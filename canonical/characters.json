@@ -1,0 +1,35 @@
+[
+  {
+    "id": "castle",
+    "name": "Castle",
+    "icon": "🏰",
+    "health": 30,
+    "rarity": "unique",
+    "archetypes": ["Castle"],
+    "art": "",
+    "effects": {},
+    "flavor": "Plain stone and stubbornness. It has never once had an idea, and it has never once fallen for lack of one."
+  },
+  {
+    "id": "collapsed-mine",
+    "name": "Collapsed Mine",
+    "icon": "⛏️",
+    "health": 20,
+    "rarity": "unique",
+    "archetypes": ["Castle"],
+    "art": "",
+    "effects": { "startGold": 1 },
+    "flavor": "What's left of the vault is worth exactly one coin — but it's one coin nobody else starts with."
+  },
+  {
+    "id": "plains-terrace",
+    "name": "Plains Terrace",
+    "icon": "🌾",
+    "health": 20,
+    "rarity": "unique",
+    "archetypes": ["Castle"],
+    "art": "",
+    "effects": { "firstUnitAtkBonus": 1 },
+    "flavor": "Open ground favors whoever steps onto it first. +1 Attack to the very first unit you play this match."
+  }
+]
