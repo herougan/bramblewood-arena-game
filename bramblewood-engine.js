@@ -1320,7 +1320,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
           const who = t.who || 'enemy';
           const sub = t.sub || (t.target==='all' ? 'all' : t.target==='random' ? 'random' : 'adjacent');
-          const amount = (t.amount==='attack') ? boardCard.atk : (t.amount||0);
+          // Custom/My-Attack/My-Health amount selector (2026-09-30): 'attack' and 'health' both
+          // read the acting card's own CURRENT (post-buff) stat at the moment the trigger fires,
+          // same live-value convention as the pre-existing "=Attack" support just below it.
+          const amount = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : (t.amount||0);
           if(sub==='all' && who!=='self'){
             const sidePl = who==='ally' ? pl : enemy;
             ['left','center','right'].forEach(side=> sidePl.row[side].slice().forEach(c=>{
@@ -1404,7 +1407,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // which permanently raises max HP too. Self-only, same convention as buffAttack/
         // buffHealth defaulting to the caster; fires the new heal trigger trio.
         case 'heal': {
-          const healed = Math.min(boardCard.maxHp - boardCard.hp, t.amount||0);
+          // Custom/My-Attack/My-Health amount selector (2026-09-30) -- 'health' reads the card's
+          // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
+          // result), same live-value convention as 'attack' resolving to boardCard.atk elsewhere.
+          const healAmount = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : (t.amount||0);
+          const healed = Math.min(boardCard.maxHp - boardCard.hp, healAmount);
           if(healed>0){ boardCard.hp += healed; fireHealTriggers(players, sideOf, playerId, boardCard, boardCard, healed, stats, events); }
           break;
         }

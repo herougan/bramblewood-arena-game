@@ -996,6 +996,15 @@
   #cardPop .card-txn-log-title{font-family:'Baloo 2'; font-weight:800; color:var(--ink-muted); margin-bottom:2px; font-size:11px; text-transform:uppercase; letter-spacing:.03em;}
   #cardPop .card-txn-log ul{margin:0; padding-left:16px;}
   #cardPop .card-txn-log li{margin-bottom:1px; color:var(--ink-muted);}
+  /* Live-value substitution (2026-09-30, "live in-match tooltips" backlog item): once a card's
+     ability text is describing an ACTUAL live board instance rather than its generic printed
+     text, a formula like "= My Attack" resolves to the real current number (describeEffects'
+     own liveAmountValue) instead of the generic phrase -- highlighted so it visually reads as
+     "this already happened to be computed for you," not just another typed-in number. Reuses
+     --wait (already a theme-aware blue used nowhere else in ability text) rather than inventing
+     a new token. Not scoped to #cardPop specifically since the same <li> markup (describeEffects'
+     output) also renders inside the Codex/card-detail overlay.*/
+  .live-stat-val{color:var(--wait); font-weight:800;}
 
   /* ==================== CODEX ==================== */
   .codex-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}

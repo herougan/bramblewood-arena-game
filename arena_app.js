@@ -815,6 +815,19 @@ const RARITY_DEFS = [
   {key:'ancient', label:'Ancient', color:'#92400e'},
 ];
 function rarityDef(key){ return RARITY_DEFS.find(r=>r.key===key) || RARITY_DEFS[1]; }
+// Deck-build rarity limits (2026-09-30, carried-forward backlog item: "deck-build max-count-per-
+// rarity enforcement"). Until now Rarity was purely cosmetic (see referenceHTML's own old copy,
+// updated alongside this) -- a real deck could run 20 copies of a single Legendary if you had
+// them unlocked. This gives each tier a real per-card copy cap in a 20-card deck, common cards
+// forming the bulk of a deck down to one-of singleton top-end rarities. Starter/Quest/Quest-Unique
+// are cosmetic print variants of Common/Uncommon/Unique respectively (see their own RARITY_DEFS
+// entries) so they alias straight onto that tier's limit rather than getting their own number.
+const RARITY_MAX_COPIES = {
+  common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2,
+  unique:1, legendary:1, mythic:1, ancient:1,
+  starter:10, quest:5, questunique:1,
+};
+function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] || 10; }
 // Splash Effect (2026-09-19, open-items #107 — "canonical/cards.json still stores 'foil' as a
 // rarity value... splitting it into its own field is a schema change"): Foil used to be a
 // RARITY_DEFS entry that a card's `rarity` field pointed to INSTEAD OF a real power tier — so a
@@ -850,7 +863,22 @@ function archetypesOf(d){
 function isStructure(d){ return archetypesOf(d).includes('Structure') || d.type==='Structure'; }
 function rarityStops(key){ const r = rarityDef(key); return r.gradient || [r.color, r.color]; }
 
-function describeEffects(def){
+// Live-value substitution for in-match ability text (2026-09-30, carried-forward backlog item:
+// "a distinct in-match live-value tooltip system: a card already on the battlefield should show
+// its CURRENT stats and render any formula-based ability text as the actual computed number...
+// with that computed number highlighted in blue"). Deliberately mirrors EXACTLY what the engine's
+// own 'damage'/'heal' trigger resolution reads (boardCard.atk / boardCard.hp, plain -- no
+// rally-aura or corrode folded in, since those two trigger actions in bramblewood-engine.js don't
+// apply them either) so the number shown is never misleading about what the trigger will actually
+// do when it fires. Returns null (no substitution) for anything that isn't a live board instance,
+// which is exactly when describeEffects is called without a liveCard (Codex, hand, deck pool).
+function liveAmountValue(mode, liveCard){
+  if(!liveCard) return null;
+  if(mode==='attack') return liveCard.atk;
+  if(mode==='health') return liveCard.hp;
+  return null;
+}
+function describeEffects(def, liveCard){
   const lines = [];
   const e = def.effects || {};
   if(def.cost) lines.push(`Costs ${def.cost} lumber to play.`); // 2026-09-22: cards are paid for in Lumber now, not Gold
@@ -877,7 +905,8 @@ function describeEffects(def){
   if(e.onAttackedSpawn) lines.push(`On Attacked (and survives): spawns ${e.onAttackedSpawn.count||1}× ${cardName(e.onAttackedSpawn.defId)}.`);
   if(e.onReadyDamage) lines.push(`On Ready: deals ${e.onReadyDamage.amount} ${e.onReadyDamage.dmgType||'physical'} damage to a random enemy.`);
   if(e.missile){
-    const amt = e.missile.amount==='attack' ? "its own Attack stat" : e.missile.amount;
+    const liveVal = e.missile.amount==='attack' ? liveAmountValue('attack', liveCard) : null;
+    const amt = liveVal!=null ? `<span class="live-stat-val">${liveVal}</span>` : (e.missile.amount==='attack' ? "its own Attack stat" : e.missile.amount);
     lines.push(`${e.missile.trigger==='onReady'?'On Ready':'On Spawn'}: hits a random enemy for ${amt} damage.`);
   }
   if(e.render) lines.push(`${e.render.trigger==='onReady'?'On Ready':'On Spawn'}: lowers the opposing creature's Attack by ${e.render.amount}.`);
@@ -898,6 +927,17 @@ function describeEffects(def){
     const commaIdx = preview.indexOf(', ');
     let detail = commaIdx>=0 ? preview.slice(commaIdx+2) : preview;
     detail = detail.charAt(0).toUpperCase() + detail.slice(1);
+    // Live-value substitution (2026-09-30): triggerPreviewText always prints the generic "its own
+    // Attack"/"its own Health" phrase (it has no concept of a live match -- it's also the editor's
+    // own authoring-time preview). Once an actual live board instance is available, swap that
+    // phrase for the real computed number, highlighted so it visually reads as "resolved," not
+    // typed-in. Exact-phrase replace is safe here: that literal phrase only ever comes from this
+    // same amt substitution inside triggerPreviewText, never from any other sentence shape.
+    if(liveCard){
+      const atkVal = liveAmountValue('attack', liveCard), hpVal = liveAmountValue('health', liveCard);
+      if(t.amount==='attack' && atkVal!=null) detail = detail.replace('its own Attack', `<span class="live-stat-val">${atkVal}</span>`);
+      if(t.amount==='health' && hpVal!=null) detail = detail.replace('its own Health', `<span class="live-stat-val">${hpVal}</span>`);
+    }
     if(t.count!=null && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
     lines.push(`${tDef.label}: ${detail}`);
@@ -1460,7 +1500,7 @@ function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
   const d = getCardDefs()[defId];
   if(!d) return '';
-  const lines = describeEffects(d);
+  const lines = describeEffects(d, liveCard);
   const [rA, rB] = rarityStops(d.rarity||'common');
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
@@ -1596,6 +1636,34 @@ function liveCardFromHoverEl(el){
   }
   return null;
 }
+// Castle hover popover (2026-09-30, backlog item: "the castle needs the same [live-value]
+// treatment plus its own tooltip (it currently has none)"). matchCastleTileHTML's data-defid is a
+// CHARACTER id (e.g. a Bramble like 'plains-terrace'), which getCardDefs() -- the CARD roster --
+// never resolves, so fullCardHTML silently returned '' for a hovered castle and initPopover's
+// handler just bailed below; the only thing a hovered castle ever showed was a plain native
+// `title` attribute (now removed from matchCastleTileHTML's extraAttrs, since this replaces it --
+// the same double-tooltip bug already fixed once this session for the leader widget would recur
+// otherwise). Builds the same kind of rich popover every other card gets, from CHARACTER_DEFS/
+// matchState instead: live current/max HP, the Bramble's passive via the exact same
+// characterDescHTML() text the deck-builder/Codex already show (not a second, drift-prone copy of
+// that logic), plus -- new here, since it's only meaningful mid-match -- whether a one-shot
+// passive like Plains Terrace's has already fired this match or is still armed.
+function castleHoverHTML(hqSide){
+  const m = matchState; if(!m) return '';
+  const pid = hqSide==='A' ? 1 : 2;
+  const pl = m.players[pid]; if(!pl) return '';
+  const def = pl.character || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
+  const visualDef = {...def, icon: def.icon || '🏰', health: pl.hq.maxHp};
+  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(visualDef, {isCastle:true, liveHp: pl.hq.hp, extraClass:'card-pop-visual-tile'})}</div>`;
+  let passiveText = characterDescHTML(def);
+  if((def.effects||{}).firstUnitAtkBonus){
+    passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
+  }
+  return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Castle'}</h4>
+    <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
+    <p class="panel-sub">${passiveText}</p>
+    ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
+}
 (function initPopover(){
   const pop = document.getElementById('cardPop');
   // 2026-09-29, per explicit request ("I think the hover details should only appear after
@@ -1613,8 +1681,9 @@ function liveCardFromHoverEl(el){
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     hoverTimer = setTimeout(()=>{
       hoverTimer = null;
+      const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
-      const html = fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
+      const html = hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
       pop.hidden = false;
@@ -2283,8 +2352,14 @@ function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 function referenceHTML(){
   return `
   <div class="panel"><h2>📚 Ability &amp; Trigger Reference</h2><p class="panel-sub">Every keyword, preset, trigger, and action the card editor can use — kept in sync automatically, since the editor reads from this same list.</p></div>
-  <div class="panel"><h3 class="ref-heading">Rarity</h3><p class="panel-sub">Purely cosmetic — sets the ring color around a card's tile everywhere it's shown (Codex, hand, board). Doesn't affect gameplay.</p>
-    <div class="ref-grid">${RARITY_DEFS.map(r=>{ const [a,b]=rarityStops(r.key); return `<div class="ref-card" style="display:flex; align-items:center; gap:10px;"><span style="flex-shrink:0; width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg, ${a}, ${b}); border:1px solid var(--surface-border);"></span><b style="margin:0;">${r.label}</b></div>`; }).join('')}
+  <!-- 2026-09-30: Rarity picked up a real gameplay effect alongside its cosmetic tile-ring color
+       -- a per-card copy limit in a built deck (see RARITY_MAX_COPIES/maxCopiesForRarity). This
+       panel's copy used to say "purely cosmetic... doesn't affect gameplay," which is no longer
+       true, so it's rewritten here and each entry now shows its actual cap. Starter/Quest/
+       Quest-Unique are called out as aliasing their base tier's limit rather than getting their
+       own row, matching how maxCopiesForRarity treats them. -->
+  <div class="panel"><h3 class="ref-heading">Rarity</h3><p class="panel-sub">Sets the ring color around a card's tile everywhere it's shown (Codex, hand, board), AND caps how many copies of that card can go in one built deck — shown below each tier. Starter aliases Common's cap, Quest aliases Uncommon's, Quest-Unique aliases Unique's.</p>
+    <div class="ref-grid">${RARITY_DEFS.map(r=>{ const [a,b]=rarityStops(r.key); const cap=maxCopiesForRarity(r.key); return `<div class="ref-card" style="display:flex; align-items:center; gap:10px;"><span style="flex-shrink:0; width:20px; height:20px; border-radius:50%; background:linear-gradient(135deg, ${a}, ${b}); border:1px solid var(--surface-border);"></span><b style="margin:0; flex:1;">${r.label}</b><span class="panel-sub" style="margin:0;">max ${cap}/deck</span></div>`; }).join('')}
   </div></div>
   <!-- Splash Effect (2026-09-19, open-items #107): its own reference panel now that it's an
        independent field from Rarity rather than a slot inside it — see the SPLASH_EFFECT_DEFS/
@@ -3152,14 +3227,15 @@ function renderEditor(){
       el.addEventListener('input', refreshPreview);
       el.addEventListener('change', refreshPreview);
     });
-    // Grey out the numeric Amount field while "= Attack" is checked, so it's visually clear
-    // which one actually applies (readTriggerRow always prefers the checkbox when checked).
-    const amountAttackCb = row.querySelector('[data-t="amountIsAttack"]');
+    // Grey out the numeric Amount field whenever the Custom/My-Attack/My-Health selector isn't
+    // set to Custom, so it's visually clear which one actually applies (readTriggerRow always
+    // prefers amtMode over the numeric field once it's not 'custom').
+    const amtModeEl = row.querySelector('[data-t="amtMode"]');
     const amountInputEl = row.querySelector('[data-t="amount"]');
-    if(amountAttackCb && amountInputEl){
-      const syncAmountDisabled = ()=>{ amountInputEl.disabled = amountAttackCb.checked; amountInputEl.style.opacity = amountAttackCb.checked ? '0.4' : ''; };
+    if(amtModeEl && amountInputEl){
+      const syncAmountDisabled = ()=>{ const on = amtModeEl.value!=='custom'; amountInputEl.disabled = on; amountInputEl.style.opacity = on ? '0.4' : ''; };
       syncAmountDisabled();
-      amountAttackCb.addEventListener('change', syncAmountDisabled);
+      amtModeEl.addEventListener('change', syncAmountDisabled);
     }
   });
   if(document.getElementById('btnDelete')) document.getElementById('btnDelete').addEventListener('click', async ()=>{
@@ -3325,9 +3401,10 @@ function readTriggerRow(row){
   const t = {on, do:doKey};
   const amountEl = row.querySelector('[data-t="amount"]');
   if(amountEl && amountEl.value!=='') t.amount = Number(amountEl.value);
-  // "= Attack" checkbox wins over the numeric Amount field when checked (see actionFieldsHTML).
-  const amountIsAttackEl = row.querySelector('[data-t="amountIsAttack"]');
-  if(amountIsAttackEl && amountIsAttackEl.checked) t.amount = 'attack';
+  // Custom/My-Attack/My-Health selector wins over the numeric Amount field whenever it's not set
+  // to Custom (see actionFieldsHTML).
+  const amtModeEl = row.querySelector('[data-t="amtMode"]');
+  if(amtModeEl && amtModeEl.value!=='custom') t.amount = amtModeEl.value;
   const amount2El = row.querySelector('[data-t="amount2"]');
   if(amount2El && amount2El.value!=='') t.amount2 = Number(amount2El.value);
   const nameMatchEl = row.querySelector('[data-t="nameMatch"]');
@@ -3362,7 +3439,7 @@ function triggerPreviewText(t){
   const trigLabel = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : trig.label) : FILL;
   const aDef = ACTION_DEFS.find(x=>x.key===t.do);
   if(!aDef) return `${trigLabel}, ${FILL}.`;
-  const amt = t.amount==='attack' ? 'its own Attack' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
+  const amt = t.amount==='attack' ? 'its own Attack' : t.amount==='health' ? 'its own Health' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
   const amt2 = (t.amount2!=null && t.amount2!=='' && !Number.isNaN(t.amount2)) ? t.amount2 : FILL;
   const count = (t.count!=null && t.count!=='') ? t.count : FILL;
   const name = t.nameMatch ? `"${t.nameMatch}"` : FILL;
@@ -3439,12 +3516,23 @@ function actionFieldsHTML(t,i){
   // still has a bare amount2 field (none do today) would fall back to the generic "amount2".
   const isBuffOrDebuff = aDef.key==='buff' || aDef.key==='debuff';
   if(aDef.fields.includes('amount')) html += `<input type="number" placeholder="${isBuffOrDebuff?'attack':'amount'}" class="w-64" data-t="amount" data-i="${i}" value="${t.amount!=null&&t.amount!=='attack'?t.amount:''}">`;
-  // "= Attack" toggle (2026-09-20): the Deal-damage action's Amount can be a fixed number OR
-  // "this card's own current Attack stat" -- the engine's fireDamageAction/runCustomTriggers
-  // already fully supports amount==='attack' (it's how the old Arrow (=Attack) preset worked
-  // under the hood), this was just never exposed as a Custom Trigger field before. Scoped to
-  // 'damage' only, per the explicit request to move Missile N here.
-  if(aDef.key==='damage') html += `<label style="display:inline-flex;align-items:center;gap:4px;font-size:12px;white-space:nowrap;" title="Deal damage equal to this card's own current Attack stat instead of a fixed number."><input type="checkbox" data-t="amountIsAttack" data-i="${i}" ${t.amount==='attack'?'checked':''}> = Attack</label>`;
+  // Custom/My-Attack/My-Health amount selector (2026-09-30, carried-forward backlog item:
+  // "a Custom/My-Attack/My-Health amount selector for Deal Damage... and the same capability
+  // newly added to Heal"). Replaces the old "=Attack"-only checkbox (which covered Deal Damage
+  // alone and had no Health option) with a proper 3-way select offered on BOTH actions. Reads off
+  // the acting card's own CURRENT (post-buff) Attack or Health stat at the moment the trigger
+  // fires -- the same live-value convention the old "=Attack" checkbox already used, now just
+  // available for Health too and on Heal as well as Deal Damage. Judgment call: "= My Health"
+  // uses the card's current HP (boardCard.hp), not its printed max -- parallel to how "= My
+  // Attack" already reads the current, possibly-buffed Attack rather than a frozen base number.
+  if(aDef.key==='damage' || aDef.key==='heal'){
+    const mode = t.amount==='attack' ? 'attack' : t.amount==='health' ? 'health' : 'custom';
+    html += `<select data-t="amtMode" data-i="${i}" title="Use a fixed number, or an amount equal to this card's own current Attack or Health stat.">
+      <option value="custom" ${mode==='custom'?'selected':''}>Custom amount</option>
+      <option value="attack" ${mode==='attack'?'selected':''}>= My Attack</option>
+      <option value="health" ${mode==='health'?'selected':''}>= My Health</option>
+    </select>`;
+  }
   if(aDef.fields.includes('amount2')) html += `<input type="number" placeholder="${isBuffOrDebuff?'health':'amount2'}" class="w-64" data-t="amount2" data-i="${i}" value="${t.amount2!=null?t.amount2:''}">`;
   if(aDef.fields.includes('nameMatch')) html += `<input type="text" placeholder="card name" class="w-110" data-t="nameMatch" data-i="${i}" value="${escapeAttr(t.nameMatch||'')}">`;
   if(aDef.fields.includes('matchMode')) html += `<select data-t="matchMode" data-i="${i}"><option value="exact" ${t.matchMode==='exact'?'selected':''}>exact name</option><option value="contains" ${t.matchMode!=='exact'?'selected':''}>name contains…</option></select>`;
@@ -5469,6 +5557,12 @@ function wireDeckListDrop(){
     const defId = e.dataTransfer.getData('text/plain');
     const defs = getCardDefs();
     if(!defId || !defs[defId] || defs[defId].locked) return;
+    // Same rarity copy-limit enforcement as the click/tap path (deckCardClick) -- this drop
+    // handler bypasses that function entirely, so it needs its own identical check.
+    if((myDeckCounts[defId]||0) >= maxCopiesForRarity(defs[defId].rarity)){
+      denyShake(listEl);
+      return;
+    }
     myDeckCounts[defId] = (myDeckCounts[defId]||0) + 1;
     saveMyDeck();
     renderMyDeckPanels();
@@ -7593,9 +7687,12 @@ function renderMyDeckPanels(){
     unlockedIds.map(id=>cardTileHTML(defs[id], {magnetic:true})).join('') +
     (lockedIds.length ? `<div class="lock-divider">🔒 Locked — not usable in a deck yet</div>` : '') +
     lockedIds.map(id=>cardTileHTML(defs[id])).join('');
-  document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }); }));
+  document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
-  document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }); }));
+  // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
+  // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
+  // below (renderSimPools) deliberately omit this argument.
+  document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // Item #10: both the pool tiles and the deck-list chips can be dragged onto the leader slot
   // (see leaderSlotHTML/wireLeaderSlot) to set that card as the deck's leader — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
@@ -7949,7 +8046,10 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     liveHp: hp,
     sideLabel: sideLabel,
     extraClass: 'match-castle-tile',
-    extraAttrs: `data-hq="${hqSide}" title="${escapeAttr((sideLabel?sideLabel+' Castle — ':'')+(def.name||'Castle'))}"`,
+    // No native `title` here (2026-09-30) -- castleHoverHTML now gives this tile the same rich
+    // popover every other card gets; stacking a plain browser title tooltip on top of it is
+    // exactly the double-tooltip bug already fixed once this session for the leader widget.
+    extraAttrs: `data-hq="${hqSide}"`,
   });
 }
 function renderMatchUI(){
@@ -12151,12 +12251,23 @@ function flyBetweenRects(fromRect, toRect, glyph){
 // lands on a pool tile or on an existing deck chip (2026-09-14; previously pool-click=add
 // and chip-click=remove were two different gestures). Animates a small flight between the
 // pool tile and the deck's mini chip list in whichever direction the change actually went.
-function deckCardClick(e, id, counts, poolSel, deckListSel, onChange){
+function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRarityLimit){
   const remove = !!e.shiftKey;
   if(remove && (counts[id]||0)<=0) return;
   const poolTileEl = document.querySelector(`${poolSel} [data-defid="${id}"]`);
   const chipEl = document.querySelector(`${deckListSel} [data-defid="${id}"]`);
   const deckListEl = document.querySelector(deckListSel);
+  // Rarity copy-limit enforcement (2026-09-30): only ever passed `true` from the real Deck
+  // builder's own pool/chip click handlers -- the Sandbox/Myriad test-deck tool (which reuses this
+  // same function) deliberately allows stacking unlimited copies of anything to test interactions,
+  // so it never passes this flag and stays uncapped.
+  if(!remove && enforceRarityLimit){
+    const def = getCardDefs()[id];
+    if(def && (counts[id]||0) >= maxCopiesForRarity(def.rarity)){
+      denyShake(poolTileEl || chipEl);
+      return;
+    }
+  }
   const fromRect = (remove ? chipEl : poolTileEl) ? (remove ? chipEl : poolTileEl).getBoundingClientRect() : null;
   const toRectFallback = remove ? (poolTileEl && poolTileEl.getBoundingClientRect()) : ((chipEl||deckListEl) && (chipEl||deckListEl).getBoundingClientRect());
   counts[id] = Math.max(0, (counts[id]||0) + (remove?-1:1));
@@ -12826,7 +12937,7 @@ function overlayDelegateChanges(){
     if(key==='on') t.on = e.target.value;
     if(key==='do'){ t.do = e.target.value; renderEditor(); return; }
     if(key==='amount') t.amount = e.target.value===''?undefined:Number(e.target.value);
-    if(key==='amountIsAttack') t.amount = e.target.checked ? 'attack' : undefined;
+    if(key==='amtMode') t.amount = e.target.value==='custom' ? undefined : e.target.value;
     if(key==='amount2') t.amount2 = e.target.value===''?undefined:Number(e.target.value);
     if(key==='nameMatch') t.nameMatch = e.target.value;
     if(key==='matchMode') t.matchMode = e.target.value;
