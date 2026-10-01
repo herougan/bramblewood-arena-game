@@ -94,6 +94,11 @@ def sub_once(text, placeholder, replacement):
 engine_src_string_literal = json.dumps(engine_src)
 
 out = template
+# Splash art (2026-10-02): PixelLab otters-vs-hummingbirds scene, inlined as a data URI like the
+# card art so the single-file build stays self-contained.
+import base64
+splash_png = open(SCRATCH + "art/splash.png", "rb").read()
+out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encode(splash_png).decode("ascii"))
 out = sub_once(out, "__ENGINE_SRC__", engine_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself

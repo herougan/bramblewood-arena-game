@@ -4197,6 +4197,8 @@ function refreshAccountUI(){
     if(txt) txt.textContent = signedIn ? (cloudUserLabel || 'Signed in') : 'Guest · Sign in';
     chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
   }
+  const badge = document.getElementById('homeAcctBadge');
+  if(badge){ badge.textContent = signedIn ? '✓ Signed in' : 'Guest'; badge.classList.toggle('signed-in', signedIn); badge.title = signedIn ? (cloudUserEmail||'') : 'Not signed in — progress saved on this device only'; }
   const line = document.getElementById('entranceAccountLine');
   if(line){
     line.hidden = !signedIn;
@@ -13741,7 +13743,7 @@ function renderHome(){
             </div>
           </div>
         </div>
-        <button class="btn ghost home-menu-btn-small" data-hometab="profile"><span class="tab-emoji">👤</span> Profile</button>
+        <button class="btn ghost home-menu-btn-small" data-hometab="profile"><span class="tab-emoji">👤</span> Profile<span class="home-acct-badge ${isSignedIn()?'signed-in':''}" id="homeAcctBadge">${isSignedIn()?'✓ Signed in':'Guest'}</span></button>
         <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
