@@ -4163,6 +4163,11 @@ let cloudReady = false; // true once the initial pull/push reconciliation has co
 let cloudIsAnonymous = true; // true = current identity (if any) is a bare anonymous session, not a real account
 let cloudAnonUnavailable = false; // true once an anonymous sign-in attempt has actually failed (toggle off/network) —
                                    // drives cloudLinkEmail()'s signUp-instead-of-upgrade fallback
+// Account identity for the "who am I signed in as" tellback (2026-10-02): the topbar account chip,
+// the Profile panel, and the post-Google-redirect toast all read these.
+let cloudUserEmail = null;
+let cloudUserLabel = null; // Google full name if present, else the email
+let cloudInitPromise = null; // resolves once initCloudSync() has settled (signed in, guest, or offline)
 // The real gate: everything this batch restricts (Raid, packs, cross-device sync) checks THIS,
 // never cloudUserId alone — a bare anonymous session is a real Supabase user row, but it is not
 // what "signed in" means to a player, and must never unlock anything gated behind that word.
@@ -4173,13 +4178,55 @@ function isSignedIn(){ return !!cloudUserId && !cloudIsAnonymous; }
 function isHostedOnline(){ try{ return /^https?:$/.test(location.protocol); }catch(e){ return false; } }
 function setCloudPill(ok, label){
   const pill = document.getElementById('cloudSyncPill');
-  if(!pill) return;
+  if(!pill){ refreshAccountUI(); return; }
   pill.textContent = ok ? (isSignedIn() ? '☁️ Synced' : '☁️ Guest (local only)') : '☁️ Offline';
   pill.classList.toggle('ok', !!ok && isSignedIn());
   pill.title = label || '';
+  refreshAccountUI();
+}
+// One place that reflects the current account state everywhere outside the full Profile panel:
+// the topbar account chip (always visible — the "tellback" that sign-in actually worked) and the
+// entrance screen's account line / Sign-in button.
+function refreshAccountUI(){
+  const signedIn = isSignedIn();
+  const chip = document.getElementById('accountChip');
+  if(chip){
+    chip.hidden = false;
+    chip.classList.toggle('signed-in', signedIn);
+    const txt = document.getElementById('accountChipText');
+    if(txt) txt.textContent = signedIn ? (cloudUserLabel || 'Signed in') : 'Guest · Sign in';
+    chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
+  }
+  const line = document.getElementById('entranceAccountLine');
+  if(line){
+    line.hidden = !signedIn;
+    line.textContent = signedIn ? `✅ Signed in as ${cloudUserLabel || cloudUserEmail || 'your account'}` : '';
+  }
+  const entranceBtn = document.getElementById('entranceSignInBtn');
+  if(entranceBtn) entranceBtn.hidden = signedIn;
+  // A brand-new device that signed in with Google before ever picking a warband name: offer the
+  // Google first name as the default rather than an empty field.
+  const nameInput = document.getElementById('loginNameInput');
+  if(signedIn && nameInput && !nameInput.value && cloudUserLabel && cloudUserLabel!==cloudUserEmail){
+    nameInput.value = cloudUserLabel.split(' ')[0].slice(0,24);
+  }
+}
+function showToast(message, kind){
+  let host = document.getElementById('toastHost');
+  if(!host){ host = document.createElement('div'); host.id = 'toastHost'; host.className = 'toast-host'; document.body.appendChild(host); }
+  const t = document.createElement('div');
+  t.className = 'toast' + (kind ? ' toast-'+kind : '');
+  t.setAttribute('role', 'status');
+  t.textContent = message;
+  host.appendChild(t);
+  requestAnimationFrame(()=> t.classList.add('show'));
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(), 400); }, 4500);
 }
 async function applySessionIdentity(user){
   cloudUserId = user.id;
+  cloudUserEmail = user.email || null;
+  const meta = user.user_metadata || {};
+  cloudUserLabel = meta.full_name || meta.name || user.email || null;
   // Supabase's own flag, set true by signInAnonymously() and cleared automatically the instant an
   // anonymous session gets real credentials (updateUser/signUp/OAuth) — trusted directly rather
   // than inferred, since it's exactly what "is this a real account" means server-side. Falls back
@@ -4207,15 +4254,28 @@ async function applySessionIdentity(user){
   }
 }
 async function initCloudSync(){
+  // Coming back from Google (2026-10-02): Supabase hands the result back in the URL — tokens on
+  // success, error/error_description on failure (e.g. the player cancelled on Google's screen).
+  // Read it BEFORE createClient(), which consumes and strips the success tokens itself.
+  let oauthReturning = false, oauthError = null;
+  try{
+    const both = (location.hash||'').replace(/^#/,'&') + '&' + (location.search||'').replace(/^\?/,'');
+    oauthReturning = /(^|&)(access_token|code)=/.test(both);
+    const m = both.match(/(?:^|&)error_description=([^&]*)/) || both.match(/(?:^|&)error=([^&]*)/);
+    if(m) oauthError = decodeURIComponent(m[1].replace(/\+/g,' '));
+  }catch(e){}
   try{
     if(typeof supabase === 'undefined' || !supabase.createClient){ setCloudPill(false, 'cloud SDK failed to load'); return; }
     sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    // Catches the redirect back from a Google sign-in (see cloudSignInWithGoogle) — supabase-js
-    // parses the URL fragment itself and fires SIGNED_IN here once the tokens land, which is the
-    // only reliable moment to know a same-page OAuth round-trip actually completed.
+    // Later auth changes in this same page (not the initial load, which the code below handles
+    // directly so the post-redirect toast fires exactly once).
+    let initSettled = false;
     sbClient.auth.onAuthStateChange((event, session)=>{
-      if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous){
+      if(!initSettled) return;
+      if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
         applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); });
+      } else if(event==='SIGNED_OUT'){
+        resetCloudIdentity(); refreshAuthGateUI();
       }
     });
     const { data: sessionData } = await sbClient.auth.getSession();
@@ -4223,19 +4283,44 @@ async function initCloudSync(){
     if(!session){
       const { data, error } = await sbClient.auth.signInAnonymously();
       if(error || !data || !data.user){
+        // Anonymous sessions are off in the dashboard — that's fine and is now the expected
+        // setup: a guest is simply local-only (everything saved in this browser), with online
+        // features behind requireSignIn(). Not an "offline" state.
         cloudAnonUnavailable = true;
-        setCloudPill(false, 'cloud sync unavailable — anonymous sign-in may need enabling in the Supabase dashboard');
-        return;
+        cloudReady = true;
+        setCloudPill(true, 'Playing as guest — progress saved on this device');
+      } else {
+        await applySessionIdentity(data.user);
+        cloudReady = true;
       }
-      await applySessionIdentity(data.user);
     } else {
       await applySessionIdentity(session.user);
+      cloudReady = true;
     }
-    cloudReady = true;
+    initSettled = true;
     setCloudPill(true, isSignedIn() ? 'Cloud sync active' : 'Playing as guest — sign in to sync');
+    refreshAuthGateUI();
   } catch(e){
     setCloudPill(false, 'cloud sync unavailable');
+  } finally {
+    if(oauthReturning || oauthError){
+      try{ history.replaceState(null, '', location.pathname); }catch(e){}
+      if(isSignedIn()) showToast(`✅ Signed in as ${cloudUserLabel || cloudUserEmail || 'your Google account'} — your progress now syncs.`, 'ok');
+      else showToast(`Google sign-in didn't complete${oauthError ? ': '+oauthError : ''}. You're still playing as a guest.`, 'error');
+    }
   }
+}
+function resetCloudIdentity(){
+  cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null;
+  if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
+  setCloudPill(true, 'Playing as guest — progress saved on this device');
+}
+// Signs out of the cloud account only. Everything already on this device (decks, currencies,
+// cards — including whatever was synced down) stays in localStorage and keeps working as a guest.
+async function cloudSignOut(){
+  if(sbClient){ try{ await sbClient.auth.signOut(); }catch(e){} }
+  resetCloudIdentity();
+  refreshAuthGateUI();
 }
 async function cloudPullState(){
   if(!sbClient || !cloudUserId) return;
@@ -4372,10 +4457,10 @@ function requireSignIn(reason, onSuccess){
   authGatePendingAction = onSuccess;
   openAuthGateModal(reason);
 }
-function openAuthGateModal(reason){
+function openAuthGateModal(reason, opts){
   const overlay = document.getElementById('authGateOverlay');
   if(!overlay) { if(authGatePendingAction){ const fn=authGatePendingAction; authGatePendingAction=null; fn(); } return; } // no modal markup available — fail open rather than silently block
-  overlay.innerHTML = authGateModalHTML(reason);
+  overlay.innerHTML = authGateModalHTML(reason, opts);
   overlay.hidden = false;
   wireAuthGateModal();
 }
@@ -4386,10 +4471,11 @@ function closeAuthGateModal(){
   overlay.innerHTML = '';
   authGatePendingAction = null;
 }
-function authGateModalHTML(reason){
+function authGateModalHTML(reason, opts){
   const googleDisabled = !isHostedOnline();
+  const reminder = !!(opts && opts.reminder);
   return `<div class="modal auth-gate-modal">
-    <div class="modal-head-row"><h2>🔑 Sign in ${reason ? escapeHtml(reason) : 'to continue'}</h2>
+    <div class="modal-head-row"><h2>${reminder ? '🌰 Keep your progress safe' : `🔑 Sign in ${reason ? escapeHtml(reason) : 'to continue'}`}</h2>
       <button class="modal-close-btn" id="authGateCloseBtn" aria-label="Close">✕</button></div>
     <p class="panel-sub">Playing as a guest keeps your progress on this device only. Signing in (free) unlocks Online Raid, Shop packs, and syncing across devices — anything you've already done here carries over the moment you sign up.</p>
     <button type="button" class="btn google-btn" id="authGateGoogleBtn" ${googleDisabled?'disabled':''} title="${googleDisabled?'Google sign-in needs the game hosted at a real web address first — not available in this downloaded copy yet.':''}">🔵 Continue with Google</button>
@@ -4403,12 +4489,15 @@ function authGateModalHTML(reason){
       </div>
       <div class="cloud-link-msg" id="authGateMsg" hidden></div>
     </form>
+    ${reminder ? '<button type="button" class="btn ghost small auth-gate-later" id="authGateLaterBtn">Maybe later — keep playing as a guest</button>' : ''}
   </div>`;
 }
 function wireAuthGateModal(){
   const overlay = document.getElementById('authGateOverlay');
   const closeBtn = document.getElementById('authGateCloseBtn');
   if(closeBtn) closeBtn.addEventListener('click', closeAuthGateModal);
+  const laterBtn = document.getElementById('authGateLaterBtn');
+  if(laterBtn) laterBtn.addEventListener('click', closeAuthGateModal);
   if(overlay) overlay.addEventListener('click', e=>{ if(e.target===overlay) closeAuthGateModal(); });
   const msgEl = document.getElementById('authGateMsg');
   const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
@@ -4452,12 +4541,31 @@ function wireAuthGateModal(){
 // surface (Raid fight buttons, Shop pack buttons, the Profile panel itself) drops its guest-only
 // styling/locks immediately, without needing a manual reload.
 function refreshAuthGateUI(){
+  refreshAccountUI();
   if(currentTab==='profile') renderProfile();
   if(currentTab==='shop') renderShop();
   // Guarded on !matchState: requireSignIn's pending action for Raid is "start the fight," which
   // by the time this runs has usually already replaced #playSubBody with the live match screen —
   // re-rendering the boss list over that would silently kill the match the player just started.
   if(currentTab==='play' && playSubTab==='raid' && !matchState && document.getElementById('playSubBody')) renderRaidSubTab(document.getElementById('playSubBody'));
+}
+
+// ---- Sign-in reminder (2026-10-02, explicit spec): never during or before the tutorial; once the
+// tutorial is done, a guest gets one gentle reminder each time the game is (re)started — i.e. once
+// per page load, never repeated within the same session. A guest who dismisses it keeps playing
+// locally; online features stay behind requireSignIn() as before.
+let signInReminderShownThisLoad = false;
+async function maybeRemindSignIn(){
+  if(signInReminderShownThisLoad) return;
+  if(!loadTutorialDone()) return;
+  try{ if(cloudInitPromise) await cloudInitPromise; }catch(e){}
+  if(isSignedIn() || !sbClient || !isHostedOnline()) return;
+  if(typeof matchState!=='undefined' && matchState) return; // never interrupt a live fight
+  const overlay = document.getElementById('authGateOverlay');
+  if(!overlay || !overlay.hidden) return; // some other sign-in prompt is already up
+  signInReminderShownThisLoad = true;
+  authGatePendingAction = null;
+  openAuthGateModal('', {reminder:true});
 }
 
 // ---- Ranked ladder ----
@@ -14288,10 +14396,11 @@ function renderProfile(){
       <p class="panel-sub">Your name and progress are saved on this device by default. <span id="cloudSyncStatusLine">Checking cloud sync…</span></p>
       <div class="panel cloud-account-panel" id="cloudAccountPanel">
         <h3>${isSignedIn() ? '☁️ Signed in' : '🔑 Sign in for online features'}</h3>
+        ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>` : ''}
         <p class="panel-sub" id="cloudAccountSub">${isSignedIn()
           ? 'Your currencies, card levels, decks, and rank are synced and available on any device you sign in on.'
-          : 'You\'re playing as a guest — everything works locally, but Online Raid, Shop packs, and cross-device sync all need a free account. Signing up carries over everything you\'ve already done here.'}</p>
-        ${isSignedIn() ? '' : `
+          : 'You\'re playing as a guest — everything is saved on this device only, and online features (Online Raid, Ranked, Guilds, Shop packs, cross-device sync) need a free account. Signing up carries over everything you\'ve already done here.'}</p>
+        ${isSignedIn() ? `<button type="button" class="btn small" id="cloudSignOutBtn">Sign out of this account</button>` : `
         <button type="button" class="btn google-btn" id="profileGoogleBtn" ${isHostedOnline()?'':'disabled'} title="${isHostedOnline()?'':'Google sign-in needs the game hosted at a real web address first — not available in this downloaded copy yet.'}">🔵 Continue with Google</button>
         <div class="auth-gate-divider"><span>or</span></div>
         <form id="cloudLinkForm" class="cloud-link-form" autocomplete="off">
@@ -14316,6 +14425,12 @@ function renderProfile(){
     clearMyProfile();
     matchHistoryList = null; // don't let a re-login (possibly a different account) show a stale cached list
     showLoginScreen();
+  });
+  const signOutBtn = document.getElementById('cloudSignOutBtn');
+  if(signOutBtn) signOutBtn.addEventListener('click', async ()=>{
+    if(!confirm('Sign out? Everything stays on this device and you can keep playing as a guest — online features lock until you sign in again.')) return;
+    await cloudSignOut();
+    showToast('Signed out — playing as a guest on this device.');
   });
   const statusLine = document.getElementById('cloudSyncStatusLine');
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? 'Cloud sync active — your progress is backed up.' : (cloudReady ? 'Playing as guest — not signed in.' : 'Connecting…'));
@@ -14441,7 +14556,16 @@ document.addEventListener('fullscreenchange', ()=>{
 switchTab('home');
 initDb();
 initUserAuth();
-initCloudSync();
+cloudInitPromise = initCloudSync();
+(function wireAccountChip(){
+  const chip = document.getElementById('accountChip');
+  if(!chip) return;
+  chip.addEventListener('click', ()=>{
+    if(isSignedIn()) switchTab('profile');
+    else requireSignIn('to sync your progress', ()=>{});
+  });
+  refreshAccountUI();
+})();
 loadRaidBosses();
 
 // Item #9 (2026-09-18): "Clicking exit brings you to home." Now that there's a real Home landing
@@ -14480,7 +14604,8 @@ function renderEntranceAuth(){
   if(!el) return;
   if(myProfile && myProfile.name){
     el.innerHTML = `<p class="entrance-welcome-back">Welcome back, <b>${escapeHtml(myProfile.name)}</b> 🌰</p>
-      <button class="btn primary big splash-enter" id="startBtn">▶ Start</button>`;
+      <button class="btn primary big splash-enter" id="startBtn">▶ Start</button>
+      <p class="entrance-account-line" id="entranceAccountLine" hidden></p>`;
     const btn = document.getElementById('startBtn');
     if(btn) btn.addEventListener('click', triggerEntranceAnimation);
   } else {
@@ -14489,6 +14614,7 @@ function renderEntranceAuth(){
         <button type="submit" class="btn primary big splash-enter" id="loginSubmitBtn">🌿 Enter the Grove</button>
       </form>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
+      <p class="entrance-account-line" id="entranceAccountLine" hidden></p>
       <p class="entrance-login-note">No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.</p>`;
     const form = document.getElementById('loginForm');
     // Reliability hardening (2026-09-24, "im stuck. i cant enter." bug report): wrapped in
@@ -14537,6 +14663,7 @@ function renderEntranceAuth(){
     const signInBtn = document.getElementById('entranceSignInBtn');
     if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to sync your progress', renderEntranceAuth));
   }
+  refreshAccountUI();
 }
 function triggerEntranceAnimation(){
   const splash = document.getElementById('splashScreen');
@@ -14579,7 +14706,7 @@ function triggerEntranceAnimation(){
     const needsFactionPick = !loadTutorialDone() && !loadFactionChoice();
     const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice();
     function enterTutorialFlow(){ try{ if(needsFactionPick) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
-    if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else switchTab('home'); clearWatchdog(); return; }
+    if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else { switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }
     // Render Home UNDERNEATH the still-visible overlay first, so the peel-off/fade genuinely
     // reveals a real page rather than a blank wrap for however long the animation takes.
     switchTab('home');
@@ -14590,6 +14717,7 @@ function triggerEntranceAnimation(){
       try{
         splash.hidden = true; splash.classList.remove('leaving');
         enterTutorialFlow();
+        if(!needsFactionPick && !needsTutorialResume) maybeRemindSignIn();
       }catch(eInner){
         console.error('[Bramblewood] entrance animation callback failed:', eInner);
         splash.hidden = true; splash.classList.remove('leaving');
@@ -14611,7 +14739,9 @@ function triggerEntranceAnimation(){
   if(!splash) return;
   let seen = false;
   try{ seen = sessionStorage.getItem('bramblewood_seen_splash')==='1'; }catch(e){}
-  if(seen){ splash.hidden = true; return; }
+  // A reload in the same tab skips the splash but is still a restart of the game — so it still
+  // gets the once-per-load sign-in reminder (maybeRemindSignIn itself checks tutorial/sign-in).
+  if(seen){ splash.hidden = true; setTimeout(maybeRemindSignIn, 1200); return; }
   renderEntranceAuth();
 })();
 

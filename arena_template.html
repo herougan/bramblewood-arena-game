@@ -399,6 +399,22 @@
      misleading login affordance. */
   .user-pill{display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink);}
   .user-pill .user-ico{font-size:12px;}
+  /* Account chip (2026-10-02): the always-visible answer to "am I signed in?" — guest vs. the
+     signed-in Google/email account. Clicking opens sign-in (guest) or Profile (signed in). */
+  .account-chip{display:flex; align-items:center; gap:5px; font:inherit; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:999px; background:var(--surface-2); border:1px dashed var(--surface-border); color:var(--ink); cursor:pointer; max-width:200px;}
+  .account-chip span:last-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .account-chip.signed-in{border-style:solid; border-color:#4caf50;}
+  .account-chip.signed-in .account-chip-ico::after{content:'';}
+  .account-chip:hover{filter:brightness(1.08);}
+  .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
+  .account-identity-ico{font-size:18px;}
+  .auth-gate-later{display:block; margin:12px auto 0;}
+  .entrance-account-line{margin:8px 0 0; font-weight:800; font-size:13px; text-align:center;}
+  .toast-host{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1000; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,440px);}
+  .toast{background:var(--surface-2, #222); color:var(--ink, #fff); border:1px solid var(--surface-border, #444); border-radius:12px; padding:10px 14px; font-size:13.5px; font-weight:700; box-shadow:0 6px 24px rgba(0,0,0,.35); opacity:0; transform:translateY(10px); transition:opacity .3s, transform .3s; text-align:center;}
+  .toast.show{opacity:1; transform:none;}
+  .toast-ok{border-color:#4caf50;}
+  .toast-error{border-color:#e57373;}
   /* Energy pill (2026-09-22) — same chip language as .user-pill/.db-pill, but always visible
      (it's spent every time you start a fight) and gets a warning tint once you're too low to
      afford even the cheapest thing that costs it (a Skirmish). */
@@ -3683,6 +3699,7 @@
     <div class="energy-pill" id="energyPill" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 per minute">
       <span class="energy-ico">⚡</span><span id="energyPillText">—</span>
     </div>
+    <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>
     <div class="user-pill" id="userPill" hidden><span class="user-ico">👤</span><span id="userPillText"></span></div>
     <div class="db-pill" id="dbPill" style="display:none"><span class="dot"></span><span id="dbPillText"></span></div>
   </div>
