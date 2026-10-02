@@ -313,10 +313,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Castle-zone + single-lane rework landing.
   function setCastle(pl, defId){ pl.castle = makeBoardCard(defId); return pl.castle; }
   let uidCounter = 1;
+  // Hand limit (2026-10-02, explicit request): a hand holds at most MAX_HAND cards. A draw with a
+  // full hand "auto-pitches" instead — the top card goes straight from the deck to the graveyard
+  // and pays 1 Lumber. Every draw (round start and card effects) funnels through here.
+  const MAX_HAND = 5;
   function draw(player, n, side, stats, events){
     for(let i=0;i<n;i++){
       if(player.deck.length===0) return;
       const defId = player.deck.pop();
+      if(player.hand.length >= MAX_HAND){
+        player.graveyard.push({defId});
+        player.lumber += 1;
+        if(recordEvents && events) events.push({type:'overdraw', side, defId, lumber:1});
+        continue;
+      }
       player.hand.push({uid:uidCounter++, defId});
       ensureStat(stats, side, defId).drawn++;
       if(recordEvents && events) events.push({type:'draw', side, defId});
@@ -678,7 +688,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const gated = c=>{ if(who==='self' || dodgeCheck(c)) apply(c); else dodge(c); };
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
-      ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0) gated(c); }));
+      ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); // area effect: Evade only dodges single-target
       return;
     }
     const target = resolveGeneralTarget(players, playerId, boardCard, who, sub);
@@ -750,8 +760,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!(def.effects && def.effects.evasive)) return true;
     return rnd() >= 0.5;
   }
+  // dodgeCheck: true = the hit lands. Evade (evasive) dodges any SINGLE-TARGET attack or ability.
   function dodgeCheck(card){
     return evasiveGate(card);
+  }
+  // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
+  //   Swift  — dodges combat attacks from non-Swift attackers
+  //   Flying — dodges combat attacks from non-Flying attackers
+  //   Evade  — dodges single-target attacks (only applied when singleTarget is true)
+  // e.g. a Swift + Flying + Evade card hit by a plain attacker's normal strike: 1 - (1/2)^3 = 7/8.
+  function combatHitLands(attCard, defCard, singleTarget){
+    const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
+    const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
+    if(singleTarget && dd.evasive && rnd() < 0.5) return false;
+    if(dd.swift && !ad.swift && rnd() < 0.5) return false;
+    if(dd.flying && !ad.flying && rnd() < 0.5) return false;
+    return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
   // Recomputed fresh every round (see resolveCombat) rather than folded into .atk permanently,
@@ -1512,7 +1536,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
           const apply = c=>{ c.atk = Math.max(0, c.atk-(t.amount||0)); if(recordEvents&&events) events.push({type:'statusFx', kind:'debuffAttack', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid, amount:t.amount||0}); if(c.hp>0){ bleedTick(sideOf, otherId(playerId), c, stats, events, 'defend'); runCustomTriggers(players, sideOf, otherId(playerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events); } };
           const dodge = c=>{ if(recordEvents&&events) events.push({type:'evaded', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); };
-          if(t.target==='all'){ ['left','center','right'].forEach(side=> enemy.row[side].forEach(c=>{ if(c.hp>0){ if(dodgeCheck(c)) apply(c); else dodge(c); } })); break; }
+          if(t.target==='all'){ ['left','center','right'].forEach(side=> enemy.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); break; } // area effect: Evade only dodges single-target
           const opp = opposingCardOf(players, playerId, boardCard); if(opp){ if(dodgeCheck(opp.card)) apply(opp.card); else dodge(opp.card); } break;
         }
         // Debuff (2026-09-30): the general mirror of Buff — lowers Attack (t.amount) and/or
@@ -2329,10 +2353,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:meta.enemyId, pos});
       });
       if(!candidates.length) return null;
+      // Swift (2026-10-02) acts before everything — even Quick — and among several Swift units the
+      // normal position/tie-break order below decides; then Quick; then everyone else.
+      const speedRank = c=>{ const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : (e.quick ? 1 : 2); };
       candidates.sort((a,b)=>{
-        const aq = !!(CARD_DEFS[a.att.defId].effects && CARD_DEFS[a.att.defId].effects.quick);
-        const bq = !!(CARD_DEFS[b.att.defId].effects && CARD_DEFS[b.att.defId].effects.quick);
-        if(aq!==bq) return aq ? -1 : 1;
+        const ra = speedRank(a), rb = speedRank(b);
+        if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
@@ -2469,7 +2495,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Poison/Expose/Shell/onAttackedSpawn). Sweep/Swipe continuation and an HQ strike are
       // unaffected by a dodged primary hit. Ambush overrides this gate entirely (see
       // ambushForce above) — its first strike always connects.
-      if(target.kind==='card' && !ambushForce && !dodgeCheck(target.card)){
+      if(target.kind==='card' && !ambushForce && !combatHitLands(a.att, target.card, true)){
         if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid});
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (same row, one slot either way) takes the hit
@@ -2664,7 +2690,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             const extraRaw = findNextLiveCardBeyond(liveEnemyCols, lastCol, liveSelf.dir);
             if(!extraRaw) break;
             lastCol = extraRaw.col; // continuation always walks from the ORIGINAL column, not the guardian's — advance even if evaded
-            if(!dodgeCheck(extraRaw.card)){
+            if(!combatHitLands(a.att, extraRaw.card, false)){ // Sweep extra: multi-target, so no Evade roll — Swift/Flying still apply
               if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraRaw.card.defId, targetUid:extraRaw.card.uid, sweep:true});
               continue;
             }
@@ -2718,7 +2744,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
-              if(!dodgeCheck(c2raw)){
+              if(!combatHitLands(a.att, c2raw, false)){ // Swipe flank: multi-target, so no Evade roll — Swift/Flying still apply
                 if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, swipe:true});
                 return;
               }

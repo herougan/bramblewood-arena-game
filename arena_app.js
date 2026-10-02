@@ -184,11 +184,12 @@ const PASSIVE_DEFS = [
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
-  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round.`},
+  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
+  {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round(s) before attacking again.`},
   {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`Getting hit queues ${v} bonus armor + a skipped attack, active next round.`},
   {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy HQ directly.`},
-  {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target hit (melee included) has a flat 1-in-2 chance to be dodged. No cap, no cooldown.`},
+  {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Sweep and Swipe extra hits can't be evaded.`},
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): unconditional damage multipliers, a deliberately
   // separate family from the existing Resistance/Weakness boxes (which only apply against a
   // matching dmgType/archetype/keyword) — see attackerDamageFactor/defenderDamageFactor in the
@@ -266,7 +267,7 @@ const PASSIVE_DEFS = [
   // (right below) needs to check against — nothing else reads it yet, but it's a natural fit
   // for anything airborne (bees, birds, wyrms) and a sensible future hook for other "grounded
   // AOE can't reach it" skills (Rock Throw, below) without needing its own new mechanic.
-  {key:'flying', category:'passive', label:'Flying', kind:'boolean', desc:()=>`Airborne — immune to Earthquake and any other ground-only AOE that explicitly excludes Flying units.`},
+  {key:'flying', category:'passive', label:'Flying', kind:'boolean', desc:()=>`Airborne — dodges combat attacks from non-Flying attackers 1 time in 2, and immune to Earthquake and other ground-only area effects.`},
   // Earthquake (2026-09-21, task #304, per explicit request: "I want a few AOE skills too, like
   // Earthquake. - do damage to all non flying units. I think it makes sense as a Evergreen
   // skill - so it can belong in passive abilities. By default, it just means - on spawn, do an
@@ -741,7 +742,7 @@ const ARCHETYPE_ICON = __ARCHETYPE_ICON__;
 // Rally/Regen/etc. are the same category — they describe the attacker's survivability or its
 // allies' benefit, not what its hits are made of).
 const RESIST_ABILITY_EXCLUDE = new Set([
-  'armor','thorns','rage','expose','guardian','quick','reload','shell','stealth','evasive',
+  'armor','thorns','rage','expose','guardian','quick','swift','reload','shell','stealth','evasive',
   'rally','esprit','regen','stunOnHit','bulwark','reflect','momentum','bloom','frenzy',
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): these scale HOW MUCH damage a hit deals, not what
   // kind of damage it is — a different axis from the "sensible thing to resist" qualities this
@@ -2325,6 +2326,7 @@ function abilityBadges(d){
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
   if(e.flying) out.push(`🪽`);
+  if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`🌎💥${e.earthquake}`);
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
@@ -11685,6 +11687,44 @@ async function resolveRound(){
   renderMatchUI();
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+// Full-hand auto-pitch (2026-10-02): a face-down card flies from that side's deck to its graveyard
+// (your Graveyard zone; the enemy has none on screen, so theirs arcs up and fades), with a
+// "+1 🪵" pop where it lands. Fixed-position clone on <body>, so the round's final re-render
+// can't cut it off mid-flight.
+function animateOverdraw(ev){
+  const mine = ev.side==='A';
+  const from = document.getElementById(mine ? 'deckWidgetBottom' : 'deckWidgetTop');
+  if(!from) return;
+  const to = mine ? document.getElementById('dropDiscard') : null;
+  const fr = from.getBoundingClientRect();
+  const card = document.createElement('div');
+  card.className = 'overdraw-fly';
+  card.innerHTML = '<span>🌰</span>';
+  Object.assign(card.style, {left:(fr.left + fr.width/2 - 28)+'px', top:(fr.top + fr.height/2 - 38)+'px'});
+  document.body.appendChild(card);
+  let dx, dy;
+  if(to){ const tr = to.getBoundingClientRect(); dx = (tr.left + tr.width/2) - (fr.left + fr.width/2); dy = (tr.top + tr.height/2) - (fr.top + fr.height/2); }
+  else { dx = 60; dy = -40; }
+  const pop = ()=>{
+    const r = card.getBoundingClientRect();
+    const t = document.createElement('div');
+    t.className = 'overdraw-gain'; t.textContent = `+${ev.lumber||1} 🪵`;
+    Object.assign(t.style, {left:(r.left + r.width/2)+'px', top:(r.top)+'px'});
+    document.body.appendChild(t);
+    setTimeout(()=> t.remove(), 1200);
+    card.remove();
+  };
+  if(hasGsap()){
+    gsap.timeline({onComplete:pop})
+      .fromTo(card, {scale:.6, opacity:0, rotation:0}, {scale:1, opacity:1, duration:.15})
+      .to(card, {x:dx, y:dy, rotation:mine?-200:160, duration:.7, ease:'power2.inOut'})
+      .to(card, {opacity:0, scale:.5, duration:.15});
+  } else {
+    card.style.transition = 'transform .7s ease-in-out, opacity .2s .6s';
+    requestAnimationFrame(()=>{ card.style.transform = `translate(${dx}px,${dy}px) rotate(-200deg)`; card.style.opacity = '0'; });
+    setTimeout(pop, 800);
+  }
+}
 // "FIGHT!" banner (2026-09-17, per explicit request: "there should be a 'fight' sign before the
 // combat anims begins") — a brief full-battlefield overlay, purely cosmetic, awaited once from
 // resolveRound() right before it starts replaying this round's already-fully-resolved event log.
@@ -11928,6 +11968,7 @@ function logText(ev){
     // card it drew leaked something the player has no legitimate way to see. Only the player's
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
+    case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
@@ -12621,6 +12662,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   const targetDef = ev.targetDefId ? (defs[ev.targetDefId]||{}) : null;
   const ae = attDef.effects||{}, te = (targetDef&&targetDef.effects)||{};
   if(ae.quick && attEl){ SoundKit.quick(); floatText(attEl, '⚡ Quick!', 'quick'); }
+  if(ae.swift && attEl){ SoundKit.quick(); floatText(attEl, '💨 Swift!', 'quick'); }
   if(ae.rage && attEl && attEl.classList.contains('raging')) SoundKit.growl();
   if(ev.type==='hitHQ' && ae.stealth && targetEl){ SoundKit.stealthTone(); floatText(targetEl, '👻 Stealth!', 'debuff'); }
   if(ev.type==='hit' && te.shell && targetEl){ SoundKit.shellUp(); setTimeout(()=> floatText(targetEl, '🐚 Shell!', ''), 80); }
@@ -13160,6 +13202,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='bounty'){ if(ev.uid) itemDropVfx(ev.uid, '🪵'); else SoundKit.gold(); }
   if(ev.type==='exile') SoundKit.exile();
   if(ev.type==='draw') SoundKit.draw();
+  if(ev.type==='overdraw'){ SoundKit.draw(); animateOverdraw(ev); }
   // Chronos wait-countdown (2026-09-17): the ordinary per-round tick — ring redraws to the
   // new remaining fraction, a quick pulse, and a small clock-tick sound.
   if(ev.type==='waitTick'){
@@ -15421,10 +15464,22 @@ function showSpeechBubble(el, text){
   // own getBoundingClientRect() — see the CSS comment on .speech-bubble. This is what lets the
   // bubble render above the map/field instead of getting clipped by .board-row's overflow-y.
   document.body.appendChild(b);
-  const cardRect = el.getBoundingClientRect();
   const bubbleRect = b.getBoundingClientRect(); // real size even at opacity:0 (still laid out)
-  b.style.left = (cardRect.left + cardRect.width/2 - bubbleRect.width/2) + 'px';
-  b.style.top = (cardRect.top - bubbleRect.height - 6) + 'px';
+  // 2026-10-02 ("when scrolling up and down, the text gets left behind"): re-anchor to the card
+  // every frame while the bubble is alive, so it follows scrolling (and a board re-render, which
+  // swaps the card's element — re-found by its data-uid) instead of staying where it first appeared.
+  const uid = el.getAttribute && el.getAttribute('data-uid');
+  let anchor = el;
+  const place = ()=>{
+    if(!anchor.isConnected && uid){ const fresh = document.querySelector(`.board-card[data-uid="${uid}"]`); if(fresh) anchor = fresh; }
+    if(!anchor.isConnected) return;
+    const cardRect = anchor.getBoundingClientRect();
+    b.style.left = (cardRect.left + cardRect.width/2 - bubbleRect.width/2) + 'px';
+    b.style.top = (cardRect.top - bubbleRect.height - 6) + 'px';
+  };
+  place();
+  const follow = ()=>{ if(!b.isConnected) return; place(); requestAnimationFrame(follow); };
+  requestAnimationFrame(follow);
   if(hasGsap()){
     gsap.timeline({onComplete:()=> b.remove()})
       .to(b, {opacity:1, scale:1, y:0, duration:.22, ease:'back.out(2.2)'})
