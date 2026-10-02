@@ -990,6 +990,7 @@ function nextMatchRng(){
   forcedNextSeed = null;
   return seededRng(currentMatchSeed);
 }
+let codexFiltersOpen = false; // UX A7: phone-only Codex filter disclosure
 const CARD_DEFS_BASELINE = __CARD_DEFS__;
 // Character-select roster: small, fixed set of "background" cards (Castle/Collapsed Mine/Plains
 // Terrace/...) picked once before a match, each setting your HQ's max HP and granting a team-wide
@@ -2057,8 +2058,9 @@ function renderCodex(){
   const defs = getCardDefs();
   const archetypes = [...new Set(Object.values(defs).flatMap(d=>archetypesOf(d)))].sort();
   body.innerHTML = `
-    <div class="codex-toolbar">
+    <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
       <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
+      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option></select>
@@ -2080,6 +2082,8 @@ function renderCodex(){
     <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${codexStatsHTML(defs)}`;
   document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; renderCodexGrid(); });
+  const cxFT = document.getElementById('cxFiltersToggle');
+  if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });

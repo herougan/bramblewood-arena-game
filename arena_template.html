@@ -1105,6 +1105,16 @@
 
   /* ==================== CODEX ==================== */
   .codex-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
+  /* UX A7 (2026-10-03): on phones the seven filter controls stacked into seven rows before the first
+     card; now search stays visible and the rest sit behind one "Filters" toggle. Desktop unchanged. */
+  .cx-filters-toggle{display:none;}
+  @media (max-width:700px){
+    .codex-toolbar{gap:8px;}
+    .codex-toolbar #cxSearch{flex:1 1 60%; min-width:0;}
+    .cx-filters-toggle{display:inline-flex;}
+    .codex-toolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle){display:none;}
+    .codex-toolbar.filters-open > select{flex:1 1 45%; min-width:0;}
+  }
   .codex-toolbar input, .codex-toolbar select{font-family:'Nunito'; font-size:13.5px; padding:8px 10px; border:1px solid var(--surface-border); border-radius:9px; background:var(--surface); color:var(--ink);}
   .codex-toolbar input{flex:1; min-width:160px;}
   .codex-sub-tabs{display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap;}
