@@ -1,0 +1,7 @@
+-- Applied to project xjctfwobcsyiztecutrb on 2026-10-02 via the Supabase connector.
+-- 1) Revoke anon EXECUTE on the 5 SECURITY DEFINER RPCs (signed-in only).
+-- 2) decrement_raid_boss_hp: real (non-anonymous) account required; damage capped at the boss's
+--    stats.hqHp (default 200, one fight's worth); 60s cooldown per player per boss (raid_hit_log).
+-- 3) report_live_match_result: each player's new rating clamped to +/-24 (client Elo K) of their
+--    current rating; winner can't lose rating, loser can't gain.
+-- Full SQL: see the migration "harden_public_rpcs" in the Supabase dashboard (Database > Migrations).
