@@ -2156,6 +2156,26 @@
   .zone-chips{display:flex; gap:5px; flex-wrap:wrap;}
   .zone-chip{font-size:16px; background:var(--bg); border-radius:7px; padding:3px 5px;}
 
+
+  /* ---- Simplified sign-in (2026-10-02) ---- */
+  .auth-form{display:flex; flex-direction:column; gap:12px; max-width:360px; margin:0 auto; width:100%;}
+  .auth-lede{margin:0; font-size:14px; line-height:1.45; color:inherit; opacity:.85; text-align:center;}
+  /* Google's standard "Sign in with Google" button (light theme): white, 1px #747775 border, G logo left. */
+  .gsi-btn{display:flex; align-items:center; justify-content:center; gap:10px; width:100%; height:44px; padding:0 12px; background:#fff; color:#1f1f1f; border:1px solid #747775; border-radius:22px; font:500 15px/1 'Roboto', Arial, sans-serif; letter-spacing:.25px; cursor:pointer; transition:background .15s, box-shadow .15s;}
+  .gsi-btn:hover:not(:disabled){background:#f6f8fc; box-shadow:0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);}
+  .gsi-btn:focus-visible{outline:2px solid #4285F4; outline-offset:2px;}
+  .gsi-btn:disabled{opacity:.5; cursor:not-allowed;}
+  .gsi-btn .gsi-logo{width:20px; height:20px; flex:none;}
+  .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; opacity:.6; text-transform:lowercase;}
+  .auth-or::before, .auth-or::after{content:''; flex:1; height:1px; background:currentColor; opacity:.35;}
+  .auth-email-form{display:flex; flex-direction:column; gap:8px; margin:0;}
+  .auth-email-form input{height:42px; padding:0 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; font-size:14px; background:#fffdf7; color:#2b2117; box-sizing:border-box; width:100%;}
+  .auth-actions{display:grid !important; grid-template-columns:1fr 1fr; gap:8px; margin-top:2px;}
+  .auth-actions .btn{height:42px; width:100%; display:flex; align-items:center; justify-content:center; font-size:14px; padding:0 10px; margin:0;}
+  .auth-actions:has(> :only-child){grid-template-columns:1fr;}
+  .add-password{margin:6px 0 10px;} .add-password summary{cursor:pointer; font-size:13px; font-weight:700;}
+  .add-password form{margin-top:8px;}
+  .auth-gate-modal .auth-gate-later{display:block; margin:10px auto 0;}
   /* ---------- 🧪 Test Kit (2026-10-02) ---------- */
   #view-play.testkit-mode{display:block;}
   .testkit-layout{display:grid; grid-template-columns:minmax(0,1fr) minmax(330px,390px); gap:14px; align-items:start;}

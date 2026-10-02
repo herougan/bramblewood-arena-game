@@ -4712,7 +4712,9 @@ function showToast(message, kind){
   requestAnimationFrame(()=> t.classList.add('show'));
   setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(), 400); }, 4500);
 }
+let cloudSessionUser = null;
 async function applySessionIdentity(user){
+  cloudSessionUser = user;
   cloudUserId = user.id;
   cloudUserEmail = user.email || null;
   const meta = user.user_metadata || {};
@@ -4806,6 +4808,7 @@ async function initCloudSync(){
 }
 function resetCloudIdentity(){
   cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null; cloudUserAvatar = null;
+  cloudSessionUser = null;
   cloudCardAdmin = false;
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
@@ -4946,6 +4949,76 @@ async function cloudSignInWithGoogle(){
    and calls fn() itself the moment sign-in actually succeeds (then closes the modal) — the caller
    never needs to poll or re-check isSignedIn() itself.
    ============================================================ */
+
+/* ---- Shared sign-in form (2026-10-02, "Simplify the 'Sign in to sync your progress' menu"):
+   one component used by both the sign-in popup and the Profile page, so they can't drift apart.
+   One line of copy, the standard Google button, a quiet "or", email + password, and two
+   equal-width buttons: Create account / Login. ---- */
+const GOOGLE_G_SVG = '<svg class="gsi-logo" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
+function authFormHTML(prefix){
+  const online = isHostedOnline();
+  return `<div class="auth-form" id="${prefix}AuthForm">
+    <p class="auth-lede">Signing in unlocks online play and syncs your data across devices.</p>
+    <button type="button" class="gsi-btn" id="${prefix}GoogleBtn" ${online?'':'disabled'} title="${online?'':'Google sign-in only works on the hosted site.'}">${GOOGLE_G_SVG}<span>Sign in with Google</span></button>
+    <div class="auth-or"><span>or</span></div>
+    <form class="auth-email-form" id="${prefix}EmailForm" autocomplete="on" novalidate>
+      <input id="${prefix}Email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
+      <input id="${prefix}Password" type="password" placeholder="Password (6+ characters)" autocomplete="current-password" aria-label="Password">
+      <div class="auth-actions">
+        <button type="submit" class="btn primary" id="${prefix}LoginBtn">Login</button>
+        <button type="button" class="btn" id="${prefix}CreateBtn">Create account</button>
+      </div>
+      <div class="cloud-link-msg" id="${prefix}Msg" role="status" hidden></div>
+    </form>
+  </div>`;
+}
+// Friendlier versions of Supabase's raw auth errors, incl. the "this email is a Google account" case.
+function authErrorText(err, mode){
+  const raw = ((err && err.message) || '').toLowerCase();
+  if(raw.includes('invalid login credentials')) return 'Wrong email or password. If you signed up with Google, use “Sign in with Google” — you can add a password from your Profile afterwards.';
+  if(raw.includes('already registered') || raw.includes('already been registered') || raw.includes('already exists')) return 'That email already has an account — use Login (or Sign in with Google if that’s how you signed up).';
+  if(raw.includes('email not confirmed')) return 'Check your inbox and confirm your email first, then Login.';
+  if(raw.includes('password')) return (err && err.message) || 'Password must be at least 6 characters.';
+  return (err && err.message) || (mode==='create' ? 'Could not create your account — try again.' : 'Login failed — try again.');
+}
+function wireAuthForm(prefix, onSuccess){
+  const msgEl = document.getElementById(prefix+'Msg');
+  const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
+  const g = document.getElementById(prefix+'GoogleBtn');
+  if(g) g.addEventListener('click', async ()=>{ if(g.disabled) return; try{ await cloudSignInWithGoogle(); }catch(err){ showMsg(authErrorText(err), true); } });
+  const vals = ()=> ({email:(document.getElementById(prefix+'Email')||{}).value?.trim()||'', password:(document.getElementById(prefix+'Password')||{}).value||''});
+  const busy = on=> ['LoginBtn','CreateBtn'].forEach(k=>{ const b = document.getElementById(prefix+k); if(b) b.disabled = on; });
+  const form = document.getElementById(prefix+'EmailForm');
+  if(form) form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const {email, password} = vals();
+    if(!email || !password){ showMsg('Enter your email and password.', true); return; }
+    if(!confirm('Logging in loads that account’s saved progress onto this device (replacing what’s here now). Continue?')) return;
+    busy(true);
+    try{ await cloudSignIn(email, password); matchHistoryList = null; onSuccess('login'); }
+    catch(err){ showMsg(authErrorText(err,'login'), true); }
+    finally{ busy(false); }
+  });
+  const create = document.getElementById(prefix+'CreateBtn');
+  if(create) create.addEventListener('click', async ()=>{
+    const {email, password} = vals();
+    if(!email || password.length<6){ showMsg('Enter an email and a password of 6+ characters.', true); return; }
+    busy(true);
+    try{
+      const data = await cloudLinkEmail(email, password);
+      // Supabase hides "email taken" on sign-up (anti-enumeration) by returning a user with no
+      // identities — that's the "this email already belongs to an account" case (often a Google one).
+      if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){ showMsg(authErrorText({message:'already registered'}), true); return; }
+      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg('Almost there — check your inbox to confirm your email, then Login.', false); return; }
+      onSuccess('create');
+    }catch(err){ showMsg(authErrorText(err,'create'), true); }
+    finally{ busy(false); }
+  });
+}
+// Signed-in Google accounts can add a password, so the same account also works with email Login.
+function userHasPasswordIdentity(){
+  try{ const u = cloudSessionUser; return !!(u && (u.identities||[]).some(i=>i.provider==='email')); }catch(e){ return true; }
+}
 let authGatePendingAction = null; // the fn passed to the most recent requireSignIn() call
 function requireSignIn(reason, onSuccess){
   if(isSignedIn()){ onSuccess(); return; }
@@ -4967,24 +5040,12 @@ function closeAuthGateModal(){
   authGatePendingAction = null;
 }
 function authGateModalHTML(reason, opts){
-  const googleDisabled = !isHostedOnline();
   const reminder = !!(opts && opts.reminder);
   return `<div class="modal auth-gate-modal">
-    <div class="modal-head-row"><h2>${reminder ? '🌰 Keep your progress safe' : `🔑 Sign in ${reason ? escapeHtml(reason) : 'to continue'}`}</h2>
+    <div class="modal-head-row"><h2>${reminder ? '🌰 Keep your progress safe' : `🔑 Sign in${reason ? ' '+escapeHtml(reason) : ''}`}</h2>
       <button class="modal-close-btn" id="authGateCloseBtn" aria-label="Close">✕</button></div>
-    <p class="panel-sub">Playing as a guest keeps your progress on this device only. Signing in (free) unlocks Online Raid, Shop packs, and syncing across devices — anything you've already done here carries over the moment you sign up.</p>
-    <button type="button" class="btn google-btn" id="authGateGoogleBtn" ${googleDisabled?'disabled':''} title="${googleDisabled?'Google sign-in needs the game hosted at a real web address first — not available in this downloaded copy yet.':''}">🔵 Continue with Google</button>
-    <div class="auth-gate-divider"><span>or</span></div>
-    <form id="authGateForm" class="cloud-link-form" autocomplete="off">
-      <input id="authGateEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
-      <input id="authGatePassword" type="password" placeholder="Password (6+ characters)" autocomplete="new-password" minlength="6" required>
-      <div class="cloud-link-actions">
-        <button type="submit" class="btn primary small" id="authGateSignUpBtn">Create account</button>
-        <button type="button" class="btn small" id="authGateSignInBtn">Sign in to an existing account</button>
-      </div>
-      <div class="cloud-link-msg" id="authGateMsg" hidden></div>
-    </form>
-    ${reminder ? '<button type="button" class="btn ghost small auth-gate-later" id="authGateLaterBtn">Maybe later — keep playing as a guest</button>' : ''}
+    ${authFormHTML('authGate')}
+    ${reminder ? '<button type="button" class="btn ghost small auth-gate-later" id="authGateLaterBtn">Maybe later</button>' : ''}
   </div>`;
 }
 function wireAuthGateModal(){
@@ -4994,42 +5055,11 @@ function wireAuthGateModal(){
   const laterBtn = document.getElementById('authGateLaterBtn');
   if(laterBtn) laterBtn.addEventListener('click', closeAuthGateModal);
   if(overlay) overlay.addEventListener('click', e=>{ if(e.target===overlay) closeAuthGateModal(); });
-  const msgEl = document.getElementById('authGateMsg');
-  const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
-  const afterSuccess = ()=>{
+  wireAuthForm('authGate', ()=>{
     const fn = authGatePendingAction; authGatePendingAction = null;
     closeAuthGateModal();
     if(fn) fn();
     refreshAuthGateUI();
-  };
-  const googleBtn = document.getElementById('authGateGoogleBtn');
-  if(googleBtn) googleBtn.addEventListener('click', async ()=>{
-    if(googleBtn.disabled) return;
-    // Full-page redirect to Google and back — this JS context (including authGatePendingAction)
-    // does NOT survive that round-trip, unlike the same-page email/password path above. The
-    // player lands back home already signed in (via onAuthStateChange in initCloudSync) but needs
-    // one more click on whatever they originally wanted (Fight/Buy) — an accepted, honest
-    // trade-off of a redirect-based OAuth flow in a single static-file app with no server side.
-    try{ await cloudSignInWithGoogle(); }
-    catch(err){ showMsg((err && err.message) || 'Google sign-in failed — try again.', true); }
-  });
-  const form = document.getElementById('authGateForm');
-  if(form) form.addEventListener('submit', async e=>{
-    e.preventDefault();
-    const email = document.getElementById('authGateEmail').value.trim();
-    const password = document.getElementById('authGatePassword').value;
-    if(!email || password.length<6){ showMsg('Enter a valid email and a password of 6+ characters.', true); return; }
-    try{ await cloudLinkEmail(email, password); afterSuccess(); }
-    catch(err){ showMsg((err && err.message) || 'Could not create your account — try again later.', true); }
-  });
-  const signInBtn = document.getElementById('authGateSignInBtn');
-  if(signInBtn) signInBtn.addEventListener('click', async ()=>{
-    const email = document.getElementById('authGateEmail').value.trim();
-    const password = document.getElementById('authGatePassword').value;
-    if(!email || !password){ showMsg('Enter your email and password first.', true); return; }
-    if(!confirm('Signing in to an existing account replaces this device\'s local progress with that account\'s saved progress. Continue?')) return;
-    try{ await cloudSignIn(email, password); afterSuccess(); }
-    catch(err){ showMsg((err && err.message) || 'Sign-in failed — check your email and password.', true); }
   });
 }
 // Called after any successful sign-in (modal or Profile tab) so every currently-rendered gated
@@ -15581,23 +15611,12 @@ function renderProfile(){
       </div>
       <p class="panel-sub">Your name and progress are saved on this device by default. <span id="cloudSyncStatusLine">Checking cloud sync…</span></p>
       <div class="panel cloud-account-panel" id="cloudAccountPanel">
-        <h3>${isSignedIn() ? '☁️ Signed in' : '🔑 Sign in for online features'}</h3>
-        ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>` : ''}
-        <p class="panel-sub" id="cloudAccountSub">${isSignedIn()
-          ? 'Your currencies, card levels, decks, and rank are synced and available on any device you sign in on.'
-          : 'You\'re playing as a guest — everything is saved on this device only, and online features (Online Raid, Ranked, Guilds, Shop packs, cross-device sync) need a free account. Signing up carries over everything you\'ve already done here.'}</p>
-        ${isSignedIn() ? `<button type="button" class="btn small" id="cloudSignOutBtn">Sign out of this account</button>` : `
-        <button type="button" class="btn google-btn" id="profileGoogleBtn" ${isHostedOnline()?'':'disabled'} title="${isHostedOnline()?'':'Google sign-in needs the game hosted at a real web address first — not available in this downloaded copy yet.'}">🔵 Continue with Google</button>
-        <div class="auth-gate-divider"><span>or</span></div>
-        <form id="cloudLinkForm" class="cloud-link-form" autocomplete="off">
-          <input id="cloudEmailInput" type="email" placeholder="you@example.com" autocomplete="email" required>
-          <input id="cloudPasswordInput" type="password" placeholder="Password (6+ characters)" autocomplete="new-password" minlength="6" required>
-          <div class="cloud-link-actions">
-            <button type="submit" class="btn primary small" id="cloudLinkBtn">Create account</button>
-            <button type="button" class="btn small" id="cloudSignInBtn">Sign in to an existing account</button>
-          </div>
-          <div class="cloud-link-msg" id="cloudLinkMsg" hidden></div>
-        </form>`}
+        <h3>${isSignedIn() ? '☁️ Signed in' : '🔑 Sign in'}</h3>
+        ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>
+        <p class="panel-sub">Your progress is synced to this account.</p>
+        ${userHasPasswordIdentity() ? '' : `<details class="add-password"><summary>Add a password (to also Login with email)</summary>
+          <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (6+ characters)" autocomplete="new-password" minlength="6"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
+        <button type="button" class="btn small" id="cloudSignOutBtn">Sign out</button>` : authFormHTML('profile')}
       </div>
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
@@ -15620,40 +15639,18 @@ function renderProfile(){
   });
   const statusLine = document.getElementById('cloudSyncStatusLine');
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? 'Cloud sync active — your progress is backed up.' : (cloudReady ? 'Playing as guest — not signed in.' : 'Connecting…'));
-  const msgEl = document.getElementById('cloudLinkMsg');
-  const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
-  const googleBtn = document.getElementById('profileGoogleBtn');
-  if(googleBtn) googleBtn.addEventListener('click', async ()=>{
-    if(googleBtn.disabled) return;
-    try{ await cloudSignInWithGoogle(); } // full-page redirect to Google and back — see cloudSignInWithGoogle's own comment
-    catch(err){ showMsg((err && err.message) || 'Google sign-in failed — try again.', true); }
+  wireAuthForm('profile', mode=>{
+    showToast(mode==='create' ? '✅ Account created — everything you’ve done so far is now synced.' : '✅ Logged in — this device now has your synced progress.', 'ok');
+    renderProfile(); refreshAuthGateUI();
   });
-  const form = document.getElementById('cloudLinkForm');
-  if(form) form.addEventListener('submit', async (e)=>{
+  const pwForm = document.getElementById('addPasswordForm');
+  if(pwForm) pwForm.addEventListener('submit', async e=>{
     e.preventDefault();
-    const email = document.getElementById('cloudEmailInput').value.trim();
-    const password = document.getElementById('cloudPasswordInput').value;
-    if(!email || password.length<6){ showMsg('Enter a valid email and a password of 6+ characters.', true); return; }
-    try{
-      await cloudLinkEmail(email, password);
-      showMsg('Account created — everything you\'ve done so far is now synced.', false);
-      renderProfile();
-      refreshAuthGateUI();
-    }catch(err){ showMsg((err && err.message) || 'Could not create your account — try again later.', true); }
-  });
-  const signInBtn = document.getElementById('cloudSignInBtn');
-  if(signInBtn) signInBtn.addEventListener('click', async ()=>{
-    const email = document.getElementById('cloudEmailInput').value.trim();
-    const password = document.getElementById('cloudPasswordInput').value;
-    if(!email || !password){ showMsg('Enter your email and password first.', true); return; }
-    if(!confirm('Signing in to an existing account replaces this device\'s local progress with that account\'s saved progress. Continue?')) return;
-    try{
-      await cloudSignIn(email, password);
-      matchHistoryList = null; // this may well be a DIFFERENT account than whatever was cached
-      showMsg('Signed in — this device now has your synced progress.', false);
-      renderProfile();
-      refreshAuthGateUI();
-    }catch(err){ showMsg((err && err.message) || 'Sign-in failed — check your email and password.', true); }
+    const pw = document.getElementById('addPasswordInput').value; const m = document.getElementById('addPasswordMsg');
+    const say = (t,err)=>{ m.hidden=false; m.textContent=t; m.classList.toggle('error',!!err); };
+    if(pw.length<6){ say('Use at least 6 characters.', true); return; }
+    try{ const { data, error } = await sbClient.auth.updateUser({password:pw}); if(error) throw error; if(data && data.user) cloudSessionUser = data.user; say('Saved — you can now also Login with your email and this password.'); }
+    catch(err){ say(authErrorText(err), true); }
   });
 }
 
