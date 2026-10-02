@@ -2825,6 +2825,25 @@
   .home-profile-avatar{width:26px; height:26px; border-radius:50%; object-fit:cover; display:block; box-shadow:0 0 0 2px #6fbf4a;}
   .home-profile-name{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .home-profile-sub{font-size:9.5px; font-weight:800; opacity:.8;}
+  /* 2026-10-02 ("the settings 5 buttons aren't consistently sized"): the boxes measured equal, but
+     their CONTENTS didn't line up — the guest Profile tile's extra "Guest" line pushed its icon and
+     label up, the avatar (26px) sat taller than the emoji icons (20px), and on phones long labels
+     ("Settings", "Ranking") ran edge to edge. Now: an equal-column grid, every tile's icon in the
+     same 26px slot, labels never wrap, and "Guest" is pinned to the bottom edge so it can't shift
+     anything. */
+  .home-menu-row{display:grid !important; grid-template-columns:repeat(5, minmax(0,1fr)); gap:10px;}
+  .home-menu-row > *{flex:none !important; width:auto !important;}
+  .home-menu-row .home-menu-btn-small{position:relative; height:84px; min-height:84px; padding:8px 4px; justify-content:center; gap:6px;}
+  .home-menu-row .home-menu-btn-small .tab-emoji, .home-menu-row .home-profile-avatar{height:26px; width:auto; min-width:26px; display:flex; align-items:center; justify-content:center; font-size:21px;}
+  .home-menu-row .home-profile-avatar{width:26px;}
+  .home-menu-row .home-menu-btn-small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .home-menu-row .home-profile-sub{position:absolute; left:0; right:0; bottom:5px; text-align:center;}
+  @media (max-width: 460px){
+    .home-menu-row{gap:6px;}
+    .home-menu-row .home-menu-btn-small{font-size:11px; height:74px; min-height:74px; padding:6px 2px;}
+    .home-menu-row .home-menu-btn-small .tab-emoji{font-size:19px;}
+    .home-menu-row .home-profile-sub{bottom:2px; font-size:8.5px;}
+  }
   .home-nav-btn{font-family:'Baloo 2'; font-weight:700; font-size:13.5px; border:0; border-radius:9px; background:var(--surface-2); color:var(--ink); padding:8px 14px; display:flex; align-items:center; gap:6px;}
   .home-nav-btn:hover{background:var(--surface-3);}
   .home-nav-btn[hidden]{display:none;}
