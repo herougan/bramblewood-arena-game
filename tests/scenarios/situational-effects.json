@@ -1,0 +1,17 @@
+[
+  {"name":"Rend ignores Armor", "rounds":6, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"pyroclast-wyrm","wait":0,"hp":200}], "B":[{"id":"stone-turtle-warden","hp":200,"attack":0}],
+   "expect":[{"event":"hit","where":{"attDefId":"pyroclast-wyrm","rend":true},"min":1}]},
+
+  {"name":"Grit triggers against a stronger card", "rounds":6, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"basalt-boar","wait":0,"hp":200}], "B":[{"id":"yeti","wait":0,"hp":200}],
+   "expect":[{"event":"statusFx","where":{"kind":"grit"},"min":1}]},
+
+  {"name":"On Kill: gain Lumber (Dust Hyena)", "rounds":6, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"dust-hyena","wait":0,"hp":200}], "B":[{"id":"alley-cat","attack":0}],
+   "expect":[{"event":"death","min":1}, {"event":"lumber","min":1}]},
+
+  {"name":"On Spawn: swaps two enemy cards (Trickster Fox)", "rounds":1, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"ent","side":"left"}, {"id":"otter-centurion","side":"right"}], "B":[{"id":"trickster-fox"}],
+   "expect":[{"event":"swapPositions","min":1}]}
+]

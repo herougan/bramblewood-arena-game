@@ -3223,6 +3223,22 @@
      above) — it's just the positioning surface for the trail + node buttons, sized to fill
      whatever's left of the now-taller, y-scrollable .conquest-main pane beneath the scrim
      heading, so the underlying map-theme-* gradient reads as one continuous painted map. */
+  /* Offline Raid + Async run (2026-10-03) */
+  .offline-raid-panel h2{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  .offline-raid-panel .or-week{font-size:13px; font-weight:700; opacity:.75;}
+  .offline-raid-panel .or-hp{display:flex; align-items:center; gap:12px; margin:10px 0;}
+  .offline-raid-panel .or-hp .raid-boss-hp-bar{flex:1; height:14px;}
+  .offline-raid-panel .or-actions{margin:6px 0 14px;}
+  .offline-raid-panel .or-party-h{font-size:15px; margin:6px 0 8px; display:flex; gap:8px; align-items:baseline;}
+  .offline-raid-panel .or-count{font-size:12px; opacity:.7; font-weight:700;}
+  .offline-raid-panel .or-party{display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:8px;}
+  .offline-raid-panel .or-raider{display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13px; min-width:0;}
+  .offline-raid-panel .or-raider.is-me{border-color:var(--accent); box-shadow:0 0 0 2px var(--gold-soft);}
+  .offline-raid-panel .or-name{font-weight:800; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .offline-raid-panel .or-dmg{font-weight:800; color:var(--danger);}
+  .online-raid-details{margin:12px 0;}
+  .online-raid-details > summary{cursor:pointer; font-weight:800; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink);}
+  .async-run-line{display:block; margin-top:6px; font-size:12px; opacity:.92;}
   .conquest-map-canvas{position:relative; width:100%; min-height:460px; border-radius:12px; margin-top:10px;}
   /* Admin map layout editor */
   .map-layout-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin:0 0 4px; padding:8px 12px; border-radius:10px;}

@@ -3,6 +3,9 @@ import json, os
 SCRATCH = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
+# Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
+ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read()
+raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
 # self-contained -- external CDN scripts (cdnjs, etc.) are blocked at publish time -- so GSAP
@@ -99,12 +102,13 @@ out = template
 import base64
 splash_png = open(SCRATCH + "art/splash.png", "rb").read()
 out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encode(splash_png).decode("ascii"))
-out = sub_once(out, "__ENGINE_SRC__", engine_src)
+out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself
 app_src = sub_once(app_src, "__CARD_DEFS__", card_defs_literal)
 app_src = sub_once(app_src, "__ARCHETYPE_ICON__", archetype_icon_literal)
 app_src = sub_once(app_src, "__CHARACTER_DEFS__", character_defs_literal)
+app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --
 # GSAP must load and register its plugin BEFORE arena_app.js runs (it calls gsap.Flip.from()
 # and gsap.timeline() at module-eval-adjacent times, e.g. inside renderBoard()).

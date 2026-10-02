@@ -1,0 +1,45 @@
+[
+  {"name":"Unblocked unit hits the castle", "rounds":3, "hqHp":{"A":30,"B":30},
+   "A":[{"id":"otter-centurion"}], "B":[],
+   "expect":[{"event":"hitHQ","min":1}, {"castle":"B","max":27}]},
+
+  {"name":"0-Attack cards never attack", "rounds":6, "hqHp":{"A":30,"B":30},
+   "A":[{"id":"termite-mound"}], "B":[],
+   "expect":[{"event":"hitHQ","eq":0}, {"castle":"B","eq":30}]},
+
+  {"name":"Wait delays the first attack (Yeti, Wait 5)", "rounds":4, "hqHp":{"A":30,"B":60},
+   "A":[{"id":"yeti"}], "B":[],
+   "expect":[{"event":"hitHQ","eq":0}, {"castle":"B","eq":60}]},
+
+  {"name":"Wait ends and the attack lands (Yeti)", "rounds":8, "hqHp":{"A":30,"B":60},
+   "A":[{"id":"yeti"}], "B":[],
+   "expect":[{"event":"hitHQ","min":1}, {"castle":"B","max":50}]},
+
+  {"name":"Card across is attacked before the castle", "rounds":2, "hqHp":{"A":30,"B":30},
+   "A":[{"id":"otter-centurion","wait":0}], "B":[{"id":"ent","hp":60,"attack":0}],
+   "expect":[{"event":"hit","where":{"attDefId":"otter-centurion"},"min":1}, {"castle":"B","eq":30}]},
+
+  {"name":"Flying dodges some ground attacks (about 1 in 2)", "rounds":20, "hqHp":{"A":300,"B":300},
+   "A":[{"id":"otter-centurion","wait":0,"hp":500}], "B":[{"id":"bee-knight","hp":500}],
+   "expect":[{"event":"evaded","min":3}, {"event":"hit","where":{"attDefId":"otter-centurion"},"min":3}]},
+
+  {"name":"Poison ticks every round", "rounds":8, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"caustic-scorpion","wait":0,"hp":200}], "B":[{"id":"ent","hp":200,"attack":1}],
+   "expect":[{"event":"poisonTick","min":3}]},
+
+  {"name":"Thorns hurt the attacker", "rounds":6, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"otter-centurion","wait":0,"hp":200}], "B":[{"id":"quill-thorn-boar","hp":200,"attack":0}],
+   "expect":[{"event":"thorns","min":1}]},
+
+  {"name":"Bleed ticks on the bled card", "rounds":8, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"bog-leech","hp":200}], "B":[{"id":"ent","hp":200,"wait":0}],
+   "expect":[{"event":"bleedTick","min":1}]},
+
+  {"name":"A dead card leaves the board", "rounds":6, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"yeti","wait":0}], "B":[{"id":"alley-cat"}],
+   "expect":[{"event":"death","min":1}, {"alive":"B","eq":0}]},
+
+  {"name":"Castle at 0 ends the fight", "rounds":30, "hqHp":{"A":60,"B":10},
+   "A":[{"id":"yeti","wait":0}], "B":[],
+   "expect":[{"winner":1}, {"castle":"B","max":0}]}
+]

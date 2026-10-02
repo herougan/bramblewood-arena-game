@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Bramblewood test suite. Fast engine-level suites always run; the two-browser test runs with --e2e.
+#   tests/run-all.sh          ~15s: card matrix, mechanic scenarios, two-player, async/raid
+#   tests/run-all.sh --e2e    + live two-browser match (~1 min, needs Playwright + Chromium)
+set -u
+cd "$(dirname "$0")/.."
+fail=0
+run(){ echo "▶ $*"; "$@" || fail=1; echo; }
+run node tests/card-matrix.js
+run node tests/scenarios.js
+run node tests/two-player.js
+run node tests/async-raid.js
+if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; fi
+if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
+exit $fail

@@ -4375,7 +4375,8 @@ function logMatchHistory(m){
   // of durable identity a "look back on your account's match history" feature is for, matching
   // the same boundary Online Raid/Shop/cross-device sync already draw.
   if(!sbClient || !isSignedIn()) return;
-  const opponentLabel = m.mode==='raidOnline' ? ((m.raidBoss && m.raidBoss.name) || 'Raid Boss')
+  const opponentLabel = (m.mode==='raidOnline' || m.mode==='raidOffline') ? ((m.raidBoss && m.raidBoss.name) || 'Raid Boss')
+    : (m.mode==='async' && m.asyncGhost) ? m.asyncGhost.name
     : m.mode==='liveRanked' ? (m.liveOpponentName || 'Opponent')
     : 'AI Opponent';
   const result = m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw');
@@ -4405,7 +4406,7 @@ async function loadMatchHistory(){
   }catch(e){ matchHistoryList = []; }
   if(currentTab==='profile') renderProfile();
 }
-const MATCH_HISTORY_MODE_LABEL = {ai:'Test Battle', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', liveRanked:'Ranked 1v1 (Live)'};
+const MATCH_HISTORY_MODE_LABEL = {ai:'vs Computer', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
 function matchHistoryPanelHTML(){
   if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
   if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
@@ -6708,6 +6709,50 @@ function cleanupLiveMatch(){
   if(liveMatchSub){ try{ sbClient.removeChannel(liveMatchSub); }catch(e){} liveMatchSub = null; }
 }
 
+// ---- Async Arena runs vs ghost decks (2026-10-03) — see bramblewood-ghosts.js for the model:
+// a run is up to 7 wins (ends at 3 losses); at each win stage you fight a ghost of a deck that
+// reached the same stage. Recorded ghosts live in this browser for now (offline); a cloud table
+// can feed the same pool later without changing the rules.
+const ASYNC_RUN_KEY = 'bramblewood_async_run_v1';
+const ASYNC_GHOSTS_KEY = 'bramblewood_async_ghosts_v1';
+const Ghosts = (typeof BramblewoodGhosts!=='undefined') ? BramblewoodGhosts : null;
+function loadAsyncRun(){ try{ const r = JSON.parse(localStorage.getItem(ASYNC_RUN_KEY)||'null'); return r && typeof r.wins==='number' ? r : null; }catch(e){ return null; } }
+function saveAsyncRun(r){ try{ if(r) localStorage.setItem(ASYNC_RUN_KEY, JSON.stringify(r)); else localStorage.removeItem(ASYNC_RUN_KEY); }catch(e){} }
+function loadAsyncGhosts(){ try{ return JSON.parse(localStorage.getItem(ASYNC_GHOSTS_KEY)||'[]') || []; }catch(e){ return []; } }
+function saveAsyncGhosts(list){ try{ localStorage.setItem(ASYNC_GHOSTS_KEY, JSON.stringify(list)); }catch(e){} }
+function myGhostOwnerId(){ return cloudUserId || 'local-player'; }
+function asyncStagePool(stage){
+  // Your own recorded decks never come back as your opponent.
+  const rec = loadAsyncGhosts().filter(g=> g.owner!==myGhostOwnerId());
+  return Ghosts.buildStagePool(getCardDefs(), stage, rec, Date.now());
+}
+function asyncRunSummaryHTML(){
+  if(!Ghosts) return '';
+  const run = loadAsyncRun();
+  const stage = run ? run.wins : 0;
+  const pool = asyncStagePool(stage);
+  return `<span class="async-run-line">${run ? `Run: <b>${run.wins}W–${run.losses}L</b> · Stage ${stage+1}/${Ghosts.ASYNC.MAX_WINS}` : `New run · up to ${Ghosts.ASYNC.MAX_WINS} wins, ${Ghosts.ASYNC.MAX_LOSSES} losses ends it`} · ${pool.active} decks at this stage</span>`;
+}
+// Called from resolveRound's over-branch for mode 'async'.
+function settleAsyncRunAfterMatch(m){
+  if(!Ghosts) return;
+  const run = loadAsyncRun() || Ghosts.newAsyncRun(Date.now());
+  const won = m.winner===1;
+  const stage = (m.asyncStage!=null) ? m.asyncStage : run.wins;
+  if(won){
+    run.wins++;
+    saveAsyncGhosts(Ghosts.recordAsyncGhost(loadAsyncGhosts(), {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage, at: Date.now(), source:'player'}));
+    const g = 12 + stage*6, d = 2 + stage;
+    grantCurrency('gold', g); grantCurrency('dust', d);
+    m.asyncRewardEarned = {gold:g, dust:d};
+  } else run.losses++;
+  m.asyncRunAfter = {wins: run.wins, losses: run.losses};
+  if(Ghosts.asyncRunOver(run)){
+    if(run.wins >= Ghosts.ASYNC.MAX_WINS){ grantCurrency('gold', 150); grantCurrency('metal', 2); m.asyncRewardEarned = Object.assign({gold:0, dust:0}, m.asyncRewardEarned); m.asyncRewardEarned.gold += 150; m.asyncRewardEarned.metal = 2; }
+    m.asyncRunComplete = true;
+    saveAsyncRun(null);
+  } else saveAsyncRun(run);
+}
 // Async Arena (item #62): a match that persists in this browser (localStorage) rather than
 // only in memory, so leaving the tab and coming back — even after a reload — offers a
 // Continue option instead of forcing a fresh Start. Scoped to single-device continuity, not
@@ -6720,6 +6765,7 @@ function saveAsyncMatchState(){
       players: matchState.players, stats: matchState.stats, log: matchState.log, round: matchState.round,
       selectedUid: matchState.selectedUid, deckTotals: matchState.deckTotals,
       leaderDefId: matchState.leaderDefId, leaderUid: matchState.leaderUid,
+      asyncGhost: matchState.asyncGhost || null, asyncStage: matchState.asyncStage, opponentName: matchState.opponentName,
     }));
   }catch(e){ /* storage unavailable/full — non-fatal, the match just won't survive a reload */ }
 }
@@ -6735,7 +6781,8 @@ function resumeAsyncMatch(){
   matchState = {engine, players:snap.players, sideOf, stats:snap.stats||{}, over:false, winner:0, selectedUid:snap.selectedUid||null,
     log:snap.log||[], round:snap.round||1, resolving:false, mode:'async', active:1, turnDone:{1:false,2:false}, awaitingPass:false,
     deckTotals: snap.deckTotals || {1:snap.players[1].deck.length, 2:snap.players[2].deck.length}, speedMult: snap.speedMult||1,
-    leaderDefId: snap.leaderDefId||null, leaderUid: snap.leaderUid||null};
+    leaderDefId: snap.leaderDefId||null, leaderUid: snap.leaderUid||null,
+    asyncGhost: snap.asyncGhost||null, asyncStage: snap.asyncStage, opponentName: snap.opponentName};
   renderPlay();
 }
 function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); matchState = null; renderPlay(); }
@@ -6829,7 +6876,8 @@ function renderArenaSubTab(body){
         </button>
         <button class="btn primary big arena-mode-btn" id="startAsyncBtn">
           <span class="amb-ico">📨</span><span class="amb-lbl">Async Arena</span>
-          <span class="amb-sub">Play at your own pace — Save &amp; Exit any time, Continue later</span>
+          <span class="amb-sub">Fight ghosts of other players' decks at your win stage — Save &amp; Exit any time</span>
+          ${asyncRunSummaryHTML()}
         </button>
         <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
           <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span>
@@ -7718,6 +7766,93 @@ function renderConquestSubTab(body){
     }
   }
 }
+/* ---- Offline Raid (2026-10-03: "raid (chosen to be offline only for now) which loads the
+   previously active decks fighting this raid"). One featured boss per week; its HP is a shared pool
+   that every deck fighting it this week chips down. Loading the tab pulls in this week's previous
+   attempts (yours are recorded in this browser) and, if the party is thin, seeded raiders whose
+   fights are simulated with the real engine — see bramblewood-ghosts.js raidState(). No sign-in. ---- */
+const RAID_BOSSES = __RAID_BOSSES__;
+const RAID_ATTEMPTS_KEY = 'bramblewood_raid_attempts_v1';
+function loadRaidAttempts(){ try{ return JSON.parse(localStorage.getItem(RAID_ATTEMPTS_KEY)||'[]') || []; }catch(e){ return []; } }
+function saveRaidAttempts(list){ try{ localStorage.setItem(RAID_ATTEMPTS_KEY, JSON.stringify(list)); }catch(e){} }
+let _raidStateCache = null;
+function currentOfflineRaid(){
+  if(!Ghosts) return null;
+  const now = Date.now();
+  const boss = Ghosts.featuredRaidBoss(RAID_BOSSES, now);
+  if(!boss) return null;
+  const attempts = loadRaidAttempts();
+  const key = boss.id + ':' + Ghosts.raidCycle(now) + ':' + attempts.length;
+  if(_raidStateCache && _raidStateCache.key===key) return _raidStateCache.state;
+  const engineApi = {makeSimEngine};
+  const state = Ghosts.raidState(engineApi, getCardDefs(), boss, attempts, now);
+  _raidStateCache = {key, state};
+  return state;
+}
+function offlineRaidPanelHTML(){
+  const st = currentOfflineRaid();
+  if(!st) return '';
+  const b = st.boss, pct = Math.max(0, Math.min(100, Math.round(st.remaining/st.max*100)));
+  const msLeft = (st.cycle+1) * Ghosts.RAID.CYCLE_DAYS*24*3600*1000 - Date.now();
+  const daysLeft = Math.max(1, Math.ceil(msLeft / (24*3600*1000)));
+  const party = st.party.slice().sort((a,b)=> b.damage - a.damage);
+  const defs = getCardDefs();
+  return `<div class="panel offline-raid-panel">
+    <h2>${b.icon} ${escapeHtml(b.name)} <span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span></h2>
+    <p class="panel-sub">${escapeHtml(b.blurb||'')} Every deck that fights it this week chips down one shared health pool.</p>
+    <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${st.remaining}</b> / ${st.max} HP</span></div>
+    <div class="or-actions">${st.defeated ? `<span class="conquest-rank-badge">🏆 Defeated this week — a new boss arrives in ${daysLeft} day${daysLeft===1?'':'s'}</span>`
+      : `<button class="btn primary" id="offlineRaidFightBtn">⚔️ Fight (${ENERGY_COST.onlineRaid}⚡) — boss castle ${st.nextCastleHp} HP</button>`}</div>
+    <h3 class="or-party-h">Raid party this week <span class="or-count">${party.length} decks</span></h3>
+    <div class="or-party">${party.map(p=>{
+      const top = Object.keys(p.deck||{}).sort((x,y)=> (p.deck[y]-p.deck[x])).slice(0,3).map(id=> defs[id] ? defs[id].icon : '').join('');
+      return `<div class="or-raider ${p.owner===myGhostOwnerId()?'is-me':''}" title="${escapeAttr((p.source==='seed'?'Stand-in raider':'Player deck')+' · '+Object.keys(p.deck||{}).map(id=> defs[id]?defs[id].name+' ×'+p.deck[id]:id).join(', '))}">
+        ${p.avatar ? avatarHTML(p.avatar, 30) : '<span class="or-av">🛡️</span>'}
+        <span class="or-name">${escapeHtml(p.owner===myGhostOwnerId() ? 'You' : (p.name||'Raider'))}</span>
+        <span class="or-deck">${top}</span>
+        <span class="or-dmg">−${p.damage}</span></div>`; }).join('')}</div>
+  </div>`;
+}
+function startOfflineRaidMatch(){
+  const st = currentOfflineRaid();
+  if(!st || st.defeated) return;
+  if(!deckSizeOkOrWarn()) return;
+  if(!spendEnergy(ENERGY_COST.onlineRaid)){
+    alert(`Not enough Energy for a Raid attempt — this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
+    return;
+  }
+  const boss = st.boss;
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
+  const sideOf = id=> id===1?'A':'B';
+  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const castle = st.nextCastleHp;
+  const players = {
+    1: engine.newPlayer(1, myDeckCounts, myCharacter),
+    2: engine.newPlayer(2, boss.deck, {id:'raid-boss-'+boss.id, name:boss.name, health:castle, effects:{}}),
+  };
+  const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
+  const stats = {};
+  engine.draw(players[1], 3, 'A', stats, []);
+  engine.draw(players[2], 3, 'B', stats, []);
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
+    mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    raidBoss: boss, raidCycle: st.cycle, raidCastleStart: castle, opponentName: boss.name, leaderDefId: myLeaderId, leaderUid: null};
+  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+  showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${st.remaining} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon}).then(()=> renderPlay());
+}
+function settleOfflineRaidAfterMatch(m){
+  const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
+  saveRaidAttempts(Ghosts.recordRaidAttempt(loadRaidAttempts(), {bossId: m.raidBoss.id, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: dealt, won: m.winner===1, at: Date.now(), source:'player'}));
+  _raidStateCache = null;
+  const after = currentOfflineRaid();
+  m.raidDamageDealt = dealt;
+  m.raidRemainingAfter = after ? after.remaining : 0;
+  const strength = m.raidBoss.strength || 1;
+  const g = Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0), d = Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0);
+  if(g>0) grantCurrency('gold', g);
+  if(d>0) grantCurrency('dust', d);
+  m.raidRewardEarned = {gold:g, dust:d};
+}
 function renderRaidSubTab(body){
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —
   // the Raid tab is the other permanent home for these same map nodes (a beaten Raid Boss
@@ -7733,7 +7868,8 @@ function renderRaidSubTab(body){
   // satisfies the very next ask ("the coming up section should come right after") for free —
   // with this gone, Coming Up is now the section directly after Online Raid's own boss list.
   body.innerHTML = `
-    <div id="onlineRaidBody"></div>
+    ${offlineRaidPanelHTML()}
+    <details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>
     <div class="panel raid-preview-panel"><h2>🔮 Coming Up</h2><p class="panel-sub">More Raid Bosses are waiting further out in Conquest. Beat their map to unlock the real fight.</p>
       <div class="conquest-nodes">${RAID_PREVIEWS.map(p=>`
         <div class="conquest-node raid-preview-card" title="Unlock this by pushing further in Conquest">
@@ -7749,6 +7885,8 @@ function renderRaidSubTab(body){
   // Raid tab's layout without the two systems' render logic getting tangled together.
   const onlineBody = document.getElementById('onlineRaidBody');
   if(onlineBody) renderOnlineRaidPanel(onlineBody);
+  const orBtn = document.getElementById('offlineRaidFightBtn');
+  if(orBtn) orBtn.addEventListener('click', startOfflineRaidMatch);
 }
 /* ============================================================
    Mandatory onboarding: Otters/Hummingbirds faction choice + a 6-skirmish tutorial SERIES
@@ -9338,8 +9476,16 @@ function startMatch(mode){
   // (resolveRound's mode==='gauntlet' branch below), not in how the opponent is built.
   const players = {
     1: engine.newPlayer(1, myDeckCounts, myCharacter),
-    2: engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : DEFAULT_DECK, CHARACTER_DEFS['castle']),
+    2: null,
   };
+  let asyncGhost = null, asyncStage = null;
+  if(mode==='async' && Ghosts){
+    const run = loadAsyncRun() || Ghosts.newAsyncRun(Date.now());
+    asyncStage = run.wins;
+    asyncGhost = Ghosts.pickOpponent(asyncStagePool(asyncStage), currentMatchSeed, run.faced);
+    if(asyncGhost){ run.faced = (run.faced||[]).concat([asyncGhost.owner]); saveAsyncRun(run); }
+  }
+  players[2] = engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : (asyncGhost ? asyncGhost.deck : DEFAULT_DECK), CHARACTER_DEFS['castle']);
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length}; // item #65: "Deck" tile shows X/Y — captured before the opening draw
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);
@@ -9350,7 +9496,7 @@ function startMatch(mode){
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
     // never retroactively changes an in-progress match. leaderUid is set once the leader is
     // actually summoned onto the board; null before that and if no leader was ever chosen.
-    leaderDefId: myLeaderId, leaderUid: null};
+    leaderDefId: myLeaderId, leaderUid: null, asyncGhost, asyncStage};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
   if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet'){
@@ -9359,6 +9505,7 @@ function startMatch(mode){
     const oppDeckCounts = Object.fromEntries(matchState.players[2].deck.concat(matchState.players[2].hand).map(c=> typeof c==='string' ? c : c.defId).reduce((mm,id)=> mm.set(id,(mm.get(id)||0)+1), new Map()));
     const opp = mode==='pc'
       ? {name:'Player 2', deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)}
+      : asyncGhost ? {name: asyncGhost.name, deck: deckNameFromCounts(asyncGhost.deck, r), avatar: asyncGhost.avatar || randomOpponentAvatar(r)}
       : {name: (mode==='ai'||mode==='gauntlet') ? 'Computer' : VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts((mode==='ai'||mode==='gauntlet') ? oppDeckCounts : DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
     if(mode==='pc') me.name = (myProfile && myProfile.name) ? myProfile.name+' (P1)' : 'Player 1';
     matchState.opponentName = opp.name;
@@ -13056,6 +13203,10 @@ async function resolveRound(){
       // loss) — the real number that then permanently chips into its shared current_hp pool.
       const bossDamageDealt = m.players[2] && m.players[2].hq ? Math.max(0, m.players[2].hq.maxHp - Math.max(0, m.players[2].hq.hp)) : 0;
       logRaidAttempt(m.raidBoss, won, m.round, bossDamageDealt);
+    } else if(m.mode==='async'){
+      settleAsyncRunAfterMatch(m);
+    } else if(m.mode==='raidOffline' && m.raidBoss){
+      settleOfflineRaidAfterMatch(m);
     } else if(m.mode==='gauntlet'){
       // Gauntlet (#274) — the win-streak run itself. A win grows the streak and pays a scaling
       // reward; a loss resets it to 0 (the whole point of a "until N wins" run: one loss ends the
@@ -13308,7 +13459,7 @@ function passiveTipCandidates(){
     return null; }}));
   return out;
 }
-const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','dungeon','raidOnline','liveRanked']);
+const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','dungeon','raidOnline','raidOffline','liveRanked']);
 let coachOpen = null, coachShield = null;
 function maybeShowCoachTip(){
   const m = matchState;
@@ -13740,6 +13891,20 @@ function matchStatsHTML(m){
   // Gauntlet streak (#274, 2026-09-25) — parallel to the Conquest/Raid reward blocks above,
   // keyed on m.gauntletStreakAfter being set (only true for mode==='gauntlet', by resolveRound's
   // own gauntlet branch above).
+  const aReward = m.asyncRewardEarned;
+  const asyncHTML = (m.mode==='async' && m.asyncRunAfter) ? `<div class="winloss-conquest-rewards">
+      ${m.asyncRunComplete ? `<span class="conquest-rank-badge">${m.asyncRunAfter.wins>=Ghosts.ASYNC.MAX_WINS ? '🏅 Perfect run!' : '🏁 Run over'} · ${m.asyncRunAfter.wins}W–${m.asyncRunAfter.losses}L</span>` : `<span class="conquest-rank-badge" title="This Async Arena run">📨 Run: ${m.asyncRunAfter.wins}W–${m.asyncRunAfter.losses}L</span>`}
+      ${aReward && aReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(aReward.gold)} Maple Leaves</span>` : ''}
+      ${aReward && aReward.dust>0 ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(aReward.dust)} Dust</span>` : ''}
+      ${aReward && aReward.metal>0 ? `<span class="hud-pill forge-cur-metal">🔩 ${rewardCountSpan(aReward.metal)} Metal</span>` : ''}
+    </div>` : '';
+  const orReward = m.raidRewardEarned;
+  const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards">
+      <span class="conquest-rank-badge">⚔️ ${m.raidDamageDealt} damage to ${escapeHtml(m.raidBoss.name)}</span>
+      <span class="hud-pill" title="Shared raid HP left this week">❤️ ${m.raidRemainingAfter} HP left${m.raidRemainingAfter<=0?' — defeated!':''}</span>
+      ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(orReward.gold)} Maple Leaves</span>` : ''}
+      ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(orReward.dust)} Dust</span>` : ''}
+    </div>` : '';
   const gReward = m.gauntletRewardEarned;
   const gauntletHTML = (m.mode==='gauntlet' && m.gauntletStreakAfter!=null) ? `<div class="winloss-conquest-rewards">
       ${m.gauntletRunComplete ? `<span class="conquest-rank-badge" title="You won ${GAUNTLET_GOAL} in a row!">🏅 Run Complete!</span>` : `<span class="conquest-rank-badge" title="Current Gauntlet win streak">🔥 Streak: ${m.gauntletStreakAfter}/${GAUNTLET_GOAL}</span>`}
@@ -13776,7 +13941,7 @@ function matchStatsHTML(m){
       ${dReward && dReward.metal>0 ? `<span class="hud-pill forge-cur-metal" title="Full clear payout">🔩 ${rewardCountSpan(dReward.metal)} Metal</span>` : ''}
     </div>` : '';
   return `<div class="winloss-stats">
-    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
+    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
     <div class="winloss-stats-head"><span></span><span>${sideLabel('A')}</span><span>${sideLabel('B')}</span></div>
     ${rows.map(r=>{ const cls = cellCls(r); return `<div class="winloss-stats-row"><span class="wls-label">${r.label}</span><span class="wls-val ${cls.A}">${totals.A[r.key]}</span><span class="wls-val ${cls.B}">${totals.B[r.key]}</span></div>`; }).join('')}
   </div>`;

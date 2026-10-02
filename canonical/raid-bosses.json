@@ -1,0 +1,15 @@
+[
+ {"id":"the-drowned-colossus","name":"The Drowned Colossus","icon":"🌀","strength":1,"blurb":"Every spawnling in the Hollow answers to one, much older, shape.","deck":{"humpback-elder":4,"kraken-spawnling":4,"reef-manta-glider":2},"hqHp":100},
+ {"id":"the-frost-yeti-king","name":"The Frost Yeti King","icon":"👑","strength":2,"blurb":"The summit belongs to whatever can survive the cold longest.","deck":{"yeti":4,"glacier-wolf-pack":4,"frost-hare-sprinter":2},"hqHp":130},
+ {"id":"the-deep-troll-king","name":"The Deep Troll King","icon":"👹","strength":3,"blurb":"Every tunnel in the dark eventually leads back to him.","deck":{"vampire-roost":2,"deep-cave-troll":4,"stalactite-golem":3},"hqHp":150},
+ {"id":"the-savanna-warlord","name":"The Savanna Warlord","icon":"👑","strength":4,"blurb":"Every pack on the grassland answers to one crown.","deck":{"acacia-giraffe":2,"jaguar-stalker":4,"savanna-cheetah":4},"hqHp":170},
+ {"id":"the-glacial-ape-king","name":"The Glacial Ape-King","icon":"👑","strength":5,"blurb":"Old enough to remember when the ice was thicker.","deck":{"tundra-musk-ox":3,"glacial-ape-king":2,"permafrost-mammoth":3},"hqHp":190},
+ {"id":"the-orca-vanguard-king","name":"The Orca Vanguard King","icon":"🐋","strength":6,"blurb":"The whole Current clears out the moment his pod surfaces.","deck":{"orca-vanguard":4,"moray-ambusher":2,"coral-reef-shark":3},"hqHp":210},
+ {"id":"wound-reavers-domain","name":"Wound Reaver's Domain","icon":"💀","strength":7,"blurb":"The Swampmire does not heal. It just remembers where you bled.","deck":{"wound-reaver":3,"swamp-alligator":3,"gangrenous-leech":4},"hqHp":230},
+ {"id":"the-phoenix-ember-king","name":"The Phoenix Ember King","icon":"👑","strength":8,"blurb":"Kill it and the Foundry only gets brighter.","deck":{"magma-titan":3,"pyroclast-wyrm":2,"phoenix-fledgling":3},"hqHp":250},
+ {"id":"the-avalanche-colossus","name":"The Avalanche Colossus","icon":"🗻","strength":9,"blurb":"The mountain itself decided it had had enough visitors.","deck":{"eyrie-warden":2,"rockslide-ram":4,"alpine-avalanche":4},"hqHp":270},
+ {"id":"the-rootworm-hive-mind","name":"The Rootworm Hive Mind","icon":"👑","strength":10,"blurb":"It does not have a face. It has never needed one.","deck":{"termite-mound":3,"strangler-vine":3,"rootworm-colony":4},"hqHp":290},
+ {"id":"the-hollow-oath","name":"The Hollow Oath","icon":"👑","strength":11,"blurb":"The Sanctum’s oldest promise, and the one it keeps most literally.","deck":{"bone-diviner":2,"blessed-avatar":4,"hollow-oath-keeper":4},"hqHp":310},
+ {"id":"the-warhorse-sovereign","name":"The Warhorse Sovereign","icon":"🐴","strength":12,"blurb":"Every stable on the Approach was bred for this one rider.","deck":{"squires-mount":2,"warhorse-charger":4,"cataphract-destrier":4},"hqHp":330},
+ {"id":"the-cave-warlord","name":"The Cave Warlord","icon":"👑","strength":13,"blurb":"Everything on the Sundered Peak, in the end, answers to him.","deck":{"cave-warlord":4,"grizzly-vanguard":3,"silverback-brawler":3},"hqHp":350}
+]
