@@ -168,6 +168,97 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
   opts = opts || {};
   const recordEvents = !!opts.recordEvents;
+  // Battle modes (2026-10-02, explicit request): 'gravity' is the original game — cards collapse
+  // in toward the centre and targeting uses the rank-interlock "teeth" math. 'open' and
+  // 'gladiator' use FIXED SLOTS instead: every board card carries an integer `slot` (0 = centre,
+  // negative = left, positive = right, same screen columns for both players), gaps stay open when a
+  // card dies, a new card must go next to one of your cards (or centre on an empty field), and a
+  // card attacks straight across — an empty column opposite means it hits the castle.
+  // 'gladiator' additionally starts each side with its leader pinned in slot 0 at 10x HP / 2x ATK;
+  // there is no castle — "castle" damage goes into the leader, and the leader dying loses the game.
+  const battleMode = opts.battleMode || 'gravity';
+  const slotMode = battleMode==='open' || battleMode==='gladiator';
+  const isGladiator = battleMode==='gladiator';
+  const GAP = Object.freeze({hp:0, uid:null, gap:true});
+  function allBoardCards(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
+  // Keeps every card's slot consistent with the row array it lives in, and keeps the arrays sorted
+  // nearest-centre first (the order the rest of the engine and the renderer already assume).
+  // Cards pushed by effects/tokens without a slot (or moved to the other flank) get the next free
+  // slot just beyond that flank's outermost card.
+  function syncSlots(pl){
+    if(!slotMode) return;
+    const used = new Set();
+    pl.row.center.forEach(c=>{ c.slot = 0; used.add(0); });
+    [['left',-1],['right',1]].forEach(([side,sign])=>{
+      const keep = [], fix = [];
+      pl.row[side].forEach(c=>{
+        if(Number.isInteger(c.slot) && Math.sign(c.slot)===sign && !used.has(c.slot)){ used.add(c.slot); keep.push(c); }
+        else fix.push(c);
+      });
+      let edge = keep.reduce((m,c)=> Math.max(m, Math.abs(c.slot)), 0);
+      fix.forEach(c=>{ edge += 1; while(used.has(sign*edge)) edge += 1; c.slot = sign*edge; used.add(c.slot); keep.push(c); });
+      keep.sort((a,b)=> Math.abs(a.slot)-Math.abs(b.slot));
+      pl.row[side] = keep;
+    });
+  }
+  function occupiedSlots(pl){ syncSlots(pl); const set = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0) set.add(c.slot); }); return set; }
+  // Legal placement slots in open/gladiator: any empty slot next to one of your live cards, or the
+  // centre when you have nothing on the field.
+  function legalSlots(pl){
+    if(!slotMode) return [];
+    const occ = occupiedSlots(pl);
+    if(occ.size===0) return [0];
+    const out = new Set();
+    occ.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
+    return [...out].sort((a,b)=>a-b);
+  }
+  // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
+  // 'left'/'right'/'center' string (L/R buttons, AI, leader summon) picks the legal slot on that
+  // side nearest the centre, falling back to the other side. Returns null if nothing is legal.
+  function resolvePlacementSlot(pl, side){
+    const legal = legalSlots(pl);
+    if(!legal.length) return null;
+    if(typeof side==='number') return legal.includes(side) ? side : null;
+    const want = side==='left' ? -1 : (side==='right' ? 1 : 0);
+    const byDist = (a,b)=> Math.abs(a)-Math.abs(b) || (a-b);
+    const same = legal.filter(sl=> want===0 || sl===0 || Math.sign(sl)===want).sort(byDist);
+    return (same.length ? same : legal.slice().sort(byDist))[0];
+  }
+  function putInSlot(pl, card, slot){
+    card.slot = slot;
+    const side = slot===0 ? 'center' : (slot<0 ? 'left' : 'right');
+    pl.row[side].push(card);
+    syncSlots(pl);
+    return side;
+  }
+  function gladiatorLeaderOf(pl){
+    if(!isGladiator || pl.gladiatorLeaderUid==null) return null;
+    return allBoardCards(pl).find(c=>c.uid===pl.gladiatorLeaderUid) || null;
+  }
+  // Gladiator has no castle: each side's hq mirrors its leader so every existing win/HP check and
+  // the castle HP bar keep working unchanged.
+  function syncGladiatorHq(pl){
+    if(!isGladiator || pl.gladiatorLeaderUid==null) return;
+    const ld = gladiatorLeaderOf(pl);
+    if(ld) pl.hq.maxHp = ld.maxHp;
+    pl.hq.hp = ld ? Math.max(0, ld.hp) : 0;
+  }
+  // Gladiator setup: drops this side's leader straight into the centre, free, at 10x HP / 2x ATK,
+  // pinned so no effect can move it.
+  function placeGladiatorLeader(players, sideOf, playerId, defId, stats, events){
+    const pl = players[playerId];
+    if(!isGladiator || !CARD_DEFS[defId]) return null;
+    const c = makeBoardCard(defId);
+    c.hp *= 10; c.maxHp *= 10; c.atk *= 2; c.baseAtk *= 2;
+    c.pinned = true; c.gladiatorLeader = true;
+    pl.row.center = [];
+    putInSlot(pl, c, 0);
+    pl.gladiatorLeaderUid = c.uid;
+    syncGladiatorHq(pl);
+    ensureStat(stats, sideOf(playerId), defId).played++;
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:c.uid, boardSide:'center', slot:0, leader:true, gladiator:true});
+    return c;
+  }
 
   function costOfCard(defId){ return CARD_DEFS[defId].cost || 0; }
   function graceCostOfCard(defId){ return CARD_DEFS[defId].graceCost || 0; }
@@ -496,6 +587,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // reduction at every call site.
   function damageHQ(pl, amount){
     const reduced = Math.max(0, amount - bulwarkReductionFor(pl));
+    if(isGladiator && pl.gladiatorLeaderUid!=null){
+      const ld = gladiatorLeaderOf(pl);
+      if(ld) ld.hp -= reduced;
+      syncGladiatorHq(pl);
+      return reduced;
+    }
     pl.hq.hp = Math.max(0, pl.hq.hp - reduced);
     return reduced;
   }
@@ -606,6 +703,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // sequence now, since the center slot sits physically between the two flanks rather than
   // belonging to either one.
   function physicalRowOrder(pl){
+    if(slotMode){
+      // Fixed slots: gaps are real, so they appear as hp-0 placeholders — every caller already
+      // skips hp<=0 entries, which makes "adjacent" stop at a gap instead of jumping across it.
+      syncSlots(pl);
+      const cards = allBoardCards(pl);
+      if(!cards.length) return [];
+      const bySlot = new Map(cards.map(c=>[c.slot,c]));
+      const lo = Math.min(...bySlot.keys()), hi = Math.max(...bySlot.keys());
+      const out = [];
+      for(let sl=lo; sl<=hi; sl++) out.push(bySlot.get(sl) || GAP);
+      return out;
+    }
     return [...pl.row.left].reverse().concat(pl.row.center, pl.row.right);
   }
   // Guardian: a card adjacent (one slot either way, physical row order) to the original
@@ -747,6 +856,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // logged anywhere, exactly the "an attack just disappears with no trace" failure mode this
     // bug report described. Asserting here means a future violation fails loudly during
     // development instead of quietly eating a card.
+    if(slotMode){
+      syncSlots(pl);
+      allBoardCards(pl).forEach(c=>{ map[c.slot] = {kind:'card', card:c, dir: c.slot<0 ? 1 : (c.slot>0 ? -1 : 0)}; });
+      return map;
+    }
     if(pl.row.center.length>1) throw new Error('combatColumnsOf: row.center held '+pl.row.center.length+' cards — it must never hold more than 1 (see placeCard\'s auto-center-if-empty rule and the collapse-in refill guard)');
     pl.row.center.forEach(c=>{ map[0] = {kind:'card', card:c, dir:0}; });
     pl.row.left.forEach((c,i)=>{ map[-(i+1)] = {kind:'card', card:c, dir:1}; });
@@ -785,6 +899,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // are recomputed fresh every attacker's turn rather than snapshotted at round start); `myCol`
   // is this attacker's own current column value within myCols.
   function resolveLiveTarget(myCols, enemyCols, myCol){
+    if(slotMode){
+      const e = enemyCols[myCol];
+      if(e && e.kind==='card' && e.card.hp>0){ e.col = myCol; return e; }
+      return {kind:'hq'}; // empty column opposite: castle (Gladiator: routed into the enemy leader by damageHQ)
+    }
     const myKeys = Object.keys(myCols).map(Number).sort((a,b)=>a-b);
     const enemyKeys = Object.keys(enemyCols).map(Number).sort((a,b)=>a-b);
     const i = myKeys.indexOf(myCol) + 1; // 1-indexed position, left to right across my whole row
@@ -848,6 +967,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // liveColOf just above (a kill or a mid-round spawn can change n, which shifts every remaining
   // card's shared position, not just the ones that physically moved column).
   function liveSharedPos(pl, uid){
+    if(slotMode){ syncSlots(pl); const c = allBoardCards(pl).find(x=>x.uid===uid); return c ? c.slot : null; }
     const cols = combatColumnsOf(pl);
     const keys = Object.keys(cols).map(Number).sort((a,b)=>a-b);
     let col = null;
@@ -880,6 +1000,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rank-interlock math as resolveLiveTarget: on an interlocked (parity-mismatched) board, this
   // picks the left-hand of the two straddled enemies as a stable convention.
   function opposingCardOf(players, ownerId, boardCard){
+    if(slotMode){
+      syncSlots(players[ownerId]);
+      const enemy = players[otherId(ownerId)];
+      const e = combatColumnsOf(enemy)[boardCard.slot];
+      return (e && e.card.hp>0) ? {pl:enemy, card:e.card} : null;
+    }
     const ownerSideKey = findCardSide(players[ownerId], boardCard.uid);
     if(!ownerSideKey) return null;
     const ownCols = combatColumnsOf(players[ownerId]);
@@ -976,6 +1102,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(idx===-1) return false;
     const hc = pl.hand[idx];
     if(!canPlay(pl, hc.defId, uid)) return false;
+    const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
+    if(slotMode && targetSlot===null) return false;
     pl.hand.splice(idx,1);
     pl.lumber -= costOfCard(hc.defId);
     pl.grace -= graceCostOfCard(hc.defId);
@@ -995,10 +1123,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // played, or any later card played after the centered card has died — it always lands
     // in the single dedicated center slot, no matter which drop zone (Left/Right) the
     // player used. Only once center is occupied do Left/Right behave as requested.
-    const actualSide = pl.row.center.length===0 ? 'center' : side;
-    pl.row[actualSide].push(boardCard);
+    let actualSide;
+    if(slotMode){ actualSide = putInSlot(pl, boardCard, targetSlot); }
+    else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), hc.defId).played++;
-    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide});
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot});
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     // Chained (Devilry, 2026-09-17, per explicit request: "other ways like when opponent unit
@@ -1029,10 +1158,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!CARD_DEFS[defId]) return false;
     const pl = players[playerId];
     const boardCard = makeBoardCard(defId);
-    const actualSide = pl.row.center.length===0 ? 'center' : side;
-    pl.row[actualSide].push(boardCard);
+    let actualSide;
+    if(slotMode){ const sl = resolvePlacementSlot(pl, side); if(sl===null) return false; actualSide = putInSlot(pl, boardCard, sl); }
+    else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), defId).played++;
-    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide});
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot});
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     const opponent = players[otherId(playerId)];
@@ -1055,6 +1185,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[playerId];
     if(!CARD_DEFS[defId]) return false;
     if(!canPlay(pl, defId, null)) return false;
+    const leaderSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
+    if(slotMode && leaderSlot===null) return false;
     pl.lumber -= costOfCard(defId);
     pl.grace -= graceCostOfCard(defId);
     pl.devilry -= devilryCostOfCard(defId);
@@ -1066,10 +1198,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       boardCard.baseAtk += pl.firstUnitAtkBonus;
       pl.firstUnitBonusUsed = true;
     }
-    const actualSide = pl.row.center.length===0 ? 'center' : side;
-    pl.row[actualSide].push(boardCard);
+    let actualSide;
+    if(slotMode){ actualSide = putInSlot(pl, boardCard, leaderSlot); }
+    else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), defId).played++;
-    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, leader:true});
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, leader:true});
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     const opp = players[otherId(playerId)];
@@ -1550,13 +1683,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // no-op if the enemy has fewer than 2 live creatures out.
         case 'swapPositions': {
           const liveCards = [];
-          ['left','center','right'].forEach(side=> enemy.row[side].forEach((c,idx)=>{ if(c.hp>0) liveCards.push({side, idx, card:c}); }));
+          ['left','center','right'].forEach(side=> enemy.row[side].forEach((c,idx)=>{ if(c.hp>0 && !c.pinned) liveCards.push({side, idx, card:c}); }));
           if(liveCards.length>=2){
             let iA = Math.floor(rnd()*liveCards.length), iB = Math.floor(rnd()*liveCards.length);
             while(iB===iA) iB = Math.floor(rnd()*liveCards.length);
             const A = liveCards[iA], B = liveCards[iB];
             enemy.row[A.side][A.idx] = B.card;
             enemy.row[B.side][B.idx] = A.card;
+            if(slotMode){ const t = A.card.slot; A.card.slot = B.card.slot; B.card.slot = t; syncSlots(enemy); }
             if(recordEvents && events) events.push({type:'swapPositions', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), aDefId:A.card.defId, aUid:A.card.uid, bDefId:B.card.defId, bUid:B.card.uid});
             // On Move (2026-09-27, per explicit request: "Add On Move"): fires on a card the
             // moment its OWN board position changes — today that's exactly what Swap does to
@@ -1981,7 +2115,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       }
       if(cdef.effects && cdef.effects.onDeathSpawn){
-        spawns.push({pl, side, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
+        spawns.push({pl, side, slot:card.slot, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
       }
       // move to graveyard (unless a custom onDeath trigger exiles it instead, OR this card
@@ -2038,7 +2172,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       for(let i=0;i<s.count;i++){
         const side = (i===0) ? s.side : flankOrShorter(s.pl, s.side);
         const tok = makeBoardCard(s.defId);
+        if(slotMode && i===0 && Number.isInteger(s.slot)) tok.slot = s.slot; // first token takes the fallen card's slot
         s.pl.row[side].push(tok);
+        syncSlots(s.pl);
         placements.push({uid:tok.uid, lane:side});
         spawnedTokens.push(tok);
       }
@@ -2061,6 +2197,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // `.shift()` removes index 0, which is always the flank card nearest to center (index 0 =
     // column ±1, see combatColumnsOf/placeCard), so this is a genuine "fall toward the hole,"
     // not a random pick from anywhere on that flank.
+    if(slotMode){ [p1,p2].forEach(pl=>{ syncSlots(pl); syncGladiatorHq(pl); }); return; } // fixed slots: gaps stay, no collapse-in
     const centerDiedFor = new Set();
     deadEntries.forEach(({pl, side})=>{ if(side==='center') centerDiedFor.add(pl); });
     centerDiedFor.forEach(pl=>{
@@ -2669,9 +2806,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pending = frenziedAgain ? a : pickNextAttacker();
     }
     endOfRoundUpkeep(players, sideOf, stats, events);
+    if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -2679,11 +2817,19 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
   const rnd = opts.rnd || Math.random;
   const maxRounds = opts.maxRounds || 300;
   const recordEvents = !!opts.recordEvents;
-  const engine = makeSimEngine(CARD_DEFS, rnd, {recordEvents});
+  const engine = makeSimEngine(CARD_DEFS, rnd, {recordEvents, battleMode: opts.battleMode});
   const sideOf = (playerId)=> playerId===1 ? 'A' : 'B';
   const players = { 1: engine.newPlayer(1, deckCountsA), 2: engine.newPlayer(2, deckCountsB) };
   const stats = {};
   const events = recordEvents ? [] : null;
+  if(opts.battleMode==='gladiator'){
+    // opts.leaders = {1: defId, 2: defId}; defaults to each deck's first card.
+    [1,2].forEach(pid=>{
+      const counts = pid===1 ? deckCountsA : deckCountsB;
+      const defId = (opts.leaders && opts.leaders[pid]) || Object.keys(counts)[0];
+      engine.placeGladiatorLeader(players, sideOf, pid, defId, stats, events);
+    });
+  }
   engine.draw(players[1], 3, 'A', stats, events);
   engine.draw(players[2], 3, 'B', stats, events);
   let round = 1;

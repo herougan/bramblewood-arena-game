@@ -6809,8 +6809,13 @@ function renderConquestSubTab(body){
           ${revealed ? `<div class="cnp-squad">${squadChips}</div>` : ''}
           <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle">${revealed?'🙈 Hide deck':'👁 Show deck'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
+      ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
       ${cnpRewardsPreviewHTML(selectedNode, done)}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
+    panelEl.querySelectorAll('[data-battlemode]').forEach(b=> b.addEventListener('click', ()=>{
+      conquestBattleModePick[nid] = b.getAttribute('data-battlemode');
+      renderConquestSubTab(body);
+    }));
     const toggleBtn = document.getElementById('cnpDeckToggle');
     if(toggleBtn) toggleBtn.addEventListener('click', ()=>{ conquestDeckShowOverride[nid] = !revealed; renderConquestSubTab(body); });
   } else {
@@ -7165,9 +7170,42 @@ function tutorialWinLossSubtitleHTML(m){
   }
   return `<p class="splash-sub">${meta.title} — ${meta.teaches}${m.winner===1?'':`. ${meta.lesson}`}</p>`;
 }
+/* ---- Battle modes (2026-10-02, explicit request; engine side in bramblewood-engine.js — see
+   makeSimEngine's battleMode comment). Only miniboss (kind:'elite') Conquest nodes offer a choice
+   for now; everything else stays Gravity. ---- */
+const BATTLE_MODES = {
+  gravity:   {label:'Gravity',   icon:'🌀', blurb:'Classic: cards collapse in toward the centre when one falls.'},
+  open:      {label:'Open',      icon:'🧱', blurb:'Fixed slots: place next to any of your cards, gaps stay, cards hit straight across.'},
+  gladiator: {label:'Gladiator', icon:'👑', blurb:'Your leader starts in the centre at 10× HP and 2× attack. No castle — lose your leader, lose the fight.'},
+};
+const conquestBattleModePick = {}; // nid -> mode key, remembered for this session
+function battleModePickerHTML(nid){
+  const cur = conquestBattleModePick[nid] || 'gravity';
+  return `<div class="battle-mode-picker" role="radiogroup" aria-label="Battle type">
+    <div class="bmp-label">Battle type</div>
+    <div class="bmp-options">${Object.entries(BATTLE_MODES).map(([k,v])=>
+      `<button type="button" class="btn small ${k===cur?'primary':'ghost'}" role="radio" aria-checked="${k===cur}" data-battlemode="${k}">${v.icon} ${v.label}</button>`).join('')}</div>
+    <div class="bmp-blurb">${BATTLE_MODES[cur].blurb}</div>
+  </div>`;
+}
+// Gladiator leader pick: your deck-editor leader if you set one, otherwise the toughest card in the
+// deck (attack + health, then attack). A fallback pick comes out of the deck so it isn't drawn twice.
+function pickGladiatorLeader(deckCounts, preferredId){
+  const defs = getCardDefs();
+  if(preferredId && defs[preferredId]) return {defId:preferredId, fromDeck:false};
+  let best = null, bestScore = -1;
+  Object.keys(deckCounts||{}).forEach(id=>{
+    const d = defs[id]; if(!d || !(deckCounts[id]>0)) return;
+    const score = (d.attack||0) + (d.health||0) + (d.attack||0)/100;
+    if(score>bestScore){ bestScore = score; best = id; }
+  });
+  return best ? {defId:best, fromDeck:true} : null;
+}
+function minusOne(counts, id){ const c = Object.assign({}, counts); if(c[id]>0){ c[id]-=1; if(!c[id]) delete c[id]; } return c; }
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
+  const battleMode = (opts && opts.battleMode) || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
@@ -7177,26 +7215,41 @@ function startConquestMatch(mapId, nodeKey, opts){
       return false;
     }
   }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const enemyCharacter = node.characterId && CHARACTER_DEFS[node.characterId]
     ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health:node.hqHp})
     : {id:'conquest-enemy', name:node.name, health:node.hqHp, effects:{}};
+  let myDeck = myDeckCounts, enemyDeck = node.deck, myGlad = null, enemyGlad = null;
+  if(battleMode==='gladiator'){
+    myGlad = pickGladiatorLeader(myDeckCounts, myLeaderId);
+    enemyGlad = pickGladiatorLeader(node.deck, null);
+    if(myGlad && myGlad.fromDeck) myDeck = minusOne(myDeck, myGlad.defId);
+    if(enemyGlad && enemyGlad.fromDeck) enemyDeck = minusOne(enemyDeck, enemyGlad.defId);
+  }
   const players = {
-    1: engine.newPlayer(1, myDeckCounts, myCharacter),
-    2: engine.newPlayer(2, node.deck, enemyCharacter),
+    1: engine.newPlayer(1, myDeck, myCharacter),
+    2: engine.newPlayer(2, enemyDeck, enemyCharacter),
   };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
+  if(battleMode==='gladiator'){
+    if(myGlad) engine.placeGladiatorLeader(players, sideOf, 1, myGlad.defId, stats, []);
+    if(enemyGlad) engine.placeGladiatorLeader(players, sideOf, 2, enemyGlad.defId, stats, []);
+  }
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
+    battleMode,
+    gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
-    // matches too — it's part of "your loadout" same as the deck and Bramble.
-    leaderDefId: myLeaderId, leaderUid: null};
+    // matches too — it's part of "your loadout" same as the deck and Bramble. In Gladiator the
+    // leader is already on the field from turn one, so there's nothing left to summon.
+    leaderDefId: battleMode==='gladiator' ? null : myLeaderId,
+    leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   renderPlay();
   return true;
 }
@@ -8012,9 +8065,15 @@ async function attemptSummonLeader(preferredLane){
   const activePid = activePlayerId(m);
   const me = m.players[activePid];
   const openLanes = ['left','center','right'].filter(s=> me.row[s].length===0);
-  if(openLanes.length===0){ denyShake(widgetEl); return; }
   let lane;
-  if(preferredLane){
+  if(isSlotMatch(m)){
+    // Fixed slots: a dropped leader goes to the requested/nearest legal slot; a plain click picks
+    // a random legal slot (the engine re-validates either way).
+    const legal = m.engine.legalSlots(me);
+    if(!legal.length){ denyShake(widgetEl); return; }
+    lane = (preferredLane!=null && preferredLane!=='') ? preferredLane : legal[Math.floor(Math.random()*legal.length)];
+  } else if(openLanes.length===0){ denyShake(widgetEl); return; }
+  else if(preferredLane){
     // Bugfix (2026-09-22, explicit report: "why is my bee knight leader rejecting my drag and
     // drop sometimes!?"): engine.summonLeader (and placeCard, for an ordinary hand card) both
     // always force the FIRST card onto a side to land in the center slot regardless of which
@@ -8141,6 +8200,15 @@ function wireHudChrome(){
 // small "You"/"Enemy" corner tag in the same spot a Cost badge would sit (Castles never show one).
 // maxHp is read from the LIVE match state (p.hq.maxHp), not the character def's own .health,
 // since Bramble passives/buffs can move it away from the def's base value.
+// Gladiator has no castle: the castle tile shows that side's leader (its HP bar is the leader's HP,
+// mirrored by the engine), so the "this is what you must protect" spot stays in the same place.
+function castleCharOf(m, pid){
+  const pl = m.players[pid];
+  const ldId = m.battleMode==='gladiator' && m.gladiatorLeaderDefs && m.gladiatorLeaderDefs[pid];
+  const d = ldId && getCardDefs()[ldId];
+  if(!d) return pl.character;
+  return {...d, id:'gladiator-leader-'+pid, name:`👑 ${d.name} (Leader)`};
+}
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:maxHp};
   // Some Conquest/Raid opponents are given a bare placeholder character with no real Bramble
@@ -8286,7 +8354,7 @@ function renderMatchUI(){
          margin-left:auto) so they share the castle/deck row's own vertical band instead of
          claiming a whole separate one. -->
     <div class="top-play-row">
-      ${matchCastleTileHTML(p2.character, p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
+      ${matchCastleTileHTML(castleCharOf(m, 2), p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
       <div class="deck-widget hq-tile" id="deckWidgetTop">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
@@ -8309,7 +8377,7 @@ function renderMatchUI(){
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
-      ${matchCastleTileHTML(p1.character, p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
+      ${matchCastleTileHTML(castleCharOf(m, 1), p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile" id="deckWidgetBottom">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
@@ -8576,6 +8644,22 @@ function maybeAutoSkip(){
 // up"): the very first play of the match always lands in the center regardless of which side
 // is hovered (placeCard() auto-centers it), so every hover-highlight site below checks this
 // first and lights up the center slot instead of splitting into a left/right guess.
+// Open/Gladiator battle modes (fixed slots): see BATTLE_MODES / makeSimEngine's battleMode.
+function isSlotMatch(m){ return !!(m && (m.battleMode==='open' || m.battleMode==='gladiator')); }
+// The legal "+" slot in this row closest to a horizontal screen position (drops/taps anywhere on
+// the row snap to the nearest place a card is actually allowed to go).
+function nearestSlotTarget(rowEl, clientX){
+  let best = null, bestD = Infinity;
+  rowEl.querySelectorAll('.slot-target').forEach(el=>{
+    const r = el.getBoundingClientRect(); const d = Math.abs((r.left + r.width/2) - clientX);
+    if(d < bestD){ bestD = d; best = el; }
+  });
+  return best;
+}
+function highlightSlotTarget(rowEl, el){
+  rowEl.querySelectorAll('.slot-target.slot-hover').forEach(x=>{ if(x!==el) x.classList.remove('slot-hover'); });
+  if(el) el.classList.add('slot-hover');
+}
 function ownRowCenterEmpty(m){
   if(!m) return false;
   const pid = viewerHandPid(m);
@@ -8786,6 +8870,7 @@ function wireDropZones(){
         // on every dragover (not just once at drop time) so the two half-row highlight overlays
         // (see .board-row::before/::after in arena_template.html) can show, live, which side
         // would be chosen if the card were dropped right now. Same half-row split used at drop.
+        if(isSlotMatch(mForRow)){ highlightSlotTarget(ownRow, nearestSlotTarget(ownRow, e.clientX)); return; } // Open/Gladiator: light the slot it'd land in
         const rect = ownRow.getBoundingClientRect();
         const side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
         const centerEmpty = ownRowCenterEmpty(mForRow);
@@ -8799,6 +8884,7 @@ function wireDropZones(){
       ownRow.addEventListener('dragleave', e=>{
         if(!ownRow.contains(e.relatedTarget)){
           ownRow.classList.remove('row-dragover', 'drag-side-left', 'drag-side-right', 'drag-center');
+          highlightSlotTarget(ownRow, null);
           clearPlacementPreview();
         }
       });
@@ -8809,7 +8895,12 @@ function wireDropZones(){
         e.preventDefault();
         const payload = e.dataTransfer.getData('text/plain');
         const rect = ownRow.getBoundingClientRect();
-        const side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        let side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        if(isSlotMatch(matchState)){ // Open/Gladiator: the nearest legal "+" slot to where it was dropped
+          const t = nearestSlotTarget(ownRow, e.clientX);
+          highlightSlotTarget(ownRow, null);
+          if(t) side = Number(t.getAttribute('data-slot'));
+        }
         // Item #269 ("The leader should be drag and droppable as well"): dropping directly on
         // the battlefield row itself (not just the dedicated L/R buttons) requests that half,
         // same as a dragged hand card already does two lines below.
@@ -8834,9 +8925,10 @@ function wireDropZones(){
         const m = matchState;
         if(!m || m.selectedUid==null) return;
         if(ownRow.classList.contains('row-play-disabled')) return;
-        if(e.target.closest('.board-card')) return;
+        if(e.target.closest('.board-card:not(.slot-target)')) return;
         const rect = ownRow.getBoundingClientRect();
-        const side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        let side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        if(isSlotMatch(m)){ const t = nearestSlotTarget(ownRow, e.clientX); if(t) side = Number(t.getAttribute('data-slot')); }
         playCardByUid(m.selectedUid, side);
       });
     }
@@ -8905,6 +8997,7 @@ function clearPlacementPreview(opts){
 }
 function showPlacementPreview(row, side){
   const m = matchState; if(!m) return;
+  if(isSlotMatch(m)) return; // fixed slots: the highlighted "+" slot is the preview
   // The dragged card's identity isn't readable from the drop event during dragover (browsers
   // withhold dataTransfer's actual data until 'drop', for security) — but the source hand tile
   // carries a live '.dragging' class from its own dragstart handler (see renderHand()), so that's
@@ -9087,7 +9180,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk:d.attack||0, poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk:d.attack||0, poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -9117,6 +9210,30 @@ function renderBoard(opts){
   // keeps each card's scatter offset stable across re-renders, same stability guarantee the
   // dance's index-based stagger delay already has.
   const scatterPseudoRand = seed=>{ const x = Math.sin(seed*999.7+1)*10000; return x - Math.floor(x); };
+  // Open/Gladiator (fixed slots): both rows draw the SAME column range so slot N on one side sits
+  // directly across from slot N on the other; gaps render as empty spaces, and on the viewer's own
+  // row during their turn every legal empty slot becomes a "+" drop/tap target.
+  const slotView = isSlotMatch(m);
+  let slotRange = 0, legalForViewer = new Set(), viewerPid = viewerHandPid(m);
+  if(slotView){
+    const showTargets = !m.over && !m.resolving && !m.awaitingPass;
+    if(showTargets && m.engine.legalSlots) m.engine.legalSlots(m.players[viewerPid]).forEach(sl=> legalForViewer.add(sl));
+    [p1Rows, p2Rows].forEach(rows=> [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) slotRange = Math.max(slotRange, Math.abs(c.slot)); }));
+    legalForViewer.forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl)));
+    slotRange = Math.max(1, slotRange);
+  }
+  function slotRowHTML(pl, rows, dance, scatter, nextDanceStyle){
+    const bySlot = new Map();
+    [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) bySlot.set(c.slot, c); });
+    let html = '';
+    for(let sl=-slotRange; sl<=slotRange; sl++){
+      const c = bySlot.get(sl);
+      if(c){ html += boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), extraClass: c.gladiatorLeader ? 'is-gladiator-leader' : ''}); continue; }
+      if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target" data-slot="${sl}" title="Play here"><span class="slot-target-plus">＋</span></div>`;
+      else html += `<div class="board-card empty-slot" aria-hidden="true"></div>`;
+    }
+    return html;
+  }
   function rowHTML(pl, rows){
     const dance = pl.id===dancingSide;
     const scatter = scatteringSide==='both' || pl.id===scatteringSide;
@@ -9132,6 +9249,7 @@ function renderBoard(opts){
       }
       return '';
     };
+    if(slotView) return slotRowHTML(pl, rows, dance, scatter, nextDanceStyle);
     const left = [...rows.left].reverse().map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle()}));
     const right = rows.right.map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle()}));
     // Center slot (2026-09-16, per explicit request): a real, single combat lane of its
@@ -9170,7 +9288,10 @@ function renderBoard(opts){
     return `${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
-    return `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]d${dance?1:0}`;
+    // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
+    // visible too, so a change in any of them must trigger a rebuild.
+    const slotSig = slotView ? `S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
+    return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]d${dance?1:0}`;
   }
   const sig2 = rowSignature(p2Rows, dancingSide===2);
   const sig1 = rowSignature(p1Rows, dancingSide===1);
@@ -10388,7 +10509,7 @@ function boardCardHTML(c, defs, opts){
   // match (targets .badges-bottom now, leaves .badges — the ability row — alone, since that one
   // never changes after the card is first rendered).
   const abilityBadgeHTML = abilityBadges(d);
-  return `<div class="board-card ${raging?'raging':''} ${statusClasses} ${d.token?'is-token':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return `<div class="board-card ${raging?'raging':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     <div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}">
       ${c.wait>0?waitBadgeHTML(c.wait, d.wait):''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
@@ -11100,7 +11221,7 @@ async function resolveRound(){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
       });
     });
   });
@@ -11206,7 +11327,7 @@ async function resolveRound(){
           // in replayRows. Backfill it from the live (already fully-resolved) board card.
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
