@@ -1017,6 +1017,7 @@ loadLocalCardOverlay();
 function getCardDefs(){
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
+  if(typeof testKitDefsOverlay!=='undefined' && testKitDefsOverlay) Object.assign(out, testKitDefsOverlay); // 🧪 Test Kit synthetic cards, only while it's open
   // Card unlocking (2026-09-22): additively OR a per-player unlock overlay onto the static
   // `locked` flag — a card this player has unlocked (via a Shop pack) reads as locked:false
   // here regardless of its baseline, but a card that ships unlocked is never touched and
@@ -6053,7 +6054,7 @@ function renderPlay(){
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
-          ${devModeEnabled ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Sandbox</button>` : ''}
+          ${(devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
         </div>
         <div class="play-subtabs-actions">
           <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
@@ -7824,10 +7825,17 @@ function renderSandboxSubTab(body){
   body.innerHTML = `<div class="panel">
       <h2>🧪 Sandbox Test Battle</h2>
       <p class="panel-sub">A blank battlefield with no deck, no hand, and no cost gates -- spawn any card straight onto either side and run real combat to see exactly how it behaves. Developer-Mode-only; never seen by a normal player.</p>
-      <button class="btn primary big" id="sandboxStartBtn" type="button">▶ Start Sandbox Battle</button>
+      <button class="btn big" id="sandboxStartBtn" type="button">▶ Start Sandbox Battle</button>
+    </div>
+    <div class="panel">
+      <h2>🧪 Test Kit</h2>
+      <p class="panel-sub">Pick any card — or build a Test Card from scratch (attack, health, skills) — and watch it fight on a small looping field, 2 allies vs 3 enemies, at up to 5× speed. The field resets itself whenever your card dies, everything else dies, or the fight stalls. Made for checking effects, VFX and sounds.</p>
+      <button class="btn primary big" id="testKitStartBtn" type="button">🧪 Open Test Kit</button>
     </div>`;
   const btn = document.getElementById('sandboxStartBtn');
   if(btn) btn.addEventListener('click', startSandboxMatch);
+  const tk = document.getElementById('testKitStartBtn');
+  if(tk) tk.addEventListener('click', startTestKit);
 }
 function startSandboxMatch(){
   const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
@@ -7936,6 +7944,394 @@ function wireSandboxPanel(){
   const resolveBtn = document.getElementById('sbxResolveBtn');
   if(resolveBtn) resolveBtn.addEventListener('click', sandboxResolveRound);
 }
+/* ============================================================
+   🧪 Test Kit (2026-10-02, per explicit request: "a testing kit… load a card from a dropdown x
+   text filter… or a test card (attack/health, default 1/100, and skills)… a mini field with 2
+   ally cards vs 3 enemy cards, one ally at random being the card under test… they repeatedly
+   fight (speed up to 5x)… the field resets on stalemate, the test card dying, everything else
+   dying, or a new card/skill choice… a battle log at the bottom").
+
+   Built on Sandbox's own mode ('sandbox' + m.testKit) so it renders through the exact same
+   renderBoard/resolveRound/VFX/SFX pipeline real matches use — that's the whole point (testing
+   effects AND vfx/sfx). The synthetic Test Card / Training Dummy defs are layered into
+   getCardDefs() only while the kit is open (testKitDefsOverlay) and never saved anywhere.
+
+   UX audit decisions (item 6 of the same request) are marked "UX:" inline.
+   ============================================================ */
+const TESTKIT_CARD_ID = '__testkit_card__';
+const TESTKIT_DUMMY_ID = '__testkit_dummy__';
+const TESTKIT_SPEEDS = [1, 2, 3, 5];
+const TESTKIT_WALL = {id:'testkit-wall', name:'Practice Wall', icon:'🧱', rarity:'common', health:9999, effects:{}};
+const TESTKIT_STALL_ROUNDS = 3;   // rounds with zero change on any card = stalemate
+const TESTKIT_ROUND_CAP = 40;     // hard cap per field so a slow grind still recycles
+let testKitDefsOverlay = null;
+let testKit = null;
+const TESTKIT_PREFS_KEY = 'bramblewood_testkit_prefs';
+function testKitDefaultState(){
+  return {
+    sel: TESTKIT_CARD_ID, search: '', attack: 1, health: 100, dmgType: 'physical',
+    skills: {}, extraEffects: {}, skillSearch: '', others: 'random', speed: 1,
+    running: true, fieldNo: 0, round: 0, lastReason: '', counts: {}, busy: false, token: 0,
+    stall: 0, subjectUid: null,
+  };
+}
+// UX: remember the last setup (card, stats, skills, speed) so a tester iterating on one card
+// doesn't rebuild it from scratch every visit. Per-browser convenience only.
+function testKitLoadPrefs(){
+  const s = testKitDefaultState();
+  try{ const p = JSON.parse(localStorage.getItem(TESTKIT_PREFS_KEY)||'null'); if(p && typeof p==='object') ['sel','attack','health','dmgType','skills','extraEffects','others','speed'].forEach(k=>{ if(p[k]!==undefined) s[k]=p[k]; }); }catch(e){}
+  if(!TESTKIT_SPEEDS.includes(s.speed)) s.speed = 1;
+  return s;
+}
+function testKitSavePrefs(){
+  if(!testKit) return;
+  try{ localStorage.setItem(TESTKIT_PREFS_KEY, JSON.stringify({sel:testKit.sel, attack:testKit.attack, health:testKit.health, dmgType:testKit.dmgType, skills:testKit.skills, extraEffects:testKit.extraEffects, others:testKit.others, speed:testKit.speed})); }catch(e){}
+}
+function testKitSkillDefault(sd){
+  if(sd.kind==='boolean') return true;
+  if(sd.kind==='number') return ['stunOnHit','reflect'].includes(sd.key) ? 50 : 2;
+  if(sd.kind==='twoNumber') return sd.key==='explode' ? [2, 5] : [50, 1];
+  if(sd.kind==='selectNumber'){ const o = testKitSelectOpts(sd); return [(o[0]&&o[0].value)||'damage', 3]; }
+  return null;
+}
+function testKitSelectOpts(sd){ const o = typeof sd.selectOptions==='function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }
+const TESTKIT_SKILL_KINDS = new Set(['boolean','number','twoNumber','selectNumber']);
+function testKitSkillDefs(){ return SKILL_DEFS.filter(sd=> TESTKIT_SKILL_KINDS.has(sd.kind)); }
+function testKitBuildDefs(){
+  const e = JSON.parse(JSON.stringify(testKit.extraEffects||{}));
+  testKitSkillDefs().forEach(sd=>{ if(testKit.skills[sd.key]!==undefined){ try{ sd.apply(e, testKit.skills[sd.key]); }catch(err){} } });
+  testKitDefsOverlay = {
+    [TESTKIT_CARD_ID]: {id:TESTKIT_CARD_ID, name:'Test Card', icon:'🧪', attack:Math.max(0, Number(testKit.attack)||0), health:Math.max(1, Number(testKit.health)||1), cost:0, wait:0, rarity:'common', dmgType:testKit.dmgType||'physical', effects:e, token:true, test:true, flavor:'Built in the Test Kit.'},
+    [TESTKIT_DUMMY_ID]: {id:TESTKIT_DUMMY_ID, name:'Training Dummy', icon:'🎯', attack:0, health:30, cost:0, wait:0, rarity:'common', dmgType:'physical', effects:{}, token:true, test:true, flavor:'Takes hits. Never hits back.'},
+  };
+}
+function testKitFillerPool(){
+  const defs = getCardDefs();
+  return Object.keys(defs).filter(id=>{
+    const d = defs[id];
+    return id!==TESTKIT_CARD_ID && id!==TESTKIT_DUMMY_ID && id!==testKit.sel && !d.token && !d.test && !isHofVariant(d)
+      && (d.attack||0)>0 && (d.health||0)>=3 && (d.health||0)<=40;
+  });
+}
+function testKitPickFiller(pool){
+  if(testKit.others==='dummy' || !pool.length) return TESTKIT_DUMMY_ID;
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function startTestKit(){
+  if(!testKit) testKit = testKitLoadPrefs();
+  testKit.token++; testKit.fieldNo = 0; testKit.counts = {}; testKit.busy = false; testKit.running = true;
+  testKitBuildDefs();
+  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  matchState = {engine, players:{1:engine.newPlayer(1,{},TESTKIT_WALL), 2:engine.newPlayer(2,{},TESTKIT_WALL)}, sideOf:id=>id===1?'A':'B', stats:{},
+    over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, mode:'sandbox', testKit:true,
+    active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals:{1:0,2:0}, speedMult:testKit.speed, leaderDefId:null, leaderUid:null};
+  switchTab('play');
+  testKitBuildField('Started', {silent:true});
+  renderPlay();
+  testKitLoop(testKit.token);
+}
+function stopTestKit(){
+  if(testKit){ testKit.token++; testKit.busy = false; }
+  testKitDefsOverlay = null;
+  const root = document.getElementById('view-play'); if(root) root.classList.remove('testkit-mode');
+}
+function testKitBuildField(reason, opts){
+  const m = matchState; if(!m || !m.testKit) return;
+  opts = opts || {};
+  testKitBuildDefs();
+  const defs = getCardDefs();
+  if(!defs[testKit.sel]) testKit.sel = TESTKIT_CARD_ID;
+  m.engine = makeSimEngine(defs, Math.random, {recordEvents:true});
+  m.players = {1:m.engine.newPlayer(1,{},TESTKIT_WALL), 2:m.engine.newPlayer(2,{},TESTKIT_WALL)};
+  m.stats = {}; m.round = 1; m.over = false; m.winner = 0; m.replayRows = null; m.replayCards = null; m.displayHqHp = null;
+  lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
+  testKit.fieldNo++; testKit.round = 0; testKit.stall = 0;
+  if(reason && !opts.silent){ testKit.lastReason = reason; testKit.counts[reason] = (testKit.counts[reason]||0)+1; }
+  const pool = testKitFillerPool();
+  const events = [];
+  // 2 allies (the card under test lands on a random one of the two spots) vs 3 enemies.
+  const allies = Math.random()<0.5 ? [testKit.sel, testKitPickFiller(pool)] : [testKitPickFiller(pool), testKit.sel];
+  const sides = ['left','right'];
+  allies.forEach((id,i)=>{
+    const before = events.length;
+    m.engine.debugSpawnCard(m.players, m.sideOf, 1, id, sides[i], m.stats, events);
+    if(id===testKit.sel){ const ev = events.slice(before).find(e=>e.type==='play'); testKit.subjectUid = ev ? ev.uid : null; }
+  });
+  [0,1,2].forEach(i=> m.engine.debugSpawnCard(m.players, m.sideOf, 2, testKitPickFiller(pool), sides[i%2], m.stats, events));
+  // UX: everything starts ready — a Wait-5 card sitting idle for five rounds is noise here.
+  [1,2].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=>{ c.wait = 0; })));
+  testKitLogDivider(`Field #${testKit.fieldNo}${reason && !opts.silent ? ` — reset: ${reason}` : ''}`);
+  if(document.getElementById('rowMine')){
+    events.forEach(ev=>{ pushLog(ev); try{ renderVfxForEvent(ev); }catch(e){} });
+    renderBoard(); renderHUD(); updateHqHpDisplay('A'); updateHqHpDisplay('B');
+    testKitRefreshStatus();
+  } else {
+    events.forEach(ev=> m.log.push(ev));
+  }
+}
+function testKitAllCards(m, pid){ const r = m.players[pid].row; return [...r.left, ...r.center, ...r.right].filter(c=>c.hp>0); }
+function testKitSig(m){ return [1,2].map(pid=> testKitAllCards(m,pid).map(c=>`${c.uid}:${c.hp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.decay||0}`).join(',')).join('|'); }
+function testKitResetReason(m, beforeSig){
+  const mine = testKitAllCards(m,1), theirs = testKitAllCards(m,2);
+  const subjectAlive = mine.some(c=> c.uid===testKit.subjectUid);
+  const others = mine.filter(c=> c.uid!==testKit.subjectUid).length + theirs.length;
+  if(!subjectAlive) return 'Test card died';
+  if(others===0) return 'All other cards died';
+  if(!theirs.length) return 'Enemy side wiped out'; // UX: don't wait 3 idle rounds for a stalemate
+  testKit.stall = (testKitSig(m)===beforeSig) ? testKit.stall+1 : 0;
+  if(testKit.stall>=TESTKIT_STALL_ROUNDS) return 'Stalemate';
+  if(testKit.round>=TESTKIT_ROUND_CAP) return `Round cap (${TESTKIT_ROUND_CAP})`;
+  return '';
+}
+async function testKitPlayRound(token){
+  const m = matchState; if(!m || !m.testKit || testKit.busy || m.resolving) return;
+  testKit.busy = true;
+  try{
+    if(testKit.pendingReset){ const r = testKit.pendingReset; testKit.pendingReset = null; testKitBuildField(r); await sleep(500/(m.speedMult||1)); return; }
+    const before = testKitSig(m);
+    await resolveRound();
+    if(matchState!==m || testKit.token!==token) return;
+    testKit.round++;
+    // Practice walls: castles absorb hits (so castle-hit VFX still play) but never fall.
+    [1,2].forEach(pid=>{ m.players[pid].hq.hp = m.players[pid].hq.maxHp; });
+    m.over = false; m.winner = 0;
+    updateHqHpDisplay('A'); updateHqHpDisplay('B');
+    if(testKit.pendingReset){ const r = testKit.pendingReset; testKit.pendingReset = null; testKitBuildField(r); return; }
+    const reason = testKitResetReason(m, before);
+    testKitRefreshStatus();
+    if(reason){ await sleep(Math.max(250, 900/(m.speedMult||1))); if(matchState===m && testKit.token===token) testKitBuildField(reason); }
+  } finally { if(testKit) testKit.busy = false; testKitRefreshTransport(); }
+}
+async function testKitLoop(token){
+  while(testKit && testKit.token===token){
+    const m = matchState; if(!m || !m.testKit) return;
+    if(testKit.running && !testKit.busy && !m.resolving){ await testKitPlayRound(token); await sleep(Math.max(60, 300/(m.speedMult||1))); }
+    else await sleep(120);
+  }
+}
+// Any setup change resets the field — immediately if nothing is mid-animation, otherwise right
+// after the current round finishes (UX: interrupting a replay half-way leaves ghost VFX).
+function testKitRequestReset(reason){
+  const m = matchState; if(!m || !m.testKit) return;
+  testKitSavePrefs();
+  if(testKit.busy || m.resolving){ testKit.pendingReset = reason; testKitRefreshStatus(); return; }
+  testKitBuildField(reason);
+}
+/* ---------- panel UI ---------- */
+function testKitPickerRowsHTML(){
+  const defs = getCardDefs();
+  const q = (testKit.search||'').trim().toLowerCase();
+  let ids = Object.keys(defs).filter(id=> id!==TESTKIT_CARD_ID && id!==TESTKIT_DUMMY_ID && !isHofVariant(defs[id]));
+  if(q) ids = ids.filter(id=> (defs[id].name||'').toLowerCase().includes(q) || id.includes(q));
+  ids.sort((a,b)=> defs[a].name.localeCompare(defs[b].name));
+  const shown = ids.slice(0, 80);
+  const testRow = `<div class="tk-opt tk-opt-test ${testKit.sel===TESTKIT_CARD_ID?'is-sel':''}" role="option" aria-selected="${testKit.sel===TESTKIT_CARD_ID}" data-tkid="${TESTKIT_CARD_ID}" tabindex="-1"><span class="tk-opt-ico">🧪</span><span class="tk-opt-name">Test Card <small>(custom)</small></span><span class="tk-opt-stats">⚔${testKit.attack} ❤${testKit.health}</span></div>`;
+  const rows = shown.map(id=>{ const d = defs[id];
+    return `<div class="tk-opt ${testKit.sel===id?'is-sel':''}" role="option" aria-selected="${testKit.sel===id}" data-tkid="${escapeAttr(id)}" tabindex="-1"><span class="tk-opt-ico">${cardIcoHTML(d)}</span><span class="tk-opt-name">${escapeHtml(d.name)}${d.locked?' 🔒':''}</span><span class="tk-opt-stats">⚔${d.attack||0} ❤${d.health||0}</span></div>`; }).join('');
+  const more = ids.length>shown.length ? `<div class="tk-more">…${ids.length-shown.length} more — keep typing to narrow it down.</div>` : (!ids.length ? `<div class="tk-more">No cards match “${escapeHtml(testKit.search)}”.</div>` : '');
+  return testRow + rows + more;
+}
+function testKitSkillRowHTML(sd){
+  const on = testKit.skills[sd.key]!==undefined; const v = on ? testKit.skills[sd.key] : testKitSkillDefault(sd);
+  let inputs = '';
+  if(sd.kind==='number') inputs = `<input type="number" class="tk-num" min="0" data-tkskill="${sd.key}" data-idx="-1" value="${Number(v)||0}" ${on?'':'disabled'} aria-label="${escapeAttr(sd.label)} amount">`;
+  if(sd.kind==='twoNumber'){ const lbl = sd.key==='explode' ? ['Timer','Dmg'] : ['%','Rounds'];
+    inputs = [0,1].map(i=>`<input type="number" class="tk-num" min="0" data-tkskill="${sd.key}" data-idx="${i}" value="${Number(v[i])||0}" ${on?'':'disabled'} title="${lbl[i]}" aria-label="${escapeAttr(sd.label)} ${lbl[i]}">`).join(''); }
+  if(sd.kind==='selectNumber') inputs = `<select class="tk-sel" data-tkskill="${sd.key}" data-idx="0" ${on?'':'disabled'}>${testKitSelectOpts(sd).map(o=>`<option value="${escapeAttr(o.value)}" ${o.value===v[0]?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}</select><input type="number" class="tk-num" min="1" data-tkskill="${sd.key}" data-idx="1" value="${Number(v[1])||1}" ${on?'':'disabled'} aria-label="${escapeAttr(sd.label)} amount">`;
+  const desc = (()=>{ try{ return sd.desc(v); }catch(e){ return ''; } })();
+  return `<label class="tk-skill ${on?'is-on':''}" title="${escapeAttr(desc)}"><input type="checkbox" data-tkskilltoggle="${sd.key}" ${on?'checked':''}><span class="tk-skill-name">${escapeHtml(sd.label)}</span><span class="tk-skill-inputs">${inputs}</span></label>`;
+}
+function testKitSkillListHTML(){
+  const q = (testKit.skillSearch||'').trim().toLowerCase();
+  const all = testKitSkillDefs();
+  // UX: active skills float to the top so you can always see/undo what's switched on.
+  const active = all.filter(sd=> testKit.skills[sd.key]!==undefined);
+  const rest = all.filter(sd=> testKit.skills[sd.key]===undefined && (!q || sd.label.toLowerCase().includes(q) || sd.key.toLowerCase().includes(q)));
+  return active.map(testKitSkillRowHTML).join('') + (active.length && rest.length ? '<div class="tk-skill-sep"></div>' : '') + rest.map(testKitSkillRowHTML).join('')
+    + (!rest.length && q ? `<div class="tk-more">No skills match “${escapeHtml(testKit.skillSearch)}”.</div>` : '');
+}
+function testKitSelectedSummaryHTML(){
+  const d = getCardDefs()[testKit.sel]; if(!d) return '';
+  const lines = (()=>{ try{ return describeEffects(d).filter(l=>!/^Costs /.test(l)).map(escapeHtml).join('<br>'); }catch(e){ return ''; } })();
+  return `<div class="tk-summary"><div class="tk-summary-ico">${cardIcoHTML(d)}</div><div><div class="tk-summary-name">${escapeHtml(d.name)}</div><div class="tk-summary-stats">⚔ ${d.attack||0} · ❤ ${d.health||0}${d.dmgType && d.dmgType!=='physical' ? ' · '+escapeHtml(d.dmgType) : ''}</div>${lines?`<div class="tk-summary-fx">${lines}</div>`:''}</div></div>`;
+}
+function testKitStatusHTML(){
+  const m = matchState;
+  const pending = testKit.pendingReset ? `<div class="tk-pending">↻ Applying after this round…</div>` : '';
+  const tally = Object.keys(testKit.counts).map(k=>`${escapeHtml(k)} ×${testKit.counts[k]}`).join(' · ');
+  const subj = getCardDefs()[testKit.sel];
+  return `<div class="tk-status-main"><b>Field #${testKit.fieldNo}</b> · ${subj?escapeHtml(subj.name):''} <span class="tk-subject-key">(gold ring)</span></div>
+    <div class="tk-status-sub">Round ${testKit.round}${testKit.stall?` · idle ${testKit.stall}/${TESTKIT_STALL_ROUNDS}`:''}${testKit.running?'':' · ⏸ paused'}</div>
+    ${testKit.lastReason?`<div class="tk-status-sub">Last reset: ${escapeHtml(testKit.lastReason)}</div>`:''}
+    ${tally?`<div class="tk-status-sub">${tally}</div>`:''}${pending}`;
+}
+function testKitTransportHTML(){
+  return `<button type="button" class="btn small ${testKit.running?'':'primary'}" id="tkPlayBtn" aria-pressed="${testKit.running}" title="${testKit.running?'Pause (Space)':'Resume (Space)'}">${testKit.running?'⏸ Pause':'▶ Play'}</button>
+    <button type="button" class="btn small" id="tkStepBtn" ${testKit.running?'disabled':''} title="Play exactly one round (→)">⏭ Step</button>
+    <button type="button" class="btn small" id="tkResetBtn" title="New field with fresh opponents (R)">↻ Reset</button>
+    <div class="tk-speed-row"><span class="tk-speed-label">Speed</span><div class="tk-speed" role="radiogroup" aria-label="Speed">${TESTKIT_SPEEDS.map(s=>`<button type="button" class="tk-speed-btn ${testKit.speed===s?'is-on':''}" role="radio" aria-checked="${testKit.speed===s}" data-tkspeed="${s}">${s}×</button>`).join('')}</div></div>`;
+}
+function testKitPanelHTML(){
+  const isTest = testKit.sel===TESTKIT_CARD_ID;
+  return `<aside class="testkit-panel" id="testKitPanel" aria-label="Test Kit controls">
+    <div class="tk-head"><h2>🧪 Test Kit</h2></div>
+    <div class="tk-transport" id="tkTransport">${testKitTransportHTML()}</div>
+    <div class="tk-status" id="tkStatus" aria-live="polite">${testKitStatusHTML()}</div>
+    <section class="tk-section">
+      <h3>Card under test</h3>
+      <div class="tk-combo">
+        <input type="search" id="tkSearch" placeholder="Filter cards…" value="${escapeAttr(testKit.search)}" role="combobox" aria-controls="tkOptions" aria-expanded="true" autocomplete="off">
+        <div class="tk-options" id="tkOptions" role="listbox" aria-label="Cards">${testKitPickerRowsHTML()}</div>
+      </div>
+      <div id="tkSummary">${isTest ? '' : testKitSelectedSummaryHTML()}</div>
+      ${isTest ? '' : `<button type="button" class="btn small" id="tkCloneBtn" title="Copy this card's stats and skills into the Test Card so you can tweak them">✏️ Tweak as Test Card</button>`}
+    </section>
+    ${isTest ? `<section class="tk-section" id="tkTestEditor">
+      <h3>Test Card</h3>
+      <div class="tk-stat-row">
+        <label>⚔ Attack <input type="number" id="tkAtk" min="0" value="${testKit.attack}"></label>
+        <label>❤ Health <input type="number" id="tkHp" min="1" value="${testKit.health}"></label>
+        <label>Damage <select id="tkDmg">${DMG_TYPES.map(t=>`<option value="${t}" ${testKit.dmgType===t?'selected':''}>${t}</option>`).join('')}</select></label>
+      </div>
+      ${Object.keys(testKit.extraEffects||{}).length ? `<div class="tk-extra">+ copied extras: ${Object.keys(testKit.extraEffects).map(escapeHtml).join(', ')} <button type="button" class="tk-link" id="tkClearExtra">clear</button></div>` : ''}
+      <div class="tk-skill-head"><span>Skills <small id="tkSkillCount">(${Object.keys(testKit.skills).length} on)</small></span>${Object.keys(testKit.skills).length?'<button type="button" class="tk-link" id="tkClearSkills">clear all</button>':''}</div>
+      <input type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}" autocomplete="off">
+      <div class="tk-skills" id="tkSkills">${testKitSkillListHTML()}</div>
+    </section>` : ''}
+    <section class="tk-section">
+      <h3>Everyone else</h3>
+      <div class="tk-seg" role="radiogroup" aria-label="Other cards">
+        <button type="button" class="tk-speed-btn ${testKit.others==='random'?'is-on':''}" role="radio" aria-checked="${testKit.others==='random'}" data-tkothers="random">🎲 Random cards</button>
+        <button type="button" class="tk-speed-btn ${testKit.others==='dummy'?'is-on':''}" role="radio" aria-checked="${testKit.others==='dummy'}" data-tkothers="dummy">🎯 Training dummies</button>
+      </div>
+      <p class="tk-hint">1 ally + 3 enemies around your card. Castles are practice walls (they never fall). The field resets when your card dies, everything else dies, nothing changes for ${TESTKIT_STALL_ROUNDS} rounds, or after ${TESTKIT_ROUND_CAP} rounds.</p>
+    </section>
+  </aside>`;
+}
+// A full renderMatchUI() runs at the end of every resolved round. Rebuilding the control panel
+// each time would yank focus out of a search box mid-word and reset its scroll — so the live
+// panel node is lifted out before the rebuild and dropped back in afterwards (UX audit fix).
+function testKitCaptureForRerender(m){
+  if(!m || !m.testKit) return {};
+  const panel = document.getElementById('testKitPanel');
+  const a = document.activeElement;
+  const focus = (a && panel && panel.contains(a) && a.id) ? {id:a.id, start:a.selectionStart, end:a.selectionEnd} : null;
+  return {panel, focus, scroll: panel ? panel.scrollTop : 0, logScroll: (document.getElementById('battleLog')||{}).scrollTop||0};
+}
+function testKitRestoreFocus(keep){
+  const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = keep.scroll||0;
+  const log = document.getElementById('battleLog'); if(log) log.scrollTop = keep.logScroll||0;
+  if(keep.focus){ const f = document.getElementById(keep.focus.id); if(f){ f.focus({preventScroll:true}); try{ if(keep.focus.start!=null) f.setSelectionRange(keep.focus.start, keep.focus.end); }catch(e){} } }
+}
+function testKitArrangeLayout(root, keep){
+  root.classList.add('testkit-mode');
+  let panel = root.querySelector('#testKitPanel');
+  if(keep && keep.panel && panel){ panel.replaceWith(keep.panel); panel = keep.panel; }
+  const stage = document.createElement('div'); stage.className = 'testkit-stage';
+  ['.top-play-row','.battlefield','.bottom-play-row'].forEach(sel=>{ const el = root.querySelector(':scope > '+sel); if(el) stage.appendChild(el); });
+  const layout = document.createElement('div'); layout.className = 'testkit-layout';
+  layout.appendChild(stage); if(panel) layout.appendChild(panel);
+  root.insertBefore(layout, root.firstChild);
+  const log = root.querySelector('.battle-log-panel'); if(log){ log.classList.remove('collapsed'); log.classList.add('testkit-log'); root.appendChild(log); }
+}
+function testKitRefreshStatus(){ const el = document.getElementById('tkStatus'); if(el && testKit) el.innerHTML = testKitStatusHTML(); }
+function testKitRefreshTransport(){ const el = document.getElementById('tkTransport'); if(el && testKit){ el.innerHTML = testKitTransportHTML(); wireTestKitTransport(); } }
+function testKitLogDivider(text){ pushLog({type:'tkDivider', text}); }
+function testKitRerenderPanel(focusId){
+  const old = document.getElementById('testKitPanel'); if(!old) return;
+  const scrollTop = old.scrollTop, optsScroll = (document.getElementById('tkOptions')||{}).scrollTop||0;
+  const sel = focusId && document.getElementById(focusId); const caret = sel && sel.selectionStart;
+  const tmp = document.createElement('div'); tmp.innerHTML = testKitPanelHTML();
+  old.replaceWith(tmp.firstElementChild);
+  wireTestKitPanel();
+  const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = scrollTop;
+  const opts = document.getElementById('tkOptions'); if(opts) opts.scrollTop = optsScroll;
+  if(focusId){ const f = document.getElementById(focusId); if(f){ f.focus(); try{ if(caret!=null) f.setSelectionRange(caret, caret); }catch(e){} } }
+}
+function wireTestKitTransport(){
+  const m = matchState;
+  const play = document.getElementById('tkPlayBtn'); if(play) play.onclick = ()=>{ testKit.running = !testKit.running; testKitRefreshTransport(); testKitRefreshStatus(); };
+  const step = document.getElementById('tkStepBtn'); if(step) step.onclick = ()=>{ if(!testKit.running) testKitPlayRound(testKit.token); };
+  const reset = document.getElementById('tkResetBtn'); if(reset) reset.onclick = ()=> testKitRequestReset('Manual reset');
+  document.querySelectorAll('[data-tkspeed]').forEach(b=> b.onclick = ()=>{
+    testKit.speed = Number(b.getAttribute('data-tkspeed')); if(matchState) matchState.speedMult = testKit.speed; testKitSavePrefs(); testKitRefreshTransport();
+  });
+}
+let testKitSkillDebounce = null;
+function testKitSkillsChanged(){
+  testKitSavePrefs();
+  const cnt = document.getElementById('tkSkillCount'); if(cnt) cnt.textContent = `(${Object.keys(testKit.skills).length} on)`;
+  clearTimeout(testKitSkillDebounce);
+  // UX: debounce typing so "50" doesn't reset the field twice ("5", then "50").
+  testKitSkillDebounce = setTimeout(()=> testKitRequestReset('Test card changed'), 450);
+}
+function wireTestKitPanel(){
+  wireTestKitTransport();
+  const search = document.getElementById('tkSearch');
+  const opts = document.getElementById('tkOptions');
+  const choose = id=>{
+    if(!id || id===testKit.sel) return;
+    testKit.sel = id; testKitRerenderPanel(); testKitRequestReset(id===TESTKIT_CARD_ID ? 'Switched to Test Card' : 'New card selected');
+  };
+  if(opts) opts.addEventListener('click', e=>{ const row = e.target.closest('[data-tkid]'); if(row) choose(row.getAttribute('data-tkid')); });
+  if(search){
+    search.addEventListener('input', e=>{ testKit.search = e.target.value; if(opts) opts.innerHTML = testKitPickerRowsHTML(); });
+    // UX: keyboard — ↓/↑ move through the list, Enter picks the highlighted (or first real) match.
+    search.addEventListener('keydown', e=>{
+      if(!opts) return;
+      const rows = [...opts.querySelectorAll('[data-tkid]')];
+      let i = rows.findIndex(r=> r.classList.contains('is-hl'));
+      if(e.key==='ArrowDown' || e.key==='ArrowUp'){ e.preventDefault(); i = e.key==='ArrowDown' ? Math.min(rows.length-1, i+1) : Math.max(0, i-1); rows.forEach(r=>r.classList.remove('is-hl')); if(rows[i]){ rows[i].classList.add('is-hl'); rows[i].scrollIntoView({block:'nearest'}); } }
+      if(e.key==='Enter'){ e.preventDefault(); const pick = rows[i] || rows[testKit.search ? 1 : 0] || rows[0]; if(pick) choose(pick.getAttribute('data-tkid')); }
+    });
+  }
+  const clone = document.getElementById('tkCloneBtn');
+  if(clone) clone.onclick = ()=>{
+    const d = getCardDefs()[testKit.sel]; if(!d) return;
+    testKit.attack = d.attack||0; testKit.health = Math.max(1, d.health||1); testKit.dmgType = d.dmgType||'physical';
+    const eff = JSON.parse(JSON.stringify(d.effects||{})); const skills = {};
+    testKitSkillDefs().forEach(sd=>{ const v = sd.get(eff); if(v!==undefined){ skills[sd.key] = v; } });
+    // Whatever the simple skill rows can't express (custom triggers, Progeny, …) rides along untouched.
+    const probe = {}; testKitSkillDefs().forEach(sd=>{ if(skills[sd.key]!==undefined) try{ sd.apply(probe, skills[sd.key]); }catch(e){} });
+    Object.keys(probe).forEach(k=> delete eff[k]);
+    testKit.skills = skills; testKit.extraEffects = eff; testKit.sel = TESTKIT_CARD_ID;
+    testKitRerenderPanel(); testKitRequestReset(`Cloned ${d.name}`);
+  };
+  const num = (id, key, min)=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', ()=>{ const v = Math.max(min, Math.floor(Number(el.value)||0)); testKit[key] = v; const row = document.querySelector('.tk-opt-test .tk-opt-stats'); if(row) row.textContent = `⚔${testKit.attack} ❤${testKit.health}`; testKitSkillsChanged(); }); };
+  num('tkAtk','attack',0); num('tkHp','health',1);
+  const dmg = document.getElementById('tkDmg'); if(dmg) dmg.onchange = ()=>{ testKit.dmgType = dmg.value; testKitSkillsChanged(); };
+  const skills = document.getElementById('tkSkills');
+  if(skills){
+    skills.addEventListener('change', e=>{
+      const t = e.target;
+      if(t.matches('[data-tkskilltoggle]')){
+        const key = t.getAttribute('data-tkskilltoggle'); const sd = testKitSkillDefs().find(s=>s.key===key);
+        if(t.checked) testKit.skills[key] = testKitSkillDefault(sd); else delete testKit.skills[key];
+        testKitRerenderPanel(); testKitSkillsChanged(); return;
+      }
+      if(t.matches('select[data-tkskill]')){ const key = t.getAttribute('data-tkskill'); const v = testKit.skills[key]; if(Array.isArray(v)){ v[0] = t.value; testKitSkillsChanged(); } }
+    });
+    skills.addEventListener('input', e=>{
+      const t = e.target; if(!t.matches('input.tk-num[data-tkskill]')) return;
+      const key = t.getAttribute('data-tkskill'), idx = Number(t.getAttribute('data-idx')); const n = Math.max(0, Number(t.value)||0);
+      if(idx<0) testKit.skills[key] = n; else { const v = Array.isArray(testKit.skills[key]) ? testKit.skills[key] : []; v[idx] = n; testKit.skills[key] = v; }
+      testKitSkillsChanged();
+    });
+  }
+  const ss = document.getElementById('tkSkillSearch');
+  if(ss) ss.addEventListener('input', e=>{ testKit.skillSearch = e.target.value; const list = document.getElementById('tkSkills'); if(list) list.innerHTML = testKitSkillListHTML(); });
+  const clr = document.getElementById('tkClearSkills'); if(clr) clr.onclick = ()=>{ testKit.skills = {}; testKitRerenderPanel(); testKitSkillsChanged(); };
+  const clx = document.getElementById('tkClearExtra'); if(clx) clx.onclick = ()=>{ testKit.extraEffects = {}; testKitRerenderPanel(); testKitSkillsChanged(); };
+  document.querySelectorAll('[data-tkothers]').forEach(b=> b.onclick = ()=>{ testKit.others = b.getAttribute('data-tkothers'); testKitRerenderPanel(); testKitRequestReset(testKit.others==='dummy' ? 'Switched to dummies' : 'Switched to random cards'); });
+}
+// UX: keyboard shortcuts while the kit is open — Space play/pause, → step, R reset.
+document.addEventListener('keydown', e=>{
+  if(!testKit || !matchState || !matchState.testKit) return;
+  if(e.target && (e.target.tagName==='INPUT' || e.target.tagName==='SELECT' || e.target.tagName==='TEXTAREA')) return;
+  if(e.key===' '){ e.preventDefault(); testKit.running = !testKit.running; testKitRefreshTransport(); }
+  else if(e.key==='ArrowRight' && !testKit.running){ e.preventDefault(); testKitPlayRound(testKit.token); }
+  else if(e.key==='r' || e.key==='R'){ testKitRequestReset('Manual reset'); }
+});
 // Admin portal — "jump to progress" (2026-09-22, per explicit request: "include an admin portal
 // beside profile... 'jump to progress', selecting a skirmish level (behind the skirmish is its
 // ID - increasing)"): flattens every Conquest node across every map, in the same fixed order
@@ -8134,6 +8530,11 @@ function renderAdmin(){
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel">
+      <h3>🧪 Test Kit</h3>
+      <p class="panel-sub">Loop any card (or a custom Test Card) in a small 2-vs-3 fight to check its effects, VFX and sounds.</p>
+      <button class="btn primary small" id="adminTestKitBtn" type="button">Open Test Kit</button>
+    </div>
+    <div class="panel admin-subpanel">
       <h3>Jump to progress</h3>
       <p class="panel-sub">Marks every earlier skirmish/elite/boss/raid as cleared (rank S) so maps unlock in order, then drops you straight into the one you pick.</p>
       <div class="admin-jump-row">
@@ -8205,6 +8606,7 @@ function renderAdmin(){
   });
   wireRollTableAdmin();
   wireAdminManageCards();
+  const tkBtn = document.getElementById('adminTestKitBtn'); if(tkBtn) tkBtn.addEventListener('click', startTestKit);
   const jumpBtn = document.getElementById('adminJumpBtn');
   if(jumpBtn) jumpBtn.addEventListener('click', ()=>{
     const sel = document.getElementById('adminJumpSelect');
@@ -8526,6 +8928,7 @@ function startMatch(mode){
 }
 function endMatch(){
   SoundKit.stopAll();
+  if(matchState && matchState.testKit) stopTestKit();
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
   if(matchState && matchState.mode==='liveRanked') leaveLiveMatch(); // sends an abandon notice (if the match wasn't already over) and tears down the Realtime channel either way
   matchState = null; renderPlay();
@@ -8835,6 +9238,7 @@ function renderMatchUI(){
     wrapEl.classList.remove('wide-map');
   }
   const m = matchState, defs = getCardDefs();
+  if(!m) return; // e.g. Quit clicked while a round was still replaying — resolveRound's tail render lands after the match is gone
   const isPc = m.mode==='pc';
   const isAsync = m.mode==='async';
   // Sandbox (2026-09-22, Test Suite feature): no hand/deck/turn concept at all -- see
@@ -8871,7 +9275,7 @@ function renderMatchUI(){
   const me = m.players[activePid]; // this client's own seat — whoever's *actual* turn it is is m.active, not this
   const p1 = m.players[1], p2 = m.players[2];
   const topLabel = isLiveRanked ? (m.liveMySeat===2 ? 'You' : 'Opponent')
-    : isPc ? 'Player 2' : (isSandbox ? 'Enemy (spawn freely)' : 'Enemy');
+    : isPc ? 'Player 2' : (isSandbox ? (m.testKit ? 'Enemies' : 'Enemy (spawn freely)') : 'Enemy');
   // 2026-09-26 (#4, "add the name of the enemy in the right side of the top nav bar... where do we
   // show the enemy's name (player's name OR skirmish's name)"): one small helper picking the best
   // real identity available for THIS specific match, in priority order — a real opponent username
@@ -8884,7 +9288,7 @@ function renderMatchUI(){
     : (m.conquestNode && m.conquestNode.name) ? m.conquestNode.name
     : isPc ? 'Player 2' : 'Enemy';
   const bottomLabel = isLiveRanked ? (m.liveMySeat===1 ? 'You' : 'Opponent')
-    : isPc ? 'Player 1' : (isSandbox ? 'Mine (spawn freely)' : 'You');
+    : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
   const showWinModal = m.over && !m.winModalDismissed;
   const deckTotals = m.deckTotals || {1:p1.deck.length, 2:p2.deck.length};
@@ -8931,6 +9335,7 @@ function renderMatchUI(){
       ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}
       ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
   `;
+  const tkKeep = testKitCaptureForRerender(m);
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -8980,7 +9385,7 @@ function renderMatchUI(){
         <p>Player ${activePid===1?2:1}'s cards stay hidden until they hand it back. Once Player ${activePid} has the device, tap ready to see your hand.</p>
         <button class="btn primary big" id="passReadyBtn">I'm Player ${activePid} — Ready</button>
       </div>
-    </div>` : isSandbox ? sandboxPanelHTML(m) : `
+    </div>` : isSandbox ? (m.testKit ? testKitPanelHTML() : sandboxPanelHTML(m)) : `
     <div class="drop-row" id="dropRow">
       <!-- 2026-09-26, per explicit request ("Remove the <-> controls in the bottom - unneeded
            now [because] dragging and dropping directly on the field [already works]"): confirmed
@@ -9036,6 +9441,8 @@ function renderMatchUI(){
       </div>
     </div>` : ''}
   `;
+  root.classList.remove('testkit-mode');
+  if(m.testKit) testKitArrangeLayout(root, tkKeep);
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : endMatch));
   wireLeaderWidget();
   wireHudChrome();
@@ -9172,7 +9579,7 @@ function renderMatchUI(){
   renderBoard();
   if(!showPassOverlay) renderHand();
   wireDropZones();
-  if(isSandbox) wireSandboxPanel();
+  if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox) wireSandboxPanel();
   updateControlsDisabled();
   m.log.forEach(renderLogLine);
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
@@ -11097,7 +11504,7 @@ function boardCardHTML(c, defs, opts){
   // match (targets .badges-bottom now, leaves .badges — the ability row — alone, since that one
   // never changes after the card is first rendered).
   const abilityBadgeHTML = abilityBadges(d);
-  return `<div class="board-card ${raging?'raging':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return `<div class="board-card ${raging?'raging':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     <div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}">
       ${c.wait>0?waitBadgeHTML(c.wait, d.wait):''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
@@ -12629,6 +13036,7 @@ function renderLogLine(ev){
   // get a real log line below) is actually log-worthy. Left unfixed this would have flooded the
   // log with several "waitTick" lines every round in any match with more than one waiting card.
   if(ev.type==='waitTick') return;
+  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = 0; return; }
   const {cls,text} = logText(ev);
   const row = document.createElement('div');
   row.className = 'log-row '+cls;
@@ -13380,7 +13788,7 @@ function renderVfxForEvent(ev){
         // target survived, apply whatever passive Poison/Bleed the attacker's card carries.
         // This covers primary hits AND every Sweep/Swipe continuation, since they're all
         // pushed as plain 'hit' events with the same attDefId/targetUid shape.
-        const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+        const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
         if(rc){
           rc.hp = Math.max(0, rc.hp - ev.dmg);
           if(rc.hp>0){
@@ -13462,7 +13870,7 @@ function renderVfxForEvent(ev){
     // — silent unless this specific card actually wrote an On Skill line.
     maybeSpeak(ev.attUid, null, 'onSkill');
     const el = boardCardEl(ev.targetUid);
-    const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); }
     else if(ev.kind==='stun'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
@@ -13527,7 +13935,7 @@ function renderVfxForEvent(ev){
       SoundKit.healTone();
     }
     if(el) floatText(el, '+'+ev.amount+'❤', 'heal');
-    const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc){ rc.hp = Math.min(rc.maxHp||(rc.hp+ev.amount), rc.hp + ev.amount); }
     updateCardHpDisplay(ev.targetUid);
   }
@@ -13539,7 +13947,7 @@ function renderVfxForEvent(ev){
     const el = boardCardEl(ev.attUid);
     SoundKit.sapDrain();
     if(el) floatText(el, '+'+ev.amount+'❤', 'heal');
-    const rc = matchState.replayCards && matchState.replayCards[ev.attUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
     if(rc){ rc.hp = Math.min(rc.maxHp||(rc.hp+ev.amount), rc.hp + ev.amount); }
     updateCardHpDisplay(ev.attUid);
   }
@@ -13558,7 +13966,7 @@ function renderVfxForEvent(ev){
   }
   if(ev.type==='thorns'){
     SoundKit.clang(); flashDmg(ev.targetUid, ev.dmg, false);
-    const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.targetUid);
   }
@@ -13568,7 +13976,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='reflect'){
     SoundKit.reflectTone(); flashDmg(ev.targetUid, ev.dmg, false);
     const el = boardCardEl(ev.targetUid); if(el) floatText(el, '🪞 -'+ev.dmg, 'debuff');
-    const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.targetUid);
   }
@@ -13629,7 +14037,7 @@ function renderVfxForEvent(ev){
     const el = boardCardEl(ev.targetUid);
     SoundKit.gashTone();
     if(el) floatText(el, '+'+ev.amount+'🩸', 'bleed');
-    const rc = matchState.replayCards && matchState.replayCards[ev.targetUid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.bleed = (rc.bleed||0) + ev.amount;
     updateCardStatusDisplay(ev.targetUid);
   }
@@ -13654,7 +14062,7 @@ function renderVfxForEvent(ev){
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
     floatText(el, '🫧 '+ev.dmg+'!', 'poison-tick');
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
   }
@@ -13668,7 +14076,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='bleedTick'){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
     floatText(el, '🩸 '+ev.dmg+'!', 'bleed-tick');
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
   }
@@ -13679,13 +14087,13 @@ function renderVfxForEvent(ev){
   if(ev.type==='decayTick'){
     SoundKit.corrodeTone(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
     floatText(el, '🦠 '+ev.dmg+'! (-'+ev.atk+'⚔)', 'bleed-tick');
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(rc.atk!=null) rc.atk = Math.max(0, rc.atk - ev.atk); }
     updateCardHpDisplay(ev.uid);
   }
   if(ev.type==='revive'){
     SoundKit.buffUp(); const el = boardCardEl(ev.uid);
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = 1; rc.poison = 0; rc.stunned = false; }
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
@@ -13746,7 +14154,7 @@ function renderVfxForEvent(ev){
   // Chronos wait-countdown (2026-09-17): the ordinary per-round tick — ring redraws to the
   // new remaining fraction, a quick pulse, and a small clock-tick sound.
   if(ev.type==='waitTick'){
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.wait = ev.waitRemaining;
     SoundKit.waitTickTone();
     updateCardWaitDisplay(ev.uid, ev.waitRemaining);
@@ -13755,7 +14163,7 @@ function renderVfxForEvent(ev){
   // brighter chime plus the magnify-and-fade/dark-red flourish on the ring badge itself,
   // instead of the badge just silently disappearing the next time the board re-renders.
   if(ev.type==='ready'){
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.wait = 0;
     SoundKit.readyChime();
     playReadyFlourish(ev.uid);
@@ -13779,7 +14187,7 @@ function renderVfxForEvent(ev){
   // Chained (Devilry, 2026-09-17, per explicit request): the chain-link overlay snaps and
   // falls away plus a metallic break sound, instead of it just disappearing on the next render.
   if(ev.type==='chainBreak'){
-    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.chained = false;
     SoundKit.chainBreak();
     const el = boardCardEl(ev.uid);

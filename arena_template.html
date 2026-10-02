@@ -2155,6 +2155,73 @@
   .section-divider.mech-line-devilry{border-left:3px solid var(--devilry-border); background:color-mix(in srgb, var(--devilry-bg) 25%, transparent);}
   .zone-chips{display:flex; gap:5px; flex-wrap:wrap;}
   .zone-chip{font-size:16px; background:var(--bg); border-radius:7px; padding:3px 5px;}
+
+  /* ---------- 🧪 Test Kit (2026-10-02) ---------- */
+  #view-play.testkit-mode{display:block;}
+  .testkit-layout{display:grid; grid-template-columns:minmax(0,1fr) minmax(330px,390px); gap:14px; align-items:start;}
+  .testkit-stage{min-width:0; display:flex; flex-direction:column; gap:8px;}
+  #view-play.testkit-mode #deckWidgetTop, #view-play.testkit-mode #deckWidgetBottom, #view-play.testkit-mode #leaderWidgetWrap,
+  #view-play.testkit-mode #handStrip, #view-play.testkit-mode > .hud, #view-play.testkit-mode .hud-opponent-tag, #view-play.testkit-mode #ffBtn{display:none !important;}
+  #view-play.testkit-mode .battlefield{min-height:0;}
+  #view-play.testkit-mode .board-row{min-height:150px;}
+  .testkit-panel{background:var(--panel, #1f2a1e); color:var(--page-ink, #f4ecd8); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 14px; position:sticky; top:8px; max-height:calc(100vh - 16px); overflow:auto; display:flex; flex-direction:column; gap:10px; font-size:13.5px;}
+  .testkit-panel h2{margin:0; font-size:18px;}
+  .testkit-panel h3{margin:0 0 6px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; opacity:.75;}
+  .tk-section{border-top:1px solid rgba(255,255,255,.1); padding-top:10px;}
+  .tk-transport{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+  .tk-speed, .tk-seg{display:inline-flex; border:1px solid rgba(255,255,255,.2); border-radius:999px; overflow:hidden; margin-left:auto;}
+  .tk-seg{margin-left:0; display:flex;}
+  .tk-speed-btn{background:transparent; color:inherit; border:0; padding:6px 11px; font:inherit; font-weight:700; cursor:pointer; min-height:32px; flex:1;}
+  .tk-speed-btn + .tk-speed-btn{border-left:1px solid rgba(255,255,255,.2);}
+  .tk-speed-btn.is-on{background:var(--accent, #d58b3a); color:#1b130b;}
+  .tk-speed-btn:focus-visible, .tk-opt:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
+  .tk-speed-row{display:flex; align-items:center; gap:10px; width:100%;}
+  .tk-speed-label{font-size:12px; font-weight:700; opacity:.75;}
+  .tk-speed{margin-left:0 !important;}
+  .tk-subject-key{font-size:11px; color:#ffd27a; font-weight:700;}
+  .board-card.tk-subject{box-shadow:0 0 0 3px #ffd27a, 0 0 18px 4px rgba(255,210,122,.55) !important;}
+  .tk-status{background:rgba(0,0,0,.25); border-radius:10px; padding:8px 10px; line-height:1.45;}
+  .tk-status-sub{opacity:.75; font-size:12px;}
+  .tk-pending{color:#ffd27a; font-size:12px; font-weight:700;}
+  .testkit-panel input[type=search], .testkit-panel input[type=number], .testkit-panel select{background:rgba(0,0,0,.3); color:inherit; border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 8px; font:inherit; min-height:32px; box-sizing:border-box;}
+  .testkit-panel input[type=search]{width:100%;}
+  .tk-options{max-height:210px; overflow:auto; margin-top:6px; border:1px solid rgba(255,255,255,.12); border-radius:10px;}
+  .tk-opt{display:grid; grid-template-columns:28px 1fr auto; gap:8px; align-items:center; padding:5px 8px; cursor:pointer; border-bottom:1px solid rgba(255,255,255,.06);}
+  .tk-opt:hover, .tk-opt.is-hl{background:rgba(255,255,255,.08);}
+  .tk-opt.is-sel{background:rgba(213,139,58,.3); box-shadow:inset 3px 0 0 var(--accent, #d58b3a);}
+  .tk-opt-test{font-weight:800; position:sticky; top:0; background:#2c3a27; z-index:1;}
+  .tk-opt-test.is-sel{background:#5a4424;}
+  .tk-opt-ico{font-size:18px; line-height:1; display:flex; align-items:center; justify-content:center;}
+  .tk-opt-ico img{width:26px; height:26px; object-fit:cover; border-radius:6px;}
+  .tk-opt-stats{font-size:12px; opacity:.8; white-space:nowrap;}
+  .tk-more{padding:6px 8px; opacity:.65; font-size:12px;}
+  .tk-summary{display:flex; gap:10px; margin-top:8px; align-items:flex-start;}
+  .tk-summary-ico{font-size:30px;} .tk-summary-ico img{width:44px; height:44px; border-radius:8px; object-fit:cover;}
+  .tk-summary-name{font-weight:800;} .tk-summary-stats{opacity:.85;} .tk-summary-fx{font-size:12px; opacity:.8; margin-top:4px;}
+  #tkCloneBtn{margin-top:8px;}
+  .tk-stat-row{display:grid; grid-template-columns:1fr 1fr 1.2fr; gap:8px; margin-bottom:8px;}
+  .tk-stat-row label{display:flex; flex-direction:column; gap:3px; font-size:12px; font-weight:700;}
+  .tk-stat-row input, .tk-stat-row select{width:100%;}
+  .tk-skill-head{display:flex; justify-content:space-between; align-items:center; font-weight:700; margin-bottom:6px;}
+  .tk-skills{max-height:260px; overflow:auto; margin-top:6px; display:flex; flex-direction:column; gap:2px;}
+  .tk-skill{display:grid; grid-template-columns:20px 1fr auto; gap:6px; align-items:center; padding:3px 6px; border-radius:8px; cursor:pointer; min-height:32px;}
+  .tk-skill:hover{background:rgba(255,255,255,.06);}
+  .tk-skill.is-on{background:rgba(111,191,115,.18);}
+  .tk-skill-inputs{display:flex; gap:4px;}
+  .tk-skill .tk-num{width:58px;} .tk-skill .tk-sel{max-width:110px;}
+  .tk-skill input:disabled, .tk-skill select:disabled{opacity:.35;}
+  .tk-skill-sep{height:1px; background:rgba(255,255,255,.15); margin:4px 0;}
+  .tk-link{background:none; border:0; color:#ffd27a; text-decoration:underline; cursor:pointer; font:inherit; font-size:12px; padding:0;}
+  .tk-extra{font-size:12px; opacity:.85; margin-bottom:6px;}
+  .tk-hint{font-size:12px; opacity:.7; margin:8px 0 0; line-height:1.4;}
+  .battle-log-panel.testkit-log{margin-top:12px;}
+  .battle-log-panel.testkit-log .battle-log{max-height:220px; display:flex !important;}
+  .battle-log-panel.testkit-log .battle-log-toggle{pointer-events:none;} .battle-log-panel.testkit-log .battle-log-chevron{display:none;}
+  .log-row.tk-log-divider{background:transparent; border-top:1px dashed rgba(255,255,255,.25); border-radius:0; font-weight:800; opacity:.8; text-align:center;}
+  @media (max-width: 900px){
+    .testkit-layout{grid-template-columns:1fr;}
+    .testkit-panel{position:static; max-height:none;}
+  }
   .battle-log{max-height:210px; overflow-y:auto; display:flex; flex-direction:column-reverse; gap:4px; font-size:12.5px;}
   /* 2026-09-25: Battle Log now collapses by default (task #351) so the in-match screen doesn't
      have a permanent log panel eating vertical space and making the layout feel like it's
