@@ -1559,6 +1559,12 @@
     color:var(--danger); text-shadow:0 0 18px color-mix(in srgb, var(--danger) 55%, transparent), 0 3px 0 rgba(0,0,0,.35);
     animation:fightSignIn 220ms cubic-bezier(.2,.9,.25,1.4) forwards;}
   .fight-sign.fight-sign-out{animation:fightSignOut 220ms ease-in forwards;}
+  .fight-sign.end-sign{font-size:72px; z-index:30; background:radial-gradient(ellipse at center, rgba(0,0,0,.35), transparent 65%);}
+  .fight-sign.end-victory{color:#ffd76a; text-shadow:0 0 24px rgba(255,200,80,.85), 0 4px 0 rgba(90,50,0,.6);}
+  .fight-sign.end-defeat{color:#c9c2d6; text-shadow:0 0 18px rgba(40,30,60,.8), 0 4px 0 rgba(0,0,0,.5);}
+  .fight-sign.end-draw{color:#f4ecd8;}
+  .end-confetti{position:absolute; z-index:31; font-size:22px; pointer-events:none;}
+  @media (max-width:600px){ .fight-sign.end-sign{font-size:44px;} }
   @keyframes fightSignIn{0%{opacity:0; transform:scale(2.2) rotate(-6deg);}60%{opacity:1; transform:scale(.92) rotate(2deg);}100%{opacity:1; transform:scale(1) rotate(0deg);}}
   @keyframes fightSignOut{0%{opacity:1; transform:scale(1);}100%{opacity:0; transform:scale(1.3);}}
   /* "Next Turn" banner (Wait-timer rework, 2026-09-20, per explicit request: "decrement at start

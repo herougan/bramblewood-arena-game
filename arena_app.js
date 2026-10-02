@@ -12382,11 +12382,19 @@ async function resolveRound(){
   // end-of-round cleanup below knows whether panCameraToShowUid ever actually moved the camera
   // this round (most rounds on a board that fits never do, and skip the recenter entirely).
   battlefieldCameraFollowedThisRound = false;
-  for(const ev of mainEvents){
+  for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
+    const ev = mainEvents[evIdx];
     if(ev.type==='hit' || ev.type==='hitHQ') panCameraToShowUid(ev.attUid);
     pushLog(ev); renderVfxForEvent(ev);
     await sleep(delayForEvent(ev, lastVfxKind));
     lastVfxKind = vfxKindOf(ev);
+    // 2026-10-03 ("When the enemy's castle reaches 0 health, pause the combat, and celebrate"):
+    // the instant a castle visibly hits 0, stop replaying the rest of the round's animations (they
+    // still go in the log) and go straight to the Victory/Defeat beat below.
+    if(over && ev.type==='hitHQ' && m.displayHqHp && (m.displayHqHp.A<=0 || m.displayHqHp.B<=0)){
+      mainEvents.slice(evIdx+1).forEach(e=> pushLog(e));
+      break;
+    }
     if(ev.type==='death'){
       // Task list item 2 — record this dying card's real on-screen position (see
       // lastDeathOrigin's own declaration comment) BEFORE removeUidFromReplayRow/renderBoard
@@ -12508,7 +12516,7 @@ async function resolveRound(){
   // PRE-decrement Wait) so updateCardWaitDisplay/playReadyFlourish below have an old value to
   // animate away FROM — after the final sync render the live board would already show the new,
   // fully-resolved number and the ring would have nothing left to visibly deplete.
-  if(waitEvents.length){
+  if(waitEvents.length && !over){
     // Sequential, deliberate order (per "sequential... top-to-bottom/left-to-right decrement
     // animation") rather than whatever order endOfRoundUpkeep happened to iterate the board in:
     // enemy row (#rowEnemy, rendered above #rowMine — see renderBoard) first as "top," own row
@@ -12561,6 +12569,7 @@ async function resolveRound(){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (p1dead&&p2dead)?0:(p1dead?2:1);
+    if(m.mode!=='sandbox') await showEndSign(m);
     m.over = true;
     // Personal win/loss stats only mean something vs an AI opponent — a vs-PC pass-and-play
     // match (and a Conquest skirmish, tracked separately via conquest progress) doesn't add
@@ -12809,6 +12818,36 @@ async function showFightSign(){
   await sleep(ms);
   el.classList.add('fight-sign-out');
   setTimeout(()=> el.remove(), 220);
+}
+// Victory / Defeat sign (2026-10-03, per explicit request: "Before the 'You win' submenu pops out,
+// the words 'Victory' (or 'Defeat') should appear, in the same way the 'Battle' appears" + "pause
+// the combat, and celebrate the victory"). Same zoom-in as FIGHT!, held longer, with a burst of
+// leaves and sparkles on a win. Not shortened much by fast-forward — it's the payoff moment.
+async function showEndSign(m){
+  const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
+  const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
+  const kind = m.winner===0 ? 'draw' : (m.mode==='pc' ? 'victory' : (m.winner===mySeat ? 'victory' : 'defeat'));
+  const text = m.mode==='pc' && m.winner!==0 ? `PLAYER ${m.winner} WINS!` : ({victory:'VICTORY!', defeat:'DEFEAT', draw:'DRAW'})[kind];
+  const el = document.createElement('div');
+  el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
+  battlefield.appendChild(el);
+  try{ if(kind==='victory' && SoundKit.win) SoundKit.win(); else if(kind==='defeat' && SoundKit.lose) SoundKit.lose(); }catch(e){}
+  if(kind==='victory' && hasGsap()){
+    const r = battlefield.getBoundingClientRect();
+    for(let i=0;i<28;i++){
+      const p = document.createElement('span'); p.className = 'end-confetti';
+      p.textContent = ['🍂','🍁','✨','⭐','🌰'][i%5];
+      battlefield.appendChild(p);
+      const ang = Math.random()*Math.PI*2, dist = 120 + Math.random()*Math.min(r.width, 520)*0.5;
+      gsap.set(p, {left:'50%', top:'50%', xPercent:-50, yPercent:-50, scale:.4, opacity:1});
+      gsap.to(p, {x:Math.cos(ang)*dist, y:Math.sin(ang)*dist*0.6 - 40, rotation:Math.random()*360-180, scale:1+Math.random()*.6, duration:.9+Math.random()*.5, ease:'power2.out'});
+      gsap.to(p, {y:'+=90', opacity:0, duration:.7, delay:.95, ease:'power1.in', onComplete:()=> p.remove()});
+    }
+  }
+  const mult = Math.min(2, m.speedMult || 1);
+  await sleep(Math.round(1700/mult));
+  el.classList.add('fight-sign-out');
+  await sleep(220); el.remove();
 }
 // "Next Turn" banner (Wait-timer rework, 2026-09-20) — see resolveRound()'s new post-combat
 // wait-tick phase for how this is used, and the CSS comment on .next-turn-sign for why only the
