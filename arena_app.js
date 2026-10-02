@@ -9171,6 +9171,17 @@ function startMatch(mode){
     leaderDefId: myLeaderId, leaderUid: null};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
+  if(mode==='async' || mode==='pc'){
+    const r = seededRng(currentMatchSeed ^ 0x5eed);
+    const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+    const opp = mode==='pc'
+      ? {name:'Player 2', deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)}
+      : {name: VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
+    if(mode==='pc') me.name = (myProfile && myProfile.name) ? myProfile.name+' (P1)' : 'Player 1';
+    matchState.opponentName = opp.name;
+    showVsScreen(me, opp).then(()=> renderPlay());
+    return;
+  }
   renderPlay();
 }
 function endMatch(){
@@ -9539,6 +9550,7 @@ function renderMatchUI(){
   const hudOpponentName = isLiveRanked ? (m.liveOpponentName || 'Opponent')
     : (m.raidBoss && m.raidBoss.name) ? m.raidBoss.name
     : (m.conquestNode && m.conquestNode.name) ? m.conquestNode.name
+    : m.opponentName ? m.opponentName
     : isPc ? 'Player 2' : 'Enemy';
   const bottomLabel = isLiveRanked ? (m.liveMySeat===1 ? 'You' : 'Opponent')
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
@@ -13049,6 +13061,135 @@ function hideCoachTip(){
   if(coachOpen.anchorEl) coachOpen.anchorEl.classList.remove('coach-anchor');
   coachOpen = null;
 }
+/* ============================================================
+   Player character, title & colour (2026-10-03, per explicit request: "Titles and colours! You can
+   select the title and colour of your character. What is your character? You can choose between a
+   mouse, a hummingbird, or an otter. (You might unlock others when you win the game) They can be
+   dressed up in the future."). Lists come from these registries (and Registry.avatars* getters),
+   so new characters/titles/colours are one entry each. Saved per browser for now.
+   ============================================================ */
+const AVATAR_CHARACTERS = [
+  {id:'otter', name:'Otter', emoji:'🦦'},
+  {id:'hummingbird', name:'Hummingbird', emoji:'🐦'},
+  {id:'mouse', name:'Mouse', emoji:'🐭'},
+  {id:'fox', name:'Fox', emoji:'🦊', unlockHint:'Clear the Wolfsbane Tundra', unlocked:()=> conquestMapCleared('m6')},
+  {id:'hedgehog', name:'Hedgehog', emoji:'🦔', unlockHint:'Clear The Ashen Peak', unlocked:()=> conquestMapCleared('m3')},
+  {id:'dragon', name:'Dragon', emoji:'🐉', unlockHint:'Win the whole campaign', unlocked:()=> conquestMapCleared('m11')},
+];
+const AVATAR_COLORS = [
+  {id:'acorn', name:'Acorn', hex:'#c9853a'}, {id:'berry', name:'Berry', hex:'#c0392b'}, {id:'river', name:'River', hex:'#2f80ed'},
+  {id:'moss', name:'Moss', hex:'#3c9a5f'}, {id:'violet', name:'Violet', hex:'#8e5bc9'}, {id:'sun', name:'Sun', hex:'#e3b23c'},
+  {id:'blossom', name:'Blossom', hex:'#e17aa8'}, {id:'frost', name:'Frost', hex:'#79b8c9'}, {id:'night', name:'Night', hex:'#3d3b5c'},
+];
+const AVATAR_TITLES = [
+  {id:'newcomer', label:'Newcomer', hint:'Everyone starts here'},
+  {id:'skirmisher', label:'Skirmisher', hint:'Win your first Conquest fight', unlocked:()=> (loadConquestProgress().completed||[]).some(id=> !/tutorial/.test(id))},
+  {id:'trailblazer', label:'Trailblazer', hint:'Clear the Bramblewood Outskirts', unlocked:()=> conquestMapCleared('m1')},
+  {id:'collector', label:'Collector', hint:'Own 50 different cards', unlocked:()=> Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length>=50},
+  {id:'raider', label:'Raider', hint:'Reach Rating 1600', unlocked:()=> myRating>=1600},
+  {id:'warden', label:'Warden of the Grove', hint:'Clear Caves & Alcoves', unlocked:()=> conquestMapCleared('m4')},
+  {id:'champion', label:'Champion of Bramblewood', hint:'Win the whole campaign', unlocked:()=> conquestMapCleared('m11')},
+];
+function conquestMapCleared(mapId){
+  try{ const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return false; const p = loadConquestProgress();
+    return map.nodes.filter(n=>n.kind!=='raidboss' && n.kind!=='tutorial').every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; }
+}
+Registry.avatarCharacters = ()=> AVATAR_CHARACTERS.map(c=> Object.assign({}, c, {isUnlocked: !c.unlocked || c.unlocked()}));
+Registry.avatarColors = ()=> AVATAR_COLORS.slice();
+Registry.avatarTitles = ()=> AVATAR_TITLES.map(t=> Object.assign({}, t, {isUnlocked: !t.unlocked || t.unlocked()}));
+const AVATAR_KEY = 'bramblewood_avatar';
+function defaultAvatar(){
+  const f = loadFactionChoice();
+  return {character: f==='hummingbirds' ? 'hummingbird' : (f==='otters' ? 'otter' : 'mouse'), color:'acorn', title:'newcomer'};
+}
+function loadAvatar(){ try{ const a = JSON.parse(localStorage.getItem(AVATAR_KEY)||'null'); if(a && a.character) return Object.assign(defaultAvatar(), a); }catch(e){} return defaultAvatar(); }
+function saveAvatar(a){ try{ localStorage.setItem(AVATAR_KEY, JSON.stringify(a)); }catch(e){} }
+function avatarHTML(av, size, extraCls){
+  const ch = AVATAR_CHARACTERS.find(c=>c.id===av.character) || AVATAR_CHARACTERS[0];
+  const col = (AVATAR_COLORS.find(c=>c.id===av.color) || AVATAR_COLORS[0]).hex;
+  const px = size || 56;
+  return `<span class="bw-avatar ${extraCls||''}" style="--av:${col}; width:${px}px; height:${px}px; font-size:${Math.round(px*0.56)}px;" aria-hidden="true">${ch.emoji}</span>`;
+}
+function avatarTitleLabel(av){ return (AVATAR_TITLES.find(t=>t.id===av.title) || AVATAR_TITLES[0]).label; }
+function avatarCustomizerHTML(){
+  const av = loadAvatar();
+  return `<div class="panel avatar-panel" id="avatarPanel">
+    <h3>🎨 Your character</h3>
+    <div class="avatar-preview">${avatarHTML(av, 84)}<div><div class="avatar-preview-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div><div class="avatar-title-chip" style="--av:${(AVATAR_COLORS.find(c=>c.id===av.color)||AVATAR_COLORS[0]).hex}">${escapeHtml(avatarTitleLabel(av))}</div></div></div>
+    <div class="inv-label">Character</div>
+    <div class="avatar-choices">${Registry.avatarCharacters().map(c=>`<button type="button" class="avatar-choice ${c.id===av.character?'is-on':''}" data-av-char="${c.id}" ${c.isUnlocked?'':'disabled'} title="${escapeAttr(c.isUnlocked ? c.name : '🔒 '+c.unlockHint)}" aria-pressed="${c.id===av.character}"><span class="ac-emoji">${c.isUnlocked?c.emoji:'🔒'}</span><span class="ac-name">${escapeHtml(c.name)}</span></button>`).join('')}</div>
+    <div class="inv-label">Colour</div>
+    <div class="avatar-swatches">${Registry.avatarColors().map(c=>`<button type="button" class="avatar-swatch ${c.id===av.color?'is-on':''}" data-av-color="${c.id}" style="--sw:${c.hex}" title="${escapeAttr(c.name)}" aria-label="${escapeAttr(c.name)}" aria-pressed="${c.id===av.color}"></button>`).join('')}</div>
+    <div class="inv-label">Title</div>
+    <div class="avatar-titles">${Registry.avatarTitles().map(t=>`<button type="button" class="avatar-title-opt ${t.id===av.title?'is-on':''}" data-av-title="${t.id}" ${t.isUnlocked?'':'disabled'} title="${escapeAttr(t.isUnlocked ? t.hint : '🔒 '+t.hint)}">${t.isUnlocked?'':'🔒 '}${escapeHtml(t.label)}</button>`).join('')}</div>
+    <p class="tk-hint">More characters and titles unlock as you win. Outfits are on the way.</p>
+  </div>`;
+}
+function wireAvatarCustomizer(){
+  const panel = document.getElementById('avatarPanel'); if(!panel) return;
+  panel.onclick = e=>{
+    const b = e.target.closest('button'); if(!b || b.disabled) return;
+    const av = loadAvatar();
+    if(b.dataset.avChar) av.character = b.dataset.avChar;
+    else if(b.dataset.avColor) av.color = b.dataset.avColor;
+    else if(b.dataset.avTitle) av.title = b.dataset.avTitle;
+    else return;
+    saveAvatar(av);
+    const tmp = document.createElement('div'); tmp.innerHTML = avatarCustomizerHTML(); panel.replaceWith(tmp.firstElementChild); wireAvatarCustomizer();
+    const top = document.querySelector('.profile-avatar'); if(top) top.innerHTML = avatarHTML(av, 72);
+  };
+}
+/* ---- VS screen (2026-10-03, per explicit request: "When a player goes with Async Arena and vs PC,
+   there will be a VS screen, with the enemy player's name and their deck's name (+ yours)."). ---- */
+const VS_OPPONENT_NAMES = ['Thistle Tess','Mossback Mo','Pip Underbough','Captain Reedwhistle','Old Burr','Sable Quill','Juniper Fen','Bramble Raider','Hazel Thornwick','Wren Puddlefoot'];
+const VS_DECK_STYLES = ['Rush','Wall','Swarm','Ambush','Bulwark','Gambit','Stampede','Hollow'];
+function deckNameFromCounts(counts, rnd){
+  const defs = getCardDefs(); const ids = Object.keys(counts||{}).filter(id=> defs[id]).sort((a,b)=> (counts[b]-counts[a]) || ((defs[b].attack||0)+(defs[b].health||0)) - ((defs[a].attack||0)+(defs[a].health||0)));
+  const head = ids[0] ? defs[ids[0]].name.split(' ').slice(-1)[0] : 'Grove';
+  return `${head} ${VS_DECK_STYLES[Math.floor((rnd||Math.random)()*VS_DECK_STYLES.length)]}`;
+}
+function randomOpponentAvatar(rnd){
+  const r = rnd || Math.random; const chars = AVATAR_CHARACTERS.slice(0,3);
+  return {character: chars[Math.floor(r()*chars.length)].id, color: AVATAR_COLORS[Math.floor(r()*AVATAR_COLORS.length)].id, title: AVATAR_TITLES[Math.floor(r()*3)].id};
+}
+function showVsScreen(left, right){
+  return new Promise(resolve=>{
+    const el = document.createElement('div');
+    el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
+    const side = (p, cls)=> `<div class="vs-side ${cls}">${avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>`;
+    el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
+    document.body.appendChild(el);
+    let done = false;
+    const finish = ()=>{ if(done) return; done = true; el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
+    el.addEventListener('click', finish);
+    if(hasGsap()){
+      gsap.from(el.querySelector('.vs-left'), {x:-260, opacity:0, duration:.5, ease:'power3.out'});
+      gsap.from(el.querySelector('.vs-right'), {x:260, opacity:0, duration:.5, ease:'power3.out'});
+      gsap.from(el.querySelector('.vs-word'), {scale:3, opacity:0, rotation:-12, duration:.45, delay:.35, ease:'back.out(2)'});
+    }
+    setTimeout(finish, 2800);
+  });
+}
+/* ---- Card Workshop (2026-10-03, per explicit request: "a (dead button for now) custom card page
+   for players to invent new cards and do rounds of voting + maybe championship winners also get to
+   design their one-in-one cards"). Describes the plan; the action button is intentionally inert. ---- */
+function openWorkshopPage(){
+  const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
+  overlay.innerHTML = `<div class="modal workshop-modal" role="dialog" aria-labelledby="wsTitle">
+    <div class="modal-head-row"><h2 id="wsTitle">✏️ Card Workshop</h2><button class="modal-close-btn" id="wsClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">Invent your own card — and maybe see it in the game.</p>
+    <ol class="ws-steps">
+      <li><b>Design</b> — pick a creature, its stats and up to three skills, and write its flavour text.</li>
+      <li><b>Vote</b> — each season, players vote designs through rounds until a few finalists remain.</li>
+      <li><b>Release</b> — the winning designs are balanced and added to the game, credited to their designer.</li>
+      <li><b>Champions</b> — tournament champions design a one-of-one card that only they will ever own.</li>
+    </ol>
+    <button type="button" class="btn primary big" disabled aria-disabled="true">🎨 Start designing</button>
+  </div>`;
+  overlay.hidden = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
+  document.getElementById('wsClose').onclick = close; overlay.onclick = e=>{ if(e.target===overlay) close(); };
+}
 // Victory / Defeat sign (2026-10-03, per explicit request: "Before the 'You win' submenu pops out,
 // the words 'Victory' (or 'Defeat') should appear, in the same way the 'Battle' appears" + "pause
 // the combat, and celebrate the victory"). Same zoom-in as FIGHT!, held longer, with a burst of
@@ -15347,12 +15488,14 @@ function renderHome(){
         <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>
+        <button class="btn ghost home-menu-btn-small" type="button" id="homeWorkshopBtn"><span class="tab-emoji">✏️</span> Workshop</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
       </div>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
+  const wsBtn = document.getElementById('homeWorkshopBtn'); if(wsBtn) wsBtn.addEventListener('click', openWorkshopPage);
   wireSettingsButton('Home');
   wireHomeMenuFlourish(root);
 }
@@ -16007,9 +16150,10 @@ function renderProfile(){
   root.innerHTML = `<div class="panel profile-panel">
       <h2>👤 Profile</h2>
       <div class="profile-card">
-        <div class="profile-avatar">🌰</div>
+        <div class="profile-avatar">${avatarHTML(loadAvatar(), 72)}</div>
         <div class="profile-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div>
       </div>
+      <div class="profile-title-row"><span class="avatar-title-chip">${escapeHtml(avatarTitleLabel(loadAvatar()))}</span></div>
       <div class="profile-stats-row">
         <span class="hud-pill">${mapleLeafIconHTML()} ${myCurrencies.gold}</span>
         <span class="hud-pill">🍂 ${myCurrencies.gems}</span>
@@ -16031,8 +16175,10 @@ function renderProfile(){
       </div>
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
+    ${avatarCustomizerHTML()}
     ${achievementsPanelHTML()}
     ${matchHistoryPanelHTML()}`;
+  wireAvatarCustomizer();
   wireAchievementsPanel();
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
