@@ -975,6 +975,21 @@ function cardName(id){ const d = getCardDefs()[id]; return d ? `${d.icon} ${d.na
    edits made in the Codex are visible to every viewer immediately,
    including inside real matches and simulator runs.
    ============================================================ */
+/* Seeded randomness (2026-10-03, per explicit request: "use seeds for our randomising of our deck
+   and enemy's deck and skills and everything"). Every match's engine gets its own seeded RNG —
+   deck shuffles, AI choices, dodge/crit/status rolls all come from it — so a match is fully
+   reproducible from its seed (+ the player's moves). The tutorial always uses the same seed: one
+   hand-checked, pre-seeded run. currentMatchSeed is shown in the Admin/Test tools for repros. */
+function seededRng(seed){
+  let a = (seed>>>0) || 0x9e3779b9;
+  return function(){ a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a>>>15), 1 | a); t = (t + Math.imul(t ^ (t>>>7), 61 | t)) ^ t; return ((t ^ (t>>>14)) >>> 0) / 4294967296; };
+}
+let currentMatchSeed = null, forcedNextSeed = null;
+function nextMatchRng(){
+  currentMatchSeed = forcedNextSeed!=null ? forcedNextSeed : (Math.floor(Math.random()*0xFFFFFFFF)>>>0);
+  forcedNextSeed = null;
+  return seededRng(currentMatchSeed);
+}
 const CARD_DEFS_BASELINE = __CARD_DEFS__;
 // Character-select roster: small, fixed set of "background" cards (Castle/Collapsed Mine/Plains
 // Terrace/...) picked once before a match, each setting your HQ's max HP and granting a team-wide
@@ -6405,7 +6420,7 @@ function startDungeonFight(){
     run = {stage:1, deckCounts:{...myDeckCounts}, castleHp:null};
     saveDungeonRun(run);
   }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const hqHp = DUNGEON_ENEMY_HQ_HP[Math.min(run.stage-1, DUNGEON_ENEMY_HQ_HP.length-1)];
@@ -6540,7 +6555,7 @@ async function enterLiveMatch(row){
 }
 
 function startLiveRankedMatch(cfg){
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode: cfg.battleMode || Registry.defaultBattleMode()});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: cfg.battleMode || Registry.defaultBattleMode()});
   const sideOf = id=> id===1?'A':'B';
   const p1Deck = cfg.mySeat===1 ? cfg.myDeck : cfg.oppDeck;
   const p2Deck = cfg.mySeat===1 ? cfg.oppDeck : cfg.myDeck;
@@ -6673,7 +6688,7 @@ function clearAsyncMatchState(){ try{ localStorage.removeItem(ASYNC_MATCH_KEY); 
 function resumeAsyncMatch(){
   const snap = loadAsyncMatchState();
   if(!snap){ alert('No saved Async Arena match found.'); renderPlay(); return; }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   matchState = {engine, players:snap.players, sideOf, stats:snap.stats||{}, over:false, winner:0, selectedUid:snap.selectedUid||null,
     log:snap.log||[], round:snap.round||1, resolving:false, mode:'async', active:1, turnDone:{1:false,2:false}, awaitingPass:false,
@@ -6704,7 +6719,7 @@ function loadResumeSnapshot(){
 function tryResumeAbandonedMatch(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   try{
-    const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode: snap.battleMode || 'gravity'});
+    const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity'});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
@@ -6815,11 +6830,13 @@ function renderArenaSubTab(body){
 const CONQUEST_MAPS = [
   { id:"m1", name:"Bramblewood Outskirts", icon:"🌲", blurb:"The first tree-line past the castle walls — mostly scouts and stragglers.", sequential:true,
     nodes: [
-      { key:"tutorial1", kind:"tutorial", name:"Choose Your Side", icon:"🐦", hqHp:0, flavor:"Otters or Hummingbirds — the faction pick that opens the whole campaign.", virtual:"faction", requires:[] },
-      { key:"tutorial2", kind:"tutorial", name:"Tutorial Complete", icon:"🎓", hqHp:0, flavor:"Six skirmishes down. The real map starts here.", virtual:"tutorial", requires:["tutorial1"] },
-      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-centurion":4,"bee-drone":4,"bee-knight":4}, hqHp:24, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial2"] },
-      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"caustic-scorpion":4,"dune-jackal":4,"sandstorm-roc":2}, hqHp:26, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["1-1"] },
-      { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"raccoon-nightcrew":4,"trash-panda-trickster":4,"honey-badger-fury":2}, hqHp:26, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-2"] },
+      // 2026-10-03 ("There should only be 1 tutorial at max, with a pre-seeded run… the tutorial
+      // should appear as a lone isolated icon on the map. It must be complete before any
+      // skirmishes can be attempted. The first two should be available as fights."):
+      { key:"tutorial", kind:"tutorial", name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics. Clear it to open the Outskirts.", requires:[] },
+      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-centurion":4,"bee-drone":4,"bee-knight":4}, hqHp:24, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial"] },
+      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"caustic-scorpion":4,"dune-jackal":4,"sandstorm-roc":2}, hqHp:26, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial"] },
+      { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"raccoon-nightcrew":4,"trash-panda-trickster":4,"honey-badger-fury":2}, hqHp:26, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"frost-hare-sprinter":3,"yeti":1,"quillback-elder":3}, hqHp:34, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
   { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"m1", sequential:true,
@@ -7096,7 +7113,7 @@ function isNodeVisible(map, node, index, progress){
       // progress.completed would make that fight permanently unreachable for anyone who reaches
       // Conquest by a path that never wrote that id (tests, admin tools, future entry points).
       const reqNode = map.nodes.find(n=>n.key===reqKey);
-      if(reqNode && reqNode.kind==='tutorial') return true;
+      if(reqNode && reqNode.kind==='tutorial') return loadTutorialDone();
       return progress.completed.includes(conquestNodeId(map.id, reqKey));
     });
   }
@@ -7115,6 +7132,18 @@ function hashStr(s){
   let h = 2166136261;
   for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
   return (h>>>0);
+}
+// Positions with the tutorial node pulled out on its own (2026-10-03: "the tutorial should appear
+// as a lone isolated icon on the map"): it sits by itself at the left edge, and every other node
+// is laid out across the remaining width exactly as before.
+function mapNodePositions(map){
+  const tIdx = map.nodes.findIndex(n=>n.kind==='tutorial');
+  if(tIdx<0) return layoutNodePositions(map.nodes, map.id);
+  const others = map.nodes.filter(n=>n.kind!=='tutorial');
+  const pos = layoutNodePositions(others, map.id).map(p=> ({x: 24 + (p.x/100)*72, y: p.y}));
+  const out = []; let k = 0;
+  map.nodes.forEach((n,i)=>{ out[i] = n.kind==='tutorial' ? {x:8, y:50} : pos[k++]; });
+  return out;
 }
 function layoutNodePositions(nodes, mapId){
   const perRow = nodes.length<=4 ? nodes.length : Math.ceil(Math.sqrt(nodes.length*1.6));
@@ -7253,7 +7282,7 @@ function renderConquestSubTab(body){
     mainEl.innerHTML = `<div class="empty-hint">This map is locked — clear the previous map's Skirmish/Elite/Boss nodes first.</div>`;
     return;
   }
-  const positions = layoutNodePositions(map.nodes, map.id);
+  const positions = mapNodePositions(map);
   const visibleFlags = map.nodes.map((n,i)=> isNodeVisible(map, n, i, progress));
   // Branch-aware trail (2026-09-24 redesign): a map can now converge/fork ("winding paths" per
   // the campaign redesign), so a single polyline through array order no longer draws the real
@@ -7267,6 +7296,7 @@ function renderConquestSubTab(body){
     reqs.forEach(reqKey=>{
       const j = nodeIndexByKey[reqKey];
       if(j===undefined) return;
+      if(map.nodes[j].kind==='tutorial') return; // the tutorial stands alone — no trail line to it
       edgeLines.push(`<line x1="${positions[j].x}" y1="${positions[j].y}" x2="${positions[i].x}" y2="${positions[i].y}" />`);
     });
   });
@@ -7298,6 +7328,12 @@ function renderConquestSubTab(body){
         // already had to finish before they could ever see this map at all — not a fightable
         // node, so no deck/hqHp, no click-to-fight, always shown already-cleared.
         if(node.kind==='tutorial'){
+          const tDone = loadTutorialDone();
+          return `<button type="button" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(node.name+' — '+(node.flavor||''))}">
+            <span class="map-node-ico">${node.icon}</span>${tDone?'<span class="map-node-check">✓</span>':''}
+          </button>`;
+        }
+        if(false){
           // Bugfix 2026-09-30 (repeat report: "the first two skirmishes are still blank" — these
           // tutorial marker nodes used to show ONLY a bare ✓, discarding node.icon entirely, so
           // they read as empty circles rather than an actual place on the map). Now shows the
@@ -7507,7 +7543,8 @@ function loadTutorialDone(){ try{ return localStorage.getItem('bramblewood_arena
 function saveTutorialDone(){ try{ localStorage.setItem('bramblewood_arena_tutorial_done', '1'); }catch(e){} }
 function loadFactionChoice(){ try{ return localStorage.getItem('bramblewood_arena_faction') || null; }catch(e){ return null; } }
 function saveFactionChoice(pick){ try{ localStorage.setItem('bramblewood_arena_faction', pick); }catch(e){} }
-const TUTORIAL_STAGE_COUNT = 6;
+const TUTORIAL_STAGE_COUNT = 1; // 2026-10-03: one pre-seeded tutorial fight (was a 6-skirmish series)
+const TUTORIAL_SEED = 20261003; // the tutorial always plays the same, hand-checked run
 function loadTutorialStage(){
   try{ const n = parseInt(localStorage.getItem('bramblewood_arena_tutorial_stage')||'1', 10); if(n>=1 && n<=TUTORIAL_STAGE_COUNT) return n; }catch(e){}
   return 1;
@@ -7567,7 +7604,7 @@ function tutorialCuratedPool(pick){
 }
 const TUTORIAL_STAGE_META = [
   null, // 1-indexed
-  {title:'First Bout', teaches:'Basic combat', lesson:'Play cards, attack, and chip away at the enemy Castle.'},
+  {title:'Tutorial', teaches:'The basics', lesson:'Play cards, attack, and chip away at the enemy Castle. New ideas get explained as you meet them in the skirmishes.'},
   {title:'Bulwark & Blade', teaches:'High Health vs. Low Health, High Attack', lesson:'Your sturdier line trades slowly; theirs hits harder but breaks faster.'},
   {title:'Build Your Bench', teaches:'Arranging your deck', lesson:'Pick your own lineup from this pool before the fight.'},
   {title:'Patience Pays', teaches:'Wait 1 monsters', lesson:'These come in strong, but need a turn before they can act.'},
@@ -7651,7 +7688,7 @@ function quitTutorialToHome(){
   const stage = (matchState && matchState.tutorialStage) || loadTutorialStage();
   endMatch();
   switchTab('home');
-  showToast(`Tutorial paused at Skirmish ${stage} of ${TUTORIAL_STAGE_COUNT} — tap “Continue tutorial” on Home to pick it back up.`);
+  showToast('Tutorial paused — tap “Start the tutorial” on Home (or the 🎓 on the Outskirts map) whenever you’re ready.');
 }
 function continueTutorialFromHome(){
   if(!loadFactionChoice()){ showFactionScreen(); return; }
@@ -7665,7 +7702,8 @@ function beginTutorialStage(stage){
 function startTutorialMatch(stage, arrangedIds){
   const pick = loadFactionChoice() || 'both';
   const st = stage || loadTutorialStage();
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  forcedNextSeed = TUTORIAL_SEED;
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const deckCounts = tutorialStagePlayerDeck(st, pick, arrangedIds);
@@ -7766,8 +7804,8 @@ function grantTutorialSeriesRewards(pick){
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 function tutorialWinLossTitle(m){
   const stage = m.tutorialStage || 1;
-  if(m.winner!==1) return `Skirmish ${stage} — Good Fight, Try Again`;
-  return stage>=TUTORIAL_STAGE_COUNT ? 'Tutorial Complete!' : `Skirmish ${stage} of ${TUTORIAL_STAGE_COUNT} Complete!`;
+  if(m.winner!==1) return 'Good Fight — Try Again';
+  return 'Tutorial Complete!';
 }
 function tutorialWinLossSubtitleHTML(m){
   const stage = m.tutorialStage || 1;
@@ -7779,7 +7817,8 @@ function tutorialWinLossSubtitleHTML(m){
     if(pick==='otters' || pick==='both') rewardIds.push('river-warden');
     if(pick==='hummingbirds' || pick==='both') rewardIds.push('sunspire-envoy');
     rewardIds.push('quarry-mole');
-    return `<p class="splash-sub">You've finished the whole primer.</p>
+    if(loadTutorialDone()) return `<p class="splash-sub">Nicely done — that was a replay, so no rewards this time.</p>`;
+    return `<p class="splash-sub">The Bramblewood Outskirts are open — your first two fights are waiting on the map.</p>
       <div class="tdp-reward-row">${rewardIds.map(id=>{ const d=defs[id]||{}; return `<span class="tdp-reward-chip">${d.icon||'🎁'} ${d.name||id}</span>`; }).join('')}</div>`;
   }
   return `<p class="splash-sub">${meta.title} — ${meta.teaches}${m.winner===1?'':`. ${meta.lesson}`}</p>`;
@@ -7881,6 +7920,7 @@ function minusOne(counts, id){ const c = Object.assign({}, counts); if(c[id]>0){
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
+  if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
   const battleMode = (opts && opts.battleMode) || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
@@ -7891,7 +7931,7 @@ function startConquestMatch(mapId, nodeKey, opts){
       return false;
     }
   }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const enemyCharacter = node.characterId && CHARACTER_DEFS[node.characterId]
@@ -7967,7 +8007,7 @@ function renderSandboxSubTab(body){
   if(tk) tk.addEventListener('click', startTestKit);
 }
 function startSandboxMatch(){
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   const players = {
     1: engine.newPlayer(1, {}, null), // empty deck -- Sandbox never draws a hand, every card
@@ -8150,7 +8190,7 @@ function startTestKit(){
   if(!testKit) testKit = testKitLoadPrefs();
   testKit.token++; testKit.fieldNo = 0; testKit.counts = {}; testKit.busy = false; testKit.running = true;
   testKitBuildDefs();
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   matchState = {engine, players:{1:engine.newPlayer(1,{},TESTKIT_WALL), 2:engine.newPlayer(2,{},TESTKIT_WALL)}, sideOf:id=>id===1?'A':'B', stats:{},
     over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, mode:'sandbox', testKit:true,
     active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals:{1:0,2:0}, speedMult:testKit.speed, leaderDefId:null, leaderUid:null};
@@ -8876,7 +8916,7 @@ function startRaidMatch(bossId){
     saveCurrencies();
     return;
   }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const bossHp = (boss.stats && boss.stats.hqHp) || 200;
@@ -9025,7 +9065,7 @@ function startMatch(mode){
     alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`);
     return;
   }
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
@@ -9057,6 +9097,7 @@ function startMatch(mode){
 }
 function endMatch(){
   SoundKit.stopAll();
+  hideCoachTip();
   clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
@@ -9664,10 +9705,15 @@ function renderMatchUI(){
         endMatch();
         if(!won){ beginTutorialStage(stage); return; }
         if(stage >= TUTORIAL_STAGE_COUNT){
-          grantTutorialSeriesRewards(pick);
-          myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck();
-          saveTutorialDone();
-          switchTab('home');
+          const firstTime = !loadTutorialDone();
+          if(firstTime){
+            grantTutorialSeriesRewards(pick);
+            myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck();
+            saveTutorialDone();
+          }
+          conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest';
+          switchTab('play');
+          if(firstTime) showToast('🎓 Tutorial complete! Your first two fights on the Outskirts are open.', 'ok');
         } else {
           beginTutorialStage(stage+1);
         }
@@ -9720,6 +9766,7 @@ function renderMatchUI(){
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
   if(!showPassOverlay && !isSandbox) maybeAutoSkip();
+  hideCoachTip(); setTimeout(maybeShowCoachTip, 600);
 }
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
 // "nothing to play" deliberately means no MEANINGFUL action is available at all, not just "no
@@ -12852,6 +12899,78 @@ async function showFightSign(){
   el.classList.add('fight-sign-out');
   setTimeout(()=> el.remove(), 220);
 }
+/* ============================================================
+   Coach tips (2026-10-03, per explicit request: "The skirmishes should have tooltips that popup
+   teaching the player new concepts. There should only be 1 tutorial at max"). Instead of a
+   six-fight tutorial, each concept is explained ONCE, the first time it actually shows up in one
+   of your fights (tutorial or Conquest): a small, non-blocking bubble pointing at the thing it
+   explains, dismissed with "Got it". Seen tips are remembered per browser.
+   ============================================================ */
+const COACH_SEEN_KEY = 'bramblewood_coach_seen';
+let coachSeen = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(COACH_SEEN_KEY)||'[]')); }catch(e){ return new Set(); } })();
+function markCoachSeen(id){ coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
+function coachHandEl(pred){
+  const m = matchState; if(!m) return null;
+  const me = m.players[1]; const defs = getCardDefs();
+  const hc = me.hand.find(h=> defs[h.defId] && pred(defs[h.defId], h));
+  return hc ? document.querySelector(`[data-handuid="${hc.uid}"]`) : null;
+}
+function coachBoardEl(pred, pid){
+  const m = matchState; if(!m) return null; const defs = getCardDefs();
+  for(const p of (pid ? [pid] : [1,2])){ const r = m.players[p].row; const c = [...r.left, ...r.center, ...r.right].find(c=> c.hp>0 && defs[c.defId] && pred(defs[c.defId], c)); if(c) return boardCardEl(c.uid); }
+  return null;
+}
+const COACH_TIPS = [
+  {id:'play', text:'Drag a card from your hand onto the field — or tap it, then tap a side. You can play one card each turn.', anchor:()=> document.querySelector('#handStrip .card-tile.playable')},
+  {id:'castle', text:'🏰 Bring the enemy Castle’s health to 0 to win. Your cards hit whatever stands across from them — and the Castle when nothing does.', anchor:()=> document.querySelector('.top-play-row .hq-tile'), when:m=> m.round>=2},
+  {id:'wait', text:'⏳ The number in the ring is Wait: rounds this card must spend on the field before it can attack.', anchor:()=> coachBoardEl(d=> (d.wait||0)>0, 1) || coachHandEl(d=> (d.wait||0)>0)},
+  {id:'lumber', text:'🪵 This card costs Lumber. Drag a card you don’t need onto the Graveyard to discard it for Lumber, then play the big one later.', anchor:()=> coachHandEl(d=> (d.cost||0)>0)},
+  {id:'leader', text:'👑 Your Leader: drag it onto the field to summon it once per match. Summoning uses your play for the turn.', anchor:()=> document.querySelector('#leaderWidget.summonable')},
+  {id:'handLimit', text:'✋ You can hold 5 cards. Draw past that and the extra card is discarded for +1 Lumber automatically.', anchor:()=> document.getElementById('handStrip'), when:m=> m.players[1].hand.length>=5},
+  {id:'flying', text:'🪽 Flying: attacks from non-flyers miss it half the time.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.flying)},
+  {id:'swift', text:'💨 Swift: always strikes first, and dodges half of all attacks from non-Swift cards.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.swift)},
+  {id:'evasive', text:'🌀 Evade: dodges half of all single-target attacks and abilities (area hits still land).', anchor:()=> coachBoardEl(d=> d.effects && d.effects.evasive)},
+  {id:'poison', text:'☠️ Poison: each hit adds stacks, and poisoned cards take that much damage at the start of every round.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.poison)},
+];
+let coachOpen = null;
+function maybeShowCoachTip(){
+  const m = matchState;
+  if(!m || m.over || (m.mode!=='tutorial' && m.mode!=='conquest') || m.resolving || coachOpen) return;
+  for(const tip of COACH_TIPS){
+    if(coachSeen.has(tip.id)) continue;
+    if(tip.when && !tip.when(m)) continue;
+    const el = tip.anchor(); if(!el) continue;
+    showCoachTip(tip, el); return;
+  }
+}
+function showCoachTip(tip, anchorEl){
+  hideCoachTip();
+  const b = document.createElement('div');
+  b.className = 'coach-tip'; b.setAttribute('role','status');
+  b.innerHTML = `<div class="coach-text">${escapeHtml(tip.text)}</div><button type="button" class="btn small primary coach-ok">Got it</button>`;
+  document.body.appendChild(b);
+  const place = ()=>{
+    if(!anchorEl.isConnected){ hideCoachTip(); return; }
+    const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight;
+    let x = Math.max(8, Math.min(window.innerWidth - bw - 8, r.left + r.width/2 - bw/2));
+    let y = r.top - bh - 14, below = false;
+    if(y < 8){ y = r.bottom + 14; below = true; }
+    b.style.left = x+'px'; b.style.top = y+'px';
+    b.classList.toggle('below', below);
+    b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
+  };
+  place();
+  anchorEl.classList.add('coach-anchor');
+  const tick = setInterval(place, 250);
+  coachOpen = {tip, el:b, anchorEl, tick};
+  b.querySelector('.coach-ok').onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 400); };
+}
+function hideCoachTip(){
+  if(!coachOpen) return;
+  clearInterval(coachOpen.tick); coachOpen.el.remove();
+  if(coachOpen.anchorEl) coachOpen.anchorEl.classList.remove('coach-anchor');
+  coachOpen = null;
+}
 // Victory / Defeat sign (2026-10-03, per explicit request: "Before the 'You win' submenu pops out,
 // the words 'Victory' (or 'Defeat') should appear, in the same way the 'Battle' appears" + "pause
 // the combat, and celebrate the victory"). Same zoom-in as FIGHT!, held longer, with a burst of
@@ -15114,7 +15233,7 @@ function renderHome(){
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
-      ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Continue tutorial <small>(Skirmish ${loadTutorialStage()} of ${TUTORIAL_STAGE_COUNT})</small></button>`}
+      ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       <button class="btn primary big home-menu-btn" data-hometab="play"><span class="tab-emoji">⚔️</span> Play</button>
       <button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>
       <button class="btn primary big home-menu-btn" data-hometab="codex"><span class="tab-emoji">📖</span> Codex</button>
@@ -16596,7 +16715,7 @@ function triggerEntranceAnimation(instant){
   try{ seen = sessionStorage.getItem('bramblewood_seen_splash')==='1'; }catch(e){}
   // A reload in the same tab skips the splash but is still a restart of the game — so it still
   // gets the once-per-load sign-in reminder (maybeRemindSignIn itself checks tutorial/sign-in).
-  if(seen){ splash.hidden = true; if(!tryResumeAbandonedMatch()) setTimeout(maybeRemindSignIn, 1200); return; }
+  if(seen){ triggerEntranceAnimation(true); return; } // reload in the same tab: straight back in (tutorial / resume / Home)
   // 2026-10-03 ("Once signed in, skip past the front screen, just go straight in"): a returning
   // signed-in player (a saved Supabase session in this browser) never sees the splash at all.
   if(hasStoredCloudSession()){ triggerEntranceAnimation(true); return; }

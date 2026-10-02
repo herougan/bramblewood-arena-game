@@ -1633,10 +1633,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             }
           } else if(t.target==='randomEnemy'){
             const pool = [...enemy.row.left, ...enemy.row.center, ...enemy.row.right].filter(c=>c.hp>0);
-            if(pool.length) target = pool[Math.floor(Math.random()*pool.length)];
+            if(pool.length) target = pool[Math.floor(rnd()*pool.length)];
           } else { // 'randomAlly', and the default when no target was ever set
             const pool = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=>c.hp>0);
-            if(pool.length) target = pool[Math.floor(Math.random()*pool.length)];
+            if(pool.length) target = pool[Math.floor(rnd()*pool.length)];
           }
           if(target){
             target.atk += atkAmt; target.baseAtk += atkAmt;

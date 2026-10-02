@@ -2172,6 +2172,14 @@
 
 
 
+
+  /* ---- Coach tips (2026-10-03) ---- */
+  .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
+  .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
+  .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
+  .coach-tip .coach-ok{align-self:flex-end;}
+  .coach-anchor{outline:3px solid #ffd76a; outline-offset:3px; border-radius:12px;}
+  @keyframes coachIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
   /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
   .home-menu-row{grid-template-columns:none !important; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr);}
   .home-menu-btn-small{position:relative;}
@@ -3172,8 +3180,16 @@
      than a real node so it reads as "already behind you," not the next thing to do. */
   .map-node.kind-tutorial{width:40px; height:40px; font-size:18px; cursor:default; opacity:.7;
     border-color:var(--surface-border); background:var(--health-soft, #d6f5df); box-shadow:none;}
-  .map-node.kind-tutorial:hover{transform:translate(-50%,-50%); box-shadow:none;}
-  .map-node.done{opacity:.6; background:var(--health-soft, #d6f5df);}
+  .map-node.kind-tutorial:hover{transform:translate(-50%,-50%) scale(1.08);}
+  .map-node.kind-tutorial{cursor:pointer !important; opacity:1 !important;}
+  .map-node.done{background:var(--health-soft, #d6f5df);}
+  /* 2026-10-03 ("When a skirmish is won, it should still be hoverable and interactable"): a cleared
+     node used to sit at 60% opacity, reading as disabled. It stays fully opaque — the ✓ badge is
+     the "cleared" signal — and keeps the normal hover lift. */
+  .map-node.done:hover{transform:translate(-50%,-50%) scale(1.08);}
+  .map-node.tutorial-solo{width:60px; height:60px; font-size:28px; box-shadow:0 0 0 4px rgba(255,255,255,.55), 0 6px 18px rgba(0,0,0,.35);}
+  .map-node.tutorial-solo.is-next{animation:tutorialBeacon 1.6s ease-in-out infinite;}
+  @keyframes tutorialBeacon{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.55), 0 0 0 0 rgba(255,215,106,.7);}50%{box-shadow:0 0 0 4px rgba(255,255,255,.75), 0 0 0 16px rgba(255,215,106,0);}}
   /* Item #2 (2026-09-19, "missions should be locked and have a locked emoji over a darkened
      icon unless the prerequisite is complete"): shows the node's REAL icon (darkened via
      filter, not swapped for a placeholder) with a small 🔒 badge pinned over its corner —
@@ -3403,7 +3419,7 @@
     .conquest-maps::-webkit-scrollbar{width:6px;}
     .conquest-maps::-webkit-scrollbar-track{background:transparent;}
     .conquest-maps::-webkit-scrollbar-thumb{background:var(--accent); border-radius:3px;}
-    .map-node{width:42px; height:42px; font-size:19px;} .map-node.kind-boss{width:48px; height:48px;} .map-node.kind-raidboss{width:52px; height:52px;} .map-node.kind-finalboss{width:56px; height:56px; font-size:26px;} .map-node.kind-tutorial{width:32px; height:32px; font-size:14px;} }
+    .map-node{width:42px; height:42px; font-size:19px;} .map-node.kind-boss{width:48px; height:48px;} .map-node.kind-raidboss{width:52px; height:52px;} .map-node.kind-finalboss{width:56px; height:56px; font-size:26px;} .map-node.kind-tutorial{width:46px; height:46px; font-size:22px;} }
   /* 2026-09-26 (user report: "the cards are all over the place. make them consistently sized")
      — replaces the old .arena-mode-row (a plain flex row, one per mode-group, each sizing its
      1-3 children independently) with a real CSS grid shared by EVERY mode tile at once. auto-fit
