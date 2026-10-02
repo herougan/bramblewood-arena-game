@@ -9151,7 +9151,11 @@ async function attemptSummonLeader(preferredLane){
   if(!m.leaderDefId || m.leaderUid!=null){ denyShake(widgetEl); return; }
   const activePid = activePlayerId(m);
   const me = m.players[activePid];
-  const openLanes = ['left','center','right'].filter(s=> me.row[s].length===0);
+  // 2026-10-03 (user report: "I couldn't play my Wandering Traveller on the left of my Dominion
+  // Nestguard"): this used to only accept COMPLETELY EMPTY lanes, but in Gravity a flank holds any
+  // number of cards — a normal hand card happily joins an occupied flank, and engine.summonLeader
+  // does exactly the same (center only while it's empty). The leader now follows the same rule.
+  const openLanes = me.row.center.length===0 ? ['center'] : ['left','right'];
   let lane;
   if(isSlotMatch(m)){
     // Fixed slots: a dropped leader goes to the requested/nearest legal slot; a plain click picks
@@ -9159,8 +9163,7 @@ async function attemptSummonLeader(preferredLane){
     const legal = m.engine.legalSlots(me);
     if(!legal.length){ denyShake(widgetEl); return; }
     lane = (preferredLane!=null && preferredLane!=='') ? preferredLane : legal[Math.floor(Math.random()*legal.length)];
-  } else if(openLanes.length===0){ denyShake(widgetEl); return; }
-  else if(preferredLane){
+  } else if(preferredLane){
     // Bugfix (2026-09-22, explicit report: "why is my bee knight leader rejecting my drag and
     // drop sometimes!?"): engine.summonLeader (and placeCard, for an ordinary hand card) both
     // always force the FIRST card onto a side to land in the center slot regardless of which
@@ -12289,6 +12292,21 @@ function deathVfx(uid){
     setTimeout(()=> skull.remove(), 650);
   }
 }
+// Safety net (2026-10-03, user report: "it teleported to the top left of the field at the end"):
+// once a round's replay is over, no board card should still be pinned (position:absolute from an
+// entrance/Flip) or carrying a leftover transform. Anything that is, and isn't mid-tween, gets its
+// inline layout props cleared so it drops back into its real slot in the row.
+function settleStrayBoardCards(){
+  document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
+    if(hasGsap() && gsap.isTweening(el)) return;
+    const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
+    const tf = el.style.transform;
+    if(pinned || (tf && tf!=='none' && !/^translate\(0(px)?, 0(px)?\)$/.test(tf))){
+      if(hasGsap()) gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'});
+      else { el.style.position=''; el.style.left=''; el.style.top=''; el.style.width=''; el.style.height=''; el.style.transform=''; }
+    }
+  });
+}
 async function resolveRound(){
   const m = matchState; if(!m||m.over||m.resolving) return;
   m.resolving = true; updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
@@ -12539,6 +12557,7 @@ async function resolveRound(){
   // modeled), and without this pause m.resolving flips false in the very same tick — letting
   // controls re-enable, and any resolving-gated check, before that entrance is even visible.
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
+  settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (p1dead&&p2dead)?0:(p1dead?2:1);
@@ -13402,7 +13421,14 @@ function floatText(el, text, cls){
   const travel = 0.9 + Math.random()*0.2;
   el.appendChild(f);
   if(hasGsap()){
-    gsap.set(f, {position:'absolute', left:'50%', top:-6+dy0, xPercent:-50, x:0, y:0, opacity:0, scale:.6});
+    // 2026-10-03 ("damage numbers sometimes seem duplicated — 2 numbers thrown up right after each
+    // other"): the .dmg-float CSS bounce keyframes (up, down, UP AGAIN) kept running underneath
+    // GSAP's tween and, being an animation, overrode it — that second hop read as a second number.
+    // GSAP owns the motion now. Also (same report: castle numbers "too high up and not obvious"):
+    // every float — unit or castle — now starts at the same spot INSIDE its target (28% down) at
+    // the same size, so numbers are consistent and never pushed off the top of the screen.
+    f.style.animation = 'none';
+    gsap.set(f, {position:'absolute', left:'50%', top:`calc(28% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.6});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:1.1, y:-20*travel, x:dx*0.4, duration:.16, ease:'back.out(2.6)'})
       .to(f, {y:-46*travel, x:dx, duration:.55, ease:'power1.out'}, '<0.02')
@@ -13686,12 +13712,49 @@ function flashShield(el){
   el.appendChild(s);
   setTimeout(()=> s.remove(), 650);
 }
-function flashDodge(el){
+// Miss callouts (2026-10-03, per explicit request: "brighter font, close to white, bigger… for each
+// of evade, flying and swift, slightly differing fade-out animations. Evade: a small rising
+// oscillation. Flying: a flying, fading shake. Swift: a dash to the left then right, static, then
+// fade."). The engine tags every 'evaded' event with `reason` (see lastMissReason in the engine).
+const MISS_STYLES = {
+  evasive: {text:'Evaded!',   icon:'🌀'},
+  flying:  {text:'Flew clear!', icon:'🪽'},
+  swift:   {text:'Too fast!', icon:'💨'},
+};
+function missCallout(el, reason){
+  const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
+  const f = document.createElement('div');
+  f.className = 'miss-float miss-'+(MISS_STYLES[reason] ? reason : 'evasive');
+  f.textContent = st.icon+' '+st.text;
+  el.appendChild(f);
+  if(!hasGsap()){ setTimeout(()=> f.remove(), 1300); return; }
+  gsap.set(f, {position:'absolute', left:'50%', top:'24%', xPercent:-50, x:0, y:0, opacity:0, scale:.7, rotation:0});
+  const tl = gsap.timeline({onComplete:()=> f.remove()});
+  tl.to(f, {opacity:1, scale:1, duration:.14, ease:'back.out(2.4)'});
+  if(reason==='swift'){
+    // dash left, dash right, settle — hold still — fade
+    tl.to(f, {x:-30, duration:.09, ease:'power2.out'})
+      .to(f, {x:30, duration:.12, ease:'power2.inOut'})
+      .to(f, {x:0, duration:.1, ease:'power2.out'})
+      .to(f, {opacity:0, duration:.3, ease:'power1.in'}, '+=0.45');
+  } else if(reason==='flying'){
+    // drifts up and away on a slant, shaking like it's caught a gust, fading as it goes
+    tl.to(f, {y:-54, x:22, duration:1.0, ease:'power1.out'})
+      .to(f, {rotation:9, duration:.08, yoyo:true, repeat:9, ease:'sine.inOut'}, '<')
+      .to(f, {opacity:0, duration:.55, ease:'power1.in'}, '<0.45');
+  } else {
+    // a small rising oscillation
+    tl.to(f, {y:-34, duration:1.0, ease:'power1.out'})
+      .to(f, {x:7, duration:.17, yoyo:true, repeat:5, ease:'sine.inOut'}, '<')
+      .to(f, {opacity:0, duration:.4, ease:'power1.in'}, '<0.6');
+  }
+}
+function flashDodge(el, reason){
   if(!el) return;
   SoundKit.dodge();
   el.classList.add('dodge');
   setTimeout(()=> el.classList.remove('dodge'), 400);
-  floatText(el, 'Evaded!', 'evaded');
+  missCallout(el, reason);
 }
 function flashDmg(uid, dmg, blocked, dmgType){
   const el = boardCardEl(uid);
@@ -13857,7 +13920,7 @@ function renderVfxForEvent(ev){
       setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
-      if(ev.type==='evaded'){ flashDodge(targetEl); return; }
+      if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       SoundKit.hit();
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic

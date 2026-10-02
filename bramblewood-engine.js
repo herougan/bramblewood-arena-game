@@ -684,7 +684,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push(ev);
       if(who!=='self' && c.hp>0){ bleedTick(sideOf, targetPid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, targetPid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     };
-    const dodge = c=>{ if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); };
+    const dodge = c=>{ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); };
     const gated = c=>{ if(who==='self' || dodgeCheck(c)) apply(c); else dodge(c); };
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
@@ -761,7 +761,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return rnd() >= 0.5;
   }
   // dodgeCheck: true = the hit lands. Evade (evasive) dodges any SINGLE-TARGET attack or ability.
+  // lastMissReason (2026-10-03): which passive caused the most recent dodge — copied onto every
+  // 'evaded' event so the front end can play a distinct miss animation for Evade / Swift / Flying.
+  let lastMissReason = 'evasive';
   function dodgeCheck(card){
+    lastMissReason = 'evasive';
     return evasiveGate(card);
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
@@ -772,9 +776,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function combatHitLands(attCard, defCard, singleTarget){
     const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
-    if(singleTarget && dd.evasive && rnd() < 0.5) return false;
-    if(dd.swift && !ad.swift && rnd() < 0.5) return false;
-    if(dd.flying && !ad.flying && rnd() < 0.5) return false;
+    if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
+    if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
+    if(dd.flying && !ad.flying && rnd() < 0.5){ lastMissReason = 'flying'; return false; }
     return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
@@ -1244,7 +1248,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Evasion: the ORIGINAL target gets the dodge roll, before any Guardian redirect —
       // dodging is about the creature the skill was aimed at, not whoever ends up eating it.
       if(!dodgeCheck(target.card)){
-        if(recordEvents && events) events.push({type:'evaded', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true});
+        if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true});
         return;
       }
       const c = redirectToGuardian(enemy, target.card); // Guardian: an adjacent protector eats the hit instead, if one's alive
@@ -1386,7 +1390,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
     if(!opp) return;
     if(!dodgeCheck(opp.card)){
-      if(recordEvents && events) events.push({type:'evaded', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
+      if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
       return;
     }
     opp.card.bleed = (opp.card.bleed||0) + amount;
@@ -1398,7 +1402,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!opp) return;
     // Evasion: Render is a skill effect, so a dodging target may ignore it entirely.
     if(!dodgeCheck(opp.card)){
-      if(recordEvents && events) events.push({type:'evaded', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
+      if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
       return;
     }
     const before = opp.card.atk;
@@ -1535,7 +1539,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         case 'debuffAttack': {
           bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
           const apply = c=>{ c.atk = Math.max(0, c.atk-(t.amount||0)); if(recordEvents&&events) events.push({type:'statusFx', kind:'debuffAttack', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid, amount:t.amount||0}); if(c.hp>0){ bleedTick(sideOf, otherId(playerId), c, stats, events, 'defend'); runCustomTriggers(players, sideOf, otherId(playerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events); } };
-          const dodge = c=>{ if(recordEvents&&events) events.push({type:'evaded', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); };
+          const dodge = c=>{ if(recordEvents&&events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); };
           if(t.target==='all'){ ['left','center','right'].forEach(side=> enemy.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); break; } // area effect: Evade only dodges single-target
           const opp = opposingCardOf(players, playerId, boardCard); if(opp){ if(dodgeCheck(opp.card)) apply(opp.card); else dodge(opp.card); } break;
         }
@@ -1550,7 +1554,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const c = target.card;
           if(who!=='self'){
             bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
-            if(!dodgeCheck(c)){ if(recordEvents&&events) events.push({type:'evaded', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(who==='ally'?playerId:otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); break; }
+            if(!dodgeCheck(c)){ if(recordEvents&&events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(who==='ally'?playerId:otherId(playerId)), targetDefId:c.defId, targetUid:c.uid}); break; }
           }
           const atkAmt = t.amount||0, hpAmt = t.amount2||0;
           if(atkAmt){ c.atk = Math.max(0, c.atk-atkAmt); c.baseAtk = Math.max(0, c.baseAtk-atkAmt); }
@@ -1682,7 +1686,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(!target || !target.card) break;
           const c = target.card;
           const targetPid = t.who==='ally' ? playerId : otherId(playerId);
-          if(!dodgeCheck(c)){ if(recordEvents&&events) events.push({type:'evaded', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); break; }
+          if(!dodgeCheck(c)){ if(recordEvents&&events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); break; }
           c.forceExileZone = true;
           c.hp = 0;
           if(recordEvents && events) events.push({type:'statusFx', kind:'exile', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid});
@@ -2496,7 +2500,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // unaffected by a dodged primary hit. Ambush overrides this gate entirely (see
       // ambushForce above) — its first strike always connects.
       if(target.kind==='card' && !ambushForce && !combatHitLands(a.att, target.card, true)){
-        if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid});
+        if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid});
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (same row, one slot either way) takes the hit
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
@@ -2691,7 +2695,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(!extraRaw) break;
             lastCol = extraRaw.col; // continuation always walks from the ORIGINAL column, not the guardian's — advance even if evaded
             if(!combatHitLands(a.att, extraRaw.card, false)){ // Sweep extra: multi-target, so no Evade roll — Swift/Flying still apply
-              if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraRaw.card.defId, targetUid:extraRaw.card.uid, sweep:true});
+              if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraRaw.card.defId, targetUid:extraRaw.card.uid, sweep:true});
               continue;
             }
             const extraCard = redirectToGuardian(players[a.enemyId], extraRaw.card);
@@ -2745,7 +2749,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
               if(!combatHitLands(a.att, c2raw, false)){ // Swipe flank: multi-target, so no Evade roll — Swift/Flying still apply
-                if(recordEvents && events) events.push({type:'evaded', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, swipe:true});
+                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, swipe:true});
                 return;
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);

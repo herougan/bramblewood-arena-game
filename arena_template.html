@@ -1645,7 +1645,7 @@
   .hq-hit-flash-big{animation:hqHitFlashBig 560ms ease;}
   @keyframes hqHitFlashBig{0%{box-shadow:0 0 0 0 transparent; transform:scale(1);}20%{box-shadow:0 0 0 9px var(--danger); filter:brightness(1.55) saturate(1.7); transform:scale(1.07);}60%{box-shadow:0 0 0 3px var(--danger); transform:scale(1.02);}100%{box-shadow:0 0 0 0 transparent; filter:none; transform:scale(1);}}
   .hq-hit-burst{left:50%; top:50%; font-size:34px;}
-  .dmg-float.hq-big{font-size:22px; color:var(--danger); text-shadow:0 0 8px color-mix(in srgb, var(--danger) 60%, transparent);}
+  .dmg-float.hq-big{font-size:38px; color:var(--dmg-float-color); z-index:60;} /* 2026-10-03: same look as unit damage numbers (was a smaller 22px red), just a touch bigger */
   /* 2026-09-17, per explicit request ("battlefield card size is too small, needs to be
      bigger"): bumped from 116x132 — fitBattlefieldZoom() (arena_app.js) reads this size back
      via getComputedStyle at runtime rather than a hardcoded number, so it auto-adapts the
@@ -1796,6 +1796,9 @@
   .dmg-float.bleed{color:var(--bleed);}
   .dmg-float.debuff{color:var(--wait);}
   .dmg-float.evaded{color:var(--ink-muted); font-size:12px;}
+  .miss-float{position:absolute; z-index:45; pointer-events:none; white-space:nowrap; font-family:'Baloo 2'; font-weight:800; font-size:26px; color:#fffbea; -webkit-text-stroke:2.5px rgba(20,14,6,.85); paint-order:stroke fill; text-shadow:0 0 10px rgba(255,255,255,.55), 0 2px 6px rgba(0,0,0,.55); letter-spacing:.3px;}
+  .miss-float.miss-swift{color:#f2fbff; text-shadow:0 0 12px rgba(150,220,255,.75), 0 2px 6px rgba(0,0,0,.55);}
+  .miss-float.miss-flying{color:#fbfff4; text-shadow:0 0 12px rgba(200,255,200,.7), 0 2px 6px rgba(0,0,0,.55);}
   .dmg-float.quick{color:var(--gold); font-size:12px;}
   /* Poison TICK text (item #1, 2026-09-16) is deliberately louder/more distinct than the
      small "+3☠" a hit APPLYING fresh poison stacks shows (the .poison class above) — a
@@ -1862,7 +1865,8 @@
     100%{opacity:0; transform:translate(-50%,-110%) scale(.7) rotate(24deg);}
   }
   .shake{animation:shakeit 320ms ease;}
-  @keyframes shakeit{0%,100%{transform:translateX(0);}25%{transform:translateX(-3px);}75%{transform:translateX(3px);}}
+  /* translate (not transform) so it composes with an in-flight GSAP Flip instead of snapping the card (2026-10-03). */
+  @keyframes shakeit{0%,100%{translate:0 0;}25%{translate:-3px 0;}75%{translate:3px 0;}}
   /* "No" feedback (2026-09-17, per explicit request: "when trying to summon a card without
      sufficient resources, it shakes red" / "when trying to discard a card that doesn't give
      resources, it shakes red"): a distinct red-tinted shake from the plain .shake above (which
@@ -1971,7 +1975,7 @@
      keyframe) for the specific card that just fell into a freshly-opened center slot, so that
      moment reads as distinct from an ordinary one-column shuffle-over. */
   .board-card.collapse-landed .card-tile{animation:collapseSquash 360ms ease-out;}
-  @keyframes collapseSquash{0%{transform:scale(1,1);}35%{transform:scale(1.18,.78);}65%{transform:scale(.92,1.1);}100%{transform:scale(1,1);}}
+  @keyframes collapseSquash{0%{scale:1 1;}35%{scale:1.18 .78;}65%{scale:.92 1.1;}100%{scale:1 1;}}
   .collapse-dust{font-size:26px;}
   /* Task #125 (2026-09-17, "it should land there with some measurable impact! Then push the
      cards off"): every freshly played/spawned card gets a firm little thud-squash the instant
@@ -1979,7 +1983,7 @@
      arena_app.js, which also shoves the immediate left/right neighbor cards via
      pushNeighborCards() (a plain transform:translateX tween, no CSS class needed for that part). */
   .board-card.landing-impact .card-tile{animation:landingThud 300ms ease-out;}
-  @keyframes landingThud{0%{transform:scale(1,1);}30%{transform:scale(1.14,.82);}60%{transform:scale(.94,1.08);}100%{transform:scale(1,1);}}
+  @keyframes landingThud{0%{scale:1 1;}30%{scale:1.14 .82;}60%{scale:.94 1.08;}100%{scale:1 1;}}
   /* 2026-09-17, per explicit request: the summon-time 💥 burst (previously .impact-burst here)
      moved to hitExplosionVfx() in arena_app.js, firing on GETS HIT instead of on summon, at a
      randomized point over the card rather than always dead-center — so this one overrides the
@@ -2012,7 +2016,7 @@
      onAttackedSpawn counter-token gets a bouncier, more pronounced touch-down than the generic
      landing-impact above, so a bee-drone-style counter-spawn reads as its own distinct beat. */
   .board-card.bee-landing .card-tile{animation:beeLandingSquash 420ms cubic-bezier(.34,1.56,.64,1);}
-  @keyframes beeLandingSquash{0%{transform:scale(1,1) rotate(0deg);}25%{transform:scale(1.22,.7) rotate(-3deg);}55%{transform:scale(.88,1.16) rotate(2deg);}80%{transform:scale(1.05,.96) rotate(-1deg);}100%{transform:scale(1,1) rotate(0deg);}}
+  @keyframes beeLandingSquash{0%{scale:1 1; rotate:0deg;}25%{scale:1.22 .7; rotate:-3deg;}55%{scale:.88 1.16; rotate:2deg;}80%{scale:1.05 .96; rotate:-1deg;}100%{scale:1 1; rotate:0deg;}}
   .bee-land-burst{font-size:24px; animation:burst 700ms ease-out forwards, beeWiggle 700ms ease-out forwards;}
   @keyframes beeWiggle{0%,100%{margin-left:0;}25%{margin-left:-4px;}50%{margin-left:3px;}75%{margin-left:-2px;}}
   .death-skull{position:absolute; top:-24px; left:50%; transform:translateX(-50%); font-size:19px; pointer-events:none; animation:deathSkullFloat 650ms ease-out forwards; z-index:3;}
@@ -2034,7 +2038,11 @@
   @keyframes strike-enemy{0%{transform:translateY(-9px) scale(.95);}55%{transform:translateY(15px) scale(1.06);}100%{transform:translateY(0) scale(1);}}
   /* Evasion: the dodging card hops sideways instead of taking a hit */
   .board-card.dodge{animation:dodge-hop 400ms ease;}
-  @keyframes dodge-hop{0%,100%{transform:translateX(0) rotate(0);}30%{transform:translateX(11px) rotate(5deg);}62%{transform:translateX(-7px) rotate(-3deg);}}
+  /* 2026-10-03: individual translate/rotate properties (not `transform`) so the dodge wiggle
+     COMPOSES with GSAP's inline transform instead of replacing it — replacing it was snapping a
+     card that GSAP was still holding in place (e.g. mid-entrance) to its row's corner ("it
+     teleported to the bottom-left for an instant when it avoided an attack"). */
+  @keyframes dodge-hop{0%,100%{translate:0 0; rotate:0deg;}30%{translate:11px 0; rotate:5deg;}62%{translate:-7px 0; rotate:-3deg;}}
   /* Guardian: a shield glyph pops over whichever card actually ate the hit */
   .shield-flash{position:absolute; inset:-8px; pointer-events:none; display:flex; align-items:center; justify-content:center; font-size:22px; animation:shieldpop 650ms ease-out forwards; z-index:5;}
   @keyframes shieldpop{0%{opacity:0; transform:scale(.5) rotate(-8deg);}22%{opacity:1; transform:scale(1.3) rotate(5deg);}100%{opacity:0; transform:scale(1.55) rotate(0deg);}}
