@@ -2717,6 +2717,8 @@
     100%{transform:perspective(700px) rotateX(var(--tiltX)) rotateY(var(--tiltY)) scale(1,1);}
   }
   .home-menu-btn{padding:16px 20px; font-size:18px; border-radius:14px; display:flex; align-items:center; justify-content:center; gap:8px; background:linear-gradient(155deg, color-mix(in srgb, var(--accent) 100%, white 12%), var(--accent-strong));}
+  .home-menu-btn.home-tutorial-btn{background:linear-gradient(155deg,#6fbf73,#3f8f4a); color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.35);}
+  .home-tutorial-btn small{font-size:13px; opacity:.85; font-weight:600;}
   .home-menu-row{display:flex; gap:10px; margin-top:8px;}
   /* This row always has exactly 5 direct children (the Settings wrap + Profile/Ranking/Guild/
      Admin), so a concrete calc() basis for ALL of them — rather than `flex:1` (grow from a 0%

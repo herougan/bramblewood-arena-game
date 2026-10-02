@@ -7576,6 +7576,20 @@ function resolveFactionChoice(pick){
 // fight. Both the "just won stage N, advance to N+1" path and the "reload mid-series, resume
 // where I left off" path (see triggerEntranceAnimation) funnel through this single function so
 // there's exactly one place that decides picker-vs-fight.
+// Leaving the tutorial (2026-10-02, "I'm stuck in the skirmish, I can't quit"): the series used
+// to have no exit at all. Quit now pauses it — the current skirmish is abandoned (no progress
+// lost: the stage counter only advances on a win) and Home shows a "Continue tutorial" button.
+// Reloading the game still resumes the tutorial automatically, as before.
+function quitTutorialToHome(){
+  const stage = (matchState && matchState.tutorialStage) || loadTutorialStage();
+  endMatch();
+  switchTab('home');
+  showToast(`Tutorial paused at Skirmish ${stage} of ${TUTORIAL_STAGE_COUNT} — tap “Continue tutorial” on Home to pick it back up.`);
+}
+function continueTutorialFromHome(){
+  if(!loadFactionChoice()){ showFactionScreen(); return; }
+  beginTutorialStage(loadTutorialStage());
+}
 function beginTutorialStage(stage){
   saveTutorialStage(stage);
   if(stage===3){ showTutorialDeckPicker(); return; }
@@ -8937,7 +8951,7 @@ function renderMatchUI(){
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
-        ${isTutorial?'':`<button class="btn small" id="quitMatchBtn">${isAsync?'Save & Exit':'Quit'}</button>`}
+        <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
     <div class="battlefield ${battlefieldMapClass(m)}" id="battlefieldEl">
@@ -9022,7 +9036,7 @@ function renderMatchUI(){
       </div>
     </div>` : ''}
   `;
-  const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : endMatch);
+  const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : endMatch));
   wireLeaderWidget();
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
@@ -11531,7 +11545,7 @@ function renderHUD(){
     <span style="flex:1"></span>
     ${hudSettingsWidgetHTML()}
     <button class="btn small" id="quitMatchBtn">${m.mode==='async'?'Save & Exit':'Quit'}</button>`;
-  const q = document.getElementById('quitMatchBtn'); if(q) q.addEventListener('click', m.mode==='async' ? saveAndExitAsyncMatch : endMatch);
+  const q = document.getElementById('quitMatchBtn'); if(q) q.addEventListener('click', m.mode==='async' ? saveAndExitAsyncMatch : (m.mode==='tutorial' ? quitTutorialToHome : endMatch));
   wireHudChrome();
   updateHqHpDisplay('A'); updateHqHpDisplay('B');
 }
@@ -14456,6 +14470,7 @@ function renderHome(){
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
+      ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Continue tutorial <small>(Skirmish ${loadTutorialStage()} of ${TUTORIAL_STAGE_COUNT})</small></button>`}
       <button class="btn primary big home-menu-btn" data-hometab="play"><span class="tab-emoji">⚔️</span> Play</button>
       <button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>
       <button class="btn primary big home-menu-btn" data-hometab="codex"><span class="tab-emoji">📖</span> Codex</button>
@@ -14495,6 +14510,7 @@ function renderHome(){
       </div>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
+  const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   wireSettingsButton('Home');
   wireHomeMenuFlourish(root);
 }
