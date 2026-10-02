@@ -7738,13 +7738,21 @@ function battleModePickerHTML(nid){
 }
 // Gladiator leader pick: your deck-editor leader if you set one, otherwise the toughest card in the
 // deck (attack + health, then attack). A fallback pick comes out of the deck so it isn't drawn twice.
-function pickGladiatorLeader(deckCounts, preferredId){
+// Gladiator balance (2026-10-02 backlog item): the enemy used to crown its single strongest card,
+// so a 40-HP whale became a 400-HP leader facing a ~90-HP player leader. The 10× HP / 2× ATK rule
+// is unchanged; what changed is WHICH enemy card gets crowned: when `targetPower` is given (your
+// own leader's attack+health), the enemy picks the card closest to ~1.15× that — an elite fight
+// stays a step harder than you, never an order of magnitude.
+function gladiatorPower(d){ return (d.attack||0) + (d.health||0); }
+function pickGladiatorLeader(deckCounts, preferredId, targetPower){
   const defs = getCardDefs();
   if(preferredId && defs[preferredId]) return {defId:preferredId, fromDeck:false};
-  let best = null, bestScore = -1;
+  let best = null, bestScore = -Infinity;
+  const target = targetPower ? targetPower*1.15 : null;
   Object.keys(deckCounts||{}).forEach(id=>{
     const d = defs[id]; if(!d || !(deckCounts[id]>0)) return;
-    const score = (d.attack||0) + (d.health||0) + (d.attack||0)/100;
+    const p = gladiatorPower(d);
+    const score = target==null ? p + (d.attack||0)/100 : -Math.abs(p - target) + p/1000;
     if(score>bestScore){ bestScore = score; best = id; }
   });
   return best ? {defId:best, fromDeck:true} : null;
@@ -7772,7 +7780,8 @@ function startConquestMatch(mapId, nodeKey, opts){
   let myDeck = myDeckCounts, enemyDeck = node.deck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
     myGlad = pickGladiatorLeader(myDeckCounts, myLeaderId);
-    enemyGlad = pickGladiatorLeader(node.deck, null);
+    const myGladDef = myGlad && getCardDefs()[myGlad.defId];
+    enemyGlad = pickGladiatorLeader(node.deck, null, myGladDef ? gladiatorPower(myGladDef) : null);
     if(myGlad && myGlad.fromDeck) myDeck = minusOne(myDeck, myGlad.defId);
     if(enemyGlad && enemyGlad.fromDeck) enemyDeck = minusOne(enemyDeck, enemyGlad.defId);
   }
