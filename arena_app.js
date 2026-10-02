@@ -829,6 +829,19 @@ const RARITY_MAX_COPIES = {
   starter:10, quest:5, questunique:1,
 };
 function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] || 10; }
+// Editions share a copy limit (2026-10-02): a card's Classic/Antique editions and the base card
+// all count together against the BASE card's limit; an edition's own stricter limit (e.g. an
+// Antique's 1) still applies to that edition on its own.
+function editionRootId(d){ return (d && d.hallOfFame && d.hallOfFame.baseId) || (d && d.id); }
+function editionCapReached(counts, id, defs){
+  const d = defs[id]; if(!d) return false;
+  const root = editionRootId(d);
+  const base = defs[root] || d;
+  let together = 0;
+  Object.keys(counts||{}).forEach(k=>{ if(defs[k] && editionRootId(defs[k])===root) together += counts[k]||0; });
+  if(together >= maxCopiesForRarity(base.rarity)) return true;
+  return (counts[id]||0) >= maxCopiesForRarity(d.rarity);
+}
 // Splash Effect (2026-09-19, open-items #107 — "canonical/cards.json still stores 'foil' as a
 // rarity value... splitting it into its own field is a schema change"): Foil used to be a
 // RARITY_DEFS entry that a card's `rarity` field pointed to INSTEAD OF a real power tier — so a
@@ -1149,12 +1162,29 @@ function cardMapUsage(){
   (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).forEach(map=> (map.nodes||[]).forEach(n=> Object.keys(n.deck||{}).forEach(id=>{ if(!use[id]) use[id] = map.id; })));
   return (_mapUsageCache = use);
 }
+// 2026-10-02 (explicit): NOTHING is obtainable by default — a card can only be unlocked from a
+// source the admin has assigned to it. The only automatic source is Base: starter/basic cards
+// (playable from the start) and the tutorial series' own reward cards.
+const TUTORIAL_REWARD_IDS = ['river-warden','sunspire-envoy','quarry-mole'];
 function cardSourceOf(d){
   if(d && d.source && d.source.kind) return d.source;
-  const mapId = cardMapUsage()[d.id];
-  if(d.rarity==='starter' || d.basic || d.id==='wandering-traveller') return {kind:'base', auto:true};
-  if(mapId) return {kind:'map', id:mapId, auto:true};
+  if(TUTORIAL_REWARD_IDS.includes(d.id)) return {kind:'base', auto:true, tutorialReward:true};
+  const rawLocked = !!((liveCards[d.id] || CARD_DEFS_BASELINE[d.id] || d).locked);
+  if(d.rarity==='starter' || d.basic || d.id==='wandering-traveller' || !rawLocked) return {kind:'base', auto:true};
   return {kind:'unsorted', auto:true};
+}
+// How a card can actually be obtained right now (null = it can't).
+function cardObtainableFrom(d){
+  const src = cardSourceOf(d);
+  if(src.kind==='pack') return 'pack';
+  if(src.kind==='map' && src.node) return 'skirmish';
+  if(src.kind==='base') return 'base';
+  return null; // unsorted, or an event (no event system live yet)
+}
+function conquestNodeLabel(mapId, nodeKey){
+  const f = findConquestNode(mapId, nodeKey);
+  const mi = mapIndexOf(mapId);
+  return f ? `Map ${mi+1} · ${f.map.name} — ${f.node.name}` : `${mapId} / ${nodeKey}`;
 }
 function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
 // A sortable section key + human label for a card's Codex group.
@@ -1174,7 +1204,36 @@ function codexSectionOf(d){
     const theme = (src.theme||'Event').trim(), name = (src.name||'').trim();
     return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:`🎉 Events · ${theme}`, event:true, eventName:name};
   }
-  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unsorted — set a source in each card’s detail view' : 'More cards'};
+  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned — not obtainable yet (set where to get it in the card’s detail view)' : 'More cards'};
+}
+// "View by" grouping (2026-10-02): the same cards split by Skirmish (each node's reward cards),
+// Card pack (each pack tier), Event (theme → event) or Unassigned, so each kind of source can be
+// reviewed and edited on its own. Returns null for cards that don't belong in the chosen view.
+function codexViewSectionOf(d, view){
+  if(view==='tiers') return codexSectionOf(d);
+  const src = cardSourceOf(d);
+  if(view==='skirmish'){
+    if(src.kind!=='map') return null;
+    const mi = mapIndexOf(src.id);
+    const f = src.node ? findConquestNode(src.id, src.node) : null;
+    const ni = f ? f.map.nodes.indexOf(f.node) : 999;
+    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: src.node ? conquestNodeLabel(src.id, src.node) : `Map ${mi+1} — no node chosen (not obtainable)`, mapId:src.id, nodeKey:src.node||null};
+  }
+  if(view==='pack'){
+    if(src.kind!=='pack') return null;
+    const tier = Math.max(1, Number(src.tier)||1);
+    return {key:`pk-${tier}`, order:[tier,0,0,''], label:`Pack Tier ${tier}`};
+  }
+  if(view==='event'){
+    if(src.kind!=='event') return null;
+    const theme = (src.theme||'Event').trim(), name = (src.name||'(unnamed event)').trim();
+    return {key:`ev-${theme}-${name}`, order:[0,0,0,theme.toLowerCase()+'|'+name.toLowerCase()], label:`🎉 ${theme} — ${name}`};
+  }
+  if(view==='unassigned'){
+    if(src.kind!=='unsorted') return null;
+    return {key:'un', order:[0,0,0,''], label:'Unassigned — not obtainable anywhere yet'};
+  }
+  return codexSectionOf(d);
 }
 function cmpOrder(a,b){ for(let i=0;i<4;i++){ if(a[i]<b[i]) return -1; if(a[i]>b[i]) return 1; } return 0; }
 
@@ -1944,6 +2003,13 @@ function renderCodex(){
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
+      <select id="cxGroupBy" title="Split the Codex by where cards come from">
+        <option value="tiers" ${(codexFilter.groupBy||'tiers')==='tiers'?'selected':''}>View by: Tiers</option>
+        <option value="skirmish" ${codexFilter.groupBy==='skirmish'?'selected':''}>View by: Skirmishes</option>
+        <option value="pack" ${codexFilter.groupBy==='pack'?'selected':''}>View by: Card packs</option>
+        <option value="event" ${codexFilter.groupBy==='event'?'selected':''}>View by: Events</option>
+        ${adminModeEnabled ? `<option value="unassigned" ${codexFilter.groupBy==='unassigned'?'selected':''}>View by: Unassigned</option>` : ''}
+      </select>
       <select id="cxViewMode" title="Grid display density">
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
@@ -1954,6 +2020,7 @@ function renderCodex(){
     <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${codexStatsHTML(defs)}`;
   document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; renderCodexGrid(); });
+  document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   document.getElementById('cxSort').addEventListener('change', e=>{ codexFilter.sort = e.target.value; renderCodexGrid(); });
@@ -2126,12 +2193,23 @@ function renderCodexGrid(){
   // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
   // 1–10), Pack tier 1, Tier 2 maps, Pack tier 2, …, unsorted, then Events by theme. Inside each
   // group: unlocked first, then locked, each sorted by the chosen sort.
+  const view = codexFilter.groupBy || 'tiers';
   const groups = new Map();
   ids.forEach(id=>{
-    const sec = codexSectionOf(defs[id]);
+    const sec = codexViewSectionOf(defs[id], view);
+    if(!sec) return;
     if(!groups.has(sec.key)) groups.set(sec.key, {sec, ids:[]});
     groups.get(sec.key).ids.push(id);
   });
+  // Skirmish view, admin: list EVERY fight node (empty ones too) so any node's rewards can be set
+  // from here.
+  if(view==='skirmish' && adminModeEnabled && !codexFilter.q){
+    CONQUEST_MAPS.forEach((map, mi)=> map.nodes.forEach((node, ni)=>{
+      if(node.virtual || !node.deck) return;
+      const key = `sk-${map.id}-${node.key}`;
+      if(!groups.has(key)) groups.set(key, {sec:{key, order:[mi,ni,0,''], label:conquestNodeLabel(map.id, node.key), mapId:map.id, nodeKey:node.key}, ids:[]});
+    }));
+  }
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
   const tileFor = id=>{
     const d = defs[id];
@@ -2144,14 +2222,23 @@ function renderCodexGrid(){
   let html = '';
   ordered.forEach(({sec, ids:gIds})=>{
     const un = gIds.filter(id=>!defs[id].locked).sort(cmp), lo = gIds.filter(id=>defs[id].locked).sort(cmp);
-    html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-count">${un.length}/${gIds.length} unlocked</span></div>`;
+    const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
+    html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-right">${gIds.length ? `<span class="cx-section-count">${un.length}/${gIds.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}</span></div>`;
     html += un.map(tileFor).join('');
     // 2026-09-22: corrected — this used to say "click one to unlock it" with no click handler
     // to back it up (flagged in batch #18's audit). Real card unlocking now exists (a chance
     // per Shop pack), so this points there instead, with an actual working link.
     if(lo.length) html += `<div class="lock-divider">🔒 Locked — unlock new cards from the <a href="#" class="codexShopLink">Shop</a></div>` + lo.map(tileFor).join('');
   });
-  document.getElementById('codexGrid').innerHTML = html;
+  const hints = {
+    skirmish: 'Cards here are granted the first time a player clears that node. Edit a node with ✏️ Edit rewards, or set a card’s source in its detail view.',
+    pack: 'Shop packs can only unlock cards placed in a pack. Set a card’s source to Pack in its detail view.',
+    event: 'Event cards are grouped by theme. There’s no live event system yet, so these aren’t obtainable until one exists.',
+    unassigned: 'These locked cards can’t be obtained anywhere yet. Open one to choose where it comes from.',
+  };
+  const hint = adminModeEnabled && hints[view] ? `<div class="cx-view-hint">${hints[view]}</div>` : '';
+  document.getElementById('codexGrid').innerHTML = hint + (html || `<div class="cx-view-hint">No cards in this view yet.</div>`);
+  document.querySelectorAll('#codexGrid .cx-edit-rewards').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); openNodeRewardsEditor(b.getAttribute('data-map'), b.getAttribute('data-node')); }));
   // 2026-09-26 (#364, "in codex, i want click to instead open the card to learn more about it,
   // and tidbits or fun text from me, the creator... include their uses with this card and winrate
   // and maybe overall contribution score"): a Codex click now ALWAYS opens the new read-only
@@ -3000,19 +3087,20 @@ function codexPlacementHTML(d){
   const raw = rawCardDef(d.id) || d;
   const src = raw.source || {};
   const auto = cardSourceOf(Object.assign({}, raw, {source:null}));
-  const autoLabel = auto.kind==='map' ? `auto: ${(CONQUEST_MAPS.find(m=>m.id===auto.id)||{}).name||auto.id}` : auto.kind==='base' ? 'auto: Base' : 'auto: Unsorted';
+  const autoLabel = auto.kind==='base' ? (auto.tutorialReward ? 'auto: Tutorial reward' : 'auto: Base') : 'not obtainable';
   const maps = CONQUEST_MAPS.map((m,i)=>`<option value="${escapeAttr(m.id)}" ${src.kind==='map'&&src.id===m.id?'selected':''}>${i+1}. ${escapeHtml(m.name)}</option>`).join('');
   return `<div class="panel cd-placement" id="cdPlacement">
     <h4>📂 Codex placement <span class="panel-sub-inline">(admin)</span></h4>
     <div class="cdp-row">
       <select id="cdpKind" aria-label="Source type">
-        <option value="" ${!src.kind?'selected':''}>Automatic (${escapeHtml(autoLabel)})</option>
+        <option value="" ${!src.kind?'selected':''}>Unassigned (${escapeHtml(autoLabel)})</option>
         <option value="base" ${src.kind==='base'?'selected':''}>Tutorial & Base</option>
-        <option value="map" ${src.kind==='map'?'selected':''}>Skirmish (map)</option>
+        <option value="map" ${src.kind==='map'?'selected':''}>Skirmish reward</option>
         <option value="pack" ${src.kind==='pack'?'selected':''}>Pack</option>
         <option value="event" ${src.kind==='event'?'selected':''}>Event</option>
       </select>
       <select id="cdpMap" aria-label="Map" ${src.kind==='map'?'':'hidden'}>${maps}</select>
+      <select id="cdpNode" aria-label="Skirmish" ${src.kind==='map'?'':'hidden'}>${nodeOptionsHTML(src.kind==='map' ? src.id : CONQUEST_MAPS[0].id, src.node)}</select>
       <input id="cdpPackTier" type="number" min="1" step="1" aria-label="Pack tier" placeholder="Pack tier" value="${src.kind==='pack'?escapeAttr(String(src.tier||1)):'1'}" ${src.kind==='pack'?'':'hidden'}>
       <input id="cdpEventTheme" type="text" aria-label="Event theme" placeholder="Theme (e.g. Christmas)" value="${src.kind==='event'?escapeAttr(src.theme||''):''}" ${src.kind==='event'?'':'hidden'}>
       <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
@@ -3021,21 +3109,31 @@ function codexPlacementHTML(d){
     <div class="cdp-actions"><button type="button" class="btn small primary" id="cdpSave">Save placement</button><span class="cdp-msg" id="cdpMsg"></span></div>
   </div>`;
 }
+function nodeOptionsHTML(mapId, selected){
+  const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return '';
+  return map.nodes.filter(n=> !n.virtual && n.deck).map(n=>`<option value="${escapeAttr(n.key)}" ${n.key===selected?'selected':''}>${escapeHtml(n.key)} · ${escapeHtml(n.name)}</option>`).join('');
+}
 function wireCodexPlacement(defId){
   const kind = document.getElementById('cdpKind'); if(!kind) return;
   const show = ()=>{
     document.getElementById('cdpMap').hidden = kind.value!=='map';
+    document.getElementById('cdpNode').hidden = kind.value!=='map';
     document.getElementById('cdpPackTier').hidden = kind.value!=='pack';
     document.getElementById('cdpEventTheme').hidden = kind.value!=='event';
     document.getElementById('cdpEventName').hidden = kind.value!=='event';
   };
   kind.addEventListener('change', show);
+  document.getElementById('cdpMap').addEventListener('change', e=>{ document.getElementById('cdpNode').innerHTML = nodeOptionsHTML(e.target.value, null); });
   document.getElementById('cdpSave').addEventListener('click', async ()=>{
     const raw = rawCardDef(defId); if(!raw) return;
     const k = kind.value;
     if(!k) delete raw.source;
     else if(k==='base') raw.source = {kind:'base'};
-    else if(k==='map') raw.source = {kind:'map', id: document.getElementById('cdpMap').value};
+    else if(k==='map'){
+      const node = document.getElementById('cdpNode').value;
+      if(!node){ document.getElementById('cdpMsg').textContent = 'Pick which skirmish rewards it.'; return; }
+      raw.source = {kind:'map', id: document.getElementById('cdpMap').value, node};
+    }
     else if(k==='pack') raw.source = {kind:'pack', tier: Math.max(1, parseInt(document.getElementById('cdpPackTier').value,10)||1)};
     else if(k==='event'){
       const theme = document.getElementById('cdpEventTheme').value.trim(), name = document.getElementById('cdpEventName').value.trim();
@@ -3048,6 +3146,62 @@ function wireCodexPlacement(defId){
     document.getElementById('cdpMsg').textContent = 'Saved ✓';
     if(currentTab==='codex') renderCodex();
   });
+}
+// Skirmish rewards editor (2026-10-02, admin). A node's reward cards are simply the cards whose
+// source points at that node — so this and a card's own Codex placement panel edit the SAME field
+// and can never disagree. Rewards are granted on the player's FIRST clear of the node.
+// Node panel line: which cards a first clear grants (hidden, undiscovered ones show as a mystery),
+// plus the admin's Edit rewards button.
+function nodeRewardCardsLineHTML(mapId, nodeKey, done){
+  const defs = getCardDefs();
+  const ids = nodeRewardCardIds(mapId, nodeKey);
+  const chips = ids.map(id=> isCardHiddenForPlayer(defs[id]) ? '<span class="dchip">❓ Mystery card</span>' : `<span class="dchip">${defs[id].icon||'🃏'} ${escapeHtml(defs[id].name)}</span>`).join('');
+  const label = done ? 'Card rewards (already claimed):' : 'First clear also unlocks:';
+  const line = ids.length ? `<div class="cnp-card-rewards"><span class="cnp-card-rewards-label">${label}</span> ${chips}</div>` : '';
+  const btn = adminModeEnabled ? `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button>` : '';
+  return line || btn ? `<div class="cnp-card-rewards-row">${line}${btn}</div>` : '';
+}
+function nodeRewardCardIds(mapId, nodeKey){
+  const defs = getCardDefs();
+  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey; });
+}
+function openNodeRewardsEditor(mapId, nodeKey){
+  const found = findConquestNode(mapId, nodeKey); if(!found) return;
+  let overlay = document.getElementById('nodeRewardsOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'nodeRewardsOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  let q = '';
+  const render = ()=>{
+    const defs = getCardDefs();
+    const current = nodeRewardCardIds(mapId, nodeKey);
+    const matches = q.trim().length < 2 ? [] : Object.keys(defs)
+      .filter(id=> !defs[id].test && !defs[id].token && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
+      .slice(0, 24);
+    const srcNote = id=>{ const s = cardSourceOf(defs[id]); return s.kind==='unsorted' ? 'unassigned' : s.kind==='map' ? (s.node ? 'another node' : 'map, no node') : s.kind; };
+    overlay.innerHTML = `<div class="modal node-rewards-modal">
+      <div class="modal-head-row"><h2>✏️ Rewards — ${escapeHtml(found.node.name)}</h2><button class="modal-close-btn" id="nrClose" aria-label="Close">✕</button></div>
+      <p class="panel-sub">${escapeHtml(conquestNodeLabel(mapId, nodeKey))}. Players get each of these cards the first time they clear this fight. Adding a card here moves its source to this node.</p>
+      <div class="nr-current">${current.length ? current.map(id=>`<div class="nr-card">${cardTileHTML(defs[id], {inPlay:true})}<button type="button" class="btn small ghost nr-remove" data-id="${escapeAttr(id)}">Remove</button></div>`).join('') : '<p class="panel-sub">No reward cards yet.</p>'}</div>
+      <input type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="nr-results">${matches.map(id=>`<button type="button" class="nr-result" data-id="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${srcNote(id)}</span></button>`).join('')}</div>
+    </div>`;
+    overlay.hidden = false;
+    document.getElementById('nrClose').addEventListener('click', ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='codex') renderCodex(); if(currentTab==='play') renderPlay(); });
+    const search = document.getElementById('nrSearch');
+    search.addEventListener('input', ()=>{ q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('nrSearch'); s2.focus(); s2.setSelectionRange(pos,pos); });
+    overlay.querySelectorAll('.nr-result').forEach(b=> b.addEventListener('click', async ()=>{
+      const raw = rawCardDef(b.getAttribute('data-id')); if(!raw) return;
+      raw.source = {kind:'map', id:mapId, node:nodeKey};
+      await saveCard(raw); q = ''; render();
+    }));
+    overlay.querySelectorAll('.nr-remove').forEach(b=> b.addEventListener('click', async ()=>{
+      const raw = rawCardDef(b.getAttribute('data-id')); if(!raw) return;
+      delete raw.source;
+      await saveCard(raw); render();
+    }));
+  };
+  overlay.onclick = e=>{ if(e.target===overlay){ overlay.hidden = true; overlay.innerHTML = ''; } };
+  render();
+  setTimeout(()=>{ const s = document.getElementById('nrSearch'); if(s) s.focus(); }, 50);
 }
 function openCardEditor(defId){
   editingCard = defId ? JSON.parse(JSON.stringify(getCardDefs()[defId])) : blankCard();
@@ -5996,7 +6150,7 @@ function wireDeckListDrop(){
     if(!defId || !defs[defId] || defs[defId].locked) return;
     // Same rarity copy-limit enforcement as the click/tap path (deckCardClick) -- this drop
     // handler bypasses that function entirely, so it needs its own identical check.
-    if((myDeckCounts[defId]||0) >= maxCopiesForRarity(defs[defId].rarity)){
+    if(editionCapReached(myDeckCounts, defId, defs)){
       denyShake(listEl);
       return;
     }
@@ -7138,8 +7292,11 @@ function renderConquestSubTab(body){
           <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle">${revealed?'🙈 Hide deck':'👁 Show deck'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
       ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
+      ${nodeRewardCardsLineHTML(map.id, selectedNode.key, done)}
       ${cnpRewardsPreviewHTML(selectedNode, done)}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
+    const nrBtn = document.getElementById('cnpEditRewards');
+    if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
     panelEl.querySelectorAll('[data-battlemode]').forEach(b=> b.addEventListener('click', ()=>{
       conquestBattleModePick[nid] = b.getAttribute('data-battlemode');
       renderConquestSubTab(body);
@@ -7931,7 +8088,21 @@ function renderAdmin(){
       <h3>Reset account progress</h3>
       <p class="panel-sub">Wipes your currencies, card levels, decks, conquest progress, rating, energy, and saved name — on this device, and in the cloud too if you're signed in. This cannot be undone.</p>
       <button class="btn danger" id="adminResetBtn" type="button">⚠️ Reset my progress</button>
+    </div>
+    <div class="panel admin-subpanel">
+      <h3>Publish card edits</h3>
+      <p class="panel-sub">Card edits you make here (stats, placement, rewards, Hidden) are saved in <b>this browser only</b> — players won't see them until they're merged into the game's card data. Export them and send the file to Claude to publish. <span id="adminEditCount"></span></p>
+      <button class="btn small" id="adminExportEditsBtn" type="button">⬇️ Export card edits (.json)</button>
     </div>`;
+  const editCount = Object.keys(liveCards).length + Object.keys(liveDeletes).length;
+  const ecEl = document.getElementById('adminEditCount'); if(ecEl) ecEl.textContent = editCount ? `${editCount} edited/deleted card${editCount===1?'':'s'} waiting.` : 'No unpublished edits.';
+  const exportBtn = document.getElementById('adminExportEditsBtn');
+  if(exportBtn) exportBtn.addEventListener('click', ()=>{
+    const payload = {exportedAt: new Date().toISOString(), liveCards, liveDeletes: Object.keys(liveDeletes)};
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bramblewood-card-edits-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=> URL.revokeObjectURL(a.href), 2000);
+  });
   const devModeChk = document.getElementById('adminDevModeChk');
   if(devModeChk) devModeChk.addEventListener('change', e=>{
     setDevMode(e.target.checked);
@@ -11813,6 +11984,13 @@ async function resolveRound(){
         if(payout.dust>0) grantCurrency('dust', payout.dust);
         m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear}; // read once by the post-match screen below
       }
+      // Skirmish reward cards (2026-10-02): every card whose source is this exact node is granted on
+      // the FIRST clear only.
+      if(isFirstClear){
+        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId);
+        cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward'));
+        if(cardIds.length) m.conquestCardsEarned = cardIds;
+      }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
       // aren't, so only those two kinds pay out. A persistent Forge currency, not an in-match
@@ -12142,6 +12320,7 @@ function matchStatsHTML(m){
       ${reward && reward.gold>0 ? `<span class="hud-pill forge-cur-gold" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">${mapleLeafIconHTML()} ${rewardCountSpan(reward.gold)} Maple Leaves</span>` : ''}
       ${reward && reward.dust>0 ? `<span class="hud-pill forge-cur-dust" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">✨ ${rewardCountSpan(reward.dust)} Dust</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
+      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
   // sets conquestRankEarned (it isn't a Conquest node at all).
@@ -12864,7 +13043,7 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
   // so it never passes this flag and stays uncapped.
   if(!remove && enforceRarityLimit){
     const def = getCardDefs()[id];
-    if(def && (counts[id]||0) >= maxCopiesForRarity(def.rarity)){
+    if(def && editionCapReached(counts, id, getCardDefs())){
       denyShake(poolTileEl || chipEl);
       return;
     }
@@ -14517,7 +14696,7 @@ function renderShop(){
     <div class="shop-pack-card">
       <div class="shop-pack-ico">${p.icon}</div>
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
-      <div class="shop-pack-contents">✨ ${p.dust} Dust${p.metal?` · 🔩+${p.metal} Metal`:''}<br>${Math.round(p.levelChance*100)}% chance: level up a random card<br>${Math.round(p.unlockChance*100)}% chance: unlock a new card</div>
+      <div class="shop-pack-contents">✨ ${p.dust} Dust${p.metal?` · 🔩+${p.metal} Metal`:''}<br>${Math.round(p.levelChance*100)}% chance: level up a random card<br>${packUnlockCandidates().length ? `${Math.round(p.unlockChance*100)}% chance: unlock a new card` : 'No new cards in packs yet'}</div>
       <button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : '🔒 Sign in to buy'}</button>
     </div>`).join('');
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn))));
@@ -14569,6 +14748,10 @@ function nestCardHTML(id, d){
     ${cardTileHTML(d, {editable:false})}
   </div>`;
 }
+function packUnlockCandidates(defs){
+  defs = defs || getCardDefs();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; return d.locked && !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
+}
 function buyPack(packId, btnEl){
   const pack = getShopPacks().find(p=>p.id===packId);
   if(!pack || !isSignedIn() || !canAffordPack(pack)){ if(btnEl) denyShake(btnEl); return; }
@@ -14583,7 +14766,9 @@ function buyPack(packId, btnEl){
   let unlockedId = null;
   if(Math.random() < pack.unlockChance){
     const defs = getCardDefs();
-    const lockedCandidates = getDraftableIds().filter(id=> defs[id].locked && !defs[id].token);
+    // 2026-10-02: only cards the admin has placed in a pack can come out of one (nothing is
+    // obtainable by default). Hidden cards may be pulled — that's how a player discovers them.
+    const lockedCandidates = packUnlockCandidates(defs);
     if(lockedCandidates.length){
       unlockedId = lockedCandidates[Math.floor(Math.random()*lockedCandidates.length)];
       // 2026-09-25: routed through unlockCardForPlayer() (see its own comment above
