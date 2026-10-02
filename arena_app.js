@@ -6138,6 +6138,7 @@ function renderPlay(){
                 <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
                 <select id="battlefieldBgSelectPlaySub" aria-label="Battlefield background"></select>
               </div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
             </div>
           </div>
         </div>
@@ -9436,6 +9437,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
         <select id="battlefieldBgSelectHud" aria-label="Battlefield background"></select>
       </div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
     </div>
   </div>`;
 }
@@ -10328,7 +10330,7 @@ function updateControlsDisabled(){
   // one-shot skip — it stays clickable regardless of m.resolving.
   const ffEl = document.getElementById('ffBtn'); if(ffEl){ ffEl.innerHTML = ffBtnLabel(m.speedMult); ffEl.title = ffBtnTitle(m.speedMult); }
 }
-function ffBtnLabel(mult){ return (!mult || mult<=1) ? '&gt;&gt;' : (mult+'x'); }
+function ffBtnLabel(mult){ return `▶▶ ${(!mult || mult<=1) ? 1 : mult}×`; } // UX A12: always shows the current speed
 function ffBtnTitle(mult){ return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (1.5x → 2x → 3x → normal)`; }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
@@ -11799,6 +11801,18 @@ function boardCardHTML(c, defs, opts){
     </div>
   </div>`;
 }
+// UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
+// card in your hand you can't play right now.
+function unplayableReason(pl, d){
+  if(pl.playedThisTurn) return 'Already played this turn';
+  const need = [];
+  if((d.cost||0) > (pl.lumber||0)) need.push(`${d.cost}🪵`);
+  if((d.graceCost||0) > (pl.grace||0)) need.push(`${d.graceCost}🕊️`);
+  if((d.devilryCost||0) > (pl.devilry||0)) need.push(`${d.devilryCost}★`);
+  if((d.stoneCost||0) > (pl.stone||0)) need.push(`${d.stoneCost}🪨`);
+  if(need.length) return `Needs ${need.join(' + ')} — you have ${pl.lumber||0}🪵`;
+  return 'Can’t play this right now';
+}
 function renderHand(){
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
@@ -11811,7 +11825,9 @@ function renderHand(){
     const canDrag = (can || canDiscard) && !m.resolving;
     const [rA, rB] = rarityStops(d.rarity||'common');
     const costParts = costBadgeParts(d);
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${can?'playable':'unplayable'} ${d.art?'':'no-art'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" draggable="${canDrag}" data-defid="${hc.defId}" data-handuid="${hc.uid}" style="--rarity-a:${rA}; --rarity-b:${rB}">
+    const whyNot = can ? '' : unplayableReason(me, d);
+    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${can?'playable':'unplayable'} ${d.art?'':'no-art'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" draggable="${canDrag}" data-defid="${hc.defId}" data-handuid="${hc.uid}" style="--rarity-a:${rA}; --rarity-b:${rB}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}>
+      ${whyNot?`<div class="whynot-tag">${escapeHtml(whyNot)}</div>`:''}
       ${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
@@ -15483,6 +15499,7 @@ function renderHome(){
               <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
               <select id="battlefieldBgSelectHome" aria-label="Battlefield background"></select>
             </div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
           </div>
         </div>
         <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
@@ -15727,11 +15744,14 @@ function packCostHTML(pack){
   if(pack.cost.gems) bits.push(`🍂${pack.cost.gems}`);
   return bits.join(' ');
 }
+// UX A5 (2026-10-03): every currency pill carries its name (visible label + tooltip), driven by
+// CURRENCY_META — the Shop copy talked about "Maple Leaves and Gold Leaves" but the pills never said which was which.
+function currencyPillHTML(kind, extraCls){
+  const meta = CURRENCY_META[kind] || {glyph:'', label:kind};
+  return `<span class="hud-pill cur-pill ${extraCls||''}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
+}
 function shopCurrencyRowInnerHTML(){
-  return `<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${myCurrencies.gold}</span>
-    <span class="hud-pill forge-cur-gems">🍂 ${myCurrencies.gems}</span>
-    <span class="hud-pill forge-cur-dust">✨ ${myCurrencies.dust}</span>
-    <span class="hud-pill forge-cur-metal">🔩 ${myCurrencies.metal||0}</span>`;
+  return ['gold','gems','dust','metal'].map(k=> currencyPillHTML(k, 'forge-cur-'+k)).join('');
 }
 function refreshShopAfford(){
   document.querySelectorAll('#shopPackGrid [data-buypack]').forEach(btn=>{
@@ -15813,8 +15833,10 @@ function renderNest(){
     </div>
     <div class="grid-view" id="nestGrid">${
       ownedIds.length ? ownedIds.map(id=> nestCardHTML(id, defs[id])).join('')
-      : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0;">You don't own any cards yet — win a match, open a Shop pack, or finish the tutorial to start your collection.</p></div>`
+      : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own any cards yet — win fights or open packs to start your collection.</p>
+          <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
+  root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   // 2026-09-28, per explicit request ("don't have the checkbox w the 1x... show a card that looks
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
@@ -16155,10 +16177,7 @@ function renderProfile(){
       </div>
       <div class="profile-title-row"><span class="avatar-title-chip">${escapeHtml(avatarTitleLabel(loadAvatar()))}</span></div>
       <div class="profile-stats-row">
-        <span class="hud-pill">${mapleLeafIconHTML()} ${myCurrencies.gold}</span>
-        <span class="hud-pill">🍂 ${myCurrencies.gems}</span>
-        <span class="hud-pill">✨ ${myCurrencies.dust}</span>
-        <span class="hud-pill">🔩 ${myCurrencies.metal||0}</span>
+        ${['gold','gems','dust','metal'].map(k=> currencyPillHTML(k)).join('')}
       </div>
       <div class="profile-rank-row">
         <span class="conquest-rank-badge profile-rank-badge">${rank.label}</span>

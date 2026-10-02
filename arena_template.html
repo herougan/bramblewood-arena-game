@@ -367,7 +367,8 @@
      else is fixed to the bottom-right corner (the only other fixed control, .conquest-fight-fab,
      is bottom-CENTER and only shows on the Conquest map), so this is a clean, non-colliding move
      rather than a swap with some other element's problem. */
-  .lang-fab-wrap{position:fixed; right:14px; bottom:14px; z-index:75;}
+  /* UX A11 (2026-10-03): the floating pill overlapped content in the bottom-right corner on every screen (the Skip button in matches, the Nest grid). Language now lives in Settings. */
+  .lang-fab-wrap{display:none !important;}
   .lang-fab{display:flex; align-items:center; gap:5px; height:34px; padding:0 12px; border-radius:17px; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink-muted); font-family:'Baloo 2'; font-weight:700; font-size:13px; box-shadow:0 4px 14px rgba(0,0,0,.22);}
   .lang-fab:hover{color:var(--ink); background:var(--surface-3);}
   .lang-fab.is-open{color:var(--ink); background:var(--surface-3);}
@@ -1504,6 +1505,15 @@
      below) is dead with it — a board too full even at the zoom floor now pans (battlefieldPanX,
      see fitBattlefieldZoom/wireBattlefieldPan) instead of scrolling each row independently. */
   .board-row{display:flex; align-items:center; justify-content:center; gap:12px; min-height:214px; padding:24px 6px; position:relative; flex-wrap:nowrap;}
+  /* UX A1 (2026-10-03, "your hand is below the fold"): on shorter desktop screens the match's four
+     card rows (enemy castle row, two board rows, your hand row) plus padding didn't fit, cutting off
+     the hand — the thing you use every turn. Cards now size from the viewport height (never larger
+     than before), and the board rows track the card height. Phones keep their own fixed sizes. */
+  @media (min-width: 701px){
+    #appWrap.in-match{--match-card-h: clamp(104px, calc((100dvh - 214px) / 4.55), 149px); --match-card-w: calc(var(--match-card-h) * 0.8);}
+    #appWrap.in-match .board-row{min-height:calc(var(--match-card-h) + 36px); padding-top:18px; padding-bottom:18px;}
+    #appWrap.in-match .battlefield{padding-top:10px; padding-bottom:10px;}
+  }
   /* Direct-to-battlefield drop target (2026-09-17, per explicit request: "Dragging the card
      Left right of the actual field or in the centre position should ALSO play the card") —
      the active player's own row glows the same accent color as the dedicated Left/Right
@@ -2078,6 +2088,9 @@
      box-sizing:border-box, flex column centering, a bigger icon/name to fill the bigger frame)
      so a card in your hand and the same card on the board are now the exact same size and
      shape — picking one up and playing it no longer visibly changes its footprint. */
+  .hand-strip .card-tile{position:relative;}
+  .whynot-tag{position:absolute; left:4px; right:4px; bottom:30%; z-index:6; padding:3px 4px; border-radius:6px; background:rgba(20,14,6,.82); color:#fff3d6; font-family:system-ui, sans-serif; font-size:10.5px; font-weight:700; line-height:1.2; text-align:center; opacity:0; transition:opacity .15s; pointer-events:none;}
+  .hand-strip .card-tile.unplayable:hover .whynot-tag, .hand-strip .card-tile.unplayable:focus-within .whynot-tag, .hand-strip .card-tile.unplayable.armed .whynot-tag{opacity:1;}
   .hand-strip .card-tile{width:var(--match-card-w); height:var(--match-card-h); box-sizing:border-box; padding:9px 7px 7px; font-size:13.5px; display:flex; flex-direction:column; justify-content:flex-start;}
   .hand-strip .card-tile .ico{font-size:56px; display:flex; align-items:center; justify-content:center;}
   .hand-strip .card-tile .nm{font-size:13px; min-height:1.9em; margin:3px 0 2px;}
@@ -2203,6 +2216,11 @@
   @media (max-width:600px){ .vs-screen{grid-template-columns:1fr; grid-template-rows:1fr auto 1fr; background:linear-gradient(180deg, #2c3a27 0 50%, #5a2b22 50% 100%);} .vs-side .bw-avatar{width:84px !important; height:84px !important; font-size:46px !important;} }
   .workshop-modal{max-width:460px;} .ws-steps{padding-left:20px; line-height:1.55; margin:10px 0 16px;} .ws-steps li{margin-bottom:6px;}
   .workshop-modal .btn[disabled]{opacity:.55; cursor:not-allowed;}
+  .cur-pill{display:inline-flex; align-items:center; gap:4px;}
+  .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:.7; margin-left:2px; white-space:nowrap;}
+  @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
+  /* UX A12 (2026-10-03): a clear keyboard focus ring on every interactive control, site-wide. */
+  button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid #ffd27a; outline-offset:2px;}
   /* ---- Coach tips (2026-10-03) ---- */
   .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
@@ -2294,6 +2312,7 @@
   .tk-speed-btn.is-on{background:var(--accent, #d58b3a); color:#1b130b;}
   .tk-speed-btn:focus-visible, .tk-opt:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
   #nestGrid > .nest-empty{grid-column:1 / -1;}
+  .nest-empty-actions{display:flex; gap:8px; flex-wrap:wrap;}
   .tk-speed-row{display:flex; align-items:center; gap:10px; width:100%;}
   .tk-speed-label{font-size:12px; font-weight:700; opacity:.75;}
   .tk-speed{margin-left:0 !important;}
@@ -4037,6 +4056,7 @@
           <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
         </div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
       </div>
     </div>
     <!-- Energy/stamina (2026-09-22, "Energy is for doing skirmishes etc. You refill 1 per 1
