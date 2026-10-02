@@ -1810,7 +1810,7 @@
      Bumped to match (800, the heaviest cut Baloo 2 is actually loaded at — see the Google Fonts
      link's wght@...800 list up top) and widened the stroke slightly so it reads just as chunky
      mid-flight as the on-card stat numbers do sitting still. */
-  .dmg-float{position:absolute; left:50%; top:-6px; z-index:40; transform:translateX(-50%); font-family:'Baloo 2'; font-weight:800; font-size:34px; color:var(--dmg-float-color); -webkit-text-stroke:3px rgba(0,0,0,.8); text-shadow:-1.5px -1.5px 0 rgba(0,0,0,.8), 1.5px -1.5px 0 rgba(0,0,0,.8), -1.5px 1.5px 0 rgba(0,0,0,.8), 1.5px 1.5px 0 rgba(0,0,0,.8), 0 0 10px rgba(0,0,0,.5); animation:dmgBounceFall 1100ms cubic-bezier(.3,.15,.55,1) forwards; pointer-events:none; white-space:nowrap;}
+  .dmg-float{position:absolute; left:50%; top:-6px; z-index:40; transform:translateX(-50%); font-family:'Baloo 2'; font-weight:800; font-size:34px; color:var(--dmg-float-color); -webkit-text-stroke:5px rgba(0,0,0,.85); paint-order:stroke fill; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 10px rgba(0,0,0,.45); font-variant-numeric:lining-nums; /* 2026-10-03: stroke now drawn UNDER the fill (paint-order) — the old 3px stroke on top ate thin digits like '1' */ animation:dmgBounceFall 1100ms cubic-bezier(.3,.15,.55,1) forwards; pointer-events:none; white-space:nowrap;}
   .dmg-float.blocked{color:var(--armor);}
   .dmg-float.poison{color:var(--poison);}
   /* Bleed APPLY (2026-09-21, Skills/VFX/SFX audit fix): mirrors .dmg-float.poison just above —
@@ -2231,11 +2231,35 @@
   @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
   /* UX A12 (2026-10-03): a clear keyboard focus ring on every interactive control, site-wide. */
   button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid #ffd27a; outline-offset:2px;}
+  /* ---- Results rewards panel (2026-10-03) — one spacing scale: 16px between sections, 8px inside ---- */
+  .winloss-card{max-width:440px;}
+  .rw-panel.winloss-conquest-rewards{display:flex; flex-direction:column; align-items:stretch; justify-content:flex-start; flex-wrap:nowrap; gap:16px; margin:0 0 16px; padding:16px; border-radius:14px; background:rgba(0,0,0,.14); text-align:center;}
+  .rw-sec{display:flex; flex-direction:column; align-items:center; gap:8px; position:relative;}
+  .rw-sec + .rw-sec{padding-top:16px; border-top:1px solid rgba(0,0,0,.08);}
+  .rw-sec.rw-rank{flex-direction:row; align-items:center; justify-content:center; gap:8px;}
+  .rw-sec.rw-rank > *{margin:0 !important; position:static !important;}
+  .rw-head{font-size:11.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; opacity:.7;}
+  .rw-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center;}
+  .rw-cards{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
+  .rw-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
+  .rw-cur{font-size:15px; padding:6px 12px;}
+  .rw-act{display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); font-weight:700; font-size:13.5px; cursor:help;}
+  .rw-node{width:44px; height:44px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:21px; background:#f4ecd8; border:3px solid #c9a46a; box-shadow:0 3px 8px rgba(0,0,0,.3); cursor:help; position:relative;}
+  .rw-node.kind-elite{border-color:#8e5bc9;} .rw-node.kind-boss{border-color:#c0392b;} .rw-node.kind-raidboss{border-color:#e3b23c;}
+  .rw-spark{position:absolute; left:40%; top:60%; pointer-events:none; font-size:16px; z-index:3;}
+  /* lightweight tooltips for anything in the panel carrying data-tip */
+  .rw-panel [data-tip]{position:relative;}
+  .rw-panel [data-tip]:hover::after, .rw-panel [data-tip]:focus-visible::after{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%); width:max-content; max-width:240px; white-space:normal; padding:8px 10px; border-radius:8px; background:#fff8e6; color:#2b2117; font-size:12.5px; font-weight:600; line-height:1.4; text-align:left; text-transform:none; letter-spacing:0; box-shadow:0 6px 18px rgba(0,0,0,.35); z-index:20; pointer-events:none;}
+  .winloss-actions{gap:10px;}
   /* ---- Coach tips (2026-10-03) ---- */
   .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
   .coach-tip .coach-ok{align-self:flex-end;}
+  .coach-shield{position:fixed; inset:0; z-index:1140; background:rgba(10,8,4,.28); cursor:not-allowed;}
+  .coach-tip.is-blocking{box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 0 3px #ffd76a;}
+  .coach-anchor{position:relative; z-index:1145 !important;}
+  .coach-locked, .coach-locked *{pointer-events:none !important;}
   .coach-anchor{outline:3px solid #ffd76a; outline-offset:3px; border-radius:12px;}
   @keyframes coachIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
   /* ---- Social: Friends / invites / Market (2026-10-02) ---- */

@@ -7873,6 +7873,11 @@ function showTutorialDeckPicker(){
 // 2026-09-25: routed through unlockCardForPlayer() (see its own comment) instead of touching
 // myUnlockedCardIds directly -- same net effect, now going through the one shared, logged unlock
 // path every card-reward source should use going forward.
+function claimTutorialWin(pick){
+  const firstTime = !loadTutorialDone();
+  if(firstTime){ grantTutorialSeriesRewards(pick); myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck(); saveTutorialDone(); }
+  return firstTime;
+}
 function grantTutorialSeriesRewards(pick){
   const rewardIds = [];
   if(pick==='otters' || pick==='both') rewardIds.push('river-warden');
@@ -7899,8 +7904,7 @@ function tutorialWinLossSubtitleHTML(m){
     if(pick==='hummingbirds' || pick==='both') rewardIds.push('sunspire-envoy');
     rewardIds.push('quarry-mole');
     if(loadTutorialDone()) return `<p class="splash-sub">Nicely done — that was a replay, so no rewards this time.</p>`;
-    return `<p class="splash-sub">The Bramblewood Outskirts are open — your first two fights are waiting on the map.</p>
-      <div class="tdp-reward-row">${rewardIds.map(id=>{ const d=defs[id]||{}; return `<span class="tdp-reward-chip">${d.icon||'🎁'} ${d.name||id}</span>`; }).join('')}</div>`;
+    return `<p class="splash-sub">The Bramblewood Outskirts are open — your first two fights are waiting on the map.</p>`;
   }
   return `<p class="splash-sub">${meta.title} — ${meta.teaches}${m.winner===1?'':`. ${meta.lesson}`}</p>`;
 }
@@ -9703,7 +9707,8 @@ function renderMatchUI(){
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${matchStatsHTML(m)}
         <div class="winloss-actions">
-          <button class="btn primary big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'Try Again':'Play Again')}</button>
+          ${nextBattleButtonHTML(m)}
+          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'Try Again':'Play Again')}</button>
           ${isTutorial?'':`<div class="winloss-secondary">
             <button class="btn" id="wlBackBtn">Back to board</button>
             <button class="btn ghost" id="wlQuitBtn">Quit</button>
@@ -9801,12 +9806,7 @@ function renderMatchUI(){
         endMatch();
         if(!won){ beginTutorialStage(stage); return; }
         if(stage >= TUTORIAL_STAGE_COUNT){
-          const firstTime = !loadTutorialDone();
-          if(firstTime){
-            grantTutorialSeriesRewards(pick);
-            myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck();
-            saveTutorialDone();
-          }
+          const firstTime = claimTutorialWin(pick);
           conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest';
           switchTab('play');
           if(firstTime) showToast('🎓 Tutorial complete! Your first two fights on the Outskirts are open.', 'ok');
@@ -9829,6 +9829,14 @@ function renderMatchUI(){
       endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
+    const wlNext = document.getElementById('wlNextBattleBtn');
+    if(wlNext) wlNext.addEventListener('click', ()=>{
+      const nb = m.nextBattle; if(!nb) return;
+      if(m.mode==='tutorial'){ const firstTime = claimTutorialWin(m.tutorialFaction || loadFactionChoice() || 'both'); if(firstTime) showToast('🎓 Tutorial complete! Rewards added to your collection.', 'ok'); }
+      endMatch();
+      conquestSelectedMap = nb.mapId; playSubTab = 'conquest';
+      if(!startConquestMatch(nb.mapId, nb.key)){ conquestSelectedNodeKey = nb.key; switchTab('play'); }
+    });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
@@ -9862,7 +9870,8 @@ function renderMatchUI(){
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
   if(!showPassOverlay && !isSandbox) maybeAutoSkip();
-  hideCoachTip(); setTimeout(maybeShowCoachTip, 600);
+  if(coachOpen && !coachOpen.tip.block && !coachOpen.tip.action) hideCoachTip();
+  setTimeout(maybeShowCoachTip, 600);
 }
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
 // "nothing to play" deliberately means no MEANINGFUL action is available at all, not just "no
@@ -12775,6 +12784,25 @@ async function resolveRound(){
     // in (see logMatchHistory's own comment) — unlike the local win/loss ledger, this persists
     // the full event log server-side, so it only makes sense for a durable account.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') logMatchHistory(m);
+    if(m.mode==='tutorial' && m.winner===1){
+      const firstTime = !loadTutorialDone();
+      const m1 = CONQUEST_MAPS.find(x=>x.id==='m1');
+      if(firstTime){
+        const pick = m.tutorialFaction || loadFactionChoice() || 'both';
+        m.rewardCardIds = [...(pick==='otters'||pick==='both' ? ['river-warden'] : []), ...(pick==='hummingbirds'||pick==='both' ? ['sunspire-envoy'] : []), 'quarry-mole'];
+        m.unlockedFights = m1.nodes.filter(n=> (n.requires||[]).includes('tutorial')).map(n=>({mapId:'m1', key:n.key, node:n}));
+        m.unlockedActivities = [
+          {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
+          {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
+          {icon:'🏟️', label:'Arena', tip:'Quick battles, Gauntlet streaks, Dungeon runs and online play, from Play → Arena.'},
+        ];
+      } else {
+        m.unlockedFights = []; m.unlockedActivities = [];
+      }
+      const p = loadConquestProgress();
+      const nxt = m1.nodes.find(n=> n.kind!=='tutorial' && (n.requires||[]).includes('tutorial') && !p.completed.includes(conquestNodeId('m1', n.key)));
+      m.nextBattle = nxt ? {mapId:'m1', key:nxt.key, node:nxt} : null;
+    }
     if(m.mode==='conquest' && m.winner===1 && m.conquestNode){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
@@ -12785,6 +12813,7 @@ async function resolveRound(){
       // Rank (item #4): graded off how much of the player's own castle HP survived the fight.
       const hpFrac = m.players[1].hq.maxHp>0 ? Math.max(0, m.players[1].hq.hp)/m.players[1].hq.maxHp : 0;
       const rank = rankForHqFraction(hpFrac);
+      const unlockBefore = snapshotUnlocks();
       completeConquestNode(m.conquestNode, rank);
       m.conquestRankEarned = rank; // read once by the post-match screen (renderMatchUI) below
       const rewardTier = CONQUEST_NODE_REWARDS[m.conquestNode.kind];
@@ -12801,6 +12830,7 @@ async function resolveRound(){
         cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward'));
         if(cardIds.length) m.conquestCardsEarned = cardIds;
       }
+      { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
       // aren't, so only those two kinds pay out. A persistent Forge currency, not an in-match
@@ -13030,25 +13060,72 @@ function coachBoardEl(pred, pid){
   for(const p of (pid ? [pid] : [1,2])){ const r = m.players[p].row; const c = [...r.left, ...r.center, ...r.right].find(c=> c.hp>0 && defs[c.defId] && pred(defs[c.defId], c)); if(c) return boardCardEl(c.uid); }
   return null;
 }
-const COACH_TIPS = [
-  {id:'play', text:'Drag a card from your hand onto the field — or tap it, then tap a side. You can play one card each turn.', anchor:()=> document.querySelector('#handStrip .card-tile.playable')},
-  {id:'castle', text:'🏰 Bring the enemy Castle’s health to 0 to win. Your cards hit whatever stands across from them — and the Castle when nothing does.', anchor:()=> document.querySelector('.top-play-row .hq-tile'), when:m=> m.round>=2},
-  {id:'wait', text:'⏳ The number in the ring is Wait: rounds this card must spend on the field before it can attack.', anchor:()=> coachBoardEl(d=> (d.wait||0)>0, 1) || coachHandEl(d=> (d.wait||0)>0)},
-  {id:'lumber', text:'🪵 This card costs Lumber. Drag a card you don’t need onto the Graveyard to discard it for Lumber, then play the big one later.', anchor:()=> coachHandEl(d=> (d.cost||0)>0)},
-  {id:'leader', text:'👑 Your Leader: drag it onto the field to summon it once per match. Summoning uses your play for the turn.', anchor:()=> document.querySelector('#leaderWidget.summonable')},
-  {id:'handLimit', text:'✋ You can hold 5 cards. Draw past that and the extra card is discarded for +1 Lumber automatically.', anchor:()=> document.getElementById('handStrip'), when:m=> m.players[1].hand.length>=5},
-  {id:'flying', text:'🪽 Flying: attacks from non-flyers miss it half the time.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.flying)},
-  {id:'swift', text:'💨 Swift: always strikes first, and dodges half of all attacks from non-Swift cards.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.swift)},
-  {id:'evasive', text:'🌀 Evade: dodges half of all single-target attacks and abilities (area hits still land).', anchor:()=> coachBoardEl(d=> d.effects && d.effects.evasive)},
-  {id:'poison', text:'☠️ Poison: each hit adds stacks, and poisoned cards take that much damage at the start of every round.', anchor:()=> coachBoardEl(d=> d.effects && d.effects.poison)},
+// --- Guided tutorial steps (2026-10-03, per explicit request: "the tutorial should lock you from
+// taking actions sometimes, unless you click next" + "add a step about how you draw from the deck").
+// Shown in order during the tutorial match only. `block` steps put a see-through shield over the
+// board so nothing can be clicked until Next; `action` steps wait for the player to do the thing.
+const GUIDED_STEPS = [
+  {id:'g-hand', block:true, text:'👋 These are your cards — your hand. You’ll play them onto the field to fight.', anchor:()=> document.getElementById('handStrip')},
+  {id:'g-deck', block:true, text:'🃏 This is your Deck. At the start of every turn you draw one card from it into your hand.', anchor:()=> document.getElementById('deckWidgetBottom')},
+  {id:'g-castle', block:true, text:'🏰 This is the enemy Castle. Bring its health to 0 to win the fight.', anchor:()=> hqTileEl('B')},
+  {id:'g-mycastle', block:true, text:'🛡️ And this is your own Castle — don’t let theirs win the race!', anchor:()=> hqTileEl('A')},
+  {id:'g-play', action:true, text:'▶️ Your turn: drag a card from your hand onto the field (or tap it, then tap a side). One card per turn.', anchor:()=> document.querySelector('#handStrip .card-tile.playable'), done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
+  {id:'g-combat', block:true, when:m=> m.round>=2, text:'⚔️ Each round, every card attacks the card across from it. If nothing stands across, it hits the Castle instead.', anchor:()=> document.getElementById('battlefieldEl')},
 ];
-let coachOpen = null;
+function guidedStepActive(m){
+  if(!m || m.mode!=='tutorial') return null;
+  for(const st of GUIDED_STEPS){
+    if(coachSeen.has(st.id)) continue;
+    if(st.done && st.done(m)){ markCoachSeen(st.id); continue; }
+    if(st.when && !st.when(m)) return null; // wait for this step's moment before moving on
+    return st;
+  }
+  return null;
+}
+// --- Passive tips: appear the first time a property shows up, in ANY real match from now on
+// ("these passive tutorial messages can appear ANYTIME from henceforth"). Built dynamically from
+// Registry.skills() so every effect gets its own explainer without hand-writing a list.
+const STATUS_TIPS = [
+  {id:'st-poison', test:c=> c.poison>0, text:'☠️ Poisoned: this card takes damage equal to its poison stacks at the start of every round.'},
+  {id:'st-bleed', test:c=> c.bleed>0, text:'🩸 Bleeding: this card takes damage every time it attacks, defends or uses a skill.'},
+  {id:'st-frozen', test:c=> c.frozen>0, text:'❄️ Frozen: this card can’t act and its Wait doesn’t tick down until it thaws.'},
+  {id:'st-asleep', test:c=> c.asleep>0, text:'💤 Asleep: can’t act until it wakes — any damage wakes it.'},
+  {id:'st-paralyzed', test:c=> c.paralyzed>0, text:'⚡ Paralyzed: each round there’s a 1-in-2 chance it can’t act.'},
+  {id:'st-stunned', test:c=> c.stunned, text:'💫 Stunned: skips its attack this round.'},
+  {id:'st-chained', test:c=> c.chained, text:'⛓️ Chained: can’t attack until its chain breaks.'},
+];
+function passiveTipCandidates(){
+  const m = matchState; if(!m) return [];
+  const defs = getCardDefs(); const out = [];
+  const me = m.players[1];
+  // costs, wait, hand limit
+  out.push({id:'wait', text:'⏳ The number in the ring is Wait: rounds this card must spend on the field before it can attack.', anchor:()=> coachBoardEl(d=> (d.wait||0)>0, 1) || coachHandEl(d=> (d.wait||0)>0)});
+  out.push({id:'lumber', text:'🪵 This card needs Lumber to play. Drag a card you don’t need onto the Graveyard to discard it for Lumber, then play the big one later.', anchor:()=> coachHandEl(d=> (d.cost||0)>0)});
+  out.push({id:'leader', text:'👑 Your Leader: drag it onto the field to summon it, once per match. Summoning uses your play for the turn.', anchor:()=> document.querySelector('#leaderWidget.summonable')});
+  out.push({id:'handLimit', text:'✋ You can hold 5 cards. Draw past that and the extra card is discarded for +1 Lumber automatically.', anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
+  // every skill/effect, the first time a card carrying it is on the field
+  Registry.skills().forEach(sd=>{
+    const desc = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })();
+    out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
+  });
+  // statuses, the first time one shows up on any card
+  STATUS_TIPS.forEach(t=> out.push({id:t.id, text:t.text, anchor:()=>{
+    for(const p of [1,2]){ const r = m.players[p].row; const c = [...r.left,...r.center,...r.right].find(c=> c.hp>0 && t.test(c)); if(c) return boardCardEl(c.uid); }
+    return null; }}));
+  return out;
+}
+const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','dungeon','raidOnline','liveRanked']);
+let coachOpen = null, coachShield = null;
 function maybeShowCoachTip(){
   const m = matchState;
-  if(!m || m.over || (m.mode!=='tutorial' && m.mode!=='conquest') || m.resolving || coachOpen) return;
-  for(const tip of COACH_TIPS){
+  if(!m || m.over || !COACH_MODES.has(m.mode) || m.resolving || coachOpen) return;
+  // 1) guided tutorial steps take priority, in order
+  const g = guidedStepActive(m);
+  if(g){ const el = g.anchor(); if(el){ showCoachTip(g, el); return; } if(g.action) return; }
+  if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id) && !st.when)) return; // finish the intro first
+  // 2) passive tips — one at a time, first match wins
+  for(const tip of passiveTipCandidates()){
     if(coachSeen.has(tip.id)) continue;
-    if(tip.when && !tip.when(m)) continue;
     const el = tip.anchor(); if(!el) continue;
     showCoachTip(tip, el); return;
   }
@@ -13056,29 +13133,39 @@ function maybeShowCoachTip(){
 function showCoachTip(tip, anchorEl){
   hideCoachTip();
   const b = document.createElement('div');
-  b.className = 'coach-tip'; b.setAttribute('role','status');
-  b.innerHTML = `<div class="coach-text">${escapeHtml(tip.text)}</div><button type="button" class="btn small primary coach-ok">Got it</button>`;
+  b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
+  const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
+  b.innerHTML = `<div class="coach-text">${escapeHtml(tip.text)}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
+  if(tip.block){
+    // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
+    coachShield = document.createElement('div'); coachShield.className = 'coach-shield';
+    document.body.appendChild(coachShield);
+  }
   document.body.appendChild(b);
   const place = ()=>{
-    if(!anchorEl.isConnected){ hideCoachTip(); return; }
+    if(!anchorEl.isConnected){ const fresh = (tip.anchor && tip.anchor()); if(fresh){ anchorEl.classList.remove('coach-anchor'); anchorEl = fresh; anchorEl.classList.add('coach-anchor'); } else { hideCoachTip(); return; } }
+    if(tip.action && tip.done && matchState && tip.done(matchState)){ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 500); return; }
     const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight;
     let x = Math.max(8, Math.min(window.innerWidth - bw - 8, r.left + r.width/2 - bw/2));
     let y = r.top - bh - 14, below = false;
     if(y < 8){ y = r.bottom + 14; below = true; }
+    if(y + bh > window.innerHeight - 8){ y = Math.max(8, window.innerHeight - bh - 8); }
     b.style.left = x+'px'; b.style.top = y+'px';
     b.classList.toggle('below', below);
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
   place();
-  anchorEl.classList.add('coach-anchor');
+  anchorEl.classList.add('coach-anchor'); if(tip.block) anchorEl.classList.add('coach-locked');
   const tick = setInterval(place, 250);
-  coachOpen = {tip, el:b, anchorEl, tick};
-  b.querySelector('.coach-ok').onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 400); };
+  coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick};
+  const ok = b.querySelector('.coach-ok');
+  if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
 }
 function hideCoachTip(){
+  if(coachShield){ coachShield.remove(); coachShield = null; }
   if(!coachOpen) return;
   clearInterval(coachOpen.tick); coachOpen.el.remove();
-  if(coachOpen.anchorEl) coachOpen.anchorEl.classList.remove('coach-anchor');
+  const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
   coachOpen = null;
 }
 /* ============================================================
@@ -13337,6 +13424,86 @@ function computeMatchStats(m){
   });
   return totals;
 }
+/* ============================================================
+   Results-screen rewards panel (2026-10-03, per explicit request: "the rewards portion should be
+   well margined… show (a) cards won (b) currency won or other resources won — cheer effect if so
+   (c) activities unlocked — tooltip that explains what it is (d) skirmishes unlocked — appear as
+   circles like on the map, hoverable with tooltip, not clickable (e) click next to skip right to
+   the next battle, listing the energy on the button like '5 Lightning: Next Battle!'").
+   ============================================================ */
+function visibleFightKeys(){
+  const p = loadConquestProgress(); const out = [];
+  CONQUEST_MAPS.forEach(map=>{ if(!isMapUnlocked(map, p)) return; map.nodes.forEach((n,i)=>{ if(n.kind!=='tutorial' && isNodeVisible(map, n, i, p)) out.push(map.id+'|'+n.key); }); });
+  return out;
+}
+function unlockedMapIds(){ const p = loadConquestProgress(); return CONQUEST_MAPS.filter(m=> isMapUnlocked(m, p)).map(m=>m.id); }
+function avatarUnlockIds(){
+  try{ return [...Registry.avatarCharacters().filter(c=>c.isUnlocked && c.unlocked).map(c=>'char:'+c.id), ...Registry.avatarTitles().filter(t=>t.isUnlocked && t.unlocked).map(t=>'title:'+t.id)]; }catch(e){ return []; }
+}
+function snapshotUnlocks(){ return {fights: visibleFightKeys(), maps: unlockedMapIds(), av: avatarUnlockIds()}; }
+// Diff two snapshots into the "Unlocked" + "New fights" sections, and pick the next battle.
+function diffUnlocks(before, after, m){
+  const fights = after.fights.filter(k=> !before.fights.includes(k)).map(k=>{ const [mapId, key] = k.split('|'); const r = findConquestNode(mapId, key); return r ? {mapId, key, node:r.node, mapName:r.map ? r.map.name : ''} : null; }).filter(Boolean);
+  const acts = [];
+  after.maps.filter(id=> !before.maps.includes(id)).forEach(id=>{ const map = CONQUEST_MAPS.find(x=>x.id===id); if(map) acts.push({icon:map.icon, label:map.name, tip:`New Conquest region: ${map.blurb}`}); });
+  after.av.filter(id=> !before.av.includes(id)).forEach(id=>{
+    const [kind, key] = id.split(':');
+    if(kind==='char'){ const c = AVATAR_CHARACTERS.find(x=>x.id===key); if(c) acts.push({icon:c.emoji, label:`${c.name} character`, tip:'A new character you can play as — pick it in Profile → Your character.'}); }
+    else { const t = AVATAR_TITLES.find(x=>x.id===key); if(t) acts.push({icon:'🏷️', label:`“${t.label}” title`, tip:'A new title to show under your name — pick it in Profile → Your character.'}); }
+  });
+  return {fights, acts};
+}
+function pickNextBattle(m, newFights){
+  if(newFights && newFights.length) return newFights[0];
+  const mapId = m.conquestNode && m.conquestNode.mapId; if(!mapId) return null;
+  const map = CONQUEST_MAPS.find(x=>x.id===mapId); const p = loadConquestProgress();
+  for(let i=0;i<map.nodes.length;i++){ const n = map.nodes[i]; if(n.kind==='tutorial') continue; if(isNodeVisible(map, n, i, p) && !p.completed.includes(conquestNodeId(map.id, n.key))) return {mapId, key:n.key, node:n}; }
+  return null;
+}
+function rewardsPanelHTML(m){
+  const secs = [];
+  const reward = m.conquestRewardEarned;
+  if(m.conquestRankEarned){
+    secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="Graded on how much of your own castle HP you still had left">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
+  }
+  const cards = m.rewardCardIds || m.conquestCardsEarned || [];
+  if(cards.length){
+    const defs = getCardDefs();
+    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div></div>`);
+  }
+  const cur = [];
+  if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
+  if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
+  if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
+  if(cur.length){
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div></div>`);
+  }
+  if((m.unlockedActivities||[]).length){
+    secs.push(`<div class="rw-sec"><div class="rw-head">Unlocked</div><div class="rw-row">${m.unlockedActivities.map(a=>`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`).join('')}</div></div>`);
+  }
+  if((m.unlockedFights||[]).length){
+    secs.push(`<div class="rw-sec"><div class="rw-head">New fights</div><div class="rw-row">${m.unlockedFights.map(f=>{ const n = f.node; const e = ENERGY_COST[n.kind];
+      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(`${n.name} — ${KIND_LABEL[n.kind]||n.kind} · 🏰 ${n.hqHp} HP${e?` · ${e}⚡`:''}${n.flavor?'. '+n.flavor:''}`)}"><span>${n.icon}</span></span>`; }).join('')}</div></div>`);
+  }
+  return secs.length ? `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>` : '';
+}
+function nextBattleButtonHTML(m){
+  const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
+  const e = ENERGY_COST[nb.node.kind] || ENERGY_COST.skirmish;
+  return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚡ ${e}: Next Battle!</button>`;
+}
+// A small cheer when currency lands: sparkles burst out of the Rewards row.
+function rewardsCheer(){
+  const row = document.querySelector('.rw-cheer'); if(!row || !hasGsap()) return;
+  try{ if(SoundKit.coin) SoundKit.coin(); }catch(e){}
+  setTimeout(()=>{
+    for(let i=0;i<16;i++){
+      const s = document.createElement('span'); s.className = 'rw-spark'; s.textContent = ['✨','🍁','⭐','✨'][i%4]; row.appendChild(s);
+      const ang = Math.random()*Math.PI*2, d = 40+Math.random()*70;
+      gsap.fromTo(s, {x:0, y:0, opacity:1, scale:.5}, {x:Math.cos(ang)*d, y:Math.sin(ang)*d*0.6-20, opacity:0, scale:1.2, duration:.9+Math.random()*.4, ease:'power2.out', onComplete:()=> s.remove()});
+    }
+  }, 900);
+}
 function matchStatsHTML(m){
   const totals = computeMatchStats(m);
   // 'dealt'/'biggestHit': higher is better (gold-highlighted). 'taken': LOWER is better, since
@@ -13415,7 +13582,7 @@ function matchStatsHTML(m){
       ${dReward && dReward.metal>0 ? `<span class="hud-pill forge-cur-metal" title="Full clear payout">🔩 ${rewardCountSpan(dReward.metal)} Metal</span>` : ''}
     </div>` : '';
   return `<div class="winloss-stats">
-    ${rewardsHTML}${raidHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
+    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
     <div class="winloss-stats-head"><span></span><span>${sideLabel('A')}</span><span>${sideLabel('B')}</span></div>
     ${rows.map(r=>{ const cls = cellCls(r); return `<div class="winloss-stats-row"><span class="wls-label">${r.label}</span><span class="wls-val ${cls.A}">${totals.A[r.key]}</span><span class="wls-val ${cls.B}">${totals.B[r.key]}</span></div>`; }).join('')}
   </div>`;
@@ -13439,16 +13606,17 @@ function wireWinLossRewardAnim(){
   gsap.set(pieces, {opacity:0, scale:.5, y:10});
   gsap.to(pieces, {opacity:1, scale:1, y:0, duration:.5, ease:'back.out(2.6)', stagger:.13, delay:.5});
   pieces.forEach((el, i)=>{
-    const countEl = el.querySelector('.reward-count');
-    if(!countEl) return;
-    const target = parseInt(countEl.getAttribute('data-target'), 10);
-    if(!target) return;
-    const counter = {n:0};
-    gsap.to(counter, {n:target, duration:.55, delay:.5+i*.13+.12, ease:'power2.out',
-      onUpdate: ()=>{ countEl.textContent = '+'+Math.round(counter.n); },
-      onComplete: ()=>{ countEl.textContent = '+'+target; }
+    el.querySelectorAll('.reward-count').forEach((countEl, j)=>{
+      const target = parseInt(countEl.getAttribute('data-target'), 10);
+      if(!target) return;
+      const counter = {n:0};
+      gsap.to(counter, {n:target, duration:.6, delay:.5+i*.13+.12+j*.08, ease:'power2.out',
+        onUpdate: ()=>{ countEl.textContent = '+'+Math.round(counter.n); },
+        onComplete: ()=>{ countEl.textContent = '+'+target; }
+      });
     });
   });
+  rewardsCheer();
 }
 function logText(ev){
   const defs = getCardDefs();
@@ -13858,7 +14026,7 @@ function floatText(el, text, cls){
     // every float — unit or castle — now starts at the same spot INSIDE its target (28% down) at
     // the same size, so numbers are consistent and never pushed off the top of the screen.
     f.style.animation = 'none';
-    gsap.set(f, {position:'absolute', left:'50%', top:`calc(28% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.6});
+    gsap.set(f, {position:'absolute', left:'50%', top:`calc(40% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.6});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:1.1, y:-20*travel, x:dx*0.4, duration:.16, ease:'back.out(2.6)'})
       .to(f, {y:-46*travel, x:dx, duration:.55, ease:'power1.out'}, '<0.02')
@@ -14146,10 +14314,10 @@ function flashShield(el){
 // of evade, flying and swift, slightly differing fade-out animations. Evade: a small rising
 // oscillation. Flying: a flying, fading shake. Swift: a dash to the left then right, static, then
 // fade."). The engine tags every 'evaded' event with `reason` (see lastMissReason in the engine).
-const MISS_STYLES = {
-  evasive: {text:'Evaded!',   icon:'🌀'},
-  flying:  {text:'Flew clear!', icon:'🪽'},
-  swift:   {text:'Too fast!', icon:'💨'},
+const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the icon + motion tell you which passive did it
+  evasive: {text:'Miss', icon:'🌀'},
+  flying:  {text:'Miss', icon:'🪽'},
+  swift:   {text:'Miss', icon:'💨'},
 };
 function missCallout(el, reason){
   const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
