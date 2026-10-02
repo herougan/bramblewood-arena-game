@@ -409,8 +409,21 @@
   .account-identity{display:flex; align-items:center; gap:10px; margin:6px 0 4px; padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid #4caf50;}
   .account-identity-ico{font-size:18px;}
   .auth-gate-later{display:block; margin:12px auto 0;}
-  .entrance-account-line{margin:8px 0 0; font-weight:800; font-size:13px; text-align:center;}
-  .toast-host{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1000; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,440px);}
+  .entrance-account-line{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
+  .entrance-account-line:not([hidden]){display:flex; align-items:center; justify-content:center; gap:8px;}
+  .entrance-account-line img{width:22px; height:22px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 2px #6fbf4a;}
+  /* The sign-in modal must sit above the entrance splash (z 1000), or the splash's own Sign in
+     button opens it invisibly underneath (2026-10-02 bug report: "Sign in doesn't work"). */
+  #authGateOverlay{z-index:1100;}
+  /* Sign-in reminder banner (2026-10-02): slim strip at the top, non-blocking, two choices. */
+  .signin-banner{position:fixed; top:10px; left:50%; transform:translate(-50%,-140%); z-index:1050; display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center;
+    max-width:min(96vw,760px); width:max-content; padding:8px 10px 8px 14px; border-radius:14px; background:#20281b; color:#f4efdc; border:1px solid #4a3f2c; box-shadow:0 8px 28px rgba(0,0,0,.4);
+    font-size:13.5px; font-weight:700; transition:transform .35s cubic-bezier(.2,.9,.25,1);}
+  .signin-banner.show{transform:translate(-50%,0);}
+  .signin-banner-actions{display:flex; gap:6px;}
+  .signin-banner .btn{white-space:nowrap;}
+  .signin-banner .btn.ghost{color:#f4efdc; border-color:rgba(255,255,255,.3); background:transparent;}
+  .toast-host{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1150; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,440px);}
   .home-acct-badge{display:block; margin-top:2px; font-size:9.5px; font-weight:800; letter-spacing:.02em; opacity:.75; padding:1px 6px; border-radius:999px; border:1px dashed currentColor;}
   .home-acct-badge.signed-in{opacity:1; border-style:solid; color:#3f9a44; border-color:#4caf50; background:rgba(76,175,80,.12);}
   .toast{background:#20281b; color:#f4efdc; border:1px solid #4a3f2c; border-radius:12px; padding:10px 14px; font-size:13.5px; font-weight:700; box-shadow:0 6px 24px rgba(0,0,0,.35); opacity:0; transform:translateY(10px); transition:opacity .3s, transform .3s; text-align:center;}
@@ -2603,8 +2616,11 @@
     transform:translateX(-140%); opacity:0;
     transition:opacity .3s ease, transform .3s ease;
   }
+  /* 2026-10-02 ("the shiny effect on hover should pass through the whole button, not stop in the
+     middle"): hover now plays one full left-to-right sweep and ends off the far edge, instead of
+     sliding to the centre and parking there. */
   .home-menu-btn:hover::before, .home-menu-btn-small:hover::before{
-    opacity:.55; transform:translateX(0%);
+    opacity:.55; animation:menuBtnDazzle .9s ease-in-out forwards;
   }
   /* Kept below the plain :hover rule (equal specificity, source order decides) so a click while
      hovering — the common case — still plays the full sweep instead of getting stuck at the
@@ -2663,6 +2679,18 @@
      Targeting any direct-child button here (regardless of which class variant it carries) fixes
      this instance and can't regress if a future settings-button variant changes class again. */
   .home-settings-wrap > button{width:100%; border-radius:10px;}
+  /* 2026-10-02 ("The settings UI is not of the same size as the other options"): the wrapper
+     stretched to the row's height but its button didn't — make the wrapper a flex box so the
+     button fills it, and give every tile in the row the same minimum height. */
+  .home-settings-wrap{display:flex;}
+  .home-settings-wrap > button{flex:1;}
+  .home-menu-row .home-menu-btn-small{min-height:84px;}
+  /* Profile tile: dimmed for a guest; your Google photo + name once signed in. */
+  .home-menu-btn-small.is-guest{filter:brightness(.62) saturate(.55);}
+  .home-menu-btn-small.is-guest:hover{filter:brightness(.8) saturate(.75);}
+  .home-profile-avatar{width:26px; height:26px; border-radius:50%; object-fit:cover; display:block; box-shadow:0 0 0 2px #6fbf4a;}
+  .home-profile-name{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .home-profile-sub{font-size:9.5px; font-weight:800; opacity:.8;}
   .home-nav-btn{font-family:'Baloo 2'; font-weight:700; font-size:13.5px; border:0; border-radius:9px; background:var(--surface-2); color:var(--ink); padding:8px 14px; display:flex; align-items:center; gap:6px;}
   .home-nav-btn:hover{background:var(--surface-3);}
   .home-nav-btn[hidden]{display:none;}

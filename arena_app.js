@@ -2149,7 +2149,10 @@ const SPAWN_ONLY_TOOLTIP = "Nest-born — hatched into play by another card, nev
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
-  const locked = !!d.locked;
+  // opts.inPlay (2026-10-02): a card that's actually yours in this match (e.g. the tutorial's
+  // Wandering Traveller leader) never draws the greyed-out "locked" treatment, even if its data
+  // still marks it locked for deck-building purposes.
+  const locked = !!d.locked && !opts.inPlay;
   const [rA, rB] = rarityStops(d.rarity||'common');
   // Task #97 (2026-09-16): spawn-only tokens (Bee Swarmling etc.) get their own dashed-border
   // "is-token" treatment plus a corner ribbon, so they read as visually distinct from ordinary
@@ -4167,6 +4170,7 @@ let cloudAnonUnavailable = false; // true once an anonymous sign-in attempt has 
 // the Profile panel, and the post-Google-redirect toast all read these.
 let cloudUserEmail = null;
 let cloudUserLabel = null; // Google full name if present, else the email
+let cloudUserAvatar = null; // Google profile photo URL (user_metadata.avatar_url/picture), if any
 let cloudInitPromise = null; // resolves once initCloudSync() has settled (signed in, guest, or offline)
 // The real gate: everything this batch restricts (Raid, packs, cross-device sync) checks THIS,
 // never cloudUserId alone — a bare anonymous session is a real Supabase user row, but it is not
@@ -4189,6 +4193,7 @@ function setCloudPill(ok, label){
 // entrance screen's account line / Sign-in button.
 function refreshAccountUI(){
   const signedIn = isSignedIn();
+  if(signedIn) hideSignInBanner();
   const chip = document.getElementById('accountChip');
   if(chip){
     chip.hidden = false;
@@ -4197,12 +4202,16 @@ function refreshAccountUI(){
     if(txt) txt.textContent = signedIn ? (cloudUserLabel || 'Signed in') : 'Guest · Sign in';
     chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
   }
-  const badge = document.getElementById('homeAcctBadge');
-  if(badge){ badge.textContent = signedIn ? '✓ Signed in' : 'Guest'; badge.classList.toggle('signed-in', signedIn); badge.title = signedIn ? (cloudUserEmail||'') : 'Not signed in — progress saved on this device only'; }
+  const profBtn = document.getElementById('homeProfileBtn');
+  if(profBtn){
+    profBtn.classList.toggle('is-guest', !signedIn);
+    profBtn.innerHTML = homeProfileBtnInner();
+    profBtn.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''}` : 'Not signed in — progress is saved on this device only';
+  }
   const line = document.getElementById('entranceAccountLine');
   if(line){
     line.hidden = !signedIn;
-    line.textContent = signedIn ? `✅ Signed in as ${cloudUserLabel || cloudUserEmail || 'your account'}` : '';
+    line.innerHTML = signedIn ? `${cloudUserAvatar ? `<img src="${escapeAttr(cloudUserAvatar)}" alt="" referrerpolicy="no-referrer">` : '✅'} <span>Signed in as ${escapeHtml(cloudUserLabel || cloudUserEmail || 'your account')}</span>` : '';
   }
   const entranceBtn = document.getElementById('entranceSignInBtn');
   if(entranceBtn) entranceBtn.hidden = signedIn;
@@ -4212,6 +4221,16 @@ function refreshAccountUI(){
   if(signedIn && nameInput && !nameInput.value && cloudUserLabel && cloudUserLabel!==cloudUserEmail){
     nameInput.value = cloudUserLabel.split(' ')[0].slice(0,24);
   }
+}
+// Home's Profile tile: your Google photo (or 👤) and first name when signed in; plain, dimmed
+// "Profile" for a guest (the dimming itself is the .is-guest class).
+function homeProfileBtnInner(){
+  if(!isSignedIn()) return `<span class="tab-emoji">👤</span> Profile<span class="home-profile-sub">Guest</span>`;
+  const name = (cloudUserLabel && cloudUserLabel!==cloudUserEmail) ? cloudUserLabel.split(' ')[0] : ((cloudUserEmail||'Profile').split('@')[0]);
+  const icon = cloudUserAvatar
+    ? `<img class="home-profile-avatar" src="${escapeAttr(cloudUserAvatar)}" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'tab-emoji',textContent:'👤'}))">`
+    : `<span class="tab-emoji">👤</span>`;
+  return `${icon}<span class="home-profile-name">${escapeHtml(name)}</span>`;
 }
 function showToast(message, kind){
   let host = document.getElementById('toastHost');
@@ -4229,6 +4248,7 @@ async function applySessionIdentity(user){
   cloudUserEmail = user.email || null;
   const meta = user.user_metadata || {};
   cloudUserLabel = meta.full_name || meta.name || user.email || null;
+  cloudUserAvatar = (typeof (meta.avatar_url || meta.picture)==='string' && /^https:\/\//.test(meta.avatar_url || meta.picture)) ? (meta.avatar_url || meta.picture) : null;
   // Supabase's own flag, set true by signInAnonymously() and cleared automatically the instant an
   // anonymous session gets real credentials (updateUser/signUp/OAuth) — trusted directly rather
   // than inferred, since it's exactly what "is this a real account" means server-side. Falls back
@@ -4313,7 +4333,7 @@ async function initCloudSync(){
   }
 }
 function resetCloudIdentity(){
-  cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null;
+  cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null; cloudUserAvatar = null;
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
 }
@@ -4557,18 +4577,53 @@ function refreshAuthGateUI(){
 // per page load, never repeated within the same session. A guest who dismisses it keeps playing
 // locally; online features stay behind requireSignIn() as before.
 let signInReminderShownThisLoad = false;
+// "Tutorial complete" means the whole mandatory series is done AND the player isn't currently in
+// any part of it (a tutorial match, the faction pick, or the tutorial deck picker) — the saved flag
+// alone isn't trusted on its own, so a reminder can never land on top of tutorial content.
+function tutorialFullyDone(){
+  if(!loadTutorialDone()) return false;
+  if(typeof matchState!=='undefined' && matchState && matchState.mode==='tutorial') return false;
+  for(const id of ['factionScreen','tutorialDeckPickerScreen','splashScreen']){
+    const el = document.getElementById(id);
+    if(el && !el.hidden) return false;
+  }
+  return true;
+}
 async function maybeRemindSignIn(){
   if(signInReminderShownThisLoad) return;
-  if(!loadTutorialDone()) return;
+  if(!tutorialFullyDone()) return;
   try{ if(cloudInitPromise) await cloudInitPromise; }catch(e){}
   if(isSignedIn() || !sbClient || !isHostedOnline()) return;
+  if(!tutorialFullyDone()) return; // re-check: the player may have moved on while cloud init finished
   if(typeof matchState!=='undefined' && matchState) return; // never interrupt a live fight
   const overlay = document.getElementById('authGateOverlay');
   if(!overlay || !overlay.hidden) return; // some other sign-in prompt is already up
   signInReminderShownThisLoad = true;
-  authGatePendingAction = null;
-  openAuthGateModal('', {reminder:true});
+  showSignInBanner();
 }
+// The reminder itself (2026-10-02 redesign, per explicit request): a slim, dismissible strip at the
+// top of the screen — not a modal — with exactly two choices.
+function showSignInBanner(){
+  hideSignInBanner();
+  const bar = document.createElement('div');
+  bar.id = 'signInBanner';
+  bar.className = 'signin-banner';
+  bar.setAttribute('role', 'region');
+  bar.setAttribute('aria-label', 'Sign in reminder');
+  bar.innerHTML = `<span class="signin-banner-text">🌰 Sign in to keep your progress safe and play online.</span>
+    <span class="signin-banner-actions">
+      <button type="button" class="btn small google-btn" id="signInBannerGoogle">🔵 Sign in with Google</button>
+      <button type="button" class="btn small ghost" id="signInBannerLater">It's okay</button>
+    </span>`;
+  document.body.appendChild(bar);
+  requestAnimationFrame(()=> bar.classList.add('show'));
+  document.getElementById('signInBannerLater').addEventListener('click', hideSignInBanner);
+  document.getElementById('signInBannerGoogle').addEventListener('click', async ()=>{
+    try{ await cloudSignInWithGoogle(); }
+    catch(err){ showToast((err && err.message) || 'Google sign-in failed — try again.', 'error'); }
+  });
+}
+function hideSignInBanner(){ const b = document.getElementById('signInBanner'); if(b) b.remove(); }
 
 // ---- Ranked ladder ----
 // "Based off the Normal distribution curve, so not too many players are in one segment" (explicit
@@ -8032,7 +8087,7 @@ function leaderWidgetHTML(m){
   // carries a native title alongside its popover either), just a leftover duplicate. Removed;
   // the themed popover alone still names it as the leader via its own tile styling/ribbon.
   return `<div class="leader-widget summonable" id="leaderWidget" data-defid="${m.leaderDefId}" draggable="true">
-    ${cardTileHTML(d, {extraClass:'leader-card-face'})}
+    ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}
     <div class="leader-ribbon">👑 ${ribbon}</div>
   </div>`;
 }
@@ -13864,7 +13919,7 @@ function renderHome(){
             </div>
           </div>
         </div>
-        <button class="btn ghost home-menu-btn-small" data-hometab="profile"><span class="tab-emoji">👤</span> Profile<span class="home-acct-badge ${isSignedIn()?'signed-in':''}" id="homeAcctBadge">${isSignedIn()?'✓ Signed in':'Guest'}</span></button>
+        <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
