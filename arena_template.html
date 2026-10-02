@@ -2252,6 +2252,19 @@
   .rw-panel [data-tip]:hover::after, .rw-panel [data-tip]:focus-visible::after{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%); width:max-content; max-width:240px; white-space:normal; padding:8px 10px; border-radius:8px; background:#fff8e6; color:#2b2117; font-size:12.5px; font-weight:600; line-height:1.4; text-align:left; text-transform:none; letter-spacing:0; box-shadow:0 6px 18px rgba(0,0,0,.35); z-index:20; pointer-events:none;}
   .winloss-actions{gap:10px;}
   /* ---- Coach tips (2026-10-03) ---- */
+  /* Passive (non-blocking) tips never swallow drops/taps on the board underneath — only the button is clickable. */
+  .coach-tip:not(.is-blocking){pointer-events:none;}
+  .coach-tip:not(.is-blocking) .coach-ok{pointer-events:auto;}
+  .faction-btn[hidden]{display:none;}
+  .cd-where{margin:10px 0 0; font-size:13.5px; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .cd-where-k{font-weight:800; margin-right:6px;}
+  .resume-offer{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1200; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
+    max-width:min(560px, calc(100vw - 32px)); padding:12px 16px; border-radius:14px; background:#fff8e6; color:#2b2117; box-shadow:0 12px 32px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; animation:coachIn .25s ease-out;}
+  .resume-offer .ro-ico{font-size:26px;}
+  .resume-offer .ro-title{font-weight:800;}
+  .resume-offer .ro-sub{font-size:13px; opacity:.8;}
+  .resume-offer .ro-actions{display:flex; gap:8px;}
+  .resume-offer .btn.ghost{color:#2b2117; border-color:rgba(43,33,23,.35);}
   .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
@@ -4033,8 +4046,13 @@
         <span class="faction-name">Hummingbirds</span>
         <span class="faction-sub">Sunfeather Dominion</span>
       </button>
+      <button class="faction-btn" id="factionBothBtn" type="button" data-faction="both" hidden>
+        <span class="faction-ico">🦦🐦</span>
+        <span class="faction-name">Both</span>
+        <span class="faction-sub">A little of each</span>
+      </button>
     </div>
-    <p class="splash-sub" id="factionCountdown">Choose within 15s, or both sides will lend you their strength.</p>
+    <p class="splash-sub" id="factionCountdown">Take your time — can’t decide? In 15s you can pick both.</p>
   </div>
 </div>
 <!-- Tutorial series, skirmish 3's "Build Your Bench" deck-arranging step (2026-09-23, batch #31,

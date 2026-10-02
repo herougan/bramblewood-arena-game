@@ -2252,6 +2252,19 @@
   .rw-panel [data-tip]:hover::after, .rw-panel [data-tip]:focus-visible::after{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%); width:max-content; max-width:240px; white-space:normal; padding:8px 10px; border-radius:8px; background:#fff8e6; color:#2b2117; font-size:12.5px; font-weight:600; line-height:1.4; text-align:left; text-transform:none; letter-spacing:0; box-shadow:0 6px 18px rgba(0,0,0,.35); z-index:20; pointer-events:none;}
   .winloss-actions{gap:10px;}
   /* ---- Coach tips (2026-10-03) ---- */
+  /* Passive (non-blocking) tips never swallow drops/taps on the board underneath — only the button is clickable. */
+  .coach-tip:not(.is-blocking){pointer-events:none;}
+  .coach-tip:not(.is-blocking) .coach-ok{pointer-events:auto;}
+  .faction-btn[hidden]{display:none;}
+  .cd-where{margin:10px 0 0; font-size:13.5px; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .cd-where-k{font-weight:800; margin-right:6px;}
+  .resume-offer{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1200; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
+    max-width:min(560px, calc(100vw - 32px)); padding:12px 16px; border-radius:14px; background:#fff8e6; color:#2b2117; box-shadow:0 12px 32px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; animation:coachIn .25s ease-out;}
+  .resume-offer .ro-ico{font-size:26px;}
+  .resume-offer .ro-title{font-weight:800;}
+  .resume-offer .ro-sub{font-size:13px; opacity:.8;}
+  .resume-offer .ro-actions{display:flex; gap:8px;}
+  .resume-offer .btn.ghost{color:#2b2117; border-color:rgba(43,33,23,.35);}
   .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
@@ -4033,8 +4046,13 @@
         <span class="faction-name">Hummingbirds</span>
         <span class="faction-sub">Sunfeather Dominion</span>
       </button>
+      <button class="faction-btn" id="factionBothBtn" type="button" data-faction="both" hidden>
+        <span class="faction-ico">🦦🐦</span>
+        <span class="faction-name">Both</span>
+        <span class="faction-sub">A little of each</span>
+      </button>
     </div>
-    <p class="splash-sub" id="factionCountdown">Choose within 15s, or both sides will lend you their strength.</p>
+    <p class="splash-sub" id="factionCountdown">Take your time — can’t decide? In 15s you can pick both.</p>
   </div>
 </div>
 <!-- Tutorial series, skirmish 3's "Build Your Bench" deck-arranging step (2026-09-23, batch #31,
@@ -8094,7 +8112,7 @@ function describeEffects(def, liveCard){
       if(t.amount==='attack' && atkVal!=null) detail = detail.replace('its own Attack', `<span class="live-stat-val">${atkVal}</span>`);
       if(t.amount==='health' && hpVal!=null) detail = detail.replace('its own Health', `<span class="live-stat-val">${hpVal}</span>`);
     }
-    if(t.count!=null && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
+    if(t.count!=null && t.do!=='spawnCard' && t.do!=='drawCard' && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
     lines.push(`${tDef.label}: ${detail}`);
   });
@@ -8339,6 +8357,15 @@ function cardObtainableFrom(d){
   if(src.kind==='map' && src.node) return 'skirmish';
   if(src.kind==='base') return 'base';
   return null; // unsorted, or an event (no event system live yet)
+}
+// Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
+function cardWhereToGetText(d){
+  const src = cardSourceOf(d);
+  if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
+  if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
+  if(src.kind==='pack') return `Card packs (Tier ${Math.max(1, Number(src.tier)||1)}) in the Shop`;
+  if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
+  return 'Not obtainable yet';
 }
 function conquestNodeLabel(mapId, nodeKey){
   const f = findConquestNode(mapId, nodeKey);
@@ -10284,14 +10311,16 @@ function openCardDetail(defId){
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
-      ${adminModeEnabled ? codexPlacementHTML(d) : ''}
+      ${adminModeEnabled ? codexPlacementHTML(d) : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
       <div class="modal-actions">
         ${adminModeEnabled ? `<button class="btn" id="cdEditBtn" type="button">✏️ Edit (Admin)</button>` : ''}
         <button class="btn primary" id="cdCloseBtn" type="button">Close</button>
       </div>
     </div>`;
   overlay.hidden = false;
-  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; };
+  const onKey = e=>{ if(e.key==='Escape') close(); };
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; document.removeEventListener('keydown', onKey); };
+  document.addEventListener('keydown', onKey);
   document.getElementById('cdCloseXBtn').addEventListener('click', close);
   document.getElementById('cdCloseBtn').addEventListener('click', close);
   overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
@@ -11123,7 +11152,7 @@ function triggerPreviewText(t){
     case 'gainDevilry': doText = `gain ${amt} Dark Point${amt===1?'':'s'} (★)`; break;
     case 'refine': doText = `consume 1 lumber (if any) to produce ${amt} Elemental Energy`; break;
     case 'drawCard': doText = `draw ${count} card${count===1?'':'s'}`; break;
-    case 'spawnCard': doText = `spawn ${count}x «${defId}»`; break;
+    case 'spawnCard': { const sd = getCardDefs()[defId]; doText = `spawn ${count} ${sd ? sd.name : defId}`; break; }
     // Bugfix 2026-09-30 (found during verification of the Custom Triggers redesign above): a
     // buff/debuff that only sets ONE of amount/amount2 (very common — most buffs are Attack-only
     // or Health-only, not both) used to always show BOTH slots jammed together as "+1/+<<>>",
@@ -13673,7 +13702,7 @@ function renderArenaSubTabIfOpen(){
 
 async function findLiveRankedMatch(){
   if(!sbClient || !isSignedIn()){
-    alert('Sign in with a real account (not a guest) to queue for Ranked 1v1 Live.');
+    requireSignIn('to queue for Ranked 1v1 Live', ()=> findLiveRankedMatch());
     return;
   }
   if(deckTotal(myDeckCounts)!==DECK_SIZE){
@@ -13889,7 +13918,26 @@ function loadResumeSnapshot(){
   try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY)||'null'); if(!snap || !snap.players || !RESUMABLE_MODES.has(snap.mode)) return null;
     if(Date.now() - (snap.savedAt||0) > 3*24*3600*1000){ clearResumeSnapshot(); return null; } return snap; }catch(e){ return null; }
 }
+// Story pass 2026-10-03 (US-07): an unfinished fight is OFFERED, not forced — Home opens with a
+// small "Resume / Discard" card instead of dropping you straight back into the match.
+const RESUME_MODE_LABEL = {ai:'vs Computer fight', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
 function tryResumeAbandonedMatch(){
+  const snap = loadResumeSnapshot(); if(!snap) return false;
+  switchTab('home');
+  document.querySelectorAll('.resume-offer').forEach(e=> e.remove());
+  const card = document.createElement('div');
+  card.className = 'resume-offer'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-label', 'Unfinished fight');
+  const what = (snap.conquestNode && snap.conquestNode.name) ? `${snap.conquestNode.name} (${RESUME_MODE_LABEL[snap.mode]||'fight'})` : (RESUME_MODE_LABEL[snap.mode] || 'fight');
+  card.innerHTML = `<div class="ro-ico">⏸️</div><div class="ro-body"><div class="ro-title">You have an unfinished fight</div>
+    <div class="ro-sub">${escapeHtml(what)} · round ${snap.round||1}</div></div>
+    <div class="ro-actions"><button type="button" class="btn small ghost" id="roDiscard">Discard</button><button type="button" class="btn small primary" id="roResume">▶ Resume</button></div>`;
+  document.body.appendChild(card);
+  card.querySelector('#roResume').onclick = ()=>{ card.remove(); resumeAbandonedMatchNow(); };
+  card.querySelector('#roDiscard').onclick = ()=>{ card.remove(); clearResumeSnapshot(); showToast('Unfinished fight discarded.'); };
+  setTimeout(()=>{ try{ card.querySelector('#roResume').focus(); }catch(e){} }, 50);
+  return true;
+}
+function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   try{
     const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity'});
@@ -13932,11 +13980,11 @@ function renderArenaSubTab(body){
           <span class="amb-sub">Pick your saved Async Arena match back up</span>
         </button>`:''}
         <button class="btn primary big arena-mode-btn" id="startVsAiBtn">
-          <span class="amb-ico">🤖</span><span class="amb-lbl">Test Battle</span>
+          <span class="amb-ico">🤖</span><span class="amb-lbl">vs Computer</span>
           <span class="amb-sub">Play against a computer opponent, right now</span>
         </button>
         <button class="btn primary big arena-mode-btn" id="startVsPcBtn">
-          <span class="amb-ico">👥</span><span class="amb-lbl">vs PC</span>
+          <span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span>
           <span class="amb-sub">Local pass-and-play — take turns on this device with a friend</span>
         </button>
         <button class="btn primary big arena-mode-btn" id="startAsyncBtn">
@@ -14704,7 +14752,7 @@ function renderConquestSubTab(body){
         // place you haven't reached yet" rather than "a total mystery," while still making
         // unmistakably clear it can't be clicked/fought yet.
         if(!visible){
-          return `<div class="map-node map-node-hidden" data-lkey="${node.key}" style="${style}" aria-hidden="true" title="Locked — clear the previous skirmish on this trail first">
+          return `<div class="map-node map-node-hidden" data-lkey="${node.key}" role="img" aria-label="Locked skirmish" style="${style}" title="Locked — clear the previous skirmish on this trail first">
             <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>
           </div>`;
         }
@@ -14714,7 +14762,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${done?'<span class="map-node-check">✓</span>':''}
         </button>`;
       }).join('')}
@@ -15013,12 +15061,14 @@ function showFactionScreen(){
   el.hidden = false;
   let secondsLeft = 15;
   const countdownEl = document.getElementById('factionCountdown');
-  const tick = ()=>{ if(countdownEl) countdownEl.textContent = secondsLeft>0 ? `Choose within ${secondsLeft}s, or both sides will lend you their strength.` : 'Both sides it is.'; };
+  const bothBtn = document.getElementById('factionBothBtn');
+  if(bothBtn){ bothBtn.hidden = true; bothBtn.onclick = ()=> resolveFactionChoice('both'); }
+  const tick = ()=>{ if(countdownEl) countdownEl.textContent = secondsLeft>0 ? `Take your time — can’t decide? In ${secondsLeft}s you can pick both.` : 'Can’t decide? Both sides will lend you their strength.'; };
   tick();
   if(factionCountdownTimer) clearInterval(factionCountdownTimer);
   factionCountdownTimer = setInterval(()=>{
     secondsLeft -= 1; tick();
-    if(secondsLeft<=0){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; resolveFactionChoice('both'); }
+    if(secondsLeft<=0){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; if(bothBtn){ bothBtn.hidden = false; bothBtn.focus(); } else resolveFactionChoice('both'); }
   }, 1000);
   const otterBtn = document.getElementById('factionOtterBtn'); if(otterBtn) otterBtn.onclick = ()=> resolveFactionChoice('otters');
   const hbBtn = document.getElementById('factionHummingbirdBtn'); if(hbBtn) hbBtn.onclick = ()=> resolveFactionChoice('hummingbirds');
@@ -15280,6 +15330,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
+  if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
@@ -16261,6 +16312,7 @@ function startRaidMatch(bossId){
   const boss = (cloudRaidBosses||[]).find(b=>b.id===bossId);
   if(!boss) return;
   if(!isSignedIn()) return; // defensive re-check — the click handler already gates this via requireSignIn
+  if(!deckSizeOkOrWarn()) return;
   // Raid Points gate (2026-09-29, per explicit request: "Playing raids require both Raid points
   // and energy") — checked (and spent) BEFORE Energy, so a player who's short on Raid Points
   // never loses Energy for an attempt that was never going to start.
@@ -16368,7 +16420,7 @@ function renderMyDeckPanels(){
     unlockedIds.map(id=>cardTileHTML(defs[id], {magnetic:true})).join('') +
     (lockedIds.length ? `<div class="lock-divider">🔒 Locked — not usable in a deck yet</div>` : '') +
     lockedIds.map(id=>cardTileHTML(defs[id])).join('');
-  document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
+  document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
   // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
@@ -16416,6 +16468,13 @@ function wireCardTileFlourish(root){
 // mode: 'ai' (default — a computer opponent takes player 2, acting the instant you do) or
 // 'pc' (local hot-seat pass-and-play — a second human takes player 2, alternating turns with
 // a "pass the device" beat between them; see activePlayerId/afterPlayerAction).
+// One deck-size gate shared by every mode that fights with your own deck (Conquest and Raid used
+// to skip it, so a 21-card deck could start a Conquest fight — found in the 2026-10-03 story pass).
+function deckSizeOkOrWarn(){
+  if(deckTotal(myDeckCounts)===DECK_SIZE) return true;
+  alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`);
+  return false;
+}
 function startMatch(mode){
   // Deck size gate (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not
   // allow a deck with <20 or >20 cards.") — checked here rather than hard-blocking every
@@ -16454,12 +16513,13 @@ function startMatch(mode){
     leaderDefId: myLeaderId, leaderUid: null};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
-  if(mode==='async' || mode==='pc'){
+  if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet'){
     const r = seededRng(currentMatchSeed ^ 0x5eed);
     const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+    const oppDeckCounts = Object.fromEntries(matchState.players[2].deck.concat(matchState.players[2].hand).map(c=> typeof c==='string' ? c : c.defId).reduce((mm,id)=> mm.set(id,(mm.get(id)||0)+1), new Map()));
     const opp = mode==='pc'
       ? {name:'Player 2', deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)}
-      : {name: VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
+      : {name: (mode==='ai'||mode==='gauntlet') ? 'Computer' : VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts((mode==='ai'||mode==='gauntlet') ? oppDeckCounts : DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
     if(mode==='pc') me.name = (myProfile && myProfile.name) ? myProfile.name+' (P1)' : 'Player 1';
     matchState.opponentName = opp.name;
     showVsScreen(me, opp).then(()=> renderPlay());
@@ -19097,7 +19157,12 @@ function unplayableReason(pl, d){
   if((d.graceCost||0) > (pl.grace||0)) need.push(`${d.graceCost}🕊️`);
   if((d.devilryCost||0) > (pl.devilry||0)) need.push(`${d.devilryCost}★`);
   if((d.stoneCost||0) > (pl.stone||0)) need.push(`${d.stoneCost}🪨`);
-  if(need.length) return `Needs ${need.join(' + ')} — you have ${pl.lumber||0}🪵`;
+  const have = [];
+  if((d.cost||0) > (pl.lumber||0)) have.push(`${pl.lumber||0}🪵`);
+  if((d.graceCost||0) > (pl.grace||0)) have.push(`${pl.grace||0}🕊️`);
+  if((d.devilryCost||0) > (pl.devilry||0)) have.push(`${pl.devilry||0}★`);
+  if((d.stoneCost||0) > (pl.stone||0)) have.push(`${pl.stone||0}🪨`);
+  if(need.length) return `Needs ${need.join(' + ')} — you have ${have.join(' + ')}`;
   return 'Can’t play this right now';
 }
 function renderHand(){
@@ -19113,7 +19178,7 @@ function renderHand(){
     const [rA, rB] = rarityStops(d.rarity||'common');
     const costParts = costBadgeParts(d);
     const whyNot = can ? '' : unplayableReason(me, d);
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${can?'playable':'unplayable'} ${d.art?'':'no-art'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" draggable="${canDrag}" data-defid="${hc.defId}" data-handuid="${hc.uid}" style="--rarity-a:${rA}; --rarity-b:${rB}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}>
+    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${can?'playable':'unplayable'} ${d.art?'':'no-art'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-defid="${hc.defId}" data-handuid="${hc.uid}" style="--rarity-a:${rA}; --rarity-b:${rB}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}>
       ${whyNot?`<div class="whynot-tag">${escapeHtml(whyNot)}</div>`:''}
       ${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -19132,6 +19197,21 @@ function renderHand(){
       if(m.selectedUid !== uid) SoundKit.pickup();
       m.selectedUid = (m.selectedUid===uid) ? null : uid; // tap again to un-arm
       renderHand(); updateControlsDisabled(); refreshDiscardZone();
+      const again = document.querySelector(`#handStrip [data-handuid="${uid}"]`); if(again) again.focus({preventScroll:true});
+    });
+    // Keyboard play (story pass, US-47): Enter/Space arms the card; ↑ plays it (left half, or the
+    // centre when the row is empty), Shift+←/→ plays it to that side; plain ←/→ move between cards.
+    el.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); el.click(); return; }
+      const cards = [...strip.querySelectorAll('[data-handuid]')], i = cards.indexOf(el);
+      if((e.key==='ArrowLeft' || e.key==='ArrowRight') && !e.shiftKey){ e.preventDefault(); const n = cards[i + (e.key==='ArrowLeft'?-1:1)]; if(n) n.focus(); return; }
+      const side = e.key==='ArrowUp' ? 'left' : (e.shiftKey && e.key==='ArrowLeft') ? 'left' : (e.shiftKey && e.key==='ArrowRight') ? 'right' : null;
+      if(!side) return;
+      e.preventDefault();
+      if(!m.engine.canPlay(m.players[viewerHandPid(m)], el.getAttribute('data-defid'), uid) || m.resolving) return;
+      let target = side;
+      if(isSlotMatch(m)){ const row = document.getElementById(viewerHandPid(m)===1 ? 'rowMine' : 'rowEnemy'); const r = row && row.getBoundingClientRect(); const t = r && nearestSlotTarget(row, side==='left' ? r.left : r.right); if(t) target = Number(t.getAttribute('data-slot')); }
+      playCardByUid(uid, target);
     });
     el.addEventListener('dragstart', e=>{
       if(!el.getAttribute('draggable') || el.getAttribute('draggable')==='false'){ e.preventDefault(); return; }
@@ -24125,6 +24205,7 @@ function renderMarketInto(body){
 
 function switchTab(tab){
   currentTab = tab;
+  if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';
@@ -24407,7 +24488,12 @@ function triggerEntranceAnimation(instant){
   if(seen){ triggerEntranceAnimation(true); return; } // reload in the same tab: straight back in (tutorial / resume / Home)
   // 2026-10-03 ("Once signed in, skip past the front screen, just go straight in"): a returning
   // signed-in player (a saved Supabase session in this browser) never sees the splash at all.
-  if(hasStoredCloudSession()){ triggerEntranceAnimation(true); return; }
+  if(hasStoredCloudSession()){
+    triggerEntranceAnimation(true);
+    // The splash (where "Welcome back" lives) is skipped for signed-in players, so greet them on Home.
+    if(hasPlayedBefore() && myProfile && myProfile.name) setTimeout(()=> showToast(`Welcome back, ${myProfile.name}! 🌰`), 600);
+    return;
+  }
   renderEntranceAuth();
 })();
 
