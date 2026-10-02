@@ -15928,13 +15928,15 @@ function renderAdmin(){
    never actually shows empty even before real players exist.
    ============================================================ */
 let cloudRaidBosses = null; // [{id,name,icon,blurb,stats:{hqHp,deck},strength}], sorted by strength
+let cloudRaidBossesError = false;
 let cloudRecentRaidAttempts = null; // most recent ~15 attempts across all bosses, newest first
 async function loadRaidBosses(){
   if(!sbClient) { setTimeout(()=>{ if(sbClient) loadRaidBosses(); }, 1500); return; } // initCloudSync() may not have finished yet on first page load
   try{
-    const { data } = await sbClient.from('raid_bosses').select('*').eq('active', true).order('strength', {ascending:true});
-    if(data) cloudRaidBosses = data;
-  }catch(e){}
+    const { data, error } = await sbClient.from('raid_bosses').select('*').eq('active', true).order('strength', {ascending:true});
+    if(error) throw error;
+    cloudRaidBosses = data || []; cloudRaidBossesError = false;
+  }catch(e){ cloudRaidBosses = []; cloudRaidBossesError = true; }
   if(document.getElementById('playSubBody') && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody'));
 }
 async function loadRecentRaidAttempts(){
@@ -15998,12 +16000,12 @@ function renderOnlineRaidPanel(body){
   const rpLine = rpNextMs===null ? `${rp}/${RAID_POINTS_MAX}` : `${rp}/${RAID_POINTS_MAX} · +1 in ${formatRaidPointCountdown(rpNextMs)}`;
   body.innerHTML = `
     <div class="panel online-raid-panel">
-      <h2>🌐 Online Raid <span id="cloudSyncPill" class="cloud-sync-pill" title="">☁️ Connecting…</span></h2>
+      <h2>🌐 Online Raid</h2>
       <p class="panel-sub">Fixed-strength Raid Bosses, open to everyone right away — your rank: <b>${myRank.label}</b> (rating ${Math.round(myRating)}). Each attempt costs ${RAID_POINTS_COST}🎫 Raid Point and ${ENERGY_COST.onlineRaid}⚡ Energy.</p>
       <div class="energy-pill raid-points-pill ${rp<RAID_POINTS_COST?'energy-low':''}" title="Raid Points gate Online Raid attempts specifically, on top of Energy — refills slowly (1 every 6h) since a raid boss is the highest-stakes PvE fight in the game.">🎫 ${rpLine}</div>
       ${cloudRaidBosses===null ? `<div class="empty-hint">Loading raid bosses…</div>`
         : (cloudRaidBosses.length ? `<div class="conquest-nodes" id="onlineRaidNodeList">${cloudRaidBosses.map(onlineRaidBossCardHTML).join('')}</div>`
-          : `<div class="empty-hint">Couldn't reach the raid backend right now — try again shortly.</div>`)}
+          : `<div class="empty-hint">${cloudRaidBossesError ? 'Couldn’t reach the raid server right now — try again shortly.' : 'No raid is open right now. The next one is on its way — see “Coming Up” below.'}</div>`)}
     </div>
     <div class="panel online-raid-feed-panel"><h2>📜 Recent Attempts</h2>
       <div id="onlineRaidFeed" class="raid-attempts-feed"><div class="empty-hint">Loading recent attempts…</div></div>
