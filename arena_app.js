@@ -1044,6 +1044,24 @@ function getCardDefs(){
     if(!tier) return;
     out[id] = Object.assign({}, out[id], {prestigeTier: tierIdx, prestigeClass: tier.cssClass, prestigeIcon: tier.icon, prestigeLabel: tier.label});
   });
+  // Hidden (2026-10-02): a hidden card is always Locked to the player until it's unlocked — being
+  // discovered only reveals it, it doesn't make it playable.
+  Object.keys(out).forEach(id=>{
+    const d = out[id];
+    if(d.hidden && !d.locked && !(myUnlockedCardIds && myUnlockedCardIds.has(id))) out[id] = Object.assign({}, d, {locked:true});
+  });
+  // Hall of Fame — Classic (2026-10-02): keeps its own name/flavor/art/icon, but every mechanical
+  // field is forced from the current base card (after its leveling), so it is identical under the
+  // hood no matter what its own stored data says.
+  Object.keys(out).forEach(id=>{
+    const d = out[id];
+    if(!(d.hallOfFame && d.hallOfFame.variant==='classic')) return;
+    const base = out[d.hallOfFame.baseId];
+    if(!base) return;
+    const mech = {};
+    HOF_MECH_FIELDS.forEach(k=>{ if(base[k]!==undefined) mech[k] = base[k]; else if(d[k]!==undefined) mech[k] = undefined; });
+    out[id] = Object.assign({}, d, mech);
+  });
   return out;
 }
 function getDraftableIds(){
@@ -1051,7 +1069,143 @@ function getDraftableIds(){
   // Test cards (2026-09-22, Test Suite feature) are excluded from the draftable pool exactly
   // like token cards already are — they exist purely for the Sandbox Test Battle's spawn picker,
   // never for a real deck, regardless of whether Developer Mode is currently on or off.
-  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test);
+  // 2026-10-02: also never offers a card the player doesn't know exists yet (Hidden, undiscovered)
+  // or a Hall of Fame draft / an Antique that fails its balance check.
+  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs));
+}
+
+/* ============================================================
+   Discovery, Codex tiers, Hall of Fame (2026-10-02, explicit design)
+
+   HIDDEN vs LOCKED. Locked = you can see it but can't use it. Hidden = you don't even know it
+   exists: a `hidden:true` card is left out of every player-facing list (Codex, deck pool) until
+   the player SIGHTS it anywhere in play — on either side of the board, in their hand, as a pack
+   or reward, or in a Conquest node's revealed deck. The first sighting plays a "✨ Discovered!"
+   pop and from then on the card behaves as an ordinary Locked card (it's forced locked:true
+   while hidden, see getCardDefs). Discoveries are per player, saved in localStorage.
+
+   CODEX TIERS. Each card has a `source`: {kind:'map', id:'m3'} | {kind:'pack', tier:1} |
+   {kind:'event', theme:'Christmas', name:'Winter Lights 2026'} | {kind:'base'}. Set from the card's
+   Codex detail view (admin). Cards with no source get a sensible automatic one (the first map
+   that uses them, or Base for starter/basic cards). Browse order: Tier 1 = Tutorial, Base & maps
+   1–10, then Pack tier 1; Tier 2 = maps 11–20, then Pack tier 2; …; then anything unsorted; then
+   Events at the very bottom, grouped by theme (several events can share a theme).
+
+   HALL OF FAME. `hallOfFame:{variant, baseId, improvement, draft}`.
+     - classic: famously-used card with its OLD name/flavor/art, but mechanically forced identical
+       to the current base card (every mechanical field is copied from the base in getCardDefs).
+     - antique: a forgotten, weak card brought back exactly as it was PLUS at least one small
+       improvement (`improvement` text required). Must stay weak and non-abusable: antiqueCheck()
+       blocks it from decks if it's stronger than the median card at its cost, or if its rarity
+       allows more than 1 copy.
+     - draft:true keeps a proposal out of players' sight until it's approved (admin sees it).
+   ============================================================ */
+const DISCOVERED_KEY = 'bramblewood_arena_discovered';
+let myDiscoveredCardIds = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){ return new Set(); } })();
+function saveDiscovered(){ try{ localStorage.setItem(DISCOVERED_KEY, JSON.stringify(Array.from(myDiscoveredCardIds))); }catch(e){} }
+function isCardHiddenForPlayer(d){
+  if(!d || !d.hidden) return false;
+  if(myDiscoveredCardIds.has(d.id)) return false;
+  if(myUnlockedCardIds && myUnlockedCardIds.has(d.id)) return false;
+  return true;
+}
+const discoverQueue = [];
+let discoverShowing = false;
+// Call with any defIds the player can currently SEE. Cheap no-op for everything that isn't an
+// undiscovered hidden card, so it's safe to call from every render.
+function noteSighted(defIds){
+  if(!defIds) return;
+  const defs = getCardDefs();
+  let changed = false;
+  for(const id of defIds){
+    const d = defs[id];
+    if(!d || !d.hidden || myDiscoveredCardIds.has(id)) continue;
+    myDiscoveredCardIds.add(id); changed = true;
+    discoverQueue.push(id);
+  }
+  if(changed){ saveDiscovered(); pumpDiscoverQueue(); }
+}
+function pumpDiscoverQueue(){
+  if(discoverShowing || !discoverQueue.length) return;
+  const id = discoverQueue.shift();
+  const d = getCardDefs()[id]; if(!d){ pumpDiscoverQueue(); return; }
+  discoverShowing = true;
+  const el = document.createElement('div');
+  el.className = 'discover-pop';
+  el.setAttribute('role', 'status');
+  el.innerHTML = `<div class="discover-burst"></div><div class="discover-card">${cardTileHTML(d, {inPlay:true})}</div><div class="discover-text"><span class="discover-title">✨ Discovered!</span><span class="discover-name">${escapeHtml(d.name)}</span></div>`;
+  document.body.appendChild(el);
+  try{ SoundKit.quick && SoundKit.quick(); }catch(e){}
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); el.classList.add('leave'); }, 2600);
+  setTimeout(()=>{ el.remove(); discoverShowing = false; pumpDiscoverQueue(); }, 3100);
+}
+
+// ---- Card sources / Codex tiers ----
+let _mapUsageCache = null;
+function cardMapUsage(){
+  if(_mapUsageCache) return _mapUsageCache;
+  const use = {};
+  (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).forEach(map=> (map.nodes||[]).forEach(n=> Object.keys(n.deck||{}).forEach(id=>{ if(!use[id]) use[id] = map.id; })));
+  return (_mapUsageCache = use);
+}
+function cardSourceOf(d){
+  if(d && d.source && d.source.kind) return d.source;
+  const mapId = cardMapUsage()[d.id];
+  if(d.rarity==='starter' || d.basic || d.id==='wandering-traveller') return {kind:'base', auto:true};
+  if(mapId) return {kind:'map', id:mapId, auto:true};
+  return {kind:'unsorted', auto:true};
+}
+function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
+// A sortable section key + human label for a card's Codex group.
+function codexSectionOf(d){
+  const src = cardSourceOf(d);
+  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:'Tier 1 · Tutorial, Base & Maps 1–10', tier:1};
+  if(src.kind==='map'){
+    const idx = Math.max(0, mapIndexOf(src.id));
+    const tier = Math.floor(idx/10)+1;
+    return {key:`${tier}-0`, order:[tier,0,0,''], label: tier===1 ? 'Tier 1 · Tutorial, Base & Maps 1–10' : `Tier ${tier} · Maps ${(tier-1)*10+1}–${tier*10}`, tier};
+  }
+  if(src.kind==='pack'){
+    const tier = Math.max(1, Number(src.tier)||1);
+    return {key:`${tier}-1`, order:[tier,1,0,''], label:`Tier ${tier} · Pack Tier ${tier}`, tier};
+  }
+  if(src.kind==='event'){
+    const theme = (src.theme||'Event').trim(), name = (src.name||'').trim();
+    return {key:`ev-${theme}`, order:[9998,0,0,theme.toLowerCase()], label:`🎉 Events · ${theme}`, event:true, eventName:name};
+  }
+  return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unsorted — set a source in each card’s detail view' : 'More cards'};
+}
+function cmpOrder(a,b){ for(let i=0;i<4;i++){ if(a[i]<b[i]) return -1; if(a[i]>b[i]) return 1; } return 0; }
+
+// ---- Hall of Fame ----
+const HOF_MECH_FIELDS = ['rarity','cost','wait','attack','health','effects','dmgType','resist','graceCost','devilryCost','stoneCost','exileCost','mechanicLine','archetypes','tags','faction','basic','token','level'];
+function isHofVariant(d){ return !!(d && d.hallOfFame && (d.hallOfFame.variant==='classic' || d.hallOfFame.variant==='antique')); }
+function cardPowerScore(d){
+  const e = d.effects || {};
+  const skills = Object.keys(e).filter(k=> k!=='triggers' && e[k]).length + (Array.isArray(e.triggers) ? e.triggers.length : 0);
+  return (Number(d.attack)||0) + (Number(d.health)||0)/3 + skills*1.5 - (Number(d.wait)||0)*0.5;
+}
+// Antique balance gate: must carry an improvement note, be capped to 1 copy per deck, and be no
+// stronger than the median ordinary card at the same Lumber cost.
+function antiqueCheck(d, defs){
+  const hof = d.hallOfFame || {};
+  if(!hof.improvement || !String(hof.improvement).trim()) return {ok:false, reason:'Antique needs an "improvement" note describing what was improved.'};
+  if(maxCopiesForRarity(d.rarity) > 1) return {ok:false, reason:'Antique must use a 1-copy rarity (Unique/Legendary/Mythic/Ancient) so it can’t be stacked.'};
+  const peers = Object.values(defs).filter(x=> x.id!==d.id && !x.test && !x.token && !isHofVariant(x) && (x.cost||0)===(d.cost||0)).map(cardPowerScore).sort((a,b)=>a-b);
+  if(peers.length){
+    const median = peers[Math.floor(peers.length/2)];
+    const p = cardPowerScore(d);
+    if(p > median) return {ok:false, reason:`Too strong for an Antique (power ${p.toFixed(1)} vs median ${median.toFixed(1)} at cost ${d.cost||0}). Antiques err on the lousy side.`};
+  }
+  return {ok:true};
+}
+// True when a Hall of Fame card must stay out of decks (a draft, or an Antique failing its check).
+function hofBlocked(d, defs){
+  if(!isHofVariant(d)) return false;
+  if(d.hallOfFame.draft) return true;
+  if(d.hallOfFame.variant==='antique') return !antiqueCheck(d, defs || getCardDefs()).ok;
+  return false;
 }
 async function initDb(){
   try{
@@ -1744,6 +1898,7 @@ function codexShell(){
          now just another Codex sub-tab, routed below exactly like Brambles/Reference/etc. -->
     <button class="btn small ${codexSubTab==='forge'?'primary':''}" data-codextab="forge">🔨 Forge</button>
     <button class="btn small ${codexSubTab==='reference'?'primary':''}" data-codextab="reference">📚 Reference</button>
+    <button class="btn small ${codexSubTab==='halloffame'?'primary':''}" data-codextab="halloffame">🏛 Hall of Fame</button>
     ${adminModeEnabled ? `<button class="btn small ${codexSubTab==='deleted'?'primary':''}" data-codextab="deleted">🗑 Recently Deleted</button>
     <button class="btn small ${codexSubTab==='txns'?'primary':''}" data-codextab="txns">🧾 Log</button>` : ''}
     <!-- 2026-09-26 (#2, "add a quick button to codex from deck view... and same from codex to
@@ -1773,6 +1928,11 @@ function renderCodex(){
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
+  if(codexSubTab==='halloffame'){
+    body.innerHTML = hallOfFameTabHTML();
+    body.querySelectorAll('.hof-tile .card-tile').forEach(t=> t.addEventListener('click', ()=> openCardDetail(t.getAttribute('data-defid'))));
+    return;
+  }
   if(codexSubTab==='deleted' && adminModeEnabled){ renderDeletedTab(body); return; }
   if(codexSubTab==='txns' && adminModeEnabled){ renderTxnsTab(body); return; }
   const defs = getCardDefs();
@@ -1957,18 +2117,41 @@ function renderCodexGrid(){
     else base = (A.cost-B.cost) || A.name.localeCompare(B.name);
     return codexFilter.dir==='asc' ? -base : base;
   }
-  // Unlocked cards first, locked ones below — locked cards are still browsable/editable
-  // here (that's how you unlock more later), just visually pushed to the bottom.
-  const unlocked = ids.filter(id=>!defs[id].locked).sort(cmp);
-  const locked = ids.filter(id=>defs[id].locked).sort(cmp);
-  document.getElementById('codexResultCount').textContent = `${ids.length} of ${Object.keys(defs).length} cards (${unlocked.length} unlocked)`;
-  document.getElementById('codexGrid').innerHTML =
-    unlocked.map(id=> cardTileHTML(defs[id], {editable:true})).join('') +
+  // 2026-10-02: Hidden cards the player hasn't discovered don't exist as far as they know (admin
+  // still sees them, tagged), and Hall of Fame variants live in their own Codex tab.
+  ids = ids.filter(id=> !isHofVariant(defs[id]) && (adminModeEnabled || !isCardHiddenForPlayer(defs[id])));
+  const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && (adminModeEnabled || !isCardHiddenForPlayer(defs[id]))).length;
+  const unlockedCount = ids.filter(id=>!defs[id].locked).length;
+  document.getElementById('codexResultCount').textContent = `${ids.length} of ${totalVisible} cards (${unlockedCount} unlocked)`;
+  // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
+  // 1–10), Pack tier 1, Tier 2 maps, Pack tier 2, …, unsorted, then Events by theme. Inside each
+  // group: unlocked first, then locked, each sorted by the chosen sort.
+  const groups = new Map();
+  ids.forEach(id=>{
+    const sec = codexSectionOf(defs[id]);
+    if(!groups.has(sec.key)) groups.set(sec.key, {sec, ids:[]});
+    groups.get(sec.key).ids.push(id);
+  });
+  const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
+  const tileFor = id=>{
+    const d = defs[id];
+    const tags = [];
+    if(adminModeEnabled && isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag cx-tag-hidden">👁‍🗨 Hidden</span>');
+    if(adminModeEnabled && d.hidden && !isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag">✨ Discovered</span>');
+    const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
+    return `<div class="cx-tile-wrap">${cardTileHTML(d, {editable:true})}${tags.join('')}${src}</div>`;
+  };
+  let html = '';
+  ordered.forEach(({sec, ids:gIds})=>{
+    const un = gIds.filter(id=>!defs[id].locked).sort(cmp), lo = gIds.filter(id=>defs[id].locked).sort(cmp);
+    html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-count">${un.length}/${gIds.length} unlocked</span></div>`;
+    html += un.map(tileFor).join('');
     // 2026-09-22: corrected — this used to say "click one to unlock it" with no click handler
     // to back it up (flagged in batch #18's audit). Real card unlocking now exists (a chance
     // per Shop pack), so this points there instead, with an actual working link.
-    (locked.length ? `<div class="lock-divider">🔒 Locked — unlock new cards from the <a href="#" id="codexShopLink">Shop</a></div>` : '') +
-    locked.map(id=> cardTileHTML(defs[id], {editable:true})).join('');
+    if(lo.length) html += `<div class="lock-divider">🔒 Locked — unlock new cards from the <a href="#" class="codexShopLink">Shop</a></div>` + lo.map(tileFor).join('');
+  });
+  document.getElementById('codexGrid').innerHTML = html;
   // 2026-09-26 (#364, "in codex, i want click to instead open the card to learn more about it,
   // and tidbits or fun text from me, the creator... include their uses with this card and winrate
   // and maybe overall contribution score"): a Codex click now ALWAYS opens the new read-only
@@ -1982,8 +2165,32 @@ function renderCodexGrid(){
     t.addEventListener('click', ()=> openCardDetail(t.getAttribute('data-defid')));
     t.classList.add('cx-editable'); // name predates this change but the "this is clickable" hover/cursor affordance is still exactly right
   });
-  const shopLink = document.getElementById('codexShopLink');
-  if(shopLink) shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); });
+  document.querySelectorAll('#codexGrid .codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
+}
+// Hall of Fame tab (2026-10-02): Classic and Antique variants, each tagged with what it's a variant
+// of; Antiques show their improvement and (admin) their balance-check result; drafts are
+// admin-only until approved.
+function hallOfFameTabHTML(){
+  const defs = getCardDefs();
+  const all = Object.values(defs).filter(d=> isHofVariant(d) && (adminModeEnabled || !d.hallOfFame.draft) && (adminModeEnabled || !isCardHiddenForPlayer(d)));
+  const block = (variant, title, blurb)=>{
+    const list = all.filter(d=> d.hallOfFame.variant===variant).sort((a,b)=> a.name.localeCompare(b.name));
+    const tiles = list.map(d=>{
+      const base = defs[d.hallOfFame.baseId];
+      const chk = variant==='antique' ? antiqueCheck(d, defs) : {ok:true};
+      return `<div class="hof-entry">
+        <div class="hof-tile">${cardTileHTML(d, {extraClass:`hof-${variant}`, inPlay:true})}<span class="hof-ribbon hof-ribbon-${variant}">${variant==='classic'?'🏛 Classic':'🏺 Antique'}</span></div>
+        <div class="hof-meta">
+          ${base ? `<div>${variant==='classic'?'Classic of':'Revived from'} <b>${escapeHtml(base.name)}</b></div>` : ''}
+          ${variant==='antique' && d.hallOfFame.improvement ? `<div class="hof-improve">⬆ ${escapeHtml(d.hallOfFame.improvement)}</div>` : ''}
+          ${d.hallOfFame.draft ? `<div class="hof-draft">Draft — not live yet</div>` : ''}
+          ${adminModeEnabled && !chk.ok ? `<div class="hof-warn">⚠ ${escapeHtml(chk.reason)}</div>` : ''}
+        </div></div>`;
+    }).join('');
+    return `<div class="panel hof-panel"><h3>${title}</h3><p class="panel-sub">${blurb}</p><div class="hof-grid">${tiles || '<p class="panel-sub">None yet.</p>'}</div></div>`;
+  };
+  return block('classic', '🏛 Classic', 'Famous cards in their original look and words. Mechanically identical to today’s version — same card under the hood.')
+    + block('antique', '🏺 Antique', 'Forgotten, humble cards brought back as they were, each with one small improvement. Never strong, never abusable, one copy per deck.');
 }
 // Card art (2026-09-17): a card's `.ico` box shows real sprite artwork (d.art, a data URI)
 // when the canonical card def has one, falling back to the plain emoji (d.icon) otherwise —
@@ -2758,6 +2965,7 @@ function openCardDetail(defId){
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
+      ${adminModeEnabled ? codexPlacementHTML(d) : ''}
       <div class="modal-actions">
         ${adminModeEnabled ? `<button class="btn" id="cdEditBtn" type="button">✏️ Edit (Admin)</button>` : ''}
         <button class="btn primary" id="cdCloseBtn" type="button">Close</button>
@@ -2770,6 +2978,7 @@ function openCardDetail(defId){
   overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
   const editBtn = document.getElementById('cdEditBtn');
   if(editBtn) editBtn.addEventListener('click', ()=>{ close(); openCardEditor(defId); });
+  if(adminModeEnabled) wireCodexPlacement(defId);
   const signInBtn = document.getElementById('cdSignInStatsBtn');
   if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId)));
   // Signed-in players' match history loads lazily (see loadMatchHistory) — if it's still in
@@ -2782,6 +2991,63 @@ function openCardDetail(defId){
       }
     });
   }
+}
+// Codex placement (2026-10-02, admin): where a card comes from — decides its Codex tier/section —
+// plus its Hidden flag. Edits the RAW stored card (never getCardDefs' leveled/derived copy) and
+// saves through the normal saveCard path, so it syncs and logs like any other edit.
+function rawCardDef(id){ return JSON.parse(JSON.stringify(liveCards[id] || CARD_DEFS_BASELINE[id] || null)); }
+function codexPlacementHTML(d){
+  const raw = rawCardDef(d.id) || d;
+  const src = raw.source || {};
+  const auto = cardSourceOf(Object.assign({}, raw, {source:null}));
+  const autoLabel = auto.kind==='map' ? `auto: ${(CONQUEST_MAPS.find(m=>m.id===auto.id)||{}).name||auto.id}` : auto.kind==='base' ? 'auto: Base' : 'auto: Unsorted';
+  const maps = CONQUEST_MAPS.map((m,i)=>`<option value="${escapeAttr(m.id)}" ${src.kind==='map'&&src.id===m.id?'selected':''}>${i+1}. ${escapeHtml(m.name)}</option>`).join('');
+  return `<div class="panel cd-placement" id="cdPlacement">
+    <h4>📂 Codex placement <span class="panel-sub-inline">(admin)</span></h4>
+    <div class="cdp-row">
+      <select id="cdpKind" aria-label="Source type">
+        <option value="" ${!src.kind?'selected':''}>Automatic (${escapeHtml(autoLabel)})</option>
+        <option value="base" ${src.kind==='base'?'selected':''}>Tutorial & Base</option>
+        <option value="map" ${src.kind==='map'?'selected':''}>Skirmish (map)</option>
+        <option value="pack" ${src.kind==='pack'?'selected':''}>Pack</option>
+        <option value="event" ${src.kind==='event'?'selected':''}>Event</option>
+      </select>
+      <select id="cdpMap" aria-label="Map" ${src.kind==='map'?'':'hidden'}>${maps}</select>
+      <input id="cdpPackTier" type="number" min="1" step="1" aria-label="Pack tier" placeholder="Pack tier" value="${src.kind==='pack'?escapeAttr(String(src.tier||1)):'1'}" ${src.kind==='pack'?'':'hidden'}>
+      <input id="cdpEventTheme" type="text" aria-label="Event theme" placeholder="Theme (e.g. Christmas)" value="${src.kind==='event'?escapeAttr(src.theme||''):''}" ${src.kind==='event'?'':'hidden'}>
+      <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
+    </div>
+    <label class="field-checkbox-row"><input type="checkbox" id="cdpHidden" ${raw.hidden?'checked':''}> Hidden — players don’t know it exists until they first see it</label>
+    <div class="cdp-actions"><button type="button" class="btn small primary" id="cdpSave">Save placement</button><span class="cdp-msg" id="cdpMsg"></span></div>
+  </div>`;
+}
+function wireCodexPlacement(defId){
+  const kind = document.getElementById('cdpKind'); if(!kind) return;
+  const show = ()=>{
+    document.getElementById('cdpMap').hidden = kind.value!=='map';
+    document.getElementById('cdpPackTier').hidden = kind.value!=='pack';
+    document.getElementById('cdpEventTheme').hidden = kind.value!=='event';
+    document.getElementById('cdpEventName').hidden = kind.value!=='event';
+  };
+  kind.addEventListener('change', show);
+  document.getElementById('cdpSave').addEventListener('click', async ()=>{
+    const raw = rawCardDef(defId); if(!raw) return;
+    const k = kind.value;
+    if(!k) delete raw.source;
+    else if(k==='base') raw.source = {kind:'base'};
+    else if(k==='map') raw.source = {kind:'map', id: document.getElementById('cdpMap').value};
+    else if(k==='pack') raw.source = {kind:'pack', tier: Math.max(1, parseInt(document.getElementById('cdpPackTier').value,10)||1)};
+    else if(k==='event'){
+      const theme = document.getElementById('cdpEventTheme').value.trim(), name = document.getElementById('cdpEventName').value.trim();
+      if(!theme){ document.getElementById('cdpMsg').textContent = 'Give the event a theme first.'; return; }
+      raw.source = {kind:'event', theme, name};
+    }
+    raw.hidden = document.getElementById('cdpHidden').checked;
+    if(!raw.hidden) delete raw.hidden;
+    await saveCard(raw);
+    document.getElementById('cdpMsg').textContent = 'Saved ✓';
+    if(currentTab==='codex') renderCodex();
+  });
 }
 function openCardEditor(defId){
   editingCard = defId ? JSON.parse(JSON.stringify(getCardDefs()[defId])) : blankCard();
@@ -2848,7 +3114,7 @@ function renderEditor(){
            decks)" checkbox — checked meant NOT locked, the opposite of the underlying c.locked
            field it wrote to (c.locked = !checked). Now the checkbox IS c.locked directly: label
            reads "Locked", checked when the card is actually locked, no double-negative. -->
-      <div class="field" title="Locked cards can't be added to a deck yet — use this to keep new/experimental cards out of play until you're ready."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label></div>
+      <div class="field" title="Locked cards can't be added to a deck yet — use this to keep new/experimental cards out of play until you're ready."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden cards don't appear anywhere for a player until they first see one in play — then it shows a 'Discovered!' pop and becomes a normal Locked card."><input type="checkbox" id="fHidden" ${c.hidden?'checked':''}> Hidden</label></div>
       ${devModeEnabled ? `<div class="field" title="Test cards never appear in the draftable pool or ordinary Codex browsing (same as a locked card, but permanently, regardless of unlocking) -- they only ever show up in the Codex's dedicated 🧪 Test cards filter and the Sandbox Test Battle's spawn picker."><label>Developer</label><label class="field-checkbox-row"><input type="checkbox" id="fTest" ${c.test?'checked':''}> 🧪 Test card</label></div>` : ''}
     </div>
     <div class="field-row">
@@ -3590,6 +3856,8 @@ function readEditorFormIntoCard(){
   // 2026-09-27, item 8: the checkbox IS c.locked directly now (see the field markup above) —
   // no more !checked inversion.
   c.locked = document.getElementById('fLocked').checked;
+  const fHiddenEl = document.getElementById('fHidden');
+  if(fHiddenEl){ if(fHiddenEl.checked) c.hidden = true; else delete c.hidden; }
   // Test-card checkbox only exists in the DOM when Developer Mode is on (see renderEditor above)
   // — preserve whatever the card already carried rather than clobbering it to false whenever it's
   // saved with the field hidden.
@@ -4992,6 +5260,7 @@ function unlockCardForPlayer(id, source){
   // already-unlocked early-return below so a 2nd/3rd/4th pull of the same card still counts as
   // owning more copies, not a silent no-op.
   grantCardCopy(id);
+  noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
   myUnlockedCardIds.add(id);
   saveUnlockedCardIds();
@@ -5021,6 +5290,7 @@ function saveLockedReceivedCardIds(){ try{ localStorage.setItem('bramblewood_are
 // once one exists rather than something to design from scratch later.
 function receiveLockedCard(id, source){
   if(!id || myUnlockedCardIds.has(id) || myLockedReceivedCardIds.has(id)) return false;
+  noteSighted([id]);
   myLockedReceivedCardIds.add(id);
   saveLockedReceivedCardIds();
   const d = getCardDefs()[id] || {};
@@ -6857,6 +7127,7 @@ function renderConquestSubTab(body){
       : selectedNode.revealDeck ? `earn a Rank ${selectedNode.revealDeck} clear here to reveal it`
       : '';
     panelEl.hidden = false;
+    if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
         ${progress.ranks[nid] ? `<span class="conquest-rank-badge rank-${progress.ranks[nid]}" title="Your best clear here">Rank ${progress.ranks[nid]}</span>` : ''}
@@ -9246,6 +9517,8 @@ function renderBoard(opts){
     return {left: map(rr.left), center: map(rr.center), right: map(rr.right)};
   }
   const p1Rows = rowsFor(m.players[1]), p2Rows = rowsFor(m.players[2]);
+  // Discovery (2026-10-02): any card on either side of the board counts as sighted.
+  noteSighted([...p1Rows.left, ...p1Rows.center, ...p1Rows.right, ...p2Rows.left, ...p2Rows.center, ...p2Rows.right].map(c=>c.defId));
   const maxLeft = Math.max(p1Rows.left.length, p2Rows.left.length);
   const maxRight = Math.max(p1Rows.right.length, p2Rows.right.length);
   // Victory dance (2026-09-16, per explicit request: "When you win, I want all the cards to
@@ -10594,6 +10867,7 @@ function renderHand(){
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
   const strip = document.getElementById('handStrip'); if(!strip) return;
+  noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
   strip.innerHTML = me.hand.map(hc=>{
     const d = defs[hc.defId]; if(!d) return '';
     const can = m.engine.canPlay(me, hc.defId, hc.uid);
