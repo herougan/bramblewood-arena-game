@@ -13690,6 +13690,37 @@ function resumeAsyncMatch(){
   renderPlay();
 }
 function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); matchState = null; renderPlay(); }
+/* ---- Abandoned-match resume (2026-10-03, per explicit request: "If there was a previously
+   abandoned game, continue with that game"). Any vs-AI-style match (Test Battle, Conquest,
+   Gauntlet, Tutorial) snapshots itself after every render while it's in progress; closing the tab
+   mid-fight leaves that snapshot behind, and the next launch drops you straight back in.
+   Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
+const RESUME_KEY = 'bramblewood_resume_match_v1';
+const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial']);
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult'];
+function saveResumeSnapshot(){
+  const m = matchState;
+  if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
+  if(m.over){ clearResumeSnapshot(); return; }
+  try{ const snap = {savedAt: Date.now(), log: (m.log||[]).slice(-60)}; RESUME_FIELDS.forEach(k=>{ if(m[k]!==undefined) snap[k] = m[k]; }); localStorage.setItem(RESUME_KEY, JSON.stringify(snap)); }catch(e){}
+}
+function clearResumeSnapshot(){ try{ localStorage.removeItem(RESUME_KEY); }catch(e){} }
+function loadResumeSnapshot(){
+  try{ const snap = JSON.parse(localStorage.getItem(RESUME_KEY)||'null'); if(!snap || !snap.players || !RESUMABLE_MODES.has(snap.mode)) return null;
+    if(Date.now() - (snap.savedAt||0) > 3*24*3600*1000){ clearResumeSnapshot(); return null; } return snap; }catch(e){ return null; }
+}
+function tryResumeAbandonedMatch(){
+  const snap = loadResumeSnapshot(); if(!snap) return false;
+  try{
+    const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode: snap.battleMode || 'gravity'});
+    matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
+    delete matchState.savedAt;
+    lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
+    switchTab('play');
+    showToast('▶️ Picking up your unfinished match where you left off.');
+    return true;
+  }catch(e){ console.error('[Bramblewood] resume failed', e); clearResumeSnapshot(); matchState = null; return false; }
+}
 function renderArenaSubTab(body){
   const resumable = !!loadAsyncMatchState();
   const dungeonRun = loadDungeonRun();
@@ -16034,6 +16065,7 @@ function startMatch(mode){
 }
 function endMatch(){
   SoundKit.stopAll();
+  clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
   if(matchState && matchState.mode==='liveRanked') leaveLiveMatch(); // sends an abandon notice (if the match wasn't already over) and tears down the Realtime channel either way
@@ -16380,6 +16412,7 @@ function renderMatchUI(){
   // but is truthful and fully functional, rather than mislabeling either side.
   const isLiveRanked = m.mode==='liveRanked';
   if(isAsync){ if(m.over) clearAsyncMatchState(); else saveAsyncMatchState(); }
+  if(RESUMABLE_MODES.has(m.mode)) saveResumeSnapshot();
   const activePid = viewerHandPid(m);
   const me = m.players[activePid]; // this client's own seat — whoever's *actual* turn it is is m.active, not this
   const p1 = m.players[1], p2 = m.players[2];
@@ -23420,11 +23453,18 @@ function showLoginScreen(){
    Only clicking Start (never the login button itself) plays the peel-off/fade sequence and
    reveals Home underneath — see the .leaving CSS in arena_template.html for the actual staged
    bush/background/text/button/logo animation this just toggles on. ---- */
+function hasStoredCloudSession(){
+  try{ return Object.keys(localStorage).some(k=> /^sb-.*-auth-token$/.test(k) && /"access_token"/.test(localStorage.getItem(k)||'') && !/"is_anonymous":true/.test(localStorage.getItem(k)||'')); }catch(e){ return false; }
+}
+// "Welcome back" only for someone who has actually played here before; a first-timer gets "Welcome!".
+function hasPlayedBefore(){
+  try{ return loadTutorialDone() || loadTutorialStage()>1 || !!localStorage.getItem('bramblewood_arena_stats') || !!localStorage.getItem(CONQUEST_PROGRESS_KEY); }catch(e){ return false; }
+}
 function renderEntranceAuth(){
   const el = document.getElementById('entranceAuthArea');
   if(!el) return;
   if(myProfile && myProfile.name){
-    el.innerHTML = `<p class="entrance-welcome-back">Welcome back, <b>${escapeHtml(myProfile.name)}</b> 🌰</p>
+    el.innerHTML = `<p class="entrance-welcome-back">${hasPlayedBefore() ? `Welcome back, <b>${escapeHtml(myProfile.name)}</b>` : `Welcome, <b>${escapeHtml(myProfile.name)}</b>!`} 🌰</p>
       <button class="btn primary big splash-enter" id="startBtn">▶ Start</button>
       <p class="entrance-account-line" id="entranceAccountLine" hidden></p>`;
     const btn = document.getElementById('startBtn');
@@ -23486,8 +23526,10 @@ function renderEntranceAuth(){
   }
   refreshAccountUI();
 }
-function triggerEntranceAnimation(){
-  const splash = document.getElementById('splashScreen');
+function triggerEntranceAnimation(instant){
+  const splashEl = document.getElementById('splashScreen');
+  if(instant===true && splashEl){ splashEl.hidden = true; }
+  const splash = instant===true ? null : splashEl;
   try{ sessionStorage.setItem('bramblewood_seen_splash', '1'); }catch(e){}
   // Reliability hardening (2026-09-24, "im stuck. i cant enter." bug report): everything below
   // this point touches a LOT of app state (switchTab('home') alone fans out into renderHome and
@@ -23524,10 +23566,10 @@ function triggerEntranceAnimation(){
     // long), but re-showing the Faction Choice screen (and its 15s countdown) on every reload would
     // silently re-roll the player's faction and restart the whole series from skirmish 1 every time
     // they closed the tab. needsFactionPick / needsTutorialResume below are mutually exclusive.
-    const needsFactionPick = !loadTutorialDone() && !loadFactionChoice();
-    const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice();
+    const needsFactionPick = !loadTutorialDone() && !loadFactionChoice() && !loadResumeSnapshot();
+    const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice() && !loadResumeSnapshot();
     function enterTutorialFlow(){ try{ if(needsFactionPick) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
-    if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else { switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }
+    if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else if(!tryResumeAbandonedMatch()){ switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }
     // Render Home UNDERNEATH the still-visible overlay first, so the peel-off/fade genuinely
     // reveals a real page rather than a blank wrap for however long the animation takes.
     switchTab('home');
@@ -23538,7 +23580,7 @@ function triggerEntranceAnimation(){
       try{
         splash.hidden = true; splash.classList.remove('leaving');
         enterTutorialFlow();
-        if(!needsFactionPick && !needsTutorialResume) maybeRemindSignIn();
+        if(!needsFactionPick && !needsTutorialResume && !tryResumeAbandonedMatch()) maybeRemindSignIn();
       }catch(eInner){
         console.error('[Bramblewood] entrance animation callback failed:', eInner);
         splash.hidden = true; splash.classList.remove('leaving');
@@ -23562,7 +23604,10 @@ function triggerEntranceAnimation(){
   try{ seen = sessionStorage.getItem('bramblewood_seen_splash')==='1'; }catch(e){}
   // A reload in the same tab skips the splash but is still a restart of the game — so it still
   // gets the once-per-load sign-in reminder (maybeRemindSignIn itself checks tutorial/sign-in).
-  if(seen){ splash.hidden = true; setTimeout(maybeRemindSignIn, 1200); return; }
+  if(seen){ splash.hidden = true; if(!tryResumeAbandonedMatch()) setTimeout(maybeRemindSignIn, 1200); return; }
+  // 2026-10-03 ("Once signed in, skip past the front screen, just go straight in"): a returning
+  // signed-in player (a saved Supabase session in this browser) never sees the splash at all.
+  if(hasStoredCloudSession()){ triggerEntranceAnimation(true); return; }
   renderEntranceAuth();
 })();
 
