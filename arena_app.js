@@ -1384,12 +1384,38 @@ async function loadCloudCardOverrides(){
     const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at');
     if(error || !Array.isArray(data)) return;
     data.forEach(r=>{
+      // `__cfg:*` rows are admin-published game config (e.g. map layouts), not cards.
+      if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); return; }
       cloudOverrideIds.add(r.id);
       if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
       else if(r.data){ liveCards[r.id] = r.data; delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
     });
-    if(data.length) onCardsChanged();
+    if(data.some(r=> !String(r.id).startsWith('__cfg:'))) onCardsChanged();
   }catch(e){ /* offline — baked-in cards still work */ }
+}
+// ---- Map layout overrides (2026-10-03: "In edit mode, as an admin, can I shift the skirmish
+// positions (grid)") ---------------------------------------------------------------------------
+// Admin-dragged node positions, per map: {mapId: {nodeKey: {x, y}}} in canvas percent. Published
+// ones ride the same card_overrides table as `__cfg:map-layout:<mapId>` rows (public read, admin
+// write via RLS), so they go live for everyone; this browser keeps a local copy as a fallback.
+const MAP_LAYOUT_KEY = 'bramblewood_map_layout_v1';
+let mapLayoutOverrides = {};
+try{ mapLayoutOverrides = JSON.parse(localStorage.getItem(MAP_LAYOUT_KEY)||'{}') || {}; }catch(e){ mapLayoutOverrides = {}; }
+function persistMapLayouts(){ try{ localStorage.setItem(MAP_LAYOUT_KEY, JSON.stringify(mapLayoutOverrides)); }catch(e){} }
+function applyCloudCfgRow(r){
+  const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
+  if(!m) return;
+  if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
+  else mapLayoutOverrides[m[1]] = r.data.positions;
+  persistMapLayouts();
+  try{ if(document.getElementById('conquestCanvas') && !conquestLayoutEdit) renderPlay(); }catch(e){}
+}
+async function publishMapLayout(mapId){
+  const positions = mapLayoutOverrides[mapId] || null;
+  persistMapLayouts();
+  const row = positions ? {data:{kind:'map-layout', mapId, positions}, deleted:false, deleted_snapshot:null}
+                        : {data:null, deleted:true, deleted_snapshot:null};
+  return cloudWriteCardOverride(`__cfg:map-layout:${mapId}`, row);
 }
 async function refreshCloudCardAdmin(){
   cloudCardAdmin = false;
@@ -7214,7 +7240,109 @@ function hashStr(s){
 // Positions with the tutorial node pulled out on its own (2026-10-03: "the tutorial should appear
 // as a lone isolated icon on the map"): it sits by itself at the left edge, and every other node
 // is laid out across the remaining width exactly as before.
+// Admin layout editor: Admin Mode adds an "📐 Edit layout" bar above the Conquest map. While it's
+// on, every node (tutorial, locked, cleared) is draggable, snapping to an optional grid; arrow keys
+// nudge the focused node. Save publishes the layout for everyone (local-only if not a cloud admin),
+// Cancel restores what you had, and "Auto layout" drops the override so the generated trail returns.
+let conquestLayoutEdit = false;
+let mapLayoutGrid = 5;            // snap step in canvas %, 0 = free placement
+let mapLayoutSnapshot = null;     // pre-edit copy, for Cancel
+let mapLayoutSnapshotMap = null;
+// Leaving the map mid-edit (switching maps) discards unsaved moves rather than leaking them.
+function abandonMapLayoutEdit(){
+  if(!conquestLayoutEdit) return;
+  if(mapLayoutSnapshotMap){ if(mapLayoutSnapshot) mapLayoutOverrides[mapLayoutSnapshotMap] = mapLayoutSnapshot; else delete mapLayoutOverrides[mapLayoutSnapshotMap]; }
+  conquestLayoutEdit = false; mapLayoutSnapshot = null; mapLayoutSnapshotMap = null;
+}
+function mapLayoutToolbarHTML(map){
+  const custom = !!mapLayoutOverrides[map.id];
+  if(!conquestLayoutEdit){
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button>
+      <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
+  }
+  const g = (v,l)=> `<button type="button" class="btn small ${mapLayoutGrid===v?'primary':'ghost'}" data-mlgrid="${v}">${l}</button>`;
+  return `<div class="map-layout-bar conquest-scrim editing">
+    <span class="ml-note"><b>Editing layout.</b> Drag skirmishes to move them. Arrow keys nudge the focused one.</span>
+    <span class="ml-group">Grid ${g(0,'Off')}${g(2.5,'Fine')}${g(5,'Medium')}${g(10,'Coarse')}</span>
+    <span class="ml-group"><button type="button" class="btn small ghost" id="mlReset" title="Drop the custom positions and go back to the generated trail">↺ Auto layout</button>
+    <button type="button" class="btn small ghost" id="mlCancel">Cancel</button>
+    <button type="button" class="btn small primary" id="mlSave">💾 Save${cloudCardAdmin?' & publish':''}</button></span>
+  </div>`;
+}
+function wireMapLayoutEditor(map, body){
+  const rerender = ()=> renderConquestSubTab(body);
+  const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  on('mlEdit', ()=>{
+    conquestLayoutEdit = true;
+    mapLayoutSnapshotMap = map.id;
+    mapLayoutSnapshot = mapLayoutOverrides[map.id] ? JSON.parse(JSON.stringify(mapLayoutOverrides[map.id])) : null;
+    rerender();
+  });
+  if(!conquestLayoutEdit) return;
+  const exit = ()=>{ conquestLayoutEdit = false; mapLayoutSnapshot = null; mapLayoutSnapshotMap = null; rerender(); };
+  on('mlCancel', ()=>{ abandonMapLayoutEdit(); rerender(); });
+  on('mlReset', ()=>{ delete mapLayoutOverrides[map.id]; rerender(); });
+  on('mlSave', async ()=>{
+    const published = await publishMapLayout(map.id);
+    showToast(published ? `☁️ ${map.name} layout published — live for every player.` : `📐 ${map.name} layout saved in this browser.`, 'ok');
+    exit();
+  });
+  document.querySelectorAll('[data-mlgrid]').forEach(b=> b.addEventListener('click', ()=>{ mapLayoutGrid = +b.getAttribute('data-mlgrid'); rerender(); }));
+
+  const canvas = document.getElementById('conquestCanvas');
+  if(!canvas) return;
+  const snap = v=> mapLayoutGrid ? Math.round(v/mapLayoutGrid)*mapLayoutGrid : Math.round(v*10)/10;
+  const clamp = v=> Math.max(3, Math.min(97, v));
+  // First move turns the whole map into an explicit layout, so untouched nodes stay where they are.
+  const ensureLayout = ()=>{
+    if(mapLayoutOverrides[map.id]) return mapLayoutOverrides[map.id];
+    const pos = mapNodePositions(map), lay = {};
+    map.nodes.forEach((n,i)=>{ lay[n.key] = {x:+pos[i].x.toFixed(1), y:+pos[i].y.toFixed(1)}; });
+    return (mapLayoutOverrides[map.id] = lay);
+  };
+  const place = (el, key, x, y)=>{
+    x = clamp(snap(x)); y = clamp(snap(y));
+    ensureLayout()[key] = {x, y};
+    el.style.left = x+'%'; el.style.top = y+'%';
+    canvas.querySelectorAll(`line[data-a="${key}"]`).forEach(l=>{ l.setAttribute('x1', x); l.setAttribute('y1', y); });
+    canvas.querySelectorAll(`line[data-b="${key}"]`).forEach(l=>{ l.setAttribute('x2', x); l.setAttribute('y2', y); });
+  };
+  canvas.querySelectorAll('[data-lkey]').forEach(el=>{
+    const key = el.getAttribute('data-lkey');
+    el.setAttribute('tabindex', '0');
+    el.removeAttribute('aria-hidden');
+    el.title = 'Drag to move';
+    el.addEventListener('pointerdown', ev=>{
+      ev.preventDefault();
+      el.focus({preventScroll:true});
+      el.setPointerCapture(ev.pointerId);
+      el.classList.add('ml-dragging');
+      const move = e=>{
+        const r = canvas.getBoundingClientRect();
+        place(el, key, (e.clientX - r.left)/r.width*100, (e.clientY - r.top)/r.height*100);
+      };
+      const up = ()=>{ el.classList.remove('ml-dragging'); el.removeEventListener('pointermove', move); el.removeEventListener('pointerup', up); el.removeEventListener('pointercancel', up); };
+      el.addEventListener('pointermove', move);
+      el.addEventListener('pointerup', up);
+      el.addEventListener('pointercancel', up);
+    });
+    el.addEventListener('keydown', ev=>{
+      const d = {ArrowLeft:[-1,0], ArrowRight:[1,0], ArrowUp:[0,-1], ArrowDown:[0,1]}[ev.key];
+      if(!d) return;
+      ev.preventDefault();
+      const step = mapLayoutGrid || (ev.shiftKey ? 2 : 0.5);
+      const cur = ensureLayout()[key];
+      place(el, key, cur.x + d[0]*step, cur.y + d[1]*step);
+    });
+  });
+}
 function mapNodePositions(map){
+  const base = autoMapNodePositions(map);
+  const ov = mapLayoutOverrides[map.id];
+  if(!ov) return base;
+  return map.nodes.map((n,i)=> (ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]);
+}
+function autoMapNodePositions(map){
   const tIdx = map.nodes.findIndex(n=>n.kind==='tutorial');
   if(tIdx<0) return layoutNodePositions(map.nodes, map.id);
   const others = map.nodes.filter(n=>n.kind!=='tutorial');
@@ -7341,6 +7469,7 @@ function renderConquestSubTab(body){
   listEl.querySelectorAll('[data-mapid]').forEach(el=> el.addEventListener('click', ()=>{
     const map = CONQUEST_MAPS.find(m=>m.id===el.getAttribute('data-mapid'));
     if(!isMapUnlocked(map, progress)) return;
+    if(map.id!==conquestSelectedMap) abandonMapLayoutEdit();
     conquestSelectedMap = map.id; conquestSelectedNodeKey = null; renderConquestSubTab(body);
   }));
   const mainEl = document.getElementById('conquestMain');
@@ -7376,7 +7505,7 @@ function renderConquestSubTab(body){
       const j = nodeIndexByKey[reqKey];
       if(j===undefined) return;
       if(map.nodes[j].kind==='tutorial') return; // the tutorial stands alone — no trail line to it
-      edgeLines.push(`<line x1="${positions[j].x}" y1="${positions[j].y}" x2="${positions[i].x}" y2="${positions[i].y}" />`);
+      edgeLines.push(`<line data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${positions[j].x}" y1="${positions[j].y}" x2="${positions[i].x}" y2="${positions[i].y}" />`);
     });
   });
   // Item #5 (2026-09-18, "the green background represents the map... make it encompass the
@@ -7392,7 +7521,8 @@ function renderConquestSubTab(body){
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
   mainEl.innerHTML = `<div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
-    <div class="conquest-map-canvas" id="conquestCanvas">
+    ${adminModeEnabled ? mapLayoutToolbarHTML(map) : ''}
+    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
@@ -7409,7 +7539,7 @@ function renderConquestSubTab(body){
         // node, so no deck/hqHp, no click-to-fight, always shown already-cleared.
         if(node.kind==='tutorial'){
           const tDone = loadTutorialDone();
-          return `<button type="button" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(node.name+' — '+(node.flavor||''))}">
+          return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(node.name+' — '+(node.flavor||''))}">
             <span class="map-node-ico">${node.icon}</span>${tDone?'<span class="map-node-check">✓</span>':''}
           </button>`;
         }
@@ -7432,7 +7562,7 @@ function renderConquestSubTab(body){
         // place you haven't reached yet" rather than "a total mystery," while still making
         // unmistakably clear it can't be clicked/fought yet.
         if(!visible){
-          return `<div class="map-node map-node-hidden" style="${style}" aria-hidden="true" title="Locked — clear the previous skirmish on this trail first">
+          return `<div class="map-node map-node-hidden" data-lkey="${node.key}" style="${style}" aria-hidden="true" title="Locked — clear the previous skirmish on this trail first">
             <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>
           </div>`;
         }
@@ -7442,7 +7572,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${done?'<span class="map-node-check">✓</span>':''}
         </button>`;
       }).join('')}
@@ -7450,6 +7580,7 @@ function renderConquestSubTab(body){
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
   const tooltipEl = document.getElementById('conquestTooltip');
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
+  if(adminModeEnabled) wireMapLayoutEditor(map, body);
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
@@ -7478,7 +7609,7 @@ function renderConquestSubTab(body){
   mainEl.querySelectorAll('.map-node[data-nodekey]').forEach(el=>{
     const node = map.nodes.find(n=>n.key===el.getAttribute('data-nodekey'));
     if(!node) return;
-    el.addEventListener('mouseenter', ()=>{ tooltipEl.innerHTML = nodeTooltipHTML(node); tooltipEl.hidden = false; positionTooltip(el); });
+    el.addEventListener('mouseenter', ()=>{ if(conquestLayoutEdit && adminModeEnabled) return; tooltipEl.innerHTML = nodeTooltipHTML(node); tooltipEl.hidden = false; positionTooltip(el); });
     el.addEventListener('mouseleave', ()=>{ tooltipEl.hidden = true; });
     // 2026-09-19, per explicit request ("clicking the skirmish icon twice should start the
     // fight"): the first click on a node selects it (shows the panel + the fixed Fight FAB,
@@ -7487,6 +7618,7 @@ function renderConquestSubTab(body){
     // confirmation. Clicking a DIFFERENT node always just re-selects (never fights), so you
     // can freely browse the trail without accidentally launching a match two clicks in.
     el.addEventListener('click', ()=>{
+      if(conquestLayoutEdit && adminModeEnabled) return; // layout editing: clicks are drags, never fights
       if(conquestSelectedNodeKey === node.key){ startConquestMatch(map.id, node.key); return; }
       conquestSelectedNodeKey = node.key; renderConquestSubTab(body);
     });
