@@ -8187,10 +8187,52 @@ async function logTxn(entry){
   if(!dbHandle){ localTxns.unshift(entry); if(localTxns.length>300) localTxns.pop(); return; }
   try{ await dbHandle.collection('txns').add(entry); }catch(e){ /* logging must never block the actual card write */ }
 }
+// Published card edits (2026-10-02): admin card edits live in Supabase's public.card_overrides
+// (public read, write only for accounts in public.app_admins — enforced by RLS, not by the
+// client-side Admin Mode checkbox). Every visitor pulls the overrides at startup and layers them
+// over the baked-in cards.json, so a save from the admin's account goes live for everyone on their
+// next load. If the table is missing/unreachable or you're not an admin, edits fall back to the
+// old this-browser-only overlay below.
+let cloudCardAdmin = false;
+const cloudOverrideIds = new Set();
+async function loadCloudCardOverrides(){
+  if(!sbClient) return;
+  try{
+    const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at');
+    if(error || !Array.isArray(data)) return;
+    data.forEach(r=>{
+      cloudOverrideIds.add(r.id);
+      if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
+      else if(r.data){ liveCards[r.id] = r.data; delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
+    });
+    if(data.length) onCardsChanged();
+  }catch(e){ /* offline — baked-in cards still work */ }
+}
+async function refreshCloudCardAdmin(){
+  cloudCardAdmin = false;
+  if(!sbClient || !isSignedIn()) return;
+  try{ const { data, error } = await sbClient.rpc('is_app_admin'); cloudCardAdmin = !error && data === true; }catch(e){}
+  try{ if(document.getElementById('view-admin')) renderAdmin(); }catch(e){}
+}
+// Returns true when the write landed in the cloud; false means "keep it local" (with a toast).
+async function cloudWriteCardOverride(id, row){
+  if(!cloudCardAdmin || !sbClient) return false;
+  try{
+    const { error } = await sbClient.from('card_overrides').upsert(Object.assign({id, updated_at: nowIso(), updated_by: cloudUserId}, row));
+    if(error) throw error;
+    cloudOverrideIds.add(id);
+    return true;
+  }catch(e){
+    showToast(`Couldn't publish this edit (${(e && e.message) || 'network error'}) — saved in this browser only.`, 'error');
+    return false;
+  }
+}
 async function saveCard(def){
   const before = getCardDefs()[def.id] || null;
   const action = before ? 'edited' : 'created';
   if(!dbHandle){
+    const published = await cloudWriteCardOverride(def.id, {data:def, deleted:false, deleted_snapshot:null});
+    if(published) showToast(`☁️ ${def.name || def.id} published — live for every player.`, 'ok');
     liveCards[def.id]=def;
     delete liveDeletes[def.id]; delete liveTombstones[def.id];
     persistLocalCardOverlay();
@@ -8204,6 +8246,7 @@ async function saveCard(def){
 async function deleteCustomCard(id){
   const snapshot = getCardDefs()[id] || null;
   if(!dbHandle){
+    await cloudWriteCardOverride(id, {data:null, deleted:true, deleted_snapshot:snapshot});
     liveDeletes[id]=true; liveTombstones[id]={id, __deleted:true, deletedSnapshot:snapshot, deletedAt:nowIso()}; delete liveCards[id];
     persistLocalCardOverlay();
     onCardsChanged();
@@ -8218,6 +8261,7 @@ async function restoreCard(id){
   const snapshot = tomb && tomb.deletedSnapshot;
   if(!snapshot){ alert("Couldn't find what this card looked like before it was deleted."); return; }
   if(!dbHandle){
+    await cloudWriteCardOverride(id, {data:snapshot, deleted:false, deleted_snapshot:null});
     liveCards[id]=snapshot; delete liveDeletes[id]; delete liveTombstones[id];
     persistLocalCardOverlay();
     onCardsChanged();
@@ -11547,13 +11591,14 @@ async function initCloudSync(){
   try{
     if(typeof supabase === 'undefined' || !supabase.createClient){ setCloudPill(false, 'cloud SDK failed to load'); return; }
     sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const overridesLoaded = loadCloudCardOverrides(); // public read — no session needed
     // Later auth changes in this same page (not the initial load, which the code below handles
     // directly so the post-redirect toast fires exactly once).
     let initSettled = false;
     sbClient.auth.onAuthStateChange((event, session)=>{
       if(!initSettled) return;
       if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
-        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); });
+        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); });
       } else if(event==='SIGNED_OUT'){
         resetCloudIdentity(); refreshAuthGateUI();
       }
@@ -11578,6 +11623,8 @@ async function initCloudSync(){
       cloudReady = true;
     }
     initSettled = true;
+    await overridesLoaded;
+    refreshCloudCardAdmin();
     setCloudPill(true, isSignedIn() ? 'Cloud sync active' : 'Playing as guest — sign in to sync');
     refreshAuthGateUI();
   } catch(e){
@@ -11592,6 +11639,7 @@ async function initCloudSync(){
 }
 function resetCloudIdentity(){
   cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null; cloudUserAvatar = null;
+  cloudCardAdmin = false;
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
 }
@@ -14925,11 +14973,36 @@ function renderAdmin(){
     </div>
     <div class="panel admin-subpanel">
       <h3>Publish card edits</h3>
-      <p class="panel-sub">Card edits you make here (stats, placement, rewards, Hidden) are saved in <b>this browser only</b> — players won't see them until they're merged into the game's card data. Export them and send the file to Claude to publish. <span id="adminEditCount"></span></p>
-      <button class="btn small" id="adminExportEditsBtn" type="button">⬇️ Export card edits (.json)</button>
+      <p class="panel-sub">${cloudCardAdmin
+        ? '☁️ <b>You can publish.</b> Every card edit you save (stats, placement, rewards, Hidden) goes live for all players on their next load.'
+        : (isSignedIn()
+            ? 'This account can\'t publish card edits, so your edits are saved in <b>this browser only</b>.'
+            : 'Sign in with your admin Google account to publish card edits live. Until then they\'re saved in <b>this browser only</b>.')}
+        <span id="adminEditCount"></span></p>
+      <div class="admin-jump-row">
+        ${cloudCardAdmin ? '<button class="btn primary small" id="adminPushEditsBtn" type="button">☁️ Publish browser-only edits</button>' : ''}
+        <button class="btn small" id="adminExportEditsBtn" type="button">⬇️ Export card edits (.json)</button>
+      </div>
     </div>`;
-  const editCount = Object.keys(liveCards).length + Object.keys(liveDeletes).length;
-  const ecEl = document.getElementById('adminEditCount'); if(ecEl) ecEl.textContent = editCount ? `${editCount} edited/deleted card${editCount===1?'':'s'} waiting.` : 'No unpublished edits.';
+  const pendingIds = [...new Set([...Object.keys(liveCards), ...Object.keys(liveDeletes)])].filter(id=> !cloudOverrideIds.has(id));
+  const ecEl = document.getElementById('adminEditCount');
+  if(ecEl) ecEl.textContent = pendingIds.length ? `${pendingIds.length} browser-only edit${pendingIds.length===1?'':'s'} not yet published.` : (cloudOverrideIds.size ? `${cloudOverrideIds.size} published edit${cloudOverrideIds.size===1?'':'s'} live.` : 'No card edits yet.');
+  const pushBtn = document.getElementById('adminPushEditsBtn');
+  if(pushBtn){
+    pushBtn.disabled = !pendingIds.length;
+    pushBtn.addEventListener('click', async ()=>{
+      pushBtn.disabled = true; pushBtn.textContent = 'Publishing…';
+      let ok = 0;
+      for(const id of pendingIds){
+        const row = liveDeletes[id]
+          ? {data:null, deleted:true, deleted_snapshot: (liveTombstones[id] && liveTombstones[id].deletedSnapshot) || null}
+          : {data:liveCards[id], deleted:false, deleted_snapshot:null};
+        if(await cloudWriteCardOverride(id, row)) ok++;
+      }
+      showToast(`☁️ Published ${ok} of ${pendingIds.length} edit${pendingIds.length===1?'':'s'}.`, ok===pendingIds.length ? 'ok' : 'error');
+      renderAdmin();
+    });
+  }
   const exportBtn = document.getElementById('adminExportEditsBtn');
   if(exportBtn) exportBtn.addEventListener('click', ()=>{
     const payload = {exportedAt: new Date().toISOString(), liveCards, liveDeletes: Object.keys(liveDeletes)};
