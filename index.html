@@ -2157,6 +2157,52 @@
   .zone-chip{font-size:16px; background:var(--bg); border-radius:7px; padding:3px 5px;}
 
 
+
+  /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
+  .home-menu-row{grid-template-columns:none !important; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr);}
+  .home-menu-btn-small{position:relative;}
+  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#d9412b; color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+  #view-friends{max-width:760px; margin:0 auto;}
+  .fr-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .fr-head h2{margin:0;}
+  .fr-code{font-size:13px; display:flex; align-items:center; gap:8px;}
+  .fr-code b{font-family:ui-monospace, Menlo, monospace; font-size:16px; letter-spacing:.12em; background:rgba(0,0,0,.08); padding:3px 8px; border-radius:8px;}
+  .fr-search{display:grid; grid-template-columns:1fr auto; gap:8px; margin:14px 0 8px;}
+  .fr-search input{height:42px; padding:0 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7;}
+  .fr-section{margin-top:16px;} .fr-section h3{margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.06em; opacity:.75;}
+  .fr-count{display:inline-block; min-width:18px; padding:0 6px; border-radius:9px; background:rgba(0,0,0,.12); font-size:11px; text-align:center;}
+  .fr-row{display:grid; grid-template-columns:40px 1fr auto; gap:10px; align-items:center; padding:8px 6px; border-bottom:1px solid rgba(0,0,0,.08);}
+  .fr-avatar{width:36px; height:36px; border-radius:50%; background:#c9a46a; color:#2b2117; font-weight:800; display:flex; align-items:center; justify-content:center; position:relative; font-size:16px; overflow:hidden;}
+  .fr-avatar img{width:100%; height:100%; object-fit:cover;}
+  .fr-avatar.is-on::after{content:''; position:absolute; right:0; bottom:0; width:11px; height:11px; border-radius:50%; background:#3fbf5a; box-shadow:0 0 0 2px #f4ecd8;}
+  .fr-name{font-weight:800;} .fr-sub{font-size:12px; opacity:.75;}
+  .fr-on{color:#2f8f45; font-weight:700;} .fr-pending{font-size:12px; opacity:.7; margin-right:4px;}
+  .fr-actions{display:flex; gap:6px; align-items:center;}
+  .fr-empty{opacity:.7; font-size:13px; margin:6px 0;}
+  .fr-waiting{margin-top:14px; padding:10px 12px; border-radius:10px; background:rgba(213,139,58,.15); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .invite-modal{max-width:440px;}
+  .inv-field{margin:12px 0;} .inv-label{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; opacity:.75; margin-bottom:6px;}
+  .inv-modes{display:flex; border-color:rgba(0,0,0,.2);} .inv-modes .tk-speed-btn{color:#2b2117;} .inv-modes .tk-speed-btn + .tk-speed-btn{border-left-color:rgba(0,0,0,.2);}
+  .inv-blurb{font-size:12.5px; opacity:.8; margin:6px 0 0;}
+  .inv-deck{font-size:13px; padding:8px 10px; border-radius:8px; background:rgba(63,191,90,.12);} .inv-deck.is-bad{background:rgba(217,65,43,.12);}
+  .invite-banner{position:fixed; top:62px; left:50%; transform:translateX(-50%); z-index:1200; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; max-width:min(560px, calc(100vw - 24px)); padding:10px 14px; border-radius:12px; background:#2c3a27; color:#f4ecd8; box-shadow:0 8px 24px rgba(0,0,0,.35); font-size:14px;}
+  .invite-banner[hidden]{display:none;}
+  .ib-actions{display:flex; gap:6px;}
+  .shop-tabs{display:flex; gap:6px; margin-top:10px;}
+  .mk-panel .mk-tabs{display:flex; border-color:rgba(0,0,0,.2); margin-bottom:12px;} .mk-panel .tk-speed-btn{color:#2b2117;} .mk-panel .tk-speed-btn + .tk-speed-btn{border-left-color:rgba(0,0,0,.2);}
+  .mk-filters{display:grid; grid-template-columns:1fr auto auto; gap:8px; margin-bottom:12px;}
+  .mk-filters input, .mk-filters select, .mk-sell select, .mk-sell input{height:40px; padding:0 10px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; box-sizing:border-box;}
+  .mk-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:12px;}
+  .mk-item{display:flex; flex-direction:column; gap:6px; align-items:stretch; position:relative;}
+  .mk-item .btn{width:100%;}
+  .mk-meta{display:flex; justify-content:space-between; align-items:center; font-size:12px; gap:6px;}
+  .mk-price{font-weight:800; font-size:14px; display:inline-flex; align-items:center; gap:3px;}
+  .mk-seller{opacity:.7; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .mk-foil{position:absolute; top:6px; left:6px; background:#fff3b0; color:#6b4e00; font-size:11px; font-weight:800; padding:2px 6px; border-radius:6px;}
+  .mk-sell{display:flex; flex-direction:column; gap:8px; max-width:420px;}
+  .mk-sell-preview{max-width:160px;}
+  .mk-sell-row{display:grid; grid-template-columns:1fr 1fr; gap:8px;} .mk-sell-row label{display:flex; flex-direction:column; gap:4px; font-size:12px; font-weight:700;}
+  @media (max-width:560px){ .mk-filters{grid-template-columns:1fr 1fr;} .mk-filters input{grid-column:1 / -1;} .mk-grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
   /* ---- Simplified sign-in (2026-10-02) ---- */
   .auth-form{display:flex; flex-direction:column; gap:12px; max-width:360px; margin:0 auto; width:100%;}
   .auth-lede{margin:0; font-size:14px; line-height:1.45; color:inherit; opacity:.85; text-align:center;}
@@ -3935,6 +3981,7 @@
   <div id="view-deck" hidden></div>
   <div id="view-shop" hidden></div>
   <div id="view-nest" hidden></div>
+  <div id="view-friends" hidden></div>
   <div id="view-profile" hidden></div>
   <div id="view-ranking" hidden></div>
   <div id="view-guild" hidden></div>
@@ -11710,7 +11757,7 @@ async function initCloudSync(){
     sbClient.auth.onAuthStateChange((event, session)=>{
       if(!initSettled) return;
       if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
-        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); });
+        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); });
       } else if(event==='SIGNED_OUT'){
         resetCloudIdentity(); refreshAuthGateUI();
       }
@@ -11737,6 +11784,7 @@ async function initCloudSync(){
     initSettled = true;
     await overridesLoaded;
     refreshCloudCardAdmin();
+    socialInit();
     setCloudPill(true, isSignedIn() ? 'Cloud sync active' : 'Playing as guest — sign in to sync');
     refreshAuthGateUI();
   } catch(e){
@@ -11752,6 +11800,7 @@ async function initCloudSync(){
 function resetCloudIdentity(){
   cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null; cloudUserAvatar = null;
   cloudSessionUser = null;
+  if(typeof socialTeardown==='function') socialTeardown();
   cloudCardAdmin = false;
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
@@ -13471,7 +13520,9 @@ async function enterLiveMatch(row){
     const { data: oppProfile } = await sbClient.from('profiles').select('display_name').eq('id', oppId).maybeSingle();
     if(oppProfile && oppProfile.display_name) oppName = oppProfile.display_name;
   }catch(e){ /* non-fatal — the generic "Opponent" label is fine */ }
+  const settings = row.settings || {};
   startLiveRankedMatch({
+    friendly: row.ranked===false, battleMode: Registry.battleMode(settings.battleMode) ? settings.battleMode : Registry.defaultBattleMode(),
     matchId: row.id, role, mySeat, oppId, oppRating, oppName,
     myDeck: myDeckCounts, myCharacter: myCharacterId,
     oppDeck: oppDeck || {}, oppCharacter: oppCharacter || 'castle',
@@ -13479,7 +13530,7 @@ async function enterLiveMatch(row){
 }
 
 function startLiveRankedMatch(cfg){
-  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), Math.random, {recordEvents:true, battleMode: cfg.battleMode || Registry.defaultBattleMode()});
   const sideOf = id=> id===1?'A':'B';
   const p1Deck = cfg.mySeat===1 ? cfg.myDeck : cfg.oppDeck;
   const p2Deck = cfg.mySeat===1 ? cfg.oppDeck : cfg.myDeck;
@@ -13501,6 +13552,7 @@ function startLiveRankedMatch(cfg){
     leaderDefId:null, leaderUid:null, // leader-summon isn't wired up for a real 2-player match yet — see module header, limitation #4
     liveMatchId: cfg.matchId, liveRole: cfg.role, liveMySeat: cfg.mySeat, liveOpponentId: cfg.oppId,
     liveOpponentRating: cfg.oppRating, liveOpponentName: cfg.oppName, liveReplaying: false,
+    liveFriendly: !!cfg.friendly, battleMode: cfg.battleMode || Registry.defaultBattleMode(),
   };
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
@@ -14697,16 +14749,70 @@ function tutorialWinLossSubtitleHTML(m){
 const BATTLE_MODES = {
   gravity:   {label:'Gravity',   icon:'🌀', blurb:'Classic: cards collapse in toward the centre when one falls.'},
   open:      {label:'Open',      icon:'🧱', blurb:'Fixed slots: place next to any of your cards, gaps stay, cards hit straight across.'},
-  gladiator: {label:'Gladiator', icon:'👑', blurb:'Your leader starts in the centre at 10× HP and 2× attack. No castle — lose your leader, lose the fight.'},
+  gladiator: {label:'Gladiator', icon:'👑', live:false, blurb:'Your leader starts in the centre at 10× HP and 2× attack. No castle — lose your leader, lose the fight.'},
+};
+
+/* ============================================================
+   Registry (2026-10-02, per explicit request: "let the get() of these types be dynamic. Not
+   hardcoded every time it's needed. Same for other dynamic things such as getting the list of
+   cards, effects, types, users, skirmishes etc."). ONE place every screen asks "what exists?":
+   new code calls Registry.x() instead of re-listing ids or reaching into a constant directly, so
+   adding a battle type / skill / map / card shows up everywhere that lists them automatically.
+   Lists are computed fresh on each call (cheap) so live card edits and admin overrides apply.
+   ============================================================ */
+const Registry = {
+  // Arena / battle types — Gravity ("blackhole" 🌀), Open, Gladiator, and any added later.
+  battleModes(){ return Object.keys(BATTLE_MODES).map(id=> Object.assign({id}, BATTLE_MODES[id])); },
+  battleMode(id){ return BATTLE_MODES[id] ? Object.assign({id}, BATTLE_MODES[id]) : null; },
+  defaultBattleMode(){ return 'gravity'; },
+  // Cards — live (card edits, overrides, Test Kit synthetics) with optional filters.
+  cards(f){
+    const defs = getCardDefs(); f = f || {};
+    return Object.values(defs).filter(d=> (f.includeTokens || !d.token) && (f.includeTest || !d.test)
+      && (!f.faction || d.faction===f.faction) && (!f.rarity || d.rarity===f.rarity)
+      && (!f.unlockedOnly || !d.locked) && (!f.q || (d.name||'').toLowerCase().includes(String(f.q).toLowerCase())));
+  },
+  card(id){ return getCardDefs()[id] || null; },
+  // Skills / effects (the card editor's whole "+ Add Skill" vocabulary).
+  skills(){ return SKILL_DEFS.slice(); },
+  skill(key){ return SKILL_DEFS.find(s=>s.key===key) || null; },
+  damageTypes(){ return DMG_TYPES.slice(); },
+  rarities(){ return RARITY_DEFS.slice(); },
+  // Conquest maps and every fightable node across them, in progression order.
+  maps(){ return CONQUEST_MAPS.slice(); },
+  skirmishes(f){ f = f || {}; return flattenConquestNodes().filter(n=> !f.kind || n.kind===f.kind); },
+  skirmish(mapId, nodeKey){ const r = findConquestNode(mapId, nodeKey); return r ? r.node : null; },
+  // Players (Supabase profiles), cached per page load.
+  users: {
+    _cache: new Map(),
+    async get(ids){
+      const want = [...new Set(ids||[])].filter(id=> id && !Registry.users._cache.has(id));
+      if(want.length && sbClient){
+        const { data } = await sbClient.from('profiles').select('id, display_name, rating, friend_code, last_seen_at').in('id', want);
+        (data||[]).forEach(p=> Registry.users._cache.set(p.id, p));
+      }
+      const out = {}; (ids||[]).forEach(id=>{ if(Registry.users._cache.has(id)) out[id] = Registry.users._cache.get(id); }); return out;
+    },
+    async search(q){
+      if(!sbClient || !q || !q.trim()) return [];
+      const term = q.trim();
+      const code = term.toUpperCase().replace(/^#/,'');
+      const { data, error } = await sbClient.rpc('search_players', {p_query: term, p_code: code});
+      if(error) throw error;
+      (data||[]).forEach(p=> Registry.users._cache.set(p.id, p));
+      return data||[];
+    },
+    remember(p){ if(p && p.id) Registry.users._cache.set(p.id, p); },
+  },
 };
 const conquestBattleModePick = {}; // nid -> mode key, remembered for this session
 function battleModePickerHTML(nid){
-  const cur = conquestBattleModePick[nid] || 'gravity';
+  const cur = conquestBattleModePick[nid] || Registry.defaultBattleMode();
   return `<div class="battle-mode-picker" role="radiogroup" aria-label="Battle type">
     <div class="bmp-label">Battle type</div>
-    <div class="bmp-options">${Object.entries(BATTLE_MODES).map(([k,v])=>
-      `<button type="button" class="btn small ${k===cur?'primary':'ghost'}" role="radio" aria-checked="${k===cur}" data-battlemode="${k}">${v.icon} ${v.label}</button>`).join('')}</div>
-    <div class="bmp-blurb">${BATTLE_MODES[cur].blurb}</div>
+    <div class="bmp-options">${Registry.battleModes().map(v=>
+      `<button type="button" class="btn small ${v.id===cur?'primary':'ghost'}" role="radio" aria-checked="${v.id===cur}" data-battlemode="${v.id}">${v.icon} ${v.label}</button>`).join('')}</div>
+    <div class="bmp-blurb">${(Registry.battleMode(cur)||{}).blurb||''}</div>
   </div>`;
 }
 // Gladiator leader pick: your deck-editor leader if you set one, otherwise the toughest card in the
@@ -14978,7 +15084,7 @@ function testKitSkillDefault(sd){
 }
 function testKitSelectOpts(sd){ const o = typeof sd.selectOptions==='function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }
 const TESTKIT_SKILL_KINDS = new Set(['boolean','number','twoNumber','selectNumber']);
-function testKitSkillDefs(){ return SKILL_DEFS.filter(sd=> TESTKIT_SKILL_KINDS.has(sd.kind)); }
+function testKitSkillDefs(){ return Registry.skills().filter(sd=> TESTKIT_SKILL_KINDS.has(sd.kind)); }
 function testKitBuildDefs(){
   const e = JSON.parse(JSON.stringify(testKit.extraEffects||{}));
   testKitSkillDefs().forEach(sd=>{ if(testKit.skills[sd.key]!==undefined){ try{ sd.apply(e, testKit.skills[sd.key]); }catch(err){} } });
@@ -15173,7 +15279,7 @@ function testKitPanelHTML(){
       <div class="tk-stat-row">
         <label>⚔ Attack <input type="number" id="tkAtk" min="0" value="${testKit.attack}"></label>
         <label>❤ Health <input type="number" id="tkHp" min="1" value="${testKit.health}"></label>
-        <label>Damage <select id="tkDmg">${DMG_TYPES.map(t=>`<option value="${t}" ${testKit.dmgType===t?'selected':''}>${t}</option>`).join('')}</select></label>
+        <label>Damage <select id="tkDmg">${Registry.damageTypes().map(t=>`<option value="${t}" ${testKit.dmgType===t?'selected':''}>${t}</option>`).join('')}</select></label>
       </div>
       ${Object.keys(testKit.extraEffects||{}).length ? `<div class="tk-extra">+ copied extras: ${Object.keys(testKit.extraEffects).map(escapeHtml).join(', ')} <button type="button" class="tk-link" id="tkClearExtra">clear</button></div>` : ''}
       <div class="tk-skill-head"><span>Skills <small id="tkSkillCount">(${Object.keys(testKit.skills).length} on)</small></span>${Object.keys(testKit.skills).length?'<button type="button" class="tk-link" id="tkClearSkills">clear all</button>':''}</div>
@@ -19569,6 +19675,9 @@ async function resolveRound(){
           clearDungeonRun();
         }
       }
+    } else if(m.mode==='liveRanked' && m.liveRole==='host' && m.liveFriendly){
+      // Friendly match (private invite): no rating change — just close the match out.
+      if(sbClient && m.liveMatchId) sbClient.rpc('report_live_match_result', {p_match_id: m.liveMatchId, p_winner_id: m.winner===0 ? null : (m.winner===m.liveMySeat ? cloudUserId : m.liveOpponentId), p_player1_new_rating: null, p_player2_new_rating: null}).then(()=>{}, ()=>{});
     } else if(m.mode==='liveRanked' && m.liveRole==='host'){
       // Ranked 1v1 Live (#277) — host is the only client that ever reaches here (see
       // afterPlayerAction's own comment), so it's also the only one that reports the result:
@@ -21895,6 +22004,7 @@ function renderHome(){
         </div>
         <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
+        <button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
       </div>
@@ -22146,11 +22256,26 @@ function refreshShopAfford(){
   const row = document.getElementById('shopCurrencyRow');
   if(row) row.innerHTML = shopCurrencyRowInnerHTML();
 }
+let shopTab = 'packs';
 function renderShop(){
   const root = document.getElementById('view-shop');
+  const tabsHTML = `<div class="shop-tabs tk-seg mk-tabs" role="tablist" aria-label="Shop sections">
+      <button type="button" class="tk-speed-btn ${shopTab==='packs'?'is-on':''}" role="tab" aria-selected="${shopTab==='packs'}" data-shoptab="packs">📦 Packs</button>
+      <button type="button" class="tk-speed-btn ${shopTab==='market'?'is-on':''}" role="tab" aria-selected="${shopTab==='market'}" data-shoptab="market">🏪 Market</button></div>`;
+  if(shopTab==='market'){
+    root.innerHTML = `<div class="panel mk-panel"><h2>🏪 Market</h2>
+        <p class="panel-sub">Buy and sell cards with other players.</p>
+        <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}</div>
+      <div id="marketMount"></div>`;
+    root.querySelectorAll('[data-shoptab]').forEach(b=> b.onclick = ()=>{ shopTab = b.dataset.shoptab; renderShop(); });
+    const mount = document.getElementById('marketMount');
+    renderMarketInto(mount);
+    marketLoad().then(()=>{ if(currentTab==='shop' && shopTab==='market' && document.getElementById('marketMount')===mount) renderMarketInto(mount); });
+    return;
+  }
   root.innerHTML = `<div class="panel"><h2>🛒 Shop</h2>
       <p class="panel-sub">Card packs, paid for with Maple Leaves and Gold Leaves — each always grants Magic Dust (sometimes Metal too), plus a chance to instantly level up a random unlocked card.</p>
-      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>
+      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
     </div>
     <div class="shop-pack-grid" id="shopPackGrid"></div>
     <div class="panel shop-reveal-panel" id="shopRevealPanel" hidden>
@@ -22164,6 +22289,7 @@ function renderShop(){
          rather than shown as a greyed-out promise. See receiveLockedCard()'s own comment for the
          "arrives locked" data model this would eventually feed into. -->
     `;
+  root.querySelectorAll('[data-shoptab]').forEach(b=> b.onclick = ()=>{ shopTab = b.dataset.shoptab; renderShop(); });
   const grid = document.getElementById('shopPackGrid');
   // 2026-09-24: pack purchases are one of the three features this batch gates behind a real
   // sign-in. Deliberately NOT disabled outright when unaffordable-or-guest at the same time —
@@ -22597,6 +22723,453 @@ function renderProfile(){
   });
 }
 
+/* ============================================================
+   👥 Social: Friends, private match invites, and the public Market (2026-10-02, per explicit
+   request: "1. friend system (LONG PASS) 2. public market system (LONG PASS) 3. friend private
+   match invite + settings e.g. blackhole type").
+
+   Backend: supabase/migrations/20261002_social_friends_invites_market.sql — friendships,
+   match_invites, market_listings, plus SECURITY DEFINER functions that enforce the rules
+   server-side (only friends can invite, one buyer per listing, can't buy your own listing).
+   Every list here (arena types, cards, rarities, currencies, players) comes from Registry, never
+   a hard-coded copy. Everything degrades to a clear "not available yet" note if the backend
+   tables don't exist (e.g. before the migration is applied).
+   ============================================================ */
+const Social = {
+  ready: false,            // backend tables reachable
+  checked: false,
+  myCode: null,
+  rows: [],                // friendships rows involving me
+  online: new Set(),       // profile ids currently online (Realtime presence)
+  presence: null, inviteSub: null, friendSub: null,
+  incomingInvites: [],     // pending invites to me
+  outgoingInvite: null,    // my one pending invite (waiting screen)
+  searchResults: null, searchTerm: '', searching: false,
+  heartbeat: null,
+};
+function socialErrText(err){
+  const raw = (err && (err.message || err.details)) || '';
+  if(/relation .* does not exist|could not find the function|schema cache/i.test(raw)) return 'Friends & Market aren’t switched on yet — the database update still needs to be applied.';
+  return raw || 'Something went wrong — try again.';
+}
+function relTime(iso){
+  if(!iso) return 'a while ago';
+  const s = Math.max(0, (Date.now() - new Date(iso).getTime())/1000);
+  if(s<90) return 'just now'; if(s<3600) return Math.round(s/60)+'m ago'; if(s<86400) return Math.round(s/3600)+'h ago';
+  return Math.round(s/86400)+'d ago';
+}
+// Called whenever the signed-in identity changes (and once at boot after cloud init).
+async function socialInit(){
+  socialTeardown();
+  if(!sbClient || !isSignedIn()) { Social.checked = true; Social.ready = false; return; }
+  try{
+    const { data, error } = await sbClient.from('profiles').select('friend_code').eq('id', cloudUserId).maybeSingle();
+    if(error) throw error;
+    Social.myCode = data && data.friend_code || null;
+    Social.ready = true;
+  }catch(e){ Social.ready = false; Social.checked = true; return; }
+  Social.checked = true;
+  await socialRefresh();
+  // Presence: who's online right now (keyed by profile id).
+  try{
+    Social.presence = sbClient.channel('bw-online', {config:{presence:{key: cloudUserId}}});
+    Social.presence.on('presence', {event:'sync'}, ()=>{
+      Social.online = new Set(Object.keys(Social.presence.presenceState()||{}));
+      if(currentTab==='friends') renderFriendsListOnly();
+    });
+    Social.presence.subscribe(st=>{ if(st==='SUBSCRIBED') Social.presence.track({at: Date.now()}); });
+  }catch(e){}
+  // Live friend requests + invites.
+  try{
+    Social.friendSub = sbClient.channel('bw-friends-'+cloudUserId)
+      .on('postgres_changes', {event:'*', schema:'public', table:'friendships', filter:`addressee_id=eq.${cloudUserId}`}, p=>{ socialRefresh().then(()=>{ if(p.eventType==='INSERT' && p.new && p.new.status==='pending') showToast('👥 New friend request — open Friends to respond.'); }); })
+      .on('postgres_changes', {event:'*', schema:'public', table:'friendships', filter:`requester_id=eq.${cloudUserId}`}, p=>{ socialRefresh().then(()=>{ if(p.eventType==='UPDATE' && p.new && p.new.status==='accepted') showToast('👥 Friend request accepted!', 'ok'); }); })
+      .subscribe();
+    Social.inviteSub = sbClient.channel('bw-invites-'+cloudUserId)
+      .on('postgres_changes', {event:'INSERT', schema:'public', table:'match_invites', filter:`to_id=eq.${cloudUserId}`}, ()=> socialLoadInvites())
+      .on('postgres_changes', {event:'UPDATE', schema:'public', table:'match_invites', filter:`to_id=eq.${cloudUserId}`}, ()=> socialLoadInvites())
+      .on('postgres_changes', {event:'UPDATE', schema:'public', table:'match_invites', filter:`from_id=eq.${cloudUserId}`}, p=> onMyInviteUpdated(p.new))
+      .subscribe();
+  }catch(e){}
+  socialLoadInvites();
+  // "Last seen" heartbeat while signed in.
+  const beat = ()=>{ if(sbClient && cloudUserId) sbClient.from('profiles').update({last_seen_at: new Date().toISOString()}).eq('id', cloudUserId).then(()=>{}, ()=>{}); };
+  beat(); Social.heartbeat = setInterval(beat, 120000);
+}
+function socialTeardown(){
+  ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
+  if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
+  Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null;
+  hideInviteBanner();
+}
+async function socialRefresh(){
+  if(!Social.ready) return;
+  const { data, error } = await sbClient.from('friendships').select('*');
+  if(error){ console.warn('friendships', error); return; }
+  Social.rows = data || [];
+  const ids = Social.rows.map(r=> r.requester_id===cloudUserId ? r.addressee_id : r.requester_id);
+  await Registry.users.get(ids);
+  refreshFriendsBadge();
+  if(currentTab==='friends') renderFriends();
+}
+function socialBuckets(){
+  const me = cloudUserId, out = {friends:[], incoming:[], outgoing:[], blocked:[]};
+  Social.rows.forEach(r=>{
+    const otherId = r.requester_id===me ? r.addressee_id : r.requester_id;
+    const p = Registry.users._cache.get(otherId) || {id:otherId, display_name:'Player'};
+    const item = {row:r, other:p};
+    if(r.status==='accepted') out.friends.push(item);
+    else if(r.status==='blocked' && r.requester_id===me) out.blocked.push(item);
+    else if(r.status==='pending') (r.addressee_id===me ? out.incoming : out.outgoing).push(item);
+  });
+  out.friends.sort((a,b)=> (Social.online.has(b.other.id)-Social.online.has(a.other.id)) || String(a.other.display_name).localeCompare(String(b.other.display_name)));
+  return out;
+}
+function refreshFriendsBadge(){
+  const n = socialBuckets().incoming.length + Social.incomingInvites.length;
+  document.querySelectorAll('[data-hometab="friends"] .home-badge').forEach(b=> b.remove());
+  if(n>0) document.querySelectorAll('[data-hometab="friends"]').forEach(btn=>{ const s = document.createElement('span'); s.className = 'home-badge'; s.textContent = n; btn.appendChild(s); });
+}
+/* ---------- Friends screen ---------- */
+function friendRowHTML(item, kind){
+  const p = item.other; const on = Social.online.has(p.id);
+  const name = escapeHtml(p.display_name || 'Player');
+  const status = kind==='friend' ? (on ? '<span class="fr-on">● Online</span>' : `<span class="fr-off">Last seen ${relTime(p.last_seen_at)}</span>`) : (p.rating ? `Rating ${Math.round(p.rating)}` : '');
+  let actions = '';
+  if(kind==='friend') actions = `<button type="button" class="btn small primary" data-fr-invite="${p.id}">⚔️ Invite</button><button type="button" class="btn small ghost" data-fr-menu="${p.id}" aria-label="More for ${name}">⋯</button>`;
+  if(kind==='incoming') actions = `<button type="button" class="btn small primary" data-fr-accept="${item.row.id}">Accept</button><button type="button" class="btn small" data-fr-decline="${item.row.id}">Decline</button>`;
+  if(kind==='outgoing') actions = `<span class="fr-pending">Pending</span><button type="button" class="btn small ghost" data-fr-remove="${p.id}">Cancel</button>`;
+  if(kind==='blocked') actions = `<button type="button" class="btn small" data-fr-remove="${p.id}">Unblock</button>`;
+  return `<div class="fr-row" data-fr-id="${p.id}">
+    <div class="fr-avatar ${on?'is-on':''}" aria-hidden="true">${escapeHtml((p.display_name||'?').trim().charAt(0).toUpperCase())}</div>
+    <div class="fr-main"><div class="fr-name">${name}</div><div class="fr-sub">${status}</div></div>
+    <div class="fr-actions">${actions}</div>
+  </div>`;
+}
+function friendsListHTML(){
+  const b = socialBuckets();
+  const sec = (title, items, kind, empty)=> items.length || empty ? `<section class="fr-section"><h3>${title}${items.length?` <span class="fr-count">${items.length}</span>`:''}</h3>${items.length ? items.map(i=>friendRowHTML(i, kind)).join('') : `<p class="fr-empty">${empty}</p>`}</section>` : '';
+  return sec('Requests', b.incoming, 'incoming', '')
+    + sec('Friends', b.friends, 'friend', 'No friends yet — share your friend code or search for a player above.')
+    + sec('Sent', b.outgoing, 'outgoing', '')
+    + sec('Blocked', b.blocked, 'blocked', '');
+}
+function searchResultsHTML(){
+  if(Social.searching) return '<p class="fr-empty">Searching…</p>';
+  if(Social.searchResults===null) return '';
+  if(!Social.searchResults.length) return `<p class="fr-empty">No players found for “${escapeHtml(Social.searchTerm)}”. Names need 3+ letters; friend codes are 6 characters.</p>`;
+  const known = new Map(Social.rows.map(r=> [r.requester_id===cloudUserId ? r.addressee_id : r.requester_id, r]));
+  return Social.searchResults.map(p=>{
+    const r = known.get(p.id);
+    const state = !r ? `<button type="button" class="btn small primary" data-fr-add="${p.id}">＋ Add</button>`
+      : r.status==='accepted' ? '<span class="fr-pending">Friends ✓</span>'
+      : r.status==='pending' ? (r.addressee_id===cloudUserId ? `<button type="button" class="btn small primary" data-fr-accept="${r.id}">Accept</button>` : '<span class="fr-pending">Requested</span>')
+      : '<span class="fr-pending">Blocked</span>';
+    return `<div class="fr-row"><div class="fr-avatar" aria-hidden="true">${escapeHtml((p.display_name||'?').charAt(0).toUpperCase())}</div><div class="fr-main"><div class="fr-name">${escapeHtml(p.display_name||'Player')}</div><div class="fr-sub">#${escapeHtml(p.friend_code||'')} · Rating ${Math.round(p.rating||1500)}</div></div><div class="fr-actions">${state}</div></div>`;
+  }).join('');
+}
+function renderFriends(){
+  const root = document.getElementById('view-friends'); if(!root) return;
+  if(!isSignedIn()){
+    root.innerHTML = `<div class="panel"><h2>👥 Friends</h2><p class="panel-sub">Add friends, see who’s online, and invite them to private matches.</p><button type="button" class="btn primary" id="frSignInBtn">Sign in to use Friends</button></div>`;
+    document.getElementById('frSignInBtn').onclick = ()=> requireSignIn('to use Friends', ()=>{ switchTab('friends'); });
+    return;
+  }
+  if(!Social.ready){
+    root.innerHTML = `<div class="panel"><h2>👥 Friends</h2><p class="panel-sub">${Social.checked ? 'Friends aren’t switched on yet — the database update still needs to be applied.' : 'Connecting…'}</p></div>`;
+    if(!Social.checked) socialInit().then(()=>{ if(currentTab==='friends') renderFriends(); });
+    return;
+  }
+  root.innerHTML = `<div class="panel fr-panel">
+      <div class="fr-head"><h2>👥 Friends</h2>
+        <div class="fr-code" title="Share this so friends can add you">Your code <b id="frMyCode">${escapeHtml(Social.myCode||'——')}</b> <button type="button" class="btn small ghost" id="frCopyCode">Copy</button></div></div>
+      <form class="fr-search" id="frSearchForm" role="search">
+        <input type="search" id="frSearchInput" placeholder="Friend code or player name" value="${escapeAttr(Social.searchTerm)}" aria-label="Friend code or player name" autocomplete="off">
+        <button type="submit" class="btn primary">Search</button>
+      </form>
+      <div id="frSearchResults">${searchResultsHTML()}</div>
+      <div id="frLists">${friendsListHTML()}</div>
+      ${Social.outgoingInvite ? `<div class="fr-waiting" id="frWaiting">⏳ Waiting for <b>${escapeHtml(((Registry.users._cache.get(Social.outgoingInvite.to_id)||{}).display_name)||'your friend')}</b> to accept… <button type="button" class="btn small ghost" id="frCancelInvite">Cancel invite</button></div>` : ''}
+    </div>`;
+  wireFriends();
+}
+function renderFriendsListOnly(){ const el = document.getElementById('frLists'); if(el){ el.innerHTML = friendsListHTML(); } }
+function wireFriends(){
+  const root = document.getElementById('view-friends'); if(!root) return;
+  const copy = document.getElementById('frCopyCode');
+  if(copy) copy.onclick = ()=>{ try{ navigator.clipboard.writeText(Social.myCode||''); showToast('Friend code copied.'); }catch(e){} };
+  const form = document.getElementById('frSearchForm');
+  if(form) form.onsubmit = async e=>{
+    e.preventDefault();
+    Social.searchTerm = document.getElementById('frSearchInput').value.trim(); if(!Social.searchTerm) return;
+    Social.searching = true; document.getElementById('frSearchResults').innerHTML = searchResultsHTML();
+    try{ Social.searchResults = await Registry.users.search(Social.searchTerm); }
+    catch(err){ Social.searchResults = []; showToast(socialErrText(err), 'error'); }
+    Social.searching = false; document.getElementById('frSearchResults').innerHTML = searchResultsHTML();
+  };
+  const cancelInv = document.getElementById('frCancelInvite');
+  if(cancelInv) cancelInv.onclick = cancelMyInvite;
+  // One delegated handler for every row button (lists re-render often).
+  root.onclick = async e=>{
+    const t = e.target.closest('button'); if(!t) return;
+    const run = async (fn, ok)=>{ t.disabled = true; try{ await fn(); if(ok) showToast(ok, 'ok'); await socialRefresh(); }catch(err){ showToast(socialErrText(err), 'error'); } finally{ t.disabled = false; } };
+    if(t.dataset.frAdd) return run(async ()=>{ const { data, error } = await sbClient.rpc('send_friend_request', {p_target: t.dataset.frAdd}); if(error) throw error; showToast(data==='accepted' ? '👥 You’re now friends!' : (data==='already_friends' ? 'Already friends.' : 'Friend request sent.'), 'ok'); });
+    if(t.dataset.frAccept) return run(async ()=>{ const { error } = await sbClient.rpc('respond_friend_request', {p_id: t.dataset.frAccept, p_accept: true}); if(error) throw error; }, '👥 Friend added!');
+    if(t.dataset.frDecline) return run(async ()=>{ const { error } = await sbClient.rpc('respond_friend_request', {p_id: t.dataset.frDecline, p_accept: false}); if(error) throw error; });
+    if(t.dataset.frRemove) return run(()=> socialRemove(t.dataset.frRemove));
+    if(t.dataset.frInvite) return openInviteModal(t.dataset.frInvite);
+    if(t.dataset.frMenu){
+      const id = t.dataset.frMenu; const p = Registry.users._cache.get(id) || {};
+      const choice = prompt(`${p.display_name||'Player'} — type REMOVE to unfriend, or BLOCK to block.`);
+      if(!choice) return;
+      if(/^remove$/i.test(choice.trim()) && confirm(`Remove ${p.display_name||'this player'} from your friends?`)) return run(()=> socialRemove(id), 'Removed.');
+      if(/^block$/i.test(choice.trim()) && confirm(`Block ${p.display_name||'this player'}? They won’t be able to add or invite you.`)) return run(async ()=>{ const { error } = await sbClient.rpc('block_player', {p_target: id}); if(error) throw error; }, 'Blocked.');
+    }
+  };
+}
+async function socialRemove(otherId){
+  const r = Social.rows.find(r=> (r.requester_id===otherId && r.addressee_id===cloudUserId) || (r.addressee_id===otherId && r.requester_id===cloudUserId));
+  if(!r) return;
+  const { error } = await sbClient.from('friendships').delete().eq('id', r.id); if(error) throw error;
+}
+/* ---------- Private match invites ---------- */
+function liveBattleModes(){ return Registry.battleModes().filter(m=> m.live!==false); }
+let inviteSettings = {battleMode: null};
+function openInviteModal(friendId){
+  const p = Registry.users._cache.get(friendId) || {display_name:'your friend'};
+  const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
+  const modes = liveBattleModes();
+  if(!inviteSettings.battleMode || !modes.some(m=>m.id===inviteSettings.battleMode)) inviteSettings.battleMode = modes[0] ? modes[0].id : Registry.defaultBattleMode();
+  const deckOk = deckTotal(myDeckCounts)===DECK_SIZE;
+  const modeHTML = ()=> modes.map(m=> `<button type="button" class="tk-speed-btn ${m.id===inviteSettings.battleMode?'is-on':''}" role="radio" aria-checked="${m.id===inviteSettings.battleMode}" data-inv-mode="${m.id}">${m.icon} ${escapeHtml(m.label)}</button>`).join('');
+  overlay.innerHTML = `<div class="modal invite-modal" role="dialog" aria-labelledby="invTitle">
+    <div class="modal-head-row"><h2 id="invTitle">⚔️ Invite ${escapeHtml(p.display_name||'friend')}</h2><button class="modal-close-btn" id="invClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">A private, friendly match — no rating change.</p>
+    <div class="inv-field"><div class="inv-label">Arena type</div><div class="tk-seg inv-modes" role="radiogroup" aria-label="Arena type">${modeHTML()}</div>
+      <p class="inv-blurb" id="invBlurb">${escapeHtml((Registry.battleMode(inviteSettings.battleMode)||{}).blurb||'')}</p></div>
+    <div class="inv-field"><div class="inv-label">Your deck</div><div class="inv-deck ${deckOk?'':'is-bad'}">${deckOk ? `✅ Active deck · ${DECK_SIZE} cards` : `⚠️ Your deck has ${deckTotal(myDeckCounts)} cards — it needs exactly ${DECK_SIZE}. Fix it in Deck first.`}</div></div>
+    <div class="auth-actions"><button type="button" class="btn" id="invCancel">Cancel</button><button type="button" class="btn primary" id="invSend" ${deckOk?'':'disabled'}>Send invite</button></div>
+  </div>`;
+  overlay.hidden = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
+  document.getElementById('invClose').onclick = close; document.getElementById('invCancel').onclick = close;
+  overlay.onclick = e=>{ if(e.target===overlay) close(); };
+  overlay.querySelectorAll('[data-inv-mode]').forEach(b=> b.onclick = ()=>{
+    inviteSettings.battleMode = b.dataset.invMode;
+    overlay.querySelectorAll('[data-inv-mode]').forEach(x=>{ x.classList.toggle('is-on', x===b); x.setAttribute('aria-checked', x===b); });
+    document.getElementById('invBlurb').textContent = (Registry.battleMode(inviteSettings.battleMode)||{}).blurb||'';
+  });
+  document.getElementById('invSend').onclick = async ()=>{
+    const btn = document.getElementById('invSend'); btn.disabled = true;
+    try{
+      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: myDeckCounts, p_character: myCharacterId, p_leader: myLeaderId || null});
+      if(error) throw error;
+      Social.outgoingInvite = data; close();
+      showToast(`Invite sent to ${p.display_name||'your friend'}.`, 'ok');
+      if(currentTab==='friends') renderFriends();
+      pollMyInvite();
+    }catch(err){ btn.disabled = false; showToast(socialErrText(err), 'error'); }
+  };
+}
+// Realtime normally tells us when the invite is answered; this poll is the backup.
+let myInvitePoll = null;
+function pollMyInvite(){
+  clearTimeout(myInvitePoll);
+  const inv = Social.outgoingInvite; if(!inv || !sbClient) return;
+  myInvitePoll = setTimeout(async ()=>{
+    try{ const { data } = await sbClient.from('match_invites').select('*').eq('id', inv.id).maybeSingle(); if(data) await onMyInviteUpdated(data); }catch(e){}
+    if(Social.outgoingInvite && Social.outgoingInvite.id===inv.id) pollMyInvite();
+  }, 4000);
+}
+async function onMyInviteUpdated(inv){
+  if(!inv || !Social.outgoingInvite || inv.id!==Social.outgoingInvite.id || inv.status==='pending') return;
+  Social.outgoingInvite = null; clearTimeout(myInvitePoll);
+  const name = ((Registry.users._cache.get(inv.to_id)||{}).display_name) || 'Your friend';
+  if(inv.status==='accepted' && inv.match_id){
+    const { data: row } = await sbClient.from('live_matches').select('*').eq('id', inv.match_id).maybeSingle();
+    if(row){ showToast(`⚔️ ${name} accepted — match starting!`, 'ok'); switchTab('play'); await enterLiveMatch(row); return; }
+  }
+  if(inv.status==='declined') showToast(`${name} declined the invite.`);
+  if(inv.status==='expired') showToast('Your invite expired.');
+  if(currentTab==='friends') renderFriends();
+}
+async function cancelMyInvite(){
+  const inv = Social.outgoingInvite; if(!inv) return;
+  Social.outgoingInvite = null; clearTimeout(myInvitePoll);
+  try{ await sbClient.rpc('cancel_match_invite', {p_id: inv.id}); }catch(e){}
+  if(currentTab==='friends') renderFriends();
+}
+async function socialLoadInvites(){
+  if(!Social.ready) return;
+  const since = new Date(Date.now() - 15*60000).toISOString();
+  const { data } = await sbClient.from('match_invites').select('*').eq('to_id', cloudUserId).eq('status','pending').gte('created_at', since).order('created_at', {ascending:false});
+  Social.incomingInvites = data || [];
+  await Registry.users.get(Social.incomingInvites.map(i=>i.from_id));
+  refreshFriendsBadge();
+  showInviteBanner();
+}
+function showInviteBanner(){
+  const inv = Social.incomingInvites[0];
+  if(!inv || (matchState && !matchState.over)){ hideInviteBanner(); return; }
+  let el = document.getElementById('inviteBanner');
+  if(!el){ el = document.createElement('div'); el.id = 'inviteBanner'; el.className = 'invite-banner'; el.setAttribute('role','alert'); document.body.appendChild(el); }
+  const from = (Registry.users._cache.get(inv.from_id)||{}).display_name || 'A friend';
+  const mode = Registry.battleMode((inv.settings||{}).battleMode) || Registry.battleMode(Registry.defaultBattleMode());
+  el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}</span>
+    <span class="ib-actions"><button type="button" class="btn small primary" id="ibAccept">Accept</button><button type="button" class="btn small" id="ibDecline">Decline</button></span>`;
+  el.hidden = false;
+  document.getElementById('ibDecline').onclick = async ()=>{ try{ await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null}); }catch(e){} Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
+  document.getElementById('ibAccept').onclick = async ()=>{
+    if(deckTotal(myDeckCounts)!==DECK_SIZE){ showToast(`Your deck needs exactly ${DECK_SIZE} cards to play — fix it in Deck, then accept.`, 'error'); return; }
+    const b = document.getElementById('ibAccept'); b.disabled = true;
+    try{
+      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: myDeckCounts, p_character: myCharacterId, p_leader: myLeaderId || null});
+      if(error) throw error;
+      Social.incomingInvites = []; hideInviteBanner(); refreshFriendsBadge();
+      switchTab('play'); await enterLiveMatch(row);
+    }catch(err){ b.disabled = false; showToast(socialErrText(err), 'error'); Social.incomingInvites.shift(); showInviteBanner(); }
+  };
+}
+function hideInviteBanner(){ const el = document.getElementById('inviteBanner'); if(el) el.hidden = true; }
+/* ---------- Public Market (Shop → Market tab) ---------- */
+const MARKET_FEE = 0.05; // 5% of each sale is burned as a fee
+const Market = {tab:'browse', q:'', rarity:'', sort:'cheap', listings:null, mine:null, loading:false, sellId:'', sellPrice:20, sellCurrency:'gold'};
+function marketCurrencies(){ return Object.keys(CURRENCY_META).filter(k=> k==='gold' || k==='gems').map(k=> Object.assign({id:k}, CURRENCY_META[k])); }
+function priceHTML(price, cur){ const c = CURRENCY_META[cur] || {}; return `<span class="mk-price" title="${escapeAttr(c.label||cur)}">${c.glyph||''} ${price}</span>`; }
+async function marketLoad(){
+  if(!sbClient){ Market.listings = []; return; }
+  Market.loading = true;
+  try{
+    let q = sbClient.from('market_listings').select('*').eq('status','active');
+    q = Market.sort==='new' ? q.order('created_at', {ascending:false}) : q.order('price', {ascending: Market.sort!=='dear'});
+    const { data, error } = await q.limit(200); if(error) throw error;
+    Market.listings = data || []; Market.error = null;
+    await Registry.users.get(Market.listings.map(l=>l.seller_id));
+    if(isSignedIn()){
+      const { data: mine } = await sbClient.from('market_listings').select('*').eq('seller_id', cloudUserId).order('created_at', {ascending:false}).limit(60);
+      Market.mine = mine || [];
+      await marketClaimProceeds();
+    }
+  }catch(err){ Market.listings = []; Market.error = socialErrText(err); }
+  Market.loading = false;
+}
+async function marketClaimProceeds(){
+  try{
+    const { data, error } = await sbClient.rpc('claim_market_proceeds'); if(error) throw error;
+    (data||[]).forEach(l=>{ const net = Math.max(1, Math.floor(l.price*(1-MARKET_FEE))); grantCurrency(l.currency, net); const d = Registry.card(l.card_id); showToast(`💰 Sold ${d?d.name:'a card'} for ${net} ${(CURRENCY_META[l.currency]||{}).label||l.currency}.`, 'ok'); });
+  }catch(e){}
+}
+function marketBrowseHTML(){
+  if(Market.error) return `<p class="fr-empty">${escapeHtml(Market.error)}</p>`;
+  if(Market.loading || Market.listings===null) return '<p class="fr-empty">Loading the market…</p>';
+  const q = Market.q.trim().toLowerCase();
+  const rows = Market.listings.filter(l=>{ const d = Registry.card(l.card_id); return d && (!q || d.name.toLowerCase().includes(q)) && (!Market.rarity || d.rarity===Market.rarity); });
+  if(!rows.length) return `<p class="fr-empty">${Market.listings.length ? 'No listings match your filters.' : 'Nothing for sale yet — be the first to list a card from the Sell tab.'}</p>`;
+  return `<div class="mk-grid">${rows.map(l=>{
+    const d = Registry.card(l.card_id); const mine = l.seller_id===cloudUserId; const seller = (Registry.users._cache.get(l.seller_id)||{}).display_name || 'Player';
+    const afford = (myCurrencies[l.currency]||0) >= l.price;
+    return `<div class="mk-item">${cardTileHTML(d, {inPlay:true})}${l.foil?'<div class="mk-foil">✨ Foil</div>':''}
+      <div class="mk-meta">${priceHTML(l.price, l.currency)}<span class="mk-seller">by ${escapeHtml(seller)}</span></div>
+      ${mine ? '<button type="button" class="btn small" disabled>Your listing</button>' : `<button type="button" class="btn small primary" data-mk-buy="${l.id}" ${afford||!isSignedIn()?'':'disabled'} title="${afford?'':'Not enough '+escapeAttr((CURRENCY_META[l.currency]||{}).label||'')}">Buy</button>`}
+    </div>`; }).join('')}</div>`;
+}
+function ownedForSale(){
+  return Object.keys(myCardCopies).filter(id=> (myCardCopies[id]||[]).length>0 && Registry.card(id)).sort((a,b)=> Registry.card(a).name.localeCompare(Registry.card(b).name));
+}
+function marketSellHTML(){
+  if(!isSignedIn()) return `<p class="fr-empty">Sign in to sell cards.</p><button type="button" class="btn primary" id="mkSignIn">Sign in</button>`;
+  const owned = ownedForSale();
+  if(!owned.length) return '<p class="fr-empty">You don’t own any cards to sell yet. Cards you win or open in packs show up here.</p>';
+  if(!Market.sellId || !owned.includes(Market.sellId)) Market.sellId = owned[0];
+  const copies = myCardCopies[Market.sellId]||[]; const d = Registry.card(Market.sellId);
+  const inDeck = (myDeckCounts[Market.sellId]||0) > 0 && copies.length<=1;
+  return `<form class="mk-sell" id="mkSellForm">
+    <label class="inv-label" for="mkSellCard">Card</label>
+    <select id="mkSellCard">${owned.map(id=>`<option value="${escapeAttr(id)}" ${id===Market.sellId?'selected':''}>${escapeHtml(Registry.card(id).name)} (×${myCardCopies[id].length})</option>`).join('')}</select>
+    <div class="mk-sell-preview">${cardTileHTML(d, {inPlay:true})}</div>
+    ${inDeck ? '<p class="inv-deck is-bad">⚠️ This is your only copy and it’s in your deck — selling it removes it from your collection.</p>' : ''}
+    <div class="mk-sell-row">
+      <label>Price <input type="number" id="mkSellPrice" min="1" max="100000" value="${Market.sellPrice}"></label>
+      <label>Currency <select id="mkSellCur">${marketCurrencies().map(c=>`<option value="${c.id}" ${c.id===Market.sellCurrency?'selected':''}>${escapeHtml(c.label)}</option>`).join('')}</select></label>
+    </div>
+    <p class="tk-hint" id="mkNet">You’ll receive ${Math.max(1, Math.floor(Market.sellPrice*(1-MARKET_FEE)))} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.</p>
+    <button type="submit" class="btn primary">List for sale</button>
+  </form>`;
+}
+function marketMineHTML(){
+  if(!isSignedIn()) return '<p class="fr-empty">Sign in to see your listings.</p>';
+  const mine = Market.mine||[];
+  if(!mine.length) return '<p class="fr-empty">You haven’t listed anything yet.</p>';
+  const label = {active:'For sale', sold:'Sold', cancelled:'Cancelled'};
+  return mine.map(l=>{ const d = Registry.card(l.card_id) || {name:l.card_id, icon:'❔'};
+    return `<div class="fr-row"><div class="fr-avatar">${cardIcoHTML(d)}</div><div class="fr-main"><div class="fr-name">${escapeHtml(d.name)}${l.foil?' ✨':''}</div><div class="fr-sub">${label[l.status]||l.status} · ${priceHTML(l.price, l.currency)}${l.status==='sold'?' · '+relTime(l.sold_at):''}</div></div>
+      <div class="fr-actions">${l.status==='active'?`<button type="button" class="btn small" data-mk-cancel="${l.id}">Cancel</button>`:''}</div></div>`; }).join('');
+}
+function renderMarketInto(body){
+  body.innerHTML = `<div class="panel mk-panel">
+    <div class="mk-tabs tk-seg" role="tablist">
+      ${[['browse','🛍️ Browse'],['sell','🏷️ Sell'],['mine','📋 My listings']].map(([k,l])=>`<button type="button" class="tk-speed-btn ${Market.tab===k?'is-on':''}" role="tab" aria-selected="${Market.tab===k}" data-mk-tab="${k}">${l}</button>`).join('')}
+    </div>
+    ${Market.tab==='browse' ? `<div class="mk-filters">
+      <input type="search" id="mkQ" placeholder="Search cards…" value="${escapeAttr(Market.q)}" aria-label="Search cards">
+      <select id="mkRarity" aria-label="Rarity"><option value="">All rarities</option>${Registry.rarities().map(r=>`<option value="${escapeAttr(r.key)}" ${Market.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join('')}</select>
+      <select id="mkSort" aria-label="Sort"><option value="cheap" ${Market.sort==='cheap'?'selected':''}>Cheapest first</option><option value="dear" ${Market.sort==='dear'?'selected':''}>Priciest first</option><option value="new" ${Market.sort==='new'?'selected':''}>Newest first</option></select>
+    </div><div id="mkBody">${marketBrowseHTML()}</div>` : Market.tab==='sell' ? `<div id="mkBody">${marketSellHTML()}</div>` : `<div id="mkBody">${marketMineHTML()}</div>`}
+  </div>`;
+  body.onclick = async e=>{
+    const t = e.target.closest('button'); if(!t) return;
+    if(t.dataset.mkTab){ Market.tab = t.dataset.mkTab; renderMarketInto(body); return; }
+    if(t.id==='mkSignIn'){ requireSignIn('to use the Market', ()=>{ renderShop(); }); return; }
+    if(t.dataset.mkBuy){
+      if(!isSignedIn()){ requireSignIn('to buy from the Market', ()=>{ renderShop(); }); return; }
+      const l = (Market.listings||[]).find(x=>x.id===t.dataset.mkBuy); if(!l) return;
+      const d = Registry.card(l.card_id);
+      if((myCurrencies[l.currency]||0) < l.price){ showToast('Not enough '+((CURRENCY_META[l.currency]||{}).label||l.currency)+'.', 'error'); return; }
+      if(!confirm(`Buy ${d?d.name:'this card'} for ${l.price} ${(CURRENCY_META[l.currency]||{}).label||''}?`)) return;
+      t.disabled = true;
+      try{
+        const { error } = await sbClient.rpc('buy_listing', {p_id: l.id}); if(error) throw error;
+        myCurrencies[l.currency] = (myCurrencies[l.currency]||0) - l.price; saveCurrencies();
+        unlockCardForPlayer(l.card_id, 'market');
+        if(l.foil){ const c = myCardCopies[l.card_id]; if(c && c.length){ c[c.length-1].foil = true; saveCardCopies(); } }
+        showToast(`🛍️ Bought ${d?d.name:'a card'} — it’s in your Nest.`, 'ok');
+        await marketLoad(); renderMarketInto(body); { const row = document.getElementById('shopCurrencyRow'); if(row) row.innerHTML = shopCurrencyRowInnerHTML(); }
+      }catch(err){ t.disabled = false; showToast(socialErrText(err), 'error'); await marketLoad(); renderMarketInto(body); }
+      return;
+    }
+    if(t.dataset.mkCancel){
+      t.disabled = true;
+      try{
+        const { data, error } = await sbClient.rpc('cancel_listing', {p_id: t.dataset.mkCancel}); if(error) throw error;
+        if(!myCardCopies[data.card_id]) myCardCopies[data.card_id] = [];
+        myCardCopies[data.card_id].push({foil: !!data.foil}); saveCardCopies();
+        showToast('Listing cancelled — the card is back in your Nest.');
+        await marketLoad(); renderMarketInto(body);
+      }catch(err){ t.disabled = false; showToast(socialErrText(err), 'error'); }
+    }
+  };
+  const q = document.getElementById('mkQ'); if(q) q.oninput = ()=>{ Market.q = q.value; document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
+  const r = document.getElementById('mkRarity'); if(r) r.onchange = ()=>{ Market.rarity = r.value; document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
+  const so = document.getElementById('mkSort'); if(so) so.onchange = async ()=>{ Market.sort = so.value; await marketLoad(); renderMarketInto(body); };
+  const card = document.getElementById('mkSellCard'); if(card) card.onchange = ()=>{ Market.sellId = card.value; renderMarketInto(body); };
+  const price = document.getElementById('mkSellPrice'); if(price) price.oninput = ()=>{ Market.sellPrice = Math.max(1, Math.floor(Number(price.value)||1)); const n = document.getElementById('mkNet'); if(n) n.firstChild && (n.textContent = `You’ll receive ${Math.max(1, Math.floor(Market.sellPrice*(1-MARKET_FEE)))} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.`); };
+  const cur = document.getElementById('mkSellCur'); if(cur) cur.onchange = ()=>{ Market.sellCurrency = cur.value; };
+  const form = document.getElementById('mkSellForm');
+  if(form) form.onsubmit = async e=>{
+    e.preventDefault();
+    const id = Market.sellId; const copies = myCardCopies[id]||[]; if(!copies.length) return;
+    const btn = form.querySelector('button[type=submit]'); btn.disabled = true;
+    // Sell a non-foil copy when there is one; foils only when that's all you have.
+    let idx = copies.findIndex(c=>!c.foil); if(idx<0) idx = 0;
+    try{
+      const { error } = await sbClient.rpc('create_listing', {p_card: id, p_foil: !!copies[idx].foil, p_price: Market.sellPrice, p_currency: Market.sellCurrency}); if(error) throw error;
+      copies.splice(idx, 1); saveCardCopies();
+      showToast(`🏷️ Listed ${Registry.card(id).name} for ${Market.sellPrice}.`, 'ok');
+      Market.tab = 'mine'; await marketLoad(); renderMarketInto(body);
+    }catch(err){ btn.disabled = false; showToast(socialErrText(err), 'error'); }
+  };
+}
+
 function switchTab(tab){
   currentTab = tab;
   document.getElementById('view-home').hidden = tab!=='home';
@@ -22608,6 +23181,7 @@ function switchTab(tab){
   document.getElementById('view-profile').hidden = tab!=='profile';
   document.getElementById('view-ranking').hidden = tab!=='ranking';
   document.getElementById('view-guild').hidden = tab!=='guild';
+  { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
   document.getElementById('view-admin').hidden = tab!=='admin';
   // Reliability hardening (2026-09-24, same pass as the entrance-screen fix): each tab's
   // renderer is wrapped individually so a bug in ONE tab's render path (bad localStorage state,
@@ -22628,6 +23202,7 @@ function switchTab(tab){
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='guild') safeRender('Guild', renderGuild);
+  if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
   // Task #94 (2026-09-16, "make the battleground significantly bigger, full on full
   // screen"): the wider layout only makes sense while an actual match is on screen, so it's

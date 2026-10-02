@@ -2157,6 +2157,52 @@
   .zone-chip{font-size:16px; background:var(--bg); border-radius:7px; padding:3px 5px;}
 
 
+
+  /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
+  .home-menu-row{grid-template-columns:none !important; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr);}
+  .home-menu-btn-small{position:relative;}
+  .home-badge{position:absolute; top:6px; right:6px; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:#d9412b; color:#fff; font-size:11px; font-weight:800; line-height:18px; text-align:center; box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+  #view-friends{max-width:760px; margin:0 auto;}
+  .fr-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .fr-head h2{margin:0;}
+  .fr-code{font-size:13px; display:flex; align-items:center; gap:8px;}
+  .fr-code b{font-family:ui-monospace, Menlo, monospace; font-size:16px; letter-spacing:.12em; background:rgba(0,0,0,.08); padding:3px 8px; border-radius:8px;}
+  .fr-search{display:grid; grid-template-columns:1fr auto; gap:8px; margin:14px 0 8px;}
+  .fr-search input{height:42px; padding:0 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7;}
+  .fr-section{margin-top:16px;} .fr-section h3{margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.06em; opacity:.75;}
+  .fr-count{display:inline-block; min-width:18px; padding:0 6px; border-radius:9px; background:rgba(0,0,0,.12); font-size:11px; text-align:center;}
+  .fr-row{display:grid; grid-template-columns:40px 1fr auto; gap:10px; align-items:center; padding:8px 6px; border-bottom:1px solid rgba(0,0,0,.08);}
+  .fr-avatar{width:36px; height:36px; border-radius:50%; background:#c9a46a; color:#2b2117; font-weight:800; display:flex; align-items:center; justify-content:center; position:relative; font-size:16px; overflow:hidden;}
+  .fr-avatar img{width:100%; height:100%; object-fit:cover;}
+  .fr-avatar.is-on::after{content:''; position:absolute; right:0; bottom:0; width:11px; height:11px; border-radius:50%; background:#3fbf5a; box-shadow:0 0 0 2px #f4ecd8;}
+  .fr-name{font-weight:800;} .fr-sub{font-size:12px; opacity:.75;}
+  .fr-on{color:#2f8f45; font-weight:700;} .fr-pending{font-size:12px; opacity:.7; margin-right:4px;}
+  .fr-actions{display:flex; gap:6px; align-items:center;}
+  .fr-empty{opacity:.7; font-size:13px; margin:6px 0;}
+  .fr-waiting{margin-top:14px; padding:10px 12px; border-radius:10px; background:rgba(213,139,58,.15); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .invite-modal{max-width:440px;}
+  .inv-field{margin:12px 0;} .inv-label{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; opacity:.75; margin-bottom:6px;}
+  .inv-modes{display:flex; border-color:rgba(0,0,0,.2);} .inv-modes .tk-speed-btn{color:#2b2117;} .inv-modes .tk-speed-btn + .tk-speed-btn{border-left-color:rgba(0,0,0,.2);}
+  .inv-blurb{font-size:12.5px; opacity:.8; margin:6px 0 0;}
+  .inv-deck{font-size:13px; padding:8px 10px; border-radius:8px; background:rgba(63,191,90,.12);} .inv-deck.is-bad{background:rgba(217,65,43,.12);}
+  .invite-banner{position:fixed; top:62px; left:50%; transform:translateX(-50%); z-index:1200; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; max-width:min(560px, calc(100vw - 24px)); padding:10px 14px; border-radius:12px; background:#2c3a27; color:#f4ecd8; box-shadow:0 8px 24px rgba(0,0,0,.35); font-size:14px;}
+  .invite-banner[hidden]{display:none;}
+  .ib-actions{display:flex; gap:6px;}
+  .shop-tabs{display:flex; gap:6px; margin-top:10px;}
+  .mk-panel .mk-tabs{display:flex; border-color:rgba(0,0,0,.2); margin-bottom:12px;} .mk-panel .tk-speed-btn{color:#2b2117;} .mk-panel .tk-speed-btn + .tk-speed-btn{border-left-color:rgba(0,0,0,.2);}
+  .mk-filters{display:grid; grid-template-columns:1fr auto auto; gap:8px; margin-bottom:12px;}
+  .mk-filters input, .mk-filters select, .mk-sell select, .mk-sell input{height:40px; padding:0 10px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; box-sizing:border-box;}
+  .mk-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:12px;}
+  .mk-item{display:flex; flex-direction:column; gap:6px; align-items:stretch; position:relative;}
+  .mk-item .btn{width:100%;}
+  .mk-meta{display:flex; justify-content:space-between; align-items:center; font-size:12px; gap:6px;}
+  .mk-price{font-weight:800; font-size:14px; display:inline-flex; align-items:center; gap:3px;}
+  .mk-seller{opacity:.7; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .mk-foil{position:absolute; top:6px; left:6px; background:#fff3b0; color:#6b4e00; font-size:11px; font-weight:800; padding:2px 6px; border-radius:6px;}
+  .mk-sell{display:flex; flex-direction:column; gap:8px; max-width:420px;}
+  .mk-sell-preview{max-width:160px;}
+  .mk-sell-row{display:grid; grid-template-columns:1fr 1fr; gap:8px;} .mk-sell-row label{display:flex; flex-direction:column; gap:4px; font-size:12px; font-weight:700;}
+  @media (max-width:560px){ .mk-filters{grid-template-columns:1fr 1fr;} .mk-filters input{grid-column:1 / -1;} .mk-grid{grid-template-columns:repeat(2, minmax(0,1fr));} }
   /* ---- Simplified sign-in (2026-10-02) ---- */
   .auth-form{display:flex; flex-direction:column; gap:12px; max-width:360px; margin:0 auto; width:100%;}
   .auth-lede{margin:0; font-size:14px; line-height:1.45; color:inherit; opacity:.85; text-align:center;}
@@ -3935,6 +3981,7 @@
   <div id="view-deck" hidden></div>
   <div id="view-shop" hidden></div>
   <div id="view-nest" hidden></div>
+  <div id="view-friends" hidden></div>
   <div id="view-profile" hidden></div>
   <div id="view-ranking" hidden></div>
   <div id="view-guild" hidden></div>
