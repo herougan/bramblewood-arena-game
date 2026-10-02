@@ -7016,9 +7016,82 @@ const MAP_DECOR = {
     { emoji:'🐸', x:22, y:80, size:13 },
     { emoji:'🌾', x:8, y:52, size:16, rot:-8 },
     { emoji:'🍄', x:78, y:50, size:14, rot:6 },
-    { emoji:'🦋', x:48, y:40, size:15 },
   ],
 };
+// Living map decor (2026-10-03, per explicit request: "The random symbols on the maps like the
+// toadstool and butterfly and plants: firstly, put many more — next put some trees. Next, the
+// butterflies should move! They move from plant to plant, or just idle around."). Each biome lists
+// its trees, ground plants/props and a little critter. Placement is seeded per map (stable across
+// visits) and keeps clear of the nodes and the trail lines so nothing interactive is covered.
+const MAP_BIOMES = {
+  forest:  {trees:['🌲','🌳','🌲','🌳','🌲'], small:['🍄','🌿','🌱','🌼','🌾','🍀','🪨','🌸','🍄'], mover:{emoji:'🦋', kind:'butterfly', n:4}},
+  water:   {trees:['🌴','🌳'], small:['🪷','🌿','🐚','🪨','🌾','🐸'], mover:{emoji:'🐟', kind:'fish', n:3}},
+  ash:     {trees:['🪵','🌵'], small:['🪨','🔥','🪨','🌋','🍂','💨'], mover:{emoji:'🔥', kind:'firefly', n:4}},
+  cave:    {trees:['🪨','🗿'], small:['💎','🍄','🪨','🕸️','🦴','💎'], mover:{emoji:'🦇', kind:'bat', n:3}},
+  savanna: {trees:['🌳','🌴','🌳'], small:['🌾','🌾','🪨','🌼','🌵','🦴'], mover:{emoji:'🦋', kind:'butterfly', n:3}},
+  tundra:  {trees:['🌲','🌲','🏔️'], small:['❄️','🪨','🌨️','🧊','🌿'], mover:{emoji:'🐦', kind:'bird', n:3}},
+  reef:    {trees:['🪸','🪸'], small:['🐚','🪸','🦀','🌿','🪨','🫧'], mover:{emoji:'🐠', kind:'fish', n:4}},
+  swamp:   {trees:['🌳','🌲'], small:['🪷','🍄','🌿','🐸','🪵','🌾'], mover:{emoji:'✨', kind:'firefly', n:5}},
+  forge:   {trees:['🗿','🪨'], small:['🔥','🪨','⚙️','🪨','💨'], mover:{emoji:'🔥', kind:'firefly', n:4}},
+  alpine:  {trees:['🌲','🏔️','🌲'], small:['🪨','🌿','🪶','❄️','🌼'], mover:{emoji:'🦅', kind:'bird', n:2}},
+};
+const MAP_BIOME_OF = {m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
+function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
+function generatedMapDecor(map, positions){
+  const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
+  const rnd = seededRng(hashStr('decor:'+map.id));
+  const idx = {}; map.nodes.forEach((n,i)=> idx[n.key]=i);
+  const segs = [];
+  map.nodes.forEach((n,i)=> (n.requires||[]).forEach(k=>{ const j = idx[k]; if(j!=null && map.nodes[j].kind!=='tutorial') segs.push([positions[j], positions[i]]); }));
+  const taken = (MAP_DECOR[map.id]||[]).map(d=> ({x:d.x, y:d.y, r:d.type==='pond' ? Math.max(d.w,d.h)/2+3 : 4}));
+  const clear = (x,y,r)=> positions.every(p=> Math.hypot(p.x-x, (p.y-y)*0.8) > 8+r) && segs.every(([a,b])=> distToSeg(x,y,a.x,a.y,b.x,b.y) > 3.2+r*0.4) && taken.every(t=> Math.hypot(t.x-x, t.y-y) > t.r + r);
+  const out = [];
+  const place = (count, r, make)=>{ let tries = 0; while(count>0 && tries<400){ tries++; const x = 3+rnd()*94, y = 6+rnd()*88; if(!clear(x,y,r)) continue; taken.push({x,y,r}); out.push(make(x,y)); count--; } };
+  // trees in loose clusters toward the edges, then many small plants/props everywhere else
+  place(9, 4, (x,y)=> ({cls:'map-tree', emoji: biome.trees[Math.floor(rnd()*biome.trees.length)], x, y, size: 22+Math.floor(rnd()*14)}));
+  place(30, 2, (x,y)=> ({cls:'map-small', emoji: biome.small[Math.floor(rnd()*biome.small.length)], x, y, size: 11+Math.floor(rnd()*7), rot: Math.round(rnd()*20-10)}));
+  return out;
+}
+let mapMoverToken = 0;
+function startMapMovers(canvas, map, decor){
+  const token = ++mapMoverToken;
+  const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
+  if(!hasGsap() || !canvas) return;
+  const spots = decor.filter(d=> d.cls==='map-small' || d.cls==='map-tree').map(d=> ({x:d.x, y:d.y - (d.cls==='map-tree' ? 4 : 1.5)}));
+  const mv = biome.mover;
+  for(let i=0;i<mv.n;i++){
+    const el = document.createElement('span');
+    el.className = 'map-mover mv-'+mv.kind; el.textContent = mv.emoji; el.style.fontSize = (mv.kind==='firefly' ? 10 : 15)+'px';
+    const start = spots.length ? spots[Math.floor(Math.random()*spots.length)] : {x:20+Math.random()*60, y:20+Math.random()*60};
+    el.style.left = start.x+'%'; el.style.top = start.y+'%';
+    canvas.appendChild(el);
+    moverLoop(el, spots, mv.kind, token, start);
+  }
+}
+async function moverLoop(el, spots, kind, token, cur){
+  const alive = ()=> token===mapMoverToken && el.isConnected;
+  await sleep(Math.random()*1500);
+  while(alive()){
+    // Most of the time hop to another plant; sometimes just idle-wander nearby.
+    const idle = Math.random()<0.35 || !spots.length;
+    const tgt = idle ? {x: Math.max(3, Math.min(97, cur.x + (Math.random()*16-8))), y: Math.max(5, Math.min(95, cur.y + (Math.random()*12-6)))} : spots[Math.floor(Math.random()*spots.length)];
+    const dist = Math.hypot(tgt.x-cur.x, tgt.y-cur.y);
+    const speed = kind==='fish' ? 5 : kind==='bird' ? 14 : kind==='bat' ? 12 : kind==='firefly' ? 3 : 7; // % per second
+    const dur = Math.max(1.2, dist/speed);
+    gsap.set(el, {scaleX: tgt.x<cur.x ? -1 : 1});
+    const wob = kind==='fish' ? 4 : kind==='firefly' ? 10 : 14;
+    gsap.to(el, {left: tgt.x+'%', top: tgt.y+'%', duration: dur, ease:'sine.inOut'});
+    gsap.to(el, {y: -wob, duration: .28, repeat: Math.max(1, Math.round(dur/.28)), yoyo:true, ease:'sine.inOut'});
+    if(kind==='firefly') gsap.to(el, {opacity:.25, duration:.6, repeat: Math.round(dur/.6), yoyo:true});
+    await sleep(dur*1000);
+    if(!alive()) return;
+    gsap.set(el, {y:0, opacity:1});
+    cur = tgt;
+    // rest on the plant: a little flutter
+    if(kind==='butterfly') gsap.to(el, {scaleY:.7, duration:.18, repeat:5, yoyo:true});
+    await sleep(1200 + Math.random()*3200);
+  }
+}
 function mapDecorHTML(mapId){
   const items = MAP_DECOR[mapId];
   if(!items || !items.length) return '';
@@ -7283,6 +7356,7 @@ function renderConquestSubTab(body){
     return;
   }
   const positions = mapNodePositions(map);
+  const genDecor = generatedMapDecor(map, positions);
   const visibleFlags = map.nodes.map((n,i)=> isNodeVisible(map, n, i, progress));
   // Branch-aware trail (2026-09-24 redesign): a map can now converge/fork ("winding paths" per
   // the campaign redesign), so a single polyline through array order no longer draws the real
@@ -7316,6 +7390,7 @@ function renderConquestSubTab(body){
     <div class="conquest-map-canvas" id="conquestCanvas">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
+      ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
         const done = progress.completed.includes(id);
@@ -7369,6 +7444,7 @@ function renderConquestSubTab(body){
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
   const tooltipEl = document.getElementById('conquestTooltip');
+  startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');

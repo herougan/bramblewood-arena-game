@@ -3128,28 +3128,47 @@
      whatever's left of the now-taller, y-scrollable .conquest-main pane beneath the scrim
      heading, so the underlying map-theme-* gradient reads as one continuous painted map. */
   .conquest-map-canvas{position:relative; width:100%; min-height:460px; border-radius:12px; margin-top:10px;}
-  .map-theme-m1{background:radial-gradient(ellipse at 30% 20%, #4a7c3f 0%, #2f5a2a 45%, #1c3d1c 100%);}
-  .map-theme-m2{background:radial-gradient(ellipse at 30% 20%, #2f7ca0 0%, #1d5578 45%, #123a54 100%);}
-  .map-theme-m3{background:radial-gradient(ellipse at 30% 20%, #c05a2e 0%, #8a3a1e 45%, #4d1f10 100%);}
-  .map-theme-m4{background:radial-gradient(ellipse at 30% 20%, #5a4a7c 0%, #392c54 45%, #1c1530 100%);}
+  .map-theme-m1{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  .map-theme-m2{--mt-a:#2f7ca0; --mt-b:#1d5578; --mt-c:#123a54;}
+  .map-theme-m3{--mt-a:#c05a2e; --mt-b:#8a3a1e; --mt-c:#4d1f10;}
+  .map-theme-m4{--mt-a:#5a4a7c; --mt-b:#392c54; --mt-c:#1c1530;}
   /* 10 more themes (2026-09-18, item #3) — one gradient per new map (m5-m14), same "radial,
      lighter top-left, darker bottom-right" recipe as m1-m4 above, each tinted to its own biome:
      savanna gold, icy tundra blue-white, a deeper teal reef, black swampmire, volcanic red-black,
      alpine grey-white, dense jungle green, a shrine's purple-gold, a dusty cavalry-road tan, and
      a final dark blood-red apex-predator peak. */
-  .map-theme-m5{background:radial-gradient(ellipse at 30% 20%, #c9a227 0%, #8f6f1a 45%, #4d3b0e 100%);}
-  .map-theme-m6{background:radial-gradient(ellipse at 30% 20%, #a9c6d9 0%, #5c7c8f 45%, #263840 100%);}
-  .map-theme-m7{background:radial-gradient(ellipse at 30% 20%, #1f9e93 0%, #146b63 45%, #0b3b36 100%);}
-  .map-theme-m8{background:radial-gradient(ellipse at 30% 20%, #384a2e 0%, #212e1a 45%, #10160c 100%);}
-  .map-theme-m9{background:radial-gradient(ellipse at 30% 20%, #d9481f 0%, #8f2a10 45%, #401407 100%);}
-  .map-theme-m10{background:radial-gradient(ellipse at 30% 20%, #cdd6de 0%, #8a97a3 45%, #47515a 100%);}
+  .map-theme-m5{--mt-a:#c9a227; --mt-b:#8f6f1a; --mt-c:#4d3b0e;}
+  .map-theme-m6{--mt-a:#a9c6d9; --mt-b:#5c7c8f; --mt-c:#263840;}
+  .map-theme-m7{--mt-a:#1f9e93; --mt-b:#146b63; --mt-c:#0b3b36;}
+  .map-theme-m8{--mt-a:#384a2e; --mt-b:#212e1a; --mt-c:#10160c;}
+  .map-theme-m9{--mt-a:#d9481f; --mt-b:#8f2a10; --mt-c:#401407;}
+  .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;}
   /* m11 (2026-09-24 campaign redesign) is now "The Sundered Peak," the campaign's final map —
      reuses the dark-red gradient that previously lived at the old m14 slot (same map, same
      name/theme, just renumbered as the new structure's last regular map). */
-  .map-theme-m11{background:radial-gradient(ellipse at 30% 20%, #7c1f2a 0%, #4d1319 45%, #22090c 100%);}
-  .map-theme-m12{background:radial-gradient(ellipse at 30% 20%, #8a5fc9 0%, #5a3a8f 45%, #2e1c4d 100%);}
-  .map-theme-m13{background:radial-gradient(ellipse at 30% 20%, #b98a4e 0%, #7a5a30 45%, #3f2e18 100%);}
-  .map-theme-m14{background:radial-gradient(ellipse at 30% 20%, #7c1f2a 0%, #4d1319 45%, #22090c 100%);}
+  .map-theme-m11{--mt-a:#7c1f2a; --mt-b:#4d1319; --mt-c:#22090c;}
+  .map-theme-m12{--mt-a:#8a5fc9; --mt-b:#5a3a8f; --mt-c:#2e1c4d;}
+  .map-theme-m13{--mt-a:#b98a4e; --mt-b:#7a5a30; --mt-c:#3f2e18;}
+  .map-theme-m14{--mt-a:#7c1f2a; --mt-b:#4d1319; --mt-c:#22090c;}
+
+  /* Painted map backgrounds (2026-10-03, per explicit request: "Replace all the maps with a
+     background (with highlights and darkening gradients)"). Every map shares one layered recipe,
+     tinted by its own --mt-a/b/c palette: a dark vignette, a warm light pooling from the top-left,
+     a few soft lighter/darker terrain patches, a faint speckle texture, then the base gradient. */
+  .conquest-layout[class*="map-theme-"]{background:
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 52%, rgba(0,0,0,.55) 100%),
+    radial-gradient(ellipse 50% 42% at 22% 16%, rgba(255,240,190,.30) 0%, rgba(255,240,190,.10) 40%, transparent 72%),
+    radial-gradient(ellipse 26% 18% at 72% 28%, color-mix(in srgb, var(--mt-a) 80%, white 20%) 0%, transparent 70%),
+    radial-gradient(ellipse 30% 20% at 38% 78%, color-mix(in srgb, var(--mt-a) 85%, white 15%) 0%, transparent 72%),
+    radial-gradient(ellipse 34% 24% at 86% 84%, color-mix(in srgb, var(--mt-c) 80%, black 20%) 0%, transparent 70%),
+    radial-gradient(ellipse 28% 22% at 10% 70%, color-mix(in srgb, var(--mt-c) 70%, black 30%) 0%, transparent 72%),
+    repeating-radial-gradient(circle at 17% 23%, rgba(255,255,255,.04) 0 1px, transparent 1px 9px),
+    repeating-radial-gradient(circle at 63% 71%, rgba(0,0,0,.05) 0 1px, transparent 1px 11px),
+    radial-gradient(ellipse at 30% 20%, var(--mt-a) 0%, var(--mt-b) 48%, var(--mt-c) 100%);}
+  .map-decor.map-tree{z-index:0; opacity:.95; filter:drop-shadow(0 4px 3px rgba(0,0,0,.35));}
+  .map-decor.map-small{opacity:.85;}
+  .map-mover{position:absolute; z-index:1; pointer-events:none; user-select:none; line-height:1; transform:translate(-50%,-50%); filter:drop-shadow(0 2px 2px rgba(0,0,0,.3)); will-change:left, top, transform;}
+  .map-mover.mv-firefly{filter:drop-shadow(0 0 6px rgba(255,240,120,.95));}
   .map-trail-svg{position:absolute; inset:0; width:100%; height:100%;}
   .map-trail-svg polyline, .map-trail-svg line{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
   /* Map decoration (2026-09-29, "Draw a pond emoji or something in this outskirts - it's abit
