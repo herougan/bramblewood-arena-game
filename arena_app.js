@@ -4745,7 +4745,7 @@ function refreshAccountUI(){
     chip.hidden = false;
     chip.classList.toggle('signed-in', signedIn);
     const txt = document.getElementById('accountChipText');
-    if(txt) txt.textContent = signedIn ? (cloudUserLabel || 'Signed in') : 'Guest · Sign in';
+    if(txt){ if(signedIn) txt.textContent = cloudUserLabel || 'Signed in'; else txt.innerHTML = '<span class="acc-long">Guest · </span>Sign in'; }
     chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
   }
   const profBtn = document.getElementById('homeProfileBtn');

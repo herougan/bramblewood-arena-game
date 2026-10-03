@@ -4341,6 +4341,15 @@
   body[data-atmo="moonlit"] #atmoTint{opacity:.7; background:radial-gradient(ellipse at 20% 0%, rgba(170,200,255,.6), rgba(30,50,110,.6) 55%, rgba(5,10,30,.8) 100%);}
   body[data-atmo="rain"] #atmoTint{opacity:.45; background:linear-gradient(180deg, rgba(120,140,170,.7), rgba(40,60,80,.6));}
   body[data-atmo="autumn"] #atmoTint{opacity:.45; background:radial-gradient(ellipse at 50% 30%, rgba(255,190,120,.6), rgba(150,60,20,.5));}
+  /* Phone header on one row (2026-10-03, UX #20): logo mark only, compact pills, short sign-in label. */
+  @media (max-width:520px){
+    .topbar{flex-wrap:nowrap; gap:6px; justify-content:flex-end;}
+    .topbar .brand{margin-right:auto; padding:4px 2px;} .topbar .brand .word{display:none;}
+    .topbar .home-nav-btn{padding:7px 9px; font-size:12.5px;}
+    .topbar .energy-pill{padding:4px 8px;}
+    .topbar .account-chip{max-width:118px; padding:5px 8px;} .topbar .account-chip .acc-long{display:none;}
+    .topbar .settings-btn{flex-shrink:0;}
+  }
 </style>
 </head>
 <body>
