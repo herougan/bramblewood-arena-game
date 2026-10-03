@@ -8483,6 +8483,24 @@ function ensureTutorialMarkersComplete(progress){
 // Only the map you're on is built; switching pans the world toward the target (slide out, slide in
 // from that side) so moving between maps reads as travelling, not as a page swap.
 let conquestPanDir = null;
+// Immersive full-screen map: the real Fullscreen API where available (desktop, Android), plus a CSS
+// class that hides the chrome and lets the map fill the viewport (also the iPhone fallback).
+function toggleConquestImmersive(body){
+  const on = !document.body.classList.contains('conquest-immersive');
+  document.body.classList.toggle('conquest-immersive', on);
+  try{
+    if(on && document.documentElement.requestFullscreen && !document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+    if(!on && document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+  }catch(e){}
+  renderConquestSubTab(body || document.getElementById('playSubBody'));
+}
+document.addEventListener('fullscreenchange', ()=>{
+  if(!document.fullscreenElement && document.body.classList.contains('conquest-immersive')){
+    document.body.classList.remove('conquest-immersive');
+    try{ if(currentTab==='play' && playSubTab==='conquest' && !matchState) renderConquestSubTab(document.getElementById('playSubBody')); }catch(e){}
+  }
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('conquest-immersive') && !document.fullscreenElement) toggleConquestImmersive(); });
 function conquestPanTo(mapId, body, progress){
   const target = CONQUEST_MAPS.find(m=> m.id===mapId);
   if(!target || !isMapUnlocked(target, progress || loadConquestProgress())) return;
@@ -8498,7 +8516,10 @@ function conquestPanTo(mapId, body, progress){
 function renderConquestSubTab(body){
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
-  if(wrapEl) wrapEl.classList.add('wide-map');
+  // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
+  // Allow for a full-screen button in conquest"): Conquest now sits in the same content column as
+  // Arena; the ⛶ button gives the immersive full-screen map instead.
+  if(wrapEl) wrapEl.classList.remove('wide-map');
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
   // itself (see attachDelayedTooltip's call in renderPlay). Just a bare heading here.
@@ -8575,7 +8596,7 @@ function renderConquestSubTab(body){
   // tooltip (nodeTooltipHTML below) and the click-through node panel already cover the same
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
-  mainEl.innerHTML = `<div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
+  mainEl.innerHTML = `<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
@@ -8635,6 +8656,7 @@ function renderConquestSubTab(body){
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
   const tooltipEl = document.getElementById('conquestTooltip');
+  { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
   {
     const idx = CONQUEST_MAPS.indexOf(map), prev = CONQUEST_MAPS[idx-1], next = CONQUEST_MAPS[idx+1];
@@ -9423,7 +9445,7 @@ function renderRaidSubTab(body){
   // replayed here), so it gets the same ~99%-width canvas rather than snapping back to the
   // normal 1220px content column.
   const wrapEl = document.getElementById('appWrap');
-  if(wrapEl) wrapEl.classList.add('wide-map');
+  if(wrapEl) wrapEl.classList.remove('wide-map'); // same column as Arena/Conquest (2026-10-03)
   // 2026-09-29, per explicit request ("Remove 'Conquest Replays'."): the "Raid Bosses you've
   // permanently unlocked by beating them once in Conquest — replay them any time" section used to
   // render here, between Online Raid and Coming Up. Removed outright — replaying an unlocked
