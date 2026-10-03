@@ -15,7 +15,7 @@ _Last updated: 2026-10-03_
 - ⛔ **NFTs or blockchain:** none.
 - ⛔ **Real-money purchases:** none. Gold Leaves is the "premium" currency, but nothing sells it for money.
 - ⛔ **Loot boxes for money:** none. Card packs are bought with in-game currency only.
-- ⛔ **Sudden death, daily/weekly quests, PvP tickets, autobattler draft mode:** designed, not built (items 3, 8, 12, 13, 15).
+- ⛔ **Catch-up mechanics, multi-row raids with boss fragments:** still designs (items 10, 14).
 
 ---
 
@@ -45,13 +45,16 @@ _Last updated: 2026-10-03_
   - `bramblewood-engine.js` (`resolveCombat`, `placeCard`)
   - `context-combat-engine.md`
 
-**3. Sudden death and draws** 📝
-- From **turn 20**: sudden death, **1 hit = die**.
-  - To confirm: does this mean any hit kills the unit it lands on, any hit on a castle ends the game, or both?
-- **Auto-draw** when nobody has an action they can take and the board isn't changing.
-- **Forfeit** is always available.
-- A stalled board is hard to detect in general, so the rule only checks "no legal actions + no state change", nothing cleverer.
-- **Where:** not built yet. It would go in the engine's round loop, with the turn counter in `resolveRound` in `arena_app.js`.
+**3. Sudden death and draws** ✅
+- From **turn 20**, any hit that lands kills the unit it hits, and any hit on a castle ends the game. A banner announces it.
+  - **Raids:** only the unit half applies. Otherwise surviving to turn 20 would hand anyone the whole boss castle.
+  - This is my reading of "1 hit = die"; it's one setting if you meant otherwise.
+- **Auto-draw:** when neither player has a card left in hand or deck and the board hasn't changed for 2 rounds. Also at **turn 100**.
+- **Forfeit:** a 🏳️ button in single-player modes. It counts as a loss and shows the normal results screen.
+- **Where:**
+  - Engine: `SUDDEN_DEATH_ROUND`, `setSuddenDeath`, `boardSignature`, `noActionsLeft`, `DRAW_ROUND_CAP`
+  - App: `resolveRound`, `forfeitMatch` in `arena_app.js`
+  - Tests: `tests/scenarios/sudden-death.json`
 
 **4. Battle modes** ✅
 - **Gravity** (default): cards slide inward to the centre.
@@ -89,9 +92,9 @@ _Last updated: 2026-10-03_
   - Maximum 20, refills 1 per minute.
   - Conquest fights cost 1–5 by node kind.
   - Stored in this browser only.
-- 🎟️ **PvP Tickets** 📝: **10 per day**, spent on PvP (item 12).
+- 🎟️ **PvP Tickets** ✅: **10 per day**, refilled at local midnight, spent on PvP (item 12). Stored in this browser only.
 - 🎫 **Raid Points** ✅: only used by the hidden Online Raid.
-- **Where:** `ENERGY_MAX`, `ENERGY_COST`, `spendEnergy` in `arena_app.js`.
+- **Where:** `ENERGY_MAX`, `ENERGY_COST`, `spendEnergy`, `PVP_TICKETS_PER_DAY`, `usePvpTicket` in `arena_app.js`.
 
 **9. Getting cards** ✅
 - Every card has one source:
@@ -104,12 +107,14 @@ _Last updated: 2026-10-03_
   - `cardSourceOf`, `cardWhereToGetText`, `SHOP_PACKS_DEFAULT`, `levelUpCost` in `arena_app.js`
   - `context-economy-progression.md`
 
-**10. Reward philosophy** 📝 (principle; guides every reward number)
+**10. Reward philosophy** 🟡 (principle; guides every reward number)
 - Raw rewards from playing are deliberately **low**, so the gap between grinders and non-grinders stays small.
+  - PvP pays 18 / 6 Maple Leaves for a win / loss.
+  - An Autobattler run pays 8 per win, plus a bonus at 10 wins.
 - The real rewards come from **limited** sources: quests (item 15).
-- **Grinders get statistics medals:** recognition, not power, so they don't feel they lost out.
+- **Statistics medals** ✅ are built. Lifetime totals of units defeated, wins, PvP wins, Conquest clears, raid damage and Energy spent earn Bronze → Silver → Gold → Platinum. They're recognition, not power.
 - **Catch-up mechanics:** to decide. One option is to make the game less punishing as it goes on.
-- **Where:** this doc for now.
+- **Where:** `STAT_MEDALS`, `bumpQuestCounter` in `arena_app.js`; quest rewards in `QUEST_TIERS`.
 
 ### Modes
 
@@ -122,23 +127,30 @@ _Last updated: 2026-10-03_
   - `CONQUEST_MAPS`, `startConquestMatch`, `mapNodePositions` in `arena_app.js`
   - `game-design-v36`–`v38` addenda
 
-**12. PvP: ticket battles** 📝
+**12. PvP: ticket battles** ✅
 - Spend 1 of your **10 daily tickets** to fight a **random stranger's deck, played by the AI**.
-- The stranger's deck **always goes first**.
-- **Where:** not built. The deck pool can reuse the ghost decks (`bramblewood-ghosts.js` `buildStagePool`).
-- Today's "Async Arena" (a 7-win / 3-loss run against ghosts, see `game-design-v39-addendum.md`) gets replaced by this mode and the draft mode below.
+- **"They always go first":** the stranger plays its card at the start of every round, before you plan, and wins every same-column tie.
+- Strangers come from the ghost pool at the stage that matches your rating. Every PvP match also records your deck, so you become a stranger for others.
+- Wins and losses move your rating.
+- It's the ⚔️ PvP tile in Arena. The old 7-win / 3-loss Async Arena tile is hidden.
+- **Where:** `pvpOpponentPool`, `settlePvpAfterMatch` in `arena_app.js`; `buildStagePool` in `bramblewood-ghosts.js`.
+- **Next:** a cloud table so strangers are other real players, not only this browser's decks plus seeds.
 
-**13. Autobattler: draft run** 📝 (like Super Auto Pets / Bazaar-style async battlers)
-- **Draft everything at the start:** your cards, your castle and your leader.
-- You get **two leaders**; the **second (sub-leader) can be swapped** as you go.
-- **Health:** start with **5**. Lose **1 per loss in rounds 1–3**, then **2 per loss**.
-- **Goal:** reach **10 wins**. After that, **Endless** (11, 12, …) is optional, with a hard stop at **round 100**.
-- **Boon after each round:** e.g. duplicate a card, +1/+1 a card, or add a passive.
-- **Fights are CPU vs CPU**, so they're fast. The skill is deck-building, not piloting.
-- Opponents are other players' runs at the same win count (ghosts). Each win stage needs ≥ 10 active decks, a requirement the ghost pool already meets.
-- **Where:** not built.
-  - Ghost pool and tests: `bramblewood-ghosts.js`, `tests/async-raid.js`
-  - CPU vs CPU fight loop: `simulateOneMatch` in the engine
+**13. Autobattler: draft run** ✅ (like Super Auto Pets / Bazaar-style async battlers; its own 🧩 tab in Play)
+- **Draft:** pick 1 of 3 for your castle, leader and sub-leader, then 10 card picks. Each card pick gives 2 copies, so the deck is 20 cards.
+- **Leaders:** the leader starts every fight on the board. The sub-leader joins on round 4 and can be swapped between fights (1 of 2 offers, once per fight).
+- **Health:** 5. A loss in fights 1–3 costs 1; later losses cost 2.
+- **Goal:** 10 wins, then **cash out or go Endless**. Endless hard-stops at fight 100.
+- **Boon after every fight:** pick 1 of 3 — duplicate a card, +1/+1, or add a passive (Armor, Thorns, Poison, Flying, …). Changed cards are run-only copies, never the real card.
+- **Fights are CPU vs CPU** and resolve instantly (about 35 ms). The results screen shows castles, rounds and your MVP card.
+- **Opponents:** ghost runs at the same number of wins, at least 12 per stage including Endless, topped up with seeded ghosts. Your run is recorded as a ghost each fight.
+- **Where:**
+  - Rules and simulation: `bramblewood-autobattle.js`
+  - UI: `renderAutobattleSubTab` in `arena_app.js`
+  - Tests: `tests/autobattle.js`
+- **Next:**
+  - a "watch the fight" replay;
+  - a cloud ghost table, so you meet real players.
 
 **14. Raids** 🟡
 - **Target version:** async multiplayer. You and **N async players' decks, in rows, against one boss**, but you only fight **a fragment** of it, e.g. the head or the tail.
@@ -155,15 +167,14 @@ _Last updated: 2026-10-03_
   - `offlineRaidPanelHTML` in `arena_app.js`
   - `canonical/raid-bosses.json`
 
-**15. Quests: daily and weekly** 📝
-- Rewards are tiered and decrease as you complete more.
-- **Daily, tier 1:**
-  - Use 40 Energy on Skirmishes
-  - Use 3 PvP tickets
-  - Defeat 12 units
-- **Daily, tier 2 (smaller rewards):** Join a Raid, …
-- **Weekly:** very rewarding, with the same internal tiers.
-- **Where:** not built.
+**15. Quests: daily and weekly** ✅ (📜 Quests on Home, with a badge when something is claimable)
+- Each tier appears once the tier above is fully claimed, and rewards shrink tier by tier.
+- **Daily** (resets at local midnight):
+  - **Tier 1** (60 🍁 + 8 ✨ each): use 40 ⚡ on Conquest, use 3 PvP tickets, defeat 12 units.
+  - **Tier 2** (30 + 4): join a Raid, win 2 matches, clear 2 Conquest fights.
+  - **Tier 3** (15 + 2): defeat 30 units, win 2 PvP matches.
+- **Weekly** (resets Monday): the same shape with bigger goals. Tier 1 pays 300 🍁 + 40 ✨ + 3 🔩 each.
+- **Where:** `QUEST_TIERS`, `bumpQuestCounter`, `openQuestsModal` in `arena_app.js`. Counters are local for now.
 
 **16. Ranked and rating** ✅
 - Rating with tiers.
@@ -195,6 +206,7 @@ _Last updated: 2026-10-03_
   - **Mechanic scenarios**
   - **Two-player:** policies, seat fairness, replay
   - **Async/raid pools**
+  - **Autobattler:** draft, health, boons, leaders, ghosts, and 30 full runs
 - `--e2e` adds a two-browser live match.
 - 54 user stories with acceptance criteria.
 - **Where:**
@@ -206,6 +218,7 @@ _Last updated: 2026-10-03_
 
 ## Parked (hidden, kept in code)
 - **Online Raid:** hidden 2026-10-03.
+- **Async Arena (7W/3L ghost run):** hidden; replaced by PvP + Autobattler. The code and its saved-match Continue are kept.
 - **Gauntlet, Dungeon, Pass & Play:** still in Arena; likely folded into PvP / Autobattler later.
 - **Card pairings that never damage each other** (mostly armor walls): accepted as fine. Players will build decks that get through.
 
