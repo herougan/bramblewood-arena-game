@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""UI smoke test for the 2026-10-03 features — real game page in headless Chromium.
+
+    python3 tests/e2e/ui_smoke.py
+
+Checks:
+  1. every tab and Play sub-tab at 1366, 820 (iPad) and 390 (phone): no page errors, no sideways scroll;
+  2. Home: Play hero + 2×2 grid, Settings → Workshop/Admin, Community menu;
+  3. card levels: hidden in the Codex, shown in the Nest and in the deck pool when the level filter is on;
+  4. Shop: a pack opens, every card flips, the cards land in the Nest;
+  5. Raid trench: pick a row, play your row turn by turn to the end, the attempt is recorded once;
+  6. Conquest world: an edge pans to the next map;
+  7. Arena: Recent opponents opens the opponent's deck;
+  8. phone header stays on one row.
+Exit code 1 on any failure.
+"""
+import asyncio, os, sys
+from playwright.async_api import async_playwright
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
+URL = 'file://' + os.path.join(ROOT, 'index.html')
+EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
+INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
+        "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit']));"
+        "localStorage.setItem('bramblewood_recent_opponents_v1', JSON.stringify([{at:1, name:'Moss B.', mode:'pvp', result:'win', deck:{'yeti':2,'bee-drone':3}}]));")
+TABS = ['home', 'codex', 'deck', 'shop', 'nest', 'profile', 'ranking', 'friends', 'guild', 'admin']
+SUBTABS = ['conquest', 'arena', 'autobattle', 'raid']
+failures = []
+
+def check(cond, msg):
+    if not cond:
+        failures.append(msg); print('  FAIL', msg)
+
+async def new_page(b, w, h):
+    pg = await b.new_page(viewport={'width': w, 'height': h})
+    errs = []
+    pg.on('pageerror', lambda e: errs.append(str(e)))
+    pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
+    await pg.add_init_script(INIT)
+    await pg.goto(URL); await pg.wait_for_timeout(1500)
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; 1")
+    return pg, errs
+
+async def main():
+    async with async_playwright() as p:
+        b = await p.chromium.launch(executable_path=EXE)
+        # 1 + 8: every screen at three sizes
+        for w, h in [(1366, 860), (820, 1180), (390, 844)]:
+            pg, errs = await new_page(b, w, h)
+            for t in TABS:
+                await pg.evaluate(f"switchTab('{t}'); 1"); await pg.wait_for_timeout(250)
+                check(not await pg.evaluate("document.documentElement.scrollWidth > innerWidth+1"), f'{t}@{w}: sideways scroll')
+            for st in SUBTABS:
+                await pg.evaluate(f"playSubTab='{st}'; switchTab('play'); 1"); await pg.wait_for_timeout(350)
+                check(not await pg.evaluate("document.documentElement.scrollWidth > innerWidth+1"), f'play:{st}@{w}: sideways scroll')
+            if w == 390:
+                await pg.evaluate("switchTab('codex'); 1"); await pg.wait_for_timeout(200)
+                check(await pg.evaluate("document.querySelector('.topbar').getBoundingClientRect().height") < 60, 'phone header wraps to two rows')
+            check(not errs, f'page errors at {w}: {errs[:3]}')
+            await pg.close()
+
+        pg, errs = await new_page(b, 1366, 900)
+        # 2: Home
+        await pg.evaluate("switchTab('home'); 1"); await pg.wait_for_timeout(300)
+        check(await pg.evaluate("!!document.querySelector('.home-grid .home-play') && document.querySelectorAll('.home-grid .home-tile').length===5"), 'Home should have a Play hero + 4 tiles')
+        await pg.click('#settingsBtn'); await pg.wait_for_timeout(150)
+        links = await pg.evaluate("[...document.querySelectorAll('#settingsLinks button')].map(b=>b.textContent)")
+        check(any('Workshop' in l for l in links), 'Settings should link to the Workshop')
+        await pg.click('#settingsBtn')
+        await pg.click('#homeCommunityBtn'); await pg.wait_for_timeout(150)
+        check(await pg.evaluate("!document.getElementById('homeCommunityMenu').hidden"), 'Community menu should open')
+        # 3: card levels
+        await pg.evaluate("myCardLevels['bee-drone']=3; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
+        check(await pg.evaluate("[...document.querySelectorAll('#codexGrid .levelbadge')].every(e=> getComputedStyle(e).display==='none')"), 'card levels should be hidden in the Codex')
+        await pg.evaluate("unlockCardForPlayer('bee-drone','test'); switchTab('nest'); 1"); await pg.wait_for_timeout(300)
+        check(await pg.evaluate("[...document.querySelectorAll('#nestGrid .levelbadge')].some(e=> getComputedStyle(e).display!=='none')"), 'card levels should show in the Nest')
+        await pg.evaluate("switchTab('deck'); 1"); await pg.wait_for_timeout(300)
+        if await pg.query_selector('#deckLevelFilter'):
+            await pg.select_option('#deckLevelFilter', '3'); await pg.wait_for_timeout(200)
+            check(await pg.evaluate("document.getElementById('myDeckPool').classList.contains('show-levels')"), 'deck pool should show levels when the level filter is on')
+        # 4: pack opening
+        await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
+        before = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
+        await pg.click('[data-buypack="silver"]'); await pg.wait_for_timeout(500)
+        await pg.click('#poSkip'); await pg.wait_for_timeout(500)
+        check(await pg.evaluate("document.querySelectorAll('.po-card.is-flipped').length") == 5, 'the Acorn Chest should reveal 5 cards')
+        after = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
+        check(after - before == 5, f'pack should add 5 copies (added {after-before})')
+        await pg.click('#poDone')
+        # 5: raid trench, played
+        await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
+        n0 = await pg.evaluate("loadRaidPartAttempts().length")
+        await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(300)
+        await pg.click('[data-row="0"]'); await pg.wait_for_timeout(300)
+        played = 0
+        for _ in range(16):
+            if await pg.evaluate("!!document.querySelector('.tr-result')"): break
+            hc = await pg.query_selector('.tm-hand-card.playable')
+            if hc:
+                await hc.click(); await pg.wait_for_timeout(80)
+                slot = await pg.query_selector('.tr-cell.is-legal')
+                if slot: await slot.click(); played += 1
+            await pg.click('#tmEnd'); await pg.wait_for_timeout(1700)
+        check(await pg.evaluate("!!document.querySelector('.tr-result')"), 'the trench fight should reach a result')
+        check(played > 0, 'never played a card in the trench')
+        check(await pg.evaluate("loadRaidPartAttempts().length") == n0 + 1, 'the trench attempt should be recorded exactly once')
+        await pg.click('#trDone')
+        # 6: Conquest world panning
+        await pg.evaluate("(()=>{ const pr=loadConquestProgress(); CONQUEST_MAPS.slice(0,2).forEach(m=> m.nodes.forEach(n=>{ const id=conquestNodeId(m.id,n.key); if(!pr.completed.includes(id)) pr.completed.push(id); })); saveConquestProgress(pr); conquestSelectedMap='m1'; playSubTab='conquest'; switchTab('play'); return 1; })()")
+        await pg.wait_for_timeout(500)
+        edge = await pg.query_selector('.world-edge-right[data-world-go]')
+        check(edge is not None, 'the next map should peek in at the right edge')
+        if edge:
+            await edge.click(); await pg.wait_for_timeout(600)
+            check(await pg.evaluate("conquestSelectedMap") == 'm2', 'the edge should pan to the next map')
+        # 7: recent opponents
+        await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
+        await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
+        check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
+        check(not errs, f'page errors in feature checks: {errs[:3]}')
+        await b.close()
+    print(f'ui-smoke: {len(failures)} failure(s)')
+    sys.exit(1 if failures else 0)
+
+asyncio.run(main())

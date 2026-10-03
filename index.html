@@ -15169,7 +15169,7 @@ function sendLiveIntent(intent){
 async function replayLiveIntent(intent){
   const m = matchState;
   if(!m || m.mode!=='liveRanked' || m.liveRole!=='host' || !intent) return;
-  if(activePlayerId(m) !== intent.fromSeat) return; // stale/out-of-turn intent (e.g. a race with a state broadcast already in flight) — drop it silently rather than risk misattributing an action
+  if(activePlayerId(m) !== intent.fromSeat){ broadcastLiveState(); return; } // stale/out-of-turn intent (e.g. a race with a state broadcast already in flight) — drop it silently rather than risk misattributing an action
   m.liveReplaying = true;
   try{
     if(intent.type==='playCard') await playCardByUid(intent.uid, intent.side, intent.dropPoint);
@@ -15177,6 +15177,9 @@ async function replayLiveIntent(intent){
     else if(intent.type==='skipTurn') await skipTurn();
     else if(intent.type==='summonLeader') await attemptSummonLeader(intent.preferredLane);
   } finally { m.liveReplaying = false; }
+  // Always resync the peer after handling one of its intents — including a no-op/rejected one —
+  // so its mirror can never drift into re-sending an action the host already applied.
+  broadcastLiveState();
 }
 
 // Host-only: broadcasts the full, authoritative match state to the peer. See module header
@@ -22688,6 +22691,10 @@ async function discardCardByUid(uid){
     await afterPlayerAction(activePid);
   } else {
     renderHand(); renderBoard(); updateControlsDisabled(); renderHUD();
+    // Live 1v1 (2026-10-03 fix): a discard doesn't end the turn, so nothing broadcast it — the
+    // peer's mirror kept the discarded card and "discard unused", re-sent the same discard forever,
+    // and the match stalled (the flaky tests/e2e/live_two_player.py run). Sync after every discard.
+    if(m.mode==='liveRanked') broadcastLiveState();
   }
 }
 async function skipTurn(){
