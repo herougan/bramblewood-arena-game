@@ -7329,7 +7329,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage'];
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -10302,6 +10302,7 @@ function hudSettingsWidgetHTML(){
     <button class="settings-btn" id="settingsBtnHud" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
     <div class="settings-panel" id="settingsPanelHud" hidden>
       <div class="settings-panel-title">Settings</div>
+      ${(matchState && matchState.drawOffered && !matchState.over) ? `<div class="settings-row"><button type="button" class="btn small primary" id="acceptDrawHudBtn" style="width:100%">🤝 Accept the draw offer</button></div>` : ''}
       <div class="settings-row">
         <div class="settings-row-label"><span>🎵 Music</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
         <input type="range" id="musicVolumeSliderHud" min="0" max="100" step="1" aria-label="Music volume">
@@ -10324,6 +10325,7 @@ function hudSettingsWidgetHTML(){
 }
 function wireHudChrome(){
   wireSettingsButton('Hud');
+  const d = document.getElementById('acceptDrawHudBtn'); if(d) d.onclick = acceptDrawOffer;
 }
 // In-match Castle tile (2026-09-25, per explicit request: "The castle is to be LIKE a card, with
 // its own art etc. And its stats displayed like a card."): renders the HQ through the exact same
@@ -10579,7 +10581,7 @@ function renderMatchUI(){
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':'So Close! Good Fight')}</h2>
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
-        ${m.endReason ? `<p class="winloss-reason">${({forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`})[m.endReason]||''}</p>` : ''}
+        ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -13439,6 +13441,7 @@ async function resolveRound(){
   // below) picks who wins a same-column tie THIS round — odd rounds keep the original "enemy
   // (side 2) acts first" default, even rounds flip it to the player (side 1) acting first.
   if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND);
+  setupEnemyBehaviour(m);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
   let over = (m.forcedWinner!=null) ? true : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
@@ -13667,6 +13670,11 @@ async function resolveRound(){
   settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
   // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
   // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.
+  // Spent enemy: surrender / offer a draw (see setupEnemyBehaviour).
+  if(!over && m.forcedWinner==null && m.enemyBehaviour && m.enemyBehaviour!=='neverSurrender' && enemyIsSpent(m, events)){
+    if(m.enemyBehaviour==='surrender'){ m.forcedWinner = 1; m.endReason = 'surrender'; over = true; }
+    else if(!m.drawOffered){ m.drawOffered = true; setTimeout(()=>{ if(matchState===m && !m.over) showDrawOffer(m); }, 200); }
+  }
   if(!over && m.mode!=='tutorial' && m.mode!=='sandbox' && !m.testKit){
     const sig = boardSignature(m.players);
     m.stallRounds = (sig===m.lastBoardSigForDraw && noActionsLeft(m.players)) ? (m.stallRounds||0)+1 : 0;
@@ -13914,6 +13922,51 @@ function showSuddenDeathBanner(m){
   el.innerHTML = `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">${raid ? 'Any hit now kills a unit outright.' : 'Any hit now kills — a hit on a castle ends the game.'}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
+}
+// ---- Enemy behaviours when they run dry (2026-10-03, explicit): an enemy is "spent" once it has
+// nothing it can play (no playable card in hand and an empty deck), dealt no damage last round, and
+// has no units still under Wait. Then, by its behaviour:
+//   surrender      — most enemies: they give up, you win.
+//   offerDraw      — they offer a draw; close the popup and the offer stays in the ⚙️ menu.
+//   neverSurrender — they never give up, and keep throwing weak "loop" units (1/1 Frog & Fly Imps).
+// Bosses never surrender. Everyone else is picked per opponent from the match seed (~70% / 20% /
+// 10%), or set per Conquest node with node.enemyBehaviour. ----
+const ENEMY_BEHAVIOUR_MODES = new Set(['ai','gauntlet','conquest','dungeon','pvp','async']);
+const LOOP_UNITS = ['frog-imp','fly-imp'];
+function setupEnemyBehaviour(m){
+  if(m.enemyBehaviour!==undefined) return;
+  if(!ENEMY_BEHAVIOUR_MODES.has(m.mode)){ m.enemyBehaviour = null; return; }
+  const node = m.conquestNode;
+  let b = node && node.enemyBehaviour;
+  if(!b && node && /boss/.test(node.kind||'')) b = 'neverSurrender';
+  if(!b){ const r = seededRng((currentMatchSeed||1) ^ 0xbe7a)(); b = r < 0.7 ? 'surrender' : (r < 0.9 ? 'offerDraw' : 'neverSurrender'); }
+  m.enemyBehaviour = b;
+  m.players[2].loopCards = b==='neverSurrender' ? LOOP_UNITS.slice() : [];
+}
+function enemyIsSpent(m, events){
+  const e = m.players[2];
+  if(e.deck.length) return false;
+  if(e.hand.some(h=> m.engine.canPlay(e, h.defId, h.uid))) return false;
+  if(events.some(ev=> (ev.type==='hit' || ev.type==='hitHQ' || ev.type==='thorns') && ev.side==='B' && (ev.dmg||ev.amount||0) > 0)) return false;
+  if(['left','center','right'].some(s=> e.row[s].some(c=> c && !c.gap && c.hp>0 && (c.wait||0) > 0))) return false;
+  return true;
+}
+function showDrawOffer(m){
+  document.querySelectorAll('.draw-offer').forEach(x=> x.remove());
+  const el = document.createElement('div');
+  el.className = 'draw-offer'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Draw offer');
+  el.innerHTML = `<div class="do-ico">🤝</div><div class="do-body"><div class="do-title">${escapeHtml(m.opponentName || 'The enemy')} offers a draw</div>
+    <div class="do-sub">They've run out of moves. Close this to keep fighting — the offer stays in the ⚙️ menu.</div></div>
+    <div class="do-actions"><button type="button" class="btn small ghost" id="doClose">Keep fighting</button><button type="button" class="btn small primary" id="doAccept">Accept draw</button></div>`;
+  document.body.appendChild(el);
+  el.querySelector('#doClose').onclick = ()=> el.remove();
+  el.querySelector('#doAccept').onclick = ()=>{ el.remove(); acceptDrawOffer(); };
+}
+async function acceptDrawOffer(){
+  const m = matchState; if(!m || m.over || m.resolving || !m.drawOffered) return;
+  document.querySelectorAll('.draw-offer').forEach(x=> x.remove());
+  m.forcedWinner = 0; m.endReason = 'drawOffer';
+  await resolveRound();
 }
 const FORFEIT_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','raidOffline','raidOnline','pvp']);
 async function forfeitMatch(){

@@ -7325,5 +7325,43 @@
     },
     "numericId": 342,
     "uuid": "69df5746-2a3e-4f73-a3d2-12f8b19bd65e"
+  },
+  {
+    "id": "frog-imp",
+    "name": "Frog Imp",
+    "icon": "\ud83d\udc38",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 1,
+    "token": true,
+    "flavor": "Out of cards, out of ideas \u2014 but never out of frogs.",
+    "locked": true,
+    "archetypes": [
+      "Frog"
+    ],
+    "numericId": 343,
+    "uuid": "6ffee17e-1f54-4ff9-a984-7a047b19ca31",
+    "effects": {}
+  },
+  {
+    "id": "fly-imp",
+    "name": "Fly Imp",
+    "icon": "\ud83e\udeb0",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 1,
+    "token": true,
+    "flavor": "There is always one more fly.",
+    "locked": true,
+    "archetypes": [
+      "Insect"
+    ],
+    "numericId": 344,
+    "uuid": "b1043351-8511-40d9-9687-5be6e5503b20",
+    "effects": {
+      "flying": true
+    }
   }
 ]
