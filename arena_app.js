@@ -19748,6 +19748,7 @@ function shadersEnabled(){
   const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.connection && navigator.connection.saveData);
   return !lowPower;
 }
+const SPLASH_DEPTH_ART = (()=>{ const v = "__SPLASH_DEPTH__"; return v.indexOf('__SPLASH') === 0 ? '' : v; })(); // depth map for experiment #2 (tools/make_splash_depth.py)
 function splashArtURL(){
   const v = getComputedStyle(document.documentElement).getPropertyValue('--splash-art').trim();
   const m = v.match(/^url\((['"]?)(.*)\1\)$/); return m ? m[2] : '';
@@ -19755,7 +19756,7 @@ function splashArtURL(){
 function mountSceneShader(host, opts){
   if(!host || !shadersEnabled() || host.querySelector(':scope > .bw-shader')) return null;
   const img = splashArtURL(); if(!img || img.indexOf('__SPLASH') >= 0) return null;
-  return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true}, opts||{}));
+  return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true, depth: SPLASH_DEPTH_ART || null}, opts||{}));
 }
 function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;

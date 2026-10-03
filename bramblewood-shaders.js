@@ -51,7 +51,7 @@ float caustic(vec2 uv, float t){
 const VERT = `attribute vec2 a_pos; void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }`;
 
 const SCENE_FRAG = COMMON + `
-uniform sampler2D u_tex; uniform vec2 u_texSize; uniform vec2 u_focus;
+uniform sampler2D u_tex; uniform vec2 u_texSize; uniform vec2 u_focus; uniform sampler2D u_depthTex; uniform float u_hasDepth;
 vec2 coverUV(vec2 uv){ float ca = u_res.x/u_res.y, ia = u_texSize.x/u_texSize.y;
   vec2 s = ca > ia ? vec2(1.0, ia/ca) : vec2(ca/ia, 1.0);
   vec2 f = u_focus + u_mouse*0.012; return f + (uv - u_focus)*s; }
@@ -60,6 +60,14 @@ void main(){
   vec2 q = gl_FragCoord.xy/u_res.y;
   float t = u_time;
   vec2 iu = coverUV(uv);
+  // Depth parallax (effects experiment #2): near pixels (white in the depth map) shift with the
+  // camera, far ones barely move. Three refinement steps keep the shift stable at depth edges.
+  if(u_hasDepth > 0.5){
+    vec2 cam = u_mouse + 0.35*vec2(sin(t*0.21), cos(t*0.17));
+    vec2 p = iu;
+    for(int k = 0; k < 3; k++){ float d = texture2D(u_depthTex, p).r; p = iu - (d - 0.4) * cam * vec2(0.026, 0.016) * u_int; }
+    iu = clamp(p, vec2(0.001), vec2(0.999));
+  }
   vec3 c0 = texture2D(u_tex, iu).rgb;
   float green = smoothstep(0.02, 0.14, c0.g - max(c0.r, c0.b));
   // blue in the lower part of the picture is water; blue up top is sky and stays still
@@ -194,6 +202,7 @@ function isSupported(){
 
 let pointer = [0, 0];
 window.addEventListener('pointermove', e=>{ pointer = [(e.clientX/innerWidth)*2 - 1, (e.clientY/innerHeight)*2 - 1]; }, {passive:true});
+window.addEventListener('deviceorientation', e=>{ if(e.gamma == null) return; pointer = [Math.max(-1, Math.min(1, e.gamma/30)), Math.max(-1, Math.min(1, (e.beta-40)/30))]; }, {passive:true});
 
 function mount(host, opts){
   opts = opts || {};
@@ -211,7 +220,7 @@ function mount(host, opts){
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   const U = n=> gl.getUniformLocation(prog, n);
-  const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus')};
+  const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth')};
   if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); }
   const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0]};
   if(scene){
@@ -224,7 +233,22 @@ function mount(host, opts){
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
       gl.uniform1i(u.tex, 0); gl.uniform2f(u.texSize, img.naturalWidth, img.naturalHeight);
       const f = opts.focus || [0.5, 0.4]; gl.uniform2f(u.focus, f[0], f[1]);
+      gl.uniform1f(u.hasDepth, 0);
       layer.ready = true; host.classList.add('has-shader');
+      if(opts.depth){
+        const dimg = new Image();
+        dimg.onload = ()=>{
+          if(!layers.has(layer)) return;
+          gl.activeTexture(gl.TEXTURE1);
+          const dt = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, dt);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+          gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, dimg);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.uniform1i(u.depthTex, 1); gl.uniform1f(u.hasDepth, 1);
+        };
+        dimg.src = opts.depth;
+      }
     };
     img.src = opts.image;
   } else host.classList.add('has-shader');

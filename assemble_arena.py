@@ -103,6 +103,9 @@ import base64
 splash_png = open(SCRATCH + "art/splash.png", "rb").read()
 # CSS custom property so the entrance screen and the Home scene share ONE copy of the data URI.
 out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encode(splash_png).decode("ascii"))
+_depth_path = SCRATCH + "art/splash_depth.png"
+_depth_uri = ("data:image/png;base64," + base64.b64encode(open(_depth_path, "rb").read()).decode("ascii")) if os.path.exists(_depth_path) else ""
+app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
 # Home 2.5D layers (2026-10-03): foreground otter/hummingbird sprites (transparent PNGs) if present.
 import os
 def _home_sprite(name):
