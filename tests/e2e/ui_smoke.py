@@ -122,6 +122,22 @@ async def main():
         check(await pg.evaluate("[...document.querySelectorAll('[data-lazy]')].some(e=> !e.dataset.filled)"), 'world cards far down should load lazily')
         await pg.click('[data-world-map="m1"]'); await pg.wait_for_timeout(600)
         check(await pg.evaluate("conquestSelectedMap==='m1' && !conquestWorldView && !!document.getElementById('conquestCanvas')"), 'a world diamond should zoom into its map')
+        # 6c: T3 fight sessions — a server seed is fetched on node select, used for the fight, moves are
+        # recorded, and the fight is handed in once (mocked server)
+        await pg.evaluate("""(()=>{ window.__rpcCalls = []; const real = window.sbClient; window.__realSb = real;
+          sbClient = {rpc: async (fn, args)=>{ __rpcCalls.push([fn, args]); if(fn==='start_fight') return {data:[{session_id:'s-1', seed: 424242}], error:null}; if(fn==='submit_fight') return {data:'accepted', error:null}; return {data:null, error:null}; }};
+          isSignedIn = ()=> true; return 1; })()""")
+        await pg.evaluate("(async()=>{ const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); await prefetchFightTicket('conquest', m.id+':'+n.key); startConquestMatch(m.id, n.key, {skipEnergyCost:true}); return 1; })()")
+        await pg.wait_for_timeout(500)
+        check(await pg.evaluate("currentMatchSeed===424242 && matchState.fightSession==='s-1'"), 'the conquest fight should use the server-issued seed')
+        await pg.evaluate("(async()=>{ const me=matchState.players[1]; const h=me.hand.find(x=> matchState.engine.canPlay(me, x.defId, x.uid)); if(h) await playCardByUid(h.uid,'left'); else await skipTurn(); })()")
+        await pg.wait_for_timeout(300)
+        check(await pg.evaluate("matchState.transcript.length>=1"), 'player moves should be recorded in the transcript')
+        await pg.evaluate("(async()=>{ matchState.over=true; matchState.winner=2; await handInFight(matchState); await handInFight(matchState); })()")
+        await pg.wait_for_timeout(200)
+        check(await pg.evaluate("__rpcCalls.filter(c=>c[0]==='submit_fight').length===1"), 'a fight should be handed in exactly once')
+        await pg.evaluate("matchState=null; endMatch && 1")
+        await pg.evaluate("playSubTab='arena'; switchTab('play'); 1")
         # 7: recent opponents
         await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)

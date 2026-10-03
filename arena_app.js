@@ -8827,7 +8827,7 @@ function renderConquestSubTab(body){
     el.addEventListener('click', ()=>{
       if(conquestLayoutEdit && adminModeEnabled) return; // layout editing: clicks are drags, never fights
       if(conquestSelectedNodeKey === node.key){ startConquestMatch(map.id, node.key); return; }
-      conquestSelectedNodeKey = node.key; renderConquestSubTab(body);
+      conquestSelectedNodeKey = node.key; prefetchFightTicket('conquest', map.id + ':' + node.key); renderConquestSubTab(body);
     });
   });
   const selectedNode = conquestSelectedNodeKey ? map.nodes.find(n=>n.key===conquestSelectedNodeKey) : null;
@@ -10057,6 +10057,42 @@ function pickGladiatorLeader(deckCounts, preferredId, targetPower){
   return best ? {defId:best, fromDeck:true} : null;
 }
 function minusOne(counts, id){ const c = Object.assign({}, counts); if(c[id]>0){ c[id]-=1; if(!c[id]) delete c[id]; } return c; }
+// ---- T3 step 1 (2026-10-03): server-issued single-use fight seeds + move transcripts. ----
+// Selecting a Conquest node quietly asks the server for a seed (start_fight). Starting the fight
+// uses it, every player move is recorded, and the result plus transcript are handed in once
+// (submit_fight). Signed-out, offline, or before the migration is applied, all of this silently
+// does nothing and the fight uses a local seed exactly as before. Step 2 replays transcripts on
+// the server (Edge Function + a shared match module) before anything is paid out from there.
+const fightTickets = {};
+async function prefetchFightTicket(mode, nodeKey){
+  try{
+    if(!sbClient || !isSignedIn()) return;
+    const key = mode + '|' + (nodeKey||'');
+    const t = fightTickets[key]; if(t && (t.pending || Date.now() - t.at < 30*60*1000)) return;
+    fightTickets[key] = {pending:true, at:Date.now()};
+    const { data, error } = await sbClient.rpc('start_fight', {p_mode: mode, p_node: nodeKey || null, p_deck: myDeckCounts || {}, p_cards_hash: currentCardDataHash()});
+    const row = Array.isArray(data) ? data[0] : data;
+    if(error || !row || row.seed == null){ delete fightTickets[key]; return; }
+    fightTickets[key] = {id: row.session_id, seed: Number(row.seed)>>>0, at: Date.now()};
+  }catch(e){ delete fightTickets[mode + '|' + (nodeKey||'')]; }
+}
+function takeFightTicket(mode, nodeKey){
+  const key = mode + '|' + (nodeKey||''); const t = fightTickets[key];
+  if(!t || t.pending || !t.id) return null;
+  delete fightTickets[key];
+  forcedNextSeed = t.seed; // nextMatchRng() picks this up
+  return t.id;
+}
+function recordFightAction(m, a){ if(m && Array.isArray(m.transcript) && m.transcript.length < 2000) m.transcript.push(Object.assign({r: m.round||0}, a)); }
+async function handInFight(m){
+  if(!m || !m.fightSession || m.fightHandedIn) return;
+  m.fightHandedIn = true;
+  try{
+    const result = {v:1, winner: m.winner, round: m.round, hp: {1: m.players[1].hq.hp, 2: m.players[2].hq.hp}, rank: m.conquestRankEarned || null, cardsHash: currentCardDataHash(), seed: currentMatchSeed};
+    const { data, error } = await sbClient.rpc('submit_fight', {p_session: m.fightSession, p_transcript: {v:1, actions: m.transcript || []}, p_result: result});
+    m.fightHandIn = error ? 'error' : data;
+  }catch(e){ m.fightHandIn = 'error'; }
+}
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
@@ -10075,6 +10111,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
+  const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
@@ -10104,6 +10141,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
+    fightSession, transcript: [],
     battleMode,
     gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
@@ -11418,6 +11456,7 @@ function leaderWidgetHTML(m){
 async function attemptSummonLeader(preferredLane){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;
+  recordFightAction(m, {a:'leader', lane: preferredLane||null});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
       if(activePlayerId(m)!==m.liveMySeat) return; // not your turn — no-op, same as the pass overlay elsewhere
@@ -14112,6 +14151,7 @@ function aiActNow(){
 async function playCardByUid(uid, side, dropPoint){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return; // hand is hidden behind the pass-the-device overlay right now
+  recordFightAction(m, {a:'play', uid, side: side||null});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
       if(activePlayerId(m)!==m.liveMySeat) return; // not your turn — no-op
@@ -14363,6 +14403,7 @@ function refreshDiscardZone(){
 async function discardCardByUid(uid){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;
+  recordFightAction(m, {a:'discard', uid});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
       if(activePlayerId(m)!==m.liveMySeat) return; // not your turn — no-op
@@ -14455,6 +14496,7 @@ async function discardCardByUid(uid){
 async function skipTurn(){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;
+  recordFightAction(m, {a:'pass'});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
       if(activePlayerId(m)!==m.liveMySeat) return; // not your turn — no-op
@@ -15067,6 +15109,7 @@ async function resolveRound(){
       const nxt = m1.nodes.find(n=> n.kind!=='tutorial' && (n.requires||[]).includes('tutorial') && !p.completed.includes(conquestNodeId('m1', n.key)));
       m.nextBattle = nxt ? {mapId:'m1', key:nxt.key, node:nxt} : null;
     }
+    if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear

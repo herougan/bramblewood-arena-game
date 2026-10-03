@@ -37,7 +37,7 @@ _Last updated: 2026-10-03 (21:00)_
 - packs rolled on the server.
 
 Build order:
-1. `fight_sessions` table plus a `start_fight` RPC that issues the seed.
+1. `fight_sessions` table plus a `start_fight` RPC that issues the seed. 🟡 Client side is built: Conquest fetches a seed when you select a node, uses it, records your moves, and hands in once. The migration is `supabase/migrations/20261003_fight_sessions.sql`. **Not applied yet:** my apply call was cancelled. Say "apply it" and I'll run it. Until then the game silently uses local seeds, as before.
 2. Conquest hand-in through an Edge Function that replays the transcript with the same engine.
 3. Raid damage the same way.
 4. Packs rolled on the server.
