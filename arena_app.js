@@ -17973,9 +17973,12 @@ function importDeckCodeFlow(btnEl){
 // this default, falling back cleanly if no override exists or it fails to parse. This default
 // array itself is never mutated at runtime.
 const SHOP_PACKS_DEFAULT = [
-  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, dust:15, metal:0, levelChance:0.3, unlockChance:0.04},
-  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, dust:35, metal:1, levelChance:0.6, unlockChance:0.10},
-  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, dust:80, metal:3, levelChance:1.0, unlockChance:0.20},
+  // cards (2026-10-03, D2): packs now hold real cards — Pack 1's 33-card pool (canonical/cards.json
+  // source {kind:'pack', tier:1}). `cards` = how many come out; `newGuaranteed` = at least one you
+  // don't own yet, while any remain. unlockChance is kept for old admin overrides but unused.
+  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:10, metal:0, levelChance:0.2, unlockChance:0.04},
+  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:25, metal:1, levelChance:0.4, unlockChance:0.10},
+  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:60, metal:3, levelChance:0.8, unlockChance:0.20},
 ];
 const SHOP_PACKS_OVERRIDE_KEY = 'bramblewood_arena_shop_packs_override';
 function getShopPacks(){
@@ -18035,8 +18038,10 @@ function renderShop(){
     marketLoad().then(()=>{ if(currentTab==='shop' && shopTab==='market' && document.getElementById('marketMount')===mount) renderMarketInto(mount); });
     return;
   }
+  const signedInShop = isSignedIn();
   root.innerHTML = `<div class="panel"><h2>🛒 Shop</h2>
-      <p class="panel-sub">Card packs, paid for with Maple Leaves and Gold Leaves — each always grants Magic Dust (sometimes Metal too), plus a chance to instantly level up a random unlocked card.</p>
+      <p class="panel-sub">Packs of cards from <b>Pack 1</b> (${packCardPool().length} cards), plus Magic Dust.</p>
+      ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
     </div>
     <div class="shop-pack-grid" id="shopPackGrid"></div>
@@ -18059,13 +18064,15 @@ function renderShop(){
   // clickable "🔒 Sign in to buy" label so a guest player understands WHY, rather than a plain
   // disabled button that looks broken.
   const signedIn = isSignedIn();
-  grid.innerHTML = getShopPacks().map(p=> `
+  const pool = packCardPool();
+  grid.innerHTML = !pool.length ? `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>` : getShopPacks().map(p=> `
     <div class="shop-pack-card">
       <div class="shop-pack-ico">${p.icon}</div>
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
-      <div class="shop-pack-contents">✨ ${p.dust} Dust${p.metal?` · 🔩+${p.metal} Metal`:''}<br>${Math.round(p.levelChance*100)}% chance: level up a random card<br>${packUnlockCandidates().length ? `${Math.round(p.unlockChance*100)}% chance: unlock a new card` : 'No new cards in packs yet'}</div>
-      <button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : '🔒 Sign in to buy'}</button>
+      <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
+      <button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : 'Sign in'}</button>
     </div>`).join('');
+  const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn))));
 }
 // The Nest (2026-09-27, item 10, per explicit request: "now we need to build the Nest or Repo —
@@ -18121,83 +18128,90 @@ function packUnlockCandidates(defs){
   defs = defs || getCardDefs();
   return Object.keys(defs).filter(id=>{ const d = defs[id]; return d.locked && !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
 }
+// Pack 1 pool: every card placed in a pack (any tier for now). Locked or not — packs give copies.
+function packCardPool(defs){
+  defs = defs || getCardDefs();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; return !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
+}
+const PACK_RARITY_WEIGHT = {starter:6, common:6, uncommon:3, rare:1.5, epic:0.6, legendary:0.25, mythic:0.1, ancient:0.05};
+function rollPackCards(pack){
+  const defs = getCardDefs(), pool = packCardPool(defs);
+  if(!pool.length) return [];
+  const w = id=> PACK_RARITY_WEIGHT[defs[id].rarity||'common'] || 4;
+  const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); let r = Math.random()*tot; for(const id of list){ r -= w(id); if(r<=0) return id; } return list[list.length-1]; };
+  const out = [];
+  const unowned = pool.filter(id=> !(myCardCopies[id]||[]).length && !myUnlockedCardIds.has(id));
+  if(pack.newGuaranteed && unowned.length) out.push(pick(unowned));
+  while(out.length < (pack.cards||3)) out.push(pick(pool));
+  return out.sort(()=> Math.random()-0.5);
+}
 function buyPack(packId, btnEl){
   const pack = getShopPacks().find(p=>p.id===packId);
   if(!pack || !isSignedIn() || !canAffordPack(pack)){ if(btnEl) denyShake(btnEl); return; }
+  const pulls = rollPackCards(pack);
+  if(!pulls.length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
   myCurrencies.gold -= (pack.cost.gold||0);
   myCurrencies.gems -= (pack.cost.gems||0);
   grantCurrency('dust', pack.dust);
   if(pack.metal) grantCurrency('metal', pack.metal);
   saveCurrencies();
-  // Unlock roll (2026-09-22, real card unlocking) — rolled independently of, and before, the
-  // leveling roll below, so a freshly-unlocked card in THIS SAME pack-open is immediately
-  // eligible to also get leveled by the second roll.
-  let unlockedId = null;
-  if(Math.random() < pack.unlockChance){
-    const defs = getCardDefs();
-    // 2026-10-02: only cards the admin has placed in a pack can come out of one (nothing is
-    // obtainable by default). Hidden cards may be pulled — that's how a player discovers them.
-    const lockedCandidates = packUnlockCandidates(defs);
-    if(lockedCandidates.length){
-      unlockedId = lockedCandidates[Math.floor(Math.random()*lockedCandidates.length)];
-      // 2026-09-25: routed through unlockCardForPlayer() (see its own comment above
-      // loadUnlockedCardIds) instead of touching myUnlockedCardIds directly -- same net effect.
-      unlockCardForPlayer(unlockedId, 'shopPack');
-    }
-  }
+  const results = pulls.map(id=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; unlockCardForPlayer(id, 'shopPack'); return {id, isNew: wasNew}; });
   let leveledId = null;
-  if(Math.random() < pack.levelChance){
+  if(Math.random() < (pack.levelChance||0)){
     const defs = getCardDefs();
     const candidates = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && getCardLevel(id)<10);
-    if(candidates.length){
-      leveledId = candidates[Math.floor(Math.random()*candidates.length)];
-      myCardLevels[leveledId] = getCardLevel(leveledId)+1;
-      saveCardLevels();
-    }
+    if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; saveCardLevels(); }
   }
-  SoundKit.gold();
-  if(btnEl) emojiBurstVfx.burst(btnEl, {emojis:[pack.icon,'✨','🪙'], count:16});
+  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
   refreshShopAfford();
-  const panel = document.getElementById('shopRevealPanel');
-  const mount = document.getElementById('shopRevealMount');
-  const textEl = document.getElementById('shopRevealText');
-  if(!panel || !mount || !textEl) return;
-  panel.hidden = false;
-  const rewardBits = [`✨ +${pack.dust} Dust`];
-  if(pack.metal) rewardBits.push(`🔩 +${pack.metal} Metal`);
-  let previewId = null;
-  if(unlockedId){
-    const d = getCardDefs()[unlockedId];
-    rewardBits.push(`🔓 New card unlocked: ${escapeHtml(d.name)}!`);
-    previewId = unlockedId;
-  }
-  if(leveledId){
-    const d = getCardDefs()[leveledId];
-    rewardBits.push(`🎉 ${escapeHtml(d.name)} leveled up to ${getCardLevel(leveledId)}!`);
-    if(!previewId) previewId = leveledId;
-  }
-  if(previewId){
-    const d = getCardDefs()[previewId];
-    mount.innerHTML = cardTileHTML(d, {extraClass:'forge-preview'});
-    starFallVfx.celebrate(mount.querySelector('.forge-preview'), 3);
-    // A NEW CARD is a bigger, rarer moment than a routine level-up and must read as distinct
-    // (style-guideline.md section 4/checklist item 4) — starFallVfx.celebrate() above already
-    // plays the shared "cha-ching" every reward moment in the game reuses, so a real unlock gets
-    // a SECOND, later, genuinely different beat layered on top: a distinct rising-arpeggio cue
-    // (SoundKit.unlock(), not gold()) plus a lock/key-themed firework burst, offset ~220ms so the
-    // two don't blur into one another (same spirit as the battle-VFX same-kind/different-kind
-    // breathing rule in section 4, applied here to a Shop reveal rather than the battle replay).
-    if(unlockedId){
-      setTimeout(()=>{
-        SoundKit.unlock();
-        const previewEl = mount.querySelector('.forge-preview');
-        emojiBurstVfx.burst(previewEl || mount, {emojis:['🔓','🗝️','✨'], count:18});
-      }, 220);
-    }
-  } else {
-    mount.innerHTML = '';
-  }
-  textEl.innerHTML = rewardBits.join(' · ');
+  openPackAnimation(pack, results, {leveledId});
+}
+// Pack opening (2026-10-03, D2): the pack shakes, bursts open, the cards fan out face-down, then flip
+// one by one (tap any card to flip it now, "Reveal all" to skip). New cards get a ribbon and a
+// brighter rarity glow; a summary line lists the Dust/Metal and any free level-up.
+function openPackAnimation(pack, results, extra){
+  let overlay = document.getElementById('packOpenOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'packOpenOverlay'; overlay.className = 'modal-overlay pack-open-overlay'; document.body.appendChild(overlay); }
+  const defs = getCardDefs();
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bits = [`✨ +${pack.dust} Dust`]; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`);
+  if(extra.leveledId && defs[extra.leveledId]) bits.push(`⭐ ${escapeHtml(defs[extra.leveledId].name)} reached Lv ${getCardLevel(extra.leveledId)}`);
+  const newCount = results.filter(r=> r.isNew).length;
+  overlay.innerHTML = `<div class="pack-open-stage" role="dialog" aria-label="Opening ${escapeAttr(pack.name)}">
+    <div class="pack-open-pack" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
+    <div class="pack-open-cards" id="poCards">${results.map((r,i)=> { const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
+      return `<button type="button" class="po-card ${r.isNew?'is-new':''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
+        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
+    <div class="pack-open-foot" id="poFoot" hidden><p>${newCount ? `<b>${newCount} new card${newCount===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>
+      <div class="po-actions"><button type="button" class="btn" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button></div></div>
+    <button type="button" class="btn ghost po-skip" id="poSkip">Reveal all</button>
+  </div>`;
+  overlay.hidden = false;
+  const cards = [...overlay.querySelectorAll('.po-card')];
+  let flipped = 0, timers = [];
+  const close = ()=>{ timers.forEach(clearTimeout); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='shop') renderShop(); };
+  const finish = ()=>{ const f = overlay.querySelector('#poFoot'); if(f) f.hidden = false; const sk = overlay.querySelector('#poSkip'); if(sk) sk.hidden = true; };
+  const flip = (el)=>{
+    if(!el || el.classList.contains('is-flipped')) return;
+    el.classList.add('is-flipped'); flipped++;
+    const isNew = el.classList.contains('is-new');
+    try{ isNew ? SoundKit.unlock() : SoundKit.draw(); }catch(e){}
+    if(isNew && !reduce){ try{ emojiBurstVfx.burst(el, {emojis:['✨','🌟','🔓'], count:12}); }catch(e){} }
+    if(flipped >= cards.length) finish();
+  };
+  cards.forEach(el=> el.addEventListener('click', ()=> flip(el)));
+  overlay.querySelector('#poSkip').onclick = ()=>{ timers.forEach(clearTimeout); cards.forEach(flip); };
+  overlay.querySelector('#poDone').onclick = close;
+  overlay.querySelector('#poNest').onclick = ()=>{ close(); switchTab('nest'); };
+  overlay.onclick = e=>{ if(e.target===overlay && flipped >= cards.length) close(); };
+  // timeline: shake → burst → fan out → auto-flip one by one
+  const pk = overlay.querySelector('#poPack');
+  const T = reduce ? [0, 0, 0, 120] : [0, 700, 1050, 1500];
+  try{ SoundKit.pickup(); }catch(e){}
+  timers.push(setTimeout(()=> pk.classList.add('is-shaking'), T[0]));
+  timers.push(setTimeout(()=>{ pk.classList.add('is-burst'); try{ SoundKit.gold(); }catch(e){} if(!reduce){ try{ emojiBurstVfx.burst(pk, {emojis:[pack.icon,'✨','🍂'], count:20}); }catch(e){} } }, T[1]));
+  timers.push(setTimeout(()=> overlay.querySelector('#poCards').classList.add('is-out'), T[2]));
+  cards.forEach((el,i)=> timers.push(setTimeout(()=> flip(el), T[3] + i*(reduce ? 60 : 420))));
 }
 
 /* ============================================================
