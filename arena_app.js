@@ -1030,6 +1030,22 @@ function loadLocalCardOverlay(){
   } catch(e){ /* corrupt/unreadable -- start from the clean baseline rather than throw */ }
 }
 loadLocalCardOverlay();
+// Card-data integrity (T3): the fingerprint covers the baseline plus admin live overrides — never
+// the per-player unlock/level overlays, which the server applies itself from the player's own rows.
+const IntegrityM = (typeof window!=='undefined' && window.BramblewoodIntegrity) || null;
+function effectiveCardDefsForHash(){
+  const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
+  Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
+  return out;
+}
+let _cardHashMemo = {key: null, hash: ''};
+function currentCardDataHash(){
+  if(!IntegrityM) return '';
+  const key = JSON.stringify(liveCards) + '|' + Object.keys(liveDeletes).sort().join(',');
+  if(_cardHashMemo.key !== key){ _cardHashMemo = {key, hash: IntegrityM.cardDataHash(effectiveCardDefsForHash())}; }
+  return _cardHashMemo.hash;
+}
+const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : '';
 function getCardDefs(){
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -10828,6 +10844,8 @@ function renderAdmin(){
     </div>
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
+    <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
+      <code class="admin-hash" id="adminCardHash" title="${escapeAttr(currentCardDataHash())}">${escapeHtml(currentCardDataHash().slice(0,16))}…</code> <span class="panel-sub">${Object.keys(effectiveCardDefsForHash()).length} cards · baseline build ${escapeHtml(BASELINE_CARD_HASH.slice(0,12))}</span></div>
     ${(RaidM && allRaidDefs().length) ? `<div class="panel admin-subpanel"><h3>🐙 Raids</h3><p class="panel-sub">Parts, HP bars, lock order, stages, scoring and rewards. Publishes live.</p>${allRaidDefs().map(d=> `<button type="button" class="btn small" data-admin-raid="${escapeAttr(d.id)}">✏️ ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)}${d.live===false?' (off)':''}</button>`).join(' ')}</div>` : ''}
     <div class="panel admin-subpanel">
       <h3>🧪 Test Kit</h3>

@@ -4,7 +4,7 @@ SCRATCH = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
 # Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
-ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-autobattle.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-raid.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-trench.js", encoding="utf-8").read()
+ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-autobattle.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-raid.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-trench.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-integrity.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
