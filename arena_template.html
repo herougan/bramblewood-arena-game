@@ -2333,6 +2333,19 @@
   .dlg-timer{position:relative; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:10px;}
   .dlg-timer svg{position:absolute; inset:0; transform:rotate(-90deg);}
   .dlg-timer circle{fill:none; stroke:#c9853a; stroke-width:3; stroke-dasharray:94.2; stroke-dashoffset:0;}
+  /* Map feature spots + leaves reveal (2026-10-03) */
+  .map-spot{position:absolute; transform:translate(-50%,-50%); z-index:6; display:flex; flex-direction:column; align-items:center; gap:2px; background:none; border:0; cursor:pointer; padding:0;}
+  .map-spot .map-spot-ico{width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; background:rgba(255,248,230,.92); box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a;}
+  .map-spot.is-new .map-spot-ico{animation:spotPulse 1.6s ease-in-out infinite;}
+  @keyframes spotPulse{0%,100%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 0 rgba(255,210,122,.8);} 50%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 12px rgba(255,210,122,0);}}
+  .map-spot .map-spot-new{position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#d64545; color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .map-spot .map-spot-name{font-size:11px; font-weight:800; color:#fff8e6; text-shadow:0 1px 3px rgba(0,0,0,.8); white-space:nowrap;}
+  .map-spot:hover .map-spot-ico, .map-spot:focus-visible .map-spot-ico{transform:scale(1.12);}
+  .play-subtabs[hidden]{display:none !important;}
+  .leaves-cover{position:fixed; inset:0; z-index:1300; background:rgba(20,40,16,.96); overflow:hidden; pointer-events:none;}
+  .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
+  .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
+  .admin-unlock-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}

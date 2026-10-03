@@ -2333,6 +2333,19 @@
   .dlg-timer{position:relative; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:10px;}
   .dlg-timer svg{position:absolute; inset:0; transform:rotate(-90deg);}
   .dlg-timer circle{fill:none; stroke:#c9853a; stroke-width:3; stroke-dasharray:94.2; stroke-dashoffset:0;}
+  /* Map feature spots + leaves reveal (2026-10-03) */
+  .map-spot{position:absolute; transform:translate(-50%,-50%); z-index:6; display:flex; flex-direction:column; align-items:center; gap:2px; background:none; border:0; cursor:pointer; padding:0;}
+  .map-spot .map-spot-ico{width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; background:rgba(255,248,230,.92); box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a;}
+  .map-spot.is-new .map-spot-ico{animation:spotPulse 1.6s ease-in-out infinite;}
+  @keyframes spotPulse{0%,100%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 0 rgba(255,210,122,.8);} 50%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 12px rgba(255,210,122,0);}}
+  .map-spot .map-spot-new{position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#d64545; color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .map-spot .map-spot-name{font-size:11px; font-weight:800; color:#fff8e6; text-shadow:0 1px 3px rgba(0,0,0,.8); white-space:nowrap;}
+  .map-spot:hover .map-spot-ico, .map-spot:focus-visible .map-spot-ico{transform:scale(1.12);}
+  .play-subtabs[hidden]{display:none !important;}
+  .leaves-cover{position:fixed; inset:0; z-index:1300; background:rgba(20,40,16,.96); overflow:hidden; pointer-events:none;}
+  .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
+  .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
+  .admin-unlock-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
@@ -13948,16 +13961,16 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
-        <div class="play-subtabs" role="tablist">
-          <button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>
+        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
+          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
                renderDeckSection in Part 8), so the old "Player" sub-tab here — which showed that
                exact same builder — is retired to avoid two different paths to the same screen.
                renderPlayerSubTab itself is untouched and still the fallback below for safety. -->
-          <button class="tab-btn ${playSubTab==='arena'?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'}"><span class="tab-emoji">🏟️</span> Arena</button>
-          <button class="tab-btn ${playSubTab==='autobattle'?'active':''}" data-playtab="autobattle" role="tab" aria-selected="${playSubTab==='autobattle'}"><span class="tab-emoji">🧩</span> Autobattler</button>
-          <button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> Raid</button>
+          ${tabOpen('arena') ? `<button class="tab-btn ${playSubTab==='arena'?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
+          ${tabOpen('autobattle') ? `<button class="tab-btn ${playSubTab==='autobattle'?'active':''}" data-playtab="autobattle" role="tab" aria-selected="${playSubTab==='autobattle'}"><span class="tab-emoji">🧩</span> Autobattler</button>` : ''}
+          ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> Raid</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
@@ -14018,6 +14031,7 @@ function renderPlay(){
     const conquestTabBtn = root.querySelector('[data-playtab="conquest"]');
     if(conquestTabBtn) attachDelayedTooltip(conquestTabBtn, 'Fight your way across a map of preset AI skirmishes with the deck and Bramble you set up in the Deck menu. Beat a Raid Boss to unlock it permanently in the Raid tab.');
     const body = document.getElementById('playSubBody');
+    if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
     if(playSubTab==='arena'){ renderArenaSubTab(body); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
@@ -14712,6 +14726,16 @@ const DIALOGUES = {
     {who:'whisper', text:'Ten wins and you\'re a legend. Five losses and you\'re a story.', options:[{label:'Deal.', goto:'go'}], silent:'go'},
     {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.'},
   ]},
+  unlock_nest: {lines:[
+    {who:'swiftpaw', text:'An old nest. Somebody kept their cards here once.'},
+    {who:'swiftpaw', text:'Everything you win ends up in yours now. Want a look?', options:[{label:'Show me.', goto:'go'}], silent:'go'},
+    {label:'go', who:'shieldback', text:'Count it twice. Soldiers lose things.'},
+  ]},
+  unlock_quests: {lines:[
+    {who:'shieldback', text:'The notice board. Orders from the lodge — every day, every week.'},
+    {who:'swiftpaw', text:'The first few pay well. The rest… pay.', options:[{label:'I\'ll take them.', goto:'go'}], silent:'go'},
+    {label:'go', who:'shieldback', text:'Do the work, get the leaves. That\'s the whole system.'},
+  ]},
   boss_banter: {lines:[
     {who:'shieldback', text:'That one doesn\'t surrender. Don\'t wait for it to.'},
     {who:'swiftpaw', text:'Then we make it a short conversation.'},
@@ -14787,6 +14811,80 @@ function playDialogue(id, opts){
   const p = dialogueQueue.then(run, run);
   dialogueQueue = p.catch(()=>{});
   return p;
+}
+// ---- Conquest-first onboarding (2026-10-03, explicit: "When you finish the tutorial, the leaves
+// push apart, and your map is revealed. At the start, there isn't even the map tab, just this small
+// map and possibility. No shop, no deck edit. But as you conquer, you spot 'game interactibles' as
+// icons on the map. Clicking them unlocks a small speech, then right into it."). Each feature lives
+// behind a spot on the map; a spot appears once its map is open and its `after` node is cleared.
+// Clicking it unlocks the feature, starts its dialogue (non-blocking) and goes straight there.
+// Players who were already past the tutorial when this shipped keep everything their progress has
+// earned (migrateFeatureUnlocks). Admin → "Unlock all features" / "Replay onboarding".
+const UNLOCKS_KEY = 'bramblewood_unlocks_v1';
+const FEATURE_SPOTS = [
+  {key:'deck', icon:'⛺', name:'Armoury Tent', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
+  {key:'nest', icon:'🪺', name:'Old Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
+  {key:'quests', icon:'📜', name:'Notice Board', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
+  {key:'arena', icon:'🏟️', name:'The Arena', map:'m2', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'m3', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
+  {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'raid', icon:'🐲', name:'Raid Banner', map:'m4', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
+];
+function loadUnlocks(){
+  try{ const u = JSON.parse(localStorage.getItem(UNLOCKS_KEY)||'null'); if(u && u.unlocked) return u; }catch(e){}
+  return migrateFeatureUnlocks();
+}
+function saveUnlocks(u){ try{ localStorage.setItem(UNLOCKS_KEY, JSON.stringify(u)); }catch(e){} }
+function spotAvailable(spot, progress){
+  progress = progress || loadConquestProgress();
+  const map = CONQUEST_MAPS.find(m=> m.id===spot.map); if(!map || !isMapUnlocked(map, progress)) return false;
+  return !spot.after || (progress.completed||[]).includes(conquestNodeId(spot.map, spot.after));
+}
+// First run of this build for an existing player: grant whatever their progress has already reached.
+function migrateFeatureUnlocks(){
+  const u = {unlocked:{}, migrated: Date.now()};
+  if(loadTutorialDone()){ const pr = loadConquestProgress(); FEATURE_SPOTS.forEach(sp=>{ if(spotAvailable(sp, pr)) u.unlocked[sp.key] = true; }); }
+  saveUnlocks(u);
+  return u;
+}
+function featureUnlocked(key){ return !!loadUnlocks().unlocked[key]; }
+// Is a tab/sub-tab/feature name open? Anything no spot owns is always open.
+function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); return !sp || featureUnlocked(sp.key); }
+function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
+function activateSpot(spot){
+  const first = !featureUnlocked(spot.key);
+  if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok'); playDialogue(spot.dialogue, {once:true}); }
+  spot.go();
+}
+function mapSpotsHTML(map, positions, progress){
+  return FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
+    const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
+    const base = positions[Math.max(0, idx)] || {x:50, y:50};
+    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -14 : 14)));
+    const open = featureUnlocked(sp.key);
+    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+      <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
+  }).join('');
+}
+// The leaves part to reveal the map (end of the tutorial).
+function leavesRevealToMap(){
+  playSubTab = 'conquest'; conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null;
+  switchTab('play');
+  const cover = document.createElement('div');
+  cover.className = 'leaves-cover'; cover.setAttribute('aria-hidden','true');
+  const glyphs = ['🌿','🍂','🍁','🌿','🍂','🌱'];
+  const rnd = seededRng(20261003);
+  let html = '';
+  // a jittered grid, so the cover is dense everywhere without visible rows
+  for(let i=0;i<160;i++){ const gx = i%16, gy = Math.floor(i/16); const x = Math.min(99, (gx + rnd())*6.4 - 1), y = Math.min(99, (gy + rnd())*10.4 - 2); html += `<span class="lc-leaf" style="left:${x}%; top:${y}%; font-size:${46 + (i*7)%40}px; transform:rotate(${(i*47)%360}deg)" data-side="${x<50?-1:1}">${glyphs[i%glyphs.length]}</span>`; }
+  cover.innerHTML = html;
+  document.body.appendChild(cover);
+  const done = ()=>{ cover.remove(); playDialogue('outskirts_reveal', {once:true}); };
+  if(!hasGsap()){ setTimeout(done, 400); return; }
+  try{ if(SoundKit.shift) SoundKit.shift(); }catch(e){}
+  const tl = gsap.timeline({delay:.5, onComplete: done});
+  cover.querySelectorAll('.lc-leaf').forEach(l=>{ const side = +l.dataset.side; tl.to(l, {x: side*(window.innerWidth*0.75 + Math.random()*200), y: (Math.random()-.5)*240, rotation: '+=' + (side*(180+Math.random()*240)), duration: 1.3 + Math.random()*.5, ease: 'power3.in'}, Math.random()*.25); });
+  tl.to(cover, {backgroundColor: 'rgba(20,40,16,0)', duration: 1.1, ease: 'power2.in'}, .2);
 }
 // ---- Player level (2026-10-03, explicit: "You have a level... don't have a cap. The level xp
 // requirement should be exponential. Quests, progress and thresholds give a huge amount of xp - so
@@ -16071,6 +16169,7 @@ function renderConquestSubTab(body){
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
+      ${mapSpotsHTML(map, positions, progress)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -16127,6 +16226,7 @@ function renderConquestSubTab(body){
   const tooltipEl = document.getElementById('conquestTooltip');
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
@@ -16843,6 +16943,7 @@ function minusOne(counts, id){ const c = Object.assign({}, counts); if(c[id]>0){
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
+  if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
@@ -17620,6 +17721,9 @@ function renderAdmin(){
       <h3>Admin Mode</h3>
       <p class="panel-sub">Unlocks content-editing power: card editing (below — moved here from the Codex, see #363/#364), plus the Shop's pack-odds Roll Table editor further down. <b>This is a temporary stopgap</b> — a plain local toggle, no real server auth — until a proper server-side admin app exists.</p>
       <label class="admin-toggle-label"><input type="checkbox" id="adminModeChk" ${adminModeEnabled?'checked':''}> 🛠️ Admin Mode ${adminModeEnabled?'(ON)':'(OFF)'}</label>
+      <div class="admin-unlock-row"><span class="panel-sub">Map features: ${FEATURE_SPOTS.filter(sp=> featureUnlocked(sp.key)).length}/${FEATURE_SPOTS.length} unlocked</span>
+        <button type="button" class="btn small" id="adminUnlockAllBtn">🔓 Unlock all features</button>
+        <button type="button" class="btn small ghost" id="adminRelockBtn" title="Lock every map feature again and forget the onboarding dialogue, to replay it">↺ Replay onboarding</button></div>
     </div>
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
@@ -17692,6 +17796,10 @@ function renderAdmin(){
                     // editor checkbox all read devModeEnabled fresh the next time THEY render.
   });
   const adminModeChk = document.getElementById('adminModeChk');
+  const unlockAllBtn = document.getElementById('adminUnlockAllBtn');
+  if(unlockAllBtn) unlockAllBtn.onclick = ()=>{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); showToast('🔓 All map features unlocked.', 'ok'); renderAdmin(); };
+  const relockBtn = document.getElementById('adminRelockBtn');
+  if(relockBtn) relockBtn.onclick = ()=>{ saveUnlocks({unlocked:{}, migrated: Date.now()}); const f = loadDialogueFlags(); Object.keys(f).forEach(k=>{ if(k.startsWith('seen:')) delete f[k]; }); try{ localStorage.setItem(DIALOGUE_FLAGS_KEY, JSON.stringify(f)); }catch(e){} showToast('↺ Features locked again — find them on the map.', 'ok'); renderAdmin(); };
   if(adminModeChk) adminModeChk.addEventListener('change', e=>{
     setAdminMode(e.target.checked);
     renderAdmin(); // re-render to flip the "(ON)/(OFF)" label and show/hide the Roll Table panel
@@ -18702,7 +18810,10 @@ function renderMatchUI(){
     const wlNext = document.getElementById('wlNextBattleBtn');
     if(wlNext) wlNext.addEventListener('click', ()=>{
       const nb = m.nextBattle; if(!nb) return;
-      if(m.mode==='tutorial'){ const firstTime = claimTutorialWin(m.tutorialFaction || loadFactionChoice() || 'both'); if(firstTime) showToast('🎓 Tutorial complete! Rewards added to your collection.', 'ok'); }
+      if(m.mode==='tutorial'){
+        const firstTime = claimTutorialWin(m.tutorialFaction || loadFactionChoice() || 'both');
+        if(firstTime){ showToast('🎓 Tutorial complete! Rewards added to your collection.', 'ok'); endMatch(); leavesRevealToMap(); return; }
+      }
       endMatch();
       conquestSelectedMap = nb.mapId; playSubTab = 'conquest';
       if(!startConquestMatch(nb.mapId, nb.key)){ conquestSelectedNodeKey = nb.key; switchTab('play'); }
@@ -22475,6 +22586,7 @@ function rewardsPanelHTML(m){
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = ENERGY_COST[nb.node.kind] || ENERGY_COST.skirmish;
+  if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
   return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚡ ${e}: Next Battle!</button>`;
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
@@ -24649,13 +24761,14 @@ function renderHome(){
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       <button class="btn primary big home-menu-btn" data-hometab="play"><span class="tab-emoji">⚔️</span> Play</button>
-      <button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>
-      <button class="btn primary big home-menu-btn" data-hometab="codex"><span class="tab-emoji">📖</span> Codex</button>
-      <button class="btn primary big home-menu-btn" data-hometab="shop"><span class="tab-emoji">🛒</span> Shop</button>
+      ${tabOpen('deck') ? `<button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>` : ''}
+      ${tabOpen('codex') ? `<button class="btn primary big home-menu-btn" data-hometab="codex"><span class="tab-emoji">📖</span> Codex</button>` : ''}
+      ${tabOpen('shop') ? `<button class="btn primary big home-menu-btn" data-hometab="shop"><span class="tab-emoji">🛒</span> Shop</button>` : ''}
       <!-- The Nest (2026-09-27, item 10): a real nav entry point alongside Play/Deck/Codex/Shop,
            not tucked into the small ghost-button row — the collection is somewhere a player
            will want to browse deliberately, same weight as those four. -->
-      <button class="btn primary big home-menu-btn" data-hometab="nest"><span class="tab-emoji">🪺</span> Nest</button>
+      ${tabOpen('nest') ? `<button class="btn primary big home-menu-btn" data-hometab="nest"><span class="tab-emoji">🪺</span> Nest</button>` : ''}
+      ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More of Bramblewood opens up as you push across the map — look for <b>!</b> icons.</p>` : ''}
       <div class="home-menu-row">
         <div class="settings-wrap home-settings-wrap">
           <button class="btn ghost home-menu-btn-small" id="settingsBtnHome" type="button" title="Settings" aria-haspopup="true" aria-expanded="false"><span class="tab-emoji">⚙️</span> Settings</button>
@@ -24682,11 +24795,11 @@ function renderHome(){
           </div>
         </div>
         <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
-        <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
-        <button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>
-        <button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>
+        ${tabOpen('ranking') ? `<button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>` : ''}
+        ${tabOpen('friends') ? `<button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>` : ''}
+        ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
         <button class="btn ghost home-menu-btn-small" type="button" id="homeWorkshopBtn"><span class="tab-emoji">✏️</span> Workshop</button>
-        <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
+        ${tabOpen('guild') ? `<button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>` : ''}
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
       </div>
     </div>`;
@@ -25860,6 +25973,7 @@ function renderMarketInto(body){
 }
 
 function switchTab(tab){
+  if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
