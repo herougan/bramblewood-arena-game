@@ -15214,7 +15214,7 @@ function renderPlay(){
         </div>
       </div>
       <div id="playSubBody"></div>`;
-    root.querySelectorAll('[data-playtab]').forEach(b=> b.addEventListener('click', ()=>{ playSubTab = b.getAttribute('data-playtab'); playerStatsOpen = false; renderPlay(); }));
+    root.querySelectorAll('[data-playtab]').forEach(b=> b.addEventListener('click', ()=>{ playSubTab = b.getAttribute('data-playtab'); playerStatsOpen = false; if(playSubTab!=='conquest') exitConquestImmersive(); renderPlay(); }));
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
     if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
@@ -17483,6 +17483,12 @@ function ensureTutorialMarkersComplete(progress){
 let conquestPanDir = null;
 // Immersive full-screen map: the real Fullscreen API where available (desktop, Android), plus a CSS
 // class that hides the chrome and lets the map fill the viewport (also the iPhone fallback).
+// Flow audit 2026-10-03: immersive mode hides the header, so it must never outlive the map.
+function exitConquestImmersive(){
+  if(!document.body.classList.contains('conquest-immersive')) return;
+  document.body.classList.remove('conquest-immersive');
+  try{ if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{}); }catch(e){}
+}
 function toggleConquestImmersive(body){
   const on = !document.body.classList.contains('conquest-immersive');
   document.body.classList.toggle('conquest-immersive', on);
@@ -18432,7 +18438,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
     const r = finished ? settle() : null;
     overlay.innerHTML = `<div class="modal trench-replay trench-match" role="dialog" aria-label="Trench fight">
       <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">Turn ${Math.min(v.round, cfg.rounds)} / ${cfg.rounds}</span></h2>
-        <button class="modal-close-btn" id="trClose" aria-label="${finished ? 'Close' : 'Leave the fight'}">✕</button></div>
+        <button class="${finished ? 'modal-close-btn' : 'btn small tr-leave-btn'}" id="trClose" aria-label="${finished ? 'Close' : 'Leave the fight'}">${finished ? '✕' : '🚪 Leave'}</button></div>
       <div class="tr-bars">
         <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(v.castle.hp/v.castle.max*100)}%"></span></div><b>${v.castle.hp}/${v.castle.max}</b></div>
         <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(v.wall.hp/v.wall.max*100)}%"></span></div><b>${v.wall.hp}/${v.wall.max}</b></div>
@@ -20722,6 +20728,7 @@ function renderMatchUI(){
     // width, so drop it here explicitly.
     wrapEl.classList.remove('wide-map');
   }
+  exitConquestImmersive();
   const m = matchState, defs = getCardDefs();
   if(!m) return; // e.g. Quit clicked while a round was still replaying — resolveRound's tail render lands after the match is gone
   const isPc = m.mode==='pc';
@@ -24506,6 +24513,14 @@ function showCoachTip(tip, anchorEl){
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
     coachShield = document.createElement('div'); coachShield.className = 'coach-shield';
+    // 2026-10-03 flow audit ("player can't quit"): the shield covered the Quit/Settings buttons
+    // during the guided tutorial steps. Clicks that land on those controls pass through.
+    coachShield.addEventListener('click', e=>{
+      for(const id of ['quitMatchBtn','forfeitMatchBtn','settingsBtnHud']){
+        const q = document.getElementById(id); if(!q) continue; const r = q.getBoundingClientRect();
+        if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom){ hideCoachTip(); q.click(); return; }
+      }
+    });
     document.body.appendChild(coachShield);
   }
   document.body.appendChild(b);
@@ -28409,6 +28424,7 @@ function renderMarketInto(body){
 }
 
 function switchTab(tab){
+  if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
