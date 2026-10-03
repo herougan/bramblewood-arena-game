@@ -2352,6 +2352,23 @@
   .recent-opps .ro-res.win{background:#3c9a5f;} .recent-opps .ro-res.loss{background:#b5473f;}
   .recent-opps .ro-name{flex:1; min-width:160px; display:flex; flex-direction:column;}
   .recent-opps .ro-meta{font-size:12px; opacity:.75;}
+  /* Skirmish editor (2026-10-03) */
+  .skirmish-editor{max-width:760px; width:min(760px, calc(100vw - 32px)); max-height:min(90vh, 980px); overflow:auto;}
+  .skirmish-editor .se-key{font-size:12px; font-weight:700; opacity:.6; margin-left:6px;}
+  .skirmish-editor .se-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px 14px;}
+  .skirmish-editor .se-grid label{display:flex; flex-direction:column; gap:4px; font-size:12.5px; font-weight:800;}
+  .skirmish-editor .se-grid input, .skirmish-editor .se-grid select{font-weight:400;}
+  .skirmish-editor .se-wide{grid-column:1 / -1;}
+  .skirmish-editor .se-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; font-size:12.5px;}
+  .skirmish-editor .se-chk{flex-direction:row !important; align-items:center; gap:4px !important; font-weight:600 !important;}
+  .skirmish-editor .se-h{margin:14px 0 6px;}
+  .skirmish-editor .se-deck{display:flex; flex-direction:column; gap:4px; margin-bottom:8px;}
+  .skirmish-editor .se-row{display:flex; align-items:center; gap:8px; padding:4px 8px; border-radius:8px; background:var(--surface-2);}
+  .skirmish-editor .se-card{flex:1;} .skirmish-editor .se-stat{font-size:12px; opacity:.7; width:70px; text-align:right;}
+  .skirmish-editor .se-n{width:26px; text-align:center;}
+  .skirmish-editor #seSearch{width:100%; box-sizing:border-box;}
+  .skirmish-editor .se-sim{margin:10px 0; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:14px;}
+  .skirmish-editor .se-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; position:sticky; bottom:-1px; background:inherit; padding-top:8px;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
@@ -9274,12 +9291,25 @@ let mapLayoutOverrides = {};
 try{ mapLayoutOverrides = JSON.parse(localStorage.getItem(MAP_LAYOUT_KEY)||'{}') || {}; }catch(e){ mapLayoutOverrides = {}; }
 function persistMapLayouts(){ try{ localStorage.setItem(MAP_LAYOUT_KEY, JSON.stringify(mapLayoutOverrides)); }catch(e){} }
 function applyCloudCfgRow(r){
+  const mn = /^__cfg:map-nodes:(.+)$/.exec(r.id);
+  if(mn){ applyCloudNodeEdits(mn[1], r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
   if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
   else mapLayoutOverrides[m[1]] = r.data.positions;
   persistMapLayouts();
   try{ if(document.getElementById('conquestCanvas') && !conquestLayoutEdit) renderPlay(); }catch(e){}
+}
+function applyCloudNodeEdits(mapId, r){
+  if(r.deleted || !r.data || !r.data.edits) delete nodeEdits[mapId]; else nodeEdits[mapId] = r.data.edits;
+  persistNodeEdits();
+  try{ applyNodeEdits(); if(document.getElementById('conquestCanvas') && !conquestLayoutEdit) renderPlay(); }catch(e){}
+}
+async function publishNodeEdits(mapId){
+  persistNodeEdits();
+  const edits = nodeEdits[mapId];
+  const row = edits ? {data:{kind:'map-nodes', mapId, edits}, deleted:false, deleted_snapshot:null} : {data:null, deleted:true, deleted_snapshot:null};
+  return cloudWriteCardOverride(`__cfg:map-nodes:${mapId}`, row);
 }
 async function publishMapLayout(mapId){
   const positions = mapLayoutOverrides[mapId] || null;
@@ -11125,7 +11155,7 @@ function nodeRewardCardsLineHTML(mapId, nodeKey, done){
   const chips = ids.map(id=> isCardHiddenForPlayer(defs[id]) ? '<span class="dchip">❓ Mystery card</span>' : `<span class="dchip">${defs[id].icon||'🃏'} ${escapeHtml(defs[id].name)}</span>`).join('');
   const label = done ? 'Card rewards (already claimed):' : 'First clear also unlocks:';
   const line = ids.length ? `<div class="cnp-card-rewards"><span class="cnp-card-rewards-label">${label}</span> ${chips}</div>` : '';
-  const btn = adminModeEnabled ? `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button>` : '';
+  const btn = adminModeEnabled ? `<button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button>` : '';
   return line || btn ? `<div class="cnp-card-rewards-row">${line}${btn}</div>` : '';
 }
 function nodeRewardCardIds(mapId, nodeKey){
@@ -14931,6 +14961,145 @@ function leavesRevealToMap(){
   cover.querySelectorAll('.lc-leaf').forEach(l=>{ const side = +l.dataset.side; tl.to(l, {x: side*(window.innerWidth*0.75 + Math.random()*200), y: (Math.random()-.5)*240, rotation: '+=' + (side*(180+Math.random()*240)), duration: 1.3 + Math.random()*.5, ease: 'power3.in'}, Math.random()*.25); });
   tl.to(cover, {backgroundColor: 'rgba(20,40,16,0)', duration: 1.1, ease: 'power2.in'}, .2);
 }
+// ---- Skirmish editor (2026-10-03, "Are the mega editors ready... the skirmish editor?"). Admin
+// Mode → select a node → 🛠️ Edit skirmish. Edits name/icon/flavour, kind, castle HP, castle
+// character, battle mode, surrender behaviour, deck reveal, prerequisite nodes, pre-fight dialogue
+// and the enemy deck; "Simulate 200 vs my deck" for tuning; "Test fight" (no Energy, no progress);
+// Save publishes live for everyone (card_overrides) when you're a cloud admin. ➕ New skirmish adds
+// a node to the map (place it with 📐 Edit layout). ----
+const SKIRMISH_KINDS = ['skirmish','elite','boss','raidboss','finalboss'];
+function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; return e; }
+function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
+function addSkirmishToMap(mapId){
+  const map = CONQUEST_MAPS.find(m=> m.id===mapId); if(!map) return;
+  const e = nodePatchFor(mapId); e.added = e.added || [];
+  let n = 1; while(map.nodes.some(x=> x.key===`${mapId}-c${n}`)) n++;
+  const last = map.nodes.filter(x=> x.kind!=='tutorial').slice(-1)[0];
+  const node = {key:`${mapId}-c${n}`, kind:'skirmish', name:'New Skirmish', icon:'⚔️', hqHp:30, flavor:'', deck: Object.assign({}, (last && last.deck) || {'otter-centurion':6}), requires: last ? [last.key] : []};
+  e.added.push(node); persistNodeEdits(); applyNodeEdits();
+  openSkirmishEditor(mapId, node.key);
+}
+function simulateSkirmishVsMyDeck(node, n){
+  const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
+  const myChar = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS.castle;
+  const enemyChar = node.characterId && CHARACTER_DEFS[node.characterId] ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health: node.hqHp}) : {id:'sim-enemy', name:node.name, health: node.hqHp||30, effects:{}};
+  for(let i=0;i<n;i++){
+    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || 'gravity'});
+    const sideOf = id=> id===1?'A':'B', stats = {};
+    const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
+    P[2].loopCards = [];
+    engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
+    let r = 1, over = false, lastSig = null, stalled = 0;
+    for(; r<=DRAW_ROUND_CAP && !over; r++){
+      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND);
+      [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
+      engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
+      over = engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2);
+      if(over) break;
+      const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2) break;
+      engine.draw(P[1], 1, 'A', stats, null); engine.draw(P[2], 1, 'B', stats, null);
+    }
+    const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0;
+    if(over && b && !a){ wins++; castleLeft += P[1].hq.hp/P[1].hq.maxHp; } else if(over && a && !b) losses++; else draws++;
+    rounds += r;
+  }
+  return {wins, losses, draws, n, avgRounds: rounds/n, avgCastleLeft: wins ? castleLeft/wins : 0};
+}
+function openSkirmishEditor(mapId, nodeKey){
+  const map = CONQUEST_MAPS.find(m=> m.id===mapId); const node = map && map.nodes.find(n=> n.key===nodeKey); if(!node) return;
+  let overlay = document.getElementById('skirmishEditorOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'skirmishEditorOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const draft = JSON.parse(JSON.stringify(node));
+  draft.deck = draft.deck || {};
+  let q = '', simText = '', dirty = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
+  const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(cur||'')===String(v)?'selected':''}>${escapeHtml(label)}</option>`;
+  const render = ()=>{
+    const defs = getCardDefs();
+    const deckIds = Object.keys(draft.deck).filter(id=> draft.deck[id]>0);
+    const total = deckIds.reduce((t,id)=> t + draft.deck[id], 0);
+    const matches = q.trim().length < 2 ? [] : Object.keys(defs).filter(id=> !defs[id].test && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 18);
+    const others = map.nodes.filter(n=> n.key!==draft.key);
+    overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
+      <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
+      <div class="se-grid">
+        <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
+        <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
+        <label>Kind<select id="seKind">${SKIRMISH_KINDS.map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
+        <label>Castle HP<input id="seHp" type="number" min="1" max="9999" value="${draft.hqHp||30}"></label>
+        <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
+        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Gravity; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+        <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
+        <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
+        <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
+        <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
+        <div class="se-wide se-req"><span>Requires (must clear first):</span>${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.key)}</label>`).join('')}</div>
+      </div>
+      <h3 class="se-h">Enemy deck · ${total} cards</h3>
+      <div class="se-deck">${deckIds.length ? deckIds.map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health+(defs[id].wait?' · W'+defs[id].wait:'') : ''}</span>
+        <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${draft.deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
+      <input type="text" id="seSearch" placeholder="Search a card to add to the enemy deck…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
+      ${simText ? `<div class="se-sim">${simText}</div>` : ''}
+      <div class="se-actions">
+        <button type="button" class="btn" id="seSim">📊 Simulate 200 vs my deck</button>
+        <button type="button" class="btn" id="seTest">▶ Test fight</button>
+        <span style="flex:1"></span>
+        ${isAddedNode(mapId, draft.key) ? `<button type="button" class="btn ghost" id="seDelete">🗑 Delete skirmish</button>` : `<button type="button" class="btn ghost" id="seReset" title="Drop all edits to this node">↺ Reset to original</button>`}
+        <button type="button" class="btn primary" id="seSave">💾 Save${cloudCardAdmin?' & publish':''}</button>
+      </div>
+    </div>`;
+    overlay.hidden = false;
+    const read = ()=>{
+      const v = id=> (document.getElementById(id)||{}).value;
+      draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; draft.kind = v('seKind');
+      draft.hqHp = Math.max(1, Math.min(9999, Number(v('seHp'))||30)); draft.flavor = v('seFlavor')||'';
+      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
+    };
+    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); }); });
+    document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
+    overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
+    overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
+    overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
+    const search = document.getElementById('seSearch');
+    search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
+    document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
+      simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% castle left when you win` : ''}.`; render(); };
+    document.getElementById('seSave').onclick = async ()=>{
+      read();
+      const e = nodePatchFor(mapId);
+      if(isAddedNode(mapId, draft.key)){ e.added = e.added.map(n=> n.key===draft.key ? JSON.parse(JSON.stringify(draft)) : n); }
+      else {
+        const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
+        const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
+      }
+      persistNodeEdits(); applyNodeEdits();
+      const published = await publishNodeEdits(mapId);
+      showToast(published ? `☁️ ${draft.name} published — live for every player.` : `💾 ${draft.name} saved in this browser.`, 'ok');
+      dirty = false; close();
+    };
+    document.getElementById('seTest').onclick = ()=>{
+      read();
+      const e = nodePatchFor(mapId);
+      // test the draft as-is without saving: temporarily swap it in
+      const idx = map.nodes.findIndex(n=> n.key===draft.key); const saved = map.nodes[idx]; map.nodes[idx] = JSON.parse(JSON.stringify(draft));
+      overlay.hidden = true;
+      playSubTab = 'conquest'; switchTab('play');
+      const ok = startConquestMatch(mapId, draft.key, {skipEnergyCost:true});
+      map.nodes[idx] = saved;
+      if(ok && matchState) matchState.adminTest = true;
+    };
+    const reset = document.getElementById('seReset');
+    if(reset) reset.onclick = async ()=>{ if(!confirm('Drop every edit to this skirmish?')) return; const e = nodePatchFor(mapId); delete e.patches[draft.key]; persistNodeEdits(); applyNodeEdits(); await publishNodeEdits(mapId); showToast('↺ Skirmish reset.', 'ok'); close(); };
+    const del = document.getElementById('seDelete');
+    if(del) del.onclick = async ()=>{ if(!confirm('Delete this added skirmish?')) return; const e = nodePatchFor(mapId); e.added = (e.added||[]).filter(n=> n.key!==draft.key); delete e.patches[draft.key]; persistNodeEdits(); applyNodeEdits(); await publishNodeEdits(mapId); conquestSelectedNodeKey = null; showToast('🗑 Skirmish deleted.', 'ok'); close(); };
+  };
+  overlay.onclick = ev=>{ if(ev.target===overlay){ if(dirty && !confirm('Close without saving your changes?')) return; close(); } };
+  render();
+}
 // ---- Player level (2026-10-03, explicit: "You have a level... don't have a cap. The level xp
 // requirement should be exponential. Quests, progress and thresholds give a huge amount of xp - so
 // levelling does mean not just playtime but actual achievement. E.g. collection size or arena
@@ -15686,6 +15855,25 @@ const CONQUEST_MAPS = [
       { key:"11-8", kind:"finalboss", name:"The Cave Warlord", icon:"👑", deck:{"cave-warlord":4,"grizzly-vanguard":3,"silverback-brawler":3}, hqHp:350, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["11-7"] },
     ]},
 ];
+// ---- Skirmish editor overlay (2026-10-03): admin edits to nodes ride on top of the definitions
+// above. CONQUEST_MAPS_BASELINE keeps the original; applyNodeEdits() rebuilds every map's node list
+// from it plus the edits (patched fields, admin-added skirmishes, removed added ones). Edits live in
+// this browser and, when published, in card_overrides as `__cfg:map-nodes:<mapId>` (live for all).
+const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
+const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
+let nodeEdits = {};
+try{ nodeEdits = JSON.parse(localStorage.getItem(NODE_EDITS_KEY)||'{}') || {}; }catch(e){ nodeEdits = {}; }
+function persistNodeEdits(){ try{ localStorage.setItem(NODE_EDITS_KEY, JSON.stringify(nodeEdits)); }catch(e){} }
+function applyNodeEdits(){
+  CONQUEST_MAPS.forEach((map, mi)=>{
+    const base = CONQUEST_MAPS_BASELINE[mi] ? JSON.parse(JSON.stringify(CONQUEST_MAPS_BASELINE[mi].nodes)) : [];
+    const ed = nodeEdits[map.id] || {};
+    const nodes = base.concat(JSON.parse(JSON.stringify(ed.added||[])));
+    nodes.forEach(n=>{ const p = (ed.patches||{})[n.key]; if(p) Object.assign(n, JSON.parse(JSON.stringify(p))); });
+    map.nodes.length = 0; nodes.forEach(n=> map.nodes.push(n));
+  });
+}
+applyNodeEdits();
 // Item #7 (2026-09-18): "foreshadow the upcoming bosses with dark blurred card divs indicating
 // the raids available in conquest... at least 4 raids ready by the alpha... first one can be a
 // beach-themed one." These are teaser-only entries for the Raid tab — deliberately NOT wired
@@ -15962,7 +16150,7 @@ function abandonMapLayoutEdit(){
 function mapLayoutToolbarHTML(map){
   const custom = !!mapLayoutOverrides[map.id];
   if(!conquestLayoutEdit){
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button>
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button><button type="button" class="btn small" id="mlNewSkirmish">➕ New skirmish</button>
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
   const g = (v,l)=> `<button type="button" class="btn small ${mapLayoutGrid===v?'primary':'ghost'}" data-mlgrid="${v}">${l}</button>`;
@@ -15977,6 +16165,7 @@ function mapLayoutToolbarHTML(map){
 function wireMapLayoutEditor(map, body){
   const rerender = ()=> renderConquestSubTab(body);
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
+  on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
   on('mlEdit', ()=>{
     conquestLayoutEdit = true;
     mapLayoutSnapshotMap = map.id;
@@ -16366,6 +16555,8 @@ function renderConquestSubTab(body){
       ${nodeRewardCardsLineHTML(map.id, selectedNode.key, done)}
       ${cnpRewardsPreviewHTML(selectedNode, done)}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
+    const seBtn = document.getElementById('cnpEditSkirmish');
+    if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
     const nrBtn = document.getElementById('cnpEditRewards');
     if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
     panelEl.querySelectorAll('[data-battlemode]').forEach(b=> b.addEventListener('click', ()=>{
@@ -17007,7 +17198,8 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
   if(!deckSizeOkOrWarn()) return false;
-  const battleMode = (opts && opts.battleMode) || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
+  const battleMode = (opts && opts.battleMode) || node.battleMode || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
+  if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
@@ -21892,7 +22084,7 @@ async function resolveRound(){
       const nxt = m1.nodes.find(n=> n.kind!=='tutorial' && (n.requires||[]).includes('tutorial') && !p.completed.includes(conquestNodeId('m1', n.key)));
       m.nextBattle = nxt ? {mapId:'m1', key:nxt.key, node:nxt} : null;
     }
-    if(m.mode==='conquest' && m.winner===1 && m.conquestNode){
+    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
       // would look like a repeat.

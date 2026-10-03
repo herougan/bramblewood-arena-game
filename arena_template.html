@@ -2352,6 +2352,23 @@
   .recent-opps .ro-res.win{background:#3c9a5f;} .recent-opps .ro-res.loss{background:#b5473f;}
   .recent-opps .ro-name{flex:1; min-width:160px; display:flex; flex-direction:column;}
   .recent-opps .ro-meta{font-size:12px; opacity:.75;}
+  /* Skirmish editor (2026-10-03) */
+  .skirmish-editor{max-width:760px; width:min(760px, calc(100vw - 32px)); max-height:min(90vh, 980px); overflow:auto;}
+  .skirmish-editor .se-key{font-size:12px; font-weight:700; opacity:.6; margin-left:6px;}
+  .skirmish-editor .se-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px 14px;}
+  .skirmish-editor .se-grid label{display:flex; flex-direction:column; gap:4px; font-size:12.5px; font-weight:800;}
+  .skirmish-editor .se-grid input, .skirmish-editor .se-grid select{font-weight:400;}
+  .skirmish-editor .se-wide{grid-column:1 / -1;}
+  .skirmish-editor .se-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; font-size:12.5px;}
+  .skirmish-editor .se-chk{flex-direction:row !important; align-items:center; gap:4px !important; font-weight:600 !important;}
+  .skirmish-editor .se-h{margin:14px 0 6px;}
+  .skirmish-editor .se-deck{display:flex; flex-direction:column; gap:4px; margin-bottom:8px;}
+  .skirmish-editor .se-row{display:flex; align-items:center; gap:8px; padding:4px 8px; border-radius:8px; background:var(--surface-2);}
+  .skirmish-editor .se-card{flex:1;} .skirmish-editor .se-stat{font-size:12px; opacity:.7; width:70px; text-align:right;}
+  .skirmish-editor .se-n{width:26px; text-align:center;}
+  .skirmish-editor #seSearch{width:100%; box-sizing:border-box;}
+  .skirmish-editor .se-sim{margin:10px 0; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:14px;}
+  .skirmish-editor .se-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; position:sticky; bottom:-1px; background:inherit; padding-top:8px;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
