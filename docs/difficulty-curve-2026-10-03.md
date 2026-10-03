@@ -47,3 +47,37 @@ Options:
 3. **Both** (recommended). Rewards make progress feel earned; the retune keeps the steps even.
 
 Targets I'd use: first node of a map ~80%, the middle ~60%, elites ~45%, the boss ~35–45% with a deck that uses that map's rewards.
+
+## D18 draft applied (2026-10-04): review and adjust in the skirmish editor
+
+### Skirmish reward cards (first clear only)
+
+| Node | Reward | Why |
+|---|---|---|
+| 1-1 Otter Patrol | Feral Tomcat (3/5, Quick, free) | an early free attacker |
+| 1-2 Scorpion Ambush | Chipmunk Cavalry (4/9, Quick, 1🪵) | the first Lumber card worth saving for |
+| 1-3 Raccoon Heist | Owl Nightwatch (4/10, Stealth, Flying) | answers flyers |
+| 1-4 Frost Vanguard | Otter Riverguard (5/20, Armor) and Shepherd's Bark (4/16, Guardian) | the boss pays twice: a wall and a protector |
+| 2-1 Reef Skirmishers | Jackrabbit Sprinter (5/8, Quick) | |
+| 2-2 Tidal Ring | Cuttlefish Illusionist (3/12, Evasive) | |
+| 2-3 Cetacean Pod | Migration Leader (3/12, Flying) | |
+| 2-4 The Kraken's Maw | Rootworm Colony (3/14, Poison) | |
+| 2-5 The Drowned Colossus | Reef Manta Glider (5/16, Evasive) | the boss's own signature card |
+
+**How they're stored:** `source: {kind:'map', id, node}` in `canonical/cards.json`. The game grants them on the first clear and shows them under "Cards won". The Codex shows where each one comes from.
+
+### Map 2 retuned
+
+The new Map 2 decks are lighter water decks with fewer Krakens and Humpbacks, and lower castle HP. Each row shows the old deck and HP, then the new.
+
+| Node | Deck, old → new | HP, old → new | Win %, old → new |
+|---|---|---|---|
+| 2-1 | Manta ×4, Hermit Crab ×4, Narwhal ×2 → Hermit Crab ×4, Pond Trout ×4, Silver Minnow ×2, Manta ×1 | 30 → 26 | ~0% → ~93% |
+| 2-2 | Kraken ×2, Riverguard ×4, Bell-Ringer ×4 → Riverguard ×2, Bell-Ringer ×4, Hermit Crab ×4 | 32 → 28 | ~100% → ~59% |
+| 2-3 elite | → Manta ×2, Hermit Crab ×4, River Carp ×3, Pond Trout ×2 (the Collapsed Mine castle is gone) | 40 → 34 | ~0% → ~48% |
+| 2-4 elite | → Kraken ×1, Hermit Crab ×4, River Carp ×3, Pond Trout ×3 | 60 → 38 | ~0% → ~45% |
+| 2-5 boss | → Kraken ×1, Humpback ×1, Manta ×1, Hermit Crab ×4, River Carp ×3 | 100 → 40 | ~0% → ~20%, rising with Map 2's own rewards |
+
+The win rates are for a deck built from what a player owns after Map 1, with the AI piloting both sides. 2-2 used to be the outlier (100%); it is now the step up after 2-1.
+
+**Next:** Maps 3+ still start at about 0–40%. Same treatment once you're happy with these two.

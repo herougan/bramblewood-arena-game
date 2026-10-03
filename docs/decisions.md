@@ -26,6 +26,7 @@ _Last updated: 2026-10-03 (21:00)_
   - B: retune Maps 2–4 to target win rates;
   - C: both.
 - **Default:** C. I'd draft the reward picks and the retunes for you to review in the skirmish editor.
+- **Draft applied (00:30):** reward cards on all Map 1–2 nodes, and Map 2 retuned. The table is in the curve doc. Everything is adjustable in the skirmish editor; say "revert D18" to undo.
 
 ## Ongoing tracks (no decision needed)
 

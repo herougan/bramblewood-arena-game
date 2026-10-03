@@ -7907,13 +7907,15 @@ const CONQUEST_MAPS = [
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:20, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"quillback-elder":2,"pond-duck":4}, hqHp:30, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
+  // Map 2 retuned 2026-10-04 (D18 draft, tools/difficulty_curve.js): aimed at a deck built from Map 1's
+  // new skirmish rewards — first node ~90%, 2-2 ~60%, elites ~45%, boss ~30-40%.
   { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"m1", sequential:true,
     nodes: [
-      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"reef-manta-glider":4,"open-ocean-hermit-crab":4,"narwhal-lancer":2}, hqHp:30, flavor:"The shallows here are only shallow at low tide.", requires:[] },
-      { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"kraken-spawnling":2,"otter-riverguard":4,"shrine-bell-ringer":4}, hqHp:32, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
-      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"humpback-elder":2,"narwhal-lancer":3,"reef-manta-glider":3}, hqHp:40, flavor:"They surface in formation. That is the last warning you get.", characterId:"collapsed-mine", requires:["2-2"] },
-      { key:"2-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":4,"humpback-elder":3,"narwhal-lancer":3}, hqHp:60, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["2-3"] },
-      { key:"2-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":4,"humpback-elder":4,"reef-manta-glider":2}, hqHp:100, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["2-4"] },
+      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:26, flavor:"The shallows here are only shallow at low tide.", requires:[] },
+      { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"otter-riverguard":2,"shrine-bell-ringer":4,"open-ocean-hermit-crab":4}, hqHp:28, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
+      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"river-carp":3,"pond-trout":2}, hqHp:34, flavor:"They surface in formation. That is the last warning you get.", requires:["2-2"] },
+      { key:"2-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"river-carp":3,"pond-trout":3}, hqHp:38, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["2-3"] },
+      { key:"2-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":1,"humpback-elder":1,"reef-manta-glider":1,"open-ocean-hermit-crab":4,"river-carp":3}, hqHp:40, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["2-4"] },
     ]},
   { id:"m3", name:"The Ashen Peak", icon:"🌋", blurb:"Scorched high ground — only the toughest hides make it this far up.", unlockAfter:"m2", sequential:true,
     nodes: [
