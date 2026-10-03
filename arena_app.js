@@ -18045,100 +18045,185 @@ let currentTab = 'home';
 // roadmap's own sequencing note ("I'd sequence this right after the leveling data model
 // exists, so the dummy button has something real to increment").
 let forgeSelectedId = null;
+// Forge (reworked 2026-10-03, "Furnish the forge more fully... animations prepared for on-forge"):
+// a hearth header with only the currencies the Forge spends (T4: show a currency only where it
+// matters), a searchable/filterable pool that marks cards you can temper right now, and an anvil
+// panel with a 0→10 level track, a before→after stat preview, cost chips that say what you're
+// short of, and the three Prestige medallions. Tempering plays a short smithing sequence:
+// the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
+// to its new stats. Reduced motion skips straight to the result.
+let forgeFilter = 'all', forgeSearch = '', forgeSort = 'name', forgeBusy = false;
+function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
+function forgeStatsAt(id, level){
+  const b = forgeBaseDef(id) || {}; const m = levelStatMultiplier(level);
+  return {attack: b.attack!=null ? Math.max(1, Math.round(b.attack*m)) : null, health: b.health!=null ? Math.max(1, Math.round(b.health*m)) : null};
+}
+function forgeReady(id){ const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
+function forgeCostChipsHTML(cost){
+  const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
+  return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
+}
 function renderForge(){
-  const root = document.getElementById('view-forge');
+  const root = document.getElementById('view-forge'); if(!root) return;
   const defs = getCardDefs();
-  const ownedIds = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token).sort((a,b)=> defs[a].name.localeCompare(defs[b].name));
-  if(forgeSelectedId && !ownedIds.includes(forgeSelectedId)) forgeSelectedId = null;
+  let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token);
+  if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;
+  const readyCount = ids.filter(forgeReady).length;
+  const q = forgeSearch.trim().toLowerCase();
+  let shown = ids.filter(id=> !q || defs[id].name.toLowerCase().includes(q));
+  if(forgeFilter==='ready') shown = shown.filter(forgeReady);
+  if(forgeFilter==='max') shown = shown.filter(id=> getCardLevel(id)>=10);
+  if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
+  const rIdx = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common');
+  shown.sort((a,b)=> forgeSort==='level' ? (getCardLevel(b)-getCardLevel(a) || defs[a].name.localeCompare(defs[b].name))
+    : forgeSort==='rarity' ? (rIdx(b)-rIdx(a) || defs[a].name.localeCompare(defs[b].name))
+    : defs[a].name.localeCompare(defs[b].name));
   const sel = forgeSelectedId ? defs[forgeSelectedId] : null;
-  const selLevel = forgeSelectedId ? getCardLevel(forgeSelectedId) : 0;
-  const cost = sel ? levelUpCost(selLevel) : null;
-  const maxed = selLevel>=10;
-  // Prestige (2026-09-23, batch #27) — only ever reachable once a card is already maxed;
-  // nextTier is null once all 3 tiers are owned (fully prestiged).
-  const nextTier = (sel && maxed) ? nextPrestigeTier(forgeSelectedId) : null;
+  const L = sel ? getCardLevel(forgeSelectedId) : 0;
+  const maxed = L>=10;
+  const metal = myCurrencies.metal||0;
   root.innerHTML = `
-    <div class="panel">
-      <h2>🔨 The Forge</h2>
-      <p class="panel-sub">Spend Magic Dust (and a few Maple Leaves) to level up any unlocked card, 0→10 — stats climb as the level rises. A maxed card can go further with Prestige — purely cosmetic, no more stat growth.</p>
-      <div class="forge-currency-row">
-        <span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${myCurrencies.gold}</span>
-        <span class="hud-pill forge-cur-gems">🍂 ${myCurrencies.gems}</span>
-        <span class="hud-pill forge-cur-dust">✨ ${myCurrencies.dust}</span>
-        <span class="hud-pill forge-cur-metal" title="Earned by defeating a named Conquest leader (a Boss or Raid Boss node)">🔩 ${myCurrencies.metal||0}</span>
+    <div class="forge-hero">
+      <div class="forge-embers" aria-hidden="true">${Array.from({length:14}, (_,k)=> `<i style="--x:${(k*7.3)%100}%; --d:${(2.6+(k%5)*0.7).toFixed(1)}s; --delay:${(k*0.37%3).toFixed(2)}s"></i>`).join('')}</div>
+      <div class="forge-hero-text">
+        <h2>🔨 The Forge</h2>
+        <p>Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a finish that shows your mastery; stats stay the same.</p>
+      </div>
+      <div class="forge-wallet" aria-label="Forge currencies">
+        <span class="forge-coin dust" title="Magic Dust">✨ ${myCurrencies.dust||0}</span>
+        <span class="forge-coin gold" title="Maple Leaves">${mapleLeafIconHTML()} ${myCurrencies.gold||0}</span>
+        ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
     <div class="forge-layout">
-      <div class="pool-grid" id="forgePool"></div>
-      <div class="panel forge-detail" id="forgeDetail">
-        ${sel ? `
-          <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
-          <h3>${sel.name} — Level ${selLevel}${maxed?' (Max)':''}${sel.prestigeLabel?` · ${sel.prestigeIcon} ${sel.prestigeLabel}`:''}</h3>
-          <div class="forge-stat-row"><span class="atk">⚔ ${sel.attack||0}</span><span class="hp">❤ ${sel.health||0}</span></div>
-          ${!maxed ? `
-            <button class="btn primary" id="forgeLevelUpBtn" ${canAffordLevelUp(selLevel)?'':'disabled'}>Level Up — ✨${cost.dust} ${mapleLeafIconHTML()}${cost.gold}</button>
-            ${!canAffordLevelUp(selLevel)?'<p class="forge-afford-warn">Not enough currency yet — win a match or two.</p>':''}
-          ` : nextTier ? `
-            <p class="panel-sub">Cosmetic only — ${sel.attack||0}/${sel.health||0} stays exactly the same.</p>
-            <button class="btn primary prestige-btn" id="forgePrestigeBtn" ${canAffordPrestige(forgeSelectedId)?'':'disabled'}>${nextTier.icon} Prestige: ${nextTier.label} — ✨${nextTier.cost.dust} ${mapleLeafIconHTML()}${nextTier.cost.gold}</button>
-            ${!canAffordPrestige(forgeSelectedId)?'<p class="forge-afford-warn">Not enough currency yet — win a match or two.</p>':''}
-          ` : `<p class="forge-afford-warn" style="color:var(--health)">This card is fully Prestiged — every cosmetic tier owned.</p>`}
-        ` : `<p class="panel-sub">Pick a card from the pool to level it up.</p>`}
+      <div class="panel forge-pool-panel">
+        <div class="forge-toolbar">
+          <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
+          <div class="forge-chips" role="group" aria-label="Filter">
+            ${[['all','All'],['ready',`🔨 Ready${readyCount?` (${readyCount})`:''}`],['leveled','Levelled'],['max','Max']].map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
+          </div>
+          <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
+        </div>
+        <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
+      </div>
+      <div class="panel forge-anvil" id="forgeDetail">${sel ? forgeAnvilHTML(forgeSelectedId, sel, L, maxed) : `
+        <div class="forge-anvil-empty">
+          <div class="anvil-art" aria-hidden="true"><span class="anvil-top"></span><span class="anvil-waist"></span><span class="anvil-foot"></span></div>
+          <p>Pick a card to bring it to the anvil.</p>
+          ${readyCount ? `<button type="button" class="btn small primary" id="forgePickReady">🔨 Show the ${readyCount} I can temper</button>` : ''}
+        </div>`}
       </div>
     </div>`;
   const poolEl = document.getElementById('forgePool');
-  poolEl.innerHTML = ownedIds.map(id=> cardTileHTML(defs[id], {extraClass: id===forgeSelectedId?'selected':''})).join('');
-  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
-  const levelUpBtn = document.getElementById('forgeLevelUpBtn');
-  if(levelUpBtn) levelUpBtn.addEventListener('click', ()=>{
-    if(!forgeSelectedId || !canAffordLevelUp(getCardLevel(forgeSelectedId))){ denyShake(levelUpBtn); return; }
-    const lvl = getCardLevel(forgeSelectedId);
-    const c = levelUpCost(lvl);
-    // Task list item 4 (2026-09-18, "do a card flip animation... for revealing card rewards or
-    // something"): the Forge level-up is the one place this app already has a clean "before"
-    // (current stats) and "after" (leveled-up stats) card face — captured BEFORE mutating any
-    // state below, so `beforeHTML` genuinely reflects the pre-level-up card. Flip fires first;
-    // the star-fall celebration + full panel refresh (new level/stats/cost text) are deferred to
-    // flipRevealCard's onFlipped, timed to land right as the new face becomes visible, not
-    // before or after it.
-    const beforeHTML = cardTileHTML(getCardDefs()[forgeSelectedId], {extraClass:'forge-preview'});
-    myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
-    myCardLevels[forgeSelectedId] = lvl+1; saveCardLevels();
-    const afterHTML = cardTileHTML(getCardDefs()[forgeSelectedId], {extraClass:'forge-preview'});
-    const mountEl = document.querySelector('#forgeDetail .forge-preview-wrap');
-    const flip = flipRevealCard(mountEl, {
-      frontHTML: beforeHTML, backHTML: afterHTML,
-      onFlipped: ()=>{
-        const cardEl = mountEl.querySelector('.forge-preview');
-        starFallVfx.celebrate(cardEl, 1+Math.floor(Math.random()*5));
-      },
-    });
-    if(flip) flip.reveal(); else starFallVfx.celebrate(mountEl, 1+Math.floor(Math.random()*5));
-    setTimeout(renderForge, 900); // let the flip + star-fall celebration actually play before the full panel (name/level/stats/button) refreshes out from under them
+  if(shown.length) poolEl.innerHTML = shown.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: id===forgeSelectedId?'selected':''})}${forgeReady(id)?'<span class="forge-ready-badge" title="You can temper this now">🔨</span>':''}</div>`).join('');
+  poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
+  const search = document.getElementById('forgeSearch');
+  search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
+  root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));
+  document.getElementById('forgeSort').addEventListener('change', e=>{ forgeSort = e.target.value; renderForge(); });
+  const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ forgeFilter = 'ready'; renderForge(); };
+  const lvlBtn = document.getElementById('forgeLevelUpBtn');
+  if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const preBtn = document.getElementById('forgePrestigeBtn');
+  if(preBtn) preBtn.addEventListener('click', ()=> forgePrestige(preBtn));
+}
+function forgeAnvilHTML(id, sel, L, maxed){
+  const now = forgeStatsAt(id, L), next = forgeStatsAt(id, Math.min(10, L+1));
+  const delta = (a, b, cls, glyph)=> a==null ? '' : `<div class="forge-stat ${cls}"><span class="fs-glyph">${glyph}</span><span class="fs-now">${a}</span>${!maxed ? `<span class="fs-arrow">→</span><span class="fs-next ${b>a?'up':''}">${b}${b>a?`<small>+${b-a}</small>`:''}</span>` : ''}</div>`;
+  const pips = Array.from({length:10}, (_,k)=> `<i class="${k<L?'on':''} ${k===L && !maxed?'next':''}"></i>`).join('');
+  const prestige = getCardPrestige(id), tier = maxed ? nextPrestigeTier(id) : null;
+  const cost = !maxed ? levelUpCost(L) : (tier ? tier.cost : null);
+  const afford = !maxed ? canAffordLevelUp(L) : (tier ? canAffordPrestige(id) : false);
+  const noGain = !maxed && next.attack===now.attack && next.health===now.health;
+  return `
+    <div class="anvil-stage" id="anvilStage">
+      <div class="forge-glow" aria-hidden="true"></div>
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
+      <div class="anvil-art" aria-hidden="true"><span class="anvil-top"></span><span class="anvil-waist"></span><span class="anvil-foot"></span></div>
+      <span class="forge-hammer" aria-hidden="true">🔨</span>
+    </div>
+    <h3 class="forge-name">${escapeHtml(sel.name)}${sel.prestigeLabel?` <span class="forge-prestige-tag">${sel.prestigeIcon} ${escapeHtml(sel.prestigeLabel)}</span>`:''}</h3>
+    <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
+    <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
+    ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
+    ${!maxed ? `
+      <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
+      <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 Temper to Lv ${L+1}</button>
+      ${afford ? '' : `<p class="forge-note">Win fights or open packs for more Dust and Maple Leaves.</p>`}
+    ` : `
+      <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
+      ${tier ? `
+        <p class="forge-note">${escapeHtml(tier.desc)} Stats stay the same.</p>
+        <div class="forge-cost-row">${forgeCostChipsHTML(tier.cost)}</div>
+        <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}</button>
+      ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
+    `}`;
+}
+// The smithing sequence. Resolves once the card has flipped to its new face.
+function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
+  return new Promise(resolve=>{
+    const stage = document.getElementById('anvilStage');
+    const mountEl = stage && stage.querySelector('.forge-preview-wrap');
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!stage || !mountEl || reduce || !hasGsap()){ resolve(); return; }
+    const card = mountEl.querySelector('.card-tile'), hammer = stage.querySelector('.forge-hammer');
+    stage.classList.add('is-hot');
+    const sparks = ()=>{
+      for(let k=0;k<10;k++){
+        const sp = document.createElement('span'); sp.className = 'forge-spark'; stage.appendChild(sp);
+        const ang = -Math.PI*(0.1 + Math.random()*0.8), d = 40 + Math.random()*70;
+        gsap.fromTo(sp, {x:0, y:0, opacity:1, scale:1}, {x:Math.cos(ang)*d*(Math.random()<.5?-1:1), y:Math.sin(ang)*d, opacity:0, scale:.3, duration:.45+Math.random()*.3, ease:'power2.out', onComplete:()=> sp.remove()});
+      }
+    };
+    const tl = gsap.timeline();
+    tl.set(hammer, {opacity:1, rotation:-55, y:-30, x:40});
+    const strikes = heavy ? 4 : 3;
+    for(let k=0;k<strikes;k++){
+      tl.to(hammer, {rotation:-55, y:-34, duration:.16, ease:'power2.out'})
+        .to(hammer, {rotation:10, y:6, duration:.09, ease:'power3.in', onComplete:()=>{ try{ SoundKit.clang(); }catch(e){} sparks(); }})
+        .to(card, {scaleY:.93, scaleX:1.04, duration:.05, yoyo:true, repeat:1, ease:'power1.out'}, '<');
+    }
+    tl.to(hammer, {opacity:0, y:-50, duration:.2})
+      .add(()=>{
+        stage.classList.remove('is-hot'); stage.classList.add('is-quench');
+        for(let k=0;k<6;k++){ const st = document.createElement('span'); st.className = 'forge-steam'; stage.appendChild(st);
+          gsap.fromTo(st, {x:(Math.random()-0.5)*80, y:0, opacity:.7, scale:.5}, {y:-90-Math.random()*40, opacity:0, scale:1.6, duration:1+Math.random()*.4, ease:'power1.out', onComplete:()=> st.remove()}); }
+        try{ SoundKit.coin && SoundKit.coin(); }catch(e){}
+      })
+      .add(()=>{
+        const flip = flipRevealCard(mountEl, {frontHTML: beforeHTML, backHTML: afterHTML, onFlipped: ()=>{ const c = mountEl.querySelector('.forge-preview'); if(c) starFallVfx.celebrate(c, heavy ? 3+Math.floor(Math.random()*5) : 1+Math.floor(Math.random()*4)); }});
+        if(flip) flip.reveal();
+        setTimeout(()=>{ stage.classList.remove('is-quench'); resolve(); }, 760);
+      }, '+=0.15');
   });
-  // Prestige button (2026-09-23, batch #27) — same flip-reveal + celebration pattern as Level Up
-  // above, but with its own distinct sound cue (SoundKit.prestigeTone, see style-guideline.md's
-  // "never reuse an existing cue for a new mechanic" rule) since it's a genuinely different kind
-  // of reward moment (cosmetic mastery, not a stat change).
-  const prestigeBtn = document.getElementById('forgePrestigeBtn');
-  if(prestigeBtn) prestigeBtn.addEventListener('click', ()=>{
-    if(!forgeSelectedId || !canAffordPrestige(forgeSelectedId)){ denyShake(prestigeBtn); return; }
-    const beforeHTML = cardTileHTML(getCardDefs()[forgeSelectedId], {extraClass:'forge-preview'});
-    const ok = prestigeUpCard(forgeSelectedId);
-    if(!ok){ denyShake(prestigeBtn); return; }
-    if(typeof SoundKit!=='undefined' && SoundKit.prestigeTone) SoundKit.prestigeTone();
-    const afterHTML = cardTileHTML(getCardDefs()[forgeSelectedId], {extraClass:'forge-preview'});
-    const mountEl = document.querySelector('#forgeDetail .forge-preview-wrap');
-    const flip = flipRevealCard(mountEl, {
-      frontHTML: beforeHTML, backHTML: afterHTML,
-      onFlipped: ()=>{
-        const cardEl = mountEl.querySelector('.forge-preview');
-        starFallVfx.celebrate(cardEl, 2+Math.floor(Math.random()*6));
-      },
-    });
-    if(flip) flip.reveal(); else starFallVfx.celebrate(mountEl, 2+Math.floor(Math.random()*6));
-    setTimeout(renderForge, 900);
-  });
+}
+async function forgeTemper(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId, L = getCardLevel(id);
+  if(L>=10 || !canAffordLevelUp(L)){ denyShake(btn); return; }
+  forgeBusy = true; btn.disabled = true;
+  const c = levelUpCost(L);
+  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  myCardLevels[id] = L+1; saveCardLevels();
+  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  try{ await forgeSmithAnimation(beforeHTML, afterHTML, false); }catch(e){}
+  forgeBusy = false; renderForge();
+  const pop = document.querySelector('#forgeDetail .forge-level-label');
+  if(pop){ pop.classList.add('pop'); }
+  showToast(`🔨 ${getCardDefs()[id].name} is now level ${L+1}.`, 'ok');
+}
+async function forgePrestige(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId;
+  if(!canAffordPrestige(id)){ denyShake(btn); return; }
+  forgeBusy = true; btn.disabled = true;
+  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
+  try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
+  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  forgeBusy = false; renderForge();
 }
 /* ---- Home landing page (2026-09-20, per explicit request: "Have a 'Home' landing page...
    contains the Play, Deck, Codex" + "Shop (in main nav)" + "Settings and Profile button will be

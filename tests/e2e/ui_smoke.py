@@ -90,6 +90,14 @@ async def main():
         after = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
         check(after - before == 3, f'pack should add 3 copies (added {after-before})')
         await pg.click('#poDone')
+        # 4b: Forge — temper a card: the smithing sequence plays, the level goes up once, currency is spent
+        await pg.evaluate("myCurrencies.dust=300; myCurrencies.gold=400; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
+        fid = await pg.evaluate("document.querySelector('#forgePool .card-tile').dataset.defid")
+        await pg.click(f'#forgePool .card-tile[data-defid="{fid}"]'); await pg.wait_for_timeout(200)
+        l0 = await pg.evaluate(f"getCardLevel('{fid}')")
+        await pg.click('#forgeLevelUpBtn'); await pg.click('#forgeLevelUpBtn', force=True); await pg.wait_for_timeout(3200)
+        check(await pg.evaluate(f"getCardLevel('{fid}')") == l0 + 1, 'tempering should raise the level exactly once (double-click guarded)')
+        check(await pg.evaluate("myCurrencies.dust < 300"), 'tempering should spend Magic Dust')
         # 5: raid trench, played
         await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
         n0 = await pg.evaluate("loadRaidPartAttempts().length")
