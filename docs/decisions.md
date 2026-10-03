@@ -6,30 +6,41 @@
 
 **Rules for this doc:** an item leaves this list the moment it's decided; the outcome goes into the "Decided" log at the bottom and into MASTER.md or the relevant design doc.
 
-_Last updated: 2026-10-03 (late evening)_
+_Last updated: 2026-10-03 (21:00)_
 
 ---
 
 ## Decide: a yes/no or a pick
 
-**D15. PixelLab credits.** Waiting for the monthly reset, as you said. Still to do:
-- 16 of the 26 Map 8–10 cards;
-- the two Home 2.5D sprites.
+**D17. Sound direction (from T9).** The cue sheet is drafted in [`sfx-cue-sheet.md`](sfx-cue-sheet.md): about 25 cues, each with a mood and a length. Pick the overall feel:
+- **A. Cosy and organic.** Wood knocks, leaf rustles, soft bells, paper; it matches the painted woodland.
+- **B. Chiptune.** Retro blips, which match the pixel art.
+- **C. Mixed.** Organic for the world and battle, chiptune only for UI clicks and coins.
+- **Default:** C.
 
-The prompts are ready in `art_staging/jobs_m8_10.json`. Nothing is needed from you.
+## Ongoing tracks (no decision needed)
 
-**D16. UI/UX (open item).** Screenshots of every major screen, plus a battle at turns 1, 4 and 8 and the result, are in [`ui-review-2026-10-03.md`](ui-review-2026-10-03.md). The same page is published as the artifact "Bramblewood UI Review".
+**Polish (was D16).** More animation and fixing odd graphical glitches as we find them. WebGL is kept out of this track; it lives in the effects catalogue. Progress:
+- **Battle (2026-10-03):** hover-to-see-facing, castle HP ribbons, tips moved off the board, log drawer, compact Graveyard, "Pass turn", fits a 1366×860 screen.
+- **Glitch fixed:** Nest cards had collapsed to an 18px sliver since the card-scaling change.
 
-My pushback is in there:
-1. stop adding currencies;
-2. stop adding modes for now;
-3. widen the Play column instead of shrinking Conquest;
-4. fundamentals before more effects.
+**Effects (was T7).** The menu of effects and how to build each is in [`effects-catalogue.md`](effects-catalogue.md). Your picks:
+1. **Holo foil:** ✅ shipped, in CSS, on Nest foil copies and Rare+ pack reveals.
+2. **Depth-map parallax:** next, chosen for scale.
+3. **Battlefield weather:** next.
 
-There is also a proposed fix order: battle layout, Play width, Deck builder, Arena hierarchy, Codex toolbar, currencies.
-- **You (19:44):** OK to the pushback, but WebGL experiments continue alongside. Next UI batch starts with the battle layout.
-- **Battle batch 1 done (20:15):** hover facing (p = i − n/2), castle HP ribbons, tips off the board, log drawer, compact Graveyard, "Pass turn".
-- **Research:** [`research-webgl-graphify-2026-10-03.md`](research-webgl-graphify-2026-10-03.md) covers what to try next in WebGL and graphify (run on our code).
+**T3. Server verification: approved, building.** The design is in the Decided log below:
+- a single-use seed, which acts as the nonce;
+- a transcript of your moves;
+- a server replay;
+- a card-data fingerprint;
+- packs rolled on the server.
+
+Build order:
+1. `fight_sessions` table plus a `start_fight` RPC that issues the seed.
+2. Conquest hand-in through an Edge Function that replays the transcript with the same engine.
+3. Raid damage the same way.
+4. Packs rolled on the server.
 
 ## Discuss: needs a conversation, not a pick
 
@@ -48,129 +59,17 @@ Open questions:
 - share a link?
 - how many to keep, and for how long?
 
-**T3. Trust and the server: your design, with one correction.**
-
-What you proposed, and I agree:
-- The server is only asked at the moments that matter: opening packs, starting a fight, and handing in a result.
-- Battles run on the client from a **server-issued seed**.
-- The client bundles its moves (a transcript) and sends them with a hash.
-- The server replays every line: can this card be played, can this card attack that one, the lumber, the wait, every RNG roll regenerated from the seed.
-- Packs are rolled entirely on the server (one RPC that rolls the cards and writes them), so the client never picks its own cards.
-
-**Nonces: you do need one, but the seed already is it.** There *is* a replay benefit. Anything that pays out could be handed in twice:
-- raid damage;
-- ranked points;
-- first-clear rewards;
-- pack-like rewards.
-
-The same goes for a winning transcript submitted from two tabs. The fix costs nothing extra:
-- **"Start fight" returns a single-use seed.** The server stores a `fight_sessions` row: user, seed, deck hash, card-data hash, mode/node, expires_at, used=false.
-- **"Hand in" checks the row.** It must be the same user, not expired and not used, and the replay must pass. Then it marks the row used and pays out once.
-- **The client never chooses the seed.** Otherwise it could shop for lucky seeds.
-- **The deck is locked at "start fight".**
-
-That's two calls per fight: start and hand in.
-
-**The known gap:** the client knows the seed, so a cheater could pre-compute the AI's future draws. In PvE that's a small edge; I'd accept it for v1. (Ranked Live already runs on the host.)
-
-**Card data on the client** (your question): built ✅. `bramblewood-integrity.js` makes a SHA-256 fingerprint of every card's gameplay fields: cost, wait, attack, health, effects and so on. Art and flavor are excluded, so new art doesn't change it.
-- The fingerprint covers baseline cards plus admin live overrides.
-- It's shown in **Admin → Card data fingerprint**.
-- It goes into each `fight_sessions` row and each hand-in.
-- The server computes the same hash from `canonical/cards.json` plus `card_overrides`, using the same file. A mismatch means edited or stale card data: reject, or tell the client to reload.
-- Today `canonical/cards.json` hashes to `716fef18f31c…`. Tests check that the browser and Node agree.
-
-**T4. Materia** (discussion; your list):
-- sources: raids, maps, arena, guild, and maybe shop chests;
-- what it does: crafting, and upgrades with Maple Leaves.
-
-**My pushback:** we already have 8 currencies on screen (see D16). If Materia comes in, make it **replace Magic Dust + Metal** as the one crafting currency, with typed variants only if they really earn their place (e.g. Tidal / Ember / Grove materia by source). Not a ninth chip.
-
-**T5.** Moved to Decided (cancelled).
-
-**T6.** Moved to Decided.
-
-**T7. Shaders, v1 built.** Real WebGL is live (Settings → 🌊 Shader effects):
-- **Splash and faction screens:** the painted scene runs through a shader that reads its own pixels:
-  - green sways in gusts;
-  - blue in the lower half ripples and glints like water;
-  - bright pixels bloom;
-  - light shafts, fireflies and a slight pointer parallax.
-- **Home backdrop:** the same scene shader, softened.
-- **Every Conquest map** has its own overlay:
-
-  | Map | Effect |
-  |---|---|
-  | Forest | Canopy dapple, light shafts, fireflies |
-  | Sunken Hollow | Caustics, glints |
-  | Volcanoes | Lava glow, smoke, embers |
-  | Caves | Fog, spores, and a lantern that follows your pointer |
-  | Savanna | Heat shimmer, dust |
-  | Tundra | Aurora, snowfall |
-  | Coral | Caustics, bubbles |
-  | Swamp | Marsh fog, fireflies |
-  | Eyrie | Clouds, wind streaks |
-  | Sundered Peak | Embers, lightning |
-
-- **Cost controls:**
-  - one shared loop;
-  - pauses off-screen and in hidden tabs;
-  - half resolution on maps;
-  - cleans up its GL context.
-- **Default:** on where WebGL works; off with reduced motion, on 2-core devices or with data-saver on.
-
-**Next, if you want more:**
-- the battlefield (rain splashes, a lane glow at the start of your turn);
-- day/night from your clock;
-- the moddable "atmosphere pack" JSON.
-
-**T8. Farms (new).** Your idea: a farm, plus crafting potions to sell to other players on the Market. A sketch to react to:
-- **The farm:** a few plots (on the Home scene or a map spot) that grow herbs in real time, 1–8 hours. Planting takes seeds from Conquest or raid drops.
-- **The potion bench:** herbs plus Materia make potions.
-- **Potions are consumables for PvE only:** +2 HP on your castle, the first card costs 1 less, reveal an enemy deck, one extra trench turn. Never usable in Ranked.
-- **The Market:** players list potions for 🍁. The Market takes a cut, which is a gold sink. This needs T3's server trust first: listings and trades must be server-side.
-
-Questions:
-- Is the farm a place (a screen with plots) or a panel?
-- Does it fit the game's identity, or pull it toward an idle game?
-- Could potions ever touch PvP? (I'd say no.)
-
-**T9. Sound effects: sourcing (new).** Today every sound is synthesized live in Web Audio (no files). Proposed sources, licence first:
-- **Kenney.nl:** CC0, no attribution. The "Interface Sounds", "Impact Sounds", "RPG Audio" and "UI Audio" packs cover clicks, card flips, hits and coins.
-- **OpenGameArt.org,** filtered to CC0 (some packs are CC-BY, which needs credit).
-- **Freesound.org,** with the CC0 filter (CC-BY needs credit; avoid NC for a commercial game).
-- **Sonniss GDC bundles:** royalty-free, commercial OK, no attribution. Large, high quality.
-- **jsfxr / sfxr:** generate retro blips ourselves. These are ours outright.
-
-The list we need, about 25 cues:
-- card play;
-- card flip;
-- hit (light/heavy);
-- dodge (whoosh);
-- poison tick;
-- heal;
-- castle hit;
-- castle destroyed;
-- win and lose stingers;
-- pack shake, burst and rare reveal;
-- coin;
-- UI click, hover and back;
-- map pan;
-- node select;
-- raid boss roar;
-- trench telegraph.
-
-**Plan:**
-1. I draft a cue sheet with mood and length per cue.
-2. You pick a direction: cosy/organic or chiptune.
-3. I pull CC0 candidates.
-
-The workspace can't download from those sites, so you'd drop the files in, or I use the browser. I keep a `CREDITS.md` and an `audio/` folder with a licence per file.
-
 ## Decided (2026-10-03)
 
 | # | Decision | Outcome |
 |---|---|---|
+| D15 | PixelLab credits | ✅ Wait for the monthly reset, then finish Maps 8–10 and the Home sprites. |
+| D16 | UI/UX review | ✅ The pictures are fine and it's starting to look polished. It's now the ongoing **Polish** track (more animation, glitch fixes), without WebGL. |
+| T3 | Server trust | ✅ Go. Server-issued **single-use seed** (it doubles as the nonce, which stops reward replays); the client sends a transcript and hash; the server replays every action and roll; card-data fingerprint checked; packs rolled on the server. Only pack opens and fight hand-ins talk to the server. |
+| T4 | Currencies and Materia | ✅ Many currencies are fine, including Materia, **as long as each shows only where it matters**. Rule: a currency chip appears only on screens that earn or spend it (Shop: 🍁🍂; Forge: ✨🔩 and Materia; Raid: 🎫 and Raid Points; battle: 🪵). Profile keeps the full wallet. |
+| T8 | Farms and potions | ✅ Approved as sketched: real-time plots, potions as PvE-only consumables, and potions sellable on the Market once trades are server-side (T3). |
+| T9 | Sound sourcing | ✅ Plan approved: CC0 first (Kenney, OpenGameArt CC0, Freesound CC0), plus our own jsfxr, with `audio/` and `CREDITS.md`. The direction is D17. |
+| T7 | Effects | ✅ Picks: holo foil now (done), depth parallax for scale, battlefield weather. See `effects-catalogue.md`. |
 | — | Admins | ✅ jayzhang.here@gmail.com added to `app_admins` (Admin entry, live card/skirmish/raid publishing). |
 | — | Repeat clears | ✅ The win screen shows the first-clear bonus greyed out under "First clear · already earned ✓". |
 | D12 | Passwords | ✅ Minimum length raised to 8 in Supabase (through your Chrome). The leaked-password toggle waits for Pro. |

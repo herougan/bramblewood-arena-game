@@ -3,8 +3,9 @@
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
 > ➡️ **Waiting on you:** [`decisions.md`](decisions.md). It has:
-> - 2 decisions: D15, waiting for the PixelLab reset, and D16, the [UI review](ui-review-2026-10-03.md);
-> - 7 discussion topics: T1–T4 and T7–T9 (Farms and SFX are new).
+> - 1 decision: D17, the sound direction;
+> - ongoing tracks: Polish, Effects ([catalogue](effects-catalogue.md)) and T3 server verification (building);
+> - 2 discussion topics: T1 and T2.
 >
 > In the project it's `claude/decisions.md`.
 
