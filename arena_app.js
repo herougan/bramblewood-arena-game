@@ -2012,6 +2012,7 @@ function castleHoverHTML(hqSide){
       const html = hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
+      pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
       pop.hidden = false;
       positionPop(el);
     }, HOVER_POP_DELAY_MS);
@@ -6276,6 +6277,7 @@ function renderPlayerSubTab(body){
         <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
         <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
+        <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
         <select id="deckSort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="name">Sort: Name</option></select>
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
@@ -6296,6 +6298,7 @@ function renderPlayerSubTab(body){
   // instead of just the lone type-tags dropdown it had before.
   document.getElementById('deckSearch').addEventListener('input', renderMyDeckPanels);
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
+  document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
   wireLeaderSlot();
@@ -10907,6 +10910,12 @@ function renderMyDeckPanels(){
   const kind = kindEl ? kindEl.value : '';
   const sortEl = document.getElementById('deckSort');
   const sortMode = sortEl ? sortEl.value : 'cost';
+  // Card levels (2026-10-03, explicit: "really ugly to display card levels ANYWHERE except for your
+  // collection or when crafting... Also filterable for when building your deck"): hidden in the pool
+  // unless this filter is on; then the pool shows level badges and keeps only cards at that level+.
+  const lvlEl = document.getElementById('deckLevelFilter');
+  const lvlMode = lvlEl ? lvlEl.value : '';
+  const minLvl = /^\d+$/.test(lvlMode) ? +lvlMode : 0;
   // 2026-09-16 follow-up ("the number of cards is not dynamic"): the "X/20 cards" badge lives
   // in the panel-sub, which is only painted once by renderPlayerSubTab — every add/remove click
   // was refreshing the deck list/pool below it but leaving the stale count sitting above. Now
@@ -10917,6 +10926,7 @@ function renderMyDeckPanels(){
     `<span class="dchip" draggable="true" data-defid="${id}">${defs[id].icon} ${defs[id].name} ×${n}</span>`).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const sortFn = (a,b)=>{
     const A=defs[a], B=defs[b];
+    if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; }
     if(sortMode==='name') return A.name.localeCompare(B.name);
     if(sortMode==='attack') return B.attack-A.attack;
     if(sortMode==='health') return B.health-A.health;
@@ -10925,7 +10935,9 @@ function renderMyDeckPanels(){
   const allIds = getDraftableIds()
     .filter(id=> !arch || archetypesOf(defs[id]).includes(arch))
     .filter(id=> !kind || defs[id].type===kind)
-    .filter(id=> !q || defs[id].name.toLowerCase().includes(q));
+    .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
+    .filter(id=> !minLvl || (myCardLevels[id]||0) >= minLvl);
+  document.getElementById('myDeckPool').classList.toggle('show-levels', !!lvlMode);
   const unlockedIds = allIds.filter(id=>!defs[id].locked).sort(sortFn);
   const lockedIds = allIds.filter(id=>defs[id].locked).sort(sortFn);
   document.getElementById('myDeckPool').innerHTML =

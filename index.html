@@ -965,6 +965,10 @@
   .editbadge{position:absolute; bottom:-6px; right:-6px; width:16px; height:16px; border-radius:50%; background:var(--grace); color:var(--badge-ink); font-size:9px; display:flex; align-items:center; justify-content:center; border:2px solid var(--surface); z-index:3;}
   /* Card leveling (Epic B, 2026-09-18) — mirrors .editbadge's corner-pill treatment on the
      opposite (bottom-left) corner so it never collides with cost/lock/spawn/edit badges. */
+  /* Card levels show only in your collection (Nest), the Forge, and the deck pool while its level
+     filter is on (2026-10-03, explicit request). Everywhere else — Codex, hand, board, popovers — hidden. */
+  .levelbadge{display:none;}
+  :is(#nestGrid, #forgePool, .show-levels) .levelbadge{display:block;}
   .levelbadge{position:absolute; bottom:-6px; left:-6px; background:linear-gradient(135deg,#ffd75e,#ff9f4a); color:var(--level-badge-ink); font-family:'Baloo 2'; font-weight:800; font-size:9px; border-radius:8px; padding:1px 5px; border:2px solid var(--surface); z-index:3; white-space:nowrap;}
   /* Prestige tiers (2026-09-23, batch #27, per explicit request: "beyond 10 is styling, e.g. gold,
      rainbow etc., extended art"): purely cosmetic — no stat changes, see prestigeUpCost/getCardDefs'
@@ -4197,6 +4201,28 @@
     .dropzone, .discardzone, .skipzone{min-height:60px;}
     .battle-log-panel{padding:6px 12px 5px;}
   }
+  /* ===== Card sizes that scale (2026-10-03, explicit: "There should be several card sizes, and they
+     need to scale sensibly... text just needs to stay legible at all sizes"). Every .card-tile is its
+     own size container, so its name, stats and badges size from the CARD's width (cqw), not the page's.
+     Roughly proportional at every size, with floors so nothing gets smaller than legible and ceilings
+     so a huge card doesn't get cartoonish. Size tokens for callers: */
+  :root{ --card-xs:64px; --card-sm:88px; --card-md:110px; --card-lg:168px; --card-xl:260px; }
+  .card-tile{container-type:inline-size;}
+  .card-tile .nm{font-size:clamp(9.5px, 12.5cqw, 21px) !important; line-height:1.1;}
+  .card-tile .atk, .card-tile .hp{font-size:clamp(12px, 19cqw, 34px) !important; bottom:clamp(2px, 3cqw, 6px);}
+  .card-tile .atk{left:clamp(3px, 6cqw, 10px);} .card-tile .hp{right:clamp(3px, 6cqw, 10px);}
+  .card-tile .costbadge, .card-tile .waitbadge{font-size:clamp(8.5px, 9.5cqw, 14px); height:clamp(15px, 18cqw, 24px); min-width:clamp(18px, 24cqw, 34px);}
+  .card-tile .poison-tag{font-size:clamp(10px, 13cqw, 22px) !important;}
+  .card-tile .whynot-tag{font-size:clamp(8.5px, 10cqw, 13px);}
+  /* the tiniest tiles (reward chips, discover picks) drop the name rather than cramming it */
+  @container (max-width: 70px){ .card-tile .nm{display:none;} }
+  .card-size-xs{width:var(--card-xs) !important;} .card-size-sm{width:var(--card-sm) !important;}
+  .card-size-md{width:var(--card-md) !important;} .card-size-lg{width:var(--card-lg) !important;}
+  .card-size-xl{width:var(--card-xl) !important;}
+  /* the detail view and big grids scale with the screen between their min and max sizes */
+  .card-detail-card .card-pop-visual-tile{width:clamp(180px, 34vmin, 300px);}
+  .grid-view.full-art .card-tile{width:100%;}
+  .grid-view.full-art{grid-template-columns:repeat(auto-fill, minmax(clamp(140px, 19vw, 210px), 1fr)) !important;}
 </style>
 </head>
 <body>
@@ -10289,6 +10315,7 @@ function castleHoverHTML(hqSide){
       const html = hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
+      pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
       pop.hidden = false;
       positionPop(el);
     }, HOVER_POP_DELAY_MS);
@@ -14553,6 +14580,7 @@ function renderPlayerSubTab(body){
         <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
         <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
+        <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
         <select id="deckSort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="name">Sort: Name</option></select>
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
@@ -14573,6 +14601,7 @@ function renderPlayerSubTab(body){
   // instead of just the lone type-tags dropdown it had before.
   document.getElementById('deckSearch').addEventListener('input', renderMyDeckPanels);
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
+  document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
   wireLeaderSlot();
@@ -19184,6 +19213,12 @@ function renderMyDeckPanels(){
   const kind = kindEl ? kindEl.value : '';
   const sortEl = document.getElementById('deckSort');
   const sortMode = sortEl ? sortEl.value : 'cost';
+  // Card levels (2026-10-03, explicit: "really ugly to display card levels ANYWHERE except for your
+  // collection or when crafting... Also filterable for when building your deck"): hidden in the pool
+  // unless this filter is on; then the pool shows level badges and keeps only cards at that level+.
+  const lvlEl = document.getElementById('deckLevelFilter');
+  const lvlMode = lvlEl ? lvlEl.value : '';
+  const minLvl = /^\d+$/.test(lvlMode) ? +lvlMode : 0;
   // 2026-09-16 follow-up ("the number of cards is not dynamic"): the "X/20 cards" badge lives
   // in the panel-sub, which is only painted once by renderPlayerSubTab — every add/remove click
   // was refreshing the deck list/pool below it but leaving the stale count sitting above. Now
@@ -19194,6 +19229,7 @@ function renderMyDeckPanels(){
     `<span class="dchip" draggable="true" data-defid="${id}">${defs[id].icon} ${defs[id].name} ×${n}</span>`).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const sortFn = (a,b)=>{
     const A=defs[a], B=defs[b];
+    if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; }
     if(sortMode==='name') return A.name.localeCompare(B.name);
     if(sortMode==='attack') return B.attack-A.attack;
     if(sortMode==='health') return B.health-A.health;
@@ -19202,7 +19238,9 @@ function renderMyDeckPanels(){
   const allIds = getDraftableIds()
     .filter(id=> !arch || archetypesOf(defs[id]).includes(arch))
     .filter(id=> !kind || defs[id].type===kind)
-    .filter(id=> !q || defs[id].name.toLowerCase().includes(q));
+    .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
+    .filter(id=> !minLvl || (myCardLevels[id]||0) >= minLvl);
+  document.getElementById('myDeckPool').classList.toggle('show-levels', !!lvlMode);
   const unlockedIds = allIds.filter(id=>!defs[id].locked).sort(sortFn);
   const lockedIds = allIds.filter(id=>defs[id].locked).sort(sortFn);
   document.getElementById('myDeckPool').innerHTML =
