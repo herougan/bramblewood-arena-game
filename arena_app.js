@@ -8785,6 +8785,7 @@ function renderConquestSubTab(body){
     if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
   }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
+  try{ mountMapShader(document.getElementById('conquestCanvas'), map.id); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   function nodeTooltipHTML(node){
@@ -17998,6 +17999,7 @@ function renderHome(){
   setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
   wireHomeMenuFlourish(root);
   wireHomeScene(root);
+  try{ mountSceneShader(root.querySelector('.hs-back'), {scale: 0.5, intensity: 0.8}); }catch(e){}
 }
 // Home 2.5D scene (2026-10-03, D11: "some of the otters and hummingbirds on the main screen should be
 // layered in front w/ background opacity, so it looks 2.5d"): the splash scene sits far back, faded;
@@ -19565,6 +19567,41 @@ function setAtmosphere(id){
   atmoRaf = requestAnimationFrame(frame);
 }
 try{ if(loadAtmosphere()!=='off') setTimeout(()=> setAtmosphere(loadAtmosphere()), 400); }catch(e){}
+// Shader layers (T7): real WebGL on the splash, the Home backdrop and the Conquest maps — see
+// bramblewood-shaders.js. On by default where it can run; Settings → Shader effects turns it off.
+const SHADER_KEY = 'bramblewood_shaders_v1';
+const ShaderM = (typeof window!=='undefined' && window.BramblewoodShaders && window.BramblewoodShaders.mount) ? window.BramblewoodShaders : null;
+function shadersEnabled(){
+  if(!ShaderM || !ShaderM.isSupported()) return false;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  let v = null; try{ v = localStorage.getItem(SHADER_KEY); }catch(e){}
+  if(v) return v === 'on';
+  const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.connection && navigator.connection.saveData);
+  return !lowPower;
+}
+function splashArtURL(){
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--splash-art').trim();
+  const m = v.match(/^url\((['"]?)(.*)\1\)$/); return m ? m[2] : '';
+}
+function mountSceneShader(host, opts){
+  if(!host || !shadersEnabled() || host.querySelector(':scope > .bw-shader')) return null;
+  const img = splashArtURL(); if(!img || img.indexOf('__SPLASH') >= 0) return null;
+  return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true}, opts||{}));
+}
+function mountMapShader(host, mapId){
+  if(!host || !shadersEnabled()) return null;
+  const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
+  return ShaderM.mount(host, {preset:'map', kind, prepend: true, className: 'bw-shader-map'});
+}
+function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
+function setShadersEnabled(on){
+  try{ localStorage.setItem(SHADER_KEY, on ? 'on' : 'off'); }catch(e){}
+  if(!on){ if(ShaderM) ShaderM.destroyAll(); return; }
+  mountEntranceShaders();
+  try{ if(currentTab==='home') mountSceneShader(document.querySelector('#view-home .hs-back'), {scale: 0.5, intensity: 0.8});
+       if(currentTab==='play' && playSubTab==='conquest' && !matchState && !conquestWorldView) mountMapShader(document.getElementById('conquestCanvas'), conquestSelectedMap); }catch(e){}
+}
+try{ setTimeout(mountEntranceShaders, 50); }catch(e){}
 function wireSettingsButton(idSuffix){
   const btn = document.getElementById('settingsBtn'+idSuffix);
   const panel = document.getElementById('settingsPanel'+idSuffix);
@@ -19607,6 +19644,13 @@ function wireSettingsButton(idSuffix){
       const bfEl = document.getElementById('battlefieldEl');
       if(bfEl && matchState) bfEl.className = 'battlefield ' + battlefieldMapClass(matchState);
     });
+  }
+  const shSel = document.getElementById('shaderSelect'+idSuffix);
+  if(shSel){
+    const can = !!(ShaderM && ShaderM.isSupported());
+    shSel.innerHTML = can ? `<option value="on">On</option><option value="off">Off</option>` : `<option value="off">Not supported on this device</option>`;
+    shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
+    shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
   }
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
   if(atmo){

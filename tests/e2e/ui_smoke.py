@@ -11,7 +11,8 @@ Checks:
   5. Raid trench: pick a row, play your row turn by turn to the end, the attempt is recorded once;
   6. Conquest world: an edge pans to the next map; the 🧭 atlas shows every map and zooms in;
   7. Arena: Recent opponents opens the opponent's deck;
-  8. phone header stays on one row.
+  8. phone header stays on one row;
+  9. shader layers mount on the splash, Home and a map, and Settings can turn them off.
 Exit code 1 on any failure.
 """
 import asyncio, os, sys
@@ -126,6 +127,23 @@ async def main():
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
         check(not errs, f'page errors in feature checks: {errs[:3]}')
+        await b.close()
+        # 9: T7 shader layers (software WebGL): splash, Home and a Conquest map mount and render
+        b = await p.chromium.launch(executable_path=EXE, args=['--enable-unsafe-swiftshader', '--use-angle=swiftshader'])
+        pg = await b.new_page(viewport={'width': 1024, 'height': 700}); errs = []
+        pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('console', lambda m: errs.append(m.text) if '[shaders]' in m.text else None)
+        await pg.add_init_script("localStorage.setItem('bramblewood_shaders_v1','on')")
+        await pg.goto(URL); await pg.wait_for_timeout(1500)
+        if await pg.evaluate("BramblewoodShaders.isSupported()"):
+            check(await pg.evaluate("!!document.querySelector('#splashScreen .entrance-bg.has-shader canvas.bw-shader')"), 'the splash should get a shader layer')
+            await pg.evaluate("localStorage.setItem('bramblewood_arena_tutorial_done','1'); document.getElementById('splashScreen').hidden=true; switchTab('home'); 1"); await pg.wait_for_timeout(600)
+            check(await pg.evaluate("!!document.querySelector('#view-home .hs-back canvas.bw-shader')"), 'Home should get a shader layer')
+            await pg.evaluate("playSubTab='conquest'; switchTab('play'); 1"); await pg.wait_for_timeout(600)
+            check(await pg.evaluate("!!document.querySelector('#conquestCanvas > canvas.bw-shader-map')"), 'the Conquest map should get a shader overlay')
+            await pg.evaluate("setShadersEnabled(false); 1"); await pg.wait_for_timeout(100)
+            check(await pg.evaluate("BramblewoodShaders._layers.size === 0 && !document.querySelector('canvas.bw-shader')"), 'turning shaders off should remove every layer')
+        else: print('  (no WebGL here; shader check skipped)')
+        check(not errs, f'shader errors: {errs[:3]}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')
     sys.exit(1 if failures else 0)

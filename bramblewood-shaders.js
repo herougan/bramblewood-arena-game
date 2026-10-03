@@ -1,0 +1,263 @@
+// Shader layers (T7, 2026-10-03 — "Let's REALLY delve into this. Let's try some on the maps and in
+// the beginning few web pages"). Real WebGL, not CSS: two kinds of layer.
+//
+//  • scene  — draws a painted picture (the splash art) through a fragment shader. The shader reads
+//             the picture's own pixels to decide what moves: green pixels sway in the wind, blue
+//             pixels ripple like water and catch glints, bright pixels bloom. Light shafts and
+//             fireflies are added on top, and the view drifts slightly with the pointer.
+//  • map    — a transparent overlay for a Conquest map, one look per terrain: dappled canopy
+//             light (forest), caustics (water), embers and lava glow (fire), drifting fog and a
+//             lantern that follows your pointer (caves), heat shimmer (savanna), snowfall and an
+//             aurora (tundra), bubbles (coral), marsh fog and fireflies (swamp), clouds and wind
+//             (sky), and embers with lightning (storm).
+//
+// Every layer: one shared animation loop; pauses when off screen or when the tab is hidden;
+// renders at reduced resolution; destroys itself (and frees its GL context) when its host leaves
+// the page. Browser-only; a no-op anywhere without WebGL.
+(function(root){
+'use strict';
+if(typeof window === 'undefined' || typeof document === 'undefined'){ if(typeof module!=='undefined' && module.exports) module.exports = {}; return; }
+
+const COMMON = `
+precision mediump float;
+uniform vec2 u_res; uniform float u_time; uniform vec2 u_mouse; uniform float u_int;
+float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+float noise(vec2 p){ vec2 i = floor(p), f = fract(p); vec2 u = f*f*(3.0-2.0*f);
+  return mix(mix(hash(i), hash(i+vec2(1.0,0.0)), u.x), mix(hash(i+vec2(0.0,1.0)), hash(i+vec2(1.0,1.0)), u.x), u.y); }
+float fbm(vec2 p){ float v = 0.0, a = 0.5; for(int i = 0; i < 4; i++){ v += a*noise(p); p = p*2.03 + 1.7; a *= 0.5; } return v; }
+// glowing points, one chance per grid cell, drifting with the cell grid; q is aspect-correct
+float sparks(vec2 q, float scale, float t, vec2 drift, float size, float density){
+  vec2 p = q*scale + drift*t; vec2 id = floor(p); vec2 f = fract(p) - 0.5;
+  float h = hash(id);
+  vec2 o = (vec2(hash(id+3.1), hash(id+7.7)) - 0.5)*0.6 + 0.15*vec2(sin(t*1.3 + h*6.28), cos(t*1.1 + h*12.0));
+  float d = length(f - o); float tw = 0.55 + 0.45*sin(t*(1.5 + h*3.0) + h*40.0);
+  return step(1.0 - density, h) * smoothstep(size, 0.0, d) * tw;
+}
+// diagonal god rays from the top-left; uv is 0..1 with y down
+float shafts(vec2 uv, float t){
+  vec2 dir = normalize(vec2(0.8, 1.0)); float x = dot(uv, vec2(dir.y, -dir.x));
+  float r = noise(vec2(x*7.0, t*0.12)) * noise(vec2(x*19.0 + 3.0, t*0.2));
+  return r * smoothstep(1.3, 0.0, dot(uv, dir));
+}
+float caustic(vec2 uv, float t){
+  vec2 p = mod(uv*6.2831, 6.2831) - 250.0; vec2 i = p; float c = 1.0; float inten = 0.005;
+  for(int n = 0; n < 4; n++){ float tt = t*(1.0 - (3.5/float(n+1)));
+    i = p + vec2(cos(tt - i.x) + sin(tt + i.y), sin(tt - i.y) + cos(tt + i.x));
+    c += 1.0/length(vec2(p.x/(sin(i.x+tt)/inten), p.y/(cos(i.y+tt)/inten))); }
+  c /= 4.0; c = 1.17 - pow(c, 1.4); return pow(abs(c), 8.0);
+}
+`;
+
+const VERT = `attribute vec2 a_pos; void main(){ gl_Position = vec4(a_pos, 0.0, 1.0); }`;
+
+const SCENE_FRAG = COMMON + `
+uniform sampler2D u_tex; uniform vec2 u_texSize; uniform vec2 u_focus;
+vec2 coverUV(vec2 uv){ float ca = u_res.x/u_res.y, ia = u_texSize.x/u_texSize.y;
+  vec2 s = ca > ia ? vec2(1.0, ia/ca) : vec2(ca/ia, 1.0);
+  vec2 f = u_focus + u_mouse*0.012; return f + (uv - u_focus)*s; }
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
+  vec2 q = gl_FragCoord.xy/u_res.y;
+  float t = u_time;
+  vec2 iu = coverUV(uv);
+  vec3 c0 = texture2D(u_tex, iu).rgb;
+  float green = smoothstep(0.02, 0.14, c0.g - max(c0.r, c0.b));
+  // blue in the lower part of the picture is water; blue up top is sky and stays still
+  float water = smoothstep(0.03, 0.16, c0.b - max(c0.r, c0.g*0.92)) * smoothstep(0.38, 0.55, iu.y);
+  vec2 px = 1.0/u_texSize;
+  // wind: foliage sways in gusts, more near the top of the picture
+  float gust = 0.6 + 0.4*sin(t*0.35) * noise(vec2(t*0.2, 1.0));
+  vec2 off = vec2(sin(t*1.7 + iu.y*28.0 + noise(iu*7.0 + t*0.25)*5.0), 0.0) * px * 1.6 * green * gust * u_int;
+  // water: ripples
+  off += water * vec2(sin(iu.y*150.0 + t*2.4), cos(iu.x*80.0 + t*1.6)) * px * 1.2 * u_int;
+  vec3 col = texture2D(u_tex, iu + off).rgb;
+  // glints on water
+  float gli = pow(noise(iu*vec2(60.0, 260.0) + vec2(t*0.6, t*1.2)), 10.0) * water;
+  col += vec3(0.9, 0.97, 1.0) * gli * 1.6 * u_int;
+  // bloom-lite: bright neighbours bleed light
+  vec3 b = vec3(0.0);
+  for(int k = 0; k < 4; k++){ float a = float(k)*1.5708 + 0.785; vec3 s = texture2D(u_tex, iu + vec2(cos(a), sin(a))*px*3.0).rgb;
+    b += max(s - 0.72, 0.0); }
+  col += b * 0.55 * u_int;
+  // light shafts and fireflies
+  col += vec3(1.0, 0.9, 0.65) * shafts(uv, t) * 0.32 * u_int;
+  float ff = sparks(q, 7.0, t, vec2(0.05, -0.08), 0.12, 0.22) + sparks(q, 12.0, t, vec2(-0.04, -0.05), 0.1, 0.15)*0.6;
+  col += vec3(0.85, 1.0, 0.45) * ff * smoothstep(0.15, 0.6, uv.y) * u_int;
+  // slow breathing light + vignette
+  col *= 0.96 + 0.04*sin(t*0.5);
+  col *= mix(1.0, smoothstep(1.25, 0.35, length((uv - vec2(0.5, 0.45))*vec2(1.2, 1.0))), 0.55);
+  gl_FragColor = vec4(col, 1.0);
+}`;
+
+// map overlay: premultiplied colour, blended over the CSS-painted map
+const MAP_FRAG = COMMON + `
+uniform float u_kind; uniform vec3 u_tint;
+vec4 add(vec4 acc, vec3 c, float a){ a = clamp(a, 0.0, 1.0); return acc + vec4(c*a, a)*(1.0 - acc.a); }
+void main(){
+  vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
+  vec2 q = gl_FragCoord.xy/u_res.y;
+  float t = u_time; vec4 o = vec4(0.0); int k = int(u_kind + 0.5);
+  vec2 m = vec2(u_mouse.x*0.5 + 0.5, u_mouse.y*0.5 + 0.5); // pointer in uv
+  float aspect = u_res.x/u_res.y;
+  if(k == 0){ // forest: canopy dapple, light shafts, fireflies
+    float d = fbm(uv*vec2(3.2, 4.0)*vec2(aspect, 1.0)*0.6 + vec2(t*0.045, t*0.02) + 0.3*vec2(sin(t*0.4), 0.0));
+    o = add(o, vec3(1.0, 0.95, 0.7), smoothstep(0.58, 0.78, d)*0.28);
+    o = add(o, vec3(0.0, 0.05, 0.0), smoothstep(0.42, 0.22, d)*0.30);
+    o = add(o, vec3(1.0, 0.92, 0.6), shafts(uv, t)*0.34);
+    o = add(o, vec3(0.8, 1.0, 0.4), sparks(q, 9.0, t, vec2(0.05, -0.06), 0.14, 0.18));
+  } else if(k == 1 || k == 6){ // water / coral: caustics, glints, bubbles
+    float c = caustic(uv*vec2(aspect, 1.0)*0.9 + vec2(t*0.01, 0.0), t*0.45);
+    o = add(o, vec3(0.75, 0.95, 1.0), c*0.42);
+    o = add(o, vec3(0.0, 0.1, 0.2), smoothstep(0.4, 1.0, uv.y)*0.18);
+    if(k == 6){ vec2 bq = q*10.0 + vec2(0.0, t*0.9); vec2 id = floor(bq); vec2 f = fract(bq) - 0.5; float h = hash(id);
+      float r = length(f - (vec2(hash(id+2.0), 0.0) - 0.5)*0.5 - vec2(sin(t*2.0 + h*9.0)*0.08, 0.0));
+      o = add(o, vec3(0.85, 1.0, 1.0), step(0.86, h) * smoothstep(0.03, 0.0, abs(r - 0.12)) * 0.8); }
+    else o = add(o, vec3(1.0), sparks(q, 18.0, t, vec2(0.15, 0.0), 0.06, 0.12)*0.7);
+  } else if(k == 2 || k == 8 || k == 10){ // fire / foundry / storm: lava glow, smoke, rising embers
+    float g = fbm(vec2(uv.x*aspect*2.0, uv.y*3.0 - t*0.25));
+    float glow = smoothstep(0.45, 1.0, uv.y) * (0.55 + 0.45*sin(t*1.3 + g*6.0));
+    o = add(o, vec3(1.0, 0.45, 0.1), glow*g*(k == 8 ? 0.55 : 0.38));
+    o = add(o, vec3(0.08, 0.05, 0.05), smoothstep(0.5, 0.0, uv.y) * fbm(uv*vec2(aspect*2.0, 2.0) + vec2(t*0.03, t*0.06)) * 0.45);
+    float e = sparks(q, 11.0, t, vec2(0.12, 0.55), 0.09, 0.28) + sparks(q, 20.0, t, vec2(-0.1, 0.8), 0.07, 0.2);
+    o = add(o, vec3(1.0, 0.6, 0.2), e);
+    if(k == 10){ float slot = floor(t*1.5); float fl = step(0.94, hash(vec2(slot, 3.0))) * exp(-fract(t*1.5)*7.0);
+      o = add(o, vec3(0.85, 0.9, 1.0), fl*0.45); }
+  } else if(k == 3){ // caves: fog, spores, and a lantern that follows the pointer
+    float f = fbm(uv*vec2(aspect*1.6, 2.2) + vec2(t*0.035, -t*0.01));
+    o = add(o, vec3(0.6, 0.55, 0.75), smoothstep(0.45, 0.85, f)*0.32);
+    float lamp = smoothstep(0.38, 0.0, length((uv - m)*vec2(aspect, 1.0)));
+    o = add(o, vec3(0.0, 0.0, 0.02), (1.0 - lamp)*0.30);
+    o = add(o, vec3(1.0, 0.8, 0.45), lamp*0.18);
+    o = add(o, vec3(0.5, 1.0, 0.95), sparks(q, 10.0, t, vec2(0.03, -0.05), 0.1, 0.16));
+  } else if(k == 4){ // savanna: heat shimmer, dust, sun shafts
+    float s = sin(uv.y*70.0 - t*3.0 + fbm(uv*vec2(4.0, 2.0) + t*0.2)*6.0);
+    o = add(o, vec3(1.0, 0.85, 0.55), smoothstep(0.85, 1.0, s) * smoothstep(0.3, 0.9, uv.y) * 0.16);
+    o = add(o, vec3(1.0, 0.9, 0.65), shafts(uv, t)*0.3);
+    o = add(o, vec3(1.0, 0.92, 0.75), sparks(q, 14.0, t, vec2(0.35, -0.05), 0.07, 0.2)*0.7);
+  } else if(k == 5){ // tundra: aurora and snowfall
+    float band = sin(uv.x*aspect*2.5 + fbm(vec2(uv.x*3.0, t*0.1))*4.0 + t*0.25);
+    float aur = smoothstep(0.55, 0.0, uv.y) * smoothstep(0.2, 1.0, band) * (0.5 + 0.5*fbm(vec2(uv.x*8.0, t*0.3)));
+    o = add(o, mix(vec3(0.3, 1.0, 0.7), vec3(0.6, 0.5, 1.0), uv.x), aur*0.35);
+    float sn = sparks(q, 9.0, t, vec2(0.12, -0.55), 0.09, 0.4) + sparks(q, 16.0, t, vec2(0.2, -0.9), 0.07, 0.35)*0.8 + sparks(q, 28.0, t, vec2(0.3, -1.3), 0.06, 0.3)*0.6;
+    o = add(o, vec3(1.0), sn*0.9);
+  } else if(k == 7){ // swamp: low fog, murk, green fireflies
+    float f = fbm(uv*vec2(aspect*1.4, 3.0) + vec2(t*0.05, 0.0));
+    o = add(o, vec3(0.65, 0.75, 0.6), smoothstep(0.35, 1.0, uv.y) * smoothstep(0.4, 0.8, f) * 0.38);
+    o = add(o, vec3(0.6, 1.0, 0.3), sparks(q, 8.0, t, vec2(0.04, -0.04), 0.14, 0.22));
+  } else { // 9 sky: drifting clouds, wind streaks
+    float c = fbm(uv*vec2(aspect*1.2, 2.5) + vec2(t*0.04, 0.0));
+    o = add(o, vec3(1.0), smoothstep(0.55, 0.85, c)*0.38);
+    float row = floor(uv.y*28.0); float rf = fract(uv.y*28.0);
+    float st = smoothstep(0.9, 1.0, sin((uv.x*aspect - t*(0.5 + hash(vec2(row, 4.0))*0.5))*2.2 + row*1.7)) * step(0.8, hash(vec2(row, 1.0))) * smoothstep(0.1, 0.0, abs(rf - 0.5));
+    o = add(o, vec3(1.0), st*0.45);
+    o = add(o, vec3(1.0, 0.95, 0.8), shafts(uv, t)*0.22);
+  }
+  gl_FragColor = o * u_int;
+}`;
+
+const MAP_KIND = {m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, m12:3, m13:4, m14:10};
+
+const layers = new Set();
+let raf = null, t0 = performance.now();
+
+function compile(gl, type, src){
+  const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ const e = gl.getShaderInfoLog(s); gl.deleteShader(s); throw new Error('shader: ' + e); }
+  return s;
+}
+function program(gl, frag){
+  const p = gl.createProgram();
+  gl.attachShader(p, compile(gl, gl.VERTEX_SHADER, VERT)); gl.attachShader(p, compile(gl, gl.FRAGMENT_SHADER, frag));
+  gl.bindAttribLocation(p, 0, 'a_pos'); gl.linkProgram(p);
+  if(!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error('link: ' + gl.getProgramInfoLog(p));
+  return p;
+}
+
+let supported = null;
+function isSupported(){
+  if(supported !== null) return supported;
+  try{ const c = document.createElement('canvas'); const g = c.getContext('webgl'); supported = !!g; const lc = g && g.getExtension('WEBGL_lose_context'); if(lc) lc.loseContext(); }
+  catch(e){ supported = false; }
+  return supported;
+}
+
+let pointer = [0, 0];
+window.addEventListener('pointermove', e=>{ pointer = [(e.clientX/innerWidth)*2 - 1, (e.clientY/innerHeight)*2 - 1]; }, {passive:true});
+
+function mount(host, opts){
+  opts = opts || {};
+  if(!host || !isSupported()) return null;
+  const cv = document.createElement('canvas');
+  cv.className = 'bw-shader ' + (opts.className || '');
+  cv.setAttribute('aria-hidden', 'true');
+  const scene = opts.preset === 'scene';
+  const gl = cv.getContext('webgl', {premultipliedAlpha: true, alpha: !scene, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: false, powerPreference: 'low-power'});
+  if(!gl) return null;
+  let prog;
+  try{ prog = program(gl, scene ? SCENE_FRAG : MAP_FRAG); }catch(e){ console.warn('[shaders]', e.message); return null; }
+  gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+  const U = n=> gl.getUniformLocation(prog, n);
+  const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus')};
+  if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); }
+  const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0]};
+  if(scene){
+    const img = new Image();
+    img.onload = ()=>{
+      if(!layers.has(layer)) return;
+      const tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+      gl.uniform1i(u.tex, 0); gl.uniform2f(u.texSize, img.naturalWidth, img.naturalHeight);
+      const f = opts.focus || [0.5, 0.4]; gl.uniform2f(u.focus, f[0], f[1]);
+      layer.ready = true; host.classList.add('has-shader');
+    };
+    img.src = opts.image;
+  } else host.classList.add('has-shader');
+  cv.addEventListener('webglcontextlost', e=>{ e.preventDefault(); destroy(layer); });
+  if(opts.prepend) host.insertBefore(cv, host.firstChild); else host.appendChild(cv);
+  layers.add(layer);
+  layer.destroy = ()=> destroy(layer);
+  if(!raf) raf = requestAnimationFrame(loop);
+  return layer;
+}
+
+function destroy(layer){
+  if(!layers.has(layer)) return;
+  layers.delete(layer);
+  try{ const lc = layer.gl.getExtension('WEBGL_lose_context'); if(lc) lc.loseContext(); }catch(e){}
+  if(layer.cv.parentNode) layer.cv.parentNode.removeChild(layer.cv);
+  if(layer.host && layer.host.classList) layer.host.classList.remove('has-shader');
+}
+
+function loop(now){
+  raf = null;
+  if(!layers.size) return;
+  const t = (now - t0) / 1000;
+  layers.forEach(l=>{
+    if(!l.host.isConnected || !l.cv.isConnected){ destroy(l); return; }
+    if(document.hidden || !l.ready) return;
+    const r = l.host.getBoundingClientRect();
+    if(r.width < 2 || r.height < 2 || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(1, Math.round(r.width * dpr * l.scale)), h = Math.max(1, Math.round(r.height * dpr * l.scale));
+    if(w !== l.w || h !== l.h){ l.cv.width = w; l.cv.height = h; l.w = w; l.h = h; l.gl.viewport(0, 0, w, h); }
+    // ease the pointer so the light doesn't jump
+    l.mouse[0] += (pointer[0] - l.mouse[0]) * 0.08; l.mouse[1] += (pointer[1] - l.mouse[1]) * 0.08;
+    const gl = l.gl, u = l.u;
+    gl.uniform2f(u.res, w, h); gl.uniform1f(u.time, t); gl.uniform2f(u.mouse, l.mouse[0], l.mouse[1]); gl.uniform1f(u.int, l.intensity);
+    if(!l.scene){ gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  });
+  if(layers.size) raf = requestAnimationFrame(loop);
+}
+
+function destroyAll(){ [...layers].forEach(destroy); }
+
+const api = {mount, destroyAll, isSupported, MAP_KIND, _layers: layers};
+if(root) root.BramblewoodShaders = api;
+if(typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
