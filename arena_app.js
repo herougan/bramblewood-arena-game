@@ -6279,7 +6279,7 @@ function renderPlayerSubTab(body){
   body.innerHTML = `
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
-      <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card to add a copy, Shift-tap to remove one. It's saved to your browser as you go.</p>
+      <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card below to add a copy; tap it in your deck list to take one out. Changes save as you go.</p>
       <h3 class="deck-section-h">🌿 Choose your Bramble</h3>
       <p class="panel-sub">Your HQ for the match — sets your castle's max HP and gives your whole team a passive. See the Codex for the full write-up on each.</p>
       ${characterPickerHTML()}
