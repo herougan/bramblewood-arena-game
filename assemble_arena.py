@@ -101,7 +101,14 @@ out = template
 # card art so the single-file build stays self-contained.
 import base64
 splash_png = open(SCRATCH + "art/splash.png", "rb").read()
+# CSS custom property so the entrance screen and the Home scene share ONE copy of the data URI.
 out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encode(splash_png).decode("ascii"))
+# Home 2.5D layers (2026-10-03): foreground otter/hummingbird sprites (transparent PNGs) if present.
+import os
+def _home_sprite(name):
+    path = SCRATCH + "art/home/" + name + ".png"
+    return ("data:image/png;base64," + base64.b64encode(open(path, "rb").read()).decode("ascii")) if os.path.exists(path) else ""
+app_src = app_src.replace("__HOME_OTTER__", _home_sprite("otter"), 1).replace("__HOME_BIRD__", _home_sprite("hummingbird"), 1)
 out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself

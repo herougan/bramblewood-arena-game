@@ -17815,7 +17815,7 @@ function renderHome(){
   const root = document.getElementById('view-home');
   const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span></button>` : '';
   const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
-  root.innerHTML = `
+  root.innerHTML = `${homeSceneHTML()}
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
@@ -17842,6 +17842,29 @@ function renderHome(){
   }
   setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
   wireHomeMenuFlourish(root);
+  wireHomeScene(root);
+}
+// Home 2.5D scene (2026-10-03, D11: "some of the otters and hummingbirds on the main screen should be
+// layered in front w/ background opacity, so it looks 2.5d"): the splash scene sits far back, faded;
+// an otter and a hummingbird stand in front at the edges. The layers drift at different speeds with
+// the pointer (or device tilt), so the screen has depth. Off with reduced motion.
+const HOME_OTTER_ART = "__HOME_OTTER__", HOME_BIRD_ART = "__HOME_BIRD__";
+function homeSceneHTML(){
+  return `<div class="home-scene" aria-hidden="true">
+    <div class="hs-layer hs-back" data-depth="0.015"></div>
+    ${HOME_OTTER_ART ? `<img class="hs-layer hs-otter" data-depth="0.05" src="${HOME_OTTER_ART}" alt="">` : ''}
+    ${HOME_BIRD_ART ? `<img class="hs-layer hs-bird" data-depth="0.08" src="${HOME_BIRD_ART}" alt="">` : ''}
+  </div>`;
+}
+let homeSceneBound = false;
+function wireHomeScene(root){
+  if(homeSceneBound) return; homeSceneBound = true;
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let raf = null, tx = 0, ty = 0;
+  const apply = ()=>{ raf = null; document.querySelectorAll('#view-home .hs-layer').forEach(el=>{ const d = +el.dataset.depth || 0; el.style.setProperty('--px', (tx*d*100).toFixed(2)+'px'); el.style.setProperty('--py', (ty*d*60).toFixed(2)+'px'); }); };
+  const queue = ()=>{ if(!raf) raf = requestAnimationFrame(apply); };
+  window.addEventListener('pointermove', e=>{ if(currentTab!=='home') return; tx = (e.clientX/innerWidth - 0.5) * 2; ty = (e.clientY/innerHeight - 0.5) * 2; queue(); }, {passive:true});
+  window.addEventListener('deviceorientation', e=>{ if(currentTab!=='home' || e.gamma==null) return; tx = Math.max(-1, Math.min(1, e.gamma/30)); ty = Math.max(-1, Math.min(1, (e.beta-40)/30)); queue(); }, {passive:true});
 }
 // Who sees the Admin entry in Settings: cloud admins, plus local/dev builds (so you're never locked
 // out while signed out or offline). Ordinary players never see it.
