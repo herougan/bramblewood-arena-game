@@ -4334,6 +4334,13 @@
   @media (max-width:820px){ .hs-otter{width:110px; opacity:.55; bottom:2vh;} .hs-bird{width:90px; opacity:.55; top:12vh;} }
   @media (prefers-reduced-motion: reduce){ .hs-otter, .hs-bird{animation:none;} .hs-layer{transition:none;} }
   :root{--splash-art:url(__SPLASH_ART__);}
+  /* Atmosphere packs (2026-10-03, "shaders" v0): a colour grade + a light/particle layer over everything. */
+  #atmoTint, #atmoCanvas{position:fixed; inset:0; pointer-events:none; z-index:9000;}
+  #atmoTint{mix-blend-mode:soft-light; opacity:0; transition:opacity .6s ease, background .6s ease;}
+  body[data-atmo="golden"] #atmoTint{opacity:.55; background:radial-gradient(ellipse at 78% 8%, rgba(255,214,140,.9), rgba(255,160,60,.35) 45%, rgba(90,40,10,.45) 100%);}
+  body[data-atmo="moonlit"] #atmoTint{opacity:.7; background:radial-gradient(ellipse at 20% 0%, rgba(170,200,255,.6), rgba(30,50,110,.6) 55%, rgba(5,10,30,.8) 100%);}
+  body[data-atmo="rain"] #atmoTint{opacity:.45; background:linear-gradient(180deg, rgba(120,140,170,.7), rgba(40,60,80,.6));}
+  body[data-atmo="autumn"] #atmoTint{opacity:.45; background:radial-gradient(ellipse at 50% 30%, rgba(255,190,120,.6), rgba(150,60,20,.5));}
 </style>
 </head>
 <body>
@@ -4523,6 +4530,10 @@
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
         </div>
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row">
+              <div class="settings-row-label"><span>✨ Atmosphere</span></div>
+              <select id="atmosphereSelect" aria-label="Atmosphere"></select>
+            </div>
             <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>
     </div>

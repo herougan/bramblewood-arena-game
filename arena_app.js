@@ -19359,6 +19359,53 @@ function triggerEntranceAnimation(instant){
    rebuilt as an HTML string on nearly every action — see those functions' own calls to this).
    Two independent DOM instances rather than relocating one node, since relocating would need
    re-appending after every single HUD rebuild anyway and this is simpler and just as cheap. */
+// Atmosphere packs (2026-10-03 — the "shaders keep Minecraft alive" idea, v0): a colour grade over
+// the whole game plus a light/particle layer (dust motes, fireflies, rain, falling leaves). Purely
+// cosmetic, per-device, off by default; reduced motion keeps the grade and drops the particles.
+const ATMOSPHERES = [
+  {id:'off', label:'Off'}, {id:'golden', label:'🌅 Golden hour'}, {id:'moonlit', label:'🌙 Moonlit'},
+  {id:'rain', label:'🌧️ Rain'}, {id:'autumn', label:'🍂 Autumn'},
+];
+const ATMO_KEY = 'bramblewood_atmosphere_v1';
+function loadAtmosphere(){ try{ return localStorage.getItem(ATMO_KEY) || 'off'; }catch(e){ return 'off'; } }
+let atmoRaf = null;
+function setAtmosphere(id){
+  if(!ATMOSPHERES.some(a=> a.id===id)) id = 'off';
+  try{ localStorage.setItem(ATMO_KEY, id); }catch(e){}
+  document.body.dataset.atmo = id;
+  let tint = document.getElementById('atmoTint'); if(!tint){ tint = document.createElement('div'); tint.id = 'atmoTint'; document.body.appendChild(tint); }
+  let cv = document.getElementById('atmoCanvas'); if(!cv){ cv = document.createElement('canvas'); cv.id = 'atmoCanvas'; document.body.appendChild(cv); }
+  if(atmoRaf){ cancelAnimationFrame(atmoRaf); atmoRaf = null; }
+  const ctx = cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(id==='off' || reduce){ cv.hidden = true; return; }
+  cv.hidden = false;
+  const fit = ()=>{ cv.width = innerWidth; cv.height = innerHeight; };
+  fit(); window.addEventListener('resize', fit);
+  const N = id==='rain' ? 140 : id==='autumn' ? 26 : 48;
+  const rnd = Math.random;
+  const ps = Array.from({length:N}, ()=> ({x: rnd()*innerWidth, y: rnd()*innerHeight, v: 0.3 + rnd(), p: rnd()*Math.PI*2, s: 1 + rnd()*2.5}));
+  const leaves = ['🍂','🍁','🍃'];
+  const frame = t=>{
+    if(document.body.dataset.atmo !== id) return;
+    ctx.clearRect(0,0,cv.width,cv.height);
+    ps.forEach((q,i)=>{
+      if(id==='rain'){ q.y += 14*q.v; q.x -= 2*q.v; if(q.y > cv.height){ q.y = -20; q.x = rnd()*cv.width + 60; }
+        ctx.strokeStyle = 'rgba(190,210,235,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q.x - 3, q.y + 14); ctx.stroke(); }
+      else if(id==='autumn'){ q.y += 0.7*q.v; q.x += Math.sin(t/900 + q.p)*0.8; if(q.y > cv.height+20){ q.y = -20; q.x = rnd()*cv.width; }
+        ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(Math.sin(t/700 + q.p)); ctx.globalAlpha = .75; ctx.font = (12 + q.s*4)+'px serif'; ctx.fillText(leaves[i%3], 0, 0); ctx.restore(); }
+      else { // golden motes / moonlit fireflies
+        q.y -= 0.15*q.v; q.x += Math.sin(t/1400 + q.p)*0.3; if(q.y < -10){ q.y = cv.height + 10; q.x = rnd()*cv.width; }
+        const a = 0.35 + 0.35*Math.sin(t/(id==='moonlit'?500:900) + q.p);
+        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.s*4);
+        g.addColorStop(0, id==='moonlit' ? `rgba(210,255,140,${a})` : `rgba(255,236,170,${a*0.8})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, q.s*4, 0, Math.PI*2); ctx.fill(); }
+    });
+    atmoRaf = requestAnimationFrame(frame);
+  };
+  atmoRaf = requestAnimationFrame(frame);
+}
+try{ if(loadAtmosphere()!=='off') setTimeout(()=> setAtmosphere(loadAtmosphere()), 400); }catch(e){}
 function wireSettingsButton(idSuffix){
   const btn = document.getElementById('settingsBtn'+idSuffix);
   const panel = document.getElementById('settingsPanel'+idSuffix);
@@ -19402,9 +19449,16 @@ function wireSettingsButton(idSuffix){
       if(bfEl && matchState) bfEl.className = 'battlefield ' + battlefieldMapClass(matchState);
     });
   }
+  const atmo = document.getElementById('atmosphereSelect'+idSuffix);
+  if(atmo){
+    atmo.innerHTML = ATMOSPHERES.map(x=> `<option value="${x.id}">${x.label}</option>`).join('');
+    atmo.value = loadAtmosphere();
+    atmo.addEventListener('change', ()=> setAtmosphere(atmo.value));
+  }
   const open = ()=>{
     panel.hidden = false;
     if(!idSuffix) renderSettingsLinks();
+    if(atmo) atmo.value = loadAtmosphere();
     btn.classList.add('is-open');
     btn.setAttribute('aria-expanded','true');
   };
