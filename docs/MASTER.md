@@ -193,7 +193,7 @@ _Last updated: 2026-10-03_
   - Tuned so typical decks overwhelm a tentacle ~10% of the time and the Core ~0% (≈2.6k a fight).
   - Stages: Enraged < 75%, Thrashing < 50%, **Exposed < 1%** (enemy cards lose their abilities).
   - Everyone who fought claims the kill reward when it falls (400 gold, 60 dust, 3 metal), or 40% as compensation if it survives the week, plus Top 1/10/50% extras.
-  - Pools are live (`raid_week_attempts`, once the migration is applied), with stand-in raiders at 12%/day so a quiet week can still finish it.
+  - Pools are live (`raid_week_attempts`), with stand-in raiders at 12%/day so a quiet week can still finish it.
   - The older single weekly boss shows only if no raid is live. Online Raid stays **hidden**.
 - **Where:** `bramblewood-raid.js`, `canonical/raids.json`, `raidPanelHTML` / `startRaidPartMatch` / `openRaidEditor` in `arena_app.js`, `tests/raid.js`.
 
@@ -219,12 +219,12 @@ _Last updated: 2026-10-03_
 **17. Accounts, sync, live data and social** 🟡
 - Google or email sign-in; accounts with the same email are joined.
 - **Synced:** currencies, card unlocks, decks.
-- **Live tables** (built, but the migration is **not applied yet**):
+- **Live tables** ✅ (migration applied 2026-10-03):
   - `ghost_decks`: PvP strangers and Autobattler runs
   - `raid_week_attempts`: the weekly raid party and shared pool
   - `player_progress`: Conquest, quests, stats, XP, tickets, autobattler run, unlocks, dialogue
-  - Until the migration is applied, all of this stays in this browser.
-- Friends, private match invites (with battle mode) and the public market are built, but the **social migration is not applied yet**.
+  - If the cloud is unreachable, the game falls back to this browser's copy.
+- Friends, private match invites (with battle mode) and the public market ✅ (social migration applied 2026-10-03).
 - **Where:**
   - `supabase/migrations/20261003_live_ghosts_raid_progress.sql`
   - `supabase/migrations/20261002_social_friends_invites_market.sql`
