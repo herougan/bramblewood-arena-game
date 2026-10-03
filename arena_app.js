@@ -5952,7 +5952,14 @@ function deckPreviewPillsHTML(d){
     <span class="deck-pill deck-pill-castle" title="Castle (Bramble)">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
+    <span class="deck-pill deck-pill-level" title="Deck level — each card's rarity weight × its level, leader counts double">📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
   </div>`;
+}
+// Deck level (2026-10-03): Σ rarity weight × card level (forged level, minimum 1); the leader
+// counts double. Same formula as the Autobattler (bramblewood-autobattle.js deckLevelOf).
+function mainDeckLevel(counts, leaderId){
+  if(typeof BramblewoodAutobattle==='undefined') return 0;
+  return BramblewoodAutobattle.deckLevelOf(getCardDefs(), counts, id=> Math.max(1, (myCardLevels||{})[id]||0), leaderId ? [leaderId] : []);
 }
 
 // ---- Deck import/export codes (2026-09-21, per the "shop/packs and deck-export-codes" pick
@@ -6846,6 +6853,56 @@ function livePushProgress(force){
 }
 setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
+// ---- Player level (2026-10-03, explicit: "You have a level... don't have a cap. The level xp
+// requirement should be exponential. Quests, progress and thresholds give a huge amount of xp - so
+// levelling does mean not just playtime but actual achievement. E.g. collection size or arena
+// rank."). Playing earns a trickle (3 XP a win); the real XP comes from quests and one-time
+// milestones, checked by checkXpMilestones() whenever the game state might have crossed one. ----
+const XP_KEY = 'bramblewood_player_xp_v1';
+function xpToNext(level){ return Math.round(100 * Math.pow(1.18, level-1)); } // level 1→2 needs 100, grows 18% per level, no cap
+function loadXp(){ try{ const x = JSON.parse(localStorage.getItem(XP_KEY)||'null'); if(x && typeof x.xp==='number') return Object.assign({milestones:[]}, x); }catch(e){} return {xp:0, milestones:[]}; }
+function saveXp(x){ try{ localStorage.setItem(XP_KEY, JSON.stringify(x)); }catch(e){} }
+function levelFromXp(xp){ let level = 1, rest = xp; while(rest >= xpToNext(level)){ rest -= xpToNext(level); level++; } return {level, into: rest, need: xpToNext(level)}; }
+function playerLevelInfo(){ return levelFromXp(loadXp().xp); }
+function awardXp(n, reason){
+  if(!(n>0)) return;
+  const x = loadXp(), before = levelFromXp(x.xp).level;
+  x.xp += Math.round(n); saveXp(x);
+  const after = levelFromXp(x.xp).level;
+  if(after > before) setTimeout(()=> showToast(`⭐ Level ${after}!${reason ? ' — ' + reason : ''}`, 'ok'), 400);
+  refreshLevelBadge();
+}
+function xpMilestones(){
+  const out = [];
+  const prog = loadConquestProgress();
+  (prog.completed||[]).filter(id=> !/tutorial/.test(id)).forEach(id=> out.push({id:'cq:'+id, xp:25, label:'First clear'}));
+  (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).forEach(m=>{ if(conquestMapCleared(m.id)) out.push({id:'map:'+m.id, xp:300, label:`Cleared ${m.name}`}); });
+  if(loadTutorialDone()) out.push({id:'tutorial', xp:200, label:'Finished the tutorial'});
+  const owned = Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length;
+  [[10,150],[25,300],[50,600],[100,1000],[200,2000]].forEach(([n,xp])=>{ if(owned>=n) out.push({id:'col:'+n, xp, label:`Collected ${n} cards`}); });
+  [[1550,300],[1650,600],[1800,1000],[2000,2000],[2200,3000]].forEach(([r,xp])=>{ if(myRating>=r) out.push({id:'rank:'+r, xp, label:`Reached rating ${r}`}); });
+  const st = loadLifetimeStats();
+  STAT_MEDALS.forEach(m=>{ const t = medalTier(m.counter, st[m.counter]||0); for(let i=0;i<=t;i++) out.push({id:`medal:${m.counter}:${i}`, xp:[100,300,800,2000][i], label:`${MEDAL_NAMES[i]} medal`}); });
+  if((st.abBestWins||0) >= 10) out.push({id:'ab:10', xp:500, label:'10 Autobattler wins in a run'});
+  [15,20,30].forEach(n=>{ if((st.abBestWins||0) >= n) out.push({id:'ab:'+n, xp:250, label:`${n} Autobattler wins in a run`}); });
+  return out;
+}
+function checkXpMilestones(){
+  const x = loadXp(); const have = new Set(x.milestones);
+  const fresh = xpMilestones().filter(m=> !have.has(m.id));
+  if(!fresh.length) return;
+  fresh.forEach(m=> have.add(m.id));
+  x.milestones = Array.from(have); saveXp(x);
+  const total = fresh.reduce((t,m)=> t+m.xp, 0);
+  awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
+  showToast(`✨ +${total} XP — ${fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}`, 'ok');
+}
+function levelBadgeHTML(){
+  const L = playerLevelInfo();
+  return `<div class="player-level" id="playerLevelBadge" title="${L.into} / ${L.need} XP to level ${L.level+1} — XP mostly comes from quests and milestones">
+    <span class="pl-num">⭐ Level ${L.level}</span><span class="pl-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><span class="pl-xp">${L.into}/${L.need} XP</span></div>`;
+}
+function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); if(el) el.outerHTML = levelBadgeHTML(); }
 // ---- Quests & statistics medals (2026-10-03, explicit: "Limited rewards to stop burnout. Daily
 // quests: Use 40 energy on Skirmishes, Use 3 tickets in PVP, Defeat 12 units. Then the next tier
 // (decreasing rewards): Join a Raid, etc. Weeklies are very rewarding, but also similarly tiered."
@@ -6942,6 +6999,8 @@ function claimQuest(kind, id){
   if(claimed.includes(id) || (q[kind][quest.counter]||0) < quest.goal) return;
   claimed.push(id); saveQuestState(q);
   Object.entries(tier.reward).forEach(([k,v])=> grantCurrency(k, v));
+  const tierIdx = QUEST_TIERS[kind].indexOf(tier);
+  awardXp((kind==='daily' ? [100,60,30] : [400,250,120])[tierIdx] || 20, 'quest');
   showToast(`📜 Quest reward: ${Object.entries(tier.reward).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}`, 'ok');
   refreshQuestBadge();
 }
@@ -7031,6 +7090,7 @@ function abStatusBarHTML(run){
     <span class="ab-stat" title="Wins this run">🏆 <b>${run.wins}</b>${run.endless ? ' · ♾️ Endless' : ` / ${goal}`}</span>
     <span class="ab-stat" title="Fights played">⚔️ Fight ${run.fights + (run.phase==='prep'?1:0)}</span>
     <span class="ab-stat ab-penalty" title="Health lost on a loss">Loss costs ${AutoB.lossPenalty(run.fights+1)} ❤️</span>
+    ${run.leader ? `<span class="ab-stat" title="Deck level: each card's rarity weight × its level; leaders count double">📈 Deck Lv <b>${AutoB.runDeckLevel(getCardDefs(), run)}</b></span>` : ''}
   </div>`;
 }
 function renderAutobattleSubTab(body){
@@ -7056,7 +7116,7 @@ function renderAutobattleSubTab(body){
   const rerender = ()=> renderAutobattleSubTab(body);
   if(run.phase==='draft'){
     const off = AutoB.draftOffers(defs, CHARACTER_DEFS, run);
-    const titles = {castle:'Pick your castle', leader:'Pick your leader — starts every fight on the board', subLeader:`Pick your sub-leader — joins on round ${AutoB.AB.SUB_LEADER_ROUND}`, card:`Pick a card — you get ${AutoB.AB.COPIES_PER_PICK} copies`};
+    const titles = {castle:'Pick your castle', leader:'Pick your leader — starts every fight on the board', subLeader:`Pick your sub-leader — joins on round ${AutoB.AB.SUB_LEADER_ROUND}`, card:'Pick a card'};
     const pickNo = off.kind==='card' ? ` (${run.step-2} of ${AutoB.AB.PICKS})` : '';
     body.innerHTML = `<div class="panel ab-panel">
       <div class="ab-draft-head"><h2>Draft · ${titles[off.kind]}${pickNo}</h2><span class="ab-step">Step ${run.step+1} / ${AutoB.DRAFT_STEPS}</span></div>
@@ -7106,7 +7166,7 @@ function renderAutobattleSubTab(body){
   body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
     <div class="ab-prep">
       <div class="ab-commanders">
-        <div class="ab-slot"><div class="ab-slot-l">Castle</div>${castleTileHTML(CHARACTER_DEFS[run.castle]||{name:'Castle',health:30})}</div>
+        <div class="ab-slot"><div class="ab-slot-l">Castle <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Castle',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
         <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
         <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
           ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
@@ -7118,14 +7178,27 @@ function renderAutobattleSubTab(body){
   body.querySelectorAll('[data-swap]').forEach(b=> b.onclick = ()=>{ AutoB.swapSubLeader(run, b.dataset.swap); saveAbRun(run); rerender(); });
   document.getElementById('abAbandonBtn').onclick = ()=>{ if(confirm('Abandon this run? You keep the rewards for the wins so far.')){ AutoB.cashOut(run); run.overReason = 'cashed-out'; saveAbRun(run); rerender(); } };
   document.getElementById('abFightBtn').onclick = ()=> abFight(body, run);
+  wireAbDeckMoves(body, run);
 }
 function abNextPhaseAfterResult(run){ return run.over ? 'over' : (run.wins >= AutoB.AB.WIN_GOAL && !run.endless ? 'goal' : 'boon'); }
+function abCardChip(run, id, n, where){
+  const d = abDisplayDef(run, id); if(!d) return '';
+  const lvl = (run.levels||{})[AutoB.baseId(id)] || 1;
+  const canMove = run.phase==='prep' && (where==='deck' ? AutoB.deckTotal(run.bench||{}) < AutoB.AB.BENCH_SIZE : AutoB.deckTotal(run.deck) < AutoB.AB.DECK_SIZE);
+  return `<div class="ab-deck-card ${(run.patches||{})[AutoB.baseId(id)]?'is-boosted':''}">${cardTileHTML(d, {inPlay:true})}<div class="ab-cap"><span class="ab-cap-lvl">Lv ${lvl}</span><span>×${n}</span></div>
+    ${run.phase==='prep' ? `<button type="button" class="btn small ab-move" data-move-${where==='deck'?'bench':'deck'}="${escapeAttr(id)}" ${canMove?'':'disabled'} title="${where==='deck'?'Move one copy to the bench':'Move one copy into the deck'}">${where==='deck'?'⬇ Bench':'⬆ Deck'}</button>` : ''}</div>`;
+}
 function abDeckSummaryHTML(run){
-  const ids = Object.keys(run.deck||{});
-  if(!ids.length) return '';
-  const total = ids.reduce((t,id)=> t + run.deck[id], 0);
-  return `<div class="ab-deck"><div class="ab-deck-h">Your deck · ${total} cards</div><div class="ab-deck-grid">${ids.map(id=>{ const d = abDisplayDef(run, id); const p = (run.patches||{})[AutoB.baseId(id)];
-    return d ? `<div class="ab-deck-card ${p?'is-boosted':''}">${cardTileHTML(d, {inPlay:true})}<span class="ab-count">×${run.deck[id]}</span></div>` : ''; }).join('')}</div></div>`;
+  const ids = Object.keys(run.deck||{}), bench = Object.keys(run.bench||{});
+  if(!ids.length && !bench.length) return '';
+  return `<div class="ab-deck"><div class="ab-deck-h">Deck · ${AutoB.deckTotal(run.deck)} / ${AutoB.AB.DECK_SIZE} cards <span class="ab-note">+ 2 leaders</span></div>
+    <div class="ab-deck-grid">${ids.map(id=> abCardChip(run, id, run.deck[id], 'deck')).join('')}</div>
+    <div class="ab-deck-h ab-bench-h">Bench · ${AutoB.deckTotal(run.bench||{})} / ${AutoB.AB.BENCH_SIZE} <span class="ab-note">stored cards don't fight — swap them in between fights</span></div>
+    <div class="ab-deck-grid ab-bench">${bench.length ? bench.map(id=> abCardChip(run, id, run.bench[id], 'bench')).join('') : '<div class="ab-note">Empty — duplicates land here when your deck is full.</div>'}</div></div>`;
+}
+function wireAbDeckMoves(body, run){
+  body.querySelectorAll('[data-move-bench]').forEach(b=> b.onclick = ()=>{ AutoB.moveToBench(run, b.dataset.moveBench); saveAbRun(run); renderAutobattleSubTab(body); });
+  body.querySelectorAll('[data-move-deck]').forEach(b=> b.onclick = ()=>{ AutoB.moveToDeck(run, b.dataset.moveDeck); saveAbRun(run); renderAutobattleSubTab(body); });
 }
 function abFight(body, run){
   const pool = abPool(run.wins);
@@ -7139,7 +7212,8 @@ function abFight(body, run){
   const hpBefore = run.hp;
   AutoB.afterFight(run, res, opp.name);
   run.history[run.history.length-1].oppOwner = opp.owner;
-  if(res.winner===1) bumpQuestCounter('wins', 1);
+  if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); }
+  { const st = loadLifetimeStats(); if((st.abBestWins||0) < run.wins){ st.abBestWins = run.wins; try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){} } }
   bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
   abLastFight = {res, opp, hpBefore};
   run.phase = 'result';
@@ -13614,6 +13688,7 @@ async function resolveRound(){
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner);
     if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode)){
+      awardXp(3);
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
       if(m.mode==='pvp') bumpQuestCounter('pvpWins', 1);
@@ -16526,6 +16601,7 @@ function renderHome(){
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
+      ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       <button class="btn primary big home-menu-btn" data-hometab="play"><span class="tab-emoji">⚔️</span> Play</button>
       <button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>
@@ -16572,6 +16648,7 @@ function renderHome(){
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
+  setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
   const wsBtn = document.getElementById('homeWorkshopBtn'); if(wsBtn) wsBtn.addEventListener('click', openWorkshopPage);
   wireSettingsButton('Home');
   wireHomeMenuFlourish(root);

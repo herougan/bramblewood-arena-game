@@ -1864,8 +1864,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // EVERY aiTakeTurn caller (Test Battle's AI opponent, Gauntlet's AI opponent, and the bulk
       // simulator's AI-vs-AI mode), since aiTakeTurn is shared across all three — see its call
       // sites in arena_app.js's aiActNow() and twice more below in this file.
-      const side = rnd() < 0.5 ? 'left' : 'right';
-      debugSpawnCard(players, sideOf, aiId, 'bee-tank', side, stats, events);
+      // ai.loopCards (2026-10-03, enemy behaviours): which weak "loop" units this side falls back
+      // on once it's out of cards. Unset keeps the original Bee Tank; [] means it plays nothing.
+      const loop = Array.isArray(ai.loopCards) ? ai.loopCards.filter(id=> CARD_DEFS[id]) : ['bee-tank'];
+      if(loop.length){
+        const side = rnd() < 0.5 ? 'left' : 'right';
+        debugSpawnCard(players, sideOf, aiId, loop.length===1 ? loop[0] : loop[Math.floor(rnd()*loop.length)], side, stats, events);
+      }
     }
   }
   function applyPoisonTicks(players, sideOf, stats, events){

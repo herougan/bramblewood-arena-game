@@ -29,7 +29,8 @@ function autoDraft(run, greedy){
   check(characters[r1.castle], 'no castle drafted');
   check(defs[r1.leader] && defs[r1.subLeader] && r1.leader!==r1.subLeader, 'leaders missing or identical');
   const n = Object.values(r1.deck).reduce((a,b)=>a+b,0);
-  check(n === A.AB.PICKS*A.AB.COPIES_PER_PICK, `drafted deck has ${n} cards`);
+  check(n === A.AB.DECK_SIZE, `drafted deck has ${n} cards, want ${A.AB.DECK_SIZE}`);
+  check(A.runDeckLevel(defs, r1) >= n + 4, `deck level ${A.runDeckLevel(defs, r1)} should be at least cards + 2×2 leaders`);
   check(r1.phase==='prep' && r1.hp===5, 'run should start prep with 5 health');
 }
 
@@ -56,11 +57,19 @@ function autoDraft(run, greedy){
   const run = autoDraft(A.newRun(99, NOW));
   const offs = A.boonOffers(defs, run);
   check(offs.length===3 && new Set(offs.map(o=>o.type)).size===3, 'boon offers should be three different kinds');
-  const dup = offs.find(o=> o.type==='dup'), before = run.deck[dup.card];
-  A.applyBoon(run, dup); check(run.deck[dup.card]===before+1, 'duplicate boon did not add a copy');
+  const dup = offs.find(o=> o.type==='dup'), before = (run.deck[dup.card]||0) + (run.bench[dup.card]||0);
+  A.applyBoon(run, dup); check((run.deck[dup.card]||0) + (run.bench[dup.card]||0)===before+1, 'duplicate boon did not add a copy');
+  check(A.deckTotal(run.deck) <= A.AB.DECK_SIZE, 'deck went over its size limit');
+  check(run.bench[dup.card]===1, 'with a full deck the duplicate should go to the bench');
+  check(A.moveToDeck(run, dup.card)===false, 'moving to a full deck should be refused');
+  const out = Object.keys(run.deck)[0]; check(A.moveToBench(run, out) && A.moveToDeck(run, dup.card), 'bench ⇄ deck swap failed');
+  const lvlBefore = A.runDeckLevel(defs, run);
   const target = Object.keys(run.deck)[0];
   A.applyBoon(run, {type:'buff', card:target, atk:1, hp:1});
   A.applyBoon(run, {type:'passive', card:target, key:'armor', value:2});
+  check(run.levels[target]===3, `two boons should take the card to level 3 (got ${run.levels[target]})`);
+  check(A.runDeckLevel(defs, run) > lvlBefore, 'deck level did not rise after boons');
+  check(A.castleHealthFor(20, 0)===20 && A.castleHealthFor(20, 5)===30, 'castle should grow +10% of its base per fight');
   const side = A.sideDefs(defs, 'a', run.patches);
   const d = side.extra[side.idFor(target)];
   check(d && d.attack===defs[target].attack+1 && d.health===defs[target].health+1 && d.effects.armor===2, 'buff/passive not applied to the derived card');

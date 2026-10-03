@@ -13,13 +13,16 @@
 //  • Opponents are ghost snapshots of other runs at the same number of wins (seeded ghosts top
 //    each stage up to MIN_ACTIVE_PER_STAGE).
 // Boon edits never touch the real card: an edited card gets a run-specific copy ("base~tag").
+// 2026-10-03 follow-up: the deck is 10 cards + 2 leaders, with a bench (storage) for extras. Every
+// card starts at level 1 and each +1/+1 or passive boon raises it by 1; deck level = Σ rarity weight
+// × card level (leaders count double). Castles grow +10% health per fight played.
 // ============================================================================
 (function(root){
 'use strict';
 
 const AB = {
   START_HP:5, WIN_GOAL:10, HARD_STOP:100, EARLY_FIGHTS:3, EARLY_LOSS:1, LATE_LOSS:2,
-  PICKS:10, COPIES_PER_PICK:2, SUB_LEADER_ROUND:4, FIGHT_ROUND_CAP:60, SUDDEN_DEATH_ROUND:20,
+  PICKS:10, COPIES_PER_PICK:1, DECK_SIZE:10, BENCH_SIZE:6, CASTLE_GROWTH:0.10, SUB_LEADER_ROUND:4, FIGHT_ROUND_CAP:60, SUDDEN_DEATH_ROUND:20,
   MIN_ACTIVE_PER_STAGE:12, ACTIVE_DAYS:14,
   // Passives a boon can add — simple keyword effects the engine already supports.
   BOON_PASSIVES: [
@@ -31,6 +34,16 @@ const AB = {
   ],
 };
 const DAY = 24*3600*1000;
+const RARITY_LEVEL_WEIGHT = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10};
+function rarityWeight(d){ return RARITY_LEVEL_WEIGHT[(d && d.rarity) || 'common'] || 1; }
+// Generic deck level: counts {id:n}, levelOf(id) → level (≥1), leaders [ids] count double.
+function deckLevelOf(defs, counts, levelOf, leaders){
+  let total = 0;
+  Object.keys(counts||{}).forEach(id=>{ const d = defs[baseId(id)]; if(d) total += (counts[id]||0) * rarityWeight(d) * Math.max(1, levelOf(baseId(id))||1); });
+  (leaders||[]).forEach(id=>{ const d = defs[baseId(id)]; if(d) total += 2 * rarityWeight(d) * Math.max(1, levelOf(baseId(id))||1); });
+  return total;
+}
+function deckTotal(counts){ return Object.values(counts||{}).reduce((a,b)=> a+(b|0), 0); }
 const NAMES = ['Moss','Bramble','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Burdock','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AV_CHARS = ['otter','hummingbird','mouse'], AV_COLORS = ['acorn','berry','river','moss','violet','sun','blossom','frost','night'];
 
@@ -46,7 +59,7 @@ function baseId(id){ return String(id).split('~')[0]; }
 function newRun(seed, now){
   return {id:'ab'+(seed>>>0).toString(36), seed:seed>>>0, startedAt:now||0, phase:'draft', step:0,
     hp:AB.START_HP, wins:0, losses:0, fights:0, castle:null, leader:null, subLeader:null,
-    deck:{}, patches:{}, endless:false, over:false, overReason:null, subSwappedAt:-1, history:[], pendingBoons:null};
+    deck:{}, bench:{}, levels:{}, patches:{}, endless:false, over:false, overReason:null, subSwappedAt:-1, history:[], pendingBoons:null};
 }
 const DRAFT_STEPS = 3 + AB.PICKS; // castle, leader, sub-leader, then card picks
 function draftStepKind(step){ return step===0 ? 'castle' : step===1 ? 'leader' : step===2 ? 'subLeader' : 'card'; }
@@ -70,7 +83,7 @@ function applyDraftPick(run, choice){
   if(kind==='castle') run.castle = choice;
   else if(kind==='leader') run.leader = choice;
   else if(kind==='subLeader') run.subLeader = choice;
-  else run.deck[choice] = (run.deck[choice]||0) + AB.COPIES_PER_PICK;
+  else { if(deckTotal(run.deck) < AB.DECK_SIZE) run.deck[choice] = (run.deck[choice]||0) + AB.COPIES_PER_PICK; else run.bench[choice] = (run.bench[choice]||0) + AB.COPIES_PER_PICK; }
   run.step++;
   if(run.step >= DRAFT_STEPS) run.phase = 'prep';
   return run;
@@ -80,7 +93,7 @@ function lossPenalty(fightNumber){ return fightNumber <= AB.EARLY_FIGHTS ? AB.EA
 // Boons: three different kinds when possible, each aimed at a card in your deck (or a leader).
 function boonOffers(defs, run){
   const r = rngFor(run.seed, 'boon', run.fights);
-  const cards = Object.keys(run.deck).map(baseId).filter((v,i,a)=> a.indexOf(v)===i);
+  const cards = Object.keys(run.deck).concat(Object.keys(run.bench||{})).map(baseId).filter((v,i,a)=> a.indexOf(v)===i);
   const targets = cards.concat([run.leader, run.subLeader].filter(Boolean));
   const pickCard = ()=> targets[Math.floor(r()*targets.length)];
   const dupTarget = cards[Math.floor(r()*cards.length)];
@@ -96,13 +109,23 @@ function boonOffers(defs, run){
 function applyBoon(run, boon){
   if(!boon) return run;
   const p = run.patches[boon.card] = run.patches[boon.card] || {atk:0, hp:0, add:{}};
-  if(boon.type==='dup') run.deck[boon.card] = (run.deck[boon.card]||0) + 1;
-  else if(boon.type==='buff'){ p.atk += boon.atk; p.hp += boon.hp; }
-  else if(boon.type==='passive'){ p.add[boon.key] = boon.value; }
+  run.bench = run.bench || {}; run.levels = run.levels || {};
+  if(boon.type==='dup'){
+    // A duplicate keeps the card's level. It goes into the deck if there's room, else the bench.
+    if(deckTotal(run.deck) < AB.DECK_SIZE) run.deck[boon.card] = (run.deck[boon.card]||0) + 1;
+    else if(deckTotal(run.bench) < AB.BENCH_SIZE) run.bench[boon.card] = (run.bench[boon.card]||0) + 1;
+  }
+  else if(boon.type==='buff'){ p.atk += boon.atk; p.hp += boon.hp; run.levels[boon.card] = (run.levels[boon.card]||1) + 1; }
+  else if(boon.type==='passive'){ p.add[boon.key] = boon.value; run.levels[boon.card] = (run.levels[boon.card]||1) + 1; }
   if(!p.atk && !p.hp && !Object.keys(p.add).length) delete run.patches[boon.card];
   run.pendingBoons = null;
   return run;
 }
+// Bench ⇄ deck (prep phase). The deck holds at most DECK_SIZE cards, the bench BENCH_SIZE.
+function moveToBench(run, id){ run.bench = run.bench||{}; if(!(run.deck[id]>0) || deckTotal(run.bench) >= AB.BENCH_SIZE) return false; run.deck[id]--; if(!run.deck[id]) delete run.deck[id]; run.bench[id] = (run.bench[id]||0) + 1; return true; }
+function moveToDeck(run, id){ run.bench = run.bench||{}; if(!(run.bench[id]>0) || deckTotal(run.deck) >= AB.DECK_SIZE) return false; run.bench[id]--; if(!run.bench[id]) delete run.bench[id]; run.deck[id] = (run.deck[id]||0) + 1; return true; }
+function runDeckLevel(defs, run){ return deckLevelOf(defs, run.deck, id=> (run.levels||{})[id]||1, [run.leader, run.subLeader].filter(Boolean)); }
+function castleHealthFor(baseHealth, fightsPlayed){ return Math.round(baseHealth * (1 + AB.CASTLE_GROWTH * (fightsPlayed||0))); }
 function subLeaderOffers(defs, run){
   const ids = pool(defs);
   const top = ids.slice(Math.floor(ids.length*0.55));
@@ -124,7 +147,7 @@ function sideDefs(baseDefs, tag, patches){
   });
   return {extra, idFor: b=> map[b] || b};
 }
-function snapshotSide(s){ return {castle:s.castle, leader:s.leader, subLeader:s.subLeader, deck:Object.assign({}, s.deck), patches: JSON.parse(JSON.stringify(s.patches||{}))}; }
+function snapshotSide(s){ return {castle:s.castle, leader:s.leader, subLeader:s.subLeader, deck:Object.assign({}, s.deck), bench:Object.assign({}, s.bench||{}), levels:Object.assign({}, s.levels||{}), fights: s.fights||0, patches: JSON.parse(JSON.stringify(s.patches||{}))}; }
 
 // One CPU vs CPU fight. me/opp are run-like snapshots {castle, leader, subLeader, deck, patches}.
 function simulateFight(Engine, baseDefs, characters, me, opp, seed){
@@ -134,8 +157,10 @@ function simulateFight(Engine, baseDefs, characters, me, opp, seed){
   const rnd = mulberry32(seed>>>0);
   const engine = Engine.makeSimEngine(defs, rnd, {recordEvents:true});
   const sideOf = id=> id===1 ? 'A' : 'B';
-  const ch = id=> characters[id] || characters.castle || {id:'castle', health:30, effects:{}};
-  const players = {1: engine.newPlayer(1, deckOf(me, A), ch(me.castle)), 2: engine.newPlayer(2, deckOf(opp, B), ch(opp.castle))};
+  const ch = (id, fights)=>{ const c = characters[id] || characters.castle || {id:'castle', health:30, effects:{}}; return Object.assign({}, c, {health: castleHealthFor(c.health||30, fights)}); };
+  const players = {1: engine.newPlayer(1, deckOf(me, A), ch(me.castle, me.fights)), 2: engine.newPlayer(2, deckOf(opp, B), ch(opp.castle, opp.fights))};
+  // Out of cards = nothing more to play (no fallback "loop" units in the Autobattler).
+  players[1].loopCards = []; players[2].loopCards = [];
   const stats = {}, events = [];
   engine.draw(players[1], 3, 'A', stats, events); engine.draw(players[2], 3, 'B', stats, events);
   if(me.leader && defs[A.idFor(me.leader)]) engine.debugSpawnCard(players, sideOf, 1, A.idFor(me.leader), 'left', stats, events);
@@ -201,13 +226,13 @@ function seedGhost(defs, characters, stage, i, epoch){
   }
   const boons = stage + Math.floor(stage/3);
   for(let k=0;k<boons;k++){ run.fights = k; const offs = boonOffers(defs, run); applyBoon(run, offs[Math.floor(r()*offs.length)]); }
-  run.fights = 0;
+  run.fights = boons;
   const who = ghostIdentity(seed);
   return Object.assign(snapshotSide(run), {owner:`abseed-${stage}-${i}`, name: who.name, avatar: who.avatar, stage, source:'seed'});
 }
 function validSnapshot(defs, characters, g){
   if(!g || !g.deck || !characters[g.castle] || !defs[g.leader] || !defs[g.subLeader]) return false;
-  const ids = Object.keys(g.deck); if(!ids.length) return false;
+  const ids = Object.keys(g.deck); if(!ids.length || deckTotal(g.deck) > AB.DECK_SIZE + 2) return false;
   return ids.every(id=> defs[baseId(id)]) && Object.keys(g.patches||{}).every(id=> defs[id]);
 }
 function opponentPool(defs, characters, stage, recorded, now){
@@ -231,7 +256,7 @@ function recordGhost(recorded, entry, keep){
   return list.sort((a,b)=> b.at - a.at).slice(0, keep || 300);
 }
 
-const api = {AB, DRAFT_STEPS, newRun, draftStepKind, draftOffers, applyDraftPick, lossPenalty, boonOffers, applyBoon, subLeaderOffers, canSwapSubLeader, swapSubLeader,
+const api = {RARITY_LEVEL_WEIGHT, rarityWeight, deckLevelOf, deckTotal, moveToBench, moveToDeck, runDeckLevel, castleHealthFor, AB, DRAFT_STEPS, newRun, draftStepKind, draftOffers, applyDraftPick, lossPenalty, boonOffers, applyBoon, subLeaderOffers, canSwapSubLeader, swapSubLeader,
   sideDefs, simulateFight, afterFight, goEndless, cashOut, runRewards, snapshotOf, seedGhost, validSnapshot, opponentPool, pickOpponent, recordGhost, baseId, power, hashStr};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodAutobattle = api;
