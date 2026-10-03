@@ -8111,6 +8111,10 @@ function generatedMapDecor(map, positions){
   return out;
 }
 let mapMoverToken = 0;
+// Where each map's critters are right now, kept across re-renders (2026-10-03 fix, explicit: "the
+// butterflies fly then teleport around. They should move FROM where they WERE"). Every click on the
+// map rebuilds the canvas; the movers used to respawn at random plants each time.
+const mapMoverPos = {}; // mapId -> [{x,y}]
 function startMapMovers(canvas, map, decor){
   const token = ++mapMoverToken;
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -8120,15 +8124,18 @@ function startMapMovers(canvas, map, decor){
   for(let i=0;i<mv.n;i++){
     const el = document.createElement('span');
     el.className = 'map-mover mv-'+mv.kind; el.textContent = mv.emoji; el.style.fontSize = (mv.kind==='firefly' ? 10 : 15)+'px';
-    const start = spots.length ? spots[Math.floor(Math.random()*spots.length)] : {x:20+Math.random()*60, y:20+Math.random()*60};
+    const saved = (mapMoverPos[map.id] = mapMoverPos[map.id] || [])[i];
+    const start = saved ? {x:saved.x, y:saved.y} : (spots.length ? spots[Math.floor(Math.random()*spots.length)] : {x:20+Math.random()*60, y:20+Math.random()*60});
+    mapMoverPos[map.id][i] = start;
     el.style.left = start.x+'%'; el.style.top = start.y+'%';
     canvas.appendChild(el);
-    moverLoop(el, spots, mv.kind, token, start);
+    moverLoop(el, spots, mv.kind, token, start, mapMoverPos[map.id], i, !!saved);
   }
 }
-async function moverLoop(el, spots, kind, token, cur){
+async function moverLoop(el, spots, kind, token, cur, posStore, idx, resumed){
   const alive = ()=> token===mapMoverToken && el.isConnected;
-  await sleep(Math.random()*1500);
+  const track = ()=>{ const x = parseFloat(el.style.left), y = parseFloat(el.style.top); if(isFinite(x) && isFinite(y) && posStore) posStore[idx] = {x, y}; };
+  await sleep(resumed ? 200 + Math.random()*600 : Math.random()*1500);
   while(alive()){
     // Most of the time hop to another plant; sometimes just idle-wander nearby.
     const idle = Math.random()<0.35 || !spots.length;
@@ -8138,13 +8145,13 @@ async function moverLoop(el, spots, kind, token, cur){
     const dur = Math.max(1.2, dist/speed);
     gsap.set(el, {scaleX: tgt.x<cur.x ? -1 : 1});
     const wob = kind==='fish' ? 4 : kind==='firefly' ? 10 : 14;
-    gsap.to(el, {left: tgt.x+'%', top: tgt.y+'%', duration: dur, ease:'sine.inOut'});
+    gsap.to(el, {left: tgt.x+'%', top: tgt.y+'%', duration: dur, ease:'sine.inOut', onUpdate: track});
     gsap.to(el, {y: -wob, duration: .28, repeat: Math.max(1, Math.round(dur/.28)), yoyo:true, ease:'sine.inOut'});
     if(kind==='firefly') gsap.to(el, {opacity:.25, duration:.6, repeat: Math.round(dur/.6), yoyo:true});
     await sleep(dur*1000);
     if(!alive()) return;
-    gsap.set(el, {y:0, opacity:1});
-    cur = tgt;
+    gsap.to(el, {y:0, opacity:1, duration:.15});
+    cur = tgt; track();
     // rest on the plant: a little flutter
     if(kind==='butterfly') gsap.to(el, {scaleY:.7, duration:.18, repeat:5, yoyo:true});
     await sleep(1200 + Math.random()*3200);
