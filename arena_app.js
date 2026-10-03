@@ -18469,21 +18469,29 @@ function wireHomeMenuFlourish(root){
    "Simulator is moved into the Deck menu.") ---- */
 let deckSubTab = 'list'; // 'list' | 'sim' — mirrors playSubTab's own pattern
 let deckEditingId = null; // non-null while a specific deck's builder is open
+let deckShowList = false; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
 function renderDeckSection(){
   const root = document.getElementById('view-deck');
+  if(!deckEditingId && !deckShowList && deckSubTab==='list' && myDecks.some(d=> d.id===activeDeckId)) deckEditingId = activeDeckId;
   if(deckEditingId){
     // Editing a specific deck reuses the exact same "Build your deck" UI the old Player sub-tab
     // had (renderPlayerSubTab) — it always edits whichever deck is ACTIVE, so opening the editor
     // for a non-active deck switches to it first (see switchActiveDeck's own comment above).
     if(activeDeckId!==deckEditingId) switchActiveDeck(deckEditingId);
-    root.innerHTML = `<div class="play-subtabs-row">
-        <div class="play-subtabs" role="tablist">
-          <button class="btn small" id="deckBackToListBtn">← Back to Decks</button>
+    root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
+        <div class="deck-switcher" role="tablist" aria-label="Your decks">
+          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}">${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
+          <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
-        <button type="button" class="btn small ghost" id="deckEditorToCodexBtn" title="Go to Codex">📇 Codex</button>
+        <div class="play-subtabs-actions">
+          <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
+          <button type="button" class="btn small ghost" id="deckEditorToCodexBtn" title="Go to Codex">📇 Codex</button>
+        </div>
       </div>
       <div id="deckBuilderBody"></div>`;
-    document.getElementById('deckBackToListBtn').addEventListener('click', ()=>{ deckEditingId = null; renderDeckSection(); });
+    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
+    document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
+    document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
     renderPlayerSubTab(document.getElementById('deckBuilderBody'));
     return;
@@ -18537,7 +18545,7 @@ function renderDeckListTab(body){
         ${myDecks.length>1?`<button class="btn small ghost" data-deletedeck="${d.id}">🗑</button>`:''}
       </div>
     </div>`).join('');
-  grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.getAttribute('data-editdeck'); renderDeckSection(); }));
+  grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
   grid.querySelectorAll('[data-selectdeck]').forEach(b=> b.addEventListener('click', ()=>{ switchActiveDeck(b.getAttribute('data-selectdeck')); renderDeckSection(); }));
   grid.querySelectorAll('[data-deletedeck]').forEach(b=> b.addEventListener('click', ()=>{
     if(confirm('Delete this deck? This cannot be undone.')){ deleteDeck(b.getAttribute('data-deletedeck')); renderDeckSection(); }
@@ -18550,7 +18558,7 @@ function renderDeckListTab(body){
     inp.addEventListener('click', e=> e.stopPropagation());
     inp.addEventListener('change', ()=>{ renameDeck(inp.getAttribute('data-deckid'), inp.value); renderDeckSection(); });
   });
-  document.getElementById('newDeckBtn').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
+  document.getElementById('newDeckBtn').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
   document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
 }
 // Copies `d`'s code to the clipboard (async Clipboard API, needs a real user gesture — this is
