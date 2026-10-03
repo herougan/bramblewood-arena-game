@@ -13527,7 +13527,7 @@ function authFormHTML(prefix){
     <div class="auth-or"><span>or</span></div>
     <form class="auth-email-form" id="${prefix}EmailForm" autocomplete="on" novalidate>
       <input id="${prefix}Email" type="email" placeholder="Email" autocomplete="email" aria-label="Email">
-      <input id="${prefix}Password" type="password" placeholder="Password (6+ characters)" autocomplete="current-password" aria-label="Password">
+      <input id="${prefix}Password" type="password" placeholder="Password (8+ characters for new accounts)" autocomplete="current-password" aria-label="Password">
       <div class="auth-actions">
         <button type="submit" class="btn primary" id="${prefix}LoginBtn">Login</button>
         <button type="button" class="btn" id="${prefix}CreateBtn">Create account</button>
@@ -13542,7 +13542,7 @@ function authErrorText(err, mode){
   if(raw.includes('invalid login credentials')) return 'Wrong email or password. If you signed up with Google, use “Sign in with Google” — you can add a password from your Profile afterwards.';
   if(raw.includes('already registered') || raw.includes('already been registered') || raw.includes('already exists')) return 'That email already has an account — use Login (or Sign in with Google if that’s how you signed up).';
   if(raw.includes('email not confirmed')) return 'Check your inbox and confirm your email first, then Login.';
-  if(raw.includes('password')) return (err && err.message) || 'Password must be at least 6 characters.';
+  if(raw.includes('password')) return (err && err.message) || 'Password must be at least 8 characters.';
   return (err && err.message) || (mode==='create' ? 'Could not create your account — try again.' : 'Login failed — try again.');
 }
 function wireAuthForm(prefix, onSuccess){
@@ -13566,7 +13566,7 @@ function wireAuthForm(prefix, onSuccess){
   const create = document.getElementById(prefix+'CreateBtn');
   if(create) create.addEventListener('click', async ()=>{
     const {email, password} = vals();
-    if(!email || password.length<6){ showMsg('Enter an email and a password of 6+ characters.', true); return; }
+    if(!email || password.length<8){ showMsg('Enter an email and a password of 8+ characters.', true); return; }
     busy(true);
     try{
       const data = await cloudLinkEmail(email, password);
@@ -27064,7 +27064,7 @@ function renderProfile(){
         ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>
         <p class="panel-sub">Your progress is synced to this account.</p>
         ${userHasPasswordIdentity() ? '' : `<details class="add-password"><summary>Add a password (to also Login with email)</summary>
-          <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (6+ characters)" autocomplete="new-password" minlength="6"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
+          <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" minlength="8"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
         <button type="button" class="btn small" id="cloudSignOutBtn">Sign out</button>` : authFormHTML('profile')}
       </div>
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
@@ -27099,7 +27099,7 @@ function renderProfile(){
     e.preventDefault();
     const pw = document.getElementById('addPasswordInput').value; const m = document.getElementById('addPasswordMsg');
     const say = (t,err)=>{ m.hidden=false; m.textContent=t; m.classList.toggle('error',!!err); };
-    if(pw.length<6){ say('Use at least 6 characters.', true); return; }
+    if(pw.length<8){ say('Use at least 8 characters.', true); return; }
     try{ const { data, error } = await sbClient.auth.updateUser({password:pw}); if(error) throw error; if(data && data.user) cloudSessionUser = data.user; say('Saved — you can now also Login with your email and this password.'); }
     catch(err){ say(authErrorText(err), true); }
   });
