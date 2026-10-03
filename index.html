@@ -7504,7 +7504,46 @@ function raidState(Engine, defs, boss, attempts, now){
 }
 function recordRaidAttempt(attempts, entry, keep){ return (attempts||[]).concat([entry]).slice(-(keep||300)); }
 
-const api = {ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
+// ---------------- PvP matchmaking (2026-10-03, explicit: "There is an elo system, so you fight
+// people in your own tier. There's also a light pull towards fighting decks near your level") ----
+// Tiers mirror the game's rank ladder (arena_app.js RANK_TIERS / rankForRating): rating → z-score
+// → 6 tiers. Opponents come from your own tier; if that tier is thin (< PVP.MIN_TIER_POOL) the
+// search widens one tier at a time. Within the pool, deck level gives a LIGHT pull: a deck at your
+// level is ~2.5× as likely as one far from it, but nothing is ever excluded for level alone.
+const PVP = {RANK_MEAN:1500, RANK_SD:300, Z_EDGES:[-1.5, -0.75, 0, 0.75, 1.5], MIN_TIER_POOL:6, LEVEL_PULL:0.6, K:24};
+function tierIndexForRating(r){ const z = ((Number(r)||PVP.RANK_MEAN) - PVP.RANK_MEAN) / PVP.RANK_SD; const i = PVP.Z_EDGES.findIndex(e=> z < e); return i===-1 ? PVP.Z_EDGES.length : i; }
+function tierMidRating(t){ const e = PVP.Z_EDGES; const lo = t===0 ? e[0]-0.75 : e[t-1], hi = t===e.length ? e[e.length-1]+0.75 : e[t]; return Math.round(PVP.RANK_MEAN + ((lo+hi)/2)*PVP.RANK_SD); }
+function simpleDeckLevel(defs, deck){ const W = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10}; let t = 0; Object.keys(deck||{}).forEach(id=>{ const d = defs[id]; if(d) t += (deck[id]|0) * (W[d.rarity||'common']||1); }); return t; }
+// candidates: [{owner, rating, deckLevel, deck, ...}]. Returns {opponent, pool, tierUsed, widened}.
+function matchPvp(me, candidates, seed, excludeOwners){
+  const myTier = tierIndexForRating(me.rating);
+  const ex = new Set(excludeOwners||[]);
+  const all = (candidates||[]).filter(c=> c && !ex.has(c.owner));
+  let pool = [], widen = 0;
+  for(; widen<=5; widen++){
+    pool = all.filter(c=> Math.abs(tierIndexForRating(c.rating) - myTier) <= widen);
+    if(pool.length >= PVP.MIN_TIER_POOL || pool.length===all.length) break;
+  }
+  if(!pool.length) return {opponent:null, pool, tierUsed: myTier, widened: widen};
+  const myLvl = Math.max(1, me.deckLevel||1), scale = Math.max(8, myLvl*0.25);
+  const weights = pool.map(c=> (1-PVP.LEVEL_PULL) + PVP.LEVEL_PULL * Math.exp(-Math.abs((c.deckLevel||myLvl) - myLvl) / scale));
+  const total = weights.reduce((a,b)=> a+b, 0);
+  let x = mulberry32(seed>>>0)() * total, k = 0;
+  while(k < pool.length-1 && x >= weights[k]){ x -= weights[k]; k++; }
+  return {opponent: pool[k], pool, tierUsed: myTier, widened: widen};
+}
+function eloUpdate(myRating, oppRating, won, draw){
+  const exp = 1 / (1 + Math.pow(10, ((oppRating||PVP.RANK_MEAN) - myRating) / 400));
+  const score = draw ? 0.5 : (won ? 1 : 0);
+  const delta = Math.round(PVP.K * (score - exp));
+  return {newRating: myRating + delta, delta};
+}
+// Seeded strangers for a tier (so every tier always has a pool): stage follows the tier.
+function seedPvpStrangers(defs, tier, count, epoch){
+  const stage = Math.round(tier * (ASYNC.MAX_WINS-1) / PVP.Z_EDGES.length);
+  return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0)).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
+}
+const api = {PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
   buildStagePool, pickOpponent, newAsyncRun, asyncRunOver, recordAsyncGhost, raidCycle, featuredRaidBoss, raidPoolMax, simulateRaidFight, raidState, recordRaidAttempt};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGhosts = api;
@@ -14604,7 +14643,7 @@ function liveCanWrite(){ return !!(sbClient && cloudUserId && LiveData.available
 function liveTableMissing(error){ return !!error && (/does not exist|schema cache|relation/i.test(error.message||'') || error.code==='42P01' || error.code==='PGRST205'); }
 function liveRowToGhost(mode, r){
   const base = {owner: r.owner_id, name: r.display_name || 'Player', avatar: r.avatar || null, stage: r.stage, at: Date.parse(r.recorded_at)||0, source:'player'};
-  return mode==='pvp' ? Object.assign(base, {deck: (r.payload||{}).deck || {}}) : Object.assign({}, r.payload||{}, base);
+  return mode==='pvp' ? Object.assign(base, {deck: (r.payload||{}).deck || {}, rating: (r.payload||{}).rating, deckLevel: (r.payload||{}).deckLevel}) : Object.assign({}, r.payload||{}, base);
 }
 async function liveRefreshGhosts(mode, force){
   if(!sbClient || LiveData.available===false) return false;
@@ -15294,34 +15333,49 @@ function usePvpTicket(){ const t = loadPvpTickets(); if(t.used >= PVP_TICKETS_PE
 function msUntilLocalMidnight(){ const n = new Date(); const m = new Date(n.getFullYear(), n.getMonth(), n.getDate()+1); return m - n; }
 function pvpStageForRating(r){ const max = Ghosts ? Ghosts.ASYNC.MAX_WINS-1 : 6; return Math.max(0, Math.min(max, Math.round(((r||RANK_MEAN) - 1300) / 70))); }
 function loadPvpDecks(){ try{ return JSON.parse(localStorage.getItem(PVP_DECKS_KEY)||'[]') || []; }catch(e){ return []; } }
-function pvpOpponentPool(){
-  const stage = pvpStageForRating(myRating);
-  const mine = myGhostOwnerId();
-  // Strangers: recorded PvP decks + Async ghosts (any deck a real player has fielded), never yourself.
+// PvP matchmaking (2026-10-03): strangers from your own rating tier (widening only if the tier is
+// thin), with a light pull toward decks near your deck level — see matchPvp in bramblewood-ghosts.js.
+// Candidates: live PvP decks, this browser's recorded decks, and seeded strangers for every tier.
+const PVP_RECENT_KEY = 'bramblewood_pvp_recent_owners_v1';
+function myPvpDeckLevel(){ return mainDeckLevel(myDeckCounts, myLeaderId) || 1; }
+function pvpCandidates(){
+  const defs = getCardDefs(), mine = myGhostOwnerId();
   liveRefreshGhosts('pvp');
-  const live = LiveData.ghosts.pvp.filter(g=> Math.abs(g.stage - stage) <= 1);
-  const rec = live.concat(loadPvpDecks(), loadAsyncGhosts()).filter(g=> g.owner!==mine && g.owner!==cloudUserId).map(g=> Object.assign({}, g, {stage}));
-  return Ghosts.buildStagePool(getCardDefs(), stage, rec, Date.now());
+  const fill = g=> Object.assign({}, g, {rating: g.rating!=null ? g.rating : Ghosts.tierMidRating(Math.min(5, Math.round((g.stage||0)*5/6))), deckLevel: g.deckLevel!=null ? g.deckLevel : Ghosts.simpleDeckLevel(defs, g.deck)});
+  const real = LiveData.ghosts.pvp.concat(loadPvpDecks()).filter(g=> g.owner!==mine && g.owner!==cloudUserId && g.deck && !Ghosts.validateDeck(defs, g.deck).length).map(fill);
+  const epoch = Math.floor(Date.now()/(7*24*3600*1000));
+  const seeds = []; for(let t=0; t<=5; t++) seeds.push(...Ghosts.seedPvpStrangers(defs, t, 8, epoch));
+  return real.concat(seeds);
 }
+function pickPvpStranger(seed){
+  let recent = []; try{ recent = JSON.parse(localStorage.getItem(PVP_RECENT_KEY)||'[]'); }catch(e){}
+  const res = Ghosts.matchPvp({rating: myRating, deckLevel: myPvpDeckLevel()}, pvpCandidates(), seed, recent);
+  if(res.opponent){ recent = [res.opponent.owner].concat(recent.filter(o=> o!==res.opponent.owner)).slice(0, 5); try{ localStorage.setItem(PVP_RECENT_KEY, JSON.stringify(recent)); }catch(e){} }
+  return res;
+}
+function pvpOpponentPool(){ return {decks: pvpCandidates()}; } // kept for older callers/tests
 function recordMyPvpDeck(){
   if(!Ghosts) return;
-  const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage: pvpStageForRating(myRating), at: Date.now(), source:'player'};
+  const tier = Ghosts.tierIndexForRating(myRating);
+  const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage: tier, rating: Math.round(myRating), deckLevel: myPvpDeckLevel(), at: Date.now(), source:'player'};
   try{ localStorage.setItem(PVP_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpDecks(), entry, 200))); }catch(e){}
-  livePushGhost('pvp', entry.stage, {deck: entry.deck});
+  livePushGhost('pvp', tier, {deck: entry.deck, rating: entry.rating, deckLevel: entry.deckLevel});
 }
 function pvpTileHTML(){
   const left = pvpTicketsLeft();
   const h = Math.floor(msUntilLocalMidnight()/3600000), mn = Math.floor((msUntilLocalMidnight()%3600000)/60000);
   return `<button class="btn primary big arena-mode-btn pvp-mode-btn" id="startPvpBtn" ${left?'':'disabled'}>
     <span class="amb-ico">⚔️</span><span class="amb-lbl">PvP</span>
-    <span class="amb-sub">Fight a random stranger's deck, played by the AI. They always go first.</span>
+    <span class="amb-sub">Fight a stranger from your tier, played by the AI. They always go first.</span>
+    <span class="async-run-line">🏅 ${escapeHtml(rankForRating(myRating).label)} · rating ${Math.round(myRating)} · your deck Lv ${myPvpDeckLevel()}</span>
     <span class="async-run-line">🎟️ <b>${left}/${PVP_TICKETS_PER_DAY}</b> tickets today · ${left ? `refills in ${h}h ${mn}m` : `next tickets in ${h}h ${mn}m`}</span>
   </button>`;
 }
 function settlePvpAfterMatch(m){
   const won = m.winner===1;
-  const strength = Math.max(1, Math.min(13, Math.round(4 + (m.pvpStage||0)*1.5)));
-  const { newRating, delta } = updateRatingForRaid(myRating, strength, won);
+  // Elo against the stranger's own rating (async: only your rating moves).
+  const oppRating = (m.pvpGhost && m.pvpGhost.rating) || Ghosts.tierMidRating(Ghosts.tierIndexForRating(myRating));
+  const { newRating, delta } = Ghosts.eloUpdate(myRating, oppRating, won, m.winner===0);
   myRating = newRating; saveRatingLocal(); cloudPushRating();
   m.pvpRatingDelta = delta;
   // Deliberately low raw rewards (MASTER item 10): the big rewards come from quests.
@@ -18135,7 +18189,7 @@ function startMatch(mode){
     if(!Ghosts) return;
     if(!usePvpTicket()){ alert(`No PvP tickets left today — you get ${PVP_TICKETS_PER_DAY} a day.`); return; }
     asyncStage = pvpStageForRating(myRating);
-    asyncGhost = Ghosts.pickOpponent(pvpOpponentPool(), currentMatchSeed, []);
+    asyncGhost = pickPvpStranger(currentMatchSeed).opponent;
     recordMyPvpDeck();
   }
   if(mode==='async' && Ghosts){
@@ -18164,7 +18218,7 @@ function startMatch(mode){
     const oppDeckCounts = Object.fromEntries(matchState.players[2].deck.concat(matchState.players[2].hand).map(c=> typeof c==='string' ? c : c.defId).reduce((mm,id)=> mm.set(id,(mm.get(id)||0)+1), new Map()));
     const opp = mode==='pc'
       ? {name:'Player 2', deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)}
-      : asyncGhost ? {name: asyncGhost.name, deck: deckNameFromCounts(asyncGhost.deck, r), avatar: asyncGhost.avatar || randomOpponentAvatar(r)}
+      : asyncGhost ? {name: asyncGhost.name, deck: deckNameFromCounts(asyncGhost.deck, r) + (mode==='pvp' && asyncGhost.rating ? ` · ${rankForRating(asyncGhost.rating).label} · Lv ${asyncGhost.deckLevel||'?'}` : ''), avatar: asyncGhost.avatar || randomOpponentAvatar(r)}
       : {name: (mode==='ai'||mode==='gauntlet') ? 'Computer' : VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts((mode==='ai'||mode==='gauntlet') ? oppDeckCounts : DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
     if(mode==='pc') me.name = (myProfile && myProfile.name) ? myProfile.name+' (P1)' : 'Player 1';
     matchState.opponentName = opp.name;

@@ -192,7 +192,46 @@ function raidState(Engine, defs, boss, attempts, now){
 }
 function recordRaidAttempt(attempts, entry, keep){ return (attempts||[]).concat([entry]).slice(-(keep||300)); }
 
-const api = {ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
+// ---------------- PvP matchmaking (2026-10-03, explicit: "There is an elo system, so you fight
+// people in your own tier. There's also a light pull towards fighting decks near your level") ----
+// Tiers mirror the game's rank ladder (arena_app.js RANK_TIERS / rankForRating): rating → z-score
+// → 6 tiers. Opponents come from your own tier; if that tier is thin (< PVP.MIN_TIER_POOL) the
+// search widens one tier at a time. Within the pool, deck level gives a LIGHT pull: a deck at your
+// level is ~2.5× as likely as one far from it, but nothing is ever excluded for level alone.
+const PVP = {RANK_MEAN:1500, RANK_SD:300, Z_EDGES:[-1.5, -0.75, 0, 0.75, 1.5], MIN_TIER_POOL:6, LEVEL_PULL:0.6, K:24};
+function tierIndexForRating(r){ const z = ((Number(r)||PVP.RANK_MEAN) - PVP.RANK_MEAN) / PVP.RANK_SD; const i = PVP.Z_EDGES.findIndex(e=> z < e); return i===-1 ? PVP.Z_EDGES.length : i; }
+function tierMidRating(t){ const e = PVP.Z_EDGES; const lo = t===0 ? e[0]-0.75 : e[t-1], hi = t===e.length ? e[e.length-1]+0.75 : e[t]; return Math.round(PVP.RANK_MEAN + ((lo+hi)/2)*PVP.RANK_SD); }
+function simpleDeckLevel(defs, deck){ const W = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10}; let t = 0; Object.keys(deck||{}).forEach(id=>{ const d = defs[id]; if(d) t += (deck[id]|0) * (W[d.rarity||'common']||1); }); return t; }
+// candidates: [{owner, rating, deckLevel, deck, ...}]. Returns {opponent, pool, tierUsed, widened}.
+function matchPvp(me, candidates, seed, excludeOwners){
+  const myTier = tierIndexForRating(me.rating);
+  const ex = new Set(excludeOwners||[]);
+  const all = (candidates||[]).filter(c=> c && !ex.has(c.owner));
+  let pool = [], widen = 0;
+  for(; widen<=5; widen++){
+    pool = all.filter(c=> Math.abs(tierIndexForRating(c.rating) - myTier) <= widen);
+    if(pool.length >= PVP.MIN_TIER_POOL || pool.length===all.length) break;
+  }
+  if(!pool.length) return {opponent:null, pool, tierUsed: myTier, widened: widen};
+  const myLvl = Math.max(1, me.deckLevel||1), scale = Math.max(8, myLvl*0.25);
+  const weights = pool.map(c=> (1-PVP.LEVEL_PULL) + PVP.LEVEL_PULL * Math.exp(-Math.abs((c.deckLevel||myLvl) - myLvl) / scale));
+  const total = weights.reduce((a,b)=> a+b, 0);
+  let x = mulberry32(seed>>>0)() * total, k = 0;
+  while(k < pool.length-1 && x >= weights[k]){ x -= weights[k]; k++; }
+  return {opponent: pool[k], pool, tierUsed: myTier, widened: widen};
+}
+function eloUpdate(myRating, oppRating, won, draw){
+  const exp = 1 / (1 + Math.pow(10, ((oppRating||PVP.RANK_MEAN) - myRating) / 400));
+  const score = draw ? 0.5 : (won ? 1 : 0);
+  const delta = Math.round(PVP.K * (score - exp));
+  return {newRating: myRating + delta, delta};
+}
+// Seeded strangers for a tier (so every tier always has a pool): stage follows the tier.
+function seedPvpStrangers(defs, tier, count, epoch){
+  const stage = Math.round(tier * (ASYNC.MAX_WINS-1) / PVP.Z_EDGES.length);
+  return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0)).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
+}
+const api = {PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, generateGhostDeck, ghostIdentity, seedGhosts,
   buildStagePool, pickOpponent, newAsyncRun, asyncRunOver, recordAsyncGhost, raidCycle, featuredRaidBoss, raidPoolMax, simulateRaidFight, raidState, recordRaidAttempt};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGhosts = api;

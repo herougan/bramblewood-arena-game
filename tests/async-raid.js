@@ -126,6 +126,36 @@ console.log(`  stage pools (real+seeded): ${coverage.join('  ')}`);
   console.log(`  raid: ${boss.name} pool ${s0.max} → ${s0.remaining} after ${s0.party.length} seeded raiders; next castle ${s0.nextCastleHp} HP`);
 }
 
+// ---- 5. PvP matchmaking: own tier, light pull toward your deck level ----
+{
+  const cands = [];
+  for(let t=0;t<=5;t++) cands.push(...G.seedPvpStrangers(defs, t, 10, 1));
+  // add level-spread decks inside tier 3 so the level pull has something to choose between
+  for(let i=0;i<20;i++) cands.push({owner:'lv'+i, rating: G.tierMidRating(3), deckLevel: 10 + i*5, deck: cands[0].deck});
+  const me = {rating: G.tierMidRating(3), deckLevel: 20};
+  let sameTier = 0, near = 0, far = 0; const N = 2000;
+  for(let s=0;s<N;s++){
+    const r = G.matchPvp(me, cands, 7000+s, []);
+    if(G.tierIndexForRating(r.opponent.rating)===3) sameTier++;
+    if(r.opponent.owner.startsWith('lv')){ const d = Math.abs(r.opponent.deckLevel - 20); if(d<=10) near++; else if(d>=50) far++; }
+  }
+  check(sameTier===N, `matchmaking left your tier ${N-sameTier} times out of ${N} although the tier pool was big enough`);
+  const nearPer = near/3, farPer = far/ (20 - 0 - Math.ceil(50/5)); // decks within ±10 (3 of them) vs ≥50 away
+  check(near>0 && far>0, 'level pull should prefer near decks but never exclude far ones');
+  check(nearPer > farPer*1.5, `level pull too weak: near ${near}, far ${far}`);
+  // thin tier widens
+  const thin = cands.filter(c=> G.tierIndexForRating(c.rating)!==0).concat(cands.filter(c=> G.tierIndexForRating(c.rating)===0).slice(0,2));
+  const w = G.matchPvp({rating: G.tierMidRating(0), deckLevel: 20}, thin, 5, []);
+  check(w.widened>=1 && w.opponent, `a thin tier should widen the search (widened ${w.widened})`);
+  // excluded (recently fought) owners are skipped
+  const ex = G.matchPvp(me, cands.slice(0,3).concat(cands.slice(30,40)), 9, cands.slice(30,40).map(c=>c.owner));
+  check(!ex.opponent || !cands.slice(30,40).some(c=> c.owner===ex.opponent.owner), 'recently fought strangers were not excluded');
+  // Elo sanity
+  const a = G.eloUpdate(1500, 1500, true), b = G.eloUpdate(1500, 1500, false), c = G.eloUpdate(1500, 1800, true);
+  check(a.delta===12 && b.delta===-12 && c.delta > a.delta, `Elo deltas off: ${a.delta} ${b.delta} ${c.delta}`);
+  console.log(`  pvp matchmaking: same tier ${sameTier}/${N}; near-level picks ${near} vs far ${far}`);
+}
+
 console.log(`async-raid: ${failures.length} failure(s)`);
 [...new Set(failures)].slice(0,25).forEach(f=> console.log('  FAIL '+f));
 process.exit(failures.length ? 1 : 0);
