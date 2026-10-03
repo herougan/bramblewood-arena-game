@@ -18101,6 +18101,10 @@ const SHOP_PACKS_DEFAULT = [
   {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:25, metal:1, levelChance:0.4, unlockChance:0.10},
   {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:60, metal:3, levelChance:0.8, unlockChance:0.20},
 ];
+// D14 (2026-10-03, explicit: "Don't let the latest chests/cases/packs be purchaseable except for
+// Sprout Pouch for now"): these show as "Coming soon" and can't be bought, even under an admin override.
+const SHOP_PACKS_COMING_SOON = new Set(['silver', 'gold']);
+function packOnSale(p){ return p && !SHOP_PACKS_COMING_SOON.has(p.id) && p.available!==false; }
 const SHOP_PACKS_OVERRIDE_KEY = 'bramblewood_arena_shop_packs_override';
 function getShopPacks(){
   try{
@@ -18187,11 +18191,11 @@ function renderShop(){
   const signedIn = isSignedIn();
   const pool = packCardPool();
   grid.innerHTML = !pool.length ? `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>` : getShopPacks().map(p=> `
-    <div class="shop-pack-card">
+    <div class="shop-pack-card ${packOnSale(p)?'':'is-soon'}">
       <div class="shop-pack-ico">${p.icon}</div>
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
       <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
-      <button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : 'Sign in'}</button>
+      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : 'Sign in'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
     </div>`).join('');
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn))));
@@ -18268,7 +18272,7 @@ function rollPackCards(pack){
 }
 function buyPack(packId, btnEl){
   const pack = getShopPacks().find(p=>p.id===packId);
-  if(!pack || !isSignedIn() || !canAffordPack(pack)){ if(btnEl) denyShake(btnEl); return; }
+  if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPack(pack)){ if(btnEl) denyShake(btnEl); return; }
   const pulls = rollPackCards(pack);
   if(!pulls.length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
   myCurrencies.gold -= (pack.cost.gold||0);

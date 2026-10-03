@@ -82,11 +82,12 @@ async def main():
         # 4: pack opening
         await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
         before = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
-        await pg.click('[data-buypack="silver"]'); await pg.wait_for_timeout(500)
+        check(await pg.query_selector('[data-buypack="silver"]') is None and await pg.query_selector('[data-buypack="gold"]') is None, 'only the Sprout Pouch should be on sale (D14)')
+        await pg.click('[data-buypack="bronze"]'); await pg.wait_for_timeout(500)
         await pg.click('#poSkip'); await pg.wait_for_timeout(500)
-        check(await pg.evaluate("document.querySelectorAll('.po-card.is-flipped').length") == 5, 'the Acorn Chest should reveal 5 cards')
+        check(await pg.evaluate("document.querySelectorAll('.po-card.is-flipped').length") == 3, 'the Sprout Pouch should reveal 3 cards')
         after = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
-        check(after - before == 5, f'pack should add 5 copies (added {after-before})')
+        check(after - before == 3, f'pack should add 3 copies (added {after-before})')
         await pg.click('#poDone')
         # 5: raid trench, played
         await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
