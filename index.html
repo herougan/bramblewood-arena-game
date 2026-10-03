@@ -15324,7 +15324,14 @@ function livePushRaidAttempt(a, onDone){
 // Progress blob: these localStorage keys follow you across devices.
 const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tutorial_done','bramblewood_arena_tutorial_stage','bramblewood_arena_faction',
   'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1',
-  'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1','bramblewood_dialogue_flags_v1','bramblewood_unlocks_v1'];
+  'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1','bramblewood_dialogue_flags_v1','bramblewood_unlocks_v1',
+  // 2026-10-03: discoveries (hidden-card sightings), raid part attempts + claims (so a reward can't be claimed twice on two devices), recent opponents
+  'bramblewood_arena_discovered','bramblewood_raid_part_attempts_v1','bramblewood_raid_claims_v1','bramblewood_recent_opponents_v1'];
+// Keys merged (union) on pull instead of overwritten, because both devices may have added to them.
+const PROGRESS_MERGE_KEYS = {
+  'bramblewood_arena_discovered': (a,b)=> JSON.stringify(Array.from(new Set([...(JSON.parse(a||'[]')||[]), ...(JSON.parse(b||'[]')||[])]))),
+  'bramblewood_raid_claims_v1': (a,b)=> JSON.stringify(Object.assign({}, JSON.parse(a||'{}')||{}, JSON.parse(b||'{}')||{})),
+};
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
@@ -15336,7 +15343,9 @@ async function livePullProgress(){
     LiveData.available = true;
     const localAt = Number(localStorage.getItem(PROGRESS_LOCAL_AT_KEY)||0);
     if(data && data.data && Date.parse(data.updated_at) > localAt){
-      Object.entries(data.data).forEach(([k,v])=>{ if(PROGRESS_KEYS.includes(k) && typeof v==='string') try{ localStorage.setItem(k, v); }catch(e){} });
+      Object.entries(data.data).forEach(([k,v])=>{ if(!PROGRESS_KEYS.includes(k) || typeof v!=='string') return; try{
+        const merge = PROGRESS_MERGE_KEYS[k]; localStorage.setItem(k, merge ? merge(localStorage.getItem(k), v) : v); }catch(e){} });
+      try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
       LiveData.progressPushedHash = snapshotHash(progressSnapshot());
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
