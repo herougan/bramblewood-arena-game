@@ -2319,6 +2319,20 @@
   .player-level .pl-bar{flex:1; height:8px; border-radius:6px; background:rgba(255,255,255,.18); overflow:hidden; min-width:90px;}
   .player-level .pl-bar > span{display:block; height:100%; background:linear-gradient(90deg,#f5c542,#ffe08a);}
   .player-level .pl-xp{font-size:12px; opacity:.85;}
+  /* Dialogue (2026-10-03) — never blocks play: only the reply buttons take pointer events */
+  .dialogue-dock{position:fixed; left:12px; top:76px; z-index:1100; display:flex; flex-direction:column; gap:8px; width:min(360px, calc(100vw - 24px)); pointer-events:none;}
+  .dlg-line{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:14px; background:rgba(255,248,230,.95); color:#2b2117; box-shadow:0 8px 20px rgba(0,0,0,.35);}
+  .dlg-line.dlg-to-you{box-shadow:0 0 0 2px #e0b85a, 0 8px 20px rgba(0,0,0,.35);}
+  .dlg-line.dlg-mine{background:rgba(214,236,255,.95); margin-left:40px;}
+  .dlg-portrait{width:40px; height:40px; border-radius:50%; object-fit:cover; flex:0 0 auto; image-rendering:pixelated; box-shadow:0 0 0 2px rgba(0,0,0,.15);}
+  .dlg-portrait-ico{display:inline-flex; align-items:center; justify-content:center; font-size:24px; background:#efe3c4;}
+  .dlg-name{font-size:11.5px; font-weight:900; opacity:.75; text-transform:uppercase; letter-spacing:.04em;}
+  .dlg-text{font-size:14px; line-height:1.35;}
+  .dlg-replies{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; pointer-events:auto;}
+  .dlg-reply{pointer-events:auto;}
+  .dlg-timer{position:relative; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:10px;}
+  .dlg-timer svg{position:absolute; inset:0; transform:rotate(-90deg);}
+  .dlg-timer circle{fill:none; stroke:#c9853a; stroke-width:3; stroke-dasharray:94.2; stroke-dashoffset:0;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
@@ -14612,7 +14626,7 @@ function livePushRaidAttempt(a, onDone){
 // Progress blob: these localStorage keys follow you across devices.
 const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tutorial_done','bramblewood_arena_tutorial_stage','bramblewood_arena_faction',
   'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1',
-  'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1'];
+  'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1','bramblewood_dialogue_flags_v1','bramblewood_unlocks_v1'];
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
@@ -14643,6 +14657,137 @@ function livePushProgress(force){
 }
 setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
+// ---- Dialogue (2026-10-03, explicit: "There is non-interrupting dialogue in the game, where
+// characters speak back-and-forth to each other, and sometimes to you! You have 30s to respond.
+// Otherwise, they will take it as you said '...' not 'yes' or 'no'."). A small stack of speech
+// bubbles in the top-left corner that never blocks play; lines advance on their own. A line with
+// `options` is addressed to you: reply buttons plus a 30s ring — let it run out and you "said" "…",
+// which takes the script's `silent` branch. Speakers are the lore cast (lore-otters-vs-hummingbirds.md).
+const DIALOGUE_SPEAKERS = {
+  shieldback: {name:'High Marshal Shieldback', card:'otter-shieldback', icon:'🦦'},
+  swiftpaw:   {name:'Captain Swiftpaw', card:'otter-scout', icon:'🦦'},
+  silverstream:{name:'Queen Silverstream', card:'river-warden', icon:'🦦'},
+  aurelia:    {name:'Matriarch Aurelia', card:'sunthroat-courier', icon:'🐦'},
+  vesper:     {name:'Warlord Vesper', card:'crimson-wing-duelist-cadet', icon:'🐦'},
+  whisper:    {name:'Whisper-of-Ash', card:'voidfeather-scout', icon:'🐦'},
+  traveller:  {name:'The Wandering Traveller', card:'wandering-traveller', icon:'🧳'},
+};
+// Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
+const DIALOGUES = {
+  outskirts_reveal: {lines:[
+    {who:'swiftpaw', text:'There — the Outskirts. Scouts and stragglers, mostly.'},
+    {who:'shieldback', text:'Mostly. Which means not entirely. We go carefully.'},
+    {who:'swiftpaw', text:'You heard the Marshal. You\'re with us, aren\'t you?', options:[{label:'Of course.', goto:'yes'}, {label:'What\'s in it for me?', goto:'pay'}], silent:'quiet'},
+    {label:'yes', who:'shieldback', text:'Good. Then the first patrol is yours.', goto:'end'},
+    {label:'pay', who:'swiftpaw', text:'Leaves, glory, and the Marshal\'s eternal respect. Two of those are real.', goto:'end'},
+    {label:'quiet', who:'shieldback', text:'…Quiet type. I can work with quiet.', goto:'end'},
+    {label:'end', who:'swiftpaw', text:'Watch the map. Things turn up when you push further in.'},
+  ]},
+  unlock_deck: {lines:[
+    {who:'shieldback', text:'An armoury tent. About time.'},
+    {who:'shieldback', text:'Choose who marches with you. Twenty cards, no more, no less.', options:[{label:'Show me.', goto:'go'}], silent:'go'},
+    {label:'go', who:'swiftpaw', text:'And maybe stop bringing the slow ones.'},
+  ]},
+  unlock_shop: {lines:[
+    {who:'traveller', text:'Ah! A customer. Or a soldier. In this war they\'re the same thing.'},
+    {who:'traveller', text:'Packs, trinkets, the odd rumour. Interested?', options:[{label:'Let\'s trade.', goto:'go'}, {label:'Rumours?', goto:'rumour'}], silent:'go'},
+    {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go'},
+    {label:'go', who:'traveller', text:'Leaves on the counter, please.'},
+  ]},
+  unlock_arena: {lines:[
+    {who:'vesper', text:'An otter with a deck. How quaint. Fight me where it counts.'},
+    {who:'swiftpaw', text:'The Arena. Strangers, tickets, bad manners.', options:[{label:'I\'m in.', goto:'go'}, {label:'Later.', goto:'later'}], silent:'go'},
+    {label:'later', who:'vesper', text:'Of course. Later. They always say later.', goto:'go'},
+    {label:'go', who:'vesper', text:'Ten tickets a day. Spend them well.'},
+  ]},
+  unlock_raid: {lines:[
+    {who:'aurelia', text:'Even the Dominion cannot fell that thing alone.'},
+    {who:'shieldback', text:'Then we chip at it together. Every deck that fights wears it down.'},
+    {who:'aurelia', text:'Will you stand with your enemies, if only for an afternoon?', options:[{label:'For an afternoon.', goto:'go'}, {label:'Never.', goto:'never'}], silent:'go'},
+    {label:'never', who:'aurelia', text:'Then stand beside them and pretend. It works the same.', goto:'go'},
+    {label:'go', who:'shieldback', text:'One shared foe. One shared prize when it falls.'},
+  ]},
+  unlock_autobattler: {lines:[
+    {who:'whisper', text:'You like games? Here\'s one. Build an army from nothing. Watch it fight without you.'},
+    {who:'whisper', text:'Ten wins and you\'re a legend. Five losses and you\'re a story.', options:[{label:'Deal.', goto:'go'}], silent:'go'},
+    {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.'},
+  ]},
+  boss_banter: {lines:[
+    {who:'shieldback', text:'That one doesn\'t surrender. Don\'t wait for it to.'},
+    {who:'swiftpaw', text:'Then we make it a short conversation.'},
+  ]},
+};
+const DIALOGUE_FLAGS_KEY = 'bramblewood_dialogue_flags_v1';
+let DIALOGUE_REPLY_MS = 30000, DIALOGUE_LINE_MS = 3600; // let: tests shorten them
+function loadDialogueFlags(){ try{ return JSON.parse(localStorage.getItem(DIALOGUE_FLAGS_KEY)||'{}') || {}; }catch(e){ return {}; } }
+function setDialogueFlag(k, v){ const f = loadDialogueFlags(); f[k] = v; try{ localStorage.setItem(DIALOGUE_FLAGS_KEY, JSON.stringify(f)); }catch(e){} }
+let dialogueQueue = Promise.resolve();
+function dialogueDock(){
+  let dock = document.getElementById('dialogueDock');
+  if(!dock){ dock = document.createElement('div'); dock.id = 'dialogueDock'; dock.className = 'dialogue-dock'; dock.setAttribute('aria-live','polite'); document.body.appendChild(dock); }
+  return dock;
+}
+function speakerPortraitHTML(sp){
+  const d = sp.card && getCardDefs()[sp.card];
+  return d && d.art ? `<img class="dlg-portrait" src="${d.art}" alt="">` : `<span class="dlg-portrait dlg-portrait-ico">${sp.icon||'💬'}</span>`;
+}
+// Plays a script; resolves to {replies:[...]} — the labels you picked ('…' for a timeout).
+// Queued, so two scripts never talk over each other. `once` remembers it was seen.
+function playDialogue(id, opts){
+  opts = opts || {};
+  const script = DIALOGUES[id]; if(!script) return Promise.resolve(null);
+  if(opts.once && loadDialogueFlags()['seen:'+id]) return Promise.resolve(null);
+  const run = async ()=>{
+    if(opts.once) setDialogueFlag('seen:'+id, true);
+    const dock = dialogueDock();
+    const replies = [];
+    const byLabel = {}; script.lines.forEach((l,i)=>{ if(l.label) byLabel[l.label] = i; });
+    let i = 0, guard = 0;
+    while(i < script.lines.length && guard++ < 50){
+      const line = script.lines[i];
+      const sp = DIALOGUE_SPEAKERS[line.who] || {name: line.who, icon:'💬'};
+      const b = document.createElement('div');
+      b.className = 'dlg-line' + (line.options ? ' dlg-to-you' : '');
+      b.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(line.text)}</div></div>`;
+      dock.appendChild(b);
+      while(dock.children.length > 3) dock.firstElementChild.remove();
+      if(hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+      let next = i+1;
+      if(line.options){
+        const choice = await new Promise(resolve=>{
+          const row = document.createElement('div'); row.className = 'dlg-replies';
+          row.innerHTML = line.options.map((o,k)=> `<button type="button" class="btn small dlg-reply" data-k="${k}">${escapeHtml(o.label)}</button>`).join('') + `<span class="dlg-timer" title="Answer within 30 seconds"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"></circle></svg><b>30</b></span>`;
+          b.querySelector('.dlg-body').appendChild(row);
+          const ring = row.querySelector('circle'), num = row.querySelector('.dlg-timer b');
+          const started = Date.now();
+          const tick = setInterval(()=>{ const left = Math.max(0, DIALOGUE_REPLY_MS - (Date.now()-started)); num.textContent = Math.ceil(left/1000); ring.style.strokeDashoffset = String(94.2 * (1 - left/DIALOGUE_REPLY_MS)); if(!left){ clearInterval(tick); resolve(null); } }, 250);
+          row.querySelectorAll('.dlg-reply').forEach(btn=> btn.onclick = ()=>{ clearInterval(tick); resolve(line.options[+btn.dataset.k]); });
+        });
+        const reply = document.createElement('div');
+        reply.className = 'dlg-line dlg-mine';
+        reply.innerHTML = `<div class="dlg-body"><div class="dlg-name">You</div><div class="dlg-text">${escapeHtml(choice ? choice.label : '…')}</div></div>`;
+        b.querySelector('.dlg-replies').remove();
+        dock.appendChild(reply);
+        while(dock.children.length > 3) dock.firstElementChild.remove();
+        replies.push(choice ? choice.label : '…');
+        const target = choice ? choice.goto : line.silent;
+        if(target && byLabel[target]!=null) next = byLabel[target];
+        await sleep(900);
+      } else {
+        await sleep(Math.max(2200, Math.min(6000, DIALOGUE_LINE_MS + line.text.length*25)));
+        if(line.goto && byLabel[line.goto]!=null) next = byLabel[line.goto];
+      }
+      i = next;
+    }
+    await sleep(1800);
+    Array.from(dock.children).forEach(el=>{ if(hasGsap()) gsap.to(el, {opacity:0, x:-30, duration:.3, onComplete:()=> el.remove()}); else el.remove(); });
+    if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
+    return {replies};
+  };
+  const p = dialogueQueue.then(run, run);
+  dialogueQueue = p.catch(()=>{});
+  return p;
+}
 // ---- Player level (2026-10-03, explicit: "You have a level... don't have a cap. The level xp
 // requirement should be exponential. Quests, progress and thresholds give a huge amount of xp - so
 // levelling does mean not just playtime but actual achievement. E.g. collection size or arena

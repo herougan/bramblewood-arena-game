@@ -2319,6 +2319,20 @@
   .player-level .pl-bar{flex:1; height:8px; border-radius:6px; background:rgba(255,255,255,.18); overflow:hidden; min-width:90px;}
   .player-level .pl-bar > span{display:block; height:100%; background:linear-gradient(90deg,#f5c542,#ffe08a);}
   .player-level .pl-xp{font-size:12px; opacity:.85;}
+  /* Dialogue (2026-10-03) — never blocks play: only the reply buttons take pointer events */
+  .dialogue-dock{position:fixed; left:12px; top:76px; z-index:1100; display:flex; flex-direction:column; gap:8px; width:min(360px, calc(100vw - 24px)); pointer-events:none;}
+  .dlg-line{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:14px; background:rgba(255,248,230,.95); color:#2b2117; box-shadow:0 8px 20px rgba(0,0,0,.35);}
+  .dlg-line.dlg-to-you{box-shadow:0 0 0 2px #e0b85a, 0 8px 20px rgba(0,0,0,.35);}
+  .dlg-line.dlg-mine{background:rgba(214,236,255,.95); margin-left:40px;}
+  .dlg-portrait{width:40px; height:40px; border-radius:50%; object-fit:cover; flex:0 0 auto; image-rendering:pixelated; box-shadow:0 0 0 2px rgba(0,0,0,.15);}
+  .dlg-portrait-ico{display:inline-flex; align-items:center; justify-content:center; font-size:24px; background:#efe3c4;}
+  .dlg-name{font-size:11.5px; font-weight:900; opacity:.75; text-transform:uppercase; letter-spacing:.04em;}
+  .dlg-text{font-size:14px; line-height:1.35;}
+  .dlg-replies{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; pointer-events:auto;}
+  .dlg-reply{pointer-events:auto;}
+  .dlg-timer{position:relative; width:28px; height:28px; display:inline-flex; align-items:center; justify-content:center; font-size:10px;}
+  .dlg-timer svg{position:absolute; inset:0; transform:rotate(-90deg);}
+  .dlg-timer circle{fill:none; stroke:#c9853a; stroke-width:3; stroke-dasharray:94.2; stroke-dashoffset:0;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
