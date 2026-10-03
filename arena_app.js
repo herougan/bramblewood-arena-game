@@ -4376,7 +4376,7 @@ function logMatchHistory(m){
   // the same boundary Online Raid/Shop/cross-device sync already draw.
   if(!sbClient || !isSignedIn()) return;
   const opponentLabel = (m.mode==='raidOnline' || m.mode==='raidOffline') ? ((m.raidBoss && m.raidBoss.name) || 'Raid Boss')
-    : (m.mode==='async' && m.asyncGhost) ? m.asyncGhost.name
+    : ((m.mode==='async' || m.mode==='pvp') && m.asyncGhost) ? m.asyncGhost.name
     : m.mode==='liveRanked' ? (m.liveOpponentName || 'Opponent')
     : 'AI Opponent';
   const result = m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw');
@@ -4406,7 +4406,7 @@ async function loadMatchHistory(){
   }catch(e){ matchHistoryList = []; }
   if(currentTab==='profile') renderProfile();
 }
-const MATCH_HISTORY_MODE_LABEL = {ai:'vs Computer', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
+const MATCH_HISTORY_MODE_LABEL = {ai:'vs Computer', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
 function matchHistoryPanelHTML(){
   if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
   if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
@@ -6753,6 +6753,201 @@ function settleAsyncRunAfterMatch(m){
     saveAsyncRun(null);
   } else saveAsyncRun(run);
 }
+// ---- Quests & statistics medals (2026-10-03, explicit: "Limited rewards to stop burnout. Daily
+// quests: Use 40 energy on Skirmishes, Use 3 tickets in PVP, Defeat 12 units. Then the next tier
+// (decreasing rewards): Join a Raid, etc. Weeklies are very rewarding, but also similarly tiered."
+// + "reward the grinders with statistics medals"). Each tier shows once the tier above it is fully
+// claimed; rewards shrink tier by tier. Counters come from bumpQuestCounter() calls at the source
+// (energy spend, ticket use, enemy unit deaths, raid joins, wins). Lifetime totals of the same
+// counters earn medals — recognition, never power. ----
+const QUESTS_KEY = 'bramblewood_quests_v1';
+const STATS_KEY = 'bramblewood_lifetime_stats_v1';
+const QUEST_TIERS = {
+  daily: [
+    {reward:{gold:60, dust:8}, quests:[
+      {id:'d1-energy', counter:'energyConquest', goal:40, label:'Use 40 ⚡ Energy on Conquest fights'},
+      {id:'d1-pvp', counter:'pvpTickets', goal:3, label:'Use 3 🎟️ PvP tickets'},
+      {id:'d1-units', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units'}]},
+    {reward:{gold:30, dust:4}, quests:[
+      {id:'d2-raid', counter:'raidsJoined', goal:1, label:'Join a Raid'},
+      {id:'d2-wins', counter:'wins', goal:2, label:'Win 2 matches'},
+      {id:'d2-conquest', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights'}]},
+    {reward:{gold:15, dust:2}, quests:[
+      {id:'d3-units', counter:'unitsDefeated', goal:30, label:'Defeat 30 enemy units'},
+      {id:'d3-pvp', counter:'pvpWins', goal:2, label:'Win 2 PvP matches'}]},
+  ],
+  weekly: [
+    {reward:{gold:300, dust:40, metal:3}, quests:[
+      {id:'w1-energy', counter:'energyConquest', goal:200, label:'Use 200 ⚡ Energy on Conquest fights'},
+      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:'Use 30 🎟️ PvP tickets'},
+      {id:'w1-units', counter:'unitsDefeated', goal:100, label:'Defeat 100 enemy units'}]},
+    {reward:{gold:150, dust:20, metal:1}, quests:[
+      {id:'w2-raid', counter:'raidsJoined', goal:3, label:'Join 3 Raids'},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:400, label:'Deal 400 Raid damage'},
+      {id:'w2-wins', counter:'wins', goal:15, label:'Win 15 matches'}]},
+    {reward:{gold:70, dust:10}, quests:[
+      {id:'w3-conquest', counter:'conquestWins', goal:10, label:'Clear 10 Conquest fights'},
+      {id:'w3-pvp', counter:'pvpWins', goal:10, label:'Win 10 PvP matches'}]},
+  ],
+};
+// Medal thresholds for lifetime stats: bronze / silver / gold / platinum.
+const STAT_MEDALS = [
+  {counter:'unitsDefeated', label:'Units defeated', icon:'⚔️', steps:[100, 1000, 5000, 20000]},
+  {counter:'wins', label:'Matches won', icon:'🏆', steps:[10, 100, 500, 2000]},
+  {counter:'pvpWins', label:'PvP wins', icon:'🎟️', steps:[10, 100, 500, 2000]},
+  {counter:'conquestWins', label:'Conquest fights cleared', icon:'🗺️', steps:[10, 100, 400, 1500]},
+  {counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:[1000, 10000, 50000, 250000]},
+  {counter:'energyConquest', label:'Energy spent', icon:'⚡', steps:[200, 2000, 10000, 50000]},
+];
+const MEDAL_NAMES = ['Bronze','Silver','Gold','Platinum'];
+const MEDAL_ICONS = ['🥉','🥈','🥇','💠'];
+function weekKey(d){ d = d || new Date(); const m = new Date(d.getFullYear(), d.getMonth(), d.getDate()); m.setDate(m.getDate() - ((m.getDay()+6)%7)); return 'W'+localDayKey(m); } // weeks start Monday
+function loadQuestState(){
+  let q = null; try{ q = JSON.parse(localStorage.getItem(QUESTS_KEY)||'null'); }catch(e){}
+  q = q || {};
+  const day = localDayKey(), week = weekKey();
+  if(q.day!==day) { q.day = day; q.daily = {}; q.claimedDaily = []; }
+  if(q.week!==week){ q.week = week; q.weekly = {}; q.claimedWeekly = []; }
+  q.daily = q.daily||{}; q.weekly = q.weekly||{}; q.claimedDaily = q.claimedDaily||[]; q.claimedWeekly = q.claimedWeekly||[];
+  return q;
+}
+function saveQuestState(q){ try{ localStorage.setItem(QUESTS_KEY, JSON.stringify(q)); }catch(e){} }
+function loadLifetimeStats(){ try{ return JSON.parse(localStorage.getItem(STATS_KEY)||'{}') || {}; }catch(e){ return {}; } }
+function bumpQuestCounter(counter, n){
+  if(!(n>0)) return;
+  const q = loadQuestState();
+  q.daily[counter] = (q.daily[counter]||0) + n;
+  q.weekly[counter] = (q.weekly[counter]||0) + n;
+  saveQuestState(q);
+  const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
+  try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+  refreshQuestBadge();
+}
+// The tiers a player can currently see: every fully-claimed tier plus the first unfinished one.
+function visibleQuestTiers(kind, q){
+  const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
+  const out = [];
+  for(const tier of QUEST_TIERS[kind]){
+    out.push(tier);
+    if(!tier.quests.every(x=> claimed.includes(x.id))) break;
+  }
+  return out;
+}
+function claimableQuestCount(){
+  const q = loadQuestState(); let n = 0;
+  ['daily','weekly'].forEach(kind=>{
+    const counts = q[kind], claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
+    visibleQuestTiers(kind, q).forEach(t=> t.quests.forEach(x=>{ if(!claimed.includes(x.id) && (counts[x.counter]||0) >= x.goal) n++; }));
+  });
+  return n;
+}
+function claimQuest(kind, id){
+  const q = loadQuestState();
+  const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
+  const tier = visibleQuestTiers(kind, q).find(t=> t.quests.some(x=> x.id===id)); if(!tier) return;
+  const quest = tier.quests.find(x=> x.id===id);
+  if(claimed.includes(id) || (q[kind][quest.counter]||0) < quest.goal) return;
+  claimed.push(id); saveQuestState(q);
+  Object.entries(tier.reward).forEach(([k,v])=> grantCurrency(k, v));
+  showToast(`📜 Quest reward: ${Object.entries(tier.reward).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}`, 'ok');
+  refreshQuestBadge();
+}
+function medalTier(counter, value){ const m = STAT_MEDALS.find(x=> x.counter===counter); let t = -1; if(m) m.steps.forEach((s,i)=>{ if(value>=s) t = i; }); return t; }
+function questsModalHTML(){
+  const q = loadQuestState(), st = loadLifetimeStats();
+  const resetIn = (ms)=>{ const h = Math.floor(ms/3600000), d = Math.floor(h/24); return d ? `${d}d ${h%24}h` : `${h}h ${Math.floor((ms%3600000)/60000)}m`; };
+  const now = new Date(), nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay()+6)%7)));
+  const section = (kind, title, ms)=>{
+    const counts = q[kind], claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
+    const tiers = visibleQuestTiers(kind, q);
+    const hidden = QUEST_TIERS[kind].length - tiers.length;
+    return `<section class="qs-section"><h3>${title} <span class="qs-reset">resets in ${resetIn(ms)}</span></h3>
+      ${tiers.map((t,ti)=> `<div class="qs-tier"><div class="qs-tier-head">Tier ${ti+1} · each: ${Object.entries(t.reward).map(([k,v])=> `${(CURRENCY_META[k]||{}).glyph||''} ${v}`).join(' ')}</div>
+        ${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id);
+          return `<div class="qs-quest ${got?'is-claimed':''}"><div class="qs-q-label">${escapeHtml(x.label)}</div>
+            <div class="qs-bar"><div style="width:${Math.round(v/x.goal*100)}%"></div></div><div class="qs-q-num">${v}/${x.goal}</div>
+            ${got ? '<span class="qs-done">✓ Claimed</span>' : `<button class="btn small ${done?'primary':''}" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'}>Claim</button>`}</div>`; }).join('')}
+      </div>`).join('')}
+      ${hidden>0 ? `<div class="qs-more">🔒 ${hidden} more tier${hidden===1?'':'s'} (smaller rewards) after this one</div>` : ''}
+    </section>`;
+  };
+  const medals = STAT_MEDALS.map(m=>{ const v = st[m.counter]||0, t = medalTier(m.counter, v), next = m.steps[t+1];
+    return `<div class="qs-medal ${t>=0?'has-medal':''}" title="${next!=null ? `Next: ${MEDAL_NAMES[t+1]} at ${next.toLocaleString()}` : 'Top medal reached'}"><span class="qs-medal-ico">${t>=0 ? MEDAL_ICONS[t] : '▫️'}</span>
+      <span class="qs-medal-l">${m.icon} ${m.label}</span><span class="qs-medal-v">${v.toLocaleString()}</span></div>`; }).join('');
+  return `<div class="modal quests-modal" role="dialog" aria-labelledby="qsTitle">
+    <div class="modal-head-row"><h2 id="qsTitle">📜 Quests</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
+    ${section('daily', 'Daily', msUntilLocalMidnight())}
+    ${section('weekly', 'Weekly', nextMon - now)}
+    <section class="qs-section"><h3>Medals <span class="qs-reset">lifetime stats — for bragging, not power</span></h3><div class="qs-medals">${medals}</div></section>
+  </div>`;
+}
+let questsKeyHandler = null;
+function openQuestsModal(){
+  const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
+  const prevScroll = overlay.querySelector('.quests-modal') ? overlay.querySelector('.quests-modal').scrollTop : 0;
+  overlay.innerHTML = questsModalHTML(); overlay.hidden = false;
+  overlay.querySelector('.quests-modal').scrollTop = prevScroll;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(questsKeyHandler){ document.removeEventListener('keydown', questsKeyHandler); questsKeyHandler = null; } };
+  if(questsKeyHandler) document.removeEventListener('keydown', questsKeyHandler);
+  questsKeyHandler = e=>{ if(e.key==='Escape') close(); };
+  document.addEventListener('keydown', questsKeyHandler);
+  document.getElementById('qsClose').onclick = close;
+  overlay.onclick = e=>{ if(e.target===overlay) close(); };
+  overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); }));
+}
+function refreshQuestBadge(){
+  const n = claimableQuestCount();
+  document.querySelectorAll('#homeQuestsBtn .home-badge').forEach(b=> b.remove());
+  if(n>0) document.querySelectorAll('#homeQuestsBtn').forEach(btn=>{ const s = document.createElement('span'); s.className = 'home-badge'; s.textContent = n; btn.appendChild(s); });
+}
+// ---- PvP (2026-10-03, explicit: "one mode is just called PVP, and you use your daily 10 tickets to
+// battle random strangers' decks, piloted by AI. They always go first."). A ticket is spent when the
+// match starts. The stranger is a deck from the ghost pool at the stage that matches your rating;
+// each match you play also records YOUR deck, so you become a stranger for other players. "They go
+// first": the stranger plays its card at the START of every round, before you plan, and wins every
+// same-column tie in combat. ----
+const PVP_TICKETS_PER_DAY = 10;
+const PVP_TICKETS_KEY = 'bramblewood_pvp_tickets_v1';
+const PVP_DECKS_KEY = 'bramblewood_pvp_decks_v1';
+function localDayKey(d){ d = d || new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function loadPvpTickets(){ try{ const t = JSON.parse(localStorage.getItem(PVP_TICKETS_KEY)||'null'); if(t && t.day===localDayKey()) return t; }catch(e){} return {day: localDayKey(), used:0}; }
+function pvpTicketsLeft(){ return Math.max(0, PVP_TICKETS_PER_DAY - loadPvpTickets().used); }
+function usePvpTicket(){ const t = loadPvpTickets(); if(t.used >= PVP_TICKETS_PER_DAY) return false; t.used++; try{ localStorage.setItem(PVP_TICKETS_KEY, JSON.stringify(t)); }catch(e){} bumpQuestCounter('pvpTickets', 1); return true; }
+function msUntilLocalMidnight(){ const n = new Date(); const m = new Date(n.getFullYear(), n.getMonth(), n.getDate()+1); return m - n; }
+function pvpStageForRating(r){ const max = Ghosts ? Ghosts.ASYNC.MAX_WINS-1 : 6; return Math.max(0, Math.min(max, Math.round(((r||RANK_MEAN) - 1300) / 70))); }
+function loadPvpDecks(){ try{ return JSON.parse(localStorage.getItem(PVP_DECKS_KEY)||'[]') || []; }catch(e){ return []; } }
+function pvpOpponentPool(){
+  const stage = pvpStageForRating(myRating);
+  const mine = myGhostOwnerId();
+  // Strangers: recorded PvP decks + Async ghosts (any deck a real player has fielded), never yourself.
+  const rec = loadPvpDecks().concat(loadAsyncGhosts()).filter(g=> g.owner!==mine).map(g=> Object.assign({}, g, {stage}));
+  return Ghosts.buildStagePool(getCardDefs(), stage, rec, Date.now());
+}
+function recordMyPvpDeck(){
+  if(!Ghosts) return;
+  const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage: pvpStageForRating(myRating), at: Date.now(), source:'player'};
+  try{ localStorage.setItem(PVP_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpDecks(), entry, 200))); }catch(e){}
+}
+function pvpTileHTML(){
+  const left = pvpTicketsLeft();
+  const h = Math.floor(msUntilLocalMidnight()/3600000), mn = Math.floor((msUntilLocalMidnight()%3600000)/60000);
+  return `<button class="btn primary big arena-mode-btn pvp-mode-btn" id="startPvpBtn" ${left?'':'disabled'}>
+    <span class="amb-ico">⚔️</span><span class="amb-lbl">PvP</span>
+    <span class="amb-sub">Fight a random stranger's deck, played by the AI. They always go first.</span>
+    <span class="async-run-line">🎟️ <b>${left}/${PVP_TICKETS_PER_DAY}</b> tickets today · ${left ? `refills in ${h}h ${mn}m` : `next tickets in ${h}h ${mn}m`}</span>
+  </button>`;
+}
+function settlePvpAfterMatch(m){
+  const won = m.winner===1;
+  const strength = Math.max(1, Math.min(13, Math.round(4 + (m.pvpStage||0)*1.5)));
+  const { newRating, delta } = updateRatingForRaid(myRating, strength, won);
+  myRating = newRating; saveRatingLocal(); cloudPushRating();
+  m.pvpRatingDelta = delta;
+  // Deliberately low raw rewards (MASTER item 10): the big rewards come from quests.
+  const g = won ? 18 : 6, d = won ? 2 : 0;
+  grantCurrency('gold', g); if(d) grantCurrency('dust', d);
+  m.pvpRewardEarned = {gold:g, dust:d};
+}
 // Async Arena (item #62): a match that persists in this browser (localStorage) rather than
 // only in memory, so leaving the tab and coming back — even after a reload — offers a
 // Continue option instead of forcing a fresh Start. Scoped to single-device continuity, not
@@ -6792,8 +6987,8 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    mid-fight leaves that snapshot behind, and the next launch drops you straight back in.
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
-const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult'];
+const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -6807,7 +7002,7 @@ function loadResumeSnapshot(){
 }
 // Story pass 2026-10-03 (US-07): an unfinished fight is OFFERED, not forced — Home opens with a
 // small "Resume / Discard" card instead of dropping you straight back into the match.
-const RESUME_MODE_LABEL = {ai:'vs Computer fight', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
+const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'vs Computer fight', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
 function tryResumeAbandonedMatch(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   switchTab('home');
@@ -6874,11 +7069,7 @@ function renderArenaSubTab(body){
           <span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span>
           <span class="amb-sub">Local pass-and-play — take turns on this device with a friend</span>
         </button>
-        <button class="btn primary big arena-mode-btn" id="startAsyncBtn">
-          <span class="amb-ico">📨</span><span class="amb-lbl">Async Arena</span>
-          <span class="amb-sub">Fight ghosts of other players' decks at your win stage — Save &amp; Exit any time</span>
-          ${asyncRunSummaryHTML()}
-        </button>
+        ${pvpTileHTML()}
         <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
           <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span>
           <span class="amb-sub">Back-to-back AI fights — win ${GAUNTLET_GOAL} in a row for a big payout. One loss resets the streak.</span>
@@ -6908,7 +7099,8 @@ function renderArenaSubTab(body){
     </div>`;
   document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  document.getElementById('startAsyncBtn').addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
+  const asyncBtn = document.getElementById('startAsyncBtn'); if(asyncBtn) asyncBtn.addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
+  const pvpBtn = document.getElementById('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp'));
   document.getElementById('startGauntletBtn').addEventListener('click', ()=> startMatch('gauntlet'));
   document.getElementById('startDungeonBtn').addEventListener('click', startDungeonFight);
   const abandonDungeonBtn = document.getElementById('abandonDungeonBtn');
@@ -7822,6 +8014,7 @@ function startOfflineRaidMatch(){
     return;
   }
   const boss = st.boss;
+  bumpQuestCounter('raidsJoined', 1);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
@@ -7846,6 +8039,7 @@ function settleOfflineRaidAfterMatch(m){
   _raidStateCache = null;
   const after = currentOfflineRaid();
   m.raidDamageDealt = dealt;
+  bumpQuestCounter('raidDamage', dealt);
   m.raidRemainingAfter = after ? after.remaining : 0;
   const strength = m.raidBoss.strength || 1;
   const g = Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0), d = Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0);
@@ -8320,6 +8514,7 @@ function startConquestMatch(mapId, nodeKey, opts){
       alert(`Not enough Energy for ${node.name} -- this fight costs ${cost}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
       return false;
     }
+    bumpQuestCounter('energyConquest', cost);
   }
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode});
   const sideOf = id=> id===1?'A':'B';
@@ -9481,6 +9676,13 @@ function startMatch(mode){
     2: null,
   };
   let asyncGhost = null, asyncStage = null;
+  if(mode==='pvp'){
+    if(!Ghosts) return;
+    if(!usePvpTicket()){ alert(`No PvP tickets left today — you get ${PVP_TICKETS_PER_DAY} a day.`); return; }
+    asyncStage = pvpStageForRating(myRating);
+    asyncGhost = Ghosts.pickOpponent(pvpOpponentPool(), currentMatchSeed, []);
+    recordMyPvpDeck();
+  }
   if(mode==='async' && Ghosts){
     const run = loadAsyncRun() || Ghosts.newAsyncRun(Date.now());
     asyncStage = run.wins;
@@ -9493,15 +9695,15 @@ function startMatch(mode){
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
-    mode: mode==='pc' ? 'pc' : (mode==='async' ? 'async' : (mode==='gauntlet' ? 'gauntlet' : 'ai')), active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    mode: mode==='pc' ? 'pc' : (mode==='async' ? 'async' : (mode==='pvp' ? 'pvp' : (mode==='gauntlet' ? 'gauntlet' : 'ai'))), active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // Epic A (2026-09-18, "Leader slot + in-match summon"): snapshotted once at match start —
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
     // never retroactively changes an in-progress match. leaderUid is set once the leader is
     // actually summoned onto the board; null before that and if no leader was ever chosen.
-    leaderDefId: myLeaderId, leaderUid: null, asyncGhost, asyncStage};
+    leaderDefId: myLeaderId, leaderUid: null, asyncGhost, asyncStage, pvpGhost: mode==='pvp' ? asyncGhost : null, pvpStage: mode==='pvp' ? asyncStage : null};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
-  if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet'){
+  if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet' || mode==='pvp'){
     const r = seededRng(currentMatchSeed ^ 0x5eed);
     const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
     const oppDeckCounts = Object.fromEntries(matchState.players[2].deck.concat(matchState.players[2].hand).map(c=> typeof c==='string' ? c : c.defId).reduce((mm,id)=> mm.set(id,(mm.get(id)||0)+1), new Map()));
@@ -9511,7 +9713,7 @@ function startMatch(mode){
       : {name: (mode==='ai'||mode==='gauntlet') ? 'Computer' : VS_OPPONENT_NAMES[Math.floor(r()*VS_OPPONENT_NAMES.length)], deck: deckNameFromCounts((mode==='ai'||mode==='gauntlet') ? oppDeckCounts : DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)};
     if(mode==='pc') me.name = (myProfile && myProfile.name) ? myProfile.name+' (P1)' : 'Player 1';
     matchState.opponentName = opp.name;
-    showVsScreen(me, opp).then(()=> renderPlay());
+    showVsScreen(me, opp).then(()=>{ if(matchState && matchState.mode==='pvp') aiActNow(); renderPlay(); });
     return;
   }
   renderPlay();
@@ -9532,7 +9734,7 @@ function endMatch(){
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
   if(m.mode!=='pc' && m.mode!=='liveRanked'){
-    aiActNow();
+    if(m.mode!=='pvp') aiActNow(); // PvP: the stranger already played at the start of the round
     renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
     // 2026-09-17 follow-up ("there is a small lag between placing the unit and the unit
     // acting"): this pause is dead time between the play landing and combat actually starting —
@@ -12891,7 +13093,7 @@ async function resolveRound(){
   if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
-  let over = (m.forcedWinner!=null) ? true : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.round%2===0 ? 1 : 2);
+  let over = (m.forcedWinner!=null) ? true : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
   // combat), with a pulsing zoom-in 'next turn' banner and sequential... decrement animation"):
   // the engine still generates waitTick/ready exactly where it always has (endOfRoundUpkeep, the
@@ -12899,6 +13101,7 @@ async function resolveRound(){
   // mutation timing is staying put), but they're pulled out of the interleaved combat log here so
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
+  if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
   const mainEvents = events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready');
   const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready');
   // 2026-09-17 follow-up ("there should be a 'fight' sign before the combat anims begin"):
@@ -13136,6 +13339,11 @@ async function resolveRound(){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner);
+    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode)){
+      bumpQuestCounter('wins', 1);
+      if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
+      if(m.mode==='pvp') bumpQuestCounter('pvpWins', 1);
+    }
     // Match History / Replay (#254) — same eligibility as recordMatchResult just above (a real
     // personal result, not hot-seat/Conquest/Sandbox/tutorial), but ALSO gated on being signed
     // in (see logMatchHistory's own comment) — unlike the local win/loss ledger, this persists
@@ -13219,6 +13427,8 @@ async function resolveRound(){
       // loss) — the real number that then permanently chips into its shared current_hp pool.
       const bossDamageDealt = m.players[2] && m.players[2].hq ? Math.max(0, m.players[2].hq.maxHp - Math.max(0, m.players[2].hq.hp)) : 0;
       logRaidAttempt(m.raidBoss, won, m.round, bossDamageDealt);
+    } else if(m.mode==='pvp'){
+      settlePvpAfterMatch(m);
     } else if(m.mode==='async'){
       settleAsyncRunAfterMatch(m);
     } else if(m.mode==='raidOffline' && m.raidBoss){
@@ -13335,6 +13545,7 @@ async function resolveRound(){
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+    if(m.mode==='pvp') aiActNow(); // "They always go first": the stranger plays before you plan
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
   // comment) right as control hands back to the player, instead of letting it bleed into their
@@ -13344,6 +13555,8 @@ async function resolveRound(){
   renderMatchUI();
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+// Modes whose fights count toward quests and medals (not the tutorial, sandbox, test kit or pass & play).
+const QUEST_COUNTING_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','pvp','raidOffline','raidOnline','liveRanked','autobattle']);
 // Sudden death banner (turn 20) and Forfeit (2026-10-03).
 function showSuddenDeathBanner(m){
   const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
@@ -13492,7 +13705,7 @@ function passiveTipCandidates(){
     return null; }}));
   return out;
 }
-const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','dungeon','raidOnline','raidOffline','liveRanked']);
+const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','pvp','dungeon','raidOnline','raidOffline','liveRanked']);
 let coachOpen = null, coachShield = null;
 function maybeShowCoachTip(){
   const m = matchState;
@@ -13924,6 +14137,13 @@ function matchStatsHTML(m){
   // Gauntlet streak (#274, 2026-09-25) — parallel to the Conquest/Raid reward blocks above,
   // keyed on m.gauntletStreakAfter being set (only true for mode==='gauntlet', by resolveRound's
   // own gauntlet branch above).
+  const pReward = m.pvpRewardEarned;
+  const pvpHTML = (m.mode==='pvp' && pReward) ? `<div class="winloss-conquest-rewards">
+      <span class="hud-pill ${m.pvpRatingDelta>=0?'raid-rating-up':'raid-rating-down'}">${m.pvpRatingDelta>=0?'▲':'▼'} ${Math.abs(m.pvpRatingDelta)} rating</span>
+      <span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(pReward.gold)} Maple Leaves</span>
+      ${pReward.dust ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(pReward.dust)} Dust</span>` : ''}
+      <span class="hud-pill">🎟️ ${pvpTicketsLeft()}/${PVP_TICKETS_PER_DAY} tickets left</span>
+    </div>` : '';
   const aReward = m.asyncRewardEarned;
   const asyncHTML = (m.mode==='async' && m.asyncRunAfter) ? `<div class="winloss-conquest-rewards">
       ${m.asyncRunComplete ? `<span class="conquest-rank-badge">${m.asyncRunAfter.wins>=Ghosts.ASYNC.MAX_WINS ? '🏅 Perfect run!' : '🏁 Run over'} · ${m.asyncRunAfter.wins}W–${m.asyncRunAfter.losses}L</span>` : `<span class="conquest-rank-badge" title="This Async Arena run">📨 Run: ${m.asyncRunAfter.wins}W–${m.asyncRunAfter.losses}L</span>`}
@@ -13974,7 +14194,7 @@ function matchStatsHTML(m){
       ${dReward && dReward.metal>0 ? `<span class="hud-pill forge-cur-metal" title="Full clear payout">🔩 ${rewardCountSpan(dReward.metal)} Metal</span>` : ''}
     </div>` : '';
   return `<div class="winloss-stats">
-    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
+    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
     <div class="winloss-stats-head"><span></span><span>${sideLabel('A')}</span><span>${sideLabel('B')}</span></div>
     ${rows.map(r=>{ const cls = cellCls(r); return `<div class="winloss-stats-row"><span class="wls-label">${r.label}</span><span class="wls-val ${cls.A}">${totals.A[r.key]}</span><span class="wls-val ${cls.B}">${totals.B[r.key]}</span></div>`; }).join('')}
   </div>`;
@@ -16069,6 +16289,7 @@ function renderHome(){
         <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>
+        <button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>
         <button class="btn ghost home-menu-btn-small" type="button" id="homeWorkshopBtn"><span class="tab-emoji">✏️</span> Workshop</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>
         <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
@@ -16076,6 +16297,7 @@ function renderHome(){
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
+  const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const wsBtn = document.getElementById('homeWorkshopBtn'); if(wsBtn) wsBtn.addEventListener('click', openWorkshopPage);
   wireSettingsButton('Home');
   wireHomeMenuFlourish(root);

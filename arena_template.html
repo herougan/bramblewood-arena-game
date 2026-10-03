@@ -2259,6 +2259,27 @@
   .sudden-death-sign .sds-title{font-size:30px; font-weight:900; letter-spacing:.04em;}
   .sudden-death-sign .sds-sub{font-size:14px; margin-top:4px;}
   .winloss-reason{margin:4px 0 8px; font-size:14px; opacity:.85;}
+  /* Quests & medals (2026-10-03) */
+  .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
+  .quests-modal .qs-section{margin:14px 0 6px;}
+  .quests-modal h3{font-size:17px; margin:0 0 8px; display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;}
+  .quests-modal .qs-reset{font-size:12px; font-weight:700; opacity:.65;}
+  .quests-modal .qs-tier{border:1px solid var(--surface-border); border-radius:12px; padding:8px 10px; margin-bottom:8px; background:var(--surface-2);}
+  .quests-modal .qs-tier-head{font-size:12px; font-weight:800; opacity:.75; margin-bottom:6px;}
+  .quests-modal .qs-quest{display:grid; grid-template-columns:1fr 90px 54px 86px; align-items:center; gap:8px; padding:5px 0; font-size:14px;}
+  .quests-modal .qs-quest.is-claimed{opacity:.55;}
+  .quests-modal .qs-bar{height:8px; border-radius:6px; background:rgba(0,0,0,.15); overflow:hidden;}
+  .quests-modal .qs-bar > div{height:100%; background:var(--accent);}
+  .quests-modal .qs-q-num{font-size:12px; font-weight:800; text-align:right;}
+  .quests-modal .qs-done{font-size:12px; font-weight:800; color:var(--health); text-align:center;}
+  .quests-modal .qs-more{font-size:12px; opacity:.7; padding:2px 4px;}
+  .quests-modal .qs-medals{display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:8px;}
+  .quests-modal .qs-medal{display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13px; opacity:.7;}
+  .quests-modal .qs-medal.has-medal{opacity:1;}
+  .quests-modal .qs-medal-ico{font-size:20px;}
+  .quests-modal .qs-medal-l{flex:1;}
+  .quests-modal .qs-medal-v{font-weight:800;}
+  @media (max-width:520px){ .quests-modal .qs-quest{grid-template-columns:1fr 54px 80px;} .quests-modal .qs-bar{grid-column:1 / -1; order:3;} }
   .coach-tip:not(.is-blocking){pointer-events:none;}
   .coach-tip:not(.is-blocking) .coach-ok{pointer-events:auto;}
   .faction-btn[hidden]{display:none;}
