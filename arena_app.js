@@ -1432,6 +1432,7 @@ function applyCloudCfgRow(r){
   if(mn){ applyCloudNodeEdits(mn[1], r); return; }
   const mr = /^__cfg:raid:(.+)$/.exec(r.id);
   if(mr){ applyCloudRaidDef(mr[1], r); return; }
+  if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
   if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
@@ -9841,27 +9842,113 @@ function beginTutorialStage(stage){
   if(stage===3){ showTutorialDeckPicker(); return; }
   startTutorialMatch(stage, null);
 }
-function startTutorialMatch(stage, arrangedIds){
+// ---- Tutorial config (2026-10-03, explicit: "let me edit the tutorial. I think the HP is too high").
+// Everything an admin may want to tune, editable in Admin → 🎓 Tutorial editor. Saved in this
+// browser and, for cloud admins, published as `__cfg:tutorial` so every new player gets it.
+// Decks are {cardId: copies}; null means "automatic" (the faction Basics, as before).
+const TUTORIAL_CFG_DEFAULT = {myHp:12, rivalHp:10, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v1';
+let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
+function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
+function applyCloudTutorialCfg(r){
+  if(r.deleted || !r.data || !r.data.cfg) tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT);
+  else tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, r.data.cfg);
+  saveTutorialCfg();
+}
+async function publishTutorialCfg(){
+  saveTutorialCfg();
+  if(!cloudCardAdmin) return false;
+  try{ await cloudWriteCardOverride('__cfg:tutorial', {data:{kind:'tutorial', cfg: tutorialCfg}, deleted:false, deleted_snapshot:null}); return true; }catch(e){ return false; }
+}
+function guidedStepText(st){ return (tutorialCfg.steps && tutorialCfg.steps[st.id]) || st.text; }
+function deckToText(d){ return d ? Object.entries(d).map(([id,n])=> `${id} x${n}`).join('\n') : ''; }
+function textToDeck(txt){
+  const out = {}, bad = [];
+  String(txt||'').split(/[\n,]+/).map(x=> x.trim()).filter(Boolean).forEach(line=>{
+    const m = /^([a-z0-9\-]+)\s*(?:x|\*|×)?\s*(\d+)?$/i.exec(line);
+    if(!m || !getCardDefs()[m[1]]){ bad.push(line); return; }
+    out[m[1]] = (out[m[1]]||0) + Math.max(1, Math.min(20, parseInt(m[2]||'1',10)));
+  });
+  return {deck: Object.keys(out).length ? out : null, bad};
+}
+function openTutorialEditor(){
+  let ov = document.getElementById('tutorialEditorOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'tutorialEditorOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const c = tutorialCfg;
+  const pick = loadFactionChoice() || 'both';
+  const autoMine = tutorialStagePlayerDeck(1, pick), autoRival = tutorialStageOpponentDeck(1, pick);
+  const sum = d=> Object.values(d||{}).reduce((a,b)=> a+b, 0);
+  ov.innerHTML = `<div class="modal tutorial-editor" role="dialog" aria-label="Tutorial editor">
+    <div class="modal-head-row"><h2>🎓 Tutorial editor</h2><button class="modal-close-btn" id="teClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
+    <div class="te-grid">
+      <label>Your castle HP<input type="number" id="teMyHp" min="1" max="200" value="${c.myHp||30}"></label>
+      <label>Rival castle HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
+      <label>Starting hand<input type="number" id="teHand" min="1" max="5" value="${c.handSize||3}"></label>
+      <label>Seed<input type="number" id="teSeed" min="0" value="${c.seed||TUTORIAL_SEED}" title="The tutorial always plays the same draws for a given seed"></label>
+    </div>
+    <div class="te-grid">
+      ${['otters','hummingbirds','both'].map(f=> `<label>Rival name (${f==='both'?'picked both':'picked '+f})<input type="text" id="teRival_${f}" maxlength="40" value="${escapeAttr((c.rivalNames||{})[f]||'')}"></label>`).join('')}
+    </div>
+    <div class="te-grid te-decks">
+      <label>Your deck <small>(one per line: card-id x2 · empty = automatic, ${sum(autoMine)} cards)</small><textarea id="teMyDeck" rows="6" placeholder="${escapeAttr(deckToText(autoMine))}">${escapeHtml(deckToText(c.myDeck))}</textarea></label>
+      <label>Rival deck <small>(empty = automatic, ${sum(autoRival)} cards)</small><textarea id="teRivalDeck" rows="6" placeholder="${escapeAttr(deckToText(autoRival))}">${escapeHtml(deckToText(c.rivalDeck))}</textarea></label>
+    </div>
+    <h3>Guided steps</h3>
+    <div class="te-steps">${GUIDED_STEPS.map(st=> `<label>${escapeHtml(st.id.replace('g-',''))} ${st.block?'<small>(blocks until Next)</small>':st.action?'<small>(waits for the action)</small>':''}<textarea rows="2" data-testep="${st.id}" placeholder="${escapeAttr(st.text)}">${escapeHtml((c.steps||{})[st.id]||'')}</textarea></label>`).join('')}</div>
+    <p class="te-msg" id="teMsg" role="status"></p>
+    <div class="te-actions">
+      <button type="button" class="btn ghost small" id="teReset">↺ Reset to defaults</button>
+      <span style="flex:1"></span>
+      <button type="button" class="btn small" id="teTest">▶ Test the tutorial</button>
+      <button type="button" class="btn primary" id="teSave">💾 Save${cloudCardAdmin?' & publish':''}</button>
+    </div>
+  </div>`;
+  ov.hidden = false;
+  const $ = id=> ov.querySelector('#'+id);
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key==='Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  $('teClose').onclick = close;
+  const read = ()=>{
+    const my = textToDeck($('teMyDeck').value), rv = textToDeck($('teRivalDeck').value);
+    const bad = my.bad.concat(rv.bad);
+    if(bad.length){ $('teMsg').textContent = '⚠️ Unknown card ids: ' + bad.join(', '); return null; }
+    const steps = {}; ov.querySelectorAll('[data-testep]').forEach(t=>{ const v = t.value.trim(); if(v) steps[t.dataset.testep] = v; });
+    return {myHp: Math.max(1, +$('teMyHp').value||12), rivalHp: Math.max(1, +$('teRivalHp').value||10), handSize: Math.max(1, Math.min(5, +$('teHand').value||3)), seed: (+$('teSeed').value>>>0) || TUTORIAL_SEED,
+      rivalNames: {otters: $('teRival_otters').value.trim(), hummingbirds: $('teRival_hummingbirds').value.trim(), both: $('teRival_both').value.trim()},
+      myDeck: my.deck, rivalDeck: rv.deck, steps};
+  };
+  $('teSave').onclick = async ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); const pub = await publishTutorialCfg(); $('teMsg').textContent = pub ? '✅ Saved and published.' : '✅ Saved in this browser.'; };
+  $('teReset').onclick = ()=>{ tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT); saveTutorialCfg(); openTutorialEditor(); };
+  $('teTest').onclick = ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); saveTutorialCfg();
+    close(); GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
+    startTutorialMatch(1, null, {adminTest:true}); };
+}
+function startTutorialMatch(stage, arrangedIds, opts){
   const pick = loadFactionChoice() || 'both';
   const st = stage || loadTutorialStage();
-  forcedNextSeed = TUTORIAL_SEED;
+  const cfg = tutorialCfg;
+  forcedNextSeed = (cfg.seed>>>0) || TUTORIAL_SEED;
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
-  const deckCounts = tutorialStagePlayerDeck(st, pick, arrangedIds);
+  const myCharacter = Object.assign({}, CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'], cfg.myHp ? {health: cfg.myHp} : {});
+  const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
+  const deckCounts = validDeck(cfg.myDeck) || tutorialStagePlayerDeck(st, pick, arrangedIds);
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
   // whole section's header comment for why skirmish decks stay scratch-only until the series is
   // actually won.
-  const rivalName = pick==='hummingbirds' ? 'Rivergate Otter Scout' : 'Sunfeather Fledgling Guard';
-  const rivalCharacter = Object.assign({}, CHARACTER_DEFS['castle'], {id:'tutorial-rival', name: rivalName});
+  const rivalName = (cfg.rivalNames && cfg.rivalNames[pick]) || (pick==='hummingbirds' ? 'Rivergate Otter Scout' : 'Sunfeather Fledgling Guard');
+  const rivalCharacter = Object.assign({}, CHARACTER_DEFS['castle'], {id:'tutorial-rival', name: rivalName}, cfg.rivalHp ? {health: cfg.rivalHp} : {});
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
-    2: engine.newPlayer(2, tutorialStageOpponentDeck(st, pick), rivalCharacter),
+    2: engine.newPlayer(2, validDeck(cfg.rivalDeck) || tutorialStageOpponentDeck(st, pick), rivalCharacter),
   };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
-  engine.draw(players[1], 3, 'A', stats, []);
-  engine.draw(players[2], 3, 'B', stats, []);
+  const hand = Math.max(1, Math.min(5, cfg.handSize||3));
+  engine.draw(players[1], hand, 'A', stats, []);
+  engine.draw(players[2], hand, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'tutorial', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // 2026-09-25, explicit request ("Let's make a leader card for the tutorial - call them
@@ -9870,7 +9957,7 @@ function startTutorialMatch(stage, arrangedIds){
     // ('otters'/'hummingbirds'/'both') the same way. Summonable every tutorial stage — nothing
     // here gates it to a single stage — giving new players an early, repeatable look at the
     // Leader-summon mechanic on top of the wait/cost lessons the stages already teach.
-    leaderDefId:'wandering-traveller', leaderUid:null, tutorialFaction:pick, tutorialStage:st};
+    leaderDefId:'wandering-traveller', leaderUid:null, tutorialFaction:pick, tutorialStage:st, adminTest: !!(opts && opts.adminTest)};
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
   switchTab('play');
@@ -9935,6 +10022,7 @@ function showTutorialDeckPicker(){
 // myUnlockedCardIds directly -- same net effect, now going through the one shared, logged unlock
 // path every card-reward source should use going forward.
 function claimTutorialWin(pick){
+  if(matchState && matchState.adminTest){ showToast('🎓 Tutorial test finished — nothing was granted.', 'ok'); return false; }
   const firstTime = !loadTutorialDone();
   if(firstTime){ grantTutorialSeriesRewards(pick); myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck(); saveTutorialDone(); }
   return firstTime;
@@ -10889,6 +10977,8 @@ function renderAdmin(){
     </div>
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
+    <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
+      <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
@@ -10973,6 +11063,7 @@ function renderAdmin(){
                     // below; the Codex's Create-a-Card button/card-click gate reads adminModeEnabled
                     // fresh the next time IT renders.
   });
+  const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
   wireRollTableAdmin();
@@ -15527,18 +15618,14 @@ function showCoachTip(tip, anchorEl){
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
   const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
-  b.innerHTML = `<div class="coach-text">${escapeHtml(tip.text)}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
+  b.innerHTML = `<div class="coach-text">${escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text)}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
+    // 2026-10-03 (explicit: "for the tutorial's first few tutorial guides - user cannot take any
+    // action but the one the tutorial wants"): the shield blocks everything, Quit included, until
+    // Next. Only the guided tutorial steps ever block; passive tips never do.
     coachShield = document.createElement('div'); coachShield.className = 'coach-shield';
-    // 2026-10-03 flow audit ("player can't quit"): the shield covered the Quit/Settings buttons
-    // during the guided tutorial steps. Clicks that land on those controls pass through.
-    coachShield.addEventListener('click', e=>{
-      for(const id of ['quitMatchBtn','forfeitMatchBtn','settingsBtnHud']){
-        const q = document.getElementById(id); if(!q) continue; const r = q.getBoundingClientRect();
-        if(e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom){ hideCoachTip(); q.click(); return; }
-      }
-    });
+    coachShield.addEventListener('click', ()=>{ b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); });
     document.body.appendChild(coachShield);
   }
   document.body.appendChild(b);
@@ -15570,10 +15657,24 @@ function showCoachTip(tip, anchorEl){
   anchorEl.classList.add('coach-anchor'); if(tip.block) anchorEl.classList.add('coach-locked');
   const tick = setInterval(place, 250);
   coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick};
+  // Guided "do this" steps lock everything except what the step asks for (the hand and your
+  // board row for "play a card"); a click anywhere else just nudges the tip.
+  if(tip.action && GUIDED_STEPS.includes(tip)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b};
   const ok = b.querySelector('.coach-ok');
   if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
 }
+let tutorialLock = null;
+['pointerdown','mousedown','click','dragstart','touchstart','keydown'].forEach(type=> document.addEventListener(type, e=>{
+  if(!tutorialLock) return;
+  if(!matchState || matchState.mode!=='tutorial'){ tutorialLock = null; return; }
+  const t = e.target;
+  if(type==='keydown' && (e.key==='Tab' || e.key==='Shift')) return;
+  if(t && t.closest && tutorialLock.allow.some(sel=> t.closest(sel))) return;
+  e.stopPropagation(); e.preventDefault();
+  if(type==='click' || type==='keydown'){ const b = tutorialLock.tip; if(b){ b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); } }
+}, true));
 function hideCoachTip(){
+  tutorialLock = null;
   if(coachShield){ coachShield.remove(); coachShield = null; }
   if(!coachOpen) return;
   clearInterval(coachOpen.tick); coachOpen.el.remove();
@@ -18245,10 +18346,10 @@ function renderHome(){
       <h1 class="home-menu-title">Bramblewood Arena</h1>
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
-      <div class="home-grid">
+      ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span></button>
         ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
-      </div>
+      </div>` : `<p class="home-tutorial-lock">🔒 Play, Deck, Codex, Shop and the Nest open once you finish the tutorial.</p>`}
       ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More opens up as you cross the map — look for <b>!</b> icons.</p>` : ''}
       ${(tabOpen('quests') || community.length) ? `<div class="home-menu-row home-extras">
         ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
@@ -19530,7 +19631,17 @@ function renderMarketInto(body){
   };
 }
 
+// 2026-10-03 (explicit: "the player MUST complete tutorial to continue"): until the tutorial is
+// won, the only places open are Home (which offers it), Profile (sign-in) and Admin for admins.
+const TUTORIAL_FREE_TABS = new Set(['home','profile','admin']);
+function tutorialGateBlocks(tab){
+  if(loadTutorialDone() || TUTORIAL_FREE_TABS.has(tab)) return false;
+  if(tab==='play' && matchState && matchState.mode==='tutorial') return false;
+  if(adminModeEnabled || devModeEnabled) return false;
+  return true;
+}
 function switchTab(tab){
+  if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
   if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;

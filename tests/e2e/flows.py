@@ -47,7 +47,7 @@ async def main():
     # 1. quit from each mode
     for label, js in [('quick battle', "startMatch('ai')"), ('pass&play', "startMatch('pc')"), ('gauntlet', "startMatch('gauntlet')"),
                       ('dungeon', "startDungeonFight()"), ('conquest', "(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key);})()"),
-                      ('offline raid', "startOfflineRaidMatch()"), ('tutorial', "beginTutorialStage(1)")]:
+                      ('offline raid', "startOfflineRaidMatch()"), ('tutorial (after the guided steps)', "GUIDED_STEPS.forEach(st=> markCoachSeen(st.id)); beginTutorialStage(1)")]:
         pg, errs = await fresh(b)
         try:
             await pg.evaluate(f"(()=>{{ playSubTab='arena'; switchTab('play'); {js}; return 1; }})()"); await pg.wait_for_timeout(900)
@@ -62,6 +62,34 @@ async def main():
         except Exception as e: bad(f'{label}: {e}')
         if errs: bad(f'{label}: page errors {errs[:2]}')
         await pg.close()
+    # 1-tut. the tutorial's first guided steps lock everything but the step; the tutorial gates the game
+    pg, errs = await fresh(b)
+    await pg.evaluate("localStorage.removeItem('bramblewood_arena_tutorial_done'); GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); beginTutorialStage(1); 1"); await pg.wait_for_timeout(1500)
+    q = await pg.query_selector('#quitMatchBtn')
+    if q:
+        bb = await q.bounding_box(); await pg.mouse.click(bb['x']+bb['width']/2, bb['y']+bb['height']/2); await pg.wait_for_timeout(500)
+        if not await pg.evaluate("!!matchState && matchState.mode==='tutorial'"): bad('tutorial: Quit worked during a guided step (should be locked)')
+    # click Next through the blocking steps, then the play step locks Quit but allows playing a card
+    for _ in range(6):
+        nx = await pg.query_selector('.coach-tip .coach-ok')
+        if not nx: break
+        await nx.click(); await pg.wait_for_timeout(450)
+    if await pg.evaluate("!!(coachOpen && coachOpen.tip.id==='g-play')"):
+        bb = await q.bounding_box(); await pg.mouse.click(bb['x']+bb['width']/2, bb['y']+bb['height']/2); await pg.wait_for_timeout(400)
+        if not await pg.evaluate("!!matchState"): bad('tutorial: Quit worked during the "play a card" step')
+        hc = await pg.query_selector('#handStrip .card-tile.playable')
+        if hc:
+            await hc.click(); await pg.wait_for_timeout(200)
+            row = await pg.query_selector('#rowMine'); rb = await row.bounding_box()
+            await pg.mouse.click(rb['x']+rb['width']*0.3, rb['y']+rb['height']/2); await pg.wait_for_timeout(600)
+            if await pg.evaluate("!['left','center','right'].some(sd=> matchState.players[1].row[sd].length)"): bad('tutorial: could not play a card during the "play a card" step')
+    else: bad('tutorial: never reached the "play a card" step')
+    await pg.evaluate("endMatch(); 1"); await pg.wait_for_timeout(200)
+    await pg.evaluate("switchTab('codex'); 1"); await pg.wait_for_timeout(200)
+    if await pg.evaluate("currentTab")!='home': bad('tutorial gate: Codex opened before the tutorial was finished')
+    if await pg.evaluate("!!document.querySelector('#view-home .home-grid')"): bad('tutorial gate: Home shows the menu before the tutorial is finished')
+    if errs: bad(f'tutorial lock: page errors {errs[:2]}')
+    await pg.close()
     # 1a. phone: Quit reachable in a quick battle
     pg, errs = await fresh(b, 390, 844)
     await pg.evaluate("playSubTab='arena'; switchTab('play'); startMatch('ai'); 1"); await pg.wait_for_timeout(900)
