@@ -1,0 +1,130 @@
+[
+  {
+    "id": "goliath",
+    "name": "The Goliath",
+    "icon": "🐙",
+    "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.",
+    "cost": {
+      "raidPoints": 1,
+      "energy": 4
+    },
+    "parts": [
+      {
+        "id": "left",
+        "name": "Left Tentacle",
+        "icon": "🦑",
+        "bars": 3,
+        "barHp": 80000,
+        "fight": {
+          "castleHp": 160,
+          "deck": {
+            "kraken-spawnling": 4,
+            "riptide-eel": 3,
+            "moray-ambusher": 3
+          }
+        }
+      },
+      {
+        "id": "right",
+        "name": "Right Tentacle",
+        "icon": "🦑",
+        "bars": 3,
+        "barHp": 80000,
+        "fight": {
+          "castleHp": 100,
+          "deck": {
+            "kraken-spawnling": 4,
+            "reef-manta-glider": 3,
+            "coral-reef-shark": 3
+          }
+        }
+      },
+      {
+        "id": "tail",
+        "name": "Tail",
+        "icon": "🌊",
+        "bars": 3,
+        "barHp": 80000,
+        "fight": {
+          "castleHp": 150,
+          "deck": {
+            "humpback-elder": 3,
+            "orca-vanguard": 3,
+            "riptide-eel": 4
+          }
+        }
+      },
+      {
+        "id": "core",
+        "name": "Core",
+        "icon": "👁️",
+        "bars": 8,
+        "barHp": 80000,
+        "lockedUntil": [
+          "left",
+          "right",
+          "tail"
+        ],
+        "fight": {
+          "castleHp": 200,
+          "deck": {
+            "humpback-elder": 4,
+            "orca-vanguard": 4,
+            "kraken-spawnling": 4,
+            "coral-reef-shark": 3
+          }
+        }
+      }
+    ],
+    "stages": [
+      {
+        "at": 0.75,
+        "name": "Enraged"
+      },
+      {
+        "at": 0.5,
+        "name": "Thrashing"
+      },
+      {
+        "at": 0.01,
+        "name": "Exposed",
+        "rules": [
+          {
+            "stripAbilities": true
+          }
+        ]
+      }
+    ],
+    "scoring": {
+      "perInFightHp": 50,
+      "cap": 5000,
+      "overwhelmCap": 10000
+    },
+    "standIns": {
+      "perDayPct": 12
+    },
+    "rewards": {
+      "kill": {
+        "gold": 400,
+        "dust": 60,
+        "metal": 3
+      },
+      "compensationPct": 40,
+      "tiers": {
+        "top1": {
+          "metal": 3,
+          "title": "Goliath-Slayer"
+        },
+        "top10": {
+          "metal": 2,
+          "dust": 30
+        },
+        "top50": {
+          "dust": 20
+        },
+        "participant": {}
+      }
+    },
+    "fightRounds": 12
+  }
+]

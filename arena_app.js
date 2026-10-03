@@ -1414,6 +1414,8 @@ function persistMapLayouts(){ try{ localStorage.setItem(MAP_LAYOUT_KEY, JSON.str
 function applyCloudCfgRow(r){
   const mn = /^__cfg:map-nodes:(.+)$/.exec(r.id);
   if(mn){ applyCloudNodeEdits(mn[1], r); return; }
+  const mr = /^__cfg:raid:(.+)$/.exec(r.id);
+  if(mr){ applyCloudRaidDef(mr[1], r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
   if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
@@ -6830,7 +6832,7 @@ async function liveRefreshRaid(bossId, cycle){
 }
 function livePushRaidAttempt(a, onDone){
   if(!liveCanWrite()){ onDone && onDone(false); return; }
-  sbClient.from('raid_week_attempts').insert({boss_id: a.bossId, cycle: a.cycle, owner_id: cloudUserId, display_name: a.name, avatar: a.avatar, deck: a.deck, damage: Math.max(0, Math.min(1000, a.damage|0)), won: !!a.won})
+  sbClient.from('raid_week_attempts').insert({boss_id: a.bossId, cycle: a.cycle, owner_id: cloudUserId, display_name: a.name, avatar: a.avatar, deck: a.deck, damage: Math.max(0, Math.min(10000, a.damage|0)), won: !!a.won})
     .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; onDone && onDone(!error); }, ()=> onDone && onDone(false));
 }
 // Progress blob: these localStorage keys follow you across devices.
@@ -7301,7 +7303,7 @@ const QUEST_TIERS = {
       {id:'w1-units', counter:'unitsDefeated', goal:100, label:'Defeat 100 enemy units'}]},
     {reward:{gold:150, dust:20, metal:1}, quests:[
       {id:'w2-raid', counter:'raidsJoined', goal:3, label:'Join 3 Raids'},
-      {id:'w2-raiddmg', counter:'raidDamage', goal:400, label:'Deal 400 Raid damage'},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:20000, label:'Deal 20,000 Raid damage'},
       {id:'w2-wins', counter:'wins', goal:15, label:'Win 15 matches'}]},
     {reward:{gold:70, dust:10}, quests:[
       {id:'w3-conquest', counter:'conquestWins', goal:10, label:'Clear 10 Conquest fights'},
@@ -7314,7 +7316,7 @@ const STAT_MEDALS = [
   {counter:'wins', label:'Matches won', icon:'🏆', steps:[10, 100, 500, 2000]},
   {counter:'pvpWins', label:'PvP wins', icon:'🎟️', steps:[10, 100, 500, 2000]},
   {counter:'conquestWins', label:'Conquest fights cleared', icon:'🗺️', steps:[10, 100, 400, 1500]},
-  {counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:[1000, 10000, 50000, 250000]},
+  {counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:[10000, 100000, 500000, 2500000]},
   {counter:'energyConquest', label:'Energy spent', icon:'⚡', steps:[200, 2000, 10000, 50000]},
 ];
 const MEDAL_NAMES = ['Bronze','Silver','Gold','Platinum'];
@@ -8805,6 +8807,340 @@ function settleOfflineRaidAfterMatch(m){
 }
 // Online Raid hidden 2026-10-03 ("Hide it for now") — code kept; flip this to bring it back.
 const ONLINE_RAID_VISIBLE = false;
+// ---- Raid P1 (2026-10-03, see docs/raid-design.md): multi-part raids from canonical/raids.json
+// (+ admin edits). Pick a part to fight with today's engine; in-fight castle damage converts into
+// raid damage (caps 5,000 / 10,000 for an overwhelm); locked parts wait for others; stages as HP
+// falls; everyone who took part claims the kill reward (or 40% compensation if it survives the
+// week), plus contribution-tier extras. Rules live in bramblewood-raid.js. ----
+const RAID_DEFS_BASE = __RAIDS__;
+const RAID_DEFS_KEY = 'bramblewood_raid_defs_v1';
+const RAID_PART_ATTEMPTS_KEY = 'bramblewood_raid_part_attempts_v1';
+const RAID_CLAIMS_KEY = 'bramblewood_raid_claims_v1';
+const RaidM = (typeof BramblewoodRaid!=='undefined') ? BramblewoodRaid : null;
+let raidDefEdits = {};
+try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {}; }catch(e){ raidDefEdits = {}; }
+function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=> raidDefEdits[d.id] || d); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
+function activeRaidDef(){ return allRaidDefs().find(d=> d.live!==false) || null; }
+function applyCloudRaidDef(id, r){
+  if(r.deleted || !r.data || !r.data.def) delete raidDefEdits[id]; else raidDefEdits[id] = r.data.def;
+  try{ localStorage.setItem(RAID_DEFS_KEY, JSON.stringify(raidDefEdits)); }catch(e){}
+  try{ if(playSubTab==='raid' && document.getElementById('playSubBody') && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); }catch(e){}
+}
+function loadRaidPartAttempts(){ try{ return JSON.parse(localStorage.getItem(RAID_PART_ATTEMPTS_KEY)||'[]') || []; }catch(e){ return []; } }
+function saveRaidPartAttempts(l){ try{ localStorage.setItem(RAID_PART_ATTEMPTS_KEY, JSON.stringify(l.slice(-500))); }catch(e){} }
+const liveRaidParts = {}; // `${raidId}:${cycle}` -> {at, rows}
+async function liveRefreshRaidParts(raidId, cycle){
+  if(!sbClient || LiveData.available===false) return false;
+  const key = raidId+':'+cycle, cur = liveRaidParts[key];
+  if(cur && Date.now() - cur.at < 60*1000) return false;
+  liveRaidParts[key] = {at: Date.now(), rows: cur ? cur.rows : []};
+  try{
+    const { data, error } = await sbClient.from('raid_week_attempts').select('boss_id, owner_id, display_name, damage, fought_at').like('boss_id', raidId+':%').eq('cycle', cycle).order('fought_at', {ascending:true}).limit(5000);
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return false; }
+    LiveData.available = true;
+    liveRaidParts[key] = {at: Date.now(), rows: (data||[]).map(r=> ({raidId, part: String(r.boss_id).split(':')[1], cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true}))};
+    return true;
+  }catch(e){ return false; }
+}
+function currentRaidAttempts(def, cycle){
+  const live = (liveRaidParts[def.id+':'+cycle] || {}).rows || [];
+  return live.concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===cycle && !a.pushed));
+}
+function currentRaidStateFor(def, now){
+  now = now || Date.now();
+  const cycle = RaidM.cycleOf(now);
+  return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
+}
+function raidBarsHTML(ps){
+  const p = ps.def, bars = Math.max(1, p.bars|0);
+  let html = '';
+  for(let i=0;i<bars;i++){ const fill = Math.max(0, Math.min(1, ps.barsLeft - (bars-1-i))); html += `<span class="rp-bar"><span style="width:${Math.round(fill*100)}%"></span></span>`; }
+  return `<div class="rp-bars" title="${bars} bars × ${(p.barHp||0).toLocaleString()} HP">${html}</div>`;
+}
+function raidClaimsFor(def){
+  // a claim is possible for this cycle (if the raid fell) or the previous cycle (compensation)
+  const now = Date.now(), cyc = RaidM.cycleOf(now), me = myGhostOwnerId();
+  let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
+  const out = [];
+  [cyc, cyc-1].forEach(c=>{
+    const key = def.id+':'+c; if(claimed[key]) return;
+    const st = RaidM.raidState(def, currentRaidAttempts(def, c).concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && !currentRaidAttempts(def, c).some(x=> x.at===a.at))), c===cyc ? now : (c+1)*RaidM.CYCLE_MS - 1, {cycle:c});
+    const rw = RaidM.claimableReward(def, st, me, now);
+    if(rw) out.push({key, cycle:c, reward: rw});
+  });
+  return out;
+}
+function claimRaidReward(def, claim){
+  const all = Object.assign({}, claim.reward.base);
+  Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
+  Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
+  let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
+  claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
+  awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
+  showToast(`🐙 ${claim.reward.kind==='kill' ? 'Raid felled!' : 'Raid compensation'}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+}
+function raidPanelHTML(){
+  if(!RaidM) return '';
+  const def = activeRaidDef(); if(!def) return '';
+  const st = currentRaidStateFor(def);
+  liveRefreshRaidParts(def.id, st.cycle).then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); });
+  const daysLeft = Math.max(1, Math.ceil(((st.cycle+1)*RaidM.CYCLE_MS - Date.now()) / (24*3600*1000)));
+  const me = myGhostOwnerId(), mine = st.contributors[me] || 0, tier = RaidM.contributionTier(st, me);
+  const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
+  const claims = raidClaimsFor(def);
+  const cost = def.cost || {};
+  return `<div class="panel raid2-panel">
+    <div class="r2-head"><span class="r2-ico">${def.icon||'🐙'}</span><div><h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+      <p class="panel-sub">${escapeHtml(def.blurb||'')}</p></div>
+      ${adminModeEnabled ? `<button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button>` : ''}</div>
+    <div class="r2-total"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
+      <span><b>${st.remaining.toLocaleString()}</b> / ${st.total.toLocaleString()} · ${daysLeft} day${daysLeft===1?'':'s'} left</span></div>
+    ${claims.map((c,i)=> `<div class="r2-claim">🎁 ${c.reward.kind==='kill' ? 'The raid fell — claim your reward!' : 'Last week’s raid survived — claim your compensation.'} <button type="button" class="btn small primary" data-raid-claim="${i}">Claim</button></div>`).join('')}
+    <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
+      const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
+      return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
+        <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${Math.ceil(ps.remaining).toLocaleString()}</span></div>
+        ${raidBarsHTML(ps)}
+        <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
+          <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
+      </div>`; }).join('')}</div>
+    <p class="r2-me">Your damage this week: <b>${mine.toLocaleString()}</b>${tierLabel ? ` · ${tierLabel}` : ' — fight any open part to join'} · Raid Points: ${currentRaidPoints()}/${RAID_POINTS_MAX}</p>
+    <p class="r2-rules">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${((def.scoring||{}).cap||5000).toLocaleString()}</b> damage — destroy the part's castle (an <b>overwhelm</b>) for <b>${((def.scoring||{}).overwhelmCap||10000).toLocaleString()}</b>. If it falls, everyone who fought wins; if it survives the week, everyone gets ${((def.rewards||{}).compensationPct!=null ? def.rewards.compensationPct : 40)}% as compensation.</p>
+  </div>`;
+}
+function wireRaidPanel(){
+  const def = activeRaidDef(); if(!def) return;
+  document.querySelectorAll('[data-raid-part]').forEach(b=> b.addEventListener('click', ()=> startRaidPartMatch(def, b.dataset.raidPart)));
+  const claims = raidClaimsFor(def);
+  document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
+  const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
+}
+// Raid editor (Admin, Raid P1): parts (bars, bar HP, fight castle, lock order, enemy deck), stages,
+// scoring caps, stand-ins, cost and rewards. Validates with BramblewoodRaid.validateRaid, simulates
+// each part vs your deck, saves in this browser and publishes `__cfg:raid:<id>` for every player.
+function raidRewardDefaults(def){ def.rewards = def.rewards || {}; def.rewards.kill = def.rewards.kill || {}; def.rewards.tiers = def.rewards.tiers || {}; return def.rewards; }
+function simulateRaidPart(def, part, strip, n){
+  let defs = getCardDefs(), deck = Object.assign({}, (part.fight||{}).deck||{});
+  if(strip){ defs = Object.assign({}, defs); const d2 = {}; Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}}); d2[nid] = deck[id]; }); deck = d2; }
+  const castle = (part.fight||{}).castleHp || 200;
+  const myChar = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS.castle;
+  let total = 0, over = 0;
+  for(let i=0;i<n;i++){
+    const engine = makeSimEngine(defs, seededRng(7700+i), {recordEvents:false, suddenDeathCastles:false});
+    const sideOf = id=> id===1?'A':'B', stats = {};
+    const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, deck, {id:'sim-raid', name: part.name, health: castle, effects:{}})};
+    P[2].loopCards = [];
+    engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
+    let lastSig = null, stalled = 0;
+    const rounds = RaidM.fightRounds(def, part);
+    for(let r=1; r<=rounds; r++){
+      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND);
+      [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
+      engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
+      if(engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2)) break;
+      const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2) break;
+      engine.draw(P[1], 1, 'A', stats, null); engine.draw(P[2], 1, 'B', stats, null);
+    }
+    const ow = P[2].hq.hp <= 0; if(ow) over++;
+    total += RaidM.contributionFor(def, castle - Math.max(0, P[2].hq.hp), ow);
+  }
+  return {n, avg: total/n, overwhelmPct: over/n*100};
+}
+function openRaidEditor(raidId){
+  if(!RaidM) return;
+  const src = allRaidDefs().find(d=> d.id===raidId); if(!src) return;
+  let overlay = document.getElementById('raidEditorOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'raidEditorOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const draft = JSON.parse(JSON.stringify(src));
+  draft.parts = draft.parts || []; draft.stages = draft.stages || []; draft.scoring = draft.scoring || {}; draft.standIns = draft.standIns || {}; draft.cost = draft.cost || {};
+  raidRewardDefaults(draft);
+  let openPart = draft.parts[0] ? draft.parts[0].id : null, q = '', simText = {}, dirty = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
+  const num = (v, d)=>{ const n = Number(v); return isFinite(n) ? n : d; };
+  const render = ()=>{
+    const defs = getCardDefs();
+    const errs = RaidM.validateRaid(draft, defs);
+    const st = RaidM.raidState(Object.assign({}, draft, {standIns:{perDayPct:0}}), [], Date.now());
+    const P = draft.parts.find(p=> p.id===openPart);
+    const deck = P ? ((P.fight = P.fight || {}).deck = P.fight.deck || {}) : {};
+    const matches = (!P || q.trim().length < 2) ? [] : Object.keys(defs).filter(id=> !defs[id].test && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 18);
+    const rw = draft.rewards;
+    const tierRow = t=> `<label>${({top1:'Top 1%',top10:'Top 10%',top50:'Top 50%',participant:'Participant'})[t]} extra gold<input type="number" min="0" data-tier-gold="${t}" value="${(rw.tiers[t]||{}).gold||0}"></label><label>…title<input data-tier-title="${t}" value="${escapeAttr((rw.tiers[t]||{}).title||'')}"></label>`;
+    overlay.innerHTML = `<div class="modal skirmish-editor raid-editor" role="dialog" aria-label="Raid editor">
+      <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Raid')} <span class="se-key">${escapeHtml(draft.id)}${raidDefEdits[draft.id] ? ' · edited' : ''}</span></h2><button class="modal-close-btn" id="reClose" aria-label="Close">✕</button></div>
+      ${errs.length ? `<div class="re-errs">⚠️ ${errs.map(escapeHtml).join(' · ')}</div>` : ''}
+      <div class="se-grid">
+        <label>Name<input id="reName" value="${escapeAttr(draft.name||'')}"></label>
+        <label>Icon<input id="reIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
+        <label>Raid Points per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints||0}"></label>
+        <label>Energy per fight<input id="reCostEn" type="number" min="0" max="20" value="${draft.cost.energy||0}"></label>
+        <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||12}"></label>
+        <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
+        <label class="se-chk"><input type="checkbox" id="reLive" ${draft.live!==false?'checked':''}> Live this week</label>
+      </div>
+      <h3 class="se-h">Parts · ${st.total.toLocaleString()} HP in all</h3>
+      <div class="re-parts">${draft.parts.map(p=> `<button type="button" class="re-part-tab ${p.id===openPart?'on':''}" data-open-part="${escapeAttr(p.id)}">${escapeHtml(p.icon||'🎯')} ${escapeHtml(p.name||p.id)}<small>${p.bars}×${(p.barHp||0).toLocaleString()}${(p.lockedUntil||[]).length?' 🔒':''}</small></button>`).join('')}<button type="button" class="btn small" id="reAddPart">＋ Part</button></div>
+      ${P ? `<div class="se-grid re-part">
+        <label>Part name<input data-pf="name" value="${escapeAttr(P.name||'')}"></label>
+        <label>Icon<input data-pf="icon" value="${escapeAttr(P.icon||'')}" maxlength="4"></label>
+        <label>HP bars<input data-pf="bars" type="number" min="1" max="20" value="${P.bars||1}"></label>
+        <label>HP per bar<input data-pf="barHp" type="number" min="1000" step="1000" value="${P.barHp||80000}"></label>
+        <label>Fight castle HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
+        <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
+        <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
+      </div>
+      <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
+      <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
+        <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
+      <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
+      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> (s.rules||[]).some(r=> r.stripAbilities)) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
+      ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
+      <h3 class="se-h">Stages (as total HP falls)</h3>
+      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
+      <h3 class="se-h">Scoring &amp; rewards</h3>
+      <div class="se-grid">
+        <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
+        <label>Cap per fight<input id="reCap" type="number" min="100" step="100" value="${draft.scoring.cap||5000}"></label>
+        <label>Overwhelm (castle destroyed)<input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||10000}"></label>
+        <label>Stand-in raiders % per day<input id="reStand" type="number" min="0" max="50" value="${draft.standIns.perDayPct||0}"></label>
+        <label>Kill: gold<input id="reKGold" type="number" min="0" value="${rw.kill.gold||0}"></label>
+        <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
+        <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
+        <label>Compensation % if it survives<input id="reComp" type="number" min="0" max="100" value="${rw.compensationPct!=null ? rw.compensationPct : 40}"></label>
+        ${['top1','top10','top50','participant'].map(tierRow).join('')}
+      </div>
+      <div class="se-actions">
+        ${RAID_DEFS_BASE.some(d=> d.id===draft.id) ? `<button type="button" class="btn ghost" id="reReset">↺ Reset to original</button>` : ''}
+        <span style="flex:1"></span>
+        <button type="button" class="btn primary" id="reSave" ${errs.length?'disabled title="Fix the problems above first"':''}>💾 Save${cloudCardAdmin?' & publish':''}</button>
+      </div>
+    </div>`;
+    overlay.hidden = false;
+    wire();
+  };
+  const read = ()=>{
+    const v = id=> (overlay.querySelector('#'+id)||{}).value;
+    draft.name = v('reName') || draft.name; draft.icon = v('reIcon') || draft.icon; draft.blurb = v('reBlurb') || '';
+    draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), 12))));
+    draft.cost.raidPoints = Math.max(0, num(v('reCostRp'), 1)); draft.cost.energy = Math.max(0, num(v('reCostEn'), 4));
+    const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
+    draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), 50)); draft.scoring.cap = Math.max(1, num(v('reCap'), 5000)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), 10000));
+    draft.standIns.perDayPct = Math.max(0, Math.min(50, num(v('reStand'), 0)));
+    const rw = draft.rewards;
+    rw.kill.gold = Math.max(0, num(v('reKGold'), 0)); rw.kill.dust = Math.max(0, num(v('reKDust'), 0)); rw.kill.metal = Math.max(0, num(v('reKMetal'), 0));
+    rw.compensationPct = Math.max(0, Math.min(100, num(v('reComp'), 40)));
+    overlay.querySelectorAll('[data-tier-gold]').forEach(el=>{ const t = el.dataset.tierGold; rw.tiers[t] = rw.tiers[t] || {}; const g = Math.max(0, num(el.value, 0)); if(g) rw.tiers[t].gold = g; else delete rw.tiers[t].gold; });
+    overlay.querySelectorAll('[data-tier-title]').forEach(el=>{ const t = el.dataset.tierTitle; rw.tiers[t] = rw.tiers[t] || {}; if(el.value.trim()) rw.tiers[t].title = el.value.trim(); else delete rw.tiers[t].title; });
+    const P = draft.parts.find(p=> p.id===openPart);
+    if(P){
+      overlay.querySelectorAll('[data-pf]').forEach(el=>{ const k = el.dataset.pf;
+        if(k==='name' || k==='icon') P[k] = el.value; else if(k==='castleHp') P.fight.castleHp = Math.max(10, num(el.value, 200));
+        else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
+      const locks = [...overlay.querySelectorAll('[data-lock]')].filter(c=> c.checked).map(c=> c.dataset.lock);
+      if(locks.length) P.lockedUntil = locks; else delete P.lockedUntil;
+    }
+    draft.stages.forEach((s,i)=>{
+      const n = overlay.querySelector(`[data-st-name="${i}"]`), a = overlay.querySelector(`[data-st-at="${i}"]`), x = overlay.querySelector(`[data-st-strip="${i}"]`);
+      if(n) s.name = n.value; if(a) s.at = Math.max(0, Math.min(0.999, num(a.value, 50)/100));
+      if(x){ s.rules = (s.rules||[]).filter(r=> !r.stripAbilities); if(x.checked) s.rules.push({stripAbilities:true}); }
+    });
+  };
+  const wire = ()=>{
+    const $ = id=> overlay.querySelector('#'+id);
+    // Text/number edits only update the draft + the problems line (a full re-render here would race
+    // the blur that fires when you click a button); checkboxes change the layout, so they re-render.
+    const refreshErrs = ()=>{ const errs = RaidM.validateRaid(draft, getCardDefs()); let box = overlay.querySelector('.re-errs');
+      if(errs.length){ if(!box){ box = document.createElement('div'); box.className = 're-errs'; overlay.querySelector('.modal-head-row').after(box); } box.textContent = '⚠️ ' + errs.join(' · '); } else if(box) box.remove();
+      const sv = $('reSave'); if(sv) sv.disabled = !!errs.length; };
+    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id==='reSearch') return; el.addEventListener('change', ()=>{ dirty = true; read(); if(el.type==='checkbox') render(); else refreshErrs(); }); });
+    $('reClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
+    overlay.querySelectorAll('[data-open-part]').forEach(b=> b.onclick = ()=>{ read(); openPart = b.dataset.openPart; q = ''; render(); });
+    $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:3, barHp:80000, fight:{castleHp:200, deck:{}}}); openPart = 'part'+i; dirty = true; render(); };
+    const P = draft.parts.find(p=> p.id===openPart);
+    if(P){
+      const deck = P.fight.deck;
+      overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); deck[b.dataset.inc]++; dirty = true; render(); });
+      overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); if(--deck[b.dataset.dec]<=0) delete deck[b.dataset.dec]; dirty = true; render(); });
+      overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); deck[b.dataset.add] = (deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
+      const search = $('reSearch');
+      search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = $('reSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
+      const sim = strip=>{ read(); const r = simulateRaidPart(draft, P, strip, 100); const need = Math.ceil(RaidM.partTotal(P) / Math.max(1, r.avg));
+        simText[P.id] = `Your deck vs ${escapeHtml(P.name)}${strip?' (Exposed)':''}, 100 attempts: <b>${Math.round(r.avg).toLocaleString()}</b> raid damage on average · <b>${r.overwhelmPct.toFixed(0)}%</b> overwhelms · about <b>${need.toLocaleString()}</b> attempts like yours to drain this part.`; render(); };
+      $('reSim').onclick = ()=> sim(false);
+      if($('reSimExposed')) $('reSimExposed').onclick = ()=> sim(true);
+      $('reDelPart').onclick = ()=>{ if(!confirm(`Remove ${P.name}?`)) return; draft.parts = draft.parts.filter(p=> p!==P); draft.parts.forEach(p=>{ if(p.lockedUntil){ p.lockedUntil = p.lockedUntil.filter(x=> x!==P.id); if(!p.lockedUntil.length) delete p.lockedUntil; } }); openPart = draft.parts[0] ? draft.parts[0].id : null; dirty = true; render(); };
+    }
+    $('reAddStage').onclick = ()=>{ read(); draft.stages.push({at:0.25, name:'New stage', rules:[]}); dirty = true; render(); };
+    overlay.querySelectorAll('[data-st-del]').forEach(b=> b.onclick = ()=>{ read(); draft.stages.splice(+b.dataset.stDel, 1); dirty = true; render(); });
+    $('reSave').onclick = async ()=>{
+      read(); if(RaidM.validateRaid(draft, getCardDefs()).length){ render(); return; }
+      draft.stages.sort((a,b)=> b.at - a.at);
+      raidDefEdits[draft.id] = JSON.parse(JSON.stringify(draft));
+      try{ localStorage.setItem(RAID_DEFS_KEY, JSON.stringify(raidDefEdits)); }catch(e){}
+      let published = false;
+      if(cloudCardAdmin){ try{ published = await cloudWriteCardOverride('__cfg:raid:'+draft.id, {data:{kind:'raid', def: raidDefEdits[draft.id]}, deleted:false, deleted_snapshot:null}); }catch(e){ published = false; } }
+      showToast(published ? `☁️ ${draft.name} published — live for every player.` : `💾 ${draft.name} saved in this browser.`, 'ok');
+      dirty = false; close();
+    };
+    const reset = $('reReset');
+    if(reset) reset.onclick = async ()=>{ if(!confirm('Drop every edit to this raid?')) return; delete raidDefEdits[draft.id]; try{ localStorage.setItem(RAID_DEFS_KEY, JSON.stringify(raidDefEdits)); }catch(e){}
+      if(cloudCardAdmin){ try{ await cloudWriteCardOverride('__cfg:raid:'+draft.id, {data:null, deleted:true, deleted_snapshot:null}); }catch(e){} }
+      showToast('↺ Raid reset.', 'ok'); dirty = false; close(); };
+  };
+  overlay.onclick = ev=>{ if(ev.target===overlay){ if(dirty && !confirm('Close without saving your changes?')) return; close(); } };
+  render();
+}
+function startRaidPartMatch(def, partId){
+  const st = currentRaidStateFor(def);
+  const f = RaidM.fightFor(def, st, partId);
+  if(!f || f.locked || f.defeated) return;
+  if(!deckSizeOkOrWarn()) return;
+  const cost = def.cost || {};
+  if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ alert(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 and you have ${currentRaidPoints()}🎫. They refill 1 every 6 hours.`); return; }
+  if(!spendEnergy(cost.energy||0)){ alert(`Not enough Energy — this costs ${cost.energy}⚡ and you have ${currentEnergy()}⚡.`); return; }
+  if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+  bumpQuestCounter('raidsJoined', 1);
+  // "Exposed" stage: the part's cards fight without their abilities (run-only copies).
+  let defs = getCardDefs(), deck = f.deck;
+  if(f.stripAbilities){
+    defs = Object.assign({}, defs); deck = {};
+    Object.keys(f.deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}, name: defs[id].name+' (exposed)'}); deck[nid] = f.deck[id]; });
+  }
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
+  const sideOf = id=> id===1?'A':'B';
+  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
+  const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
+  const stats = {};
+  engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
+    mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
+    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: myLeaderId, leaderUid: null};
+  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+}
+function settleRaidPartAfterMatch(m){
+  const def = m.raidDef;
+  const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
+  const overwhelmed = m.players[2].hq.hp <= 0 && m.endReason!=='forfeit';
+  const contribution = RaidM.contributionFor(def, dealt, overwhelmed);
+  const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, at: Date.now()};
+  const list = loadRaidPartAttempts(); list.push(attempt); saveRaidPartAttempts(list);
+  livePushRaidAttempt({bossId: def.id+':'+m.raidPart, cycle: m.raidCycle, name: attempt.name, avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: contribution, won: overwhelmed}, ok=>{
+    if(!ok) return; const l = loadRaidPartAttempts(); const x = l.find(a=> a.at===attempt.at); if(x){ x.pushed = true; saveRaidPartAttempts(l); }
+    const k = def.id+':'+m.raidCycle; if(liveRaidParts[k]) liveRaidParts[k].rows.push(Object.assign({}, attempt, {owner: cloudUserId, live:true}));
+  });
+  bumpQuestCounter('raidDamage', contribution);
+  // raw per-attempt reward stays low; the big payout is the shared kill reward
+  const g = Math.round(contribution/250), d = Math.round(contribution/1000);
+  if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
+  m.raidRewardEarned = {gold:g, dust:d};
+  m.raidDamageDealt = contribution; m.raidOverwhelmed = overwhelmed;
+  const after = currentRaidStateFor(def);
+  m.raidRemainingAfter = Math.round((after.byId[m.raidPart]||{remaining:0}).remaining);
+}
 function renderRaidSubTab(body){
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —
   // the Raid tab is the other permanent home for these same map nodes (a beaten Raid Boss
@@ -8820,7 +9156,7 @@ function renderRaidSubTab(body){
   // satisfies the very next ask ("the coming up section should come right after") for free —
   // with this gone, Coming Up is now the section directly after Online Raid's own boss list.
   body.innerHTML = `
-    ${offlineRaidPanelHTML()}
+    ${(RaidM && activeRaidDef()) ? raidPanelHTML() : offlineRaidPanelHTML()}
     ${ONLINE_RAID_VISIBLE ? `<details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>` : ''}
     <div class="panel raid-preview-panel"><h2>🔮 Coming Up</h2><p class="panel-sub">More Raid Bosses are waiting further out in Conquest. Beat their map to unlock the real fight.</p>
       <div class="conquest-nodes">${RAID_PREVIEWS.map(p=>`
@@ -8839,6 +9175,7 @@ function renderRaidSubTab(body){
   if(onlineBody) renderOnlineRaidPanel(onlineBody);
   const orBtn = document.getElementById('offlineRaidFightBtn');
   if(orBtn) orBtn.addEventListener('click', startOfflineRaidMatch);
+  wireRaidPanel();
 }
 /* ============================================================
    Mandatory onboarding: Otters/Hummingbirds faction choice + a 6-skirmish tutorial SERIES
@@ -10101,6 +10438,7 @@ function renderAdmin(){
     </div>
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
+    ${(RaidM && allRaidDefs().length) ? `<div class="panel admin-subpanel"><h3>🐙 Raids</h3><p class="panel-sub">Parts, HP bars, lock order, stages, scoring and rewards. Publishes live.</p>${allRaidDefs().map(d=> `<button type="button" class="btn small" data-admin-raid="${escapeAttr(d.id)}">✏️ ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)}${d.live===false?' (off)':''}</button>`).join(' ')}</div>` : ''}
     <div class="panel admin-subpanel">
       <h3>🧪 Test Kit</h3>
       <p class="panel-sub">Loop any card (or a custom Test Card) in a small 2-vs-3 fight to check its effects, VFX and sounds.</p>
@@ -10182,6 +10520,7 @@ function renderAdmin(){
   });
   wireRollTableAdmin();
   wireAdminManageCards();
+  document.querySelectorAll('[data-admin-raid]').forEach(b=> b.addEventListener('click', ()=> openRaidEditor(b.dataset.adminRaid)));
   const tkBtn = document.getElementById('adminTestKitBtn'); if(tkBtn) tkBtn.addEventListener('click', startTestKit);
   const jumpBtn = document.getElementById('adminJumpBtn');
   if(jumpBtn) jumpBtn.addEventListener('click', ()=>{
@@ -11055,7 +11394,7 @@ function renderMatchUI(){
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':'So Close! Good Fight')}</h2>
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
-        ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`})[m.endReason]||''}</p>` : ''}
+        ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -14157,6 +14496,8 @@ async function resolveRound(){
     m.stallRounds = (sig===m.lastBoardSigForDraw && noActionsLeft(m.players)) ? (m.stallRounds||0)+1 : 0;
     m.lastBoardSigForDraw = sig;
     if(m.stallRounds >= STALL_ROUNDS_FOR_DRAW || m.round >= DRAW_ROUND_CAP){ m.forcedWinner = 0; m.endReason = m.round >= DRAW_ROUND_CAP ? 'cap' : 'stalled'; over = true; }
+    // Raid attempts run on a clock: the part retreats after its turn limit and you score what you dealt.
+    if(!over && m.raidRoundCap && m.round >= m.raidRoundCap){ m.forcedWinner = 0; m.endReason = 'raidTime'; over = true; }
   }
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
@@ -14268,6 +14609,8 @@ async function resolveRound(){
       settlePvpAfterMatch(m);
     } else if(m.mode==='async'){
       settleAsyncRunAfterMatch(m);
+    } else if(m.mode==='raidOffline' && m.raidPart){
+      settleRaidPartAfterMatch(m);
     } else if(m.mode==='raidOffline' && m.raidBoss){
       settleOfflineRaidAfterMatch(m);
     } else if(m.mode==='gauntlet'){
@@ -14377,7 +14720,7 @@ async function resolveRound(){
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
     if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
     m.round += 1;
-    if(m.round === SUDDEN_DEATH_ROUND && m.mode!=='tutorial') showSuddenDeathBanner(m);
+    if(m.round === SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND)) showSuddenDeathBanner(m);
     const drawEvents = [];
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
@@ -15036,7 +15379,7 @@ function matchStatsHTML(m){
     </div>` : '';
   const orReward = m.raidRewardEarned;
   const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards">
-      <span class="conquest-rank-badge">⚔️ ${m.raidDamageDealt} damage to ${escapeHtml(m.raidBoss.name)}</span>
+      <span class="conquest-rank-badge">${m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ '}${Number(m.raidDamageDealt).toLocaleString()} damage to ${escapeHtml(m.raidBoss.name)}</span>
       <span class="hud-pill" title="Shared raid HP left this week">❤️ ${m.raidRemainingAfter} HP left${m.raidRemainingAfter<=0?' — defeated!':''}</span>
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(orReward.gold)} Maple Leaves</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(orReward.dust)} Dust</span>` : ''}

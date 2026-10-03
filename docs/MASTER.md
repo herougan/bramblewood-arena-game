@@ -15,7 +15,8 @@ _Last updated: 2026-10-03_
 - ⛔ **NFTs or blockchain:** none.
 - ⛔ **Real-money purchases:** none. Gold Leaves is the "premium" currency, but nothing sells it for money.
 - ⛔ **Loot boxes for money:** none. Card packs are bought with in-game currency only.
-- ⛔ **Catch-up mechanics, multi-row raids with boss fragments:** still designs (items 10, 14).
+- ⛔ **Catch-up mechanics:** still a design (item 10).
+- ⛔ **Multi-row raid trenches** (3 rows, column attacks, buffing parts): still a design (item 14, Raid P2). Multi-part raids themselves are built.
 
 ---
 
@@ -101,7 +102,7 @@ _Last updated: 2026-10-03_
   - Conquest fights cost 1–5 by node kind.
   - Stored in this browser only.
 - 🎟️ **PvP Tickets** ✅: **10 per day**, refilled at local midnight, spent on PvP (item 12). Stored in this browser only.
-- 🎫 **Raid Points** ✅: only used by the hidden Online Raid.
+- 🎫 **Raid Points** ✅: max 5, 1 per 6 hours. Each Goliath fight costs 1🎫 + 4⚡ (set in the Raid editor).
 - **Where:** `ENERGY_MAX`, `ENERGY_COST`, `spendEnergy`, `PVP_TICKETS_PER_DAY`, `usePvpTicket` in `arena_app.js`.
 
 **9. Getting cards** ✅
@@ -186,13 +187,15 @@ _Last updated: 2026-10-03_
 - **Later kinds** (parked):
   - Full online, real-time with multi-castle mechanics (think tentacle boss)
   - Single-player async, where you can't win alone but your score chips the bar
-- **Built today:**
-  - A weekly offline boss with a shared pool, your recorded attempts, and 8 simulated stand-ins.
-  - Online Raid is **hidden**, per your call.
-- **Where:**
-  - `raidState`, `simulateRaidFight` in `bramblewood-ghosts.js`
-  - `offlineRaidPanelHTML` in `arena_app.js`
-  - `canonical/raid-bosses.json`
+- **Built today (Raid P1, 2026-10-03):** 🐙 **The Goliath**
+  - Four parts with stacked 80,000-HP bars: Left Tentacle, Right Tentacle, Tail (3 bars each) and the Core (8 bars, **locked until all three fall**, globally).
+  - You pick an open part and fight it with today's engine for **12 turns**. Castle damage × 50 = raid damage, capped at **5,000**; destroying the part's castle (an **overwhelm**) scores **10,000**.
+  - Tuned so typical decks overwhelm a tentacle ~10% of the time and the Core ~0% (≈2.6k a fight).
+  - Stages: Enraged < 75%, Thrashing < 50%, **Exposed < 1%** (enemy cards lose their abilities).
+  - Everyone who fought claims the kill reward when it falls (400 gold, 60 dust, 3 metal), or 40% as compensation if it survives the week, plus Top 1/10/50% extras.
+  - Pools are live (`raid_week_attempts`, once the migration is applied), with stand-in raiders at 12%/day so a quiet week can still finish it.
+  - The older single weekly boss shows only if no raid is live. Online Raid stays **hidden**.
+- **Where:** `bramblewood-raid.js`, `canonical/raids.json`, `raidPanelHTML` / `startRaidPartMatch` / `openRaidEditor` in `arena_app.js`, `tests/raid.js`.
 
 **15. Quests: daily and weekly** ✅ (📜 Quests on Home, with a badge when something is claimable)
 - Each tier appears once the tier above is fully claimed, and rewards shrink tier by tier.
@@ -228,9 +231,9 @@ _Last updated: 2026-10-03_
   - `LiveData`, `cloudPullState` in `arena_app.js`
 
 **18. Admin tools and editors** 🟡
-- **Ready:** card editor (publishes live through `card_overrides`), map layout editor, node rewards, Test Kit, and "Unlock all features / Replay onboarding".
+- **Ready:** card editor (publishes live through `card_overrides`), map layout editor, node rewards, **Skirmish editor**, **Raid editor** (parts, bars, locks, decks, turns, stages, scoring, rewards, simulate vs your deck; Raid tab → ✏️ Edit raid, or Admin → 🐙 Raids), Test Kit, and "Unlock all features / Replay onboarding".
 - **Simulator:** lists the decks you've fought recently, with "Simulate vs my deck".
-- **Not built:** Skirmish editor, Raid editor (see `raid-design.md`).
+- **Not built:** Raid P2 trench editor (grid, attack patterns) — comes with the trench engine.
 - The Admin tile is still visible to everyone; server-side writes are admin-only.
 - **Where:** `setAdminMode`, `renderAdmin`, `cloudWriteCardOverride`, `wireMapLayoutEditor` in `arena_app.js`.
 

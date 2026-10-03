@@ -2369,6 +2369,40 @@
   .skirmish-editor #seSearch{width:100%; box-sizing:border-box;}
   .skirmish-editor .se-sim{margin:10px 0; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:14px;}
   .skirmish-editor .se-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; position:sticky; bottom:-1px; background:inherit; padding-top:8px;}
+  /* Raid P1 panel + editor (2026-10-03) */
+  .raid2-panel .r2-head{display:flex; align-items:flex-start; gap:12px;}
+  .raid2-panel .r2-head > div{flex:1; min-width:0;}
+  .raid2-panel .r2-head h2{margin:0; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .raid2-panel .r2-ico{font-size:44px; line-height:1;}
+  .raid2-panel .r2-stage{font-size:12px; font-weight:800; padding:2px 10px; border-radius:999px; background:#b3261e; color:#fff; letter-spacing:.04em; text-transform:uppercase;}
+  .raid2-panel .r2-total{display:flex; flex-direction:column; gap:4px; margin:10px 0 12px; font-size:13.5px;}
+  .raid2-panel .r2-claim{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 12px; margin-bottom:10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--accent); font-weight:700;}
+  .raid2-panel .r2-parts{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px;}
+  .raid2-panel .r2-part{border:1px solid var(--surface-border); border-radius:12px; padding:10px; background:var(--surface-2); display:flex; flex-direction:column; gap:8px;}
+  .raid2-panel .r2-part.is-locked{opacity:.7;}
+  .raid2-panel .r2-part.is-down{opacity:.5; filter:grayscale(.8);}
+  .raid2-panel .r2-part-head{display:flex; align-items:center; gap:6px;}
+  .raid2-panel .r2-part-ico{font-size:22px;}
+  .raid2-panel .r2-part-head b{flex:1; min-width:0;}
+  .raid2-panel .r2-part-num{font-size:12px; font-weight:800; opacity:.75; font-variant-numeric:tabular-nums;}
+  .raid2-panel .r2-part-foot{display:flex; flex-direction:column; gap:4px; font-size:13px;}
+  .raid2-panel .r2-note{font-size:12px; opacity:.7;}
+  .raid2-panel .r2-me{margin:12px 0 4px; font-size:14px;}
+  .raid2-panel .r2-rules{margin:0; font-size:12.5px; opacity:.75;}
+  .rp-bars{display:grid; grid-template-columns:repeat(auto-fit, minmax(14px, 1fr)); gap:3px;}
+  .rp-bar{display:block; height:9px; border-radius:3px; background:rgba(0,0,0,.18); overflow:hidden;}
+  .rp-bar > span{display:block; height:100%; background:linear-gradient(90deg, #c0392b, #e67e22);}
+  .raid-editor .re-errs{margin:6px 0 10px; padding:8px 12px; border-radius:10px; background:rgba(179,38,30,.12); border:1px solid #b3261e; font-size:13px; font-weight:700;}
+  .raid-editor .re-parts{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; align-items:center;}
+  .raid-editor .re-part-tab{display:flex; flex-direction:column; align-items:flex-start; padding:6px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:inherit; font:inherit; font-weight:700; cursor:pointer;}
+  .raid-editor .re-part-tab small{font-weight:600; opacity:.65; font-size:11px;}
+  .raid-editor .re-part-tab.on{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent) inset;}
+  .raid-editor #reSearch{width:100%; box-sizing:border-box;}
+  .raid-editor .re-part-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+  .raid-editor .re-stages{display:flex; flex-direction:column; gap:6px;}
+  .raid-editor .re-stage{display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:6px 8px; border-radius:8px; background:var(--surface-2); font-size:13px;}
+  .raid-editor .re-stage input[type=number]{width:70px;}
+  .raid-editor .re-stage label{display:flex; align-items:center; gap:4px;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}

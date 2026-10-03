@@ -31,13 +31,13 @@ create policy "delete own ghost" on public.ghost_decks for delete to authenticat
 
 create table if not exists public.raid_week_attempts (
   id uuid primary key default gen_random_uuid(),
-  boss_id text not null check (char_length(boss_id) <= 80),
+  boss_id text not null check (char_length(boss_id) <= 120),
   cycle int not null,
   owner_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   display_name text check (char_length(display_name) <= 40),
   avatar jsonb,
   deck jsonb not null check (pg_column_size(deck) < 8000),
-  damage int not null check (damage between 0 and 1000),
+  damage int not null check (damage between 0 and 10000),
   won boolean not null default false,
   fought_at timestamptz not null default now()
 );

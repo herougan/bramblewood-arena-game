@@ -7,7 +7,14 @@ This doc covers:
 - the Raid editor we'd need;
 - a build order.
 
-Nothing in here is built yet.
+## Status (2026-10-03)
+- **P0 Skirmish editor:** ✅ built.
+- **P1 Raid model + editor:** ✅ built. The Goliath is live on the Raid tab with four parts, global locks, stages, caps, kill/compensation/tier rewards and a 12-turn clock per fight. Defaults I chose for your open questions:
+  - Core lock: **global** (the Core opens once all three outer parts are drained). The in-fight half waits for the trench engine.
+  - Rewards: **equal base + contribution tiers**.
+  - "Leaves" = 🍁 Maple Leaves (P4, not built).
+- **Added in P1:** a **turn limit per fight** (default 12). Without it, a part's finite deck runs out and any deck grinds its castle down, so every fight was an overwhelm.
+- **P2 trench engine, P3 server replay check, P4 Leaves/crafting:** not built.
 
 ## Editors today
 
@@ -17,8 +24,8 @@ Nothing in here is built yet.
 | **Test Kit** (test editor) | ✅ Ready. A looping 2-vs-3 field to watch one card's effects, VFX and SFX. | Admin → Open Test Kit, or Play → 🧪 Test |
 | **Skirmish rewards** | ✅ Ready. Which cards a node pays out. | Conquest node panel → ✏️ Edit rewards |
 | **Map layout** | ✅ Ready. Drag nodes with grid snap; publishes live. | Conquest → 📐 Edit layout |
-| **Skirmish editor** (enemy deck, HP, kind, battle mode, surrender behaviour, dialogue) | ❌ Not built. Nodes are still defined in code (`CONQUEST_MAPS`). | Proposed next |
-| **Raid editor** | ❌ Not built | Plan below |
+| **Skirmish editor** (enemy deck, HP, kind, battle mode, surrender behaviour, dialogue) | ✅ Ready | Conquest node panel → 🛠️ Edit skirmish |
+| **Raid editor** (P1: parts, bars, locks, decks, turns, stages, scoring, rewards, simulate) | ✅ Ready | Raid tab → ✏️ Edit raid, or Admin → 🐙 Raids |
 
 **Recommendation:** build the **Skirmish editor** before the Raid editor. It's smaller, you'd use it every day, and the Raid editor reuses its deck and enemy pickers.
 
