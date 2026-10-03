@@ -23,6 +23,16 @@ _Last updated: 2026-10-03 (21:00)_
 **Polish (was D16).** More animation and fixing odd graphical glitches as we find them. WebGL is kept out of this track; it lives in the effects catalogue. Progress:
 - **Battle (2026-10-03):** hover-to-see-facing, castle HP ribbons, tips moved off the board, log drawer, compact Graveyard, "Pass turn", fits a 1366×860 screen.
 - **Glitch fixed:** Nest cards had collapsed to an 18px sliver since the card-scaling change.
+- **Flow audit (2026-10-03, `tests/e2e/flows.py`):** Quit from every mode (quick battle, Pass & Play, gauntlet, dungeon, Conquest, offline raid, tutorial), mid-round and on phones; win-screen buttons; trench leave; pack cards reaching the Nest, the deck builder and the Forge; Escape on Settings, Quests and pack opening. Fixed:
+  - tutorial tip shields blocked the Quit button;
+  - Conquest full-screen hid the header inside matches and on other tabs;
+  - the trench's leave control was an unlabelled ✕ (now "🚪 Leave");
+  - pack opening ignored Escape.
+- **Forge rework:**
+  - a hearth header showing only the currencies the Forge uses;
+  - search, filter and sort, with a 🔨 badge on cards you can afford to temper;
+  - an anvil panel with level pips, before→after stats, cost chips and Prestige medallions;
+  - a smithing animation: the card heats, three hammer strikes throw sparks, steam on the quench, then it flips to the new stats.
 
 **Effects (was T7).** The menu of effects and how to build each is in [`effects-catalogue.md`](effects-catalogue.md). Your picks:
 1. **Holo foil:** ✅ shipped, in CSS, on Nest foil copies and Rare+ pack reveals.
