@@ -4432,6 +4432,8 @@
   .discardzone.compact{flex-direction:row; width:auto; min-height:0; padding:7px 14px; border-radius:999px; gap:6px;}
   .discardzone.compact .dz-ico{font-size:15px;} .discardzone.compact .dz-sub{font-size:11px; opacity:.7;}
   @media (max-width:699px){ .coach-tip.is-docked{max-width:none;} }
+  /* D16 "fit the viewport": the page's 60px bottom padding (room for floating buttons elsewhere) pushed the battle ~35px past an 860px screen */
+  #appWrap.in-match{padding-bottom:12px;}
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
