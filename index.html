@@ -1114,14 +1114,14 @@
   /* D16 (2026-10-03): desktop too — search and sort stay out; types, archetypes, grouping and
      view density sit behind Filters (which shows how many are active). */
   .cx-filters-toggle{display:inline-flex;}
-  .codex-toolbar #cxSearch{flex:1 1 260px; min-width:0;}
-  .codex-toolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle):not(#cxSort):not(#cxSortDir){display:none;}
+  #codexToolbar #cxSearch{flex:1 1 260px; min-width:0;}
+  #codexToolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle):not(#cxSort):not(#cxSortDir){display:none;}
   @media (max-width:700px){
-    .codex-toolbar:not(.filters-open) > #cxSort, .codex-toolbar:not(.filters-open) > #cxSortDir{display:none;}
+    #codexToolbar:not(.filters-open) > #cxSort, #codexToolbar:not(.filters-open) > #cxSortDir{display:none;}
     .codex-toolbar{gap:8px;}
     .codex-toolbar #cxSearch{flex:1 1 60%; min-width:0;}
     .cx-filters-toggle{display:inline-flex;}
-    .codex-toolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle){display:none;}
+    #codexToolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle){display:none;}
     .codex-toolbar.filters-open > select{flex:1 1 45%; min-width:0;}
   }
   .codex-toolbar input, .codex-toolbar select{font-family:'Nunito'; font-size:13.5px; padding:8px 10px; border:1px solid var(--surface-border); border-radius:9px; background:var(--surface); color:var(--ink);}
