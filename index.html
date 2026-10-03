@@ -2346,6 +2346,12 @@
   .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .admin-unlock-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
+  .recent-opps .ro-list{display:flex; flex-direction:column; gap:6px;}
+  .recent-opps .ro-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:6px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .recent-opps .ro-res{width:24px; height:24px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-weight:900; color:#fff; background:#8a8a8a;}
+  .recent-opps .ro-res.win{background:#3c9a5f;} .recent-opps .ro-res.loss{background:#b5473f;}
+  .recent-opps .ro-name{flex:1; min-width:160px; display:flex; flex-direction:column;}
+  .recent-opps .ro-meta{font-size:12px; opacity:.75;}
   /* Quests & medals (2026-10-03) */
   .quests-modal{max-width:640px; width:min(640px, calc(100vw - 32px)); max-height:min(86vh, 900px); overflow:auto;}
   .quests-modal .qs-section{margin:14px 0 6px;}
@@ -15249,6 +15255,7 @@ function abFight(body, run){
   { const st = loadLifetimeStats(); if((st.abBestWins||0) < run.wins){ st.abBestWins = run.wins; try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){} } }
   bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
   abLastFight = {res, opp, hpBefore};
+  recordRecentOpponent({name: opp.name, mode:'autobattle', deck: Object.fromEntries(Object.entries(opp.deck||{}).map(([k,v])=> [AutoB.baseId(k), v])), result: res.winner===1 ? 'win' : (res.winner===2 ? 'loss' : 'draw')});
   run.phase = 'result';
   saveAbRun(run);
   renderAutobattleSubTab(body);
@@ -21798,6 +21805,9 @@ async function resolveRound(){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner);
+    if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
+      try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
+    }
     if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode)){
       awardXp(3);
       bumpQuestCounter('wins', 1);
@@ -24121,9 +24131,53 @@ let simResults = null;
 // test_v27_myriad_unlocked.js) so an unchanged default keeps only-unlocked cards in the roster
 // dump; flipping it on includes every draftable card, locked or not.
 let myriadIncludeLocked = false;
+// ---- Recent opponents (2026-10-03, explicit: "Simulate an enemy deck? Maybe an option also! - in
+// the Simulator page, showing decks you've fought recently"). Every finished fight records the
+// opponent's deck (tokens left out); the Simulator lists the last 20 with "Simulate vs my deck"
+// (1,000 headless games, their real deck size allowed) and "Load as Deck B". ----
+const RECENT_OPP_KEY = 'bramblewood_recent_opponents_v1';
+let simAnyDeckSize = false;
+function loadRecentOpponents(){ try{ return JSON.parse(localStorage.getItem(RECENT_OPP_KEY)||'[]') || []; }catch(e){ return []; } }
+function opponentDeckFromMatch(m){
+  if(m.mode==='conquest' && m.conquestNode && m.conquestNode.deck) return Object.assign({}, m.conquestNode.deck);
+  if((m.mode==='raidOffline' || m.mode==='raidOnline') && m.raidBoss) return Object.assign({}, m.raidBoss.deck || (m.raidBoss.stats||{}).deck || {});
+  if(m.asyncGhost && m.asyncGhost.deck) return Object.assign({}, m.asyncGhost.deck);
+  const defs = getCardDefs(), out = {}, add = id=>{ if(id && defs[id] && !defs[id].token) out[id] = (out[id]||0)+1; };
+  const e = m.players[2];
+  (e.deck||[]).forEach(c=> add(typeof c==='string' ? c : c.defId));
+  (e.hand||[]).forEach(h=> add(h.defId));
+  (e.graveyard||[]).forEach(g=> add(g.defId));
+  ['left','center','right'].forEach(sd=> (e.row[sd]||[]).forEach(c=> c && !c.gap && add(c.defId)));
+  return out;
+}
+function recordRecentOpponent(entry){
+  if(!entry || !entry.deck || !Object.keys(entry.deck).length) return;
+  const list = loadRecentOpponents();
+  list.unshift(Object.assign({at: Date.now()}, entry));
+  try{ localStorage.setItem(RECENT_OPP_KEY, JSON.stringify(list.slice(0, 20))); }catch(e){}
+}
+const RECENT_OPP_MODE_LABEL = {ai:'vs Computer', pvp:'PvP', conquest:'Conquest', gauntlet:'Gauntlet', dungeon:'Dungeon', raidOffline:'Raid', raidOnline:'Online Raid', async:'Async', autobattle:'Autobattler', liveRanked:'Ranked'};
+function recentOpponentsPanelHTML(){
+  const list = loadRecentOpponents(), defs = getCardDefs();
+  return `<div class="panel recent-opps"><h2>🕑 Decks you've fought recently</h2>
+    <p class="panel-sub">Pick one to see how your active deck does against it over 1,000 simulated games — or load it into Deck B and tweak.</p>
+    ${list.length ? `<div class="ro-list">${list.map((o,i)=>{ const top = Object.keys(o.deck).sort((a,b)=> o.deck[b]-o.deck[a]).slice(0,4).map(id=> defs[id] ? defs[id].icon : '').join('');
+      return `<div class="ro-row"><span class="ro-res ${o.result||''}">${o.result==='win'?'W':o.result==='loss'?'L':'D'}</span>
+        <span class="ro-name"><b>${escapeHtml(o.name||'Opponent')}</b><span class="ro-meta">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${deckTotal(o.deck)} cards · ${top}</span></span>
+        <button type="button" class="btn small primary" data-ro-sim="${i}">▶ Simulate vs my deck</button>
+        <button type="button" class="btn small" data-ro-load="${i}">Load as Deck B</button></div>`; }).join('')}</div>`
+      : `<div class="empty-hint">No fights yet — play a match and the opponent's deck shows up here.</div>`}
+  </div>`;
+}
+function wireRecentOpponents(){
+  const list = loadRecentOpponents();
+  const load = i=>{ const o = list[i]; if(!o) return false; simDecks.A = Object.assign({}, myDeckCounts); simDecks.B = Object.assign({}, o.deck); simAnyDeckSize = true; return true; };
+  document.querySelectorAll('[data-ro-load]').forEach(b=> b.onclick = ()=>{ if(load(+b.dataset.roLoad)){ renderSim(); showToast('Loaded: your deck as A, their deck as B.', 'ok'); } });
+  document.querySelectorAll('[data-ro-sim]').forEach(b=> b.onclick = ()=>{ if(!load(+b.dataset.roSim)) return; renderSim(); const n = document.getElementById('nInput'); if(n) n.value = 1000; runSimulation(); });
+}
 function renderSim(){
   const root = document.getElementById('view-sim');
-  root.innerHTML = `
+  root.innerHTML = recentOpponentsPanelHTML() + `
     <div class="panel"><h2>Run the simulation</h2>
       <p class="panel-sub" id="simDeckSummary">Deck A: ${deckTotal(simDecks.A)} cards vs Deck B: ${deckTotal(simDecks.B)} cards</p>
       <div class="run-row">
@@ -24204,6 +24258,7 @@ function renderSim(){
   }));
   document.querySelectorAll('[data-preset]').forEach(b=> b.addEventListener('click', ()=>{ document.getElementById('nInput').value = b.getAttribute('data-preset'); }));
   document.getElementById('runBtn').addEventListener('click', runSimulation);
+  wireRecentOpponents();
   document.getElementById('ptRunBtn').addEventListener('click', runPowerTest);
   const ptFilterType = document.getElementById('ptFilterType'), ptFilterLock = document.getElementById('ptFilterLock');
   if(ptFilterType) ptFilterType.addEventListener('change', renderPowerResults);
@@ -24486,7 +24541,7 @@ async function runSimulation(){
   // a Myriad Deck (one of every draftable card, deliberately far more than 20) — Myriad is a
   // distinct, intentional "test the whole roster at once" mode, not a deck someone is building
   // to actually play, so it's exempt rather than blocked.
-  if(!simMyriadActive() && (deckTotal(simDecks.A)!==DECK_SIZE || deckTotal(simDecks.B)!==DECK_SIZE)){
+  if(!simMyriadActive() && !simAnyDeckSize && (deckTotal(simDecks.A)!==DECK_SIZE || deckTotal(simDecks.B)!==DECK_SIZE)){
     showSimRunError(`Both decks must have exactly ${DECK_SIZE} cards each (currently ${deckTotal(simDecks.A)} and ${deckTotal(simDecks.B)}). Use "Set Myriad Deck" instead to test with every unlocked card at once.`);
     return;
   }
