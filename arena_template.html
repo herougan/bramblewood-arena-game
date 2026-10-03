@@ -4302,6 +4302,24 @@
   .tm-hand-card.is-selected{transform:translateY(-6px); box-shadow:0 0 0 3px var(--accent), 0 8px 16px rgba(0,0,0,.35);}
   .tm-hint{font-size:13px; opacity:.8;}
   @media (prefers-reduced-motion: reduce){ .trench-match .tr-cell.is-danger{animation:none;} }
+  /* Conquest world (2026-10-03, D6) */
+  .conquest-map-item.next-locked{border-style:dashed;}
+  .world-edge{position:absolute; bottom:10px; z-index:6; display:flex; align-items:center; gap:4px; max-width:150px; padding:10px 10px; font:inherit; font-size:12.5px; font-weight:800; color:#fff8e6; border:0; cursor:pointer;
+    background:linear-gradient(90deg, rgba(0,0,0,.45), rgba(0,0,0,0)); text-shadow:0 1px 2px rgba(0,0,0,.8); border-radius:12px;}
+  .world-edge span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .world-edge-left{left:0;} .world-edge-right{right:0; background:linear-gradient(270deg, rgba(0,0,0,.45), rgba(0,0,0,0)); justify-content:flex-end;}
+  .world-edge:hover, .world-edge:focus-visible{color:#ffd98a;}
+  .world-edge.is-locked{opacity:.6; cursor:not-allowed;}
+  .conquest-main.world-out-right{animation:worldOutL .23s ease-in forwards;} .conquest-main.world-out-left{animation:worldOutR .23s ease-in forwards;}
+  .conquest-main.world-in-right{animation:worldInR .32s cubic-bezier(.2,.8,.3,1);} .conquest-main.world-in-left{animation:worldInL .32s cubic-bezier(.2,.8,.3,1);}
+  @keyframes worldOutL{to{transform:translateX(-12%); opacity:0}} @keyframes worldOutR{to{transform:translateX(12%); opacity:0}}
+  @keyframes worldInR{from{transform:translateX(12%); opacity:0}} @keyframes worldInL{from{transform:translateX(-12%); opacity:0}}
+  @media (max-width:760px){ .world-edge{max-width:96px; font-size:11px; padding:8px 6px;} }
+  @media (max-width:760px){
+    .conquest-maps{flex-direction:row !important; width:auto !important; max-height:none !important; overflow-x:auto !important; overflow-y:hidden !important; flex-wrap:nowrap; padding:8px !important;}
+    .conquest-map-item{flex:0 0 auto; padding:6px 10px !important; gap:6px !important;}
+    .conquest-map-item .cmi-ico{font-size:18px !important;} .conquest-map-item .cmi-name{font-size:12px !important; white-space:nowrap;}
+  }
 </style>
 </head>
 <body>

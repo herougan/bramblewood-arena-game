@@ -4302,6 +4302,24 @@
   .tm-hand-card.is-selected{transform:translateY(-6px); box-shadow:0 0 0 3px var(--accent), 0 8px 16px rgba(0,0,0,.35);}
   .tm-hint{font-size:13px; opacity:.8;}
   @media (prefers-reduced-motion: reduce){ .trench-match .tr-cell.is-danger{animation:none;} }
+  /* Conquest world (2026-10-03, D6) */
+  .conquest-map-item.next-locked{border-style:dashed;}
+  .world-edge{position:absolute; bottom:10px; z-index:6; display:flex; align-items:center; gap:4px; max-width:150px; padding:10px 10px; font:inherit; font-size:12.5px; font-weight:800; color:#fff8e6; border:0; cursor:pointer;
+    background:linear-gradient(90deg, rgba(0,0,0,.45), rgba(0,0,0,0)); text-shadow:0 1px 2px rgba(0,0,0,.8); border-radius:12px;}
+  .world-edge span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .world-edge-left{left:0;} .world-edge-right{right:0; background:linear-gradient(270deg, rgba(0,0,0,.45), rgba(0,0,0,0)); justify-content:flex-end;}
+  .world-edge:hover, .world-edge:focus-visible{color:#ffd98a;}
+  .world-edge.is-locked{opacity:.6; cursor:not-allowed;}
+  .conquest-main.world-out-right{animation:worldOutL .23s ease-in forwards;} .conquest-main.world-out-left{animation:worldOutR .23s ease-in forwards;}
+  .conquest-main.world-in-right{animation:worldInR .32s cubic-bezier(.2,.8,.3,1);} .conquest-main.world-in-left{animation:worldInL .32s cubic-bezier(.2,.8,.3,1);}
+  @keyframes worldOutL{to{transform:translateX(-12%); opacity:0}} @keyframes worldOutR{to{transform:translateX(12%); opacity:0}}
+  @keyframes worldInR{from{transform:translateX(12%); opacity:0}} @keyframes worldInL{from{transform:translateX(-12%); opacity:0}}
+  @media (max-width:760px){ .world-edge{max-width:96px; font-size:11px; padding:8px 6px;} }
+  @media (max-width:760px){
+    .conquest-maps{flex-direction:row !important; width:auto !important; max-height:none !important; overflow-x:auto !important; overflow-y:hidden !important; flex-wrap:nowrap; padding:8px !important;}
+    .conquest-map-item{flex:0 0 auto; padding:6px 10px !important; gap:6px !important;}
+    .conquest-map-item .cmi-ico{font-size:18px !important;} .conquest-map-item .cmi-name{font-size:12px !important; white-space:nowrap;}
+  }
 </style>
 </head>
 <body>
@@ -16890,6 +16908,23 @@ function ensureTutorialMarkersComplete(progress){
   if(changed) saveConquestProgress(progress);
   return progress;
 }
+// D6 (2026-10-03, explicit: "What if ALL the maps are somewhat joined (loaded only when needed).
+// Clicking on tab items moves you to the centre of that map!"): maps sit side by side as one world.
+// Only the map you're on is built; switching pans the world toward the target (slide out, slide in
+// from that side) so moving between maps reads as travelling, not as a page swap.
+let conquestPanDir = null;
+function conquestPanTo(mapId, body, progress){
+  const target = CONQUEST_MAPS.find(m=> m.id===mapId);
+  if(!target || !isMapUnlocked(target, progress || loadConquestProgress())) return;
+  if(mapId===conquestSelectedMap){ const c = document.getElementById('conquestMain'); if(c) c.scrollTo({top:0, behavior:'smooth'}); return; }
+  abandonMapLayoutEdit();
+  const from = CONQUEST_MAPS.findIndex(m=> m.id===conquestSelectedMap), to = CONQUEST_MAPS.indexOf(target);
+  const dir = to > from ? 'right' : 'left';
+  const mainEl = document.getElementById('conquestMain');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = reduce ? null : dir; renderConquestSubTab(body); };
+  if(mainEl && !reduce){ mainEl.classList.add('world-out-' + dir); setTimeout(go, 230); } else go();
+}
 function renderConquestSubTab(body){
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
@@ -16905,20 +16940,23 @@ function renderConquestSubTab(body){
     <div class="conquest-tooltip" id="conquestTooltip" hidden></div>
     <button type="button" class="conquest-fight-fab" id="conquestFightFab" hidden>⚔️ Fight</button>`;
   const listEl = document.getElementById('conquestMapList');
-  listEl.innerHTML = CONQUEST_MAPS.map(map=>{
-    const unlocked = isMapUnlocked(map, progress);
-    const cleared = map.nodes.filter(n=>n.kind!=='raidboss' && n.kind!=='tutorial').every(n=> progress.completed.includes(conquestNodeId(map.id, n.key)));
-    return `<div class="conquest-map-item ${map.id===conquestSelectedMap?'selected':''} ${unlocked?'':'locked'}" data-mapid="${map.id}">
-      <div class="cmi-ico">${unlocked?map.icon:'🔒'}</div>
-      <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${unlocked?(cleared?'Cleared':'In progress'):'Locked'}</div></div>
+  // D6 (2026-10-03): unlocked maps only, plus ONE compact "Next: … 🔒" teaser — locked maps no longer
+  // take a third of the width. Each shows its progress so the tab doubles as a progress view.
+  const firstLocked = CONQUEST_MAPS.find(m=> !isMapUnlocked(m, progress));
+  listEl.innerHTML = CONQUEST_MAPS.filter(m=> isMapUnlocked(m, progress)).map(map=>{
+    const fightable = map.nodes.filter(n=> n.kind!=='raidboss' && n.kind!=='tutorial');
+    const doneN = fightable.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
+    const cleared = doneN===fightable.length;
+    return `<div class="conquest-map-item ${map.id===conquestSelectedMap?'selected':''}" data-mapid="${map.id}" role="button" tabindex="0">
+      <div class="cmi-ico">${map.icon}</div>
+      <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('');
-  listEl.querySelectorAll('[data-mapid]').forEach(el=> el.addEventListener('click', ()=>{
-    const map = CONQUEST_MAPS.find(m=>m.id===el.getAttribute('data-mapid'));
-    if(!isMapUnlocked(map, progress)) return;
-    if(map.id!==conquestSelectedMap) abandonMapLayoutEdit();
-    conquestSelectedMap = map.id; conquestSelectedNodeKey = null; renderConquestSubTab(body);
-  }));
+  }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
+  listEl.querySelectorAll('[data-mapid]').forEach(el=>{
+    const go = ()=> conquestPanTo(el.getAttribute('data-mapid'), body, progress);
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
+  });
   const mainEl = document.getElementById('conquestMain');
   const map = CONQUEST_MAPS.find(m=>m.id===conquestSelectedMap) || CONQUEST_MAPS[0];
   // 2026-09-18, per explicit request ("the conquest should encompass the map tab — the segment
@@ -17027,6 +17065,25 @@ function renderConquestSubTab(body){
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
   const tooltipEl = document.getElementById('conquestTooltip');
+  // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
+  {
+    const idx = CONQUEST_MAPS.indexOf(map), prev = CONQUEST_MAPS[idx-1], next = CONQUEST_MAPS[idx+1];
+    const canvasEl = document.getElementById('conquestCanvas');
+    const edge = (m, side)=> m ? `<button type="button" class="world-edge world-edge-${side} ${isMapUnlocked(m, progress)?'':'is-locked'}" ${isMapUnlocked(m, progress)?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(m.name)}">${side==='left'?'‹ ':''}<span>${isMapUnlocked(m, progress)?m.icon:'🔒'} ${escapeHtml(m.name)}</span>${side==='right'?' ›':''}</button>` : '';
+    if(canvasEl){
+      canvasEl.insertAdjacentHTML('beforeend', edge(prev,'left') + edge(next,'right'));
+      canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); conquestPanTo(b.dataset.worldGo, body, progress); }));
+      let sx = null, sy = null;
+      canvasEl.addEventListener('pointerdown', e=>{ if(conquestLayoutEdit) return; sx = e.clientX; sy = e.clientY; });
+      canvasEl.addEventListener('pointerup', e=>{
+        if(sx==null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+        if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.5){ const m = dx < 0 ? next : prev; if(m && isMapUnlocked(m, progress)) conquestPanTo(m.id, body, progress); }
+      });
+    }
+    if(conquestPanDir){ mainEl.classList.add('world-in-' + conquestPanDir); conquestPanDir = null; }
+    const selChip = listEl.querySelector('.conquest-map-item.selected');
+    if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
+  }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
