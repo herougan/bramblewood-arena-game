@@ -4806,6 +4806,8 @@ async function applySessionIdentity(user){
     saveRatingLocal();
     if(isSignedIn()) await cloudPullState();
   }
+  livePullProgress();
+  liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
 }
 async function initCloudSync(){
   // Coming back from Google (2026-10-02): Supabase hands the result back in the URL — tokens on
@@ -6759,6 +6761,91 @@ function settleAsyncRunAfterMatch(m){
     saveAsyncRun(null);
   } else saveAsyncRun(run);
 }
+// ---- Live data (2026-10-03, explicit: "Cloud tables: it should be live, not in local") ----
+// ghost_decks (PvP strangers + Autobattler runs), raid_week_attempts (the weekly raid party) and
+// player_progress (your progress blob) — see supabase/migrations/20261003_live_ghosts_raid_progress.sql.
+// Reads are public; writes need any session (guest sessions included). If the tables don't exist
+// yet (migration not applied) or we're offline, everything quietly keeps working from this
+// browser's own copies, exactly as before.
+const LiveData = {available:null, ghosts:{pvp:[], autobattle:[]}, ghostsAt:{}, raid:{}, progressPushedHash:null};
+const LIVE_GHOST_TTL_MS = 3*60*1000;
+function liveCanWrite(){ return !!(sbClient && cloudUserId && LiveData.available!==false); }
+function liveTableMissing(error){ return !!error && (/does not exist|schema cache|relation/i.test(error.message||'') || error.code==='42P01' || error.code==='PGRST205'); }
+function liveRowToGhost(mode, r){
+  const base = {owner: r.owner_id, name: r.display_name || 'Player', avatar: r.avatar || null, stage: r.stage, at: Date.parse(r.recorded_at)||0, source:'player'};
+  return mode==='pvp' ? Object.assign(base, {deck: (r.payload||{}).deck || {}}) : Object.assign({}, r.payload||{}, base);
+}
+async function liveRefreshGhosts(mode, force){
+  if(!sbClient || LiveData.available===false) return false;
+  if(!force && LiveData.ghostsAt[mode] && Date.now() - LiveData.ghostsAt[mode] < LIVE_GHOST_TTL_MS) return false;
+  LiveData.ghostsAt[mode] = Date.now();
+  try{
+    const since = new Date(Date.now() - 14*24*3600*1000).toISOString();
+    const { data, error } = await sbClient.from('ghost_decks').select('owner_id, mode, stage, display_name, avatar, payload, recorded_at').eq('mode', mode).gte('recorded_at', since).order('recorded_at', {ascending:false}).limit(1500);
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return false; }
+    LiveData.available = true;
+    LiveData.ghosts[mode] = (data||[]).map(r=> liveRowToGhost(mode, r));
+    return true;
+  }catch(e){ return false; }
+}
+function livePushGhost(mode, stage, payload){
+  if(!liveCanWrite()) return;
+  sbClient.from('ghost_decks').upsert({owner_id: cloudUserId, mode, stage, display_name: (myProfile && myProfile.name) || 'Player', avatar: loadAvatar(), payload, recorded_at: new Date().toISOString()}, {onConflict:'owner_id,mode,stage'})
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; }, ()=>{});
+}
+async function liveRefreshRaid(bossId, cycle){
+  if(!sbClient || LiveData.available===false) return false;
+  const key = bossId+':'+cycle;
+  const cur = LiveData.raid[key];
+  if(cur && Date.now() - cur.at < 60*1000) return false;
+  LiveData.raid[key] = {at: Date.now(), rows: cur ? cur.rows : []};
+  try{
+    const { data, error } = await sbClient.from('raid_week_attempts').select('owner_id, display_name, avatar, deck, damage, won, fought_at').eq('boss_id', bossId).eq('cycle', cycle).order('fought_at', {ascending:true}).limit(2000);
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return false; }
+    LiveData.available = true;
+    LiveData.raid[key] = {at: Date.now(), rows: (data||[]).map(r=> ({bossId, cycle, owner: r.owner_id, name: r.display_name || 'Player', avatar: r.avatar, deck: r.deck, damage: r.damage, won: r.won, at: Date.parse(r.fought_at)||0, source:'player', live:true}))};
+    return true;
+  }catch(e){ return false; }
+}
+function livePushRaidAttempt(a, onDone){
+  if(!liveCanWrite()){ onDone && onDone(false); return; }
+  sbClient.from('raid_week_attempts').insert({boss_id: a.bossId, cycle: a.cycle, owner_id: cloudUserId, display_name: a.name, avatar: a.avatar, deck: a.deck, damage: Math.max(0, Math.min(1000, a.damage|0)), won: !!a.won})
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; onDone && onDone(!error); }, ()=> onDone && onDone(false));
+}
+// Progress blob: these localStorage keys follow you across devices.
+const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tutorial_done','bramblewood_arena_tutorial_stage','bramblewood_arena_faction',
+  'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1',
+  'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1'];
+const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
+function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
+function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
+async function livePullProgress(){
+  if(!sbClient || !cloudUserId || LiveData.available===false) return;
+  try{
+    const { data, error } = await sbClient.from('player_progress').select('data, updated_at').eq('profile_id', cloudUserId).maybeSingle();
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return; }
+    LiveData.available = true;
+    const localAt = Number(localStorage.getItem(PROGRESS_LOCAL_AT_KEY)||0);
+    if(data && data.data && Date.parse(data.updated_at) > localAt){
+      Object.entries(data.data).forEach(([k,v])=>{ if(PROGRESS_KEYS.includes(k) && typeof v==='string') try{ localStorage.setItem(k, v); }catch(e){} });
+      LiveData.progressPushedHash = snapshotHash(progressSnapshot());
+      try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
+      if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
+    } else livePushProgress(true);
+  }catch(e){}
+}
+function livePushProgress(force){
+  if(!liveCanWrite()) return;
+  const snap = progressSnapshot(), h = snapshotHash(snap);
+  if(!force && h===LiveData.progressPushedHash) return;
+  LiveData.progressPushedHash = h;
+  const now = Date.now();
+  try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
+  sbClient.from('player_progress').upsert({profile_id: cloudUserId, data: snap, updated_at: new Date(now).toISOString()})
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; }, ()=>{});
+}
+setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
+window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
 // ---- Quests & statistics medals (2026-10-03, explicit: "Limited rewards to stop burnout. Daily
 // quests: Use 40 energy on Skirmishes, Use 3 tickets in PVP, Defeat 12 units. Then the next tier
 // (decreasing rewards): Join a Raid, etc. Weeklies are very rewarding, but also similarly tiered."
@@ -6918,8 +7005,9 @@ function loadAbRun(){ try{ return JSON.parse(localStorage.getItem(AB_RUN_KEY)||'
 function saveAbRun(run){ try{ if(run) localStorage.setItem(AB_RUN_KEY, JSON.stringify(run)); else localStorage.removeItem(AB_RUN_KEY); }catch(e){} }
 function loadAbGhosts(){ try{ return JSON.parse(localStorage.getItem(AB_GHOSTS_KEY)||'[]') || []; }catch(e){ return []; } }
 function abPool(stage){
-  const rec = loadAbGhosts().filter(g=> g.owner!==myGhostOwnerId());
-  const key = stage + ':' + Math.floor(Date.now()/(7*24*3600*1000)) + ':' + rec.length;
+  liveRefreshGhosts('autobattle');
+  const rec = LiveData.ghosts.autobattle.concat(loadAbGhosts()).filter(g=> g.owner!==myGhostOwnerId() && g.owner!==cloudUserId);
+  const key = stage + ':' + Math.floor(Date.now()/(7*24*3600*1000)) + ':' + rec.length + ':' + (LiveData.ghostsAt.autobattle||0);
   if(!_abPoolCache[key]) _abPoolCache[key] = AutoB.opponentPool(getCardDefs(), CHARACTER_DEFS, stage, rec, Date.now());
   return _abPoolCache[key];
 }
@@ -7044,7 +7132,9 @@ function abFight(body, run){
   const faced = run.history.map(h=> h.oppOwner).filter(Boolean);
   const opp = AutoB.pickOpponent(pool, AutoB.hashStr(run.id + ':' + run.fights), faced);
   // You become a ghost for other players at this stage.
-  try{ localStorage.setItem(AB_GHOSTS_KEY, JSON.stringify(AutoB.recordGhost(loadAbGhosts(), AutoB.snapshotOf(run, myGhostOwnerId(), (myProfile && myProfile.name) || 'You', loadAvatar(), Date.now())))); }catch(e){}
+  const mySnap = AutoB.snapshotOf(run, myGhostOwnerId(), (myProfile && myProfile.name) || 'You', loadAvatar(), Date.now());
+  try{ localStorage.setItem(AB_GHOSTS_KEY, JSON.stringify(AutoB.recordGhost(loadAbGhosts(), mySnap))); }catch(e){}
+  livePushGhost('autobattle', run.wins, {castle: mySnap.castle, leader: mySnap.leader, subLeader: mySnap.subLeader, deck: mySnap.deck, patches: mySnap.patches, bench: mySnap.bench||{}});
   const res = AutoB.simulateFight({makeSimEngine, boardSignature, noActionsLeft}, getCardDefs(), CHARACTER_DEFS, run, opp, AutoB.hashStr(run.id + ':fight:' + run.fights));
   const hpBefore = run.hp;
   AutoB.afterFight(run, res, opp.name);
@@ -7094,13 +7184,16 @@ function pvpOpponentPool(){
   const stage = pvpStageForRating(myRating);
   const mine = myGhostOwnerId();
   // Strangers: recorded PvP decks + Async ghosts (any deck a real player has fielded), never yourself.
-  const rec = loadPvpDecks().concat(loadAsyncGhosts()).filter(g=> g.owner!==mine).map(g=> Object.assign({}, g, {stage}));
+  liveRefreshGhosts('pvp');
+  const live = LiveData.ghosts.pvp.filter(g=> Math.abs(g.stage - stage) <= 1);
+  const rec = live.concat(loadPvpDecks(), loadAsyncGhosts()).filter(g=> g.owner!==mine && g.owner!==cloudUserId).map(g=> Object.assign({}, g, {stage}));
   return Ghosts.buildStagePool(getCardDefs(), stage, rec, Date.now());
 }
 function recordMyPvpDeck(){
   if(!Ghosts) return;
   const entry = {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), stage: pvpStageForRating(myRating), at: Date.now(), source:'player'};
   try{ localStorage.setItem(PVP_DECKS_KEY, JSON.stringify(Ghosts.recordAsyncGhost(loadPvpDecks(), entry, 200))); }catch(e){}
+  livePushGhost('pvp', entry.stage, {deck: entry.deck});
 }
 function pvpTileHTML(){
   const left = pvpTicketsLeft();
@@ -8147,8 +8240,13 @@ function currentOfflineRaid(){
   const now = Date.now();
   const boss = Ghosts.featuredRaidBoss(RAID_BOSSES, now);
   if(!boss) return null;
-  const attempts = loadRaidAttempts();
-  const key = boss.id + ':' + Ghosts.raidCycle(now) + ':' + attempts.length;
+  const cycle = Ghosts.raidCycle(now);
+  const liveKey = boss.id+':'+cycle;
+  liveRefreshRaid(boss.id, cycle).then(changed=>{ if(changed && playSubTab==='raid' && !matchState && document.querySelector('.offline-raid-panel')) renderRaidSubTab(document.getElementById('playSubBody')); });
+  const liveRows = (LiveData.raid[liveKey] && LiveData.raid[liveKey].rows) || [];
+  // Local attempts already uploaded are in liveRows; keep only the ones that haven't made it up yet.
+  const attempts = liveRows.concat(loadRaidAttempts().filter(a=> !a.pushed));
+  const key = boss.id + ':' + cycle + ':' + attempts.length;
   if(_raidStateCache && _raidStateCache.key===key) return _raidStateCache.state;
   const engineApi = {makeSimEngine};
   const state = Ghosts.raidState(engineApi, getCardDefs(), boss, attempts, now);
@@ -8209,7 +8307,9 @@ function startOfflineRaidMatch(){
 }
 function settleOfflineRaidAfterMatch(m){
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
-  saveRaidAttempts(Ghosts.recordRaidAttempt(loadRaidAttempts(), {bossId: m.raidBoss.id, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: dealt, won: m.winner===1, at: Date.now(), source:'player'}));
+  const attempt = {bossId: m.raidBoss.id, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: dealt, won: m.winner===1, at: Date.now(), source:'player'};
+  saveRaidAttempts(Ghosts.recordRaidAttempt(loadRaidAttempts(), attempt));
+  livePushRaidAttempt(attempt, ok=>{ if(!ok) return; const list = loadRaidAttempts(); const mine = list.find(x=> x.at===attempt.at && x.bossId===attempt.bossId); if(mine){ mine.pushed = true; saveRaidAttempts(list); } const k = attempt.bossId+':'+attempt.cycle; if(LiveData.raid[k]){ LiveData.raid[k].rows.push(Object.assign({}, attempt, {owner: cloudUserId, live:true})); } _raidStateCache = null; });
   _raidStateCache = null;
   const after = currentOfflineRaid();
   m.raidDamageDealt = dealt;
