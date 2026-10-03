@@ -18767,7 +18767,8 @@ function openPackAnimation(pack, results, extra){
   overlay.hidden = false;
   const cards = [...overlay.querySelectorAll('.po-card')];
   let flipped = 0, timers = [];
-  const close = ()=>{ timers.forEach(clearTimeout); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='shop') renderShop(); };
+  let onKey = null;
+  const close = ()=>{ timers.forEach(clearTimeout); if(onKey) document.removeEventListener('keydown', onKey); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='shop') renderShop(); };
   const finish = ()=>{ const f = overlay.querySelector('#poFoot'); if(f) f.hidden = false; const sk = overlay.querySelector('#poSkip'); if(sk) sk.hidden = true; };
   const flip = (el)=>{
     if(!el || el.classList.contains('is-flipped')) return;
@@ -18782,6 +18783,9 @@ function openPackAnimation(pack, results, extra){
   overlay.querySelector('#poDone').onclick = close;
   overlay.querySelector('#poNest').onclick = ()=>{ close(); switchTab('nest'); };
   overlay.onclick = e=>{ if(e.target===overlay && flipped >= cards.length) close(); };
+  // Flow audit 2026-10-03: Escape first reveals everything, a second Escape closes.
+  onKey = e=>{ if(e.key!=='Escape' || overlay.hidden) return; e.preventDefault(); if(flipped < cards.length){ timers.forEach(clearTimeout); cards.forEach(flip); } else close(); };
+  document.addEventListener('keydown', onKey);
   // timeline: shake → burst → fan out → auto-flip one by one
   const pk = overlay.querySelector('#poPack');
   const T = reduce ? [0, 0, 0, 120] : [0, 700, 1050, 1500];

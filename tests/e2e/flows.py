@@ -136,6 +136,49 @@ async def main():
         if d not in forge: bad(f'forge: bought card {d} not in Forge pool')
     if errs: bad(f'pack flow page errors {errs[:2]}')
     await pg.close()
+    # 2b. win screen buttons: Back to board, Play again, Next battle, Quit
+    for btn_id in ['wlBackBtn', 'wlPrimaryBtn', 'wlNextBattleBtn', 'wlQuitBtn']:
+        pg, errs = await fresh(b)
+        await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key); matchState.players[2].hq.hp=1; return 1;})()")
+        await pg.wait_for_timeout(800)
+        for _ in range(60):
+            if await pg.evaluate("!!document.getElementById('wlQuitBtn')"): break
+            await pg.evaluate("(async()=>{ const m=matchState; if(!m||m.over||m.resolving) return; const me=m.players[1]; const h=me.hand.find(x=> m.engine.canPlay(me,x.defId,x.uid)); if(h) await playCardByUid(h.uid,'left'); else await skipTurn(); })()")
+            await pg.wait_for_timeout(400)
+        await pg.wait_for_timeout(1500)
+        el = await pg.query_selector('#'+btn_id)
+        if not el: bad(f'win screen: no #{btn_id}')
+        else:
+            await el.click(); await pg.wait_for_timeout(900)
+            vs = await pg.query_selector('.vs-screen')
+            if vs: await vs.click(); await pg.wait_for_timeout(500)
+            state = await pg.evaluate("[!!matchState, matchState && matchState.over, !!document.querySelector('.winloss-overlay'), currentTab]")
+            if btn_id=='wlBackBtn' and state[2]: bad('win screen: Back to board did not close the modal')
+            if btn_id in ('wlPrimaryBtn','wlNextBattleBtn') and not (state[0] and not state[1]): bad(f'win screen: {btn_id} did not start a new fight {state}')
+            if btn_id=='wlQuitBtn' and state[0]: bad('win screen: Quit left a match open')
+            if btn_id=='wlBackBtn':
+                # after looking at the board you still need a way out
+                await quit_via_button(pg, 'after Back to board')
+        if errs: bad(f'win screen {btn_id}: page errors {errs[:2]}')
+        await pg.close()
+    # 2c. in-match settings open/close; pack overlay closes with Escape
+    pg, errs = await fresh(b)
+    await pg.evaluate("playSubTab='arena'; switchTab('play'); startMatch('ai'); 1"); await pg.wait_for_timeout(900)
+    vs = await pg.query_selector('.vs-screen')
+    if vs: await vs.click(); await pg.wait_for_timeout(500)
+    sb = await pg.query_selector('#settingsBtnHud')
+    if not sb: bad('match: no settings button')
+    else:
+        await sb.click(); await pg.wait_for_timeout(200)
+        if not await pg.evaluate("(()=>{ const p=document.getElementById('settingsPanelHud'); return !!p && !p.hidden; })()"): bad('match: settings did not open')
+        await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
+        if await pg.evaluate("(()=>{ const p=document.getElementById('settingsPanelHud'); return !!p && !p.hidden; })()"): bad('match: settings does not close on Escape')
+    await pg.evaluate("endMatch(); isSignedIn=()=>true; myCurrencies.gold=1000; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
+    await pg.click('[data-buypack="bronze"]'); await pg.wait_for_timeout(400)
+    await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
+    if await pg.evaluate("(()=>{ const o=document.getElementById('packOpenOverlay'); return !!o && !o.hidden; })()"): bad('pack opening cannot be closed with Escape')
+    if errs: bad(f'settings/pack: page errors {errs[:2]}')
+    await pg.close()
     # 3. Escape closes modals
     pg, errs = await fresh(b)
     await pg.click('#settingsBtn'); await pg.wait_for_timeout(200); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
