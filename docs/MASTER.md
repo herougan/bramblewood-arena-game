@@ -2,7 +2,7 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 3 decisions (D12–D14) and 7 discussion topics (T1–T7); D1–D11 are logged as decided. In the project it's `claude/decisions.md`.
+> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 4 decisions (D12–D15) and 7 discussion topics (T1–T7); D1–D11 are logged as decided. In the project it's `claude/decisions.md`.
 
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.

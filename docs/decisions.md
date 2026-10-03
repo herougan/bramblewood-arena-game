@@ -35,6 +35,10 @@ Only the map you're on is built, so it stays fast. The bigger version is one con
 Pack 1 has 33 cards, so a committed player completes it in roughly 10–15 packs.
 - **Default:** keep it, and watch how fast people fill Pack 1.
 
+**D15. PixelLab credits.** The monthly generation limit ran out partway through the batch: 10 of 26 Map 8–10 cards got done, and the two Home 2.5D sprites didn't. Prompts for the rest are ready.
+- **Options:** buy credits or upgrade the plan (your call, on your account), or wait for the monthly reset.
+- **Default:** wait for the reset, then I finish the batch.
+
 ## Discuss: needs a conversation, not a pick
 
 **T1. Catch-up mechanics** (MASTER item 10). How returning or late players catch up without devaluing grinders. Ideas:
@@ -91,4 +95,4 @@ Questions:
 | D8 | Trench | ✅ Built. You play your row turn by turn; allies are CPU on other raiders' decks (live) or default raid decks; telegraphed columns glow soft red. |
 | D9 | Leaked-password protection | ⛔ Pro-plan only (see D12). |
 | D10 | Native builds | ⏸ Not yet. |
-| D11 | Art | 🟡 In progress. Maps 8–10 (26 cards) generating in PixelLab; Home 2.5D scene built; foreground otter + hummingbird sprites generating. |
+| D11 | Art | 🟡 10 Map 8 cards wired; Home 2.5D scene coded (faded backdrop + parallax). The rest of Maps 8–10 and the two foreground sprites wait on PixelLab credits (D15). |
