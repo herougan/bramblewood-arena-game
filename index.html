@@ -4287,6 +4287,21 @@
   .po-actions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap;}
   .po-skip{position:absolute; right:0; bottom:0; color:#fff4dc;}
   @media (prefers-reduced-motion: reduce){ .pack-open-pack.is-shaking, .po-card, .po-card.is-new.is-flipped .po-front{animation:none !important;} .po-inner{transition:none;} }
+  /* Trench match (2026-10-03, D8) */
+  .trench-match .tr-cell.is-danger{background:rgba(190,50,40,.20); box-shadow:inset 0 0 0 1px rgba(190,50,40,.35); animation:trDanger 1.2s ease-in-out infinite alternate;}
+  @keyframes trDanger{from{background:rgba(190,50,40,.12)} to{background:rgba(190,50,40,.26)}}
+  .trench-match .tr-cell.is-legal{background:rgba(217,154,78,.22); box-shadow:inset 0 0 0 2px var(--accent); cursor:pointer;}
+  .trench-match .tr-cell.is-legal:hover, .trench-match .tr-cell.is-legal:focus-visible{background:rgba(217,154,78,.4); outline:none;}
+  .trench-match .tr-warn{font-weight:800; color:#a8322a;}
+  .tm-hand-bar{display:flex; align-items:center; gap:10px; margin:8px 0 4px; padding:8px; border-radius:12px; background:var(--surface-2); overflow-x:auto;}
+  .tm-lumber{font-weight:800; white-space:nowrap;}
+  .tm-hand{display:flex; gap:8px;}
+  .tm-hand-card{padding:0; border:0; background:none; cursor:pointer; width:84px; flex-shrink:0; border-radius:12px;}
+  .tm-hand-card .card-tile{width:100%;}
+  .tm-hand-card.unplayable{opacity:.6; filter:grayscale(.5);}
+  .tm-hand-card.is-selected{transform:translateY(-6px); box-shadow:0 0 0 3px var(--accent), 0 8px 16px rgba(0,0,0,.35);}
+  .tm-hint{font-size:13px; opacity:.8;}
+  @media (prefers-reduced-motion: reduce){ .trench-match .tr-cell.is-danger{animation:none;} }
 </style>
 </head>
 <body>
@@ -8199,12 +8214,19 @@ function trenchConfig(def, part, stage){
   return cfg;
 }
 
-// Runs one whole trench fight. opts: {makeSimEngine, defs, seed, rows:[{deck, name, mine}] (front→back),
-// cfg (from trenchConfig), bossName}. Returns {snapshots, dealt, overwhelmed, wallBroken, rounds, log}.
-function runTrench(opts){
+// A trench fight as a turn-by-turn stepper (2026-10-03, D8: "You still play as usual" — your row is
+// yours to play; the ally rows and the boss are CPU). opts: {makeSimEngine, defs, seed,
+// rows:[{deck, name, mine}] (front→back), cfg (from trenchConfig), bossName, myRow (index or -1)}.
+//   T.view()                  current board snapshot (+ T.telegraphCols(): columns hit this turn)
+//   T.myHand()/T.myLegalSlots()/T.canPlayMine(uid)/T.playMine(uid, slot)/T.discardMine(uid)
+//   T.endTurn()               resolves the turn, returns its snapshots; T.over / T.result() when done
+// Each turn: allies + boss play (at the start of the turn), you play, then specials, auras and one
+// combat pass per row; then everyone draws.
+function createTrench(opts){
   const cfg = opts.cfg, rnd = mulberry32(opts.seed >>> 0);
   const defs = Object.assign({}, opts.defs);
   const illusory = cfg.rules.illusory || 0, waitDelta = cfg.rules.waitDelta || 0;
+  const myRow = opts.myRow != null ? opts.myRow : -1;
   // boss cards: run-only copies (abilities stripped when Exposed; Illusory added by the rule)
   const bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{
@@ -8232,7 +8254,6 @@ function runTrench(opts){
   const pair = i=> ({1: rows[i], 2: boss});
   const log = [];
   let roundNotes = [];
-  // entities first, adjacent from the centre outwards (open mode needs neighbours)
   const order = [0, -1, 1, -2, 2, -3, 3];
   entIds.forEach((id, i)=> engine.debugSpawnCard(pair(0), sideOf, 2, id, order[i], stats, null));
   const entityAlive = ()=> engine.allBoardCards(boss).some(c=> c.hp>0 && entIds.includes(c.defId));
@@ -8248,46 +8269,69 @@ function runTrench(opts){
   };
   [...rows, boss].forEach(pl=> engine.draw(pl, 3, pl===boss?'B':'A', stats, null));
   const cardView = c=> ({uid:c.uid, defId:c.defId, slot:c.slot, hp:Math.max(0,c.hp), maxHp:c.maxHp, atk:c.atk, wait:c.wait, entity: entIds.includes(c.defId)});
-  const snap = (round, phase, telegraph)=> ({round, phase, telegraph, wall:{hp:wall.hp, max:wall.maxHp}, castle:{hp:boss.hq.hp, max:boss.hq.maxHp},
-    rows: rows.map(pl=> engine.allBoardCards(pl).filter(c=> c.hp>0).map(cardView)),
-    boss: engine.allBoardCards(boss).filter(c=> c.hp>0).map(cardView), notes: roundNotes.slice()});
-  const snapshots = [snap(0, 'start', null)];
-  // telegraphs: each column attack picks next round's column a round ahead
+  const pending = {}; // attack id -> telegraphed column for its next firing
   const pickColumn = ()=>{
     const occ = new Set(); rows.forEach(pl=> engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0) occ.add(c.slot); }));
     const cols = occ.size ? Array.from(occ) : [-1, 0, 1];
     return cols[Math.floor(rnd()*cols.length)];
   };
-  const pending = {}; // attack id -> telegraphed column for its next firing
   const removeDead = ()=> rows.forEach((pl,i)=> engine.removeDeadCards(pair(i), sideOf, {}, stats, null));
-  let round = 1, overwhelmed = false;
-  for(; round <= cfg.rounds; round++){
+  const T = {cfg, defs, entityIds: entIds, rows, boss, wall, round: 1, over: false, overwhelmed: false, phase: 'play', myRow};
+  // which columns this turn's specials will hit (column attacks firing this turn), for the red flash
+  T.telegraphCols = ()=> cfg.attacks.filter(a=> a.pattern==='column' && T.round % Math.max(1, a.every||1) === 0 && pending[a.id]!=null).map(a=> pending[a.id]);
+  T.frontRowHit = ()=> cfg.attacks.some(a=> a.pattern==='frontRow' && T.round % Math.max(1, a.every||1) === 0);
+  T.view = (phase)=> ({round: T.round, phase: phase || T.phase, telegraph: T.telegraphCols()[0] != null ? T.telegraphCols()[0] : null, telegraphCols: T.telegraphCols(), frontRowHit: T.frontRowHit(),
+    wall:{hp:wall.hp, max:wall.maxHp}, castle:{hp:boss.hq.hp, max:boss.hq.maxHp},
+    rows: rows.map(pl=> engine.allBoardCards(pl).filter(c=> c.hp>0).map(cardView)),
+    boss: engine.allBoardCards(boss).filter(c=> c.hp>0).map(cardView), notes: roundNotes.slice(),
+    hand: myRow>=0 ? rows[myRow].hand.map(h=> ({uid:h.uid, defId:h.defId})) : [], lumber: myRow>=0 ? (rows[myRow].lumber||0) : 0, played: myRow>=0 ? !!rows[myRow].playedThisTurn : false});
+  const withWaitDelta = (pl, fn)=>{ const before = new Set(engine.allBoardCards(pl).map(c=> c.uid)); fn(); if(waitDelta) engine.allBoardCards(pl).forEach(c=>{ if(!before.has(c.uid)) c.wait = (c.wait||0) + waitDelta; }); };
+  function startTurn(){
     roundNotes = [];
     engine.setSuddenDeath(false);
     [...rows, boss].forEach(pl=>{ pl.playedThisTurn = false; pl.discardUsedThisTurn = false; });
-    rows.forEach((pl, i)=>{
-      const before = new Set(engine.allBoardCards(pl).map(c=> c.uid));
-      engine.aiTakeTurn(pair(i), sideOf, 1, stats, null);
-      if(waitDelta) engine.allBoardCards(pl).forEach(c=>{ if(!before.has(c.uid)) c.wait = (c.wait||0) + waitDelta; });
-    });
+    rows.forEach((pl, i)=>{ if(i===myRow) return; withWaitDelta(pl, ()=> engine.aiTakeTurn(pair(i), sideOf, 1, stats, null)); });
     engine.aiTakeTurn(pair(0), sideOf, 2, stats, null);
+    // a column attack that fires this turn and wasn't telegraphed last turn picks its column now
+    cfg.attacks.forEach(a=>{ if(a.pattern==='column' && T.round % Math.max(1, a.every||1) === 0 && pending[a.id]==null) pending[a.id] = pickColumn(); });
+    T.phase = 'play';
+  }
+  T.myHand = ()=> myRow>=0 ? rows[myRow].hand.slice() : [];
+  T.canPlayMine = uid=>{ if(myRow<0) return false; const pl = rows[myRow]; const h = pl.hand.find(x=> x.uid===uid); return !!h && !pl.playedThisTurn && engine.canPlay(pl, h.defId, h.uid); };
+  T.myLegalSlots = ()=> myRow>=0 ? engine.legalSlots(rows[myRow]) : [];
+  T.playMine = (uid, slot)=>{
+    if(!T.canPlayMine(uid)) return false;
+    const pl = rows[myRow]; let ok = false;
+    withWaitDelta(pl, ()=>{ ok = engine.placeCard(pair(myRow), sideOf, 1, uid, slot, stats, null) !== false; });
+    return ok;
+  };
+  T.discardMine = uid=>{
+    if(myRow<0) return false; const pl = rows[myRow];
+    if(pl.discardUsedThisTurn) return false;
+    const idx = pl.hand.findIndex(x=> x.uid===uid); if(idx<0) return false;
+    const [dc] = pl.hand.splice(idx, 1); pl.graveyard.push({defId: dc.defId}); pl.lumber = (pl.lumber||0) + 1; pl.discardUsedThisTurn = true;
+    return true;
+  };
+  T.endTurn = ()=>{
+    if(T.over) return [];
+    const out = [];
+    const round = T.round;
     // boss special attacks
     cfg.attacks.forEach(a=>{
       const every = Math.max(1, a.every||1);
-      if(round % every === 0){
-        if(a.pattern === 'column'){
-          const col = pending[a.id] != null ? pending[a.id] : pickColumn();
-          let hitAny = false;
-          rows.forEach((pl, i)=>{ engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0 && c.slot===col){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); hitAny = true; roundNotes.push({kind:'smack', attack:a.name, row:i, slot:col, dmg:a.dmg, defId:c.defId}); } }); });
-          if(!hitAny){ wall.hp = Math.max(0, wall.hp - (a.dmg||0)); roundNotes.push({kind:'smack', attack:a.name, row:-1, slot:col, dmg:a.dmg}); }
-          delete pending[a.id];
-        } else if(a.pattern === 'frontRow'){
-          engine.allBoardCards(rows[0]).forEach(c=>{ if(c.hp>0){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); roundNotes.push({kind:'sweep', attack:a.name, row:0, slot:c.slot, dmg:a.dmg, defId:c.defId}); } });
-        }
+      if(round % every !== 0) return;
+      if(a.pattern === 'column'){
+        const col = pending[a.id] != null ? pending[a.id] : pickColumn();
+        let hitAny = false;
+        rows.forEach((pl, i)=>{ engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0 && c.slot===col){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); hitAny = true; roundNotes.push({kind:'smack', attack:a.name, row:i, slot:col, dmg:a.dmg, defId:c.defId}); } }); });
+        if(!hitAny){ wall.hp = Math.max(0, wall.hp - (a.dmg||0)); roundNotes.push({kind:'smack', attack:a.name, row:-1, slot:col, dmg:a.dmg}); }
+        delete pending[a.id];
+      } else if(a.pattern === 'frontRow'){
+        engine.allBoardCards(rows[0]).forEach(c=>{ if(c.hp>0){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); roundNotes.push({kind:'sweep', attack:a.name, row:0, slot:c.slot, dmg:a.dmg, defId:c.defId}); } });
       }
-      if(a.pattern === 'column' && (round+1) % every === 0) pending[a.id] = pickColumn();
     });
     removeDead();
+    out.push(T.view('specials'));
     // entities buff each other: +aura armour per OTHER entity still standing
     if(entIds.length){
       const alive = engine.allBoardCards(boss).filter(c=> c.hp>0 && entIds.includes(c.defId)).length;
@@ -8298,23 +8342,42 @@ function runTrench(opts){
     removeDead();
     for(let i=1;i<rows.length;i++) engine.resolveCombat(pair(i), sideOf, stats, null, 1, {upkeepIds:[1], attackerIds:[1]});
     roundNotes.push({kind:'round', castleDmg: castleBefore - boss.hq.hp, wallDmg: wallBefore - wall.hp});
-    const tele = Object.keys(pending).length ? Object.values(pending)[0] : null;
-    snapshots.push(snap(round, 'combat', tele));
+    // next turn's column attacks are telegraphed now, so they flash during the coming play phase
+    cfg.attacks.forEach(a=>{ if(a.pattern==='column' && (round+1) % Math.max(1, a.every||1) === 0) pending[a.id] = pickColumn(); });
+    T.phase = 'combat';
+    out.push(T.view('combat'));
     log.push({round, castle: boss.hq.hp, wall: wall.hp});
-    if(boss.hq.hp <= 0){ overwhelmed = true; break; }
-    if(wall.hp <= 0) break;
-    rows.forEach(pl=> engine.draw(pl, 1, 'A', stats, null));
-    engine.draw(boss, 1, 'B', stats, null);
-  }
-  // damage dealt = castle damage + damage to the boss's entities (dead ones count in full), so chipping
-  // a shielded Core's stumps still contributes
-  const entHp = {}; engine.allBoardCards(boss).forEach(c=>{ if(entIds.includes(c.defId)) entHp[c.defId] = Math.max(0, c.hp); });
-  const entityDealt = entIds.reduce((t,id)=> t + (defs[id].health - (entHp[id]!=null ? entHp[id] : 0)), 0);
-  const castleDealt = Math.max(0, cfg.castleHp - Math.max(0, boss.hq.hp));
-  return {snapshots, dealt: castleDealt + entityDealt, castleDealt, entityDealt, overwhelmed, wallBroken: wall.hp <= 0, rounds: Math.min(round, cfg.rounds), log, entityIds: entIds, defs};
+    if(boss.hq.hp <= 0){ T.overwhelmed = true; T.over = true; }
+    else if(wall.hp <= 0 || round >= cfg.rounds){ T.over = true; }
+    if(!T.over){
+      rows.forEach(pl=> engine.draw(pl, 1, 'A', stats, null));
+      engine.draw(boss, 1, 'B', stats, null);
+      T.round = round + 1;
+      startTurn();
+    }
+    return out;
+  };
+  T.result = ()=>{
+    // damage dealt = castle damage + damage to the boss's entities (dead ones count in full), so chipping
+    // a shielded Core's stumps still contributes. "Over damage" past 0 on the global pool still counts (D7).
+    const entHp = {}; engine.allBoardCards(boss).forEach(c=>{ if(entIds.includes(c.defId)) entHp[c.defId] = Math.max(0, c.hp); });
+    const entityDealt = entIds.reduce((t,id)=> t + (defs[id].health - (entHp[id]!=null ? entHp[id] : 0)), 0);
+    const castleDealt = Math.max(0, cfg.castleHp - Math.max(0, boss.hq.hp));
+    return {dealt: castleDealt + entityDealt, castleDealt, entityDealt, overwhelmed: T.overwhelmed, wallBroken: wall.hp <= 0, rounds: Math.min(T.round, cfg.rounds), log, entityIds: entIds, defs};
+  };
+  T.start = ()=>{ T.startSnap = T.view('start'); startTurn(); return T; };
+  return T;
+}
+// Whole fight with every row CPU-played (tests, editor simulation, quick previews).
+function runTrench(opts){
+  const T = createTrench(Object.assign({}, opts, {myRow: -1})).start();
+  const snapshots = [T.startSnap];
+  let guard = 0;
+  while(!T.over && guard++ < 200) T.endTurn().forEach(s=>{ if(s.phase==='combat') snapshots.push(s); });
+  return Object.assign({snapshots}, T.result());
 }
 
-const api = {ROW_NAMES, DEFAULTS, trenchConfig, runTrench};
+const api = {ROW_NAMES, DEFAULTS, trenchConfig, createTrench, runTrench};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodTrench = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
@@ -17179,7 +17242,7 @@ const ONLINE_RAID_VISIBLE = false;
 // raid damage (caps 5,000 / 10,000 for an overwhelm); locked parts wait for others; stages as HP
 // falls; everyone who took part claims the kill reward (or 40% compensation if it survives the
 // week), plus contribution-tier extras. Rules live in bramblewood-raid.js. ----
-const RAID_DEFS_BASE = [{"id": "goliath", "name": "The Goliath", "icon": "🐙", "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.", "cost": {"raidPoints": 1, "energy": 4}, "parts": [{"id": "left", "name": "Left Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"kraken-spawnling": 4, "riptide-eel": 3, "moray-ambusher": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "right", "name": "Right Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"kraken-spawnling": 4, "reef-manta-glider": 3, "coral-reef-shark": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "tail", "name": "Tail", "icon": "🌊", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"humpback-elder": 3, "orca-vanguard": 3, "riptide-eel": 4}}, "trench": {"attacks": [{"id": "sweep", "name": "Tail Sweep", "pattern": "frontRow", "dmg": 3, "every": 2}]}}, {"id": "core", "name": "Core", "icon": "👁️", "bars": 8, "barHp": 80000, "lockedUntil": ["left", "right", "tail"], "fight": {"castleHp": 200, "deck": {"humpback-elder": 4, "orca-vanguard": 4, "kraken-spawnling": 4, "coral-reef-shark": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}], "entities": [{"id": "stump-l", "name": "Left Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-c", "name": "Tail Stump", "icon": "🌊", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-r", "name": "Right Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}], "shieldWhileEntities": true, "rules": {"waitDelta": 1, "illusory": 0.667}, "wallHp": 70}, "scoring": {"perInFightHp": 140}}], "stages": [{"at": 0.75, "name": "Enraged"}, {"at": 0.5, "name": "Thrashing"}, {"at": 0.01, "name": "Exposed", "rules": [{"stripAbilities": true}]}], "scoring": {"perInFightHp": 15, "cap": 5000, "overwhelmCap": 10000}, "standIns": {"perDayPct": 12}, "rewards": {"kill": {"gold": 400, "dust": 60, "metal": 3}, "compensationPct": 40, "tiers": {"top1": {"metal": 3, "title": "Goliath-Slayer"}, "top10": {"metal": 2, "dust": 30}, "top50": {"dust": 20}, "participant": {}}}, "fightRounds": 12, "trench": {"rows": 3, "wallHp": 45}}];
+const RAID_DEFS_BASE = [{"id": "goliath", "name": "The Goliath", "icon": "🐙", "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.", "cost": {"raidPoints": 1, "energy": 4}, "parts": [{"id": "left", "name": "Left Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"kraken-spawnling": 4, "riptide-eel": 3, "moray-ambusher": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "right", "name": "Right Tentacle", "icon": "🦑", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"kraken-spawnling": 4, "reef-manta-glider": 3, "coral-reef-shark": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}]}}, {"id": "tail", "name": "Tail", "icon": "🌊", "bars": 3, "barHp": 80000, "fight": {"castleHp": 420, "deck": {"humpback-elder": 3, "orca-vanguard": 3, "riptide-eel": 4}}, "trench": {"attacks": [{"id": "sweep", "name": "Tail Sweep", "pattern": "frontRow", "dmg": 3, "every": 2}]}}, {"id": "core", "name": "Core", "icon": "👁️", "bars": 8, "barHp": 80000, "lockedUntil": ["left", "right", "tail"], "fight": {"castleHp": 200, "deck": {"humpback-elder": 4, "orca-vanguard": 4, "kraken-spawnling": 4, "coral-reef-shark": 3}}, "trench": {"attacks": [{"id": "smack", "name": "Tentacle Smack", "pattern": "column", "dmg": 6, "every": 3}], "entities": [{"id": "stump-l", "name": "Left Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-c", "name": "Tail Stump", "icon": "🌊", "attack": 3, "health": 20, "armor": 0, "aura": 1}, {"id": "stump-r", "name": "Right Stump", "icon": "🦑", "attack": 3, "health": 20, "armor": 0, "aura": 1}], "shieldWhileEntities": true, "rules": {"waitDelta": 1, "illusory": 0.667}, "wallHp": 70}, "scoring": {"perInFightHp": 140}}], "stages": [{"at": 0.75, "name": "Enraged"}, {"at": 0.5, "name": "Thrashing"}, {"at": 0.01, "name": "Exposed", "rules": [{"stripAbilities": true}]}], "scoring": {"perInFightHp": 15, "cap": 5000, "overwhelmCap": 10000}, "standIns": {"perDayPct": 12}, "rewards": {"kill": {"gold": 400, "dust": 60, "metal": 3}, "compensationPct": 40, "tiers": {"top1": {"metal": 3, "title": "Goliath-Slayer"}, "top10": {"metal": 2, "dust": 30}, "top50": {"dust": 20}, "participant": {}}}, "fightRounds": 12, "trench": {"rows": 3, "wallHp": 45}, "allyDecks": [{"name": "Riverguard Line", "deck": {"otter-centurion": 3, "otter-guard": 3, "otter-paddler": 3, "otter-kit": 3, "bee-knight": 4, "dolphin-knight": 4}}, {"name": "Hive Wall", "deck": {"bee-drone": 4, "bee-knight": 4, "bee-sentry": 4, "honey-bee": 4, "forager-ant": 4}}, {"name": "Talon Sky", "deck": {"cobalt-talon-fledgling": 4, "cobalt-talon-skirmisher": 4, "crimson-wing-recruit": 4, "owl-fletcher": 4, "cave-flitter": 4}}, {"name": "Tundra Pack", "deck": {"timber-wolf-pack": 4, "ice-crevasse-wolf": 4, "snowshoe-hare": 4, "arctic-fox-raider": 4, "taiga-lynx": 4}}]}];
 const RAID_DEFS_KEY = 'bramblewood_raid_defs_v1';
 const RAID_PART_ATTEMPTS_KEY = 'bramblewood_raid_part_attempts_v1';
 const RAID_CLAIMS_KEY = 'bramblewood_raid_claims_v1';
@@ -17510,14 +17573,35 @@ function openRaidEditor(raidId){
 // fight runs CPU-vs-CPU instantly, is scored and saved straight away (so closing the replay can't
 // re-roll it), then replays round by round. ----
 const TrenchM = (typeof BramblewoodTrench!=='undefined') ? BramblewoodTrench : null;
-function trenchAllies(seed){
-  const out = [], exclude = [myGhostOwnerId(), cloudUserId].filter(Boolean);
-  let cands = []; try{ cands = pvpCandidates(); }catch(e){ cands = []; }
-  for(let k=0; k<2; k++){
-    const res = Ghosts.matchPvp({rating: myRating, deckLevel: myPvpDeckLevel()}, cands, (seed + k*7919)>>>0, exclude.concat(out.map(o=> o.owner)));
-    const g = res.opponent;
-    if(g){ out.push({owner: g.owner, name: g.name || 'Raider', deck: g.deck, level: g.deckLevel || Ghosts.simpleDeckLevel(getCardDefs(), g.deck), real: !String(g.owner||'').includes('seed')}); }
-    else { const id = Ghosts.ghostIdentity ? Ghosts.ghostIdentity(seed+k) : {name:'Stand-in'}; const deck = Ghosts.generateGhostDeck(getCardDefs(), 3, (seed+k)>>>0); out.push({owner:'stand-in-'+k, name: id.name, deck, level: Ghosts.simpleDeckLevel(getCardDefs(), deck), real:false}); }
+// Allies (2026-10-03, D8: "CPU allies... playing ghost decks (of other raid-fighters). There are some
+// default raid fight decks"): the most recent other raiders' decks from this week's raid (live), then
+// the raid's default ally decks (canonical/raids.json allyDecks) to fill any gap.
+const raidAllyCache = {}; // raidId:cycle -> {at, rows}
+async function liveFetchRaidAllies(def, cycle){
+  const key = def.id+':'+cycle, cur = raidAllyCache[key];
+  if(cur && Date.now() - cur.at < 2*60*1000) return cur.rows;
+  if(!sbClient || LiveData.available===false) return [];
+  try{
+    const { data, error } = await sbClient.from('raid_week_attempts').select('owner_id, display_name, deck, fought_at').like('boss_id', def.id+':%').eq('cycle', cycle).order('fought_at', {ascending:false}).limit(60);
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return []; }
+    raidAllyCache[key] = {at: Date.now(), rows: data || []};
+    return raidAllyCache[key].rows;
+  }catch(e){ return []; }
+}
+function trenchAllies(def, liveRows, seed){
+  const defs = getCardDefs(), mine = [myGhostOwnerId(), cloudUserId].filter(Boolean);
+  const out = [], seen = new Set(mine);
+  (liveRows||[]).forEach(r=>{
+    if(out.length >= 2 || seen.has(r.owner_id) || !r.deck || !Object.keys(r.deck).length) return;
+    if(Object.keys(r.deck).some(id=> !defs[id])) return;
+    seen.add(r.owner_id);
+    out.push({owner: r.owner_id, name: r.display_name || 'Raider', deck: r.deck, level: Ghosts.simpleDeckLevel(defs, r.deck), real: true});
+  });
+  const defaults = (def.allyDecks||[]).filter(d=> d.deck && Object.keys(d.deck).every(id=> defs[id]));
+  let k = 0;
+  while(out.length < 2){
+    if(defaults.length){ const d = defaults[(seed + k*7) % defaults.length]; k++; if(out.some(o=> o.name===d.name) && k < 20) continue; out.push({owner:'default-'+d.name, name: d.name, deck: d.deck, level: Ghosts.simpleDeckLevel(defs, d.deck), real:false}); }
+    else { const deck = Ghosts.generateGhostDeck(defs, 3, (seed+k)>>>0); k++; out.push({owner:'stand-in-'+k, name: (Ghosts.ghostIdentity(seed+k)||{}).name || 'Stand-in', deck, level: Ghosts.simpleDeckLevel(defs, deck), real:false}); }
   }
   return out;
 }
@@ -17530,32 +17614,35 @@ function openTrenchSetup(def, partId){
   const f = RaidM.fightFor(def, st, partId);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
   const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
-  const allies = trenchAllies(seed);
+  let allies = trenchAllies(def, [], seed);
   let overlay = document.getElementById('trenchOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
   const cost = def.cost || {};
   const rules = [];
   cfg.attacks.forEach(a=> rules.push(trenchAttackText(a)));
-  if(cfg.entities.length) rules.push(`${cfg.entities.length} ${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} stand guard${cfg.shieldWhileEntities ? ' — the castle can’t be hit until they all fall' : ''}${cfg.entities.some(e=> e.aura) ? '; each gains armour for every other one alive' : ''}`);
+  if(cfg.entities.length) rules.push(`${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} guard it${cfg.shieldWhileEntities ? ' — its castle can’t be hit until they fall' : ''}`);
   if(cfg.rules.waitDelta) rules.push(`Your units enter with +${cfg.rules.waitDelta} Wait`);
-  if(cfg.rules.illusory) rules.push(`Its units are Illusory — they dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
-  if(cfg.strip) rules.push('EXPOSED: the boss has lost every ability');
+  if(cfg.rules.illusory) rules.push(`Its units dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
+  if(cfg.strip) rules.push('EXPOSED: it has lost every ability');
+  const alliesHTML = ()=> `Fighting alongside: ${allies.map(a=> `<b>${escapeHtml(a.name)}</b> <span class="ts-lvl">deck Lv ${a.level}${a.real ? '' : ' · default deck'}</span>`).join(' and ')}`;
   overlay.innerHTML = `<div class="modal trench-setup" role="dialog" aria-label="Choose your trench">
     <div class="modal-head-row"><h2>${escapeHtml(f.part.icon||'')} ${escapeHtml(f.part.name)} — the trenches</h2><button class="modal-close-btn" id="tsClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">Three rows hold the line. Boss attacks hit the <b>front</b> row first and roll through to the row behind when a column is empty. Every row hits back. ${cfg.rounds} turns, trench wall ${cfg.wallHp} HP.</p>
+    <p class="panel-sub">You play your row; two raiders' decks hold the others. Boss hits land on the front row first and roll through gaps. ${cfg.rounds} turns · wall ${cfg.wallHp} HP.</p>
     <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}</ul>
     <div class="ts-rows">${[0,1,2].map(i=> `<button type="button" class="ts-row" data-row="${i}">
       <span class="ts-row-name">${TrenchM.ROW_NAMES[i]}</span>
-      <span class="ts-row-hint">${i===0 ? 'Takes the hits, deals the most' : i===1 ? 'Hit only through gaps in the front' : 'Safest — hit only through two gaps'}</span>
+      <span class="ts-row-hint">${i===0 ? 'Takes the hits' : i===1 ? 'Hit through front gaps' : 'Safest'}</span>
       <span class="ts-row-cta">Take the ${TrenchM.ROW_NAMES[i].toLowerCase()}</span></button>`).join('')}</div>
-    <p class="ts-allies">Fighting alongside: ${allies.map(a=> `<b>${escapeHtml(a.name)}</b> <span class="ts-lvl">deck Lv ${a.level}${a.real ? '' : ' · stand-in'}</span>`).join(' and ')}</p>
-    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡ · the fight plays itself, then replays for you.</p>
+    <p class="ts-allies" id="tsAllies">${alliesHTML()}</p>
+    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡.</p>
   </div>`;
   overlay.hidden = false;
+  liveFetchRaidAllies(def, st.cycle).then(rows=>{ if(!rows.length) return; allies = trenchAllies(def, rows, seed); const el = document.getElementById('tsAllies'); if(el) el.innerHTML = alliesHTML(); });
   overlay.querySelector('#tsClose').onclick = close;
   overlay.onclick = ev=>{ if(ev.target===overlay) close(); };
   overlay.querySelectorAll('[data-row]').forEach(b=> b.onclick = ()=>{
+    if(!deckSizeOkOrWarn()) return;
     if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 (you have ${currentRaidPoints()}).`, 'error'); return; }
     if(!spendEnergy(cost.energy||0)){ showToast(`Not enough Energy — this costs ${cost.energy}⚡ (you have ${currentEnergy()}).`, 'error'); return; }
     if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
@@ -17563,10 +17650,8 @@ function openTrenchSetup(def, partId){
     const myRow = +b.dataset.row;
     const me = {name: (myProfile && myProfile.name) || 'You', deck: Object.assign({}, myDeckCounts), mine:true};
     const order = [allies[0], allies[1]]; order.splice(myRow, 0, me);
-    const res = TrenchM.runTrench({makeSimEngine, defs: getCardDefs(), seed, rows: order.map(o=> ({deck:o.deck, name:o.name, mine:!!o.mine})), cfg, bossName: f.part.name});
-    const settled = recordRaidAttempt(def, partId, st.cycle, res.dealt, res.overwhelmed);
-    if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody'));
-    openTrenchReplay(def, f.part, cfg, res, order, myRow, settled);
+    const T = TrenchM.createTrench({makeSimEngine, defs: getCardDefs(), seed, rows: order.map(o=> ({deck:o.deck, name:o.name, mine:!!o.mine})), cfg, bossName: f.part.name, myRow}).start();
+    openTrenchMatch(def, partId, f.part, cfg, T, order, myRow, st.cycle);
   });
 }
 function trenchTileHTML(c, defs, extra){
@@ -17576,54 +17661,75 @@ function trenchTileHTML(c, defs, extra){
     <div class="tr-ico">${cardIcoHTML(d)}</div><div class="tr-stats"><span class="tr-atk">${c.atk}</span><span class="tr-hp">${c.hp}</span></div>
     ${c.wait ? `<span class="tr-wait">${c.wait}</span>` : ''}<span class="tr-hpbar"><span style="width:${pct}%"></span></span></div>`;
 }
-function openTrenchReplay(def, part, cfg, res, rowsInfo, myRow, settled){
+// The trench match (2026-10-03, D8): you play your row like a normal match — pick a card, drop it
+// in a lit slot (or discard it for +1 🪵), End turn. Allies and the boss are CPU. Columns a telegraphed
+// attack will hit this turn glow a soft red across every row (the front row when a sweep is due).
+// Leaving early still banks the damage you've done; the fight is scored once, when it ends.
+function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
   let overlay = document.getElementById('trenchOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
-  const defs = res.defs;
-  const snaps = res.snapshots;
-  let minS = 0, maxS = 0;
-  snaps.forEach(s=> [s.boss].concat(s.rows).forEach(list=> list.forEach(c=>{ minS = Math.min(minS, c.slot); maxS = Math.max(maxS, c.slot); })));
-  minS = Math.max(minS, -4); maxS = Math.min(maxS, 4);
-  const cols = []; for(let x=minS; x<=maxS; x++) cols.push(x);
-  let idx = 0, timer = null, speed = 1, done = false;
-  const close = ()=>{ if(timer) clearTimeout(timer); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
-  const rowHTML = (list, cls, hits)=> `<div class="tr-row ${cls}" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=>{ const c = list.find(k=> k.slot===x); return `<div class="tr-cell">${c ? trenchTileHTML(c, defs, hits && hits.has(c.uid) ? 'is-hit' : '') : ''}</div>`; }).join('')}</div>`;
-  const noteText = n=> n.kind==='smack' ? (n.row<0 ? `💥 ${escapeHtml(n.attack)} hits the wall for ${n.dmg}` : `💥 ${escapeHtml(n.attack)} hits ${TrenchM.ROW_NAMES[n.row]}’s ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`)
+  const defs = T.defs;
+  let selected = null, busy = false, settled = null, anim = null;
+  const settle = ()=>{ if(settled) return settled; const r = T.result(); settled = Object.assign({res: r}, recordRaidAttempt(def, partId, cycle, r.dealt, r.overwhelmed)); return settled; };
+  const close = ()=>{ if(anim) clearTimeout(anim); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
+  const colsFor = v=>{ let lo = -2, hi = 2; [v.boss].concat(v.rows).forEach(l=> l.forEach(c=>{ lo = Math.min(lo, c.slot); hi = Math.max(hi, c.slot); })); T.myLegalSlots().concat(v.telegraphCols||[]).forEach(x=>{ lo = Math.min(lo, x); hi = Math.max(hi, x); }); lo = Math.max(lo, -5); hi = Math.min(hi, 5); const out = []; for(let x=lo; x<=hi; x++) out.push(x); return out; };
+  const noteText = n=> n.kind==='smack' ? (n.row<0 ? `💥 ${escapeHtml(n.attack)} hits the wall for ${n.dmg}` : `💥 ${escapeHtml(n.attack)} hits ${escapeHtml((defs[n.defId]||{}).name||'')} (${TrenchM.ROW_NAMES[n.row].toLowerCase()}) for ${n.dmg}`)
     : n.kind==='sweep' ? `🌊 ${escapeHtml(n.attack)} hits ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`
     : n.kind==='roll' ? `↘ A blow rolls through to the ${TrenchM.ROW_NAMES[n.row].toLowerCase()} row (${n.dmg})` : '';
-  const render = ()=>{
-    const s = snaps[idx];
-    const roundNote = s.notes.find(n=> n.kind==='round');
-    const hitUids = new Set(); // cards hit by specials this round
-    const finalView = done || idx===snaps.length-1;
-    overlay.innerHTML = `<div class="modal trench-replay" role="dialog" aria-label="Trench fight">
-      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">${s.round ? `Turn ${s.round} / ${cfg.rounds}` : 'Deploying…'}</span></h2>
-        <button class="modal-close-btn" id="trClose" aria-label="Close">✕</button></div>
+  const render = (v, opts)=>{
+    opts = opts || {};
+    const cols = colsFor(v);
+    const danger = new Set(v.telegraphCols||[]);
+    const legal = (!opts.anim && selected!=null && !v.played) ? new Set(T.myLegalSlots()) : new Set();
+    const roundNote = v.notes.find(n=> n.kind==='round');
+    const rowHTML = (list, i)=> `<div class="tr-row" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=>{
+      const c = list.find(k=> k.slot===x);
+      const cls = ['tr-cell', (danger.has(x) || (v.frontRowHit && i===0)) ? 'is-danger' : '', (i===myRow && legal.has(x) && !c) ? 'is-legal' : ''].join(' ');
+      return `<div class="${cls}" ${i===myRow && legal.has(x) && !c ? `data-slot="${x}" role="button" tabindex="0" aria-label="Play here"` : ''}>${c ? trenchTileHTML(c, defs) : ''}</div>`; }).join('')}</div>`;
+    const hand = v.hand.map(h=>{ const d = defs[h.defId]; const ok = !opts.anim && !v.played && T.canPlayMine(h.uid);
+      return `<button type="button" class="tm-hand-card ${ok?'playable':'unplayable'} ${selected===h.uid?'is-selected':''}" data-hand="${h.uid}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}</button>`; }).join('');
+    const finished = T.over && !opts.anim;
+    const r = finished ? settle() : null;
+    overlay.innerHTML = `<div class="modal trench-replay trench-match" role="dialog" aria-label="Trench fight">
+      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">Turn ${Math.min(v.round, cfg.rounds)} / ${cfg.rounds}</span></h2>
+        <button class="modal-close-btn" id="trClose" aria-label="${finished ? 'Close' : 'Leave the fight'}">✕</button></div>
       <div class="tr-bars">
-        <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(s.castle.hp/s.castle.max*100)}%"></span></div><b>${s.castle.hp}/${s.castle.max}</b></div>
-        <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(s.wall.hp/s.wall.max*100)}%"></span></div><b>${s.wall.hp}/${s.wall.max}</b></div>
+        <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(v.castle.hp/v.castle.max*100)}%"></span></div><b>${v.castle.hp}/${v.castle.max}</b></div>
+        <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(v.wall.hp/v.wall.max*100)}%"></span></div><b>${v.wall.hp}/${v.wall.max}</b></div>
       </div>
       <div class="tr-board">
-        ${rowHTML(s.boss, 'is-boss')}
-        <div class="tr-tele" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=> `<span class="${s.telegraph===x ? 'on' : ''}">${s.telegraph===x ? '⚠️' : ''}</span>`).join('')}</div>
-        ${s.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, '', hitUids)}</div>`).join('')}
+        <div class="tr-row-wrap is-boss-wrap">${rowHTML(v.boss, -1).replace(/is-danger/g,'')}</div>
+        ${v.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, i)}</div>`).join('')}
       </div>
-      <div class="tr-notes">${s.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
-      ${finalView ? `<div class="tr-result ${res.overwhelmed?'is-win':''}">
-          <h3>${res.overwhelmed ? '🏆 Overwhelmed!' : res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
-          <p>Castle damage <b>${res.castleDealt}</b>${res.entityDealt ? ` · stump damage <b>${res.entityDealt}</b>` : ''} → <b>${settled.contribution.toLocaleString()}</b> raid damage${settled.gold||settled.dust ? ` · +${settled.gold} gold${settled.dust ? `, +${settled.dust} dust` : ''}` : ''}</p>
-          <p class="panel-sub">${escapeHtml(part.name)} has ${settled.remainingAfter.toLocaleString()} HP left this week.</p>
+      <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
+      ${finished ? `<div class="tr-result ${r.res.overwhelmed?'is-win':''}">
+          <h3>${r.res.overwhelmed ? '🏆 Overwhelmed!' : r.res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
+          <p>Castle damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString()}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
+          <p class="panel-sub">${escapeHtml(part.name)} has ${r.remainingAfter.toLocaleString()} HP left this week.</p>
           <button type="button" class="btn primary" id="trDone">Back to the raid</button></div>`
-        : `<div class="se-actions"><button type="button" class="btn small" id="trSpeed">⏩ ${speed}×</button><span style="flex:1"></span><button type="button" class="btn small" id="trSkip">⏭ Skip to result</button></div>`}
+        : `<div class="tm-hand-bar"><span class="tm-lumber" title="Lumber — pays for cards">🪵 ${v.lumber}</span><div class="tm-hand">${hand || '<span class="panel-sub">No cards in hand</span>'}</div></div>
+          <div class="se-actions">${selected!=null && !opts.anim ? `<button type="button" class="btn small" id="tmDiscard">🗑 Discard (+1🪵)</button>` : ''}<span class="tm-hint">${opts.anim ? 'Resolving…' : v.played ? 'Card played — end your turn.' : selected!=null ? (T.canPlayMine(selected) ? 'Pick a lit slot in your row.' : 'Not enough 🪵 — discard something for lumber.') : 'Pick a card, then a lit slot.'}</span><span style="flex:1"></span><button type="button" class="btn primary" id="tmEnd" ${opts.anim?'disabled':''}>End turn ▶</button></div>`}
     </div>`;
     overlay.hidden = false;
-    overlay.querySelector('#trClose').onclick = close;
+    overlay.querySelector('#trClose').onclick = ()=>{ if(!T.over && !confirm('Leave the fight? The damage you have done so far still counts.')) return; settle(); close(); };
     const dn = overlay.querySelector('#trDone'); if(dn) dn.onclick = close;
-    const sp = overlay.querySelector('#trSpeed'); if(sp) sp.onclick = ()=>{ speed = speed===1 ? 3 : 1; render(); };
-    const sk = overlay.querySelector('#trSkip'); if(sk) sk.onclick = ()=>{ if(timer) clearTimeout(timer); idx = snaps.length-1; done = true; render(); };
+    overlay.querySelectorAll('[data-hand]').forEach(b=> b.onclick = ()=>{ if(busy) return; const uid = +b.dataset.hand; selected = selected===uid ? null : uid; render(T.view()); });
+    overlay.querySelectorAll('[data-slot]').forEach(c=>{ const go = ()=>{ if(busy || selected==null) return; if(T.playMine(selected, +c.dataset.slot)){ try{ SoundKit.play(); }catch(e){} selected = null; } render(T.view()); }; c.onclick = go; c.onkeydown = e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }; });
+    const dc = overlay.querySelector('#tmDiscard'); if(dc) dc.onclick = ()=>{ if(T.discardMine(selected)){ selected = null; render(T.view()); } else showToast('You already discarded this turn.', 'error'); };
+    const eb = overlay.querySelector('#tmEnd'); if(eb) eb.onclick = endTurn;
   };
-  const step = ()=>{ render(); if(idx < snaps.length-1 && !done){ timer = setTimeout(()=>{ idx++; step(); }, 1100/speed); } else done = true; };
-  step();
+  const endTurn = ()=>{
+    if(busy || T.over) return;
+    busy = true; selected = null;
+    const snaps = T.endTurn();
+    let k = 0;
+    const step = ()=>{
+      if(k < snaps.length){ render(snaps[k], {anim:true}); k++; anim = setTimeout(step, k===1 ? 650 : 900); return; }
+      busy = false; anim = null; render(T.view());
+    };
+    step();
+  };
+  render(T.view());
 }
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);

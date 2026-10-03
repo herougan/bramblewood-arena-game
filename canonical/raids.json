@@ -211,6 +211,49 @@
     "trench": {
       "rows": 3,
       "wallHp": 45
-    }
+    },
+    "allyDecks": [
+      {
+        "name": "Riverguard Line",
+        "deck": {
+          "otter-centurion": 3,
+          "otter-guard": 3,
+          "otter-paddler": 3,
+          "otter-kit": 3,
+          "bee-knight": 4,
+          "dolphin-knight": 4
+        }
+      },
+      {
+        "name": "Hive Wall",
+        "deck": {
+          "bee-drone": 4,
+          "bee-knight": 4,
+          "bee-sentry": 4,
+          "honey-bee": 4,
+          "forager-ant": 4
+        }
+      },
+      {
+        "name": "Talon Sky",
+        "deck": {
+          "cobalt-talon-fledgling": 4,
+          "cobalt-talon-skirmisher": 4,
+          "crimson-wing-recruit": 4,
+          "owl-fletcher": 4,
+          "cave-flitter": 4
+        }
+      },
+      {
+        "name": "Tundra Pack",
+        "deck": {
+          "timber-wolf-pack": 4,
+          "ice-crevasse-wolf": 4,
+          "snowshoe-hare": 4,
+          "arctic-fox-raider": 4,
+          "taiga-lynx": 4
+        }
+      }
+    ]
   }
 ]

@@ -9142,14 +9142,35 @@ function openRaidEditor(raidId){
 // fight runs CPU-vs-CPU instantly, is scored and saved straight away (so closing the replay can't
 // re-roll it), then replays round by round. ----
 const TrenchM = (typeof BramblewoodTrench!=='undefined') ? BramblewoodTrench : null;
-function trenchAllies(seed){
-  const out = [], exclude = [myGhostOwnerId(), cloudUserId].filter(Boolean);
-  let cands = []; try{ cands = pvpCandidates(); }catch(e){ cands = []; }
-  for(let k=0; k<2; k++){
-    const res = Ghosts.matchPvp({rating: myRating, deckLevel: myPvpDeckLevel()}, cands, (seed + k*7919)>>>0, exclude.concat(out.map(o=> o.owner)));
-    const g = res.opponent;
-    if(g){ out.push({owner: g.owner, name: g.name || 'Raider', deck: g.deck, level: g.deckLevel || Ghosts.simpleDeckLevel(getCardDefs(), g.deck), real: !String(g.owner||'').includes('seed')}); }
-    else { const id = Ghosts.ghostIdentity ? Ghosts.ghostIdentity(seed+k) : {name:'Stand-in'}; const deck = Ghosts.generateGhostDeck(getCardDefs(), 3, (seed+k)>>>0); out.push({owner:'stand-in-'+k, name: id.name, deck, level: Ghosts.simpleDeckLevel(getCardDefs(), deck), real:false}); }
+// Allies (2026-10-03, D8: "CPU allies... playing ghost decks (of other raid-fighters). There are some
+// default raid fight decks"): the most recent other raiders' decks from this week's raid (live), then
+// the raid's default ally decks (canonical/raids.json allyDecks) to fill any gap.
+const raidAllyCache = {}; // raidId:cycle -> {at, rows}
+async function liveFetchRaidAllies(def, cycle){
+  const key = def.id+':'+cycle, cur = raidAllyCache[key];
+  if(cur && Date.now() - cur.at < 2*60*1000) return cur.rows;
+  if(!sbClient || LiveData.available===false) return [];
+  try{
+    const { data, error } = await sbClient.from('raid_week_attempts').select('owner_id, display_name, deck, fought_at').like('boss_id', def.id+':%').eq('cycle', cycle).order('fought_at', {ascending:false}).limit(60);
+    if(error){ if(liveTableMissing(error)) LiveData.available = false; return []; }
+    raidAllyCache[key] = {at: Date.now(), rows: data || []};
+    return raidAllyCache[key].rows;
+  }catch(e){ return []; }
+}
+function trenchAllies(def, liveRows, seed){
+  const defs = getCardDefs(), mine = [myGhostOwnerId(), cloudUserId].filter(Boolean);
+  const out = [], seen = new Set(mine);
+  (liveRows||[]).forEach(r=>{
+    if(out.length >= 2 || seen.has(r.owner_id) || !r.deck || !Object.keys(r.deck).length) return;
+    if(Object.keys(r.deck).some(id=> !defs[id])) return;
+    seen.add(r.owner_id);
+    out.push({owner: r.owner_id, name: r.display_name || 'Raider', deck: r.deck, level: Ghosts.simpleDeckLevel(defs, r.deck), real: true});
+  });
+  const defaults = (def.allyDecks||[]).filter(d=> d.deck && Object.keys(d.deck).every(id=> defs[id]));
+  let k = 0;
+  while(out.length < 2){
+    if(defaults.length){ const d = defaults[(seed + k*7) % defaults.length]; k++; if(out.some(o=> o.name===d.name) && k < 20) continue; out.push({owner:'default-'+d.name, name: d.name, deck: d.deck, level: Ghosts.simpleDeckLevel(defs, d.deck), real:false}); }
+    else { const deck = Ghosts.generateGhostDeck(defs, 3, (seed+k)>>>0); k++; out.push({owner:'stand-in-'+k, name: (Ghosts.ghostIdentity(seed+k)||{}).name || 'Stand-in', deck, level: Ghosts.simpleDeckLevel(defs, deck), real:false}); }
   }
   return out;
 }
@@ -9162,32 +9183,35 @@ function openTrenchSetup(def, partId){
   const f = RaidM.fightFor(def, st, partId);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
   const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
-  const allies = trenchAllies(seed);
+  let allies = trenchAllies(def, [], seed);
   let overlay = document.getElementById('trenchOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
   const cost = def.cost || {};
   const rules = [];
   cfg.attacks.forEach(a=> rules.push(trenchAttackText(a)));
-  if(cfg.entities.length) rules.push(`${cfg.entities.length} ${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} stand guard${cfg.shieldWhileEntities ? ' — the castle can’t be hit until they all fall' : ''}${cfg.entities.some(e=> e.aura) ? '; each gains armour for every other one alive' : ''}`);
+  if(cfg.entities.length) rules.push(`${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} guard it${cfg.shieldWhileEntities ? ' — its castle can’t be hit until they fall' : ''}`);
   if(cfg.rules.waitDelta) rules.push(`Your units enter with +${cfg.rules.waitDelta} Wait`);
-  if(cfg.rules.illusory) rules.push(`Its units are Illusory — they dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
-  if(cfg.strip) rules.push('EXPOSED: the boss has lost every ability');
+  if(cfg.rules.illusory) rules.push(`Its units dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
+  if(cfg.strip) rules.push('EXPOSED: it has lost every ability');
+  const alliesHTML = ()=> `Fighting alongside: ${allies.map(a=> `<b>${escapeHtml(a.name)}</b> <span class="ts-lvl">deck Lv ${a.level}${a.real ? '' : ' · default deck'}</span>`).join(' and ')}`;
   overlay.innerHTML = `<div class="modal trench-setup" role="dialog" aria-label="Choose your trench">
     <div class="modal-head-row"><h2>${escapeHtml(f.part.icon||'')} ${escapeHtml(f.part.name)} — the trenches</h2><button class="modal-close-btn" id="tsClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">Three rows hold the line. Boss attacks hit the <b>front</b> row first and roll through to the row behind when a column is empty. Every row hits back. ${cfg.rounds} turns, trench wall ${cfg.wallHp} HP.</p>
+    <p class="panel-sub">You play your row; two raiders' decks hold the others. Boss hits land on the front row first and roll through gaps. ${cfg.rounds} turns · wall ${cfg.wallHp} HP.</p>
     <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}</ul>
     <div class="ts-rows">${[0,1,2].map(i=> `<button type="button" class="ts-row" data-row="${i}">
       <span class="ts-row-name">${TrenchM.ROW_NAMES[i]}</span>
-      <span class="ts-row-hint">${i===0 ? 'Takes the hits, deals the most' : i===1 ? 'Hit only through gaps in the front' : 'Safest — hit only through two gaps'}</span>
+      <span class="ts-row-hint">${i===0 ? 'Takes the hits' : i===1 ? 'Hit through front gaps' : 'Safest'}</span>
       <span class="ts-row-cta">Take the ${TrenchM.ROW_NAMES[i].toLowerCase()}</span></button>`).join('')}</div>
-    <p class="ts-allies">Fighting alongside: ${allies.map(a=> `<b>${escapeHtml(a.name)}</b> <span class="ts-lvl">deck Lv ${a.level}${a.real ? '' : ' · stand-in'}</span>`).join(' and ')}</p>
-    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡ · the fight plays itself, then replays for you.</p>
+    <p class="ts-allies" id="tsAllies">${alliesHTML()}</p>
+    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡.</p>
   </div>`;
   overlay.hidden = false;
+  liveFetchRaidAllies(def, st.cycle).then(rows=>{ if(!rows.length) return; allies = trenchAllies(def, rows, seed); const el = document.getElementById('tsAllies'); if(el) el.innerHTML = alliesHTML(); });
   overlay.querySelector('#tsClose').onclick = close;
   overlay.onclick = ev=>{ if(ev.target===overlay) close(); };
   overlay.querySelectorAll('[data-row]').forEach(b=> b.onclick = ()=>{
+    if(!deckSizeOkOrWarn()) return;
     if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 (you have ${currentRaidPoints()}).`, 'error'); return; }
     if(!spendEnergy(cost.energy||0)){ showToast(`Not enough Energy — this costs ${cost.energy}⚡ (you have ${currentEnergy()}).`, 'error'); return; }
     if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
@@ -9195,10 +9219,8 @@ function openTrenchSetup(def, partId){
     const myRow = +b.dataset.row;
     const me = {name: (myProfile && myProfile.name) || 'You', deck: Object.assign({}, myDeckCounts), mine:true};
     const order = [allies[0], allies[1]]; order.splice(myRow, 0, me);
-    const res = TrenchM.runTrench({makeSimEngine, defs: getCardDefs(), seed, rows: order.map(o=> ({deck:o.deck, name:o.name, mine:!!o.mine})), cfg, bossName: f.part.name});
-    const settled = recordRaidAttempt(def, partId, st.cycle, res.dealt, res.overwhelmed);
-    if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody'));
-    openTrenchReplay(def, f.part, cfg, res, order, myRow, settled);
+    const T = TrenchM.createTrench({makeSimEngine, defs: getCardDefs(), seed, rows: order.map(o=> ({deck:o.deck, name:o.name, mine:!!o.mine})), cfg, bossName: f.part.name, myRow}).start();
+    openTrenchMatch(def, partId, f.part, cfg, T, order, myRow, st.cycle);
   });
 }
 function trenchTileHTML(c, defs, extra){
@@ -9208,54 +9230,75 @@ function trenchTileHTML(c, defs, extra){
     <div class="tr-ico">${cardIcoHTML(d)}</div><div class="tr-stats"><span class="tr-atk">${c.atk}</span><span class="tr-hp">${c.hp}</span></div>
     ${c.wait ? `<span class="tr-wait">${c.wait}</span>` : ''}<span class="tr-hpbar"><span style="width:${pct}%"></span></span></div>`;
 }
-function openTrenchReplay(def, part, cfg, res, rowsInfo, myRow, settled){
+// The trench match (2026-10-03, D8): you play your row like a normal match — pick a card, drop it
+// in a lit slot (or discard it for +1 🪵), End turn. Allies and the boss are CPU. Columns a telegraphed
+// attack will hit this turn glow a soft red across every row (the front row when a sweep is due).
+// Leaving early still banks the damage you've done; the fight is scored once, when it ends.
+function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
   let overlay = document.getElementById('trenchOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
-  const defs = res.defs;
-  const snaps = res.snapshots;
-  let minS = 0, maxS = 0;
-  snaps.forEach(s=> [s.boss].concat(s.rows).forEach(list=> list.forEach(c=>{ minS = Math.min(minS, c.slot); maxS = Math.max(maxS, c.slot); })));
-  minS = Math.max(minS, -4); maxS = Math.min(maxS, 4);
-  const cols = []; for(let x=minS; x<=maxS; x++) cols.push(x);
-  let idx = 0, timer = null, speed = 1, done = false;
-  const close = ()=>{ if(timer) clearTimeout(timer); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
-  const rowHTML = (list, cls, hits)=> `<div class="tr-row ${cls}" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=>{ const c = list.find(k=> k.slot===x); return `<div class="tr-cell">${c ? trenchTileHTML(c, defs, hits && hits.has(c.uid) ? 'is-hit' : '') : ''}</div>`; }).join('')}</div>`;
-  const noteText = n=> n.kind==='smack' ? (n.row<0 ? `💥 ${escapeHtml(n.attack)} hits the wall for ${n.dmg}` : `💥 ${escapeHtml(n.attack)} hits ${TrenchM.ROW_NAMES[n.row]}’s ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`)
+  const defs = T.defs;
+  let selected = null, busy = false, settled = null, anim = null;
+  const settle = ()=>{ if(settled) return settled; const r = T.result(); settled = Object.assign({res: r}, recordRaidAttempt(def, partId, cycle, r.dealt, r.overwhelmed)); return settled; };
+  const close = ()=>{ if(anim) clearTimeout(anim); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
+  const colsFor = v=>{ let lo = -2, hi = 2; [v.boss].concat(v.rows).forEach(l=> l.forEach(c=>{ lo = Math.min(lo, c.slot); hi = Math.max(hi, c.slot); })); T.myLegalSlots().concat(v.telegraphCols||[]).forEach(x=>{ lo = Math.min(lo, x); hi = Math.max(hi, x); }); lo = Math.max(lo, -5); hi = Math.min(hi, 5); const out = []; for(let x=lo; x<=hi; x++) out.push(x); return out; };
+  const noteText = n=> n.kind==='smack' ? (n.row<0 ? `💥 ${escapeHtml(n.attack)} hits the wall for ${n.dmg}` : `💥 ${escapeHtml(n.attack)} hits ${escapeHtml((defs[n.defId]||{}).name||'')} (${TrenchM.ROW_NAMES[n.row].toLowerCase()}) for ${n.dmg}`)
     : n.kind==='sweep' ? `🌊 ${escapeHtml(n.attack)} hits ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`
     : n.kind==='roll' ? `↘ A blow rolls through to the ${TrenchM.ROW_NAMES[n.row].toLowerCase()} row (${n.dmg})` : '';
-  const render = ()=>{
-    const s = snaps[idx];
-    const roundNote = s.notes.find(n=> n.kind==='round');
-    const hitUids = new Set(); // cards hit by specials this round
-    const finalView = done || idx===snaps.length-1;
-    overlay.innerHTML = `<div class="modal trench-replay" role="dialog" aria-label="Trench fight">
-      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">${s.round ? `Turn ${s.round} / ${cfg.rounds}` : 'Deploying…'}</span></h2>
-        <button class="modal-close-btn" id="trClose" aria-label="Close">✕</button></div>
+  const render = (v, opts)=>{
+    opts = opts || {};
+    const cols = colsFor(v);
+    const danger = new Set(v.telegraphCols||[]);
+    const legal = (!opts.anim && selected!=null && !v.played) ? new Set(T.myLegalSlots()) : new Set();
+    const roundNote = v.notes.find(n=> n.kind==='round');
+    const rowHTML = (list, i)=> `<div class="tr-row" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=>{
+      const c = list.find(k=> k.slot===x);
+      const cls = ['tr-cell', (danger.has(x) || (v.frontRowHit && i===0)) ? 'is-danger' : '', (i===myRow && legal.has(x) && !c) ? 'is-legal' : ''].join(' ');
+      return `<div class="${cls}" ${i===myRow && legal.has(x) && !c ? `data-slot="${x}" role="button" tabindex="0" aria-label="Play here"` : ''}>${c ? trenchTileHTML(c, defs) : ''}</div>`; }).join('')}</div>`;
+    const hand = v.hand.map(h=>{ const d = defs[h.defId]; const ok = !opts.anim && !v.played && T.canPlayMine(h.uid);
+      return `<button type="button" class="tm-hand-card ${ok?'playable':'unplayable'} ${selected===h.uid?'is-selected':''}" data-hand="${h.uid}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}</button>`; }).join('');
+    const finished = T.over && !opts.anim;
+    const r = finished ? settle() : null;
+    overlay.innerHTML = `<div class="modal trench-replay trench-match" role="dialog" aria-label="Trench fight">
+      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">Turn ${Math.min(v.round, cfg.rounds)} / ${cfg.rounds}</span></h2>
+        <button class="modal-close-btn" id="trClose" aria-label="${finished ? 'Close' : 'Leave the fight'}">✕</button></div>
       <div class="tr-bars">
-        <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(s.castle.hp/s.castle.max*100)}%"></span></div><b>${s.castle.hp}/${s.castle.max}</b></div>
-        <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(s.wall.hp/s.wall.max*100)}%"></span></div><b>${s.wall.hp}/${s.wall.max}</b></div>
+        <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(v.castle.hp/v.castle.max*100)}%"></span></div><b>${v.castle.hp}/${v.castle.max}</b></div>
+        <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(v.wall.hp/v.wall.max*100)}%"></span></div><b>${v.wall.hp}/${v.wall.max}</b></div>
       </div>
       <div class="tr-board">
-        ${rowHTML(s.boss, 'is-boss')}
-        <div class="tr-tele" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=> `<span class="${s.telegraph===x ? 'on' : ''}">${s.telegraph===x ? '⚠️' : ''}</span>`).join('')}</div>
-        ${s.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, '', hitUids)}</div>`).join('')}
+        <div class="tr-row-wrap is-boss-wrap">${rowHTML(v.boss, -1).replace(/is-danger/g,'')}</div>
+        ${v.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, i)}</div>`).join('')}
       </div>
-      <div class="tr-notes">${s.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
-      ${finalView ? `<div class="tr-result ${res.overwhelmed?'is-win':''}">
-          <h3>${res.overwhelmed ? '🏆 Overwhelmed!' : res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
-          <p>Castle damage <b>${res.castleDealt}</b>${res.entityDealt ? ` · stump damage <b>${res.entityDealt}</b>` : ''} → <b>${settled.contribution.toLocaleString()}</b> raid damage${settled.gold||settled.dust ? ` · +${settled.gold} gold${settled.dust ? `, +${settled.dust} dust` : ''}` : ''}</p>
-          <p class="panel-sub">${escapeHtml(part.name)} has ${settled.remainingAfter.toLocaleString()} HP left this week.</p>
+      <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
+      ${finished ? `<div class="tr-result ${r.res.overwhelmed?'is-win':''}">
+          <h3>${r.res.overwhelmed ? '🏆 Overwhelmed!' : r.res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
+          <p>Castle damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString()}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
+          <p class="panel-sub">${escapeHtml(part.name)} has ${r.remainingAfter.toLocaleString()} HP left this week.</p>
           <button type="button" class="btn primary" id="trDone">Back to the raid</button></div>`
-        : `<div class="se-actions"><button type="button" class="btn small" id="trSpeed">⏩ ${speed}×</button><span style="flex:1"></span><button type="button" class="btn small" id="trSkip">⏭ Skip to result</button></div>`}
+        : `<div class="tm-hand-bar"><span class="tm-lumber" title="Lumber — pays for cards">🪵 ${v.lumber}</span><div class="tm-hand">${hand || '<span class="panel-sub">No cards in hand</span>'}</div></div>
+          <div class="se-actions">${selected!=null && !opts.anim ? `<button type="button" class="btn small" id="tmDiscard">🗑 Discard (+1🪵)</button>` : ''}<span class="tm-hint">${opts.anim ? 'Resolving…' : v.played ? 'Card played — end your turn.' : selected!=null ? (T.canPlayMine(selected) ? 'Pick a lit slot in your row.' : 'Not enough 🪵 — discard something for lumber.') : 'Pick a card, then a lit slot.'}</span><span style="flex:1"></span><button type="button" class="btn primary" id="tmEnd" ${opts.anim?'disabled':''}>End turn ▶</button></div>`}
     </div>`;
     overlay.hidden = false;
-    overlay.querySelector('#trClose').onclick = close;
+    overlay.querySelector('#trClose').onclick = ()=>{ if(!T.over && !confirm('Leave the fight? The damage you have done so far still counts.')) return; settle(); close(); };
     const dn = overlay.querySelector('#trDone'); if(dn) dn.onclick = close;
-    const sp = overlay.querySelector('#trSpeed'); if(sp) sp.onclick = ()=>{ speed = speed===1 ? 3 : 1; render(); };
-    const sk = overlay.querySelector('#trSkip'); if(sk) sk.onclick = ()=>{ if(timer) clearTimeout(timer); idx = snaps.length-1; done = true; render(); };
+    overlay.querySelectorAll('[data-hand]').forEach(b=> b.onclick = ()=>{ if(busy) return; const uid = +b.dataset.hand; selected = selected===uid ? null : uid; render(T.view()); });
+    overlay.querySelectorAll('[data-slot]').forEach(c=>{ const go = ()=>{ if(busy || selected==null) return; if(T.playMine(selected, +c.dataset.slot)){ try{ SoundKit.play(); }catch(e){} selected = null; } render(T.view()); }; c.onclick = go; c.onkeydown = e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }; });
+    const dc = overlay.querySelector('#tmDiscard'); if(dc) dc.onclick = ()=>{ if(T.discardMine(selected)){ selected = null; render(T.view()); } else showToast('You already discarded this turn.', 'error'); };
+    const eb = overlay.querySelector('#tmEnd'); if(eb) eb.onclick = endTurn;
   };
-  const step = ()=>{ render(); if(idx < snaps.length-1 && !done){ timer = setTimeout(()=>{ idx++; step(); }, 1100/speed); } else done = true; };
-  step();
+  const endTurn = ()=>{
+    if(busy || T.over) return;
+    busy = true; selected = null;
+    const snaps = T.endTurn();
+    let k = 0;
+    const step = ()=>{
+      if(k < snaps.length){ render(snaps[k], {anim:true}); k++; anim = setTimeout(step, k===1 ? 650 : 900); return; }
+      busy = false; anim = null; render(T.view());
+    };
+    step();
+  };
+  render(T.view());
 }
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);

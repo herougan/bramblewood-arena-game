@@ -70,6 +70,28 @@ check(out.core.avg >= 1000 && out.core.avg <= 4000, `core: average ${Math.round(
 check(out.core.ow <= 0.05, `core: overwhelmed ${Math.round(out.core.ow*100)}% — should be near-impossible`);
 check(out.exposed.avg > out.core.avg, 'Exposed core should be easier than the normal core');
 
+// 5. interactive stepper: you play your own row turn by turn
+{
+  const cfg = T.trenchConfig(raid, part('left'), null);
+  const t = T.createTrench({makeSimEngine: mk, defs, seed: 99, rows: rowsFor(2), cfg, bossName:'left', myRow: 1}).start();
+  let played = 0, sawTelegraphBeforeSmack = false, guard = 0;
+  while(!t.over && guard++ < 40){
+    const tele = t.telegraphCols();
+    const playable = t.myHand().find(h=> t.canPlayMine(h.uid));
+    if(playable){
+      const slots = t.myLegalSlots();
+      check(slots.length > 0, 'a playable card should have a legal slot');
+      if(t.playMine(playable.uid, slots[0])){ played++; check(!t.canPlayMine((t.myHand()[0]||{}).uid), 'only one card per turn'); }
+    } else if(t.myHand().length) t.discardMine(t.myHand()[0].uid);
+    const snaps = t.endTurn();
+    if(tele.length && snaps[0].notes.some(n=> n.kind==='smack' && tele.includes(n.slot))) sawTelegraphBeforeSmack = true;
+  }
+  check(t.over, 'interactive trench should finish within its turn limit');
+  check(played > 0, 'never managed to play a card in my row');
+  check(sawTelegraphBeforeSmack, 'a Tentacle Smack never hit a column that had been telegraphed the turn before');
+  const r = t.result(); check(r.dealt >= 0 && r.rounds <= cfg.rounds, 'interactive result out of range');
+}
+
 check(JSON.stringify(H.loadCardDefs())===JSON.stringify(defs), 'card defs mutated');
 console.log(`trench: ${failures.length} failure(s)`);
 failures.slice(0,20).forEach(f=> console.log('  FAIL '+f));

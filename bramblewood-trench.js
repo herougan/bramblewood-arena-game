@@ -44,12 +44,19 @@ function trenchConfig(def, part, stage){
   return cfg;
 }
 
-// Runs one whole trench fight. opts: {makeSimEngine, defs, seed, rows:[{deck, name, mine}] (front→back),
-// cfg (from trenchConfig), bossName}. Returns {snapshots, dealt, overwhelmed, wallBroken, rounds, log}.
-function runTrench(opts){
+// A trench fight as a turn-by-turn stepper (2026-10-03, D8: "You still play as usual" — your row is
+// yours to play; the ally rows and the boss are CPU). opts: {makeSimEngine, defs, seed,
+// rows:[{deck, name, mine}] (front→back), cfg (from trenchConfig), bossName, myRow (index or -1)}.
+//   T.view()                  current board snapshot (+ T.telegraphCols(): columns hit this turn)
+//   T.myHand()/T.myLegalSlots()/T.canPlayMine(uid)/T.playMine(uid, slot)/T.discardMine(uid)
+//   T.endTurn()               resolves the turn, returns its snapshots; T.over / T.result() when done
+// Each turn: allies + boss play (at the start of the turn), you play, then specials, auras and one
+// combat pass per row; then everyone draws.
+function createTrench(opts){
   const cfg = opts.cfg, rnd = mulberry32(opts.seed >>> 0);
   const defs = Object.assign({}, opts.defs);
   const illusory = cfg.rules.illusory || 0, waitDelta = cfg.rules.waitDelta || 0;
+  const myRow = opts.myRow != null ? opts.myRow : -1;
   // boss cards: run-only copies (abilities stripped when Exposed; Illusory added by the rule)
   const bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{
@@ -77,7 +84,6 @@ function runTrench(opts){
   const pair = i=> ({1: rows[i], 2: boss});
   const log = [];
   let roundNotes = [];
-  // entities first, adjacent from the centre outwards (open mode needs neighbours)
   const order = [0, -1, 1, -2, 2, -3, 3];
   entIds.forEach((id, i)=> engine.debugSpawnCard(pair(0), sideOf, 2, id, order[i], stats, null));
   const entityAlive = ()=> engine.allBoardCards(boss).some(c=> c.hp>0 && entIds.includes(c.defId));
@@ -93,46 +99,69 @@ function runTrench(opts){
   };
   [...rows, boss].forEach(pl=> engine.draw(pl, 3, pl===boss?'B':'A', stats, null));
   const cardView = c=> ({uid:c.uid, defId:c.defId, slot:c.slot, hp:Math.max(0,c.hp), maxHp:c.maxHp, atk:c.atk, wait:c.wait, entity: entIds.includes(c.defId)});
-  const snap = (round, phase, telegraph)=> ({round, phase, telegraph, wall:{hp:wall.hp, max:wall.maxHp}, castle:{hp:boss.hq.hp, max:boss.hq.maxHp},
-    rows: rows.map(pl=> engine.allBoardCards(pl).filter(c=> c.hp>0).map(cardView)),
-    boss: engine.allBoardCards(boss).filter(c=> c.hp>0).map(cardView), notes: roundNotes.slice()});
-  const snapshots = [snap(0, 'start', null)];
-  // telegraphs: each column attack picks next round's column a round ahead
+  const pending = {}; // attack id -> telegraphed column for its next firing
   const pickColumn = ()=>{
     const occ = new Set(); rows.forEach(pl=> engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0) occ.add(c.slot); }));
     const cols = occ.size ? Array.from(occ) : [-1, 0, 1];
     return cols[Math.floor(rnd()*cols.length)];
   };
-  const pending = {}; // attack id -> telegraphed column for its next firing
   const removeDead = ()=> rows.forEach((pl,i)=> engine.removeDeadCards(pair(i), sideOf, {}, stats, null));
-  let round = 1, overwhelmed = false;
-  for(; round <= cfg.rounds; round++){
+  const T = {cfg, defs, entityIds: entIds, rows, boss, wall, round: 1, over: false, overwhelmed: false, phase: 'play', myRow};
+  // which columns this turn's specials will hit (column attacks firing this turn), for the red flash
+  T.telegraphCols = ()=> cfg.attacks.filter(a=> a.pattern==='column' && T.round % Math.max(1, a.every||1) === 0 && pending[a.id]!=null).map(a=> pending[a.id]);
+  T.frontRowHit = ()=> cfg.attacks.some(a=> a.pattern==='frontRow' && T.round % Math.max(1, a.every||1) === 0);
+  T.view = (phase)=> ({round: T.round, phase: phase || T.phase, telegraph: T.telegraphCols()[0] != null ? T.telegraphCols()[0] : null, telegraphCols: T.telegraphCols(), frontRowHit: T.frontRowHit(),
+    wall:{hp:wall.hp, max:wall.maxHp}, castle:{hp:boss.hq.hp, max:boss.hq.maxHp},
+    rows: rows.map(pl=> engine.allBoardCards(pl).filter(c=> c.hp>0).map(cardView)),
+    boss: engine.allBoardCards(boss).filter(c=> c.hp>0).map(cardView), notes: roundNotes.slice(),
+    hand: myRow>=0 ? rows[myRow].hand.map(h=> ({uid:h.uid, defId:h.defId})) : [], lumber: myRow>=0 ? (rows[myRow].lumber||0) : 0, played: myRow>=0 ? !!rows[myRow].playedThisTurn : false});
+  const withWaitDelta = (pl, fn)=>{ const before = new Set(engine.allBoardCards(pl).map(c=> c.uid)); fn(); if(waitDelta) engine.allBoardCards(pl).forEach(c=>{ if(!before.has(c.uid)) c.wait = (c.wait||0) + waitDelta; }); };
+  function startTurn(){
     roundNotes = [];
     engine.setSuddenDeath(false);
     [...rows, boss].forEach(pl=>{ pl.playedThisTurn = false; pl.discardUsedThisTurn = false; });
-    rows.forEach((pl, i)=>{
-      const before = new Set(engine.allBoardCards(pl).map(c=> c.uid));
-      engine.aiTakeTurn(pair(i), sideOf, 1, stats, null);
-      if(waitDelta) engine.allBoardCards(pl).forEach(c=>{ if(!before.has(c.uid)) c.wait = (c.wait||0) + waitDelta; });
-    });
+    rows.forEach((pl, i)=>{ if(i===myRow) return; withWaitDelta(pl, ()=> engine.aiTakeTurn(pair(i), sideOf, 1, stats, null)); });
     engine.aiTakeTurn(pair(0), sideOf, 2, stats, null);
+    // a column attack that fires this turn and wasn't telegraphed last turn picks its column now
+    cfg.attacks.forEach(a=>{ if(a.pattern==='column' && T.round % Math.max(1, a.every||1) === 0 && pending[a.id]==null) pending[a.id] = pickColumn(); });
+    T.phase = 'play';
+  }
+  T.myHand = ()=> myRow>=0 ? rows[myRow].hand.slice() : [];
+  T.canPlayMine = uid=>{ if(myRow<0) return false; const pl = rows[myRow]; const h = pl.hand.find(x=> x.uid===uid); return !!h && !pl.playedThisTurn && engine.canPlay(pl, h.defId, h.uid); };
+  T.myLegalSlots = ()=> myRow>=0 ? engine.legalSlots(rows[myRow]) : [];
+  T.playMine = (uid, slot)=>{
+    if(!T.canPlayMine(uid)) return false;
+    const pl = rows[myRow]; let ok = false;
+    withWaitDelta(pl, ()=>{ ok = engine.placeCard(pair(myRow), sideOf, 1, uid, slot, stats, null) !== false; });
+    return ok;
+  };
+  T.discardMine = uid=>{
+    if(myRow<0) return false; const pl = rows[myRow];
+    if(pl.discardUsedThisTurn) return false;
+    const idx = pl.hand.findIndex(x=> x.uid===uid); if(idx<0) return false;
+    const [dc] = pl.hand.splice(idx, 1); pl.graveyard.push({defId: dc.defId}); pl.lumber = (pl.lumber||0) + 1; pl.discardUsedThisTurn = true;
+    return true;
+  };
+  T.endTurn = ()=>{
+    if(T.over) return [];
+    const out = [];
+    const round = T.round;
     // boss special attacks
     cfg.attacks.forEach(a=>{
       const every = Math.max(1, a.every||1);
-      if(round % every === 0){
-        if(a.pattern === 'column'){
-          const col = pending[a.id] != null ? pending[a.id] : pickColumn();
-          let hitAny = false;
-          rows.forEach((pl, i)=>{ engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0 && c.slot===col){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); hitAny = true; roundNotes.push({kind:'smack', attack:a.name, row:i, slot:col, dmg:a.dmg, defId:c.defId}); } }); });
-          if(!hitAny){ wall.hp = Math.max(0, wall.hp - (a.dmg||0)); roundNotes.push({kind:'smack', attack:a.name, row:-1, slot:col, dmg:a.dmg}); }
-          delete pending[a.id];
-        } else if(a.pattern === 'frontRow'){
-          engine.allBoardCards(rows[0]).forEach(c=>{ if(c.hp>0){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); roundNotes.push({kind:'sweep', attack:a.name, row:0, slot:c.slot, dmg:a.dmg, defId:c.defId}); } });
-        }
+      if(round % every !== 0) return;
+      if(a.pattern === 'column'){
+        const col = pending[a.id] != null ? pending[a.id] : pickColumn();
+        let hitAny = false;
+        rows.forEach((pl, i)=>{ engine.allBoardCards(pl).forEach(c=>{ if(c.hp>0 && c.slot===col){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); hitAny = true; roundNotes.push({kind:'smack', attack:a.name, row:i, slot:col, dmg:a.dmg, defId:c.defId}); } }); });
+        if(!hitAny){ wall.hp = Math.max(0, wall.hp - (a.dmg||0)); roundNotes.push({kind:'smack', attack:a.name, row:-1, slot:col, dmg:a.dmg}); }
+        delete pending[a.id];
+      } else if(a.pattern === 'frontRow'){
+        engine.allBoardCards(rows[0]).forEach(c=>{ if(c.hp>0){ engine.damageCardFlat(c, a.dmg||0, 'physical', null); roundNotes.push({kind:'sweep', attack:a.name, row:0, slot:c.slot, dmg:a.dmg, defId:c.defId}); } });
       }
-      if(a.pattern === 'column' && (round+1) % every === 0) pending[a.id] = pickColumn();
     });
     removeDead();
+    out.push(T.view('specials'));
     // entities buff each other: +aura armour per OTHER entity still standing
     if(entIds.length){
       const alive = engine.allBoardCards(boss).filter(c=> c.hp>0 && entIds.includes(c.defId)).length;
@@ -143,23 +172,42 @@ function runTrench(opts){
     removeDead();
     for(let i=1;i<rows.length;i++) engine.resolveCombat(pair(i), sideOf, stats, null, 1, {upkeepIds:[1], attackerIds:[1]});
     roundNotes.push({kind:'round', castleDmg: castleBefore - boss.hq.hp, wallDmg: wallBefore - wall.hp});
-    const tele = Object.keys(pending).length ? Object.values(pending)[0] : null;
-    snapshots.push(snap(round, 'combat', tele));
+    // next turn's column attacks are telegraphed now, so they flash during the coming play phase
+    cfg.attacks.forEach(a=>{ if(a.pattern==='column' && (round+1) % Math.max(1, a.every||1) === 0) pending[a.id] = pickColumn(); });
+    T.phase = 'combat';
+    out.push(T.view('combat'));
     log.push({round, castle: boss.hq.hp, wall: wall.hp});
-    if(boss.hq.hp <= 0){ overwhelmed = true; break; }
-    if(wall.hp <= 0) break;
-    rows.forEach(pl=> engine.draw(pl, 1, 'A', stats, null));
-    engine.draw(boss, 1, 'B', stats, null);
-  }
-  // damage dealt = castle damage + damage to the boss's entities (dead ones count in full), so chipping
-  // a shielded Core's stumps still contributes
-  const entHp = {}; engine.allBoardCards(boss).forEach(c=>{ if(entIds.includes(c.defId)) entHp[c.defId] = Math.max(0, c.hp); });
-  const entityDealt = entIds.reduce((t,id)=> t + (defs[id].health - (entHp[id]!=null ? entHp[id] : 0)), 0);
-  const castleDealt = Math.max(0, cfg.castleHp - Math.max(0, boss.hq.hp));
-  return {snapshots, dealt: castleDealt + entityDealt, castleDealt, entityDealt, overwhelmed, wallBroken: wall.hp <= 0, rounds: Math.min(round, cfg.rounds), log, entityIds: entIds, defs};
+    if(boss.hq.hp <= 0){ T.overwhelmed = true; T.over = true; }
+    else if(wall.hp <= 0 || round >= cfg.rounds){ T.over = true; }
+    if(!T.over){
+      rows.forEach(pl=> engine.draw(pl, 1, 'A', stats, null));
+      engine.draw(boss, 1, 'B', stats, null);
+      T.round = round + 1;
+      startTurn();
+    }
+    return out;
+  };
+  T.result = ()=>{
+    // damage dealt = castle damage + damage to the boss's entities (dead ones count in full), so chipping
+    // a shielded Core's stumps still contributes. "Over damage" past 0 on the global pool still counts (D7).
+    const entHp = {}; engine.allBoardCards(boss).forEach(c=>{ if(entIds.includes(c.defId)) entHp[c.defId] = Math.max(0, c.hp); });
+    const entityDealt = entIds.reduce((t,id)=> t + (defs[id].health - (entHp[id]!=null ? entHp[id] : 0)), 0);
+    const castleDealt = Math.max(0, cfg.castleHp - Math.max(0, boss.hq.hp));
+    return {dealt: castleDealt + entityDealt, castleDealt, entityDealt, overwhelmed: T.overwhelmed, wallBroken: wall.hp <= 0, rounds: Math.min(T.round, cfg.rounds), log, entityIds: entIds, defs};
+  };
+  T.start = ()=>{ T.startSnap = T.view('start'); startTurn(); return T; };
+  return T;
+}
+// Whole fight with every row CPU-played (tests, editor simulation, quick previews).
+function runTrench(opts){
+  const T = createTrench(Object.assign({}, opts, {myRow: -1})).start();
+  const snapshots = [T.startSnap];
+  let guard = 0;
+  while(!T.over && guard++ < 200) T.endTurn().forEach(s=>{ if(s.phase==='combat') snapshots.push(s); });
+  return Object.assign({snapshots}, T.result());
 }
 
-const api = {ROW_NAMES, DEFAULTS, trenchConfig, runTrench};
+const api = {ROW_NAMES, DEFAULTS, trenchConfig, createTrench, runTrench};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodTrench = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
