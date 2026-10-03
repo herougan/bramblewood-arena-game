@@ -2,100 +2,93 @@
 
 **Purpose:** every open item that needs **your decision** or **a conversation**, in one place. MASTER.md links here from its top.
 
-**How to answer:** reply in chat with the number and your choice, e.g. "D3 yes, D7 option B". If an item says "default", I'll go with that default if you don't object.
+**How to answer:** reply in chat with the number and your choice, e.g. "D12 yes, T6 let's talk". If an item says "default", I'll go with that default if you don't object.
 
-**Rules for this doc:** an item leaves this list the moment it's decided; the outcome goes into MASTER.md or the relevant design doc.
+**Rules for this doc:** an item leaves this list the moment it's decided; the outcome goes into the "Decided" log at the bottom and into MASTER.md or the relevant design doc.
 
-_Last updated: 2026-10-03_
+_Last updated: 2026-10-03 (evening)_
 
 ---
 
 ## Decide: a yes/no or a pick
 
-### UX (from `ux-critique-2026-10-02.md`)
-
-**D1. Header + Home redesign** (A3 + A4). Size: M.
-- One slim top-right header on every screen: avatar/name chip (opens Profile; "Sign in" for guests) + ⚙ cog.
-- Ranking, Friends and Guild become menu items. Admin moves inside Settings, shown only to admin accounts.
-- Home gets a big Play hero button, with Deck, Codex, Shop and Nest as a 2×2 grid.
-- **My recommendation:** yes. It also fixes "Admin is visible to every player".
-
-**D2. Shop for guests** (A6). Size: S.
-- One clear "Sign in to open packs — it's free" call to action.
-- Packs with no cards yet are hidden or labelled "Coming soon".
-- **My recommendation:** yes.
-
-**D3. Readable card names in the Codex** (A7, second half). Size: S.
-- Add a dark strip behind card names on busy art.
-- **My recommendation:** yes.
-
-**D4. Where the Simulator lives** (A8).
-- The critique said: move it out of Deck into the admin-only Test area.
-- But you since asked for "decks you've fought recently → simulate vs my deck", which is a player feature.
+**D12. Passwords (replaces D9).** Leaked-password protection is a **Supabase Pro-plan** feature; the project is on Free, so the toggle is greyed out.
 - **Options:**
-  - A: keep it in Deck for everyone, renamed "Practice vs recent opponents".
-  - B: move it to Test, admin-only.
-- **My recommendation:** A.
+  - A: raise the minimum password length from 6 to 8 (free; I can do it through your Chrome).
+  - B: leave it until you upgrade to Pro.
+  - C: both A now and the toggle when on Pro.
+- **Default:** C.
 
-**D5. Arena tidy-up** (A9). Size: M.
-- Group the modes into Practice / Challenges / Online, with one-line descriptions.
-- Rename "Test Battle" to "Quick Battle".
-- **My recommendation:** yes.
+**D13. Map panning: keep the "travel" feel, or go to one giant scrolling world?** What's built (D6):
+- unlocked maps plus one "Next: … 🔒";
+- neighbour maps peek in at the edges;
+- tabs, edges and swipes pan the world to that map.
 
-**D6. Conquest locked maps** (A10). Size: M.
-- Collapse locked maps into a compact "Next: Sunken Hollow 🔒" strip.
-- Show node names on hover (always on desktop).
-- **My recommendation:** yes.
+Only the map you're on is built, so it stays fast. The bigger version is one continuous canvas you can drag across, with maps loading as they scroll into view. It's a larger rebuild of the Conquest screen.
+- **Default:** keep what's built; revisit after playtesting.
 
-### Raids (from `raid-design.md`)
+**D14. Pack economy check.** Packs now hold real cards:
+- Sprout Pouch: 3 cards, 50 🍁.
+- Acorn Chest: 5 cards with 1 new guaranteed, 120 🍁 + 10 🍂.
+- Golden Case: 8 cards with 1 new guaranteed, 250 🍁 + 30 🍂.
 
-**D7. Defaults I chose; confirm or change them.**
-- a. **Core lock is global.** The Core opens once the community drains all three outer parts. The alternative is "both": the in-fight stumps also guard it, which is already true in the trench.
-- b. **Rewards are an equal base reward plus Top 1/10/50% extras** (materials and titles, never power). The alternative is fully equal rewards.
-- c. **"Leaves" as the upgrade currency means 🍁 Maple Leaves** (today's soft currency), not 🍂 Gold Leaves or a new currency. This matters for P4.
-
-**D8. Steering a trench fight.** Today you pick your row and the fight plays itself (as you asked: "autobattle CPU playing so it's fast").
-- Next step could be one decision per telegraph: "pull a unit back a row" when ⚠️ Tentacle Smack is coming.
-- **Options:**
-  - A: keep raids fully auto.
-  - B: add that one decision per telegraph.
-- **My recommendation:** A for now; revisit after people play it.
-
-### Platform and ops (from `roadmap-and-backlog.md`)
-
-**D9. Leaked-password protection** (Supabase → Auth → Passwords) is off.
-- It's a one-click toggle. I can flip it through your Chrome if you say so.
-- **Default:** I turn it on.
-
-**D10. Engine for native builds:** Electron/Tauri + Capacitor (reuses all the code) vs Unity (full rewrite; the only route to Nintendo Switch).
-- **My recommendation:** the web stack now; Unity only if Switch becomes a real goal.
-
-**D11. Map 8+ art.** Shall I queue the next PixelLab batch (maps 8–11 cards and backgrounds)?
-- **Default:** yes, after maps 6–7 finish.
-
----
+Pack 1 has 33 cards, so a committed player completes it in roughly 10–15 packs.
+- **Default:** keep it, and watch how fast people fill Pack 1.
 
 ## Discuss: needs a conversation, not a pick
 
-**T1. Catch-up mechanics** (MASTER item 10). How returning or late players catch up without devaluing grinders. Ideas on the table:
+**T1. Catch-up mechanics** (MASTER item 10). How returning or late players catch up without devaluing grinders. Ideas:
 - rested XP;
 - a weekly "comeback" quest tier;
 - making early Conquest cheaper once you've cleared further;
 - the game getting less punishing as it goes on.
 
-**T2. Replays** (you said "let me think about this"). The building blocks exist:
+**T2. Replays** (you're still thinking). The building blocks exist:
 - fights are fully seeded;
-- recent opponents are saved, and the Simulator can rerun them.
+- recent opponents are saved, with names, in Arena → Recent opponents.
 
 Open questions:
 - watch-only replays, or "re-fight this deck"?
-- share a replay link?
-- keep how many, and for how long?
+- share a link?
+- how many to keep, and for how long?
 
-**T3. Trust and the server.** Currencies, rating and raid damage are still written by the game client.
+**T3. Trust and the server.** Currencies, rating and raid damage are still written by the client.
 - Raid P3 (a server replays each raid fight from its seed) is the first step.
-- Question: how soon do rewards get valuable enough that this matters?
+- The interactive trench makes that harder, because the server would need your moves too.
 
-**T4. Leaves upgrades and crafting** (Raid P4). What upgrading a card with Leaves does (+1 level? new art?), and which raid materials craft which cards.
+**T4. Leaves upgrades and crafting** (Raid P4). What upgrading with 🍁 Maple Leaves does, and which raid materials craft which cards.
 
-**T5. Apple sign-in** needs an Apple Developer account ($99/yr). Is that worth it now, or later with the iOS build?
+**T5. Apple sign-in** needs an Apple Developer account ($99/yr). Now, or later with the iOS build?
+
+**T6. Alt-art.** My proposal is in `game-design-v40-addendum.md` § Alt-art:
+- cosmetic art variants per owned copy, like foil;
+- from packs, raid top tiers, events and achievements;
+- you pick which art your deck shows;
+- generated in the same PixelLab pipeline.
+
+Questions:
+- Can opponents see your alt-art in PvP?
+- Can alt-art be traded on the Market?
+
+**T7. Shaders, "the Minecraft longevity" idea.** v0 is live as **Settings → Atmosphere**: golden hour, moonlit fireflies, rain and autumn. Proposal for where to take it is in `game-design-v40-addendum.md` § Atmosphere:
+- real WebGL effects on the map and battlefield backgrounds (water ripple, wind sway, light shafts);
+- day/night following your local clock;
+- moddable "atmosphere packs" (JSON plus small shader snippets) that you, and later players, can author.
+
+---
+
+## Decided (2026-10-03)
+
+| # | Decision | Outcome |
+|---|---|---|
+| D1 | Header + Home | ✅ Built. Play is the hero, Deck/Codex/Shop/Nest a 2×2 grid. Quests + Community (Ranking/Friends/Guild) are the only extras. Header on Home. Workshop + Admin live in Settings; Admin only for admins. |
+| D2 | Shop + Pack 1 | ✅ Built. 33 cards in Pack 1; packs give real cards; pack-opening animation; guest sign-in banner. |
+| D3 | Card names | ✅ Built. Original parchment-scroll banner (your reference was a watermarked stock image, so I drew our own) at every card size. |
+| D4 | Simulator | ✅ B. Admin-only. Players see "Recent opponents" (name, mode, result, deck) in Arena. |
+| D5 | Arena | ✅ Built. Practice / Challenges / Online; one-line copy; "Quick Battle". |
+| D6 | Conquest maps | ✅ Built. Unlocked maps plus "Next: … 🔒" with progress; joined world with edge peeks, swipe and tabs panning (see D13). |
+| D7 | Raid damage | ✅ Confirmed. Core lock global; equal base + tiers; Maple Leaves. Damage to stumps and guards counts, and "over damage" past a part's 0 still counts. |
+| D8 | Trench | ✅ Built. You play your row turn by turn; allies are CPU on other raiders' decks (live) or default raid decks; telegraphed columns glow soft red. |
+| D9 | Leaked-password protection | ⛔ Pro-plan only (see D12). |
+| D10 | Native builds | ⏸ Not yet. |
+| D11 | Art | 🟡 In progress. Maps 8–10 (26 cards) generating in PixelLab; Home 2.5D scene built; foreground otter + hummingbird sprites generating. |

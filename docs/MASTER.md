@@ -2,7 +2,7 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 11 decisions (D1–D11) and 5 discussion topics (T1–T5). In the project it's `claude/decisions.md`.
+> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 3 decisions (D12–D14) and 7 discussion topics (T1–T7); D1–D11 are logged as decided. In the project it's `claude/decisions.md`.
 
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
@@ -11,7 +11,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-03_
+_Last updated: 2026-10-03 (evening) — see `game-design-v40-addendum.md` for this batch_
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -32,6 +32,7 @@ _Last updated: 2026-10-03_
 - Effects: passives, skills, and custom triggers.
 - Rarity sets the copy limit per deck: Common 10 · Uncommon 5 · Rare 4 · Very/Super Rare 3 · Epic/Heroic 2 · Unique/Legendary/Mythic/Ancient 1.
 - Hall of Fame editions (Classic/Antique) share their base card's limit.
+- **Card sizes scale** with each card's own width (size tokens xs–xl). Names sit on a parchment scroll. Card levels show only in the Nest, the Forge and the deck builder's level filter.
 - **Where:**
   - `canonical/cards.json` (the data)
   - `RARITY_MAX_COPIES` and `editionCapReached` in `arena_app.js`
@@ -113,6 +114,7 @@ _Last updated: 2026-10-03_
   - **Conquest node reward**
   - **Card pack** (by tier)
   - **Event** (no live events yet)
+- **Pack 1 = 33 cards.** Packs give real cards (3/5/8; the bigger two guarantee one new card) with a pack-opening animation.
 - Owned copies show in the **Nest**. The **Forge** levels cards up with currency.
 - **Where:**
   - `cardSourceOf`, `cardWhereToGetText`, `SHOP_PACKS_DEFAULT`, `levelUpCost` in `arena_app.js`
@@ -135,6 +137,7 @@ _Last updated: 2026-10-03_
 
 **11. Conquest, onboarding and dialogue** ✅
 - 11 maps of skirmish, elite, boss and raid-boss nodes. Each costs Energy.
+- **Joined world:** unlocked maps with progress, plus one "Next: … 🔒". Neighbour maps peek in at the edges; tabs, edges and swipes pan the world to that map.
 - Results show rank, rewards, unlocks and a Next Battle button. Admins can drag nodes on the map.
 - **Conquest-first onboarding:**
   - After the seeded tutorial, the leaves part to reveal the map. A new player has only Play, Settings and Profile.
@@ -191,14 +194,14 @@ _Last updated: 2026-10-03_
   - Single-player async, where you can't win alone but your score chips the bar
 - **Built today (Raid P1, 2026-10-03):** 🐙 **The Goliath**
   - Four parts with stacked 80,000-HP bars: Left Tentacle, Right Tentacle, Tail (3 bars each) and the Core (8 bars, **locked until all three fall**, globally).
-  - **Trenches (P2):** each fight is 3 rows — you plus two other raiders' decks — vs the part, auto-played and then replayed. Boss hits roll through empty front columns to the rows behind; Tentacle Smack hits a telegraphed column; the Core has three stumps that buff each other and shield its castle, plus +1 Wait and 67% dodge.
-  - You pick an open part and a row; the fight lasts **12 turns**. Castle damage × 50 = raid damage, capped at **5,000**; destroying the part's castle (an **overwhelm**) scores **10,000**.
+  - **Trenches (P2):** each fight is 3 rows: you play yours turn by turn; the two allies are CPU on other raiders' recent decks, or the raid's default ally decks. Telegraphed columns glow soft red. Boss hits roll through empty front columns to the rows behind; Tentacle Smack hits a telegraphed column; the Core has three stumps that buff each other and shield its castle, plus +1 Wait and 67% dodge.
+  - You pick an open part and a row; the fight lasts **12 turns**. Castle damage × 15 (Core stumps × 140) = raid damage, capped at **5,000**; destroying the part's castle (an **overwhelm**) scores **10,000**.
   - Tuned so a typical trench scores ≈4.5k on an outer part (0–10% overwhelms) and ≈2.2k on the Core (0% overwhelms).
   - Stages: Enraged < 75%, Thrashing < 50%, **Exposed < 1%** (enemy cards lose their abilities).
   - Everyone who fought claims the kill reward when it falls (400 gold, 60 dust, 3 metal), or 40% as compensation if it survives the week, plus Top 1/10/50% extras.
   - Pools are live (`raid_week_attempts`), with stand-in raiders at 12%/day so a quiet week can still finish it.
   - The older single weekly boss shows only if no raid is live. Online Raid stays **hidden**.
-- **Where:** `bramblewood-raid.js`, `bramblewood-trench.js`, `canonical/raids.json`, `openTrenchSetup` / `openTrenchReplay`, `raidPanelHTML` / `startRaidPartMatch` / `openRaidEditor` in `arena_app.js`, `tests/raid.js`, `tests/trench.js`.
+- **Where:** `bramblewood-raid.js`, `bramblewood-trench.js`, `canonical/raids.json`, `openTrenchSetup` / `openTrenchMatch`, `raidPanelHTML` / `startRaidPartMatch` / `openRaidEditor` in `arena_app.js`, `tests/raid.js`, `tests/trench.js`.
 
 **15. Quests: daily and weekly** ✅ (📜 Quests on Home, with a badge when something is claimable)
 - Each tier appears once the tier above is fully claimed, and rewards shrink tier by tier.
