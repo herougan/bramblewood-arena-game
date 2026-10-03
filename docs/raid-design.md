@@ -14,7 +14,20 @@ This doc covers:
   - Rewards: **equal base + contribution tiers**.
   - "Leaves" = 🍁 Maple Leaves (P4, not built).
 - **Added in P1:** a **turn limit per fight** (default 12). Without it, a part's finite deck runs out and any deck grinds its castle down, so every fight was an overwhelm.
-- **P2 trench engine, P3 server replay check, P4 Leaves/crafting:** not built.
+- **P2 trench:** ✅ built (2026-10-03). See "Trench as built" below.
+- **P3 server replay check, P4 Leaves/crafting:** not built.
+
+## Trench as built (P2)
+- **Rows are players.** You pick Front, Middle or Back; two allies fill the other rows — real raiders' recent decks near your level when the cloud has them, stand-ins otherwise.
+- **Auto-played.** The whole fight runs CPU-vs-CPU in an instant, is scored and saved right away (closing the replay can't re-roll it), then replays turn by turn with ⏩ 3× and ⏭ Skip.
+- **Same engine, every ability.** It runs on the normal engine in fixed-slot ("open") mode, so columns are real and cards keep all their effects. Each turn: every row plays, the boss plays, then one combat pass per row. Only the front pass lets the boss swing.
+- **Roll-through.** A boss hit on an empty front column lands on that column in the middle row, then the back row, then the **trench wall** (one HP pool for all three rows).
+- **Special attacks:** Tentacle Smack (whole column, telegraphed a turn ahead with ⚠️) on the tentacles and the Core; Tail Sweep (every front-row card) on the Tail.
+- **The Core:** three stumps (Left / Tail / Right) stand on its board from turn 1. Each gains +1 armour per other stump alive, and the castle can't be hit until all three fall. Your units enter with +1 Wait; the boss's units dodge 67% of attacks. Stump damage counts toward your score at 140 raid damage per HP.
+- **Exposed (< 1%):** strips every boss ability, Illusory, the Wait penalty, the auras and the shield.
+- **Tuning** (40-fight batches of typical decks, checked by `tests/trench.js`): tentacles and tail ≈ 4.2–4.8k a fight, 0–10% overwhelms; Core ≈ 2.2k, 0% overwhelms; Exposed Core ≈ 6.5k, ~30% overwhelms.
+- **Raid editor** gains: trench on/off and wall HP; per part: wall HP, extra Wait, dodge %, castle shield, special attacks (column / front row, damage, every N turns), entities (icon, name, attack, HP, armour, armour per ally), and its own raid-damage-per-HP. "Simulate" runs your deck in the middle row with two stand-ins.
+- **Not yet:** moving a unit back a row in response to a telegraph (you don't steer the fight yet), row roles (+1 armour front etc.), a live raid feed.
 
 ## Editors today
 

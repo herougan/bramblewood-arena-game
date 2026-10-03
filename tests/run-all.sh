@@ -12,6 +12,7 @@ run node tests/two-player.js
 run node tests/async-raid.js
 run node tests/autobattle.js
 run node tests/raid.js
+run node tests/trench.js
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

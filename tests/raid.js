@@ -18,8 +18,9 @@ RAIDS.forEach(r=> R.validateRaid(r, defs).forEach(e=> failures.push(`${r.id}: ${
 check(R.validateRaid({id:'x', parts:[{id:'a', bars:1, barHp:10, lockedUntil:['b'], fight:{deck:{yeti:1}}}, {id:'b', bars:1, barHp:10, lockedUntil:['a'], fight:{deck:{yeti:1}}}]}, defs).some(e=> /loop/.test(e)), 'lock loops are not detected');
 
 // 2. scoring caps
-check(R.contributionFor(raid, 40, false)===2000, 'perInFightHp conversion wrong');
-check(R.contributionFor(raid, 999, false)===5000, 'normal cap not applied');
+check(R.contributionFor(raid, 40, false)===40*raid.scoring.perInFightHp, 'perInFightHp conversion wrong');
+check(R.contributionFor(raid, 10, false, {scoring:{perInFightHp:140}})===1400, 'per-part scoring override ignored');
+check(R.contributionFor(raid, 9999, false)===5000, 'normal cap not applied');
 check(R.contributionFor(raid, 10, true)===10000, 'overwhelm cap not applied');
 
 // 3. locks, stand-ins, stages

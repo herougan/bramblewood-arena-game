@@ -8905,7 +8905,7 @@ function raidPanelHTML(){
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
     <p class="r2-me">Your damage this week: <b>${mine.toLocaleString()}</b>${tierLabel ? ` · ${tierLabel}` : ' — fight any open part to join'} · Raid Points: ${currentRaidPoints()}/${RAID_POINTS_MAX}</p>
-    <p class="r2-rules">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${((def.scoring||{}).cap||5000).toLocaleString()}</b> damage — destroy the part's castle (an <b>overwhelm</b>) for <b>${((def.scoring||{}).overwhelmCap||10000).toLocaleString()}</b>. If it falls, everyone who fought wins; if it survives the week, everyone gets ${((def.rewards||{}).compensationPct!=null ? def.rewards.compensationPct : 40)}% as compensation.</p>
+    <p class="r2-rules">${def.trench ? `Fights happen in the <b>trenches</b>: you and two other raiders hold three rows, and the battle plays itself. ` : ''}Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${((def.scoring||{}).cap||5000).toLocaleString()}</b> damage — destroy the part's castle (an <b>overwhelm</b>) for <b>${((def.scoring||{}).overwhelmCap||10000).toLocaleString()}</b>. If it falls, everyone who fought wins; if it survives the week, everyone gets ${((def.rewards||{}).compensationPct!=null ? def.rewards.compensationPct : 40)}% as compensation.</p>
   </div>`;
 }
 function wireRaidPanel(){
@@ -8920,6 +8920,17 @@ function wireRaidPanel(){
 // each part vs your deck, saves in this browser and publishes `__cfg:raid:<id>` for every player.
 function raidRewardDefaults(def){ def.rewards = def.rewards || {}; def.rewards.kill = def.rewards.kill || {}; def.rewards.tiers = def.rewards.tiers || {}; return def.rewards; }
 function simulateRaidPart(def, part, strip, n){
+  if(def.trench && TrenchM){
+    const cfg = TrenchM.trenchConfig(def, part, strip ? {rules:[{stripAbilities:true}]} : null);
+    let total = 0, over = 0, walls = 0;
+    for(let i=0;i<n;i++){
+      const rows = [0,1,2].map(k=> k===1 ? {deck: Object.assign({}, myDeckCounts), name:'You'} : {deck: Ghosts.generateGhostDeck(getCardDefs(), (i+k)%7, 900+i*13+k), name:'Stand-in'});
+      const r = TrenchM.runTrench({makeSimEngine, defs: getCardDefs(), seed: 7700+i, rows, cfg, bossName: part.name});
+      if(r.overwhelmed) over++; if(r.wallBroken) walls++;
+      total += RaidM.contributionFor(def, r.dealt, r.overwhelmed, part);
+    }
+    return {n, avg: total/n, overwhelmPct: over/n*100, wallPct: walls/n*100, trench: true};
+  }
   let defs = getCardDefs(), deck = Object.assign({}, (part.fight||{}).deck||{});
   if(strip){ defs = Object.assign({}, defs); const d2 = {}; Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}}); d2[nid] = deck[id]; }); deck = d2; }
   const castle = (part.fight||{}).castleHp || 200;
@@ -8942,7 +8953,7 @@ function simulateRaidPart(def, part, strip, n){
       engine.draw(P[1], 1, 'A', stats, null); engine.draw(P[2], 1, 'B', stats, null);
     }
     const ow = P[2].hq.hp <= 0; if(ow) over++;
-    total += RaidM.contributionFor(def, castle - Math.max(0, P[2].hq.hp), ow);
+    total += RaidM.contributionFor(def, castle - Math.max(0, P[2].hq.hp), ow, part);
   }
   return {n, avg: total/n, overwhelmPct: over/n*100};
 }
@@ -8975,6 +8986,8 @@ function openRaidEditor(raidId){
         <label>Raid Points per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints||0}"></label>
         <label>Energy per fight<input id="reCostEn" type="number" min="0" max="20" value="${draft.cost.energy||0}"></label>
         <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||12}"></label>
+        <label class="se-chk"><input type="checkbox" id="reTrench" ${draft.trench?'checked':''}> Trench fights (3 rows, auto-played)</label>
+        ${draft.trench ? `<label>Trench wall HP<input id="reWall" type="number" min="5" max="999" value="${draft.trench.wallHp||45}"></label>` : ''}
         <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
         <label class="se-chk"><input type="checkbox" id="reLive" ${draft.live!==false?'checked':''}> Live this week</label>
       </div>
@@ -8988,7 +9001,18 @@ function openRaidEditor(raidId){
         <label>Fight castle HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
+        <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
       </div>
+      ${draft.trench ? (()=>{ const T = P.trench || {}; const rl = T.rules || {};
+        return `<h3 class="se-h">${escapeHtml(P.name||P.id)} in the trenches</h3>
+        <div class="se-grid">
+          <label>Wall HP (blank = raid)<input data-pt="wallHp" type="number" min="5" max="999" value="${T.wallHp||''}"></label>
+          <label>Your units: extra Wait<input data-pt="waitDelta" type="number" min="0" max="3" value="${rl.waitDelta||0}"></label>
+          <label>Boss units dodge %<input data-pt="illusory" type="number" min="0" max="90" value="${Math.round((rl.illusory||0)*100)}"></label>
+          <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Castle shielded while entities stand</label>
+        </div>
+        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
+        <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
@@ -9023,6 +9047,9 @@ function openRaidEditor(raidId){
     const v = id=> (overlay.querySelector('#'+id)||{}).value;
     draft.name = v('reName') || draft.name; draft.icon = v('reIcon') || draft.icon; draft.blurb = v('reBlurb') || '';
     draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), 12))));
+    const tr = overlay.querySelector('#reTrench');
+    if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
+    if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
     draft.cost.raidPoints = Math.max(0, num(v('reCostRp'), 1)); draft.cost.energy = Math.max(0, num(v('reCostEn'), 4));
     const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
     draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), 50)); draft.scoring.cap = Math.max(1, num(v('reCap'), 5000)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), 10000));
@@ -9037,6 +9064,19 @@ function openRaidEditor(raidId){
       overlay.querySelectorAll('[data-pf]').forEach(el=>{ const k = el.dataset.pf;
         if(k==='name' || k==='icon') P[k] = el.value; else if(k==='castleHp') P.fight.castleHp = Math.max(10, num(el.value, 200));
         else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
+      const ph = overlay.querySelector('[data-pf="perHp"]');
+      if(ph){ if(ph.value==='') { if(P.scoring) delete P.scoring.perInFightHp; if(P.scoring && !Object.keys(P.scoring).length) delete P.scoring; } else { P.scoring = Object.assign({}, P.scoring||{}, {perInFightHp: Math.max(1, num(ph.value, 50))}); } }
+      if(draft.trench){
+        const T = P.trench = P.trench || {}; T.rules = T.rules || {};
+        const pt = k=> overlay.querySelector(`[data-pt="${k}"]`);
+        if(pt('wallHp')){ if(pt('wallHp').value==='') delete T.wallHp; else T.wallHp = Math.max(5, num(pt('wallHp').value, 45)); }
+        if(pt('waitDelta')){ const w = Math.max(0, Math.min(3, Math.round(num(pt('waitDelta').value, 0)))); if(w) T.rules.waitDelta = w; else delete T.rules.waitDelta; }
+        if(pt('illusory')){ const d = Math.max(0, Math.min(90, num(pt('illusory').value, 0))); if(d) T.rules.illusory = Math.round(d*10)/1000; else delete T.rules.illusory; }
+        if(pt('shield')){ if(pt('shield').checked) T.shieldWhileEntities = true; else delete T.shieldWhileEntities; }
+        (T.attacks||[]).forEach((a,i)=>{ const g = k=> overlay.querySelector(`[data-at-${k}="${i}"]`); if(g('name')) a.name = g('name').value; if(g('pat')) a.pattern = g('pat').value; if(g('dmg')) a.dmg = Math.max(0, num(g('dmg').value, 0)); if(g('every')) a.every = Math.max(1, Math.round(num(g('every').value, 1))); });
+        (T.entities||[]).forEach((e,i)=>{ const g = k=> overlay.querySelector(`[data-en-${k}="${i}"]`); if(g('icon')) e.icon = g('icon').value; if(g('name')) e.name = g('name').value; if(g('atk')) e.attack = Math.max(0, num(g('atk').value, 0)); if(g('hp')) e.health = Math.max(1, num(g('hp').value, 20)); if(g('armor')) e.armor = Math.max(0, num(g('armor').value, 0)); if(g('aura')) e.aura = Math.max(0, num(g('aura').value, 0)); });
+        if(!Object.keys(T.rules).length) delete T.rules;
+      }
       const locks = [...overlay.querySelectorAll('[data-lock]')].filter(c=> c.checked).map(c=> c.dataset.lock);
       if(locks.length) P.lockedUntil = locks; else delete P.lockedUntil;
     }
@@ -9065,11 +9105,18 @@ function openRaidEditor(raidId){
       overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); deck[b.dataset.add] = (deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
       const search = $('reSearch');
       search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = $('reSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
-      const sim = strip=>{ read(); const r = simulateRaidPart(draft, P, strip, 100); const need = Math.ceil(RaidM.partTotal(P) / Math.max(1, r.avg));
-        simText[P.id] = `Your deck vs ${escapeHtml(P.name)}${strip?' (Exposed)':''}, 100 attempts: <b>${Math.round(r.avg).toLocaleString()}</b> raid damage on average · <b>${r.overwhelmPct.toFixed(0)}%</b> overwhelms · about <b>${need.toLocaleString()}</b> attempts like yours to drain this part.`; render(); };
+      const sim = strip=>{ read(); const r = simulateRaidPart(draft, P, strip, draft.trench ? 40 : 100); const need = Math.ceil(RaidM.partTotal(P) / Math.max(1, r.avg));
+        simText[P.id] = `Your deck${r.trench ? ' (middle row, two stand-in allies)' : ''} vs ${escapeHtml(P.name)}${strip?' (Exposed)':''}, ${r.n} attempts: <b>${Math.round(r.avg).toLocaleString()}</b> raid damage on average · <b>${r.overwhelmPct.toFixed(0)}%</b> overwhelms${r.trench ? ` · wall broken ${r.wallPct.toFixed(0)}%` : ''} · about <b>${need.toLocaleString()}</b> attempts like yours to drain this part.`; render(); };
       $('reSim').onclick = ()=> sim(false);
       if($('reSimExposed')) $('reSimExposed').onclick = ()=> sim(true);
       $('reDelPart').onclick = ()=>{ if(!confirm(`Remove ${P.name}?`)) return; draft.parts = draft.parts.filter(p=> p!==P); draft.parts.forEach(p=>{ if(p.lockedUntil){ p.lockedUntil = p.lockedUntil.filter(x=> x!==P.id); if(!p.lockedUntil.length) delete p.lockedUntil; } }); openPart = draft.parts[0] ? draft.parts[0].id : null; dirty = true; render(); };
+    }
+    if(P && draft.trench){
+      const T = ()=> (P.trench = P.trench || {});
+      const add = $('reAddAttack'); if(add) add.onclick = ()=>{ read(); const t = T(); t.attacks = (t.attacks||[]).concat([{id:'atk'+Date.now().toString(36), name:'Smack', pattern:'column', dmg:5, every:3}]); dirty = true; render(); };
+      const ae = $('reAddEntity'); if(ae) ae.onclick = ()=>{ read(); const t = T(); t.entities = (t.entities||[]).concat([{id:'ent'+Date.now().toString(36), name:'Entity', icon:'🦑', attack:3, health:20, armor:0, aura:0}]); dirty = true; render(); };
+      overlay.querySelectorAll('[data-at-del]').forEach(b=> b.onclick = ()=>{ read(); T().attacks.splice(+b.dataset.atDel, 1); dirty = true; render(); });
+      overlay.querySelectorAll('[data-en-del]').forEach(b=> b.onclick = ()=>{ read(); T().entities.splice(+b.dataset.enDel, 1); dirty = true; render(); });
     }
     $('reAddStage').onclick = ()=>{ read(); draft.stages.push({at:0.25, name:'New stage', rules:[]}); dirty = true; render(); };
     overlay.querySelectorAll('[data-st-del]').forEach(b=> b.onclick = ()=>{ read(); draft.stages.splice(+b.dataset.stDel, 1); dirty = true; render(); });
@@ -9091,10 +9138,131 @@ function openRaidEditor(raidId){
   overlay.onclick = ev=>{ if(ev.target===overlay){ if(dirty && !confirm('Close without saving your changes?')) return; close(); } };
   render();
 }
+// ---- Raid P2: the trench (bramblewood-trench.js). You pick a row; two allies fill the others (real
+// raiders' recent decks near your level when the cloud has them, stand-ins otherwise); the whole
+// fight runs CPU-vs-CPU instantly, is scored and saved straight away (so closing the replay can't
+// re-roll it), then replays round by round. ----
+const TrenchM = (typeof BramblewoodTrench!=='undefined') ? BramblewoodTrench : null;
+function trenchAllies(seed){
+  const out = [], exclude = [myGhostOwnerId(), cloudUserId].filter(Boolean);
+  let cands = []; try{ cands = pvpCandidates(); }catch(e){ cands = []; }
+  for(let k=0; k<2; k++){
+    const res = Ghosts.matchPvp({rating: myRating, deckLevel: myPvpDeckLevel()}, cands, (seed + k*7919)>>>0, exclude.concat(out.map(o=> o.owner)));
+    const g = res.opponent;
+    if(g){ out.push({owner: g.owner, name: g.name || 'Raider', deck: g.deck, level: g.deckLevel || Ghosts.simpleDeckLevel(getCardDefs(), g.deck), real: !String(g.owner||'').includes('seed')}); }
+    else { const id = Ghosts.ghostIdentity ? Ghosts.ghostIdentity(seed+k) : {name:'Stand-in'}; const deck = Ghosts.generateGhostDeck(getCardDefs(), 3, (seed+k)>>>0); out.push({owner:'stand-in-'+k, name: id.name, deck, level: Ghosts.simpleDeckLevel(getCardDefs(), deck), real:false}); }
+  }
+  return out;
+}
+function trenchAttackText(a){
+  return a.pattern==='column' ? `${escapeHtml(a.name||'Column attack')}: ${a.dmg} to a whole column every ${a.every} turn${a.every===1?'':'s'} (telegraphed)`
+       : a.pattern==='frontRow' ? `${escapeHtml(a.name||'Sweep')}: ${a.dmg} to every card in the front row every ${a.every} turn${a.every===1?'':'s'}` : escapeHtml(a.name||a.id);
+}
+function openTrenchSetup(def, partId){
+  const st = currentRaidStateFor(def);
+  const f = RaidM.fightFor(def, st, partId);
+  const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
+  const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
+  const allies = trenchAllies(seed);
+  let overlay = document.getElementById('trenchOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
+  const cost = def.cost || {};
+  const rules = [];
+  cfg.attacks.forEach(a=> rules.push(trenchAttackText(a)));
+  if(cfg.entities.length) rules.push(`${cfg.entities.length} ${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} stand guard${cfg.shieldWhileEntities ? ' — the castle can’t be hit until they all fall' : ''}${cfg.entities.some(e=> e.aura) ? '; each gains armour for every other one alive' : ''}`);
+  if(cfg.rules.waitDelta) rules.push(`Your units enter with +${cfg.rules.waitDelta} Wait`);
+  if(cfg.rules.illusory) rules.push(`Its units are Illusory — they dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
+  if(cfg.strip) rules.push('EXPOSED: the boss has lost every ability');
+  overlay.innerHTML = `<div class="modal trench-setup" role="dialog" aria-label="Choose your trench">
+    <div class="modal-head-row"><h2>${escapeHtml(f.part.icon||'')} ${escapeHtml(f.part.name)} — the trenches</h2><button class="modal-close-btn" id="tsClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">Three rows hold the line. Boss attacks hit the <b>front</b> row first and roll through to the row behind when a column is empty. Every row hits back. ${cfg.rounds} turns, trench wall ${cfg.wallHp} HP.</p>
+    <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}</ul>
+    <div class="ts-rows">${[0,1,2].map(i=> `<button type="button" class="ts-row" data-row="${i}">
+      <span class="ts-row-name">${TrenchM.ROW_NAMES[i]}</span>
+      <span class="ts-row-hint">${i===0 ? 'Takes the hits, deals the most' : i===1 ? 'Hit only through gaps in the front' : 'Safest — hit only through two gaps'}</span>
+      <span class="ts-row-cta">Take the ${TrenchM.ROW_NAMES[i].toLowerCase()}</span></button>`).join('')}</div>
+    <p class="ts-allies">Fighting alongside: ${allies.map(a=> `<b>${escapeHtml(a.name)}</b> <span class="ts-lvl">deck Lv ${a.level}${a.real ? '' : ' · stand-in'}</span>`).join(' and ')}</p>
+    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡ · the fight plays itself, then replays for you.</p>
+  </div>`;
+  overlay.hidden = false;
+  overlay.querySelector('#tsClose').onclick = close;
+  overlay.onclick = ev=>{ if(ev.target===overlay) close(); };
+  overlay.querySelectorAll('[data-row]').forEach(b=> b.onclick = ()=>{
+    if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 (you have ${currentRaidPoints()}).`, 'error'); return; }
+    if(!spendEnergy(cost.energy||0)){ showToast(`Not enough Energy — this costs ${cost.energy}⚡ (you have ${currentEnergy()}).`, 'error'); return; }
+    if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+    bumpQuestCounter('raidsJoined', 1);
+    const myRow = +b.dataset.row;
+    const me = {name: (myProfile && myProfile.name) || 'You', deck: Object.assign({}, myDeckCounts), mine:true};
+    const order = [allies[0], allies[1]]; order.splice(myRow, 0, me);
+    const res = TrenchM.runTrench({makeSimEngine, defs: getCardDefs(), seed, rows: order.map(o=> ({deck:o.deck, name:o.name, mine:!!o.mine})), cfg, bossName: f.part.name});
+    const settled = recordRaidAttempt(def, partId, st.cycle, res.dealt, res.overwhelmed);
+    if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody'));
+    openTrenchReplay(def, f.part, cfg, res, order, myRow, settled);
+  });
+}
+function trenchTileHTML(c, defs, extra){
+  const d = defs[c.defId] || {name:c.defId, icon:'❔'};
+  const pct = Math.max(0, Math.min(100, Math.round(c.hp / Math.max(1, c.maxHp) * 100)));
+  return `<div class="tr-card ${c.entity?'is-entity':''} ${extra||''}" data-uid="${c.uid}" title="${escapeAttr(d.name)} — ${c.atk}/${c.hp}${c.wait?` · Wait ${c.wait}`:''}">
+    <div class="tr-ico">${cardIcoHTML(d)}</div><div class="tr-stats"><span class="tr-atk">${c.atk}</span><span class="tr-hp">${c.hp}</span></div>
+    ${c.wait ? `<span class="tr-wait">${c.wait}</span>` : ''}<span class="tr-hpbar"><span style="width:${pct}%"></span></span></div>`;
+}
+function openTrenchReplay(def, part, cfg, res, rowsInfo, myRow, settled){
+  let overlay = document.getElementById('trenchOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'trenchOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const defs = res.defs;
+  const snaps = res.snapshots;
+  let minS = 0, maxS = 0;
+  snaps.forEach(s=> [s.boss].concat(s.rows).forEach(list=> list.forEach(c=>{ minS = Math.min(minS, c.slot); maxS = Math.max(maxS, c.slot); })));
+  minS = Math.max(minS, -4); maxS = Math.min(maxS, 4);
+  const cols = []; for(let x=minS; x<=maxS; x++) cols.push(x);
+  let idx = 0, timer = null, speed = 1, done = false;
+  const close = ()=>{ if(timer) clearTimeout(timer); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && playSubTab==='raid' && !matchState) renderRaidSubTab(document.getElementById('playSubBody')); };
+  const rowHTML = (list, cls, hits)=> `<div class="tr-row ${cls}" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=>{ const c = list.find(k=> k.slot===x); return `<div class="tr-cell">${c ? trenchTileHTML(c, defs, hits && hits.has(c.uid) ? 'is-hit' : '') : ''}</div>`; }).join('')}</div>`;
+  const noteText = n=> n.kind==='smack' ? (n.row<0 ? `💥 ${escapeHtml(n.attack)} hits the wall for ${n.dmg}` : `💥 ${escapeHtml(n.attack)} hits ${TrenchM.ROW_NAMES[n.row]}’s ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`)
+    : n.kind==='sweep' ? `🌊 ${escapeHtml(n.attack)} hits ${escapeHtml((defs[n.defId]||{}).name||'')} for ${n.dmg}`
+    : n.kind==='roll' ? `↘ A blow rolls through to the ${TrenchM.ROW_NAMES[n.row].toLowerCase()} row (${n.dmg})` : '';
+  const render = ()=>{
+    const s = snaps[idx];
+    const roundNote = s.notes.find(n=> n.kind==='round');
+    const hitUids = new Set(); // cards hit by specials this round
+    const finalView = done || idx===snaps.length-1;
+    overlay.innerHTML = `<div class="modal trench-replay" role="dialog" aria-label="Trench fight">
+      <div class="modal-head-row"><h2>${escapeHtml(part.icon||'')} ${escapeHtml(part.name)} <span class="tr-round">${s.round ? `Turn ${s.round} / ${cfg.rounds}` : 'Deploying…'}</span></h2>
+        <button class="modal-close-btn" id="trClose" aria-label="Close">✕</button></div>
+      <div class="tr-bars">
+        <div class="tr-bar"><span>🏰 ${escapeHtml(part.name)}</span><div class="tr-meter boss"><span style="width:${Math.round(s.castle.hp/s.castle.max*100)}%"></span></div><b>${s.castle.hp}/${s.castle.max}</b></div>
+        <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(s.wall.hp/s.wall.max*100)}%"></span></div><b>${s.wall.hp}/${s.wall.max}</b></div>
+      </div>
+      <div class="tr-board">
+        ${rowHTML(s.boss, 'is-boss')}
+        <div class="tr-tele" style="grid-template-columns:repeat(${cols.length}, minmax(0,1fr))">${cols.map(x=> `<span class="${s.telegraph===x ? 'on' : ''}">${s.telegraph===x ? '⚠️' : ''}</span>`).join('')}</div>
+        ${s.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, '', hitUids)}</div>`).join('')}
+      </div>
+      <div class="tr-notes">${s.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
+      ${finalView ? `<div class="tr-result ${res.overwhelmed?'is-win':''}">
+          <h3>${res.overwhelmed ? '🏆 Overwhelmed!' : res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
+          <p>Castle damage <b>${res.castleDealt}</b>${res.entityDealt ? ` · stump damage <b>${res.entityDealt}</b>` : ''} → <b>${settled.contribution.toLocaleString()}</b> raid damage${settled.gold||settled.dust ? ` · +${settled.gold} gold${settled.dust ? `, +${settled.dust} dust` : ''}` : ''}</p>
+          <p class="panel-sub">${escapeHtml(part.name)} has ${settled.remainingAfter.toLocaleString()} HP left this week.</p>
+          <button type="button" class="btn primary" id="trDone">Back to the raid</button></div>`
+        : `<div class="se-actions"><button type="button" class="btn small" id="trSpeed">⏩ ${speed}×</button><span style="flex:1"></span><button type="button" class="btn small" id="trSkip">⏭ Skip to result</button></div>`}
+    </div>`;
+    overlay.hidden = false;
+    overlay.querySelector('#trClose').onclick = close;
+    const dn = overlay.querySelector('#trDone'); if(dn) dn.onclick = close;
+    const sp = overlay.querySelector('#trSpeed'); if(sp) sp.onclick = ()=>{ speed = speed===1 ? 3 : 1; render(); };
+    const sk = overlay.querySelector('#trSkip'); if(sk) sk.onclick = ()=>{ if(timer) clearTimeout(timer); idx = snaps.length-1; done = true; render(); };
+  };
+  const step = ()=>{ render(); if(idx < snaps.length-1 && !done){ timer = setTimeout(()=>{ idx++; step(); }, 1100/speed); } else done = true; };
+  step();
+}
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId);
   if(!f || f.locked || f.defeated) return;
+  if(def.trench && TrenchM){ openTrenchSetup(def, partId); return; }
   if(!deckSizeOkOrWarn()) return;
   const cost = def.cost || {};
   if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ alert(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 and you have ${currentRaidPoints()}🎫. They refill 1 every 6 hours.`); return; }
@@ -9125,7 +9293,17 @@ function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
   const overwhelmed = m.players[2].hq.hp <= 0 && m.endReason!=='forfeit';
-  const contribution = RaidM.contributionFor(def, dealt, overwhelmed);
+  const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed);
+  m.raidRewardEarned = {gold:r.gold, dust:r.dust};
+  m.raidDamageDealt = r.contribution; m.raidOverwhelmed = overwhelmed;
+  m.raidRemainingAfter = r.remainingAfter;
+}
+// Shared by the single-row fight and the trench: scores an attempt, stores it locally, pushes it
+// live, bumps quests and pays the small per-attempt reward.
+function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed){
+  const part = (def.parts||[]).find(p=> p.id===partId);
+  const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part);
+  const m = {raidPart: partId, raidCycle: cycle};
   const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, at: Date.now()};
   const list = loadRaidPartAttempts(); list.push(attempt); saveRaidPartAttempts(list);
   livePushRaidAttempt({bossId: def.id+':'+m.raidPart, cycle: m.raidCycle, name: attempt.name, avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: contribution, won: overwhelmed}, ok=>{
@@ -9136,10 +9314,8 @@ function settleRaidPartAfterMatch(m){
   // raw per-attempt reward stays low; the big payout is the shared kill reward
   const g = Math.round(contribution/250), d = Math.round(contribution/1000);
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
-  m.raidRewardEarned = {gold:g, dust:d};
-  m.raidDamageDealt = contribution; m.raidOverwhelmed = overwhelmed;
   const after = currentRaidStateFor(def);
-  m.raidRemainingAfter = Math.round((after.byId[m.raidPart]||{remaining:0}).remaining);
+  return {contribution, gold:g, dust:d, remainingAfter: Math.round((after.byId[partId]||{remaining:0}).remaining)};
 }
 function renderRaidSubTab(body){
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —

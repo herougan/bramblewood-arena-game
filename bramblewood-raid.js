@@ -19,8 +19,9 @@ const CYCLE_MS = 7*DAY;
 
 function cycleOf(now){ return Math.floor(now / CYCLE_MS); }
 function partTotal(p){ return Math.max(1, (p.bars|0) * (p.barHp|0)); }
-function contributionFor(def, dealt, overwhelmed){
-  const sc = def.scoring || {};
+// `part` (optional) may carry its own scoring overrides, e.g. the Core's stumps are worth more per HP.
+function contributionFor(def, dealt, overwhelmed, part){
+  const sc = Object.assign({}, def.scoring || {}, (part && part.scoring) || {});
   if(overwhelmed) return sc.overwhelmCap || 10000;
   return Math.max(0, Math.min(sc.cap || 5000, Math.round((dealt||0) * (sc.perInFightHp || 50))));
 }

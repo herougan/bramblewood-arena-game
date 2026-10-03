@@ -202,6 +202,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // surviving to round 20 would hand any raider the whole boss castle.
   const suddenDeathCastles = opts.suddenDeathCastles !== false;
   function setSuddenDeath(on){ suddenDeath = !!on; }
+  // Raid trench hooks (2026-10-03, Raid P2 — see bramblewood-trench.js). All opt-in; a normal match
+  // never sets them, so every existing fight resolves exactly as before.
+  //  - passUpkeepIds: during a resolveCombat pass, only these player ids get poison/decay/round-start/
+  //    end-of-round upkeep (a trench runs one pass per row against the same boss board).
+  //  - passAttackerIds: only these player ids' cards attack in this pass.
+  //  - pl.onHqHit(amount, attackerCard): if it returns a number, that replaces the castle hit
+  //    (trench roll-through to the next row, or a boss castle shielded while its entities stand).
+  let passUpkeepIds = null, passAttackerIds = null, currentAttacker = null;
+  function inUpkeep(pl){ return !passUpkeepIds || passUpkeepIds.includes(pl.id); }
   function isSuddenDeath(){ return suddenDeath; }
   function allBoardCards(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
   // Keeps every card's slot consistent with the row array it lives in, and keeps the arrays sorted
@@ -621,6 +630,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // uniformly at the one place all castle damage funnels through, rather than re-deriving the
   // reduction at every call site.
   function damageHQ(pl, amount){
+    if(typeof pl.onHqHit === 'function'){ const r = pl.onHqHit(amount, currentAttacker); if(typeof r === 'number') return r; }
     const reduced = Math.max(0, amount - bulwarkReductionFor(pl));
     if(isGladiator && pl.gladiatorLeaderUid!=null){
       const ld = gladiatorLeaderOf(pl);
@@ -805,6 +815,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
     if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     if(dd.flying && !ad.flying && rnd() < 0.5){ lastMissReason = 'flying'; return false; }
+    // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
+    if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
     return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
@@ -1876,7 +1888,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyPoisonTicks(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     const poisoned = [];
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.poison>0) poisoned.push({pl,card:c}); })));
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.poison>0) poisoned.push({pl,card:c}); })));
     if(!poisoned.length) return;
     for(const {pl,card} of poisoned){
       if(card.hp<=0) continue;
@@ -1898,7 +1910,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyDecayTicks(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     const decayed = [];
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.decay>0) decayed.push({pl,card:c}); })));
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.decay>0) decayed.push({pl,card:c}); })));
     if(!decayed.length) return;
     for(const {pl,card} of decayed){
       if(card.hp<=0) continue;
@@ -1912,7 +1924,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     removeDeadCards(players, sideOf, {}, stats, events);
   }
   function fireRoundStartTriggers(players, sideOf, stats, events){
-    [players[1], players[2]].forEach(pl=>{
+    [players[1], players[2]].filter(inUpkeep).forEach(pl=>{
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
         const def = CARD_DEFS[c.defId];
         // Renewal (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Cleanse"/Gwent's
@@ -1982,14 +1994,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Shell: deactivate whatever was active THIS round (already applied above in resolveCombat/
     // gatherAttackers), then promote any newly-queued shell (from getting hit this round) so it's
     // active starting NEXT round.
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
       if(c.shellSkip || c.shellArmor){ c.shellSkip = false; c.shellArmor = 0; }
       if(c.shellNext){ c.shellArmor = c.shellNext; c.shellSkip = true; c.shellNext = 0; }
     })));
     // Crit (2026-09-14): a capped "once per round" proc — reset the round's usage counter
     // here so next round's attacks get a fresh proc attempt. (Evade's own counter was
     // removed 2026-09-29 when Evade/Evasion merged into the stateless Evasive keyword.)
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
       c.critUsed = 0;
       c._frenziedThisRound = false; // Frenzy (2026-09-16): one extra attack per round, resets here just like Crit
     })));
@@ -1998,7 +2010,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // kill — shares the same bookkeeping object as the onReady damage pass and removeDeadCards.
     const killCredit = {};
     // Explode: a lit fuse, ticking down every round independent of Wait/Stun/Reload.
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
       if(c.hp<=0 || c.explodeFired || c.explodeRemaining===undefined) return;
       const def = CARD_DEFS[c.defId];
       if(!def.effects || !def.effects.explode) return;
@@ -2014,7 +2026,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     })));
     const readyNow = [];
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
       if(c.reloadRemaining>0){ if(c._reloadJustSet){ c._reloadJustSet = false; } else { c.reloadRemaining -= 1; } } // don't tick down the same round it was set
       // Elemental status ticks (Frozen/Asleep/Paralyzed) — all count down here, once per round,
       // regardless of whether they gated this round's attack (Paralyzed's coin flip can still
@@ -2088,7 +2100,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         });
       }
     }
-    [p1,p2].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
+    [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
       if(c.wait===0){
         const def = CARD_DEFS[c.defId];
         if(def.effects && def.effects.onReadyGold){
@@ -2269,7 +2281,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'collapseIn', side:sideOf(pl.id), defId:moved.defId, uid:moved.uid, fromSide});
     });
   }
-  function resolveCombat(players, sideOf, stats, events, firstAttackerSide){
+  function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
+    passUpkeepIds = (pass && pass.upkeepIds) || null;
+    passAttackerIds = (pass && pass.attackerIds) || null;
+    try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
+    finally { passUpkeepIds = null; passAttackerIds = null; currentAttacker = null; }
+  }
+  function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
     // Ordering (2026-09-16, per explicit request: "Poison should happen first") — Poison now
     // ticks BEFORE any round-start trigger (Renewal cleanse, Regeneration, On Round Start, Per
     // Turn). Previously Renewal ran first and could cleanse a stack away before it ever dealt
@@ -2349,6 +2367,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const poolMeta = new Map();    // uid -> {att, attId, enemyId} — currently eligible, not yet acted
     function discoverEligibleAttackers(){
       [[p1,1,2],[p2,2,1]].forEach(([pl,ownId,enemyId])=>{
+        if(passAttackerIds && !passAttackerIds.includes(ownId)) return;
         ['left','center','right'].forEach(sideKey=>{
           pl.row[sideKey].forEach(card=>{
             const uid = card.uid;
@@ -2448,6 +2467,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
       // this round" — see reflowAfterKills' own comment for why this can't be taken inside it.
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
+      currentAttacker = a.att;
       const attDef = CARD_DEFS[a.att.defId];
       // Crit (2026-09-14): a 1-in-2 chance, capped at once per round, to double this card's
       // damage for every hit it lands this round (its primary attack and any Sweep/Swipe
@@ -2864,13 +2884,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // above pickNextAttacker's declaration) rather than pulling a fresh one from the pool —
       // everything else falls through to the normal live pick, which naturally picks up whatever
       // this turn's own kills/reflow/mid-attack spawns just made newly eligible.
+      currentAttacker = null;
       pending = frenziedAgain ? a : pickNextAttacker();
     }
     endOfRoundUpkeep(players, sideOf, stats, events);
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

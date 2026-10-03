@@ -16,12 +16,23 @@
         "bars": 3,
         "barHp": 80000,
         "fight": {
-          "castleHp": 160,
+          "castleHp": 420,
           "deck": {
             "kraken-spawnling": 4,
             "riptide-eel": 3,
             "moray-ambusher": 3
           }
+        },
+        "trench": {
+          "attacks": [
+            {
+              "id": "smack",
+              "name": "Tentacle Smack",
+              "pattern": "column",
+              "dmg": 6,
+              "every": 3
+            }
+          ]
         }
       },
       {
@@ -31,12 +42,23 @@
         "bars": 3,
         "barHp": 80000,
         "fight": {
-          "castleHp": 100,
+          "castleHp": 420,
           "deck": {
             "kraken-spawnling": 4,
             "reef-manta-glider": 3,
             "coral-reef-shark": 3
           }
+        },
+        "trench": {
+          "attacks": [
+            {
+              "id": "smack",
+              "name": "Tentacle Smack",
+              "pattern": "column",
+              "dmg": 6,
+              "every": 3
+            }
+          ]
         }
       },
       {
@@ -46,12 +68,23 @@
         "bars": 3,
         "barHp": 80000,
         "fight": {
-          "castleHp": 150,
+          "castleHp": 420,
           "deck": {
             "humpback-elder": 3,
             "orca-vanguard": 3,
             "riptide-eel": 4
           }
+        },
+        "trench": {
+          "attacks": [
+            {
+              "id": "sweep",
+              "name": "Tail Sweep",
+              "pattern": "frontRow",
+              "dmg": 3,
+              "every": 2
+            }
+          ]
         }
       },
       {
@@ -73,6 +106,55 @@
             "kraken-spawnling": 4,
             "coral-reef-shark": 3
           }
+        },
+        "trench": {
+          "attacks": [
+            {
+              "id": "smack",
+              "name": "Tentacle Smack",
+              "pattern": "column",
+              "dmg": 6,
+              "every": 3
+            }
+          ],
+          "entities": [
+            {
+              "id": "stump-l",
+              "name": "Left Stump",
+              "icon": "🦑",
+              "attack": 3,
+              "health": 20,
+              "armor": 0,
+              "aura": 1
+            },
+            {
+              "id": "stump-c",
+              "name": "Tail Stump",
+              "icon": "🌊",
+              "attack": 3,
+              "health": 20,
+              "armor": 0,
+              "aura": 1
+            },
+            {
+              "id": "stump-r",
+              "name": "Right Stump",
+              "icon": "🦑",
+              "attack": 3,
+              "health": 20,
+              "armor": 0,
+              "aura": 1
+            }
+          ],
+          "shieldWhileEntities": true,
+          "rules": {
+            "waitDelta": 1,
+            "illusory": 0.667
+          },
+          "wallHp": 70
+        },
+        "scoring": {
+          "perInFightHp": 140
         }
       }
     ],
@@ -96,7 +178,7 @@
       }
     ],
     "scoring": {
-      "perInFightHp": 50,
+      "perInFightHp": 15,
       "cap": 5000,
       "overwhelmCap": 10000
     },
@@ -125,6 +207,10 @@
         "participant": {}
       }
     },
-    "fightRounds": 12
+    "fightRounds": 12,
+    "trench": {
+      "rows": 3,
+      "wallHp": 45
+    }
   }
 ]
