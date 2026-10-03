@@ -59,7 +59,9 @@ function playMatch(deck1, deck2, pol1, pol2, seed, script){
   engine.draw(players[1], 3, 'A', stats, events); engine.draw(players[2], 3, 'B', stats, events);
   const polRnd = {1: H.seededRng(seed ^ 0x1111), 2: H.seededRng(seed ^ 0x2222)};
   let round = 1, over = false, step = 0;
-  for(; round<=120 && !over; round++){
+  let lastSig = null, stalled = 0, drawn = false;
+  for(; round<=H.Engine.DRAW_ROUND_CAP && !over && !drawn; round++){
+    engine.setSuddenDeath(round >= H.Engine.SUDDEN_DEATH_ROUND);
     [1,2].forEach(pid=>{ const pl = players[pid]; pl.playedThisTurn = false; pl.discardUsedThisTurn = false; pl.__turn = round; pl.__canPlay = h=> engine.canPlay(pl, h.defId, h.uid); });
     [1,2].forEach(pid=>{
       const act = script ? script[step++] : POLICIES[pid===1?pol1:pol2](players[pid], polRnd[pid]);
@@ -71,10 +73,11 @@ function playMatch(deck1, deck2, pol1, pol2, seed, script){
     const inv = H.checkInvariants(players, `round ${round}`);
     [1,2].forEach(pid=>{ if(players[pid].hand.length>5) inv.push(`round ${round}: P${pid} hand has ${players[pid].hand.length} cards`); });
     if(inv.length){ failures.push(`${pol1} vs ${pol2} seed ${seed}: ${inv[0]}`); break; }
+    if(!over){ const sig = H.Engine.boardSignature(players); stalled = (sig===lastSig && H.Engine.noActionsLeft(players)) ? stalled+1 : 0; lastSig = sig; if(stalled >= H.Engine.STALL_ROUNDS_FOR_DRAW){ drawn = true; break; } }
     if(!over){ engine.draw(players[1], 1, 'A', stats, events); engine.draw(players[2], 1, 'B', stats, events); }
   }
   const a = players[1].hq.hp<=0, b = players[2].hq.hp<=0;
-  const winner = over ? (a&&b ? 0 : a ? 2 : 1) : (players[1].hq.hp===players[2].hq.hp ? 0 : players[1].hq.hp>players[2].hq.hp ? 1 : 2);
+  const winner = over ? (a&&b ? 0 : a ? 2 : 1) : 0; // not over = auto-draw (stalled board or round cap)
   return {winner, rounds: round-1, hp:[players[1].hq.hp, players[2].hq.hp], log};
 }
 

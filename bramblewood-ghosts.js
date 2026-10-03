@@ -139,13 +139,14 @@ function raidPoolMax(boss){ return (boss.hqHp||200) * RAID.POOL_MULT; }
 // castle HP. Returns the castle damage the raider dealt.
 function simulateRaidFight(Engine, defs, boss, deck, castleHp, seed){
   const rnd = mulberry32(seed);
-  const engine = Engine.makeSimEngine(defs, rnd, {recordEvents:false});
+  const engine = Engine.makeSimEngine(defs, rnd, {recordEvents:false, suddenDeathCastles:false});
   const sideOf = id=> id===1 ? 'A' : 'B';
   const players = {1: engine.newPlayer(1, deck), 2: engine.newPlayer(2, boss.deck, {id:'raid-'+boss.id, name:boss.name, health:castleHp, effects:{}})};
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, null); engine.draw(players[2], 3, 'B', stats, null);
   let round = 1, over = false;
   for(; round<=60 && !over; round++){
+    if(engine.setSuddenDeath) engine.setSuddenDeath(round >= 20);
     [1,2].forEach(p=>{ players[p].playedThisTurn = false; players[p].discardUsedThisTurn = false; });
     engine.aiTakeTurn(players, sideOf, 1, stats, null);
     engine.aiTakeTurn(players, sideOf, 2, stats, null);

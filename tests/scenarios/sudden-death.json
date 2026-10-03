@@ -1,0 +1,17 @@
+[
+  {"name":"Before turn 20 a 1-damage hit is just 1 damage", "rounds":19, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"otter-centurion","wait":0,"hp":999,"attack":1}], "B":[{"id":"ent","hp":900,"attack":0}],
+   "expect":[{"event":"death","eq":0}, {"alive":"B","eq":1}]},
+
+  {"name":"Sudden death: from turn 20 any landed hit kills", "rounds":20, "hqHp":{"A":60,"B":60},
+   "A":[{"id":"otter-centurion","wait":0,"hp":999,"attack":1}], "B":[{"id":"ent","hp":900,"attack":0}],
+   "expect":[{"event":"death","min":1}, {"alive":"B","eq":0}]},
+
+  {"name":"Sudden death: a castle hit ends the game", "rounds":30, "hqHp":{"A":60,"B":500},
+   "A":[{"id":"otter-centurion","wait":0,"hp":999,"attack":1}], "B":[],
+   "expect":[{"winner":1}, {"castle":"B","eq":0}]},
+
+  {"name":"Raid castles are exempt from sudden death", "rounds":25, "hqHp":{"A":60,"B":500}, "suddenDeathCastles":false,
+   "A":[{"id":"otter-centurion","wait":0,"hp":999,"attack":1}], "B":[],
+   "expect":[{"castle":"B","min":470}]}
+]

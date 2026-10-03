@@ -37,7 +37,7 @@ const sideOf = id=> id===1 ? 'A' : 'B';
 // ---------------------------------------------------------------------------------------------
 function runBoard(spec){
   const defs = spec.defs || loadCardDefs();
-  const engine = Engine.makeSimEngine(defs, seededRng(spec.seed||1), {recordEvents:true, battleMode: spec.battleMode});
+  const engine = Engine.makeSimEngine(defs, seededRng(spec.seed||1), {recordEvents:true, battleMode: spec.battleMode, suddenDeathCastles: spec.suddenDeathCastles});
   const players = {1: engine.newPlayer(1, {}), 2: engine.newPlayer(2, {})};
   const hqHp = spec.hqHp || {};
   if(hqHp.A!=null){ players[1].hq.hp = players[1].hq.maxHp = hqHp.A; }
@@ -55,6 +55,7 @@ function runBoard(spec){
   let round = 1, over = false, invariantErrors = [];
   for(; round<=maxRounds; round++){
     events.push({type:'roundStart', round});
+    if(!spec.noSuddenDeath) engine.setSuddenDeath(round >= Engine.SUDDEN_DEATH_ROUND);
     over = engine.resolveCombat(players, sideOf, stats, events, round%2===0 ? 1 : 2);
     invariantErrors.push(...checkInvariants(players, `round ${round}`));
     if(over) break;

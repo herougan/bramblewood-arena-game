@@ -7822,7 +7822,7 @@ function startOfflineRaidMatch(){
     return;
   }
   const boss = st.boss;
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const castle = st.nextCastleHp;
@@ -9309,7 +9309,7 @@ function startRaidMatch(bossId){
     saveCurrencies();
     return;
   }
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const bossHp = (boss.stats && boss.stats.hqHp) || 200;
@@ -9954,6 +9954,7 @@ function renderMatchUI(){
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
+        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss">🏳️ Forfeit</button>` : ''}
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
@@ -10028,6 +10029,7 @@ function renderMatchUI(){
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':'So Close! Good Fight')}</h2>
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
+        ${m.endReason ? `<p class="winloss-reason">${({forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -10043,6 +10045,7 @@ function renderMatchUI(){
   root.classList.remove('testkit-mode');
   if(m.testKit) testKitArrangeLayout(root, tkKeep);
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : endMatch));
+  const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   wireLeaderWidget();
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
@@ -12885,7 +12888,10 @@ async function resolveRound(){
   // then swip-swapping once that starts"): m.round (incremented once per resolved round, see
   // below) picks who wins a same-column tie THIS round — odd rounds keep the original "enemy
   // (side 2) acts first" default, even rounds flip it to the player (side 1) acting first.
-  const over = m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.round%2===0 ? 1 : 2);
+  if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND);
+  // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
+  // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
+  let over = (m.forcedWinner!=null) ? true : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.round%2===0 ? 1 : 2);
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
   // combat), with a pulsing zoom-in 'next turn' banner and sequential... decrement animation"):
   // the engine still generates waitTick/ready exactly where it always has (endOfRoundUpkeep, the
@@ -13108,9 +13114,17 @@ async function resolveRound(){
   // controls re-enable, and any resolving-gated check, before that entrance is even visible.
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
   settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
+  // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
+  // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.
+  if(!over && m.mode!=='tutorial' && m.mode!=='sandbox' && !m.testKit){
+    const sig = boardSignature(m.players);
+    m.stallRounds = (sig===m.lastBoardSigForDraw && noActionsLeft(m.players)) ? (m.stallRounds||0)+1 : 0;
+    m.lastBoardSigForDraw = sig;
+    if(m.stallRounds >= STALL_ROUNDS_FOR_DRAW || m.round >= DRAW_ROUND_CAP){ m.forcedWinner = 0; m.endReason = m.round >= DRAW_ROUND_CAP ? 'cap' : 'stalled'; over = true; }
+  }
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
-    m.winner = (p1dead&&p2dead)?0:(p1dead?2:1);
+    m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
     if(m.mode!=='sandbox') await showEndSign(m);
     m.over = true;
     // Personal win/loss stats only mean something vs an AI opponent — a vs-PC pass-and-play
@@ -13316,6 +13330,7 @@ async function resolveRound(){
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
     if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
     m.round += 1;
+    if(m.round === SUDDEN_DEATH_ROUND && m.mode!=='tutorial') showSuddenDeathBanner(m);
     const drawEvents = [];
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
@@ -13329,6 +13344,22 @@ async function resolveRound(){
   renderMatchUI();
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+// Sudden death banner (turn 20) and Forfeit (2026-10-03).
+function showSuddenDeathBanner(m){
+  const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
+  const el = document.createElement('div');
+  el.className = 'sudden-death-sign'; el.setAttribute('role','status');
+  el.innerHTML = `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">${raid ? 'Any hit now kills a unit outright.' : 'Any hit now kills — a hit on a castle ends the game.'}</div>`;
+  document.body.appendChild(el);
+  setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
+}
+const FORFEIT_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','raidOffline','raidOnline','pvp']);
+async function forfeitMatch(){
+  const m = matchState; if(!m || m.over || m.resolving || !FORFEIT_MODES.has(m.mode)) return;
+  if(!confirm('Forfeit this match? It counts as a loss.')) return;
+  m.forcedWinner = 2; m.endReason = 'forfeit';
+  await resolveRound();
+}
 // Full-hand auto-pitch (2026-10-02): a face-down card flies from that side's deck to its graveyard
 // (your Graveyard zone; the enemy has none on screen, so theirs arcs up and fades), with a
 // "+1 🪵" pop where it lands. Fixed-position clone on <body>, so the round's final re-render

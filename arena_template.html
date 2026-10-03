@@ -2253,6 +2253,12 @@
   .winloss-actions{gap:10px;}
   /* ---- Coach tips (2026-10-03) ---- */
   /* Passive (non-blocking) tips never swallow drops/taps on the board underneath — only the button is clickable. */
+  .sudden-death-sign{position:fixed; left:50%; top:30%; transform:translate(-50%,-50%); z-index:1250; text-align:center; padding:18px 28px; border-radius:16px;
+    background:rgba(40,6,6,.9); color:#ffe1e1; box-shadow:0 0 0 3px #d64545, 0 18px 40px rgba(0,0,0,.5); animation:coachIn .3s ease-out; pointer-events:none; transition:opacity .5s;}
+  .sudden-death-sign.out{opacity:0;}
+  .sudden-death-sign .sds-title{font-size:30px; font-weight:900; letter-spacing:.04em;}
+  .sudden-death-sign .sds-sub{font-size:14px; margin-top:4px;}
+  .winloss-reason{margin:4px 0 8px; font-size:14px; opacity:.85;}
   .coach-tip:not(.is-blocking){pointer-events:none;}
   .coach-tip:not(.is-blocking) .coach-ok{pointer-events:auto;}
   .faction-btn[hidden]{display:none;}

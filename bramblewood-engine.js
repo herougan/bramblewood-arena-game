@@ -140,6 +140,23 @@ function buildDeckIdsFrom(cardCounts, rnd){
   return shuffle(ids, rnd);
 }
 const HQ_MAX_HP = 100;
+// Sudden death & draws (2026-10-03, explicit: "On turn 20+, go to sudden death - 1 hit = die. If
+// no one has actions they can take, and nothing on the board state is changing - auto draw.").
+// From SUDDEN_DEATH_ROUND, any hit that lands kills the unit it hits outright, and any hit on a
+// castle (or a Gladiator leader) ends the game. A match still going at DRAW_ROUND_CAP is a draw.
+const SUDDEN_DEATH_ROUND = 20;
+const DRAW_ROUND_CAP = 100;
+const STALL_ROUNDS_FOR_DRAW = 2;
+// A compact fingerprint of everything that can change on the board: castles, and every card's
+// hp/attack/wait. If it's identical round after round, nothing is happening.
+function boardSignature(players){
+  return [1,2].map(pid=>{ const pl = players[pid];
+    return pl.hq.hp + ':' + ['left','center','right'].map(s=> pl.row[s].map(c=> (c.gap?'_':c.defId+'/'+c.hp+'/'+c.atk+'/'+(c.wait||0))).join(',')).join('|');
+  }).join('#');
+}
+// "No actions left": neither player has anything left to put into play (empty hand and deck).
+// A player with any card in hand can always at least pitch it, which changes the game state.
+function noActionsLeft(players){ return [1,2].every(pid=> !players[pid].hand.length && !players[pid].deck.length); }
 function statKey(side, defId){ return side+'|'+defId; }
 function ensureStat(stats, side, defId){
   const k = statKey(side, defId);
@@ -180,6 +197,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const slotMode = battleMode==='open' || battleMode==='gladiator';
   const isGladiator = battleMode==='gladiator';
   const GAP = Object.freeze({hp:0, uid:null, gap:true});
+  let suddenDeath = false;
+  // Raid bosses opt out of the castle half (opts.suddenDeathCastles:false): otherwise simply
+  // surviving to round 20 would hand any raider the whole boss castle.
+  const suddenDeathCastles = opts.suddenDeathCastles !== false;
+  function setSuddenDeath(on){ suddenDeath = !!on; }
+  function isSuddenDeath(){ return suddenDeath; }
   function allBoardCards(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
   // Keeps every card's slot consistent with the row array it lives in, and keeps the arrays sorted
   // nearest-centre first (the order the rest of the engine and the renderer already assume).
@@ -550,6 +573,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function damageCard(card, amount, dmgType, attCard){
     const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = computeHitDamage(attCard, amount, dmgType, card);
     card.hp = Math.max(0, card.hp - dmg);
+    if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount};
   }
@@ -576,6 +600,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let dmg = factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount;
     if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
     card.hp = Math.max(0, card.hp - dmg);
+    if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep breaks on any flat/ranged damage too
     return dmg;
   }
@@ -599,11 +624,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const reduced = Math.max(0, amount - bulwarkReductionFor(pl));
     if(isGladiator && pl.gladiatorLeaderUid!=null){
       const ld = gladiatorLeaderOf(pl);
-      if(ld) ld.hp -= reduced;
+      if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && reduced>0) ? ld.hp : reduced;
       syncGladiatorHq(pl);
       return reduced;
     }
     pl.hq.hp = Math.max(0, pl.hq.hp - reduced);
+    if(suddenDeath && suddenDeathCastles && reduced>0) pl.hq.hp = 0; // sudden death: a castle hit ends the game
     return reduced;
   }
   function pickRandomEnemyTarget(enemyPl){
@@ -2839,7 +2865,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -2864,7 +2890,9 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
   engine.draw(players[2], 3, 'B', stats, events);
   let round = 1;
   let winner = 0;
-  while(round <= maxRounds){
+  let lastSig = null, stalled = 0, drawn = false;
+  while(round <= Math.min(maxRounds, DRAW_ROUND_CAP)){
+    engine.setSuddenDeath(round >= SUDDEN_DEATH_ROUND);
     players[1].playedThisTurn = false;
     players[2].playedThisTurn = false;
     players[1].discardUsedThisTurn = false;
@@ -2881,10 +2909,16 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
       winner = (p1dead && p2dead) ? 0 : (p1dead ? 2 : 1);
       break;
     }
+    const sig = boardSignature(players);
+    stalled = (sig===lastSig && noActionsLeft(players)) ? stalled+1 : 0;
+    lastSig = sig;
+    if(stalled >= STALL_ROUNDS_FOR_DRAW){ drawn = true; winner = 0; break; }
     round += 1;
     engine.draw(players[1], 1, 'A', stats, events);
     engine.draw(players[2], 1, 'B', stats, events);
   }
+  if(drawn) return {winner:0, rounds:round, stats, players, events, drawn:true};
+  if(round > Math.min(maxRounds, DRAW_ROUND_CAP) && maxRounds >= DRAW_ROUND_CAP) return {winner:0, rounds:round, stats, players, events, drawn:true};
   if(round > maxRounds){
     const hp1 = players[1].hq.hp, hp2 = players[2].hq.hp;
     winner = hp1===hp2 ? 0 : (hp1>hp2 ? 1 : 2);
@@ -2893,5 +2927,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS };
+  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, SUDDEN_DEATH_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, boardSignature, noActionsLeft };
 }
