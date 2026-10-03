@@ -28,6 +28,8 @@ My pushback is in there:
 
 There is also a proposed fix order: battle layout, Play width, Deck builder, Arena hierarchy, Codex toolbar, currencies.
 - **You (19:44):** OK to the pushback, but WebGL experiments continue alongside. Next UI batch starts with the battle layout.
+- **Battle batch 1 done (20:15):** hover facing (p = i − n/2), castle HP ribbons, tips off the board, log drawer, compact Graveyard, "Pass turn".
+- **Research:** [`research-webgl-graphify-2026-10-03.md`](research-webgl-graphify-2026-10-03.md) covers what to try next in WebGL and graphify (run on our code).
 
 ## Discuss: needs a conversation, not a pick
 
