@@ -45,15 +45,19 @@ _Last updated: 2026-10-03_
   - `bramblewood-engine.js` (`resolveCombat`, `placeCard`)
   - `context-combat-engine.md`
 
-**3. Sudden death and draws** ✅
+**3. Sudden death, draws and surrender** ✅
 - From **turn 20**, any hit that lands kills the unit it hits, and any hit on a castle ends the game. A banner announces it.
   - **Raids:** only the unit half applies. Otherwise surviving to turn 20 would hand anyone the whole boss castle.
   - This is my reading of "1 hit = die"; it's one setting if you meant otherwise.
 - **Auto-draw:** when neither player has a card left in hand or deck and the board hasn't changed for 2 rounds. Also at **turn 100**.
 - **Forfeit:** a 🏳️ button in single-player modes. It counts as a loss and shows the normal results screen.
+- **Enemy behaviour when it runs dry** (nothing playable, no damage dealt last round, nothing still under Wait). Picked per opponent from the seed, or set per node:
+  - **Surrender** (~70%): you win.
+  - **Offer a draw** (~20%): a popup, and the offer stays in ⚙️.
+  - **Never surrender** (~10%, and every boss): it keeps throwing 1/1 Frog & Fly Imps (`loopCards`).
 - **Where:**
   - Engine: `SUDDEN_DEATH_ROUND`, `setSuddenDeath`, `boardSignature`, `noActionsLeft`, `DRAW_ROUND_CAP`
-  - App: `resolveRound`, `forfeitMatch` in `arena_app.js`
+  - App: `resolveRound`, `forfeitMatch`, `setupEnemyBehaviour`, `enemyIsSpent` in `arena_app.js`
   - Tests: `tests/scenarios/sudden-death.json`
 
 **4. Battle modes** ✅
@@ -73,8 +77,12 @@ _Last updated: 2026-10-03_
 - A deck is exactly **20 cards**; every mode checks this before a fight.
 - You also bring a **Leader**, summoned from a slot during the match.
 - Your **castle ("Bramble")** comes from a character pick that sets its HP and passive.
+- **Deck level** = Σ rarity weight × card level, with the leader counted double.
+  - Weights run Common 1 → Mythic 9 → Ancient 10.
+  - So 20 Commons at level 1 is a level-20 deck. Shown on each deck.
 - **Where:**
-  - `deckSizeOkOrWarn`, `myLeaderId` in `arena_app.js`
+  - `deckSizeOkOrWarn`, `myLeaderId`, `mainDeckLevel` in `arena_app.js`
+  - `deckLevelOf` in `bramblewood-autobattle.js`
   - `canonical/characters.json`
 
 ### Economy
@@ -107,25 +115,42 @@ _Last updated: 2026-10-03_
   - `cardSourceOf`, `cardWhereToGetText`, `SHOP_PACKS_DEFAULT`, `levelUpCost` in `arena_app.js`
   - `context-economy-progression.md`
 
-**10. Reward philosophy** 🟡 (principle; guides every reward number)
+**10. Rewards, XP and levels** 🟡 (the reward principle guides every number)
 - Raw rewards from playing are deliberately **low**, so the gap between grinders and non-grinders stays small.
   - PvP pays 18 / 6 Maple Leaves for a win / loss.
   - An Autobattler run pays 8 per win, plus a bonus at 10 wins.
 - The real rewards come from **limited** sources: quests (item 15).
 - **Statistics medals** ✅ are built. Lifetime totals of units defeated, wins, PvP wins, Conquest clears, raid damage and Energy spent earn Bronze → Silver → Gold → Platinum. They're recognition, not power.
+- **Player level** ✅ — uncapped. Each level needs 18% more XP than the last (100 to reach level 2).
+  - Playing pays a trickle: 3 XP per win.
+  - The real XP comes from quests (tier 1 daily 100, tier 1 weekly 400).
+  - …and one-time milestones: first clears, map clears, collection size, rating reached, medals, Autobattler 10 wins.
 - **Catch-up mechanics:** to decide. One option is to make the game less punishing as it goes on.
-- **Where:** `STAT_MEDALS`, `bumpQuestCounter` in `arena_app.js`; quest rewards in `QUEST_TIERS`.
+- **Where:** `STAT_MEDALS`, `bumpQuestCounter`, `awardXp`, `xpMilestones` in `arena_app.js`; quest rewards in `QUEST_TIERS`.
 
 ### Modes
 
-**11. Conquest (campaign)** ✅
+**11. Conquest, onboarding and dialogue** ✅
 - 11 maps of skirmish, elite, boss and raid-boss nodes. Each costs Energy.
-- Results show rank, rewards, unlocks and a Next Battle button.
-- Starts with the seeded tutorial node.
-- Admins can drag nodes on the map.
+- Results show rank, rewards, unlocks and a Next Battle button. Admins can drag nodes on the map.
+- **Conquest-first onboarding:**
+  - After the seeded tutorial, the leaves part to reveal the map. A new player has only Play, Settings and Profile.
+  - Features are found as **! icons on the map**:
+    - ⛺ Deck/Codex after 1-1
+    - 🪺 Nest after 1-2
+    - 📜 Quests after 1-3
+    - 🏟️ Arena when map 2 opens
+    - 🛒 Shop when map 3 opens
+    - 🧩 Autobattler after 3-2
+    - 🐲 Raid when map 4 opens
+  - Clicking one: a short speech, then straight in.
+  - Players who were already past the tutorial keep what their progress earned.
+- **Dialogue:** the lore cast talks in non-blocking bubbles (top-left). When they address you, you have 30 s to reply; silence counts as "…" and takes its own branch.
 - **Where:**
-  - `CONQUEST_MAPS`, `startConquestMatch`, `mapNodePositions` in `arena_app.js`
-  - `game-design-v36`–`v38` addenda
+  - `CONQUEST_MAPS`, `startConquestMatch`, `mapNodePositions`
+  - `FEATURE_SPOTS`, `tabOpen`, `leavesRevealToMap`
+  - `DIALOGUES`, `playDialogue`
+  - …all in `arena_app.js`; also `game-design-v36`–`v38` addenda
 
 **12. PvP: ticket battles** ✅
 - Spend 1 of your **10 daily tickets** to fight a **random stranger's deck, played by the AI**.
@@ -137,7 +162,9 @@ _Last updated: 2026-10-03_
 - **Next:** a cloud table so strangers are other real players, not only this browser's decks plus seeds.
 
 **13. Autobattler: draft run** ✅ (like Super Auto Pets / Bazaar-style async battlers; its own 🧩 tab in Play)
-- **Draft:** pick 1 of 3 for your castle, leader and sub-leader, then 10 card picks. Each card pick gives 2 copies, so the deck is 20 cards.
+- **Draft:** pick 1 of 3 for your castle, leader and sub-leader, then 10 card picks. That makes a **10-card deck + 2 leaders**.
+- **Bench:** holds up to 6 stored cards, swapped in between fights. Duplicates land there when the deck is full.
+- **Levels:** every card starts at level 1, and each +1/+1 or passive boon adds a level. Deck level is shown (leaders count double). Castles gain +10% health per fight.
 - **Leaders:** the leader starts every fight on the board. The sub-leader joins on round 4 and can be swapped between fights (1 of 2 offers, once per fight).
 - **Health:** 5. A loss in fights 1–3 costs 1; later losses cost 2.
 - **Goal:** 10 wins, then **cash out or go Endless**. Endless hard-stops at fight 100.
@@ -152,7 +179,7 @@ _Last updated: 2026-10-03_
   - a "watch the fight" replay;
   - a cloud ghost table, so you meet real players.
 
-**14. Raids** 🟡
+**14. Raids** 🟡 — full design and editor plan in `raid-design.md`
 - **Target version:** async multiplayer. You and **N async players' decks, in rows, against one boss**, but you only fight **a fragment** of it, e.g. the head or the tail.
 - The boss has **one global HP bar** worn down by everyone's chip damage. It goes through **stages** as the bar drops.
 - **If it dies, everyone gets rewards. If it survives, everyone gets compensation rewards.**
@@ -186,17 +213,24 @@ _Last updated: 2026-10-03_
 
 ### Platform
 
-**17. Accounts, sync and social** 🟡
+**17. Accounts, sync, live data and social** 🟡
 - Google or email sign-in; accounts with the same email are joined.
 - **Synced:** currencies, card unlocks, decks.
-- **Local only:** Conquest progress, avatar, Energy.
+- **Live tables** (built, but the migration is **not applied yet**):
+  - `ghost_decks`: PvP strangers and Autobattler runs
+  - `raid_week_attempts`: the weekly raid party and shared pool
+  - `player_progress`: Conquest, quests, stats, XP, tickets, autobattler run, unlocks, dialogue
+  - Until the migration is applied, all of this stays in this browser.
 - Friends, private match invites (with battle mode) and the public market are built, but the **social migration is not applied yet**.
 - **Where:**
+  - `supabase/migrations/20261003_live_ghosts_raid_progress.sql`
   - `supabase/migrations/20261002_social_friends_invites_market.sql`
-  - `cloudPullState` in `arena_app.js`
+  - `LiveData`, `cloudPullState` in `arena_app.js`
 
-**18. Admin tools** ✅
-- Admin Mode: card editor (publishes live through `card_overrides`), map layout editor, node rewards, Test Kit.
+**18. Admin tools and editors** 🟡
+- **Ready:** card editor (publishes live through `card_overrides`), map layout editor, node rewards, Test Kit, and "Unlock all features / Replay onboarding".
+- **Simulator:** lists the decks you've fought recently, with "Simulate vs my deck".
+- **Not built:** Skirmish editor, Raid editor (see `raid-design.md`).
 - The Admin tile is still visible to everyone; server-side writes are admin-only.
 - **Where:** `setAdminMode`, `renderAdmin`, `cloudWriteCardOverride`, `wireMapLayoutEditor` in `arena_app.js`.
 
