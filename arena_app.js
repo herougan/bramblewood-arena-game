@@ -12316,6 +12316,7 @@ function wireDropZones(){
   // including a fresh empty #battleLog div, which would wipe whatever log lines renderLogLine has
   // appended into it since the last full render. Toggling visibility in place keeps them intact.
   wireFacingHover();
+  try{ mountBattleWeather(matchState); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
   const battleLogToggle = document.getElementById('battleLogToggle');
@@ -15256,6 +15257,8 @@ async function resolveRound(){
   SoundKit.stopAll();
   m.resolving = false;
   renderMatchUI();
+  // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
+  if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Modes whose fights count toward quests and medals (not the tutorial, sandbox, test kit or pass & play).
@@ -19758,6 +19761,26 @@ function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;
   const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
   return ShaderM.mount(host, {preset:'map', kind, prepend: true, className: 'bw-shader-map'});
+}
+// Battlefield weather (2026-10-03, effects experiment #5): the map overlay system, placed under
+// the cards and toned down. Rain on wet maps (and with the 🌧️ Rain atmosphere), the map's own look
+// elsewhere. The canvas is moved into each re-rendered battlefield rather than recreated.
+let battleWeather = null;
+function battleWeatherKind(m){
+  if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
+  const override = loadBattlefieldBgOverride();
+  const mapId = (override && override!=='auto' && override!=='calm') ? override : (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
+  if(mapId==='m2' || mapId==='m8') return 11;
+  const k = ShaderM.MAP_KIND[mapId]; return k == null ? 0 : k;
+}
+function mountBattleWeather(m){
+  const bf = document.getElementById('battlefieldEl');
+  if(!bf || !m || !shadersEnabled() || m.testKit){ if(battleWeather){ battleWeather.destroy(); battleWeather = null; } return; }
+  const kind = battleWeatherKind(m);
+  if(battleWeather && battleWeather.kindId===kind && ShaderM.reattach(battleWeather, bf, true)) return;
+  if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle'});
+  if(battleWeather) battleWeather.kindId = kind;
 }
 function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
 function setShadersEnabled(on){

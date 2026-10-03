@@ -144,6 +144,17 @@ void main(){
     float f = fbm(uv*vec2(aspect*1.4, 3.0) + vec2(t*0.05, 0.0));
     o = add(o, vec3(0.65, 0.75, 0.6), smoothstep(0.35, 1.0, uv.y) * smoothstep(0.4, 0.8, f) * 0.38);
     o = add(o, vec3(0.6, 1.0, 0.3), sparks(q, 8.0, t, vec2(0.04, -0.04), 0.14, 0.22));
+  } else if(k == 11){ // rain on the battlefield: slanted streaks and splash rings on the felt
+    vec2 rq = vec2(q.x + q.y*0.18, q.y);
+    float col = floor(rq.x*90.0); float h = hash(vec2(col, 7.0));
+    float y = fract(rq.y*0.8 + t*(1.6 + h*0.8) + h*10.0);
+    float streak = step(0.93, h + 0.0*y) * smoothstep(0.0, 0.08, y) * smoothstep(0.2, 0.08, y) * smoothstep(0.5, 0.0, abs(fract(rq.x*90.0) - 0.5));
+    o = add(o, vec3(0.8, 0.88, 1.0), streak*0.5);
+    vec2 sp = q*6.0; vec2 id = floor(sp); vec2 f = fract(sp) - 0.5; float hh = hash(id);
+    float ph = fract(t*0.7 + hh*7.0); float r = length(f - (vec2(hash(id+1.3), hash(id+2.7)) - 0.5)*0.6);
+    float ring = smoothstep(0.03, 0.0, abs(r - ph*0.35)) * (1.0 - ph) * step(0.7, hh);
+    o = add(o, vec3(0.85, 0.92, 1.0), ring*0.55);
+    o = add(o, vec3(0.05, 0.08, 0.12), 0.12);
   } else { // 9 sky: drifting clouds, wind streaks
     float c = fbm(uv*vec2(aspect*1.2, 2.5) + vec2(t*0.04, 0.0));
     o = add(o, vec3(1.0), smoothstep(0.55, 0.85, c)*0.38);
@@ -256,8 +267,17 @@ function loop(now){
 }
 
 function destroyAll(){ [...layers].forEach(destroy); }
+// Move a live layer into a freshly re-rendered host (keeps its GL context: moving a canvas element
+// doesn't reset it). Returns false if the layer is gone.
+function reattach(layer, host, prepend){
+  if(!layer || !layers.has(layer) || !host) return false;
+  if(layer.host !== host){ if(layer.host && layer.host.classList) layer.host.classList.remove('has-shader'); layer.host = host; host.classList.add('has-shader'); }
+  if(layer.cv.parentNode !== host){ if(prepend) host.insertBefore(layer.cv, host.firstChild); else host.appendChild(layer.cv); }
+  if(!raf) raf = requestAnimationFrame(loop);
+  return true;
+}
 
-const api = {mount, destroyAll, isSupported, MAP_KIND, _layers: layers};
+const api = {mount, destroyAll, reattach, isSupported, MAP_KIND, _layers: layers};
 if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

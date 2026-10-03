@@ -4457,6 +4457,10 @@
   .card-tile.is-holo.holo-active .holo-glare, .card-tile.is-holo.holo-tilt .holo-glare{opacity:1;}
   .card-tile.is-holo.holo-active .holo-layer{opacity:.55;}
   @media (prefers-reduced-motion: reduce){ .card-tile.is-holo{animation:none !important; transform:none !important;} }
+  .battlefield > .bw-shader-battle{z-index:0; border-radius:inherit;}
+  .battlefield > .battlefield-inner, .battlefield > .bf-hp{position:relative; z-index:1;}
+  #rowMine.turn-glow{animation:turnGlow 1.8s ease-out;}
+  @keyframes turnGlow{0%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);} 25%{box-shadow:inset 0 -40px 60px -30px rgba(255,215,122,.55);} 100%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);}}
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
@@ -8767,6 +8771,17 @@ void main(){
     float f = fbm(uv*vec2(aspect*1.4, 3.0) + vec2(t*0.05, 0.0));
     o = add(o, vec3(0.65, 0.75, 0.6), smoothstep(0.35, 1.0, uv.y) * smoothstep(0.4, 0.8, f) * 0.38);
     o = add(o, vec3(0.6, 1.0, 0.3), sparks(q, 8.0, t, vec2(0.04, -0.04), 0.14, 0.22));
+  } else if(k == 11){ // rain on the battlefield: slanted streaks and splash rings on the felt
+    vec2 rq = vec2(q.x + q.y*0.18, q.y);
+    float col = floor(rq.x*90.0); float h = hash(vec2(col, 7.0));
+    float y = fract(rq.y*0.8 + t*(1.6 + h*0.8) + h*10.0);
+    float streak = step(0.93, h + 0.0*y) * smoothstep(0.0, 0.08, y) * smoothstep(0.2, 0.08, y) * smoothstep(0.5, 0.0, abs(fract(rq.x*90.0) - 0.5));
+    o = add(o, vec3(0.8, 0.88, 1.0), streak*0.5);
+    vec2 sp = q*6.0; vec2 id = floor(sp); vec2 f = fract(sp) - 0.5; float hh = hash(id);
+    float ph = fract(t*0.7 + hh*7.0); float r = length(f - (vec2(hash(id+1.3), hash(id+2.7)) - 0.5)*0.6);
+    float ring = smoothstep(0.03, 0.0, abs(r - ph*0.35)) * (1.0 - ph) * step(0.7, hh);
+    o = add(o, vec3(0.85, 0.92, 1.0), ring*0.55);
+    o = add(o, vec3(0.05, 0.08, 0.12), 0.12);
   } else { // 9 sky: drifting clouds, wind streaks
     float c = fbm(uv*vec2(aspect*1.2, 2.5) + vec2(t*0.04, 0.0));
     o = add(o, vec3(1.0), smoothstep(0.55, 0.85, c)*0.38);
@@ -8879,8 +8894,17 @@ function loop(now){
 }
 
 function destroyAll(){ [...layers].forEach(destroy); }
+// Move a live layer into a freshly re-rendered host (keeps its GL context: moving a canvas element
+// doesn't reset it). Returns false if the layer is gone.
+function reattach(layer, host, prepend){
+  if(!layer || !layers.has(layer) || !host) return false;
+  if(layer.host !== host){ if(layer.host && layer.host.classList) layer.host.classList.remove('has-shader'); layer.host = host; host.classList.add('has-shader'); }
+  if(layer.cv.parentNode !== host){ if(prepend) host.insertBefore(layer.cv, host.firstChild); else host.appendChild(layer.cv); }
+  if(!raf) raf = requestAnimationFrame(loop);
+  return true;
+}
 
-const api = {mount, destroyAll, isSupported, MAP_KIND, _layers: layers};
+const api = {mount, destroyAll, reattach, isSupported, MAP_KIND, _layers: layers};
 if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
@@ -21250,6 +21274,7 @@ function wireDropZones(){
   // including a fresh empty #battleLog div, which would wipe whatever log lines renderLogLine has
   // appended into it since the last full render. Toggling visibility in place keeps them intact.
   wireFacingHover();
+  try{ mountBattleWeather(matchState); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
   const battleLogToggle = document.getElementById('battleLogToggle');
@@ -24190,6 +24215,8 @@ async function resolveRound(){
   SoundKit.stopAll();
   m.resolving = false;
   renderMatchUI();
+  // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
+  if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Modes whose fights count toward quests and medals (not the tutorial, sandbox, test kit or pass & play).
@@ -28692,6 +28719,26 @@ function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;
   const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
   return ShaderM.mount(host, {preset:'map', kind, prepend: true, className: 'bw-shader-map'});
+}
+// Battlefield weather (2026-10-03, effects experiment #5): the map overlay system, placed under
+// the cards and toned down. Rain on wet maps (and with the 🌧️ Rain atmosphere), the map's own look
+// elsewhere. The canvas is moved into each re-rendered battlefield rather than recreated.
+let battleWeather = null;
+function battleWeatherKind(m){
+  if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
+  const override = loadBattlefieldBgOverride();
+  const mapId = (override && override!=='auto' && override!=='calm') ? override : (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
+  if(mapId==='m2' || mapId==='m8') return 11;
+  const k = ShaderM.MAP_KIND[mapId]; return k == null ? 0 : k;
+}
+function mountBattleWeather(m){
+  const bf = document.getElementById('battlefieldEl');
+  if(!bf || !m || !shadersEnabled() || m.testKit){ if(battleWeather){ battleWeather.destroy(); battleWeather = null; } return; }
+  const kind = battleWeatherKind(m);
+  if(battleWeather && battleWeather.kindId===kind && ShaderM.reattach(battleWeather, bf, true)) return;
+  if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle'});
+  if(battleWeather) battleWeather.kindId = kind;
 }
 function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
 function setShadersEnabled(on){
