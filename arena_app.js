@@ -7502,15 +7502,22 @@ function renderAutobattleSubTab(body){
   if(!run){
     body.innerHTML = `<div class="panel ab-panel ab-intro">
       <h2>🧩 Autobattler</h2>
-      <p class="panel-sub">Draft a castle, two leaders and a deck from scratch, then watch it fight other players' runs. Fights play themselves — your job is building the deck.</p>
+      <p class="panel-sub">Build a deck from nothing and watch it fight other players' runs. You make the choices; the fights play themselves.</p>
+      <ol class="ab-loop" aria-label="How a run works">
+        <li><span class="abl-ico">🏰</span><b>Draft</b><span>a castle, two leaders, then cards</span></li>
+        <li><span class="abl-ico">⚔️</span><b>Fight</b><span>another player's run with as many wins</span></li>
+        <li><span class="abl-ico">✨</span><b>Boon</b><span>copy a card, +1/+1, or a new passive</span></li>
+        <li><span class="abl-ico">🏆</span><b>${AutoB.AB.WIN_GOAL} wins</b><span>cash out, or go Endless</span></li>
+      </ol>
+      <button class="btn primary big ab-start-hero" id="abStartBtn">🧩 Start a run</button>
+      <details class="ab-rules-more"><summary>Full rules</summary>
       <ul class="ab-rules">
         <li>❤️ <b>${AutoB.AB.START_HP} health.</b> A loss in your first ${AutoB.AB.EARLY_FIGHTS} fights costs ${AutoB.AB.EARLY_LOSS}; after that a loss costs ${AutoB.AB.LATE_LOSS}.</li>
         <li>🏆 <b>Reach ${AutoB.AB.WIN_GOAL} wins.</b> Then cash out, or keep going in Endless (stops at fight ${AutoB.AB.HARD_STOP}).</li>
         <li>👑 <b>Two leaders:</b> your leader starts every fight on the board; your sub-leader joins on round ${AutoB.AB.SUB_LEADER_ROUND} and can be swapped between fights.</li>
         <li>✨ <b>After every fight</b> pick a boon: duplicate a card, +1/+1 a card, or give a card a passive.</li>
         <li>👻 <b>Opponents</b> are other players' runs with the same number of wins.</li>
-      </ul>
-      <button class="btn primary big" id="abStartBtn">Start a run</button>
+      </ul></details>
     </div>`;
     document.getElementById('abStartBtn').onclick = ()=>{ saveAbRun(AutoB.newRun((Math.random()*2**32)>>>0, Date.now())); renderAutobattleSubTab(body); };
     return;
@@ -7817,8 +7824,8 @@ function renderArenaSubTab(body){
            row at a given screen width. -->
       ${resumable?`<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
           <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>`:''}
-      <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid">
-        <button class="btn primary big arena-mode-btn" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer</span></button>
+      <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid arena-practice-grid">
+        <button class="btn primary big arena-mode-btn arena-hero" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer · costs no Energy</span></button>
         <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span></button>
       </div></div>
       <div class="arena-group"><h3 class="arena-group-h">Challenges</h3><div class="arena-mode-grid">

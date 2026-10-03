@@ -4546,6 +4546,30 @@
   .te-steps{display:grid; gap:8px;}
   .te-actions{display:flex; gap:8px; align-items:center; margin-top:12px;}
   .te-msg{min-height:1.2em; font-size:13px;}
+  /* D16 pushback accepted (2026-10-03): every Play sub-tab gets the same, wider column — Conquest's
+     map gets room again and Arena/Raid/Autobattler margins still match it. */
+  #appWrap.tab-play:not(.in-match) .content-wrap{max-width:min(1400px, 94vw);}
+  /* Arena hierarchy (D16, 2026-10-03): Quick Battle is the one brown hero; every other mode is a
+     quieter parchment tile so the screen says "start here". */
+  .arena-practice-grid{grid-template-columns:2fr 1fr !important;}
+  .arena-mode-btn.arena-hero{min-height:150px; font-size:1.1em; box-shadow:0 8px 22px rgba(120,60,10,.35);}
+  .arena-mode-btn.arena-hero .amb-ico{font-size:44px;}
+  .arena-mode-btn.arena-hero .amb-lbl{font-size:24px;}
+  .arena-mode-btn:not(.arena-hero){background:var(--surface-2) !important; color:var(--ink) !important; border:1px solid var(--surface-border) !important; box-shadow:0 2px 6px var(--shadow) !important; text-shadow:none !important;}
+  .arena-mode-btn:not(.arena-hero) .amb-sub, .arena-mode-btn:not(.arena-hero) .async-run-line, .arena-mode-btn:not(.arena-hero) .gauntlet-streak-line, .arena-mode-btn:not(.arena-hero) .dungeon-status-line{color:var(--ink-muted) !important;}
+  .arena-mode-btn:not(.arena-hero):hover:not(:disabled){border-color:var(--accent) !important; transform:translateY(-2px);}
+  .arena-mode-btn.dungeon-panel .dungeon-node{color:var(--ink);}
+  @media (max-width:600px){ .arena-practice-grid{grid-template-columns:1fr !important;} }
+  .ab-intro{text-align:center;}
+  .ab-loop{list-style:none; padding:0; margin:18px auto; display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:10px; max-width:860px; counter-reset:abl;}
+  .ab-loop li{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; padding:14px 10px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13px; color:var(--ink-muted);}
+  .ab-loop li b{color:var(--ink); font:800 16px 'Baloo 2',system-ui,sans-serif;}
+  .ab-loop li:not(:last-child)::after{content:'›'; position:absolute; right:-10px; top:50%; transform:translateY(-50%); font-size:22px; color:var(--accent); z-index:1;}
+  .abl-ico{font-size:30px;}
+  .ab-start-hero{min-width:260px; font-size:20px; padding:16px 28px;}
+  .ab-rules-more{max-width:640px; margin:14px auto 0; text-align:left;}
+  .ab-rules-more summary{cursor:pointer; text-align:center; color:var(--ink-muted); font-weight:700;}
+  @media (max-width:600px){ .ab-loop{grid-template-columns:repeat(2, minmax(0,1fr));} .ab-loop li:nth-child(2)::after{display:none;} }
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
