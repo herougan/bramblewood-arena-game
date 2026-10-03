@@ -2132,7 +2132,7 @@ function renderCodex(){
   body.innerHTML = `
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
       <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
-      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters</button>
+      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='tiers') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option></select>
@@ -12049,10 +12049,10 @@ function renderMatchUI(){
         ${matchStatsHTML(m)}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
-          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'Try Again':'Play Again')}</button>
+          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
           ${isTutorial?'':`<div class="winloss-secondary">
-            <button class="btn" id="wlBackBtn">Back to board</button>
-            <button class="btn ghost" id="wlQuitBtn">Quit</button>
+            <button class="btn" id="wlBackBtn" title="Close this and look at the final board">👀 See the board</button>
+            <button class="btn ghost" id="wlQuitBtn">${m.mode==='conquest' ? '🗺️ Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? '🐙 Back to the raid' : '🚪 Leave'}</button>
           </div>`}
         </div>
       </div>
@@ -16020,7 +16020,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = ENERGY_COST[nb.node.kind] || ENERGY_COST.skirmish;
   if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
-  return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚡ ${e}: Next Battle!</button>`;
+  return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
 function rewardsCheer(){
@@ -18660,8 +18660,11 @@ function currencyPillHTML(kind, extraCls){
   const meta = CURRENCY_META[kind] || {glyph:'', label:kind};
   return `<span class="hud-pill cur-pill ${extraCls||''}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
 }
+// T4 (2026-10-03, "display when it matters, don't display when it doesn't"): the Shop only shows
+// what it spends — Maple Leaves and Gold Leaves. Dust and Metal live on the Forge; Profile keeps the
+// full wallet.
 function shopCurrencyRowInnerHTML(){
-  return ['gold','gems','dust','metal'].map(k=> currencyPillHTML(k, 'forge-cur-'+k)).join('');
+  return ['gold','gems'].map(k=> currencyPillHTML(k, 'forge-cur-'+k)).join('');
 }
 function refreshShopAfford(){
   document.querySelectorAll('#shopPackGrid [data-buypack]').forEach(btn=>{
@@ -18720,7 +18723,8 @@ function renderShop(){
       <div class="shop-pack-ico">${p.icon}</div>
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
       <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
-      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? packCostHTML(p) : 'Sign in'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
+      <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
+      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
     </div>`).join('');
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn))));

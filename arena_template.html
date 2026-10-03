@@ -1111,8 +1111,13 @@
   .codex-toolbar{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px;}
   /* UX A7 (2026-10-03): on phones the seven filter controls stacked into seven rows before the first
      card; now search stays visible and the rest sit behind one "Filters" toggle. Desktop unchanged. */
-  .cx-filters-toggle{display:none;}
+  /* D16 (2026-10-03): desktop too — search and sort stay out; types, archetypes, grouping and
+     view density sit behind Filters (which shows how many are active). */
+  .cx-filters-toggle{display:inline-flex;}
+  .codex-toolbar #cxSearch{flex:1 1 260px; min-width:0;}
+  .codex-toolbar:not(.filters-open) > :not(#cxSearch):not(.cx-filters-toggle):not(#cxSort):not(#cxSortDir){display:none;}
   @media (max-width:700px){
+    .codex-toolbar:not(.filters-open) > #cxSort, .codex-toolbar:not(.filters-open) > #cxSortDir{display:none;}
     .codex-toolbar{gap:8px;}
     .codex-toolbar #cxSearch{flex:1 1 60%; min-width:0;}
     .cx-filters-toggle{display:inline-flex;}
@@ -1167,7 +1172,7 @@
      that's actually clickable, i.e. only once adminModeEnabled is on and the click handler is
      really wired up — see renderCodexGrid's own comment. */
   .grid-view .card-tile.cx-editable{cursor:pointer;}
-  #codexResultCount{color:var(--ink-muted); font-size:12.5px; margin-bottom:8px; display:block;}
+  #codexResultCount{color:#d9c9a8; font-size:12.5px; margin-bottom:8px; display:block;} /* sits on the dark page, not parchment (contrast fix 2026-10-03) */
 
   /* ---- editor modal ---- */
   .modal-overlay{position:fixed; inset:0; background:var(--overlay); z-index:600; display:flex; align-items:flex-start; justify-content:center; overflow-y:auto; padding:40px 16px;}
@@ -4577,6 +4582,11 @@
   .deck-chip:hover:not(.on){background:var(--surface-2); color:var(--ink);}
   .dc-star{color:#e3b23c;} .deck-chip.on .dc-star{color:#ffe08a;}
   .deck-chip-new{color:var(--accent-strong);}
+  .codex-sub-tabs .btn.ghost{background:var(--surface); color:var(--ink); border-color:var(--surface-border);} /* '🃏 Deck' text was invisible on the dark page */
+  .cx-fcount{display:inline-flex; min-width:18px; height:18px; padding:0 5px; border-radius:9px; background:var(--accent); color:#fff; font-size:11px; align-items:center; justify-content:center; margin-left:4px;}
+  .wl-cost{font-size:.75em; opacity:.85; margin-left:4px;}
+  .shop-pack-price{font:800 15px 'Baloo 2',system-ui,sans-serif; margin:6px 0 8px; display:flex; gap:6px; justify-content:center; align-items:center;}
+  #shopPackGrid{grid-template-columns:repeat(auto-fit, minmax(180px, 240px)); justify-content:center;}
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
