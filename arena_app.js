@@ -11581,6 +11581,87 @@ function castleCharOf(m, pid){
   if(!d) return pl.character;
   return {...d, id:'gladiator-leader-'+pid, name:`👑 ${d.name} (Leader)`};
 }
+// Castle HP ribbons (2026-10-03, D16 battle fixes: "Castle HP is the score, so it should be the
+// biggest number on screen"): a full-width bar along the top edge of the battlefield for the top
+// castle and along the bottom edge for yours. Kept in sync by updateHqHpDisplay.
+function hpRibbonHTML(m, side, label){
+  const pid = side==='A' ? 1 : 2; const hq = m.players[pid].hq;
+  const hp = Math.max(0, hq.hp), pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
+  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Castle')+': '+hp+' of '+hq.maxHp+' health')}">
+    <span class="bf-hp-label">🏰 ${escapeHtml(label||'Castle')}</span>
+    <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
+    <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span></div>`;
+}
+function updateHpRibbon(side, hp){
+  const m = matchState; if(!m) return;
+  const el = document.querySelector(`[data-hpribbon="${side}"]`); if(!el) return;
+  const hq = m.players[side==='A'?1:2].hq; hp = Math.max(0, hp);
+  const pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
+  const f = el.querySelector('.bf-hp-fill'); if(f) f.style.width = pct.toFixed(1)+'%';
+  const n = el.querySelector('.bf-hp-num'); if(n) n.innerHTML = `${hp}<small>/${hq.maxHp}</small>`;
+  el.classList.toggle('is-low', pct<=30);
+  el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit');
+}
+// Who faces whom (2026-10-03, explicit: "Your position is either in integers or in half integers,
+// comparing your integer index, you can see who you are facing"). Same rule as the engine's
+// resolveLiveTarget: each card's shared position is p = i - n/2 (i = 1-based index left to right
+// across its whole row, n = cards in that row). Equal positions face off; a half-step apart
+// straddles (two cards face one). Nothing within half a step means it hits the castle.
+function boardOrderOf(m, pid){
+  const pl = m.players[pid];
+  if(isSlotMatch(m)) return allCardsOnBoard(pl).slice().sort((a,b)=> (a.slot||0)-(b.slot||0)).map(c=> ({uid:c.uid, p:c.slot||0}));
+  const list = [...pl.row.left].reverse().concat(pl.row.center, pl.row.right).filter(c=> c.hp>0);
+  return list.map((c,k)=> ({uid:c.uid, p:(k+1) - list.length/2}));
+}
+function facingOf(m, uid){
+  for(const pid of [1,2]){
+    const mine = boardOrderOf(m, pid), me = mine.find(x=> String(x.uid)===String(uid)); if(!me) continue;
+    const foes = boardOrderOf(m, pid===1?2:1).filter(x=> Math.abs(x.p - me.p) < 0.75);
+    return {pid, foes: foes.map(x=> x.uid)};
+  }
+  return null;
+}
+function allCardsOnBoard(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
+function clearFacing(){
+  document.querySelectorAll('.board-card.is-facing-src, .board-card.is-faced').forEach(e=> e.classList.remove('is-facing-src','is-faced'));
+  document.querySelectorAll('.bf-hp.is-faced').forEach(e=> e.classList.remove('is-faced'));
+  const svg = document.getElementById('facingSvg'); if(svg) svg.innerHTML = '';
+}
+function showFacing(uid){
+  const m = matchState; clearFacing(); if(!m || m.resolving) return;
+  const f = facingOf(m, uid); if(!f) return;
+  const src = boardCardEl(uid), bf = document.getElementById('battlefieldEl'), svg = document.getElementById('facingSvg');
+  if(!src || !bf || !svg) return;
+  src.classList.add('is-facing-src');
+  const br = bf.getBoundingClientRect(), sr = src.getBoundingClientRect();
+  svg.setAttribute('viewBox', `0 0 ${br.width} ${br.height}`);
+  const cx = r=> r.left + r.width/2 - br.left, cy = r=> r.top + r.height/2 - br.top;
+  const line = (x2, y2)=> `<line x1="${cx(sr).toFixed(1)}" y1="${cy(sr).toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+  let html = '';
+  if(f.foes.length){
+    f.foes.forEach(u=>{ const t = boardCardEl(u); if(!t) return; t.classList.add('is-faced'); const tr = t.getBoundingClientRect(); html += line(cx(tr), cy(tr)); });
+  } else {
+    const castleSide = f.pid===1 ? 'B' : 'A';
+    const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
+    if(rib){ rib.classList.add('is-faced'); const rr = rib.getBoundingClientRect(); html += line(cx(sr), cy(rr)); }
+  }
+  if(f.foes.length===2) html += `<text x="${cx(sr).toFixed(1)}" y="${(cy(sr) + (f.pid===1?-sr.height*0.62:sr.height*0.7)).toFixed(1)}" text-anchor="middle">½ · ½</text>`;
+  svg.innerHTML = html;
+}
+function wireFacingHover(){
+  const bf = document.getElementById('battlefieldEl'); if(!bf || bf.dataset.facingWired) return;
+  bf.dataset.facingWired = '1';
+  bf.addEventListener('pointerover', e=>{
+    if(e.pointerType==='touch') return;
+    const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    showFacing(c.dataset.uid);
+  });
+  bf.addEventListener('pointerout', e=>{
+    const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    if(e.relatedTarget && c.contains(e.relatedTarget)) return;
+    clearFacing();
+  });
+}
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:maxHp};
   // Some Conquest/Raid opponents are given a bare placeholder character with no real Bramble
@@ -11739,6 +11820,7 @@ function renderMatchUI(){
       <div class="top-row-controls">
         <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
+        <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
         ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss">🏳️ Forfeit</button>` : ''}
@@ -11746,11 +11828,14 @@ function renderMatchUI(){
       </div>
     </div>
     <div class="battlefield ${battlefieldMapClass(m)}" id="battlefieldEl">
+      ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner">
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider"></div>
         <div class="board-row mine" id="rowMine"></div>
       </div>
+      ${hpRibbonHTML(m, 'A', bottomLabel)}
+      <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -11784,13 +11869,13 @@ function renderMatchUI(){
            header comment) — is preserved by giving the battlefield row itself an equivalent click
            handler (see wireBattlefieldPan's ownRow 'click' listener) rather than dropped along
            with the buttons. -->
-      <div class="discardzone" id="dropDiscard" title="${escapeAttr(discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null))}">${holdingCard
+      <div class="discardzone ${holdingCard?'':'compact'}" id="dropDiscard" title="${escapeAttr(discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null))}">${holdingCard
         ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
-        : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length} cards</span>`}</div>
+        : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
       <!-- Skip Turn (2026-09-26, "skip turn can be a smaller button on the btm right instead"):
            pulled out of the flex flow (see .skipzone.compact's position:absolute) and pinned to
            the row's own bottom-right corner as a small pill instead of a third full-size box. -->
-      <div class="skipzone compact" id="skipZone" title="Skip Turn"><span class="dz-ico">⏭</span>${m.resolving?'Resolving…':'Skip'}</div>
+      <div class="skipzone compact" id="skipZone" title="Pass: end your turn without playing a card"><span class="dz-ico">⏭</span>${m.resolving?'Resolving…':'Pass turn'}</div>
     </div>`}
     <!-- 2026-09-25 fix (explicit report: "things are not aligned... elements should feel like
          they were meant to be full screen... not things poking at the btm. The txn log can be
@@ -12230,6 +12315,9 @@ function wireDropZones(){
   // renderPlay()/renderMatchUI() call: a full re-render rebuilds this whole template from scratch,
   // including a fresh empty #battleLog div, which would wipe whatever log lines renderLogLine has
   // appended into it since the last full render. Toggling visibility in place keeps them intact.
+  wireFacingHover();
+  const logHud = document.getElementById('battleLogHudBtn');
+  if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
   const battleLogToggle = document.getElementById('battleLogToggle');
   if(battleLogToggle) battleLogToggle.addEventListener('click', ()=>{
     battleLogOpen = !battleLogOpen;
@@ -14442,6 +14530,7 @@ function updateHqHpDisplay(side, hpOverride){
   // shorter string no longer overflows on mobile.
   const hpText = el.querySelector('.hp');
   if(hpText) hpText.textContent = `❤${Math.max(0,hp)}`;
+  updateHpRibbon(side, hp);
 }
 // Status badges/overlays (poison ☠, bleed 🩸, stun 💫) now refresh on the specific board
 // card the instant a hit applies them (2026-09-16, per explicit request: "poison... should
@@ -15395,6 +15484,18 @@ function showCoachTip(tip, anchorEl){
   const place = ()=>{
     if(!anchorEl.isConnected){ const fresh = (tip.anchor && tip.anchor()); if(fresh){ anchorEl.classList.remove('coach-anchor'); anchorEl = fresh; anchorEl.classList.add('coach-anchor'); } else { hideCoachTip(); return; } }
     if(tip.action && tip.done && matchState && tip.done(matchState)){ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 500); return; }
+    // 2026-10-03 (D16: "coach marks cover the fight"): passive tips never sit over the board.
+    // They dock in the empty band above the battlefield (or below the HUD on phones), the card
+    // they're about keeps its glow, and they step aside while a round is resolving.
+    if(!tip.block && !tip.action && matchState){
+      b.hidden = !!matchState.resolving;
+      b.classList.add('is-docked');
+      const bf = document.getElementById('battlefieldEl');
+      if(window.innerWidth < 700){ b.style.left = '12px'; b.style.right = '12px'; b.style.top = ''; b.style.bottom = 'calc(12px + env(safe-area-inset-bottom,0px))'; return; }
+      const top = bf ? Math.max(8, bf.getBoundingClientRect().top - b.offsetHeight - 8) : 8;
+      b.style.left = ''; b.style.right = '12px'; b.style.top = top + 'px';
+      return;
+    }
     const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight;
     let x = Math.max(8, Math.min(window.innerWidth - bw - 8, r.left + r.width/2 - bw/2));
     let y = r.top - bh - 14, below = false;

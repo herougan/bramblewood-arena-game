@@ -2137,7 +2137,7 @@
      controls themselves), making the log read as glued to the battlefield/controls cluster it
      doesn't actually belong to. Now it's the reverse — tight against the battlefield above,
      genuinely separated from the Battle Log below. */
-  .drop-row{display:flex; gap:10px; margin-bottom:26px; flex-wrap:wrap; justify-content:center; align-items:flex-end; position:relative; z-index:12;}
+  .drop-row{display:flex; gap:10px; margin-bottom:10px; flex-wrap:wrap; justify-content:center; align-items:flex-end; position:relative; z-index:12;}
   /* 2026-09-26 (see the drop-row's own HTML comment): Skip Turn is now a small pill pinned to
      this row's bottom-right corner instead of a third full-size box sitting in the flex flow —
      the discardzone alone is left to center itself in the row. */
@@ -4406,6 +4406,32 @@
   .conquest-map-canvas > .bw-shader-map{z-index:0; border-radius:inherit;}
   .rw-sec.rw-past{opacity:.55; filter:grayscale(.85); border-top:1px dashed currentColor; padding-top:8px;}
   .rw-sec.rw-past .rw-head{font-style:italic;}
+  /* D16 battle fixes (2026-10-03) */
+  .bf-hp{display:flex; align-items:center; gap:10px; font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; color:#fff; text-shadow:0 1px 2px rgba(0,0,0,.6); position:relative; z-index:2;}
+  .bf-hp-enemy{margin:-4px 0 8px;} .bf-hp-mine{margin:8px 0 -4px;}
+  .bf-hp-label{font-size:13px; white-space:nowrap; max-width:30%; overflow:hidden; text-overflow:ellipsis;}
+  .bf-hp-track{flex:1; height:12px; border-radius:999px; background:rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.25); overflow:hidden;}
+  .bf-hp-fill{display:block; height:100%; background:linear-gradient(90deg,#4fbf5a,#8be07a); transition:width .35s ease;}
+  .bf-hp-enemy .bf-hp-fill{background:linear-gradient(90deg,#d8553f,#ff8f6e);}
+  .bf-hp.is-low .bf-hp-fill{background:linear-gradient(90deg,#c0392b,#ff6b5e);}
+  .bf-hp-num{font-size:22px; line-height:1; font-variant-numeric:tabular-nums; min-width:64px; text-align:right;}
+  .bf-hp-num small{font-size:12px; opacity:.75;}
+  .bf-hp.is-hit .bf-hp-num{animation:bfHpHit .4s ease;}
+  @keyframes bfHpHit{0%{transform:scale(1);} 35%{transform:scale(1.25); color:#ffd2c8;} 100%{transform:scale(1);}}
+  .bf-hp.is-faced .bf-hp-track{box-shadow:0 0 0 3px rgba(255,215,122,.8);}
+  .facing-svg{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; overflow:visible;}
+  .facing-svg line{stroke:#ffd77a; stroke-width:3; stroke-dasharray:6 5; stroke-linecap:round; opacity:.9;}
+  .facing-svg text{fill:#ffd77a; font:800 12px 'Baloo 2',system-ui,sans-serif; paint-order:stroke; stroke:rgba(0,0,0,.7); stroke-width:3px;}
+  .board-card.is-facing-src .card-tile{box-shadow:0 0 0 3px #ffd77a, 0 6px 16px rgba(0,0,0,.4);}
+  .board-card.is-faced .card-tile{box-shadow:0 0 0 3px #ff9284, 0 6px 16px rgba(0,0,0,.4);}
+  .coach-tip.is-docked{max-width:min(340px, calc(100vw - 24px)); left:auto;}
+  .coach-tip.is-docked::after, .coach-tip.is-docked::before{display:none;}
+  .battle-log-panel:not(.testkit-log){position:fixed; left:12px; bottom:calc(12px + env(safe-area-inset-bottom,0px)); width:min(380px, calc(100vw - 24px)); z-index:65; margin:0; box-shadow:0 10px 30px rgba(0,0,0,.35);}
+  .battle-log-panel.collapsed:not(.testkit-log){display:none;}
+  @media (max-width:560px){ .bf-hp-label{display:none;} .bf-hp-num{font-size:18px; min-width:52px;} .bf-hp-track{height:10px;} }
+  .discardzone.compact{flex-direction:row; width:auto; min-height:0; padding:7px 14px; border-radius:999px; gap:6px;}
+  .discardzone.compact .dz-ico{font-size:15px;} .discardzone.compact .dz-sub{font-size:11px; opacity:.7;}
+  @media (max-width:699px){ .coach-tip.is-docked{max-width:none;} }
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
