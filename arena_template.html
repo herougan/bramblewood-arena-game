@@ -3358,7 +3358,7 @@
      it hides itself entirely in both places rather than showing a near-empty bar. The in-match
      case already had its own #appWrap.in-match .topbar-wrap{display:none} rule further up this
      file; :not(.in-match) here just avoids that rule and this one fighting redundantly. */
-  #appWrap.tab-home .topbar-wrap{display:none;}
+  /* 2026-10-03 (D1): the header shows on Home too — one header everywhere except Play (which has its own compact row) and matches. */
   #appWrap.tab-play:not(.in-match) .topbar-wrap{display:none;}
   .play-subtabs .tab-btn.active{background:var(--accent); color:var(--accent-ink);}
   .player-stats-row{display:flex; gap:10px; flex-wrap:wrap;}
@@ -4232,6 +4232,33 @@
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 40'%3E%3Cdefs%3E%3ClinearGradient id='r' x1='0' y1='0' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%239c7442'/%3E%3Cstop offset='.35' stop-color='%23e9d2a2'/%3E%3Cstop offset='.7' stop-color='%23cfae74'/%3E%3Cstop offset='1' stop-color='%238d6536'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='1' y='0.6' width='12' height='38.8' rx='5' fill='url(%23r)' stroke='%236b4a26' stroke-width='1'/%3E%3Cpath d='M3 19.5 Q7 17 11 19.5' fill='none' stroke='%236b4a26' stroke-width='.9'/%3E%3Cpath d='M3 21 Q7 23.5 11 21' fill='none' stroke='%236b4a26' stroke-width='.7' stroke-opacity='.7'/%3E%3Cellipse cx='7' cy='3' rx='4.5' ry='1.6' fill='%237a5630' fill-opacity='.55'/%3E%3Cellipse cx='7' cy='37' rx='4.5' ry='1.6' fill='%237a5630' fill-opacity='.55'/%3E%3C/svg%3E") left center / auto 100% no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 40'%3E%3Cdefs%3E%3ClinearGradient id='c' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23f1dfb8'/%3E%3Cstop offset='1' stop-color='%23b48a52'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0 3.5 L5 3 L9 6 Q12 11 7 13 L0 12 Z' fill='url(%23c)' stroke='%236b4a26' stroke-width='.9'/%3E%3Cpath d='M0 36 L6 37 Q11 35 9 31 L0 30 Z' fill='%23d9bb84' stroke='%236b4a26' stroke-width='.8'/%3E%3C/svg%3E") right center / auto 100% no-repeat, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23f4e6c6'/%3E%3Cstop offset='.55' stop-color='%23ead39f'/%3E%3Cstop offset='1' stop-color='%23d6b67c'/%3E%3C/linearGradient%3E%3CradialGradient id='s' cx='.5' cy='.5' r='.5'%3E%3Cstop offset='0' stop-color='%23b98a4a' stop-opacity='.22'/%3E%3Cstop offset='1' stop-color='%23b98a4a' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d='M0 3 L14 2 L22 4 L40 2 L58 3 L74 1.5 L96 3 L118 2 L134 3.5 L152 2 L170 3 L186 2 L200 3.5 L200 36 L188 38 L172 36.5 L156 38.5 L138 37 L120 38.5 L100 36.5 L82 38 L62 36.5 L44 38.5 L26 37 L12 38.5 L0 37 Z' fill='url(%23g)' stroke='%237a5630' stroke-width='1.2' vector-effect='non-scaling-stroke'/%3E%3Cellipse cx='40' cy='14' rx='26' ry='9' fill='url(%23s)'/%3E%3Cellipse cx='150' cy='27' rx='32' ry='10' fill='url(%23s)'/%3E%3Cellipse cx='104' cy='10' rx='18' ry='6' fill='url(%23s)'/%3E%3Cg fill='none' stroke='%238a6438' stroke-opacity='.45' stroke-width='.8' vector-effect='non-scaling-stroke'%3E%3Cpath d='M30 38 L33 31 L29 26 L34 21'/%3E%3Cpath d='M33 31 L40 29'/%3E%3Cpath d='M122 2 L125 9 L121 14'/%3E%3Cpath d='M125 9 L132 11 L136 8'/%3E%3Cpath d='M178 37 L174 31 L179 27 L176 22'/%3E%3Cpath d='M174 31 L168 30'/%3E%3C/g%3E%3C/svg%3E") center / calc(100% - .5em) 100% no-repeat;
     filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.45));}
   .card-tile.locked .nm{filter:none;}
+  /* Home (2026-10-03, D1): Play hero spanning both columns, then a 2×2 grid; Quests + Community below. */
+  .home-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px; width:min(520px, 100%); margin:6px auto 4px;}
+  .home-grid .home-tile{width:100%; margin:0; min-height:74px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:19px;}
+  .home-grid .home-tile .tab-emoji{font-size:24px;}
+  .home-grid .home-play{grid-column:1 / -1; min-height:120px; font-size:28px; letter-spacing:.02em;}
+  .home-grid .home-play .tab-emoji{font-size:38px;}
+  .home-community-wrap{position:relative;}
+  .home-extras .home-menu-btn-small{width:130px;}
+  .home-community-wrap .home-menu-btn-small{width:130px;}
+  .home-community-menu{position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:4px; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 10px 24px rgba(0,0,0,.35); z-index:30; min-width:150px;}
+  .settings-links{display:flex; gap:6px; flex-wrap:wrap;}
+  #appWrap.tab-home .topbar{justify-content:flex-end;}
+  #appWrap.tab-home .topbar .brand{display:none;}
+  .home-menu-row.home-extras{display:flex !important; justify-content:center; gap:10px; width:min(520px,100%); margin-left:auto; margin-right:auto;}
+  @media (max-width:520px){ .home-grid .home-tile{min-height:62px; font-size:16px;} .home-grid .home-play{min-height:96px; font-size:24px;} }
+  /* Arena groups (2026-10-03, D5): Practice / Challenges / Online, very short copy. */
+  .arena-group{margin:4px 0 14px; text-align:left;}
+  .arena-group-h{font-size:13px; letter-spacing:.08em; text-transform:uppercase; opacity:.7; margin:6px 2px 8px; font-weight:800;}
+  .ro-list.ro-compact{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:6px;}
+  .ro-btn{display:flex; align-items:center; gap:8px; width:100%; text-align:left; font:inherit; color:inherit; background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:6px 8px; cursor:pointer;}
+  .ro-btn:hover, .ro-btn:focus-visible{border-color:var(--accent);}
+  .ro-btn .ro-name{display:flex; flex-direction:column; min-width:0;} .ro-btn .ro-meta{font-size:12px; opacity:.75; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .ro-btn .ro-res{font-weight:800; width:22px; text-align:center;}
+  .ro-deck-modal{max-width:720px; width:min(720px, calc(100vw - 32px)); max-height:min(88vh, 900px); overflow:auto;}
+  .ro-deck-grid{grid-template-columns:repeat(auto-fill, minmax(96px, 1fr)) !important;}
+  .ro-deck-card{position:relative;} .ro-deck-card .card-tile{width:100%;}
+  .ro-deck-card .ro-x{position:absolute; right:4px; top:4px; z-index:5; background:var(--surface); border-radius:8px; padding:0 6px; font-weight:800; font-size:12px;}
 </style>
 </head>
 <body>
@@ -4421,6 +4448,7 @@
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
         </div>
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>
     </div>
     <!-- Energy/stamina (2026-09-22, "Energy is for doing skirmishes etc. You refill 1 per 1

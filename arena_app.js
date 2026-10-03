@@ -4426,11 +4426,11 @@ async function loadMatchHistory(){
   }catch(e){ matchHistoryList = []; }
   if(currentTab==='profile') renderProfile();
 }
-const MATCH_HISTORY_MODE_LABEL = {ai:'vs Computer', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
+const MATCH_HISTORY_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
 function matchHistoryPanelHTML(){
   if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
   if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
-  if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a real match (Test Battle, Gauntlet, Online Raid, or Ranked 1v1 Live) and it'll show up here.</p></div>`;
+  if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a match and it shows up here.</p></div>`;
   return `<div class="panel">
     <h2>📜 Match History</h2>
     <p class="panel-sub">Your last ${matchHistoryList.length} real matches — tap one to read back its full battle log.</p>
@@ -7661,7 +7661,7 @@ function pvpTileHTML(){
   const h = Math.floor(msUntilLocalMidnight()/3600000), mn = Math.floor((msUntilLocalMidnight()%3600000)/60000);
   return `<button class="btn primary big arena-mode-btn pvp-mode-btn" id="startPvpBtn" ${left?'':'disabled'}>
     <span class="amb-ico">⚔️</span><span class="amb-lbl">PvP</span>
-    <span class="amb-sub">Fight a stranger from your tier, played by the AI. They always go first.</span>
+    <span class="amb-sub">A stranger's deck from your tier</span>
     <span class="async-run-line">🏅 ${escapeHtml(rankForRating(myRating).label)} · rating ${Math.round(myRating)} · your deck Lv ${myPvpDeckLevel()}</span>
     <span class="async-run-line">🎟️ <b>${left}/${PVP_TICKETS_PER_DAY}</b> tickets today · ${left ? `refills in ${h}h ${mn}m` : `next tickets in ${h}h ${mn}m`}</span>
   </button>`;
@@ -7732,7 +7732,7 @@ function loadResumeSnapshot(){
 }
 // Story pass 2026-10-03 (US-07): an unfinished fight is OFFERED, not forced — Home opens with a
 // small "Resume / Discard" card instead of dropping you straight back into the match.
-const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'vs Computer fight', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
+const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'Quick Battle', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
 function tryResumeAbandonedMatch(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   switchTab('home');
@@ -7773,7 +7773,7 @@ function renderArenaSubTab(body){
   const dungeonStatusHTML = dungeonRun ? `<div class="dungeon-status-line">Stage ${dungeonRun.stage}/${DUNGEON_STAGE_COUNT} · Castle: ${dungeonRun.castleHp!=null?Math.max(0,dungeonRun.castleHp):'Full'} HP · ${dungeonDeckCount(dungeonRun)} cards left in deck</div>` : '';
   body.innerHTML = `
     <div class="panel" style="text-align:center;">
-      <p class="panel-sub">${deckSizeBadgeHTML(myDeckCounts)} in your deck · Bramble: ${(CHARACTER_DEFS[myCharacterId]||{}).name||'—'}. Change either from Deck on the Home screen.</p>
+      <p class="panel-sub">${deckSizeBadgeHTML(myDeckCounts)} · ${(CHARACTER_DEFS[myCharacterId]||{}).name||'—'}</p>
       <!-- 2026-09-26 (user report, screenshot: "the cards are all over the place. make them
            consistently sized") — these used to be five separate .arena-mode-row flex containers,
            one per mode-group, each centering and sizing its own 1-3 buttons independently with a
@@ -7786,28 +7786,20 @@ function renderArenaSubTab(body){
            genuinely stretch every cell to match) so every mode tile — plain button or the more
            complex Dungeon panel alike — is really the same size, however many end up sharing a
            row at a given screen width. -->
-      <div class="arena-mode-grid">
-        ${resumable?`<button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
-          <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span>
-          <span class="amb-sub">Pick your saved Async Arena match back up</span>
-        </button>`:''}
-        <button class="btn primary big arena-mode-btn" id="startVsAiBtn">
-          <span class="amb-ico">🤖</span><span class="amb-lbl">vs Computer</span>
-          <span class="amb-sub">Play against a computer opponent, right now</span>
-        </button>
-        <button class="btn primary big arena-mode-btn" id="startVsPcBtn">
-          <span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span>
-          <span class="amb-sub">Local pass-and-play — take turns on this device with a friend</span>
-        </button>
-        ${pvpTileHTML()}
+      ${resumable?`<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
+          <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>`:''}
+      <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid">
+        <button class="btn primary big arena-mode-btn" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer</span></button>
+        <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span></button>
+      </div></div>
+      <div class="arena-group"><h3 class="arena-group-h">Challenges</h3><div class="arena-mode-grid">
         <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
-          <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span>
-          <span class="amb-sub">Back-to-back AI fights — win ${GAUNTLET_GOAL} in a row for a big payout. One loss resets the streak.</span>
-          <span class="gauntlet-streak-line">🔥 Current streak: <b>${loadGauntletStreak()}</b> / ${GAUNTLET_GOAL} · Best: <b>${loadGauntletBest()}</b></span>
+          <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row</span>
+          <span class="gauntlet-streak-line">🔥 ${loadGauntletStreak()} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
         </button>
         <div class="arena-mode-btn dungeon-panel" id="dungeonPanel">
           <span class="amb-ico">🗝️</span><span class="amb-lbl">Dungeon</span>
-          <span class="amb-sub">3 fights in a row against dark-grey foes, back to back — optional, but losses stick: cards that die and Castle HP you lose carry into the next fight.</span>
+          <span class="amb-sub">3 fights; losses carry over</span>
           <div class="dungeon-node-row">${dungeonNodesHTML}</div>
           ${dungeonStatusHTML}
           <div class="dungeon-panel-actions">
@@ -7815,17 +7807,20 @@ function renderArenaSubTab(body){
             ${dungeonRun?`<button class="btn ghost" id="abandonDungeonBtn">Abandon Run</button>`:''}
           </div>
         </div>
+      </div></div>
+      <div class="arena-group"><h3 class="arena-group-h">Online</h3><div class="arena-mode-grid">
+        ${pvpTileHTML()}
         ${liveQueueing ? `
         <div class="arena-mode-btn live-queue-status" id="liveQueueStatus">
-          <span class="amb-ico">🔎</span><span class="amb-lbl">Searching for an opponent…</span>
-          <span class="amb-sub">Matched by rating — this can take a moment if few players are online right now.</span>
+          <span class="amb-ico">🔎</span><span class="amb-lbl">Searching…</span>
+          <span class="amb-sub">Matching by rating</span>
           <button class="btn ghost" id="cancelLiveQueueBtn" style="margin-top:8px;">Cancel</button>
         </div>` : `
         <button class="btn primary big arena-mode-btn live-ranked-mode-btn" id="startLiveRankedBtn">
-          <span class="amb-ico">⚡</span><span class="amb-lbl">Ranked 1v1 (Live)</span>
-          <span class="amb-sub">Real-time PvP against another real player, matched by rating. Requires a real (non-guest) account.</span>
+          <span class="amb-ico">⚡</span><span class="amb-lbl">Ranked Live</span><span class="amb-sub">Real players, real time</span>
         </button>`}
-      </div>
+      </div></div>
+      ${recentOpponentsPlayerHTML()}
     </div>`;
   document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
@@ -7842,6 +7837,7 @@ function renderArenaSubTab(body){
   });
   if(resumable) document.getElementById('continueAsyncBtn').addEventListener('click', resumeAsyncMatch);
   const liveBtn = document.getElementById('startLiveRankedBtn'); if(liveBtn) liveBtn.addEventListener('click', findLiveRankedMatch);
+  body.querySelectorAll('[data-ro-view]').forEach(b=> b.addEventListener('click', ()=> openRecentOpponentDeck(+b.dataset.roView)));
   const cancelLiveBtn = document.getElementById('cancelLiveQueueBtn'); if(cancelLiveBtn) cancelLiveBtn.addEventListener('click', cancelLiveRankedQueue);
 }
 
@@ -17054,7 +17050,7 @@ function recordRecentOpponent(entry){
   list.unshift(Object.assign({at: Date.now()}, entry));
   try{ localStorage.setItem(RECENT_OPP_KEY, JSON.stringify(list.slice(0, 20))); }catch(e){}
 }
-const RECENT_OPP_MODE_LABEL = {ai:'vs Computer', pvp:'PvP', conquest:'Conquest', gauntlet:'Gauntlet', dungeon:'Dungeon', raidOffline:'Raid', raidOnline:'Online Raid', async:'Async', autobattle:'Autobattler', liveRanked:'Ranked'};
+const RECENT_OPP_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', conquest:'Conquest', gauntlet:'Gauntlet', dungeon:'Dungeon', raidOffline:'Raid', raidOnline:'Online Raid', async:'Async', autobattle:'Autobattler', liveRanked:'Ranked'};
 function recentOpponentsPanelHTML(){
   const list = loadRecentOpponents(), defs = getCardDefs();
   return `<div class="panel recent-opps"><h2>🕑 Decks you've fought recently</h2>
@@ -17066,6 +17062,30 @@ function recentOpponentsPanelHTML(){
         <button type="button" class="btn small" data-ro-load="${i}">Load as Deck B</button></div>`; }).join('')}</div>`
       : `<div class="empty-hint">No fights yet — play a match and the opponent's deck shows up here.</div>`}
   </div>`;
+}
+function recentOpponentsPlayerHTML(){
+  const list = loadRecentOpponents().slice(0, 8), defs = getCardDefs();
+  if(!list.length) return '';
+  return `<div class="arena-group"><h3 class="arena-group-h">🕑 Recent opponents</h3><div class="ro-list ro-compact">${list.map((o,i)=>{
+    const top = Object.keys(o.deck).sort((a,b)=> o.deck[b]-o.deck[a]).slice(0,5).map(id=> defs[id] ? defs[id].icon : '').join('');
+    return `<button type="button" class="ro-row ro-btn" data-ro-view="${i}"><span class="ro-res ${o.result||''}">${o.result==='win'?'W':o.result==='loss'?'L':'D'}</span>
+      <span class="ro-name"><b>${escapeHtml(o.name||'Opponent')}</b><span class="ro-meta">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${top}</span></span></button>`; }).join('')}</div></div>`;
+}
+function openRecentOpponentDeck(i){
+  const o = loadRecentOpponents()[i]; if(!o) return;
+  const defs = getCardDefs();
+  let overlay = document.getElementById('roDeckOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'roDeckOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const ids = Object.keys(o.deck).filter(id=> defs[id]).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || defs[a].name.localeCompare(defs[b].name));
+  overlay.innerHTML = `<div class="modal ro-deck-modal" role="dialog" aria-label="Opponent deck">
+    <div class="modal-head-row"><h2>${escapeHtml(o.name||'Opponent')}</h2><button class="modal-close-btn" id="roClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${o.result==='win'?'you won':o.result==='loss'?'you lost':'draw'} · ${deckTotal(o.deck)} cards</p>
+    <div class="pool-grid ro-deck-grid">${ids.map(id=> `<div class="ro-deck-card">${cardTileHTML(defs[id], {inPlay:true})}<span class="ro-x">×${o.deck[id]}</span></div>`).join('')}</div>
+  </div>`;
+  overlay.hidden = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
+  overlay.querySelector('#roClose').onclick = close;
+  overlay.onclick = e=>{ if(e.target===overlay) close(); };
 }
 function wireRecentOpponents(){
   const list = loadRecentOpponents();
@@ -17706,63 +17726,51 @@ function renderForge(){
    now (see codexShell above) and the Simulator lives inside the new Deck section (below); Home
    itself just has four big section buttons plus a Settings/Profile row underneath. ---- */
 function renderHome(){
+  // Home (2026-10-03, D1 — explicit: "Play has to be the biggest button - maybe its own 1x2, the rest
+  // can be 2x2" + "I don't want too many menu items"): the global header (energy, profile chip, ⚙)
+  // now shows here too, so Settings/Profile/Admin/Workshop left Home. Play is the hero; Deck, Codex,
+  // Shop and Nest are a 2×2 grid; Quests and Community (Ranking/Friends/Guild) are the only extras.
   const root = document.getElementById('view-home');
+  const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span></button>` : '';
+  const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
   root.innerHTML = `
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
-      <button class="btn primary big home-menu-btn" data-hometab="play"><span class="tab-emoji">⚔️</span> Play</button>
-      ${tabOpen('deck') ? `<button class="btn primary big home-menu-btn" data-hometab="deck"><span class="tab-emoji">🃏</span> Deck</button>` : ''}
-      ${tabOpen('codex') ? `<button class="btn primary big home-menu-btn" data-hometab="codex"><span class="tab-emoji">📖</span> Codex</button>` : ''}
-      ${tabOpen('shop') ? `<button class="btn primary big home-menu-btn" data-hometab="shop"><span class="tab-emoji">🛒</span> Shop</button>` : ''}
-      <!-- The Nest (2026-09-27, item 10): a real nav entry point alongside Play/Deck/Codex/Shop,
-           not tucked into the small ghost-button row — the collection is somewhere a player
-           will want to browse deliberately, same weight as those four. -->
-      ${tabOpen('nest') ? `<button class="btn primary big home-menu-btn" data-hometab="nest"><span class="tab-emoji">🪺</span> Nest</button>` : ''}
-      ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More of Bramblewood opens up as you push across the map — look for <b>!</b> icons.</p>` : ''}
-      <div class="home-menu-row">
-        <div class="settings-wrap home-settings-wrap">
-          <button class="btn ghost home-menu-btn-small" id="settingsBtnHome" type="button" title="Settings" aria-haspopup="true" aria-expanded="false"><span class="tab-emoji">⚙️</span> Settings</button>
-          <div class="settings-panel" id="settingsPanelHome" hidden>
-            <div class="settings-panel-title">Settings</div>
-            <div class="settings-row">
-              <div class="settings-row-label"><span>🎵 Music</span><span class="settings-row-val" id="musicVolumeValHome">60%</span></div>
-              <input type="range" id="musicVolumeSliderHome" min="0" max="100" step="1" aria-label="Music volume">
-              <div class="settings-row-note">No music track yet — this is ready for when there is.</div>
-            </div>
-            <div class="settings-row">
-              <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValHome">100%</span></div>
-              <input type="range" id="sfxVolumeSliderHome" min="0" max="100" step="1" aria-label="Sound effects volume">
-            </div>
-            <div class="settings-row">
-              <div class="settings-row-label"><span>💬 Voice</span><span class="settings-row-val" id="voiceVolumeValHome">80%</span></div>
-              <input type="range" id="voiceVolumeSliderHome" min="0" max="100" step="1" aria-label="Voice volume">
-            </div>
-            <div class="settings-row">
-              <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
-              <select id="battlefieldBgSelectHome" aria-label="Battlefield background"></select>
-            </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
-          </div>
-        </div>
-        <button class="btn ghost home-menu-btn-small ${isSignedIn()?'':'is-guest'}" data-hometab="profile" id="homeProfileBtn">${homeProfileBtnInner()}</button>
-        ${tabOpen('ranking') ? `<button class="btn ghost home-menu-btn-small" data-hometab="ranking"><span class="tab-emoji">🏆</span> Ranking</button>` : ''}
-        ${tabOpen('friends') ? `<button class="btn ghost home-menu-btn-small" data-hometab="friends"><span class="tab-emoji">👥</span> Friends</button>` : ''}
-        ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
-        <button class="btn ghost home-menu-btn-small" type="button" id="homeWorkshopBtn"><span class="tab-emoji">✏️</span> Workshop</button>
-        ${tabOpen('guild') ? `<button class="btn ghost home-menu-btn-small" data-hometab="guild"><span class="tab-emoji">🛡️</span> Guild</button>` : ''}
-        <button class="btn ghost home-menu-btn-small" data-hometab="admin"><span class="tab-emoji">🛠️</span> Admin</button>
+      <div class="home-grid">
+        <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span></button>
+        ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
       </div>
+      ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More opens up as you cross the map — look for <b>!</b> icons.</p>` : ''}
+      ${(tabOpen('quests') || community.length) ? `<div class="home-menu-row home-extras">
+        ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
+        ${community.length ? `<div class="home-community-wrap"><button class="btn ghost home-menu-btn-small" type="button" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><span class="tab-emoji">👥</span> Community</button>
+          <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
+      </div>` : ''}
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
+  const cb = document.getElementById('homeCommunityBtn'), cm = document.getElementById('homeCommunityMenu');
+  if(cb && cm){
+    cb.addEventListener('click', e=>{ e.stopPropagation(); cm.hidden = !cm.hidden; cb.setAttribute('aria-expanded', String(!cm.hidden)); });
+    document.addEventListener('click', ()=>{ cm.hidden = true; cb.setAttribute('aria-expanded','false'); }, {once:true});
+  }
   setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
-  const wsBtn = document.getElementById('homeWorkshopBtn'); if(wsBtn) wsBtn.addEventListener('click', openWorkshopPage);
-  wireSettingsButton('Home');
   wireHomeMenuFlourish(root);
+}
+// Who sees the Admin entry in Settings: cloud admins, plus local/dev builds (so you're never locked
+// out while signed out or offline). Ordinary players never see it.
+function adminEntryVisible(){
+  return !!(cloudCardAdmin || devModeEnabled || adminModeEnabled || /^(file:|https?:\/\/(localhost|127\.0\.0\.1))/.test(location.href));
+}
+function renderSettingsLinks(){
+  const el = document.getElementById('settingsLinks'); if(!el) return;
+  el.innerHTML = `<button type="button" class="btn ghost small" id="settingsWorkshopBtn">✏️ Workshop</button>${adminEntryVisible() ? `<button type="button" class="btn ghost small" id="settingsAdminBtn">🛠️ Admin</button>` : ''}`;
+  const w = document.getElementById('settingsWorkshopBtn'); if(w) w.onclick = ()=>{ closeAnyOpenSettingsPanel(); openWorkshopPage(); };
+  const a = document.getElementById('settingsAdminBtn'); if(a) a.onclick = ()=>{ closeAnyOpenSettingsPanel(); switchTab('admin'); };
 }
 
 // Home menu "brandish" wiring (2026-09-20, per explicit requests: "Brandish the menu items -
@@ -17846,7 +17854,7 @@ function renderDeckSection(){
     <div class="play-subtabs-row">
       <div class="play-subtabs" role="tablist">
         <button class="tab-btn ${deckSubTab==='list'?'active':''}" data-decktab="list" role="tab" aria-selected="${deckSubTab==='list'}"><span class="tab-emoji">🃏</span> My Decks</button>
-        <button class="tab-btn ${deckSubTab==='sim'?'active':''}" data-decktab="sim" role="tab" aria-selected="${deckSubTab==='sim'}"><span class="tab-emoji">📊</span> Simulator</button>
+        ${adminEntryVisible() ? `<button class="tab-btn ${deckSubTab==='sim'?'active':''}" data-decktab="sim" role="tab" aria-selected="${deckSubTab==='sim'}"><span class="tab-emoji">📊</span> Simulator</button>` : ''}
       </div>
       <!-- 2026-09-26 (user report: "the UI is not well margined. the codex button maybe should be
            on the right of my decks/simulator") — this Codex cross-nav button used to sit inline
@@ -17863,6 +17871,7 @@ function renderDeckSection(){
   const codexBtn = document.getElementById('deckToCodexBtn');
   if(codexBtn) codexBtn.addEventListener('click', ()=> switchTab('codex'));
   const body = document.getElementById('deckSubBody');
+  if(deckSubTab==='sim' && !adminEntryVisible()) deckSubTab = 'list'; // D4 (2026-10-03): the Simulator is an admin tool now
   if(deckSubTab==='sim'){ body.innerHTML = '<div id="view-sim"></div>'; renderSim(); return; }
   renderDeckListTab(body);
 }
@@ -19276,6 +19285,7 @@ function wireSettingsButton(idSuffix){
   }
   const open = ()=>{
     panel.hidden = false;
+    if(!idSuffix) renderSettingsLinks();
     btn.classList.add('is-open');
     btn.setAttribute('aria-expanded','true');
   };
