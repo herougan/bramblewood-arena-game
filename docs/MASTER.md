@@ -2,6 +2,8 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
+> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 11 decisions (D1–D11) and 5 discussion topics (T1–T5). In the project it's `claude/decisions.md`.
+
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
 - Each item gives:
@@ -126,7 +128,7 @@ _Last updated: 2026-10-03_
   - Playing pays a trickle: 3 XP per win.
   - The real XP comes from quests (tier 1 daily 100, tier 1 weekly 400).
   - …and one-time milestones: first clears, map clears, collection size, rating reached, medals, Autobattler 10 wins.
-- **Catch-up mechanics:** to decide. One option is to make the game less punishing as it goes on.
+- **Catch-up mechanics:** to discuss — see T1 in `decisions.md`.
 - **Where:** `STAT_MEDALS`, `bumpQuestCounter`, `awardXp`, `xpMilestones` in `arena_app.js`; quest rewards in `QUEST_TIERS`.
 
 ### Modes
