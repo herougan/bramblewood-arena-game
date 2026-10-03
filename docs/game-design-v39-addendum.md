@@ -33,7 +33,9 @@ Commits c7c58a8 and e80c306 on `main`.
 ## Tests
 `tests/` holds a headless suite covering the card matrix with golden snapshots, mechanic scenarios, two-player policies, and Async/Raid, plus a two-browser live match test. See `testing-strategy.md`.
 
-## To confirm
-- **Async run shape** (7 wins / 3 losses) and the reward numbers.
-- **Raid:** pool = HP × 8, 8 stand-ins capped at 50%, weekly rotation.
-- **Online Raid:** keep it folded or remove it, now that Raid is offline-first.
+## Decisions (answered 2026-10-03)
+- **Async Arena:** splits into two modes, both designed in `MASTER.md`. **PvP** spends 10 daily tickets against AI-piloted stranger decks, which always go first. The **Autobattler** draft run uses 5 HP and aims for 10 wins, then Endless up to round 100, with boons and CPU vs CPU fights. The 7W/3L ghost run built here is a stepping stone; its ghost pool and tests carry over.
+- **Raid:** the target is async multiplayer. N rows of async decks fight a fragment of a boss with one global HP bar and stages. Everyone gets rewarded on a kill, and gets compensation if the boss survives. The weekly offline raid built here is the base for it.
+- **Online Raid:** hidden (`ONLINE_RAID_VISIBLE = false`); the code is kept.
+- **Armor-wall stalemates:** fine as they are.
+- **New rule:** sudden death from turn 20, auto-draw when nobody can act and the board isn't changing, and forfeit (see `MASTER.md` item 3).

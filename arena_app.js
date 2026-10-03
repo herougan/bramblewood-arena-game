@@ -7853,6 +7853,8 @@ function settleOfflineRaidAfterMatch(m){
   if(d>0) grantCurrency('dust', d);
   m.raidRewardEarned = {gold:g, dust:d};
 }
+// Online Raid hidden 2026-10-03 ("Hide it for now") — code kept; flip this to bring it back.
+const ONLINE_RAID_VISIBLE = false;
 function renderRaidSubTab(body){
   // Shares the Conquest map's full-width treatment (see renderConquestSubTab's own comment) —
   // the Raid tab is the other permanent home for these same map nodes (a beaten Raid Boss
@@ -7869,7 +7871,7 @@ function renderRaidSubTab(body){
   // with this gone, Coming Up is now the section directly after Online Raid's own boss list.
   body.innerHTML = `
     ${offlineRaidPanelHTML()}
-    <details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>
+    ${ONLINE_RAID_VISIBLE ? `<details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>` : ''}
     <div class="panel raid-preview-panel"><h2>🔮 Coming Up</h2><p class="panel-sub">More Raid Bosses are waiting further out in Conquest. Beat their map to unlock the real fight.</p>
       <div class="conquest-nodes">${RAID_PREVIEWS.map(p=>`
         <div class="conquest-node raid-preview-card" title="Unlock this by pushing further in Conquest">
