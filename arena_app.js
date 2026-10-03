@@ -18498,6 +18498,50 @@ function renderNest(){
     renderNest();
   }));
 }
+// Holographic foil (2026-10-03, effects experiment #1 — "(1) for ease immediately"). Pure CSS on the
+// real card (no WebGL): a rainbow band, a fine sparkle texture and a glare spot, blended with
+// colour-dodge so the art itself seems to catch the light. The pointer (or phone tilt) moves the
+// light and tilts the card; untouched, it drifts slowly. Used on foil copies in the Nest and on
+// Rare-and-up cards in the pack reveal. decorateHolo() adds the layer; wireHolo() is global.
+function decorateHolo(root){
+  (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
+    if(t.querySelector(':scope > .holo-layer')) return;
+    const l = document.createElement('span'); l.className = 'holo-layer'; l.setAttribute('aria-hidden','true'); t.appendChild(l);
+    const g = document.createElement('span'); g.className = 'holo-glare'; g.setAttribute('aria-hidden','true'); t.appendChild(g);
+  });
+}
+(function wireHolo(){
+  if(typeof document === 'undefined') return;
+  const setVars = (el, px, py, active)=>{
+    el.style.setProperty('--hx', (px*100).toFixed(1)+'%');
+    el.style.setProperty('--hy', (py*100).toFixed(1)+'%');
+    el.style.setProperty('--hbx', (50 + (px-0.5)*60).toFixed(1)+'%');
+    el.style.setProperty('--hby', (50 + (py-0.5)*60).toFixed(1)+'%');
+    el.style.setProperty('--hrx', ((0.5-py)*14).toFixed(2)+'deg');
+    el.style.setProperty('--hry', ((px-0.5)*18).toFixed(2)+'deg');
+    el.classList.toggle('holo-active', !!active);
+  };
+  document.addEventListener('pointermove', e=>{
+    const t = e.target && e.target.closest && e.target.closest('.card-tile.is-holo'); if(!t) return;
+    const r = t.getBoundingClientRect(); if(!r.width) return;
+    setVars(t, Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)), Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)), true);
+  }, {passive:true});
+  document.addEventListener('pointerout', e=>{
+    const t = e.target && e.target.closest && e.target.closest('.card-tile.is-holo'); if(!t) return;
+    if(e.relatedTarget && t.contains(e.relatedTarget)) return;
+    t.classList.remove('holo-active'); ['--hrx','--hry'].forEach(k=> t.style.setProperty(k, '0deg'));
+  });
+  window.addEventListener('deviceorientation', e=>{
+    if(e.gamma == null) return;
+    const px = Math.max(0, Math.min(1, 0.5 + e.gamma/60)), py = Math.max(0, Math.min(1, 0.5 + (e.beta-40)/60));
+    document.querySelectorAll('.card-tile.is-holo:not(.holo-active)').forEach(t=>{
+      t.style.setProperty('--hbx', (50 + (px-0.5)*60).toFixed(1)+'%'); t.style.setProperty('--hby', (50 + (py-0.5)*60).toFixed(1)+'%');
+      t.style.setProperty('--hx', (px*100).toFixed(1)+'%'); t.style.setProperty('--hy', (py*100).toFixed(1)+'%');
+      t.classList.add('holo-tilt');
+    });
+  }, {passive:true});
+  new MutationObserver(muts=>{ if(muts.some(m=> [...m.addedNodes].some(n=> n.nodeType===1 && (n.classList.contains('is-holo') || (n.querySelector && n.querySelector('.is-holo')))))) decorateHolo(); }).observe(document.documentElement, {childList:true, subtree:true});
+})();
 function nestCardHTML(id, d){
   const copies = myCardCopies[id] || [];
   const n = copies.length;
@@ -18509,7 +18553,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" title="${n} cop${n===1?'y':'ies'} owned${hasFoil?' · ✨ foil':''} — click to toggle the shimmer">
-    ${cardTileHTML(d, {editable:false})}
+    ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? 'is-holo' : ''})}
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -18569,7 +18613,7 @@ function openPackAnimation(pack, results, extra){
     <div class="pack-open-pack" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
     <div class="pack-open-cards" id="poCards">${results.map((r,i)=> { const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
       return `<button type="button" class="po-card ${r.isNew?'is-new':''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
-        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
+        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? 'is-holo' : ''})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
     <div class="pack-open-foot" id="poFoot" hidden><p>${newCount ? `<b>${newCount} new card${newCount===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>
       <div class="po-actions"><button type="button" class="btn" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button></div></div>
     <button type="button" class="btn ghost po-skip" id="poSkip">Reveal all</button>
