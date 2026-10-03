@@ -6203,9 +6203,6 @@ function renderPlay(){
                costing 1-5⚡ by kind (ENERGY_COST). A second copy of the same pill, mirrored by
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
-          <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 per minute">
-            <span class="energy-ico">⚡</span><span id="energyPillPlayText">—</span>
-          </div>
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
@@ -6228,7 +6225,12 @@ function renderPlay(){
                 <select id="battlefieldBgSelectPlaySub" aria-label="Battlefield background"></select>
               </div>
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             </div>
+          </div>
+          <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 per minute">
+            <span class="energy-ico">⚡</span><span id="energyPillPlayText">—</span>
           </div>
         </div>
       </div>
