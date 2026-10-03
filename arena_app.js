@@ -8594,6 +8594,63 @@ function showFactionScreen(){
   }, 1000);
   const otterBtn = document.getElementById('factionOtterBtn'); if(otterBtn) otterBtn.onclick = ()=> resolveFactionChoice('otters');
   const hbBtn = document.getElementById('factionHummingbirdBtn'); if(hbBtn) hbBtn.onclick = ()=> resolveFactionChoice('hummingbirds');
+  wireFactionShowcase(el);
+}
+// Faction showcase (2026-10-03, explicit: "hovering over a side shows cool characters in that
+// faction (not in card form) and 3 card examples in that faction. The whole screen moves slightly
+// in that direction, in a thunderous immense move."). Characters are the faction's painted art,
+// shown frameless (soft-edged, floating); below them, three real card tiles. The scene surges
+// toward the hovered side with a quake, a flash and a low boom.
+const FACTION_SHOWCASE = {
+  otters: {title:'Rivergate Otters', blurb:'Shield walls, slick armour and stubborn river pride.', characters:['otter-centurion','otter-riverguard','otter-shieldback'], cards:['otter-kit','otter-paddler','otter-guard'], dir:-1},
+  hummingbirds: {title:'Sunfeather Dominion', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
+};
+function wireFactionShowcase(screen){
+  if(!screen || screen.dataset.showcaseWired) return;
+  screen.dataset.showcaseWired = '1';
+  const defs = getCardDefs();
+  const layer = document.createElement('div');
+  layer.className = 'faction-showcase'; layer.setAttribute('aria-hidden','true');
+  layer.innerHTML = Object.entries(FACTION_SHOWCASE).map(([key, f])=>{
+    const chars = f.characters.map(id=> defs[id]).filter(d=> d && d.art);
+    const cards = f.cards.map(id=> defs[id]).filter(Boolean);
+    return `<div class="fs-panel fs-${f.dir<0?'left':'right'}" data-fs="${key}">
+      <div class="fs-title">${escapeHtml(f.title)}</div><div class="fs-blurb">${escapeHtml(f.blurb)}</div>
+      <div class="fs-chars">${chars.map((d,i)=> `<img class="fs-char fs-char-${i}" src="${d.art}" alt="" draggable="false">`).join('')}</div>
+      <div class="fs-cards">${cards.map(d=> cardTileHTML(d, {inPlay:true})).join('')}</div></div>`;
+  }).join('') + `<div class="fs-flash"></div>`;
+  screen.appendChild(layer);
+  const inner = screen.querySelector('.faction-inner'), bg = screen.querySelector('.entrance-bg'), bushes = screen.querySelector('.entrance-bushes');
+  let current = null;
+  const surge = (key)=>{
+    if(current===key) return; current = key;
+    const f = key ? FACTION_SHOWCASE[key] : null, dir = f ? f.dir : 0;
+    layer.querySelectorAll('.fs-panel').forEach(pn=> pn.classList.toggle('on', pn.dataset.fs===key));
+    if(!hasGsap()) return;
+    gsap.killTweensOf([inner, bg, bushes, screen]);
+    // the other side's panel retreats off its own edge
+    layer.querySelectorAll('.fs-panel').forEach(pn=>{ if(pn.dataset.fs!==key){ gsap.killTweensOf(pn); gsap.to(pn, {opacity: 0, x: FACTION_SHOWCASE[pn.dataset.fs].dir*120, duration: .3, ease: 'power2.in'}); } });
+    // everything leans toward the hovered side; the backdrop travels furthest (parallax)
+    gsap.to(bg, {x: dir*-70, scale: dir ? 1.07 : 1, duration: .7, ease: 'expo.out'});
+    gsap.to(bushes, {x: dir*-110, duration: .8, ease: 'expo.out'});
+    gsap.to(inner, {x: dir*24, rotation: dir*0.6, duration: .6, ease: 'expo.out'});
+    if(!f) return;
+    const panel = layer.querySelector(`[data-fs="${key}"]`);
+    gsap.fromTo(panel, {x: dir*160, opacity: 0}, {x: 0, opacity: 1, duration: .55, ease: 'expo.out'});
+    gsap.fromTo(panel.querySelectorAll('.fs-char'), {scale: .5, y: 40, opacity: 0}, {scale: 1, y: 0, opacity: 1, duration: .6, stagger: .08, ease: 'back.out(1.8)'});
+    gsap.fromTo(panel.querySelectorAll('.fs-cards .card-tile'), {y: 60, opacity: 0, rotation: dir*8}, {y: 0, opacity: 1, rotation: 0, duration: .5, stagger: .07, delay: .15, ease: 'power3.out'});
+    // the quake: a short, hard rumble that settles
+    gsap.fromTo(screen, {x: 0, y: 0}, {keyframes: [{x: dir*14, y: -4, duration: .06}, {x: dir*-9, y: 5, duration: .06}, {x: dir*7, y: -3, duration: .06}, {x: dir*-4, y: 2, duration: .07}, {x: 0, y: 0, duration: .12}], ease: 'none'});
+    gsap.fromTo(layer.querySelector('.fs-flash'), {opacity: .55}, {opacity: 0, duration: .5, ease: 'power2.out'});
+    try{ if(SoundKit.siegeTone) SoundKit.siegeTone(); }catch(e){}
+  };
+  [['factionOtterBtn','otters'],['factionHummingbirdBtn','hummingbirds']].forEach(([id,key])=>{
+    const b = document.getElementById(id); if(!b) return;
+    b.addEventListener('mouseenter', ()=> surge(key));
+    b.addEventListener('focus', ()=> surge(key));
+    b.addEventListener('mouseleave', ()=> surge(null));
+    b.addEventListener('blur', ()=> surge(null));
+  });
 }
 function resolveFactionChoice(pick){
   if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
