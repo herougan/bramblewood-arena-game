@@ -18,6 +18,15 @@ _Last updated: 2026-10-03 (21:00)_
 - **C. Mixed.** Organic for the world and battle, chiptune only for UI clicks and coins.
 - **Default:** C.
 
+**D18. Progression after Map 1.** See [`difficulty-curve-2026-10-03.md`](difficulty-curve-2026-10-03.md).
+- **Already done:** I retuned Map 1 into an on-ramp. It was close to unwinnable with the post-tutorial deck; now the first fights are wins, and the boss needs a rebuilt deck.
+- **The problem:** from Map 2 on, the starter deck wins about 0–10%, and no Conquest node grants a card, so packs are the only progression.
+- **Options:**
+  - A: assign skirmish reward cards per node;
+  - B: retune Maps 2–4 to target win rates;
+  - C: both.
+- **Default:** C. I'd draft the reward picks and the retunes for you to review in the skirmish editor.
+
 ## Ongoing tracks (no decision needed)
 
 **Polish (was D16).** More animation and fixing odd graphical glitches as we find them. WebGL is kept out of this track; it lives in the effects catalogue. Progress:
@@ -28,6 +37,18 @@ _Last updated: 2026-10-03 (21:00)_
   - Conquest full-screen hid the header inside matches and on other tabs;
   - the trench's leave control was an unlabelled ✕ (now "🚪 Leave");
   - pack opening ignored Escape.
+- **UX consultant pass (23:30–00:30):**
+  - every Play sub-tab gets the same, wider column;
+  - Arena has one hero (Quick Battle) and quieter tiles;
+  - the Autobattler start screen is a 4-step loop plus one Start;
+  - Deck opens straight into the builder, with a deck switcher;
+  - win screen: "Next: <fight> · ⚡", Play again, See the board, Back to the map;
+  - the Shop shows only the currencies it spends, always shows prices, says "Need N more 🍁", and centres the packs;
+  - Codex filters sit behind one button, with an active count;
+  - one header order everywhere, and the Play settings panel matches the others;
+  - phone: swipeable Bramble picker, the Forge list shows first, solid Quests/Community buttons, deck-builder copy that doesn't need Shift;
+  - contrast fixes on the dark page;
+  - a bug where the Codex filter collapse hid the deck builder's filters.
 - **Forge rework:**
   - a hearth header showing only the currencies the Forge uses;
   - search, filter and sort, with a 🔨 badge on cards you can afford to temper;

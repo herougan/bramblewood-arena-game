@@ -3,7 +3,7 @@
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
 > ➡️ **Waiting on you:** [`decisions.md`](decisions.md). It has:
-> - 1 decision: D17, the sound direction;
+> - 2 decisions: D17, the sound direction, and D18, progression after Map 1;
 > - ongoing tracks: Polish, Effects ([catalogue](effects-catalogue.md)) and T3 server verification (building);
 > - 2 discussion topics: T1 and T2.
 >
