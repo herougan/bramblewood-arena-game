@@ -9,7 +9,7 @@ Checks:
   3. card levels: hidden in the Codex, shown in the Nest and in the deck pool when the level filter is on;
   4. Shop: a pack opens, every card flips, the cards land in the Nest;
   5. Raid trench: pick a row, play your row turn by turn to the end, the attempt is recorded once;
-  6. Conquest world: an edge pans to the next map;
+  6. Conquest world: an edge pans to the next map; the 🧭 atlas shows every map and zooms in;
   7. Arena: Recent opponents opens the opponent's deck;
   8. phone header stays on one row.
 Exit code 1 on any failure.
@@ -115,6 +115,12 @@ async def main():
         if edge:
             await edge.click(); await pg.wait_for_timeout(600)
             check(await pg.evaluate("conquestSelectedMap") == 'm2', 'the edge should pan to the next map')
+        # 6b: D13 world atlas — compass diamonds, lazy cards, click zooms into a map
+        await pg.click('#conquestWorldBtn'); await pg.wait_for_timeout(500)
+        check(await pg.evaluate("document.querySelectorAll('.world-diamond').length") == await pg.evaluate("CONQUEST_MAPS.length"), 'the world view should show one diamond per map')
+        check(await pg.evaluate("[...document.querySelectorAll('[data-lazy]')].some(e=> !e.dataset.filled)"), 'world cards far down should load lazily')
+        await pg.click('[data-world-map="m1"]'); await pg.wait_for_timeout(600)
+        check(await pg.evaluate("conquestSelectedMap==='m1' && !conquestWorldView && !!document.getElementById('conquestCanvas')"), 'a world diamond should zoom into its map')
         # 7: recent opponents
         await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)

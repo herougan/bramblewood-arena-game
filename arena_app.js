@@ -8501,6 +8501,90 @@ document.addEventListener('fullscreenchange', ()=>{
   }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.classList.contains('conquest-immersive') && !document.fullscreenElement) toggleConquestImmersive(); });
+// D13 (2026-10-03, explicit: "a global map mode, where the whole map(s) are reduced to skirmish like
+// icons... Compass Diamond icons instead - to delineate them from skirmish icons", and "lazy loading,
+// where as we scroll, it loads"). The atlas is a winding trail of compass diamonds, one per map. Each
+// stop is an empty placeholder until it scrolls into view; only then is its mini-map preview built.
+// Clicking a diamond zooms into that map. Art stays per-map: no 4K world painting needed.
+let conquestWorldView = false;
+let conquestZoomIn = false;
+function openConquestWorld(body){
+  abandonMapLayoutEdit();
+  conquestWorldView = true; conquestSelectedNodeKey = null;
+  renderConquestSubTab(body || document.getElementById('playSubBody'));
+}
+function compassDiamondSVG(mapId, locked){
+  const g = 'cd-' + mapId;
+  return `<svg class="compass-diamond" viewBox="0 0 100 100" aria-hidden="true">
+    <defs><radialGradient id="${g}" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="var(--mt-a)"/><stop offset=".55" stop-color="var(--mt-b)"/><stop offset="1" stop-color="var(--mt-c)"/></radialGradient></defs>
+    <polygon points="50,3 97,50 50,97 3,50" fill="${locked ? '#55585c' : `url(#${g})`}" stroke="#e9c46a" stroke-width="3.5"/>
+    <polygon points="50,11 89,50 50,89 11,50" fill="none" stroke="rgba(255,240,200,.45)" stroke-width="1.2"/>
+    <polygon points="50,16 56,44 84,50 56,56 50,84 44,56 16,50 44,44" fill="rgba(255,240,200,.16)" stroke="rgba(255,240,200,.55)" stroke-width="1"/>
+    <circle cx="50" cy="50" r="19" fill="rgba(10,14,18,.55)" stroke="rgba(255,240,200,.6)" stroke-width="1.2"/>
+    <text x="50" y="9.5" text-anchor="middle" font-size="7" font-weight="700" fill="#2b1d08">N</text>
+  </svg>`;
+}
+function renderConquestWorld(mainEl, body, progress){
+  const maps = CONQUEST_MAPS;
+  const narrow = (mainEl.clientWidth || innerWidth) < 600;
+  const lanes = narrow ? [30, 70] : [50, 74, 50, 26];
+  const ROW = narrow ? 132 : 168;
+  const pts = maps.map((m,i)=> ({x: lanes[i % lanes.length], y: 80 + i*ROW}));
+  const h = 80 + (maps.length-1)*ROW + 110;
+  // the trail between diamonds: a smooth curve through every stop (percent x, pixel y)
+  let d = '';
+  pts.forEach((p,i)=>{ if(!i){ d = `M ${p.x} ${p.y}`; return; } const q = pts[i-1], my = (q.y + p.y)/2; d += ` C ${q.x} ${my}, ${p.x} ${my}, ${p.x} ${p.y}`; });
+  const firstLocked = maps.findIndex(m=> !isMapUnlocked(m, progress));
+  mainEl.className = 'conquest-main conquest-world';
+  mainEl.innerHTML = `<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button>
+    <div class="conquest-scrim conquest-headline"><h3>🧭 The World</h3><p class="panel-sub">Every map at once. Pick a diamond to travel there.</p></div>
+    <div class="world-atlas" style="height:${h}px">
+      <svg class="world-trail" viewBox="0 0 100 ${h}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" /></svg>
+      ${maps.map((m,i)=>{
+        const open = isMapUnlocked(m, progress);
+        const hidden = !open && i > firstLocked; // beyond the next locked map: a silhouette only
+        const here = m.id===conquestSelectedMap;
+        return `<div class="world-stop map-theme-${m.id} ${open?'':'is-locked'} ${hidden?'is-fog':''} ${here?'is-here':''} ${(pts[i].x>60 || (pts[i].x===50 && i%4===2))?'label-left':''}" data-stop="${i}" style="left:${pts[i].x}%; top:${pts[i].y}px">
+          <button type="button" class="world-diamond" ${open?`data-world-map="${m.id}"`:'disabled'} aria-label="${escapeAttr((open?'':'Locked: ') + (hidden?'Unknown map':m.name))}">
+            ${compassDiamondSVG(m.id, !open)}<span class="wd-ico">${open ? m.icon : (hidden ? '❔' : '🔒')}</span>
+          </button>
+          <div class="world-card" data-lazy="${i}"></div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body);
+  mainEl.querySelectorAll('[data-world-map]').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.worldMap;
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const go = ()=>{ conquestWorldView = false; conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestZoomIn = !reduce; renderConquestSubTab(body); };
+    if(reduce){ go(); return; }
+    const r = b.getBoundingClientRect(), mr = mainEl.getBoundingClientRect();
+    mainEl.style.transformOrigin = `${r.left + r.width/2 - mr.left}px ${r.top + r.height/2 - mr.top + mainEl.scrollTop}px`;
+    mainEl.classList.add('world-zoom-out'); setTimeout(go, 260);
+  }));
+  // Lazy: fill each stop's card only when it scrolls near the viewport.
+  const fill = el=>{
+    const i = +el.dataset.lazy, m = maps[i]; if(el.dataset.filled) return; el.dataset.filled = '1';
+    const open = isMapUnlocked(m, progress);
+    if(!open){ el.innerHTML = i > firstLocked ? `<div class="wc-name">Uncharted</div>` : `<div class="wc-name">${escapeHtml(m.name)}</div><div class="wc-sub">🔒 Clear the map before it</div>`; return; }
+    const fightable = m.nodes.filter(n=> n.kind!=='raidboss' && n.kind!=='tutorial');
+    const doneN = fightable.filter(n=> progress.completed.includes(conquestNodeId(m.id, n.key))).length;
+    const pos = mapNodePositions(m);
+    const dots = m.nodes.map((n,k)=>{ const done = progress.completed.includes(conquestNodeId(m.id, n.key)) || n.kind==='tutorial'; return `<i class="wc-dot ${done?'done':''} k-${n.kind}" style="left:${pos[k].x}%; top:${pos[k].y}%"></i>`; }).join('');
+    el.innerHTML = `<div class="wc-name">${escapeHtml(m.name)}</div>
+      <div class="wc-mini">${dots}</div>
+      <div class="wc-bar"><span style="width:${fightable.length ? Math.round(100*doneN/fightable.length) : 0}%"></span></div>
+      <div class="wc-sub">${doneN===fightable.length ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}${m.id===conquestSelectedMap ? ' · you are here' : ''}</div>`;
+  };
+  const cards = [...mainEl.querySelectorAll('[data-lazy]')];
+  if('IntersectionObserver' in window){
+    const io = new IntersectionObserver(es=> es.forEach(e=>{ if(e.isIntersecting){ fill(e.target); io.unobserve(e.target); } }), {root: mainEl.scrollHeight > mainEl.clientHeight ? mainEl : null, rootMargin: '200px 0px'});
+    cards.forEach(c=> io.observe(c));
+  } else cards.forEach(fill);
+  // Start with the map you're on in view.
+  const here = mainEl.querySelector('.world-stop.is-here');
+  if(here) requestAnimationFrame(()=>{ const sc = mainEl.scrollHeight > mainEl.clientHeight ? mainEl : null; const top = here.offsetTop - 160; if(sc) sc.scrollTop = Math.max(0, top); else here.scrollIntoView({block:'center'}); });
+}
 function conquestPanTo(mapId, body, progress){
   const target = CONQUEST_MAPS.find(m=> m.id===mapId);
   if(!target || !isMapUnlocked(target, progress || loadConquestProgress())) return;
@@ -8543,8 +8627,13 @@ function renderConquestSubTab(body){
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
   }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
+  // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
+  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
+  { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
+    wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
+  if(conquestWorldView) listEl.querySelectorAll('.conquest-map-item.selected:not(.world-chip)').forEach(el=> el.classList.remove('selected'));
   listEl.querySelectorAll('[data-mapid]').forEach(el=>{
-    const go = ()=> conquestPanTo(el.getAttribute('data-mapid'), body, progress);
+    const go = ()=>{ if(conquestWorldView){ conquestWorldView = false; conquestSelectedMap = el.getAttribute('data-mapid'); conquestSelectedNodeKey = null; renderConquestSubTab(body); return; } conquestPanTo(el.getAttribute('data-mapid'), body, progress); };
     el.addEventListener('click', go);
     el.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
   });
@@ -8561,6 +8650,7 @@ function renderConquestSubTab(body){
   // surface so they stay legible sitting on top of the gradient.
   const layoutEl = document.getElementById('conquestLayout');
   if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}`;
+  if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
   if(!isMapUnlocked(map, progress)){
     mainEl.innerHTML = `<div class="empty-hint">This map is locked — clear the previous map's Skirmish/Elite/Boss nodes first.</div>`;
     return;
@@ -8596,7 +8686,7 @@ function renderConquestSubTab(body){
   // tooltip (nodeTooltipHTML below) and the click-through node panel already cover the same
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
-  mainEl.innerHTML = `<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
@@ -8657,6 +8747,8 @@ function renderConquestSubTab(body){
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
+  { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
+  if(conquestZoomIn){ mainEl.classList.add('world-zoom-in'); conquestZoomIn = false; }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
   {
     const idx = CONQUEST_MAPS.indexOf(map), prev = CONQUEST_MAPS[idx-1], next = CONQUEST_MAPS[idx+1];

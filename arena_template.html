@@ -4353,6 +4353,50 @@
   .shop-pack-card.is-soon{filter:saturate(.5); opacity:.8;}
   /* Conquest full-screen map (2026-10-03) */
   .conquest-main{position:relative;}
+  /* D13 world atlas: every map as a compass diamond on one winding trail (lazy-filled cards). */
+  .conquest-world-btn{position:absolute; top:12px; right:58px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .conquest-world-btn:hover, .conquest-world-btn:focus-visible{background:rgba(0,0,0,.6);}
+  .conquest-layout.is-world{background:
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 50%, rgba(0,0,0,.5) 100%),
+    repeating-radial-gradient(circle at 30% 20%, rgba(255,255,255,.03) 0 1px, transparent 1px 10px),
+    linear-gradient(180deg, #2c4a3a 0%, #24405a 35%, #3c2f52 65%, #4a2228 100%);}
+  .world-atlas{position:relative; margin:8px auto 24px; max-width:720px;}
+  .world-trail{position:absolute; inset:0; width:100%; height:100%; pointer-events:none;}
+  .world-trail path{fill:none; stroke:rgba(255,240,200,.5); stroke-width:3; stroke-dasharray:9 8; stroke-linecap:round; vector-effect:non-scaling-stroke;}
+  .world-stop{position:absolute; width:0; height:0;}
+  .world-stop .world-diamond{position:absolute; left:-46px; top:-46px;}
+  .world-stop .world-card{position:absolute; top:50%; transform:translateY(-50%); left:58px;}
+  .world-stop.label-left .world-card{left:auto; right:58px;}
+  .world-diamond{position:relative; width:92px; height:92px; padding:0; border:0; background:none; cursor:pointer; flex:0 0 auto; filter:drop-shadow(0 6px 10px rgba(0,0,0,.45)); transition:transform .15s ease;}
+  .world-diamond:hover:not(:disabled), .world-diamond:focus-visible{transform:scale(1.1);}
+  .world-diamond:disabled{cursor:default;}
+  .world-diamond .compass-diamond{position:absolute; inset:0; width:100%; height:100%;}
+  .world-diamond .wd-ico{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:32px; line-height:1;}
+  .world-stop.is-locked .wd-ico{font-size:24px; filter:grayscale(1);}
+  .world-stop.is-fog{opacity:.45;}
+  .world-stop.is-here .world-diamond::after{content:''; position:absolute; inset:-8px; border:3px solid #ffd77a; transform:rotate(45deg) scale(.72); border-radius:6px; animation:hereRing 1.8s ease-in-out infinite;}
+  @keyframes hereRing{0%,100%{opacity:.9;} 50%{opacity:.25;}}
+  .world-card{min-width:150px; max-width:200px; min-height:40px; padding:8px 10px; border-radius:10px; background:rgba(14,18,22,.72); border:1px solid rgba(255,255,255,.18); color:#fff; backdrop-filter:blur(2px);}
+  .world-card:empty{background:rgba(14,18,22,.35);}
+  .wc-name{font-weight:700; font-size:14px;}
+  .wc-sub{font-size:12px; opacity:.85; margin-top:4px;}
+  .wc-mini{position:relative; height:46px; margin-top:6px; border-radius:6px; background:radial-gradient(ellipse at 30% 20%, var(--mt-a), var(--mt-b) 55%, var(--mt-c)); overflow:hidden;}
+  .wc-dot{position:absolute; width:6px; height:6px; border-radius:50%; background:#fff; opacity:.55; transform:translate(-50%,-50%);}
+  .wc-dot.done{background:#8fe08a; opacity:1;}
+  .wc-dot.k-boss, .wc-dot.k-finalboss{width:9px; height:9px; background:#ff8a7a;}
+  .wc-dot.k-boss.done, .wc-dot.k-finalboss.done{background:#8fe08a;}
+  .wc-bar{height:4px; border-radius:2px; background:rgba(255,255,255,.18); margin-top:6px; overflow:hidden;}
+  .wc-bar span{display:block; height:100%; background:#e9c46a;}
+  .conquest-map-item.world-chip .cmi-ico{filter:drop-shadow(0 0 3px rgba(233,196,106,.6));}
+  .conquest-main.world-zoom-out{animation:worldZoomOut .26s ease-in forwards;}
+  .conquest-main.world-zoom-in{animation:worldZoomIn .36s cubic-bezier(.2,.8,.3,1);}
+  @keyframes worldZoomOut{to{transform:scale(1.6); opacity:0;}}
+  @keyframes worldZoomIn{from{transform:scale(.55); opacity:0;} to{transform:none; opacity:1;}}
+  @media (max-width:560px){
+    .world-diamond{width:70px; height:70px;} .world-stop .world-diamond{left:-35px; top:-35px;} .world-diamond .wd-ico{font-size:24px;}
+    .world-stop .world-card{left:44px;} .world-stop.label-left .world-card{right:44px;}
+    .world-card{min-width:110px; max-width:140px; padding:6px 8px;} .wc-mini{height:34px;} .wc-name{font-size:12.5px;}
+  }
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
