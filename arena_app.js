@@ -1991,6 +1991,7 @@ function castleHoverHTML(hqSide){
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     hoverTimer = setTimeout(()=>{
       hoverTimer = null;
+      if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
       const html = hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
@@ -2008,6 +2009,9 @@ function castleHoverHTML(hqSide){
     pop.hidden = true;
   });
   document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; });
+  // A click usually re-renders the card away, and a removed element never fires mouseout — so the
+  // popover would stay stuck on screen. Any click closes it.
+  document.addEventListener('click', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; }, true);
   function positionPop(el){
     const r = el.getBoundingClientRect();
     const pw = 230;
@@ -6139,6 +6143,7 @@ function renderPlay(){
                exact same builder — is retired to avoid two different paths to the same screen.
                renderPlayerSubTab itself is untouched and still the fallback below for safety. -->
           <button class="tab-btn ${playSubTab==='arena'?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'}"><span class="tab-emoji">🏟️</span> Arena</button>
+          <button class="tab-btn ${playSubTab==='autobattle'?'active':''}" data-playtab="autobattle" role="tab" aria-selected="${playSubTab==='autobattle'}"><span class="tab-emoji">🧩</span> Autobattler</button>
           <button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> Raid</button>
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
@@ -6202,6 +6207,7 @@ function renderPlay(){
     const body = document.getElementById('playSubBody');
     if(playSubTab==='arena'){ renderArenaSubTab(body); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); return; }
+    if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
     if(playSubTab==='sandbox'){ renderSandboxSubTab(body); return; }
     if(playSubTab==='conquest'){ renderConquestSubTab(body); return; }
     renderPlayerSubTab(body);
@@ -6899,6 +6905,174 @@ function refreshQuestBadge(){
   const n = claimableQuestCount();
   document.querySelectorAll('#homeQuestsBtn .home-badge').forEach(b=> b.remove());
   if(n>0) document.querySelectorAll('#homeQuestsBtn').forEach(btn=>{ const s = document.createElement('span'); s.className = 'home-badge'; s.textContent = n; btn.appendChild(s); });
+}
+// ---- Autobattler draft run (2026-10-03) — rules and simulation live in bramblewood-autobattle.js
+// (shared with tests/autobattle.js); this is the UI and the local persistence. Fights are CPU vs CPU
+// and resolve instantly, so a run is all about drafting and boon choices. ----
+const AutoB = (typeof BramblewoodAutobattle!=='undefined') ? BramblewoodAutobattle : null;
+const AB_RUN_KEY = 'bramblewood_ab_run_v1';
+const AB_GHOSTS_KEY = 'bramblewood_ab_ghosts_v1';
+let abLastFight = null; // the fight result shown on the result screen
+const _abPoolCache = {};
+function loadAbRun(){ try{ return JSON.parse(localStorage.getItem(AB_RUN_KEY)||'null'); }catch(e){ return null; } }
+function saveAbRun(run){ try{ if(run) localStorage.setItem(AB_RUN_KEY, JSON.stringify(run)); else localStorage.removeItem(AB_RUN_KEY); }catch(e){} }
+function loadAbGhosts(){ try{ return JSON.parse(localStorage.getItem(AB_GHOSTS_KEY)||'[]') || []; }catch(e){ return []; } }
+function abPool(stage){
+  const rec = loadAbGhosts().filter(g=> g.owner!==myGhostOwnerId());
+  const key = stage + ':' + Math.floor(Date.now()/(7*24*3600*1000)) + ':' + rec.length;
+  if(!_abPoolCache[key]) _abPoolCache[key] = AutoB.opponentPool(getCardDefs(), CHARACTER_DEFS, stage, rec, Date.now());
+  return _abPoolCache[key];
+}
+function castleBlurb(c){
+  const e = (c && c.effects) || {}, bits = [];
+  if(e.startGold) bits.push(`Start with +${e.startGold} 🪵`);
+  if(e.firstUnitAtkBonus) bits.push(`First unit +${e.firstUnitAtkBonus} ⚔`);
+  return bits.join(' · ') || 'No special effect';
+}
+function castleTileHTML(c, extra){ return `<div class="ab-castle-tile ${extra||''}"><div class="ab-castle-ico">${c.icon||'🏰'}</div><div class="ab-castle-name">${escapeHtml(c.name)}</div><div class="ab-castle-hp">🏰 ${c.health} HP</div><div class="ab-castle-fx">${escapeHtml(castleBlurb(c))}</div></div>`; }
+function abDisplayDef(run, id){
+  const base = getCardDefs()[AutoB.baseId(id)]; if(!base) return null;
+  const side = AutoB.sideDefs(getCardDefs(), 'view', run.patches);
+  return side.extra[side.idFor(AutoB.baseId(id))] || base;
+}
+function abHeartsHTML(run){ let h = ''; for(let i=0;i<AutoB.AB.START_HP;i++) h += i < run.hp ? '❤️' : '🖤'; return `<span class="ab-hearts" title="${run.hp} health left">${h}</span>`; }
+function abStatusBarHTML(run){
+  const goal = AutoB.AB.WIN_GOAL;
+  return `<div class="ab-status">
+    ${abHeartsHTML(run)}
+    <span class="ab-stat" title="Wins this run">🏆 <b>${run.wins}</b>${run.endless ? ' · ♾️ Endless' : ` / ${goal}`}</span>
+    <span class="ab-stat" title="Fights played">⚔️ Fight ${run.fights + (run.phase==='prep'?1:0)}</span>
+    <span class="ab-stat ab-penalty" title="Health lost on a loss">Loss costs ${AutoB.lossPenalty(run.fights+1)} ❤️</span>
+  </div>`;
+}
+function renderAutobattleSubTab(body){
+  if(!AutoB){ body.innerHTML = '<div class="panel">Autobattler unavailable.</div>'; return; }
+  const run = loadAbRun();
+  const defs = getCardDefs();
+  if(!run){
+    body.innerHTML = `<div class="panel ab-panel ab-intro">
+      <h2>🧩 Autobattler</h2>
+      <p class="panel-sub">Draft a castle, two leaders and a deck from scratch, then watch it fight other players' runs. Fights play themselves — your job is building the deck.</p>
+      <ul class="ab-rules">
+        <li>❤️ <b>${AutoB.AB.START_HP} health.</b> A loss in your first ${AutoB.AB.EARLY_FIGHTS} fights costs ${AutoB.AB.EARLY_LOSS}; after that a loss costs ${AutoB.AB.LATE_LOSS}.</li>
+        <li>🏆 <b>Reach ${AutoB.AB.WIN_GOAL} wins.</b> Then cash out, or keep going in Endless (stops at fight ${AutoB.AB.HARD_STOP}).</li>
+        <li>👑 <b>Two leaders:</b> your leader starts every fight on the board; your sub-leader joins on round ${AutoB.AB.SUB_LEADER_ROUND} and can be swapped between fights.</li>
+        <li>✨ <b>After every fight</b> pick a boon: duplicate a card, +1/+1 a card, or give a card a passive.</li>
+        <li>👻 <b>Opponents</b> are other players' runs with the same number of wins.</li>
+      </ul>
+      <button class="btn primary big" id="abStartBtn">Start a run</button>
+    </div>`;
+    document.getElementById('abStartBtn').onclick = ()=>{ saveAbRun(AutoB.newRun((Math.random()*2**32)>>>0, Date.now())); renderAutobattleSubTab(body); };
+    return;
+  }
+  const rerender = ()=> renderAutobattleSubTab(body);
+  if(run.phase==='draft'){
+    const off = AutoB.draftOffers(defs, CHARACTER_DEFS, run);
+    const titles = {castle:'Pick your castle', leader:'Pick your leader — starts every fight on the board', subLeader:`Pick your sub-leader — joins on round ${AutoB.AB.SUB_LEADER_ROUND}`, card:`Pick a card — you get ${AutoB.AB.COPIES_PER_PICK} copies`};
+    const pickNo = off.kind==='card' ? ` (${run.step-2} of ${AutoB.AB.PICKS})` : '';
+    body.innerHTML = `<div class="panel ab-panel">
+      <div class="ab-draft-head"><h2>Draft · ${titles[off.kind]}${pickNo}</h2><span class="ab-step">Step ${run.step+1} / ${AutoB.DRAFT_STEPS}</span></div>
+      <div class="ab-offers">${off.options.map(id=> `<button type="button" class="ab-offer" data-pick="${escapeAttr(id)}">${off.kind==='castle' ? castleTileHTML(CHARACTER_DEFS[id]) : cardTileHTML(defs[id], {inPlay:true})}</button>`).join('')}</div>
+      ${abDeckSummaryHTML(run)}
+    </div>`;
+    body.querySelectorAll('[data-pick]').forEach(b=> b.onclick = ()=>{ AutoB.applyDraftPick(run, b.dataset.pick); saveAbRun(run); rerender(); });
+    return;
+  }
+  if(run.phase==='result' && abLastFight){ renderAbResult(body, run); return; }
+  if(run.phase==='result') run.phase = abNextPhaseAfterResult(run);
+  if(run.phase==='boon'){
+    run.pendingBoons = run.pendingBoons || AutoB.boonOffers(defs, run); saveAbRun(run);
+    body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
+      <h2>✨ Pick a boon</h2>
+      <div class="ab-offers">${run.pendingBoons.map((bn,i)=>{ const d = abDisplayDef(run, bn.card);
+        return `<button type="button" class="ab-offer ab-boon" data-boon="${i}"><div class="ab-boon-label">${bn.type==='dup'?'📑':bn.type==='buff'?'💪':'🔮'} ${escapeHtml(bn.label)}</div>${d?cardTileHTML(d, {inPlay:true}):''}</button>`; }).join('')}</div>
+      ${abDeckSummaryHTML(run)}</div>`;
+    body.querySelectorAll('[data-boon]').forEach(b=> b.onclick = ()=>{ AutoB.applyBoon(run, run.pendingBoons[+b.dataset.boon]); run.phase = 'prep'; saveAbRun(run); rerender(); });
+    return;
+  }
+  if(run.phase==='goal'){
+    body.innerHTML = `<div class="panel ab-panel ab-center">${abStatusBarHTML(run)}
+      <div class="ab-big">🏆</div><h2>${AutoB.AB.WIN_GOAL} wins!</h2>
+      <p class="panel-sub">Cash out now, or keep going in Endless — every extra win adds to your rewards, but you can still lose your run. Endless stops at fight ${AutoB.AB.HARD_STOP}.</p>
+      <div class="ab-actions"><button class="btn primary big" id="abEndlessBtn">♾️ Go Endless</button><button class="btn big" id="abCashBtn">💰 Cash out</button></div></div>`;
+    document.getElementById('abEndlessBtn').onclick = ()=>{ AutoB.goEndless(run); saveAbRun(run); rerender(); };
+    document.getElementById('abCashBtn').onclick = ()=>{ AutoB.cashOut(run); saveAbRun(run); rerender(); };
+    return;
+  }
+  if(run.phase==='over'){
+    if(!run.rewarded){ const rw = AutoB.runRewards(run); Object.entries(rw).forEach(([k,v])=>{ if(v>0) grantCurrency(k, v); }); run.rewarded = rw; saveAbRun(run); }
+    const rw = run.rewarded;
+    const why = {'out-of-health':'Out of health', 'hard-stop':`Fight ${AutoB.AB.HARD_STOP} — the run is complete`, 'cashed-out':'Cashed out'}[run.overReason] || 'Run over';
+    body.innerHTML = `<div class="panel ab-panel ab-center">
+      <div class="ab-big">${run.wins>=AutoB.AB.WIN_GOAL?'🏅':'🧩'}</div><h2>${escapeHtml(why)}</h2>
+      <p class="ab-final"><b>${run.wins}</b> wins · ${run.losses} losses · ${run.fights} fights</p>
+      <div class="winloss-conquest-rewards">${rw.gold?`<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} +${rw.gold} Maple Leaves</span>`:''}${rw.dust?`<span class="hud-pill forge-cur-dust">✨ +${rw.dust} Dust</span>`:''}${rw.metal?`<span class="hud-pill forge-cur-metal">🔩 +${rw.metal} Metal</span>`:''}</div>
+      <div class="ab-history">${run.history.map(h=> `<span class="ab-h ${h.won?'w':h.draw?'d':'l'}" title="Fight ${h.n} vs ${escapeAttr(h.opp)}">${h.won?'W':h.draw?'D':'L'}</span>`).join('')}</div>
+      <div class="ab-actions"><button class="btn primary big" id="abNewRunBtn">Start a new run</button></div></div>`;
+    document.getElementById('abNewRunBtn').onclick = ()=>{ saveAbRun(null); abLastFight = null; rerender(); };
+    return;
+  }
+  // prep
+  const subOpts = AutoB.canSwapSubLeader(run) ? AutoB.subLeaderOffers(defs, run) : [];
+  const L = abDisplayDef(run, run.leader), S = abDisplayDef(run, run.subLeader);
+  body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
+    <div class="ab-prep">
+      <div class="ab-commanders">
+        <div class="ab-slot"><div class="ab-slot-l">Castle</div>${castleTileHTML(CHARACTER_DEFS[run.castle]||{name:'Castle',health:30})}</div>
+        <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
+        <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
+          ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
+      </div>
+      <div class="ab-fight-box"><button class="btn primary big" id="abFightBtn">⚔️ Fight</button><div class="ab-note">vs a run with ${run.wins} win${run.wins===1?'':'s'}</div>
+        <button type="button" class="btn small ghost" id="abAbandonBtn">Abandon run</button></div>
+    </div>
+    ${abDeckSummaryHTML(run)}</div>`;
+  body.querySelectorAll('[data-swap]').forEach(b=> b.onclick = ()=>{ AutoB.swapSubLeader(run, b.dataset.swap); saveAbRun(run); rerender(); });
+  document.getElementById('abAbandonBtn').onclick = ()=>{ if(confirm('Abandon this run? You keep the rewards for the wins so far.')){ AutoB.cashOut(run); run.overReason = 'cashed-out'; saveAbRun(run); rerender(); } };
+  document.getElementById('abFightBtn').onclick = ()=> abFight(body, run);
+}
+function abNextPhaseAfterResult(run){ return run.over ? 'over' : (run.wins >= AutoB.AB.WIN_GOAL && !run.endless ? 'goal' : 'boon'); }
+function abDeckSummaryHTML(run){
+  const ids = Object.keys(run.deck||{});
+  if(!ids.length) return '';
+  const total = ids.reduce((t,id)=> t + run.deck[id], 0);
+  return `<div class="ab-deck"><div class="ab-deck-h">Your deck · ${total} cards</div><div class="ab-deck-grid">${ids.map(id=>{ const d = abDisplayDef(run, id); const p = (run.patches||{})[AutoB.baseId(id)];
+    return d ? `<div class="ab-deck-card ${p?'is-boosted':''}">${cardTileHTML(d, {inPlay:true})}<span class="ab-count">×${run.deck[id]}</span></div>` : ''; }).join('')}</div></div>`;
+}
+function abFight(body, run){
+  const pool = abPool(run.wins);
+  const faced = run.history.map(h=> h.oppOwner).filter(Boolean);
+  const opp = AutoB.pickOpponent(pool, AutoB.hashStr(run.id + ':' + run.fights), faced);
+  // You become a ghost for other players at this stage.
+  try{ localStorage.setItem(AB_GHOSTS_KEY, JSON.stringify(AutoB.recordGhost(loadAbGhosts(), AutoB.snapshotOf(run, myGhostOwnerId(), (myProfile && myProfile.name) || 'You', loadAvatar(), Date.now())))); }catch(e){}
+  const res = AutoB.simulateFight({makeSimEngine, boardSignature, noActionsLeft}, getCardDefs(), CHARACTER_DEFS, run, opp, AutoB.hashStr(run.id + ':fight:' + run.fights));
+  const hpBefore = run.hp;
+  AutoB.afterFight(run, res, opp.name);
+  run.history[run.history.length-1].oppOwner = opp.owner;
+  if(res.winner===1) bumpQuestCounter('wins', 1);
+  bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
+  abLastFight = {res, opp, hpBefore};
+  run.phase = 'result';
+  saveAbRun(run);
+  renderAutobattleSubTab(body);
+}
+function renderAbResult(body, run){
+  const {res, opp, hpBefore} = abLastFight;
+  const defs = getCardDefs();
+  const won = res.winner===1, draw = res.winner===0;
+  const me = {name:(myProfile && myProfile.name) || 'You', avatar: loadAvatar()};
+  const bar = (hp, max, cls)=> `<div class="ab-castle-bar ${cls}"><div class="ab-castle-fill" style="width:100%" data-to="${Math.round(Math.max(0,hp)/max*100)}"></div><span>${Math.max(0,hp)} / ${max}</span></div>`;
+  body.innerHTML = `<div class="panel ab-panel ab-center ab-result">
+    <div class="ab-vs"><div class="ab-vs-side">${avatarHTML(me.avatar, 64)}<div>${escapeHtml(me.name)}</div>${bar(res.hp[0], res.maxHp[0], 'mine')}</div>
+      <div class="ab-vs-mid">VS</div>
+      <div class="ab-vs-side">${avatarHTML(opp.avatar || {character:'mouse', color:'night'}, 64)}<div>${escapeHtml(opp.name)}</div>${bar(res.hp[1], res.maxHp[1], 'theirs')}</div></div>
+    <h2 class="ab-outcome ${won?'win':draw?'draw':'loss'}">${won?'Victory!':draw?'Draw':'Defeat'}</h2>
+    <p class="ab-final">${res.rounds} rounds${res.mvp && defs[res.mvp] ? ` · MVP ${defs[res.mvp].icon} ${escapeHtml(defs[res.mvp].name)} (${res.mvpDamage} damage)` : ''}${!won && !draw ? ` · −${hpBefore - run.hp} ❤️` : ''}</p>
+    ${abStatusBarHTML(run)}
+    <div class="ab-actions"><button class="btn primary big" id="abContinueBtn">Continue</button></div></div>`;
+  if(hasGsap()) body.querySelectorAll('.ab-castle-fill').forEach(el=> gsap.to(el, {width: el.dataset.to + '%', duration: 1.1, delay: .3, ease:'power2.out'}));
+  else body.querySelectorAll('.ab-castle-fill').forEach(el=> el.style.width = el.dataset.to + '%');
+  document.getElementById('abContinueBtn').onclick = ()=>{ abLastFight = null; run.phase = abNextPhaseAfterResult(run); saveAbRun(run); renderAutobattleSubTab(body); };
 }
 // ---- PvP (2026-10-03, explicit: "one mode is just called PVP, and you use your daily 10 tickets to
 // battle random strangers' decks, piloted by AI. They always go first."). A ticket is spent when the
