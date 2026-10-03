@@ -2118,7 +2118,7 @@ function renderCodex(){
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
-      <select id="cxSort"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option></select>
+      <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
       <select id="cxGroupBy" title="Split the Codex by where cards come from">
         <option value="tiers" ${(codexFilter.groupBy||'tiers')==='tiers'?'selected':''}>View by: Tiers</option>
@@ -17993,7 +17993,7 @@ function renderDeckListTab(body){
   grid.innerHTML = myDecks.map(d=> `
     <div class="deck-menu-card ${d.id===activeDeckId?'active':''}" data-deckid="${d.id}">
       <div class="deck-menu-card-head">
-        <input class="deck-menu-name-input" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
+        <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
         ${d.id===activeDeckId?'<span class="deck-active-badge">ACTIVE</span>':''}
       </div>
       ${deckPreviewPillsHTML(d)}

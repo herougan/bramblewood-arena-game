@@ -10,10 +10,10 @@
 <style>
   :root{
     --bg:#dfe4cb; --bg-2:#cfd8b6; --surface:#f2e9cf; --surface-2:#e8dcb8; --surface-3:#dccf9e;
-    --surface-border:#c9b483; --ink:#2c3320; --ink-muted:#5f6b4c; --ink-soft:#7b8566;
-    --accent:#a5641f; --accent-strong:#7d4a15; --accent-ink:#fff6e4;
+    --surface-border:#c9b483; --ink:#2c3320; --ink-muted:#4f5a3e; --ink-soft:#7b8566;
+    --accent:#985a1a; --accent-strong:#7d4a15; --accent-ink:#fff6e4;
     --banner:#3f5c3a; --banner-2:#2f4a2c; --banner-ink:#eee6cd;
-    --attack:#a5342a; --health:#4f8a3d;
+    --attack:#a5342a; --health:#3d6e2e;
     /* 2026-09-25, per explicit request ("I think the damage counters can be bigger and lighter
        in color"): the on-CARD attack/health badges (.card-tile .atk/.hp below) always sit on the
        card face's own dark bottom edge (see the white-top/black-bottom card gradient's own
@@ -41,7 +41,7 @@
        the matching icon-prefix fix (🪙 cost / ⏳ wait) — color alone wasn't going to be enough at
        20px, so both fixes ship together. */
     --wait:#2f6d94; --wait-soft:#cfe3ee;
-    --gold:#b8860b; --gold-soft:#f0dfa8; --grave:#6b6156; --grave-soft:#e3dcc8;
+    --gold:#b8860b; --gold-text:#7a5a00; --gold-soft:#f0dfa8; --grave:#6b6156; --grave-soft:#e3dcc8;
     --grace:#7c3aed; --grace-soft:#e6dbfa; --exile:#7c6a58; --exile-soft:#e8ded0;
     --stone:#5b6b74; --stone-soft:#dbe2e4;
     --lumber:#8b5e34; --lumber-soft:#e8dbc8; --elementalenergy:#0891b2; --elementalenergy-soft:#cdeef4;
@@ -89,7 +89,7 @@
          deltas, the cloud-sync-ok pill, cloud-link messages, and the low-Energy pill warning --
          distinct on purpose from the semantic --health/--danger tokens (which theme-swap and are
          tuned for bigger surfaces), since this is a small fixed-ink accent on --surface-2 */
-    --gems-color:#7c3aed; --dust-color:#c23bab; --metal-color:#cbd5e1;
+    --gems-color:#6c3ad0; --dust-color:#8a2a7c; --metal-color:#46525e;
       /* out-of-game currency icon colors (parallel to --gold above) -- Forge's currency row */
     --grace-strong:#5b21b6; /* Ecclesia/Grace's own "-strong" shade, same naming pattern as
       --accent/--accent-strong -- the Myriad panel's primary button border */
@@ -102,7 +102,7 @@
     --highlight-amber:#ffb648; /* a "this is selected / this is a dev tool" amber, reused as-is
       between the debug bar and the tutorial deck-picker's selected-card state -- unrelated
       features that happened to hand-pick the exact same hex */
-    --energy-ink:#c98a1a; --level-badge-ink:#3a2400; --scrim-ink:#fff;
+    --energy-ink:#7a5a00; --level-badge-ink:#3a2400; --scrim-ink:#fff;
       /* small single-context fixed inks: the Energy pill's icon, the card level-up badge's text
          (sits on its own #ffd75e->#ff9f4a gradient, close to but deliberately distinct from
          --gold-ink's shade), and the Conquest map's dark text-legibility scrim */
@@ -155,7 +155,7 @@
       --accent:#d99a4e; --accent-strong:#f0b972; --accent-ink:#2a1c08;
       --banner:#2f4a2c; --banner-2:#1e3220; --banner-ink:#ede4c8;
       --attack:#e17564; --health:#82c25f; --wait:#6fb3e0; --wait-soft:#182634;
-      --gold:#e8c15c; --gold-soft:#3a301a; --grave:#a89e8c; --grave-soft:#2c281f;
+      --gold:#e8c15c; --gold-text:#e8c15c; --dust-color:#e06acb; --metal-color:#cbd5e1; --gems-color:#a78bfa; --energy-ink:#e8b04a; --gold-soft:#3a301a; --grave:#a89e8c; --grave-soft:#2c281f;
       --grace:#b28aef; --grace-soft:#2c2338; --exile:#b9ab94; --exile-soft:#2c281f;
       --stone:#9aa8b0; --stone-soft:#2a3236;
       --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
@@ -172,7 +172,7 @@
     --accent:#d99a4e; --accent-strong:#f0b972; --accent-ink:#2a1c08;
     --banner:#2f4a2c; --banner-2:#1e3220; --banner-ink:#ede4c8;
     --attack:#e17564; --health:#82c25f; --wait:#6fb3e0; --wait-soft:#182634;
-    --gold:#e8c15c; --gold-soft:#3a301a; --grave:#a89e8c; --grave-soft:#2c281f;
+    --gold:#e8c15c; --gold-text:#e8c15c; --dust-color:#e06acb; --metal-color:#cbd5e1; --gems-color:#a78bfa; --energy-ink:#e8b04a; --gold-soft:#3a301a; --grave:#a89e8c; --grave-soft:#2c281f;
     --grace:#b28aef; --grace-soft:#2c2338; --exile:#b9ab94; --exile-soft:#2c281f;
     --stone:#9aa8b0; --stone-soft:#2a3236;
     --lumber:#c9985f; --lumber-soft:#332a1c; --elementalenergy:#22d3ee; --elementalenergy-soft:#173238;
@@ -2218,7 +2218,7 @@
   .avatar-swatch.is-on{box-shadow:0 0 0 3px #2b2117;}
   .avatar-titles{display:flex; flex-wrap:wrap; gap:6px;}
   .avatar-title-opt{padding:6px 12px; border-radius:999px; border:1px solid rgba(0,0,0,.2); background:#fffdf7; font:inherit; font-size:13px; font-weight:700; cursor:pointer;}
-  .avatar-title-opt.is-on{background:#c9853a; color:#fff; border-color:#a86a26;}
+  .avatar-title-opt.is-on{background:#985a1a; color:#fff; border-color:#7d4a15;}
   .avatar-title-opt:disabled{opacity:.5; cursor:not-allowed;}
   .vs-screen{position:fixed; inset:0; z-index:1300; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; background:linear-gradient(105deg, #2c3a27 0%, #2c3a27 49.6%, #5a2b22 50.4%, #5a2b22 100%); color:#f4ecd8; cursor:pointer; transition:opacity .3s;}
   .vs-screen.vs-out{opacity:0;}
@@ -2231,7 +2231,7 @@
   .workshop-modal{max-width:460px;} .ws-steps{padding-left:20px; line-height:1.55; margin:10px 0 16px;} .ws-steps li{margin-bottom:6px;}
   .workshop-modal .btn[disabled]{opacity:.55; cursor:not-allowed;}
   .cur-pill{display:inline-flex; align-items:center; gap:4px;}
-  .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:.7; margin-left:2px; white-space:nowrap;}
+  .cur-pill .cur-label{font-size:10.5px; font-weight:700; opacity:1; margin-left:2px; white-space:nowrap;}
   @media (max-width:460px){ .cur-pill .cur-label{display:none;} }
   /* UX A12 (2026-10-03): a clear keyboard focus ring on every interactive control, site-wide. */
   button:focus-visible, [role="button"]:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible, .map-node:focus-visible{outline:3px solid #ffd27a; outline-offset:2px;}
@@ -2383,14 +2383,14 @@
   .raid2-panel .r2-claim{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 12px; margin-bottom:10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--accent); font-weight:700;}
   .raid2-panel .r2-parts{display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:10px;}
   .raid2-panel .r2-part{border:1px solid var(--surface-border); border-radius:12px; padding:10px; background:var(--surface-2); display:flex; flex-direction:column; gap:8px;}
-  .raid2-panel .r2-part.is-locked{opacity:.7;}
+  .raid2-panel .r2-part.is-locked{filter:saturate(.6);}
   .raid2-panel .r2-part.is-down{opacity:.5; filter:grayscale(.8);}
   .raid2-panel .r2-part-head{display:flex; align-items:center; gap:6px;}
   .raid2-panel .r2-part-ico{font-size:22px;}
   .raid2-panel .r2-part-head b{flex:1; min-width:0;}
   .raid2-panel .r2-part-num{font-size:12px; font-weight:800; opacity:.75; font-variant-numeric:tabular-nums;}
   .raid2-panel .r2-part-foot{display:flex; flex-direction:column; gap:4px; font-size:13px;}
-  .raid2-panel .r2-note{font-size:12px; opacity:.7;}
+  .raid2-panel .r2-note{font-size:12px; color:var(--ink-muted);}
   .raid2-panel .r2-me{margin:12px 0 4px; font-size:14px;}
   .raid2-panel .r2-rules{margin:0; font-size:12.5px; opacity:.75;}
   .rp-bars{display:grid; grid-template-columns:repeat(auto-fit, minmax(14px, 1fr)); gap:3px;}
@@ -2559,7 +2559,7 @@
   .gsi-btn:focus-visible{outline:2px solid #4285F4; outline-offset:2px;}
   .gsi-btn:disabled{opacity:.5; cursor:not-allowed;}
   .gsi-btn .gsi-logo{width:20px; height:20px; flex:none;}
-  .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; opacity:.6; text-transform:lowercase;}
+  .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-muted); text-transform:lowercase;}
   .auth-or::before, .auth-or::after{content:''; flex:1; height:1px; background:currentColor; opacity:.35;}
   .auth-email-form{display:flex; flex-direction:column; gap:8px; margin:0;}
   .auth-email-form input{height:42px; padding:0 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; font-size:14px; background:#fffdf7; color:#2b2117; box-sizing:border-box; width:100%;}
@@ -2586,7 +2586,7 @@
   .tk-seg{margin-left:0; display:flex;}
   .tk-speed-btn{background:transparent; color:inherit; border:0; padding:6px 11px; font:inherit; font-weight:700; cursor:pointer; min-height:32px; flex:1;}
   .tk-speed-btn + .tk-speed-btn{border-left:1px solid rgba(255,255,255,.2);}
-  .tk-speed-btn.is-on{background:var(--accent, #d58b3a); color:#1b130b;}
+  .tk-speed-btn.is-on{background:var(--accent, #d58b3a); color:var(--accent-ink, #fff6e4);}
   .tk-speed-btn:focus-visible, .tk-opt:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
   #nestGrid > .nest-empty{grid-column:1 / -1;}
   .nest-empty-actions{display:flex; gap:8px; flex-wrap:wrap;}
@@ -2683,7 +2683,7 @@
 
   /* ---- Forge tab (2026-09-18, Epic B) ---- */
   .forge-currency-row{display:flex; gap:8px; margin-top:8px;}
-  .hud-pill.forge-cur-gold{color:var(--gold);}
+  .hud-pill.forge-cur-gold{color:var(--gold-text);}
   .coin-ico{width:1em; height:1em; vertical-align:-0.15em; flex-shrink:0;}
   .hud-pill.forge-cur-gems{color:var(--gems-color);}
   .hud-pill.forge-cur-dust{color:var(--dust-color);}
@@ -3488,7 +3488,7 @@
   .offline-raid-panel .or-dmg{font-weight:800; color:var(--danger);}
   .online-raid-details{margin:12px 0;}
   .online-raid-details > summary{cursor:pointer; font-weight:800; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink);}
-  .async-run-line{display:block; margin-top:6px; font-size:12px; opacity:.92;}
+  .async-run-line{display:block; margin-top:6px; font-size:12px;}
   .conquest-map-canvas{position:relative; width:100%; min-height:460px; border-radius:12px; margin-top:10px;}
   /* Admin map layout editor */
   .map-layout-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin:0 0 4px; padding:8px 12px; border-radius:10px;}
@@ -3661,7 +3661,7 @@
      win/loss modal (the rank you just earned). Deliberately plain metal/gem-toned colors rather
      than reusing an existing semantic var (--danger/--health/etc.) since a rank isn't good/bad
      in that sense, just a tier. */
-  .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); margin-left:auto;}
+  .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); background:var(--gold); margin-left:auto;}
   .conquest-rank-badge.rank-C{background:#c8845a;}
   .conquest-rank-badge.rank-B{background:#c9d1d9; color:#2a2f36;}
   .conquest-rank-badge.rank-A{background:#ffd75e;}
@@ -3831,11 +3831,11 @@
   /* One shared max-width for every variant's blurb (previously 180/210/230/210px per variant,
      part of the same inconsistent-sizing bug) — now purely a text-wrapping measure, not a de
      facto width control, since the grid column already fixes the tile's real width. */
-  .arena-mode-btn .amb-sub{font-size:11.5px; font-weight:400; opacity:.85; max-width:210px; line-height:1.4;}
+  .arena-mode-btn .amb-sub{font-size:11.5px; font-weight:400; opacity:1; max-width:210px; line-height:1.4;}
   /* Gauntlet (#274, 2026-09-25) — the one Arena mode button that also shows live progress
      (current streak/goal + best), so it doubles as its own tiny status readout, not just an
      entry point like the other three. */
-  .gauntlet-mode-btn .gauntlet-streak-line{font-size:11.5px; font-weight:700; margin-top:2px; opacity:.95;}
+  .gauntlet-mode-btn .gauntlet-streak-line{font-size:11.5px; font-weight:700; margin-top:2px;}
   .live-queue-status{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; width:100%; box-sizing:border-box; background:var(--surface-2); border:1px dashed var(--surface-border); border-radius:16px; padding:16px; opacity:.95;}
   .live-queue-status .amb-ico{font-size:22px; animation:liveQueuePulse 1.4s ease-in-out infinite;}
   @keyframes liveQueuePulse{ 0%,100%{opacity:.55;} 50%{opacity:1;} }
