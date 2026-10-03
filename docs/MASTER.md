@@ -2,7 +2,11 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you:** [`decisions.md`](decisions.md) — 4 decisions (D12–D15) and 7 discussion topics (T1–T7); D1–D11 are logged as decided. In the project it's `claude/decisions.md`.
+> ➡️ **Waiting on you:** [`decisions.md`](decisions.md). It has:
+> - 2 decisions: D15, waiting for the PixelLab reset, and D16, the [UI review](ui-review-2026-10-03.md);
+> - 7 discussion topics: T1–T4 and T7–T9 (Farms and SFX are new).
+>
+> In the project it's `claude/decisions.md`.
 
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
@@ -11,7 +15,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-03 (evening) — see `game-design-v40-addendum.md` for this batch_
+_Last updated: 2026-10-03 (late evening) — see `game-design-v40-addendum.md` for this batch_
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.

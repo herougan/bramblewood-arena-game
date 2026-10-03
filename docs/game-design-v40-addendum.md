@@ -88,3 +88,31 @@ Your point: Minecraft stays alive through shaders and replayability rather than 
 3. **Time and weather:** day/night follows your local clock; weather rotates daily. A rainy day in the Sunken Hollow should feel different.
 4. **Moddable packs:** an atmosphere pack is a small JSON (grade, particles, uniforms) plus optional GLSL snippets. Admin-published at first, through the same `card_overrides` `__cfg:` route, then player-made and shareable. That's the "blank slate / moddable" half of the Minecraft lesson.
 5. **Cheap first:** keep it off by default on low-power devices, and cap particles. A per-pack performance budget lives in the pack JSON.
+
+## Late evening batch (2026-10-03)
+
+**🧭 World atlas (D13)**
+- Conquest has a "World" chip and a 🧭 button.
+- Every map shows as a compass diamond (gold rim, N mark, map icon), distinct from round skirmish nodes, on one winding trail.
+- Locked maps are grey; maps past the next locked one are fogged as "Uncharted".
+- Each stop's card (mini-map dots, progress bar, "you are here") is built only when it scrolls near view, using IntersectionObserver.
+- Click a diamond: the atlas zooms toward it, then the map zooms in.
+- Code: `renderConquestWorld()` and `compassDiamondSVG()`.
+
+**⛶ Immersive Conquest**
+- The map fills the screen; header and sub-tabs are hidden; the Fullscreen API is used where available.
+- Esc or ✕ leaves.
+- Conquest now uses the same content column as Arena.
+
+**Shaders v1 (T7)**
+- `bramblewood-shaders.js`: `mount(host, {preset:'scene'|'map'})`.
+- **Scene preset:** samples the splash art and decides motion per pixel by colour: foliage sways, water ripples and glints, bright areas bloom. It adds light shafts and fireflies.
+- **Map preset:** a premultiplied overlay per terrain kind (`MAP_KIND`).
+- Settings → 🌊 Shader effects.
+
+**Card-data fingerprint (T3)**
+- `bramblewood-integrity.js`: `cardDataHash()` (a synchronous SHA-256 over a stable JSON of the gameplay fields).
+- Shown in Admin.
+- Tests: `tests/integrity.js`.
+
+**UI review (D16):** see `ui-review-2026-10-03.md`.
