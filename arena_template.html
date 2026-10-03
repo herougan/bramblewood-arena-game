@@ -31,7 +31,7 @@
        same reasoning as --card-atk-color just above -- --attack itself swaps to a darker,
        light-mode-tuned red that reads as muted against a busy board, not the punch a damage
        number needs regardless of theme. */
-    --dmg-float-color:#ff3b30;
+    --dmg-float-color:#ff9284; /* 2026-10-03 ("Lighten the color of the damage text"): was #ff3b30 */
     /* Wait recolored from a warm tan (2026-09-18, per explicit request: "what does the 0
        represent in the image? where's the wait counter? make sure all these elements are
        obvious") to a cool steel blue, deliberately far from --gold's warm amber — the two badges
@@ -1814,7 +1814,7 @@
      Bumped to match (800, the heaviest cut Baloo 2 is actually loaded at — see the Google Fonts
      link's wght@...800 list up top) and widened the stroke slightly so it reads just as chunky
      mid-flight as the on-card stat numbers do sitting still. */
-  .dmg-float{position:absolute; left:50%; top:-6px; z-index:40; transform:translateX(-50%); font-family:'Baloo 2'; font-weight:800; font-size:34px; color:var(--dmg-float-color); -webkit-text-stroke:5px rgba(0,0,0,.85); paint-order:stroke fill; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 10px rgba(0,0,0,.45); font-variant-numeric:lining-nums; /* 2026-10-03: stroke now drawn UNDER the fill (paint-order) — the old 3px stroke on top ate thin digits like '1' */ animation:dmgBounceFall 1100ms cubic-bezier(.3,.15,.55,1) forwards; pointer-events:none; white-space:nowrap;}
+  .dmg-float{position:absolute; left:50%; top:-6px; z-index:40; transform:translateX(-50%); font-family:'Baloo 2'; font-weight:800; font-size:34px; color:var(--dmg-float-color); -webkit-text-stroke:5px #2b0805; paint-order:stroke fill; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 10px rgba(0,0,0,.4); font-variant-numeric:tabular-nums lining-nums; letter-spacing:1.5px; /* 2026-10-03 ("the '1' damage number is still weird"): Baloo 2's proportional '1' is a bare stick that the minus glued onto; its tabular '1' has a foot, and the spacing keeps the minus apart */ /* 2026-10-03: stroke now drawn UNDER the fill (paint-order) — the old 3px stroke on top ate thin digits like '1' */ animation:dmgBounceFall 1100ms cubic-bezier(.3,.15,.55,1) forwards; pointer-events:none; white-space:nowrap;}
   .dmg-float.blocked{color:var(--armor);}
   .dmg-float.poison{color:var(--poison);}
   /* Bleed APPLY (2026-09-21, Skills/VFX/SFX audit fix): mirrors .dmg-float.poison just above —
@@ -4404,6 +4404,8 @@
   .entrance-bg.has-shader::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(12,18,8,.30) 0%, rgba(12,18,8,.55) 55%, rgba(12,18,8,.82) 100%);}
   .hs-back.has-shader{background:none;}
   .conquest-map-canvas > .bw-shader-map{z-index:0; border-radius:inherit;}
+  .rw-sec.rw-past{opacity:.55; filter:grayscale(.85); border-top:1px dashed currentColor; padding-top:8px;}
+  .rw-sec.rw-past .rw-head{font-style:italic;}
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}

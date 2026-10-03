@@ -27,8 +27,7 @@ My pushback is in there:
 4. fundamentals before more effects.
 
 There is also a proposed fix order: battle layout, Play width, Deck builder, Arena hierarchy, Codex toolbar, currencies.
-- **Pick:** which items to do, and in what order.
-- **Default:** start with the battle layout.
+- **You (19:44):** OK to the pushback, but WebGL experiments continue alongside. Next UI batch starts with the battle layout.
 
 ## Discuss: needs a conversation, not a pick
 
@@ -170,6 +169,8 @@ The workspace can't download from those sites, so you'd drop the files in, or I 
 
 | # | Decision | Outcome |
 |---|---|---|
+| — | Admins | ✅ jayzhang.here@gmail.com added to `app_admins` (Admin entry, live card/skirmish/raid publishing). |
+| — | Repeat clears | ✅ The win screen shows the first-clear bonus greyed out under "First clear · already earned ✓". |
 | D12 | Passwords | ✅ Minimum length raised to 8 in Supabase (through your Chrome). The leaked-password toggle waits for Pro. |
 | D13 | World map | ✅ Built. A 🧭 World view shows every map as a **compass diamond** (not a round skirmish icon) on one winding trail. Each map's card loads only as you scroll to it; click a diamond to zoom into that map. Art stays per-map, so no 4K world painting is needed. |
 | D14 | Packs | ✅ Only the Sprout Pouch is on sale; Acorn Chest and Golden Case show "Coming soon". |

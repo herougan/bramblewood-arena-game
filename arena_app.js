@@ -10845,6 +10845,8 @@ function renderAdmin(){
     </div>
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
+    <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
+      <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
       <code class="admin-hash" id="adminCardHash" title="${escapeAttr(currentCardDataHash())}">${escapeHtml(currentCardDataHash().slice(0,16))}…</code> <span class="panel-sub">${Object.keys(effectiveCardDefsForHash()).length} cards · baseline build ${escapeHtml(BASELINE_CARD_HASH.slice(0,12))}</span></div>
     ${(RaidM && allRaidDefs().length) ? `<div class="panel admin-subpanel"><h3>🐙 Raids</h3><p class="panel-sub">Parts, HP bars, lock order, stages, scoring and rewards. Publishes live.</p>${allRaidDefs().map(d=> `<button type="button" class="btn small" data-admin-raid="${escapeAttr(d.id)}">✏️ ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)}${d.live===false?' (off)':''}</button>`).join(' ')}</div>` : ''}
@@ -10927,6 +10929,8 @@ function renderAdmin(){
                     // below; the Codex's Create-a-Card button/card-click gate reads adminModeEnabled
                     // fresh the next time IT renders.
   });
+  const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
+  if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
   wireRollTableAdmin();
   wireAdminManageCards();
   document.querySelectorAll('[data-admin-raid]').forEach(b=> b.addEventListener('click', ()=> openRaidEditor(b.dataset.adminRaid)));
@@ -12635,9 +12639,14 @@ function renderBoard(opts){
       if(dance) return ` style="--dance-delay:${(i++ *0.09).toFixed(2)}s"`;
       if(scatter){
         const seed = i++;
-        const dx = (scatterPseudoRand(seed*3+1)-0.5)*70;
-        const dy = (scatterPseudoRand(seed*3+2)-0.5)*36 - 8;
-        const rot = (scatterPseudoRand(seed*3+3)-0.5)*46;
+        // 2026-10-03 ("Upon victory, the cards fly to the right for no reason"): the old offsets
+        // (±35px x, ±23° spin) happened to lean right for the first few seeds, so a beaten row
+        // read as flying off to the right. Now the losers just slump: a small alternating tilt,
+        // a few px of sideways wobble that averages to zero, and a short drop.
+        const side = seed % 2 ? 1 : -1;
+        const dx = side * (2 + scatterPseudoRand(seed*3+1)*6);
+        const dy = 10 + scatterPseudoRand(seed*3+2)*8;
+        const rot = side * (5 + scatterPseudoRand(seed*3+3)*7);
         return ` style="--scatter-delay:${(seed*0.06).toFixed(2)}s; --scatter-dx:${dx.toFixed(1)}px; --scatter-dy:${dy.toFixed(1)}px; --scatter-rot:${rot.toFixed(1)}deg;"`;
       }
       return '';
@@ -14987,6 +14996,9 @@ async function resolveRound(){
         if(payout.gold>0) grantCurrency('gold', payout.gold);
         if(payout.dust>0) grantCurrency('dust', payout.dust);
         m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear}; // read once by the post-match screen below
+        // 2026-10-03 ("First time rewards are displayed below the rewards, greyed out. To teach what
+        // you have earned from this in the past"): on a repeat clear, remember the one-off bonus.
+        if(!isFirstClear) m.conquestFirstClearPast = {gold: rewardTier.first.gold, dust: rewardTier.first.dust, cards: nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId)};
       }
       // Skirmish reward cards (2026-10-02): every card whose source is this exact node is granted on
       // the FIRST clear only.
@@ -15715,6 +15727,15 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(cur.length){
     secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div></div>`);
+  }
+  const past = m.conquestFirstClearPast;
+  if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
+    const defs = getCardDefs();
+    const pills = [];
+    if(past.gold>0) pills.push(`<span class="hud-pill cur-pill rw-cur">${(CURRENCY_META.gold||{}).glyph||''} ${past.gold}<span class="cur-label">${escapeHtml((CURRENCY_META.gold||{}).label||'gold')}</span></span>`);
+    if(past.dust>0) pills.push(`<span class="hud-pill cur-pill rw-cur">${(CURRENCY_META.dust||{}).glyph||''} ${past.dust}<span class="cur-label">${escapeHtml((CURRENCY_META.dust||{}).label||'dust')}</span></span>`);
+    (past.cards||[]).forEach(id=>{ if(defs[id]) pills.push(`<span class="rw-act rw-past-card">${defs[id].icon||'🃏'} ${escapeHtml(defs[id].name)}</span>`); });
+    secs.push(`<div class="rw-sec rw-past" data-tip="You already earned these the first time you cleared this fight"><div class="rw-head">First clear · already earned ✓</div><div class="rw-row">${pills.join('')}</div></div>`);
   }
   if((m.unlockedActivities||[]).length){
     secs.push(`<div class="rw-sec"><div class="rw-head">Unlocked</div><div class="rw-row">${m.unlockedActivities.map(a=>`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`).join('')}</div></div>`);
