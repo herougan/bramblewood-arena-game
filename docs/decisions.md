@@ -73,6 +73,7 @@ Open questions:
 
 | # | Decision | Outcome |
 |---|---|---|
+| — | Tutorial rules | ✅ (22:51) The tutorial must be finished before anything else (Home shows only the tutorial; Profile and Admin stay reachable). Its first guided steps lock every action except the one asked for, Quit included. Passive tips never block. Admin → 🎓 Tutorial editor: castle HP (now 12 vs 10, was 30 vs 30), starting hand, seed, rival names, both decks, every step's text. Save publishes it; a test run grants nothing. |
 | D15 | PixelLab credits | ✅ Wait for the monthly reset, then finish Maps 8–10 and the Home sprites. |
 | D16 | UI/UX review | ✅ The pictures are fine and it's starting to look polished. It's now the ongoing **Polish** track (more animation, glitch fixes), without WebGL. |
 | T3 | Server trust | ✅ Go. Server-issued **single-use seed** (it doubles as the nonce, which stops reward replays); the client sends a transcript and hash; the server replays every action and roll; card-data fingerprint checked; packs rolled on the server. Only pack opens and fight hand-ins talk to the server. |
