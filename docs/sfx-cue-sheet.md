@@ -35,6 +35,14 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 25 | Trench telegraph | Column about to be smashed | Rising creak and rumble | Warning beeps | 800 ms |
 | 26 | Deny | Illegal action | Dull wood knock | Buzz | 150 ms |
 | 27 | Level up | Player level | Bright bell flourish | Level-up jingle | 1.5 s |
+| 28 | Bow loosed | Arrow / Fire Arrow fires | Plucked string and an air whoosh (fire adds crackle) | Twang blip | 220 ms |
+| 29 | Arrow lands | Arrow hits | Wooden thunk with a short quiver | Thud blip | 120 ms |
+| 30 | Bleed-out | A card dies (non-fire) | Low wet squelch, two drips (pitch by cause: poison lower, cold higher) | Down-blip and two drips | 550 ms |
+| 31 | Burn-away | A card burns (heat) | Soft roar with crackles | Noise hiss | 700 ms |
+| 32 | Castle falls | Castle at 0 | Long rumble, stones settling | Long noise fall | 1.4 s |
+| 33 | Pitch | A card is pitched for resources | Wood tock and a bright two-note chime | Coin blip | 330 ms |
+
+**Status (2026-10-05):** cues 28–33 are live as Web Audio synths (`SoundKit.arrowLoose/arrowThunk/bleedOut/burnAway/castleCollapse/pitchChime`), built on two new primitives: filtered noise with a sweeping filter (`fnoise`) and a pitch-swept tone (`sweep`). They follow the "mixed" default for D17: an organic body with a little chip on top.
 
 **Sources, CC0 first:**
 - **Kenney:** Interface Sounds, Impact Sounds, RPG Audio, UI Audio, Casino Audio (card sounds).

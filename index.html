@@ -10925,6 +10925,40 @@ const SoundKit = (()=>{
     src.connect(g); g.connect(c.destination); src.start();
     track(src);
   }
+  // Richer primitives (2026-10-05 SFX pass): band-limited noise with its own envelope and a
+  // sweeping filter (whooshes, crackles, rumbles, squelches), and a pitch-swept tone (twangs, drips).
+  function fnoise(dur, gainPeak, o){
+    o = o || {};
+    if(sfxVolume<=0) return;
+    const c = ac(); if(!c) return;
+    const t0 = c.currentTime + (o.delay||0);
+    const len = Math.max(1, Math.floor(c.sampleRate*dur));
+    const buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    const crackle = o.crackle || 0;
+    for(let i=0;i<len;i++){ let v = Math.random()*2-1; if(crackle && Math.random() < crackle) v *= 6; d[i] = v; }
+    const src = c.createBufferSource(); src.buffer = buf;
+    const f = c.createBiquadFilter(); f.type = o.type || 'bandpass'; f.Q.value = o.q || 1;
+    f.frequency.setValueAtTime(o.freq || 1200, t0);
+    if(o.freqEnd) f.frequency.exponentialRampToValueAtTime(o.freqEnd, t0 + dur);
+    const g = c.createGain(); const att = o.attack != null ? o.attack : 0.01;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, gainPeak*sfxVolume), t0 + att);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    src.connect(f); f.connect(g); g.connect(c.destination); src.start(t0); src.stop(t0 + dur + 0.02);
+    track(src);
+  }
+  function sweep(f0, f1, dur, type, gainPeak, delay){
+    if(sfxVolume<=0) return;
+    const c = ac(); if(!c) return;
+    const t0 = c.currentTime + (delay||0);
+    const osc = c.createOscillator(), g = c.createGain();
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(f0, t0); osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime((gainPeak||0.12)*sfxVolume, t0 + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g); g.connect(c.destination); osc.start(t0); osc.stop(t0 + dur + 0.02);
+    track(osc);
+  }
   // Task list item 8's "voice from a set list" — a short, distinct blip standing in for a
   // character's spoken line (real voice recording is out of scope for a single-file artifact).
   // Deterministic per-seed pitch (see speakLine() in the speech framework below) so the same
@@ -10993,6 +11027,43 @@ const SoundKit = (()=>{
     play(){ tone(440,0.09,'triangle',0.08); },
     exile(){ tone(300,0.2,'sine',0.07); tone(200,0.22,'sine',0.05,0.08); },
     launch(){ tone(950,0.05,'sine',0.06); tone(1300,0.05,'sine',0.045,0.03); },
+    // ---- 2026-10-05 SFX pass (sfx-cue-sheet.md; "mixed" direction: organic body, a touch of chip) ----
+    // Bow loosed: a plucked string (fast-decaying triangle dropping an octave) and an air whoosh.
+    arrowLoose(fire){
+      sweep(330, 150, 0.16, 'triangle', 0.12);
+      fnoise(0.22, 0.10, {type:'bandpass', freq:2600, freqEnd:700, q:1.4, attack:0.02, delay:0.02});
+      if(fire) fnoise(0.32, 0.07, {type:'highpass', freq:1800, crackle:0.04, attack:0.03, delay:0.03});
+    },
+    // Arrow lands: a dull wooden thunk with a short quiver.
+    arrowThunk(fire){
+      fnoise(0.07, 0.16, {type:'lowpass', freq:900, freqEnd:200, attack:0.003});
+      sweep(170, 95, 0.09, 'sine', 0.14);
+      tone(420, 0.05, 'triangle', 0.04, 0.03); tone(400, 0.05, 'triangle', 0.03, 0.08);
+      if(fire) fnoise(0.4, 0.06, {type:'bandpass', freq:900, q:0.7, crackle:0.05, attack:0.02, delay:0.04});
+    },
+    // Bleed-out: a low wet squelch, then two drips.
+    bleedOut(tone2){
+      fnoise(0.28, 0.10, {type:'lowpass', freq:600, freqEnd:120, q:4, attack:0.02});
+      const base = tone2==='cold' ? 1400 : tone2==='poison' ? 700 : 950;
+      sweep(base, base*0.62, 0.07, 'sine', 0.07, 0.28);
+      sweep(base*0.9, base*0.55, 0.07, 'sine', 0.06, 0.46);
+    },
+    // Burn-away: a soft roar with crackles.
+    burnAway(){
+      fnoise(0.7, 0.07, {type:'lowpass', freq:500, freqEnd:200, attack:0.08});
+      fnoise(0.6, 0.05, {type:'highpass', freq:2500, crackle:0.03, attack:0.05});
+    },
+    // Castle falls: a long rumble with stones settling.
+    castleCollapse(){
+      fnoise(1.4, 0.16, {type:'lowpass', freq:220, freqEnd:70, q:0.8, attack:0.05});
+      [0.12, 0.35, 0.55, 0.8].forEach((d,i)=> fnoise(0.12, 0.12 - i*0.02, {type:'lowpass', freq:700, freqEnd:180, attack:0.004, delay:d}));
+      sweep(110, 45, 0.9, 'sine', 0.12, 0.05);
+    },
+    // Pitched a card: a wood tock and a bright two-note chime, so the resource gain reads by ear.
+    pitchChime(){
+      fnoise(0.05, 0.10, {type:'bandpass', freq:1500, q:3, attack:0.002});
+      tone(880, 0.16, 'triangle', 0.08, 0.04); tone(1320, 0.22, 'triangle', 0.07, 0.11);
+    },
     dodge(){ tone(1100,0.05,'triangle',0.05); tone(700,0.05,'triangle',0.04,0.04); },
     shield(){ tone(500,0.08,'square',0.08); tone(760,0.09,'square',0.06,0.04); },
     pickup(){ tone(320,0.045,'sine',0.05); tone(460,0.05,'sine',0.045,0.03); },
@@ -24310,6 +24381,7 @@ function deathVfx(uid){
   const isFlipping = flippingEls.has(String(uid));
   const style = deathStyleFor(uid);
   const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  try{ if(style==='burn') SoundKit.burnAway(); else SoundKit.bleedOut(style); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
     if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
@@ -25376,6 +25448,7 @@ async function showEndSign(m){
       d.style.animationDelay = (i*45) + 'ms'; battlefield.appendChild(d); setTimeout(()=> d.remove(), 1500);
     }
     setTimeout(()=> burnAwayVfx(tile, 1100), 180);
+    try{ SoundKit.castleCollapse(); }catch(e){}
   });
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
@@ -26345,6 +26418,7 @@ function pitchCallout(gains, def){
   const el = document.createElement('div'); el.className = 'pitch-callout'; el.setAttribute('role','status');
   el.innerHTML = `<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`;
   host.appendChild(el); setTimeout(()=> el.remove(), 1700);
+  try{ SoundKit.pitchChime(); }catch(e){}
   gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
 }
 function resourceGainVfx(fromRect, gains){
@@ -26678,7 +26752,7 @@ function renderVfxForEvent(ev){
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     if(ev.ranged){
-      SoundKit.launch();
+      if(!arrowShot) SoundKit.launch();
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
       // they're taking a random 1 damage"): spawnProjectile silently no-ops when its origin
       // element isn't in the DOM (boardCardEl(ev.attUid) can miss if the source already left
@@ -26688,6 +26762,8 @@ function renderVfxForEvent(ev){
       // projectile — and therefore a visible "where this came from" — always plays.
       if(arrowShot){
         const shooter = boardCardEl(ev.attUid);
+        setTimeout(()=>{ try{ SoundKit.arrowLoose(pa.fire); }catch(e){} }, arrowWind);
+        setTimeout(()=>{ try{ if(ev.type!=='evaded') SoundKit.arrowThunk(pa.fire); }catch(e){} }, arrowWind + arrowFlightMs());
         if(shooter && hasGsap()) gsap.fromTo(shooter, {scale:1}, {scale:.96, duration:arrowWind/1000, yoyo:true, repeat:1, ease:'power1.inOut'}); // draw the bow
         setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
