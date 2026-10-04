@@ -51,5 +51,19 @@ depth[corner] = np.maximum(depth[corner], 0.75 + 0.2 * bottom[corner])
 
 img = Image.fromarray((np.clip(depth, 0, 1) * 255).astype(np.uint8), 'L')
 img = img.filter(ImageFilter.GaussianBlur(1.2))   # soften seams so the parallax doesn't tear
-img.save(os.path.join(ROOT, 'art/splash_depth.png'))
-print('wrote art/splash_depth.png', img.size)
+
+# 4. water mask (green channel): only the river ripples and glints. The shader used to guess water
+#    from "blue in the lower half", which also rippled blue hummingbirds and blue flowers.
+#    Keep the largest connected blue region below the horizon (the river), close small gaps
+#    (foam, glints), and feather the edge.
+from scipy import ndimage
+blue = (b > r + 0.12) & (b > g) & (v > horizon + 0.05)
+lab, n = ndimage.label(blue)
+sizes = ndimage.sum(blue, lab, range(1, n + 1))
+water = lab == (int(np.argmax(sizes)) + 1)
+water = ndimage.binary_closing(water, iterations=3)
+water = ndimage.binary_fill_holes(water)
+wimg = Image.fromarray((water * 255).astype(np.uint8), 'L').filter(ImageFilter.GaussianBlur(1.0))
+out = Image.merge('RGB', (img, wimg, Image.new('L', img.size, 0)))
+out.save(os.path.join(ROOT, 'art/splash_depth.png'), optimize=True)
+print('wrote art/splash_depth.png (R = depth, G = water mask)', out.size, 'water px', int(water.sum()))

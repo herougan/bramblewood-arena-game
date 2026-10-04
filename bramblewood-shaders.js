@@ -72,6 +72,9 @@ void main(){
   float green = smoothstep(0.02, 0.14, c0.g - max(c0.r, c0.b));
   // blue in the lower part of the picture is water; blue up top is sky and stays still
   float water = smoothstep(0.03, 0.16, c0.b - max(c0.r, c0.g*0.92)) * smoothstep(0.38, 0.55, iu.y);
+  // a painted scene with a depth map also carries a water mask in its green channel: use that
+  // instead of the colour guess, so blue birds and flowers stay still and only the river moves
+  if(u_hasDepth > 0.5) water = texture2D(u_depthTex, iu).g;
   vec2 px = 1.0/u_texSize;
   // wind: foliage sways in gusts, more near the top of the picture
   float gust = 0.6 + 0.4*sin(t*0.35) * noise(vec2(t*0.2, 1.0));
