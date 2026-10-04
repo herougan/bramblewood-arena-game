@@ -4599,6 +4599,7 @@
   /* Home: Quests and Community read as real buttons, not disabled ghosts over the painting */
   .home-extras .btn.ghost.home-menu-btn-small{background:rgba(250,240,220,.92); color:#3a2a18; border:1px solid rgba(120,80,30,.45); box-shadow:0 4px 12px rgba(0,0,0,.25);}
   .home-extras .btn.ghost.home-menu-btn-small:hover:not(:disabled){background:#fff6e2;}
+  .rw-to-deck{margin-top:8px;}
   .conquest-fs-btn{position:absolute; top:12px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-fs-btn:hover, .conquest-fs-btn:focus-visible{background:rgba(0,0,0,.6);}
   body.conquest-immersive .topbar-wrap, body.conquest-immersive .play-subtabs-row{display:none !important;}
@@ -21311,6 +21312,8 @@ function renderMatchUI(){
       if(!startConquestMatch(nb.mapId, nb.key)){ conquestSelectedNodeKey = nb.key; switchTab('play'); }
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
+    // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
+    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
     // while the card itself pops in with a spring overshoot and the trophy/skull/handshake
@@ -25117,7 +25120,8 @@ function rewardsPanelHTML(m){
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div></div>`);
+    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div>
+      ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="Open your deck to swap ${cards.length===1?'it':'them'} in">🃏 Put ${cards.length===1?'it':'them'} in my deck</button>` : ''}</div>`);
   }
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);

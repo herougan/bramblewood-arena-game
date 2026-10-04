@@ -12191,6 +12191,8 @@ function renderMatchUI(){
       if(!startConquestMatch(nb.mapId, nb.key)){ conquestSelectedNodeKey = nb.key; switchTab('play'); }
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
+    // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
+    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
     // while the card itself pops in with a spring overshoot and the trophy/skull/handshake
@@ -15997,7 +15999,8 @@ function rewardsPanelHTML(m){
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div></div>`);
+    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div>
+      ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="Open your deck to swap ${cards.length===1?'it':'them'} in">🃏 Put ${cards.length===1?'it':'them'} in my deck</button>` : ''}</div>`);
   }
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
