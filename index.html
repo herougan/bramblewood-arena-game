@@ -14490,7 +14490,7 @@ function loadRatingLocal(){
   return RANK_MEAN;
 }
 let myRating = loadRatingLocal();
-function saveRatingLocal(){ try{ localStorage.setItem('bramblewood_arena_rating', String(myRating)); }catch(e){} }
+function saveRatingLocal(){ try{ localStorage.setItem('bramblewood_arena_rating', String(myRating)); }catch(e){} soonCheckMilestones(); }
 function loadCurrencies(){
   try{
     const raw = localStorage.getItem('bramblewood_arena_currencies');
@@ -14865,7 +14865,7 @@ function loadCardCopies(){
   return {};
 }
 let myCardCopies = loadCardCopies();
-function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); }catch(e){} }
+function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); }catch(e){} soonCheckMilestones(); }
 // One-time migration (2026-09-27): every card this player unlocked BEFORE the Nest existed has
 // no copy record at all yet — without this, those cards would show as owned x0 in the new
 // screen despite being real, played, unlocked cards. Seeds exactly 1 non-foil copy for any
@@ -16314,7 +16314,7 @@ function mapSpotsHTML(map, positions, progress){
   return FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
     const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -14 : 14)));
+    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -18 : 14)));
     const open = featureUnlocked(sp.key);
     return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
@@ -16513,6 +16513,15 @@ function xpMilestones(){
   [15,20,30].forEach(n=>{ if((st.abBestWins||0) >= n) out.push({id:'ab:'+n, xp:250, label:`${n} Autobattler wins in a run`}); });
   return out;
 }
+// 2026-10-04 ("achievement toasts only came out on the Home menu — they should come out as you earn
+// them"): milestones were only checked when Home rendered. Now every save that can cross one
+// (conquest clears, collection, lifetime stats, rating) schedules a check, coalesced into one.
+var milestoneCheckTimer = null; // var, not let: saves during start-up run before this line
+function soonCheckMilestones(){
+  if(typeof window === 'undefined') return;
+  clearTimeout(milestoneCheckTimer);
+  milestoneCheckTimer = setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 700);
+}
 function checkXpMilestones(){
   const x = loadXp(); const have = new Set(x.milestones);
   const fresh = xpMilestones().filter(m=> !have.has(m.id));
@@ -16597,7 +16606,7 @@ function bumpQuestCounter(counter, n){
   saveQuestState(q);
   const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
-  refreshQuestBadge();
+  refreshQuestBadge(); soonCheckMilestones();
 }
 // The tiers a player can currently see: every fully-claimed tier plus the first unfinished one.
 function visibleQuestTiers(kind, q){
@@ -17282,7 +17291,7 @@ function loadConquestProgress(){
   try{ const raw = localStorage.getItem(CONQUEST_PROGRESS_KEY); if(raw){ const p = JSON.parse(raw); if(!p.ranks) p.ranks = {}; return p; } }catch(e){}
   return {completed:[], raidUnlocked:[], ranks:{}};
 }
-function saveConquestProgress(p){ try{ localStorage.setItem(CONQUEST_PROGRESS_KEY, JSON.stringify(p)); }catch(e){} }
+function saveConquestProgress(p){ try{ localStorage.setItem(CONQUEST_PROGRESS_KEY, JSON.stringify(p)); }catch(e){} soonCheckMilestones(); }
 // Skirmish rank (2026-09-19, item #4: "some skirmishes require C, B, A, S ranked wins to reveal
 // the [enemy deck] contents"): a simple post-match grade based on how much of your OWN castle's
 // HP you still had left the moment the enemy's fell — a clean, always-available signal (no new
