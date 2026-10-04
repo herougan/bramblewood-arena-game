@@ -4462,6 +4462,28 @@
   .card-tile.is-holo.holo-active .holo-glare, .card-tile.is-holo.holo-tilt .holo-glare{opacity:1;}
   .card-tile.is-holo.holo-active .holo-layer{opacity:.55;}
   @media (prefers-reduced-motion: reduce){ .card-tile.is-holo{animation:none !important; transform:none !important;} }
+  /* Rarity variants (2026-10-04): pearl = soft pastel sheen; cosmos = deep-space band + glitter */
+  .card-tile.holo-pearl .holo-layer{
+    background-image:
+      linear-gradient(115deg, hsl(200 60% 82%) 0%, hsl(280 45% 85%) 20%, hsl(340 55% 86%) 40%, hsl(40 60% 85%) 60%, hsl(160 45% 82%) 80%, hsl(200 60% 82%) 100%),
+      repeating-linear-gradient(35deg, rgba(255,255,255,.10) 0 1px, transparent 1px 6px);
+    background-size:250% 250%, auto; mix-blend-mode:soft-light; opacity:.6; filter:none;}
+  .card-tile.holo-pearl.holo-active .holo-layer{opacity:.8;}
+  .card-tile.holo-cosmos .holo-layer{
+    background-image:
+      repeating-linear-gradient(125deg, hsl(250 85% 55%) 0%, hsl(290 85% 60%) 8%, hsl(200 95% 60%) 16%, hsl(330 90% 62%) 24%, hsl(250 85% 55%) 32%),
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,.25) 0 1px, transparent 2px),
+      radial-gradient(circle at 70% 65%, rgba(255,255,255,.2) 0 1px, transparent 2px);
+    background-size:320% 320%, 23px 23px, 31px 31px; opacity:.45;}
+  .card-tile.holo-cosmos.holo-active .holo-layer{opacity:.62;}
+  .holo-glitter{position:absolute; inset:0; pointer-events:none; z-index:7; border-radius:inherit; overflow:hidden;}
+  .holo-glitter i{position:absolute; width:9px; height:9px; margin:-4.5px; opacity:0; animation:holoTwinkle 2.6s ease-in-out infinite;
+    background:radial-gradient(circle, #fff 0 1.2px, transparent 1.6px), linear-gradient(90deg, transparent 40%, rgba(255,255,255,.95) 50%, transparent 60%), linear-gradient(0deg, transparent 40%, rgba(255,255,255,.95) 50%, transparent 60%);}
+  @keyframes holoTwinkle{0%,100%{opacity:0; transform:scale(.3) rotate(0deg);} 45%{opacity:1; transform:scale(1) rotate(45deg);} 60%{opacity:.2;}}
+  @media (prefers-reduced-motion: reduce){ .holo-glitter i{animation:none; opacity:.5;} }
+  .card-pop-visual{position:relative;}
+  .cd-foil-chip{position:absolute; top:-10px; left:50%; transform:translateX(-50%); z-index:9; font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; color:#2a1d3a;
+    background:linear-gradient(110deg,#ffd6f0,#d6f0ff,#e8ffd6,#fff2c6); box-shadow:0 2px 6px rgba(0,0,0,.35);}
   .battlefield > .bw-shader-battle{z-index:0; border-radius:inherit;}
   .battlefield > .battlefield-inner, .battlefield > .bf-hp{position:relative; z-index:1;}
   #rowMine.turn-glow{animation:turnGlow 1.8s ease-out;}

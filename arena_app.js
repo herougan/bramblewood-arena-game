@@ -3169,6 +3169,7 @@ function openCardDetail(defId){
   const overlay = document.getElementById('cardDetailOverlay');
   if(!d || !overlay) return;
   cardDetailOpenId = defId;
+  const ownsFoil = (typeof myCardCopies !== 'undefined') && (myCardCopies[defId] || []).some(c=>c && c.foil);
   const lines = describeEffects(d);
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
@@ -3183,7 +3184,7 @@ function openCardDetail(defId){
     : '';
   overlay.innerHTML = `<div class="modal card-detail-card">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
-      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile'})}</div>
+      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}</div>
       ${abilityHTML}
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
@@ -18780,10 +18781,22 @@ function renderNest(){
 // colour-dodge so the art itself seems to catch the light. The pointer (or phone tilt) moves the
 // light and tilts the card; untouched, it drifts slowly. Used on foil copies in the Nest and on
 // Rare-and-up cards in the pack reveal. decorateHolo() adds the layer; wireHolo() is global.
+// Foil look per rarity (effects catalogue, 2026-10-04): pearl for Rare–Super Rare (soft pastel
+// sheen), classic rainbow holo for Epic–Quest Unique and foil commons, "cosmos" (deep-space hue
+// band plus twinkling glitter) for Legendary and up.
+function holoClass(d){
+  const i = RARITY_TIER_BANDS.indexOf((d && d.rarity) || 'common');
+  return 'is-holo ' + (i >= 11 ? 'holo-cosmos' : (i >= 4 && i <= 6) ? 'holo-pearl' : 'holo-rainbow');
+}
 function decorateHolo(root){
   (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
     if(t.querySelector(':scope > .holo-layer')) return;
     const l = document.createElement('span'); l.className = 'holo-layer'; l.setAttribute('aria-hidden','true'); t.appendChild(l);
+    if(t.classList.contains('holo-cosmos')){
+      const gl = document.createElement('span'); gl.className = 'holo-glitter'; gl.setAttribute('aria-hidden','true');
+      gl.innerHTML = Array.from({length:9}, (_, k)=> `<i style="left:${(11 + (k*37)%80)}%;top:${(9 + (k*53)%82)}%;animation-delay:${(k*0.37)%2.6}s"></i>`).join('');
+      t.appendChild(gl);
+    }
     const g = document.createElement('span'); g.className = 'holo-glare'; g.setAttribute('aria-hidden','true'); t.appendChild(g);
   });
 }
@@ -18830,7 +18843,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" title="${n} cop${n===1?'y':'ies'} owned${hasFoil?' · ✨ foil':''} — click to toggle the shimmer">
-    ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? 'is-holo' : ''})}
+    ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? holoClass(d) : ''})}
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -18890,7 +18903,7 @@ function openPackAnimation(pack, results, extra){
     <div class="pack-open-pack" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
     <div class="pack-open-cards" id="poCards">${results.map((r,i)=> { const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
       return `<button type="button" class="po-card ${r.isNew?'is-new':''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
-        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? 'is-holo' : ''})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
+        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
     <div class="pack-open-foot" id="poFoot" hidden><p>${newCount ? `<b>${newCount} new card${newCount===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>
       <div class="po-actions"><button type="button" class="btn" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button></div></div>
     <button type="button" class="btn ghost po-skip" id="poSkip">Reveal all</button>
