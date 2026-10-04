@@ -4941,9 +4941,9 @@
       <div class="settings-panel" id="settingsPanel" hidden>
         <div class="settings-panel-title">Settings</div>
         <div class="settings-row">
-          <div class="settings-row-label"><span>🎵 Music</span><span class="settings-row-val" id="musicVolumeVal">60%</span></div>
+          <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeVal">60%</span></div>
           <input type="range" id="musicVolumeSlider" min="0" max="100" step="1" aria-label="Music volume">
-          <div class="settings-row-note">No music track yet — this is ready for when there is.</div>
+          <div class="settings-row-note">The sound of each place: birds, wind, water, drips. Music comes later.</div>
         </div>
         <div class="settings-row">
           <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeVal">100%</span></div>
@@ -11036,9 +11036,11 @@ const SoundKit = (()=>{
     // persists the choice so a future music system has a real, already-user-set volume to start
     // from instead of silently defaulting to full blast the day it ships.
     getMusicVolume(){ return musicVolume; },
+    audioContext(){ return ac(); },
     setMusicVolume(v){
       musicVolume = Math.max(0, Math.min(1, v));
       try{ localStorage.setItem('bw_musicVolume', String(musicVolume)); }catch(e){}
+      try{ if(typeof Ambience!=='undefined') Ambience.setVolume(musicVolume); }catch(e){}
     },
     voiceTone,
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
@@ -11265,6 +11267,132 @@ const SoundKit = (()=>{
     sweepTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
   };
 })();
+// ---- Ambience (2026-10-05, immersion point #1: "every place should sound like itself") ----
+// A soundscape per place, synthesised live (no audio files): continuous "beds" (filtered noise
+// with slow movement) plus little scheduled events (birds, drips, frogs, crackles, bubbles,
+// gusts). Same 0–11 kinds as the map shaders (ShaderM.MAP_KIND), plus 'home'. Driven by the
+// 🎵 Music slider (no music track exists yet, so the slider now controls this). Starts on the
+// first tap/key (browsers block audio before a gesture), crossfades between places, and goes
+// quiet while the tab is hidden.
+const Ambience = (()=>{
+  let cur = null, wanted = null, vol = 0.6, unlocked = false, master = null;
+  try{ const v = localStorage.getItem('bw_musicVolume'); if(v!=null) vol = Math.max(0, Math.min(1, parseFloat(v))); }catch(e){}
+  const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
+  const LEVEL = 0.55;
+  function out(){
+    const c = C(); if(!c) return null;
+    if(!master){ master = c.createGain(); master.gain.value = vol*LEVEL; master.connect(c.destination); }
+    return master;
+  }
+  let noiseBuf = null;
+  function noiseBuffer(c){
+    if(noiseBuf) return noiseBuf;
+    const len = c.sampleRate*3, b = c.createBuffer(1, len, c.sampleRate), d = b.getChannelData(0);
+    let last = 0; for(let i=0;i<len;i++){ const w = Math.random()*2-1; last = (last + 0.04*w)/1.04; d[i] = w*0.55 + last*3.2; } // pinkish
+    return (noiseBuf = b);
+  }
+  // A continuous bed: looping noise -> filter -> gain, with optional slow movement on loudness and pitch.
+  function bed(scene, o){
+    const c = C(); const src = c.createBufferSource(); src.buffer = noiseBuffer(c); src.loop = true;
+    src.playbackRate.value = 0.9 + Math.random()*0.2;
+    const f = c.createBiquadFilter(); f.type = o.type || 'lowpass'; f.frequency.value = o.freq || 500; f.Q.value = o.q || 0.7;
+    const g = c.createGain(); g.gain.value = o.gain || 0.04;
+    src.connect(f); f.connect(g); g.connect(scene.bus);
+    if(o.lfo){ const l = c.createOscillator(), lg = c.createGain(); l.frequency.value = o.lfo; lg.gain.value = (o.gain||0.04)*(o.depth||0.5); l.connect(lg); lg.connect(g.gain); l.start(); scene.nodes.push(l); }
+    if(o.sweep){ const l = c.createOscillator(), lg = c.createGain(); l.frequency.value = o.sweep; lg.gain.value = o.sweepDepth || (o.freq||500)*0.5; l.connect(lg); lg.connect(f.frequency); l.start(); scene.nodes.push(l); }
+    if(o.am){ const l = c.createOscillator(), lg = c.createGain(); l.frequency.value = o.am; lg.gain.value = (o.gain||0.04)*0.9; l.connect(lg); lg.connect(g.gain); l.start(); scene.nodes.push(l); }
+    src.start(); scene.nodes.push(src);
+  }
+  function drone(scene, freq, gain){
+    const c = C(); const o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = freq; g.gain.value = gain;
+    o.connect(g); g.connect(scene.bus); o.start(); scene.nodes.push(o);
+  }
+  // One-shot sounds into the scene's bus.
+  function blip(scene, f0, f1, dur, type, gain, delay){
+    const c = C(); const t = c.currentTime + (delay||0); const o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + Math.min(0.02, dur*0.3)); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(scene.bus); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function puff(scene, dur, gain, type, freq, q, delay, freqEnd){
+    const c = C(); const t = c.currentTime + (delay||0); const src = c.createBufferSource(); src.buffer = noiseBuffer(c);
+    const f = c.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.setValueAtTime(freq || 1000, t); f.Q.value = q || 1;
+    if(freqEnd) f.frequency.exponentialRampToValueAtTime(freqEnd, t + dur);
+    const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(gain, t + dur*0.3); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(f); f.connect(g); g.connect(scene.bus); src.start(t, Math.random()*2); src.stop(t + dur + 0.05);
+  }
+  const rnd = (a,b)=> a + Math.random()*(b-a);
+  const bird = sc=>{ const n = 2 + Math.floor(Math.random()*4), base = rnd(2300, 3600); for(let i=0;i<n;i++) blip(sc, base*rnd(0.9,1.15), base*rnd(1.1,1.4), rnd(0.05,0.11), 'sine', 0.035, i*rnd(0.09,0.15)); };
+  const frog = sc=>{ const n = 2 + Math.floor(Math.random()*3), f = rnd(120, 200); for(let i=0;i<n;i++) blip(sc, f*1.4, f, 0.09, 'square', 0.018, i*0.16); };
+  const drip = sc=>{ const f = rnd(900, 1500); blip(sc, f, f*0.6, 0.06, 'sine', 0.05); blip(sc, f*0.95, f*0.58, 0.06, 'sine', 0.02, 0.26); blip(sc, f*0.9, f*0.56, 0.06, 'sine', 0.008, 0.52); };
+  const crackle = sc=>{ for(let i=0;i<3;i++) puff(sc, 0.03, 0.05, 'highpass', 3000, 0.7, i*rnd(0.02,0.08)); };
+  const bubble = sc=>{ const n = 2 + Math.floor(Math.random()*4); for(let i=0;i<n;i++){ const f = rnd(250, 500); blip(sc, f, f*2.4, 0.06, 'sine', 0.03, i*rnd(0.05,0.12)); } };
+  const gust = sc=> puff(sc, rnd(2.5, 4.5), 0.06, 'bandpass', rnd(350, 600), 2, 0, rnd(800, 1300));
+  const clank = sc=>{ const f = rnd(500, 900); blip(sc, f, f*0.98, 0.5, 'triangle', 0.02); blip(sc, f*2.76, f*2.7, 0.3, 'sine', 0.008); };
+  const thunder = sc=> puff(sc, 3.2, 0.12, 'lowpass', 300, 0.6, 0, 60);
+  const cry = sc=> blip(sc, rnd(1700, 2100), rnd(1100, 1300), 0.55, 'sine', 0.025);
+  const RECIPES = {
+    home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
+    0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
+    1:  {beds:[{type:'bandpass', freq:850, q:0.5, gain:0.04, lfo:0.11}], events:[[frog, 2, 6], [bird, 6, 14]]},
+    2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4]]},
+    3:  {beds:[{freq:200, gain:0.05, lfo:0.04}], drone:[55, 0.012], events:[[drip, 1, 4]]},
+    4:  {beds:[{freq:600, gain:0.035, lfo:0.06}, {type:'bandpass', freq:4600, q:8, gain:0.012, am:28}], events:[[cry, 10, 22]]},
+    5:  {beds:[{type:'bandpass', freq:550, q:3, gain:0.06, sweep:0.07, sweepDepth:250}], events:[[gust, 5, 11]]},
+    6:  {beds:[{freq:300, gain:0.07, lfo:0.05}], events:[[bubble, 1, 3.5]]},
+    7:  {beds:[{freq:250, gain:0.05, lfo:0.05}, {type:'bandpass', freq:3600, q:6, gain:0.011, am:22}], events:[[frog, 1.5, 5]]},
+    8:  {beds:[{freq:110, gain:0.09, lfo:0.06, depth:0.6}], events:[[crackle, 0.5, 1.6], [clank, 5, 12]]},
+    9:  {beds:[{type:'bandpass', freq:800, q:1, gain:0.05, sweep:0.05, sweepDepth:300}], events:[[cry, 8, 18], [gust, 6, 12]]},
+    10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [thunder, 14, 30]]},
+    11: {beds:[{type:'highpass', freq:1500, gain:0.05}, {freq:420, gain:0.03, lfo:0.08}], events:[[drip, 2, 5], [thunder, 20, 40]]},
+  };
+  function build(kind){
+    const c = C(), o = out(); if(!c || !o) return null;
+    const r = RECIPES[kind]; if(!r) return null;
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.8); bus.connect(o);
+    const sc = {kind, bus, nodes:[], timers:[], alive:true};
+    r.beds.forEach(b=> bed(sc, b));
+    if(r.drone) drone(sc, r.drone[0], r.drone[1]);
+    (r.events||[]).forEach(([fn, lo, hi])=>{
+      const next = ()=>{ if(!sc.alive) return; if(!document.hidden && vol > 0){ try{ fn(sc); }catch(e){} } sc.timers.push(setTimeout(next, rnd(lo, hi)*1000)); };
+      sc.timers.push(setTimeout(next, rnd(lo, hi)*500));
+    });
+    return sc;
+  }
+  function retire(sc){
+    if(!sc) return; sc.alive = false; sc.timers.forEach(clearTimeout);
+    const c = C(); if(!c) return;
+    try{ sc.bus.gain.cancelScheduledValues(c.currentTime); sc.bus.gain.setValueAtTime(Math.max(0.0001, sc.bus.gain.value), c.currentTime); sc.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 1.4); }catch(e){}
+    setTimeout(()=>{ sc.nodes.forEach(n=>{ try{ n.stop(); }catch(e){} }); try{ sc.bus.disconnect(); }catch(e){} }, 1600);
+  }
+  function apply(){
+    if(!unlocked) return;
+    if(cur && cur.kind === wanted) return;
+    retire(cur); cur = null;
+    if(wanted != null && vol > 0) cur = build(wanted);
+  }
+  function unlock(){
+    if(unlocked) return; const c = C(); if(!c) return;
+    try{ if(c.state === 'suspended') c.resume(); }catch(e){}
+    unlocked = true; apply();
+  }
+  if(typeof window !== 'undefined'){
+    ['pointerdown','keydown','touchstart'].forEach(ev=> window.addEventListener(ev, unlock, {passive:true}));
+    document.addEventListener('visibilitychange', ()=>{ const c = C(); if(!c || !master) return; master.gain.setTargetAtTime(document.hidden ? 0 : vol*LEVEL, c.currentTime, 0.3); });
+  }
+  return {
+    play(kind){ wanted = kind; apply(); },
+    stop(){ wanted = null; retire(cur); cur = null; },
+    current(){ return cur ? cur.kind : null; },
+    setVolume(v){ vol = v; const c = C(); if(master && c) master.gain.setTargetAtTime(vol*LEVEL, c.currentTime, 0.1); if(vol <= 0){ retire(cur); cur = null; } else apply(); },
+  };
+})();
+function ambienceKindForMatch(m){
+  if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
+  const mapId = (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
+  const k = (typeof BramblewoodShaders!=='undefined' && BramblewoodShaders.MAP_KIND) ? BramblewoodShaders.MAP_KIND[mapId] : 0;
+  return k == null ? 0 : k;
+}
 
 /* ============================================================
    PART 4 — hover popover (shared by all three tabs)
@@ -15691,7 +15819,7 @@ function renderPlay(){
             <div class="settings-panel" id="settingsPanelPlaySub" hidden>
               <div class="settings-panel-title">Settings</div>
               <div class="settings-row">
-                <div class="settings-row-label"><span>🎵 Music</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
+                <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
                 <input type="range" id="musicVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Music volume">
               </div>
               <div class="settings-row">
@@ -18301,6 +18429,7 @@ function renderConquestSubTab(body){
   }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   try{ mountMapShader(document.getElementById('conquestCanvas'), map.id); }catch(e){}
+  try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(ak == null ? 0 : ak); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   function nodeTooltipHTML(node){
@@ -21183,7 +21312,7 @@ function hudSettingsWidgetHTML(){
       <div class="settings-panel-title">Settings</div>
       ${(matchState && matchState.drawOffered && !matchState.over) ? `<div class="settings-row"><button type="button" class="btn small primary" id="acceptDrawHudBtn" style="width:100%">🤝 Accept the draw offer</button></div>` : ''}
       <div class="settings-row">
-        <div class="settings-row-label"><span>🎵 Music</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
+        <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
         <input type="range" id="musicVolumeSliderHud" min="0" max="100" step="1" aria-label="Music volume">
       </div>
       <div class="settings-row">
@@ -21966,6 +22095,7 @@ function wireDropZones(){
   // appended into it since the last full render. Toggling visibility in place keeps them intact.
   wireFacingHover();
   try{ mountBattleWeather(matchState); }catch(e){}
+  try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
   const battleLogToggle = document.getElementById('battleLogToggle');
@@ -29449,6 +29579,9 @@ function switchTab(tab){
   if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;
+  // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
+  // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
+  try{ if(tab==='home') Ambience.play('home'); else if(tab!=='play') Ambience.stop(); }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
