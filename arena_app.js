@@ -14055,9 +14055,12 @@ function fitBattlefieldZoom(){
     const heightScale = rect.height>0 ? availableHeight/rect.height : 1;
     return {containerWidth, availableHeight, scale: Math.min(widthScale, heightScale)};
   }
+  const wasZoomed = !!(appWrap && appWrap.classList.contains('battlefield-zoomed'));
   if(appWrap) appWrap.classList.remove('battlefield-zoomed');
   const baseline = measure();
-  const needsZoom = baseline.scale < 0.995;
+  // Hysteresis (2026-10-05): once widened, stay wide until the board clearly fits the narrow
+  // column again, so a row hovering at the threshold doesn't flip the whole column back and forth.
+  const needsZoom = baseline.scale < (wasZoomed ? 1.06 : 0.995);
   if(appWrap) appWrap.classList.toggle('battlefield-zoomed', needsZoom);
   const m = needsZoom ? measure() : baseline;
 
@@ -15014,8 +15017,10 @@ function deathVfx(uid){
 function glideFromRect(el, from){
   if(!el || !from || !el.isConnected || !hasGsap()) return;
   const to = el.getBoundingClientRect();
-  const dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
+  let dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+  dx /= sc; dy /= sc;
   gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration:Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease:'power2.out', clearProps:'x,y'});
 }
 // Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
@@ -15031,6 +15036,22 @@ function glideFromRect(el, from){
     requestAnimationFrame(tick);
     if(!matchState || !hasGsap()) return;
     const rows = document.querySelectorAll('#rowMine, #rowEnemy'); if(!rows.length) return;
+    // Castle tiles and hand cards (2026-10-05): measured against the viewport. They move only
+    // when the page around them reflows (the play column widening for a zoomed-out board, the
+    // pill row appearing), never on purpose, so any untweened sideways/vertical jump is a snap.
+    document.querySelectorAll('[data-hq], #handStrip .card-tile').forEach(el=>{
+      const r = el.getBoundingClientRect(); if(!r.width) return;
+      const prev = last.get(el);
+      const busy = gsap.isTweening(el) || el.classList.contains('dragging') || (el.getAnimations && el.getAnimations().some(a=> a.playState==='running'));
+      if(prev && !busy && !prev.busy && Math.abs(r.width - prev.w) < 2){
+        const dx = prev.x - r.left, dy = prev.y - r.top;
+        if((Math.abs(dx) > 12 && Math.abs(dx) < 400) || (Math.abs(dy) > 12 && Math.abs(dy) < 120)){
+          gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration:.28, ease:'power2.out', clearProps:'x,y'});
+          last.set(el, {x:prev.x, y:prev.y, w:r.width, busy:true}); return;
+        }
+      }
+      last.set(el, {x:r.left, y:r.top, w:r.width, busy});
+    });
     // measured against the board's inner layer (which only the camera pan/zoom moves), not the
     // row: a row that changes width re-centres itself, carrying its cards with it
     const inner = document.getElementById('battlefieldInner');
@@ -15041,10 +15062,16 @@ function glideFromRect(el, from){
         const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
         const prev = last.get(el);
         const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid));
-        if(prev && !busy && !prev.busy && Math.abs(pos.w - prev.w) < 2){
+        // (2026-10-05) No "was animating last frame" exemption: an animation that ends normally
+        // ends where the card visibly is, so a jump on the frame it's released IS a snap (a Flip
+        // or entrance whose target went stale because the row changed mid-slide).
+        if(prev && !busy && Math.abs(pos.w - prev.w) < 2){
           const dx = prev.x - pos.x, dy = prev.y - pos.y;
           if(Math.abs(dx) > 12 && Math.abs(dy) < 40){
-            gsap.fromTo(el, {x:dx}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
+            // dx is in screen pixels; the card lives inside the (possibly zoomed) board, so its own
+            // x is in board pixels — divide by the board's scale or a zoomed-out board under-corrects.
+            const sc = (typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+            gsap.fromTo(el, {x:dx/sc}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
             last.set(el, {x:pos.x + dx, y:pos.y, w:pos.w, busy:true});
             return;
           }

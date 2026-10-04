@@ -4553,6 +4553,10 @@
   .battlefield > .bf-hp .bf-hp-num small{font-size:10px;}
   .battlefield > .bf-hp.is-faced .bf-hp-track{box-shadow:inset 0 0 0 2px rgba(255,215,122,.9);}
   #battlefieldEl{padding-top:24px; padding-bottom:24px;}
+  /* 2026-10-05: the resource-pill row keeps its height even with nothing to show, so the castle,
+     hand and everything below it never jump up and down as Lumber hits 0 and comes back. */
+  #appWrap.in-match #view-play .hud{min-height:36px;}
+  @media (max-width:699px){ #appWrap.in-match #view-play .hud{min-height:33px;} }
   /* Profile (2026-10-04, "sections should have the same widths and margins between them") */
   #view-profile{display:flex; flex-direction:column; gap:16px; align-items:stretch;}
   #view-profile > .panel{width:100%; max-width:880px; margin:0 auto !important; box-sizing:border-box;}
