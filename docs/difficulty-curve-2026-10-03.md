@@ -80,4 +80,39 @@ The new Map 2 decks are lighter water decks with fewer Krakens and Humpbacks, an
 
 The win rates are for a deck built from what a player owns after Map 1, with the AI piloting both sides. 2-2 used to be the outlier (100%); it is now the step up after 2-1.
 
-**Next:** Maps 3+ still start at about 0–40%. Same treatment once you're happy with these two.
+## Maps 3–4 (2026-10-04, auto-tuned)
+
+**The tool:** `node tools/autotune_map.js <mapId> [games]`. For each node, in order, it builds the deck a player would own arriving there: base cards plus every earlier skirmish reward. Then it adjusts the node toward a target win rate:
+- too hard: lower the castle HP, then swap a copy of the node's strongest card for its weakest;
+- too easy: the reverse, and raise HP.
+
+**Targets:** first skirmish ~85%, sliding to ~60% by the last skirmish; elites ~45%; boss ~35%; raid boss ~20–35%. It only prints a proposal; I applied it by hand, clamping any card to 6 copies.
+
+**New reward cards:**
+- **Map 3:** Pack Rat Looter (3-1), Camouflage Frog (3-2), Slowpoke Sentinel (3-3), Duckling Squadron (3-4), Canopy Sloth Guardian (3-5), Glacier Wolf Pack (3-6, boss).
+- **Map 4:** Blind Cave Fish (4-2), Sulfur Cinder Moth (4-4), Echo Screecher (4-6), Vampire Roost (4-7), Stalactite Golem (4-8, boss).
+- **Swapped out:** I first gave Narwhal Lancer (7/20) for 3-5. It made all of Map 4 trivial, so it's now Canopy Sloth Guardian.
+
+Win rates, old → new:
+
+| Node | Win % | Castle HP |
+|---|---|---|
+| 3-1 | 13 → 85 | 36 → 16 |
+| 3-2 | 30 → 62 | 40 → 16 |
+| 3-3 elite | 0 → 47 | |
+| 3-4 elite | 28 → 45 | |
+| 3-5 elite | 7 → 45 | 80 → 45 |
+| 3-6 boss | 32 (unchanged) | |
+| 4-1 | 43 → 82 | |
+| 4-2 | 100 → 77 | |
+| 4-3 | 3 → 70 | |
+| 4-4 | 98 → 80 | |
+| 4-5 | 3 → 65 | |
+| 4-6 | 100 → 72 | |
+| 4-7 elite | 87 → 53 | |
+| 4-8 boss | 67 → 47 | |
+| Deep Troll raid | 82 → 35 | |
+
+**Known quirk:** some early Map 3–4 castles now have low HP (16–19). The difficulty comes from their decks instead. If you'd rather castles always grow map to map, raise HP and soften the decks in the skirmish editor.
+
+**Next:** Maps 5–11, with the same tool, once you've played Maps 1–4.
