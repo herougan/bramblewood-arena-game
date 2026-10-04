@@ -106,6 +106,10 @@ out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encod
 _depth_path = SCRATCH + "art/splash_depth.png"
 _depth_uri = ("data:image/png;base64," + base64.b64encode(open(_depth_path, "rb").read()).decode("ascii")) if os.path.exists(_depth_path) else ""
 app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
+# Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): small pixel-art PNGs from art/fx/.
+for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "art/fx/fire_arrow.png")):
+    _fp = SCRATCH + _fn
+    app_src = app_src.replace(_ph, ("data:image/png;base64," + base64.b64encode(open(_fp, "rb").read()).decode("ascii")) if os.path.exists(_fp) else "", 1)
 # Home 2.5D layers (2026-10-03): foreground otter/hummingbird sprites (transparent PNGs) if present.
 import os
 def _home_sprite(name):

@@ -294,6 +294,9 @@ const PASSIVE_DEFS = [
   // behavior of the attacker — see computeHitDamage in bramblewood-engine.js for the actual
   // bonus-damage check. Retroactively tagged the two existing cards whose names already say
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
+  // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the enemy facing it (a random enemy if none, the castle if the board is empty).`},
+  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the enemy facing it (Heat resistance and weakness apply).`},
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
 ];
 const ACTIVE_PRESETS = [
@@ -16099,7 +16102,9 @@ function vfxKindOf(ev){
 }
 function delayForEvent(ev, prevKind){
   let base;
-  if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  if(ev.type==='arrow') base = 40;
+  else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
+  else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
   else if(ev.type==='death') base = 550; // was 1100 -- chain 2x faster
   else if(ev.type==='render') base = 780;
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
@@ -16418,6 +16423,7 @@ function logText(ev){
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
+    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`};
     case 'revive': return {cls:'gold', text:`${nm(ev.defId)} refused to die — revived at 1 HP! ✨`};
     case 'collapseIn': return {cls:'', text:`${nm(ev.defId)} falls into the center from the ${ev.fromSide}. ➡`};
     case 'death': return {cls:'', text:`${nm(ev.defId)} died.`};
@@ -17054,6 +17060,41 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
     flyBetweenRects(fromRect, toRectFallback, (defs[id]&&defs[id].icon)||'🌰');
   }
 }
+// Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): a pixel-art arrow PNG, aimed at the
+// target, that crosses the board fast (accelerating), sticks in the target for a moment and fades.
+// Fire Arrow trails embers and glows.
+const ARROW_PNG = (()=>{ const v = "__ARROW_PNG__"; return v.indexOf('__ARROW') === 0 ? '' : v; })();
+const FIRE_ARROW_PNG = (()=>{ const v = "__FIRE_ARROW_PNG__"; return v.indexOf('__FIRE') === 0 ? '' : v; })();
+function arrowFlightMs(){ const mult = (matchState && matchState.speedMult) || 1; return Math.max(90, Math.round(260 / mult)); }
+function spawnArrowProjectile(fromEl, toEl, fire){
+  if(!fromEl || !toEl) return;
+  const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
+  const sx = a.left + a.width/2, sy = a.top + a.height/2;
+  // aim a little off-centre so a volley of arrows doesn't stack on one pixel
+  const ex = b.left + b.width*(0.38 + Math.random()*0.24), ey = b.top + b.height*(0.36 + Math.random()*0.28);
+  const ang = Math.atan2(ey - sy, ex - sx) * 180 / Math.PI;
+  const el = document.createElement('div'); el.className = 'arrow-proj' + (fire ? ' is-fire' : ''); el.setAttribute('aria-hidden', 'true');
+  const src = fire ? (FIRE_ARROW_PNG || ARROW_PNG) : ARROW_PNG;
+  el.innerHTML = src ? `<img src="${src}" alt="">` : '<span class="arrow-fallback">➶</span>';
+  document.body.appendChild(el);
+  const ms = arrowFlightMs(), W = 76, H = 27;
+  if(!hasGsap()){ setTimeout(()=> el.remove(), ms); return; }
+  gsap.set(el, {x:sx - W/2, y:sy - H/2, rotation:ang, opacity:1, scaleX:.7});
+  const tl = gsap.timeline({onComplete:()=> el.remove()});
+  tl.to(el, {x:ex - W*0.85, y:ey - H/2, scaleX:1.12, duration:ms/1000, ease:'power2.in'})
+    .set(el, {scaleX:1})
+    .to(el, {rotation: ang + (Math.random()*10 - 5), duration:.06, ease:'power1.out'})   // the thunk as it sticks
+    .to(el, {opacity:0, duration:.32, delay:.22, ease:'power1.in'});
+  if(fire){
+    for(let i = 0; i < 6; i++){
+      const e = document.createElement('span'); e.className = 'arrow-ember'; document.body.appendChild(e);
+      const t = (i + 1) / 7;
+      gsap.set(e, {x: sx + (ex - sx)*t - 3, y: sy + (ey - sy)*t - 3, opacity:0, scale:1});
+      gsap.to(e, {opacity:1, duration:.05, delay: ms/1000*t});
+      gsap.to(e, {y:`-=${14 + Math.random()*14}`, x:`+=${Math.random()*10 - 5}`, opacity:0, scale:.3, duration:.45, delay: ms/1000*t + .05, ease:'power1.out', onComplete:()=> e.remove()});
+    }
+  }
+}
 function spawnProjectile(fromEl, toEl, glyph){
   if(!fromEl || !toEl) return;
   const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
@@ -17281,7 +17322,12 @@ function renderVfxForEvent(ev){
     // acted" — that's enough; they no longer also lunge.
     if(!ev.ranged) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ'});
     const {windup, projectile, impactPad} = animMs();
-    const impactDelay = windup + (ev.ranged ? projectile : impactPad);
+    // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
+    const pa = matchState.pendingArrow;
+    const arrowShot = !!(ev.ranged && pa && String(pa.uid)===String(ev.attUid));
+    if(arrowShot){ matchState.pendingArrow = null; ev._arrowShot = true; }
+    const arrowWind = Math.round(windup*0.35);
+    const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     if(ev.ranged){
       SoundKit.launch();
@@ -17292,7 +17338,12 @@ function renderVfxForEvent(ev){
       // damage moments later, but with nothing visibly thrown at it, reading as damage from
       // nowhere. Falling back to that side's own castle as the origin point guarantees the
       // projectile — and therefore a visible "where this came from" — always plays.
-      setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
+      if(arrowShot){
+        const shooter = boardCardEl(ev.attUid);
+        if(shooter && hasGsap()) gsap.fromTo(shooter, {scale:1}, {scale:.96, duration:arrowWind/1000, yoyo:true, repeat:1, ease:'power1.inOut'}); // draw the bow
+        setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
+      }
+      else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
@@ -17368,6 +17419,7 @@ function renderVfxForEvent(ev){
   // existing whole-battlefield playEarthquake() shake (the same "ground just shook" cue big-
   // creature spawns and castle hits already use) so this skill's AOE finally reads as one, plus
   // its own low rumbling tone and a banner on the caster.
+  if(ev.type==='arrow'){ matchState.pendingArrow = {uid: ev.uid, fire: !!ev.fire}; }
   if(ev.type==='earthquake'){
     const el = boardCardEl(ev.uid);
     SoundKit.earthquakeTone();

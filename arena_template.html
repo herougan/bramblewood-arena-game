@@ -4574,6 +4574,13 @@
   .ds-meta{display:flex; gap:12px; font-size:12.5px; font-weight:700; opacity:.85;}
   .ds-meta .short{color:#b5651d;}
   @media (max-width:430px){ .deck-showcase{flex-direction:column;} .ds-pair{justify-content:center;} }
+  /* Arrow projectiles (2026-10-04) */
+  .arrow-proj{position:fixed; left:0; top:0; width:76px; height:27px; z-index:9999; pointer-events:none; transform-origin:85% 50%;
+    filter:drop-shadow(-10px 0 3px rgba(255,255,255,.35)) drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+  .arrow-proj img{width:100%; height:100%; image-rendering:pixelated; display:block;}
+  .arrow-proj.is-fire{filter:drop-shadow(-12px 0 4px rgba(255,140,40,.75)) drop-shadow(0 0 6px rgba(255,190,60,.9));}
+  .arrow-fallback{font-size:20px;}
+  .arrow-ember{position:fixed; left:0; top:0; width:6px; height:6px; border-radius:50%; z-index:9998; pointer-events:none; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,120,30,.85);}
   /* Wider results screen (2026-10-04) with bigger reward cards */
   .pass-card.winloss-card{max-width:min(640px, 94vw); width:100%;}
   .rw-card .card-tile{width:118px; height:148px; font-size:12px;}

@@ -1406,6 +1406,37 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       fireDamageAction(players, sideOf, ownerId, attCard.defId, amount, 'physical', {kind:'card', card:c}, stats, events, null, attCard.uid);
     }));
   }
+  // Arrow N / Fire Arrow N (2026-10-04, "new skills: Arrow and Fire Arrow — an arrow flies towards
+  // the enemy at high speed"): at the start of every round, before melee, each Ready card with
+  // Arrow shoots once at the enemy facing it (a random enemy if nothing faces it, the castle if the
+  // enemy board is empty) for N physical damage. Fire Arrow is the same shot as Heat damage, so
+  // Heat resistance/weakness apply and a kill burns. Stunned/Frozen/Asleep archers hold fire.
+  // Both can sit on one card (it shoots twice). Goes through fireDamageAction, so Evasion,
+  // Guardian redirects, Expose and King Slayer all work as for any ranged hit.
+  function fireArrowVolley(players, sideOf, stats, events){
+    let fired = false;
+    [1,2].forEach(pid=>{
+      if(passAttackerIds && !passAttackerIds.includes(pid)) return;
+      const pl = players[pid]; if(!pl) return;
+      const enemy = players[otherId(pid)];
+      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{
+        if(c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0) return;
+        const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return;
+        const shots = [];
+        if(fx.arrow > 0) shots.push({amount: fx.arrow, dmgType: 'physical', fire: false});
+        if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
+        shots.forEach(shot=>{
+          const opp = opposingCardOf(players, pid, c);
+          const target = (opp && opp.card && opp.card.hp>0) ? {kind:'card', card:opp.card} : pickRandomEnemyTarget(enemy);
+          if(recordEvents && events) events.push({type:'arrow', fire: shot.fire, side: sideOf(pid), defId: c.defId, uid: c.uid,
+            targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.amount});
+          fired = true;
+          fireDamageAction(players, sideOf, pid, c.defId, shot.amount, shot.dmgType, target, stats, events, null, c.uid);
+        });
+      });
+    });
+    if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+  }
   function fireMissile(players, sideOf, ownerId, attCard, eff, stats, events){
     const enemy = players[otherId(ownerId)];
     bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
@@ -2302,6 +2333,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Rally N (item #14): recomputed fresh every round, AFTER poison ticks/deaths resolve, so
     // a Rally source that just poisoned itself to death no longer contributes this round.
     computeRallyBonuses(players);
+    fireArrowVolley(players, sideOf, stats, events);
     // 2026-09-20 (explicit bug report: "the battle log is missing some of the attack
     // transactions"): every reason below that keeps a card from taking its turn used to be a
     // silent `return` — the card just sat there, and nothing in the log explained why. A player
