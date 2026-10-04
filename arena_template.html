@@ -616,6 +616,20 @@
     animation-duration:5.5s, 2.6s; filter:saturate(1.7) brightness(1.16);
     box-shadow:0 -9px 20px -6px color-mix(in srgb, var(--rarity-a, transparent) 75%, transparent);
   }
+  /* Gold-leaf frame (effects catalogue "chrome / embossed gold", 2026-10-04): Legendary and up get a
+     polished gold rim (the ::before ring, masked to a 3px band on the card's edge) with a bright streak
+     sliding across it every few seconds. */
+  @property --gold-x{syntax:'<percentage>'; inherits:false; initial-value:-40%;}
+  .card-tile.rarity-tier-top::before{inset:-2px; border-radius:14px; z-index:3; pointer-events:none; padding:3px; box-sizing:border-box;
+    -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+            mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    background:
+      linear-gradient(115deg, transparent calc(var(--gold-x) - 9%), rgba(255,255,240,.95) var(--gold-x), transparent calc(var(--gold-x) + 9%)),
+      linear-gradient(160deg, #fff1b8 0%, #e7b84a 18%, #8a5a12 38%, #f6d46e 55%, #a8721c 74%, #ffe7a0 88%, #b5801f 100%);
+    animation:goldStreak 4.8s ease-in-out infinite;}
+  @keyframes goldStreak{0%,55%{--gold-x:-40%;} 85%,100%{--gold-x:140%;}}
+  @media (prefers-reduced-motion: reduce){ .card-tile.rarity-tier-top::before{animation:none;} }
+  .card-tile.rarity-tier-top.locked::before{filter:grayscale(1) brightness(.8);}
   .card-tile:hover{border-color:var(--accent);}
   /* Card art (2026-09-17, reworked same day per explicit request: "card art should encompass
      the WHOLE card, fading to transparent softly at the edges — only fall back to the emoji if
