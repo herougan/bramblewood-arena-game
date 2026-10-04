@@ -3343,11 +3343,11 @@
   #homeNavBtn{margin-left:auto;}
 
   /* ---- Deck menu (2026-09-20) ---- */
-  .deck-menu-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; margin:14px 0;}
+  .deck-menu-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 380px),1fr)); gap:14px; margin:14px 0;}
   .deck-menu-card{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:14px; padding:14px;}
   .deck-menu-card.active{border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 40%, transparent);}
   .deck-menu-card-head{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
-  .deck-menu-name-input{flex:1; font-family:'Baloo 2'; font-size:15px; font-weight:700; background:transparent; border:1px solid transparent; border-radius:8px; padding:4px 6px; color:var(--ink);}
+  .deck-menu-name-input{flex:1; min-width:0; width:0; font-family:'Baloo 2'; font-size:15px; font-weight:700; background:transparent; border:1px solid transparent; border-radius:8px; padding:4px 6px; color:var(--ink);}
   .deck-menu-name-input:hover, .deck-menu-name-input:focus{border-color:var(--surface-border); background:var(--surface);}
   .deck-active-badge{font-size:10px; font-weight:800; letter-spacing:.04em; color:var(--accent-ink); background:var(--accent); border-radius:6px; padding:2px 6px; flex-shrink:0;}
   .deck-preview-pills{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
@@ -4541,6 +4541,39 @@
   .battlefield > .bf-hp .bf-hp-num small{font-size:10px;}
   .battlefield > .bf-hp.is-faced .bf-hp-track{box-shadow:inset 0 0 0 2px rgba(255,215,122,.9);}
   #battlefieldEl{padding-top:24px; padding-bottom:24px;}
+  /* Profile (2026-10-04, "sections should have the same widths and margins between them") */
+  #view-profile{display:flex; flex-direction:column; gap:16px; align-items:stretch;}
+  #view-profile > .panel{width:100%; max-width:880px; margin:0 auto !important; box-sizing:border-box;}
+  #view-profile > .profile-panel{text-align:center;}
+  #view-profile > .profile-panel > .cloud-account-panel, #view-profile > .profile-panel > p{max-width:520px; margin-left:auto; margin-right:auto;}
+  .pp-card{display:flex; flex-direction:column; gap:4px; padding:14px; border-radius:14px; background:linear-gradient(180deg, rgba(120,40,30,.10), rgba(0,0,0,.04)); border:1px solid var(--surface-border);}
+  .pp-banner{display:flex; align-items:center; gap:12px; padding-bottom:10px; border-bottom:1px solid var(--surface-border);}
+  .pp-who{flex:1; min-width:0;}
+  .pp-name{font-family:'Baloo 2',system-ui,sans-serif; font-size:20px; font-weight:800; line-height:1.1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pp-title{font-size:12.5px; opacity:.75;}
+  .pp-card > .btn{align-self:flex-start;}
+  #view-profile .profile-rank-row{display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap;}
+  /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
+  .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
+  .ds-pair{display:flex; gap:8px; flex-shrink:0;}
+  .ds-slot{margin:0; display:flex; flex-direction:column; align-items:center; gap:4px; width:92px;}
+  .ds-slot figcaption{font-size:11.5px; font-weight:700; text-align:center; line-height:1.15; max-width:92px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .ds-tile{width:92px; height:115px;}
+  .ds-tile .card-tile{width:92px !important; height:115px !important; font-size:10px; margin:0; pointer-events:none;}
+  .ds-tile .card-tile .nm{font-size:11px !important; min-height:0 !important; margin:6px 0 0 !important;}
+  .ds-empty-leader{width:92px; height:115px; border-radius:12px; border:2px dashed var(--surface-border); display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:28px; opacity:.7;}
+  .ds-empty-leader small{font-size:11px; margin-top:4px;}
+  .ds-info{flex:1; min-width:0; display:flex; flex-direction:column; justify-content:space-between; gap:8px;}
+  .ds-arch{display:flex; flex-wrap:wrap; gap:6px;}
+  .ds-arch-chip{font-size:12px; font-weight:800; padding:3px 10px; border-radius:999px; background:rgba(201,164,106,.22); border:1px solid rgba(201,164,106,.6);}
+  .ds-arch-chip.is-mixed{opacity:.7; font-weight:600;}
+  .ds-stats{display:grid; grid-template-columns:repeat(3,1fr); gap:6px;}
+  .ds-stats span{display:flex; flex-direction:column; align-items:center; padding:6px 4px; border-radius:10px; background:rgba(0,0,0,.06);}
+  .ds-stats b{font-size:18px; line-height:1; font-variant-numeric:tabular-nums;}
+  .ds-stats small{font-size:10.5px; opacity:.75; margin-top:3px; white-space:nowrap;}
+  .ds-meta{display:flex; gap:12px; font-size:12.5px; font-weight:700; opacity:.85;}
+  .ds-meta .short{color:#b5651d;}
+  @media (max-width:430px){ .deck-showcase{flex-direction:column;} .ds-pair{justify-content:center;} }
   /* Wider results screen (2026-10-04) with bigger reward cards */
   .pass-card.winloss-card{max-width:min(640px, 94vw); width:100%;}
   .rw-card .card-tile{width:118px; height:148px; font-size:12px;}
@@ -15198,6 +15231,46 @@ function deleteDeck(id){
 // Small Castle|Leader|Deck pill-preview row for one deck — used on the Deck Menu list. Reuses
 // CHARACTER_DEFS (the "Bramble"/Castle picker) and the card defs (for the Leader's icon/name)
 // exactly like the existing Player-tab builder does.
+// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
+// choice, and some signature of the deck — archetypes, average attack, defence and cost"). Used on
+// the Manage-decks cards and the Profile's "what rivals see" preview.
+function deckSignature(d){
+  const defs = getCardDefs(), counts = d.counts || {};
+  let n = 0, atk = 0, hp = 0, cost = 0; const arch = {};
+  Object.entries(counts).forEach(([id, c])=>{
+    const x = defs[id]; if(!x || !(c > 0)) return;
+    n += c; atk += (x.attack||0)*c; hp += (x.health||0)*c; cost += (x.cost||0)*c;
+    (x.archetypes||[]).forEach(a=>{ if(a && a!=='Misc') arch[a] = (arch[a]||0) + c; });
+  });
+  const archetypes = Object.entries(arch).sort((a,b)=> b[1]-a[1]).filter(([,c])=> c >= Math.max(3, n*0.15)).slice(0,3).map(([a])=> a);
+  const fmt = v=> n ? (Math.round(v/n*10)/10).toFixed(1) : '–';
+  return {n, archetypes, avgAtk: fmt(atk), avgHp: fmt(hp), avgCost: fmt(cost)};
+}
+function deckShowcaseHTML(d, opts){
+  opts = opts || {};
+  const defs = getCardDefs();
+  const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
+  const leader = d.leaderId && defs[d.leaderId];
+  const sig = deckSignature(d);
+  const total = deckTotal(d.counts||{});
+  const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
+  return `<div class="deck-showcase ${opts.compact?'is-compact':''}">
+    <div class="ds-pair">
+      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Castle')}</figcaption></figure>
+      <figure class="ds-slot"><div class="ds-tile">${leaderTile}</div><figcaption>👑 ${leader ? escapeHtml(leader.name) : 'Leader'}</figcaption></figure>
+    </div>
+    <div class="ds-info">
+      <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
+      <div class="ds-stats">
+        <span title="Average attack"><b>${sig.avgAtk}</b><small>⚔ avg atk</small></span>
+        <span title="Average health"><b>${sig.avgHp}</b><small>❤ avg hp</small></span>
+        <span title="Average cost (Lumber)"><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
+      </div>
+      <div class="ds-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span>📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span></div>
+    </div>
+  </div>`;
+}
 function deckPreviewPillsHTML(d){
   const defs = getCardDefs();
   const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
@@ -27944,7 +28017,7 @@ function renderDeckListTab(body){
         <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
         ${d.id===activeDeckId?'<span class="deck-active-badge">ACTIVE</span>':''}
       </div>
-      ${deckPreviewPillsHTML(d)}
+      ${deckShowcaseHTML(d)}
       <div class="deck-menu-card-actions">
         <button class="btn small" data-editdeck="${d.id}">✏️ Edit</button>
         ${d.id!==activeDeckId?`<button class="btn small" data-selectdeck="${d.id}">✅ Make Active</button>`:''}
@@ -28558,6 +28631,25 @@ function guildBrowseListHTML(list){
 
 /* ---- Profile page (2026-09-20, per explicit request: "Have a logout button in the Profile
    page.") ---- */
+// Player preview (2026-10-04, "a preview of what others will see when they fight your deck"):
+// the banner a rival gets for you — avatar, name, title, rank — over your active deck's showcase.
+function playerPreviewHTML(){
+  const d = myDecks.find(x=> x.id===activeDeckId) || myDecks[0];
+  const rank = rankForRating(myRating);
+  return `<div class="panel player-preview-panel">
+    <h2>⚔️ What rivals see</h2>
+    <p class="panel-sub">This is you on the other side of the board: your name and look, and the deck you play with (your active deck${d ? `, “${escapeHtml(d.name)}”` : ''}).</p>
+    <div class="pp-card">
+      <div class="pp-banner">
+        <div class="pp-avatar">${avatarHTML(loadAvatar(), 60)}</div>
+        <div class="pp-who"><div class="pp-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div><div class="pp-title">${escapeHtml(avatarTitleLabel(loadAvatar()))}</div></div>
+        <span class="conquest-rank-badge pp-rank">${rank.label}</span>
+      </div>
+      ${d ? deckShowcaseHTML(d) : '<p class="panel-sub">No deck yet.</p>'}
+      ${tabOpen('deck') ? '<button type="button" class="btn small" id="ppEditDeckBtn">🃏 Edit this deck</button>' : ''}
+    </div>
+  </div>`;
+}
 function renderProfile(){
   const root = document.getElementById('view-profile');
   const rank = rankForRating(myRating);
@@ -28586,10 +28678,12 @@ function renderProfile(){
       </div>
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
+    ${playerPreviewHTML()}
     ${avatarCustomizerHTML()}
     ${achievementsPanelHTML()}
     ${matchHistoryPanelHTML()}`;
   wireAvatarCustomizer();
+  const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireAchievementsPanel();
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();

@@ -5977,6 +5977,46 @@ function deleteDeck(id){
 // Small Castle|Leader|Deck pill-preview row for one deck — used on the Deck Menu list. Reuses
 // CHARACTER_DEFS (the "Bramble"/Castle picker) and the card defs (for the Leader's icon/name)
 // exactly like the existing Player-tab builder does.
+// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
+// choice, and some signature of the deck — archetypes, average attack, defence and cost"). Used on
+// the Manage-decks cards and the Profile's "what rivals see" preview.
+function deckSignature(d){
+  const defs = getCardDefs(), counts = d.counts || {};
+  let n = 0, atk = 0, hp = 0, cost = 0; const arch = {};
+  Object.entries(counts).forEach(([id, c])=>{
+    const x = defs[id]; if(!x || !(c > 0)) return;
+    n += c; atk += (x.attack||0)*c; hp += (x.health||0)*c; cost += (x.cost||0)*c;
+    (x.archetypes||[]).forEach(a=>{ if(a && a!=='Misc') arch[a] = (arch[a]||0) + c; });
+  });
+  const archetypes = Object.entries(arch).sort((a,b)=> b[1]-a[1]).filter(([,c])=> c >= Math.max(3, n*0.15)).slice(0,3).map(([a])=> a);
+  const fmt = v=> n ? (Math.round(v/n*10)/10).toFixed(1) : '–';
+  return {n, archetypes, avgAtk: fmt(atk), avgHp: fmt(hp), avgCost: fmt(cost)};
+}
+function deckShowcaseHTML(d, opts){
+  opts = opts || {};
+  const defs = getCardDefs();
+  const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
+  const leader = d.leaderId && defs[d.leaderId];
+  const sig = deckSignature(d);
+  const total = deckTotal(d.counts||{});
+  const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
+  return `<div class="deck-showcase ${opts.compact?'is-compact':''}">
+    <div class="ds-pair">
+      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Castle')}</figcaption></figure>
+      <figure class="ds-slot"><div class="ds-tile">${leaderTile}</div><figcaption>👑 ${leader ? escapeHtml(leader.name) : 'Leader'}</figcaption></figure>
+    </div>
+    <div class="ds-info">
+      <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
+      <div class="ds-stats">
+        <span title="Average attack"><b>${sig.avgAtk}</b><small>⚔ avg atk</small></span>
+        <span title="Average health"><b>${sig.avgHp}</b><small>❤ avg hp</small></span>
+        <span title="Average cost (Lumber)"><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
+      </div>
+      <div class="ds-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span>📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span></div>
+    </div>
+  </div>`;
+}
 function deckPreviewPillsHTML(d){
   const defs = getCardDefs();
   const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
@@ -18723,7 +18763,7 @@ function renderDeckListTab(body){
         <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
         ${d.id===activeDeckId?'<span class="deck-active-badge">ACTIVE</span>':''}
       </div>
-      ${deckPreviewPillsHTML(d)}
+      ${deckShowcaseHTML(d)}
       <div class="deck-menu-card-actions">
         <button class="btn small" data-editdeck="${d.id}">✏️ Edit</button>
         ${d.id!==activeDeckId?`<button class="btn small" data-selectdeck="${d.id}">✅ Make Active</button>`:''}
@@ -19337,6 +19377,25 @@ function guildBrowseListHTML(list){
 
 /* ---- Profile page (2026-09-20, per explicit request: "Have a logout button in the Profile
    page.") ---- */
+// Player preview (2026-10-04, "a preview of what others will see when they fight your deck"):
+// the banner a rival gets for you — avatar, name, title, rank — over your active deck's showcase.
+function playerPreviewHTML(){
+  const d = myDecks.find(x=> x.id===activeDeckId) || myDecks[0];
+  const rank = rankForRating(myRating);
+  return `<div class="panel player-preview-panel">
+    <h2>⚔️ What rivals see</h2>
+    <p class="panel-sub">This is you on the other side of the board: your name and look, and the deck you play with (your active deck${d ? `, “${escapeHtml(d.name)}”` : ''}).</p>
+    <div class="pp-card">
+      <div class="pp-banner">
+        <div class="pp-avatar">${avatarHTML(loadAvatar(), 60)}</div>
+        <div class="pp-who"><div class="pp-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div><div class="pp-title">${escapeHtml(avatarTitleLabel(loadAvatar()))}</div></div>
+        <span class="conquest-rank-badge pp-rank">${rank.label}</span>
+      </div>
+      ${d ? deckShowcaseHTML(d) : '<p class="panel-sub">No deck yet.</p>'}
+      ${tabOpen('deck') ? '<button type="button" class="btn small" id="ppEditDeckBtn">🃏 Edit this deck</button>' : ''}
+    </div>
+  </div>`;
+}
 function renderProfile(){
   const root = document.getElementById('view-profile');
   const rank = rankForRating(myRating);
@@ -19365,10 +19424,12 @@ function renderProfile(){
       </div>
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
+    ${playerPreviewHTML()}
     ${avatarCustomizerHTML()}
     ${achievementsPanelHTML()}
     ${matchHistoryPanelHTML()}`;
   wireAvatarCustomizer();
+  const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireAchievementsPanel();
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
