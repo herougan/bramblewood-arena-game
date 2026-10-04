@@ -15063,6 +15063,7 @@ function deathVfx(uid){
   const style = deathStyleFor(uid);
   const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
   try{ if(style==='burn') SoundKit.burnAway(); else SoundKit.bleedOut(style); }catch(e){}
+  try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
     if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
@@ -17452,6 +17453,7 @@ function renderVfxForEvent(ev){
     }
     setTimeout(()=>{
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
+      try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.hit();
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
@@ -20474,8 +20476,19 @@ function mountBattleWeather(m){
   const kind = battleWeatherKind(m);
   if(battleWeather && battleWeather.kindId===kind && ShaderM.reattach(battleWeather, bf, true)) return;
   if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
-  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle'});
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt:true});
   if(battleWeather) battleWeather.kindId = kind;
+}
+// Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,
+// coloured by damage type. Castle hits flash bigger, at the board's edge nearest that castle.
+const LIGHT_COLORS = {heat:[1, 0.55, 0.18], cold:[0.45, 0.75, 1], poison:[0.5, 1, 0.35], acid:[0.75, 1, 0.3], decay:[0.6, 0.45, 0.8], physical:[1, 0.88, 0.62]};
+function battleLightAt(el, dmgType, big){
+  if(!battleWeather || !battleWeather.flash || !el) return;
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const b = bf.getBoundingClientRect(), r = el.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (r.left + r.width/2 - b.left)/b.width));
+  const y = Math.max(0, Math.min(1, (r.top + r.height/2 - b.top)/b.height));
+  battleWeather.flash(x, y, LIGHT_COLORS[dmgType] || LIGHT_COLORS.physical, big ? 0.9 : 0.55, big ? 0.6 : 0.32, big ? 900 : 520);
 }
 function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
 function setShadersEnabled(on){

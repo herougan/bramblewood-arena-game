@@ -9064,6 +9064,9 @@ void main(){
 // map overlay: premultiplied colour, blended over the CSS-painted map
 const MAP_FRAG = COMMON + `
 uniform float u_kind; uniform vec3 u_tint;
+// Lighting (2026-10-05): up to 4 short-lived point lights (x, y in 0..1 with y down, radius in
+// screen heights, strength) and an optional lit cloth texture for the battlefield felt.
+uniform vec4 u_lights[4]; uniform vec3 u_lightCol[4]; uniform float u_felt;
 vec4 add(vec4 acc, vec3 c, float a){ a = clamp(a, 0.0, 1.0); return acc + vec4(c*a, a)*(1.0 - acc.a); }
 void main(){
   vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
@@ -9135,7 +9138,33 @@ void main(){
     o = add(o, vec3(1.0), st*0.45);
     o = add(o, vec3(1.0, 0.95, 0.8), shafts(uv, t)*0.22);
   }
-  gl_FragColor = o * u_int;
+  vec4 outc = o * u_int;
+  if(u_felt > 0.5){
+    // Felt: a fine woven height field (two crossed threads plus grain), turned into a surface
+    // normal and lit by a warm lamp that drifts slowly and leans toward the pointer. Shadows are
+    // alpha-only darkening, highlights are additive, so the cloth reads on any table colour.
+    vec2 px = gl_FragCoord.xy;
+    float f = 1.15;
+    float h0 = sin(px.x*f)*sin(px.y*f*0.97) + 0.6*fbm(px*0.035) + 0.25*noise(px*0.6);
+    float hx = sin((px.x+1.0)*f)*sin(px.y*f*0.97) + 0.6*fbm((px+vec2(1.0,0.0))*0.035) + 0.25*noise((px+vec2(1.0,0.0))*0.6);
+    float hy = sin(px.x*f)*sin((px.y+1.0)*f*0.97) + 0.6*fbm((px+vec2(0.0,1.0))*0.035) + 0.25*noise((px+vec2(0.0,1.0))*0.6);
+    vec3 n = normalize(vec3(h0 - hx, h0 - hy, 2.2));
+    vec2 lampUv = vec2(0.32 + 0.22*m.x + 0.05*sin(t*0.13), 0.18 + 0.12*m.y + 0.04*cos(t*0.11));
+    vec3 L = normalize(vec3((lampUv - uv)*vec2(aspect, -1.0), 0.75));
+    float diff = dot(n, L);
+    float pool = smoothstep(1.25, 0.0, length((uv - lampUv)*vec2(aspect, 1.0)));
+    float shade = (diff - 0.82) * 1.6;
+    outc.a += clamp(-shade, 0.0, 1.0) * 0.16 + (1.0 - pool) * 0.10;     // cloth shadow + falloff
+    outc.rgb += vec3(1.0, 0.86, 0.6) * (clamp(shade, 0.0, 1.0)*0.10 + pool*0.07);
+  }
+  for(int i = 0; i < 4; i++){
+    vec4 L4 = u_lights[i];
+    if(L4.w <= 0.001) continue;
+    float d = length((uv - L4.xy) * vec2(aspect, 1.0));
+    float a = L4.w * pow(smoothstep(L4.z, 0.0, d), 1.6);
+    outc.rgb += u_lightCol[i] * a;   // additive: light, not paint
+  }
+  gl_FragColor = outc;
 }`;
 
 const MAP_KIND = {m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, m12:3, m13:4, m14:10};
@@ -9184,9 +9213,16 @@ function mount(host, opts){
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   const U = n=> gl.getUniformLocation(prog, n);
-  const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth')};
-  if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); }
-  const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0]};
+  const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth'),
+    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt')};
+  if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? 1 : 0); }
+  const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
+  // Point light: x, y in 0..1 of the host (y down), colour [r,g,b] 0..1, strength ~0.3–1,
+  // radius in host heights, life in ms. Rises in 60 ms, then fades out. At most 4 at once.
+  layer.flash = (x, y, color, strength, radius, life)=>{
+    layer.lights.push({x, y, c: color || [1, 0.85, 0.6], s: strength == null ? 0.6 : strength, r: radius || 0.35, life: life || 520, t0: performance.now()});
+    if(layer.lights.length > 4) layer.lights.shift();
+  };
   if(scene){
     const img = new Image();
     img.onload = ()=>{
@@ -9248,7 +9284,19 @@ function loop(now){
     l.mouse[0] += (pointer[0] - l.mouse[0]) * 0.08; l.mouse[1] += (pointer[1] - l.mouse[1]) * 0.08;
     const gl = l.gl, u = l.u;
     gl.uniform2f(u.res, w, h); gl.uniform1f(u.time, t); gl.uniform2f(u.mouse, l.mouse[0], l.mouse[1]); gl.uniform1f(u.int, l.intensity);
-    if(!l.scene){ gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+    if(!l.scene){
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+      if(u.lights){
+        const nowMs = performance.now();
+        l.lights = l.lights.filter(L=> nowMs - L.t0 < L.life);
+        const pos = new Float32Array(16), col = new Float32Array(12);
+        l.lights.forEach((L, i)=>{
+          const age = nowMs - L.t0, k = age < 60 ? age/60 : Math.pow(1 - (age - 60)/(L.life - 60), 2);
+          pos.set([L.x, L.y, L.r, L.s * Math.max(0, k)], i*4); col.set(L.c, i*3);
+        });
+        gl.uniform4fv(u.lights, pos); gl.uniform3fv(u.lightCol, col);
+      }
+    }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   });
   if(layers.size) raf = requestAnimationFrame(loop);
@@ -24382,6 +24430,7 @@ function deathVfx(uid){
   const style = deathStyleFor(uid);
   const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
   try{ if(style==='burn') SoundKit.burnAway(); else SoundKit.bleedOut(style); }catch(e){}
+  try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
     if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
@@ -26771,6 +26820,7 @@ function renderVfxForEvent(ev){
     }
     setTimeout(()=>{
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
+      try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.hit();
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
@@ -29793,8 +29843,19 @@ function mountBattleWeather(m){
   const kind = battleWeatherKind(m);
   if(battleWeather && battleWeather.kindId===kind && ShaderM.reattach(battleWeather, bf, true)) return;
   if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
-  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle'});
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt:true});
   if(battleWeather) battleWeather.kindId = kind;
+}
+// Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,
+// coloured by damage type. Castle hits flash bigger, at the board's edge nearest that castle.
+const LIGHT_COLORS = {heat:[1, 0.55, 0.18], cold:[0.45, 0.75, 1], poison:[0.5, 1, 0.35], acid:[0.75, 1, 0.3], decay:[0.6, 0.45, 0.8], physical:[1, 0.88, 0.62]};
+function battleLightAt(el, dmgType, big){
+  if(!battleWeather || !battleWeather.flash || !el) return;
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const b = bf.getBoundingClientRect(), r = el.getBoundingClientRect();
+  const x = Math.max(0, Math.min(1, (r.left + r.width/2 - b.left)/b.width));
+  const y = Math.max(0, Math.min(1, (r.top + r.height/2 - b.top)/b.height));
+  battleWeather.flash(x, y, LIGHT_COLORS[dmgType] || LIGHT_COLORS.physical, big ? 0.9 : 0.55, big ? 0.6 : 0.32, big ? 900 : 520);
 }
 function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
 function setShadersEnabled(on){
