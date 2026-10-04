@@ -1437,6 +1437,14 @@
      enough that it doesn't look like a broken/missing background, deliberately with no radial
      highlight, no saturated color, nothing that competes with the cards for attention. */
   .battlefield.map-calm{background:linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);}
+  /* Immersion #2 (2026-10-05, "fights happen somewhere"): when the skirmish's map has pixel-art
+     terrain, the battlefield floor IS that terrain, under a soft dark scrim so cards stay readable;
+     the felt shader then only adds light (lamp pool + impact lights), no cloth weave. */
+  .battlefield.has-floor-art{image-rendering:pixelated; background:
+    radial-gradient(ellipse 120% 90% at 50% 45%, rgba(0,0,0,.18) 0%, rgba(0,0,0,.48) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.40)),
+    var(--map-art) center / cover no-repeat, #1b2418;}
+  .battlefield.has-floor-art *{image-rendering:auto;}
   /* 2026-09-21 (explicit bug report: "the map keeps zooming in and out erratically. the zoom out
      should be within the battlefield only.. nothing changes to the outer border"): the zoom-to-fit
      transform (fitBattlefieldZoom(), arena_app.js) used to sit directly on .battlefield itself —

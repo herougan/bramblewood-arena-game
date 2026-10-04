@@ -192,7 +192,7 @@ void main(){
     vec3 L = normalize(vec3((lampUv - uv)*vec2(aspect, -1.0), 0.75));
     float diff = dot(n, L);
     float pool = smoothstep(1.25, 0.0, length((uv - lampUv)*vec2(aspect, 1.0)));
-    float shade = (diff - 0.82) * 1.6;
+    float shade = (diff - 0.82) * 1.6 * (u_felt < 1.5 ? 1.0 : 0.0);   // 2 = light only (terrain floor, no cloth)
     outc.a += clamp(-shade, 0.0, 1.0) * 0.16 + (1.0 - pool) * 0.10;     // cloth shadow + falloff
     outc.rgb += vec3(1.0, 0.86, 0.6) * (clamp(shade, 0.0, 1.0)*0.10 + pool*0.07);
   }
@@ -254,7 +254,7 @@ function mount(host, opts){
   const U = n=> gl.getUniformLocation(prog, n);
   const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth'),
     lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt')};
-  if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? 1 : 0); }
+  if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? Number(opts.felt) : 0); }
   const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
   // Point light: x, y in 0..1 of the host (y down), colour [r,g,b] 0..1, strength ~0.3–1,
   // radius in host heights, life in ms. Rises in 60 ms, then fades out. At most 4 at once.

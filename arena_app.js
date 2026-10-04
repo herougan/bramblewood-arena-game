@@ -2768,10 +2768,13 @@ function saveBattlefieldBgOverride(v){ try{ localStorage.setItem(BATTLEFIELD_BG_
 function battlefieldMapClass(m){
   const override = loadBattlefieldBgOverride();
   if(override && override!=='auto'){
-    return override==='calm' ? 'map-calm' : (MAP_BATTLEFIELD_CLASS[override] || '');
+    if(override==='calm') return 'map-calm';
+    const oc = MAP_BATTLEFIELD_CLASS[override] || '';
+    return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' : oc;
   }
   const mapId = m && m.conquestNode && m.conquestNode.mapId;
-  return (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
+  const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
+  return cls && MAP_ART_IDS.has(mapId) ? cls + ' has-floor-art' : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
 // more ecological description"): the 🔁 spawn-only badge's tooltip used to read as a flat rules
@@ -20607,10 +20610,11 @@ function mountBattleWeather(m){
   const bf = document.getElementById('battlefieldEl');
   if(!bf || !m || !shadersEnabled() || m.testKit){ if(battleWeather){ battleWeather.destroy(); battleWeather = null; } return; }
   const kind = battleWeatherKind(m);
-  if(battleWeather && battleWeather.kindId===kind && ShaderM.reattach(battleWeather, bf, true)) return;
+  const feltMode = bf.classList.contains('has-floor-art') ? 2 : 1;
+  if(battleWeather && battleWeather.kindId===kind && battleWeather.feltMode===feltMode && ShaderM.reattach(battleWeather, bf, true)) return;
   if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
-  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt:true});
-  if(battleWeather) battleWeather.kindId = kind;
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt: bf.classList.contains('has-floor-art') ? 2 : 1});
+  if(battleWeather){ battleWeather.kindId = kind; battleWeather.feltMode = feltMode; }
 }
 // Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,
 // coloured by damage type. Castle hits flash bigger, at the board's edge nearest that castle.
