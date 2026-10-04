@@ -1967,6 +1967,17 @@
   /* Death VFX (2026-09-14): a dying card phases out slowly in place, with a small skull
      floating above it, instead of just vanishing at the next full board repaint. */
   .board-card.dying{transition:opacity 650ms ease, transform 650ms ease; opacity:0; transform:scale(.82) translateY(8px);}
+  /* Burn-away death (2026-10-04) — see burnAwayVfx(). The mask image is 2.2× the card's height (edge at its middle);
+     sliding it from top to bottom moves the ragged edge up through the card. */
+  .board-card.burning{-webkit-mask-image:var(--burn-mask); mask-image:var(--burn-mask); -webkit-mask-size:100% 220%; mask-size:100% 220%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    animation:burnMask var(--burn-ms,600ms) linear forwards;}
+  @keyframes burnMask{from{-webkit-mask-position:0 0%; mask-position:0 0%;} to{-webkit-mask-position:0 100%; mask-position:0 100%;}}
+  .burn-glow{position:absolute; inset:0; z-index:8; pointer-events:none; border-radius:inherit;
+    background:var(--burn-glow) no-repeat; background-size:100% 220%; animation:burnGlow var(--burn-ms,600ms) linear forwards; mix-blend-mode:screen;}
+  @keyframes burnGlow{from{background-position:0 0%;} to{background-position:0 100%;}}
+  .burn-glow i{position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,140,40,.8); opacity:0;
+    animation:burnEmber calc(var(--burn-ms,600ms) * .45) ease-out forwards;}
+  @keyframes burnEmber{0%{opacity:0; transform:translate(0,0) scale(1);} 20%{opacity:1;} 100%{opacity:0; transform:translate(6px,-34px) scale(.4);}}
   /* Comic slide (item #3/#47): cards sliding to fill a gap left by a death, or swapping
      places (Scurry), overshoot a little past their landing spot before settling —
      a bouncier, more cartoony motion than a plain linear/ease slide. */

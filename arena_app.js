@@ -14855,6 +14855,36 @@ function playReadyFlourish(uid){
 // skull floating above it. Speed-aware via animMs().death so a string of deaths in one round
 // (see the "death animations can chain together 2x faster" pacing change) genuinely reads as
 // faster, not just a shorter gap between otherwise-fixed-length animations.
+// Burn-away (effects catalogue "burn / dissolve", 2026-10-04): the card burns from the bottom up
+// behind a ragged glowing edge, with a few embers lifting off. Pure CSS mask + one overlay, so it
+// stacks safely on top of Flip/GSAP transforms. Skipped for reduced motion (the plain fade stays).
+const BURN_MASKS = (()=>{
+  // One ragged edge, shared by the mask (card visible above the edge) and the glow (drawn on it).
+  let seed = 7; const rnd = ()=> (seed = (seed*16807) % 2147483647) / 2147483647;
+  const pts = []; for(let x = 0; x <= 100; x += 4) pts.push([x, 150 + (rnd()-0.5)*14 + Math.sin(x*0.21)*4]);
+  const edge = pts.map(p=> p.join(',')).join(' ');
+  const svg = body => 'url("data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300' preserveAspectRatio='none'>${body}</svg>`) + '")';
+  return {
+    mask: svg(`<polygon points='0,0 100,0 ${edge.split(' ').reverse().join(' ')}' fill='#000'/>`),
+    glow: svg(`<defs><filter id='b'><feGaussianBlur stdDeviation='1.6'/></filter></defs><polyline points='${edge}' fill='none' stroke='#ff7a1a' stroke-width='7' filter='url(#b)'/><polyline points='${edge}' fill='none' stroke='#ffe08a' stroke-width='2.2'/>`),
+  };
+})();
+function burnAwayVfx(el, ms){
+  if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  el.style.setProperty('--burn-ms', ms + 'ms');
+  el.style.setProperty('--burn-mask', BURN_MASKS.mask);
+  el.style.setProperty('--burn-glow', BURN_MASKS.glow);
+  const glow = document.createElement('span'); glow.className = 'burn-glow'; glow.setAttribute('aria-hidden', 'true');
+  for(let i = 0; i < 6; i++){
+    // each ember starts on the burning edge at the moment it appears (edge height = 1.2f − 0.1 of the card at time f)
+    const f = 0.15 + i*0.12, e = document.createElement('i');
+    e.style.left = (8 + ((i*37)%84) + Math.random()*6) + '%'; e.style.bottom = Math.max(2, (1.2*f - 0.1)*100) + '%';
+    e.style.animationDelay = Math.round(ms*f) + 'ms'; glow.appendChild(e);
+  }
+  el.appendChild(glow);
+  el.classList.add('burning');
+  return true;
+}
 function deathVfx(uid){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -14869,9 +14899,11 @@ function deathVfx(uid){
   // tween, so skip it (and its killTweensOf) for a currently-flipping element; the skull-float
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
+  const burnt = burnAwayVfx(el, Math.round(death*1.25));
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
+    if(burnt) gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
     gsap.timeline({onComplete:()=> skull.remove()})
       .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
       .to(skull, {y:-40, opacity:0, duration:(death*0.5)/1000, ease:'power1.in'});
@@ -14889,6 +14921,14 @@ function deathVfx(uid){
 // entrance/Flip) or carrying a leftover transform. Anything that is, and isn't mid-tween, gets its
 // inline layout props cleared so it drops back into its real slot in the row.
 function settleStrayBoardCards(){
+  // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
+  const m = matchState, alive = new Set();
+  if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
+  document.querySelectorAll('.board-card.burning').forEach(el=>{
+    if(!alive.has(String(el.dataset.uid))) return;
+    el.classList.remove('burning'); el.querySelectorAll(':scope > .burn-glow').forEach(g=> g.remove());
+    if(hasGsap()) gsap.set(el, {clearProps:'scale,y,opacity'});
+  });
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
