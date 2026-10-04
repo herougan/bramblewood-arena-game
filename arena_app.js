@@ -15877,6 +15877,20 @@ async function showEndSign(m){
   const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
   const kind = m.winner===0 ? 'draw' : (m.mode==='pc' ? 'victory' : (m.winner===mySeat ? 'victory' : 'defeat'));
   const text = m.mode==='pc' && m.winner!==0 ? `PLAYER ${m.winner} WINS!` : ({victory:'VICTORY!', defeat:'DEFEAT', draw:'DRAW'})[kind];
+  // Castle falls (effects catalogue "burn / dissolve", 2026-10-04): a destroyed castle shudders,
+  // throws up dust and burns away under the Victory/Defeat sign.
+  ['A','B'].forEach(side=>{
+    const hq = m.players[side==='A' ? 1 : 2].hq; if(!hq || hq.hp > 0) return;
+    const tile = hqTileEl(side); if(!tile) return;
+    shakeEl(tile);
+    const r = tile.getBoundingClientRect(), br = battlefield.getBoundingClientRect();
+    for(let i = 0; i < 7; i++){
+      const d = document.createElement('span'); d.className = 'castle-dust'; d.setAttribute('aria-hidden','true');
+      d.style.left = (r.left - br.left + r.width*(0.1 + i*0.13)) + 'px'; d.style.top = (r.top - br.top + r.height*0.82) + 'px';
+      d.style.animationDelay = (i*45) + 'ms'; battlefield.appendChild(d); setTimeout(()=> d.remove(), 1500);
+    }
+    setTimeout(()=> burnAwayVfx(tile, 1100), 180);
+  });
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
   battlefield.appendChild(el);
