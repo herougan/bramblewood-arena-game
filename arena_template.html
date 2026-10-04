@@ -3589,6 +3589,18 @@
     repeating-radial-gradient(circle at 17% 23%, rgba(255,255,255,.04) 0 1px, transparent 1px 9px),
     repeating-radial-gradient(circle at 63% 71%, rgba(0,0,0,.05) 0 1px, transparent 1px 11px),
     radial-gradient(ellipse at 30% 20%, var(--mt-a) 0%, var(--mt-b) 48%, var(--mt-c) 100%);}
+  /* Pixel-art terrain under the light/vignette layers when a map has one (2026-10-04,
+     tools/make_map_backgrounds.py). The speckle/patch layers are dropped so the art reads. */
+  /*__MAP_ART_CSS__*/
+  .conquest-layout[class*="map-theme-"]{image-rendering:pixelated;}
+  .conquest-layout[class*="map-theme-"] *{image-rendering:auto;}
+  .conquest-layout.has-map-art{background:
+    radial-gradient(ellipse 130% 95% at 50% 45%, transparent 55%, rgba(0,0,0,.5) 100%),
+    radial-gradient(ellipse 50% 42% at 22% 16%, rgba(255,240,190,.20) 0%, rgba(255,240,190,.06) 40%, transparent 72%),
+    var(--map-art) center / cover no-repeat,
+    radial-gradient(ellipse at 30% 20%, var(--mt-a) 0%, var(--mt-b) 48%, var(--mt-c) 100%);}
+  .conquest-layout.has-map-art .map-decor{display:none;}
+  .conquest-layout.has-map-art .map-trail-svg line, .conquest-layout.has-map-art .map-trail-svg polyline{stroke:rgba(255,248,225,.85); stroke-width:.75; filter:drop-shadow(0 0 1.2px rgba(0,0,0,.75));}
   .map-decor.map-tree{z-index:0; opacity:.95; filter:drop-shadow(0 4px 3px rgba(0,0,0,.35));}
   .map-decor.map-small{opacity:.85;}
   .map-mover{position:absolute; z-index:1; pointer-events:none; user-select:none; line-height:1; transform:translate(-50%,-50%); filter:drop-shadow(0 2px 2px rgba(0,0,0,.3)); will-change:left, top, transform;}

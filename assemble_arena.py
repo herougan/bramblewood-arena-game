@@ -106,6 +106,14 @@ out = sub_once(out, "__SPLASH_ART__", "data:image/png;base64," + base64.b64encod
 _depth_path = SCRATCH + "art/splash_depth.png"
 _depth_uri = ("data:image/png;base64," + base64.b64encode(open(_depth_path, "rb").read()).decode("ascii")) if os.path.exists(_depth_path) else ""
 app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
+# Conquest map backgrounds (2026-10-04): tools/make_map_backgrounds.py -> art/maps/<id>.png, one CSS
+# custom property per map theme, shown pixelated under the map's light/vignette gradients.
+_map_css = []
+for _mid in range(1, 30):
+    _fp = SCRATCH + "art/maps/m%d.png" % _mid
+    if os.path.exists(_fp):
+        _map_css.append(".map-theme-m%d{--map-art:url(data:image/png;base64,%s);}" % (_mid, base64.b64encode(open(_fp, "rb").read()).decode("ascii")))
+out = out.replace("/*__MAP_ART_CSS__*/", "\n".join(_map_css), 1)
 # Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): small pixel-art PNGs from art/fx/.
 for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "art/fx/fire_arrow.png")):
     _fp = SCRATCH + _fn

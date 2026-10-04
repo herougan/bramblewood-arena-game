@@ -7132,6 +7132,8 @@ function activateSpot(spot){
   if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok'); playDialogue(spot.dialogue, {once:true}); }
   spot.go();
 }
+// Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
+const MAP_ART_IDS = new Set(["m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
 function mapSpotsHTML(map, positions, progress){
   return FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
     const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
@@ -8740,7 +8742,7 @@ function renderConquestSubTab(body){
   // bounded, themed Conquest panel. Individual .conquest-map-item pills keep their own opaque
   // surface so they stay legible sitting on top of the gradient.
   const layoutEl = document.getElementById('conquestLayout');
-  if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}`;
+  if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
   if(!isMapUnlocked(map, progress)){
     mainEl.innerHTML = `<div class="empty-hint">This map is locked — clear the previous map's Skirmish/Elite/Boss nodes first.</div>`;
