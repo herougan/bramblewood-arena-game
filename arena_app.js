@@ -12056,6 +12056,7 @@ function renderMatchUI(){
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
+        ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
           <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
@@ -12193,6 +12194,7 @@ function renderMatchUI(){
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
+    const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); });
     const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
@@ -13260,7 +13262,13 @@ function renderBoard(opts){
   function releaseNewElRects(){
     if(!newElRects) return;
     if(window.__DEBUG_RENDER__) newElRects.forEach(({el})=>console.log('[settle revert]', 't=',performance.now().toFixed(1), el.getAttribute('data-uid')));
+    // 2026-10-04 ("cards sometimes teleport to the right"): the pin was measured when the card
+    // landed; if the row reflowed since (another card entered, one died, the center refilled), the
+    // card's real slot is elsewhere and clearing the pin snapped it there in one frame. Measure
+    // before and after, and glide any difference instead.
+    const before = newElRects.map(({el})=> el.getBoundingClientRect());
     newElRects.forEach(({el})=> gsap.set(el, {clearProps:'position,left,top,width,height'}));
+    newElRects.forEach(({el}, i)=> glideFromRect(el, before[i]));
     newElRects = null;
   }
   if(window.__DEBUG_RENDER__) console.log('[enteringUids before force-reset]', JSON.stringify([...enteringUids]), 'attackingUids=', JSON.stringify([...attackingUids]));
@@ -14593,6 +14601,7 @@ async function discardCardByUid(uid){
   if(darkPointBonus>0) gainChips.push({amount:darkPointBonus, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId});
   if(onDiscardGains.length) gainChips.push(...onDiscardGains);
   if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
+  if(gainChips.length) pitchCallout(gainChips, dcDef);
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
@@ -14641,10 +14650,9 @@ function renderHUD(){
     ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
     ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}
     ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
-    <span style="flex:1"></span>
-    ${hudSettingsWidgetHTML()}
-    <button class="btn small" id="quitMatchBtn">${m.mode==='async'?'Save & Exit':'Quit'}</button>`;
-  const q = document.getElementById('quitMatchBtn'); if(q) q.addEventListener('click', m.mode==='async' ? saveAndExitAsyncMatch : (m.mode==='tutorial' ? quitTutorialToHome : endMatch));
+    `;
+  // (2026-10-04) Settings and Quit live in the top bar now; this used to add a second copy of
+  // both (with a duplicate #quitMatchBtn id) under the board after every HUD refresh.
   wireHudChrome();
   updateHqHpDisplay('A'); updateHqHpDisplay('B');
 }
@@ -14885,6 +14893,31 @@ function burnAwayVfx(el, ms){
   el.classList.add('burning');
   return true;
 }
+// Bleed-out (2026-10-04, "fire-death should be reserved for fire; a red-fade like bleed out"):
+// the default death. A dark wash runs down the card from the top, the colour drains out, a few
+// drops fall from the bottom edge, and the card sinks and fades. Tinted by what killed it: red
+// for ordinary wounds, sickly green for poison/acid/decay, icy blue for cold.
+const DEATH_TONES = {bleed:'#b3121f', poison:'#4f8f1c', cold:'#5fb7e6'};
+function deathStyleFor(uid){
+  const m = matchState, rc = m && m.replayCards && m.replayCards[uid];
+  const d = rc ? getCardDefs()[rc.defId] : null;
+  const hurt = (m && m.lastHurtBy && m.lastHurtBy[uid]) || '';
+  const fiery = d && (d.dmgType==='heat' || (d.archetypes||[]).includes('Volcanic') || (d.resist||[]).includes('heat') && (d.archetypes||[]).includes('Elemental'));
+  if(hurt==='heat' || (fiery && hurt!=='cold')) return 'burn';
+  if(hurt==='poison' || hurt==='acid' || hurt==='decay') return 'poison';
+  if(hurt==='cold') return 'cold';
+  return 'bleed';
+}
+function bleedOutVfx(el, ms, tone){
+  if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  el.style.setProperty('--bleed-ms', ms + 'ms');
+  el.style.setProperty('--bleed-c', DEATH_TONES[tone] || DEATH_TONES.bleed);
+  const w = document.createElement('span'); w.className = 'bleed-wash'; w.setAttribute('aria-hidden', 'true');
+  for(let i = 0; i < 4; i++){ const dr = document.createElement('i'); dr.style.left = (18 + i*21 + Math.random()*8) + '%'; dr.style.animationDelay = Math.round(ms*(0.25 + i*0.11)) + 'ms'; w.appendChild(dr); }
+  el.appendChild(w);
+  el.classList.add('bleeding', 'bleed-' + (tone || 'bleed'));
+  return true;
+}
 function deathVfx(uid){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -14899,10 +14932,12 @@ function deathVfx(uid){
   // tween, so skip it (and its killTweensOf) for a currently-flipping element; the skull-float
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
-  const burnt = burnAwayVfx(el, Math.round(death*1.25));
+  const style = deathStyleFor(uid);
+  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt) gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
     gsap.timeline({onComplete:()=> skull.remove()})
       .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
@@ -14920,13 +14955,59 @@ function deathVfx(uid){
 // once a round's replay is over, no board card should still be pinned (position:absolute from an
 // entrance/Flip) or carrying a leftover transform. Anything that is, and isn't mid-tween, gets its
 // inline layout props cleared so it drops back into its real slot in the row.
+// Slide an element from where it visibly was (rect `from`) to wherever layout has put it now,
+// instead of letting it jump. Used wherever a pin or stray transform is released.
+function glideFromRect(el, from){
+  if(!el || !from || !el.isConnected || !hasGsap()) return;
+  const to = el.getBoundingClientRect();
+  const dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
+  if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration:Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease:'power2.out', clearProps:'x,y'});
+}
+// Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
+// reflow a row outside a Flip animation: a pinned entrant released, a dying card removed, the
+// end-of-round sync render, a half-slot recentre when the card count changes parity. Rather than
+// chase each one, this watches every resting board card once per animation frame — BEFORE paint —
+// and if one has jumped sideways within its row since the last frame without being animated, it is
+// offset back to where it was and glided to its new place. The snap is never painted.
+(function boardSnapGuard(){
+  if(typeof window === 'undefined' || !window.requestAnimationFrame) return;
+  let last = new WeakMap();
+  function tick(){
+    requestAnimationFrame(tick);
+    if(!matchState || !hasGsap()) return;
+    const rows = document.querySelectorAll('#rowMine, #rowEnemy'); if(!rows.length) return;
+    // measured against the board's inner layer (which only the camera pan/zoom moves), not the
+    // row: a row that changes width re-centres itself, carrying its cards with it
+    const inner = document.getElementById('battlefieldInner');
+    const rr = (inner || rows[0]).getBoundingClientRect();
+    rows.forEach(row=>{
+      row.querySelectorAll(':scope .board-card').forEach(el=>{
+        const r = el.getBoundingClientRect();
+        const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
+        const prev = last.get(el);
+        const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid));
+        if(prev && !busy && !prev.busy && Math.abs(pos.w - prev.w) < 2){
+          const dx = prev.x - pos.x, dy = prev.y - pos.y;
+          if(Math.abs(dx) > 12 && Math.abs(dy) < 40){
+            gsap.fromTo(el, {x:dx}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
+            last.set(el, {x:pos.x + dx, y:pos.y, w:pos.w, busy:true});
+            return;
+          }
+        }
+        last.set(el, {x:pos.x, y:pos.y, w:pos.w, busy});
+      });
+    });
+  }
+  requestAnimationFrame(tick);
+})();
 function settleStrayBoardCards(){
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
-  document.querySelectorAll('.board-card.burning').forEach(el=>{
+  document.querySelectorAll('.board-card.burning, .board-card.bleeding').forEach(el=>{
     if(!alive.has(String(el.dataset.uid))) return;
-    el.classList.remove('burning'); el.querySelectorAll(':scope > .burn-glow').forEach(g=> g.remove());
+    el.classList.remove('burning', 'bleeding', 'bleed-bleed', 'bleed-poison', 'bleed-cold'); el.querySelectorAll(':scope > .burn-glow, :scope > .bleed-wash').forEach(g=> g.remove());
     if(hasGsap()) gsap.set(el, {clearProps:'scale,y,opacity'});
   });
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
@@ -14934,7 +15015,7 @@ function settleStrayBoardCards(){
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
     const tf = el.style.transform;
     if(pinned || (tf && tf!=='none' && !/^translate\(0(px)?, 0(px)?\)$/.test(tf))){
-      if(hasGsap()) gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'});
+      if(hasGsap()){ const before = el.getBoundingClientRect(); gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'}); glideFromRect(el, before); }
       else { el.style.position=''; el.style.left=''; el.style.top=''; el.style.width=''; el.style.height=''; el.style.transform=''; }
     }
   });
@@ -15022,6 +15103,11 @@ async function resolveRound(){
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
     if(ev.type==='hit' || ev.type==='hitHQ') panCameraToShowUid(ev.attUid);
+    // remember what last hurt each card, so its death can look like it (burn for heat, bleed otherwise)
+    if(!m.lastHurtBy) m.lastHurtBy = {};
+    if(ev.type==='hit' && ev.targetUid!=null) m.lastHurtBy[ev.targetUid] = ev.dmgType || ((getCardDefs()[ev.attDefId]||{}).dmgType) || 'physical';
+    else if(ev.type==='poisonTick') m.lastHurtBy[ev.uid] = 'poison';
+    else if(ev.type==='bleedTick') m.lastHurtBy[ev.uid] = 'bleed';
     pushLog(ev); renderVfxForEvent(ev);
     await sleep(delayForEvent(ev, lastVfxKind));
     lastVfxKind = vfxKindOf(ev);
@@ -16045,6 +16131,19 @@ function pickNextBattle(m, newFights){
   for(let i=0;i<map.nodes.length;i++){ const n = map.nodes[i]; if(n.kind==='tutorial') continue; if(isNodeVisible(map, n, i, p) && !p.completed.includes(conquestNodeId(map.id, n.key))) return {mapId, key:n.key, node:n}; }
   return null;
 }
+// Loss tip (2026-10-04, "a tip on loss — like asking you to try to make a new deck"): one short,
+// specific suggestion read off how the match went, plus a button straight into the deck builder.
+function lossTipHTML(m){
+  const enemy = m.players[2].hq, mine = m.players[1].hq;
+  const enemyLeft = enemy.maxHp ? enemy.hp / enemy.maxHp : 1;
+  let tip;
+  if(enemyLeft > 0.7) tip = 'Your cards barely reached their castle. Try a deck with more attack, or <b>Quick</b> and <b>Flying</b> cards that hit sooner.';
+  else if((m.round||0) <= 6) tip = 'You were overrun early. Cheaper cards and a <b>Guardian</b> or two will hold the line while your big hitters wind up.';
+  else if(enemyLeft < 0.25) tip = 'So close! Swap your two or three weakest cards for something new from a pack or a skirmish reward, and go again.';
+  else tip = 'Try building a new deck around one plan: a strong archetype, a fitting leader, and fewer one-off cards.';
+  const canDeck = tabOpen('deck');
+  return `<div class="loss-tip"><span class="loss-tip-ico" aria-hidden="true">💡</span><div class="loss-tip-body"><div>${tip}</div>${canDeck ? '<button type="button" class="btn small" id="wlReworkDeckBtn">🃏 Rework my deck</button>' : ''}</div></div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -16833,6 +16932,18 @@ function animateAttacker(attUid, isMine, opts){
 // without needing another pass through this code). `fromRect` is the drop point (the discard
 // zone's own rect works for both a genuine drag-drop and a tap-to-discard, since either way
 // that's where the card visually lands); `gains` is [{amount, glyph, pillId}, ...].
+// Pitch callout (2026-10-04, "cards don't announce how much resource they give on pitch"): a big
+// "+2 🪵 Lumber" banner over the board for a beat, and the matching resource pill pulses.
+function pitchCallout(gains, def){
+  const host = document.getElementById('battlefieldEl'); if(!host) return;
+  const names = {lumber:'Lumber', grace:'Grace', stone:'Stone', devilry:'Dark Points'};
+  const label = gains.map(g=>{ const key = Object.keys(PITCH_RESOURCE_META).find(k=> PITCH_RESOURCE_META[k].pillId===g.pillId); return `<span class="pc-gain">+${g.amount} ${g.glyph}<small>${names[key]||''}</small></span>`; }).join('');
+  host.querySelectorAll('.pitch-callout').forEach(e=> e.remove());
+  const el = document.createElement('div'); el.className = 'pitch-callout'; el.setAttribute('role','status');
+  el.innerHTML = `<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`;
+  host.appendChild(el); setTimeout(()=> el.remove(), 1700);
+  gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
+}
 function resourceGainVfx(fromRect, gains){
   if(!fromRect || !gains || !gains.length) return;
   gains.forEach((g, i)=>{

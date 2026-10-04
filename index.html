@@ -1992,6 +1992,18 @@
   .burn-glow i{position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,140,40,.8); opacity:0;
     animation:burnEmber calc(var(--burn-ms,600ms) * .45) ease-out forwards;}
   @keyframes burnEmber{0%{opacity:0; transform:translate(0,0) scale(1);} 20%{opacity:1;} 100%{opacity:0; transform:translate(6px,-34px) scale(.4);}}
+  /* Bleed-out death (2026-10-04) — see bleedOutVfx(). */
+  .board-card.bleeding{animation:bleedDrain var(--bleed-ms,700ms) ease-in forwards;}
+  @keyframes bleedDrain{0%{filter:none;} 60%{filter:saturate(.35) brightness(.8);} 100%{filter:saturate(.1) brightness(.55);}}
+  .bleed-wash{position:absolute; inset:0; z-index:8; pointer-events:none; border-radius:inherit; overflow:visible;}
+  .bleed-wash::before{content:''; position:absolute; inset:0; border-radius:inherit; mix-blend-mode:multiply;
+    background:linear-gradient(180deg, var(--bleed-c) 0%, color-mix(in srgb, var(--bleed-c) 70%, transparent) 70%, transparent 100%) no-repeat;
+    background-size:100% 0%; animation:bleedRun var(--bleed-ms,700ms) cubic-bezier(.3,.1,.5,1) forwards;}
+  @keyframes bleedRun{to{background-size:100% 140%;}}
+  .bleed-wash i{position:absolute; top:96%; width:6px; height:9px; margin-left:-3px; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%;
+    background:var(--bleed-c); opacity:0; animation:bleedDrop calc(var(--bleed-ms,700ms) * .6) cubic-bezier(.5,0,.9,.6) forwards;}
+  @keyframes bleedDrop{0%{opacity:0; transform:translateY(-6px) scaleY(.6);} 15%{opacity:.95;} 100%{opacity:0; transform:translateY(34px) scaleY(1.3);}}
+  .board-card.bleed-cold .bleed-wash::before{mix-blend-mode:screen;}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -4515,6 +4527,40 @@
     background:linear-gradient(110deg,#ffd6f0,#d6f0ff,#e8ffd6,#fff2c6); box-shadow:0 2px 6px rgba(0,0,0,.35);}
   .battlefield > .bw-shader-battle{z-index:0; border-radius:inherit;}
   .battlefield > .battlefield-inner, .battlefield > .bf-hp{position:relative; z-index:1;}
+  /* 2026-10-04 ("flush to the top and bottom, without label — it's inherently understandable"):
+     the castle bars are now the battlefield's own top and bottom edges, full width, with the
+     number riding inside the bar's right end. */
+  .battlefield > .bf-hp{position:absolute; left:0; right:0; z-index:3; gap:0; height:16px; margin:0; pointer-events:auto;}
+  .battlefield > .bf-hp-enemy{top:0;} .battlefield > .bf-hp-mine{bottom:0;}
+  .battlefield > .bf-hp .bf-hp-label{display:none;}
+  .battlefield > .bf-hp .bf-hp-track{height:100%; border:0; border-radius:0; background:rgba(0,0,0,.45);}
+  .battlefield > .bf-hp-enemy .bf-hp-track{border-radius:15px 15px 0 0; box-shadow:inset 0 -1px 0 rgba(255,255,255,.18);}
+  .battlefield > .bf-hp-mine .bf-hp-track{border-radius:0 0 15px 15px; box-shadow:inset 0 1px 0 rgba(255,255,255,.18);}
+  .battlefield > .bf-hp .bf-hp-num{position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:13px; min-width:0; pointer-events:none;
+    text-shadow:0 1px 2px rgba(0,0,0,.85), 0 0 4px rgba(0,0,0,.6);}
+  .battlefield > .bf-hp .bf-hp-num small{font-size:10px;}
+  .battlefield > .bf-hp.is-faced .bf-hp-track{box-shadow:inset 0 0 0 2px rgba(255,215,122,.9);}
+  #battlefieldEl{padding-top:24px; padding-bottom:24px;}
+  /* Wider results screen (2026-10-04) with bigger reward cards */
+  .pass-card.winloss-card{max-width:min(640px, 94vw); width:100%;}
+  .rw-card .card-tile{width:118px; height:148px; font-size:12px;}
+  .rw-cards{gap:12px;}
+  /* Loss tip */
+  .loss-tip{display:flex; gap:10px; align-items:flex-start; text-align:left; margin:0 0 14px; padding:12px 14px; border-radius:12px;
+    background:rgba(255,214,120,.16); border:1px solid rgba(201,164,106,.55); font-size:14px; line-height:1.4;}
+  .loss-tip-ico{font-size:22px; line-height:1;}
+  .loss-tip-body{display:flex; flex-direction:column; gap:8px; align-items:flex-start;}
+  /* Pitch callout */
+  .pitch-callout{position:absolute; left:50%; top:50%; z-index:40; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:2px; pointer-events:none;
+    padding:10px 22px 12px; border-radius:16px; background:rgba(28,22,14,.82); border:2px solid #e3b23c; box-shadow:0 10px 30px rgba(0,0,0,.45);
+    color:#fff6dc; font-family:'Baloo 2',system-ui,sans-serif; animation:pitchCallout 1.7s ease forwards;}
+  .pitch-callout .pc-from{font-size:13px; font-weight:700; opacity:.8;}
+  .pitch-callout .pc-gain{font-size:34px; font-weight:800; line-height:1.05; text-shadow:0 2px 0 rgba(0,0,0,.4);}
+  .pitch-callout .pc-gain small{font-size:15px; margin-left:6px; opacity:.85;}
+  @keyframes pitchCallout{0%{opacity:0; transform:translate(-50%,-30%) scale(.7);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.06);} 22%{transform:translate(-50%,-50%) scale(1);} 78%{opacity:1; transform:translate(-50%,-56%);} 100%{opacity:0; transform:translate(-50%,-70%);}}
+  .pill-gain-pulse{animation:pillGainPulse .9s ease;}
+  @keyframes pillGainPulse{0%,100%{transform:scale(1); box-shadow:none;} 30%{transform:scale(1.25); box-shadow:0 0 0 4px rgba(227,178,60,.55);}}
+  @media (prefers-reduced-motion: reduce){ .pitch-callout{animation-duration:2.2s;} }
   #rowMine.turn-glow{animation:turnGlow 1.8s ease-out;}
   @keyframes turnGlow{0%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);} 25%{box-shadow:inset 0 -40px 60px -30px rgba(255,215,122,.55);} 100%{box-shadow:inset 0 0 0 0 rgba(255,215,122,0);}}
   /* ---- Forge rework (2026-10-03) ---- */
@@ -21231,6 +21277,7 @@ function renderMatchUI(){
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
+        ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
           <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
@@ -21368,6 +21415,7 @@ function renderMatchUI(){
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
+    const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); });
     const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
@@ -22435,7 +22483,13 @@ function renderBoard(opts){
   function releaseNewElRects(){
     if(!newElRects) return;
     if(window.__DEBUG_RENDER__) newElRects.forEach(({el})=>console.log('[settle revert]', 't=',performance.now().toFixed(1), el.getAttribute('data-uid')));
+    // 2026-10-04 ("cards sometimes teleport to the right"): the pin was measured when the card
+    // landed; if the row reflowed since (another card entered, one died, the center refilled), the
+    // card's real slot is elsewhere and clearing the pin snapped it there in one frame. Measure
+    // before and after, and glide any difference instead.
+    const before = newElRects.map(({el})=> el.getBoundingClientRect());
     newElRects.forEach(({el})=> gsap.set(el, {clearProps:'position,left,top,width,height'}));
+    newElRects.forEach(({el}, i)=> glideFromRect(el, before[i]));
     newElRects = null;
   }
   if(window.__DEBUG_RENDER__) console.log('[enteringUids before force-reset]', JSON.stringify([...enteringUids]), 'attackingUids=', JSON.stringify([...attackingUids]));
@@ -23768,6 +23822,7 @@ async function discardCardByUid(uid){
   if(darkPointBonus>0) gainChips.push({amount:darkPointBonus, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId});
   if(onDiscardGains.length) gainChips.push(...onDiscardGains);
   if(gainChips.length) resourceGainVfx(discardZoneEl ? discardZoneEl.getBoundingClientRect() : null, gainChips);
+  if(gainChips.length) pitchCallout(gainChips, dcDef);
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
@@ -23816,10 +23871,9 @@ function renderHUD(){
     ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
     ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}
     ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
-    <span style="flex:1"></span>
-    ${hudSettingsWidgetHTML()}
-    <button class="btn small" id="quitMatchBtn">${m.mode==='async'?'Save & Exit':'Quit'}</button>`;
-  const q = document.getElementById('quitMatchBtn'); if(q) q.addEventListener('click', m.mode==='async' ? saveAndExitAsyncMatch : (m.mode==='tutorial' ? quitTutorialToHome : endMatch));
+    `;
+  // (2026-10-04) Settings and Quit live in the top bar now; this used to add a second copy of
+  // both (with a duplicate #quitMatchBtn id) under the board after every HUD refresh.
   wireHudChrome();
   updateHqHpDisplay('A'); updateHqHpDisplay('B');
 }
@@ -24060,6 +24114,31 @@ function burnAwayVfx(el, ms){
   el.classList.add('burning');
   return true;
 }
+// Bleed-out (2026-10-04, "fire-death should be reserved for fire; a red-fade like bleed out"):
+// the default death. A dark wash runs down the card from the top, the colour drains out, a few
+// drops fall from the bottom edge, and the card sinks and fades. Tinted by what killed it: red
+// for ordinary wounds, sickly green for poison/acid/decay, icy blue for cold.
+const DEATH_TONES = {bleed:'#b3121f', poison:'#4f8f1c', cold:'#5fb7e6'};
+function deathStyleFor(uid){
+  const m = matchState, rc = m && m.replayCards && m.replayCards[uid];
+  const d = rc ? getCardDefs()[rc.defId] : null;
+  const hurt = (m && m.lastHurtBy && m.lastHurtBy[uid]) || '';
+  const fiery = d && (d.dmgType==='heat' || (d.archetypes||[]).includes('Volcanic') || (d.resist||[]).includes('heat') && (d.archetypes||[]).includes('Elemental'));
+  if(hurt==='heat' || (fiery && hurt!=='cold')) return 'burn';
+  if(hurt==='poison' || hurt==='acid' || hurt==='decay') return 'poison';
+  if(hurt==='cold') return 'cold';
+  return 'bleed';
+}
+function bleedOutVfx(el, ms, tone){
+  if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  el.style.setProperty('--bleed-ms', ms + 'ms');
+  el.style.setProperty('--bleed-c', DEATH_TONES[tone] || DEATH_TONES.bleed);
+  const w = document.createElement('span'); w.className = 'bleed-wash'; w.setAttribute('aria-hidden', 'true');
+  for(let i = 0; i < 4; i++){ const dr = document.createElement('i'); dr.style.left = (18 + i*21 + Math.random()*8) + '%'; dr.style.animationDelay = Math.round(ms*(0.25 + i*0.11)) + 'ms'; w.appendChild(dr); }
+  el.appendChild(w);
+  el.classList.add('bleeding', 'bleed-' + (tone || 'bleed'));
+  return true;
+}
 function deathVfx(uid){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -24074,10 +24153,12 @@ function deathVfx(uid){
   // tween, so skip it (and its killTweensOf) for a currently-flipping element; the skull-float
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
-  const burnt = burnAwayVfx(el, Math.round(death*1.25));
+  const style = deathStyleFor(uid);
+  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt) gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
     gsap.timeline({onComplete:()=> skull.remove()})
       .fromTo(skull, {y:0, opacity:0, scale:.6}, {y:-26, opacity:1, scale:1, duration:(death*0.5)/1000, ease:'back.out(2)'})
@@ -24095,13 +24176,59 @@ function deathVfx(uid){
 // once a round's replay is over, no board card should still be pinned (position:absolute from an
 // entrance/Flip) or carrying a leftover transform. Anything that is, and isn't mid-tween, gets its
 // inline layout props cleared so it drops back into its real slot in the row.
+// Slide an element from where it visibly was (rect `from`) to wherever layout has put it now,
+// instead of letting it jump. Used wherever a pin or stray transform is released.
+function glideFromRect(el, from){
+  if(!el || !from || !el.isConnected || !hasGsap()) return;
+  const to = el.getBoundingClientRect();
+  const dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
+  if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
+  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration:Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease:'power2.out', clearProps:'x,y'});
+}
+// Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
+// reflow a row outside a Flip animation: a pinned entrant released, a dying card removed, the
+// end-of-round sync render, a half-slot recentre when the card count changes parity. Rather than
+// chase each one, this watches every resting board card once per animation frame — BEFORE paint —
+// and if one has jumped sideways within its row since the last frame without being animated, it is
+// offset back to where it was and glided to its new place. The snap is never painted.
+(function boardSnapGuard(){
+  if(typeof window === 'undefined' || !window.requestAnimationFrame) return;
+  let last = new WeakMap();
+  function tick(){
+    requestAnimationFrame(tick);
+    if(!matchState || !hasGsap()) return;
+    const rows = document.querySelectorAll('#rowMine, #rowEnemy'); if(!rows.length) return;
+    // measured against the board's inner layer (which only the camera pan/zoom moves), not the
+    // row: a row that changes width re-centres itself, carrying its cards with it
+    const inner = document.getElementById('battlefieldInner');
+    const rr = (inner || rows[0]).getBoundingClientRect();
+    rows.forEach(row=>{
+      row.querySelectorAll(':scope .board-card').forEach(el=>{
+        const r = el.getBoundingClientRect();
+        const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
+        const prev = last.get(el);
+        const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid));
+        if(prev && !busy && !prev.busy && Math.abs(pos.w - prev.w) < 2){
+          const dx = prev.x - pos.x, dy = prev.y - pos.y;
+          if(Math.abs(dx) > 12 && Math.abs(dy) < 40){
+            gsap.fromTo(el, {x:dx}, {x:0, duration:Math.min(.32, .14 + Math.abs(dx)/2200), ease:'power2.out', clearProps:'x'});
+            last.set(el, {x:pos.x + dx, y:pos.y, w:pos.w, busy:true});
+            return;
+          }
+        }
+        last.set(el, {x:pos.x, y:pos.y, w:pos.w, busy});
+      });
+    });
+  }
+  requestAnimationFrame(tick);
+})();
 function settleStrayBoardCards(){
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
-  document.querySelectorAll('.board-card.burning').forEach(el=>{
+  document.querySelectorAll('.board-card.burning, .board-card.bleeding').forEach(el=>{
     if(!alive.has(String(el.dataset.uid))) return;
-    el.classList.remove('burning'); el.querySelectorAll(':scope > .burn-glow').forEach(g=> g.remove());
+    el.classList.remove('burning', 'bleeding', 'bleed-bleed', 'bleed-poison', 'bleed-cold'); el.querySelectorAll(':scope > .burn-glow, :scope > .bleed-wash').forEach(g=> g.remove());
     if(hasGsap()) gsap.set(el, {clearProps:'scale,y,opacity'});
   });
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
@@ -24109,7 +24236,7 @@ function settleStrayBoardCards(){
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
     const tf = el.style.transform;
     if(pinned || (tf && tf!=='none' && !/^translate\(0(px)?, 0(px)?\)$/.test(tf))){
-      if(hasGsap()) gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'});
+      if(hasGsap()){ const before = el.getBoundingClientRect(); gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'}); glideFromRect(el, before); }
       else { el.style.position=''; el.style.left=''; el.style.top=''; el.style.width=''; el.style.height=''; el.style.transform=''; }
     }
   });
@@ -24197,6 +24324,11 @@ async function resolveRound(){
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
     if(ev.type==='hit' || ev.type==='hitHQ') panCameraToShowUid(ev.attUid);
+    // remember what last hurt each card, so its death can look like it (burn for heat, bleed otherwise)
+    if(!m.lastHurtBy) m.lastHurtBy = {};
+    if(ev.type==='hit' && ev.targetUid!=null) m.lastHurtBy[ev.targetUid] = ev.dmgType || ((getCardDefs()[ev.attDefId]||{}).dmgType) || 'physical';
+    else if(ev.type==='poisonTick') m.lastHurtBy[ev.uid] = 'poison';
+    else if(ev.type==='bleedTick') m.lastHurtBy[ev.uid] = 'bleed';
     pushLog(ev); renderVfxForEvent(ev);
     await sleep(delayForEvent(ev, lastVfxKind));
     lastVfxKind = vfxKindOf(ev);
@@ -25220,6 +25352,19 @@ function pickNextBattle(m, newFights){
   for(let i=0;i<map.nodes.length;i++){ const n = map.nodes[i]; if(n.kind==='tutorial') continue; if(isNodeVisible(map, n, i, p) && !p.completed.includes(conquestNodeId(map.id, n.key))) return {mapId, key:n.key, node:n}; }
   return null;
 }
+// Loss tip (2026-10-04, "a tip on loss — like asking you to try to make a new deck"): one short,
+// specific suggestion read off how the match went, plus a button straight into the deck builder.
+function lossTipHTML(m){
+  const enemy = m.players[2].hq, mine = m.players[1].hq;
+  const enemyLeft = enemy.maxHp ? enemy.hp / enemy.maxHp : 1;
+  let tip;
+  if(enemyLeft > 0.7) tip = 'Your cards barely reached their castle. Try a deck with more attack, or <b>Quick</b> and <b>Flying</b> cards that hit sooner.';
+  else if((m.round||0) <= 6) tip = 'You were overrun early. Cheaper cards and a <b>Guardian</b> or two will hold the line while your big hitters wind up.';
+  else if(enemyLeft < 0.25) tip = 'So close! Swap your two or three weakest cards for something new from a pack or a skirmish reward, and go again.';
+  else tip = 'Try building a new deck around one plan: a strong archetype, a fitting leader, and fewer one-off cards.';
+  const canDeck = tabOpen('deck');
+  return `<div class="loss-tip"><span class="loss-tip-ico" aria-hidden="true">💡</span><div class="loss-tip-body"><div>${tip}</div>${canDeck ? '<button type="button" class="btn small" id="wlReworkDeckBtn">🃏 Rework my deck</button>' : ''}</div></div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -26008,6 +26153,18 @@ function animateAttacker(attUid, isMine, opts){
 // without needing another pass through this code). `fromRect` is the drop point (the discard
 // zone's own rect works for both a genuine drag-drop and a tap-to-discard, since either way
 // that's where the card visually lands); `gains` is [{amount, glyph, pillId}, ...].
+// Pitch callout (2026-10-04, "cards don't announce how much resource they give on pitch"): a big
+// "+2 🪵 Lumber" banner over the board for a beat, and the matching resource pill pulses.
+function pitchCallout(gains, def){
+  const host = document.getElementById('battlefieldEl'); if(!host) return;
+  const names = {lumber:'Lumber', grace:'Grace', stone:'Stone', devilry:'Dark Points'};
+  const label = gains.map(g=>{ const key = Object.keys(PITCH_RESOURCE_META).find(k=> PITCH_RESOURCE_META[k].pillId===g.pillId); return `<span class="pc-gain">+${g.amount} ${g.glyph}<small>${names[key]||''}</small></span>`; }).join('');
+  host.querySelectorAll('.pitch-callout').forEach(e=> e.remove());
+  const el = document.createElement('div'); el.className = 'pitch-callout'; el.setAttribute('role','status');
+  el.innerHTML = `<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`;
+  host.appendChild(el); setTimeout(()=> el.remove(), 1700);
+  gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
+}
 function resourceGainVfx(fromRect, gains){
   if(!fromRect || !gains || !gains.length) return;
   gains.forEach((g, i)=>{
