@@ -44,6 +44,12 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 
 **Status (2026-10-05):** cues 28–33 are live as Web Audio synths (`SoundKit.arrowLoose/arrowThunk/bleedOut/burnAway/castleCollapse/pitchChime`), built on two new primitives: filtered noise with a sweeping filter (`fnoise`) and a pitch-swept tone (`sweep`). They follow the "mixed" default for D17: an organic body with a little chip on top.
 
+**Status (2026-10-05, later):**
+- Hits now use a richer synth: a thwack with random pitch, plus a boom and crack on heavy blows (`SoundKit.hitAt`).
+- Hits and deaths are panned to where they happen on screen (`SoundKit.at`).
+- New cues: 34 **Materia forms** (`materiaForm`, 800 ms, a glassy shimmer and pings) and 35 **Hero level-up** (`heroLevel`, 1.5 s, a rising bell arpeggio).
+- The ranked to-do list is in `effects-catalogue.md` → Recommendations.
+
 **Sources, CC0 first:**
 - **Kenney:** Interface Sounds, Impact Sounds, RPG Audio, UI Audio, Casino Audio (card sounds).
 - **OpenGameArt** (CC0 filter).

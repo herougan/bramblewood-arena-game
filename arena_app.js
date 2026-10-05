@@ -1561,6 +1561,13 @@ const SoundKit = (()=>{
   try{ const v = localStorage.getItem('bw_voiceVolume'); if(v!=null) voiceVolume = Math.max(0, Math.min(1, parseFloat(v))); }catch(e){}
   let musicVolume = 0.6;
   try{ const v = localStorage.getItem('bw_musicVolume'); if(v!=null) musicVolume = Math.max(0, Math.min(1, parseFloat(v))); }catch(e){}
+  // Stereo position (2026-10-05): cues fired inside SoundKit.at(pan, fn) are panned to where the
+  // action is on screen (−1 left … +1 right), so a hit on the far column sounds over there.
+  let curPan = 0;
+  function outNode(c){
+    if(!curPan || !c.createStereoPanner) return c.destination;
+    const p = c.createStereoPanner(); p.pan.value = curPan; p.connect(c.destination); return p;
+  }
   function ac(){ if(!ctx){ try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ ctx=null; } } return ctx; }
   // Item #15 (2026-09-18, "the sound continues playing even after I end the turn"): every cue
   // here is scheduled with real Web Audio timestamps (c.currentTime + delay/duration), which run
@@ -1591,7 +1598,7 @@ const SoundKit = (()=>{
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime((gainPeak||0.15)*vol, t0+0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
-    osc.connect(g); g.connect(c.destination);
+    osc.connect(g); g.connect(outNode(c));
     osc.start(t0); osc.stop(t0+dur+0.02);
     track(osc);
   }
@@ -1604,7 +1611,7 @@ const SoundKit = (()=>{
     for(let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1)*(1-i/bufSize);
     const src = c.createBufferSource(); src.buffer = buf;
     const g = c.createGain(); g.gain.value = (gainPeak||0.12)*sfxVolume;
-    src.connect(g); g.connect(c.destination); src.start();
+    src.connect(g); g.connect(outNode(c)); src.start();
     track(src);
   }
   // Richer primitives (2026-10-05 SFX pass): band-limited noise with its own envelope and a
@@ -1626,7 +1633,7 @@ const SoundKit = (()=>{
     g.gain.setValueAtTime(0.0001, t0);
     g.gain.exponentialRampToValueAtTime(Math.max(0.0002, gainPeak*sfxVolume), t0 + att);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    src.connect(f); f.connect(g); g.connect(c.destination); src.start(t0); src.stop(t0 + dur + 0.02);
+    src.connect(f); f.connect(g); g.connect(outNode(c)); src.start(t0); src.stop(t0 + dur + 0.02);
     track(src);
   }
   function sweep(f0, f1, dur, type, gainPeak, delay){
@@ -1638,7 +1645,7 @@ const SoundKit = (()=>{
     osc.frequency.setValueAtTime(f0, t0); osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
     g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime((gainPeak||0.12)*sfxVolume, t0 + 0.008);
     g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(g); g.connect(c.destination); osc.start(t0); osc.stop(t0 + dur + 0.02);
+    osc.connect(g); g.connect(outNode(c)); osc.start(t0); osc.stop(t0 + dur + 0.02);
     track(osc);
   }
   // Task list item 8's "voice from a set list" — a short, distinct blip standing in for a
@@ -1685,6 +1692,36 @@ const SoundKit = (()=>{
       activeNodes.clear();
     },
     hit(){ tone(180,0.12,'square',0.1); },
+    // Richer hits (2026-10-05): a felt-and-wood thwack with a little random pitch so a long
+    // exchange doesn't sound like one sample on repeat; heavy blows add a low boom and a crack.
+    hitAt(dmg, heavy){
+      const j = 0.92 + Math.random()*0.16;
+      fnoise(0.09, 0.14, {type:'lowpass', freq:1400*j, freqEnd:260, q:1.2, attack:0.002});
+      sweep(210*j, 120*j, 0.08, 'triangle', 0.09);
+      if(heavy || dmg >= 4){
+        sweep(95*j, 42, 0.26, 'sine', 0.16, 0.01);
+        fnoise(0.05, 0.10, {type:'highpass', freq:2600, attack:0.001, crackle:0.08, delay:0.005});
+      }
+    },
+    // Hero (2026-10-05): a crystal forming (glassy shimmer + a ringing ping), and a level-up
+    // flourish (rising bell arpeggio over a soft swell).
+    materiaForm(){
+      fnoise(0.5, 0.06, {type:'bandpass', freq:3000, freqEnd:7000, q:6, attack:0.25});
+      [1568, 2093, 2637].forEach((f, i)=> tone(f, 0.5 - i*0.08, 'sine', 0.06, 0.32 + i*0.06));
+      sweep(400, 900, 0.3, 'triangle', 0.04, 0.05);
+    },
+    heroLevel(){
+      fnoise(0.8, 0.05, {type:'lowpass', freq:400, freqEnd:1800, attack:0.35});
+      [523, 659, 784, 1047, 1319].forEach((f, i)=> tone(f, 0.45, 'triangle', 0.07, 0.25 + i*0.09));
+      tone(1568, 0.9, 'sine', 0.05, 0.75);
+    },
+    // Play the cues in fn() panned to pan (−1 … 1), or to an element's place on screen.
+    at(where, fn){
+      let pan = typeof where === 'number' ? where : 0;
+      if(where && where.getBoundingClientRect){ const r = where.getBoundingClientRect(); pan = ((r.left + r.width/2)/Math.max(1, innerWidth))*2 - 1; }
+      const prev = curPan; curPan = Math.max(-1, Math.min(1, pan*0.7));
+      try{ fn(); } finally { curPan = prev; }
+    },
     death(){ tone(90,0.3,'sawtooth',0.12); },
     gold(){ tone(880,0.08,'triangle',0.12); tone(1320,0.09,'triangle',0.09,0.05); },
     // Card unlocking (2026-09-22, style-guide enforcement pass): a brand-new card is a bigger,
@@ -6289,6 +6326,8 @@ function heroGainXp(n, why){
   myHero.xp += n; saveHero();
   const after = heroLevelFromXp(myHero.xp).level;
   if(after > before){
+    try{ SoundKit.heroLevel(); }catch(e){}
+    heroLevelUpPending = after;
     const pts = heroPointsFree(myHero), skill = HERO_SKILL_LEVELS.some(l=> l > before && l <= after);
     setTimeout(()=> showToast(`🦸 ${escapeHtml(myHero.name)} reached Level ${after}!${pts>0 ? ` ${pts} stat point${pts===1?'':'s'} to spend` : ''}${skill ? ' · a new skill to pick' : ''} — Deck → 🦸 Hero`, 'ok'), 700);
   } else if(why) showToast(`🦸 +${n} Hero XP — ${why}`, 'ok');
@@ -6305,6 +6344,26 @@ function heroAwardBattle(m){
   myHero.battles = (myHero.battles||0) + 1; if(won) myHero.wins = (myHero.wins||0) + 1;
   heroGainXp((won ? 30 : 10) + (won && played ? 10 : 0), won ? 'victory' : 'experience');
 }
+let heroLevelUpPending = 0;
+// A crystal forms over the craft button: it grows out of a ring of sparks, spins once, and drops
+// toward the Materia counts. Pure CSS/DOM; skipped for reduced motion.
+function materiaBurstVfx(kind){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const btn = document.querySelector('#heroCraftBtn, [data-fmb="craft"]'); if(!btn) return;
+  const r = btn.getBoundingClientRect();
+  const el = document.createElement('div'); el.className = 'materia-burst mk-' + kind.id; el.setAttribute('aria-hidden', 'true');
+  el.style.left = (r.left + r.width/2) + 'px'; el.style.top = (r.top - 8) + 'px';
+  el.innerHTML = `<span class="mb-gem">${kind.icon}</span>` + Array.from({length:10}, (_, i)=> `<i style="--a:${i*36}deg; --d:${(i%3)*40}ms"></i>`).join('');
+  document.body.appendChild(el); setTimeout(()=> el.remove(), 1400);
+}
+// When the Hero Hall opens after a level-up, the big card gets a rising ring of light once.
+function heroHallLevelFlourish(body){
+  if(!heroLevelUpPending) return; heroLevelUpPending = 0;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const card = body.querySelector('.hero-card-big'); if(!card) return;
+  card.classList.remove('is-levelling'); void card.offsetWidth; card.classList.add('is-levelling');
+  setTimeout(()=> card.classList.remove('is-levelling'), 1500);
+}
 function statKeyFor(side, defId){ return side + '|' + defId; }
 // Materia (T4, first version): crafted in the Forge from Magic Dust. Each craft grants Hero XP and
 // a crystal of one of four kinds, kept for socketing later.
@@ -6317,7 +6376,8 @@ function craftMateria(){
   const k = MATERIA_KINDS[Math.floor(Math.random()*MATERIA_KINDS.length)];
   myHero.materia[k.id] = (myHero.materia[k.id]||0) + 1;
   heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`);
-  try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
+  try{ SoundKit.materiaForm(); }catch(e){}
+  try{ materiaBurstVfx(k); }catch(e){}
   return k;
 }
 // Decks that leave this device (live matches, ghosts, invites, raid records) go without the Hero.
@@ -17855,7 +17915,7 @@ function renderVfxForEvent(ev){
     setTimeout(()=>{
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
-      SoundKit.hit();
+      SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
@@ -18197,7 +18257,7 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.death(); deathVfx(ev.uid); maybeSpeak(ev.uid, 'onDeath'); }
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); }
   // Center collapse-in (item #4, 2026-09-16): the actual slide into place is free — the
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
@@ -19360,6 +19420,7 @@ function renderHeroHall(body){
     renderDeckSection();
   });
   document.getElementById('heroCraftBtn').addEventListener('click', ()=>{ if(craftMateria()) renderDeckSection(); });
+  heroHallLevelFlourish(body);
 }
 function addTentPoles(root){ if(root && !root.querySelector(':scope > .tent-pole')) root.insertAdjacentHTML('afterbegin', '<span class="tent-pole left" aria-hidden="true"></span><span class="tent-pole right" aria-hidden="true"></span>'); }
 function renderDeckSection(){
@@ -21073,6 +21134,7 @@ function battleLightAt(el, dmgType, big){
   const x = Math.max(0, Math.min(1, (r.left + r.width/2 - b.left)/b.width));
   const y = Math.max(0, Math.min(1, (r.top + r.height/2 - b.top)/b.height));
   battleWeather.flash(x, y, LIGHT_COLORS[dmgType] || LIGHT_COLORS.physical, big ? 0.9 : 0.55, big ? 0.6 : 0.32, big ? 900 : 520);
+  if(big && battleWeather.wave) battleWeather.wave(x, y, LIGHT_COLORS[dmgType] || LIGHT_COLORS.physical, 0.9, 760);
 }
 function mountEntranceShaders(){ document.querySelectorAll('.splash .entrance-bg').forEach(el=> mountSceneShader(el)); }
 function setShadersEnabled(on){

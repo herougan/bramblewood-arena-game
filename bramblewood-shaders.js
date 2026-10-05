@@ -106,6 +106,9 @@ uniform float u_kind; uniform vec3 u_tint;
 // Lighting (2026-10-05): up to 4 short-lived point lights (x, y in 0..1 with y down, radius in
 // screen heights, strength) and an optional lit cloth texture for the battlefield felt.
 uniform vec4 u_lights[4]; uniform vec3 u_lightCol[4]; uniform float u_felt;
+// Shockwave (2026-10-05): x, y (0..1, y down), age 0..1, strength. A bright crest with a dark trough
+// behind it rolls out across the felt — castle hits and the heaviest blows.
+uniform vec4 u_wave; uniform vec3 u_waveCol;
 vec4 add(vec4 acc, vec3 c, float a){ a = clamp(a, 0.0, 1.0); return acc + vec4(c*a, a)*(1.0 - acc.a); }
 void main(){
   vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
@@ -203,6 +206,15 @@ void main(){
     float a = L4.w * pow(smoothstep(L4.z, 0.0, d), 1.6);
     outc.rgb += u_lightCol[i] * a;   // additive: light, not paint
   }
+  if(u_wave.w > 0.001){
+    float wd = length((uv - u_wave.xy) * vec2(aspect, 1.0));
+    float R = 0.04 + u_wave.z * 0.55;                       // ring radius in screen heights
+    float fade = u_wave.w * (1.0 - u_wave.z) * (1.0 - u_wave.z);
+    float crest = smoothstep(0.035, 0.0, abs(wd - R));
+    float trough = smoothstep(0.07, 0.0, abs(wd - (R - 0.05))) * step(wd, R);
+    outc.rgb += u_waveCol * crest * fade * 0.55;
+    outc.a += trough * fade * 0.22;
+  }
   gl_FragColor = outc;
 }`;
 
@@ -253,7 +265,7 @@ function mount(host, opts){
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   const U = n=> gl.getUniformLocation(prog, n);
   const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth'),
-    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt')};
+    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt'), wave: U('u_wave'), waveCol: U('u_waveCol')};
   if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? Number(opts.felt) : 0); }
   const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
   // Point light: x, y in 0..1 of the host (y down), colour [r,g,b] 0..1, strength ~0.3–1,
@@ -262,6 +274,8 @@ function mount(host, opts){
     layer.lights.push({x, y, c: color || [1, 0.85, 0.6], s: strength == null ? 0.6 : strength, r: radius || 0.35, life: life || 520, t0: performance.now()});
     if(layer.lights.length > 4) layer.lights.shift();
   };
+  // Shockwave: one at a time (a newer one replaces the old). life in ms.
+  layer.wave = (x, y, color, strength, life)=>{ layer.waveState = {x, y, c: color || [1, 0.9, 0.7], s: strength == null ? 0.8 : strength, life: life || 700, t0: performance.now()}; };
   if(scene){
     const img = new Image();
     img.onload = ()=>{
@@ -334,6 +348,11 @@ function loop(now){
           pos.set([L.x, L.y, L.r, L.s * Math.max(0, k)], i*4); col.set(L.c, i*3);
         });
         gl.uniform4fv(u.lights, pos); gl.uniform3fv(u.lightCol, col);
+      }
+      if(u.wave){
+        const W = l.waveState, age = W ? (performance.now() - W.t0)/W.life : 2;
+        if(W && age < 1){ gl.uniform4f(u.wave, W.x, W.y, age, W.s); gl.uniform3f(u.waveCol, W.c[0], W.c[1], W.c[2]); }
+        else { if(W) l.waveState = null; gl.uniform4f(u.wave, 0, 0, 0, 0); }
       }
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);

@@ -4758,6 +4758,24 @@
   .hero-materia span{font-weight:800; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid var(--surface-border); font-variant-numeric:tabular-nums;}
   .hero-dust{opacity:.75; font-weight:700;}
   .hero-stat .hs-label{white-space:nowrap;}
+  /* Materia burst + Hero level flourish (2026-10-05) */
+  .materia-burst{position:fixed; z-index:9500; width:0; height:0; pointer-events:none;}
+  .materia-burst .mb-gem{position:absolute; left:-18px; top:-18px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:30px;
+    filter:drop-shadow(0 0 8px var(--mk,#c9a2ff)) drop-shadow(0 0 2px #fff); animation:mbGem 1.3s cubic-bezier(.2,.8,.3,1) forwards;}
+  .materia-burst i{position:absolute; left:-3px; top:-3px; width:6px; height:6px; border-radius:50%; background:#fff; box-shadow:0 0 8px 2px var(--mk,#c9a2ff);
+    animation:mbSpark .8s ease-out var(--d) forwards; transform:rotate(var(--a)) translateY(0);}
+  .materia-burst.mk-ember{--mk:#ff8a3c;} .materia-burst.mk-tide{--mk:#5ec8ff;} .materia-burst.mk-grove{--mk:#7be36b;} .materia-burst.mk-stone{--mk:#d8c7a2;}
+  @keyframes mbGem{0%{transform:translateY(10px) scale(.1) rotate(-90deg); opacity:0;} 35%{transform:translateY(-34px) scale(1.25) rotate(0); opacity:1;}
+    70%{transform:translateY(-40px) scale(1) rotate(360deg); opacity:1;} 100%{transform:translateY(40px) scale(.5) rotate(360deg); opacity:0;}}
+  @keyframes mbSpark{0%{transform:rotate(var(--a)) translateY(0) scale(1); opacity:1;} 100%{transform:rotate(var(--a)) translateY(-46px) scale(.2); opacity:0;}}
+  .hero-card-big{position:relative;}
+  .hero-card-big.is-levelling::before{content:''; position:absolute; inset:-14px; border-radius:20px; pointer-events:none; z-index:4;
+    background:conic-gradient(from 0deg, transparent, rgba(255,215,110,.9), transparent 30%, rgba(255,240,190,.8), transparent 60%, rgba(255,215,110,.9), transparent);
+    -webkit-mask:radial-gradient(closest-side, transparent 78%, #000 80%, #000 96%, transparent); mask:radial-gradient(closest-side, transparent 78%, #000 80%, #000 96%, transparent);
+    animation:heroRing 1.4s ease-out forwards;}
+  .hero-card-big.is-levelling .card-tile{animation:heroLift 1.4s cubic-bezier(.2,.8,.3,1);}
+  @keyframes heroRing{0%{transform:scale(.6) rotate(0); opacity:0;} 25%{opacity:1;} 100%{transform:scale(1.25) rotate(200deg); opacity:0;}}
+  @keyframes heroLift{0%{transform:none;} 30%{transform:translateY(-10px) scale(1.05); filter:brightness(1.35);} 100%{transform:none; filter:none;}}
   .forge-materia-bench{display:flex; align-items:center; gap:12px; margin:10px 0 14px; padding:10px 14px; border-radius:14px; background:linear-gradient(90deg,rgba(120,70,160,.28),rgba(60,30,20,.25)); border:1px solid rgba(200,160,255,.35); color:#f6e7cf;}
   .forge-materia-bench .hero-materia span{color:#f6e7cf; border-color:rgba(255,255,255,.25);}
   .fmb-icon{font-size:28px; filter:drop-shadow(0 0 6px rgba(190,140,255,.8));}
