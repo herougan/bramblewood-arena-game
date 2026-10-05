@@ -13058,6 +13058,7 @@ function wireDropZones(){
     }
   });
   const discardZone = document.getElementById('dropDiscard');
+  if(discardZone && matchState && matchState.selectedUid!=null){ try{ const hc = matchState.players[viewerHandPid(matchState)].hand.find(c=> c.uid===matchState.selectedUid); if(hc) showPitchBadge(hc.defId); }catch(e){} }
   if(discardZone){
     // 2026-09-17, per explicit request ("show how many resources will be gained when pitching
     // a card"): the zone already swaps to "+1 🪙" once a card is TAP-selected (m.selectedUid,
@@ -13134,7 +13135,7 @@ function wireDropZones(){
     discardZone.addEventListener('drop', e=>{
       e.preventDefault(); discardZone.classList.remove('dragover');
       discardDragActive = false;
-      hideResourceTip();
+      hideResourceTip(); hidePitchBadge();
       const uid = Number(e.dataTransfer.getData('text/plain'));
       if(uid) discardCardByUid(uid);
     });
@@ -14950,8 +14951,12 @@ function renderHand(){
       e.dataTransfer.setData('text/plain', String(uid));
       e.dataTransfer.effectAllowed = 'move';
       el.classList.add('dragging');
+      // Pitch preview (2026-10-05, user: "when the player is hovering the card over the graveyard
+      // they should have a more obvious indicator"): the graveyard lights up with what this card
+      // would pitch for the moment you pick it up, and grows when you're over it.
+      try{ showPitchBadge(el.getAttribute('data-defid')); }catch(_){}
     });
-    el.addEventListener('dragend', ()=> el.classList.remove('dragging'));
+    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -15108,6 +15113,19 @@ function pitchValueStatDisplay(c){
   const bonus = coreEvilBonus + devilryBonus;
   if(bonus>0) out += ` +${bonus} ${PITCH_RESOURCE_META.devilry.glyph}`;
   return out;
+}
+function showPitchBadge(defId){
+  const z = document.getElementById('dropDiscard'); if(!z || !defId) return;
+  const {resource, amount} = pitchYieldOf(defId);
+  const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
+  let b = z.querySelector('.pitch-badge');
+  if(!b){ b = document.createElement('span'); b.className = 'pitch-badge'; b.setAttribute('aria-hidden','true'); z.appendChild(b); }
+  b.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
+  z.classList.add('pitch-ready');
+}
+function hidePitchBadge(){
+  const z = document.getElementById('dropDiscard'); if(!z) return;
+  z.classList.remove('pitch-ready'); z.querySelectorAll('.pitch-badge').forEach(b=> b.remove());
 }
 function pitchYieldPreviewHTML(defId){
   const {resource, amount} = pitchYieldOf(defId);
@@ -17670,7 +17688,7 @@ function pitchCallout(gains, def){
   host.querySelectorAll('.pitch-callout').forEach(e=> e.remove());
   const el = document.createElement('div'); el.className = 'pitch-callout'; el.setAttribute('role','status');
   el.innerHTML = `<span class="pc-from">${def ? escapeHtml(def.name) + ' pitched' : 'Pitched'}</span>${label}`;
-  host.appendChild(el); setTimeout(()=> el.remove(), 1700);
+  host.appendChild(el); setTimeout(()=> el.remove(), 1150);
   try{ SoundKit.pitchChime(); }catch(e){}
   gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
 }
