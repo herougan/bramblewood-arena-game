@@ -109,6 +109,10 @@ uniform vec4 u_lights[4]; uniform vec3 u_lightCol[4]; uniform float u_felt;
 // Shockwave (2026-10-05): x, y (0..1, y down), age 0..1, strength. A bright crest with a dark trough
 // behind it rolls out across the felt — castle hits and the heaviest blows.
 uniform vec4 u_wave; uniform vec3 u_waveCol;
+// Card shadows (2026-10-05): up to 12 card rectangles (x, y, w, h in 0..1, y down) cast soft
+// shadows on the felt, pushed away from the lamp.
+uniform vec4 u_cards[12]; uniform float u_ncards;
+float boxSdf(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
 vec4 add(vec4 acc, vec3 c, float a){ a = clamp(a, 0.0, 1.0); return acc + vec4(c*a, a)*(1.0 - acc.a); }
 void main(){
   vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
@@ -199,6 +203,21 @@ void main(){
     outc.a += clamp(-shade, 0.0, 1.0) * 0.16 + (1.0 - pool) * 0.10;     // cloth shadow + falloff
     outc.rgb += vec3(1.0, 0.86, 0.6) * (clamp(shade, 0.0, 1.0)*0.10 + pool*0.07);
   }
+  if(u_felt > 0.5 && u_ncards > 0.5){
+    vec2 lampS = vec2(0.32 + 0.22*m.x + 0.05*sin(t*0.13), 0.18 + 0.12*m.y + 0.04*cos(t*0.11));
+    float sh = 0.0;
+    for(int i = 0; i < 12; i++){
+      if(float(i) >= u_ncards) break;
+      vec4 C = u_cards[i];
+      vec2 c = C.xy + C.zw*0.5;
+      vec2 dir = (c - lampS) * vec2(aspect, 1.0);
+      vec2 off = normalize(dir + vec2(0.0001)) * 0.026 + vec2(0.0, 0.016);
+      vec2 p = (uv - c) * vec2(aspect, 1.0) - off;
+      float d = boxSdf(p, C.zw*0.5*vec2(aspect, 1.0), 0.012);
+      sh = max(sh, smoothstep(0.05, -0.01, d));
+    }
+    outc.a += sh * 0.55 * (1.0 - outc.a);
+  }
   for(int i = 0; i < 4; i++){
     vec4 L4 = u_lights[i];
     if(L4.w <= 0.001) continue;
@@ -265,9 +284,9 @@ function mount(host, opts){
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   const U = n=> gl.getUniformLocation(prog, n);
   const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth'),
-    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt'), wave: U('u_wave'), waveCol: U('u_waveCol')};
+    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt'), wave: U('u_wave'), waveCol: U('u_waveCol'), cards: U('u_cards'), ncards: U('u_ncards')};
   if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? Number(opts.felt) : 0); }
-  const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
+  const layer = {shadowSel: opts.shadows || null, host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
   // Point light: x, y in 0..1 of the host (y down), colour [r,g,b] 0..1, strength ~0.3–1,
   // radius in host heights, life in ms. Rises in 60 ms, then fades out. At most 4 at once.
   layer.flash = (x, y, color, strength, radius, life)=>{
@@ -348,6 +367,19 @@ function loop(now){
           pos.set([L.x, L.y, L.r, L.s * Math.max(0, k)], i*4); col.set(L.c, i*3);
         });
         gl.uniform4fv(u.lights, pos); gl.uniform3fv(u.lightCol, col);
+      }
+      if(u.cards){
+        let n = 0;
+        if(l.shadowSel && !l.noShadows){
+          const arr = new Float32Array(48);
+          const els = l.host.querySelectorAll(l.shadowSel);
+          for(let i = 0; i < els.length && n < 12; i++){
+            const c = els[i].getBoundingClientRect(); if(c.width < 4) continue;
+            arr.set([(c.left - r.left)/r.width, (c.top - r.top)/r.height, c.width/r.width, c.height/r.height], n*4); n++;
+          }
+          if(n) gl.uniform4fv(u.cards, arr);
+        }
+        gl.uniform1f(u.ncards, n);
       }
       if(u.wave){
         const W = l.waveState, age = W ? (performance.now() - W.t0)/W.life : 2;

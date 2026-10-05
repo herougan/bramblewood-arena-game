@@ -4758,6 +4758,12 @@
   .hero-materia span{font-weight:800; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid var(--surface-border); font-variant-numeric:tabular-nums;}
   .hero-dust{opacity:.75; font-weight:700;}
   .hero-stat .hs-label{white-space:nowrap;}
+  /* Danger vignette (2026-10-05): castle under 25% (faster under 10%) */
+  body.castle-danger::after{content:''; position:fixed; inset:0; pointer-events:none; z-index:8000;
+    box-shadow:inset 0 0 90px 10px rgba(190,20,20,.55); animation:dangerPulse 1.05s ease-in-out infinite;}
+  body.castle-danger-hi::after{animation-duration:.72s; box-shadow:inset 0 0 120px 18px rgba(210,20,20,.65);}
+  @keyframes dangerPulse{0%,100%{opacity:.25;} 18%{opacity:1;} 40%{opacity:.45;} 55%{opacity:.8;}}
+  @media (prefers-reduced-motion:reduce){ body.castle-danger::after{animation:none; opacity:.5;} }
   /* Materia burst + Hero level flourish (2026-10-05) */
   .materia-burst{position:fixed; z-index:9500; width:0; height:0; pointer-events:none;}
   .materia-burst .mb-gem{position:absolute; left:-18px; top:-18px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:30px;

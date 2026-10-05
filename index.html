@@ -4768,6 +4768,12 @@
   .hero-materia span{font-weight:800; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid var(--surface-border); font-variant-numeric:tabular-nums;}
   .hero-dust{opacity:.75; font-weight:700;}
   .hero-stat .hs-label{white-space:nowrap;}
+  /* Danger vignette (2026-10-05): castle under 25% (faster under 10%) */
+  body.castle-danger::after{content:''; position:fixed; inset:0; pointer-events:none; z-index:8000;
+    box-shadow:inset 0 0 90px 10px rgba(190,20,20,.55); animation:dangerPulse 1.05s ease-in-out infinite;}
+  body.castle-danger-hi::after{animation-duration:.72s; box-shadow:inset 0 0 120px 18px rgba(210,20,20,.65);}
+  @keyframes dangerPulse{0%,100%{opacity:.25;} 18%{opacity:1;} 40%{opacity:.45;} 55%{opacity:.8;}}
+  @media (prefers-reduced-motion:reduce){ body.castle-danger::after{animation:none; opacity:.5;} }
   /* Materia burst + Hero level flourish (2026-10-05) */
   .materia-burst{position:fixed; z-index:9500; width:0; height:0; pointer-events:none;}
   .materia-burst .mb-gem{position:absolute; left:-18px; top:-18px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:30px;
@@ -9296,6 +9302,10 @@ uniform vec4 u_lights[4]; uniform vec3 u_lightCol[4]; uniform float u_felt;
 // Shockwave (2026-10-05): x, y (0..1, y down), age 0..1, strength. A bright crest with a dark trough
 // behind it rolls out across the felt — castle hits and the heaviest blows.
 uniform vec4 u_wave; uniform vec3 u_waveCol;
+// Card shadows (2026-10-05): up to 12 card rectangles (x, y, w, h in 0..1, y down) cast soft
+// shadows on the felt, pushed away from the lamp.
+uniform vec4 u_cards[12]; uniform float u_ncards;
+float boxSdf(vec2 p, vec2 b, float r){ vec2 q = abs(p) - b + r; return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r; }
 vec4 add(vec4 acc, vec3 c, float a){ a = clamp(a, 0.0, 1.0); return acc + vec4(c*a, a)*(1.0 - acc.a); }
 void main(){
   vec2 uv = vec2(gl_FragCoord.x/u_res.x, 1.0 - gl_FragCoord.y/u_res.y);
@@ -9386,6 +9396,21 @@ void main(){
     outc.a += clamp(-shade, 0.0, 1.0) * 0.16 + (1.0 - pool) * 0.10;     // cloth shadow + falloff
     outc.rgb += vec3(1.0, 0.86, 0.6) * (clamp(shade, 0.0, 1.0)*0.10 + pool*0.07);
   }
+  if(u_felt > 0.5 && u_ncards > 0.5){
+    vec2 lampS = vec2(0.32 + 0.22*m.x + 0.05*sin(t*0.13), 0.18 + 0.12*m.y + 0.04*cos(t*0.11));
+    float sh = 0.0;
+    for(int i = 0; i < 12; i++){
+      if(float(i) >= u_ncards) break;
+      vec4 C = u_cards[i];
+      vec2 c = C.xy + C.zw*0.5;
+      vec2 dir = (c - lampS) * vec2(aspect, 1.0);
+      vec2 off = normalize(dir + vec2(0.0001)) * 0.026 + vec2(0.0, 0.016);
+      vec2 p = (uv - c) * vec2(aspect, 1.0) - off;
+      float d = boxSdf(p, C.zw*0.5*vec2(aspect, 1.0), 0.012);
+      sh = max(sh, smoothstep(0.05, -0.01, d));
+    }
+    outc.a += sh * 0.55 * (1.0 - outc.a);
+  }
   for(int i = 0; i < 4; i++){
     vec4 L4 = u_lights[i];
     if(L4.w <= 0.001) continue;
@@ -9452,9 +9477,9 @@ function mount(host, opts){
   gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
   const U = n=> gl.getUniformLocation(prog, n);
   const u = {res: U('u_res'), time: U('u_time'), mouse: U('u_mouse'), int: U('u_int'), kind: U('u_kind'), tint: U('u_tint'), tex: U('u_tex'), texSize: U('u_texSize'), focus: U('u_focus'), depthTex: U('u_depthTex'), hasDepth: U('u_hasDepth'),
-    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt'), wave: U('u_wave'), waveCol: U('u_waveCol')};
+    lights: U('u_lights'), lightCol: U('u_lightCol'), felt: U('u_felt'), wave: U('u_wave'), waveCol: U('u_waveCol'), cards: U('u_cards'), ncards: U('u_ncards')};
   if(!scene){ gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.uniform1f(u.kind, opts.kind || 0); gl.uniform1f(u.felt, opts.felt ? Number(opts.felt) : 0); }
-  const layer = {host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
+  const layer = {shadowSel: opts.shadows || null, host, cv, gl, u, scene, ready: !scene, scale: opts.scale || (scene ? 0.75 : 0.5), intensity: opts.intensity == null ? 1 : opts.intensity, w: 0, h: 0, mouse: [0,0], lights: []};
   // Point light: x, y in 0..1 of the host (y down), colour [r,g,b] 0..1, strength ~0.3–1,
   // radius in host heights, life in ms. Rises in 60 ms, then fades out. At most 4 at once.
   layer.flash = (x, y, color, strength, radius, life)=>{
@@ -9535,6 +9560,19 @@ function loop(now){
           pos.set([L.x, L.y, L.r, L.s * Math.max(0, k)], i*4); col.set(L.c, i*3);
         });
         gl.uniform4fv(u.lights, pos); gl.uniform3fv(u.lightCol, col);
+      }
+      if(u.cards){
+        let n = 0;
+        if(l.shadowSel && !l.noShadows){
+          const arr = new Float32Array(48);
+          const els = l.host.querySelectorAll(l.shadowSel);
+          for(let i = 0; i < els.length && n < 12; i++){
+            const c = els[i].getBoundingClientRect(); if(c.width < 4) continue;
+            arr.set([(c.left - r.left)/r.width, (c.top - r.top)/r.height, c.width/r.width, c.height/r.height], n*4); n++;
+          }
+          if(n) gl.uniform4fv(u.cards, arr);
+        }
+        gl.uniform1f(u.ncards, n);
       }
       if(u.wave){
         const W = l.waveState, age = W ? (performance.now() - W.t0)/W.life : 2;
@@ -11496,6 +11534,16 @@ const SoundKit = (()=>{
       [523, 659, 784, 1047, 1319].forEach((f, i)=> tone(f, 0.45, 'triangle', 0.07, 0.25 + i*0.09));
       tone(1568, 0.9, 'sine', 0.05, 0.75);
     },
+    // Danger (2026-10-05): a soft low heartbeat while your castle is low, and a sting for sudden death.
+    heartbeat(fast){
+      sweep(70, 48, 0.14, 'sine', 0.13); fnoise(0.08, 0.05, {type:'lowpass', freq:180, attack:0.004});
+      sweep(64, 44, 0.16, 'sine', 0.10, fast ? 0.2 : 0.26);
+    },
+    suddenDeathSting(){
+      fnoise(1.1, 0.10, {type:'lowpass', freq:300, freqEnd:90, attack:0.02});
+      [233, 220, 175].forEach((f, i)=> tone(f, 0.55, 'sawtooth', 0.05, i*0.18));
+      tone(117, 1.2, 'sine', 0.10, 0.5);
+    },
     // Play the cues in fn() panned to pan (−1 … 1), or to an element's place on screen.
     at(where, fn){
       let pan = typeof where === 'number' ? where : 0;
@@ -11855,6 +11903,14 @@ const Ambience = (()=>{
     stop(){ wanted = null; retire(cur); cur = null; },
     current(){ return cur ? cur.kind : null; },
     setVolume(v){ vol = v; const c = C(); if(master && c) master.gain.setTargetAtTime(vol*LEVEL, c.currentTime, 0.1); if(vol <= 0){ retire(cur); cur = null; } else apply(); },
+    // Ducking (2026-10-05): dip under a big moment, then breathe back. depth 0..1 of the level kept.
+    duck(keep, holdMs){
+      const c = C(); if(!master || !c || document.hidden) return;
+      const t = c.currentTime, g = master.gain;
+      try{ g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); }catch(e){}
+      g.setTargetAtTime(vol*LEVEL*(keep == null ? 0.5 : keep), t, 0.02);
+      g.setTargetAtTime(vol*LEVEL, t + (holdMs || 300)/1000, 0.25);
+    },
   };
 })();
 function ambienceKindForMatch(m){
@@ -25949,6 +26005,7 @@ function showSuddenDeathBanner(m){
   const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
   const el = document.createElement('div');
   el.className = 'sudden-death-sign'; el.setAttribute('role','status');
+  try{ SoundKit.suddenDeathSting(); Ambience.duck(0.3, 1400); }catch(e){}
   el.innerHTML = `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">${raid ? 'Any hit now kills a unit outright.' : 'Any hit now kills — a hit on a castle ends the game.'}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
@@ -27518,6 +27575,54 @@ function flashDodge(el, reason){
   setTimeout(()=> el.classList.remove('dodge'), 400);
   missCallout(el, reason);
 }
+// Impact reaction (2026-10-05, effects rec. A1): the struck card squashes and is knocked back away
+// from the hit, then springs back. It animates the INNER .card-tile (never the Flip-owned
+// .board-card) and stays out of the way of a card that is mid-lunge itself.
+function impactSquash(el, dmg){
+  if(!el || !hasGsap() || reducedMotion()) return;
+  const uid = el.getAttribute && el.getAttribute('data-uid');
+  if(uid && attackingUids.has(String(uid))) return;
+  const tile = el.querySelector('.card-tile'); if(!tile) return;
+  const bf = document.getElementById('battlefieldEl'); const r = el.getBoundingClientRect(), b = bf ? bf.getBoundingClientRect() : null;
+  const away = b ? ((r.top + r.height/2) < (b.top + b.height/2) ? -1 : 1) : 1;
+  const k = Math.min(1, 0.45 + (dmg||1)/10);
+  gsap.timeline()
+    .to(tile, {scaleX:1 + 0.07*k, scaleY:1 - 0.09*k, y:away*6*k, duration:0.06, ease:'power2.out'})
+    .to(tile, {scaleX:1, scaleY:1, y:0, duration:0.38, ease:'elastic.out(1, 0.45)', clearProps:'transform'});
+}
+function reducedMotion(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+// Hit-stop: every tween slows to a near-freeze for a few frames on the heaviest blows, so the hit
+// "lands". Only GSAP time is slowed; the event sequencer keeps its own clock, so nothing drifts.
+let hitStopUntil = 0;
+function hitStop(ms){
+  if(!hasGsap() || reducedMotion()) return;
+  if(matchState && (matchState.speedMult||1) > 1.5) return;   // fast-forward: no freezes
+  const now = performance.now(); if(now < hitStopUntil) return;
+  hitStopUntil = now + ms + 120;
+  gsap.globalTimeline.timeScale(0.06);
+  setTimeout(()=> gsap.globalTimeline.timeScale(1), ms);
+}
+// Danger layer (2026-10-05, effects rec. S5): while your castle is under 25% a soft heartbeat plays
+// and the screen edge pulses red; under 10% it quickens.
+const DangerPulse = (()=>{
+  let timer = null, beating = false;
+  function level(){
+    const m = typeof matchState !== 'undefined' ? matchState : null;
+    if(!m || m.over || !m.players || !m.players[1] || !m.players[1].hq) return 0;
+    const hq = m.players[1].hq; if(!(hq.maxHp > 0) || hq.hp <= 0) return 0;
+    const f = hq.hp / hq.maxHp; return f < 0.10 ? 2 : f < 0.25 ? 1 : 0;
+  }
+  function tick(){
+    timer = null;
+    const L = level();
+    document.body.classList.toggle('castle-danger', L > 0);
+    document.body.classList.toggle('castle-danger-hi', L > 1);
+    if(L && !document.hidden){ try{ SoundKit.heartbeat(L > 1); }catch(e){} }
+    timer = setTimeout(tick, L > 1 ? 720 : L ? 1050 : 1500);
+  }
+  return {start(){ if(!timer) tick(); }};
+})();
+setTimeout(()=> DangerPulse.start(), 2000);
 function flashDmg(uid, dmg, blocked, dmgType){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -27697,6 +27802,9 @@ function renderVfxForEvent(ev){
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
+      { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
+        if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
+        if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
@@ -30902,7 +31010,7 @@ function mountBattleWeather(m){
   const feltMode = bf.classList.contains('has-floor-art') ? 2 : 1;
   if(battleWeather && battleWeather.kindId===kind && battleWeather.feltMode===feltMode && ShaderM.reattach(battleWeather, bf, true)) return;
   if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
-  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt: bf.classList.contains('has-floor-art') ? 2 : 1});
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt: bf.classList.contains('has-floor-art') ? 2 : 1, shadows:'.board-card .card-tile'});
   if(battleWeather){ battleWeather.kindId = kind; battleWeather.feltMode = feltMode; }
 }
 // Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,

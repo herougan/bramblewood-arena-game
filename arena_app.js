@@ -1715,6 +1715,16 @@ const SoundKit = (()=>{
       [523, 659, 784, 1047, 1319].forEach((f, i)=> tone(f, 0.45, 'triangle', 0.07, 0.25 + i*0.09));
       tone(1568, 0.9, 'sine', 0.05, 0.75);
     },
+    // Danger (2026-10-05): a soft low heartbeat while your castle is low, and a sting for sudden death.
+    heartbeat(fast){
+      sweep(70, 48, 0.14, 'sine', 0.13); fnoise(0.08, 0.05, {type:'lowpass', freq:180, attack:0.004});
+      sweep(64, 44, 0.16, 'sine', 0.10, fast ? 0.2 : 0.26);
+    },
+    suddenDeathSting(){
+      fnoise(1.1, 0.10, {type:'lowpass', freq:300, freqEnd:90, attack:0.02});
+      [233, 220, 175].forEach((f, i)=> tone(f, 0.55, 'sawtooth', 0.05, i*0.18));
+      tone(117, 1.2, 'sine', 0.10, 0.5);
+    },
     // Play the cues in fn() panned to pan (−1 … 1), or to an element's place on screen.
     at(where, fn){
       let pan = typeof where === 'number' ? where : 0;
@@ -2074,6 +2084,14 @@ const Ambience = (()=>{
     stop(){ wanted = null; retire(cur); cur = null; },
     current(){ return cur ? cur.kind : null; },
     setVolume(v){ vol = v; const c = C(); if(master && c) master.gain.setTargetAtTime(vol*LEVEL, c.currentTime, 0.1); if(vol <= 0){ retire(cur); cur = null; } else apply(); },
+    // Ducking (2026-10-05): dip under a big moment, then breathe back. depth 0..1 of the level kept.
+    duck(keep, holdMs){
+      const c = C(); if(!master || !c || document.hidden) return;
+      const t = c.currentTime, g = master.gain;
+      try{ g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); }catch(e){}
+      g.setTargetAtTime(vol*LEVEL*(keep == null ? 0.5 : keep), t, 0.02);
+      g.setTargetAtTime(vol*LEVEL, t + (holdMs || 300)/1000, 0.25);
+    },
   };
 })();
 function ambienceKindForMatch(m){
@@ -16168,6 +16186,7 @@ function showSuddenDeathBanner(m){
   const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
   const el = document.createElement('div');
   el.className = 'sudden-death-sign'; el.setAttribute('role','status');
+  try{ SoundKit.suddenDeathSting(); Ambience.duck(0.3, 1400); }catch(e){}
   el.innerHTML = `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">${raid ? 'Any hit now kills a unit outright.' : 'Any hit now kills — a hit on a castle ends the game.'}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
@@ -17737,6 +17756,54 @@ function flashDodge(el, reason){
   setTimeout(()=> el.classList.remove('dodge'), 400);
   missCallout(el, reason);
 }
+// Impact reaction (2026-10-05, effects rec. A1): the struck card squashes and is knocked back away
+// from the hit, then springs back. It animates the INNER .card-tile (never the Flip-owned
+// .board-card) and stays out of the way of a card that is mid-lunge itself.
+function impactSquash(el, dmg){
+  if(!el || !hasGsap() || reducedMotion()) return;
+  const uid = el.getAttribute && el.getAttribute('data-uid');
+  if(uid && attackingUids.has(String(uid))) return;
+  const tile = el.querySelector('.card-tile'); if(!tile) return;
+  const bf = document.getElementById('battlefieldEl'); const r = el.getBoundingClientRect(), b = bf ? bf.getBoundingClientRect() : null;
+  const away = b ? ((r.top + r.height/2) < (b.top + b.height/2) ? -1 : 1) : 1;
+  const k = Math.min(1, 0.45 + (dmg||1)/10);
+  gsap.timeline()
+    .to(tile, {scaleX:1 + 0.07*k, scaleY:1 - 0.09*k, y:away*6*k, duration:0.06, ease:'power2.out'})
+    .to(tile, {scaleX:1, scaleY:1, y:0, duration:0.38, ease:'elastic.out(1, 0.45)', clearProps:'transform'});
+}
+function reducedMotion(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+// Hit-stop: every tween slows to a near-freeze for a few frames on the heaviest blows, so the hit
+// "lands". Only GSAP time is slowed; the event sequencer keeps its own clock, so nothing drifts.
+let hitStopUntil = 0;
+function hitStop(ms){
+  if(!hasGsap() || reducedMotion()) return;
+  if(matchState && (matchState.speedMult||1) > 1.5) return;   // fast-forward: no freezes
+  const now = performance.now(); if(now < hitStopUntil) return;
+  hitStopUntil = now + ms + 120;
+  gsap.globalTimeline.timeScale(0.06);
+  setTimeout(()=> gsap.globalTimeline.timeScale(1), ms);
+}
+// Danger layer (2026-10-05, effects rec. S5): while your castle is under 25% a soft heartbeat plays
+// and the screen edge pulses red; under 10% it quickens.
+const DangerPulse = (()=>{
+  let timer = null, beating = false;
+  function level(){
+    const m = typeof matchState !== 'undefined' ? matchState : null;
+    if(!m || m.over || !m.players || !m.players[1] || !m.players[1].hq) return 0;
+    const hq = m.players[1].hq; if(!(hq.maxHp > 0) || hq.hp <= 0) return 0;
+    const f = hq.hp / hq.maxHp; return f < 0.10 ? 2 : f < 0.25 ? 1 : 0;
+  }
+  function tick(){
+    timer = null;
+    const L = level();
+    document.body.classList.toggle('castle-danger', L > 0);
+    document.body.classList.toggle('castle-danger-hi', L > 1);
+    if(L && !document.hidden){ try{ SoundKit.heartbeat(L > 1); }catch(e){} }
+    timer = setTimeout(tick, L > 1 ? 720 : L ? 1050 : 1500);
+  }
+  return {start(){ if(!timer) tick(); }};
+})();
+setTimeout(()=> DangerPulse.start(), 2000);
 function flashDmg(uid, dmg, blocked, dmgType){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -17916,6 +17983,9 @@ function renderVfxForEvent(ev){
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
+      { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
+        if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
+        if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
@@ -21121,7 +21191,7 @@ function mountBattleWeather(m){
   const feltMode = bf.classList.contains('has-floor-art') ? 2 : 1;
   if(battleWeather && battleWeather.kindId===kind && battleWeather.feltMode===feltMode && ShaderM.reattach(battleWeather, bf, true)) return;
   if(battleWeather){ battleWeather.destroy(); battleWeather = null; }
-  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt: bf.classList.contains('has-floor-art') ? 2 : 1});
+  battleWeather = ShaderM.mount(bf, {preset:'map', kind, prepend:true, intensity:0.55, className:'bw-shader-battle', felt: bf.classList.contains('has-floor-art') ? 2 : 1, shadows:'.board-card .card-tile'});
   if(battleWeather){ battleWeather.kindId = kind; battleWeather.feltMode = feltMode; }
 }
 // Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,
