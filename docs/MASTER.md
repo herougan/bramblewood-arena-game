@@ -317,7 +317,7 @@ _Last updated: 2026-10-05 (night): visual library; card legibility, deck top and
   - the ambience dips under big moments;
   - each map's ground has its own material (wet glints, ember cracks, frost, sand ripples);
   - rivals babble their taunt in a voice for their people.
-- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). Done so far: hit-stop, card shadows, ducking, the danger layer. Also done: map materials, rival voices. Next: real sound samples (S3, needs your files), the pack reveal build-up (A5), the walking map pawn (A6).
+- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). Done so far: hit-stop, card shadows, ducking, the danger layer. Also done: map materials, rival voices. Also done: the pack reveal build-up. Next: real sound samples (S3, needs your files), the walking map pawn (A6), the hourglass flip on Wait (A7).
 - **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)), with hits and deaths panned left or right to where they happen; per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
 - **Immersion** ([doc](immersion-2026-10-05.md)):
   - ✅ per-place ambience;

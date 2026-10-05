@@ -5097,6 +5097,21 @@
     .deck-switch-row .play-subtabs-actions{width:100%; display:flex; gap:6px;}
     .deck-switch-row .play-subtabs-actions .btn{flex:1; white-space:nowrap; font-size:12px; padding:6px 6px; justify-content:center;}
   }
+
+  /* Pack reveal build-up (2026-10-05) */
+  .pack-open-pack{position:relative;}
+  .pack-open-pack[class*="leak-"]::after{content:''; position:absolute; inset:-30%; z-index:-1; pointer-events:none; border-radius:50%; opacity:0;
+    background:repeating-conic-gradient(from 0deg, var(--leak) 0deg 6deg, transparent 6deg 22deg); -webkit-mask:radial-gradient(closest-side, #000 30%, transparent 100%); mask:radial-gradient(closest-side, #000 30%, transparent 100%);}
+  .pack-open-pack.leak-blue{--leak:rgba(110,180,255,.85);} .pack-open-pack.leak-violet{--leak:rgba(190,120,255,.9);} .pack-open-pack.leak-gold{--leak:rgba(255,214,110,.95);}
+  .pack-open-pack.is-shaking[class*="leak-"]{box-shadow:0 18px 40px rgba(0,0,0,.6), 0 0 60px 8px var(--leak);}
+  .pack-open-pack.is-shaking[class*="leak-"]::after{animation:leakRays .7s ease-in forwards;}
+  @keyframes leakRays{0%{opacity:0; transform:rotate(0) scale(.6);} 100%{opacity:1; transform:rotate(40deg) scale(1.1);}}
+  .po-card.is-charging{animation:none !important; transform:translateY(-6px) scale(1.04); transition:transform .3s ease;
+    filter:drop-shadow(0 0 10px var(--rarity-a, #8fc4ff)) drop-shadow(0 0 22px var(--rarity-b, #8fc4ff));}
+  .po-card.is-charging .po-back{animation:chargePulse .16s ease-in-out infinite alternate;}
+  .po-card.is-legend.is-charging{filter:drop-shadow(0 0 14px #ffd36e) drop-shadow(0 0 34px #ffb43a);}
+  @keyframes chargePulse{to{filter:brightness(1.5);}}
+  @media (prefers-reduced-motion: reduce){ .pack-open-pack::after{display:none;} }
 </style>
 </head>
 <body>

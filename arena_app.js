@@ -1742,6 +1742,13 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // Pack reveal: a rising shimmer while a Rare+ card holds its breath (longer and brighter for Legendary+).
+    rareRise(legend){
+      const d = legend ? 0.7 : 0.45;
+      fnoise(d, 0.05, {type:'bandpass', freq:1200, freqEnd:6000, q:4, attack:d*0.8});
+      sweep(300, legend ? 1200 : 800, d, 'triangle', 0.05);
+      if(legend) [784, 988, 1175, 1568].forEach((f, i)=> tone(f, 0.4, 'sine', 0.05, d + i*0.06));
+    },
     // Danger (2026-10-05): a soft low heartbeat while your castle is low, and a sting for sudden death.
     heartbeat(fast){
       sweep(70, 48, 0.14, 'sine', 0.13); fnoise(0.08, 0.05, {type:'lowpass', freq:180, attack:0.004});
@@ -19986,10 +19993,16 @@ function openPackAnimation(pack, results, extra){
   const bits = [`✨ +${pack.dust} Dust`]; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`);
   if(extra.leveledId && defs[extra.leveledId]) bits.push(`⭐ ${escapeHtml(defs[extra.leveledId].name)} reached Lv ${getCardLevel(extra.leveledId)}`);
   const newCount = results.filter(r=> r.isNew).length;
+  // Pack reveal build-up (2026-10-05, effects rec. A5): light leaks from the pack's seams before it
+  // bursts, coloured by the best card inside (blue for Rare, violet for Epic, gold for Legendary+),
+  // and each Rare+ card holds its breath (a glow and a rising shimmer) before it flips.
+  const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
+  const bestTier = Math.max(...results.map(r=> tierOf(r.id)));
+  const leak = bestTier >= 11 ? 'leak-gold' : bestTier >= 7 ? 'leak-violet' : bestTier >= 4 ? 'leak-blue' : '';
   overlay.innerHTML = `<div class="pack-open-stage" role="dialog" aria-label="Opening ${escapeAttr(pack.name)}">
-    <div class="pack-open-pack" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
+    <div class="pack-open-pack ${leak}" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
     <div class="pack-open-cards" id="poCards">${results.map((r,i)=> { const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
-      return `<button type="button" class="po-card ${r.isNew?'is-new':''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
+      return `<button type="button" class="po-card ${r.isNew?'is-new':''} ${tierOf(r.id) >= 4 ? 'is-rare' : ''} ${tierOf(r.id) >= 11 ? 'is-legend' : ''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
         <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
     <div class="pack-open-foot" id="poFoot" hidden><p>${newCount ? `<b>${newCount} new card${newCount===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>
       <div class="po-actions"><button type="button" class="btn" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button></div></div>
@@ -20001,8 +20014,14 @@ function openPackAnimation(pack, results, extra){
   let onKey = null;
   const close = ()=>{ timers.forEach(clearTimeout); if(onKey) document.removeEventListener('keydown', onKey); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='shop') renderShop(); };
   const finish = ()=>{ const f = overlay.querySelector('#poFoot'); if(f) f.hidden = false; const sk = overlay.querySelector('#poSkip'); if(sk) sk.hidden = true; };
-  const flip = (el)=>{
-    if(!el || el.classList.contains('is-flipped')) return;
+  const flip = (el, now)=>{
+    if(!el || el.classList.contains('is-flipped') || el.classList.contains('is-charging')) return;
+    if(!now && !reduce && el.classList.contains('is-rare')){
+      el.classList.add('is-charging');
+      try{ SoundKit.rareRise(el.classList.contains('is-legend')); }catch(e){}
+      timers.push(setTimeout(()=>{ el.classList.remove('is-charging'); flip(el, true); }, el.classList.contains('is-legend') ? 750 : 480));
+      return;
+    }
     el.classList.add('is-flipped'); flipped++;
     const isNew = el.classList.contains('is-new');
     try{ isNew ? SoundKit.unlock() : SoundKit.draw(); }catch(e){}
@@ -20010,12 +20029,12 @@ function openPackAnimation(pack, results, extra){
     if(flipped >= cards.length) finish();
   };
   cards.forEach(el=> el.addEventListener('click', ()=> flip(el)));
-  overlay.querySelector('#poSkip').onclick = ()=>{ timers.forEach(clearTimeout); cards.forEach(flip); };
+  overlay.querySelector('#poSkip').onclick = ()=>{ timers.forEach(clearTimeout); cards.forEach(c=>{ c.classList.remove('is-charging'); flip(c, true); }); };
   overlay.querySelector('#poDone').onclick = close;
   overlay.querySelector('#poNest').onclick = ()=>{ close(); switchTab('nest'); };
   overlay.onclick = e=>{ if(e.target===overlay && flipped >= cards.length) close(); };
   // Flow audit 2026-10-03: Escape first reveals everything, a second Escape closes.
-  onKey = e=>{ if(e.key!=='Escape' || overlay.hidden) return; e.preventDefault(); if(flipped < cards.length){ timers.forEach(clearTimeout); cards.forEach(flip); } else close(); };
+  onKey = e=>{ if(e.key!=='Escape' || overlay.hidden) return; e.preventDefault(); if(flipped < cards.length){ timers.forEach(clearTimeout); cards.forEach(c=>{ c.classList.remove('is-charging'); flip(c, true); }); } else close(); };
   document.addEventListener('keydown', onKey);
   // timeline: shake → burst → fan out → auto-flip one by one
   const pk = overlay.querySelector('#poPack');
