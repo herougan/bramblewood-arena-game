@@ -21,17 +21,45 @@ gsap_flip_src = open(SCRATCH + "Flip.min.js", encoding="utf-8").read()
 # `.createClient(url, anonKey)` — see arena_app.js's initCloudSync() for how it's used.
 supabase_src = open(SCRATCH + "supabase.umd.js", encoding="utf-8").read()
 
+# Asset split (2026-10-05): card art, map terrain and the Home sprites used to be base64 data URIs
+# inside index.html (4.8 MB of a 7.8 MB page). They're now written to assets/ next to index.html
+# and referenced by URL with a ?v=<content hash> so browsers cache them and refetch only when they
+# change. BW_INLINE=1 restores the old fully self-contained single file (e.g. for an Artifact).
+import base64, hashlib, re as _re
+INLINE = os.environ.get("BW_INLINE") == "1"
+ASSETS = SCRATCH + "assets/"
+_written = set()
+def asset_url(rel, data, mime="image/png"):
+    if INLINE:
+        return "data:%s;base64,%s" % (mime, base64.b64encode(data).decode("ascii"))
+    path = ASSETS + rel
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    if not os.path.exists(path) or open(path, "rb").read() != data:
+        with open(path, "wb") as fh: fh.write(data)
+    _written.add(path)
+    return "assets/%s?v=%s" % (rel, hashlib.sha256(data).hexdigest()[:10])
+def data_uri_to_asset(rel_base, uri):
+    m = _re.match(r"data:image/([a-z+]+);base64,(.*)$", uri or "", _re.S)
+    if not m: return uri
+    ext = {"jpeg": "jpg", "svg+xml": "svg"}.get(m.group(1), m.group(1))
+    return asset_url("%s.%s" % (rel_base, ext), base64.b64decode(m.group(2)), "image/" + m.group(1))
+
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}
 for c in canonical:
     d = dict(c)  # keep 'id' inside the object too (many call sites read d.id directly)
+    if isinstance(d.get("art"), str) and d["art"].startswith("data:"):
+        d["art"] = data_uri_to_asset("cards/" + _re.sub(r"[^a-z0-9_-]", "-", d["id"].lower()), d["art"])
     card_defs_obj[d["id"]] = d
 card_defs_literal = json.dumps(card_defs_obj, ensure_ascii=False)
 
 characters = json.load(open(SCRATCH + "canonical/characters.json", encoding="utf-8"))
 character_defs_obj = {}
 for ch in characters:
-    character_defs_obj[ch["id"]] = dict(ch)
+    cd = dict(ch)
+    if isinstance(cd.get("art"), str) and cd["art"].startswith("data:"):
+        cd["art"] = data_uri_to_asset("castles/" + _re.sub(r"[^a-z0-9_-]", "-", cd["id"].lower()), cd["art"])
+    character_defs_obj[cd["id"]] = cd
 character_defs_literal = json.dumps(character_defs_obj, ensure_ascii=False)
 
 ARCHETYPE_ICON = {
@@ -112,7 +140,7 @@ _map_css = []
 for _mid in range(1, 30):
     _fp = SCRATCH + "art/maps/m%d.png" % _mid
     if os.path.exists(_fp):
-        _map_css.append(".map-theme-m%d, .battlefield.map-m%d{--map-art:url(data:image/png;base64,%s);}" % (_mid, _mid, base64.b64encode(open(_fp, "rb").read()).decode("ascii")))
+        _map_css.append(".map-theme-m%d, .battlefield.map-m%d{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%d.png" % _mid, open(_fp, "rb").read())))
 out = out.replace("/*__MAP_ART_CSS__*/", "\n".join(_map_css), 1)
 # Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): small pixel-art PNGs from art/fx/.
 for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "art/fx/fire_arrow.png")):
@@ -122,7 +150,7 @@ for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "
 import os
 def _home_sprite(name):
     path = SCRATCH + "art/home/" + name + ".png"
-    return ("data:image/png;base64," + base64.b64encode(open(path, "rb").read()).decode("ascii")) if os.path.exists(path) else ""
+    return asset_url("home/" + name + ".png", open(path, "rb").read()) if os.path.exists(path) else ""
 app_src = app_src.replace("__HOME_OTTER__", _home_sprite("otter"), 1).replace("__HOME_BIRD__", _home_sprite("hummingbird"), 1)
 out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
@@ -143,7 +171,27 @@ gsap_block = (
 )
 out = sub_once(out, "</body>", f"{gsap_block}<script>\n{app_src}\n</script>\n</body>")
 
+# Any other large inline image left in the page (the biome card textures in the stylesheet, each
+# pasted twice) moves to assets/tex/, named by content so duplicates collapse to one file. The
+# splash and its depth map stay inline: the WebGL splash shader can't read a separate image file
+# when the page is opened straight from disk.
+if not INLINE:
+    _keep = set()
+    for _fn in ("art/splash.png", "art/splash_depth.png"):
+        if os.path.exists(SCRATCH + _fn): _keep.add(base64.b64encode(open(SCRATCH + _fn, "rb").read()).decode("ascii"))
+    def _ext(m):
+        b64 = m.group(2)
+        if len(b64) < 20000 or b64 in _keep: return m.group(0)
+        data = base64.b64decode(b64)
+        return asset_url("tex/%s.%s" % (hashlib.sha256(data).hexdigest()[:16], "jpg" if m.group(1)=="jpeg" else m.group(1)), data)
+    out = _re.sub(r"data:image/(png|jpeg|webp|gif);base64,([A-Za-z0-9+/=]+)", _ext, out)
 with open(SCRATCH + "bramblewood-arena.html", "w", encoding="utf-8") as f:
     f.write(out)
 
-print("Wrote bramblewood-arena.html:", len(out), "bytes")
+# drop asset files nothing references any more (renamed or deleted art)
+if not INLINE and os.path.isdir(ASSETS):
+    for root, _dirs, files in os.walk(ASSETS):
+        for fn in files:
+            fp = os.path.join(root, fn)
+            if fp not in _written: os.remove(fp)
+print("Wrote bramblewood-arena.html:", len(out), "bytes", "(inline)" if INLINE else "+ %d asset files" % len(_written))

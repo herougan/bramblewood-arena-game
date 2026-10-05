@@ -2646,6 +2646,26 @@ function hallOfFameTabHTML(){
 // the browser's own native image-drag gesture from competing with the card-tile's own HTML5
 // drag-and-drop — without it, grabbing exactly on the art started an image drag instead of
 // (or on top of) picking the card up.
+// Art warm-up (2026-10-05 asset split): card art now loads from assets/ instead of living inside
+// the page. Board and hand tiles are rebuilt constantly, so once the page is idle every card's art
+// is fetched and decoded in the background; later tiles then paint from the warm cache instead of
+// flashing their plain background the first time a card shows up.
+const warmedArt = new Set();
+function warmCardArt(){
+  const urls = [];
+  try{ Object.values(getCardDefs()).forEach(d=>{ if(d && d.art && !/^data:/.test(d.art) && !warmedArt.has(d.art)) urls.push(d.art); }); }catch(e){ return; }
+  let i = 0;
+  const step = deadline=>{
+    while(i < urls.length && (!deadline || deadline.timeRemaining() > 4)){
+      const u = urls[i++]; warmedArt.add(u);
+      const img = new Image(); img.decoding = 'async'; img.src = u; if(img.decode) img.decode().catch(()=>{});
+      if(!deadline && i % 12 === 0) break;
+    }
+    if(i < urls.length) (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 60)))(step);
+  };
+  (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 800)))(step);
+}
+try{ if(typeof window!=='undefined') window.addEventListener('load', ()=> setTimeout(warmCardArt, 1500)); }catch(e){}
 function cardIcoHTML(d){
   if(d && d.art){
     const icon = escapeAttr((d && d.icon) || '❔');
