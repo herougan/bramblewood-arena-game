@@ -8,6 +8,7 @@
 > - **D18:** play Maps 1–4 and tell me how the difficulty and rewards feel.
 > - **Lore:** your comments on [`lore-bible.md`](lore-bible.md); are dogs Legion war-dogs or wild beasts; which beasts the Hummingbirds befriend; the proposed card renames.
 > - **Play-test:** the new sound, effects and immersion work has only been checked by tests and screenshots; it needs your eyes and ears.
+> - **Languages:** translate card names, or keep them English? Native-speaker review for Tagalog, Tamil, Japanese and Korean.
 > - **Two discussion topics:** T1 and T2.
 
 **Rules for this doc**
@@ -17,7 +18,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (late evening): places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -260,7 +261,8 @@ _Last updated: 2026-10-05 (late evening): places (Tent, Cart, Nest); world, look
   - a two-browser live match;
   - the UI smoke test;
   - flows (quit from every mode, the tutorial lock);
-  - **snaps:** no card, castle or hand tile may jump between frames, desktop and phone.
+  - **snaps:** no card, castle or hand tile may jump between frames, desktop and phone;
+  - **i18n:** every language pack loads and translates.
 - 54 user stories with acceptance criteria.
 - **Where:**
   - `docs/testing-strategy.md`
@@ -269,7 +271,7 @@ _Last updated: 2026-10-05 (late evening): places (Tent, Cart, Nest); world, look
 
 ### World
 
-**20. World, look and sound** 🟡 (lore and art direction are set; the art is partly placeholder)
+**20. World, look, sound and language** 🟡 (lore and art direction are set; the art is partly placeholder)
 - **Lore:** [`lore-bible.md`](lore-bible.md) defines seven peoples:
   - the Rivergate Legion (Otters: pre-Roman, trains fish);
   - the Sunfeather Tribes (Hummingbirds: colourful, beast-friends);
@@ -298,10 +300,16 @@ _Last updated: 2026-10-05 (late evening): places (Tent, Cart, Nest); world, look
     - Shop is the Traveller's Cart;
     - Nest is the Old Nest;
     - the Forge and in-world transitions are still to do.
+- **Languages** ([doc](i18n.md)):
+  - English plus 12 languages: FR, DE, ES, IT, PT, Tagalog, Tamil, Indonesian, Simplified and Traditional Chinese, Japanese, Korean.
+  - Picked in Settings → 🌐 Language.
+  - The main frame is translated (about 130 strings); the rest falls back to English.
+  - Card names stay English for now (your call).
 - **Delivery:** art loads from `assets/` (content-hashed URLs, idle warm-up). The page dropped from 7.8 MB to 3.2 MB (1.0 MB compressed). `BW_INLINE=1` gives a single-file build.
 - **Where:**
   - `PLACES`, `Ambience`, `showVersusOpener`, `peopleOfDeck`, `setAtmosphere('live')`, `battleLightAt` and `boardSnapGuard` in `arena_app.js`
   - `bramblewood-shaders.js`
+  - `bramblewood-i18n.js` and `lang/*.json`
   - `assemble_arena.py`
 
 ---

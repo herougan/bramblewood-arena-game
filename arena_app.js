@@ -6506,7 +6506,7 @@ function renderPlay(){
                 <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
                 <select id="battlefieldBgSelectPlaySub" aria-label="Battlefield background"></select>
               </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             </div>
@@ -12123,7 +12123,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
         <select id="battlefieldBgSelectHud" aria-label="Battlefield background"></select>
       </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
     </div>
   </div>`;
 }
@@ -20373,14 +20373,36 @@ function tutorialGateBlocks(tab){
   return true;
 }
 let currentTabBeforeSwitch = null;
+// Language picker (2026-10-05): every Settings panel's 🌐 Language row is a <select class="lang-select">.
+const I18nM = (typeof window!=='undefined' && window.BramblewoodI18n) ? window.BramblewoodI18n : null;
+function wireLanguageSelects(){
+  if(!I18nM) return;
+  document.querySelectorAll('select.lang-select').forEach(sel=>{
+    if(!sel.dataset.wired){
+      sel.dataset.wired = '1'; sel.setAttribute('translate', 'no');
+      sel.innerHTML = I18nM.LANGS.map(l=> `<option value="${l.code}">${l.flag} ${l.native}</option>`).join('');
+      sel.addEventListener('change', ()=> setGameLanguage(sel.value));
+    }
+    sel.value = I18nM.current();
+  });
+}
+async function setGameLanguage(code){
+  if(!I18nM) return;
+  const got = await I18nM.set(code);
+  document.querySelectorAll('select.lang-select').forEach(s=> s.value = got);
+  // re-render the current screen so text built with i18() picks up the new language too
+  try{ if(!matchState) switchTab(currentTab); else I18nM.translateNow(); }catch(e){}
+  if(got !== code) showToast('That language isn’t available yet.');
+}
+try{ if(I18nM) I18nM._boot(); }catch(e){}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
 const PLACES = {
-  deck: {cls:'tent-scene', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
-  shop: {cls:'cart-scene', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
-  nest: {cls:'nest-scene', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury Tent', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  shop: {cls:'cart-scene', icon:'🧳', sign:'The Traveller’s Cart', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  nest: {cls:'nest-scene', icon:'🪺', sign:'The Old Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
@@ -20395,7 +20417,7 @@ function switchTab(tab){
   try{
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
-    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v) v.classList.add(pl.cls); });
+    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
@@ -20882,6 +20904,7 @@ function wireSettingsButton(idSuffix){
     shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
     shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
   }
+  wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
   if(atmo){
     atmo.innerHTML = ATMOSPHERES.map(x=> `<option value="${x.id}">${x.label}</option>`).join('');

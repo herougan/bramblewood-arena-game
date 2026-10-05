@@ -4595,7 +4595,7 @@
   #view-deck.tent-scene::before{content:''; position:absolute; left:0; right:0; top:0; height:30px; z-index:0; pointer-events:none; border-radius:18px 18px 0 0;
     background:radial-gradient(circle at 24px -10px, #5a1f17 0 30px, transparent 31px) 0 0 / 48px 30px repeat-x, linear-gradient(#5a1f17, #5a1f17) 0 0 / 100% 8px no-repeat;
     filter:drop-shadow(0 4px 3px rgba(0,0,0,.35));}
-  #view-deck.tent-scene::after{content:'⛺ Armoury Tent'; position:absolute; top:14px; left:50%; transform:translateX(-50%) rotate(-1.5deg); z-index:2; pointer-events:none;
+  #view-deck.tent-scene::after{content:attr(data-sign); position:absolute; top:14px; left:50%; transform:translateX(-50%) rotate(-1.5deg); z-index:2; pointer-events:none;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.06em; color:#3a2410; padding:5px 16px; border-radius:6px;
     background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-deck.tent-scene > *{position:relative; z-index:1;}
@@ -4624,7 +4624,7 @@
     -webkit-mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
             mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
     border-radius:14px 14px 0 0;}
-  #view-shop.cart-scene::after{content:'🧳 The Traveller’s Cart'; position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
+  #view-shop.cart-scene::after{content:attr(data-sign); position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
     background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-shop.cart-scene > *{position:relative; z-index:1;}
@@ -4644,7 +4644,7 @@
       repeating-linear-gradient(-30deg, rgba(90,62,34,.55) 0 2px, transparent 2px 13px),
       linear-gradient(180deg, #6b4c2e, #4a3320);
     box-shadow:inset 0 0 0 10px rgba(74,51,32,.85), inset 0 0 0 14px rgba(140,104,62,.6), 0 10px 30px rgba(0,0,0,.35);}
-  #view-nest.nest-scene::after{content:'🪺 The Old Nest'; position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+  #view-nest.nest-scene::after{content:attr(data-sign); position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
     background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-nest.nest-scene > *{position:relative; z-index:1;}
@@ -5060,7 +5060,7 @@
           <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
         </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row">
               <div class="settings-row-label"><span>✨ Atmosphere</span></div>
               <select id="atmosphereSelect" aria-label="Atmosphere"></select>

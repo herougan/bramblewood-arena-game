@@ -4,7 +4,7 @@ SCRATCH = os.path.dirname(os.path.abspath(__file__)) + "/"
 
 engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
 # Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
-ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-autobattle.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-raid.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-trench.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-integrity.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-shaders.js", encoding="utf-8").read()
+ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-autobattle.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-raid.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-trench.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-integrity.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-shaders.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-i18n.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
@@ -43,6 +43,18 @@ def data_uri_to_asset(rel_base, uri):
     if not m: return uri
     ext = {"jpeg": "jpg", "svg+xml": "svg"}.get(m.group(1), m.group(1))
     return asset_url("%s.%s" % (rel_base, ext), base64.b64decode(m.group(2)), "image/" + m.group(1))
+
+# Language packs (2026-10-05): lang/<code>.json -> assets/lang/<code>.js, loaded on demand by
+# bramblewood-i18n.js (or all inlined with BW_INLINE=1).
+import glob as _glob
+_pack_urls, _inline_packs = {}, []
+for _fp in sorted(_glob.glob(SCRATCH + "lang/*.json")):
+    _code = os.path.basename(_fp)[:-5]
+    if _code == "en": continue
+    _js = "(window.BW_LANG_PACKS=window.BW_LANG_PACKS||{})[%s]=%s;\n" % (json.dumps(_code), json.dumps(json.load(open(_fp, encoding="utf-8")), ensure_ascii=False, separators=(",", ":")))
+    if INLINE: _inline_packs.append(_js)
+    else: _pack_urls[_code] = asset_url("lang/%s.js" % _code, _js.encode("utf-8"), "text/javascript")
+ghosts_src = ("".join(_inline_packs) if INLINE else "") + ghosts_src.replace("__LANG_PACK_URLS__", json.dumps(_pack_urls).replace("\\", "\\\\").replace("'", "\\'"), 1)
 
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}

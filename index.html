@@ -4605,7 +4605,7 @@
   #view-deck.tent-scene::before{content:''; position:absolute; left:0; right:0; top:0; height:30px; z-index:0; pointer-events:none; border-radius:18px 18px 0 0;
     background:radial-gradient(circle at 24px -10px, #5a1f17 0 30px, transparent 31px) 0 0 / 48px 30px repeat-x, linear-gradient(#5a1f17, #5a1f17) 0 0 / 100% 8px no-repeat;
     filter:drop-shadow(0 4px 3px rgba(0,0,0,.35));}
-  #view-deck.tent-scene::after{content:'⛺ Armoury Tent'; position:absolute; top:14px; left:50%; transform:translateX(-50%) rotate(-1.5deg); z-index:2; pointer-events:none;
+  #view-deck.tent-scene::after{content:attr(data-sign); position:absolute; top:14px; left:50%; transform:translateX(-50%) rotate(-1.5deg); z-index:2; pointer-events:none;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.06em; color:#3a2410; padding:5px 16px; border-radius:6px;
     background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-deck.tent-scene > *{position:relative; z-index:1;}
@@ -4634,7 +4634,7 @@
     -webkit-mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
             mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
     border-radius:14px 14px 0 0;}
-  #view-shop.cart-scene::after{content:'🧳 The Traveller’s Cart'; position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
+  #view-shop.cart-scene::after{content:attr(data-sign); position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
     background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-shop.cart-scene > *{position:relative; z-index:1;}
@@ -4654,7 +4654,7 @@
       repeating-linear-gradient(-30deg, rgba(90,62,34,.55) 0 2px, transparent 2px 13px),
       linear-gradient(180deg, #6b4c2e, #4a3320);
     box-shadow:inset 0 0 0 10px rgba(74,51,32,.85), inset 0 0 0 14px rgba(140,104,62,.6), 0 10px 30px rgba(0,0,0,.35);}
-  #view-nest.nest-scene::after{content:'🪺 The Old Nest'; position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+  #view-nest.nest-scene::after{content:attr(data-sign); position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
     background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
   #view-nest.nest-scene > *{position:relative; z-index:1;}
@@ -5070,7 +5070,7 @@
           <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
         </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row">
               <div class="settings-row-label"><span>✨ Atmosphere</span></div>
               <select id="atmosphereSelect" aria-label="Atmosphere"></select>
@@ -9430,6 +9430,175 @@ const api = {mount, destroyAll, reattach, isSupported, MAP_KIND, _layers: layers
 if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
+
+// Translation layer (2026-10-05, "support the major European languages, Tagalog, Tamil, Bahasa,
+// Chinese (both), Japanese and Korean"). English is the source language and the fallback.
+//
+// Two ways text gets translated:
+//  • i18(english, vars) in code — for sentences with numbers or names in them:
+//      i18('Need {n} more 🍁', {n: 3})
+//  • A page-level translator — while a non-English language is active it watches the page and
+//    swaps any text node, title, aria-label or placeholder whose English text (ignoring leading
+//    emoji/symbols and surrounding spaces) is in the language pack. Labels and buttons therefore
+//    translate without touching the code that renders them. Anything inside [translate="no"],
+//    .nm (card names), inputs and textareas is left alone.
+//
+// Packs: lang/<code>.json, {"English text": "translation"}. The build turns each into
+// assets/lang/<code>.js (loaded on demand) or inlines them all with BW_INLINE=1. Missing strings
+// stay English; window.BramblewoodI18n.misses() lists what was seen but not translated.
+(function(root){
+'use strict';
+if(typeof window === 'undefined' || typeof document === 'undefined'){
+  const passthrough = (s, v)=> v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s;
+  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough};
+  return;
+}
+
+const LANGS = [
+  {code:'en', name:'English', native:'English', flag:'🇬🇧'},
+  {code:'fr', name:'French', native:'Français', flag:'🇫🇷'},
+  {code:'de', name:'German', native:'Deutsch', flag:'🇩🇪'},
+  {code:'es', name:'Spanish', native:'Español', flag:'🇪🇸'},
+  {code:'it', name:'Italian', native:'Italiano', flag:'🇮🇹'},
+  {code:'pt', name:'Portuguese', native:'Português', flag:'🇵🇹'},
+  {code:'tl', name:'Tagalog', native:'Tagalog', flag:'🇵🇭'},
+  {code:'ta', name:'Tamil', native:'தமிழ்', flag:'🇮🇳'},
+  {code:'id', name:'Indonesian', native:'Bahasa Indonesia', flag:'🇮🇩'},
+  {code:'zh-Hans', name:'Chinese (Simplified)', native:'简体中文', flag:'🇨🇳'},
+  {code:'zh-Hant', name:'Chinese (Traditional)', native:'繁體中文', flag:'🇹🇼'},
+  {code:'ja', name:'Japanese', native:'日本語', flag:'🇯🇵'},
+  {code:'ko', name:'Korean', native:'한국어', flag:'🇰🇷'},
+];
+// Script fonts, fetched only when that language is picked. Google Fonts serves CJK in small
+// unicode-range slices, so only the characters actually on screen are downloaded.
+const FONTS = {
+  'ta': {css:'https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@500;700;800&display=swap', stack:"'Baloo Thambi 2','Baloo 2','Noto Sans Tamil','Latha',system-ui,sans-serif"},
+  'zh-Hans': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif"},
+  'zh-Hant': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif"},
+  'ja': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans JP','Hiragino Sans','Yu Gothic',system-ui,sans-serif"},
+  'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
+};
+const KEY = 'bramblewood_lang_v1';
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0f4f64a656", "es": "assets/lang/es.js?v=a696020fc3", "fr": "assets/lang/fr.js?v=0445b3be4f", "id": "assets/lang/id.js?v=0d5ca83240", "it": "assets/lang/it.js?v=7e05901938", "ja": "assets/lang/ja.js?v=5ad72ff015", "ko": "assets/lang/ko.js?v=42389e8ae1", "pt": "assets/lang/pt.js?v=b778330a03", "ta": "assets/lang/ta.js?v=49d03354c9", "tl": "assets/lang/tl.js?v=d07d789fff", "zh-Hans": "assets/lang/zh-Hans.js?v=cfe25d49a2", "zh-Hant": "assets/lang/zh-Hant.js?v=ce92eaa19b"}'); }catch(e){ return {}; } })();
+window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
+
+let lang = 'en', pack = null;
+const misses = new Set();
+const originals = new WeakMap();   // text node / element -> {text|attrs} in English
+const wroteAttr = new WeakMap();
+const wrote = new WeakMap();       // text node -> the value this module itself last wrote (so its own edits aren't mistaken for new English)
+function load(){ try{ const v = localStorage.getItem(KEY); return LANGS.some(l=> l.code===v) ? v : 'en'; }catch(e){ return 'en'; } }
+
+function fill(s, vars){ return vars ? String(s).replace(/\{(\w+)\}/g, (m, k)=> vars[k] != null ? vars[k] : m) : s; }
+function i18(english, vars){
+  if(lang !== 'en' && pack){
+    const hit = pack[english];
+    if(hit) return fill(hit, vars);
+    misses.add(english);
+  }
+  return fill(english, vars);
+}
+// Translate a visible string: exact match first, then with leading emoji/symbols and trailing
+// spaces/colons peeled off and put back.
+const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;
+function translateText(s){
+  if(!pack || !s) return null;
+  const trimmed = s.trim(); if(!trimmed) return null;
+  if(pack[trimmed]) return s.replace(trimmed, pack[trimmed]);
+  const lead = (trimmed.match(LEAD) || [''])[0];
+  const core = trimmed.slice(lead.length).replace(/[\s:]+$/, '');
+  if(core && pack[core]) return s.replace(core, pack[core]);
+  if(core && /\p{L}{2}/u.test(core) && core.length < 120) misses.add(core);
+  return null;
+}
+const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
+function skip(el){ return !el || el.closest && el.closest('[translate="no"], .nm, input, textarea, script, style, .no-i18n'); }
+function walk(rootNode){
+  if(!rootNode) return;
+  const els = rootNode.nodeType === 1 ? [rootNode, ...rootNode.querySelectorAll('*')] : [];
+  // text nodes
+  const tw = document.createTreeWalker(rootNode, NodeFilter.SHOW_TEXT);
+  let n; while((n = tw.nextNode())){
+    if(skip(n.parentElement)) continue;
+    let orig = originals.get(n);
+    // first sight, or the game rewrote it since we last did: what's there now is the English
+    if(orig == null || (wrote.has(n) ? wrote.get(n) !== n.nodeValue : orig !== n.nodeValue && lang === 'en')){ orig = n.nodeValue; originals.set(n, orig); }
+    const out = lang === 'en' ? orig : (translateText(orig) || orig);
+    if(n.nodeValue !== out){ n.nodeValue = out; wrote.set(n, out); }
+  }
+  els.forEach(el=>{
+    if(skip(el)) return;
+    ATTRS.forEach(a=>{
+      if(!el.hasAttribute(a)) return;
+      let o = originals.get(el); if(!o){ o = {}; originals.set(el, o); }
+      let w = wroteAttr.get(el); if(!w){ w = {}; wroteAttr.set(el, w); }
+      const now = el.getAttribute(a);
+      if(!(a in o) || (a in w ? w[a] !== now : o[a] !== now)) o[a] = now;
+      const out = lang === 'en' ? o[a] : (translateText(o[a]) || o[a]);
+      if(now !== out){ el.setAttribute(a, out); w[a] = out; } else if(a in w) w[a] = now;
+    });
+  });
+}
+let observer = null, applying = false;
+function observe(){
+  if(observer) return;
+  observer = new MutationObserver(muts=>{
+    if(applying || lang === 'en') return;
+    applying = true;
+    try{
+      muts.forEach(m=>{
+        const fresh = nd=>{ // a text node the game just wrote (not one we translated)
+          if(skip(nd.parentElement) || wrote.get(nd) === nd.nodeValue) return;
+          originals.set(nd, nd.nodeValue); const o = translateText(nd.nodeValue); if(o){ nd.nodeValue = o; wrote.set(nd, o); }
+        };
+        if(m.type === 'childList') m.addedNodes.forEach(nd=>{ if(nd.nodeType === 1) walk(nd); else if(nd.nodeType === 3) fresh(nd); });
+        else if(m.type === 'characterData' && m.target.nodeType === 3) fresh(m.target);
+      });
+    } finally { applying = false; }
+  });
+  observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+}
+function setFont(code){
+  const f = FONTS[code];
+  let st = document.getElementById('bwLangFont');
+  if(!f){ if(st) st.remove(); return; }
+  if(!document.querySelector(`link[data-lang-font="${code}"]`)){
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = f.css; l.dataset.langFont = code; document.head.appendChild(l);
+  }
+  if(!st){ st = document.createElement('style'); st.id = 'bwLangFont'; document.head.appendChild(st); }
+  // Every element gets the script font as a fallback after its Latin face, so Latin keeps its look.
+  st.textContent = `html[lang="${code}"] body, html[lang="${code}"] body *:not(.card-art-img){font-family:${f.stack} !important;}`;
+}
+function loadPack(code){
+  return new Promise(res=>{
+    if(code === 'en' || window.BW_LANG_PACKS[code]) return res(window.BW_LANG_PACKS[code] || null);
+    const url = PACK_URLS[code]; if(!url) return res(null);
+    const s = document.createElement('script'); s.src = url; s.async = true;
+    s.onload = ()=> res(window.BW_LANG_PACKS[code] || null); s.onerror = ()=> res(null);
+    document.head.appendChild(s);
+  });
+}
+const listeners = [];
+async function set(code){
+  if(!LANGS.some(l=> l.code === code)) code = 'en';
+  const p = await loadPack(code);
+  lang = (code === 'en' || p) ? code : 'en'; pack = lang === 'en' ? null : p;
+  try{ localStorage.setItem(KEY, lang); }catch(e){}
+  document.documentElement.lang = lang;
+  setFont(lang);
+  applying = true; try{ walk(document.body); } finally { applying = false; }
+  if(lang !== 'en') observe();
+  listeners.forEach(fn=>{ try{ fn(lang); }catch(e){} });
+  return lang;
+}
+const api = {
+  LANGS, i18, set, current: ()=> lang, onChange: fn=> listeners.push(fn),
+  misses: ()=> [...misses].sort(), translateNow: ()=>{ applying = true; try{ walk(document.body); } finally { applying = false; } },
+  _boot(){ const c = load(); if(c !== 'en') set(c); else document.documentElement.lang = 'en'; },
+};
+root.BramblewoodI18n = api;
+root.i18 = i18;
+})(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
 <script>
@@ -15986,7 +16155,7 @@ function renderPlay(){
                 <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
                 <select id="battlefieldBgSelectPlaySub" aria-label="Battlefield background"></select>
               </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             </div>
@@ -21603,7 +21772,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
         <select id="battlefieldBgSelectHud" aria-label="Battlefield background"></select>
       </div>
-            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span><span class="settings-row-val">English</span></div><div class="settings-row-note">More languages are on the way.</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
     </div>
   </div>`;
 }
@@ -29853,14 +30022,36 @@ function tutorialGateBlocks(tab){
   return true;
 }
 let currentTabBeforeSwitch = null;
+// Language picker (2026-10-05): every Settings panel's 🌐 Language row is a <select class="lang-select">.
+const I18nM = (typeof window!=='undefined' && window.BramblewoodI18n) ? window.BramblewoodI18n : null;
+function wireLanguageSelects(){
+  if(!I18nM) return;
+  document.querySelectorAll('select.lang-select').forEach(sel=>{
+    if(!sel.dataset.wired){
+      sel.dataset.wired = '1'; sel.setAttribute('translate', 'no');
+      sel.innerHTML = I18nM.LANGS.map(l=> `<option value="${l.code}">${l.flag} ${l.native}</option>`).join('');
+      sel.addEventListener('change', ()=> setGameLanguage(sel.value));
+    }
+    sel.value = I18nM.current();
+  });
+}
+async function setGameLanguage(code){
+  if(!I18nM) return;
+  const got = await I18nM.set(code);
+  document.querySelectorAll('select.lang-select').forEach(s=> s.value = got);
+  // re-render the current screen so text built with i18() picks up the new language too
+  try{ if(!matchState) switchTab(currentTab); else I18nM.translateNow(); }catch(e){}
+  if(got !== code) showToast('That language isn’t available yet.');
+}
+try{ if(I18nM) I18nM._boot(); }catch(e){}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
 const PLACES = {
-  deck: {cls:'tent-scene', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
-  shop: {cls:'cart-scene', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
-  nest: {cls:'nest-scene', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury Tent', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  shop: {cls:'cart-scene', icon:'🧳', sign:'The Traveller’s Cart', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  nest: {cls:'nest-scene', icon:'🪺', sign:'The Old Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
@@ -29875,7 +30066,7 @@ function switchTab(tab){
   try{
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
-    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v) v.classList.add(pl.cls); });
+    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
@@ -30362,6 +30553,7 @@ function wireSettingsButton(idSuffix){
     shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
     shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
   }
+  wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
   if(atmo){
     atmo.innerHTML = ATMOSPHERES.map(x=> `<option value="${x.id}">${x.label}</option>`).join('');
