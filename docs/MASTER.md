@@ -13,6 +13,8 @@
 > - **Sound samples (optional):** drop CC0 files for card play, draw, hit, heavy hit and death into `audio/` (Kenney's Impact and Casino packs are ideal). Real recordings will beat further synthesis, and I can't download them from here.
 > - **Two discussion topics:** T1 and T2.
 
+**🖼️ Visual library:** [every screenshot of the game, by area, device and day](https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU), with before/after pairs for the card review. It holds about 510 shots, the most one page can hold, so older crops get pruned as new shots go in. Note: shots before 5 Oct evening show fallback fonts (Claude's test browser couldn't load them); players always had the real fonts.
+
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
 - Each item gives:
@@ -20,7 +22,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (night): effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -41,6 +43,13 @@ _Last updated: 2026-10-05 (night): effects recommendations, felt shockwave and p
 - Effects: passives, skills, and custom triggers.
 - Rarity sets the copy limit per deck: Common 10 · Uncommon 5 · Rare 4 · Very/Super Rare 3 · Epic/Heroic 2 · Unique/Legendary/Mythic/Ancient 1.
 - Hall of Fame editions (Classic/Antique) share their base card's limit.
+- **Card legibility** (2026-10-05):
+  - Cost and Wait pills are dark enamel with a bright rim.
+  - Attack and Health sit on dark chips.
+  - Damage numbers use a chunky face with a lit gradient over a separate outline, tinted by type and bigger for 8+.
+  - Names are a step smaller, more so on tablets.
+  - The card detail view has two columns (the card, then name, chips, stat tiles, abilities and where to get it).
+  - The UI fonts are now hosted with the game (`fonts/`).
 - **Card sizes scale** with each card's own width (size tokens xs–xl). Names sit on a parchment scroll. Card levels show only in the Nest, the Forge and the deck builder's level filter.
 - **🦸 Hero card** ✅ (new, [design](hero-design.md)): your own card, built from Deck → 🦸 Hero.
   - Pick a people (Legion, Sunfeather or Road-folk) and a name; it takes one deck slot.
@@ -96,6 +105,7 @@ _Last updated: 2026-10-05 (night): effects recommendations, felt shockwave and p
 **6. Deck, Leader, Castle** ✅
 - A deck is exactly **20 cards**; every mode checks this before a fight.
 - You also bring a **Leader**, summoned from a slot during the match.
+- The deck builder opens with the castle and leader as real cards, beside the deck's archetypes, average attack, health and cost, size, level and Hero.
 - Your **castle ("Bramble")** comes from a character pick that sets its HP and passive.
 - **Deck level** = Σ rarity weight × card level, with the leader counted double.
   - Weights run Common 1 → Mythic 9 → Ancient 10.
@@ -299,8 +309,13 @@ _Last updated: 2026-10-05 (night): effects recommendations, felt shockwave and p
   - a lit felt texture with coloured impact lights;
   - splash depth parallax and a water mask;
   - Arrow and Fire Arrow projectiles;
-  - a shockwave across the felt on castle hits and heavy blows.
-- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). The top three are anticipation and hit-stop on attacks, card shadows on the felt, and ambience ducking with a low-health heartbeat.
+  - a shockwave across the felt on castle hits and heavy blows;
+  - cards cast soft shadows on the felt, away from the lamp;
+  - struck cards squash and recoil, with a short hit-stop on heavy blows;
+  - a heartbeat and a red edge pulse while your castle is under 25%;
+  - a sting at sudden death;
+  - the ambience dips under big moments.
+- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). Done so far: hit-stop, card shadows, ducking, the danger layer. Next: real sound samples (S3), a ground material per map (G3), rival voices (S6).
 - **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)), with hits and deaths panned left or right to where they happen; per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
 - **Immersion** ([doc](immersion-2026-10-05.md)):
   - ✅ per-place ambience;
