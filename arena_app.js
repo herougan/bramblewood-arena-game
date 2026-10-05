@@ -1715,6 +1715,33 @@ const SoundKit = (()=>{
       [523, 659, 784, 1047, 1319].forEach((f, i)=> tone(f, 0.45, 'triangle', 0.07, 0.25 + i*0.09));
       tone(1568, 0.9, 'sine', 0.05, 0.75);
     },
+    // Rival voices (2026-10-05, effects rec. S6): an Animal-Crossing-style babble, one blip per
+    // syllable-ish, with a voice per people. Seeded by the line, so the same taunt always sounds
+    // the same. Rides the Voice volume slider.
+    babble(people, text){
+      if(voiceVolume <= 0) return;
+      const V = {legion:{f:[150,210], type:'square', len:.07, gap:.085, g:.07},
+                 tribes:{f:[620,940], type:'sine', len:.045, gap:.055, g:.09},
+                 road:{f:[330,480], type:'sawtooth', len:.055, gap:.07, g:.05},
+                 beast:{f:[85,135], type:'sawtooth', len:.09, gap:.1, g:.08},
+                 hive:{f:[240,260], type:'square', len:.05, gap:.05, g:.05},
+                 deep:{f:[70,110], type:'sine', len:.14, gap:.15, g:.11},
+                 folk:{f:[260,380], type:'triangle', len:.06, gap:.075, g:.08}}[people] || {f:[260,380], type:'triangle', len:.06, gap:.075, g:.08};
+      const words = String(text||'').replace(/[^\p{L}\s]/gu, '').split(/\s+/).filter(Boolean);
+      let seed = 7; for(const ch of String(text)) seed = (seed*31 + ch.charCodeAt(0)) % 100003;
+      const rnd = ()=> (seed = (seed*16807) % 2147483647) / 2147483647;
+      let t = 0, n = 0;
+      for(const w of words){
+        const syl = Math.max(1, Math.min(3, Math.round(w.length/3)));
+        for(let i = 0; i < syl && n < 14; i++, n++){
+          const f = V.f[0] + (V.f[1]-V.f[0]) * rnd();
+          tone(f, V.len, V.type, V.g, t, voiceVolume);
+          if(people === 'beast') tone(f*0.5, V.len, 'sine', V.g*0.6, t, voiceVolume);
+          t += V.gap * (0.85 + rnd()*0.3);
+        }
+        t += V.gap * 0.6;
+      }
+    },
     // Danger (2026-10-05): a soft low heartbeat while your castle is low, and a sting for sudden death.
     heartbeat(fast){
       sweep(70, 48, 0.14, 'sine', 0.13); fnoise(0.08, 0.05, {type:'lowpass', freq:180, attack:0.004});
@@ -10873,6 +10900,8 @@ function showVersusOpener(map, node, myChar, enemyChar){
   const isBoss = /boss/.test(node.kind||''), isElite = node.kind==='elite';
   const kindLabel = isBoss ? 'Boss' : isElite ? 'Elite' : 'Skirmish';
   const deck = myDecks.find(d=> d.id===activeDeckId);
+  const tauntLine = rivalTauntFor(map, node);
+  const rivalPeople = node.people || peopleOfDeck(node.deck) || 'folk';
   const el = document.createElement('div');
   el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '');
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', `You versus ${node.name}`);
@@ -10888,7 +10917,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">🏰 ${node.hqHp||''} HP</div>
-      <div class="vs-taunt">“${escapeHtml(rivalTauntFor(map, node))}”</div>
+      <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
     <div class="vs-skip">Tap to skip</div>`;
   host.appendChild(el);
@@ -10902,6 +10931,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
   el.addEventListener('click', close);
   setTimeout(close, hold);
   try{ if(isBoss){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){}
+  if(!repeat) setTimeout(()=>{ if(!gone) try{ SoundKit.babble(rivalPeople, tauntLine); }catch(e){} }, isBoss ? 700 : 380);
   if(isBoss && hasGsap()){ const bf = document.getElementById('battlefieldEl'); if(bf) gsap.fromTo(bf, {x:-6}, {x:0, duration:.5, ease:'elastic.out(1,0.3)', delay:.35}); }
 }
 /* ============================================================

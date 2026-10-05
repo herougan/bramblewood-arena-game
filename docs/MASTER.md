@@ -314,8 +314,10 @@ _Last updated: 2026-10-05 (night): visual library; card legibility, deck top and
   - struck cards squash and recoil, with a short hit-stop on heavy blows;
   - a heartbeat and a red edge pulse while your castle is under 25%;
   - a sting at sudden death;
-  - the ambience dips under big moments.
-- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). Done so far: hit-stop, card shadows, ducking, the danger layer. Next: real sound samples (S3), a ground material per map (G3), rival voices (S6).
+  - the ambience dips under big moments;
+  - each map's ground has its own material (wet glints, ember cracks, frost, sand ripples);
+  - rivals babble their taunt in a voice for their people.
+- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). Done so far: hit-stop, card shadows, ducking, the danger layer. Also done: map materials, rival voices. Next: real sound samples (S3, needs your files), the pack reveal build-up (A5), the walking map pawn (A6).
 - **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)), with hits and deaths panned left or right to where they happen; per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
 - **Immersion** ([doc](immersion-2026-10-05.md)):
   - ✅ per-place ambience;
