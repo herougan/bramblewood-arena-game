@@ -34,13 +34,6 @@
 
 **Built:** battles are fought on the skirmish map's own pixel terrain, under a soft scrim, with the felt shader switched to light only (lamp and impact lights, no cloth weave).
 
-
-**Today:** the battlefield is green felt with a weather overlay.
-
-**Proposal:** use the map's own pixel terrain (`art/maps/<id>.png`), darkened and blurred under the felt light, as the battlefield floor. A skirmish in the Basalt Foundry then visibly happens on cracked basalt by a lava river.
-
-**Cost:** small. The art and the overlay already exist.
-
 ## 3. Rivals with presence (✅ v1 built 2026-10-05)
 
 **Built:** a versus opener before every Conquest skirmish:
@@ -50,16 +43,6 @@
 
 Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Bespoke boss entrances are still to do.
 
-
-**Proposal:** a 1.5-second "versus" opener before each skirmish:
-- your banner on the left, theirs on the right (the portrait, name, castle and rank, as in the Profile's "What rivals see");
-- one line of trash talk from the existing dialogue system;
-- then the board slides in.
-
-Bosses get a longer, bespoke entrance.
-
-**Cost:** medium. It's mostly layout, plus a few lines of dialogue per node.
-
 ## 4. Diegetic screens (🟡 first screen built 2026-10-05)
 
 **Built: the Armoury Tent.** The deck builder sits inside the Legion's tent:
@@ -68,18 +51,16 @@ Bosses get a longer, bespoke entrance.
 - the flaps part as you walk in (skipped for reduced motion);
 - inside, muffled canvas-and-wind ambience with the odd forge clank.
 
-Next candidates: the Old Nest (Nest), the Traveller's Cart (Shop), the Forge.
+**Built: the Traveller's Cart (Shop).** A mouse peddler's caravan:
+- a faded indigo-and-cream scalloped awning, plank walls and a counter edge, lantern light;
+- the awning rolls up as you arrive, with a little bell;
+- a roadside breeze, a lantern hum, the odd creak and a trinket jingle.
 
+**Built: the Old Nest (Nest).** A woven-twig hollow in warm light:
+- soft down drifts in as you enter;
+- a gentle breeze and a few small birds nearby.
 
-**Proposal:** fewer menus, more places:
-- The Armoury Tent opens as a tent interior around the deck builder.
-- The Old Nest is a nest you look into.
-- The Shop is a cart with the pouch on the counter.
-- Screen changes use in-world transitions (leaves parting, a page turning) instead of instant swaps.
-
-Tabs stay as a fallback for speed.
-
-**Cost:** medium to large. It can be done one screen at a time.
+**Still to do:** the Forge, plus in-world transitions between all screens.
 
 ## 5. A living clock (✅ built 2026-10-05)
 
@@ -89,15 +70,6 @@ Tabs stay as a fallback for speed.
 - The ambience adds crickets at night (not in caves or underwater) and a dawn chorus.
 - Preview any phase with `?tod=night` (or `dawn`, `day`, `dusk`).
 
-
-**Proposal:** your real local time tints Home, the maps and battles:
-- dawn is pink, day neutral, dusk amber;
-- night is blue, with fireflies and lanterns.
-
-The ambience follows the clock too (crickets at night, birds at dawn). Seasonal touches can come later, such as autumn leaves in October.
-
-**Cost:** small to medium. It's one global time-of-day value that the shaders and the ambience read.
-
 ---
 
-**Suggested next:** more of #4: the Traveller's Cart (Shop) and the Old Nest.
+**Suggested next:** the Forge as a place (an anvil, a hearth glow, the hammer sounds already built), then in-world screen transitions.

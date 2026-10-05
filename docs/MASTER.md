@@ -17,7 +17,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (late evening): Armoury Tent; world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-05 (late evening): places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -293,10 +293,14 @@ _Last updated: 2026-10-05 (late evening): Armoury Tent; world, look and sound (i
   - ✅ fights on the map's own ground;
   - ✅ a versus opener with the rival's people and lines;
   - ✅ a live clock (dawn, day, dusk and night tints, default on, `?tod=` to preview);
-  - 🟡 diegetic screens: the deck builder is now inside the Armoury Tent (flaps open on entry, its own ambience).
+  - 🟡 diegetic screens, each with its own entrance and sound:
+    - Deck is the Armoury Tent;
+    - Shop is the Traveller's Cart;
+    - Nest is the Old Nest;
+    - the Forge and in-world transitions are still to do.
 - **Delivery:** art loads from `assets/` (content-hashed URLs, idle warm-up). The page dropped from 7.8 MB to 3.2 MB (1.0 MB compressed). `BW_INLINE=1` gives a single-file build.
 - **Where:**
-  - `Ambience`, `showVersusOpener`, `peopleOfDeck`, `setAtmosphere('live')`, `battleLightAt` and `boardSnapGuard` in `arena_app.js`
+  - `PLACES`, `Ambience`, `showVersusOpener`, `peopleOfDeck`, `setAtmosphere('live')`, `battleLightAt` and `boardSnapGuard` in `arena_app.js`
   - `bramblewood-shaders.js`
   - `assemble_arena.py`
 

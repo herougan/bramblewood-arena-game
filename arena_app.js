@@ -1968,6 +1968,10 @@ const Ambience = (()=>{
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
     // Inside the Armoury Tent: muffled wind on canvas, the odd flap, a distant clank from the forge.
     tent: {beds:[{freq:260, gain:0.03, lfo:0.09, depth:0.7}], events:[[sc=> puff(sc, 0.35, 0.03, 'bandpass', 500, 1.5, 0, 220), 4, 9], [clank, 9, 18]]},
+    // The Traveller's Cart: a roadside breeze, a lantern's hum, the odd creak and a trinket jingle.
+    cart: {beds:[{freq:380, gain:0.028, lfo:0.06}], drone:[110, 0.004], events:[[sc=>{ const f = rnd(2400, 3200); for(let i=0;i<3;i++) blip(sc, f*(1+i*0.12), f*(1+i*0.12), 0.18, 'triangle', 0.012, i*0.05); }, 6, 14], [sc=> blip(sc, rnd(140, 180), rnd(90, 110), 0.35, 'sawtooth', 0.006), 8, 16]]},
+    // The Old Nest: a warm hollow — soft breeze through twigs and a few small birds nearby.
+    nest: {beds:[{freq:500, gain:0.022, lfo:0.08}, {type:'bandpass', freq:2200, q:0.8, gain:0.006}], events:[[bird, 3, 8]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
     1:  {beds:[{type:'bandpass', freq:850, q:0.5, gain:0.04, lfo:0.11}], events:[[frog, 2, 6], [bird, 6, 14]]},
     2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4]]},
@@ -20369,6 +20373,15 @@ function tutorialGateBlocks(tab){
   return true;
 }
 let currentTabBeforeSwitch = null;
+function placeOverlay(cls, html, ms){
+  const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
+  document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
+}
+const PLACES = {
+  deck: {cls:'tent-scene', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  shop: {cls:'cart-scene', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  nest: {cls:'nest-scene', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+};
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
@@ -20377,17 +20390,13 @@ function switchTab(tab){
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
-  try{ if(tab==='home') Ambience.play('home'); else if(tab==='deck') Ambience.play('tent'); else if(tab!=='play') Ambience.stop(); }catch(e){}
-  // The Armoury Tent (immersion #4): the deck screen is a place you walk into — flaps part on entry.
+  // Places (immersion #4): some screens are places you walk into, each with its own look, sound
+  // and entrance — the Armoury Tent (Deck), the Traveller's Cart (Shop), the Old Nest (Nest).
   try{
-    const dv = document.getElementById('view-deck');
-    if(dv){
-      dv.classList.add('tent-scene');
-      if(tab==='deck' && currentTabBeforeSwitch!=='deck' && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){
-        const f = document.createElement('div'); f.className = 'tent-flaps'; f.setAttribute('aria-hidden','true'); f.innerHTML = '<i></i><i></i>';
-        document.body.appendChild(f); setTimeout(()=> f.remove(), 900);
-      }
-    }
+    const place = PLACES[tab];
+    if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
+    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v) v.classList.add(pl.cls); });
+    if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';

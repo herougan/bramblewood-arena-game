@@ -4610,6 +4610,50 @@
   #view-deck.tent-scene::after{white-space:nowrap;}
   @media (max-width:560px){ #view-deck.tent-scene{padding:58px 10px 18px; border-radius:12px;} #view-deck.tent-scene::after{font-size:12.5px; padding:4px 12px; top:12px;} .tent-pole{display:none;} }
   @media (prefers-reduced-motion: reduce){ .tent-flaps{display:none;} }
+  /* Places, continued (2026-10-05): the Traveller's Cart (Shop) — a mouse peddler's caravan: a
+     faded indigo/brown striped awning, a plank counter, lantern light, a hanging sign. */
+  #view-shop.cart-scene{position:relative; padding:78px clamp(14px,3vw,40px) 64px; border-radius:18px; margin-top:4px; isolation:isolate;
+    background:
+      radial-gradient(ellipse 55% 40% at 50% 8%, rgba(255,200,110,.40), transparent 70%),
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(20,12,6,.55) 100%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 22px),
+      linear-gradient(180deg, #5a4430, #3e2c1d);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,.35);}
+  #view-shop.cart-scene::before{content:''; position:absolute; left:-6px; right:-6px; top:0; height:46px; z-index:0; pointer-events:none;
+    background:repeating-linear-gradient(90deg, #3b4a78 0 40px, #d9c7a6 40px 80px);
+    -webkit-mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
+            mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
+    border-radius:14px 14px 0 0;}
+  #view-shop.cart-scene::after{content:'🧳 The Traveller’s Cart'; position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+  #view-shop.cart-scene > *{position:relative; z-index:1;}
+  #view-shop.cart-scene{filter:none;} #view-shop.cart-scene::before{filter:drop-shadow(0 4px 2px rgba(0,0,0,.45));}
+  #view-shop.cart-scene{border-bottom:18px solid #6b4a2a; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,.35), inset 0 -6px 0 rgba(0,0,0,.25);}
+  #view-shop.cart-scene{padding-top:96px;}
+  .cart-awning{position:fixed; left:0; right:0; top:0; height:42vh; z-index:8000; pointer-events:none;
+    background:repeating-linear-gradient(90deg, #3b4a78 0 60px, #d9c7a6 60px 120px); box-shadow:0 12px 30px rgba(0,0,0,.45);
+    transform-origin:50% 0; animation:awningUp .8s cubic-bezier(.6,.05,.35,1) forwards;}
+  @keyframes awningUp{0%{transform:scaleY(1);} 100%{transform:scaleY(0);}}
+  /* The Old Nest — a woven twig hollow with soft down drifting in the warm light. */
+  #view-nest.nest-scene{position:relative; padding:70px clamp(14px,3vw,40px) 26px; border-radius:28px; margin-top:4px; isolation:isolate;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255,226,170,.30), transparent 70%),
+      radial-gradient(ellipse 110% 90% at 50% 45%, transparent 50%, rgba(30,18,8,.6) 100%),
+      repeating-linear-gradient(35deg, rgba(120,84,48,.55) 0 3px, transparent 3px 11px),
+      repeating-linear-gradient(-30deg, rgba(90,62,34,.55) 0 2px, transparent 2px 13px),
+      linear-gradient(180deg, #6b4c2e, #4a3320);
+    box-shadow:inset 0 0 0 10px rgba(74,51,32,.85), inset 0 0 0 14px rgba(140,104,62,.6), 0 10px 30px rgba(0,0,0,.35);}
+  #view-nest.nest-scene::after{content:'🪺 The Old Nest'; position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+  #view-nest.nest-scene > *{position:relative; z-index:1;}
+  .nest-down{position:fixed; inset:0; z-index:8000; pointer-events:none;}
+  .nest-down i{position:absolute; top:-30px; width:14px; height:22px; border-radius:50% 50% 45% 45%; background:radial-gradient(ellipse at 40% 30%, #fffaf0, #e9dcc4 60%, transparent 72%); opacity:.9;
+    animation:downFall 2.4s ease-in forwards;}
+  @keyframes downFall{0%{transform:translate(0,0) rotate(0);} 50%{transform:translate(24px,50vh) rotate(160deg);} 100%{transform:translate(-10px,105vh) rotate(320deg); opacity:0;}}
+  @media (max-width:560px){ #view-shop.cart-scene{padding:84px 10px 40px; border-radius:12px;} #view-shop.cart-scene::after, #view-nest.nest-scene::after{font-size:12.5px;} #view-nest.nest-scene{padding:58px 10px 18px; border-radius:18px;} }
+  @media (prefers-reduced-motion: reduce){ .cart-awning, .nest-down{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
   .ds-pair{display:flex; gap:8px; flex-shrink:0;}

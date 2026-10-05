@@ -4620,6 +4620,50 @@
   #view-deck.tent-scene::after{white-space:nowrap;}
   @media (max-width:560px){ #view-deck.tent-scene{padding:58px 10px 18px; border-radius:12px;} #view-deck.tent-scene::after{font-size:12.5px; padding:4px 12px; top:12px;} .tent-pole{display:none;} }
   @media (prefers-reduced-motion: reduce){ .tent-flaps{display:none;} }
+  /* Places, continued (2026-10-05): the Traveller's Cart (Shop) — a mouse peddler's caravan: a
+     faded indigo/brown striped awning, a plank counter, lantern light, a hanging sign. */
+  #view-shop.cart-scene{position:relative; padding:78px clamp(14px,3vw,40px) 64px; border-radius:18px; margin-top:4px; isolation:isolate;
+    background:
+      radial-gradient(ellipse 55% 40% at 50% 8%, rgba(255,200,110,.40), transparent 70%),
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, rgba(20,12,6,.55) 100%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 22px),
+      linear-gradient(180deg, #5a4430, #3e2c1d);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,.35);}
+  #view-shop.cart-scene::before{content:''; position:absolute; left:-6px; right:-6px; top:0; height:46px; z-index:0; pointer-events:none;
+    background:repeating-linear-gradient(90deg, #3b4a78 0 40px, #d9c7a6 40px 80px);
+    -webkit-mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
+            mask:linear-gradient(#000 0 0) top / 100% 32px no-repeat, radial-gradient(circle at 20px 32px, #000 12px, transparent 12.5px) 0 0 / 40px 46px repeat-x;
+    border-radius:14px 14px 0 0;}
+  #view-shop.cart-scene::after{content:'🧳 The Traveller’s Cart'; position:absolute; top:52px; left:50%; transform:translateX(-50%) rotate(1.2deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#e6c98e,#c9a46a); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+  #view-shop.cart-scene > *{position:relative; z-index:1;}
+  #view-shop.cart-scene{filter:none;} #view-shop.cart-scene::before{filter:drop-shadow(0 4px 2px rgba(0,0,0,.45));}
+  #view-shop.cart-scene{border-bottom:18px solid #6b4a2a; box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), 0 10px 30px rgba(0,0,0,.35), inset 0 -6px 0 rgba(0,0,0,.25);}
+  #view-shop.cart-scene{padding-top:96px;}
+  .cart-awning{position:fixed; left:0; right:0; top:0; height:42vh; z-index:8000; pointer-events:none;
+    background:repeating-linear-gradient(90deg, #3b4a78 0 60px, #d9c7a6 60px 120px); box-shadow:0 12px 30px rgba(0,0,0,.45);
+    transform-origin:50% 0; animation:awningUp .8s cubic-bezier(.6,.05,.35,1) forwards;}
+  @keyframes awningUp{0%{transform:scaleY(1);} 100%{transform:scaleY(0);}}
+  /* The Old Nest — a woven twig hollow with soft down drifting in the warm light. */
+  #view-nest.nest-scene{position:relative; padding:70px clamp(14px,3vw,40px) 26px; border-radius:28px; margin-top:4px; isolation:isolate;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255,226,170,.30), transparent 70%),
+      radial-gradient(ellipse 110% 90% at 50% 45%, transparent 50%, rgba(30,18,8,.6) 100%),
+      repeating-linear-gradient(35deg, rgba(120,84,48,.55) 0 3px, transparent 3px 11px),
+      repeating-linear-gradient(-30deg, rgba(90,62,34,.55) 0 2px, transparent 2px 13px),
+      linear-gradient(180deg, #6b4c2e, #4a3320);
+    box-shadow:inset 0 0 0 10px rgba(74,51,32,.85), inset 0 0 0 14px rgba(140,104,62,.6), 0 10px 30px rgba(0,0,0,.35);}
+  #view-nest.nest-scene::after{content:'🪺 The Old Nest'; position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+  #view-nest.nest-scene > *{position:relative; z-index:1;}
+  .nest-down{position:fixed; inset:0; z-index:8000; pointer-events:none;}
+  .nest-down i{position:absolute; top:-30px; width:14px; height:22px; border-radius:50% 50% 45% 45%; background:radial-gradient(ellipse at 40% 30%, #fffaf0, #e9dcc4 60%, transparent 72%); opacity:.9;
+    animation:downFall 2.4s ease-in forwards;}
+  @keyframes downFall{0%{transform:translate(0,0) rotate(0);} 50%{transform:translate(24px,50vh) rotate(160deg);} 100%{transform:translate(-10px,105vh) rotate(320deg); opacity:0;}}
+  @media (max-width:560px){ #view-shop.cart-scene{padding:84px 10px 40px; border-radius:12px;} #view-shop.cart-scene::after, #view-nest.nest-scene::after{font-size:12.5px;} #view-nest.nest-scene{padding:58px 10px 18px; border-radius:18px;} }
+  @media (prefers-reduced-motion: reduce){ .cart-awning, .nest-down{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
   .ds-pair{display:flex; gap:8px; flex-shrink:0;}
@@ -11404,6 +11448,10 @@ const Ambience = (()=>{
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
     // Inside the Armoury Tent: muffled wind on canvas, the odd flap, a distant clank from the forge.
     tent: {beds:[{freq:260, gain:0.03, lfo:0.09, depth:0.7}], events:[[sc=> puff(sc, 0.35, 0.03, 'bandpass', 500, 1.5, 0, 220), 4, 9], [clank, 9, 18]]},
+    // The Traveller's Cart: a roadside breeze, a lantern's hum, the odd creak and a trinket jingle.
+    cart: {beds:[{freq:380, gain:0.028, lfo:0.06}], drone:[110, 0.004], events:[[sc=>{ const f = rnd(2400, 3200); for(let i=0;i<3;i++) blip(sc, f*(1+i*0.12), f*(1+i*0.12), 0.18, 'triangle', 0.012, i*0.05); }, 6, 14], [sc=> blip(sc, rnd(140, 180), rnd(90, 110), 0.35, 'sawtooth', 0.006), 8, 16]]},
+    // The Old Nest: a warm hollow — soft breeze through twigs and a few small birds nearby.
+    nest: {beds:[{freq:500, gain:0.022, lfo:0.08}, {type:'bandpass', freq:2200, q:0.8, gain:0.006}], events:[[bird, 3, 8]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
     1:  {beds:[{type:'bandpass', freq:850, q:0.5, gain:0.04, lfo:0.11}], events:[[frog, 2, 6], [bird, 6, 14]]},
     2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4]]},
@@ -29805,6 +29853,15 @@ function tutorialGateBlocks(tab){
   return true;
 }
 let currentTabBeforeSwitch = null;
+function placeOverlay(cls, html, ms){
+  const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
+  document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
+}
+const PLACES = {
+  deck: {cls:'tent-scene', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  shop: {cls:'cart-scene', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  nest: {cls:'nest-scene', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+};
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
@@ -29813,17 +29870,13 @@ function switchTab(tab){
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
-  try{ if(tab==='home') Ambience.play('home'); else if(tab==='deck') Ambience.play('tent'); else if(tab!=='play') Ambience.stop(); }catch(e){}
-  // The Armoury Tent (immersion #4): the deck screen is a place you walk into — flaps part on entry.
+  // Places (immersion #4): some screens are places you walk into, each with its own look, sound
+  // and entrance — the Armoury Tent (Deck), the Traveller's Cart (Shop), the Old Nest (Nest).
   try{
-    const dv = document.getElementById('view-deck');
-    if(dv){
-      dv.classList.add('tent-scene');
-      if(tab==='deck' && currentTabBeforeSwitch!=='deck' && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){
-        const f = document.createElement('div'); f.className = 'tent-flaps'; f.setAttribute('aria-hidden','true'); f.innerHTML = '<i></i><i></i>';
-        document.body.appendChild(f); setTimeout(()=> f.remove(), 900);
-      }
-    }
+    const place = PLACES[tab];
+    if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
+    Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v) v.classList.add(pl.cls); });
+    if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
