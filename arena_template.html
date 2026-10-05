@@ -5082,6 +5082,21 @@
   .cd-info .flavor{margin:0; font-style:italic; padding-left:12px; border-left:3px solid rgba(201,164,106,.7);}
   @media (max-width:640px){ .cd-grid{grid-template-columns:1fr; gap:12px;} .card-detail-card .card-pop-visual{position:static; justify-content:center;}
     .cd-name{text-align:center; padding-right:0;} .cd-chips{justify-content:center;} .cd-tiles b{font-size:20px;} }
+
+  /* Polish pass (2026-10-05, after the first real-font audit) */
+  /* Sign-in reminder: bottom of the screen, so it never sits on the header's Home/Settings pills. */
+  .signin-banner{top:auto !important; bottom:calc(14px + env(safe-area-inset-bottom, 0px)); transform:translate(-50%,160%) !important;}
+  .signin-banner.show{transform:translate(-50%,0) !important;}
+  /* Home: Quests and Community become a matching row under the 2×2 grid, same width and style family. */
+  .home-menu-row.home-extras{display:grid !important; grid-template-columns:repeat(2, minmax(0,1fr)) !important; gap:12px !important; width:min(520px,100%) !important;}
+  .home-menu-row.home-extras > *:only-child{grid-column:1 / -1;}
+  .home-extras .home-menu-btn-small, .home-community-wrap .home-menu-btn-small{width:100% !important; min-width:0 !important; min-height:48px; display:flex; flex-direction:row; align-items:center; justify-content:center; gap:8px; font-size:16px; border-radius:14px;}
+  .home-extras .home-menu-btn-small .tab-emoji{font-size:20px;}
+  /* Deck screen buttons on phones: one tidy row, no two-line labels. */
+  @media (max-width:560px){
+    .deck-switch-row .play-subtabs-actions{width:100%; display:flex; gap:6px;}
+    .deck-switch-row .play-subtabs-actions .btn{flex:1; white-space:nowrap; font-size:12px; padding:6px 6px; justify-content:center;}
+  }
 </style>
 </head>
 <body>

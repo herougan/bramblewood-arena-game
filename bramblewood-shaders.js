@@ -202,6 +202,34 @@ void main(){
     float shade = (diff - 0.82) * 1.6 * (u_felt < 1.5 ? 1.0 : 0.0);   // 2 = light only (terrain floor, no cloth)
     outc.a += clamp(-shade, 0.0, 1.0) * 0.16 + (1.0 - pool) * 0.10;     // cloth shadow + falloff
     outc.rgb += vec3(1.0, 0.86, 0.6) * (clamp(shade, 0.0, 1.0)*0.10 + pool*0.07);
+    // Ground material per map (2026-10-05, effects rec. G3) — only on terrain floors (u_felt 2).
+    if(u_felt > 1.5){
+      vec2 gq = q * 7.0;
+      if(k == 1 || k == 6 || k == 7){            // wet: slow-moving specular glints toward the lamp
+        float w1 = fbm(gq*0.8 + vec2(t*0.08, t*0.05)), w2 = fbm(gq*0.8 + vec2(0.01, 0.0) + vec2(t*0.08, t*0.05));
+        float w3 = fbm(gq*0.8 + vec2(0.0, 0.01) + vec2(t*0.08, t*0.05));
+        vec3 wn = normalize(vec3((w1 - w2)*40.0, (w1 - w3)*40.0, 1.0));
+        vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
+        float spec = pow(max(dot(wn, H), 0.0), 60.0) * (0.4 + 0.6*pool);
+        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.35;
+        outc.a += 0.05;                            // a damp darkening
+      } else if(k == 2 || k == 8 || k == 10){    // ash: glowing cracks that breathe
+        float c = abs(fbm(gq*0.9) - 0.5);
+        float crack = smoothstep(0.028, 0.0, c) * smoothstep(0.3, 0.75, fbm(gq*0.35 + 3.0));
+        float pulse = 0.6 + 0.4*sin(t*1.4 + fbm(gq*0.5)*6.0);
+        outc.rgb += vec3(1.0, 0.42, 0.08) * crack * pulse * 0.55;
+        outc.a += 0.06;
+      } else if(k == 5){                          // frost: cold bloom and glittering crystals
+        float fr = smoothstep(0.45, 0.8, fbm(gq*0.6));
+        outc.rgb += vec3(0.85, 0.93, 1.0) * fr * 0.10;
+        vec2 cid = floor(gq*4.0); float hz = hash(cid);
+        outc.rgb += vec3(1.0) * step(0.985, hz) * (0.5 + 0.5*sin(t*3.0 + hz*40.0)) * 0.6 * fr;
+      } else if(k == 4){                          // sand: wind ripples catching the light
+        float rip = sin((uv.x*aspect + uv.y*0.35 + fbm(gq*0.25)*0.25) * 70.0);
+        outc.rgb += vec3(1.0, 0.9, 0.7) * smoothstep(0.82, 1.0, rip) * 0.035;
+        outc.a += smoothstep(0.82, 1.0, -rip) * 0.025;
+      }
+    }
   }
   if(u_felt > 0.5 && u_ncards > 0.5){
     vec2 lampS = vec2(0.32 + 0.22*m.x + 0.05*sin(t*0.13), 0.18 + 0.12*m.y + 0.04*cos(t*0.11));
