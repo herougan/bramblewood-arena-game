@@ -9,6 +9,7 @@
 > - **Lore:** your comments on [`lore-bible.md`](lore-bible.md); are dogs Legion war-dogs or wild beasts; which beasts the Hummingbirds befriend; the proposed card renames.
 > - **Play-test:** the new sound, effects and immersion work has only been checked by tests and screenshots; it needs your eyes and ears.
 > - **Languages:** translate card names, or keep them English? Native-speaker review for Tagalog, Tamil, Japanese and Korean.
+> - **Hero:** play a few fights with one and say how the levelling pace and stat prices feel; do you want Materia socketing (v2) next?
 > - **Two discussion topics:** T1 and T2.
 
 **Rules for this doc**
@@ -18,7 +19,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-05 (night): 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -40,9 +41,16 @@ _Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); 
 - Rarity sets the copy limit per deck: Common 10 · Uncommon 5 · Rare 4 · Very/Super Rare 3 · Epic/Heroic 2 · Unique/Legendary/Mythic/Ancient 1.
 - Hall of Fame editions (Classic/Antique) share their base card's limit.
 - **Card sizes scale** with each card's own width (size tokens xs–xl). Names sit on a parchment scroll. Card levels show only in the Nest, the Forge and the deck builder's level filter.
+- **🦸 Hero card** ✅ (new, [design](hero-design.md)): your own card, built from Deck → 🦸 Hero.
+  - Pick a people (Legion, Sunfeather or Road-folk) and a name; it takes one deck slot.
+  - It levels to **100** from battles (win +30, +10 if played; loss +10) and from crafting 💎 Materia (25 ✨ → +30 XP, in the Hall or the Forge bench).
+  - You spend stat points (+1 Attack = 5, +1 Health = 1, Wait 0 = 25) and pick 1 of 3 skills at Levels 5/15/30/50/75/100.
+  - Cost rises 1 → 4 with level. A maxed Hero is level with the top Legendaries.
+  - **Single-player only for now:** it's removed from ghost, raid and live decks until the server can check it.
 - **Where:**
   - `canonical/cards.json` (the data)
   - `RARITY_MAX_COPIES` and `editionCapReached` in `arena_app.js`
+  - `heroDef`, `renderHeroHall`, `craftMateria` in `arena_app.js`
   - `mechanics-guideline.md`
 
 **2. Combat rules** ✅
@@ -262,7 +270,8 @@ _Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); 
   - the UI smoke test;
   - flows (quit from every mode, the tutorial lock);
   - **snaps:** no card, castle or hand tile may jump between frames, desktop and phone;
-  - **i18n:** every language pack loads and translates.
+  - **i18n:** every language pack loads and translates;
+  - **hero:** create, level, spend, pick, craft, and win a fight for XP.
 - 54 user stories with acceptance criteria.
 - **Where:**
   - `docs/testing-strategy.md`
