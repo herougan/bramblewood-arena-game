@@ -5159,6 +5159,66 @@
   /* The "+1 Lumber" confirmation after a pitch: quieter now that the preview carries the news. */
   .pitch-callout{padding:4px 12px 5px !important; border-width:1px !important; background:rgba(28,22,14,.6) !important; box-shadow:0 4px 12px rgba(0,0,0,.3) !important; top:62% !important; animation-duration:1.1s !important;}
   .pitch-callout .pc-gain{font-size:18px !important;} .pitch-callout .pc-from{font-size:10.5px !important;} .pitch-callout .pc-gain small{font-size:11px !important;}
+
+  /* Coach tips stay pointed at their card (2026-10-05) */
+  .coach-tip.anchor-lost::after, .coach-tip.anchor-lost::before{display:none;}
+  .coach-tip:not(.is-blocking){z-index:120;}
+
+  /* No floating motes over the Armoury's cards (2026-10-05): they keep drifting at the edges,
+     outside the tent, but fade out over the panel. */
+  body[data-tab="deck"] #atmoCanvas{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(50% - 600px),transparent calc(50% - 540px),transparent calc(50% + 540px),#000 calc(50% + 600px),#000 100%);
+    mask-image:linear-gradient(90deg,#000 0,#000 calc(50% - 600px),transparent calc(50% - 540px),transparent calc(50% + 540px),#000 calc(50% + 600px),#000 100%);}
+
+  /* Deck top v2 + deck cards, theme-aware (2026-10-05, user screenshots in dark mode) */
+  .deck-top{background:linear-gradient(135deg, var(--surface-2), var(--surface)) !important; border:1px solid var(--surface-border) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 6px 18px rgba(0,0,0,.18); position:relative; overflow:hidden;}
+  .deck-top::before{content:''; position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg, transparent, var(--gold, #e3b23c), transparent); opacity:.8;}
+  .dt-slot{all:unset; box-sizing:border-box; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; width:120px; position:relative; border-radius:14px; padding:4px; transition:transform .15s ease, background .15s ease;}
+  .dt-slot:hover{transform:translateY(-3px); background:color-mix(in srgb, var(--gold, #e3b23c) 14%, transparent);}
+  .dt-slot:focus-visible{outline:2px solid var(--gold, #e3b23c); outline-offset:2px;}
+  .dt-tile{display:block;}
+  .dt-cap{display:flex; flex-direction:column; align-items:center; line-height:1.15; text-align:center; max-width:120px; color:var(--ink);}
+  .dt-cap span{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-muted);}
+  .dt-cap b{font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:116px;}
+  .dt-change{position:absolute; top:8px; right:8px; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:999px; background:rgba(20,14,8,.78); color:#ffe2a0; border:1px solid #c9a46a; opacity:0; transition:opacity .15s; pointer-events:none;}
+  .dt-slot:hover .dt-change, .dt-slot:focus-visible .dt-change{opacity:1;}
+  @media (hover:none){ .dt-change{opacity:1;} }
+  .dt-empty-leader{display:flex !important; background:color-mix(in srgb, var(--surface) 60%, transparent) !important; border-color:var(--surface-border) !important; color:var(--ink-muted);}
+  .dt-info h2{color:var(--ink);}
+  .dt-stats span{background:var(--surface) !important; border:1px solid var(--surface-border) !important; color:var(--ink);}
+  .dt-stats b{color:var(--ink);} .dt-stats small{color:var(--ink-muted); opacity:1 !important;}
+  .dt-stats .is-ok b{color:#3fae55 !important;} .dt-stats .is-short b{color:#d6873a !important;}
+  .ds-arch-chip{color:var(--ink); background:color-mix(in srgb, var(--gold, #c9a46a) 18%, transparent) !important; border-color:color-mix(in srgb, var(--gold, #c9a46a) 55%, transparent) !important;}
+  /* Manage-decks cards */
+  .deck-menu-card{background:linear-gradient(160deg, var(--surface-2), var(--surface)); border:1px solid var(--surface-border); border-radius:16px; padding:14px 16px; display:flex; flex-direction:column; gap:12px;}
+  .deck-menu-card.active{border-color:var(--gold, #c9a46a); box-shadow:0 0 0 2px color-mix(in srgb, var(--gold, #c9a46a) 45%, transparent), 0 8px 22px rgba(0,0,0,.2);}
+  .deck-menu-card .deck-showcase{margin:0 !important; gap:16px !important;}
+  .deck-menu-card .ds-info{gap:10px !important; justify-content:center !important;}
+  .deck-menu-card .ds-stats{grid-template-columns:repeat(3, minmax(0,1fr)) !important;}
+  .deck-menu-card .ds-stats span{background:var(--surface) !important; border:1px solid var(--surface-border); color:var(--ink); padding:8px 4px !important;}
+  .deck-menu-card .ds-stats b{color:var(--ink); font-size:19px !important;}
+  .deck-menu-card .ds-stats small{color:var(--ink-muted); opacity:1 !important; font-size:10px !important;}
+  .deck-menu-card .ds-meta{color:var(--ink-muted); opacity:1 !important;}
+  .deck-menu-card .ds-slot figcaption{color:var(--ink);}
+  .deck-menu-card .ds-empty-leader{border-color:var(--surface-border) !important; color:var(--ink-muted);}
+  .deck-menu-card-actions{display:flex; flex-wrap:wrap; gap:8px; padding-top:10px; border-top:1px solid var(--surface-border);}
+  @media (min-width:900px){ #deckMenuGrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(460px, 1fr)); gap:14px;} }
+  /* Castle / leader picker */
+  .loadout-picker{width:min(880px, 100%); position:relative;}
+  .loadout-picker h2{margin:0 0 4px; padding-right:40px;}
+  .loadout-picker .modal-close-btn{position:absolute; top:14px; right:14px;}
+  .lp-search{width:100%; margin:8px 0 12px; font:inherit; padding:8px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
+  .lp-body{max-height:min(62vh, 640px); overflow-y:auto; padding:4px;}
+  .lp-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:12px;}
+  .lp-grid.lp-castles{grid-template-columns:repeat(auto-fill, minmax(170px, 1fr));}
+  .lp-item{all:unset; box-sizing:border-box; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; padding:8px; border-radius:14px; border:1px solid transparent; text-align:center; color:var(--ink); transition:transform .12s, background .12s;}
+  .lp-item:hover{transform:translateY(-3px); background:var(--surface-2);}
+  .lp-item:focus-visible{outline:2px solid var(--gold, #c9a46a);}
+  .lp-item.is-on{border-color:var(--gold, #c9a46a); background:color-mix(in srgb, var(--gold, #c9a46a) 16%, transparent);}
+  .lp-item b{font-size:13px; line-height:1.15;} .lp-item small{font-size:11.5px; color:var(--ink-muted);}
+  .lp-tile{display:block; width:104px;} .lp-castles .lp-tile{width:130px;}
+  .lp-tile .card-tile{width:100% !important; height:auto !important; aspect-ratio:4/5; margin:0; pointer-events:none;}
+  .lp-empty{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border:2px dashed var(--surface-border); border-radius:12px; font-size:28px; color:var(--ink-muted);}
 </style>
 </head>
 <body>

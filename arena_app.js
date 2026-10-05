@@ -6145,12 +6145,12 @@ function deckHeroBannerHTML(){
   const d = {counts: myDeckCounts||{}, characterId: myCharacterId, leaderId: myLeaderId};
   const sig = deckSignature(d), total = deckTotal(d.counts), lvl = mainDeckLevel(d.counts, myLeaderId);
   const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
-  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="dt-empty-leader">👑<small>Pick a leader below</small></div>`;
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<span class="dt-empty-leader">👑<small>Tap to choose</small></span>`;
   const hero = (d.counts[HERO_ID] > 0 && typeof myHero !== 'undefined' && myHero) ? myHero : null;
   return `<div class="deck-top" id="deckHeroBanner">
     <div class="dt-pair">
-      <figure class="dt-slot"><div class="dt-tile">${castleTile}</div><figcaption><span>🏰 Castle</span><b>${escapeHtml(castle ? castle.name : '—')}</b></figcaption></figure>
-      <figure class="dt-slot"><div class="dt-tile">${leaderTile}</div><figcaption><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></figcaption></figure>
+      <button type="button" class="dt-slot" data-loadout="castle" title="Choose your castle"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><span>🏰 Castle</span><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
+      <button type="button" class="dt-slot" data-loadout="leader" title="Choose your leader"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
       <h2>${escapeHtml(active.name || 'My deck')}</h2>
@@ -6174,6 +6174,50 @@ function refreshDeckHeroBanner(){
   const el = document.getElementById('deckHeroBanner');
   if(!el) return;
   el.outerHTML = deckHeroBannerHTML();
+  wireDeckTop();
+}
+function wireDeckTop(){
+  document.querySelectorAll('#deckHeroBanner [data-loadout]').forEach(b=> b.addEventListener('click', ()=> openLoadoutPicker(b.dataset.loadout)));
+}
+// Castle / Leader picker (2026-10-05, user: "I should be able to select castle and leader by
+// clicking into them, opening a sub window. Then the sections 'choose your bramble' and 'leader'
+// wouldn't need to exist anymore").
+function openLoadoutPicker(kind){
+  document.querySelectorAll('.loadout-picker-overlay').forEach(e=> e.remove());
+  const defs = getCardDefs();
+  const ov = document.createElement('div'); ov.className = 'modal-overlay loadout-picker-overlay';
+  const isCastle = kind === 'castle';
+  let q = '';
+  const leaderIds = ()=> getDraftableIds().filter(id=> defs[id] && !defs[id].locked && !defs[id].token && !defs[id].hero)
+    .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
+    .sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || ((defs[b].attack||0)+(defs[b].health||0)) - ((defs[a].attack||0)+(defs[a].health||0)));
+  const body = ()=> isCastle
+    ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''}" data-pick="${escapeAttr(ch.id)}">
+        <span class="lp-tile">${matchCastleTileHTML(ch, ch.health, ch.health, 'preview', '')}</span><b>${escapeHtml(ch.name)}</b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>`
+    : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
+        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
+  ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
+      <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
+      <h2>${isCastle ? '🏰 Choose your castle' : '👑 Choose your leader'}</h2>
+      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward deck level.'}</p>
+      ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
+      <div class="lp-body">${body()}</div>
+    </div>`;
+  document.body.appendChild(ov);
+  const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key==='Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  ov.addEventListener('click', e=>{
+    if(e.target===ov || e.target.closest('[data-close]')) return close();
+    const b = e.target.closest('[data-pick]'); if(!b) return;
+    const id = b.dataset.pick;
+    if(isCastle){ myCharacterId = id; saveMyCharacter(); }
+    else { myLeaderId = id || null; saveMyLeader(); }
+    try{ SoundKit.pickup(); }catch(_){}
+    close(); refreshDeckHeroBanner();
+  });
+  const srch = ov.querySelector('#lpSearch');
+  if(srch){ srch.focus(); srch.addEventListener('input', ()=>{ q = srch.value.trim().toLowerCase(); ov.querySelector('.lp-body').innerHTML = body(); }); }
 }
 function characterDescHTML(ch){
   const e = ch.effects||{};
@@ -6819,11 +6863,7 @@ function renderPlayerSubTab(body){
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
       <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card below to add a copy; tap it in your deck list to take one out. Changes save as you go.</p>
-      <h3 class="deck-section-h">🌿 Choose your Bramble</h3>
-      <p class="panel-sub">Your HQ for the match — sets your castle's max HP and gives your whole team a passive. See the Codex for the full write-up on each.</p>
-      ${characterPickerHTML()}
       <h3 class="deck-section-h">🃏 Cards</h3>
-      <div id="leaderSlotWrap">${leaderSlotHTML()}</div>
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
            "Build your deck" heading, separated from the actual deck-preview chips below by the
@@ -6859,7 +6899,7 @@ function renderPlayerSubTab(body){
   document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
-  wireLeaderSlot();
+  wireLeaderSlot(); wireDeckTop();
   wireDeckListDrop();
 }
 // Item #11 (2026-09-18): "The drag and drop works also by dragging a card into the deck list
@@ -12911,8 +12951,7 @@ function renderMatchUI(){
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
   if(!showPassOverlay && !isSandbox) maybeAutoSkip();
-  if(coachOpen && !coachOpen.tip.block && !coachOpen.tip.action) hideCoachTip();
-  setTimeout(maybeShowCoachTip, 600);
+  setTimeout(maybeShowCoachTip, 600); // an open tip stays put across re-renders (2026-10-05)
 }
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
 // "nothing to play" deliberately means no MEANINGFUL action is available at all, not just "no
@@ -16491,7 +16530,9 @@ function maybeShowCoachTip(){
   // 1) guided tutorial steps take priority, in order
   const g = guidedStepActive(m);
   if(g){ const el = g.anchor(); if(el){ showCoachTip(g, el); return; } if(g.action) return; }
-  if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id) && !st.when)) return; // finish the intro first
+  // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
+  // loaded up can free-range tutorial messages come up"): no passive tip while any guided step is left.
+  if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id))) return;
   // 2) passive tips — one at a time, first match wins
   for(const tip of passiveTipCandidates()){
     if(coachSeen.has(tip.id)) continue;
@@ -16516,20 +16557,17 @@ function showCoachTip(tip, anchorEl){
   }
   document.body.appendChild(b);
   const place = ()=>{
-    if(!anchorEl.isConnected){ const fresh = (tip.anchor && tip.anchor()); if(fresh){ anchorEl.classList.remove('coach-anchor'); anchorEl = fresh; anchorEl.classList.add('coach-anchor'); } else { hideCoachTip(); return; } }
-    if(tip.action && tip.done && matchState && tip.done(matchState)){ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 500); return; }
-    // 2026-10-03 (D16: "coach marks cover the fight"): passive tips never sit over the board.
-    // They dock in the empty band above the battlefield (or below the HUD on phones), the card
-    // they're about keeps its glow, and they step aside while a round is resolving.
-    if(!tip.block && !tip.action && matchState){
-      b.hidden = !!matchState.resolving;
-      b.classList.add('is-docked');
-      const bf = document.getElementById('battlefieldEl');
-      if(window.innerWidth < 700){ b.style.left = '12px'; b.style.right = '12px'; b.style.top = ''; b.style.bottom = 'calc(12px + env(safe-area-inset-bottom,0px))'; return; }
-      const top = bf ? Math.max(8, bf.getBoundingClientRect().top - b.offsetHeight - 8) : 8;
-      b.style.left = ''; b.style.right = '12px'; b.style.top = top + 'px';
-      return;
+    // 2026-10-05 (user: "tutorial messages should be pointing to the card of interest ... they
+    // shouldn't disappear and appear again during battle. Just leave it there. If I click OKAY, it
+    // goes next"): a tip stays up, pointing at its card, until its button is pressed. If the card
+    // re-renders it follows the new element; if the card is gone it stays where it last was.
+    if(!anchorEl.isConnected){
+      const fresh = (tip.anchor && tip.anchor());
+      if(fresh){ anchorEl.classList.remove('coach-anchor'); anchorEl = fresh; anchorEl.classList.add('coach-anchor'); }
+      else { b.classList.add('anchor-lost'); return; }
     }
+    b.classList.remove('anchor-lost');
+    if(tip.action && tip.done && matchState && tip.done(matchState)){ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 500); return; }
     const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight;
     let x = Math.max(8, Math.min(window.innerWidth - bw - 8, r.left + r.width/2 - bw/2));
     let y = r.top - bh - 14, below = false;
@@ -20884,6 +20922,7 @@ const PLACES = {
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
+  try{ document.body.dataset.tab = tab; }catch(e){}
   if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;
