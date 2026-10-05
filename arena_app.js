@@ -10517,7 +10517,61 @@ function startConquestMatch(mapId, nodeKey, opts){
     leaderDefId: battleMode==='gladiator' ? null : myLeaderId,
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   renderPlay();
+  if(!(opts && opts.noOpener)) try{ showVersusOpener(found.map || CONQUEST_MAPS.find(x=> x.id===mapId), node, myCharacter, enemyCharacter); }catch(e){}
   return true;
+}
+// Versus opener (2026-10-05, immersion #3 "rivals with presence"): a short beat before each
+// skirmish — your banner on the left, the rival's on the right, a line of trash talk, then the
+// board. Bosses get a longer, heavier entrance. Tap anywhere to skip. A rival always says the same
+// line (picked from the node's key), and a node can carry its own `taunt` to override the bank.
+const RIVAL_TAUNTS = {
+  skirmish: ['These woods are ours. Turn back.', 'You’re a long way from your castle, little one.', 'Another stray from the walls? Easy pickings.', 'We heard you coming three trees ago.', 'Hand over the acorns and nobody gets hurt.', 'Wrong path, traveller.'],
+  elite: ['You beat the scouts. Now meet the real patrol.', 'Word travels fast. So will you — back home.', 'We’ve trained for someone like you.', 'Impressive, for an outsider. It ends here.'],
+  boss: ['So you’re the one making all the noise.', 'The whole wood heard you coming. I’ve been waiting.', 'Everything you’ve beaten so far answers to me.', 'Bold. Foolish, but bold.'],
+  raidboss: ['The deep remembers every challenger. None returned.'],
+};
+function rivalTauntFor(map, node){
+  if(node.taunt) return node.taunt;
+  const kind = /boss/.test(node.kind||'') ? (node.kind==='raidboss' ? 'raidboss' : 'boss') : (node.kind==='elite' ? 'elite' : 'skirmish');
+  const bank = RIVAL_TAUNTS[kind]; let h = 0; const k = (map ? map.id : '') + ':' + node.key;
+  for(let i=0;i<k.length;i++) h = (h*31 + k.charCodeAt(i)) >>> 0;
+  return bank[h % bank.length];
+}
+function showVersusOpener(map, node, myChar, enemyChar){
+  const host = document.getElementById('view-play'); if(!host || !node) return;
+  host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
+  const isBoss = /boss/.test(node.kind||''), isElite = node.kind==='elite';
+  const kindLabel = isBoss ? 'Boss' : isElite ? 'Elite' : 'Skirmish';
+  const deck = myDecks.find(d=> d.id===activeDeckId);
+  const el = document.createElement('div');
+  el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '');
+  el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', `You versus ${node.name}`);
+  el.innerHTML = `
+    <div class="vs-side vs-me">
+      <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
+      <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
+      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Castle')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+    </div>
+    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${kindLabel}</span></div>
+    <div class="vs-side vs-them">
+      <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}</div>
+      <div class="vs-name">${escapeHtml(node.name)}</div>
+      <div class="vs-sub">🏰 ${node.hqHp||''} HP</div>
+      <div class="vs-taunt">“${escapeHtml(rivalTauntFor(map, node))}”</div>
+    </div>
+    <div class="vs-skip">Tap to skip</div>`;
+  host.appendChild(el);
+  // a quick retry of the same rival gets a shorter beat
+  const key = (map ? map.id : '') + ':' + node.key, now = Date.now();
+  const repeat = showVersusOpener.last && showVersusOpener.last.key===key && now - showVersusOpener.last.t < 5*60*1000;
+  showVersusOpener.last = {key, t: now};
+  const hold = repeat ? 900 : (isBoss ? 2600 : 1700);
+  let gone = false;
+  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); };
+  el.addEventListener('click', close);
+  setTimeout(close, hold);
+  try{ if(isBoss){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){}
+  if(isBoss && hasGsap()){ const bf = document.getElementById('battlefieldEl'); if(bf) gsap.fromTo(bf, {x:-6}, {x:0, duration:.5, ease:'elastic.out(1,0.3)', delay:.35}); }
 }
 /* ============================================================
    Sandbox Test Battle (2026-09-22, Test Suite feature, tasks #309-314) — the last unbuilt piece

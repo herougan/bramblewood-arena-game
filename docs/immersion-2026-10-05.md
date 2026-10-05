@@ -30,7 +30,10 @@
 - It starts on your first tap, because browsers block audio before a gesture.
 - **Code:** `Ambience` in `arena_app.js`.
 
-## 2. Fights happen somewhere
+## 2. Fights happen somewhere (✅ built 2026-10-05)
+
+**Built:** battles are fought on the skirmish map's own pixel terrain, under a soft scrim, with the felt shader switched to light only (lamp and impact lights, no cloth weave).
+
 
 **Today:** the battlefield is green felt with a weather overlay.
 
@@ -38,7 +41,15 @@
 
 **Cost:** small. The art and the overlay already exist.
 
-## 3. Rivals with presence
+## 3. Rivals with presence (✅ v1 built 2026-10-05)
+
+**Built:** a versus opener before every Conquest skirmish:
+- your avatar, castle and deck on the left; the rival's icon, name, castle HP and a line of trash talk on the right;
+- bosses get a red side, a rumble and a longer hold;
+- tap to skip; a quick retry of the same rival gets a 0.9-second version.
+
+Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Bespoke boss entrances are still to do.
+
 
 **Proposal:** a 1.5-second "versus" opener before each skirmish:
 - your banner on the left, theirs on the right (the portrait, name, castle and rank, as in the Profile's "What rivals see");
@@ -73,4 +84,4 @@ The ambience follows the clock too (crickets at night, birds at dawn). Seasonal 
 
 ---
 
-**Suggested next:** #2, which is quick and visible, then #3.
+**Suggested next:** #5 (a living clock), then #4, one screen at a time.

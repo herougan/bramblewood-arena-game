@@ -33,6 +33,11 @@ async def nav_ok(pg, label):
     if await pg.evaluate("currentTab")!='home': bad(f'{label}: cannot get back Home')
     if await pg.evaluate("!!matchState"): bad(f'{label}: matchState still set after leaving')
 async def quit_via_button(pg, label):
+    # the versus opener (2026-10-05) covers the screen for ~2 s at the start of a skirmish; a real
+    # click there skips it, so wait for it to finish before aiming at the Quit button
+    for _ in range(40):
+        if not await pg.query_selector('.vs-opener'): break
+        await pg.wait_for_timeout(100)
     btn = await pg.query_selector('#quitMatchBtn')
     if not btn: bad(f'{label}: no Quit button'); return
     bb = await btn.bounding_box(); await pg.mouse.click(bb['x']+bb['width']/2, bb['y']+bb['height']/2); await pg.wait_for_timeout(600)
