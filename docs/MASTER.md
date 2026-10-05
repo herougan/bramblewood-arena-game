@@ -299,7 +299,8 @@ _Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); 
     - Deck is the Armoury Tent;
     - Shop is the Traveller's Cart;
     - Nest is the Old Nest;
-    - the Forge and in-world transitions are still to do.
+    - Codex → Forge is the Forge;
+    - in-world transitions are still to do.
 - **Languages** ([doc](i18n.md)):
   - English plus 12 languages: FR, DE, ES, IT, PT, Tagalog, Tamil, Indonesian, Simplified and Traditional Chinese, Japanese, Korean.
   - Picked in Settings → 🌐 Language.

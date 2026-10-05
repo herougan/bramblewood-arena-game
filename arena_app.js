@@ -1970,6 +1970,8 @@ const Ambience = (()=>{
     tent: {beds:[{freq:260, gain:0.03, lfo:0.09, depth:0.7}], events:[[sc=> puff(sc, 0.35, 0.03, 'bandpass', 500, 1.5, 0, 220), 4, 9], [clank, 9, 18]]},
     // The Traveller's Cart: a roadside breeze, a lantern's hum, the odd creak and a trinket jingle.
     cart: {beds:[{freq:380, gain:0.028, lfo:0.06}], drone:[110, 0.004], events:[[sc=>{ const f = rnd(2400, 3200); for(let i=0;i<3;i++) blip(sc, f*(1+i*0.12), f*(1+i*0.12), 0.18, 'triangle', 0.012, i*0.05); }, 6, 14], [sc=> blip(sc, rnd(140, 180), rnd(90, 110), 0.35, 'sawtooth', 0.006), 8, 16]]},
+    // The Forge: a hearth's low roar and crackle, the bellows breathing, a hammer ringing now and then.
+    forge: {beds:[{freq:180, gain:0.07, lfo:0.12, depth:0.5}], events:[[crackle, 0.4, 1.3], [clank, 3, 7], [sc=> puff(sc, 1.2, 0.05, 'bandpass', 380, 1.2, 0, 900), 6, 12]]},
     // The Old Nest: a warm hollow — soft breeze through twigs and a few small birds nearby.
     nest: {beds:[{freq:500, gain:0.022, lfo:0.08}, {type:'bandpass', freq:2200, q:0.8, gain:0.006}], events:[[bird, 3, 8]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
@@ -2337,6 +2339,7 @@ function renderCodex(){
   const body = document.getElementById('codexBody');
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
+  try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
     body.innerHTML = hallOfFameTabHTML();
@@ -18849,8 +18852,22 @@ function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
 }
+// The Forge as a place (immersion #4): soot brick, hearth glow from below, sparks rising, its own
+// sound (hearth roar, bellows, the odd hammer ring). Entering it plays the ember burst once.
+let forgeEnteredAt = 0;
+function dressForgePlace(root){
+  root.classList.add('forge-scene');
+  root.dataset.sign = '⚒️ ' + (window.i18 ? i18('The Forge') : 'The Forge');
+  if(!root.querySelector(':scope > .forge-sparks')) root.insertAdjacentHTML('afterbegin', '<div class="forge-sparks" aria-hidden="true">' + Array.from({length:12}, (_, k)=> `<i style="left:${(k*37)%92 + 4}%; animation-delay:${(k*0.53)%4}s; animation-duration:${3 + (k*0.71)%2.5}s"></i>`).join('') + '</div>');
+  try{ Ambience.play('forge'); }catch(e){}
+  if(!forgeEnteredAt){
+    forgeEnteredAt = Date.now();
+    if(!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) placeOverlay('forge-flare', '', 900);
+  }
+}
 function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
+  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r) dressForgePlace(r); }, 0);
   const defs = getCardDefs();
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token);
   if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;

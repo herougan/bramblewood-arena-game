@@ -4664,6 +4664,26 @@
   @keyframes downFall{0%{transform:translate(0,0) rotate(0);} 50%{transform:translate(24px,50vh) rotate(160deg);} 100%{transform:translate(-10px,105vh) rotate(320deg); opacity:0;}}
   @media (max-width:560px){ #view-shop.cart-scene{padding:84px 10px 40px; border-radius:12px;} #view-shop.cart-scene::after, #view-nest.nest-scene::after{font-size:12.5px;} #view-nest.nest-scene{padding:58px 10px 18px; border-radius:18px;} }
   @media (prefers-reduced-motion: reduce){ .cart-awning, .nest-down{display:none;} }
+  /* The Forge as a place (2026-10-05): soot-dark brick, a hearth glowing up from below, rising sparks. */
+  #view-forge.forge-scene{position:relative; padding:64px clamp(14px,3vw,36px) 26px; border-radius:18px; isolation:isolate; overflow:hidden;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 108%, rgba(255,140,40,.55), rgba(200,70,20,.22) 45%, transparent 75%),
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 50%, rgba(0,0,0,.6) 100%),
+      repeating-linear-gradient(0deg, rgba(0,0,0,.35) 0 2px, transparent 2px 26px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0 2px, transparent 2px 52px),
+      linear-gradient(180deg, #2b2320, #3a2a22 60%, #4a2c1c);
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.4);}
+  #view-forge.forge-scene::after{content:attr(data-sign); position:absolute; top:16px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#f6e3c0; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#5a5a60,#3a3a40); border:2px solid #222; box-shadow:0 6px 10px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.2);}
+  #view-forge.forge-scene > *:not(.forge-sparks){position:relative; z-index:1;}
+  .forge-sparks{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .forge-sparks i{position:absolute; bottom:-6px; width:3px; height:3px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,130,30,.8); opacity:0; animation:forgeSpark 4s linear infinite;}
+  @keyframes forgeSpark{0%{opacity:0; transform:translate(0,0);} 10%{opacity:1;} 100%{opacity:0; transform:translate(20px,-60vh);}}
+  .forge-flare{position:fixed; inset:0; z-index:8000; pointer-events:none; background:radial-gradient(ellipse at 50% 100%, rgba(255,160,60,.75), rgba(255,90,20,.35) 40%, transparent 70%); animation:forgeFlare .9s ease-out forwards;}
+  @keyframes forgeFlare{0%{opacity:0;} 25%{opacity:1;} 100%{opacity:0;}}
+  @media (max-width:560px){ #view-forge.forge-scene{padding:58px 10px 18px; border-radius:12px;} #view-forge.forge-scene::after{font-size:12.5px;} }
+  @media (prefers-reduced-motion: reduce){ .forge-sparks, .forge-flare{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
   .ds-pair{display:flex; gap:8px; flex-shrink:0;}
@@ -9479,7 +9499,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0f4f64a656", "es": "assets/lang/es.js?v=a696020fc3", "fr": "assets/lang/fr.js?v=0445b3be4f", "id": "assets/lang/id.js?v=0d5ca83240", "it": "assets/lang/it.js?v=7e05901938", "ja": "assets/lang/ja.js?v=5ad72ff015", "ko": "assets/lang/ko.js?v=42389e8ae1", "pt": "assets/lang/pt.js?v=b778330a03", "ta": "assets/lang/ta.js?v=49d03354c9", "tl": "assets/lang/tl.js?v=d07d789fff", "zh-Hans": "assets/lang/zh-Hans.js?v=cfe25d49a2", "zh-Hant": "assets/lang/zh-Hant.js?v=ce92eaa19b"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1453c30a61", "es": "assets/lang/es.js?v=4ed230239b", "fr": "assets/lang/fr.js?v=f2da356f8f", "id": "assets/lang/id.js?v=4c4a913dee", "it": "assets/lang/it.js?v=34a7c4789a", "ja": "assets/lang/ja.js?v=bfa01310fc", "ko": "assets/lang/ko.js?v=0a4c697c5e", "pt": "assets/lang/pt.js?v=35796d7f59", "ta": "assets/lang/ta.js?v=e952b91bf1", "tl": "assets/lang/tl.js?v=4c16c8629c", "zh-Hans": "assets/lang/zh-Hans.js?v=d575c42e44", "zh-Hant": "assets/lang/zh-Hant.js?v=2a4745cda5"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -11619,6 +11639,8 @@ const Ambience = (()=>{
     tent: {beds:[{freq:260, gain:0.03, lfo:0.09, depth:0.7}], events:[[sc=> puff(sc, 0.35, 0.03, 'bandpass', 500, 1.5, 0, 220), 4, 9], [clank, 9, 18]]},
     // The Traveller's Cart: a roadside breeze, a lantern's hum, the odd creak and a trinket jingle.
     cart: {beds:[{freq:380, gain:0.028, lfo:0.06}], drone:[110, 0.004], events:[[sc=>{ const f = rnd(2400, 3200); for(let i=0;i<3;i++) blip(sc, f*(1+i*0.12), f*(1+i*0.12), 0.18, 'triangle', 0.012, i*0.05); }, 6, 14], [sc=> blip(sc, rnd(140, 180), rnd(90, 110), 0.35, 'sawtooth', 0.006), 8, 16]]},
+    // The Forge: a hearth's low roar and crackle, the bellows breathing, a hammer ringing now and then.
+    forge: {beds:[{freq:180, gain:0.07, lfo:0.12, depth:0.5}], events:[[crackle, 0.4, 1.3], [clank, 3, 7], [sc=> puff(sc, 1.2, 0.05, 'bandpass', 380, 1.2, 0, 900), 6, 12]]},
     // The Old Nest: a warm hollow — soft breeze through twigs and a few small birds nearby.
     nest: {beds:[{freq:500, gain:0.022, lfo:0.08}, {type:'bandpass', freq:2200, q:0.8, gain:0.006}], events:[[bird, 3, 8]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
@@ -11986,6 +12008,7 @@ function renderCodex(){
   const body = document.getElementById('codexBody');
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
+  try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
     body.innerHTML = hallOfFameTabHTML();
@@ -28498,8 +28521,22 @@ function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
 }
+// The Forge as a place (immersion #4): soot brick, hearth glow from below, sparks rising, its own
+// sound (hearth roar, bellows, the odd hammer ring). Entering it plays the ember burst once.
+let forgeEnteredAt = 0;
+function dressForgePlace(root){
+  root.classList.add('forge-scene');
+  root.dataset.sign = '⚒️ ' + (window.i18 ? i18('The Forge') : 'The Forge');
+  if(!root.querySelector(':scope > .forge-sparks')) root.insertAdjacentHTML('afterbegin', '<div class="forge-sparks" aria-hidden="true">' + Array.from({length:12}, (_, k)=> `<i style="left:${(k*37)%92 + 4}%; animation-delay:${(k*0.53)%4}s; animation-duration:${3 + (k*0.71)%2.5}s"></i>`).join('') + '</div>');
+  try{ Ambience.play('forge'); }catch(e){}
+  if(!forgeEnteredAt){
+    forgeEnteredAt = Date.now();
+    if(!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) placeOverlay('forge-flare', '', 900);
+  }
+}
 function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
+  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r) dressForgePlace(r); }, 0);
   const defs = getCardDefs();
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token);
   if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;

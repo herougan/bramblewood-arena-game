@@ -151,6 +151,7 @@ T = {
 'Armoury Tent': ['Tente de l’armurerie','Rüstzelt','Tienda de la armería','Tenda dell’armeria','Tenda do arsenal','Tolda ng Armas','ஆயுதக் கூடாரம்','Tenda Gudang Senjata','军械帐篷','軍械帳篷','武具のテント','무기고 천막'],
 'The Traveller’s Cart': ['La Charrette du Voyageur','Der Karren des Reisenden','El Carro del Viajero','Il Carretto del Viandante','A Carroça do Viajante','Ang Kariton ng Manlalakbay','பயணியின் வண்டி','Gerobak Pengembara','旅人的货车','旅人的貨車','旅人の荷車','나그네의 수레'],
 'The Old Nest': ['Le Vieux Nid','Das Alte Nest','El Viejo Nido','Il Vecchio Nido','O Velho Ninho','Ang Lumang Pugad','பழைய கூடு','Sarang Tua','老巢','老巢','古い巣','오래된 둥지'],
+'The Forge': ['La Forge','Die Schmiede','La Forja','La Fucina','A Forja','Ang Pandayan','உலைக்கூடம்','Bengkel Tempa','锻造坊','鍛造坊','鍛冶場','대장간'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 os.makedirs(os.path.join(ROOT, 'lang'), exist_ok=True)

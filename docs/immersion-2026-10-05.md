@@ -60,7 +60,11 @@ Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Besp
 - soft down drifts in as you enter;
 - a gentle breeze and a few small birds nearby.
 
-**Still to do:** the Forge, plus in-world transitions between all screens.
+**Built: the Forge (Codex → Forge).** Soot-dark brick with a hearth glowing from below:
+- sparks rising and an ember flare as you walk in;
+- a hearth roar and crackle, bellows and the odd hammer ring.
+
+**Still to do:** in-world transitions between all screens.
 
 ## 5. A living clock (✅ built 2026-10-05)
 
@@ -72,4 +76,4 @@ Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Besp
 
 ---
 
-**Suggested next:** the Forge as a place (an anvil, a hearth glow, the hammer sounds already built), then in-world screen transitions.
+**Suggested next:** in-world screen transitions (leaves parting, a page turning).
