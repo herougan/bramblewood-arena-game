@@ -4417,6 +4417,11 @@
   body[data-atmo="golden"] #atmoTint{opacity:.55; background:radial-gradient(ellipse at 78% 8%, rgba(255,214,140,.9), rgba(255,160,60,.35) 45%, rgba(90,40,10,.45) 100%);}
   body[data-atmo="moonlit"] #atmoTint{opacity:.7; background:radial-gradient(ellipse at 20% 0%, rgba(170,200,255,.6), rgba(30,50,110,.6) 55%, rgba(5,10,30,.8) 100%);}
   body[data-atmo="rain"] #atmoTint{opacity:.45; background:linear-gradient(180deg, rgba(120,140,170,.7), rgba(40,60,80,.6));}
+  /* Live clock (2026-10-05): gentler than the manual looks so text stays readable all day */
+  body[data-atmo="live"][data-tod] #atmoTint{mix-blend-mode:multiply;}
+  body[data-atmo="live"][data-tod="dawn"] #atmoTint{opacity:.42; background:radial-gradient(ellipse at 15% 0%, rgb(255,236,228), rgb(246,196,200) 55%, rgb(214,180,210) 100%);}
+  body[data-atmo="live"][data-tod="dusk"] #atmoTint{opacity:.5; background:radial-gradient(ellipse at 85% 5%, rgb(255,226,170), rgb(240,170,110) 50%, rgb(170,110,110) 100%);}
+  body[data-atmo="live"][data-tod="night"] #atmoTint{opacity:.62; background:radial-gradient(ellipse at 25% 0%, rgb(190,205,255), rgb(110,130,200) 50%, rgb(60,70,130) 100%);}
   body[data-atmo="autumn"] #atmoTint{opacity:.45; background:radial-gradient(ellipse at 50% 30%, rgba(255,190,120,.6), rgba(150,60,20,.5));}
   /* Phone header on one row (2026-10-03, UX #20): logo mark only, compact pills, short sign-in label. */
   @media (max-width:520px){
@@ -11405,7 +11410,7 @@ const Ambience = (()=>{
     if(!unlocked) return;
     if(cur && cur.kind === wanted) return;
     retire(cur); cur = null;
-    if(wanted != null && vol > 0) cur = build(wanted);
+    if(wanted != null && vol > 0){ cur = build(wanted); addTimeLayer(cur); }
   }
   function unlock(){
     if(unlocked) return; const c = C(); if(!c) return;
@@ -11416,7 +11421,17 @@ const Ambience = (()=>{
     ['pointerdown','keydown','touchstart'].forEach(ev=> window.addEventListener(ev, unlock, {passive:true}));
     document.addEventListener('visibilitychange', ()=>{ const c = C(); if(!c || !master) return; master.gain.setTargetAtTime(document.hidden ? 0 : vol*LEVEL, c.currentTime, 0.3); });
   }
+  // Time of day (immersion #5): crickets at night, a busier chorus at dawn, layered on top of
+  // whatever place is playing; outdoors only (it rides on the current scene's bus).
+  let tod = null;
+  const CRICKET = {type:'bandpass', freq:4300, q:9, gain:0.013, am:24};
+  function addTimeLayer(sc){
+    if(!sc || !tod || sc.kind===3 || sc.kind===6) return; // not in caves or underwater
+    if(tod==='night'){ bed(sc, CRICKET); }
+    if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
+  }
   return {
+    setTimeOfDay(t){ if(t===tod) return; tod = t; if(cur){ const k = cur.kind; retire(cur); cur = null; wanted = k; apply(); } },
     play(kind){ wanted = kind; apply(); },
     stop(){ wanted = null; retire(cur); cur = null; },
     current(){ return cur ? cur.kind : null; },
@@ -30052,26 +30067,40 @@ function triggerEntranceAnimation(instant){
 // the whole game plus a light/particle layer (dust motes, fireflies, rain, falling leaves). Purely
 // cosmetic, per-device, off by default; reduced motion keeps the grade and drops the particles.
 const ATMOSPHERES = [
+  {id:'live', label:'🕰️ Live (your clock)'},
   {id:'off', label:'Off'}, {id:'golden', label:'🌅 Golden hour'}, {id:'moonlit', label:'🌙 Moonlit'},
   {id:'rain', label:'🌧️ Rain'}, {id:'autumn', label:'🍂 Autumn'},
 ];
 const ATMO_KEY = 'bramblewood_atmosphere_v1';
-function loadAtmosphere(){ try{ return localStorage.getItem(ATMO_KEY) || 'off'; }catch(e){ return 'off'; } }
+// Immersion #5 (2026-10-05, "a living clock"): 'live' — the default for anyone who hasn't picked an
+// atmosphere — follows the player's own local time: dawn 5–8, day 8–17, dusk 17–20, night 20–5.
+function loadAtmosphere(){ try{ return localStorage.getItem(ATMO_KEY) || 'live'; }catch(e){ return 'live'; } }
+function timeOfDay(d){ const h = (d || new Date()).getHours(); return h>=5 && h<8 ? 'dawn' : h>=8 && h<17 ? 'day' : h>=17 && h<20 ? 'dusk' : 'night'; }
+function currentTimeOfDay(){ return document.body && document.body.dataset.tod || timeOfDay(); }
+let liveClockTimer = null;
 let atmoRaf = null;
 function setAtmosphere(id){
   if(!ATMOSPHERES.some(a=> a.id===id)) id = 'off';
   try{ localStorage.setItem(ATMO_KEY, id); }catch(e){}
   document.body.dataset.atmo = id;
+  // Live: tint by the clock, re-checked every 5 minutes; particles follow the phase.
+  if(liveClockTimer){ clearInterval(liveClockTimer); liveClockTimer = null; }
+  if(id==='live'){
+    const tod = timeOfDay(); document.body.dataset.tod = tod;
+    liveClockTimer = setInterval(()=>{ if(loadAtmosphere()==='live' && timeOfDay()!==document.body.dataset.tod) setAtmosphere('live'); }, 5*60*1000);
+    try{ if(typeof Ambience!=='undefined') Ambience.setTimeOfDay(tod); }catch(e){}
+  } else { delete document.body.dataset.tod; try{ if(typeof Ambience!=='undefined') Ambience.setTimeOfDay(null); }catch(e){} }
+  const fx = id==='live' ? ({dawn:'golden', day:'off', dusk:'golden', night:'moonlit'})[document.body.dataset.tod] : id;
   let tint = document.getElementById('atmoTint'); if(!tint){ tint = document.createElement('div'); tint.id = 'atmoTint'; document.body.appendChild(tint); }
   let cv = document.getElementById('atmoCanvas'); if(!cv){ cv = document.createElement('canvas'); cv.id = 'atmoCanvas'; document.body.appendChild(cv); }
   if(atmoRaf){ cancelAnimationFrame(atmoRaf); atmoRaf = null; }
   const ctx = cv.getContext('2d'); ctx.clearRect(0,0,cv.width,cv.height);
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(id==='off' || reduce){ cv.hidden = true; return; }
+  if(fx==='off' || reduce){ cv.hidden = true; return; }
   cv.hidden = false;
   const fit = ()=>{ cv.width = innerWidth; cv.height = innerHeight; };
   fit(); window.addEventListener('resize', fit);
-  const N = id==='rain' ? 140 : id==='autumn' ? 26 : 48;
+  const N = fx==='rain' ? 140 : fx==='autumn' ? 26 : (id==='live' ? 26 : 48);
   const rnd = Math.random;
   const ps = Array.from({length:N}, ()=> ({x: rnd()*innerWidth, y: rnd()*innerHeight, v: 0.3 + rnd(), p: rnd()*Math.PI*2, s: 1 + rnd()*2.5}));
   const leaves = ['🍂','🍁','🍃'];
@@ -30079,15 +30108,15 @@ function setAtmosphere(id){
     if(document.body.dataset.atmo !== id) return;
     ctx.clearRect(0,0,cv.width,cv.height);
     ps.forEach((q,i)=>{
-      if(id==='rain'){ q.y += 14*q.v; q.x -= 2*q.v; if(q.y > cv.height){ q.y = -20; q.x = rnd()*cv.width + 60; }
+      if(fx==='rain'){ q.y += 14*q.v; q.x -= 2*q.v; if(q.y > cv.height){ q.y = -20; q.x = rnd()*cv.width + 60; }
         ctx.strokeStyle = 'rgba(190,210,235,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q.x - 3, q.y + 14); ctx.stroke(); }
-      else if(id==='autumn'){ q.y += 0.7*q.v; q.x += Math.sin(t/900 + q.p)*0.8; if(q.y > cv.height+20){ q.y = -20; q.x = rnd()*cv.width; }
+      else if(fx==='autumn'){ q.y += 0.7*q.v; q.x += Math.sin(t/900 + q.p)*0.8; if(q.y > cv.height+20){ q.y = -20; q.x = rnd()*cv.width; }
         ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(Math.sin(t/700 + q.p)); ctx.globalAlpha = .75; ctx.font = (12 + q.s*4)+'px serif'; ctx.fillText(leaves[i%3], 0, 0); ctx.restore(); }
       else { // golden motes / moonlit fireflies
         q.y -= 0.15*q.v; q.x += Math.sin(t/1400 + q.p)*0.3; if(q.y < -10){ q.y = cv.height + 10; q.x = rnd()*cv.width; }
-        const a = 0.35 + 0.35*Math.sin(t/(id==='moonlit'?500:900) + q.p);
+        const a = 0.35 + 0.35*Math.sin(t/(fx==='moonlit'?500:900) + q.p);
         const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.s*4);
-        g.addColorStop(0, id==='moonlit' ? `rgba(210,255,140,${a})` : `rgba(255,236,170,${a*0.8})`); g.addColorStop(1, 'rgba(255,255,255,0)');
+        g.addColorStop(0, fx==='moonlit' ? `rgba(210,255,140,${a})` : `rgba(255,236,170,${a*0.8})`); g.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, q.s*4, 0, Math.PI*2); ctx.fill(); }
     });
     atmoRaf = requestAnimationFrame(frame);
@@ -30095,6 +30124,8 @@ function setAtmosphere(id){
   atmoRaf = requestAnimationFrame(frame);
 }
 try{ if(loadAtmosphere()!=='off') setTimeout(()=> setAtmosphere(loadAtmosphere()), 400); }catch(e){}
+// Admin/testing: ?tod=night (or dawn/day/dusk) previews a phase without waiting for the clock.
+try{ const q = new URLSearchParams(location.search).get('tod'); if(q && /^(dawn|day|dusk|night)$/.test(q)) timeOfDay = ()=> q; }catch(e){}
 // Shader layers (T7): real WebGL on the splash, the Home backdrop and the Conquest maps — see
 // bramblewood-shaders.js. On by default where it can run; Settings → Shader effects turns it off.
 const SHADER_KEY = 'bramblewood_shaders_v1';

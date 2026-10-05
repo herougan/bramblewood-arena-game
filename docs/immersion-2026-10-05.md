@@ -72,7 +72,14 @@ Tabs stay as a fallback for speed.
 
 **Cost:** medium to large. It can be done one screen at a time.
 
-## 5. A living clock
+## 5. A living clock (✅ built 2026-10-05)
+
+**Built:** Settings → Atmosphere → "🕰️ Live (your clock)", now the default:
+- **Dawn (5–8):** rosy light with motes. **Day:** clear. **Dusk (17–20):** amber with motes. **Night:** blue with fireflies.
+- It's a multiply-blend colour cast over everything, gentle enough that text stays readable.
+- The ambience adds crickets at night (not in caves or underwater) and a dawn chorus.
+- Preview any phase with `?tod=night` (or `dawn`, `day`, `dusk`).
+
 
 **Proposal:** your real local time tints Home, the maps and battles:
 - dawn is pink, day neutral, dusk amber;
@@ -84,4 +91,4 @@ The ambience follows the clock too (crickets at night, birds at dawn). Seasonal 
 
 ---
 
-**Suggested next:** #5 (a living clock), then #4, one screen at a time.
+**Suggested next:** #4 (diegetic screens), one screen at a time, starting with the Armoury Tent around the deck builder.
