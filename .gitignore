@@ -5,3 +5,4 @@ tests/golden/card-matrix-full.json
 # graphify output (large; the report is copied to docs/code-graph-report.md)
 graphify-out/
 .vislib/
+.fxcat/

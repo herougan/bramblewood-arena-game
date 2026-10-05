@@ -13,6 +13,10 @@
 > - **Sound samples (optional):** drop CC0 files for card play, draw, hit, heavy hit and death into `audio/` (Kenney's Impact and Casino packs are ideal). Real recordings will beat further synthesis, and I can't download them from here.
 > - **Two discussion topics:** T1 and T2.
 
+**✨ Effects Lab:** [every animation, shader, light and sound, live and playable](https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE), with a full list of what's built and planned.
+
+**⚡ Performance:** [`perf-2026-10-06.md`](perf-2026-10-06.md) explains why the game slowed with many cards, and what was cut (about 42% less main-thread work).
+
 **🖼️ Visual library:** [every screenshot of the game, by area, device and day](https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU), with before/after pairs for the card review. It holds about 510 shots, the most one page can hold, so older crops get pruned as new shots go in. Note: shots before 5 Oct evening show fallback fonts (Claude's test browser couldn't load them); players always had the real fonts.
 
 **Rules for this doc**
@@ -22,7 +26,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-06: your 11-point feedback (victory rush fixed, thinner HP bars, laptop-fit results, attack line under cards, pitch badge, anchored tutorial tips, castle/leader picker, deck view polish, performance pass, Outskirts rain) plus the Effects Lab. Before that, 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -105,7 +109,7 @@ _Last updated: 2026-10-05 (night): visual library; card legibility, deck top and
 **6. Deck, Leader, Castle** ✅
 - A deck is exactly **20 cards**; every mode checks this before a fight.
 - You also bring a **Leader**, summoned from a slot during the match.
-- The deck builder opens with the castle and leader as real cards, beside the deck's archetypes, average attack, health and cost, size, level and Hero.
+- The deck builder opens with the castle and leader as real cards, beside the deck's archetypes, average attack, health and cost, size, level and Hero. **Tap the castle or leader to choose a new one** in a picker; the old inline Bramble and Leader sections are gone.
 - Your **castle ("Bramble")** comes from a character pick that sets its HP and passive.
 - **Deck level** = Σ rarity weight × card level, with the leader counted double.
   - Weights run Common 1 → Mythic 9 → Ancient 10.
