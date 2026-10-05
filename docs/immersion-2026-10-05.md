@@ -60,7 +60,16 @@ Bosses get a longer, bespoke entrance.
 
 **Cost:** medium. It's mostly layout, plus a few lines of dialogue per node.
 
-## 4. Diegetic screens
+## 4. Diegetic screens (🟡 first screen built 2026-10-05)
+
+**Built: the Armoury Tent.** The deck builder sits inside the Legion's tent:
+- muted oxblood leather panels with a scalloped valance, timber poles and lantern light;
+- a hanging "⛺ Armoury Tent" sign;
+- the flaps part as you walk in (skipped for reduced motion);
+- inside, muffled canvas-and-wind ambience with the odd forge clank.
+
+Next candidates: the Old Nest (Nest), the Traveller's Cart (Shop), the Forge.
+
 
 **Proposal:** fewer menus, more places:
 - The Armoury Tent opens as a tent interior around the deck builder.
@@ -91,4 +100,4 @@ The ambience follows the clock too (crickets at night, birds at dawn). Seasonal 
 
 ---
 
-**Suggested next:** #4 (diegetic screens), one screen at a time, starting with the Armoury Tent around the deck builder.
+**Suggested next:** more of #4: the Traveller's Cart (Shop) and the Old Nest.

@@ -1966,6 +1966,8 @@ const Ambience = (()=>{
   const cry = sc=> blip(sc, rnd(1700, 2100), rnd(1100, 1300), 0.55, 'sine', 0.025);
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
+    // Inside the Armoury Tent: muffled wind on canvas, the odd flap, a distant clank from the forge.
+    tent: {beds:[{freq:260, gain:0.03, lfo:0.09, depth:0.7}], events:[[sc=> puff(sc, 0.35, 0.03, 'bandpass', 500, 1.5, 0, 220), 4, 9], [clank, 9, 18]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
     1:  {beds:[{type:'bandpass', freq:850, q:0.5, gain:0.04, lfo:0.11}], events:[[frog, 2, 6], [bird, 6, 14]]},
     2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4]]},
@@ -19142,8 +19144,10 @@ function wireHomeMenuFlourish(root){
 let deckSubTab = 'list'; // 'list' | 'sim' — mirrors playSubTab's own pattern
 let deckEditingId = null; // non-null while a specific deck's builder is open
 let deckShowList = false; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
+function addTentPoles(root){ if(root && !root.querySelector(':scope > .tent-pole')) root.insertAdjacentHTML('afterbegin', '<span class="tent-pole left" aria-hidden="true"></span><span class="tent-pole right" aria-hidden="true"></span>'); }
 function renderDeckSection(){
   const root = document.getElementById('view-deck');
+  setTimeout(()=> addTentPoles(root), 0);
   if(!deckEditingId && !deckShowList && deckSubTab==='list' && myDecks.some(d=> d.id===activeDeckId)) deckEditingId = activeDeckId;
   if(deckEditingId){
     // Editing a specific deck reuses the exact same "Build your deck" UI the old Player sub-tab
@@ -20364,14 +20368,27 @@ function tutorialGateBlocks(tab){
   if(adminModeEnabled || devModeEnabled) return false;
   return true;
 }
+let currentTabBeforeSwitch = null;
 function switchTab(tab){
+  currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
   if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
-  try{ if(tab==='home') Ambience.play('home'); else if(tab!=='play') Ambience.stop(); }catch(e){}
+  try{ if(tab==='home') Ambience.play('home'); else if(tab==='deck') Ambience.play('tent'); else if(tab!=='play') Ambience.stop(); }catch(e){}
+  // The Armoury Tent (immersion #4): the deck screen is a place you walk into — flaps part on entry.
+  try{
+    const dv = document.getElementById('view-deck');
+    if(dv){
+      dv.classList.add('tent-scene');
+      if(tab==='deck' && currentTabBeforeSwitch!=='deck' && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){
+        const f = document.createElement('div'); f.className = 'tent-flaps'; f.setAttribute('aria-hidden','true'); f.innerHTML = '<i></i><i></i>';
+        document.body.appendChild(f); setTimeout(()=> f.remove(), 900);
+      }
+    }
+  }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
@@ -20747,7 +20764,7 @@ function shadersEnabled(){
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   let v = null; try{ v = localStorage.getItem(SHADER_KEY); }catch(e){}
   if(v) return v === 'on';
-  const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.connection && navigator.connection.saveData);
+  const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.connection && navigator.connection.saveData);
   return !lowPower;
 }
 const SPLASH_DEPTH_ART = (()=>{ const v = "__SPLASH_DEPTH__"; return v.indexOf('__SPLASH') === 0 ? '' : v; })(); // depth map for experiment #2 (tools/make_splash_depth.py)
