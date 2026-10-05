@@ -10,6 +10,7 @@
 > - **Play-test:** the new sound, effects and immersion work has only been checked by tests and screenshots; it needs your eyes and ears.
 > - **Languages:** translate card names, or keep them English? Native-speaker review for Tagalog, Tamil, Japanese and Korean.
 > - **Hero:** play a few fights with one and say how the levelling pace and stat prices feel; do you want Materia socketing (v2) next?
+> - **Sound samples (optional):** drop CC0 files for card play, draw, hit, heavy hit and death into `audio/` (Kenney's Impact and Casino packs are ideal). Real recordings will beat further synthesis, and I can't download them from here.
 > - **Two discussion topics:** T1 and T2.
 
 **Rules for this doc**
@@ -19,7 +20,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-05 (night): 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-05 (night): effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -297,8 +298,10 @@ _Last updated: 2026-10-05 (night): 🦸 Hero card (item 1). Before that: languag
   - bleed-out and burn deaths, castle collapse;
   - a lit felt texture with coloured impact lights;
   - splash depth parallax and a water mask;
-  - Arrow and Fire Arrow projectiles.
-- **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)); per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
+  - Arrow and Fire Arrow projectiles;
+  - a shockwave across the felt on castle hits and heavy blows.
+- **Next for effects:** a ranked list of animation, shader and sound additions, in [effects-catalogue.md → Recommendations](effects-catalogue.md). The top three are anticipation and hit-stop on attacks, card shadows on the felt, and ambience ducking with a low-health heartbeat.
+- **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)), with hits and deaths panned left or right to where they happen; per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
 - **Immersion** ([doc](immersion-2026-10-05.md)):
   - ✅ per-place ambience;
   - ✅ fights on the map's own ground;
