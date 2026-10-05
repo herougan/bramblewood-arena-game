@@ -3482,14 +3482,34 @@ function openCardDetail(defId){
   const noteHTML = d.creatorNote
     ? `<p class="creator-note">“${escapeHtml(d.creatorNote).replace(/\n/g,'<br>')}” <span class="creator-note-sig">— Jz</span></p>`
     : '';
+  // 2026-10-05 (user: "the card view ... should be displayed as nicely" as the Hero editor): two
+  // columns — the card big on the left; its name, chips, stat tiles, abilities, flavour and where
+  // to get it on the right. Stacks on phones.
+  const rar = String(d.rarity||'common').replace(/_/g,' ');
+  const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
+    .concat((d.archetypes||[]).filter(a=> a && a!=='Misc').slice(0,3).map(a=> `<span class="cd-chip">${escapeHtml(a)}</span>`))
+    .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
+  const tiles = `<div class="cd-tiles">
+      <span class="cdt-atk"><b>${d.attack||0}</b><small>⚔ Attack</small></span>
+      <span class="cdt-hp"><b>${d.health||0}</b><small>❤ Health</small></span>
+      <span class="cdt-cost"><b>${d.cost||0}</b><small>🪵 Cost</small></span>
+      <span class="cdt-wait"><b>${d.wait||0}</b><small>⏳ Wait</small></span>
+    </div>`;
   overlay.innerHTML = `<div class="modal card-detail-card">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
+      <div class="cd-grid">
       <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}</div>
-      ${abilityHTML}
+      <div class="cd-info">
+      <h2 class="cd-name">${escapeHtml(d.name||'')}</h2>
+      <div class="cd-chips">${chips}</div>
+      ${tiles}
+      <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
       ${adminModeEnabled ? codexPlacementHTML(d) : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
+      </div>
+      </div>
       <div class="modal-actions">
         ${adminModeEnabled ? `<button class="btn" id="cdEditBtn" type="button">✏️ Edit (Admin)</button>` : ''}
         <button class="btn primary" id="cdCloseBtn" type="button">Close</button>
@@ -6079,16 +6099,36 @@ function deckHeroHalfHTML(d, side){
     ${d.art?'':`<span class="deck-hero-ico">${d.icon||fallbackIco}</span>`}
   </div>`;
 }
+// Deck top (2026-10-05, user: "the card view and deck view should be displayed as nicely" as the
+// Hero editor): the castle and leader as real cards side by side, then the deck's name, its
+// signature (archetypes, averages), size and level, and the Hero if it's in. Replaces the old
+// split-colour banner; same id, so refreshDeckHeroBanner() keeps it current.
 function deckHeroBannerHTML(){
   const defs = getCardDefs();
   const castle = CHARACTER_DEFS[myCharacterId] || Object.values(CHARACTER_DEFS)[0];
   const leader = myLeaderId && defs[myLeaderId];
-  return `<div class="deck-hero-banner" id="deckHeroBanner">
-    ${deckHeroHalfHTML(castle,'left')}
-    ${deckHeroHalfHTML(leader,'right')}
-    <div class="deck-hero-labels">
-      <div class="deck-hero-label deck-hero-label-left"><span class="dhl-tag">🏰 Castle</span><span class="dhl-name">${castle?castle.name:'—'}</span></div>
-      <div class="deck-hero-label deck-hero-label-right"><span class="dhl-tag">👑 Leader</span><span class="dhl-name">${leader?leader.name:'Not set'}</span></div>
+  const active = (myDecks||[]).find(d=> d.id===activeDeckId) || {};
+  const d = {counts: myDeckCounts||{}, characterId: myCharacterId, leaderId: myLeaderId};
+  const sig = deckSignature(d), total = deckTotal(d.counts), lvl = mainDeckLevel(d.counts, myLeaderId);
+  const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="dt-empty-leader">👑<small>Pick a leader below</small></div>`;
+  const hero = (d.counts[HERO_ID] > 0 && typeof myHero !== 'undefined' && myHero) ? myHero : null;
+  return `<div class="deck-top" id="deckHeroBanner">
+    <div class="dt-pair">
+      <figure class="dt-slot"><div class="dt-tile">${castleTile}</div><figcaption><span>🏰 Castle</span><b>${escapeHtml(castle ? castle.name : '—')}</b></figcaption></figure>
+      <figure class="dt-slot"><div class="dt-tile">${leaderTile}</div><figcaption><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></figcaption></figure>
+    </div>
+    <div class="dt-info">
+      <h2>${escapeHtml(active.name || 'My deck')}</h2>
+      <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
+      <div class="dt-stats">
+        <span><b>${sig.avgAtk}</b><small>⚔ avg attack</small></span>
+        <span><b>${sig.avgHp}</b><small>❤ avg health</small></span>
+        <span><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
+        <span class="${total===DECK_SIZE?'is-ok':'is-short'}"><b>${total}<i>/${DECK_SIZE}</i></b><small>🃏 cards</small></span>
+        <span><b>${lvl}</b><small>📈 deck level</small></span>
+      </div>
+      ${hero ? `<div class="dt-hero">🦸 <b>${escapeHtml(hero.name)}</b> rides with this deck · Lv ${heroLevelFromXp(hero.xp).level}</div>` : ''}
     </div>
   </div>`;
 }
@@ -6401,7 +6441,7 @@ function craftMateria(){
 // Decks that leave this device (live matches, ghosts, invites, raid records) go without the Hero.
 function publicDeck(counts){ const out = Object.assign({}, counts||{}); delete out[HERO_ID]; return out; }
 
-// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
+// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
 // choice, and some signature of the deck — archetypes, average attack, defence and cost"). Used on
 // the Manage-decks cards and the Profile's "what rivals see" preview.
 function deckSignature(d){
@@ -11909,6 +11949,7 @@ function renderMyDeckPanels(){
   // refreshed here too, every time the deck actually changes.
   const badgeEl = document.getElementById('myDeckSizeBadge');
   if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
+  try{ refreshDeckHeroBanner(); }catch(e){}
   document.getElementById('myDeckList').innerHTML = Object.entries(myDeckCounts).filter(([id,n])=>n>0 && defs[id]).map(([id,n])=>
     `<span class="dchip" draggable="true" data-defid="${id}">${defs[id].icon} ${defs[id].name} ×${n}</span>`).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const sortFn = (a,b)=>{
@@ -17358,8 +17399,9 @@ function denyShake(el){
 function floatText(el, text, cls){
   if(!el) return;
   const f = document.createElement('div');
-  f.className = 'dmg-float'+(cls?(' '+cls):'');
-  f.textContent = text;
+  const heavyHit = /^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls;
+  f.className = 'dmg-float'+(cls?(' '+cls):'')+(heavyHit?' heavy':'');
+  f.textContent = text; f.dataset.t = text;
   // Item #2 (2026-09-16, "damage text shouldn't just fly up, they should have some
   // amount of random x-force"): a little random horizontal drift baked in per-instance.
   // Floating-number coverage audit (2026-09-18, "with some variation in x and y so a burst of
