@@ -368,11 +368,17 @@ function destroy(layer){
   if(layer.host && layer.host.classList) layer.host.classList.remove('has-shader');
 }
 
+let frameNo = 0;
 function loop(now){
   raf = null;
   if(!layers.size) return;
   const t = (now - t0) / 1000;
+  frameNo++;
   layers.forEach(l=>{
+    // Perf (2026-10-05): ambient-only layers draw at ~30 fps; anything with a live light or a
+    // shockwave draws every frame so impacts stay smooth.
+    const busyFx = (l.lights && l.lights.length) || l.waveState;
+    if(!busyFx && (frameNo & 1) && l.ready && l.w) return;
     if(!l.host.isConnected || !l.cv.isConnected){ destroy(l); return; }
     if(document.hidden || !l.ready) return;
     const r = l.host.getBoundingClientRect();
@@ -398,15 +404,17 @@ function loop(now){
       }
       if(u.cards){
         let n = 0;
-        if(l.shadowSel && !l.noShadows){
+        if(l.shadowSel && !l.noShadows && (frameNo % 3 === 0 || !l.shadowArr)){
           const arr = new Float32Array(48);
           const els = l.host.querySelectorAll(l.shadowSel);
           for(let i = 0; i < els.length && n < 12; i++){
             const c = els[i].getBoundingClientRect(); if(c.width < 4) continue;
             arr.set([(c.left - r.left)/r.width, (c.top - r.top)/r.height, c.width/r.width, c.height/r.height], n*4); n++;
           }
-          if(n) gl.uniform4fv(u.cards, arr);
+          l.shadowArr = arr; l.shadowN = n;
         }
+        n = l.shadowN || 0;
+        if(n && l.shadowArr) gl.uniform4fv(u.cards, l.shadowArr);
         gl.uniform1f(u.ncards, n);
       }
       if(u.wave){

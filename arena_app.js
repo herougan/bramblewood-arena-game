@@ -2130,6 +2130,7 @@ const Ambience = (()=>{
 })();
 function ambienceKindForMatch(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
+  try{ if(matchIsRainy(m)) return 11; }catch(e){}
   const mapId = (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
   const k = (typeof BramblewoodShaders!=='undefined' && BramblewoodShaders.MAP_KIND) ? BramblewoodShaders.MAP_KIND[mapId] : 0;
   return k == null ? 0 : k;
@@ -12700,7 +12701,7 @@ function renderMatchUI(){
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
-    <div class="battlefield ${battlefieldMapClass(m)}" id="battlefieldEl">
+    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner">
         <div class="board-row enemy" id="rowEnemy"></div>
@@ -21284,22 +21285,32 @@ function setAtmosphere(id){
   const rnd = Math.random;
   const ps = Array.from({length:N}, ()=> ({x: rnd()*innerWidth, y: rnd()*innerHeight, v: 0.3 + rnd(), p: rnd()*Math.PI*2, s: 1 + rnd()*2.5}));
   const leaves = ['🍂','🍁','🍃'];
+  // Perf (2026-10-05, user: "the site is now running slowly when many cards are in view"): the
+  // motes were a full-screen canvas redrawn every frame with a fresh radial gradient per particle,
+  // on top of everything. Now: one pre-rendered sprite per colour, 30 fps, and paused during a
+  // fight (the battlefield has its own weather) so it never competes with the cards.
+  const sprite = (col)=>{ const c = document.createElement('canvas'); c.width = c.height = 32; const g = c.getContext('2d');
+    const rg = g.createRadialGradient(16,16,0,16,16,16); rg.addColorStop(0, col); rg.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = rg; g.fillRect(0,0,32,32); return c; };
+  const moteImg = sprite(fx==='moonlit' ? 'rgba(210,255,140,1)' : 'rgba(255,236,170,.85)');
+  let lastDraw = 0, paused = false;
   const frame = t=>{
     if(document.body.dataset.atmo !== id) return;
+    atmoRaf = requestAnimationFrame(frame);
+    const inFight = typeof matchState !== 'undefined' && matchState && !matchState.over;
+    if(inFight){ if(!paused){ ctx.clearRect(0,0,cv.width,cv.height); paused = true; document.body.classList.add('in-fight'); } return; }
+    if(paused){ paused = false; document.body.classList.remove('in-fight'); }
+    if(t - lastDraw < 32) return; lastDraw = t;
     ctx.clearRect(0,0,cv.width,cv.height);
     ps.forEach((q,i)=>{
-      if(fx==='rain'){ q.y += 14*q.v; q.x -= 2*q.v; if(q.y > cv.height){ q.y = -20; q.x = rnd()*cv.width + 60; }
+      if(fx==='rain'){ q.y += 28*q.v; q.x -= 4*q.v; if(q.y > cv.height){ q.y = -20; q.x = rnd()*cv.width + 60; }
         ctx.strokeStyle = 'rgba(190,210,235,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(q.x, q.y); ctx.lineTo(q.x - 3, q.y + 14); ctx.stroke(); }
-      else if(fx==='autumn'){ q.y += 0.7*q.v; q.x += Math.sin(t/900 + q.p)*0.8; if(q.y > cv.height+20){ q.y = -20; q.x = rnd()*cv.width; }
+      else if(fx==='autumn'){ q.y += 1.4*q.v; q.x += Math.sin(t/900 + q.p)*1.6; if(q.y > cv.height+20){ q.y = -20; q.x = rnd()*cv.width; }
         ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(Math.sin(t/700 + q.p)); ctx.globalAlpha = .75; ctx.font = (12 + q.s*4)+'px serif'; ctx.fillText(leaves[i%3], 0, 0); ctx.restore(); }
       else { // golden motes / moonlit fireflies
-        q.y -= 0.15*q.v; q.x += Math.sin(t/1400 + q.p)*0.3; if(q.y < -10){ q.y = cv.height + 10; q.x = rnd()*cv.width; }
+        q.y -= 0.3*q.v; q.x += Math.sin(t/1400 + q.p)*0.6; if(q.y < -10){ q.y = cv.height + 10; q.x = rnd()*cv.width; }
         const a = 0.35 + 0.35*Math.sin(t/(fx==='moonlit'?500:900) + q.p);
-        const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.s*4);
-        g.addColorStop(0, fx==='moonlit' ? `rgba(210,255,140,${a})` : `rgba(255,236,170,${a*0.8})`); g.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, q.s*4, 0, Math.PI*2); ctx.fill(); }
+        const r = q.s*4; ctx.globalAlpha = Math.max(0, a); ctx.drawImage(moteImg, q.x - r, q.y - r, r*2, r*2); ctx.globalAlpha = 1; }
     });
-    atmoRaf = requestAnimationFrame(frame);
   };
   atmoRaf = requestAnimationFrame(frame);
 }
@@ -21342,7 +21353,19 @@ function battleWeatherKind(m){
   const override = loadBattlefieldBgOverride();
   const mapId = (override && override!=='auto' && override!=='calm') ? override : (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
   if(mapId==='m2' || mapId==='m8') return 11;
+  if(matchIsRainy(m)) return 11;
   const k = ShaderM.MAP_KIND[mapId]; return k == null ? 0 : k;
+}
+// Passing showers (2026-10-05, user: "introduce rain effect, sometimes happens on the first map"):
+// about one Outskirts fight in three is fought in the rain — rolled once per fight, so a retry
+// may come up dry. Rain brings its own ambience and the wet-ground look.
+function matchIsRainy(m){
+  if(!m) return false;
+  if(m.rainy == null){
+    const mapId = (m.conquestNode && m.conquestNode.mapId) || (m.mode==='conquest' ? 'm1' : null);
+    m.rainy = mapId === 'm1' && Math.random() < 0.33;
+  }
+  return !!m.rainy;
 }
 function mountBattleWeather(m){
   const bf = document.getElementById('battlefieldEl');
