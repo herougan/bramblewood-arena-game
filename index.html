@@ -4632,6 +4632,7 @@
   .vs-opener.is-boss .vs-rival-ico{border-color:#ff5a3d; box-shadow:0 0 30px rgba(255,90,61,.6);}
   .vs-name{font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:clamp(20px,3vw,34px); line-height:1.05; text-shadow:0 2px 0 rgba(0,0,0,.4); max-width:100%; overflow:hidden; text-overflow:ellipsis;}
   .vs-sub{font-size:clamp(12px,1.4vw,15px); opacity:.85;}
+  .vs-people{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);}
   .vs-taunt{font-style:italic; font-size:clamp(13px,1.6vw,17px); max-width:28ch; margin-top:4px; opacity:0; animation:vsTaunt .4s ease-out .45s forwards;}
   @keyframes vsTaunt{to{opacity:1;}}
   .vs-mid{display:flex; flex-direction:column; align-items:center; gap:6px;}
@@ -17600,11 +17601,11 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m5", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", unlockAfter:"m4", sequential:true,
     nodes: [
-      { key:"5-1", kind:"skirmish", name:"Zebra Stampede", icon:"🦓", deck:{"plains-zebra":4,"dust-hyena":4,"howler-monkey":2}, hqHp:44, flavor:"The herd runs before you even see what spooked it.", requires:[] },
+      { key:"5-1", people:"folk", kind:"skirmish", name:"Zebra Stampede", icon:"🦓", deck:{"plains-zebra":4,"dust-hyena":4,"howler-monkey":2}, hqHp:44, flavor:"The herd runs before you even see what spooked it.", requires:[] },
       { key:"5-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"dust-hyena":4,"jaguar-stalker":3,"toucan-courier":3}, hqHp:46, flavor:"They call to each other long before they close in.", requires:["5-1"] },
       { key:"5-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"howler-monkey":4,"toucan-courier":4,"dust-hyena":2}, hqHp:50, flavor:"The trees carry the warning further than any scout could.", requires:["5-2"] },
       { key:"5-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"toucan-courier":4,"jaguar-stalker":3,"plains-zebra":3}, hqHp:53, flavor:"Every flock overhead is reporting straight back to the pride.", requires:["5-3"] },
-      { key:"5-5", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"acacia-giraffe":3,"savanna-cheetah":4,"plains-zebra":3}, hqHp:56, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", requires:["5-4"] },
+      { key:"5-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"acacia-giraffe":3,"savanna-cheetah":4,"plains-zebra":3}, hqHp:56, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", requires:["5-4"] },
       { key:"5-6", kind:"elite", name:"Jaguar Run", icon:"🐆", deck:{"jaguar-stalker":4,"savanna-cheetah":3,"dust-hyena":3}, hqHp:70, flavor:"The run starts long before the pounce.", requires:["5-5"] },
       { key:"5-7", kind:"elite", name:"The Cheetah Matriarch", icon:"🐾", deck:{"savanna-cheetah":4,"jaguar-stalker":4,"dust-hyena":2}, hqHp:100, flavor:"Nothing on the Reaches outruns her, so nothing tries twice.", requires:["5-6"] },
       { key:"5-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"acacia-giraffe":2,"savanna-cheetah":4,"jaguar-stalker":4}, hqHp:170, flavor:"Every pack on the grassland answers to one crown.", requires:["5-7"] },
@@ -17613,7 +17614,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"6-1", kind:"skirmish", name:"Ice Fang Patrol", icon:"🦊", deck:{"ice-crevasse-wolf":4,"arctic-fox-raider":4,"snowshoe-hare":2}, hqHp:48, flavor:"The snow keeps every track fresh, including the ones circling back.", requires:[] },
       { key:"6-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"timber-wolf-pack":4,"boreal-elk":3,"taiga-lynx":3}, hqHp:50, flavor:"A pack this far south of the treeline means the treeline moved.", requires:["6-1"] },
-      { key:"6-3", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"snowshoe-hare":4,"arctic-fox-raider":4,"ice-crevasse-wolf":2}, hqHp:54, flavor:"They scatter, regroup, and scatter again — always uphill of you.", requires:["6-2"] },
+      { key:"6-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"snowshoe-hare":4,"arctic-fox-raider":4,"ice-crevasse-wolf":2}, hqHp:54, flavor:"They scatter, regroup, and scatter again — always uphill of you.", requires:["6-2"] },
       { key:"6-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"taiga-lynx":4,"boreal-elk":3,"timber-wolf-pack":3}, hqHp:58, flavor:"You never see the lynx. You only see the elk break formation.", requires:["6-3"] },
       { key:"6-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"tundra-musk-ox":4,"permafrost-mammoth":2,"glacier-yak":3}, hqHp:60, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", requires:["6-4"] },
       { key:"6-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"glacier-yak":4,"permafrost-mammoth":3,"tundra-musk-ox":3}, hqHp:80, flavor:"The herd does not run from the cold. It carries it.", requires:["6-5"] },
@@ -17622,14 +17623,14 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m7", name:"Coral Current", icon:"🐠", blurb:"A second, deeper reef system — faster water, faster teeth.", unlockAfter:"m6", sequential:true,
     nodes: [
-      { key:"7-1", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":4,"tide-pool-crab":4,"gull-thief":4}, hqHp:52, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
+      { key:"7-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":4,"tide-pool-crab":4,"gull-thief":4}, hqHp:52, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
       { key:"7-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"moray-ambusher":4,"riptide-eel":4,"coral-current-eel":2}, hqHp:54, flavor:"The current here is faster than it has any right to be.", requires:["7-1"] },
-      { key:"7-3", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"tide-pool-crab":4,"gull-thief":4,"clownfish-scout":2}, hqHp:56, flavor:"Every pool along this stretch hides something with claws.", requires:["7-2"] },
+      { key:"7-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"tide-pool-crab":4,"gull-thief":4,"clownfish-scout":2}, hqHp:56, flavor:"Every pool along this stretch hides something with claws.", requires:["7-2"] },
       { key:"7-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":4,"coral-current-eel":4,"moray-ambusher":2}, hqHp:58, flavor:"The channel pulls harder than the current should allow.", requires:["7-3"] },
-      { key:"7-5", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":3}, hqHp:62, flavor:"The reef forks here — two currents, two dangers.", requires:["7-4"] },
+      { key:"7-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":3}, hqHp:62, flavor:"The reef forks here — two currents, two dangers.", requires:["7-4"] },
       { key:"7-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":4,"orca-vanguard":2,"moray-ambusher":3}, hqHp:65, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["7-5"] },
       { key:"7-7", kind:"elite", name:"Eel Nest", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":4,"moray-ambusher":2}, hqHp:65, flavor:"The other current is calmer. That is not the same as safer.", requires:["7-5"] },
-      { key:"7-8", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":3,"coral-polyp-colony":3,"coral-reef-shark":3}, hqHp:116, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["7-6", "7-7"] },
+      { key:"7-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":3,"coral-polyp-colony":3,"coral-reef-shark":3}, hqHp:116, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["7-6", "7-7"] },
       { key:"7-9", kind:"boss", name:"The Orca Vanguard King", icon:"🐋", deck:{"orca-vanguard":4,"coral-reef-shark":3,"moray-ambusher":2}, hqHp:210, flavor:"The whole Current clears out the moment his pod surfaces.", requires:["7-8"] },
     ]},
   { id:"m8", name:"Sable Swampmire", icon:"🐊", blurb:"A second, blacker wetland — everything here bites first and asks later.", unlockAfter:"m7", sequential:true,
@@ -17657,11 +17658,11 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m10", name:"Eyrie Heights", icon:"🏔️", blurb:"Sheer alpine cliffs above the Foundry’s smoke — the air here belongs to whatever can still fly in it.", unlockAfter:"m9", sequential:true,
     nodes: [
-      { key:"10-1", kind:"skirmish", name:"Goat Trail Runners", icon:"🐐", deck:{"mountain-goat-climber":4,"peak-condor":4,"golden-eagle-diver":2}, hqHp:64, flavor:"The trail looks impassable right up until something runs it anyway.", requires:[] },
+      { key:"10-1", people:"folk", kind:"skirmish", name:"Goat Trail Runners", icon:"🐐", deck:{"mountain-goat-climber":4,"peak-condor":4,"golden-eagle-diver":2}, hqHp:64, flavor:"The trail looks impassable right up until something runs it anyway.", requires:[] },
       { key:"10-2", kind:"skirmish", name:"Avalanche Ridge", icon:"❄️", deck:{"alpine-avalanche":3,"rockslide-ram":4,"mountain-goat-climber":3}, hqHp:66, flavor:"One wrong step here and the whole ridge answers for it.", requires:["10-1"] },
-      { key:"10-3", kind:"skirmish", name:"Cliffside Herd", icon:"🐐", deck:{"mountain-goat-climber":4,"rockslide-ram":4,"peak-condor":2}, hqHp:68, flavor:"They climb where nothing with hooves should be able to.", requires:["10-2"] },
+      { key:"10-3", people:"folk", kind:"skirmish", name:"Cliffside Herd", icon:"🐐", deck:{"mountain-goat-climber":4,"rockslide-ram":4,"peak-condor":2}, hqHp:68, flavor:"They climb where nothing with hooves should be able to.", requires:["10-2"] },
       { key:"10-4", kind:"skirmish", name:"Ridge Fork", icon:"🏔️", deck:{"golden-eagle-diver":4,"peak-condor":4,"eyrie-warden":2}, hqHp:72, flavor:"The trail splits here. Both branches look equally unfriendly.", requires:["10-3"] },
-      { key:"10-5", kind:"elite", name:"West Ledge", icon:"🦅", deck:{"golden-eagle-diver":4,"peak-condor":3,"mountain-goat-climber":3}, hqHp:76, flavor:"The wind alone tries to take you off the west path.", requires:["10-4"] },
+      { key:"10-5", people:"folk", kind:"elite", name:"West Ledge", icon:"🦅", deck:{"golden-eagle-diver":4,"peak-condor":3,"mountain-goat-climber":3}, hqHp:76, flavor:"The wind alone tries to take you off the west path.", requires:["10-4"] },
       { key:"10-6", kind:"elite", name:"East Ledge", icon:"🐐", deck:{"rockslide-ram":4,"mountain-goat-climber":3,"alpine-avalanche":3}, hqHp:76, flavor:"The east path is quieter. That is the problem with it.", requires:["10-4"] },
       { key:"10-7", kind:"elite", name:"Eyrie Wardens", icon:"🦅", deck:{"eyrie-warden":3,"golden-eagle-diver":3,"peak-condor":3}, hqHp:76, flavor:"They nest where nothing without wings can ever reach them.", characterId:"plains-terrace", requires:["10-4"] },
       { key:"10-8", kind:"elite", name:"Summit Approach", icon:"🏔️", deck:{"alpine-avalanche":4,"rockslide-ram":4,"eyrie-warden":2}, hqHp:90, flavor:"All three trails end at the same wall of snow.", requires:["10-5", "10-6", "10-7"] },
@@ -19932,10 +19933,79 @@ const RIVAL_TAUNTS = {
   boss: ['So you’re the one making all the noise.', 'The whole wood heard you coming. I’ve been waiting.', 'Everything you’ve beaten so far answers to me.', 'Bold. Foolish, but bold.'],
   raidboss: ['The deep remembers every challenger. None returned.'],
 };
+// The peoples of Bramblewood (docs/lore-bible.md, 2026-10-05). A rival's people is read off its
+// deck (the archetype with the most copies wins), so a skirmish's lines and label match who you're
+// actually fighting: the Legion barks orders, tribes boast, beasts are hungry, road-folk haggle,
+// hives say "we".
+const PEOPLE_OF_ARCHETYPE = {
+  Otter:'legion', Fish:'legion', Beaver:'legion',
+  Hummingbird:'tribes',
+  Mouse:'road', Raccoon:'road', Traveller:'road',
+  Wolf:'beast', Fox:'beast', Cat:'beast', Bear:'beast', Dog:'beast', Snake:'beast', Reptile:'beast', Arachnid:'beast', Dragon:'beast', Bat:'beast', Eagle:'beast', Owl:'beast',
+  Insect:'hive', Ants:'hive', Bee:'hive', Worm:'hive',
+  Cetacean:'deep', Cephalopod:'deep',
+};
+const PEOPLES = {
+  legion: {name:'Rivergate Legion', icon:'🛡️'},
+  tribes: {name:'Sunfeather Tribes', icon:'🪶'},
+  road:   {name:'Road-folk', icon:'🧳'},
+  beast:  {name:'Wild beasts', icon:'🐾'},
+  hive:   {name:'The Hive', icon:'🐝'},
+  deep:   {name:'The Deep', icon:'🌊'},
+  folk:   {name:'Woodland folk', icon:'🌾'},
+};
+const PEOPLE_TAUNTS = {
+  legion: {skirmish:['Shields up. Hold the line.', 'Halt. This road belongs to Rivergate.', 'Form ranks! Outsider on the bridge.', 'By order of the Marshal: turn back.'],
+           elite:['Third century, advance on my mark.', 'You beat a patrol. This is a cohort.'], boss:['Rivergate does not break. Rivergate does not bend.', 'I have held this river for twenty winters. Try me.']},
+  tribes: {skirmish:['The Bloom sings for us today!', 'Count our colours, stranger. Then run.', 'Too slow, ground-walker!', 'Our feathers are painted for war.'],
+           elite:['The whole tribe is watching. Make it a good fall.', 'Our big friends are hungry. Shall we introduce you?'], boss:['Every tribe on the cliffs knows my song. Now you will too.', 'The sky is ours. The ground is borrowed.']},
+  road:   {skirmish:['Toll’s three acorns, friend. Or everything you’re carrying.', 'Nice pack. Be a shame if it changed owners.', 'Everything’s for sale. Even your way past.', 'Nothing personal. Business is slow.'],
+           elite:['The whole caravan’s in on this one, I’m afraid.'], boss:['Every road in Bramblewood pays the King. You’re overdue.']},
+  beast:  {skirmish:['You smell like supper.', 'Mine. This ground is mine.', 'Run. It’s more fun when you run.', '*low growl*'],
+           elite:['The pack has your scent now.'], boss:['I have eaten bigger heroes than you.', 'Talk all you like. I’m only listening for the crunch.']},
+  hive:   {skirmish:['We see you. We are many.', 'We do not hate you. We simply need the ground.', 'We have counted you. You are not enough.'],
+           elite:['We have sent more of us.'], boss:['We are the hill. The hill does not fall.']},
+  deep:   {skirmish:['The water remembers you, little thing.', 'Down here, nothing is ever lost. Only kept.'],
+           elite:['The current turns against you.'], boss:['The deep remembers every challenger. None returned.']},
+  folk:   {skirmish:['Another army through the turnips? Not today.', 'We just want the war somewhere else.', 'Mind the crops. And our fists.'],
+           elite:['The whole village turned out for you.'], boss:['This is our home. We’ll defend it ourselves.']},
+};
+// When a card only carries a habitat archetype (Savanna, Tundra...), its id says what animal it is.
+const PEOPLE_NAME_HINTS = [
+  ['tribes', /hummingbird|crimson-wing|cobalt-talon|mosswing|gold-throat|violet-vane|voidfeather|sunthroat|sunfeather|sunspire/],
+  ['legion', /otter/],
+  ['road', /(^|-)(mouse|mice|rat|rats|raccoon|panda)(-|$)/],
+  ['deep', /kraken|octopus|squid|cuttlefish|nautilus|whale|orca|narwhal|dolphin|humpback|moray|(^|-)eel(-|$)|leviathan/],
+  ['hive', /(^|-)(ants?|bees?|wasps?|hornets?|termites?|hive|swarm|moth|beetle|locust|colony)(-|$)/],
+  ['beast', /wolf|fox|(^|-)cat(-|$)|lynx|panther|jaguar|cheetah|lion|leopard|tiger|hyena|jackal|bear|grizzly|snake|adder|viper|constrictor|croc|alligator|gator|monitor|komodo|scorpion|spider|widow|shark|condor|eagle|hawk|vulture|owl|(^|-)bat(-|$)|wyrm|dragon|yeti|troll/],
+];
+function peopleOfCard(d){
+  const out = new Set();
+  (d.archetypes||[]).forEach(a=>{ const p = PEOPLE_OF_ARCHETYPE[a]; if(p) out.add(p); });
+  if(!out.size){ const hit = PEOPLE_NAME_HINTS.find(([, re])=> re.test(d.id||'')); if(hit) out.add(hit[0]); }
+  return out;
+}
+function peopleOfDeck(deck){
+  const defs = getCardDefs(), tally = {};
+  let otters = 0;
+  Object.entries(deck||{}).forEach(([id, n])=>{ const d = defs[id]; if(d && (d.archetypes||[]).includes('Otter')) otters += n; });
+  Object.entries(deck||{}).forEach(([id, n])=>{
+    const d = defs[id]; if(!d) return;
+    peopleOfCard(d).forEach(p=>{
+      // Fish fight for the Legion only when Otters lead them; wild water creatures belong to the Deep.
+      if(p==='legion' && !(d.archetypes||[]).includes('Otter') && !otters) p = 'deep';
+      tally[p] = (tally[p]||0) + n;
+    });
+  });
+  const best = Object.entries(tally).sort((a,b)=> b[1]-a[1])[0];
+  return best ? best[0] : 'folk';
+}
 function rivalTauntFor(map, node){
   if(node.taunt) return node.taunt;
   const kind = /boss/.test(node.kind||'') ? (node.kind==='raidboss' ? 'raidboss' : 'boss') : (node.kind==='elite' ? 'elite' : 'skirmish');
-  const bank = RIVAL_TAUNTS[kind]; let h = 0; const k = (map ? map.id : '') + ':' + node.key;
+  const people = node.people || peopleOfDeck(node.deck);
+  const pb = PEOPLE_TAUNTS[people] || {};
+  const bank = (pb[kind==='raidboss' ? 'boss' : kind] && pb[kind==='raidboss' ? 'boss' : kind].length) ? pb[kind==='raidboss' ? 'boss' : kind] : RIVAL_TAUNTS[kind]; let h = 0; const k = (map ? map.id : '') + ':' + node.key;
   for(let i=0;i<k.length;i++) h = (h*31 + k.charCodeAt(i)) >>> 0;
   return bank[h % bank.length];
 }
@@ -19958,6 +20028,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
     <div class="vs-side vs-them">
       <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
+      <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">🏰 ${node.hqHp||''} HP</div>
       <div class="vs-taunt">“${escapeHtml(rivalTauntFor(map, node))}”</div>
     </div>
