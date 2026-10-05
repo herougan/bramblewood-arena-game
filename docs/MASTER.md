@@ -2,12 +2,13 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you:** [`decisions.md`](decisions.md). It has:
-> - 2 decisions: D17, the sound direction, and D18, progression after Map 1;
-> - ongoing tracks: Polish, Effects ([catalogue](effects-catalogue.md)) and T3 server verification (building);
-> - 2 discussion topics: T1 and T2.
->
-> In the project it's `claude/decisions.md`.
+> ➡️ **Waiting on you** (details in [`decisions.md`](decisions.md), `claude/decisions.md` in the project):
+> - **T3:** say "apply it" to switch on server-checked fights.
+> - **D17:** sound direction (cosy, chiptune, or a mix, which is the current default).
+> - **D18:** play Maps 1–4 and tell me how the difficulty and rewards feel.
+> - **Lore:** your comments on [`lore-bible.md`](lore-bible.md); are dogs Legion war-dogs or wild beasts; which beasts the Hummingbirds befriend; the proposed card renames.
+> - **Play-test:** the new sound, effects and immersion work has only been checked by tests and screenshots; it needs your eyes and ears.
+> - **Two discussion topics:** T1 and T2.
 
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
@@ -16,7 +17,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-03 (late evening) — see `game-design-v40-addendum.md` for this batch_
+_Last updated: 2026-10-05 (evening): world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -27,7 +28,7 @@ _Last updated: 2026-10-03 (late evening) — see `game-design-v40-addendum.md` f
 
 ---
 
-## Top of mind (19)
+## Top of mind (20)
 
 ### Game core
 
@@ -255,12 +256,49 @@ _Last updated: 2026-10-03 (late evening) — see `game-design-v40-addendum.md` f
   - **Two-player:** policies, seat fairness, replay
   - **Async/raid pools**
   - **Autobattler:** draft, health, boons, leaders, ghosts, and 30 full runs
-- `--e2e` adds a two-browser live match.
+- `--e2e` adds:
+  - a two-browser live match;
+  - the UI smoke test;
+  - flows (quit from every mode, the tutorial lock);
+  - **snaps:** no card, castle or hand tile may jump between frames, desktop and phone.
 - 54 user stories with acceptance criteria.
 - **Where:**
   - `docs/testing-strategy.md`
   - `docs/user-stories.md`
   - `tests/`
+
+### World
+
+**20. World, look and sound** 🟡 (lore and art direction are set; the art is partly placeholder)
+- **Lore:** [`lore-bible.md`](lore-bible.md) defines seven peoples:
+  - the Rivergate Legion (Otters: pre-Roman, trains fish);
+  - the Sunfeather Tribes (Hummingbirds: colourful, beast-friends);
+  - road-folk (mice and rats);
+  - supporting folk (other mammals);
+  - beasts (carnivores);
+  - hives;
+  - the Deep.
+
+  Skirmish rivals speak and are labelled by their people.
+- **Map art:** procedural pixel terrain for all 11 maps (`tools/make_map_backgrounds.py`). Battles are fought on that terrain. AI art can replace it through `tools/gen_map_bg_ai.py` (OpenRouter; blocked from Claude's workspace).
+- **Effects** ([catalogue](effects-catalogue.md)):
+  - holo foil by rarity; gold-leaf rims on Legendary+;
+  - bleed-out and burn deaths, castle collapse;
+  - a lit felt texture with coloured impact lights;
+  - splash depth parallax and a water mask;
+  - Arrow and Fire Arrow projectiles.
+- **Sound:** synthesised cues ([cue sheet](sfx-cue-sheet.md)); per-place ambience on the "🎵 Music & ambience" slider; the live clock adds crickets and a dawn chorus.
+- **Immersion** ([doc](immersion-2026-10-05.md)):
+  - ✅ per-place ambience;
+  - ✅ fights on the map's own ground;
+  - ✅ a versus opener with the rival's people and lines;
+  - ✅ a live clock (dawn, day, dusk and night tints, default on, `?tod=` to preview);
+  - 📝 diegetic screens.
+- **Delivery:** art loads from `assets/` (content-hashed URLs, idle warm-up). The page dropped from 7.8 MB to 3.2 MB (1.0 MB compressed). `BW_INLINE=1` gives a single-file build.
+- **Where:**
+  - `Ambience`, `showVersusOpener`, `peopleOfDeck`, `setAtmosphere('live')`, `battleLightAt` and `boardSnapGuard` in `arena_app.js`
+  - `bramblewood-shaders.js`
+  - `assemble_arena.py`
 
 ---
 
