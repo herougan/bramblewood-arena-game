@@ -1051,6 +1051,7 @@ function currentCardDataHash(){
 const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : '';
 function getCardDefs(){
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
+  try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
   if(typeof testKitDefsOverlay!=='undefined' && testKitDefsOverlay) Object.assign(out, testKitDefsOverlay); // 🧪 Test Kit synthetic cards, only while it's open
   // Card unlocking (2026-09-22): additively OR a per-player unlock overlay onto the static
@@ -1067,7 +1068,7 @@ function getCardDefs(){
   // display (the Forge/Codex/deck-editor card tiles read it to show a level badge).
   Object.keys(out).forEach(id=>{
     const lvl = myCardLevels[id];
-    if(!lvl) return;
+    if(!lvl || id===HERO_ID) return;
     const base = out[id];
     if(base.attack==null && base.health==null) return;
     const mult = levelStatMultiplier(lvl);
@@ -1120,7 +1121,7 @@ function getDraftableIds(){
   // never for a real deck, regardless of whether Developer Mode is currently on or off.
   // 2026-10-02: also never offers a card the player doesn't know exists yet (Hidden, undiscovered)
   // or a Hall of Fame draft / an Antique that fails its balance check.
-  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs));
+  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs));
 }
 
 /* ============================================================
@@ -6221,7 +6222,108 @@ function deleteDeck(id){
 // Small Castle|Leader|Deck pill-preview row for one deck — used on the Deck Menu list. Reuses
 // CHARACTER_DEFS (the "Bramble"/Castle picker) and the card defs (for the Leader's icon/name)
 // exactly like the existing Player-tab builder does.
-// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
+/* ============================================================
+   Heroes (2026-10-05, "new card type: Hero — gains experience from battling and crafting
+   materia, up to L100, gains skills, you pick your stat points: build your own card").
+   One Hero per player for now. It's a real card (id 'hero', 1 copy) generated from the save:
+   • Level 1→100 from XP: battles with the Hero in your deck, and crafting Materia in the Forge.
+   • Each level gives 1 stat point (+3 extra every 10th level). You spend them: Attack, Health,
+     Swiftness (Wait 1 → 0). Free respec while we tune it.
+   • Skills at levels 5, 15, 30, 50, 75, 100: pick 1 of 3 from your people's kit. Number skills
+     grow with level (1 + every 25 levels).
+   • Cost to play rises with level (1 → 4), so a strong Hero is a real investment each match.
+   • Power budget: a maxed Hero lands around a top Legendary (≈ 10 attack / 45 health worth).
+   • PvE for now: stripped from anything that leaves your device (live matches, ghosts, invites),
+     because other players' games don't have your Hero's card yet.
+   ============================================================ */
+const HERO_KEY = 'bramblewood_hero_v1';
+const HERO_ID = 'hero';
+const HERO_MAX_LEVEL = 100;
+const HERO_SKILL_LEVELS = [5, 15, 30, 50, 75, 100];
+const HERO_COSTS = {atk: 5, hp: 1, speed: 25};   // stat points per +1 Attack / +1 Health / Wait −1. Priced from the roster: Health runs ~5× Attack (median cost-3 card is 8/34).
+const HERO_PEOPLES = {
+  legion: {label:'Rivergate Legionary', blurb:'Steady and hard to move. Shields, armour and holding the line.', icon:'🦦', art:'river-warden', archetypes:['Otter','River'], base:{attack:2, health:9},
+    skills:['guardian','armor','bulwark','shell','thorns','sturdy','siege','reflect','regen']},
+  tribes: {label:'Sunfeather Warrior', blurb:'Fast and bright. Wings, speed and first strikes.', icon:'🐦', art:'crimson-wing-recruit', archetypes:['Hummingbird'], base:{attack:3, health:6},
+    skills:['flying','evasive','swift','quick','crit','frenzy','pierce','ambush','momentum']},
+  road:   {label:'Road-folk Wanderer', blurb:'Sly and slippery. Poison, bleeding, tricks and a bow.', icon:'🐭', art:'wandering-traveller', archetypes:['Mouse','Traveller'], base:{attack:2, health:7},
+    skills:['stealth','poison','bleed','expose','gash','render','arrow','corrode','fester']},
+};
+function loadHero(){ try{ const h = JSON.parse(localStorage.getItem(HERO_KEY)||'null'); if(h && HERO_PEOPLES[h.people]) return Object.assign({xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0}, h); }catch(e){} return null; }
+let myHero = loadHero();
+function saveHero(){ try{ localStorage.setItem(HERO_KEY, JSON.stringify(myHero)); }catch(e){} try{ soonCheckMilestones(); }catch(e){} }
+// Pacing: Lv 20 ≈ 15 wins, Lv 50 ≈ 110, Lv 100 ≈ 600 (fewer with Materia). Total to 100 ≈ 21.5k XP.
+function heroXpToNext(L){ return Math.round(10 + 1.5*L + 0.04*L*L); }
+function heroLevelFromXp(xp){ let L = 1, left = xp; while(L < HERO_MAX_LEVEL && left >= heroXpToNext(L)){ left -= heroXpToNext(L); L++; } return {level:L, into:left, need: L < HERO_MAX_LEVEL ? heroXpToNext(L) : 0}; }
+function heroPointsForLevel(L){ return (L-1) + 3*Math.floor(L/10); }
+function heroPointsSpent(h){ return h.alloc.atk*HERO_COSTS.atk + h.alloc.hp*HERO_COSTS.hp + h.alloc.speed*HERO_COSTS.speed; }
+function heroPointsFree(h){ return heroPointsForLevel(heroLevelFromXp(h.xp).level) - heroPointsSpent(h); }
+function heroSkillValue(L){ return 1 + Math.floor(L/25); }
+function heroSkillDef(key){ return [...PASSIVE_DEFS, ...ACTIVE_PRESETS].find(p=> p.key===key); }
+function heroSkillOffer(h, atLevel){
+  // three choices, stable per hero and milestone, never repeating a skill already picked
+  const pool = HERO_PEOPLES[h.people].skills.filter(k=> !Object.values(h.picks).includes(k) && heroSkillDef(k));
+  let seed = (h.created||1) % 100000 + atLevel*7919; const rnd = ()=> (seed = (seed*16807) % 2147483647) / 2147483647;
+  const a = pool.slice(); for(let i = a.length-1; i > 0; i--){ const j = Math.floor(rnd()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a.slice(0, 3);
+}
+function heroDef(){
+  const h = myHero; if(!h) return null;
+  const P = HERO_PEOPLES[h.people], L = heroLevelFromXp(h.xp).level;
+  const effects = {};
+  Object.values(h.picks).forEach(k=>{
+    const sd = heroSkillDef(k); if(!sd) return;
+    if(sd.build) Object.assign(effects, sd.build(heroSkillValue(L)));
+    else effects[k] = sd.kind==='boolean' ? true : heroSkillValue(L);
+  });
+  const artDef = CARD_DEFS_BASELINE[P.art] || {};
+  return {id:HERO_ID, name: h.name || P.label, icon: P.icon, art: artDef.art || '', hero:true, heroLevel:L,
+    attack: P.base.attack + h.alloc.atk, health: P.base.health + h.alloc.hp,
+    cost: 1 + (L>=20) + (L>=50) + (L>=80), wait: Math.max(0, 1 - h.alloc.speed),
+    rarity:'unique', archetypes: P.archetypes.slice(), effects, locked:false,
+    flavor: `${P.label} · Level ${L}. Built by your own hand, one battle at a time.`};
+}
+function heroGainXp(n, why){
+  if(!myHero || !(n > 0)) return;
+  const before = heroLevelFromXp(myHero.xp).level;
+  myHero.xp += n; saveHero();
+  const after = heroLevelFromXp(myHero.xp).level;
+  if(after > before){
+    const pts = heroPointsFree(myHero), skill = HERO_SKILL_LEVELS.some(l=> l > before && l <= after);
+    setTimeout(()=> showToast(`🦸 ${escapeHtml(myHero.name)} reached Level ${after}!${pts>0 ? ` ${pts} stat point${pts===1?'':'s'} to spend` : ''}${skill ? ' · a new skill to pick' : ''} — Deck → 🦸 Hero`, 'ok'), 700);
+  } else if(why) showToast(`🦸 +${n} Hero XP — ${why}`, 'ok');
+}
+// Battle XP: the Hero must have been in the deck you fought with. Win +30 (+10 if it took the field), loss or draw +10.
+function heroAwardBattle(m){
+  if(!myHero || !m || !(myDeckCounts && myDeckCounts[HERO_ID] > 0)) return;
+  // only when the Hero really was in this fight's deck (raids, trenches and drafts use other decks)
+  let inFight = !!(m.stats && m.stats[statKeyFor('A', HERO_ID)]);
+  if(!inFight){ try{ inFight = /"hero"/.test(JSON.stringify(m.players && m.players[1] || {})); }catch(e){} }
+  if(!inFight) return;
+  const played = !!(m.stats && m.stats[statKeyFor('A', HERO_ID)] && m.stats[statKeyFor('A', HERO_ID)].played > 0);
+  const won = m.winner === 1;
+  myHero.battles = (myHero.battles||0) + 1; if(won) myHero.wins = (myHero.wins||0) + 1;
+  heroGainXp((won ? 30 : 10) + (won && played ? 10 : 0), won ? 'victory' : 'experience');
+}
+function statKeyFor(side, defId){ return side + '|' + defId; }
+// Materia (T4, first version): crafted in the Forge from Magic Dust. Each craft grants Hero XP and
+// a crystal of one of four kinds, kept for socketing later.
+const MATERIA_KINDS = [{id:'ember', icon:'🔥', name:'Ember'}, {id:'tide', icon:'💧', name:'Tide'}, {id:'grove', icon:'🌿', name:'Grove'}, {id:'stone', icon:'🪨', name:'Stone'}];
+const MATERIA_DUST_COST = 25, MATERIA_HERO_XP = 30;
+function craftMateria(){
+  if(!myHero){ showToast('Create your Hero first — Deck → 🦸 Hero.'); return false; }
+  if((myCurrencies.dust||0) < MATERIA_DUST_COST){ showToast(`Need ${MATERIA_DUST_COST} ✨ Magic Dust to craft Materia.`); return false; }
+  myCurrencies.dust -= MATERIA_DUST_COST; saveCurrencies();
+  const k = MATERIA_KINDS[Math.floor(Math.random()*MATERIA_KINDS.length)];
+  myHero.materia[k.id] = (myHero.materia[k.id]||0) + 1;
+  heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`);
+  try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
+  return k;
+}
+// Decks that leave this device (live matches, ghosts, invites, raid records) go without the Hero.
+function publicDeck(counts){ const out = Object.assign({}, counts||{}); delete out[HERO_ID]; return out; }
+
+// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle// Deck showcase (2026-10-04, "deck preview cards should prominently highlight the leader and castle
 // choice, and some signature of the deck — archetypes, average attack, defence and cost"). Used on
 // the Manage-decks cards and the Profile's "what rivals see" preview.
 function deckSignature(d){
@@ -6897,7 +6999,7 @@ async function pollLiveQueue(){
   if(!liveQueueing) return;
   try{
     const { data, error } = await sbClient.rpc('find_ranked_match', {
-      p_rating: myRating, p_deck: myDeckCounts, p_character: myCharacterId, p_leader: myLeaderId || null,
+      p_rating: myRating, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null,
     });
     if(error){ console.warn('find_ranked_match error', error); }
     else if(data){ await enterLiveMatch(data); return; } // matched — stop polling
@@ -6936,6 +7038,7 @@ async function enterLiveMatch(row){
 }
 
 function startLiveRankedMatch(cfg){
+  cfg = Object.assign({}, cfg, {myDeck: publicDeck(cfg.myDeck), oppDeck: publicDeck(cfg.oppDeck)});
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: cfg.battleMode || Registry.defaultBattleMode()});
   const sideOf = id=> id===1?'A':'B';
   const p1Deck = cfg.mySeat===1 ? cfg.myDeck : cfg.oppDeck;
@@ -7123,6 +7226,7 @@ async function liveRefreshGhosts(mode, force){
 }
 function livePushGhost(mode, stage, payload){
   if(!liveCanWrite()) return;
+  if(payload && payload.deck) payload = Object.assign({}, payload, {deck: publicDeck(payload.deck)});
   sbClient.from('ghost_decks').upsert({owner_id: cloudUserId, mode, stage, display_name: (myProfile && myProfile.name) || 'Player', avatar: loadAvatar(), payload, recorded_at: new Date().toISOString()}, {onConflict:'owner_id,mode,stage'})
     .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; }, ()=>{});
 }
@@ -7142,12 +7246,12 @@ async function liveRefreshRaid(bossId, cycle){
 }
 function livePushRaidAttempt(a, onDone){
   if(!liveCanWrite()){ onDone && onDone(false); return; }
-  sbClient.from('raid_week_attempts').insert({boss_id: a.bossId, cycle: a.cycle, owner_id: cloudUserId, display_name: a.name, avatar: a.avatar, deck: a.deck, damage: Math.max(0, Math.min(10000, a.damage|0)), won: !!a.won})
+  sbClient.from('raid_week_attempts').insert({boss_id: a.bossId, cycle: a.cycle, owner_id: cloudUserId, display_name: a.name, avatar: a.avatar, deck: publicDeck(a.deck), damage: Math.max(0, Math.min(10000, a.damage|0)), won: !!a.won})
     .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; onDone && onDone(!error); }, ()=> onDone && onDone(false));
 }
 // Progress blob: these localStorage keys follow you across devices.
 const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tutorial_done','bramblewood_arena_tutorial_stage','bramblewood_arena_faction',
-  'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1',
+  'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1','bramblewood_hero_v1',
   'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1','bramblewood_dialogue_flags_v1','bramblewood_unlocks_v1',
   // 2026-10-03: discoveries (hidden-card sightings), raid part attempts + claims (so a reward can't be claimed twice on two devices), recent opponents
   'bramblewood_arena_discovered','bramblewood_raid_part_attempts_v1','bramblewood_raid_claims_v1','bramblewood_recent_opponents_v1'];
@@ -10476,7 +10580,7 @@ async function prefetchFightTicket(mode, nodeKey){
     const key = mode + '|' + (nodeKey||'');
     const t = fightTickets[key]; if(t && (t.pending || Date.now() - t.at < 30*60*1000)) return;
     fightTickets[key] = {pending:true, at:Date.now()};
-    const { data, error } = await sbClient.rpc('start_fight', {p_mode: mode, p_node: nodeKey || null, p_deck: myDeckCounts || {}, p_cards_hash: currentCardDataHash()});
+    const { data, error } = await sbClient.rpc('start_fight', {p_mode: mode, p_node: nodeKey || null, p_deck: publicDeck(myDeckCounts) || {}, p_cards_hash: currentCardDataHash()});
     const row = Array.isArray(data) ? data[0] : data;
     if(error || !row || row.seed == null){ delete fightTickets[key]; return; }
     fightTickets[key] = {id: row.session_id, seed: Number(row.seed)>>>0, at: Date.now()};
@@ -11737,7 +11841,7 @@ function renderMyDeckPanels(){
     if(sortMode==='health') return B.health-A.health;
     return (A.cost-B.cost) || A.name.localeCompare(B.name);
   };
-  const allIds = getDraftableIds()
+  const allIds = (defs[HERO_ID] ? [HERO_ID] : []).concat(getDraftableIds())
     .filter(id=> !arch || archetypesOf(defs[id]).includes(arch))
     .filter(id=> !kind || defs[id].type===kind)
     .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
@@ -15768,6 +15872,7 @@ async function resolveRound(){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner);
+    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest) heroAwardBattle(m); }catch(e){}
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
     }
@@ -18865,9 +18970,21 @@ function dressForgePlace(root){
     if(!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) placeOverlay('forge-flare', '', 900);
   }
 }
+// Materia bench in the Forge (2026-10-05): the same craft as the Hero Hall, where the user expects it.
+function forgeMateriaBenchHTML(){
+  if(!myHero) return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>Raise a Hero first (Deck → 🦸 Hero). Crafting Materia here levels them up.</small></div><button type="button" class="btn small" data-fmb="hero">🦸 Raise a Hero</button></div>`;
+  const n = MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${myHero.materia[k.id]||0}</span>`).join('');
+  return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>${MATERIA_DUST_COST} ✨ → one crystal and +${MATERIA_HERO_XP} XP for ${escapeHtml(myHero.name)} (Lv ${heroLevelFromXp(myHero.xp).level})</small><span class="hero-materia">${n}</span></div><button type="button" class="btn primary small" data-fmb="craft" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft · ${MATERIA_DUST_COST} ✨</button></div>`;
+}
+function wireForgeMateriaBench(root){
+  root.querySelectorAll('[data-fmb]').forEach(b=>{ if(b._fmb) return; b._fmb = 1; b.addEventListener('click', ()=>{
+    if(b.dataset.fmb === 'hero'){ deckHeroView = true; switchTab('deck'); return; }
+    if(craftMateria()) renderForge();
+  }); });
+}
 function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
-  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r) dressForgePlace(r); }, 0);
+  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r){ dressForgePlace(r); wireForgeMateriaBench(r); } }, 0);
   const defs = getCardDefs();
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token);
   if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;
@@ -18898,6 +19015,7 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
+    ${forgeMateriaBenchHTML()}
     <div class="forge-layout">
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
@@ -19164,7 +19282,85 @@ function wireHomeMenuFlourish(root){
    "Simulator is moved into the Deck menu.") ---- */
 let deckSubTab = 'list'; // 'list' | 'sim' — mirrors playSubTab's own pattern
 let deckEditingId = null; // non-null while a specific deck's builder is open
+let deckHeroView = false; // Deck → 🦸 Hero: the Hero Hall instead of the deck builder
 let deckShowList = false; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
+// ---- The Hero Hall (Deck → 🦸 Hero) ----
+let heroCreatePeople = 'legion';
+function renderHeroHall(body){
+  if(!body) return;
+  if(!myHero){
+    body.innerHTML = `<div class="panel hero-hall hero-create">
+      <h2>🦸 Raise a Hero</h2>
+      <p class="panel-sub">Your own card. It levels up from battles and from crafting Materia in the Forge, to Level 100. You spend its stat points and pick its skills.</p>
+      <div class="hero-peoples">${Object.entries(HERO_PEOPLES).map(([k, P])=>{ const ad = CARD_DEFS_BASELINE[P.art]||{}; return `<button type="button" class="hero-people ${k===heroCreatePeople?'on':''}" data-people="${k}">
+        <span class="hp-art">${ad.art ? `<img src="${ad.art}" alt="" draggable="false">` : `<span>${P.icon}</span>`}</span>
+        <b>${P.icon} ${escapeHtml(P.label)}</b><small>${escapeHtml(P.blurb)}</small><small class="hp-base">Starts ⚔${P.base.attack} ❤${P.base.health}</small></button>`; }).join('')}</div>
+      <label class="hero-name-row">Name <input id="heroNameInput" maxlength="24" placeholder="${escapeAttr(HERO_PEOPLES[heroCreatePeople].label)}"></label>
+      <button type="button" class="btn primary big" id="heroCreateBtn">🦸 Raise my Hero</button>
+    </div>`;
+    body.querySelectorAll('[data-people]').forEach(b=> b.addEventListener('click', ()=>{ heroCreatePeople = b.dataset.people; renderHeroHall(body); }));
+    document.getElementById('heroCreateBtn').addEventListener('click', ()=>{
+      const name = (document.getElementById('heroNameInput').value || '').trim().slice(0, 24) || HERO_PEOPLES[heroCreatePeople].label;
+      myHero = {people: heroCreatePeople, name, xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0, created: Date.now()};
+      saveHero(); showToast(`🦸 ${escapeHtml(name)} joins your cause. Add them to your deck to start earning XP.`, 'ok');
+      renderDeckSection();
+    });
+    return;
+  }
+  const h = myHero, P = HERO_PEOPLES[h.people], lv = heroLevelFromXp(h.xp), L = lv.level, d = heroDef();
+  const free = heroPointsFree(h), inDeck = (myDeckCounts && myDeckCounts[HERO_ID] > 0);
+  const statRow = (key, label, now, step, note, max)=> `<div class="hero-stat"><span class="hs-label">${label}</span><b class="hs-val">${now}</b>
+      <span class="hs-cost">${HERO_COSTS[key]} pts ${note}</span>
+      <button type="button" class="btn small" data-hstat="${key}" data-dir="-1" ${h.alloc[key]<=0?'disabled':''} aria-label="Less ${escapeAttr(label)}">−</button>
+      <button type="button" class="btn small primary" data-hstat="${key}" data-dir="1" ${free < HERO_COSTS[key] || (max!=null && h.alloc[key]>=max) ?'disabled':''} aria-label="More ${escapeAttr(label)}">+</button></div>`;
+  const skills = HERO_SKILL_LEVELS.map(at=>{
+    const picked = h.picks[at];
+    if(picked){ const sd = heroSkillDef(picked); return `<div class="hero-skill is-picked"><span class="hk-lv">Lv ${at}</span><b>${escapeHtml(sd ? sd.label : picked)}</b><small>${escapeHtml(sd && sd.desc ? sd.desc(heroSkillValue(L)) : '')}</small></div>`; }
+    if(L < at) return `<div class="hero-skill is-locked"><span class="hk-lv">Lv ${at}</span><small>A new skill at Level ${at}</small></div>`;
+    return `<div class="hero-skill is-choose"><span class="hk-lv">Lv ${at}</span><b>Pick one</b><div class="hk-choices">${heroSkillOffer(h, at).map(k=>{ const sd = heroSkillDef(k); return `<button type="button" class="btn small" data-hpick="${at}" data-skill="${k}" title="${escapeAttr(sd.desc ? sd.desc(heroSkillValue(L)) : '')}">${escapeHtml(sd.label)}</button>`; }).join('')}</div></div>`;
+  }).join('');
+  body.innerHTML = `<div class="panel hero-hall">
+    <div class="hero-top">
+      <div class="hero-card-big">${cardTileHTML(d, {extraClass:'is-hero-card'})}</div>
+      <div class="hero-info">
+        <h2>🦸 ${escapeHtml(d.name)} <small>${escapeHtml(P.label)}</small></h2>
+        <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? `<span class="hero-xpbar"><span style="width:${Math.round(lv.into/lv.need*100)}%"></span></span><small>${lv.into} / ${lv.need} XP</small>` : '<small>Max level</small>'}</div>
+        <div class="hero-facts"><span>🪵 Costs ${d.cost}</span><span>⏳ Wait ${d.wait}</span><span>⚔ ${h.battles||0} battles · ${h.wins||0} wins</span></div>
+        <div class="hero-deck-row">${inDeck ? '<span class="hero-in-deck">✓ In your active deck</span><button type="button" class="btn small ghost" id="heroDeckBtn">Take out of deck</button>' : '<button type="button" class="btn primary" id="heroDeckBtn">🃏 Add to my deck</button>'}</div>
+        <p class="panel-sub hero-howto">XP: win with your Hero in the deck <b>+30</b> (+10 if it took the field), lose or draw <b>+10</b>, craft Materia <b>+${MATERIA_HERO_XP}</b>. Live and online matches don't carry your Hero yet.</p>
+      </div>
+    </div>
+    <div class="hero-cols">
+      <div class="hero-block"><h3>Stat points <span class="hero-free ${free>0?'has':''}">${free} free</span></h3>
+        ${statRow('atk', '⚔ Attack', d.attack, 1, '/ +1')}
+        ${statRow('hp', '❤ Health', d.health, 1, '/ +1')}
+        ${statRow('speed', '⏳ Swiftness', d.wait===0 ? 'Wait 0' : 'Wait 1', 1, '/ Wait −1', 1)}
+        <button type="button" class="btn small ghost" id="heroRespecBtn" ${heroPointsSpent(h)?'':'disabled'}>↺ Reset points (free for now)</button>
+      </div>
+      <div class="hero-block"><h3>Skills</h3>${skills}</div>
+      <div class="hero-block"><h3>💎 Materia</h3>
+        <p class="panel-sub">Craft a crystal from ${MATERIA_DUST_COST} ✨ Dust. Your Hero gains ${MATERIA_HERO_XP} XP each time. Crystals are kept for socketing, coming later.</p>
+        <div class="hero-materia">${MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${h.materia[k.id]||0}</span>`).join('')}</div>
+        <button type="button" class="btn primary" id="heroCraftBtn" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft Materia · ${MATERIA_DUST_COST} ✨</button>
+        <small class="hero-dust">You have ${myCurrencies.dust||0} ✨</small>
+      </div>
+    </div>
+  </div>`;
+  body.querySelectorAll('[data-hstat]').forEach(b=> b.addEventListener('click', ()=>{
+    const k = b.dataset.hstat, dir = +b.dataset.dir;
+    if(dir > 0 && heroPointsFree(myHero) < HERO_COSTS[k]) return;
+    myHero.alloc[k] = Math.max(0, myHero.alloc[k] + dir); saveHero(); renderDeckSection();
+  }));
+  body.querySelectorAll('[data-hpick]').forEach(b=> b.addEventListener('click', ()=>{ myHero.picks[b.dataset.hpick] = b.dataset.skill; saveHero(); showToast(`🦸 Learned ${escapeHtml(heroSkillDef(b.dataset.skill).label)}.`, 'ok'); renderDeckSection(); }));
+  const rs = document.getElementById('heroRespecBtn'); if(rs) rs.addEventListener('click', ()=>{ myHero.alloc = {atk:0,hp:0,speed:0}; saveHero(); renderDeckSection(); });
+  document.getElementById('heroDeckBtn').addEventListener('click', ()=>{
+    if(inDeck){ delete myDeckCounts[HERO_ID]; }
+    else { myDeckCounts[HERO_ID] = 1; if(deckTotal(myDeckCounts) > DECK_SIZE){ deckHeroView = false; showToast(`🦸 Your Hero takes a deck slot — take one card out to get back to ${DECK_SIZE}.`); } }
+    try{ saveMyDeck(); }catch(e){ try{ syncActiveDeckFromCounts && syncActiveDeckFromCounts(); }catch(_){} }
+    renderDeckSection();
+  });
+  document.getElementById('heroCraftBtn').addEventListener('click', ()=>{ if(craftMateria()) renderDeckSection(); });
+}
 function addTentPoles(root){ if(root && !root.querySelector(':scope > .tent-pole')) root.insertAdjacentHTML('afterbegin', '<span class="tent-pole left" aria-hidden="true"></span><span class="tent-pole right" aria-hidden="true"></span>'); }
 function renderDeckSection(){
   const root = document.getElementById('view-deck');
@@ -19181,6 +19377,7 @@ function renderDeckSection(){
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
         <div class="play-subtabs-actions">
+          <button type="button" class="btn small ${deckHeroView?'primary':'ghost'} hero-hall-btn" id="deckHeroBtn" title="Your Hero — level it, spend its points, pick its skills">🦸 Hero${myHero && heroPointsFree(myHero)>0 ? '<span class="hero-dot" aria-label="points to spend"></span>' : ''}</button>
           <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
           <button type="button" class="btn small ghost" id="deckEditorToCodexBtn" title="Go to Codex">📇 Codex</button>
         </div>
@@ -19190,7 +19387,9 @@ function renderDeckSection(){
     document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
-    renderPlayerSubTab(document.getElementById('deckBuilderBody'));
+    document.getElementById('deckHeroBtn').addEventListener('click', ()=>{ deckHeroView = !deckHeroView; renderDeckSection(); });
+    if(deckHeroView) renderHeroHall(document.getElementById('deckBuilderBody'));
+    else renderPlayerSubTab(document.getElementById('deckBuilderBody'));
     return;
   }
   root.innerHTML = `
@@ -20172,7 +20371,7 @@ function openInviteModal(friendId){
   document.getElementById('invSend').onclick = async ()=>{
     const btn = document.getElementById('invSend'); btn.disabled = true;
     try{
-      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: myDeckCounts, p_character: myCharacterId, p_leader: myLeaderId || null});
+      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null});
       if(error) throw error;
       Social.outgoingInvite = data; close();
       showToast(`Invite sent to ${p.display_name||'your friend'}.`, 'ok');
@@ -20233,7 +20432,7 @@ function showInviteBanner(){
     if(deckTotal(myDeckCounts)!==DECK_SIZE){ showToast(`Your deck needs exactly ${DECK_SIZE} cards to play — fix it in Deck, then accept.`, 'error'); return; }
     const b = document.getElementById('ibAccept'); b.disabled = true;
     try{
-      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: myDeckCounts, p_character: myCharacterId, p_leader: myLeaderId || null});
+      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null});
       if(error) throw error;
       Social.incomingInvites = []; hideInviteBanner(); refreshFriendsBadge();
       switchTab('play'); await enterLiveMatch(row);
