@@ -12858,6 +12858,9 @@ function renderMatchUI(){
         if(continueRun) startDungeonFight();
         return;
       }
+      // 2026-10-05 (user: "Play Again seems to make me fight the old deck instead of the Skirmish I
+      // just fought"): a Conquest fight replays the same node, not a generic AI match.
+      if(mode==='conquest' && m.conquestNode){ const cn = m.conquestNode, bm = m.battleMode; endMatch(); startConquestMatch(cn.mapId, cn.nodeId, bm ? {battleMode: bm} : undefined); return; }
       endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
@@ -13948,7 +13951,7 @@ function renderBoard(opts){
     // card's real slot is elsewhere and clearing the pin snapped it there in one frame. Measure
     // before and after, and glide any difference instead.
     const before = newElRects.map(({el})=> el.getBoundingClientRect());
-    newElRects.forEach(({el})=> gsap.set(el, {clearProps:'position,left,top,width,height'}));
+    newElRects.forEach(({el})=> gsap.set(el, {clearProps: gsap.isTweening(el) ? 'position,left,top,width,height' : 'position,left,top,width,height,transform'}));
     newElRects.forEach(({el}, i)=> glideFromRect(el, before[i]));
     newElRects = null;
   }
@@ -13991,6 +13994,12 @@ function renderBoard(opts){
         // own newer element by the time this older completion fires, and that newer entry must
         // survive this cleanup untouched.
         flipTargets.forEach(el=>{ const uid = el.getAttribute('data-uid'); if(flippingEls.get(uid)===el) flippingEls.delete(uid); });
+        // 2026-10-05 ("cards still rush to the right on victory"): Flip's absolute mode leaves
+        // GSAP's cached x/y at the absolute offset (e.g. 493,18) after it reverts the inline
+        // style. The next x/y tween on the card (a shake, a glide) then starts from that stale
+        // cache and the card flies hundreds of pixels sideways. Purge the cache on every target
+        // that isn't mid-tween.
+        flipTargets.forEach(el=>{ if(el.isConnected && !gsap.isTweening(el)) gsap.set(el, {clearProps:'transform'}); });
         // Column-collapse landing flourish: only the card(s) that just fell into a freshly-
         // opened CENTER slot (see collapseLandingUids, set in resolveRound) get this extra
         // beat — every other card that merely shifted a column over from a death nearby just
@@ -15690,13 +15699,16 @@ function glideFromRect(el, from){
         const r = el.getBoundingClientRect();
         const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
         const prev = last.get(el);
-        const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid));
+        const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid)) || getComputedStyle(el).position==='absolute';
         // (2026-10-05) No "was animating last frame" exemption: an animation that ends normally
         // ends where the card visibly is, so a jump on the frame it's released IS a snap (a Flip
         // or entrance whose target went stale because the row changed mid-slide).
         if(prev && !busy && Math.abs(pos.w - prev.w) < 2){
           const dx = prev.x - pos.x, dy = prev.y - pos.y;
-          if(Math.abs(dx) > 12 && Math.abs(dy) < 40){
+          // (2026-10-05, "cards still rush to the right on victory") a jump of more than ~2 card
+          // widths isn't a reflow snap — it's a measurement taken while a Flip had every card
+          // stacked at the row's origin. Gliding that sent the whole row flying in from the side.
+          if(Math.abs(dx) > 12 && Math.abs(dx) < Math.max(160, pos.w * 1.6) && Math.abs(dy) < 40){
             // dx is in screen pixels; the card lives inside the (possibly zoomed) board, so its own
             // x is in board pixels — divide by the board's scale or a zoomed-out board under-corrects.
             const sc = (typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
