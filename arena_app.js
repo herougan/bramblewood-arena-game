@@ -20412,6 +20412,15 @@ async function setGameLanguage(code){
   if(got !== code) showToast('That language isn’t available yet.');
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
+function leafSweep(){
+  const glyphs = ['🍂','🍁','🌿','🍃','🍂','🍁'];
+  let html = '<span class="ls-veil"></span>';
+  for(let i=0;i<22;i++){
+    const top = (i*37)%100, size = 22 + (i*13)%26, delay = (i*23)%180, rot = (i*67)%360;
+    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; --r:${rot}deg">${glyphs[i%glyphs.length]}</i>`;
+  }
+  placeOverlay('leaf-sweep', html, 900);
+}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
@@ -20435,7 +20444,11 @@ function switchTab(tab){
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
-    if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
+    const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(place && currentTabBeforeSwitch!==tab && !reduced) place.enter();
+    // In-world transition (immersion #4): any other screen change is carried by a gust of leaves
+    // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
+    else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';

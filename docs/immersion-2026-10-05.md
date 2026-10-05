@@ -43,7 +43,7 @@
 
 Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Bespoke boss entrances are still to do.
 
-## 4. Diegetic screens (🟡 first screen built 2026-10-05)
+## 4. Diegetic screens (✅ built 2026-10-05)
 
 **Built: the Armoury Tent.** The deck builder sits inside the Legion's tent:
 - muted oxblood leather panels with a scalloped valance, timber poles and lantern light;
@@ -64,7 +64,7 @@ Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Besp
 - sparks rising and an ember flare as you walk in;
 - a hearth roar and crackle, bellows and the odd hammer ring.
 
-**Still to do:** in-world transitions between all screens.
+**Built: in-world transitions.** Moving between Home, Play, the Codex and the other menus sends a gust of leaves sweeping across (about 0.6 seconds, never blocks a click). Places keep their own entrances instead. Off for reduced motion.
 
 ## 5. A living clock (✅ built 2026-10-05)
 
@@ -76,4 +76,4 @@ Lines come from `RIVAL_TAUNTS` by node kind, or a node's own `taunt` field. Besp
 
 ---
 
-**Suggested next:** in-world screen transitions (leaves parting, a page turning).
+**All five built.** Next round: bespoke boss entrances (#3), and places for the remaining menus (Quests as the Notice Board, the Arena as a real arena).

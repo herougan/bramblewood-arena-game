@@ -4674,6 +4674,14 @@
   @keyframes forgeFlare{0%{opacity:0;} 25%{opacity:1;} 100%{opacity:0;}}
   @media (max-width:560px){ #view-forge.forge-scene{padding:58px 10px 18px; border-radius:12px;} #view-forge.forge-scene::after{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .forge-sparks, .forge-flare{display:none;} }
+  /* In-world screen transition (2026-10-05): a gust of leaves sweeps across as the screen changes. */
+  .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden;}
+  .leaf-sweep .ls-veil{position:absolute; inset:0; background:linear-gradient(100deg, transparent 0%, rgba(58,80,40,.0) 20%, rgba(58,80,40,.45) 50%, rgba(58,80,40,0) 80%, transparent 100%);
+    background-size:300% 100%; animation:lsVeil .7s ease-out forwards;}
+  @keyframes lsVeil{from{background-position:100% 0;} to{background-position:0% 0;}}
+  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)); animation:lsLeaf .62s cubic-bezier(.3,.1,.4,1) forwards;}
+  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 15%{opacity:1;} 100%{transform:translate(calc(100vw + 120px), 6vh) rotate(calc(var(--r) + 260deg)); opacity:.9;}}
+  @media (prefers-reduced-motion: reduce){ .leaf-sweep{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
   .ds-pair{display:flex; gap:8px; flex-shrink:0;}

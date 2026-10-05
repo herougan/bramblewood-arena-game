@@ -295,12 +295,12 @@ _Last updated: 2026-10-05 (late evening): languages; places (Tent, Cart, Nest); 
   - ✅ fights on the map's own ground;
   - ✅ a versus opener with the rival's people and lines;
   - ✅ a live clock (dawn, day, dusk and night tints, default on, `?tod=` to preview);
-  - 🟡 diegetic screens, each with its own entrance and sound:
+  - ✅ diegetic screens, each with its own entrance and sound:
     - Deck is the Armoury Tent;
     - Shop is the Traveller's Cart;
     - Nest is the Old Nest;
     - Codex → Forge is the Forge;
-    - in-world transitions are still to do.
+    - other screen changes get a gust of leaves.
 - **Languages** ([doc](i18n.md)):
   - English plus 12 languages: FR, DE, ES, IT, PT, Tagalog, Tamil, Indonesian, Simplified and Traditional Chinese, Japanese, Korean.
   - Picked in Settings → 🌐 Language.

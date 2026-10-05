@@ -4684,6 +4684,14 @@
   @keyframes forgeFlare{0%{opacity:0;} 25%{opacity:1;} 100%{opacity:0;}}
   @media (max-width:560px){ #view-forge.forge-scene{padding:58px 10px 18px; border-radius:12px;} #view-forge.forge-scene::after{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .forge-sparks, .forge-flare{display:none;} }
+  /* In-world screen transition (2026-10-05): a gust of leaves sweeps across as the screen changes. */
+  .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden;}
+  .leaf-sweep .ls-veil{position:absolute; inset:0; background:linear-gradient(100deg, transparent 0%, rgba(58,80,40,.0) 20%, rgba(58,80,40,.45) 50%, rgba(58,80,40,0) 80%, transparent 100%);
+    background-size:300% 100%; animation:lsVeil .7s ease-out forwards;}
+  @keyframes lsVeil{from{background-position:100% 0;} to{background-position:0% 0;}}
+  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)); animation:lsLeaf .62s cubic-bezier(.3,.1,.4,1) forwards;}
+  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 15%{opacity:1;} 100%{transform:translate(calc(100vw + 120px), 6vh) rotate(calc(var(--r) + 260deg)); opacity:.9;}}
+  @media (prefers-reduced-motion: reduce){ .leaf-sweep{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
   .ds-pair{display:flex; gap:8px; flex-shrink:0;}
@@ -30081,6 +30089,15 @@ async function setGameLanguage(code){
   if(got !== code) showToast('That language isn’t available yet.');
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
+function leafSweep(){
+  const glyphs = ['🍂','🍁','🌿','🍃','🍂','🍁'];
+  let html = '<span class="ls-veil"></span>';
+  for(let i=0;i<22;i++){
+    const top = (i*37)%100, size = 22 + (i*13)%26, delay = (i*23)%180, rot = (i*67)%360;
+    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; --r:${rot}deg">${glyphs[i%glyphs.length]}</i>`;
+  }
+  placeOverlay('leaf-sweep', html, 900);
+}
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
@@ -30104,7 +30121,11 @@ function switchTab(tab){
     const place = PLACES[tab];
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
-    if(place && currentTabBeforeSwitch!==tab && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) place.enter();
+    const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(place && currentTabBeforeSwitch!==tab && !reduced) place.enter();
+    // In-world transition (immersion #4): any other screen change is carried by a gust of leaves
+    // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
+    else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
   }catch(e){}
   if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
