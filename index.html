@@ -2013,6 +2013,30 @@
     background:var(--bleed-c); opacity:0; animation:bleedDrop calc(var(--bleed-ms,700ms) * .6) cubic-bezier(.5,0,.9,.6) forwards;}
   @keyframes bleedDrop{0%{opacity:0; transform:translateY(-6px) scaleY(.6);} 15%{opacity:.95;} 100%{opacity:0; transform:translateY(34px) scaleY(1.3);}}
   .board-card.bleed-cold .bleed-wash::before{mix-blend-mode:screen;}
+  /* Castle cracks (2026-10-06) — crackStage()/updateCastleCracks() in arena_app.js. Three hand-drawn
+     crack layers that appear at ≤66%, ≤33% and ≤15% HP; a new crack lands with a little jolt. */
+  .card-tile .castle-cracks{position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit; opacity:0;
+    background-repeat:no-repeat; background-size:100% 100%; transition:opacity .25s ease;}
+  .card-tile.crack-1 .castle-cracks{opacity:.8; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-2 .castle-cracks{opacity:.85; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-3 .castle-cracks{opacity:.9; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-3 .ico{filter:saturate(.75) brightness(.9);}
+  .card-tile.crack-new{animation:crackJolt 480ms cubic-bezier(.3,.7,.4,1);}
+  @keyframes crackJolt{0%{translate:0 0;} 15%{translate:-3px 1px;} 30%{translate:3px -1px;} 45%{translate:-2px 0;} 65%{translate:1px 0;} 100%{translate:0 0;}}
+  /* Idle breathing + low-HP tremble (2026-10-06): board units bob very slightly so a quiet board
+     feels alive; a unit at ≤25% HP shivers every couple of seconds instead. Both use the independent
+     `translate` property, so they never fight GSAP, which tweens `transform`. */
+  /* Specificity is kept at a single class via :where(), so every other card-tile animation
+     (strike, dance, prestige shimmer…) still wins over these ambient ones. */
+  :where(#appWrap.in-match .board-card) .card-tile{animation:idleBreathe 3.6s ease-in-out infinite;}
+  :where(#appWrap.in-match .board-card:nth-child(2n)) .card-tile{animation-delay:-1.2s;}
+  :where(#appWrap.in-match .board-card:nth-child(3n)) .card-tile{animation-delay:-2.4s;}
+  :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
+  :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
+  .board-card.is-low-hp .stats .hp{color:#ff8a7a; text-shadow:0 0 6px rgba(255,60,40,.7);}
+  @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
+  @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
+  @media (prefers-reduced-motion: reduce){ :where(.board-card) .card-tile, .card-tile.crack-new{animation:none;} }
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -13428,8 +13452,10 @@ function cardTileHTML(d, opts){
   // every other card's single bottom-right stat number. Centering removed too (see this rule's
   // own CSS) so the castle's HP badge sits in the normal bottom-right corner like any other card.
   const hpBadgeText = hasLiveHp ? Math.max(0,opts.liveHp) : d.health;
+  // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
+  const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
   const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
-  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
+  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
@@ -13442,7 +13468,7 @@ function cardTileHTML(d, opts){
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${d.name}</div>
-    ${hpBarHTML}
+    ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     <div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>
     ${isCastle?'':poisonTagHTML(d)}
     ${abilityBadges(d)}
@@ -25338,7 +25364,8 @@ function boardCardHTML(c, defs, opts){
     c.blind>0 ? 'is-blind' : '',
     c.shocked>0 ? 'is-shocked' : '',
     c.corrode>0 ? 'is-corroded' : '',
-    c.staggered>0 ? 'is-staggered' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
+    c.staggered>0 ? 'is-staggered' : '',
+    isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
     (matchState && c.uid===matchState.leaderUid) ? 'is-leader' : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
@@ -25900,6 +25927,28 @@ function renderHUD(){
 // hpOverride lets each hitHQ event drive the bar down by exactly its own ev.dmg (see the
 // m.displayHqHp running counter in resolveRound/renderVfxForEvent) — every other caller
 // (renderHUD, a fresh render) omits it and gets the true, authoritative hq.hp as before.
+// 0 = intact, 1 = ≤66% HP, 2 = ≤33%, 3 = ≤15% (and 0 HP).
+function crackStage(hp, maxHp){ const f = maxHp>0 ? hp/maxHp : 1; return f<=0.15 ? 3 : f<=0.33 ? 2 : f<=0.66 ? 1 : 0; }
+// Low-HP tremble (2026-10-06): a unit at a quarter of its health or less shivers now and then.
+function isLowHp(c){ return c && c.hp>0 && c.maxHp>0 && c.hp/c.maxHp<=0.25; }
+function updateCastleCracks(el, hp, maxHp){
+  const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
+  const prev = [1,2,3].find(n=> tile.classList.contains('crack-'+n)) || 0;
+  const next = crackStage(hp, maxHp);
+  if(next===prev) return;
+  tile.classList.remove('crack-0','crack-1','crack-2','crack-3'); tile.classList.add('crack-'+next);
+  if(next>prev && next>0){
+    // a fresh crack opens: a puff of masonry dust and a small shake
+    const r = tile.getBoundingClientRect();
+    for(let i=0;i<3;i++){
+      const d = document.createElement('span'); d.className = 'castle-dust'; d.setAttribute('aria-hidden','true');
+      d.style.position = 'fixed'; d.style.left = (r.left + r.width*(0.3+i*0.2))+'px'; d.style.top = (r.top + r.height*0.5)+'px';
+      d.style.animationDelay = (i*60)+'ms'; document.body.appendChild(d); setTimeout(()=> d.remove(), 1400);
+    }
+    tile.classList.remove('crack-new'); void tile.offsetWidth; tile.classList.add('crack-new');
+    setTimeout(()=> tile.classList.remove('crack-new'), 520);
+  }
+}
 function updateHqHpDisplay(side, hpOverride){
   const m = matchState; if(!m) return;
   const pid = side==='A' ? 1 : 2;
@@ -25928,6 +25977,7 @@ function updateHqHpDisplay(side, hpOverride){
   // shorter string no longer overflows on mobile.
   const hpText = el.querySelector('.hp');
   if(hpText) hpText.textContent = `❤${Math.max(0,hp)}`;
+  updateCastleCracks(el, hp, hq.maxHp);
   updateHpRibbon(side, hp);
 }
 // Status badges/overlays (poison ☠, bleed 🩸, stun 💫) now refresh on the specific board
@@ -26052,6 +26102,7 @@ function updateCardHpDisplay(uid){
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
   if(hpSpan) hpSpan.textContent = '❤'+Math.max(0,c.hp);
+  el.classList.toggle('is-low-hp', isLowHp(c));
 }
 // Chronos wait-countdown, ordinary tick (2026-09-17): redraws the ring to the new remaining
 // fraction (CSS transitions the stroke-dashoffset smoothly — see .wait-ring-fg) and gives the

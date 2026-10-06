@@ -2982,8 +2982,10 @@ function cardTileHTML(d, opts){
   // every other card's single bottom-right stat number. Centering removed too (see this rule's
   // own CSS) so the castle's HP badge sits in the normal bottom-right corner like any other card.
   const hpBadgeText = hasLiveHp ? Math.max(0,opts.liveHp) : d.health;
+  // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
+  const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
   const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
-  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
+  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
@@ -2996,7 +2998,7 @@ function cardTileHTML(d, opts){
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${d.name}</div>
-    ${hpBarHTML}
+    ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     <div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>
     ${isCastle?'':poisonTagHTML(d)}
     ${abilityBadges(d)}
@@ -14892,7 +14894,8 @@ function boardCardHTML(c, defs, opts){
     c.blind>0 ? 'is-blind' : '',
     c.shocked>0 ? 'is-shocked' : '',
     c.corrode>0 ? 'is-corroded' : '',
-    c.staggered>0 ? 'is-staggered' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
+    c.staggered>0 ? 'is-staggered' : '',
+    isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
     (matchState && c.uid===matchState.leaderUid) ? 'is-leader' : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
@@ -15454,6 +15457,28 @@ function renderHUD(){
 // hpOverride lets each hitHQ event drive the bar down by exactly its own ev.dmg (see the
 // m.displayHqHp running counter in resolveRound/renderVfxForEvent) — every other caller
 // (renderHUD, a fresh render) omits it and gets the true, authoritative hq.hp as before.
+// 0 = intact, 1 = ≤66% HP, 2 = ≤33%, 3 = ≤15% (and 0 HP).
+function crackStage(hp, maxHp){ const f = maxHp>0 ? hp/maxHp : 1; return f<=0.15 ? 3 : f<=0.33 ? 2 : f<=0.66 ? 1 : 0; }
+// Low-HP tremble (2026-10-06): a unit at a quarter of its health or less shivers now and then.
+function isLowHp(c){ return c && c.hp>0 && c.maxHp>0 && c.hp/c.maxHp<=0.25; }
+function updateCastleCracks(el, hp, maxHp){
+  const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
+  const prev = [1,2,3].find(n=> tile.classList.contains('crack-'+n)) || 0;
+  const next = crackStage(hp, maxHp);
+  if(next===prev) return;
+  tile.classList.remove('crack-0','crack-1','crack-2','crack-3'); tile.classList.add('crack-'+next);
+  if(next>prev && next>0){
+    // a fresh crack opens: a puff of masonry dust and a small shake
+    const r = tile.getBoundingClientRect();
+    for(let i=0;i<3;i++){
+      const d = document.createElement('span'); d.className = 'castle-dust'; d.setAttribute('aria-hidden','true');
+      d.style.position = 'fixed'; d.style.left = (r.left + r.width*(0.3+i*0.2))+'px'; d.style.top = (r.top + r.height*0.5)+'px';
+      d.style.animationDelay = (i*60)+'ms'; document.body.appendChild(d); setTimeout(()=> d.remove(), 1400);
+    }
+    tile.classList.remove('crack-new'); void tile.offsetWidth; tile.classList.add('crack-new');
+    setTimeout(()=> tile.classList.remove('crack-new'), 520);
+  }
+}
 function updateHqHpDisplay(side, hpOverride){
   const m = matchState; if(!m) return;
   const pid = side==='A' ? 1 : 2;
@@ -15482,6 +15507,7 @@ function updateHqHpDisplay(side, hpOverride){
   // shorter string no longer overflows on mobile.
   const hpText = el.querySelector('.hp');
   if(hpText) hpText.textContent = `❤${Math.max(0,hp)}`;
+  updateCastleCracks(el, hp, hq.maxHp);
   updateHpRibbon(side, hp);
 }
 // Status badges/overlays (poison ☠, bleed 🩸, stun 💫) now refresh on the specific board
@@ -15606,6 +15632,7 @@ function updateCardHpDisplay(uid){
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
   if(hpSpan) hpSpan.textContent = '❤'+Math.max(0,c.hp);
+  el.classList.toggle('is-low-hp', isLowHp(c));
 }
 // Chronos wait-countdown, ordinary tick (2026-09-17): redraws the ring to the new remaining
 // fraction (CSS transitions the stroke-dashoffset smoothly — see .wait-ring-fg) and gives the
