@@ -9503,7 +9503,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-squad-row">
           ${revealed ? `<div class="cnp-squad">${squadChips}</div>` : ''}
-          <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle">${revealed?'🙈 Hide deck':'👁 Show deck'}</button>
+          <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle" aria-label="${revealed?'Hide the enemy deck':'Show the enemy deck'}">${revealed?'🙈 Hide':'👁 Show'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
       ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
       ${nodeRewardCardsLineHTML(map.id, selectedNode.key, done)}
@@ -12529,6 +12529,9 @@ function clearFacing(){
 }
 function showFacing(uid){
   const m = matchState; clearFacing(); if(!m || m.resolving) return;
+  // 2026-10-06 (user: "when holding a card over the battlefield it shows the attack preview line —
+  // no need"): no attack lines while a card is held, dragged or being previewed on the board.
+  if(m.selectedUid != null || placementPreview || document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging')) return;
   const f = facingOf(m, uid); if(!f) return;
   const src = boardCardEl(uid), bf = document.getElementById('battlefieldEl'), svg = document.getElementById('facingSvg');
   if(!src || !bf || !svg) return;
@@ -12748,6 +12751,11 @@ function renderMatchUI(){
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
+      <!-- 2026-10-06 (user: "the graveyard should become its own field on the right"): a card-sized
+           pile at the end of your row, mirroring the Deck on the left. Drop or tap a card here to pitch it. -->
+      <div class="discardzone graveyard-pile hq-tile ${holdingCard?'is-holding':''}" id="dropDiscard" title="${escapeAttr(discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null))}">${holdingCard
+        ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
+        : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
     </div>
     ${showPassOverlay ? `
     <div class="pass-overlay">
@@ -12770,9 +12778,6 @@ function renderMatchUI(){
            header comment) — is preserved by giving the battlefield row itself an equivalent click
            handler (see wireBattlefieldPan's ownRow 'click' listener) rather than dropped along
            with the buttons. -->
-      <div class="discardzone ${holdingCard?'':'compact'}" id="dropDiscard" title="${escapeAttr(discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null))}">${holdingCard
-        ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
-        : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
       <!-- Skip Turn (2026-09-26, "skip turn can be a smaller button on the btm right instead"):
            pulled out of the flex flow (see .skipzone.compact's position:absolute) and pinned to
            the row's own bottom-right corner as a small pill instead of a third full-size box. -->
@@ -13125,7 +13130,6 @@ function wireDropZones(){
     }
   });
   const discardZone = document.getElementById('dropDiscard');
-  if(discardZone && matchState && matchState.selectedUid!=null){ try{ const hc = matchState.players[viewerHandPid(matchState)].hand.find(c=> c.uid===matchState.selectedUid); if(hc) showPitchBadge(hc.defId); }catch(e){} }
   if(discardZone){
     // 2026-09-17, per explicit request ("show how many resources will be gained when pitching
     // a card"): the zone already swaps to "+1 🪙" once a card is TAP-selected (m.selectedUid,
@@ -13172,6 +13176,12 @@ function wireDropZones(){
     // preview during an active native drag, which is expected real-time drop-target feedback and
     // distinct from the plain-click "toggle" bug that prompted this whole rework.
     let discardDragActive = false;
+    discardZone.addEventListener('pointermove', e=>{
+      const m = matchState; if(!m || m.selectedUid==null) return;
+      const hc = m.players[viewerHandPid(m)].hand.find(c=> c.uid===m.selectedUid); if(!hc) return;
+      showResourceTipAbove(null, hc.defId, e.clientX, e.clientY); showPitchBadge(hc.defId);
+    });
+    discardZone.addEventListener('pointerleave', ()=>{ if(!discardDragActive){ hideResourceTip(); hidePitchBadge(); } });
     discardZone.addEventListener('dragover', e=>{
       e.preventDefault(); discardZone.classList.add('dragover');
       const m = matchState;
@@ -13189,13 +13199,13 @@ function wireDropZones(){
       // off the live cursor position (this IS that hover moment — a dragover firing on the
       // discard zone itself) rather than any element's rect, so it genuinely floats above
       // wherever the dragged card currently is instead of the empty hand slot it started from.
-      if(tipDefId) showResourceTipAbove(null, tipDefId, e.clientX, e.clientY); else hideResourceTip();
+      if(tipDefId){ showResourceTipAbove(null, tipDefId, e.clientX, e.clientY); showPitchBadge(tipDefId); } else hideResourceTip();
     });
     discardZone.addEventListener('dragleave', e=>{
       if(discardZone.contains(e.relatedTarget)) return; // moved onto a child span, not actually leaving
       discardZone.classList.remove('dragover');
       discardDragActive = false;
-      hideResourceTip();
+      hideResourceTip(); hidePitchBadge();
       const m = matchState;
       if(m && m.selectedUid==null){ discardZone.innerHTML = discardGraveyardHTML(); discardZone.title = discardZoneTitle(null); }
     });
@@ -15021,9 +15031,8 @@ function renderHand(){
       // Pitch preview (2026-10-05, user: "when the player is hovering the card over the graveyard
       // they should have a more obvious indicator"): the graveyard lights up with what this card
       // would pitch for the moment you pick it up, and grows when you're over it.
-      try{ showPitchBadge(el.getAttribute('data-defid')); }catch(_){}
     });
-    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); });
+    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -15182,12 +15191,10 @@ function pitchValueStatDisplay(c){
   return out;
 }
 function showPitchBadge(defId){
+  // 2026-10-06 (user: "the pitch +1 lumber should follow the card and only appear when hovering
+  // over the graveyard"): the graveyard just glows; the yield itself rides with the card (see
+  // showResourceTipAbove, positioned at the cursor).
   const z = document.getElementById('dropDiscard'); if(!z || !defId) return;
-  const {resource, amount} = pitchYieldOf(defId);
-  const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
-  let b = z.querySelector('.pitch-badge');
-  if(!b){ b = document.createElement('span'); b.className = 'pitch-badge'; b.setAttribute('aria-hidden','true'); z.appendChild(b); }
-  b.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
   z.classList.add('pitch-ready');
 }
 function hidePitchBadge(){
@@ -15259,7 +15266,7 @@ function positionResourceTipAbove(targetEl, cx, cy){
   if(!tip) return;
   if(cx!=null && cy!=null){
     tip.style.left = cx + 'px';
-    tip.style.top = cy + 'px'; // centered directly on the live cursor/drag-image point
+    tip.style.top = (cy - 74) + 'px'; // rides just above the card being dragged, following it
     return;
   }
   if(!targetEl) return;
@@ -15272,7 +15279,7 @@ function showResourceTipAbove(targetEl, defId, cx, cy){
   if(!tip || !defId || (!targetEl && cx==null)) return;
   const {resource, amount} = pitchYieldOf(defId);
   const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
-  tip.textContent = `+${amount} ${meta.glyph}`;
+  tip.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
   tip.hidden = false;
   positionResourceTipAbove(targetEl, cx, cy);
 }
