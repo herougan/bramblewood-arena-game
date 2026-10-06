@@ -223,13 +223,16 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Pixel shatter:** a token breaks into a 4×5 grid of clipped copies of itself that scatter and fade. It has its own chiptune `pixelShatter` cue. Fire still burns tokens away (`pixelShatterVfx`).
 - **Tool:** `tools/effects-lab/sync_fx_src.py [--add fnA,fnB]` refreshes the Lab's copy of game functions.
 
+**Match moments (live, evening):**
+- **Deck shuffle:** at the start of a match, both decks split and riffle together twice after the versus opener closes. It has its own `riffle` cue (`maybeDeckShuffle`, `deckShuffleVfx`).
+- **Leader throne:** a summoned leader rises on a pillar of light, a crown drops onto it, and a `leaderFanfare` plays (`leaderThroneVfx`).
+- **Water ripples:** on water and rain battlefields, a card that lands sends a soft blue ring across the shader floor (`waterRippleAt`).
+- **Known flake:** `tests/e2e/snaps.py` fails about 1 run in 4. The failure is a just-landed card jumping about one slot sideways roughly 850 ms after the render, on Map 2. The same rate happens without today's changes, so it predates them. It's next on the list to fix.
+
 **Coming next (TBC in the Effects Lab):**
 - Heat haze
 - Page curl and pixelate transitions
 - Walking map pawn
-- Deck shuffle at match start
 - Draw flip from the deck
 - Victory parade
-- Leader summon throne
 - Raid telegraph glow
-- Water ripples under cards

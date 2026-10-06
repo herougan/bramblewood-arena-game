@@ -58,6 +58,8 @@
       if(bf && bf.flash) bf.flash(0.15 + Math.random()*0.7, 0.05, [0.85, 0.9, 1], 0.8, 0.7, 700);
       try{ if(Ambience.current() == null) Ambience.play(10); setTimeout(()=> Ambience.thunder(0.5), 50); }catch(e){} },
     sdsky(){ $('#bfLab').classList.toggle('sudden-death'); },
+    ripple(){ if(!bf || !bf.wave) return; const tiles = $$('#bfLab .bf-cards .card-tile'); const host = $('#bfLab').getBoundingClientRect(); const t = tiles[Math.floor(Math.random()*tiles.length)].getBoundingClientRect();
+      bf.wave((t.left + t.width/2 - host.left)/host.width, (t.top + t.height*0.9 - host.top)/host.height, [0.55, 0.8, 1], 0.45, 1000); },
   };
   $$('[data-act]').forEach(b=> b.addEventListener('click', ()=> act[b.dataset.act] && act[b.dataset.act]()));
   const mb = $('[data-act="materia"]'); if(mb) mb.setAttribute('data-fmb', 'craft');
@@ -173,7 +175,7 @@
     ['Sound', 'Synth cue set (90+ cues)', 'live', 'Everywhere'], ['Sound', 'Stereo panning of hits and deaths', 'live', 'Battles'], ['Sound', 'Ambience per place', 'live', '“Music & ambience” slider'], ['Sound', 'Ambience ducking', 'live', 'Big moments'],
     ['Sound', 'Heartbeat and sudden-death sting', 'live', 'Battles'], ['Sound', 'Rival babble voices', 'live', 'Versus opener'], ['Sound', 'Recorded samples for top 5 cues', 'idea', 'Needs audio files'], ['Sound', 'Generative music per people', 'idea', 'Waits on sound direction (D17)'],
     ['Animation', 'Walking map pawn', 'idea', 'Conquest map'], ['Animation', 'Hourglass flip on Wait', 'idea', 'Board cards'], ['Animation', 'Idle breathing on board cards', 'live', 'Board cards'], ['Animation', 'Low-HP tremble', 'live', 'Units at ≤25% HP'], ['Battlefield', 'Castle cracks by HP stage', 'live', 'Castles'], ['Animation', 'Ready pulse', 'live', 'Wait reaches 0'],
-    ['Combat', 'Frost creep on frozen units', 'live', 'Freeze'],['Combat', 'Pixel shatter for tokens', 'live', 'Token deaths'],['Combat', 'Chromatic glitch on shock', 'live', 'Shock'],['Combat', 'Feather burst on flyers', 'live', 'Hits on flyers'],['Battlefield', 'Sudden-death red sky', 'live', 'Turn 20 onward'],['Battlefield', 'Storm lightning with thunder', 'live', 'Storm and rain fields'],['Animation', 'Card drag trail', 'live', 'Dragging a hand card'],['TBC', 'Deck shuffle at match start', 'idea', 'Coming next'],['TBC', 'Draw flip from deck', 'idea', 'Coming next'],['TBC', 'Victory parade', 'idea', 'Coming next'],['TBC', 'Leader summon throne', 'idea', 'Coming next'],['TBC', 'Raid telegraph glow', 'idea', 'Coming next'],['TBC', 'Water ripples under cards', 'idea', 'Coming next'],
+    ['Combat', 'Frost creep on frozen units', 'live', 'Freeze'],['Combat', 'Pixel shatter for tokens', 'live', 'Token deaths'],['Combat', 'Chromatic glitch on shock', 'live', 'Shock'],['Combat', 'Feather burst on flyers', 'live', 'Hits on flyers'],['Battlefield', 'Sudden-death red sky', 'live', 'Turn 20 onward'],['Battlefield', 'Storm lightning with thunder', 'live', 'Storm and rain fields'],['Animation', 'Card drag trail', 'live', 'Dragging a hand card'],['Animation', 'Deck shuffle at match start', 'live', 'Match start'],['TBC', 'Draw flip from deck', 'idea', 'Coming next'],['TBC', 'Victory parade', 'idea', 'Coming next'],['Animation', 'Leader summon throne', 'live', 'Summoning your leader'],['TBC', 'Raid telegraph glow', 'idea', 'Coming next'],['Battlefield', 'Water ripples under landing cards', 'live', 'Water and rain fields'],
   ];
   const label = {live:'<span class="st live">Live</span>', part:'<span class="st part">Partly</span>', idea:'<span class="st idea">Idea</span>'};
   $('#allTbl').innerHTML = '<thead><tr><th>Area</th><th>Effect</th><th>Status</th><th>Where</th></tr></thead><tbody>' + ALL.map(r=> `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${label[r[2]]}</td><td>${r[3]}</td></tr>`).join('') + '</tbody>';
@@ -252,5 +254,7 @@
     if(k === 'feather'){ featherBurst(c); S('featherFlutter'); S('hitAt', 3, false); }
     if(k === 'shatter'){ c.classList.remove('is-frozen'); if(pixelShatterVfx(c, 900)){ S('pixelShatter'); setTimeout(()=>{ const t = c.querySelector('.card-tile'); if(t) gsap.to(t, {opacity:1, duration:.3}); }, 1400); } }
   }));
+  cardRun.throne = ()=>{ const t = $('#throneStage .card-tile'); if(t) leaderThroneVfx(t); };
+  cardRun.shuffle = ()=> deckShuffleVfx([$('#shuffleStage .deck-widget')]);
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));
 })();

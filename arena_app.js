@@ -1748,6 +1748,10 @@ const SoundKit = (()=>{
       [2600, 2100, 2900, 1700, 2400, 1500].forEach((f, i)=> tone(f, 0.04, 'square', 0.035, i*0.025));
       fnoise(0.12, 0.05, {type:'highpass', freq:4000, attack:0.002, crackle:0.03});
     },
+    // Deck riffle (2026-10-06): the two halves of a deck riffled together — a quick run of papery ticks.
+    riffle(){ for(let i = 0; i < 14; i++) fnoise(0.025, 0.04, {type:'bandpass', freq:2600 + Math.random()*900, q:1.2, attack:0.002, delay:i*0.032 + (i>6 ? 0.18 : 0)}); fnoise(0.09, 0.05, {type:'lowpass', freq:900, attack:0.004, delay:0.72}); },
+    // Leader fanfare (2026-10-06): a short rising brass-like triad when the leader takes the field.
+    leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
     // Feather flutter (2026-10-06): a soft papery fwip when a flyer is hit.
     featherFlutter(){ fnoise(0.22, 0.035, {type:'bandpass', freq:2400, freqEnd:900, q:1.4, attack:0.02}); },
     knockOut(){
@@ -12384,6 +12388,7 @@ async function attemptSummonLeader(preferredLane){
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
+  if(m.leaderUid != null){ const lu = m.leaderUid; setTimeout(()=> leaderThroneVfx(lu), Math.round(animMs().strike || 380)); }
   await afterPlayerAction(activePid);
 }
 // LEADER_DRAG_PAYLOAD is the sentinel dataTransfer value that marks "this drag is the Leader
@@ -13248,6 +13253,7 @@ function wireDropZones(){
   wireFacingHover();
   try{ mountBattleWeather(matchState); }catch(e){}
   if(!lightningTimer) try{ scheduleLightning(matchState); }catch(e){}
+  try{ maybeDeckShuffle(matchState); }catch(e){}
   try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
@@ -15773,6 +15779,62 @@ function bleedOutVfx(el, ms, tone){
   el.classList.add('bleeding', 'bleed-' + (tone || 'bleed'));
   return true;
 }
+// Water ripples (2026-10-06, effects "Coming next"): on water and rain battlefields a card that
+// lands sends a soft blue ring across the shader floor.
+const WATER_KINDS = new Set([1, 6, 11]);
+function waterRippleAt(el){
+  try{
+    if(!el || !battleWeather || !battleWeather.wave || !WATER_KINDS.has(battleWeather.kindId)) return;
+    const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+    const b = bf.getBoundingClientRect(), r = el.getBoundingClientRect();
+    battleWeather.wave((r.left + r.width/2 - b.left)/b.width, (r.top + r.height*0.9 - b.top)/b.height, [0.55, 0.8, 1], 0.45, 1000);
+  }catch(e){}
+}
+// Leader throne (2026-10-06, effects "Coming next"): the summoned leader rises on a pillar of light,
+// a crown drops onto the card and a fanfare plays.
+function leaderThroneVfx(uid){
+  const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
+  try{ SoundKit.leaderFanfare(); }catch(e){}
+  if(!hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const r = el.getBoundingClientRect();
+  const beam = document.createElement('div'); beam.className = 'throne-beam'; beam.setAttribute('aria-hidden','true');
+  beam.style.cssText = `left:${r.left + r.width/2}px; top:${r.top + r.height}px; width:${r.width*1.3}px;`;
+  const crown = document.createElement('div'); crown.className = 'throne-crown'; crown.textContent = '👑'; crown.setAttribute('aria-hidden','true');
+  crown.style.cssText = `left:${r.left + r.width/2}px; top:${r.top}px;`;
+  document.body.append(beam, crown);
+  gsap.timeline({onComplete:()=> beam.remove()})
+    .fromTo(beam, {height:0, opacity:0}, {height:r.height*2.2, opacity:1, duration:.35, ease:'power2.out'})
+    .to(beam, {opacity:0, duration:.6, delay:.35, ease:'power1.in'});
+  gsap.timeline({onComplete:()=> crown.remove()})
+    .fromTo(crown, {y:-70, opacity:0, scale:1.6}, {y:-14, opacity:1, scale:1, duration:.45, delay:.2, ease:'bounce.out'})
+    .to(crown, {y:-30, opacity:0, duration:.5, delay:.5, ease:'power1.in'});
+  const t = el.querySelector('.card-tile');
+  if(t) gsap.fromTo(t, {y:6}, {y:-8, duration:.3, delay:.15, ease:'power2.out', yoyo:true, repeat:1, clearProps:'y'});
+}
+// Deck shuffle (2026-10-06, effects "Coming next"): at the start of a match both decks split and
+// riffle together twice. Waits for the versus opener to close so it's actually seen.
+function maybeDeckShuffle(m){
+  if(!m || m._deckShuffled || m._shufflePending || (m.round||1) > 1) return;
+  if(document.querySelector('.vs-opener, .vs-screen')){ m._shufflePending = true; setTimeout(()=>{ m._shufflePending = false; if(m === matchState) maybeDeckShuffle(m); }, 300); return; }
+  m._deckShuffled = true;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!hasGsap() || reduce) return;
+  deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)));
+}
+function deckShuffleVfx(decks){
+  let played = false;
+  decks.forEach((deck, n)=>{
+    if(!deck) return;
+    const halves = [-1, 1].map(dir=>{ const h = document.createElement('div'); h.className = 'shuffle-half'; h.setAttribute('aria-hidden','true'); deck.appendChild(h); return [h, dir]; });
+    const tl = gsap.timeline({delay:n*0.12, onComplete:()=> halves.forEach(([h])=> h.remove())});
+    for(let k = 0; k < 2; k++){
+      tl.to(halves.map(([h])=> h), {x:(i)=> halves[i][1]*24, rotation:(i)=> halves[i][1]*9, y:-4, duration:.18, ease:'power2.out'})
+        .to(halves.map(([h])=> h), {x:0, rotation:0, y:0, duration:.22, ease:'power3.in', stagger:.04});
+    }
+    tl.fromTo(deck, {scale:1}, {scale:1.06, duration:.09, yoyo:true, repeat:1, ease:'power1.out', clearProps:'scale'});
+    if(!played){ played = true; try{ SoundKit.riffle(); setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 420); }catch(e){} }
+  });
+}
 // Chromatic glitch on Shock (2026-10-06, effects "Coming next").
 function glitchVfx(el){
   const t = el && (el.querySelector('.card-tile') || el); if(!t) return;
@@ -17501,6 +17563,7 @@ function playLandingImpact(uid){
   // stay exactly as they were.
   setTimeout(()=>{ el.classList.remove('landing-impact'); }, 300);
   pushNeighborCards(el, {distance:8, durationMs:220});
+  waterRippleAt(el);
 }
 // 2026-09-21 ("The spawning of a card should look sexier"): a quick golden ring pulse + a couple
 // of sparkle glyphs, layered on top of playLandingImpact's existing squash-thud, specifically for
