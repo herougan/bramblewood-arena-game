@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-07
+- Cards flip out of your deck as you draw them; the winners parade with banners.
+
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.
 - Arrow and Fire Arrow get a full bow-shot animation; crits get their own symbol.

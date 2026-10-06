@@ -15006,6 +15006,32 @@ function unplayableReason(pl, d){
   if(need.length) return `Needs ${need.join(' + ')} — you have ${have.join(' + ')}`;
   return 'Can’t play this right now';
 }
+// Draw flip (2026-10-06, effects "Coming next"): a card that has just come into your hand flies
+// out of your deck pile face down and flips face up in its slot. The opening hand deals one by one.
+function drawFlipNewHandCards(m, strip){
+  const seen = m._handSeen || (m._handSeen = new Set());
+  const opening = seen.size === 0;
+  const fresh = [...strip.querySelectorAll('[data-handuid]')].filter(el=> !seen.has(el.getAttribute('data-handuid')));
+  fresh.forEach(el=> seen.add(el.getAttribute('data-handuid')));
+  if(!fresh.length || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const deck = document.getElementById(viewerHandPid(m) === 1 ? 'deckWidgetBottom' : 'deckWidgetTop') || document.getElementById('deckWidgetBottom');
+  if(!deck) return;
+  drawFlipVfx(fresh, deck, opening ? 0.9 : 0);
+}
+function drawFlipVfx(cards, deck, baseDelay){
+  const d = deck.getBoundingClientRect();
+  cards.forEach((el, i)=>{
+    const r = el.getBoundingClientRect(); if(!r.width) return;
+    const back = document.createElement('div'); back.className = 'draw-back'; back.setAttribute('aria-hidden','true'); el.appendChild(back);
+    const delay = (baseDelay||0) + i*0.09;
+    gsap.timeline({delay, onComplete:()=>{ back.remove(); }})
+      .fromTo(el, {x:(d.left + d.width/2) - (r.left + r.width/2), y:(d.top + d.height/2) - (r.top + r.height/2), scaleX:1, scale:.8, rotation:-6},
+        {x:0, y:0, scale:1, rotation:0, duration:.42, ease:'power2.out'})
+      .to(el, {scaleX:0, duration:.11, ease:'power1.in'}, .3)
+      .add(()=>{ back.remove(); })
+      .to(el, {scaleX:1, duration:.13, ease:'back.out(2)', clearProps:'transform'});
+  });
+}
 function renderHand(){
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
@@ -15030,6 +15056,7 @@ function renderHand(){
       ${abilityBadges(d)}
     </div>`;
   }).join('');
+  drawFlipNewHandCards(m, strip);
   strip.querySelectorAll('[data-handuid]').forEach(el=>{
     const uid = Number(el.getAttribute('data-handuid'));
     // Tap-to-arm: click a card, then click a drop zone — the fallback for touch/keyboard
@@ -16986,6 +17013,30 @@ function openWorkshopPage(){
 // the words 'Victory' (or 'Defeat') should appear, in the same way the 'Battle' appears" + "pause
 // the combat, and celebrate the victory"). Same zoom-in as FIGHT!, held longer, with a burst of
 // leaves and sparkles on a win. Not shortened much by fast-forward — it's the payoff moment.
+// Victory parade (2026-10-06, effects "Coming next"): under the Victory sign the winning side's
+// survivors hop in a wave from left to right, each raising a little banner, before the dance.
+function victoryParade(rowId, upOverride){
+  if(!hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const row = typeof rowId === 'string' ? document.getElementById(rowId) : rowId; if(!row) return;
+  const cards = [...row.querySelectorAll(':scope .board-card')].filter(c=> !c.classList.contains('falling') && !c.classList.contains('burning') && !c.classList.contains('bleeding'))
+    .sort((a, b)=> a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+  const up = upOverride || (rowId === 'rowMine' ? -1 : 1);
+  cards.forEach((c, i)=>{
+    const r = c.getBoundingClientRect();
+    const flag = document.createElement('div'); flag.className = 'parade-flag'; flag.textContent = '🚩'; flag.setAttribute('aria-hidden','true');
+    flag.style.cssText = `left:${r.left + r.width/2}px; top:${r.top}px;`; document.body.appendChild(flag);
+    const t0 = 0.25 + i*0.12;
+    gsap.timeline({delay:t0})
+      .to(c, {y:14*up, rotation:-4, duration:.14, ease:'power2.out'})
+      .to(c, {y:0, rotation:4, duration:.18, ease:'bounce.out'})
+      .to(c, {y:10*up, rotation:0, duration:.12, ease:'power2.out'})
+      .to(c, {y:0, duration:.16, ease:'bounce.out', clearProps:'y,rotation'});
+    gsap.timeline({delay:t0, onComplete:()=> flag.remove()})
+      .fromTo(flag, {y:0, opacity:0, scale:.4, rotation:-20}, {y:-22, opacity:1, scale:1, rotation:0, duration:.3, ease:'back.out(2.4)'})
+      .to(flag, {rotation:10, duration:.25, yoyo:true, repeat:2, ease:'sine.inOut'})
+      .to(flag, {y:-34, opacity:0, duration:.35, ease:'power1.in'});
+  });
+}
 async function showEndSign(m){
   const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
   const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
@@ -17010,6 +17061,7 @@ async function showEndSign(m){
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
   battlefield.appendChild(el);
   try{ if(kind==='victory' && SoundKit.win) SoundKit.win(); else if(kind==='defeat' && SoundKit.lose) SoundKit.lose(); }catch(e){}
+  if(m.winner===1 || m.winner===2) try{ victoryParade(m.winner===1 ? 'rowMine' : 'rowEnemy'); }catch(e){}
   if(kind==='victory' && hasGsap()){
     const r = battlefield.getBoundingClientRect();
     for(let i=0;i<28;i++){
