@@ -168,7 +168,8 @@
     ['Screens', 'Versus opener', 'live', 'Before Conquest fights'], ['Screens', 'Victory/Defeat sign with confetti', 'live', 'Match end'], ['Screens', 'Pack light leak and held breath', 'live', 'Pack openings'], ['Screens', 'Page curl, pixelate, ink wash transitions', 'idea', 'Codex, battles, lore'],
     ['Sound', 'Synth cue set (90+ cues)', 'live', 'Everywhere'], ['Sound', 'Stereo panning of hits and deaths', 'live', 'Battles'], ['Sound', 'Ambience per place', 'live', '“Music & ambience” slider'], ['Sound', 'Ambience ducking', 'live', 'Big moments'],
     ['Sound', 'Heartbeat and sudden-death sting', 'live', 'Battles'], ['Sound', 'Rival babble voices', 'live', 'Versus opener'], ['Sound', 'Recorded samples for top 5 cues', 'idea', 'Needs audio files'], ['Sound', 'Generative music per people', 'idea', 'Waits on sound direction (D17)'],
-    ['Animation', 'Walking map pawn', 'idea', 'Conquest map'], ['Animation', 'Hourglass flip on Wait', 'idea', 'Board cards'], ['Animation', 'Idle breathing on board cards', 'idea', 'Board cards'],
+    ['Animation', 'Walking map pawn', 'idea', 'Conquest map'], ['Animation', 'Hourglass flip on Wait', 'idea', 'Board cards'], ['Animation', 'Idle breathing on board cards', 'live', 'Board cards'], ['Animation', 'Low-HP tremble', 'live', 'Units at ≤25% HP'], ['Battlefield', 'Castle cracks by HP stage', 'live', 'Castles'], ['Animation', 'Ready pulse', 'live', 'Wait reaches 0'],
+    ['TBC', 'Frost creep', 'idea', 'Coming next'],['TBC', 'Pixel shatter for tokens', 'idea', 'Coming next'],['TBC', 'Chromatic glitch on shock', 'idea', 'Coming next'],['TBC', 'Sudden-death red sky', 'idea', 'Coming next'],['TBC', 'Storm lightning flash', 'idea', 'Coming next'],['TBC', 'Card drag trail', 'idea', 'Coming next'],['TBC', 'Deck shuffle at match start', 'idea', 'Coming next'],['TBC', 'Draw flip from deck', 'idea', 'Coming next'],['TBC', 'Victory parade', 'idea', 'Coming next'],['TBC', 'Leader summon throne', 'idea', 'Coming next'],['TBC', 'Raid telegraph glow', 'idea', 'Coming next'],['TBC', 'Water ripples under cards', 'idea', 'Coming next'],['TBC', 'Feather burst on flyers', 'idea', 'Coming next'],
   ];
   const label = {live:'<span class="st live">Live</span>', part:'<span class="st part">Partly</span>', idea:'<span class="st idea">Idea</span>'};
   $('#allTbl').innerHTML = '<thead><tr><th>Area</th><th>Effect</th><th>Status</th><th>Where</th></tr></thead><tbody>' + ALL.map(r=> `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${label[r[2]]}</td><td>${r[3]}</td></tr>`).join('') + '</tbody>';
@@ -228,5 +229,9 @@
       setTimeout(()=> t.classList.remove('ready-flare'), 700); },
     crit(){ const c = $('#critStage .board-card') || $('#critStage .card-tile'); if(!c) return; floatText(c, '-11', 'crit'); try{ critStampVfx(c); SoundKit.critTone(); SoundKit.hitAt(11, true); SkillFX.knock(c.querySelector('.card-tile')||c, -90, 1.2); }catch(e){} },
   };
+  cardRun.low = ()=>{ const w = $('#lowStage'); const t = w && w.querySelector('.card-tile'); if(!t) return; const on = !w.classList.contains('lowhp'); w.classList.toggle('lowhp', on); t.style.animation = on ? 'lowHpTremble 2.4s ease-in-out infinite' : ''; const hp = t.querySelector('.stats .hp'); if(hp){ hp.style.color = on ? '#ff8a7a' : ''; hp.style.textShadow = on ? '0 0 6px rgba(255,60,40,.7)' : ''; } };
+  $$('[data-crack]').forEach(b=> b.addEventListener('click', ()=>{ const t = $('#crackStage .card-tile'); if(!t) return; const n = +b.dataset.crack;
+    const prev = [1,2,3].find(k=> t.classList.contains('crack-'+k)) || 0; t.classList.remove('crack-1','crack-2','crack-3'); if(n) t.classList.add('crack-'+n);
+    if(n > prev){ t.classList.remove('crack-new'); void t.offsetWidth; t.classList.add('crack-new'); S('siegeTone'); setTimeout(()=> t.classList.remove('crack-new'), 520); } }));
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));
 })();

@@ -17,6 +17,7 @@ page_css = r'''
 .lab section{margin-top:28px;}
 .lab h2{font-family:'Baloo 2',system-ui,sans-serif; font-size:24px; margin:0 0 4px;}
 .lab .sec-sub{color:var(--ink-muted); margin:0 0 14px; max-width:75ch;}
+.fx.tbc{opacity:.85; border-style:dashed;} .fx.tbc h3{font-size:15px;}
 .fx-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:14px;}
 .fx{background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px; min-width:0;}
 .fx h3{margin:0; font:800 15px 'Baloo 2',system-ui,sans-serif; display:flex; align-items:center; gap:8px; justify-content:space-between;}
@@ -27,6 +28,7 @@ page_css = r'''
 .stage{position:relative; min-height:170px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; background:var(--surface-2); overflow:visible;}
 .stage.dark{background:#1b2416;}
 .stage .card-tile{width:110px !important; height:138px !important; margin:0;}
+#breathStage .card-tile{width:72px !important; height:92px !important;}
 .stage .board-card{position:relative;}
 .btns{display:flex; flex-wrap:wrap; gap:6px;}
 .btns .btn{font-size:12px;}
@@ -76,7 +78,7 @@ html = f'''<title>Bramblewood Effects Lab</title>
   <h1>Bramblewood Effects Lab</h1>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
-<nav class="toc"><a href="#skills">Skills ✨new</a><a href="#cardnew">Card ideas ✨new</a><a href="#cards">Cards</a><a href="#combat">Combat</a><a href="#battlefield">Battlefield shaders</a><a href="#screens">Screens</a><a href="#sound">Sound</a><a href="#ambience">Ambience</a><a href="#all">Full list</a></nav>
+<nav class="toc"><a href="#skills">Skills ✨new</a><a href="#cardnew">Card ideas ✨new</a><a href="#cards">Cards</a><a href="#combat">Combat</a><a href="#battlefield">Battlefield shaders</a><a href="#screens">Screens</a><a href="#sound">Sound</a><a href="#ambience">Ambience</a><a href="#tbc">Coming next</a><a href="#all">Full list</a></nav>
 
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
@@ -107,11 +109,16 @@ html = f'''<title>Bramblewood Effects Lab</title>
 <div class="fx-grid">
   <div class="fx"><h3>Summon slam <span class="st idea">Prototype</span></h3><div class="stage dark" id="slamStage">{{C_SLAM}}</div><div class="btns"><button class="btn small" data-card="slam">▶ Play card</button></div><p>The card drops from above, slams down with a squash, kicks up dust and nudges the felt.</p></div>
   <div class="fx"><h3>Hourglass flip on Wait <span class="st idea">Prototype</span></h3><div class="stage" id="waitStage">{{C_WAIT}}</div><div class="btns"><button class="btn small" data-card="wait">▶ Wait ticks down</button></div><p>The ⏳ badge flips like an hourglass and the number rolls down. Teaches Wait without text.</p></div>
-  <div class="fx"><h3>Idle breathing <span class="st idea">Prototype</span></h3><div class="stage" id="breathStage">{{C_B1}}{{C_B2}}{{C_B3}}</div><p>Resting cards rise and fall a pixel or two, out of step, so the board never looks paused.</p></div>
+  <div class="fx"><h3>Idle breathing <span class="st live">Live</span></h3><div class="stage" id="breathStage">{{C_B1}}{{C_B2}}{{C_B3}}</div><p>Resting cards rise and fall a pixel or two, out of step, so the board never looks paused. Stunned, frozen and sleeping units hold still.</p><div class="where">Board units during a battle</div></div>
   <div class="fx"><h3>Shine sweep <span class="st idea">Prototype</span></h3><div class="stage" id="shineStage">{{C_SHINE}}</div><div class="btns"><button class="btn small" data-card="shine">▶ Sweep</button></div><p>A single diagonal glint crosses a new or upgraded card.</p></div>
-  <div class="fx"><h3>Ready pulse <span class="st idea">Prototype</span></h3><div class="stage dark" id="readyStage">{{C_READY}}</div><div class="btns"><button class="btn small" data-card="ready">▶ Becomes ready</button></div><p>When Wait reaches 0 the card flares gold from the edges and gives a small hop: it can fight now.</p></div>
+  <div class="fx"><h3>Ready pulse <span class="st live">Live</span></h3><div class="stage dark" id="readyStage">{{C_READY}}</div><div class="btns"><button class="btn small" data-card="ready">▶ Becomes ready</button></div><p>When Wait reaches 0 the card flares gold from the edges and gives a small hop: it can fight now.</p></div>
+  <div class="fx"><h3>Low-HP tremble <span class="st live">Live</span></h3><div class="stage" id="lowStage">{{C_LOW}}</div><div class="btns"><button class="btn small" data-card="low">Toggle ≤25% HP</button></div><p>A unit at a quarter of its health or less shivers every couple of seconds and its Health turns red.</p><div class="where">Board units</div></div>
+  <div class="fx"><h3>Castle cracks <span class="st live">Live</span></h3><div class="stage dark" id="crackStage">{{C_CASTLE}}</div><div class="btns"><button class="btn small" data-crack="0">100%</button><button class="btn small" data-crack="1">≤66%</button><button class="btn small" data-crack="2">≤33%</button><button class="btn small" data-crack="3">≤15%</button></div><p>The castle cracks in three stages as it loses Health; each new crack lands with a jolt and a puff of masonry dust.</p><div class="where">Both castles in a battle</div></div>
   <div class="fx"><h3>Crit stamp <span class="st live">Live</span></h3><div class="stage dark" id="critStage">{{C_CRIT}}</div><div class="btns"><button class="btn small" data-card="crit">▶ Critical hit</button></div><p>A slanted CRIT! stamp on a gold starburst slams onto the card; the number gets the crit look.</p></div>
 </div></section>
+
+<section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">Ideas queued for later. Not built yet; listed so you can veto or reorder them.</p>
+<div class="fx-grid"><div class="fx tbc"><h3>🌫️ Heat haze <span class="st idea">TBC</span></h3><p>Shimmering air above fire cards and on the volcano map (shader).</p></div><div class="fx tbc"><h3>🧊 Frost creep <span class="st idea">TBC</span></h3><p>Ice crystals grow in from the corners of a frozen card.</p></div><div class="fx tbc"><h3>💥 Pixel shatter <span class="st idea">TBC</span></h3><p>Tokens burst into pixel squares instead of crumbling.</p></div><div class="fx tbc"><h3>📺 Chromatic glitch <span class="st idea">TBC</span></h3><p>A short RGB split on a shocked or paralysed card.</p></div><div class="fx tbc"><h3>📖 Page curl / pixelate transitions <span class="st idea">TBC</span></h3><p>Codex pages curl; entering a battle pixelates in.</p></div><div class="fx tbc"><h3>🚶 Walking map pawn <span class="st idea">TBC</span></h3><p>Your pawn hops node to node on the Conquest map.</p></div><div class="fx tbc"><h3>🌅 Sudden-death red sky <span class="st idea">TBC</span></h3><p>The battlefield sky bleeds red when sudden death starts.</p></div><div class="fx tbc"><h3>⚡ Storm lightning flash <span class="st idea">TBC</span></h3><p>Storm maps flash white with a delayed thunder roll.</p></div><div class="fx tbc"><h3>✨ Card drag trail <span class="st idea">TBC</span></h3><p>A faint sparkle trail follows a dragged card.</p></div><div class="fx tbc"><h3>🔀 Deck shuffle at match start <span class="st idea">TBC</span></h3><p>Both decks riffle before the first draw.</p></div><div class="fx tbc"><h3>🃏 Draw flip from deck <span class="st idea">TBC</span></h3><p>Drawn cards fly from the deck pile and flip face up.</p></div><div class="fx tbc"><h3>🎺 Victory parade <span class="st idea">TBC</span></h3><p>Survivors march off the board after a win.</p></div><div class="fx tbc"><h3>👑 Leader summon throne <span class="st idea">TBC</span></h3><p>The leader rises on a throne of light when summoned.</p></div><div class="fx tbc"><h3>🎯 Raid telegraph glow <span class="st idea">TBC</span></h3><p>A raid boss glows on the lane it will hit next turn.</p></div><div class="fx tbc"><h3>🌊 Water ripples under cards <span class="st idea">TBC</span></h3><p>Cards dropped on water maps send out ripples (shader).</p></div><div class="fx tbc"><h3>🪶 Feather burst on flyers <span class="st idea">TBC</span></h3><p>Flying units shed feathers when hit.</p></div></div></section>
 
 <section id="cards"><h2>Cards</h2><p class="sec-sub">How cards look at rest and in your collection.</p>
 <div class="fx-grid">
@@ -196,7 +203,7 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 <script src="effects-lab.js"></script>
 '''
 rep={'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
- '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant')}
+ '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
 for k,v in rep.items(): html=html.replace(k, v)
 open(f'{ROOT}/.fxcat/effects.html','w').write(html)
 print(len(html))

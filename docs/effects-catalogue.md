@@ -203,3 +203,28 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Card face:** names sit at the top of the card; ability badges sit between the Attack and Health chips; the 🪽 wing is 20% larger; cost and Wait show as pips (one log per Lumber, one hourglass per turn), with a number only past 4.
 
 **Card prototypes (Lab only):** summon slam, hourglass flip on Wait, idle breathing, shine sweep, ready pulse.
+
+**Board ambience (live, late morning):**
+- **Castle cracks:** three crack layers at ≤66%, ≤33% and ≤15% castle Health. Each new crack lands with a jolt and a puff of masonry dust (`crackStage`, `updateCastleCracks`).
+- **Low-HP tremble:** a unit at ≤25% Health shivers every couple of seconds, and its Health number turns red (`isLowHp`, `.is-low-hp`).
+- **Idle breathing:** board units bob 1.5px, out of step with each other. Stunned, frozen and sleeping units hold still.
+- **Ready pulse:** already live as the gold `readyPulse` when Wait reaches 0; the Lab now marks it live.
+- All three use the CSS `translate` property and `:where()` selectors. That way they never fight GSAP's `transform` tweens, and they never override other card animations.
+
+**Coming next (TBC in the Effects Lab):**
+- Heat haze
+- Frost creep
+- Pixel shatter for tokens
+- Chromatic glitch on shock
+- Page curl and pixelate transitions
+- Walking map pawn
+- Sudden-death red sky
+- Storm lightning flash
+- Card drag trail
+- Deck shuffle at match start
+- Draw flip from the deck
+- Victory parade
+- Leader summon throne
+- Raid telegraph glow
+- Water ripples under cards
+- Feather burst on flyers

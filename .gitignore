@@ -6,3 +6,4 @@ tests/golden/card-matrix-full.json
 graphify-out/
 .vislib/
 .fxcat/
+.hub/

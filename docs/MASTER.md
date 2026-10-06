@@ -13,11 +13,11 @@
 > - **Sound samples (optional):** drop CC0 files for card play, draw, hit, heavy hit and death into `audio/` (Kenney's Impact and Casino packs are ideal). Real recordings will beat further synthesis, and I can't download them from here.
 > - **Two discussion topics:** T1 and T2.
 
-**✨ Effects Lab:** [every animation, shader, light and sound, live and playable](https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE), with a full list of what's built and planned.
+**🧭 Master hub:** [one page with tabs for this doc, the Effects Lab and the Visual Library, plus links to every other Bramblewood page](https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J). The Effects Lab tab has a "Coming next" list of effects marked TBC. The library tab holds 439 shots; near-duplicates were pruned so everything fits in one page.
 
 **⚡ Performance:** [`perf-2026-10-06.md`](perf-2026-10-06.md) explains why the game slowed with many cards, and what was cut (about 42% less main-thread work).
 
-**🖼️ Visual library:** [every screenshot of the game, by area, device and day](https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU), with before/after pairs for the card review. It holds about 510 shots, the most one page can hold, so older crops get pruned as new shots go in. Note: shots before 5 Oct evening show fallback fonts (Claude's test browser couldn't load them); players always had the real fonts.
+**🖼️ Screenshots:** shots before 5 Oct evening show fallback fonts (Claude's test browser couldn't load them); players always had the real fonts.
 
 **Rules for this doc**
 - Keep it **under 20 items**. Anything else lives in the detailed docs.
@@ -26,7 +26,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-06 (morning): bow-shot choreography for Arrow and Fire Arrow, a crit symbol, damage-type icons, a normal knock-out death, heal sound v2, the card face (name at the top, cost and Wait as pips, larger wing), and 8 new skill prototypes in the Effects Lab. Earlier 2026-10-06: your 11-point feedback (victory rush fixed, thinner HP bars, laptop-fit results, attack line under cards, pitch badge, anchored tutorial tips, castle/leader picker, deck view polish, performance pass, Outskirts rain) plus the Effects Lab. Before that, 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-06 (late morning): Master hub (this doc, Effects Lab and Visual Library as tabs); the Graveyard is its own pile on the right, and its +Lumber tip follows the held card and only shows over the Graveyard; no attack-line preview while holding a card; "👁 Show / 🙈 Hide" on the deck toggle; a loading screen that warms the shaders; castle cracks, low-HP tremble and idle breathing on the board; a "think contextually" rule in the style guide; 16 TBC effects listed in the lab. Earlier 2026-10-06 (morning): bow-shot choreography for Arrow and Fire Arrow, a crit symbol, damage-type icons, a normal knock-out death, heal sound v2, the card face (name at the top, cost and Wait as pips, larger wing), and 8 new skill prototypes in the Effects Lab. Earlier 2026-10-06: your 11-point feedback (victory rush fixed, thinner HP bars, laptop-fit results, attack line under cards, pitch badge, anchored tutorial tips, castle/leader picker, deck view polish, performance pass, Outskirts rain) plus the Effects Lab. Before that, 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
