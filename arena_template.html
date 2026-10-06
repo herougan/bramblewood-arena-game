@@ -5319,6 +5319,28 @@
 </style>
 </head>
 <body>
+<!-- Loading screen (2026-10-06): shown first, while fonts, the shaders and the first art load. -->
+<div id="bwLoader" role="progressbar" aria-label="Loading Bramblewood" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+  <div class="bwl-inner">
+    <div class="bwl-acorn" aria-hidden="true">🌰</div>
+    <div class="bwl-title">Bramblewood Arena</div>
+    <div class="bwl-bar"><span id="bwLoaderFill"></span></div>
+    <div class="bwl-step" id="bwLoaderStep">Waking the woods…</div>
+  </div>
+</div>
+<style>
+  #bwLoader{position:fixed; inset:0; z-index:20000; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 40%, #2c3b22, #141a10 70%); color:#f3e3bf; transition:opacity .45s ease;}
+  #bwLoader.is-done{opacity:0; pointer-events:none;}
+  .bwl-inner{display:flex; flex-direction:column; align-items:center; gap:12px; width:min(320px, 80vw);}
+  .bwl-acorn{font-size:54px; animation:bwlBob 1.4s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,.5));}
+  @keyframes bwlBob{50%{transform:translateY(-8px) rotate(-6deg);}}
+  .bwl-title{font:800 22px 'Baloo 2', system-ui, sans-serif; letter-spacing:.02em;}
+  .bwl-bar{width:100%; height:10px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
+  .bwl-bar span{display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#c9853a,#ffd56e); transition:width .25s ease;}
+  .bwl-step{font:600 13px 'Nunito', system-ui, sans-serif; opacity:.75; min-height:1.2em;}
+  @media (prefers-reduced-motion: reduce){ .bwl-acorn{animation:none;} }
+</style>
+
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
      at the top of the screen so i can 'change accounts'... an account that is perpetually in
      tutorial mode, and one that is finished with it"). Retargeted batch #30, per explicit request:

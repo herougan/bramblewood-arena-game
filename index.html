@@ -5329,6 +5329,28 @@
 </style>
 </head>
 <body>
+<!-- Loading screen (2026-10-06): shown first, while fonts, the shaders and the first art load. -->
+<div id="bwLoader" role="progressbar" aria-label="Loading Bramblewood" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+  <div class="bwl-inner">
+    <div class="bwl-acorn" aria-hidden="true">🌰</div>
+    <div class="bwl-title">Bramblewood Arena</div>
+    <div class="bwl-bar"><span id="bwLoaderFill"></span></div>
+    <div class="bwl-step" id="bwLoaderStep">Waking the woods…</div>
+  </div>
+</div>
+<style>
+  #bwLoader{position:fixed; inset:0; z-index:20000; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 40%, #2c3b22, #141a10 70%); color:#f3e3bf; transition:opacity .45s ease;}
+  #bwLoader.is-done{opacity:0; pointer-events:none;}
+  .bwl-inner{display:flex; flex-direction:column; align-items:center; gap:12px; width:min(320px, 80vw);}
+  .bwl-acorn{font-size:54px; animation:bwlBob 1.4s ease-in-out infinite; filter:drop-shadow(0 6px 10px rgba(0,0,0,.5));}
+  @keyframes bwlBob{50%{transform:translateY(-8px) rotate(-6deg);}}
+  .bwl-title{font:800 22px 'Baloo 2', system-ui, sans-serif; letter-spacing:.02em;}
+  .bwl-bar{width:100%; height:10px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,.5);}
+  .bwl-bar span{display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#c9853a,#ffd56e); transition:width .25s ease;}
+  .bwl-step{font:600 13px 'Nunito', system-ui, sans-serif; opacity:.75; min-height:1.2em;}
+  @media (prefers-reduced-motion: reduce){ .bwl-acorn{animation:none;} }
+</style>
+
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
      at the top of the screen so i can 'change accounts'... an account that is perpetually in
      tutorial mode, and one that is finished with it"). Retargeted batch #30, per explicit request:
@@ -9957,7 +9979,29 @@ function reattach(layer, host, prepend){
   return true;
 }
 
-const api = {mount, destroyAll, reattach, isSupported, MAP_KIND, _layers: layers};
+// Warm-up (2026-10-06, loading screen): compile and link both programs once on a throwaway
+// context, so the browser's shader cache has them before the first real layer mounts. Resolves
+// when done (polls KHR_parallel_shader_compile where available, so the page never blocks).
+function precompile(){
+  return new Promise(resolve=>{
+    if(!isSupported()) return resolve(false);
+    let gl = null;
+    try{ const c = document.createElement('canvas'); c.width = c.height = 1; gl = c.getContext('webgl', {antialias:false, depth:false, stencil:false}); }catch(e){}
+    if(!gl) return resolve(false);
+    const ext = gl.getExtension('KHR_parallel_shader_compile');
+    const progs = [];
+    const build = frag=>{ const p = gl.createProgram();
+      const vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, VERT); gl.compileShader(vs);
+      const fs = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(fs, frag); gl.compileShader(fs);
+      gl.attachShader(p, vs); gl.attachShader(p, fs); gl.bindAttribLocation(p, 0, 'a_pos'); gl.linkProgram(p); progs.push(p); };
+    try{ build(MAP_FRAG); build(SCENE_FRAG); }catch(e){ return resolve(false); }
+    const finish = ()=>{ progs.forEach(p=>{ try{ gl.getProgramParameter(p, gl.LINK_STATUS); }catch(e){} }); const lc = gl.getExtension('WEBGL_lose_context'); if(lc) lc.loseContext(); resolve(true); };
+    if(!ext) return setTimeout(finish, 0);
+    const poll = ()=> progs.every(p=> gl.getProgramParameter(p, ext.COMPLETION_STATUS_KHR)) ? finish() : setTimeout(poll, 30);
+    poll();
+  });
+}
+const api = {mount, destroyAll, reattach, isSupported, precompile, MAP_KIND, _layers: layers};
 if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
@@ -31710,6 +31754,35 @@ function triggerEntranceAnimation(instant){
     try{ switchTab('home'); }catch(eRetry){ console.error('[Bramblewood] fallback switchTab(home) also failed:', eRetry); }
   }
 }
+// Loading screen (2026-10-06, user: "add a loading screen to load the shaders in, at least 50%"):
+// fonts, the shader programs and the first art load behind it. It lifts once the shaders are
+// compiled and at least half of everything is in (the rest keeps loading in the background), or
+// after 8 s whatever happens. Weights: shaders 40, fonts 10, art 50.
+setTimeout(function runLoader(){ // after this script finishes, so every module-level const exists
+  const el = document.getElementById('bwLoader'); if(!el) return;
+  const fill = document.getElementById('bwLoaderFill'), stepEl = document.getElementById('bwLoaderStep');
+  let pct = 0, shadersDone = false, closed = false;
+  const add = (n, label)=>{ pct = Math.min(100, pct + n); if(fill) fill.style.width = pct.toFixed(0) + '%'; el.setAttribute('aria-valuenow', String(Math.round(pct))); if(label && stepEl) stepEl.textContent = label; maybeClose(); };
+  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); };
+  const t0 = performance.now();
+  function maybeClose(){ if(shadersDone && pct >= 50) setTimeout(close, Math.max(180, 700 - (performance.now() - t0))); } // never a sub-second flash
+  setTimeout(close, 8000);
+  // fonts
+  try{ (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(()=> add(10, 'Lettering the signposts…')); }catch(e){ add(10); }
+  // shaders
+  const shaderJob = (typeof shadersEnabled === 'function' && shadersEnabled() && ShaderM && ShaderM.precompile) ? ShaderM.precompile() : Promise.resolve(false);
+  if(stepEl) stepEl.textContent = 'Lighting the lamps…';
+  shaderJob.then(()=>{ shadersDone = true; add(40, 'Painting the cards…'); }).catch(()=>{ shadersDone = true; add(40); });
+  // art: the splash, the map backgrounds and the first cards
+  const urls = [];
+  try{ const sp = splashArtURL(); if(sp && !/^data:/.test(sp)) urls.push(sp); }catch(e){}
+  try{ [...document.styleSheets].forEach(sh=>{ let rules = []; try{ rules = sh.cssRules || []; }catch(e){} [...rules].forEach(r=>{ const t = r.cssText || ''; if(t.indexOf('--map-art:') < 0) return; const mm = t.match(/--map-art:\s*url\(["']?([^"')]+)["']?\)/); if(mm && !/^data:/.test(mm[1]) && !urls.includes(mm[1])) urls.push(mm[1]); }); }); }catch(e){}
+  try{ Object.values(getCardDefs()).forEach(d=>{ if(d && d.art && !/^data:/.test(d.art) && urls.length < 40) urls.push(d.art); }); }catch(e){}
+  const per = urls.length ? 50/urls.length : 50;
+  if(!urls.length) add(50);
+  urls.forEach(u=>{ const img = new Image(); let counted = false; const done = ()=>{ if(counted) return; counted = true; add(per); };
+    img.onload = done; img.onerror = done; img.decoding = 'async'; img.src = u; setTimeout(done, 6000); });
+}, 0);
 (function initEntrance(){
   const splash = document.getElementById('splashScreen');
   if(!splash) return;

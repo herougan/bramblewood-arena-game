@@ -439,7 +439,29 @@ function reattach(layer, host, prepend){
   return true;
 }
 
-const api = {mount, destroyAll, reattach, isSupported, MAP_KIND, _layers: layers};
+// Warm-up (2026-10-06, loading screen): compile and link both programs once on a throwaway
+// context, so the browser's shader cache has them before the first real layer mounts. Resolves
+// when done (polls KHR_parallel_shader_compile where available, so the page never blocks).
+function precompile(){
+  return new Promise(resolve=>{
+    if(!isSupported()) return resolve(false);
+    let gl = null;
+    try{ const c = document.createElement('canvas'); c.width = c.height = 1; gl = c.getContext('webgl', {antialias:false, depth:false, stencil:false}); }catch(e){}
+    if(!gl) return resolve(false);
+    const ext = gl.getExtension('KHR_parallel_shader_compile');
+    const progs = [];
+    const build = frag=>{ const p = gl.createProgram();
+      const vs = gl.createShader(gl.VERTEX_SHADER); gl.shaderSource(vs, VERT); gl.compileShader(vs);
+      const fs = gl.createShader(gl.FRAGMENT_SHADER); gl.shaderSource(fs, frag); gl.compileShader(fs);
+      gl.attachShader(p, vs); gl.attachShader(p, fs); gl.bindAttribLocation(p, 0, 'a_pos'); gl.linkProgram(p); progs.push(p); };
+    try{ build(MAP_FRAG); build(SCENE_FRAG); }catch(e){ return resolve(false); }
+    const finish = ()=>{ progs.forEach(p=>{ try{ gl.getProgramParameter(p, gl.LINK_STATUS); }catch(e){} }); const lc = gl.getExtension('WEBGL_lose_context'); if(lc) lc.loseContext(); resolve(true); };
+    if(!ext) return setTimeout(finish, 0);
+    const poll = ()=> progs.every(p=> gl.getProgramParameter(p, ext.COMPLETION_STATUS_KHR)) ? finish() : setTimeout(poll, 30);
+    poll();
+  });
+}
+const api = {mount, destroyAll, reattach, isSupported, precompile, MAP_KIND, _layers: layers};
 if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

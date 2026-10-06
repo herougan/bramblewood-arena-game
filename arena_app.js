@@ -21308,6 +21308,35 @@ function triggerEntranceAnimation(instant){
     try{ switchTab('home'); }catch(eRetry){ console.error('[Bramblewood] fallback switchTab(home) also failed:', eRetry); }
   }
 }
+// Loading screen (2026-10-06, user: "add a loading screen to load the shaders in, at least 50%"):
+// fonts, the shader programs and the first art load behind it. It lifts once the shaders are
+// compiled and at least half of everything is in (the rest keeps loading in the background), or
+// after 8 s whatever happens. Weights: shaders 40, fonts 10, art 50.
+setTimeout(function runLoader(){ // after this script finishes, so every module-level const exists
+  const el = document.getElementById('bwLoader'); if(!el) return;
+  const fill = document.getElementById('bwLoaderFill'), stepEl = document.getElementById('bwLoaderStep');
+  let pct = 0, shadersDone = false, closed = false;
+  const add = (n, label)=>{ pct = Math.min(100, pct + n); if(fill) fill.style.width = pct.toFixed(0) + '%'; el.setAttribute('aria-valuenow', String(Math.round(pct))); if(label && stepEl) stepEl.textContent = label; maybeClose(); };
+  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); };
+  const t0 = performance.now();
+  function maybeClose(){ if(shadersDone && pct >= 50) setTimeout(close, Math.max(180, 700 - (performance.now() - t0))); } // never a sub-second flash
+  setTimeout(close, 8000);
+  // fonts
+  try{ (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(()=> add(10, 'Lettering the signposts…')); }catch(e){ add(10); }
+  // shaders
+  const shaderJob = (typeof shadersEnabled === 'function' && shadersEnabled() && ShaderM && ShaderM.precompile) ? ShaderM.precompile() : Promise.resolve(false);
+  if(stepEl) stepEl.textContent = 'Lighting the lamps…';
+  shaderJob.then(()=>{ shadersDone = true; add(40, 'Painting the cards…'); }).catch(()=>{ shadersDone = true; add(40); });
+  // art: the splash, the map backgrounds and the first cards
+  const urls = [];
+  try{ const sp = splashArtURL(); if(sp && !/^data:/.test(sp)) urls.push(sp); }catch(e){}
+  try{ [...document.styleSheets].forEach(sh=>{ let rules = []; try{ rules = sh.cssRules || []; }catch(e){} [...rules].forEach(r=>{ const t = r.cssText || ''; if(t.indexOf('--map-art:') < 0) return; const mm = t.match(/--map-art:\s*url\(["']?([^"')]+)["']?\)/); if(mm && !/^data:/.test(mm[1]) && !urls.includes(mm[1])) urls.push(mm[1]); }); }); }catch(e){}
+  try{ Object.values(getCardDefs()).forEach(d=>{ if(d && d.art && !/^data:/.test(d.art) && urls.length < 40) urls.push(d.art); }); }catch(e){}
+  const per = urls.length ? 50/urls.length : 50;
+  if(!urls.length) add(50);
+  urls.forEach(u=>{ const img = new Image(); let counted = false; const done = ()=>{ if(counted) return; counted = true; add(per); };
+    img.onload = done; img.onerror = done; img.decoding = 'async'; img.src = u; setTimeout(done, 6000); });
+}, 0);
 (function initEntrance(){
   const splash = document.getElementById('splashScreen');
   if(!splash) return;
