@@ -59,41 +59,78 @@ os.makedirs(os.path.join(OUT, 'img'))
 for r in raw2: shutil.copy(os.path.join(VL, 'img', r[0] + '.webp'), os.path.join(OUT, 'img', r[0] + '.webp'))
 
 # 3) Master doc, rendered. Links to the hub's own tabs switch tabs; links to other .md docs become plain names.
-md = open(os.path.join(ROOT, 'docs', 'MASTER.md'), encoding='utf-8').read()
-# Python-Markdown needs a blank line before a list; GitHub doesn't. Add one where a list starts
-# right under a paragraph (also inside blockquotes), and indent nested items to 4 spaces.
-lines, prev = [], ''
-for ln in md.split('\n'):
-    m = re.match(r'^(>\s?)?(\s*)([-*]|\d+\.)\s', ln)
-    if m:
-        q, ind = m.group(1) or '', m.group(2)
-        ln = q + ' ' * (len(ind) * 2) + ln[len(q) + len(ind):]
-        pm = re.match(r'^(>\s?)?\s*([-*]|\d+\.)\s', prev)
-        if not pm and prev.strip() not in ('', '>'): lines.append(q.rstrip() if q else '')
-    lines.append(ln); prev = ln
-md = '\n'.join(lines)
-body = markdown.markdown(md, extensions=['tables', 'sane_lists'])
-body = re.sub(r'<a href="(?!https?:)([^"#]+\.md)[^"]*">(.*?)</a>', r'<span class="doc-ref" title="Project doc: claude/\1">\2</span>', body)
-body = body.replace('href="https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE"', 'href="#lab" data-tab="lab"')
-body = body.replace('href="https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU"', 'href="#library" data-tab="library"')
-if HUB_URL: body = body.replace(f'href="{HUB_URL}"', 'href="#master" data-tab="master"')
-body = re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', body)
+def md_html(md):
+    # Python-Markdown needs a blank line before a list; GitHub doesn't. Add one where a list starts
+    # right under a paragraph (also inside blockquotes), and indent nested items to 4 spaces.
+    lines, prev = [], ''
+    for ln in md.split('\n'):
+        m = re.match(r'^(>\s?)?(\s*)([-*]|\d+\.)\s', ln)
+        if m:
+            q, ind = m.group(1) or '', m.group(2)
+            ln = q + ' ' * (len(ind) * 2) + ln[len(q) + len(ind):]
+            pm = re.match(r'^(>\s?)?\s*([-*]|\d+\.)\s', prev)
+            if not pm and prev.strip() not in ('', '>'): lines.append(q.rstrip() if q else '')
+        lines.append(ln); prev = ln
+    body = markdown.markdown('\n'.join(lines), extensions=['tables', 'sane_lists', 'fenced_code'])
+    body = re.sub(r'<a href="(?!https?:|#)([^"#]+\.md)[^"]*">(.*?)</a>', r'<span class="doc-ref" title="Project doc: claude/\1">\2</span>', body)
+    body = body.replace('href="https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE"', 'href="#lab" data-tab="lab"')
+    body = body.replace('href="https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU"', 'href="#library" data-tab="library"')
+    if HUB_URL: body = body.replace(f'href="{HUB_URL}"', 'href="#master" data-tab="master"')
+    return re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', body)
+rd = lambda *p: open(os.path.join(ROOT, *p), encoding='utf-8').read()
+body = md_html(rd('docs', 'MASTER.md'))
+changelog = md_html(rd('docs', 'CHANGELOG.md'))
 
-PAGES = [
-  ('Play the game', 'https://bramblewood-arena.vercel.app', 'The live site. Every push to main deploys here.', '🎮'),
-  ('UI Review', 'https://claude.ai/artifact/Cud1iM6QLLQXrm1CvmUEZh', 'Screen-by-screen UI critique with screenshots (3 Oct).', '🔍'),
-  ('Open Items', 'https://claude.ai/artifact/LwqZ67zLJNhnwBQ29dJmXE', 'Questions and decisions waiting on you (28 Sep snapshot).', '📌'),
-  ('Backlog', 'https://claude.ai/artifact/HLRyKaUiQVTkJHguYcCUeP', 'The earlier backlog board (22 Sep).', '🗂️'),
-  ('Ledger', 'https://claude.ai/artifact/4T6KQk3yawD8KgKG53sbPc', 'Economy and reward ledger (21 Sep).', '📒'),
-  ('Deploy Bundle', 'https://claude.ai/artifact/3h8ZDTeo1WETdV3qMihetw', 'The bundle handed to the deploy session (24 Sep).', '📦'),
-  ('The Bramblewood Codex', 'https://claude.ai/artifact/AFsdn5nFBHHWJZLeJR95oZ', 'Early card and lore codex (9 Sep).', '📖'),
-  ('Battle Simulator', 'https://claude.ai/artifact/NDa8AVgwhdhTcbfnDsaypd', 'Early balance simulator (9 Sep).', '⚖️'),
-  ('Bramblewood Skirmish', 'https://claude.ai/artifact/Gua9JW7p3XQz78ayNJHewo', 'The first playable prototype (9 Sep).', '🗡️'),
-  ('Bramblewood Arena (old build)', 'https://claude.ai/artifact/B6ZDRnca4MhdTLLFhfCdZz', 'An artifact build of the game from 17 Sep; the live site is newer.', '🏟️'),
-  ('Effects Lab (standalone)', 'https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE', 'Older standalone copy; the tab here is the current one.', '✨'),
-  ('Visual Library (standalone)', 'https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU', 'Older standalone copy with every shot; the tab here is pruned.', '🖼️'),
+# 4) Claude's guide: standing instructions, skills, and the docs to read before a task.
+RULES = [
+  'End every update with the Master doc in view (<code>project_write claude/MASTER.md</code>, <code>present_to_user: true</code>).',
+  'Never buy PixelLab, Supabase or Vercel credits or plans without explicit approval.',
+  'T3 (server-checked fights) is applied only when you say "apply it".',
+  'Never use the watermarked stock image.',
+  'Your email identifies you only; it is never sent to another service unless you ask.',
+  'Think contextually: a label leaves out what its position already says.',
+  'Work autonomously on "continue"; push back honestly; keep reports short.',
 ]
-links = ''.join(f'<a class="pg" href="{u}" target="_blank" rel="noopener"><span class="pg-i" aria-hidden="true">{i}</span><span><b>{H.escape(n)}</b><small>{H.escape(d)}</small></span></a>' for n, u, d, i in PAGES)
+SKILLS = sorted(f for f in os.listdir(os.path.join(ROOT, 'docs', 'skills')) if f.endswith('.md'))
+def skill_card(f):
+    t = rd('docs', 'skills', f); fm = re.match(r'---\n(.*?)\n---\n', t, re.S)
+    meta = dict(re.findall(r'^(\w+):\s*(.*)$', fm.group(1), re.M)) if fm else {}
+    return (f'<details class="card"><summary><b>/{H.escape(meta.get("name", f[:-3]))}</b><small>{H.escape(meta.get("description", ""))}</small></summary>'
+            f'<div class="doc">{md_html(t[fm.end():] if fm else t)}</div></details>')
+GUIDE = [  # (task, doc file, source)
+  ('Any design work (start here)', 'game-design-standard.md', 'guide'),
+  ('Any visual or UX change', 'style-guideline.md', 'guide'),
+  ('A new mechanic, skill or status', 'mechanics-guideline.md', 'guide'),
+  ('Build, new source file, deploy', 'context-architecture-pipeline.md', 'guide'),
+  ('Combat rules and the engine', 'context-combat-engine.md', 'guide'),
+  ('Currencies, rewards, levels', 'context-economy-progression.md', 'guide'),
+  ('Screens, layout, phone sizes', 'context-ui-layout.md', 'guide'),
+  ('Animation and effects', 'context-vfx-animation.md', 'guide'),
+  ('Sound', 'context-audio.md', 'guide'),
+  ('Sound cue list', 'sfx-cue-sheet.md', 'docs'),
+  ('Card art (PixelLab)', 'pixellab-art-batch-status.md', 'guide'),
+  ('Testing', 'testing-strategy.md', 'docs'),
+  ('Translations', 'i18n.md', 'docs'),
+  ('Lore, names, rival lines', 'lore-bible.md', 'docs'),
+  ('Anything waiting on a decision', 'decisions.md', 'docs'),
+]
+def doc_src(f, src):
+    pth = os.path.join(ROOT, '.guide-src' if src == 'guide' else 'docs', f)
+    return open(pth, encoding='utf-8').read() if os.path.exists(pth) else None
+rows = ''.join(f'<tr><td>{H.escape(t)}</td><td><a href="#doc-{f[:-3]}" class="jump">claude/{f}</a></td></tr>' for t, f, _ in GUIDE)
+docs_html = ''
+for t, f, src in GUIDE:
+    txt = doc_src(f, src)
+    if txt is None: continue
+    docs_html += f'<details class="card" id="doc-{f[:-3]}"><summary><b>claude/{f}</b><small>Read before: {H.escape(t[0].lower() + t[1:])}</small></summary><div class="doc">{md_html(txt)}</div></details>'
+skills_html = ''.join(skill_card(f) for f in SKILLS)
+rules_html = ''.join(f'<li>{r}</li>' for r in RULES)
+guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
+  '<p class="lede">What Claude reads and follows before working on Bramblewood. Skills are step-by-step procedures; the docs below are the rules and context for each area.</p>'
+  f'<h2>Standing instructions</h2><ul>{rules_html}</ul>'
+  '<h2>Skills</h2><p class="note">Proposed on 6 Oct. Save them from the review card in chat; once saved, they load automatically when a task matches.</p>' + skills_html +
+  f'<h2>Read before…</h2><table><thead><tr><th>Task</th><th>Doc</th></tr></thead><tbody>{rows}</tbody></table>'
+  '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth.</p>' + docs_html + '</div>')
 
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bramblewood Master Hub</title>
@@ -126,6 +163,20 @@ iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}
 .doc th,.doc td{{border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top;}}
 .doc th{{background:var(--surface-2);}}
 .doc li{{margin:2px 0;}}
+header .play{{order:3; margin:0 0 8px auto; font:700 13px 'Baloo 2',system-ui,sans-serif; color:var(--accent-ink); background:var(--accent); padding:4px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}}
+nav[role=tablist]{{order:2;}}
+@media (max-width:640px){{ header h1{{font-size:17px;}} nav[role=tablist]{{order:4; flex-basis:100%;}} }}
+.guide .lede{{color:var(--ink-muted);}} .guide .note{{color:var(--ink-muted); font-size:14px; margin:0 0 10px;}}
+details.card{{background:var(--surface); border:1px solid var(--line); border-radius:12px; margin:8px 0; padding:0 14px;}}
+details.card > summary{{cursor:pointer; padding:12px 0; list-style:none; display:flex; flex-direction:column; gap:2px;}}
+details.card > summary::-webkit-details-marker{{display:none;}}
+details.card > summary b{{font-family:'Baloo 2',system-ui,sans-serif; font-size:16px;}}
+details.card > summary b::before{{content:'▸ '; color:var(--accent);}} details.card[open] > summary b::before{{content:'▾ ';}}
+details.card > summary small{{color:var(--ink-muted); font-size:13px;}}
+details.card .doc{{padding:0 0 16px; max-width:none;}}
+details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
+.doc pre{{background:var(--surface-2); padding:10px 12px; border-radius:8px; overflow-x:auto; font-size:13px;}}
+.doc pre code{{background:none; padding:0;}}
 .pages{{max-width:900px; margin:0 auto; padding:20px 16px 60px;}}
 .pages h2{{font:800 22px 'Baloo 2',system-ui,sans-serif; margin:0 0 4px;}}
 .pages p{{color:var(--ink-muted); margin:0 0 16px;}}
@@ -136,28 +187,31 @@ iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}
 .pg b{{display:block; font-family:'Baloo 2',system-ui,sans-serif;}}
 .pg small{{color:var(--ink-muted); font-size:13px;}}
 </style></head><body>
-<header><h1>🌿 Bramblewood</h1>
+<header><h1>🌿 Bramblewood</h1><a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play ↗</a>
 <nav role="tablist" aria-label="Pages">
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">📜 Master</button>
+<button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
-<button role="tab" id="t-pages" aria-controls="p-pages" data-tab="pages">🔗 All pages</button>
+<button role="tab" id="t-guide" aria-controls="p-guide" data-tab="guide">🧠 Claude's guide</button>
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc">{body}</article></section>
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
-<section class="panel" id="p-pages" role="tabpanel" aria-labelledby="t-pages" hidden><div class="pages"><h2>All Bramblewood pages</h2><p>The tabs above hold the current Master doc, Effects Lab and Visual Library. Everything else made for this project opens in a new tab.</p><div class="pg-grid">{links}</div></div></section>
+<section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc">{changelog}</article></section>
+<section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>
 <script>
 const tabs = [...document.querySelectorAll('[role=tab]')];
 function show(id){{
   if(!document.getElementById('p-'+id)) id = 'master';
   tabs.forEach(t=>{{ const on = t.dataset.tab===id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('p-'+t.dataset.tab).hidden = !on; }});
+  const cur = tabs.find(t=> t.dataset.tab===id); if(cur) cur.scrollIntoView({{inline:'nearest', block:'nearest'}});
   const fr = document.querySelector('#p-'+id+' iframe'); if(fr && !fr.src) fr.src = fr.dataset.src;
   try{{ history.replaceState(null, '', '#'+id); }}catch(e){{}}
 }}
-document.addEventListener('click', e=>{{ const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
+document.addEventListener('click', e=>{{ const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); const d = document.querySelector(j.getAttribute('href')); if(d){{ d.open = true; d.scrollIntoView({{behavior:'smooth', block:'start'}}); }} return; }} const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
 document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
   const i = tabs.findIndex(t=> t.getAttribute('aria-selected')==='true'); let j = i;
   if(e.key==='ArrowRight') j = (i+1)%tabs.length; else if(e.key==='ArrowLeft') j = (i-1+tabs.length)%tabs.length; else return;
