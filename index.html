@@ -5023,10 +5023,27 @@
   .dmg-float{font-family:'Lilita One','Baloo 2',system-ui,sans-serif !important; font-weight:400 !important; letter-spacing:.5px !important;
     --g1:#fff6e0; --g2:#ff6a4d; --edge:#2a0604;
     color:transparent !important; -webkit-text-stroke:0 !important; text-shadow:none !important;}
-  .dmg-float::before, .dmg-float::after{content:attr(data-t); position:absolute; left:0; top:0; white-space:nowrap;}
-  .dmg-float::before{color:var(--edge); -webkit-text-stroke:7px var(--edge); paint-order:stroke fill; text-shadow:0 3px 0 var(--edge), 0 5px 6px rgba(0,0,0,.55);}
-  .dmg-float::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
+  .dmg-float{display:inline-flex !important; align-items:center; gap:.12em;}
+  .dmg-float .df-num{position:relative; color:transparent;}
+  .dmg-float .df-num::before, .dmg-float .df-num::after{content:attr(data-t); position:absolute; left:0; top:0; white-space:nowrap;}
+  .dmg-float .df-num::before{color:var(--edge); -webkit-text-stroke:7px var(--edge); paint-order:stroke fill; text-shadow:0 3px 0 var(--edge), 0 5px 6px rgba(0,0,0,.55);}
+  .dmg-float .df-num::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
     -webkit-background-clip:text; background-clip:text;}
+  .dmg-float .df-ico{font-size:.78em; line-height:1; filter:drop-shadow(0 2px 0 rgba(0,0,0,.55)) drop-shadow(0 0 6px rgba(0,0,0,.35));}
+  /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
+  .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}
+  .dmg-float .df-burst{position:absolute; left:50%; top:50%; width:1.9em; height:1.9em; margin:-.95em 0 0 -.95em; z-index:-1;
+    background:radial-gradient(circle, #fff6c8 0 18%, #ffcf3a 34%, #ff8a1c 58%, rgba(255,120,20,0) 72%);
+    clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 50%,72% 60%,85% 88%,59% 70%,50% 100%,41% 70%,15% 88%,28% 60%,0 50%,28% 40%,15% 12%,41% 30%);
+    animation:critBurst .9s ease-out forwards;}
+  @keyframes critBurst{0%{transform:scale(.2) rotate(0);} 25%{transform:scale(1.1) rotate(20deg);} 100%{transform:scale(1) rotate(60deg); opacity:.0;}}
+  .crit-stamp{position:absolute; left:50%; top:46%; z-index:14; pointer-events:none;}
+  .crit-stamp b{position:relative; display:block; font:400 clamp(14px, 20cqw, 28px)/1 'Lilita One','Baloo 2',sans-serif; color:#fff2d0; letter-spacing:1px; padding:2px 8px;
+    border:3px solid #ff5a3a; border-radius:8px; background:rgba(120,10,0,.7); text-shadow:0 2px 0 #5a0a00; white-space:nowrap;}
+  .crit-stamp .cs-burst{position:absolute; left:50%; top:50%; width:150%; aspect-ratio:1; transform:translate(-50%,-50%); z-index:-1;
+    background:radial-gradient(circle, rgba(255,230,140,.95) 0 20%, rgba(255,150,40,.7) 45%, rgba(255,120,20,0) 70%);
+    clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 50%,72% 60%,85% 88%,59% 70%,50% 100%,41% 70%,15% 88%,28% 60%,0 50%,28% 40%,15% 12%,41% 30%);}
+  .dmg-float.heat{--g1:#fff2d8; --g2:#ff8a2a; --edge:#2a0c02;}
   .dmg-float.heavy{font-size:46px; --g2:#ff3d2e;}
   .dmg-float.hq-big{font-size:44px;}
   .dmg-float.blocked{--g1:#f2f6ff; --g2:#8fb0d8; --edge:#0e1a2c;}
@@ -5241,6 +5258,57 @@
   @keyframes rainFall{to{background-position:-30px 120px;}}
   .battlefield.is-raining{box-shadow:inset 0 0 0 999px rgba(40,60,90,.10);}
   @media (prefers-reduced-motion:reduce){ .battlefield.is-raining::after{animation:none;} }
+
+  /* ===== Skill effects (bramblewood-skillfx.js, 2026-10-06) ===== */
+  .sfx{position:fixed; left:0; top:0; pointer-events:none; z-index:9990;}
+  .sfx-arrow{width:76px; height:27px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));}
+  .sfx-arrow img{width:100%; height:100%; image-rendering:pixelated; display:block;}
+  .sfx-arrow-glyph{font-size:22px;}
+  .sfx-arrow.is-fire{filter:drop-shadow(-12px 0 5px rgba(255,140,40,.8)) drop-shadow(0 0 7px rgba(255,190,60,.95));}
+  .sfx-tipflame{width:18px; height:18px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:radial-gradient(circle at 50% 65%, #fff6c2, #ffb43a 45%, rgba(255,90,20,.0) 72%);
+    filter:blur(.4px) drop-shadow(0 0 6px rgba(255,140,40,.95)); animation:tipFlicker .12s steps(2) infinite;}
+  @keyframes tipFlicker{50%{transform:scale(1.18, .9);}}
+  .sfx-ember{width:6px; height:6px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,120,30,.85);}
+  .sfx-ring{border-radius:50%; border:2px solid rgba(255,255,255,.85);}
+  .sfx-ring.sfx-string{border-color:rgba(255,240,200,.9); border-width:2px;}
+  .sfx-ring.sfx-ignite{border:3px solid rgba(255,150,40,.95); box-shadow:0 0 18px 4px rgba(255,120,20,.7), inset 0 0 14px rgba(255,200,80,.8);}
+  .sfx-ring.sfx-poison{border-color:rgba(130,230,80,.9); box-shadow:0 0 12px rgba(110,220,60,.7);}
+  .sfx-ring.sfx-frost{border:3px solid rgba(180,225,255,.95); box-shadow:0 0 16px rgba(140,200,255,.8), inset 0 0 12px rgba(220,245,255,.8);}
+  .sfx-ring.sfx-zap{border-color:rgba(200,220,255,.95); box-shadow:0 0 14px rgba(160,190,255,.9);}
+  .sfx-ring.sfx-heal{border:3px solid rgba(120,235,140,.9); box-shadow:0 0 16px rgba(90,220,120,.6);}
+  .sfx-bit{width:6px; height:6px; border-radius:1px;}
+  .sfx-bit-wood{background:#8b5a2b; width:7px; height:3px;}
+  .sfx-bit-fire{background:#ffcf5a; border-radius:50%; box-shadow:0 0 8px 3px rgba(255,110,20,.85);}
+  .sfx-bit-poison{background:#8ae04a; border-radius:50%; box-shadow:0 0 6px rgba(110,220,60,.8);}
+  .sfx-bit-ice{background:#e6f6ff; width:5px; height:9px; box-shadow:0 0 6px rgba(160,210,255,.9); clip-path:polygon(50% 0, 100% 100%, 0 100%);}
+  .sfx-bit-zap{background:#eaf0ff; width:3px; height:10px; box-shadow:0 0 8px rgba(170,200,255,1);}
+  .sfx-dart{width:30px; height:4px; border-radius:2px; background:linear-gradient(90deg, rgba(110,220,60,0), #6fd33b 40%, #e8ffd0); box-shadow:0 0 8px rgba(110,220,60,.8);}
+  .sfx-shard{width:24px; height:24px; background:linear-gradient(135deg,#ffffff,#a9dcff 50%,#4f9fe0); clip-path:polygon(50% 0, 70% 40%, 100% 50%, 70% 60%, 50% 100%, 30% 60%, 0 50%, 30% 40%); filter:drop-shadow(0 0 8px rgba(150,210,255,.95));}
+  .sfx-bolt path{fill:none; stroke:#f2f6ff; stroke-width:2.5; stroke-linejoin:round;}
+  .sfx-bolt path.glow{stroke:rgba(150,180,255,.65); stroke-width:9; filter:blur(3px);}
+  .sfx-plus{color:#6fe08a; font:900 22px 'Baloo 2',system-ui,sans-serif; text-shadow:0 0 8px rgba(90,220,120,.8), 0 2px 0 rgba(0,0,0,.4);}
+  .sfx-dome{border-radius:50% 50% 46% 46%; background:radial-gradient(ellipse at 50% 30%, rgba(220,235,255,.55), rgba(140,180,255,.18) 60%, rgba(140,180,255,0) 75%); border:2px solid rgba(200,220,255,.85); box-shadow:0 0 20px rgba(150,190,255,.6);}
+  .sfx-banner{font-size:30px; filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));}
+  .sfx-chevron{color:#ffd56e; font:900 20px system-ui,sans-serif; text-shadow:0 0 8px rgba(255,200,80,.9);}
+  .card-tile.sfx-scorch{box-shadow:inset 0 0 0 2px rgba(255,140,40,.9), inset 0 -24px 30px -10px rgba(255,90,20,.6) !important;}
+  .card-tile.sfx-frosted{box-shadow:inset 0 0 0 2px rgba(180,225,255,.95), inset 0 0 26px rgba(200,235,255,.7) !important; filter:saturate(.7) brightness(1.08);}
+
+  /* Card face v3 (2026-10-06, user feedback) */
+  /* Cost and Wait as pips: one log per Lumber, one hourglass per turn of Wait. */
+  .card-tile .costbadge, .card-tile .waitbadge{padding:0 4px !important; gap:0 !important;}
+  .pips{display:inline-flex; align-items:center; line-height:1;}
+  .pips i{font-style:normal; font-size:1.08em; filter:drop-shadow(0 1px 0 rgba(0,0,0,.6));}
+  .pips i + i{margin-left:-.28em;}
+  .pips.is-num b{margin-left:1px; font-weight:800;}
+  .card-tile .costbadge, .card-tile .waitbadge{min-width:0 !important;}
+  /* Names sit higher, leaving the middle of the art (eyes) clear. */
+  .card-tile .nm{margin-top:max(2px, 3.5cqw) !important;}
+  .card-tile .badges, .card-tile .badges-2row{top:auto !important; bottom:clamp(3px, 4cqw, 8px); max-width:46% !important;}
+  .card-tile .badges .abadge{font-size:clamp(11px, 13cqw, 20px);}
+  /* Flying wing 20% larger */
+  .abadge .ab-wing{display:inline-block; font-size:1.2em; line-height:.9;}
+
+  .leaf-puff{position:fixed; left:0; top:0; z-index:9990; pointer-events:none; font-size:15px; color:#cbb48a; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
 </style>
 </head>
 <body>
@@ -9877,6 +9945,228 @@ if(root) root.BramblewoodShaders = api;
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
 
+// Skill effects (2026-10-06): choreographed combat-skill animations, shared by the game and the
+// Effects Lab. Each takes real DOM elements (a board card, a castle tile, any box) and plays on
+// fixed-position overlays, so a re-render underneath can't cut it off. GSAP drives the motion;
+// without it every effect still fires its callbacks on time.
+//
+//   SkillFX.bowShot(shooter, target, {fire, draw, flight, onRelease, onImpact, light})
+//   SkillFX.volley(shooter, targets, opts)      SkillFX.pierce(shooter, first, second, opts)
+//   SkillFX.dart(shooter, target, opts)         SkillFX.frostBolt(shooter, target, opts)
+//   SkillFX.lightning(shooter, targets, opts)   SkillFX.heal(target, opts)
+//   SkillFX.shieldUp(target, opts)              SkillFX.rally(cards, opts)
+//
+// `light(x, y, rgb, big)` is optional: the game passes its battlefield point-light so impacts
+// light up the felt. Times are in ms and already scaled by the caller for battle speed.
+(function(root){
+'use strict';
+if(typeof document === 'undefined') return;
+const G = ()=> (typeof gsap !== 'undefined' ? gsap : null);
+const reduce = ()=> !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+const tileOf = el=> (el && el.querySelector && el.querySelector('.card-tile')) || el;
+const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height, r}; };
+const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return e; };
+const IMG = {arrow:'', fire:''};
+// delayedCall follows GSAP's global time scale (slow motion in the Lab, hit-stop in the game)
+const later = (fn, ms)=>{ const run = ()=>{ try{ fn && fn(); }catch(e){} }; const g = G(); if(g) g.delayedCall(Math.max(0, ms|0)/1000, run); else setTimeout(run, Math.max(0, ms|0)); };
+
+// A point somewhere on the target's body, not dead centre, so volleys spread.
+function aimPoint(target){
+  const c = centre(target);
+  return {x: c.r.left + c.w*(0.36 + Math.random()*0.28), y: c.r.top + c.h*(0.34 + Math.random()*0.3)};
+}
+// Splinters / sparks bursting from a point, thrown back along the shot's direction.
+function burst(x, y, ang, kind, n){
+  const g = G(); if(!g || reduce()) return;
+  for(let i = 0; i < (n||8); i++){
+    const p = layer('sfx-bit sfx-bit-' + kind);
+    const a = (ang + 180 + (Math.random()*120 - 60)) * Math.PI/180, d = 18 + Math.random()*34;
+    g.set(p, {x:x - 3, y:y - 3, rotation:Math.random()*360, opacity:1, scale:kind==='fire' ? 1.2 : 1});
+    g.to(p, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d + (kind==='fire' ? -16 : 10)}`, rotation:`+=${Math.random()*200-100}`, opacity:0, scale:.3,
+      duration:.35 + Math.random()*.25, ease:'power2.out', onComplete:()=> p.remove()});
+  }
+}
+function ring(x, y, cls, size, ms){
+  const g = G(); const r = layer('sfx-ring ' + (cls||''));
+  if(!g){ later(()=> r.remove(), ms||400); return; }
+  g.set(r, {x:x, y:y, xPercent:-50, yPercent:-50, width:8, height:8, opacity:.95});
+  g.to(r, {width:size||70, height:size||70, opacity:0, duration:(ms||420)/1000, ease:'power2.out', onComplete:()=> r.remove()});
+}
+// The target reacts to a hit: knocked back along the shot, squashes, springs back.
+function knock(target, ang, power){
+  const g = G(); if(!g || reduce()) return;
+  const t = tileOf(target); const k = power||1;
+  const dx = Math.cos(ang*Math.PI/180)*8*k, dy = Math.sin(ang*Math.PI/180)*8*k;
+  g.timeline().to(t, {x:dx, y:dy, rotation:dx*0.6, scaleX:1 + 0.05*k, scaleY:1 - 0.07*k, duration:.06, ease:'power2.out'})
+    .to(t, {x:0, y:0, rotation:0, scaleX:1, scaleY:1, duration:.42, ease:'elastic.out(1, 0.45)', clearProps:'transform'});
+}
+
+// ---- Arrow / Fire Arrow --------------------------------------------------------------------
+// 1 Draw: the archer leans back away from the target while an arrow, nocked at its centre, is
+//   pulled back along the line of fire (fire arrows light up and flicker at the tip).
+// 2 Release + recoil: the arrow leaves; the archer snaps forward then kicks back; a bowstring
+//   ring pops at the release point.
+// 3 Flight: accelerating, with a slight arc and a speed streak (fire arrows shed embers).
+// 4 Impact: the arrow sticks and quivers, the target is knocked back, splinters (or a burst of
+//   flame and an ignite ring) fly, then the arrow fades.
+function bowShot(shooter, target, o){
+  o = o || {};
+  const draw = o.draw == null ? 240 : o.draw, flight = o.flight == null ? 260 : o.flight;
+  const g = G();
+  if(!shooter || !target || !g){ later(o.onRelease, draw); later(o.onImpact, draw + flight); return; }
+  const s = centre(shooter), aim = aimPoint(target);
+  const ang = Math.atan2(aim.y - s.y, aim.x - s.x) * 180/Math.PI, rad = ang*Math.PI/180;
+  const ux = Math.cos(rad), uy = Math.sin(rad);
+  const W = 76, H = 27;
+  const src = o.fire ? (IMG.fire || IMG.arrow) : IMG.arrow;
+  const a = layer('sfx-arrow' + (o.fire ? ' is-fire' : ''), src ? `<img src="${src}" alt="">` : '<span class="sfx-arrow-glyph">➶</span>');
+  const tile = tileOf(shooter);
+  // nocked: rotated about its own centre, tail at the shooter's centre, tip toward the target
+  const nockX = s.x + ux*W*0.42 - W/2, nockY = s.y + uy*W*0.42 - H/2;
+  g.set(a, {x:nockX, y:nockY, rotation:ang, transformOrigin:'50% 50%', opacity:0, scaleX:.8});
+  const tl = g.timeline();
+  // 1) draw
+  tl.to(a, {opacity:1, duration:Math.min(.08, draw/1000*0.3)}, 0)
+    .to(a, {x:nockX - ux*16, y:nockY - uy*16, scaleX:.92, duration:draw/1000, ease:'power2.out'}, 0);
+  if(!reduce()) tl.to(tile, {x:-ux*9, y:-uy*9, rotation:-ux*3, scaleY:.97, duration:draw/1000, ease:'power2.out'}, 0);
+  if(o.fire){
+    const flame = layer('sfx-tipflame');
+    const tipX = ()=> (g.getProperty(a, 'x') + W/2 + ux*W*0.46), tipY = ()=> (g.getProperty(a, 'y') + H/2 + uy*W*0.46);
+    const follow = ()=>{ g.set(flame, {x:tipX() - 9, y:tipY() - 9}); };
+    g.ticker.add(follow);
+    g.fromTo(flame, {scale:.3, opacity:0}, {scale:1, opacity:1, duration:draw/1000, ease:'power1.out'});
+    later(()=>{ g.ticker.remove(follow); flame.remove(); }, draw + 20);
+  }
+  // 2) release + recoil
+  tl.add(()=>{
+    ring(s.x - ux*6, s.y - uy*6, 'sfx-string', 46, 320);
+    if(o.onRelease) try{ o.onRelease(); }catch(e){}
+  }, draw/1000);
+  if(!reduce()) tl.to(tile, {x:ux*7, y:uy*7, rotation:ux*2, scaleY:1.02, duration:.06, ease:'power3.out'}, draw/1000)
+    .to(tile, {x:-ux*4, y:-uy*4, rotation:-ux*1, scaleY:1, duration:.09, ease:'power1.inOut'}, draw/1000 + .06)
+    .to(tile, {x:0, y:0, rotation:0, duration:.28, ease:'elastic.out(1, 0.5)', clearProps:'transform'}, draw/1000 + .15);
+  // 3) flight — a slight arc: lift then drop, applied as a separate y tween
+  const endX = aim.x - ux*W*0.36 - W/2, endY = aim.y - uy*W*0.36 - H/2;   // tip buried a little in the target
+  const dist = Math.hypot(aim.x - s.x, aim.y - s.y), lift = Math.min(28, dist*0.08) * (Math.abs(ux) > 0.4 ? 1 : 0.4);
+  tl.to(a, {x:endX, duration:flight/1000, ease:'power2.in'}, draw/1000)
+    .to(a, {y:endY, duration:flight/1000, ease:'power2.in'}, draw/1000)
+    .fromTo(a, {scaleX:1.25}, {scaleX:1.1, duration:flight/1000, ease:'none'}, draw/1000);
+  if(lift > 4) tl.to(a, {keyframes:[{marginTop:-lift, duration:flight/2000, ease:'power1.out'}, {marginTop:0, duration:flight/2000, ease:'power1.in'}]}, draw/1000);
+  if(o.fire && !reduce()){
+    for(let i = 0; i < 8; i++){
+      const t = (i + 1) / 9, e = layer('sfx-ember');
+      const ex = s.x + (aim.x - s.x)*t*t, ey = s.y + (aim.y - s.y)*t*t;
+      g.set(e, {x:ex - 3, y:ey - 3, opacity:0});
+      g.to(e, {opacity:1, duration:.04, delay:(draw + flight*Math.sqrt(t))/1000});
+      g.to(e, {y:`-=${14 + Math.random()*16}`, x:`+=${Math.random()*10 - 5}`, opacity:0, scale:.25, duration:.5, delay:(draw + flight*Math.sqrt(t))/1000 + .04, ease:'power1.out', onComplete:()=> e.remove()});
+    }
+  }
+  // 4) impact
+  tl.add(()=>{
+    knock(target, ang, o.fire ? 1.2 : 1);
+    burst(aim.x, aim.y, ang, o.fire ? 'fire' : 'wood', o.fire ? 12 : 7);
+    if(o.fire){ ring(aim.x, aim.y, 'sfx-ignite', 90, 520); const t = tileOf(target); t.classList.add('sfx-scorch'); later(()=> t.classList.remove('sfx-scorch'), 900); }
+    if(o.light) try{ o.light(aim.x, aim.y, o.fire ? [1, 0.55, 0.18] : [1, 0.88, 0.62], !!o.fire); }catch(e){}
+    if(o.onImpact) try{ o.onImpact(); }catch(e){}
+  }, (draw + flight)/1000);
+  tl.set(a, {scaleX:1}, (draw + flight)/1000)
+    .to(a, {keyframes:[{rotation:ang + 7, duration:.05}, {rotation:ang - 5, duration:.06}, {rotation:ang + 2, duration:.07}, {rotation:ang, duration:.08}]}, (draw + flight)/1000)
+    .to(a, {opacity:0, duration:.3, ease:'power1.in'}, (draw + flight)/1000 + .45)
+    .add(()=> a.remove());
+  return tl;
+}
+
+// Three arrows lofted high, landing one after another on up to three targets.
+function volley(shooter, targets, o){
+  o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length) return;
+  list.slice(0, 3).forEach((t, i)=> later(()=> bowShot(shooter, t, Object.assign({}, o, {draw: i ? 90 : (o.draw||240), onRelease: i ? null : o.onRelease, onImpact: ()=> o.onEachImpact && o.onEachImpact(t, i)})), i*120));
+}
+// One arrow through the first target into the one behind it.
+function pierce(shooter, first, second, o){
+  o = o || {};
+  bowShot(shooter, first, Object.assign({}, o, {onImpact: ()=>{
+    if(o.onFirst) o.onFirst();
+    if(second) bowShot(first, second, {draw:0, flight:(o.flight||260)*0.8, fire:o.fire, light:o.light, onImpact:o.onSecond});
+  }}));
+}
+// A thin green dart with a dripping trail; a poison splash on hit.
+function dart(shooter, target, o){
+  o = o || {}; const g = G(); const s = centre(shooter), aim = aimPoint(target);
+  const flight = o.flight || 220;
+  if(!g){ later(o.onImpact, flight); return; }
+  const ang = Math.atan2(aim.y - s.y, aim.x - s.x) * 180/Math.PI;
+  const d = layer('sfx-dart'); g.set(d, {x:s.x - 14, y:s.y - 2, rotation:ang, transformOrigin:'90% 50%'});
+  g.to(d, {x:aim.x - 26, y:aim.y - 2, duration:flight/1000, ease:'power1.in', onComplete:()=>{
+    d.remove(); knock(target, ang, .6); burst(aim.x, aim.y, ang, 'poison', 10); ring(aim.x, aim.y, 'sfx-poison', 60, 500);
+    if(o.light) o.light(aim.x, aim.y, [0.5, 1, 0.35], false);
+    if(o.onImpact) o.onImpact();
+  }});
+  for(let i = 1; i < 6; i++){ const p = layer('sfx-bit sfx-bit-poison'); const t = i/6;
+    g.set(p, {x:s.x + (aim.x - s.x)*t, y:s.y + (aim.y - s.y)*t, opacity:0});
+    g.to(p, {opacity:.9, duration:.03, delay:flight/1000*t}); g.to(p, {y:'+=18', opacity:0, duration:.45, delay:flight/1000*t + .03, ease:'power1.in', onComplete:()=> p.remove()}); }
+}
+// An ice shard that spins in, shatters into frost and leaves a frost crack on the card.
+function frostBolt(shooter, target, o){
+  o = o || {}; const g = G(); const s = centre(shooter), aim = aimPoint(target);
+  const flight = o.flight || 300;
+  if(!g){ later(o.onImpact, flight); return; }
+  const b = layer('sfx-shard'); g.set(b, {x:s.x - 12, y:s.y - 12, scale:.4, rotation:0});
+  g.to(b, {x:aim.x - 12, y:aim.y - 12, scale:1.1, rotation:540, duration:flight/1000, ease:'power2.in', onComplete:()=>{
+    b.remove(); knock(target, Math.atan2(aim.y - s.y, aim.x - s.x)*180/Math.PI, .8);
+    burst(aim.x, aim.y, Math.atan2(aim.y - s.y, aim.x - s.x)*180/Math.PI, 'ice', 12); ring(aim.x, aim.y, 'sfx-frost', 96, 600);
+    const t = tileOf(target); t.classList.add('sfx-frosted'); later(()=> t.classList.remove('sfx-frosted'), 1400);
+    if(o.light) o.light(aim.x, aim.y, [0.45, 0.75, 1], true);
+    if(o.onImpact) o.onImpact();
+  }});
+}
+// A forked bolt that jumps from card to card.
+function lightning(shooter, targets, o){
+  o = o || {}; const chain = [shooter].concat((targets||[]).filter(Boolean)); if(chain.length < 2) return;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'sfx sfx-bolt'); svg.setAttribute('aria-hidden', 'true');
+  svg.setAttribute('width', innerWidth); svg.setAttribute('height', innerHeight); document.body.appendChild(svg);
+  const jag = (a, b)=>{ let d = `M${a.x},${a.y}`; const n = 7; for(let i = 1; i < n; i++){ const t = i/n; const nx = -(b.y - a.y), ny = b.x - a.x, L = Math.hypot(nx, ny)||1;
+    const off = (Math.random()*2 - 1) * 16; d += ` L${a.x + (b.x - a.x)*t + nx/L*off},${a.y + (b.y - a.y)*t + ny/L*off}`; } return d + ` L${b.x},${b.y}`; };
+  chain.slice(1).forEach((t, i)=> later(()=>{
+    const A = centre(chain[i]), B = centre(t);
+    for(let k = 0; k < 3; k++) later(()=>{ svg.innerHTML = `<path d="${jag(A, B)}" class="glow"/><path d="${jag(A, B)}"/>`; }, k*55);
+    later(()=>{ knock(t, Math.atan2(B.y - A.y, B.x - A.x)*180/Math.PI, .7); ring(B.x, B.y, 'sfx-zap', 70, 300); burst(B.x, B.y, 0, 'zap', 8);
+      if(o.light) o.light(B.x, B.y, [0.75, 0.85, 1], true); if(o.onEachImpact) o.onEachImpact(t, i); }, 60);
+  }, i*190));
+  later(()=> svg.remove(), chain.length*190 + 220);
+}
+// Green rings and rising pluses; the card brightens for a beat.
+function heal(target, o){
+  o = o || {}; const g = G(); const c = centre(target);
+  ring(c.x, c.y, 'sfx-heal', 110, 700); later(()=> ring(c.x, c.y, 'sfx-heal', 80, 600), 150);
+  if(!g){ later(o.onDone, 600); return; }
+  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', '+'); g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
+    g.to(p, {y:'-=46', opacity:1, scale:1, duration:.35, delay:i*0.06, ease:'power1.out'}); g.to(p, {opacity:0, duration:.3, delay:i*0.06 + .45, onComplete:()=> p.remove()}); }
+  const t = tileOf(target); g.fromTo(t, {filter:'brightness(1)'}, {filter:'brightness(1.35)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
+}
+// A translucent shield dome flashes over the card and settles.
+function shieldUp(target, o){
+  o = o || {}; const g = G(); const c = centre(target);
+  const d = layer('sfx-dome'); if(!g){ later(()=> d.remove(), 600); return; }
+  g.set(d, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w*1.2, height:c.h*1.15, scale:.6, opacity:0});
+  g.timeline({onComplete:()=> d.remove()}).to(d, {scale:1.05, opacity:1, duration:.16, ease:'back.out(2)'}).to(d, {scale:1, duration:.12}).to(d, {opacity:0, duration:.45, delay:.35});
+  if(o.light) o.light(c.x, c.y, [0.75, 0.85, 1], false);
+}
+// A banner pops above the leader and golden chevrons rise through every ally.
+function rally(cards, o){
+  o = o || {}; const g = G(); const list = (cards||[]).filter(Boolean); if(!list.length || !g) return;
+  const lead = centre(list[0]); const f = layer('sfx-banner', '🚩');
+  g.set(f, {x:lead.x - 16, y:lead.r.top - 44, scale:.2, rotation:-20, opacity:0});
+  g.timeline({onComplete:()=> f.remove()}).to(f, {scale:1.1, rotation:0, opacity:1, duration:.25, ease:'back.out(3)'}).to(f, {rotation:6, yoyo:true, repeat:3, duration:.12}).to(f, {opacity:0, y:'-=20', duration:.3});
+  list.forEach((el, i)=> later(()=>{ const c = centre(el);
+    for(let k = 0; k < 3; k++){ const ch = layer('sfx-chevron', '︽'); g.set(ch, {x:c.x - 10, y:c.r.bottom - 16 - k*10, opacity:0});
+      g.to(ch, {y:`-=${c.h*0.8}`, opacity:1, duration:.45, delay:k*0.08, ease:'power1.out'}); g.to(ch, {opacity:0, duration:.25, delay:k*0.08 + .4, onComplete:()=> ch.remove()}); }
+    const t = tileOf(el); g.fromTo(t, {y:0}, {y:-6, duration:.16, yoyo:true, repeat:1, ease:'power1.out', clearProps:'transform'});
+  }, 160 + i*90));
+}
+function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
+root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring};
+})(typeof window !== 'undefined' ? window : globalThis);
+
 // Translation layer (2026-10-05, "support the major European languages, Tagalog, Tamil, Bahasa,
 // Chinese (both), Japanese and Korean"). English is the source language and the fallback.
 //
@@ -11837,6 +12127,26 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // Knocked out (2026-10-06): a soft thump as the card falls back, then a dry rustle of leaves.
+    knockOut(){
+      sweep(180, 70, 0.22, 'sine', 0.12);
+      fnoise(0.08, 0.08, {type:'lowpass', freq:700, freqEnd:200, attack:0.004});
+      fnoise(0.5, 0.05, {type:'bandpass', freq:3200, freqEnd:1800, q:0.9, attack:0.04, crackle:0.04, delay:0.18});
+    },
+    // Heal, v2 (2026-10-06, user: "the heal sound should be nicer"): a warm rising major chord on
+    // soft bells, a breathy swell under it and a sparkle on top.
+    healTone(){
+      fnoise(0.7, 0.025, {type:'bandpass', freq:900, freqEnd:2400, q:0.8, attack:0.3});
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i)=>{ tone(f, 0.9 - i*0.1, 'sine', 0.06, i*0.07); tone(f*2, 0.5, 'sine', 0.012, i*0.07 + 0.01); });
+      [1568, 2093, 2637].forEach((f, i)=> tone(f, 0.25, 'triangle', 0.018, 0.32 + i*0.05));
+    },
+    // Bow drawn (2026-10-06): a creaking pull as the string comes back; fire arrows hiss as they light.
+    bowDraw(fire, ms){
+      const d = Math.max(0.12, (ms||240)/1000);
+      fnoise(d, 0.06, {type:'bandpass', freq:380, freqEnd:620, q:6, attack:d*0.7, crackle:0.02});
+      sweep(140, 210, d, 'triangle', 0.035);
+      if(fire) fnoise(d + 0.1, 0.05, {type:'highpass', freq:2600, attack:0.05, crackle:0.05});
+    },
     // Pack reveal: a rising shimmer while a Rare+ card holds its breath (longer and brighter for Legendary+).
     rareRise(legend){
       const d = legend ? 0.7 : 0.45;
@@ -11983,7 +12293,7 @@ const SoundKit = (()=>{
     freezeChime(){ tone(1500,0.07,'sine',0.05); tone(1900,0.09,'sine',0.045,0.05); },
     sleepTone(){ tone(500,0.14,'sine',0.05); tone(380,0.16,'sine',0.04,0.08); },
     paralyzeBuzz(){ tone(180,0.05,'square',0.07); tone(220,0.05,'square',0.06,0.04); tone(160,0.05,'square',0.06,0.08); },
-    healTone(){ tone(560,0.08,'sine',0.06); tone(760,0.1,'sine',0.055,0.05); tone(980,0.09,'sine',0.05,0.1); },
+    // (old healTone replaced 2026-10-06 — see the v2 above)
     // Chronos wait-countdown (2026-09-17, per explicit request): a small clock "tick" every
     // round a card's Wait counter ticks down but isn't ready yet, and a brighter, more
     // resolved "ready" chime specifically for the round it hits 0 — two distinct cues so the
@@ -12912,9 +13222,16 @@ function rarityTierClass(key){
 // caller can render no badge at all instead of an empty/zero one. ★ mirrors the same glyph
 // abilityBadges() uses for the Devilry/Dark Points resource — see the comment there for why ★
 // specifically (not ✦/⭐/🌟) was picked as that resource's unit symbol.
+function pipsHTML(glyph, n, kind){
+  n = Math.max(0, n|0);
+  if(n > 4) return `<span class="pips pips-${kind} is-num"><i>${glyph}</i><b>${n}</b></span>`;
+  return `<span class="pips pips-${kind}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`;
+}
 function costBadgeParts(d){
   const parts = [];
-  if(d.cost>0) parts.push(`🪵${d.cost}`); // 2026-09-22: cost is paid in Lumber now, not Gold — see costOfCard's call sites in bramblewood-engine.js
+  // 2026-10-06 (user: "don't show 'Lumber 1' - just drawing 1 lumber is enough"): cost as pips,
+  // one log per Lumber (a number only past 4, where pips stop being readable at a glance).
+  if(d.cost>0) parts.push(pipsHTML('🪵', d.cost, 'lumber')); // 2026-09-22: cost is paid in Lumber now, not Gold — see costOfCard's call sites in bramblewood-engine.js
   if(d.graceCost>0) parts.push(`🕊️${d.graceCost}`);
   if(d.devilryCost>0) parts.push(`★${d.devilryCost}`);
   return parts;
@@ -13060,7 +13377,7 @@ function cardTileHTML(d, opts){
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">⏳${d.wait}</div>`:''}`}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${d.name}</div>
@@ -13185,7 +13502,7 @@ function abilityBadges(d){
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`🪽`);
+  if(e.flying) out.push(`<span class="ab-wing">🪽</span>`); // 2026-10-06: 20% larger, it was easy to miss
   if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`🌎💥${e.earthquake}`);
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
@@ -23486,7 +23803,7 @@ function showPlacementPreview(row, side){
   // showed no hint of that during the whole drag, only once it actually landed. Mirrors
   // cardTileHTML's own waitbadge exactly so the preview genuinely previews what you're about to get.
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">⏳${d.wait}</div>`:''}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
     <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${d.name}</div>
     <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
@@ -25752,7 +26069,38 @@ function deathStyleFor(uid){
   if(hurt==='heat' || (fiery && hurt!=='cold')) return 'burn';
   if(hurt==='poison' || hurt==='acid' || hurt==='decay') return 'poison';
   if(hurt==='cold') return 'cold';
-  return 'bleed';
+  // 2026-10-06 (user: "there should be a die normally effect"): the red bleed-out is for deaths
+  // by bleeding; an ordinary knock-out falls over and crumbles into leaves (see fallDeathVfx).
+  if(hurt==='bleed') return 'bleed';
+  return 'fall';
+}
+// Normal death: the card topples backwards, greys out and breaks into a puff of leaves and dust
+// (the cue sheet's "puff of leaves" for a death). Bramblewood's creatures are knocked out of the
+// fight; only bleeding and poison get the grimmer wash.
+function fallDeathVfx(el, ms){
+  if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  const t = el.querySelector('.card-tile') || el;
+  el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
+  if(hasGsap()){
+    gsap.timeline()
+      .fromTo(t, {filter:'grayscale(0) brightness(1)'}, {rotationX:62, y:10, scaleY:.9, transformPerspective:500, transformOrigin:'50% 100%', filter:'grayscale(1) brightness(.8)', duration:ms*0.55/1000, ease:'power2.in'})
+      .to(t, {opacity:0, scale:.86, duration:ms*0.35/1000, ease:'power1.in'})
+      .add(()=>{ leafPuff(el); }, ms*0.5/1000);
+  }
+  return true;
+}
+function leafPuff(el){
+  if(!el || !hasGsap()) return;
+  const r = el.getBoundingClientRect();
+  const glyphs = ['🍂','🍃','🍂','·','·','🍁'];
+  for(let i = 0; i < 12; i++){
+    const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
+    document.body.appendChild(p);
+    const x = r.left + r.width*(0.2 + Math.random()*0.6), y = r.top + r.height*(0.55 + Math.random()*0.35);
+    gsap.set(p, {x, y, opacity:1, scale:.6 + Math.random()*.5, rotation:Math.random()*360});
+    gsap.to(p, {x:`+=${(Math.random()*2 - 1)*60}`, y:`-=${20 + Math.random()*40}`, rotation:`+=${Math.random()*240 - 120}`, duration:.5 + Math.random()*.3, ease:'power2.out'});
+    gsap.to(p, {y:`+=${30 + Math.random()*30}`, opacity:0, duration:.6, delay:.45 + Math.random()*.2, ease:'power1.in', onComplete:()=> p.remove()});
+  }
 }
 function bleedOutVfx(el, ms, tone){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
@@ -25779,12 +26127,13 @@ function deathVfx(uid){
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
   const style = deathStyleFor(uid);
-  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
-  try{ if(style==='burn') SoundKit.burnAway(); else SoundKit.bleedOut(style); }catch(e){}
+  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  try{ if(style==='burn') SoundKit.burnAway(); else if(style==='fall') SoundKit.knockOut(); else SoundKit.bleedOut(style); }catch(e){}
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    if(burnt && style==='fall'){ /* fallDeathVfx animates the tile itself */ }
+    else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
     gsap.timeline({onComplete:()=> skull.remove()})
@@ -25880,10 +26229,11 @@ function settleStrayBoardCards(){
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
-  document.querySelectorAll('.board-card.burning, .board-card.bleeding').forEach(el=>{
+  document.querySelectorAll('.board-card.burning, .board-card.bleeding, .board-card.falling').forEach(el=>{
     if(!alive.has(String(el.dataset.uid))) return;
     el.classList.remove('burning', 'bleeding', 'bleed-bleed', 'bleed-poison', 'bleed-cold'); el.querySelectorAll(':scope > .burn-glow, :scope > .bleed-wash').forEach(g=> g.remove());
-    if(hasGsap()) gsap.set(el, {clearProps:'scale,y,opacity'});
+    el.classList.remove('falling'); const ft = el.querySelector('.card-tile');
+    if(hasGsap()){ gsap.set(el, {clearProps:'scale,y,opacity'}); if(ft) gsap.set(ft, {clearProps:'transform,filter,opacity'}); }
   });
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
@@ -27602,7 +27952,13 @@ function floatText(el, text, cls){
   const f = document.createElement('div');
   const heavyHit = /^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls;
   f.className = 'dmg-float'+(cls?(' '+cls):'')+(heavyHit?' heavy':'');
-  f.textContent = text; f.dataset.t = text;
+  // 2026-10-06 (user: "for the poison and bleed hits, the icon should accompany it"): the icon is
+  // its own element beside the number, so the number's gradient fill can't wash out the emoji.
+  const raw = String(text);
+  const icon = (raw.match(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu) || []).join('').replace(/\uFE0F/g, '');
+  const num = raw.replace(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu, '').trim() || raw;
+  f.innerHTML = (cls && /\bcrit\b/.test(cls) ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
+  f.dataset.t = raw;
   // Item #2 (2026-09-16, "damage text shouldn't just fly up, they should have some
   // amount of random x-force"): a little random horizontal drift baked in per-instance.
   // Floating-number coverage audit (2026-09-18, "with some variation in x and y so a burst of
@@ -28047,11 +28403,25 @@ const DangerPulse = (()=>{
   return {start(){ if(!timer) tick(); }};
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
-function flashDmg(uid, dmg, blocked, dmgType){
+// Damage-type icons beside the number (2026-10-06).
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','debuff'], decay:['🦠','poison'], bleed:['🩸','bleed']};
+function critStampVfx(el){
+  if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const t = el.querySelector('.card-tile') || el;
+  const st = document.createElement('div'); st.className = 'crit-stamp'; st.setAttribute('aria-hidden','true'); st.innerHTML = '<span class="cs-burst"></span><b>CRIT!</b>';
+  t.appendChild(st);
+  gsap.timeline({onComplete:()=> st.remove()})
+    .fromTo(st, {xPercent:-50, yPercent:-50, scale:2.4, rotation:-24, opacity:0}, {scale:1, rotation:-12, opacity:1, duration:.14, ease:'power4.in'})
+    .to(st, {opacity:0, y:-8, duration:.3, delay:.5});
+}
+function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
   shakeEl(el);
-  floatText(el, blocked ? '0 🛡' : ('-'+dmg), blocked?'blocked':'');
+  const di = DMG_ICON[dmgType];
+  if(blocked) floatText(el, '🛡 0', 'blocked');
+  else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
+  else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   hitExplosionVfx(uid, dmgType);
 }
 // Keyword cues derived straight from the card's own definition — Quick/Stealth/Reload/
@@ -28088,7 +28458,10 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // it consumes itself, but Ambush already gets its own distinct 🗡 flourish just above — gated
   // on !ev.ambush here so a card's first, Ambush-forced crit doesn't stack two "something
   // special happened" floats on top of each other.
-  if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); floatText(targetEl||attEl, '💥 Crit!', 'gold'); }, Math.max(0, animMs().windup-20)); }
+  // Crits (2026-10-06, user: "we need a symbol for being hit critically"): the number itself gets
+  // the crit look (a gold starburst behind a bigger number) and a CRIT! stamp lands on the card —
+  // see flashDmg/critStampVfx. Only the sound is cued here.
+  if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); }, Math.max(0, animMs().windup-20)); }
   // Rend (2026-09-16 mechanic, same audit): bypasses Armor entirely, but a Rend hit against an
   // armored target looked pixel-identical to a hit against a target with no Armor at all — no
   // signal Armor was ever in the picture. ev.rend only comes back true when the target actually
@@ -28201,7 +28574,7 @@ function renderVfxForEvent(ev){
     const pa = matchState.pendingArrow;
     const arrowShot = !!(ev.ranged && pa && String(pa.uid)===String(ev.attUid));
     if(arrowShot){ matchState.pendingArrow = null; ev._arrowShot = true; }
-    const arrowWind = Math.round(windup*0.35);
+    const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     if(ev.ranged){
@@ -28215,10 +28588,14 @@ function renderVfxForEvent(ev){
       // projectile — and therefore a visible "where this came from" — always plays.
       if(arrowShot){
         const shooter = boardCardEl(ev.attUid);
+        try{ SoundKit.bowDraw(pa.fire, arrowWind); }catch(e){}
         setTimeout(()=>{ try{ SoundKit.arrowLoose(pa.fire); }catch(e){} }, arrowWind);
         setTimeout(()=>{ try{ if(ev.type!=='evaded') SoundKit.arrowThunk(pa.fire); }catch(e){} }, arrowWind + arrowFlightMs());
-        if(shooter && hasGsap()) gsap.fromTo(shooter, {scale:1}, {scale:.96, duration:arrowWind/1000, yoyo:true, repeat:1, ease:'power1.inOut'}); // draw the bow
-        setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
+        // 2026-10-06: the full bow choreography (draw, release + recoil, flight, impact) lives in
+        // bramblewood-skillfx.js, shared with the Effects Lab; spawnArrowProjectile stays as a fallback.
+        if(window.SkillFX){ SkillFX.setImages(ARROW_PNG, FIRE_ARROW_PNG); SkillFX.bowShot(shooter || hqTileEl(ev.side), targetEl, {fire: pa.fire, draw: arrowWind, flight: arrowFlightMs(),
+          light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
+        else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
@@ -28253,7 +28630,7 @@ function renderVfxForEvent(ev){
         if(typeof maybeSpeakHQ==='function') maybeSpeakHQ(ev.targetSide, 'castleOnHit');
       }
       else {
-        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType);
+        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush);
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
         // target survived, apply whatever passive Poison/Bleed the attacker's card carries.
@@ -28533,7 +28910,7 @@ function renderVfxForEvent(ev){
     // existing bubble chime + emoji-led float number together read as one distinct beat.
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
-    floatText(el, '🫧 '+ev.dmg+'!', 'poison-tick');
+    floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
@@ -28547,7 +28924,7 @@ function renderVfxForEvent(ev){
   // green rather than just a slightly different number.
   if(ev.type==='bleedTick'){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
-    floatText(el, '🩸 '+ev.dmg+'!', 'bleed-tick');
+    floatText(el, '🩸 -'+ev.dmg, 'bleed-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);

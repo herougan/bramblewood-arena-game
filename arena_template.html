@@ -5013,10 +5013,27 @@
   .dmg-float{font-family:'Lilita One','Baloo 2',system-ui,sans-serif !important; font-weight:400 !important; letter-spacing:.5px !important;
     --g1:#fff6e0; --g2:#ff6a4d; --edge:#2a0604;
     color:transparent !important; -webkit-text-stroke:0 !important; text-shadow:none !important;}
-  .dmg-float::before, .dmg-float::after{content:attr(data-t); position:absolute; left:0; top:0; white-space:nowrap;}
-  .dmg-float::before{color:var(--edge); -webkit-text-stroke:7px var(--edge); paint-order:stroke fill; text-shadow:0 3px 0 var(--edge), 0 5px 6px rgba(0,0,0,.55);}
-  .dmg-float::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
+  .dmg-float{display:inline-flex !important; align-items:center; gap:.12em;}
+  .dmg-float .df-num{position:relative; color:transparent;}
+  .dmg-float .df-num::before, .dmg-float .df-num::after{content:attr(data-t); position:absolute; left:0; top:0; white-space:nowrap;}
+  .dmg-float .df-num::before{color:var(--edge); -webkit-text-stroke:7px var(--edge); paint-order:stroke fill; text-shadow:0 3px 0 var(--edge), 0 5px 6px rgba(0,0,0,.55);}
+  .dmg-float .df-num::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
     -webkit-background-clip:text; background-clip:text;}
+  .dmg-float .df-ico{font-size:.78em; line-height:1; filter:drop-shadow(0 2px 0 rgba(0,0,0,.55)) drop-shadow(0 0 6px rgba(0,0,0,.35));}
+  /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
+  .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}
+  .dmg-float .df-burst{position:absolute; left:50%; top:50%; width:1.9em; height:1.9em; margin:-.95em 0 0 -.95em; z-index:-1;
+    background:radial-gradient(circle, #fff6c8 0 18%, #ffcf3a 34%, #ff8a1c 58%, rgba(255,120,20,0) 72%);
+    clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 50%,72% 60%,85% 88%,59% 70%,50% 100%,41% 70%,15% 88%,28% 60%,0 50%,28% 40%,15% 12%,41% 30%);
+    animation:critBurst .9s ease-out forwards;}
+  @keyframes critBurst{0%{transform:scale(.2) rotate(0);} 25%{transform:scale(1.1) rotate(20deg);} 100%{transform:scale(1) rotate(60deg); opacity:.0;}}
+  .crit-stamp{position:absolute; left:50%; top:46%; z-index:14; pointer-events:none;}
+  .crit-stamp b{position:relative; display:block; font:400 clamp(14px, 20cqw, 28px)/1 'Lilita One','Baloo 2',sans-serif; color:#fff2d0; letter-spacing:1px; padding:2px 8px;
+    border:3px solid #ff5a3a; border-radius:8px; background:rgba(120,10,0,.7); text-shadow:0 2px 0 #5a0a00; white-space:nowrap;}
+  .crit-stamp .cs-burst{position:absolute; left:50%; top:50%; width:150%; aspect-ratio:1; transform:translate(-50%,-50%); z-index:-1;
+    background:radial-gradient(circle, rgba(255,230,140,.95) 0 20%, rgba(255,150,40,.7) 45%, rgba(255,120,20,0) 70%);
+    clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 50%,72% 60%,85% 88%,59% 70%,50% 100%,41% 70%,15% 88%,28% 60%,0 50%,28% 40%,15% 12%,41% 30%);}
+  .dmg-float.heat{--g1:#fff2d8; --g2:#ff8a2a; --edge:#2a0c02;}
   .dmg-float.heavy{font-size:46px; --g2:#ff3d2e;}
   .dmg-float.hq-big{font-size:44px;}
   .dmg-float.blocked{--g1:#f2f6ff; --g2:#8fb0d8; --edge:#0e1a2c;}
@@ -5231,6 +5248,57 @@
   @keyframes rainFall{to{background-position:-30px 120px;}}
   .battlefield.is-raining{box-shadow:inset 0 0 0 999px rgba(40,60,90,.10);}
   @media (prefers-reduced-motion:reduce){ .battlefield.is-raining::after{animation:none;} }
+
+  /* ===== Skill effects (bramblewood-skillfx.js, 2026-10-06) ===== */
+  .sfx{position:fixed; left:0; top:0; pointer-events:none; z-index:9990;}
+  .sfx-arrow{width:76px; height:27px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));}
+  .sfx-arrow img{width:100%; height:100%; image-rendering:pixelated; display:block;}
+  .sfx-arrow-glyph{font-size:22px;}
+  .sfx-arrow.is-fire{filter:drop-shadow(-12px 0 5px rgba(255,140,40,.8)) drop-shadow(0 0 7px rgba(255,190,60,.95));}
+  .sfx-tipflame{width:18px; height:18px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:radial-gradient(circle at 50% 65%, #fff6c2, #ffb43a 45%, rgba(255,90,20,.0) 72%);
+    filter:blur(.4px) drop-shadow(0 0 6px rgba(255,140,40,.95)); animation:tipFlicker .12s steps(2) infinite;}
+  @keyframes tipFlicker{50%{transform:scale(1.18, .9);}}
+  .sfx-ember{width:6px; height:6px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,120,30,.85);}
+  .sfx-ring{border-radius:50%; border:2px solid rgba(255,255,255,.85);}
+  .sfx-ring.sfx-string{border-color:rgba(255,240,200,.9); border-width:2px;}
+  .sfx-ring.sfx-ignite{border:3px solid rgba(255,150,40,.95); box-shadow:0 0 18px 4px rgba(255,120,20,.7), inset 0 0 14px rgba(255,200,80,.8);}
+  .sfx-ring.sfx-poison{border-color:rgba(130,230,80,.9); box-shadow:0 0 12px rgba(110,220,60,.7);}
+  .sfx-ring.sfx-frost{border:3px solid rgba(180,225,255,.95); box-shadow:0 0 16px rgba(140,200,255,.8), inset 0 0 12px rgba(220,245,255,.8);}
+  .sfx-ring.sfx-zap{border-color:rgba(200,220,255,.95); box-shadow:0 0 14px rgba(160,190,255,.9);}
+  .sfx-ring.sfx-heal{border:3px solid rgba(120,235,140,.9); box-shadow:0 0 16px rgba(90,220,120,.6);}
+  .sfx-bit{width:6px; height:6px; border-radius:1px;}
+  .sfx-bit-wood{background:#8b5a2b; width:7px; height:3px;}
+  .sfx-bit-fire{background:#ffcf5a; border-radius:50%; box-shadow:0 0 8px 3px rgba(255,110,20,.85);}
+  .sfx-bit-poison{background:#8ae04a; border-radius:50%; box-shadow:0 0 6px rgba(110,220,60,.8);}
+  .sfx-bit-ice{background:#e6f6ff; width:5px; height:9px; box-shadow:0 0 6px rgba(160,210,255,.9); clip-path:polygon(50% 0, 100% 100%, 0 100%);}
+  .sfx-bit-zap{background:#eaf0ff; width:3px; height:10px; box-shadow:0 0 8px rgba(170,200,255,1);}
+  .sfx-dart{width:30px; height:4px; border-radius:2px; background:linear-gradient(90deg, rgba(110,220,60,0), #6fd33b 40%, #e8ffd0); box-shadow:0 0 8px rgba(110,220,60,.8);}
+  .sfx-shard{width:24px; height:24px; background:linear-gradient(135deg,#ffffff,#a9dcff 50%,#4f9fe0); clip-path:polygon(50% 0, 70% 40%, 100% 50%, 70% 60%, 50% 100%, 30% 60%, 0 50%, 30% 40%); filter:drop-shadow(0 0 8px rgba(150,210,255,.95));}
+  .sfx-bolt path{fill:none; stroke:#f2f6ff; stroke-width:2.5; stroke-linejoin:round;}
+  .sfx-bolt path.glow{stroke:rgba(150,180,255,.65); stroke-width:9; filter:blur(3px);}
+  .sfx-plus{color:#6fe08a; font:900 22px 'Baloo 2',system-ui,sans-serif; text-shadow:0 0 8px rgba(90,220,120,.8), 0 2px 0 rgba(0,0,0,.4);}
+  .sfx-dome{border-radius:50% 50% 46% 46%; background:radial-gradient(ellipse at 50% 30%, rgba(220,235,255,.55), rgba(140,180,255,.18) 60%, rgba(140,180,255,0) 75%); border:2px solid rgba(200,220,255,.85); box-shadow:0 0 20px rgba(150,190,255,.6);}
+  .sfx-banner{font-size:30px; filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));}
+  .sfx-chevron{color:#ffd56e; font:900 20px system-ui,sans-serif; text-shadow:0 0 8px rgba(255,200,80,.9);}
+  .card-tile.sfx-scorch{box-shadow:inset 0 0 0 2px rgba(255,140,40,.9), inset 0 -24px 30px -10px rgba(255,90,20,.6) !important;}
+  .card-tile.sfx-frosted{box-shadow:inset 0 0 0 2px rgba(180,225,255,.95), inset 0 0 26px rgba(200,235,255,.7) !important; filter:saturate(.7) brightness(1.08);}
+
+  /* Card face v3 (2026-10-06, user feedback) */
+  /* Cost and Wait as pips: one log per Lumber, one hourglass per turn of Wait. */
+  .card-tile .costbadge, .card-tile .waitbadge{padding:0 4px !important; gap:0 !important;}
+  .pips{display:inline-flex; align-items:center; line-height:1;}
+  .pips i{font-style:normal; font-size:1.08em; filter:drop-shadow(0 1px 0 rgba(0,0,0,.6));}
+  .pips i + i{margin-left:-.28em;}
+  .pips.is-num b{margin-left:1px; font-weight:800;}
+  .card-tile .costbadge, .card-tile .waitbadge{min-width:0 !important;}
+  /* Names sit higher, leaving the middle of the art (eyes) clear. */
+  .card-tile .nm{margin-top:max(2px, 3.5cqw) !important;}
+  .card-tile .badges, .card-tile .badges-2row{top:auto !important; bottom:clamp(3px, 4cqw, 8px); max-width:46% !important;}
+  .card-tile .badges .abadge{font-size:clamp(11px, 13cqw, 20px);}
+  /* Flying wing 20% larger */
+  .abadge .ab-wing{display:inline-block; font-size:1.2em; line-height:.9;}
+
+  .leaf-puff{position:fixed; left:0; top:0; z-index:9990; pointer-events:none; font-size:15px; color:#cbb48a; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
 </style>
 </head>
 <body>

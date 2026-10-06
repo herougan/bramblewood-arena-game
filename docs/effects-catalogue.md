@@ -181,3 +181,25 @@ Each list is ranked by payoff for effort. ✅ marks the ones built today as a fi
 6. S6 (rival voices).
 
 That covers about two sessions. A1, G2 and S4 together will change how a fight *feels* more than anything else on these lists.
+
+
+---
+
+## 2026-10-06 additions
+
+**Skill effects:** `bramblewood-skillfx.js` is shared by the game and the Effects Lab.
+- **Arrow and Fire Arrow (live).** The full sequence:
+  - **Draw:** the archer leans back while the arrow is pulled along the line of fire, with a bow creak; fire arrows light a flickering flame at the tip.
+  - **Release:** the archer snaps forward and recoils, and a bowstring ring pops.
+  - **Flight:** an arcing, accelerating arrow; fire arrows leave an ember trail.
+  - **Impact:** the arrow sticks and quivers, the target is knocked back and splinters fly. Fire arrows add a flame burst, an ignite ring and a scorched edge. The battlefield floor lights up at the impact.
+- **Prototypes, not wired into skills yet:** Volley, Pierce, Poison dart, Frost bolt, Chain lightning, Heal, Shield up, Rally.
+
+**Cards (live):**
+- **Crits:** the number is bigger and hotter on a spinning gold starburst, and a CRIT! stamp lands on the card. This replaces the separate "💥 Crit!" text.
+- **Typed damage:** the icon sits beside the number, so the gradient no longer washes it out: ☠️ poison, 🩸 bleed, 🔥 fire, ❄️ cold, 🧪 acid, 🛡 blocked.
+- **Normal death:** the card topples back, greys out and crumbles into leaves and dust. The red bleed-out is now only for bleed deaths.
+- **Heal sound v2:** a warm rising chord with a sparkle on top.
+- **Card face:** names sit at the top of the card; ability badges sit between the Attack and Health chips; the 🪽 wing is 20% larger; cost and Wait show as pips (one log per Lumber, one hourglass per turn), with a number only past 4.
+
+**Card prototypes (Lab only):** summon slam, hourglass flip on Wait, idle breathing, shine sweep, ready pulse.

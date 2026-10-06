@@ -26,7 +26,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-06: your 11-point feedback (victory rush fixed, thinner HP bars, laptop-fit results, attack line under cards, pitch badge, anchored tutorial tips, castle/leader picker, deck view polish, performance pass, Outskirts rain) plus the Effects Lab. Before that, 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
+_Last updated: 2026-10-06 (morning): bow-shot choreography for Arrow and Fire Arrow, a crit symbol, damage-type icons, a normal knock-out death, heal sound v2, the card face (name at the top, cost and Wait as pips, larger wing), and 8 new skill prototypes in the Effects Lab. Earlier 2026-10-06: your 11-point feedback (victory rush fixed, thinner HP bars, laptop-fit results, attack line under cards, pitch badge, anchored tutorial tips, castle/leader picker, deck view polish, performance pass, Outskirts rain) plus the Effects Lab. Before that, 2026-10-05 (night): visual library; card legibility, deck top and card detail; shadows, hit-stop and danger layer. Before that: effects recommendations, felt shockwave and panned hits (item 20); 🦸 Hero card (item 1). Before that: languages; places (Tent, Cart, Nest); world, look and sound (item 20), asset split, snap test. Earlier: `game-design-v40-addendum.md`._
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.

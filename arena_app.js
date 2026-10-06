@@ -1742,6 +1742,26 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // Knocked out (2026-10-06): a soft thump as the card falls back, then a dry rustle of leaves.
+    knockOut(){
+      sweep(180, 70, 0.22, 'sine', 0.12);
+      fnoise(0.08, 0.08, {type:'lowpass', freq:700, freqEnd:200, attack:0.004});
+      fnoise(0.5, 0.05, {type:'bandpass', freq:3200, freqEnd:1800, q:0.9, attack:0.04, crackle:0.04, delay:0.18});
+    },
+    // Heal, v2 (2026-10-06, user: "the heal sound should be nicer"): a warm rising major chord on
+    // soft bells, a breathy swell under it and a sparkle on top.
+    healTone(){
+      fnoise(0.7, 0.025, {type:'bandpass', freq:900, freqEnd:2400, q:0.8, attack:0.3});
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i)=>{ tone(f, 0.9 - i*0.1, 'sine', 0.06, i*0.07); tone(f*2, 0.5, 'sine', 0.012, i*0.07 + 0.01); });
+      [1568, 2093, 2637].forEach((f, i)=> tone(f, 0.25, 'triangle', 0.018, 0.32 + i*0.05));
+    },
+    // Bow drawn (2026-10-06): a creaking pull as the string comes back; fire arrows hiss as they light.
+    bowDraw(fire, ms){
+      const d = Math.max(0.12, (ms||240)/1000);
+      fnoise(d, 0.06, {type:'bandpass', freq:380, freqEnd:620, q:6, attack:d*0.7, crackle:0.02});
+      sweep(140, 210, d, 'triangle', 0.035);
+      if(fire) fnoise(d + 0.1, 0.05, {type:'highpass', freq:2600, attack:0.05, crackle:0.05});
+    },
     // Pack reveal: a rising shimmer while a Rare+ card holds its breath (longer and brighter for Legendary+).
     rareRise(legend){
       const d = legend ? 0.7 : 0.45;
@@ -1888,7 +1908,7 @@ const SoundKit = (()=>{
     freezeChime(){ tone(1500,0.07,'sine',0.05); tone(1900,0.09,'sine',0.045,0.05); },
     sleepTone(){ tone(500,0.14,'sine',0.05); tone(380,0.16,'sine',0.04,0.08); },
     paralyzeBuzz(){ tone(180,0.05,'square',0.07); tone(220,0.05,'square',0.06,0.04); tone(160,0.05,'square',0.06,0.08); },
-    healTone(){ tone(560,0.08,'sine',0.06); tone(760,0.1,'sine',0.055,0.05); tone(980,0.09,'sine',0.05,0.1); },
+    // (old healTone replaced 2026-10-06 — see the v2 above)
     // Chronos wait-countdown (2026-09-17, per explicit request): a small clock "tick" every
     // round a card's Wait counter ticks down but isn't ready yet, and a brighter, more
     // resolved "ready" chime specifically for the round it hits 0 — two distinct cues so the
@@ -2817,9 +2837,16 @@ function rarityTierClass(key){
 // caller can render no badge at all instead of an empty/zero one. ★ mirrors the same glyph
 // abilityBadges() uses for the Devilry/Dark Points resource — see the comment there for why ★
 // specifically (not ✦/⭐/🌟) was picked as that resource's unit symbol.
+function pipsHTML(glyph, n, kind){
+  n = Math.max(0, n|0);
+  if(n > 4) return `<span class="pips pips-${kind} is-num"><i>${glyph}</i><b>${n}</b></span>`;
+  return `<span class="pips pips-${kind}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`;
+}
 function costBadgeParts(d){
   const parts = [];
-  if(d.cost>0) parts.push(`🪵${d.cost}`); // 2026-09-22: cost is paid in Lumber now, not Gold — see costOfCard's call sites in bramblewood-engine.js
+  // 2026-10-06 (user: "don't show 'Lumber 1' - just drawing 1 lumber is enough"): cost as pips,
+  // one log per Lumber (a number only past 4, where pips stop being readable at a glance).
+  if(d.cost>0) parts.push(pipsHTML('🪵', d.cost, 'lumber')); // 2026-09-22: cost is paid in Lumber now, not Gold — see costOfCard's call sites in bramblewood-engine.js
   if(d.graceCost>0) parts.push(`🕊️${d.graceCost}`);
   if(d.devilryCost>0) parts.push(`★${d.devilryCost}`);
   return parts;
@@ -2965,7 +2992,7 @@ function cardTileHTML(d, opts){
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">⏳${d.wait}</div>`:''}`}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${d.name}</div>
@@ -3090,7 +3117,7 @@ function abilityBadges(d){
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`🪽`);
+  if(e.flying) out.push(`<span class="ab-wing">🪽</span>`); // 2026-10-06: 20% larger, it was easy to miss
   if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`🌎💥${e.earthquake}`);
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
@@ -13391,7 +13418,7 @@ function showPlacementPreview(row, side){
   // showed no hint of that during the whole drag, only once it actually landed. Mirrors
   // cardTileHTML's own waitbadge exactly so the preview genuinely previews what you're about to get.
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">⏳${d.wait}</div>`:''}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
     <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${d.name}</div>
     <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
@@ -15657,7 +15684,38 @@ function deathStyleFor(uid){
   if(hurt==='heat' || (fiery && hurt!=='cold')) return 'burn';
   if(hurt==='poison' || hurt==='acid' || hurt==='decay') return 'poison';
   if(hurt==='cold') return 'cold';
-  return 'bleed';
+  // 2026-10-06 (user: "there should be a die normally effect"): the red bleed-out is for deaths
+  // by bleeding; an ordinary knock-out falls over and crumbles into leaves (see fallDeathVfx).
+  if(hurt==='bleed') return 'bleed';
+  return 'fall';
+}
+// Normal death: the card topples backwards, greys out and breaks into a puff of leaves and dust
+// (the cue sheet's "puff of leaves" for a death). Bramblewood's creatures are knocked out of the
+// fight; only bleeding and poison get the grimmer wash.
+function fallDeathVfx(el, ms){
+  if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  const t = el.querySelector('.card-tile') || el;
+  el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
+  if(hasGsap()){
+    gsap.timeline()
+      .fromTo(t, {filter:'grayscale(0) brightness(1)'}, {rotationX:62, y:10, scaleY:.9, transformPerspective:500, transformOrigin:'50% 100%', filter:'grayscale(1) brightness(.8)', duration:ms*0.55/1000, ease:'power2.in'})
+      .to(t, {opacity:0, scale:.86, duration:ms*0.35/1000, ease:'power1.in'})
+      .add(()=>{ leafPuff(el); }, ms*0.5/1000);
+  }
+  return true;
+}
+function leafPuff(el){
+  if(!el || !hasGsap()) return;
+  const r = el.getBoundingClientRect();
+  const glyphs = ['🍂','🍃','🍂','·','·','🍁'];
+  for(let i = 0; i < 12; i++){
+    const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
+    document.body.appendChild(p);
+    const x = r.left + r.width*(0.2 + Math.random()*0.6), y = r.top + r.height*(0.55 + Math.random()*0.35);
+    gsap.set(p, {x, y, opacity:1, scale:.6 + Math.random()*.5, rotation:Math.random()*360});
+    gsap.to(p, {x:`+=${(Math.random()*2 - 1)*60}`, y:`-=${20 + Math.random()*40}`, rotation:`+=${Math.random()*240 - 120}`, duration:.5 + Math.random()*.3, ease:'power2.out'});
+    gsap.to(p, {y:`+=${30 + Math.random()*30}`, opacity:0, duration:.6, delay:.45 + Math.random()*.2, ease:'power1.in', onComplete:()=> p.remove()});
+  }
 }
 function bleedOutVfx(el, ms, tone){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
@@ -15684,12 +15742,13 @@ function deathVfx(uid){
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
   const style = deathStyleFor(uid);
-  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : bleedOutVfx(el, Math.round(death*1.4), style);
-  try{ if(style==='burn') SoundKit.burnAway(); else SoundKit.bleedOut(style); }catch(e){}
+  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  try{ if(style==='burn') SoundKit.burnAway(); else if(style==='fall') SoundKit.knockOut(); else SoundKit.bleedOut(style); }catch(e){}
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
+    if(burnt && style==='fall'){ /* fallDeathVfx animates the tile itself */ }
+    else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
     gsap.timeline({onComplete:()=> skull.remove()})
@@ -15785,10 +15844,11 @@ function settleStrayBoardCards(){
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
-  document.querySelectorAll('.board-card.burning, .board-card.bleeding').forEach(el=>{
+  document.querySelectorAll('.board-card.burning, .board-card.bleeding, .board-card.falling').forEach(el=>{
     if(!alive.has(String(el.dataset.uid))) return;
     el.classList.remove('burning', 'bleeding', 'bleed-bleed', 'bleed-poison', 'bleed-cold'); el.querySelectorAll(':scope > .burn-glow, :scope > .bleed-wash').forEach(g=> g.remove());
-    if(hasGsap()) gsap.set(el, {clearProps:'scale,y,opacity'});
+    el.classList.remove('falling'); const ft = el.querySelector('.card-tile');
+    if(hasGsap()){ gsap.set(el, {clearProps:'scale,y,opacity'}); if(ft) gsap.set(ft, {clearProps:'transform,filter,opacity'}); }
   });
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
@@ -17507,7 +17567,13 @@ function floatText(el, text, cls){
   const f = document.createElement('div');
   const heavyHit = /^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls;
   f.className = 'dmg-float'+(cls?(' '+cls):'')+(heavyHit?' heavy':'');
-  f.textContent = text; f.dataset.t = text;
+  // 2026-10-06 (user: "for the poison and bleed hits, the icon should accompany it"): the icon is
+  // its own element beside the number, so the number's gradient fill can't wash out the emoji.
+  const raw = String(text);
+  const icon = (raw.match(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu) || []).join('').replace(/\uFE0F/g, '');
+  const num = raw.replace(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu, '').trim() || raw;
+  f.innerHTML = (cls && /\bcrit\b/.test(cls) ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
+  f.dataset.t = raw;
   // Item #2 (2026-09-16, "damage text shouldn't just fly up, they should have some
   // amount of random x-force"): a little random horizontal drift baked in per-instance.
   // Floating-number coverage audit (2026-09-18, "with some variation in x and y so a burst of
@@ -17952,11 +18018,25 @@ const DangerPulse = (()=>{
   return {start(){ if(!timer) tick(); }};
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
-function flashDmg(uid, dmg, blocked, dmgType){
+// Damage-type icons beside the number (2026-10-06).
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','debuff'], decay:['🦠','poison'], bleed:['🩸','bleed']};
+function critStampVfx(el){
+  if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const t = el.querySelector('.card-tile') || el;
+  const st = document.createElement('div'); st.className = 'crit-stamp'; st.setAttribute('aria-hidden','true'); st.innerHTML = '<span class="cs-burst"></span><b>CRIT!</b>';
+  t.appendChild(st);
+  gsap.timeline({onComplete:()=> st.remove()})
+    .fromTo(st, {xPercent:-50, yPercent:-50, scale:2.4, rotation:-24, opacity:0}, {scale:1, rotation:-12, opacity:1, duration:.14, ease:'power4.in'})
+    .to(st, {opacity:0, y:-8, duration:.3, delay:.5});
+}
+function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
   shakeEl(el);
-  floatText(el, blocked ? '0 🛡' : ('-'+dmg), blocked?'blocked':'');
+  const di = DMG_ICON[dmgType];
+  if(blocked) floatText(el, '🛡 0', 'blocked');
+  else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
+  else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   hitExplosionVfx(uid, dmgType);
 }
 // Keyword cues derived straight from the card's own definition — Quick/Stealth/Reload/
@@ -17993,7 +18073,10 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // it consumes itself, but Ambush already gets its own distinct 🗡 flourish just above — gated
   // on !ev.ambush here so a card's first, Ambush-forced crit doesn't stack two "something
   // special happened" floats on top of each other.
-  if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); floatText(targetEl||attEl, '💥 Crit!', 'gold'); }, Math.max(0, animMs().windup-20)); }
+  // Crits (2026-10-06, user: "we need a symbol for being hit critically"): the number itself gets
+  // the crit look (a gold starburst behind a bigger number) and a CRIT! stamp lands on the card —
+  // see flashDmg/critStampVfx. Only the sound is cued here.
+  if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); }, Math.max(0, animMs().windup-20)); }
   // Rend (2026-09-16 mechanic, same audit): bypasses Armor entirely, but a Rend hit against an
   // armored target looked pixel-identical to a hit against a target with no Armor at all — no
   // signal Armor was ever in the picture. ev.rend only comes back true when the target actually
@@ -18106,7 +18189,7 @@ function renderVfxForEvent(ev){
     const pa = matchState.pendingArrow;
     const arrowShot = !!(ev.ranged && pa && String(pa.uid)===String(ev.attUid));
     if(arrowShot){ matchState.pendingArrow = null; ev._arrowShot = true; }
-    const arrowWind = Math.round(windup*0.35);
+    const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     if(ev.ranged){
@@ -18120,10 +18203,14 @@ function renderVfxForEvent(ev){
       // projectile — and therefore a visible "where this came from" — always plays.
       if(arrowShot){
         const shooter = boardCardEl(ev.attUid);
+        try{ SoundKit.bowDraw(pa.fire, arrowWind); }catch(e){}
         setTimeout(()=>{ try{ SoundKit.arrowLoose(pa.fire); }catch(e){} }, arrowWind);
         setTimeout(()=>{ try{ if(ev.type!=='evaded') SoundKit.arrowThunk(pa.fire); }catch(e){} }, arrowWind + arrowFlightMs());
-        if(shooter && hasGsap()) gsap.fromTo(shooter, {scale:1}, {scale:.96, duration:arrowWind/1000, yoyo:true, repeat:1, ease:'power1.inOut'}); // draw the bow
-        setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
+        // 2026-10-06: the full bow choreography (draw, release + recoil, flight, impact) lives in
+        // bramblewood-skillfx.js, shared with the Effects Lab; spawnArrowProjectile stays as a fallback.
+        if(window.SkillFX){ SkillFX.setImages(ARROW_PNG, FIRE_ARROW_PNG); SkillFX.bowShot(shooter || hqTileEl(ev.side), targetEl, {fire: pa.fire, draw: arrowWind, flight: arrowFlightMs(),
+          light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
+        else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
@@ -18158,7 +18245,7 @@ function renderVfxForEvent(ev){
         if(typeof maybeSpeakHQ==='function') maybeSpeakHQ(ev.targetSide, 'castleOnHit');
       }
       else {
-        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType);
+        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush);
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
         // target survived, apply whatever passive Poison/Bleed the attacker's card carries.
@@ -18438,7 +18525,7 @@ function renderVfxForEvent(ev){
     // existing bubble chime + emoji-led float number together read as one distinct beat.
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
-    floatText(el, '🫧 '+ev.dmg+'!', 'poison-tick');
+    floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
@@ -18452,7 +18539,7 @@ function renderVfxForEvent(ev){
   // green rather than just a slightly different number.
   if(ev.type==='bleedTick'){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
-    floatText(el, '🩸 '+ev.dmg+'!', 'bleed-tick');
+    floatText(el, '🩸 -'+ev.dmg, 'bleed-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
