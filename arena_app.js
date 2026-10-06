@@ -6197,7 +6197,7 @@ function deckHeroBannerHTML(){
       <button type="button" class="dt-slot" data-loadout="leader" title="Choose your leader"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
-      <h2>${escapeHtml(active.name || 'My deck')}</h2>
+      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span></h2>
       <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
       <div class="dt-stats">
         <span><b>${sig.avgAtk}</b><small>⚔ avg attack</small></span>
@@ -6220,8 +6220,24 @@ function refreshDeckHeroBanner(){
   el.outerHTML = deckHeroBannerHTML();
   wireDeckTop();
 }
+// Inline deck rename (2026-10-07, user: "Clicking 'Deck' in the deck editor should let me edit the
+// deck's name"): the name turns into a text box in place. Enter or clicking away saves, Escape cancels.
+function startDeckRename(el, deckId, after){
+  const d = (myDecks||[]).find(x=> x.id===deckId); if(!el || !d || el.querySelector('input')) return;
+  const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'deck-rename-input'; inp.value = d.name; inp.maxLength = 40;
+  inp.setAttribute('aria-label', 'Deck name');
+  el.replaceChildren(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = save=>{ if(done) return; done = true; if(save && inp.value.trim() && inp.value.trim() !== d.name){ renameDeck(deckId, inp.value); try{ showToast('Deck renamed'); }catch(e){} } (after || renderDeckSection)(); };
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); finish(true); } else if(e.key==='Escape'){ e.preventDefault(); finish(false); } e.stopPropagation(); });
+  inp.addEventListener('blur', ()=> finish(true));
+  inp.addEventListener('click', e=> e.stopPropagation());
+}
 function wireDeckTop(){
   document.querySelectorAll('#deckHeroBanner [data-loadout]').forEach(b=> b.addEventListener('click', ()=> openLoadoutPicker(b.dataset.loadout)));
+  const nm = document.querySelector('#deckHeroBanner [data-rename-deck]');
+  if(nm){ nm.addEventListener('click', ()=> startDeckRename(nm, nm.dataset.renameDeck));
+    nm.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && !nm.querySelector('input')){ e.preventDefault(); startDeckRename(nm, nm.dataset.renameDeck); } }); }
 }
 // Castle / Leader picker (2026-10-05, user: "I should be able to select castle and leader by
 // clicking into them, opening a sub window. Then the sections 'choose your bramble' and 'leader'
@@ -19980,7 +19996,7 @@ function renderDeckSection(){
     if(activeDeckId!==deckEditingId) switchActiveDeck(deckEditingId);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
-          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}">${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
+          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
         <div class="play-subtabs-actions">
@@ -19990,7 +20006,8 @@ function renderDeckSection(){
         </div>
       </div>
       <div id="deckBuilderBody"></div>`;
-    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
+    // Clicking the deck you're already in renames it (it's obvious which deck you mean).
+    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
     document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
@@ -21230,14 +21247,20 @@ async function setGameLanguage(code){
   if(got !== code) showToast('That language isn’t available yet.');
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
+// Leaf sweep (2026-10-07 rework, user: "a rush of leaves... make it more spaced out. It seems to
+// be low FPS too"): 9 leaves instead of 22, spread over ~1.1 s instead of all at once, each on its
+// own drifting path. Every leaf is a composited layer (transform + opacity only, no per-leaf
+// filter), and the veil slides with a transform instead of repainting a background, so the sweep
+// stays smooth even while the next page is being built underneath it.
 function leafSweep(){
-  const glyphs = ['🍂','🍁','🌿','🍃','🍂','🍁'];
+  const glyphs = ['🍂','🍁','🍃','🍂','🍁','🌿','🍃','🍂','🍁'];
   let html = '<span class="ls-veil"></span>';
-  for(let i=0;i<22;i++){
-    const top = (i*37)%100, size = 22 + (i*13)%26, delay = (i*23)%180, rot = (i*67)%360;
-    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; --r:${rot}deg">${glyphs[i%glyphs.length]}</i>`;
+  for(let i = 0; i < glyphs.length; i++){
+    const top = 6 + ((i*41) % 84), size = 24 + (i*11) % 18, delay = Math.round(i*120 + (i*53)%70), rot = (i*67) % 360;
+    const dur = 950 + (i*97) % 350, drift = ((i*29) % 18) - 6;
+    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; animation-duration:${dur}ms; --r:${rot}deg; --dy:${drift}vh">${glyphs[i]}</i>`;
   }
-  placeOverlay('leaf-sweep', html, 900);
+  placeOverlay('leaf-sweep', html, 2400);
 }
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';

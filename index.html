@@ -701,6 +701,14 @@
     background-size:100% 140%; background-position:0% 100%;
     animation:rarityBandDrift 10s ease-in-out infinite;}
   @keyframes rarityBandDrift{0%{background-position:0% 100%;}50%{background-position:0% 55%;}100%{background-position:0% 100%;}}
+  /* Perf (2026-10-07, user: "the deck editor and any page that shows the card gallery is laggy, esp
+     the Codex"): the band's drift animates background-position, which repaints the card every
+     frame; with ~280 cards in a gallery that was most of the cost of every scrolled frame. It now
+     rests by default and only drifts where few cards are on screen (board, hand, the big card
+     views) or on the card under the pointer. */
+  .card-tile .rarity-band{animation-play-state:paused !important;}
+  .board-card .card-tile .rarity-band, #handStrip .card-tile .rarity-band, .hero-card-big .card-tile .rarity-band, .card-pop-visual .card-tile .rarity-band,
+  .card-tile:hover > .rarity-band{animation-play-state:running !important;}
   .board-card.ghost-preview .card-tile .rarity-band{display:none;}
   /* 2026-09-20 follow-up ("increase the font of the card texts. put them closer to the edge" +
      "put skills and costs together, at the top of the card"): .nm used to sit almost flush with
@@ -2086,6 +2094,12 @@
   .card-tile > .draw-back::after{content:'🌰';}
   /* Victory parade (2026-10-06): see victoryParade(). */
   .parade-flag{position:fixed; z-index:1100; pointer-events:none; font-size:20px; transform:translate(-50%,-50%); filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));}
+  /* Inline deck rename (2026-10-07). */
+  .dt-name{cursor:text; display:inline-flex; align-items:center; gap:6px; border-radius:8px; padding:0 4px; margin-left:-4px;}
+  .dt-name:hover, .dt-name:focus-visible{background:color-mix(in srgb, var(--accent) 10%, transparent); outline:none;}
+  .dt-name .dt-edit{font-size:.55em; opacity:.45;} .dt-name:hover .dt-edit{opacity:.9;}
+  .deck-rename-input{font:inherit; color:inherit; background:var(--surface); border:2px solid var(--accent); border-radius:8px; padding:0 6px; width:min(100%, 16em); min-width:6em;}
+  .deck-chip .deck-rename-input{font-size:13px; width:9em; padding:1px 4px;}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -4759,12 +4773,16 @@
   @media (max-width:560px){ #view-forge.forge-scene{padding:58px 10px 18px; border-radius:12px;} #view-forge.forge-scene::after{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .forge-sparks, .forge-flare{display:none;} }
   /* In-world screen transition (2026-10-05): a gust of leaves sweeps across as the screen changes. */
-  .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden;}
-  .leaf-sweep .ls-veil{position:absolute; inset:0; background:linear-gradient(100deg, transparent 0%, rgba(58,80,40,.0) 20%, rgba(58,80,40,.45) 50%, rgba(58,80,40,0) 80%, transparent 100%);
-    background-size:300% 100%; animation:lsVeil .7s ease-out forwards;}
-  @keyframes lsVeil{from{background-position:100% 0;} to{background-position:0% 0;}}
-  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.35)); animation:lsLeaf .62s cubic-bezier(.3,.1,.4,1) forwards;}
-  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 15%{opacity:1;} 100%{transform:translate(calc(100vw + 120px), 6vh) rotate(calc(var(--r) + 260deg)); opacity:.9;}}
+  .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden; contain:strict;}
+  .leaf-sweep .ls-veil{position:absolute; top:0; bottom:0; left:0; width:60%; will-change:transform, opacity;
+    background:linear-gradient(100deg, rgba(58,80,40,0) 0%, rgba(58,80,40,.32) 50%, rgba(58,80,40,0) 100%);
+    animation:lsVeil 1.1s cubic-bezier(.4,.1,.4,1) forwards;}
+  @keyframes lsVeil{from{transform:translateX(-100%); opacity:0;} 20%{opacity:1;} to{transform:translateX(180%); opacity:0;}}
+  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; will-change:transform, opacity; opacity:0;
+    text-shadow:0 3px 3px rgba(0,0,0,.25); animation-name:lsLeaf; animation-timing-function:cubic-bezier(.35,.1,.45,1); animation-fill-mode:forwards;}
+  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 12%{opacity:1;}
+    50%{transform:translate(55vw, calc(var(--dy) * .5 - 3vh)) rotate(calc(var(--r) + 140deg));}
+    88%{opacity:.95;} 100%{transform:translate(calc(100vw + 120px), var(--dy)) rotate(calc(var(--r) + 300deg)); opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .leaf-sweep{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
@@ -16716,7 +16734,7 @@ function deckHeroBannerHTML(){
       <button type="button" class="dt-slot" data-loadout="leader" title="Choose your leader"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
-      <h2>${escapeHtml(active.name || 'My deck')}</h2>
+      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span></h2>
       <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
       <div class="dt-stats">
         <span><b>${sig.avgAtk}</b><small>⚔ avg attack</small></span>
@@ -16739,8 +16757,24 @@ function refreshDeckHeroBanner(){
   el.outerHTML = deckHeroBannerHTML();
   wireDeckTop();
 }
+// Inline deck rename (2026-10-07, user: "Clicking 'Deck' in the deck editor should let me edit the
+// deck's name"): the name turns into a text box in place. Enter or clicking away saves, Escape cancels.
+function startDeckRename(el, deckId, after){
+  const d = (myDecks||[]).find(x=> x.id===deckId); if(!el || !d || el.querySelector('input')) return;
+  const inp = document.createElement('input'); inp.type = 'text'; inp.className = 'deck-rename-input'; inp.value = d.name; inp.maxLength = 40;
+  inp.setAttribute('aria-label', 'Deck name');
+  el.replaceChildren(inp); inp.focus(); inp.select();
+  let done = false;
+  const finish = save=>{ if(done) return; done = true; if(save && inp.value.trim() && inp.value.trim() !== d.name){ renameDeck(deckId, inp.value); try{ showToast('Deck renamed'); }catch(e){} } (after || renderDeckSection)(); };
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); finish(true); } else if(e.key==='Escape'){ e.preventDefault(); finish(false); } e.stopPropagation(); });
+  inp.addEventListener('blur', ()=> finish(true));
+  inp.addEventListener('click', e=> e.stopPropagation());
+}
 function wireDeckTop(){
   document.querySelectorAll('#deckHeroBanner [data-loadout]').forEach(b=> b.addEventListener('click', ()=> openLoadoutPicker(b.dataset.loadout)));
+  const nm = document.querySelector('#deckHeroBanner [data-rename-deck]');
+  if(nm){ nm.addEventListener('click', ()=> startDeckRename(nm, nm.dataset.renameDeck));
+    nm.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && !nm.querySelector('input')){ e.preventDefault(); startDeckRename(nm, nm.dataset.renameDeck); } }); }
 }
 // Castle / Leader picker (2026-10-05, user: "I should be able to select castle and leader by
 // clicking into them, opening a sub window. Then the sections 'choose your bramble' and 'leader'
@@ -30499,7 +30533,7 @@ function renderDeckSection(){
     if(activeDeckId!==deckEditingId) switchActiveDeck(deckEditingId);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
-          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}">${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
+          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
         <div class="play-subtabs-actions">
@@ -30509,7 +30543,8 @@ function renderDeckSection(){
         </div>
       </div>
       <div id="deckBuilderBody"></div>`;
-    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
+    // Clicking the deck you're already in renames it (it's obvious which deck you mean).
+    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
     document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
@@ -31749,14 +31784,20 @@ async function setGameLanguage(code){
   if(got !== code) showToast('That language isn’t available yet.');
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
+// Leaf sweep (2026-10-07 rework, user: "a rush of leaves... make it more spaced out. It seems to
+// be low FPS too"): 9 leaves instead of 22, spread over ~1.1 s instead of all at once, each on its
+// own drifting path. Every leaf is a composited layer (transform + opacity only, no per-leaf
+// filter), and the veil slides with a transform instead of repainting a background, so the sweep
+// stays smooth even while the next page is being built underneath it.
 function leafSweep(){
-  const glyphs = ['🍂','🍁','🌿','🍃','🍂','🍁'];
+  const glyphs = ['🍂','🍁','🍃','🍂','🍁','🌿','🍃','🍂','🍁'];
   let html = '<span class="ls-veil"></span>';
-  for(let i=0;i<22;i++){
-    const top = (i*37)%100, size = 22 + (i*13)%26, delay = (i*23)%180, rot = (i*67)%360;
-    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; --r:${rot}deg">${glyphs[i%glyphs.length]}</i>`;
+  for(let i = 0; i < glyphs.length; i++){
+    const top = 6 + ((i*41) % 84), size = 24 + (i*11) % 18, delay = Math.round(i*120 + (i*53)%70), rot = (i*67) % 360;
+    const dur = 950 + (i*97) % 350, drift = ((i*29) % 18) - 6;
+    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; animation-duration:${dur}ms; --r:${rot}deg; --dy:${drift}vh">${glyphs[i]}</i>`;
   }
-  placeOverlay('leaf-sweep', html, 900);
+  placeOverlay('leaf-sweep', html, 2400);
 }
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
