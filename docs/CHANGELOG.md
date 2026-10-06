@@ -6,6 +6,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Cards flip out of your deck as you draw them; the winners parade with banners.
 - The Codex and deck editor are much smoother (up to about 9× less work per frame); the page-change leaves are calmer and smoother.
 - Click a deck's name to rename it.
+- Fire creatures shimmer with heat haze.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.

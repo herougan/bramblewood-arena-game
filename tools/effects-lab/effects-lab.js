@@ -169,7 +169,7 @@
     ['Combat', 'Bleed-out deaths (bleed, poison, cold)', 'live', 'Card deaths'], ['Combat', 'Burn-away deaths', 'live', 'Fire deaths, falling castle'], ['Combat', 'Arrow and Fire Arrow projectiles', 'live', 'Arrow skills'], ['Combat', 'Victory dance and loser scatter', 'live', 'Match end'],
     ['Combat', 'Attack preview line under cards', 'live', 'Battlefield hover'], ['Combat', 'Pitch badge on the Graveyard', 'live', 'Dragging a hand card'], ['Combat', 'Snap guard (no card teleports)', 'live', 'Battlefield'], ['Combat', 'Low-castle danger pulse', 'live', 'Castle under 25%'],
     ['Battlefield', 'Map weather overlay (12 looks)', 'live', 'Under the cards'], ['Battlefield', 'Lit cloth felt / light-only floor', 'live', 'Every battle'], ['Battlefield', 'Ground material per map', 'live', 'Wet, ash, frost, sand maps'], ['Battlefield', 'Impact point lights', 'live', 'Every hit'],
-    ['Battlefield', 'Shockwave ring', 'live', 'Castle hits, 8+ blows'], ['Battlefield', 'Card shadows on the floor', 'live', 'Every battle'], ['Battlefield', 'Rain showers', 'live', 'Wet maps; a third of Outskirts fights'], ['Battlefield', 'Heat haze over fire cards', 'idea', 'Fire cards'], ['Battlefield', 'Noise dissolve deaths', 'idea', 'Card deaths'],
+    ['Battlefield', 'Shockwave ring', 'live', 'Castle hits, 8+ blows'], ['Battlefield', 'Card shadows on the floor', 'live', 'Every battle'], ['Battlefield', 'Rain showers', 'live', 'Wet maps; a third of Outskirts fights'], ['Battlefield', 'Heat haze over fire cards', 'live', 'Fire cards'], ['Battlefield', 'Noise dissolve deaths', 'idea', 'Card deaths'],
     ['Screens', 'Splash depth parallax, god rays, water', 'live', 'Splash and Home'], ['Screens', 'Live clock tints and motes', 'live', 'Everywhere outside fights'], ['Screens', 'Places: Tent, Cart, Nest, Forge entrances', 'live', 'Deck, Shop, Nest, Forge'], ['Screens', 'Leaf sweep transitions', 'live', 'Menu changes'],
     ['Screens', 'Versus opener', 'live', 'Before Conquest fights'], ['Screens', 'Victory/Defeat sign with confetti', 'live', 'Match end'], ['Screens', 'Pack light leak and held breath', 'live', 'Pack openings'], ['Screens', 'Page curl, pixelate, ink wash transitions', 'idea', 'Codex, battles, lore'],
     ['Sound', 'Synth cue set (90+ cues)', 'live', 'Everywhere'], ['Sound', 'Stereo panning of hits and deaths', 'live', 'Battles'], ['Sound', 'Ambience per place', 'live', '“Music & ambience” slider'], ['Sound', 'Ambience ducking', 'live', 'Big moments'],
@@ -256,6 +256,7 @@
   }));
   cardRun.throne = ()=>{ const t = $('#throneStage .card-tile'); if(t) leaderThroneVfx(t); };
   cardRun.shuffle = ()=> deckShuffleVfx([$('#shuffleStage .deck-widget')]);
+  { const hb = $('#hazeStage .board-card'); if(hb && !hb.querySelector('.heat-haze')) hb.insertAdjacentHTML('beforeend', '<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>'); }
   cardRun.draw = ()=>{ const t = $('#drawStage .card-tile'); if(t) drawFlipVfx([t], $('#drawStage .deck-widget'), 0); };
   cardRun.parade = ()=> victoryParade($('#paradeStage'), -1);
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));

@@ -2100,6 +2100,15 @@
   .dt-name .dt-edit{font-size:.55em; opacity:.45;} .dt-name:hover .dt-edit{opacity:.9;}
   .deck-rename-input{font:inherit; color:inherit; background:var(--surface); border:2px solid var(--accent); border-radius:8px; padding:0 6px; width:min(100%, 16em); min-width:6em;}
   .deck-chip .deck-rename-input{font-size:13px; width:9em; padding:1px 4px;}
+  /* Heat haze (2026-10-07): see isFieryDef(). */
+  .board-card .heat-haze{position:absolute; left:6%; right:6%; bottom:40%; height:78%; z-index:6; pointer-events:none; overflow:hidden;
+    -webkit-mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.6) 45%, transparent 100%); mask-image:linear-gradient(0deg, #000 0%, rgba(0,0,0,.6) 45%, transparent 100%);}
+  .board-card .heat-haze i{position:absolute; left:-10%; right:-10%; bottom:-40%; height:140%; will-change:transform, opacity;
+    background:repeating-linear-gradient(0deg, rgba(255,170,90,0) 0 8px, rgba(255,214,160,.32) 10.5px, rgba(255,170,90,0) 13px 20px);
+    animation:heatRise 2.6s linear infinite;}
+  .board-card .heat-haze i + i{animation-duration:3.4s; animation-delay:-1.3s; opacity:.7; transform:scaleX(-1);}
+  @keyframes heatRise{0%{transform:translateY(0) skewX(0deg); opacity:0;} 20%{opacity:1;} 50%{transform:translateY(-22%) skewX(4deg);} 80%{opacity:.8;} 100%{transform:translateY(-44%) skewX(-3deg); opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .board-card .heat-haze{display:none;} }
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -25446,6 +25455,10 @@ function waitBadgeHTML(waitRemaining, waitTotal){
       <span class="wait-num">${waitRemaining}</span>
     </div>`;
 }
+// Heat haze (2026-10-07, effects "Coming next"): fire creatures have shimmering hot air rising off
+// the top of the card. Two faint wavy bands drifting upward, on the compositor (transform/opacity
+// only); none with reduced motion.
+function isFieryDef(d){ return !!(d && (d.dmgType==='heat' || (d.archetypes||[]).includes('Volcanic'))); }
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
   const d = defs[c.defId]||{}; const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
@@ -25532,6 +25545,7 @@ function boardCardHTML(c, defs, opts){
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
+      ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
       <div class="nm">${d.name||c.defId}</div>

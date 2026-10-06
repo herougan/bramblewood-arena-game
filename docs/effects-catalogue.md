@@ -233,8 +233,9 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Draw flip:** a card that comes into your hand flies out of your deck face down and flips face up in its slot. The opening hand deals one by one after the shuffle (`drawFlipNewHandCards`, `drawFlipVfx`).
 - **Victory parade:** under the Victory sign, the winning side's survivors hop in a wave from left to right, each raising a 🚩, before the dance (`victoryParade`).
 
+**Heat haze (live, 2026-10-07):** fire and volcanic units have hot air shimmering up off the card: two faint wavy bands drifting upward, using transform and opacity only (`isFieryDef`, `.heat-haze`).
+
 **Coming next (TBC in the Effects Lab):**
-- Heat haze
 - Page curl and pixelate transitions
 - Walking map pawn
 - Raid telegraph glow

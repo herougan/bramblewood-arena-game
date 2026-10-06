@@ -14909,6 +14909,10 @@ function waitBadgeHTML(waitRemaining, waitTotal){
       <span class="wait-num">${waitRemaining}</span>
     </div>`;
 }
+// Heat haze (2026-10-07, effects "Coming next"): fire creatures have shimmering hot air rising off
+// the top of the card. Two faint wavy bands drifting upward, on the compositor (transform/opacity
+// only); none with reduced motion.
+function isFieryDef(d){ return !!(d && (d.dmgType==='heat' || (d.archetypes||[]).includes('Volcanic'))); }
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
   const d = defs[c.defId]||{}; const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
@@ -14995,6 +14999,7 @@ function boardCardHTML(c, defs, opts){
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
+      ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
       <div class="nm">${d.name||c.defId}</div>
