@@ -24552,8 +24552,19 @@ function renderBoard(opts){
   // at `dur` when gsapFlip is false and there's no concurrent Flip tween to synchronize with at
   // all). Guarded against double-invocation (e.g. a stray second call) by nulling newElRects out
   // once released.
-  function releaseNewElRects(){
+  function releaseNewElRects(waited){
     if(!newElRects) return;
+    // 2026-10-06 (snaps flake, Map 2): if another card in the same row is still pinned by its own
+    // entrance, releasing this one now measures its slot with that sibling out of flow — it glides
+    // to the wrong place and jumps when the sibling lands. Wait (a frame at a time, up to ~1.2 s)
+    // until the row's other pins are gone, so everything returns to flow together.
+    const mine = new Set(newElRects.map(({el})=> el));
+    const rowsHere = new Set(newElRects.map(({el})=> el.parentNode).filter(Boolean));
+    const others = [...rowsHere].flatMap(row=> [...row.children].filter(c=> !mine.has(c) && c.style.position==='absolute'));
+    const stillMoving = others.some(c=> c.classList.contains('is-entering') || gsap.isTweening(c));
+    if(stillMoving && (waited||0) < 72){ requestAnimationFrame(()=> releaseNewElRects((waited||0) + 1)); return; }
+    // Siblings that are pinned but already at rest (waiting on their own release) come back with us.
+    others.filter(c=> !gsap.isTweening(c)).forEach(c=> newElRects.push({el:c}));
     if(window.__DEBUG_RENDER__) newElRects.forEach(({el})=>console.log('[settle revert]', 't=',performance.now().toFixed(1), el.getAttribute('data-uid')));
     // 2026-10-04 ("cards sometimes teleport to the right"): the pin was measured when the card
     // landed; if the row reflowed since (another card entered, one died, the center refilled), the
@@ -26498,7 +26509,7 @@ function glideFromRect(el, from){
   }
   requestAnimationFrame(tick);
 })();
-function settleStrayBoardCards(){
+function settleStrayBoardCards(waited){
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
@@ -26508,8 +26519,14 @@ function settleStrayBoardCards(){
     el.classList.remove('falling'); const ft = el.querySelector('.card-tile');
     if(hasGsap()){ gsap.set(el, {clearProps:'scale,y,opacity'}); if(ft) gsap.set(ft, {clearProps:'transform,filter,opacity'}); }
   });
+  // 2026-10-06 (snaps flake): a row where some card is still pinned AND moving (a Flip or entrance
+  // in flight) is left alone this time and retried next frame — releasing its resting cards now
+  // would measure their slots with the moving one out of flow, so they'd jump again when it lands.
+  let deferred = false;
+  const rowBusy = row=> hasGsap() && [...row.children].some(c=> c.style.position==='absolute' && (gsap.isTweening(c) || c.classList.contains('is-entering')));
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
+    if(el.parentNode && rowBusy(el.parentNode) && (waited||0) < 72){ deferred = true; return; }
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
     const tf = el.style.transform;
     if(pinned || (tf && tf!=='none' && !/^translate\(0(px)?, 0(px)?\)$/.test(tf))){
@@ -26517,6 +26534,7 @@ function settleStrayBoardCards(){
       else { el.style.position=''; el.style.left=''; el.style.top=''; el.style.width=''; el.style.height=''; el.style.transform=''; }
     }
   });
+  if(deferred) requestAnimationFrame(()=> settleStrayBoardCards((waited||0) + 1));
 }
 async function resolveRound(){
   const m = matchState; if(!m||m.over||m.resolving) return;
