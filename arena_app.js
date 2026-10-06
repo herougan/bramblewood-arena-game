@@ -2064,7 +2064,9 @@ const Ambience = (()=>{
   const bubble = sc=>{ const n = 2 + Math.floor(Math.random()*4); for(let i=0;i<n;i++){ const f = rnd(250, 500); blip(sc, f, f*2.4, 0.06, 'sine', 0.03, i*rnd(0.05,0.12)); } };
   const gust = sc=> puff(sc, rnd(2.5, 4.5), 0.06, 'bandpass', rnd(350, 600), 2, 0, rnd(800, 1300));
   const clank = sc=>{ const f = rnd(500, 900); blip(sc, f, f*0.98, 0.5, 'triangle', 0.02); blip(sc, f*2.76, f*2.7, 0.3, 'sine', 0.008); };
-  const thunder = sc=> puff(sc, 3.2, 0.12, 'lowpass', 300, 0.6, 0, 60);
+  const thunder = (sc, delay)=> puff(sc, 3.2, 0.12, 'lowpass', 300, 0.6, delay||0, 60);
+  // In a fight, thunder comes from lightningStrike() so it follows a visible flash.
+  const autoThunder = sc=>{ if(typeof matchState !== 'undefined' && matchState && !matchState.over) return; thunder(sc); };
   const cry = sc=> blip(sc, rnd(1700, 2100), rnd(1100, 1300), 0.55, 'sine', 0.025);
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
@@ -2086,8 +2088,8 @@ const Ambience = (()=>{
     7:  {beds:[{freq:250, gain:0.05, lfo:0.05}, {type:'bandpass', freq:3600, q:6, gain:0.011, am:22}], events:[[frog, 1.5, 5]]},
     8:  {beds:[{freq:110, gain:0.09, lfo:0.06, depth:0.6}], events:[[crackle, 0.5, 1.6], [clank, 5, 12]]},
     9:  {beds:[{type:'bandpass', freq:800, q:1, gain:0.05, sweep:0.05, sweepDepth:300}], events:[[cry, 8, 18], [gust, 6, 12]]},
-    10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [thunder, 14, 30]]},
-    11: {beds:[{type:'highpass', freq:1500, gain:0.05}, {freq:420, gain:0.03, lfo:0.08}], events:[[drip, 2, 5], [thunder, 20, 40]]},
+    10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [autoThunder, 14, 30]]},
+    11: {beds:[{type:'highpass', freq:1500, gain:0.05}, {freq:420, gain:0.03, lfo:0.08}], events:[[drip, 2, 5], [autoThunder, 20, 40]]},
   };
   function build(kind){
     const c = C(), o = out(); if(!c || !o) return null;
@@ -2135,6 +2137,7 @@ const Ambience = (()=>{
   return {
     setTimeOfDay(t){ if(t===tod) return; tod = t; if(cur){ const k = cur.kind; retire(cur); cur = null; wanted = k; apply(); } },
     play(kind){ wanted = kind; apply(); },
+    thunder(delay){ if(cur && cur.alive && vol > 0 && !document.hidden){ try{ thunder(cur, delay); }catch(e){} } },
     stop(){ wanted = null; retire(cur); cur = null; },
     current(){ return cur ? cur.kind : null; },
     setVolume(v){ vol = v; const c = C(); if(master && c) master.gain.setTargetAtTime(vol*LEVEL, c.currentTime, 0.1); if(vol <= 0){ retire(cur); cur = null; } else apply(); },
@@ -12733,7 +12736,7 @@ function renderMatchUI(){
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
-    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''}" id="battlefieldEl">
+    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner">
         <div class="board-row enemy" id="rowEnemy"></div>
@@ -13237,6 +13240,7 @@ function wireDropZones(){
   // appended into it since the last full render. Toggling visibility in place keeps them intact.
   wireFacingHover();
   try{ mountBattleWeather(matchState); }catch(e){}
+  if(!lightningTimer) try{ scheduleLightning(matchState); }catch(e){}
   try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
@@ -15031,11 +15035,12 @@ function renderHand(){
       e.dataTransfer.setData('text/plain', String(uid));
       e.dataTransfer.effectAllowed = 'move';
       el.classList.add('dragging');
+      dragTrail.start();
       // Pitch preview (2026-10-05, user: "when the player is hovering the card over the graveyard
       // they should have a more obvious indicator"): the graveyard lights up with what this card
       // would pitch for the moment you pick it up, and grows when you're over it.
     });
-    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); });
+    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -16421,10 +16426,33 @@ async function resolveRound(){
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+// Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
+// while it's dragged. Throttled to one sparkle per 40 ms and at most 14 alive; none with reduced motion.
+var dragTrail = (function(){
+  let on = false, last = 0, alive = 0;
+  function spark(x, y){
+    const now = performance.now(); if(now - last < 40 || alive >= 14) return; last = now;
+    const sp = document.createElement('span'); sp.className = 'drag-spark'; sp.setAttribute('aria-hidden','true');
+    sp.style.left = (x + (Math.random()*16 - 8)) + 'px'; sp.style.top = (y + (Math.random()*16 - 8)) + 'px';
+    sp.style.setProperty('--dx', (Math.random()*20 - 10).toFixed(0) + 'px');
+    document.body.appendChild(sp); alive++; setTimeout(()=>{ sp.remove(); alive--; }, 560);
+  }
+  if(typeof document !== 'undefined') document.addEventListener('dragover', e=>{ if(on && (e.clientX || e.clientY)) spark(e.clientX, e.clientY); });
+  return {
+    start(){ on = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
+    stop(){ on = false; },
+  };
+})();
 // Modes whose fights count toward quests and medals (not the tutorial, sandbox, test kit or pass & play).
 const QUEST_COUNTING_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','pvp','raidOffline','raidOnline','liveRanked','autobattle']);
 // Sudden death banner (turn 20) and Forfeit (2026-10-03).
+// Sudden-death red sky (2026-10-06, effects "Coming next"): from the sudden-death round the
+// battlefield's sky bleeds red and pulses slowly, so the rule change stays visible after the banner.
+function suddenDeathSky(m){
+  return !!(m && !m.over && m.round >= SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND));
+}
 function showSuddenDeathBanner(m){
+  try{ const bf = document.getElementById('battlefieldEl'); if(bf) bf.classList.add('sudden-death'); }catch(e){}
   const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
   const el = document.createElement('div');
   el.className = 'sudden-death-sign'; el.setAttribute('role','status');
@@ -21516,6 +21544,30 @@ function matchIsRainy(m){
     m.rainy = mapId === 'm1' && Math.random() < 0.33;
   }
   return !!m.rainy;
+}
+// Storm lightning (2026-10-06, effects "Coming next"): on storm and rain battlefields a bolt lights
+// the field now and then — a soft double flicker, a white point light high on the shader, and the
+// thunder rolls in half a second later. Gentle on purpose (two flickers, low peak, none with
+// reduced motion) so it never becomes a strobe.
+var lightningTimer = null; // var: renderMatchUI can run (match resume) before this line executes
+function scheduleLightning(m){
+  clearTimeout(lightningTimer); lightningTimer = null;
+  if(!m || m.over || m.testKit) return;
+  const kind = battleWeatherKind(m); if(kind !== 10 && kind !== 11) return;
+  const [lo, hi] = kind === 10 ? [9, 22] : [18, 40];
+  lightningTimer = setTimeout(()=>{ lightningStrike(m); scheduleLightning(matchState); }, (lo + Math.random()*(hi-lo))*1000);
+}
+function lightningStrike(m){
+  if(m !== matchState || !m || m.over || document.hidden) return;
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){
+    const f = document.createElement('div'); f.className = 'bf-lightning'; f.setAttribute('aria-hidden','true');
+    f.style.setProperty('--lx', (15 + Math.random()*70).toFixed(0) + '%');
+    bf.appendChild(f); setTimeout(()=> f.remove(), 900);
+  }
+  try{ if(battleWeather && battleWeather.flash) battleWeather.flash(0.15 + Math.random()*0.7, 0.05, [0.85, 0.9, 1], reduce ? 0.35 : 0.8, 0.7, 700); }catch(e){}
+  try{ Ambience.thunder(0.5 + Math.random()*0.6); }catch(e){}
 }
 function mountBattleWeather(m){
   const bf = document.getElementById('battlefieldEl');

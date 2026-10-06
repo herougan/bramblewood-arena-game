@@ -54,6 +54,10 @@
     materia(){ const k = MATERIA_KINDS[Math.floor(Math.random()*4)]; try{ materiaBurstVfx(k); SoundKit.materiaForm(); }catch(e){} },
     wave(){ if(bf && bf.wave){ bf.wave(0.5, 0.5, [1, 0.88, 0.62], 0.9, 760); bf.flash(0.5, 0.5, [1, 0.88, 0.62], 0.9, 0.6, 900); } try{ SoundKit.hitAt(12, true); }catch(e){} },
     leaves(){ leafDemo(); },
+    lightning(){ const host = $('#bfLab'); const f = document.createElement('div'); f.className = 'bf-lightning'; f.style.setProperty('--lx', (15 + Math.random()*70).toFixed(0) + '%'); host.appendChild(f); setTimeout(()=> f.remove(), 900);
+      if(bf && bf.flash) bf.flash(0.15 + Math.random()*0.7, 0.05, [0.85, 0.9, 1], 0.8, 0.7, 700);
+      try{ if(Ambience.current() == null) Ambience.play(10); setTimeout(()=> Ambience.thunder(0.5), 50); }catch(e){} },
+    sdsky(){ $('#bfLab').classList.toggle('sudden-death'); },
   };
   $$('[data-act]').forEach(b=> b.addEventListener('click', ()=> act[b.dataset.act] && act[b.dataset.act]()));
   const mb = $('[data-act="materia"]'); if(mb) mb.setAttribute('data-fmb', 'craft');
@@ -169,7 +173,7 @@
     ['Sound', 'Synth cue set (90+ cues)', 'live', 'Everywhere'], ['Sound', 'Stereo panning of hits and deaths', 'live', 'Battles'], ['Sound', 'Ambience per place', 'live', '“Music & ambience” slider'], ['Sound', 'Ambience ducking', 'live', 'Big moments'],
     ['Sound', 'Heartbeat and sudden-death sting', 'live', 'Battles'], ['Sound', 'Rival babble voices', 'live', 'Versus opener'], ['Sound', 'Recorded samples for top 5 cues', 'idea', 'Needs audio files'], ['Sound', 'Generative music per people', 'idea', 'Waits on sound direction (D17)'],
     ['Animation', 'Walking map pawn', 'idea', 'Conquest map'], ['Animation', 'Hourglass flip on Wait', 'idea', 'Board cards'], ['Animation', 'Idle breathing on board cards', 'live', 'Board cards'], ['Animation', 'Low-HP tremble', 'live', 'Units at ≤25% HP'], ['Battlefield', 'Castle cracks by HP stage', 'live', 'Castles'], ['Animation', 'Ready pulse', 'live', 'Wait reaches 0'],
-    ['TBC', 'Frost creep', 'idea', 'Coming next'],['TBC', 'Pixel shatter for tokens', 'idea', 'Coming next'],['TBC', 'Chromatic glitch on shock', 'idea', 'Coming next'],['TBC', 'Sudden-death red sky', 'idea', 'Coming next'],['TBC', 'Storm lightning flash', 'idea', 'Coming next'],['TBC', 'Card drag trail', 'idea', 'Coming next'],['TBC', 'Deck shuffle at match start', 'idea', 'Coming next'],['TBC', 'Draw flip from deck', 'idea', 'Coming next'],['TBC', 'Victory parade', 'idea', 'Coming next'],['TBC', 'Leader summon throne', 'idea', 'Coming next'],['TBC', 'Raid telegraph glow', 'idea', 'Coming next'],['TBC', 'Water ripples under cards', 'idea', 'Coming next'],['TBC', 'Feather burst on flyers', 'idea', 'Coming next'],
+    ['TBC', 'Frost creep', 'idea', 'Coming next'],['TBC', 'Pixel shatter for tokens', 'idea', 'Coming next'],['TBC', 'Chromatic glitch on shock', 'idea', 'Coming next'],['Battlefield', 'Sudden-death red sky', 'live', 'Turn 20 onward'],['Battlefield', 'Storm lightning with thunder', 'live', 'Storm and rain fields'],['Animation', 'Card drag trail', 'live', 'Dragging a hand card'],['TBC', 'Deck shuffle at match start', 'idea', 'Coming next'],['TBC', 'Draw flip from deck', 'idea', 'Coming next'],['TBC', 'Victory parade', 'idea', 'Coming next'],['TBC', 'Leader summon throne', 'idea', 'Coming next'],['TBC', 'Raid telegraph glow', 'idea', 'Coming next'],['TBC', 'Water ripples under cards', 'idea', 'Coming next'],['TBC', 'Feather burst on flyers', 'idea', 'Coming next'],
   ];
   const label = {live:'<span class="st live">Live</span>', part:'<span class="st part">Partly</span>', idea:'<span class="st idea">Idea</span>'};
   $('#allTbl').innerHTML = '<thead><tr><th>Area</th><th>Effect</th><th>Status</th><th>Where</th></tr></thead><tbody>' + ALL.map(r=> `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${label[r[2]]}</td><td>${r[3]}</td></tr>`).join('') + '</tbody>';
@@ -233,5 +237,13 @@
   $$('[data-crack]').forEach(b=> b.addEventListener('click', ()=>{ const t = $('#crackStage .card-tile'); if(!t) return; const n = +b.dataset.crack;
     const prev = [1,2,3].find(k=> t.classList.contains('crack-'+k)) || 0; t.classList.remove('crack-1','crack-2','crack-3'); if(n) t.classList.add('crack-'+n);
     if(n > prev){ t.classList.remove('crack-new'); void t.offsetWidth; t.classList.add('crack-new'); S('siegeTone'); setTimeout(()=> t.classList.remove('crack-new'), 520); } }));
+  { let on = false, last = 0;
+    const dc = $('#dragStage .card-tile'); if(dc){ dc.setAttribute('draggable', 'true');
+      dc.addEventListener('dragstart', e=>{ on = true; e.dataTransfer.setData('text/plain', 'x'); });
+      dc.addEventListener('dragend', ()=> on = false); }
+    document.addEventListener('dragover', e=>{ if(!on || reduce()) return; e.preventDefault(); const now = performance.now(); if(now - last < 40) return; last = now;
+      const sp = document.createElement('span'); sp.className = 'drag-spark'; sp.style.left = (e.clientX + Math.random()*16 - 8) + 'px'; sp.style.top = (e.clientY + Math.random()*16 - 8) + 'px';
+      sp.style.setProperty('--dx', (Math.random()*20 - 10).toFixed(0) + 'px'); document.body.appendChild(sp); setTimeout(()=> sp.remove(), 560); });
+  }
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));
 })();

@@ -3,11 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-06
-- Master hub: this doc, the Effects Lab and the Visual Library as tabs on one page.
+- Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.
 - Arrow and Fire Arrow get a full bow-shot animation; crits get their own symbol.
 - New card face: name at the top, cost and Wait as pips.
 - Graveyard is its own pile; loading screen; a performance pass (about 42% less work per frame).
 - Board ambience: castle cracks, low-Health tremble, idle breathing.
+- Battle atmosphere: a red sky in sudden death, lightning and thunder on storm maps, a sparkle trail on dragged cards.
 
 ## 2026-10-05
 - The world comes alive: per-place ambience, a live day/night clock, fights on the map's own terrain, versus openers.

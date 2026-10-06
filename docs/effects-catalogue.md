@@ -211,6 +211,11 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Ready pulse:** already live as the gold `readyPulse` when Wait reaches 0; the Lab now marks it live.
 - All three use the CSS `translate` property and `:where()` selectors. That way they never fight GSAP's `transform` tweens, and they never override other card animations.
 
+**Battle atmosphere (live, afternoon):**
+- **Sudden-death red sky:** from turn 20 the battlefield's sky bleeds red and pulses slowly, so the rule change stays visible after the banner (`suddenDeathSky`).
+- **Storm lightning:** on storm and rain battlefields, a bolt lights the field every 9–22 s (storm) or 18–40 s (rain). It's a soft double flicker plus a white shader light up high, and thunder follows half a second later. Ambience no longer rolls its own thunder during a fight. It's deliberately gentle (two flickers, low peak, flicker off with reduced motion), so it never strobes (`lightningStrike`).
+- **Card drag trail:** a faint gold sparkle trail follows a dragged hand card (`dragTrail`).
+
 **Coming next (TBC in the Effects Lab):**
 - Heat haze
 - Frost creep
@@ -218,9 +223,6 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - Chromatic glitch on shock
 - Page curl and pixelate transitions
 - Walking map pawn
-- Sudden-death red sky
-- Storm lightning flash
-- Card drag trail
 - Deck shuffle at match start
 - Draw flip from the deck
 - Victory parade
