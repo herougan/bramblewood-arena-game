@@ -1743,6 +1743,13 @@ const SoundKit = (()=>{
       }
     },
     // Knocked out (2026-10-06): a soft thump as the card falls back, then a dry rustle of leaves.
+    // Pixel shatter (2026-10-06): a token breaks into bits — a glassy, chiptune cascade of tiny blips.
+    pixelShatter(){
+      [2600, 2100, 2900, 1700, 2400, 1500].forEach((f, i)=> tone(f, 0.04, 'square', 0.035, i*0.025));
+      fnoise(0.12, 0.05, {type:'highpass', freq:4000, attack:0.002, crackle:0.03});
+    },
+    // Feather flutter (2026-10-06): a soft papery fwip when a flyer is hit.
+    featherFlutter(){ fnoise(0.22, 0.035, {type:'bandpass', freq:2400, freqEnd:900, q:1.4, attack:0.02}); },
     knockOut(){
       sweep(180, 70, 0.22, 'sine', 0.12);
       fnoise(0.08, 0.08, {type:'lowpass', freq:700, freqEnd:200, attack:0.004});
@@ -15766,6 +15773,42 @@ function bleedOutVfx(el, ms, tone){
   el.classList.add('bleeding', 'bleed-' + (tone || 'bleed'));
   return true;
 }
+// Chromatic glitch on Shock (2026-10-06, effects "Coming next").
+function glitchVfx(el){
+  const t = el && (el.querySelector('.card-tile') || el); if(!t) return;
+  t.classList.remove('glitch'); void t.offsetWidth; t.classList.add('glitch'); setTimeout(()=> t.classList.remove('glitch'), 420);
+}
+// Feather burst (2026-10-06): a flying unit sheds a few feathers when it's hit.
+function featherBurst(el){
+  if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  const r = el.getBoundingClientRect();
+  for(let i = 0; i < 5; i++){
+    const p = document.createElement('span'); p.className = 'feather-puff'; p.textContent = '🪶'; p.setAttribute('aria-hidden','true');
+    document.body.appendChild(p);
+    const x = r.left + r.width*(0.25 + Math.random()*0.5), y = r.top + r.height*(0.3 + Math.random()*0.3), dir = Math.random() < .5 ? -1 : 1;
+    gsap.set(p, {x, y, opacity:1, rotation:Math.random()*360, scale:.7 + Math.random()*.4});
+    gsap.to(p, {x:`+=${dir*(30 + Math.random()*40)}`, y:`-=${15 + Math.random()*25}`, rotation:`+=${dir*90}`, duration:.35, ease:'power2.out'});
+    gsap.to(p, {x:`+=${-dir*(20 + Math.random()*20)}`, y:`+=${55 + Math.random()*35}`, rotation:`+=${-dir*140}`, opacity:0, duration:1.1, delay:.33, ease:'sine.inOut', onComplete:()=> p.remove()});
+  }
+}
+// Pixel shatter (2026-10-06): a token (summoned, not a real creature) breaks into a grid of squares
+// that scatter and fade. Each square is a clipped clone of the tile, so the art itself shatters.
+function pixelShatterVfx(el, ms){
+  if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
+  const t = el.querySelector('.card-tile'); if(!t) return false;
+  const r = t.getBoundingClientRect(); if(!r.width) return false;
+  const COLS = 4, ROWS = 5, w = r.width/COLS, h = r.height/ROWS;
+  for(let row = 0; row < ROWS; row++) for(let col = 0; col < COLS; col++){
+    const bit = document.createElement('div'); bit.className = 'shatter-bit'; bit.setAttribute('aria-hidden','true');
+    bit.style.cssText = `left:${r.left + col*w}px; top:${r.top + row*h}px; width:${Math.ceil(w)}px; height:${Math.ceil(h)}px;`;
+    const c = t.cloneNode(true); c.style.width = r.width + 'px'; c.style.height = r.height + 'px'; c.style.left = (-col*w) + 'px'; c.style.top = (-row*h) + 'px';
+    bit.appendChild(c); document.body.appendChild(bit);
+    const dx = (col - (COLS-1)/2) * (18 + Math.random()*26), dy = (row - (ROWS-1)/2) * (10 + Math.random()*16) + 30;
+    gsap.to(bit, {x:dx, y:dy, rotation:(Math.random()*2 - 1)*60, scale:.5, opacity:0, duration:(ms/1000)*(0.7 + Math.random()*0.4), delay:Math.random()*0.08, ease:'power2.out', onComplete:()=> bit.remove()});
+  }
+  gsap.set(t, {opacity:0});
+  return true;
+}
 function deathVfx(uid){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -15781,12 +15824,14 @@ function deathVfx(uid){
   // flourish alone still plays either way, so death still reads even without the fade-in-place.
   const isFlipping = flippingEls.has(String(uid));
   const style = deathStyleFor(uid);
-  const burnt = style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
-  try{ if(style==='burn') SoundKit.burnAway(); else if(style==='fall') SoundKit.knockOut(); else SoundKit.bleedOut(style); }catch(e){}
+  const rcD = matchState && matchState.replayCards && matchState.replayCards[uid];
+  const isToken = !!(rcD && (getCardDefs()[rcD.defId]||{}).token);
+  const burnt = isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall') SoundKit.knockOut(); else SoundKit.bleedOut(style); }catch(e){}
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt && style==='fall'){ /* fallDeathVfx animates the tile itself */ }
+    if(burnt && (style==='fall' || isToken) && style!=='burn'){ /* fallDeathVfx / pixelShatterVfx animate the tile themselves */ }
     else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
@@ -18100,6 +18145,7 @@ function flashDmg(uid, dmg, blocked, dmgType, crit){
   else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
   else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   hitExplosionVfx(uid, dmgType);
+  try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
 }
 // Keyword cues derived straight from the card's own definition — Quick/Stealth/Reload/
 // Shell/Rage don't need any new engine-side event flags at all, because whether they
@@ -18423,7 +18469,7 @@ function renderVfxForEvent(ev){
     // Momentum are self-buffs on the ATTACKER (no targetUid at all — see their engine pushes),
     // so they float on the attacker's own tile, same convention as Grit above.
     else if(ev.kind==='blind'){ SoundKit.blindTone(); if(el) floatText(el, '👁 Blinded', 'debuff'); if(rc) rc.blind = (rc.blind||0) + 1; }
-    else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
+    else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); glitchVfx(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
     else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = (rc.corrode||0) + ev.amount; }
     // Stagger (2026-09-24, task #109): physical's elemental status, completing the cold/heat/
     // acid/poison/physical set — Shock's damage-dealt mirror, same duration-gated envelope.

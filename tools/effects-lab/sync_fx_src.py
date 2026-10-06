@@ -2,7 +2,7 @@
 """Refresh .fxcat/fx-src.js from arena_app.js: every top-level `function name(` / `const name =`
 block in fx-src is replaced by the current block of the same name in the game, found by brace
 matching (strings, template literals and comments are skipped). Prints what changed.
-    python3 tools/effects-lab/sync_fx_src.py"""
+    python3 tools/effects-lab/sync_fx_src.py [--add fnA,fnB]"""
 import re, os, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 app = open(os.path.join(ROOT, 'arena_app.js'), encoding='utf-8').read()
@@ -52,5 +52,12 @@ for m in list(decl.finditer(fx))[::-1]:
     new = app[am.start():ae]
     if new != fx[m.start():fe]:
         fx = fx[:m.start()] + new + fx[fe:]; changed.append(name)
+# --add name1,name2: append game functions the lab doesn't have yet.
+if '--add' in sys.argv:
+    for name in sys.argv[sys.argv.index('--add') + 1].split(','):
+        if re.search(r'^(?:function\s+' + name + r'\s*\(|const\s+' + name + r'\s*=)', fx, re.M): continue
+        am = re.search(r'^(?:async\s+)?(?:function\s+' + name + r'\s*\(|const\s+' + name + r'\s*=)', app, re.M)
+        if not am: print('not found:', name); continue
+        fx += '\n' + app[am.start():block_end(app, am.start())] + '\n'; changed.append('+' + name)
 open(fxp, 'w', encoding='utf-8').write(fx)
 print('updated:', ', '.join(changed[::-1]) or 'nothing')

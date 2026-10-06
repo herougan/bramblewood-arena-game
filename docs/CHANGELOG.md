@@ -9,6 +9,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Graveyard is its own pile; loading screen; a performance pass (about 42% less work per frame).
 - Board ambience: castle cracks, low-Health tremble, idle breathing.
 - Battle atmosphere: a red sky in sudden death, lightning and thunder on storm maps, a sparkle trail on dragged cards.
+- Status touches: frost creeps over frozen units, Shock glitches, flyers shed feathers, tokens shatter.
 
 ## 2026-10-05
 - The world comes alive: per-place ambience, a live day/night clock, fights on the map's own terrain, versus openers.

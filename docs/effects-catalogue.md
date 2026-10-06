@@ -216,11 +216,15 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Storm lightning:** on storm and rain battlefields, a bolt lights the field every 9–22 s (storm) or 18–40 s (rain). It's a soft double flicker plus a white shader light up high, and thunder follows half a second later. Ambience no longer rolls its own thunder during a fight. It's deliberately gentle (two flickers, low peak, flicker off with reduced motion), so it never strobes (`lightningStrike`).
 - **Card drag trail:** a faint gold sparkle trail follows a dragged hand card (`dragTrail`).
 
+**Status and death touches (live, late afternoon):**
+- **Frost creep:** ice crystals grow in from the corners of a frozen unit, with a cold rim light. This is CSS on the board card's `::after`, so it follows the `is-frozen` class.
+- **Chromatic glitch:** a 380 ms RGB split and jitter when Shock lands (`glitchVfx`).
+- **Feather burst:** a flying unit sheds a few 🪶 when hit, with a soft papery `featherFlutter` cue (`featherBurst`).
+- **Pixel shatter:** a token breaks into a 4×5 grid of clipped copies of itself that scatter and fade. It has its own chiptune `pixelShatter` cue. Fire still burns tokens away (`pixelShatterVfx`).
+- **Tool:** `tools/effects-lab/sync_fx_src.py [--add fnA,fnB]` refreshes the Lab's copy of game functions.
+
 **Coming next (TBC in the Effects Lab):**
 - Heat haze
-- Frost creep
-- Pixel shatter for tokens
-- Chromatic glitch on shock
 - Page curl and pixelate transitions
 - Walking map pawn
 - Deck shuffle at match start
@@ -229,4 +233,3 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - Leader summon throne
 - Raid telegraph glow
 - Water ripples under cards
-- Feather burst on flyers
