@@ -3865,7 +3865,62 @@ function renderEditor(){
   if(scroll) modal.scrollTop = scroll;
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
   overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
+  // The read-only id moves into the header line (audit #10) so the form opens on Identity.
+  const idEl = document.getElementById('fCardId'); const meta = modal.querySelector('.modal-meta');
+  if(idEl && meta){ const row = idEl.closest('.field-row'); if(!meta.querySelector('.ce-id')) meta.insertAdjacentHTML('afterbegin', `<span class="ce-id">${escapeHtml(editingCard.id || 'new card')}</span> · `); if(row) row.hidden = true; }
+  mountEditorSide(modal);
   if(first){ const n = document.getElementById('fName'); if(n) setTimeout(()=> n.focus(), 30); }
+}
+// Card editor side panel (2026-10-07, audit items: no live preview, no art control, no revert):
+// the real card face, redrawn as you type; the card's art (keep, paste a path/URL, upload a small
+// image, or remove); and, for a built-in card you've changed, "Revert to original".
+function editorDraftFromForm(){
+  const saved = editingCard;
+  try{ editingCard = JSON.parse(JSON.stringify(saved)); const id = saved.id; const d = readEditorFormIntoCard(); if(!id) d.id = 'preview'; return d; }
+  catch(e){ return saved; } finally { editingCard = saved; }
+}
+function mountEditorSide(modal){
+  const c = editingCard; if(!c) return;
+  const head = modal.querySelector('.modal-head-row'); if(!head || modal.querySelector('.ce-side')) return;
+  const isBuiltIn = !!(c.id && CARD_DEFS_BASELINE[c.id]), changed = !!(c.id && liveCards[c.id]);
+  head.insertAdjacentHTML('afterend', `<aside class="ce-side" aria-label="Preview and art">
+    <div class="ce-preview" id="cePreview" aria-live="polite"></div>
+    <div class="ce-art">
+      <div class="ce-art-row"><span class="ce-art-thumb" id="ceArtThumb"></span><div><b>Art</b><small id="ceArtNote"></small></div></div>
+      <input type="text" id="ceArtUrl" placeholder="Image path or URL" aria-label="Art image path or URL" value="${escapeAttr(c.art && !String(c.art).startsWith('data:') ? c.art : '')}">
+      <div class="ce-art-btns"><label class="btn small ghost ce-upload">⬆ Upload<input type="file" id="ceArtFile" accept="image/png,image/webp,image/jpeg,image/gif" hidden></label><button type="button" class="btn small ghost" id="ceArtRemove">Remove art</button></div>
+    </div>
+    ${isBuiltIn && changed ? '<button type="button" class="btn small ghost ce-revert" id="ceRevert" title="Drop every edit and go back to the card as it shipped">↺ Revert to original</button>' : ''}
+    <div class="ce-mode">${cloudCardAdmin ? '☁️ Saving publishes live for every player' : '💾 Saves in this browser only'}</div>
+  </aside>`);
+  const refresh = ()=>{
+    const d = editorDraftFromForm(); d.art = editingCard.art;
+    const pv = document.getElementById('cePreview'); if(pv) pv.innerHTML = cardTileHTML(d, {inPlay:true});
+    const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
+    const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
+  };
+  let t = null; const soon = ()=>{ clearTimeout(t); t = setTimeout(refresh, 120); };
+  modal.addEventListener('input', soon); modal.addEventListener('change', soon);
+  const url = document.getElementById('ceArtUrl');
+  url.addEventListener('change', ()=>{ const v = url.value.trim(); if(v) editingCard.art = v; refresh(); });
+  document.getElementById('ceArtFile').addEventListener('change', ev=>{
+    const f = ev.target.files && ev.target.files[0]; if(!f) return;
+    if(f.size > 300*1024){ showToast('That image is over 300 KB. Use a smaller one (cards are drawn at about 160 px).', 'warn'); return; }
+    const r = new FileReader(); r.onload = ()=>{ editingCard.art = r.result; url.value = ''; refresh(); }; r.readAsDataURL(f);
+  });
+  document.getElementById('ceArtRemove').addEventListener('click', ()=>{ delete editingCard.art; url.value = ''; refresh(); });
+  const rv = document.getElementById('ceRevert');
+  if(rv) rv.addEventListener('click', async ()=>{
+    if(!confirm(`Revert ${c.name} to the original card? Every edit to it is dropped${cloudCardAdmin ? ' for every player' : ' in this browser'}.`)) return;
+    const before = getCardDefs()[c.id] || null;
+    delete liveCards[c.id]; persistLocalCardOverlay();
+    const published = await cloudWriteCardOverride(c.id, {data: CARD_DEFS_BASELINE[c.id], deleted:false, deleted_snapshot:null});
+    onCardsChanged();
+    try{ await logTxn({action:'reverted', cardId:c.id, cardName:c.name, icon:c.icon, before, after:CARD_DEFS_BASELINE[c.id]}); }catch(e){}
+    showToast(published ? `↺ ${c.name} reverted for every player.` : `↺ ${c.name} reverted in this browser.`, 'ok');
+    closeCardEditor();
+  });
+  refresh();
 }
 function renderEditorInner(){
   const c = editingCard;
@@ -7933,6 +7988,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const others = map.nodes.filter(n=> n.key!==draft.key);
     overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
       <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
+      <p class="se-mode ${cloudCardAdmin ? 'is-live' : ''}">${cloudCardAdmin ? '☁️ Save publishes this skirmish live for every player.' : '💾 Edits save in this browser only. Sign in with an admin account to publish them for everyone.'}</p>
       <div class="se-grid">
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>

@@ -13,6 +13,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Page-change leaves drift edge to edge on gentle waves.
 - Profile shows your email and admin role; optional hobby and birthday, with a birthday gift.
 - Skirmish and card editors: safer saves, validation, and typed values kept when adding rows.
+- Card editor: a live card preview, art (path, upload or remove) and Revert to original.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.

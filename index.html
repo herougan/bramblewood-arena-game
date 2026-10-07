@@ -2144,6 +2144,19 @@
   html[data-fx="low"] .board-card.is-frozen::after, html[data-fx="none"] .board-card.is-frozen::after{animation:none;}
   html[data-fx="low"] .castle-dust, html[data-fx="none"] .castle-dust, html[data-fx="low"] .battlefield.sudden-death::before, html[data-fx="none"] .battlefield.sudden-death::before{animation:none;}
   html[data-fx="none"] .card-tile .rarity-band, html[data-fx="none"] .card-tile.is-holo, html[data-fx="none"] .board-card.is-leader::before, html[data-fx="none"] .card-tile.rarity-tier-top::before{animation:none !important;}
+  /* Card editor side panel (2026-10-07): live preview, art, revert. Floats right on wide screens. */
+  #editorOverlay .modal{width:min(860px, 100%);}
+  .ce-side{float:right; width:190px; margin:0 0 12px 18px; position:sticky; top:0; z-index:4; display:flex; flex-direction:column; gap:10px; padding:10px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .ce-preview{display:flex; justify-content:center;} .ce-preview .card-tile{width:150px; height:196px;}
+  .ce-art{display:flex; flex-direction:column; gap:6px; font-size:13px;}
+  .ce-art-row{display:flex; gap:8px; align-items:center;} .ce-art-row small{display:block; color:var(--ink-muted); font-size:11.5px;}
+  .ce-art-thumb{width:40px; height:40px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1px solid var(--surface-border); font-size:22px; flex:none;}
+  .ce-art-thumb img{width:100%; height:100%; object-fit:cover; image-rendering:pixelated;}
+  .ce-art input[type=text]{font:inherit; font-size:12px; padding:5px 7px; border-radius:7px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); min-width:0;}
+  .ce-art-btns{display:flex; gap:6px; flex-wrap:wrap;} .ce-upload{cursor:pointer;}
+  .ce-mode{font-size:11.5px; color:var(--ink-muted); text-align:center;}
+  @media (max-width: 700px){ .ce-side{float:none; width:auto; margin:0 0 12px; position:static; flex-direction:row; flex-wrap:wrap; align-items:flex-start;} .ce-preview .card-tile{width:110px; height:144px;} .ce-art{flex:1; min-width:160px;} }
+  .se-mode{margin:-4px 0 10px; font-size:12.5px; padding:6px 10px; border-radius:8px; background:var(--surface-2); color:var(--ink-muted);} .se-mode.is-live{background:color-mix(in srgb, var(--accent) 14%, var(--surface)); color:var(--ink);}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -14455,7 +14468,62 @@ function renderEditor(){
   if(scroll) modal.scrollTop = scroll;
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
   overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
+  // The read-only id moves into the header line (audit #10) so the form opens on Identity.
+  const idEl = document.getElementById('fCardId'); const meta = modal.querySelector('.modal-meta');
+  if(idEl && meta){ const row = idEl.closest('.field-row'); if(!meta.querySelector('.ce-id')) meta.insertAdjacentHTML('afterbegin', `<span class="ce-id">${escapeHtml(editingCard.id || 'new card')}</span> · `); if(row) row.hidden = true; }
+  mountEditorSide(modal);
   if(first){ const n = document.getElementById('fName'); if(n) setTimeout(()=> n.focus(), 30); }
+}
+// Card editor side panel (2026-10-07, audit items: no live preview, no art control, no revert):
+// the real card face, redrawn as you type; the card's art (keep, paste a path/URL, upload a small
+// image, or remove); and, for a built-in card you've changed, "Revert to original".
+function editorDraftFromForm(){
+  const saved = editingCard;
+  try{ editingCard = JSON.parse(JSON.stringify(saved)); const id = saved.id; const d = readEditorFormIntoCard(); if(!id) d.id = 'preview'; return d; }
+  catch(e){ return saved; } finally { editingCard = saved; }
+}
+function mountEditorSide(modal){
+  const c = editingCard; if(!c) return;
+  const head = modal.querySelector('.modal-head-row'); if(!head || modal.querySelector('.ce-side')) return;
+  const isBuiltIn = !!(c.id && CARD_DEFS_BASELINE[c.id]), changed = !!(c.id && liveCards[c.id]);
+  head.insertAdjacentHTML('afterend', `<aside class="ce-side" aria-label="Preview and art">
+    <div class="ce-preview" id="cePreview" aria-live="polite"></div>
+    <div class="ce-art">
+      <div class="ce-art-row"><span class="ce-art-thumb" id="ceArtThumb"></span><div><b>Art</b><small id="ceArtNote"></small></div></div>
+      <input type="text" id="ceArtUrl" placeholder="Image path or URL" aria-label="Art image path or URL" value="${escapeAttr(c.art && !String(c.art).startsWith('data:') ? c.art : '')}">
+      <div class="ce-art-btns"><label class="btn small ghost ce-upload">⬆ Upload<input type="file" id="ceArtFile" accept="image/png,image/webp,image/jpeg,image/gif" hidden></label><button type="button" class="btn small ghost" id="ceArtRemove">Remove art</button></div>
+    </div>
+    ${isBuiltIn && changed ? '<button type="button" class="btn small ghost ce-revert" id="ceRevert" title="Drop every edit and go back to the card as it shipped">↺ Revert to original</button>' : ''}
+    <div class="ce-mode">${cloudCardAdmin ? '☁️ Saving publishes live for every player' : '💾 Saves in this browser only'}</div>
+  </aside>`);
+  const refresh = ()=>{
+    const d = editorDraftFromForm(); d.art = editingCard.art;
+    const pv = document.getElementById('cePreview'); if(pv) pv.innerHTML = cardTileHTML(d, {inPlay:true});
+    const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
+    const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
+  };
+  let t = null; const soon = ()=>{ clearTimeout(t); t = setTimeout(refresh, 120); };
+  modal.addEventListener('input', soon); modal.addEventListener('change', soon);
+  const url = document.getElementById('ceArtUrl');
+  url.addEventListener('change', ()=>{ const v = url.value.trim(); if(v) editingCard.art = v; refresh(); });
+  document.getElementById('ceArtFile').addEventListener('change', ev=>{
+    const f = ev.target.files && ev.target.files[0]; if(!f) return;
+    if(f.size > 300*1024){ showToast('That image is over 300 KB. Use a smaller one (cards are drawn at about 160 px).', 'warn'); return; }
+    const r = new FileReader(); r.onload = ()=>{ editingCard.art = r.result; url.value = ''; refresh(); }; r.readAsDataURL(f);
+  });
+  document.getElementById('ceArtRemove').addEventListener('click', ()=>{ delete editingCard.art; url.value = ''; refresh(); });
+  const rv = document.getElementById('ceRevert');
+  if(rv) rv.addEventListener('click', async ()=>{
+    if(!confirm(`Revert ${c.name} to the original card? Every edit to it is dropped${cloudCardAdmin ? ' for every player' : ' in this browser'}.`)) return;
+    const before = getCardDefs()[c.id] || null;
+    delete liveCards[c.id]; persistLocalCardOverlay();
+    const published = await cloudWriteCardOverride(c.id, {data: CARD_DEFS_BASELINE[c.id], deleted:false, deleted_snapshot:null});
+    onCardsChanged();
+    try{ await logTxn({action:'reverted', cardId:c.id, cardName:c.name, icon:c.icon, before, after:CARD_DEFS_BASELINE[c.id]}); }catch(e){}
+    showToast(published ? `↺ ${c.name} reverted for every player.` : `↺ ${c.name} reverted in this browser.`, 'ok');
+    closeCardEditor();
+  });
+  refresh();
 }
 function renderEditorInner(){
   const c = editingCard;
@@ -18523,6 +18591,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const others = map.nodes.filter(n=> n.key!==draft.key);
     overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
       <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
+      <p class="se-mode ${cloudCardAdmin ? 'is-live' : ''}">${cloudCardAdmin ? '☁️ Save publishes this skirmish live for every player.' : '💾 Edits save in this browser only. Sign in with an admin account to publish them for everyone.'}</p>
       <div class="se-grid">
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
