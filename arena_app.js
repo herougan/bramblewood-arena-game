@@ -1756,6 +1756,8 @@ const SoundKit = (()=>{
     leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
     // Page turn (2026-10-07): a papery swish as a Codex page turns.
     pageTurn(){ fnoise(0.22, 0.05, {type:'bandpass', freq:1800, freqEnd:3600, q:0.8, attack:0.03}); fnoise(0.06, 0.03, {type:'lowpass', freq:700, attack:0.004, delay:0.2}); },
+    // Boss rumble (2026-10-07): a deep ground rumble with a cracking edge as a boss arrives.
+    bossRumble(){ fnoise(1.1, 0.14, {type:'lowpass', freq:180, freqEnd:60, attack:0.05}); sweep(70, 38, 0.9, 'sine', 0.12); fnoise(0.25, 0.05, {type:'bandpass', freq:1400, freqEnd:500, q:0.8, attack:0.01, delay:0.08, crackle:0.04}); },
     // Pawn step (2026-10-07): a soft little footfall as your avatar hops across the Conquest map.
     pawnStep(){ fnoise(0.05, 0.035, {type:'lowpass', freq:520, freqEnd:240, attack:0.004}); },
     // Feather flutter (2026-10-06): a soft papery fwip when a flyer is hit.
@@ -9305,6 +9307,13 @@ function battleRecommendation(node){
   return tips.slice(0,2).join(' ');
 }
 let conquestSelectedMap = CONQUEST_MAPS[0].id;
+// Seasonal maps (2026-10-07, effects list two): the Conquest maps take on the real-world season by
+// calendar month (northern-hemisphere months; a soft tint and edge glow, nothing that changes
+// gameplay). ?season=winter in the URL previews another one.
+function currentSeason(){
+  try{ const q = new URLSearchParams(location.search).get('season'); if(['spring','summer','autumn','winter'].includes(q)) return q; }catch(e){}
+  const mo = new Date().getMonth(); return mo <= 1 || mo === 11 ? 'winter' : mo <= 4 ? 'spring' : mo <= 7 ? 'summer' : 'autumn';
+}
 let conquestSelectedNodeKey = null;
 // Walking map pawn (2026-10-07, effects "Coming next"): your avatar stands on the Conquest map at
 // the skirmish you last picked (or your next one) and hops along to whichever node you select.
@@ -9588,6 +9597,7 @@ function renderConquestSubTab(body){
   // tooltip (nodeTooltipHTML below) and the click-through node panel already cover the same
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
+  { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
@@ -11215,6 +11225,29 @@ function rivalTauntFor(map, node){
   for(let i=0;i<k.length;i++) h = (h*31 + k.charCodeAt(i)) >>> 0;
   return bank[h % bank.length];
 }
+// Boss entrance (2026-10-07, effects list two): as a boss's versus opener closes, the ground
+// quakes, dust rings the enemy castle and a title card with the boss's name sweeps across.
+function bossEntrance(node){
+  if(!node || !fxAtLeast('low')) return;
+  try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bf = document.getElementById('battlefieldEl');
+  const card = document.createElement('div'); card.className = 'boss-title'; card.setAttribute('role', 'status');
+  card.innerHTML = `<span class="bt-kicker">${node.kind==='finalboss' ? 'Final boss' : node.kind==='raidboss' ? 'Raid boss' : 'Boss'}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
+  (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), 1900);
+  if(reduce || !hasGsap() || !fxAtLeast('med')) return;
+  if(bf){ gsap.fromTo(bf, {x:0, y:0}, {keyframes:[{x:-7, y:3}, {x:6, y:-2}, {x:-4, y:2}, {x:3, y:-1}, {x:0, y:0}], duration:.55, ease:'none', clearProps:'x,y'}); }
+  const castle = hqTileEl('B'); if(castle){
+    const r = castle.getBoundingClientRect();
+    for(let i = 0; i < 9; i++){
+      const d = document.createElement('span'); d.className = 'castle-dust'; d.setAttribute('aria-hidden','true');
+      const a = (i / 9) * Math.PI * 2;
+      d.style.position = 'fixed'; d.style.left = (r.left + r.width/2 + Math.cos(a)*r.width*0.55) + 'px'; d.style.top = (r.top + r.height*0.75 + Math.sin(a)*r.height*0.18) + 'px';
+      d.style.animationDelay = (i*30) + 'ms'; document.body.appendChild(d); setTimeout(()=> d.remove(), 1400);
+    }
+  }
+  try{ if(battleWeather && battleWeather.wave){ const b = bf.getBoundingClientRect(), c = castle && castle.getBoundingClientRect(); if(c) battleWeather.wave((c.left + c.width/2 - b.left)/b.width, Math.max(0.05, (c.bottom - b.top)/b.height), [1, 0.7, 0.45], 1, 900); } }catch(e){}
+}
 function showVersusOpener(map, node, myChar, enemyChar){
   const host = document.getElementById('view-play'); if(!host || !node) return;
   host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
@@ -11248,7 +11281,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
   showVersusOpener.last = {key, t: now};
   const hold = repeat ? 900 : (isBoss ? 2600 : 1700);
   let gone = false;
-  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); };
+  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node), 360); };
   el.addEventListener('click', close);
   setTimeout(close, hold);
   try{ if(isBoss){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){}
@@ -12979,7 +13012,7 @@ function renderMatchUI(){
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
-    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''}" id="battlefieldEl">
+    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner">
         <div class="board-row enemy" id="rowEnemy"></div>
@@ -15218,6 +15251,7 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
+      ${(matchState && isWetField(matchState))?'<span class="rain-drops" aria-hidden="true"></span>':''}
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
       <div class="nm">${d.name||c.defId}</div>
@@ -16857,6 +16891,9 @@ const QUEST_COUNTING_MODES = new Set(['ai','conquest','gauntlet','dungeon','asyn
 // Sudden death banner (turn 20) and Forfeit (2026-10-03).
 // Sudden-death red sky (2026-10-06, effects "Coming next"): from the sudden-death round the
 // battlefield's sky bleeds red and pulses slowly, so the rule change stays visible after the banner.
+// Raindrops on cards (2026-10-07, effects list two): on water and rain fields a few drops bead and
+// run slowly down the card art (CSS on each card's art box; High effects only).
+function isWetField(m){ try{ return [1, 6, 11].includes(battleWeatherKind(m)); }catch(e){ return false; } }
 function suddenDeathSky(m){
   return !!(m && !m.over && m.round >= SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND));
 }
@@ -17539,6 +17576,25 @@ function rewardsCheer(){
       gsap.fromTo(s, {x:0, y:0, opacity:1, scale:.5}, {x:Math.cos(ang)*d, y:Math.sin(ang)*d*0.6-20, opacity:0, scale:1.2, duration:.9+Math.random()*.4, ease:'power2.out', onComplete:()=> s.remove()});
     }
   }, 900);
+  // Coin shower (2026-10-07, effects list two): each currency's glyph rains into its pill one at a
+  // time, the pill popping as each lands — the reward visibly arrives rather than just appearing.
+  if(!fxAtLeast('med')) return;
+  row.querySelectorAll('.rw-cur').forEach((pill, pi)=>{
+    const glyph = (pill.textContent.trim().match(/^\S+/) || ['🪙'])[0];
+    const pr = pill.getBoundingClientRect(); if(!pr.width) return;
+    const n = 8;
+    for(let i = 0; i < n; i++){
+      const c = document.createElement('span'); c.className = 'coin-drop'; c.textContent = glyph; c.setAttribute('aria-hidden','true');
+      document.body.appendChild(c);
+      const x = pr.left + pr.width*(0.2 + Math.random()*0.6), y = pr.top + pr.height/2;
+      const t0 = 0.35 + pi*0.25 + i*0.09;
+      gsap.fromTo(c, {x: x + (Math.random()*60 - 30), y: y - 140 - Math.random()*60, opacity:0, rotation: Math.random()*180 - 90, scale:.9},
+        {x, y, opacity:1, rotation:0, scale:.6, duration:.42, delay:t0, ease:'power2.in', onComplete:()=>{
+          c.remove(); gsap.fromTo(pill, {scale:1.12}, {scale:1, duration:.18, ease:'power2.out', clearProps:'scale'});
+          try{ if(i % 2 === 0 && SoundKit.coin) SoundKit.coin(); }catch(e){}
+        }});
+    }
+  });
 }
 function matchStatsHTML(m){
   const totals = computeMatchStats(m);

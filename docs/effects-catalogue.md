@@ -245,4 +245,9 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 
 **Leaf sweep, third pass (2026-10-07):** each leaf travels at an even pace from 20% past the left edge to 10% past the right. Its height rides its own sine wave (random amplitude, wavelength and phase). Leaves start at random moments over about 0.7 s, at heights spread down the screen, and each tumbles at its own rate. The leaves no longer converge on a mid-screen point. Played with the Web Animations API on transform and opacity.
 
-**Coming next (TBC in the Effects Lab), list two:** raindrops on cards on wet maps; a boss entrance with a quake and a title card; a coin shower on rewards; a combo counter; card tilt in hand; seasonal map palettes.
+**List two, built (2026-10-07 afternoon):**
+- **Raindrops on cards:** on water and rain fields, droplets slide slowly down each card's art. It's a `.rain-drops` layer moved by transform, with a different speed for each card. High effects only.
+- **Boss entrance:** as a boss's versus opener closes, a ground quake plays, dust rings the enemy castle, a shader shockwave fires, a "BOSS · name" title card sweeps across, and a new `bossRumble` cue plays (`bossEntrance`).
+- **Coin shower:** on the results screen, each currency's glyph rains into its pill one at a time, and the pill pops as each lands (`rewardsCheer`).
+- **Seasonal maps:** a soft seasonal vignette on the Conquest map (autumn warm, winter frost, spring blossom, summer haze), chosen by calendar month. `?season=winter` previews one.
+- **On hold:** card tilt in hand, because the style guide keeps the magnetic tilt out of the hand strip, where it fights drag and selection. The combo counter waits on your decision.
