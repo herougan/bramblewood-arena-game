@@ -150,6 +150,18 @@ async def main():
         await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
+        # 8: Autobattler fight replay: draft a run, fight once, watch it step by step
+        await pg.evaluate("""(()=>{ const d = getCardDefs(); const run = AutoB.newRun(4242, Date.now());
+          while(run.phase==='draft'){ const o = AutoB.draftOffers(d, CHARACTER_DEFS, run); AutoB.applyDraftPick(run, o.options[0]); }
+          saveAbRun(run); playSubTab='autobattle'; switchTab('play'); return 1; })()"""); await pg.wait_for_timeout(500)
+        await pg.evaluate("document.getElementById('abFightBtn').click(); 1"); await pg.wait_for_timeout(500)
+        await pg.evaluate("document.getElementById('abWatchBtn').click(); 1"); await pg.wait_for_timeout(300)
+        check(await pg.evaluate("document.querySelectorAll('.fight-replay .rp-card').length > 0"), 'the fight replay should show cards')
+        await pg.evaluate("document.getElementById('rpPlay').click(); 1"); await pg.evaluate("const s = document.getElementById('rpScrub'); s.value = s.max; s.dispatchEvent(new Event('input')); 1"); await pg.wait_for_timeout(200)
+        check(await pg.evaluate("!!document.querySelector('.fight-replay .rp-outcome')"), 'the replay should end on the outcome')
+        await pg.evaluate("document.getElementById('fightReplayOverlay').dispatchEvent(new KeyboardEvent('keydown', {key:'Escape', bubbles:true})); 1"); await pg.wait_for_timeout(100)
+        check(await pg.evaluate("document.getElementById('fightReplayOverlay').hidden"), 'Escape should close the replay')
+        await pg.evaluate("saveAbRun(null); abLastFight=null; 1")
         check(not errs, f'page errors in feature checks: {errs[:3]}')
         await b.close()
         # 9: T7 shader layers (software WebGL): splash, Home and a Conquest map mount and render

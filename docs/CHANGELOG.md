@@ -17,6 +17,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Bosses make an entrance; coins rain into your rewards; raindrops on cards in wet fights; the Conquest map follows the season.
 - Skirmish editor: Gold and Dust rewards per skirmish. Card editor: rarely used sections tucked away.
 - Every edit to a Conquest map in one list, with Revert all; the card editor keeps a History you can step back through.
+- Autobattler: watch any fight round by round from its result screen.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.

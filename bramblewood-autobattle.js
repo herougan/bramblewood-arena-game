@@ -162,6 +162,12 @@ function simulateFight(Engine, baseDefs, characters, me, opp, seed){
   // Out of cards = nothing more to play (no fallback "loop" units in the Autobattler).
   players[1].loopCards = []; players[2].loopCards = [];
   const stats = {}, events = [];
+  // Replay frames (2026-10-07, "watch the fight"): the board by column after the plays and after
+  // combat each round. Read-only, so the fight itself (and its seed) is unchanged.
+  const frames = [];
+  const colsOf = pl=>{ const out = []; const put = (c, col)=> out.push(c.gap ? {col, gap:true} : {col, uid:c.uid, id:baseId(c.defId), hp:c.hp, maxHp:c.maxHp, atk:c.atk, wait:c.wait||0});
+    pl.row.center.forEach(c=> put(c, 0)); pl.row.left.forEach((c,i)=> put(c, -(i+1))); pl.row.right.forEach((c,i)=> put(c, i+1)); return out.filter(x=> !x.gap); };
+  const frame = (round, phase)=> frames.push({round, phase, hq:[players[1].hq.hp, players[2].hq.hp], sides:[colsOf(players[1]), colsOf(players[2])]});
   engine.draw(players[1], 3, 'A', stats, events); engine.draw(players[2], 3, 'B', stats, events);
   if(me.leader && defs[A.idFor(me.leader)]) engine.debugSpawnCard(players, sideOf, 1, A.idFor(me.leader), 'left', stats, events);
   if(opp.leader && defs[B.idFor(opp.leader)]) engine.debugSpawnCard(players, sideOf, 2, B.idFor(opp.leader), 'left', stats, events);
@@ -176,7 +182,9 @@ function simulateFight(Engine, baseDefs, characters, me, opp, seed){
     events.push({type:'roundStart', round});
     engine.aiTakeTurn(players, sideOf, 1, stats, events);
     engine.aiTakeTurn(players, sideOf, 2, stats, events);
+    frame(round, 'play');
     over = engine.resolveCombat(players, sideOf, stats, events, round%2===0 ? 1 : 2);
+    frame(round, 'combat');
     if(over) break;
     if(Engine.boardSignature){ const sig = Engine.boardSignature(players); stalled = (sig===lastSig && Engine.noActionsLeft(players)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2) break; }
     engine.draw(players[1], 1, 'A', stats, events); engine.draw(players[2], 1, 'B', stats, events);
@@ -188,7 +196,7 @@ function simulateFight(Engine, baseDefs, characters, me, opp, seed){
   const dmgBy = {};
   events.forEach(e=>{ if((e.type==='hit' || e.type==='hitHQ') && e.side==='A' && e.attDefId){ const k = baseId(e.attDefId); dmgBy[k] = (dmgBy[k]||0) + (e.dmg||e.amount||0); } });
   const mvp = Object.keys(dmgBy).sort((x,y)=> dmgBy[y]-dmgBy[x])[0] || null;
-  return {winner, rounds: Math.min(round, AB.FIGHT_ROUND_CAP), hp:[Math.max(0,players[1].hq.hp), Math.max(0,players[2].hq.hp)], maxHp:[players[1].hq.maxHp, players[2].hq.maxHp], mvp, mvpDamage: mvp ? dmgBy[mvp] : 0, events};
+  return {winner, rounds: Math.min(round, AB.FIGHT_ROUND_CAP), hp:[Math.max(0,players[1].hq.hp), Math.max(0,players[2].hq.hp)], maxHp:[players[1].hq.maxHp, players[2].hq.maxHp], mvp, mvpDamage: mvp ? dmgBy[mvp] : 0, events, frames};
 }
 // Record a fight's outcome on the run. Returns the run.
 function afterFight(run, result, oppName){

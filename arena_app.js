@@ -8515,6 +8515,73 @@ function abFight(body, run){
   saveAbRun(run);
   renderAutobattleSubTab(body);
 }
+// ---- Fight replay (2026-10-07, MASTER item 13 "Next: a watch the fight replay") ----------------
+// Autobattler fights resolve instantly; this steps through the recorded frames: each round shows
+// the plays (new cards pop in), then the hits (damage numbers, deaths, castle damage).
+function fightReplaySteps(frames){
+  const steps = [];
+  for(let i=0;i<frames.length;i+=2){
+    const play = frames[i], hit = frames[i+1]; if(!play) break;
+    const prev = steps.length ? steps[steps.length-1].after : null;
+    const seen = new Set(prev ? prev.sides.flat().map(c=> c.uid) : []);
+    steps.push({round: play.round, kind:'play', layout: play, isNew: uid=> !seen.has(uid), hq: play.hq, after: play});
+    if(hit){
+      const hpNow = new Map(hit.sides.flat().map(c=> [c.uid, c.hp]));
+      steps.push({round: play.round, kind:'hit', layout: play, hpOf: c=> hpNow.has(c.uid) ? hpNow.get(c.uid) : 0, dead: c=> !hpNow.has(c.uid), hq: hit.hq, hqBefore: play.hq, after: hit});
+    }
+  }
+  return steps;
+}
+function openFightReplay(res, names){
+  const steps = fightReplaySteps(res.frames || []); if(!steps.length) return;
+  const defs = getCardDefs();
+  let ov = document.getElementById('fightReplayOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'fightReplayOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  let i = 0, playing = true, speed = 1, timer = null;
+  const maxHp = res.maxHp;
+  const tile = (c, st)=>{
+    const d = defs[c.id] || {}, hp = st.kind==='hit' ? st.hpOf(c) : c.hp, lost = st.kind==='hit' ? c.hp - hp : 0, dead = st.kind==='hit' && st.dead(c);
+    const art = d.art ? `<img src="${escapeAttr(d.art)}" alt="" loading="lazy">` : `<span>${escapeHtml(d.icon||'❔')}</span>`;
+    return `<div class="rp-card${st.kind==='play' && st.isNew(c.uid) ? ' is-new' : ''}${dead ? ' is-dead' : ''}${lost>0 ? ' is-hit' : ''}" title="${escapeAttr(d.name||c.id)}">
+      <span class="rp-art">${art}</span><b class="rp-atk">${c.atk}</b><b class="rp-hp${hp < c.maxHp ? ' hurt' : ''}">${Math.max(0,hp)}</b>${c.wait>0 && st.kind==='play' ? `<i class="rp-wait">⏳${c.wait}</i>` : ''}${lost>0 ? `<em class="rp-dmg">−${lost}</em>` : ''}</div>`;
+  };
+  const bar = (k, st)=>{ const hp = Math.max(0, st.hq[k]), was = st.hqBefore ? Math.max(0, st.hqBefore[k]) : hp;
+    return `<div class="rp-castle ${k?'theirs':'mine'}"><span class="rp-name">${escapeHtml(k ? names.opp : names.me)}</span><div class="ab-castle-bar ${k?'theirs':'mine'}"><div class="ab-castle-fill" style="width:${Math.round(hp/maxHp[k]*100)}%"></div><span>${hp} / ${maxHp[k]}</span></div>${was>hp ? `<em class="rp-dmg rp-castle-dmg">−${was-hp}</em>` : ''}</div>`; };
+  const draw = ()=>{
+    const st = steps[i], cols = st.layout.sides.flat().map(c=> c.col), lo = Math.min(0, ...cols), hi = Math.max(0, ...cols);
+    const row = k=> `<div class="rp-row" style="grid-template-columns:repeat(${hi-lo+1}, var(--rp-w))">${st.layout.sides[k].map(c=> `<div style="grid-column:${c.col-lo+1}">${tile(c, st)}</div>`).join('')}</div>`;
+    const last = i===steps.length-1, outcome = res.winner===1 ? 'Victory!' : res.winner===2 ? 'Defeat' : 'Draw';
+    ov.innerHTML = `<div class="modal fight-replay" role="dialog" aria-modal="true" aria-label="Fight replay">
+      <div class="modal-head-row"><h2>▶ ${escapeHtml(names.me)} vs ${escapeHtml(names.opp)}</h2><button type="button" class="modal-close-btn" id="rpClose" aria-label="Close">✕</button></div>
+      <div class="rp-stage">${bar(1, st)}${row(1)}<div class="rp-mid">${last ? `<b class="rp-outcome ${res.winner===1?'win':res.winner===2?'loss':''}">${outcome}</b>` : `Round ${st.round} · ${st.kind==='play' ? 'plays' : 'combat'}`}</div>${row(0)}${bar(0, st)}</div>
+      <div class="rp-controls">
+        <button type="button" class="btn small ghost" id="rpStart" aria-label="Back to the start">⏮</button>
+        <button type="button" class="btn small ghost" id="rpPrev" aria-label="Step back">◀</button>
+        <button type="button" class="btn small primary" id="rpPlay">${playing && !last ? '⏸ Pause' : '▶ Play'}</button>
+        <button type="button" class="btn small ghost" id="rpNext" aria-label="Step forward">▶</button>
+        <button type="button" class="btn small ghost" id="rpSpeed" title="Playback speed">${speed}×</button>
+        <input type="range" id="rpScrub" min="0" max="${steps.length-1}" value="${i}" aria-label="Position in the fight">
+        <span class="rp-count">Round ${st.round} / ${steps[steps.length-1].round}</span>
+      </div></div>`;
+    ov.hidden = false;
+    if(st.kind==='hit' && (st.layout.sides.flat().some(c=> st.hpOf(c) < c.hp) || st.hq.some((h,k)=> h < st.hqBefore[k]))) try{ SoundKit.hit && SoundKit.hit(); }catch(e){}
+    const go = n=>{ i = Math.max(0, Math.min(steps.length-1, n)); draw(); };
+    document.getElementById('rpClose').onclick = close;
+    document.getElementById('rpStart').onclick = ()=>{ playing = false; go(0); };
+    document.getElementById('rpPrev').onclick = ()=>{ playing = false; go(i-1); };
+    document.getElementById('rpNext').onclick = ()=>{ playing = false; go(i+1); };
+    document.getElementById('rpPlay').onclick = ()=>{ if(last){ i = 0; } playing = !(playing && !last); draw(); };
+    document.getElementById('rpSpeed').onclick = ()=>{ speed = speed===1 ? 2 : speed===2 ? 4 : 1; draw(); };
+    document.getElementById('rpScrub').oninput = ev=>{ playing = false; go(+ev.target.value); };
+    clearTimeout(timer);
+    if(playing && !last) timer = setTimeout(()=> go(i+1), (st.kind==='hit' ? 950 : 650) / speed);
+  };
+  const close = ()=>{ clearTimeout(timer); ov.hidden = true; ov.innerHTML = ''; };
+  ov.onclick = ev=>{ if(ev.target===ov) close(); };
+  ov.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); close(); } else if(ev.key===' '){ ev.preventDefault(); const b = document.getElementById('rpPlay'); if(b) b.click(); } else if(ev.key==='ArrowRight'){ const b = document.getElementById('rpNext'); if(b) b.click(); } else if(ev.key==='ArrowLeft'){ const b = document.getElementById('rpPrev'); if(b) b.click(); } };
+  ov.tabIndex = -1;
+  draw(); setTimeout(()=> ov.focus(), 30);
+}
 function renderAbResult(body, run){
   const {res, opp, hpBefore} = abLastFight;
   const defs = getCardDefs();
@@ -8528,7 +8595,8 @@ function renderAbResult(body, run){
     <h2 class="ab-outcome ${won?'win':draw?'draw':'loss'}">${won?'Victory!':draw?'Draw':'Defeat'}</h2>
     <p class="ab-final">${res.rounds} rounds${res.mvp && defs[res.mvp] ? ` · MVP ${defs[res.mvp].icon} ${escapeHtml(defs[res.mvp].name)} (${res.mvpDamage} damage)` : ''}${!won && !draw ? ` · −${hpBefore - run.hp} ❤️` : ''}</p>
     ${abStatusBarHTML(run)}
-    <div class="ab-actions"><button class="btn primary big" id="abContinueBtn">Continue</button></div></div>`;
+    <div class="ab-actions">${res.frames && res.frames.length ? '<button class="btn big" id="abWatchBtn">▶ Watch the fight</button>' : ''}<button class="btn primary big" id="abContinueBtn">Continue</button></div></div>`;
+  const wb = document.getElementById('abWatchBtn'); if(wb) wb.onclick = ()=> openFightReplay(res, {me: me.name, opp: opp.name});
   if(hasGsap()) body.querySelectorAll('.ab-castle-fill').forEach(el=> gsap.to(el, {width: el.dataset.to + '%', duration: 1.1, delay: .3, ease:'power2.out'}));
   else body.querySelectorAll('.ab-castle-fill').forEach(el=> el.style.width = el.dataset.to + '%');
   document.getElementById('abContinueBtn').onclick = ()=>{ abLastFight = null; run.phase = abNextPhaseAfterResult(run); saveAbRun(run); renderAutobattleSubTab(body); };

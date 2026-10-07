@@ -2162,6 +2162,29 @@
   .ce-hist-row{display:flex; gap:6px; align-items:flex-start; justify-content:space-between;}
   .ce-hist-row small{color:var(--ink-muted); margin-left:4px;} .ce-hist-row span{display:block; color:var(--ink-muted); font-size:11px; line-height:1.3;}
   .ce-hist-row .btn{flex:none; white-space:nowrap;}
+  .fight-replay{--rp-w:clamp(54px, 9vw, 78px); max-width:760px; width:min(760px, calc(100vw - 32px)); max-height:92vh; overflow:auto;}
+  .rp-stage{display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px; border-radius:14px; background:color-mix(in srgb, var(--surface-2) 70%, #2d4a2a 30%);}
+  .rp-row{display:grid; gap:6px; justify-content:center; min-height:calc(var(--rp-w) * 1.25);}
+  .rp-mid{font-size:12.5px; color:var(--ink-muted); min-height:22px; display:flex; align-items:center;}
+  .rp-outcome{font-size:20px;} .rp-outcome.win{color:var(--good, #2e7d32);} .rp-outcome.loss{color:var(--bad, #b3261e);}
+  .rp-castle{position:relative; display:flex; align-items:center; gap:8px; width:min(420px, 100%);} .rp-castle .ab-castle-bar{flex:1;}
+  .rp-name{font-size:12px; font-weight:600; min-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .rp-card{position:relative; width:var(--rp-w); height:calc(var(--rp-w) * 1.25); border-radius:10px; background:var(--surface); border:2px solid var(--surface-border); box-shadow:0 2px 4px rgba(0,0,0,.18); overflow:visible; transition:opacity .35s, filter .35s, transform .2s;}
+  .rp-art{position:absolute; inset:3px 3px 16px; border-radius:7px; overflow:hidden; display:grid; place-items:center; font-size:calc(var(--rp-w) * .42); background:var(--surface-2);}
+  .rp-art img{width:100%; height:100%; object-fit:cover; image-rendering:pixelated;}
+  .rp-atk, .rp-hp{position:absolute; bottom:-6px; min-width:20px; padding:1px 4px; border-radius:8px; font-size:12px; text-align:center; color:#fff; background:#7a2b1d; border:1px solid rgba(255,255,255,.5);}
+  .rp-atk{left:-4px;} .rp-hp{right:-4px; background:#245c2c;} .rp-hp.hurt{background:#a3541a;}
+  .rp-wait{position:absolute; top:-6px; right:-6px; font-style:normal; font-size:11px; padding:0 4px; border-radius:8px; background:#25324a; color:#fff;}
+  .rp-dmg{position:absolute; top:10%; left:50%; translate:-50% 0; font-style:normal; font-weight:800; font-size:18px; color:#ffdf6b; -webkit-text-stroke:1px #6b1b0e; pointer-events:none; animation:rpDmg .9s ease-out both;}
+  .rp-castle-dmg{top:50%; left:auto; right:6px; translate:0 -50%; font-size:16px;}
+  .rp-card.is-new{animation:rpIn .35s ease-out both;} .rp-card.is-hit{animation:rpShake .3s ease-out;}
+  .rp-card.is-dead{opacity:.35; filter:grayscale(1);} .rp-card.is-dead::after{content:'💀'; position:absolute; inset:0; display:grid; place-items:center; font-size:calc(var(--rp-w) * .4);}
+  @keyframes rpIn{from{transform:translateY(-14px) scale(.85); opacity:0;}}
+  @keyframes rpShake{30%{transform:translateX(-3px);} 60%{transform:translateX(3px);}}
+  @keyframes rpDmg{from{opacity:0; transform:translateY(6px) scale(.8);} 25%{opacity:1; transform:none;} to{opacity:0; transform:translateY(-16px);}}
+  :where(html[data-fx="none"]) .rp-card, :where(html[data-fx="none"]) .rp-dmg{animation:none !important;}
+  .rp-controls{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:10px;} .rp-controls input[type=range]{flex:1; min-width:120px;}
+  .rp-count{font-size:12px; color:var(--ink-muted); min-width:90px; text-align:right;}
   .map-edits{max-width:560px; width:min(560px, calc(100vw - 32px)); max-height:min(86vh, 760px); overflow:auto;}
   .me-list{list-style:none; margin:0 0 12px; padding:0; display:flex; flex-direction:column; gap:6px;}
   .me-list li{display:flex; gap:8px; align-items:center; padding:8px 10px; border-radius:10px; background:var(--surface-2);}
