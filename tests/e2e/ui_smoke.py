@@ -150,6 +150,21 @@ async def main():
         await pg.evaluate("playSubTab='arena'; switchTab('play'); 1"); await pg.wait_for_timeout(400)
         await pg.click('[data-ro-view="0"]'); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.ro-deck-card').length") == 2, "the recent opponent's deck should open")
+        # 7b: the tutorial is winnable for every side pick (2026-10-07 playtest: Otters lost ~9 in 10)
+        tut = await pg.evaluate("""(()=>{ const out = {}, defs = getCardDefs();
+          for(const pick of ['otters','hummingbirds','both']){ let w = 0, fixedWin = false;
+            const myD = tutorialStagePlayerDeck(1, pick), rvD = tutorialStageOpponentDeck(1, pick);
+            for(let i=0;i<60;i++){ const seed = i===0 ? TUTORIAL_SEED : 9100+i;
+              const engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode:'gravity'}); const sideOf = id=> id===1?'A':'B', st = {};
+              const P = {1: engine.newPlayer(1, myD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.myHp})), 2: engine.newPlayer(2, rvD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.rivalHp}))};
+              engine.draw(P[1],3,'A',st,null); engine.draw(P[2],3,'B',st,null); let over = false;
+              for(let r=1; r<=40 && !over; r++){ engine.setSuddenDeath(r>=20); [1,2].forEach(k=>{ P[k].playedThisTurn=false; P[k].discardUsedThisTurn=false; });
+                engine.aiTakeTurn(P,sideOf,1,st,null); engine.aiTakeTurn(P,sideOf,2,st,null); over = engine.resolveCombat(P,sideOf,st,null, r%2===0?1:2); if(over) break; engine.draw(P[1],1,'A',st,null); engine.draw(P[2],1,'B',st,null); }
+              const won = over && P[2].hq.hp<=0 && P[1].hq.hp>0; if(won) w++; if(i===0) fixedWin = won; }
+            out[pick] = [Math.round(w/60*100), fixedWin]; }
+          return out; })()""")
+        for pick, (pct, fixed_win) in tut.items():
+            check(pct >= 70 and fixed_win, f'tutorial as {pick}: {pct}% simulated wins, fixed seed win={fixed_win} (want 70%+ and a fixed-seed win)')
         # 8: Autobattler fight replay: draft a run, fight once, watch it step by step
         await pg.evaluate("""(()=>{ const d = getCardDefs(); const run = AutoB.newRun(4242, Date.now());
           while(run.phase==='draft'){ const o = AutoB.draftOffers(d, CHARACTER_DEFS, run); AutoB.applyDraftPick(run, o.options[0]); }

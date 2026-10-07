@@ -18,6 +18,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Skirmish editor: Gold and Dust rewards per skirmish. Card editor: rarely used sections tucked away.
 - Every edit to a Conquest map in one list, with Revert all; the card editor keeps a History you can step back through.
 - Autobattler: watch any fight round by round from its result screen.
+- The tutorial can be won whichever side you pick (Otters lost about 9 in 10), and a loss can skip it. Tapping the slot plays your card; map details show on every screen size.
 - Battle music: a quiet tune in your rival's style that builds as the fight heats up (Settings → Battle music). Wait ticks flip an hourglass; caves are lit by your lamp.
 
 ## 2026-10-06
