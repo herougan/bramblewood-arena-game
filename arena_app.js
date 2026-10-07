@@ -1754,6 +1754,8 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // Trigger chime (2026-10-08): soft and neutral, under every triggered ability.
+    trigger(){ tone(784, 0.14, 'sine', 0.035); tone(1175, 0.2, 'sine', 0.025, 0.06); tone(1568, 0.16, 'triangle', 0.01, 0.1); },
     // Knocked out (2026-10-06): a soft thump as the card falls back, then a dry rustle of leaves.
     // Pixel shatter (2026-10-06): a token breaks into bits — a glassy, chiptune cascade of tiny blips.
     pixelShatter(){
@@ -11266,9 +11268,12 @@ function grantTutorialSeriesRewards(pick){
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 // 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
 function lossTitle(m){
-  try{ const h = m.players[2].hq; if(h.hp / h.maxHp <= 0.25) return 'So Close! Good Fight'; }catch(e){}
-  return 'Defeat — Good Fight';
+  try{ const h = m.players[2].hq; if(h.hp / h.maxHp <= 0.25) return 'Better Luck Next Time…'; }catch(e){}
+  return 'Defeat!';
 }
+// 2026-10-08 (user: "You Win! should be Victory! or Hurrah!"): mostly Victory!, now and then Hurrah!
+// (fixed per match, so it doesn't flicker between renders).
+function winTitle(m){ return ((m && (m.round||0)) % 4 === 3) ? 'Hurrah!' : 'Victory!'; }
 function tutorialWinLossTitle(m){
   const stage = m.tutorialStage || 1;
   if(m.winner!==1) return 'Good Fight — Try Again';
@@ -12821,6 +12826,7 @@ function startMatch(mode){
 }
 function endMatch(){
   SoundKit.stopAll();
+  document.documentElement.classList.remove('bw-resolving');
   hideCoachTip();
   clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
@@ -13178,6 +13184,11 @@ function wireFacingHover(){
   bf.addEventListener('pointerover', e=>{
     if(e.pointerType==='touch') return;
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    // 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's
+    // settled on the field (hover again, or move within it, to see it).
+    const t = c.querySelector('.card-tile');
+    if(c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
+      || (window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))))) return;
     showFacing(c.dataset.uid);
   });
   bf.addEventListener('pointerout', e=>{
@@ -13427,7 +13438,7 @@ function renderMatchUI(){
     <div class="pass-overlay winloss-overlay">
       <div class="pass-card winloss-card">
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
-        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':lossTitle(m))}</h2>
+        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -15592,8 +15603,10 @@ function boardCardHTML(c, defs, opts){
   // match (targets .badges-bottom now, leaves .badges — the ability row — alone, since that one
   // never changes after the card is first rendered).
   const abilityBadgeHTML = abilityBadges(d);
-  return `<div class="board-card ${raging?'raging':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    <div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}">
+  // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
+  const flies = !!((d.effects||{}).flying);
+  return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}">
       ${c.wait>0?waitBadgeHTML(c.wait, d.wait):''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -16426,13 +16439,29 @@ function fallDeathVfx(el, ms){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile') || el;
   el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
+  // 2026-10-08 (user: "start slow, then speed up until it hits the floor — it looks like 3
+  // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
+  // accelerating until the card lies flat), and everything else (leaves, dust, thump) lands on
+  // that impact frame. After impact the card just settles and fades out where it fell.
   if(hasGsap()){
+    const fall = ms*0.78/1000;
     gsap.timeline()
-      .fromTo(t, {filter:'grayscale(0) brightness(1)'}, {rotationX:62, y:10, scaleY:.9, transformPerspective:500, transformOrigin:'50% 100%', filter:'grayscale(1) brightness(.8)', duration:ms*0.55/1000, ease:'power2.in'})
-      .to(t, {opacity:0, scale:.86, duration:ms*0.35/1000, ease:'power1.in'})
-      .add(()=>{ leafPuff(el); }, ms*0.5/1000);
+      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:86, y:16, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power3.in'})
+      .add(()=>{ leafPuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
+      .to(t, {rotationX:80, duration:.07, ease:'power1.out'})
+      .to(t, {rotationX:86, duration:.08, ease:'power1.in'})
+      .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
   }
   return true;
+}
+// A low ring of dust that skids out along the floor where the card landed.
+function impactDust(el){
+  if(!el || !hasGsap() || !fxAtLeast('low')) return;
+  const r = el.getBoundingClientRect();
+  const d = document.createElement('span'); d.className = 'impact-dust'; d.setAttribute('aria-hidden','true');
+  d.style.cssText = `left:${r.left + r.width/2}px; top:${r.bottom - 6}px; width:${r.width*1.1}px;`;
+  document.body.appendChild(d);
+  gsap.fromTo(d, {scaleX:.4, opacity:.75}, {scaleX:1.5, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> d.remove()});
 }
 function leafPuff(el){
   if(!el || !hasGsap()) return;
@@ -16572,7 +16601,8 @@ function deathVfx(uid){
   const rcD = matchState && matchState.replayCards && matchState.replayCards[uid];
   const isToken = !!(rcD && (getCardDefs()[rcD.defId]||{}).token);
   const burnt = isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
-  try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall') SoundKit.knockOut(); else SoundKit.bleedOut(style); }catch(e){}
+  try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
+  if(burnt && style==='fall' && !isToken) skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
@@ -16708,7 +16738,7 @@ function settleStrayBoardCards(waited){
 }
 async function resolveRound(){
   const m = matchState; if(!m||m.over||m.resolving) return;
-  m.resolving = true; updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
+  m.resolving = true; document.documentElement.classList.add('bw-resolving'); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
   const events = [];
   // Progressive castle HP (2026-09-16): capture each HQ's HP BEFORE this round's combat is
   // resolved, so the bar can be stepped down hit-by-hit as each hitHQ event plays out below,
@@ -17228,7 +17258,7 @@ async function resolveRound(){
   // comment) right as control hands back to the player, instead of letting it bleed into their
   // next turn.
   SoundKit.stopAll();
-  m.resolving = false;
+  m.resolving = false; document.documentElement.classList.remove('bw-resolving');
   renderMatchUI();
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
@@ -17796,6 +17826,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
   else if(ev.type==='death') base = 550; // was 1100 -- chain 2x faster
   else if(ev.type==='render') base = 780;
+  else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
   // feedback -- "Sometimes, there is a small 0.2-0.3s pause between anims. Why? I want the
   // anims to be smooth" -- that gap was exactly this bucket's same-kind/diff-kind pause on
@@ -17809,7 +17840,7 @@ function delayForEvent(ev, prevKind){
   const mult = (matchState && matchState.speedMult) || 1;
   return Math.max(18, Math.round(base / mult));
 }
-function pushLog(ev){ if(!matchState) return; matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
+function pushLog(ev){ if(!matchState || ev.type==='triggerFired') return; matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
 function sideLabel(side){
   const isPc = matchState && matchState.mode==='pc';
   if(isPc) return side==='A' ? 'Player 1' : 'Player 2';
@@ -19022,6 +19053,23 @@ function keywordCuesForHit(ev, attEl, targetEl){
     setTimeout(()=> { (ev.sweep ? SoundKit.sweepTone() : SoundKit.swipeTone()); floatText(targetEl, label, 'quick'); }, 130);
   }
 }
+// Triggered abilities (2026-10-08, user: "a trigger vfx and a soft or neutral sfx whenever a
+// triggered ability triggers, like On Death or On Enemy Play"): a gold rune ring opens on the card
+// with the trigger's symbol above it, and a soft two-note chime.
+const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'⏳', onReady:'⚡', onExile:'🌀',
+  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️'};
+function triggerFiredVfx(ev){
+  try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){}
+  if(!fxAtLeast('low')) return;
+  const el = boardCardEl(ev.uid); if(!el || !el.isConnected) return;
+  const r = el.getBoundingClientRect(); if(!r.width) return;
+  const ring = document.createElement('div'); ring.className = 'trigger-rune'; ring.setAttribute('aria-hidden','true');
+  ring.style.cssText = `left:${r.left + r.width/2}px; top:${r.top + r.height/2}px; --rs:${Math.round(Math.max(r.width, r.height)*1.05)}px;`;
+  ring.innerHTML = `<i></i><b>${TRIGGER_GLYPH[ev.hook] || '✦'}</b>`;
+  document.body.appendChild(ring);
+  setTimeout(()=> ring.remove(), 900);
+  const t = el.querySelector('.card-tile'); if(t){ t.classList.remove('trigger-glow'); void t.offsetWidth; t.classList.add('trigger-glow'); setTimeout(()=> t.classList.remove('trigger-glow'), 700); }
+}
 function renderVfxForEvent(ev){
   // Guard (2026-09-17, fix for "Uncaught Error ... reading 'replayCards'"): this fires from
   // an in-flight setTimeout/await-sleep replay loop that closes over the match object as a
@@ -19046,6 +19094,7 @@ function renderVfxForEvent(ev){
     const firstSide = (ev.round%2===0) ? 'A' : 'B';
     flagFirstFieldFlash(firstSide);
   }
+  if(ev.type==='triggerFired'){ triggerFiredVfx(ev); return; }
   if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded'){
     const attEl = boardCardEl(ev.attUid);
     const targetEl = ev.type==='hitHQ' ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid);

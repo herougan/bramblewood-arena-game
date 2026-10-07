@@ -2042,11 +2042,29 @@
   :where(#appWrap.in-match .board-card) .card-tile{animation:idleBreathe 3.6s ease-in-out infinite;}
   :where(#appWrap.in-match .board-card:nth-child(2n)) .card-tile{animation-delay:-1.2s;}
   :where(#appWrap.in-match .board-card:nth-child(3n)) .card-tile{animation-delay:-2.4s;}
+  /* Flyers (2026-10-08, user: "lifted off the ground a little, with shadows, then they shake a bit
+     like they are soaring"): a 9px lift on the independent translate property, a slow sway, and a
+     soft shadow on the felt that shrinks as they rise. A low-HP flyer's tremble (below) wins, so a
+     badly hurt flyer sinks back down. */
+  :where(#appWrap.in-match .board-card.is-flying) .card-tile{translate:0 -9px; animation:flySoar 3.4s ease-in-out infinite;}
+  :where(#appWrap.in-match .board-card.is-flying:nth-child(2n)) .card-tile{animation-delay:-1.1s;}
+  .board-card .fly-shadow{display:none;}
+  #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:10%; right:10%; bottom:-14px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.6), rgba(0,0,0,.28) 45%, transparent 72%); animation:flyShadow 3.4s ease-in-out infinite;}
+  #appWrap.in-match .board-card.is-flying:nth-child(2n) .fly-shadow{animation-delay:-1.1s;}
+  @keyframes flySoar{0%,100%{translate:0 -9px; rotate:0deg;} 22%{translate:1.5px -12px; rotate:.8deg;} 50%{translate:0 -8px; rotate:0deg;} 74%{translate:-1.5px -12px; rotate:-.8deg;}}
+  @keyframes flyShadow{0%,100%{transform:scaleX(1); opacity:1;} 22%,74%{transform:scaleX(.86); opacity:.75;} 50%{transform:scaleX(1.03); opacity:1;}}
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
   .board-card.is-low-hp .stats .hp{color:#ff8a7a; text-shadow:0 0 6px rgba(255,60,40,.7);}
   @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
   @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
+  /* 2026-10-08 (user: "during the attacking phase, don't let them do that"): every ambient idle
+     motion pauses while a round resolves; flyers stay up but stop swaying. Same :where()
+     specificity, so strike/death animations still win. */
+  :where(html.bw-resolving #appWrap.in-match .board-card) .card-tile{animation:none;}
+  :where(html.bw-resolving #appWrap.in-match .board-card.is-flying) .card-tile{animation:none; translate:0 -9px;}
+  html.bw-resolving #appWrap.in-match .board-card.is-flying .fly-shadow{animation:none;}
   @media (prefers-reduced-motion: reduce){ :where(.board-card) .card-tile, .card-tile.crack-new{animation:none;} }
   /* Sudden-death red sky (2026-10-06): see suddenDeathSky(). Plain alpha (no blend mode) to stay cheap. */
   .battlefield.sudden-death::before{content:''; position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:inherit;
@@ -2065,6 +2083,16 @@
   /* Hourglass flip on each Wait tick (2026-10-07, A7): see updateCardWaitDisplay(). */
   .waitbadge .wait-flip{position:absolute; left:50%; top:-15px; margin-left:-6px; font-size:12px; line-height:1; pointer-events:none; animation:waitFlip 740ms cubic-bezier(.3,.7,.3,1) forwards;}
   @keyframes waitFlip{0%{opacity:0; transform:translateY(4px) rotate(0);} 20%{opacity:1; transform:translateY(-2px) rotate(0);} 65%{opacity:1; transform:translateY(-4px) rotate(180deg);} 100%{opacity:0; transform:translateY(-8px) rotate(180deg);}}
+  .impact-dust{position:fixed; z-index:1200; height:14px; margin-left:0; translate:-50% -50%; pointer-events:none; border-radius:50%;
+    background:radial-gradient(ellipse at center, rgba(205,185,150,.75), rgba(160,140,110,.35) 45%, transparent 72%); filter:blur(1px);}
+  /* Triggered ability (2026-10-08): see triggerFiredVfx(). */
+  .trigger-rune{position:fixed; z-index:1190; width:0; height:0; pointer-events:none;}
+  .trigger-rune i{position:absolute; left:calc(var(--rs) / -2); top:calc(var(--rs) / -2); width:var(--rs); height:var(--rs); border-radius:50%;
+    border:2px solid rgba(255,214,120,.9); box-shadow:0 0 12px rgba(255,200,90,.7), inset 0 0 10px rgba(255,220,140,.5); animation:triggerRing 820ms cubic-bezier(.2,.7,.3,1) forwards;}
+  .trigger-rune b{position:absolute; left:0; top:calc(var(--rs) / -2 - 6px); translate:-50% -50%; font-size:18px; filter:drop-shadow(0 1px 3px rgba(0,0,0,.6)); animation:triggerGlyph 860ms ease-out forwards;}
+  @keyframes triggerRing{0%{transform:scale(.35) rotate(0deg); opacity:0;} 25%{opacity:1;} 100%{transform:scale(1.05) rotate(60deg); opacity:0;}}
+  @keyframes triggerGlyph{0%{transform:translateY(8px) scale(.6); opacity:0;} 25%{transform:translateY(0) scale(1.15); opacity:1;} 70%{transform:translateY(-4px) scale(1); opacity:1;} 100%{transform:translateY(-12px) scale(.9); opacity:0;}}
+  .card-tile.trigger-glow{box-shadow:0 0 0 2px rgba(255,214,120,.85), 0 0 16px rgba(255,200,90,.6) !important;}
   /* Card drag trail (2026-10-06): see dragTrail. */
   .drag-spark{position:fixed; z-index:2000; width:7px; height:7px; margin:-3.5px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, #fff8d6 0%, #ffd56a 45%, rgba(255,200,80,0) 72%); animation:dragSpark 540ms ease-out forwards;}
@@ -5528,7 +5556,14 @@
   .pips.is-num b{margin-left:1px; font-weight:800;}
   .card-tile .costbadge, .card-tile .waitbadge{min-width:0 !important;}
   /* Names sit higher, leaving the middle of the art (eyes) clear. */
-  .card-tile .nm{margin-top:max(2px, 3.5cqw) !important;}
+  /* 2026-10-08 (user: "the name label might need to be higher; if the name is just 1 row, make the
+     scroll a little thicker"): closer to the top edge, and never thinner than a comfortable band;
+     two-line names still grow it naturally. */
+  .card-tile .nm{margin-top:max(1px, 1.6cqw) !important; min-height:1.85em !important; display:flex; align-items:center; justify-content:center;}
+  @container (max-width: 70px){ .card-tile .nm{display:none;} }
+  /* 2026-10-08 (user: "the wait icon looks like a bubble within a vertical pill — make it simply a
+     bubble"): the live countdown badge on the board is a circle the size of its ring. */
+  .card-tile .waitbadge[data-wait-total]{width:clamp(18px, 22cqw, 28px) !important; height:clamp(18px, 22cqw, 28px) !important; min-width:0 !important; padding:0 !important; border-radius:50% !important;}
   .card-tile .badges, .card-tile .badges-2row{top:auto !important; bottom:clamp(3px, 4cqw, 8px); max-width:46% !important;}
   .card-tile .badges .abadge{font-size:clamp(11px, 13cqw, 20px);}
   /* Flying wing 20% larger */

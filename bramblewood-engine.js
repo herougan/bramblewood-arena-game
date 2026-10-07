@@ -1506,6 +1506,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const subjArchetypes = (subjDef && subjDef.archetypes) || [];
         if(!subjArchetypes.includes(t.filterArchetype)) return;
       }
+      // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
+      // chime) before its effect's own events. Presentation only; nothing reads it for rules.
+      if(recordEvents && events) events.push({type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do});
       switch(t.do){
         case 'gainGold': pl.lumber += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
         case 'gainGrace': pl.grace += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).graceGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;

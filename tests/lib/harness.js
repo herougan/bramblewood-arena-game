@@ -95,6 +95,9 @@ function checkInvariants(players, where){
 // of event types. Stored in golden files so ANY behaviour change shows up as a diff.
 function fightSignature(res){
   const hist = {};
+  // 'triggerFired' (2026-10-08) is presentation only (the app's trigger rune); leave it out so the
+  // goldens keep describing what actually happened in the fight.
+  res = Object.assign({}, res, {events: res.events.filter(e=> e.type!=='triggerFired')});
   res.events.forEach(e=>{ hist[e.type] = (hist[e.type]||0) + 1; });
   const order = res.events.map(e=> e.type + (e.dmg!=null ? ':'+e.dmg : (e.amount!=null ? ':'+e.amount : '')) + (e.targetUid!=null ? '@'+e.targetUid : '')).join(',');
   return {
