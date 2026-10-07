@@ -8,6 +8,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Click a deck's name to rename it.
 - Fire creatures shimmer with heat haze.
 - Your avatar walks the Conquest map; raid bosses visibly wind up over the lane they'll hit.
+- Codex pages turn like a book; battles appear through a pixel dissolve. The first effects wish-list is complete.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.

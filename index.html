@@ -2113,6 +2113,17 @@
   .map-pawn{position:absolute; z-index:6; pointer-events:none; transform:translate(-50%, calc(-100% - 14px)); display:flex; flex-direction:column; align-items:center;}
   .map-pawn .mp-body{font-size:26px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)); will-change:transform;}
   .map-pawn .mp-shadow{width:18px; height:5px; margin-top:1px; border-radius:50%; background:rgba(0,0,0,.35);}
+  /* Codex page turn (2026-10-07): see codexPageTurn(). */
+  #codexBody.page-turn-fwd, #codexBody.page-turn-back{animation:pageTurnFwd 520ms cubic-bezier(.2,.7,.25,1) both; transform-origin:0% 50%; position:relative;}
+  #codexBody.page-turn-back{animation-name:pageTurnBack; transform-origin:100% 50%;}
+  @keyframes pageTurnFwd{from{transform:perspective(1400px) rotateY(-28deg) translateX(40px); opacity:.25;} to{transform:none; opacity:1;}}
+  @keyframes pageTurnBack{from{transform:perspective(1400px) rotateY(28deg) translateX(-40px); opacity:.25;} to{transform:none; opacity:1;}}
+  #codexBody.page-turn-fwd::after, #codexBody.page-turn-back::after{content:''; position:absolute; inset:0; pointer-events:none; z-index:5;
+    background:linear-gradient(90deg, rgba(0,0,0,.28), rgba(0,0,0,0) 35%); animation:pageShade 520ms ease-out forwards;}
+  #codexBody.page-turn-back::after{background:linear-gradient(270deg, rgba(0,0,0,.28), rgba(0,0,0,0) 35%);}
+  @keyframes pageShade{from{opacity:1;} to{opacity:0;}}
+  /* Pixel reveal (2026-10-07): see pixelReveal(). One canvas pixel per cell, scaled up without smoothing. */
+  .pixel-reveal{position:fixed; inset:0; width:100vw; height:100vh; z-index:7900; pointer-events:none; image-rendering:pixelated; image-rendering:crisp-edges;}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -12310,6 +12321,8 @@ const SoundKit = (()=>{
     riffle(){ for(let i = 0; i < 14; i++) fnoise(0.025, 0.04, {type:'bandpass', freq:2600 + Math.random()*900, q:1.2, attack:0.002, delay:i*0.032 + (i>6 ? 0.18 : 0)}); fnoise(0.09, 0.05, {type:'lowpass', freq:900, attack:0.004, delay:0.72}); },
     // Leader fanfare (2026-10-06): a short rising brass-like triad when the leader takes the field.
     leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
+    // Page turn (2026-10-07): a papery swish as a Codex page turns.
+    pageTurn(){ fnoise(0.22, 0.05, {type:'bandpass', freq:1800, freqEnd:3600, q:0.8, attack:0.03}); fnoise(0.06, 0.03, {type:'lowpass', freq:700, attack:0.004, delay:0.2}); },
     // Pawn step (2026-10-07): a soft little footfall as your avatar hops across the Conquest map.
     pawnStep(){ fnoise(0.05, 0.035, {type:'lowpass', freq:520, freqEnd:240, attack:0.004}); },
     // Feather flutter (2026-10-06): a soft papery fwip when a flyer is hit.
@@ -13006,6 +13019,36 @@ function codexShell(){
   </div>
   <div id="codexBody"></div>`;
 }
+// Page turn (2026-10-07, effects "Coming next"): switching Codex sections turns the page like a
+// book — the new section swings in from the right edge (forward) or the left (back), with a soft
+// shadow sweeping across it. Transform and opacity only, so it stays on the compositor.
+function codexPageTurn(dir){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const body = document.getElementById('codexBody'); if(!body) return;
+  body.classList.remove('page-turn-fwd', 'page-turn-back'); void body.offsetWidth;
+  body.classList.add('page-turn-' + dir);
+  try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+  setTimeout(()=> body.classList.remove('page-turn-' + dir), 560);
+}
+// Pixel reveal (2026-10-07, effects "Coming next"): a battle without a versus opener appears through
+// a dissolving grid of dark squares, cleared in a random order, like an old game loading its stage.
+function pixelReveal(ms){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = document.createElement('canvas'); cv.className = 'pixel-reveal'; cv.setAttribute('aria-hidden', 'true');
+  const W = innerWidth, H = innerHeight, CELL = Math.max(28, Math.round(Math.min(W, H) / 16));
+  cv.width = Math.ceil(W / CELL); cv.height = Math.ceil(H / CELL);   // one canvas pixel per cell, scaled up crisp by CSS
+  const g = cv.getContext('2d'); g.fillStyle = '#1b2418'; g.fillRect(0, 0, cv.width, cv.height);
+  document.body.appendChild(cv);
+  const cells = []; for(let y = 0; y < cv.height; y++) for(let x = 0; x < cv.width; x++) cells.push([x, y, Math.random() + (Math.abs(x - cv.width/2) + Math.abs(y - cv.height/2)) / (cv.width + cv.height) * 0.9]);
+  cells.sort((a, b)=> a[2] - b[2]);
+  const t0 = performance.now(), total = cells.length; let done = 0; ms = ms || 520;
+  const step = now=>{
+    const want = Math.min(total, Math.ceil(total * Math.min(1, (now - t0) / ms)));
+    for(; done < want; done++) g.clearRect(cells[done][0], cells[done][1], 1, 1);
+    if(done < total) requestAnimationFrame(step); else cv.remove();
+  };
+  requestAnimationFrame(step);
+}
 function renderCodex(){
   // 2026-09-25 (task #352): Recently Deleted and the transaction Log are admin/debug-only views --
   // a regular player can never populate either one (card delete/edit is already gated behind
@@ -13018,7 +13061,12 @@ function renderCodex(){
   if((codexSubTab==='deleted' || codexSubTab==='txns') && !adminModeEnabled){ codexSubTab = 'browse'; }
   const root = document.getElementById('view-codex');
   root.innerHTML = codexShell();
-  root.querySelectorAll('[data-codextab]').forEach(b=> b.addEventListener('click', ()=>{ codexSubTab = b.getAttribute('data-codextab'); renderCodex(); }));
+  root.querySelectorAll('[data-codextab]').forEach(b=> b.addEventListener('click', ()=>{
+    const order = [...root.querySelectorAll('[data-codextab]')].map(x=> x.getAttribute('data-codextab'));
+    const next = b.getAttribute('data-codextab'), dir = order.indexOf(next) >= order.indexOf(codexSubTab) ? 'fwd' : 'back';
+    if(next === codexSubTab) return;
+    codexSubTab = next; renderCodex(); codexPageTurn(dir);
+  }));
   const toDeckBtn = document.getElementById('codexToDeckBtn');
   if(toDeckBtn) toDeckBtn.addEventListener('click', ()=> switchTab('deck'));
   const body = document.getElementById('codexBody');
@@ -23865,6 +23913,7 @@ function wireDropZones(){
   try{ mountBattleWeather(matchState); }catch(e){}
   if(!lightningTimer) try{ scheduleLightning(matchState); }catch(e){}
   try{ maybeDeckShuffle(matchState); }catch(e){}
+  if(matchState && !matchState._pixRevealed){ matchState._pixRevealed = true; if(!document.querySelector('.vs-opener, .vs-screen')) try{ pixelReveal(); }catch(e){} }
   try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });

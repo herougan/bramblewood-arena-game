@@ -239,5 +239,8 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Walking map pawn:** your avatar stands on the Conquest map at the skirmish you last picked (or your next one) and hops node to node when you pick another, with soft `pawnStep` footfalls (`placeMapPawn`).
 - **Raid telegraph glow:** in the trench, the boss tile glows red and a pulsing ⬇ points down the lane its column attack will hit, on top of the existing red lane.
 
-**Coming next (TBC in the Effects Lab):**
-- Page curl and pixelate transitions
+**Transitions (live, 2026-10-07):**
+- **Codex page turn:** switching Codex sections swings the new page in from the right (forward) or the left (back), with a sweeping shadow and a papery `pageTurn` swish.
+- **Pixel reveal:** a battle without a versus opener appears through a grid of dark squares cleared in a random, centre-first order. It's one tiny canvas scaled up with `image-rendering: pixelated` (`pixelReveal`).
+
+**Coming next (TBC in the Effects Lab), list two:** raindrops on cards on wet maps; a boss entrance with a quake and a title card; a coin shower on rewards; a combo counter; card tilt in hand; seasonal map palettes.
