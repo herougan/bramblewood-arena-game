@@ -125,7 +125,7 @@ html = f'''<title>Bramblewood Effects Lab</title>
 </div></section>
 
 <section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">Ideas queued for later. Not built yet; listed so you can veto or reorder them.</p>
-<div class="fx-grid"><div class="fx tbc"><h3>📖 Page curl / pixelate transitions <span class="st idea">TBC</span></h3><p>Codex pages curl; entering a battle pixelates in.</p></div><div class="fx tbc"><h3>🚶 Walking map pawn <span class="st idea">TBC</span></h3><p>Your pawn hops node to node on the Conquest map.</p></div><div class="fx tbc"><h3>🎯 Raid telegraph glow <span class="st idea">TBC</span></h3><p>A raid boss glows on the lane it will hit next turn.</p></div></div></section>
+<div class="fx-grid"><div class="fx tbc"><h3>📖 Page curl / pixelate transitions <span class="st idea">TBC</span></h3><p>Codex pages curl; entering a battle pixelates in.</p></div></div></section>
 
 <section id="cards"><h2>Cards</h2><p class="sec-sub">How cards look at rest and in your collection.</p>
 <div class="fx-grid">

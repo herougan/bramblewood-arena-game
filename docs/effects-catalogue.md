@@ -235,7 +235,9 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 
 **Heat haze (live, 2026-10-07):** fire and volcanic units have hot air shimmering up off the card: two faint wavy bands drifting upward, using transform and opacity only (`isFieryDef`, `.heat-haze`).
 
+**Map and raid (live, 2026-10-07 morning):**
+- **Walking map pawn:** your avatar stands on the Conquest map at the skirmish you last picked (or your next one) and hops node to node when you pick another, with soft `pawnStep` footfalls (`placeMapPawn`).
+- **Raid telegraph glow:** in the trench, the boss tile glows red and a pulsing ⬇ points down the lane its column attack will hit, on top of the existing red lane.
+
 **Coming next (TBC in the Effects Lab):**
 - Page curl and pixelate transitions
-- Walking map pawn
-- Raid telegraph glow

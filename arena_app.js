@@ -1752,6 +1752,8 @@ const SoundKit = (()=>{
     riffle(){ for(let i = 0; i < 14; i++) fnoise(0.025, 0.04, {type:'bandpass', freq:2600 + Math.random()*900, q:1.2, attack:0.002, delay:i*0.032 + (i>6 ? 0.18 : 0)}); fnoise(0.09, 0.05, {type:'lowpass', freq:900, attack:0.004, delay:0.72}); },
     // Leader fanfare (2026-10-06): a short rising brass-like triad when the leader takes the field.
     leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
+    // Pawn step (2026-10-07): a soft little footfall as your avatar hops across the Conquest map.
+    pawnStep(){ fnoise(0.05, 0.035, {type:'lowpass', freq:520, freqEnd:240, attack:0.004}); },
     // Feather flutter (2026-10-06): a soft papery fwip when a flyer is hit.
     featherFlutter(){ fnoise(0.22, 0.035, {type:'bandpass', freq:2400, freqEnd:900, q:1.4, attack:0.02}); },
     knockOut(){
@@ -9128,6 +9130,40 @@ function battleRecommendation(node){
 }
 let conquestSelectedMap = CONQUEST_MAPS[0].id;
 let conquestSelectedNodeKey = null;
+// Walking map pawn (2026-10-07, effects "Coming next"): your avatar stands on the Conquest map at
+// the skirmish you last picked (or your next one) and hops along to whichever node you select.
+const MAP_PAWN_KEY = 'bramblewood_map_pawn';
+function loadPawnSpots(){ try{ return JSON.parse(localStorage.getItem(MAP_PAWN_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function placeMapPawn(canvas, map, positions, progress, visibleFlags){
+  if(!canvas || !map || !positions || (conquestLayoutEdit && adminModeEnabled)) return;
+  const idxOf = key=> map.nodes.findIndex(n=> n.key===key);
+  const spots = loadPawnSpots();
+  let target = conquestSelectedNodeKey && idxOf(conquestSelectedNodeKey) >= 0 ? conquestSelectedNodeKey : null;
+  if(!target){
+    const next = map.nodes.findIndex((n, i)=> visibleFlags[i] && n.kind!=='tutorial' && !progress.completed.includes(conquestNodeId(map.id, n.key)));
+    target = map.nodes[next >= 0 ? next : 0] && map.nodes[next >= 0 ? next : 0].key;
+  }
+  const ti = idxOf(target); if(ti < 0 || !positions[ti]) return;
+  const fi = spots[map.id] != null && idxOf(spots[map.id]) >= 0 ? idxOf(spots[map.id]) : ti;
+  const from = positions[fi], to = positions[ti];
+  const av = (typeof loadAvatar==='function') ? loadAvatar() : {character:'otter'};
+  const ch = AVATAR_CHARACTERS.find(c=> c.id===av.character) || AVATAR_CHARACTERS[0];
+  const pawn = document.createElement('div'); pawn.className = 'map-pawn'; pawn.setAttribute('aria-hidden', 'true');
+  pawn.innerHTML = `<span class="mp-body">${ch.emoji}</span><span class="mp-shadow"></span>`;
+  pawn.style.left = from.x + '%'; pawn.style.top = from.y + '%';
+  canvas.appendChild(pawn);
+  spots[map.id] = target; try{ localStorage.setItem(MAP_PAWN_KEY, JSON.stringify(spots)); }catch(e){}
+  if(fi === ti) return;
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!hasGsap() || reduce){ pawn.style.left = to.x + '%'; pawn.style.top = to.y + '%'; return; }
+  const dist = Math.hypot(to.x - from.x, to.y - from.y);
+  const hops = Math.max(2, Math.min(7, Math.round(dist / 6))), dur = Math.min(1.6, 0.22 * hops);
+  const body = pawn.querySelector('.mp-body');
+  gsap.set(body, {scaleX: to.x < from.x ? -1 : 1});
+  gsap.to(pawn, {left: to.x + '%', top: to.y + '%', duration: dur, ease: 'none'});
+  gsap.fromTo(body, {y: 0}, {y: -9, duration: dur / hops / 2, ease: 'power1.out', yoyo: true, repeat: hops * 2 - 1});
+  try{ for(let i = 0; i < hops; i++) setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (dur / hops) * 1000 * (i + 1) - 40); }catch(e){}
+}
 // Item #4's manual re-hide toggle: {[nodeId]: false} means the player chose to hide a deck they
 // already earned the right to see; absent (or true) means shown. Session-only (not persisted) —
 // purely a "spoil myself or not" preference for the current browsing session, not real progress.
@@ -9459,6 +9495,7 @@ function renderConquestSubTab(body){
     if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
   }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
+  try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
   try{ mountMapShader(document.getElementById('conquestCanvas'), map.id); }catch(e){}
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(ak == null ? 0 : ak); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
@@ -10131,7 +10168,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
         <div class="tr-bar"><span>🧱 Trench wall</span><div class="tr-meter wall"><span style="width:${Math.round(v.wall.hp/v.wall.max*100)}%"></span></div><b>${v.wall.hp}/${v.wall.max}</b></div>
       </div>
       <div class="tr-board">
-        <div class="tr-row-wrap is-boss-wrap">${rowHTML(v.boss, -1).replace(/is-danger/g,'')}</div>
+        <div class="tr-row-wrap is-boss-wrap ${danger.size ? 'is-charging' : ''}">${rowHTML(v.boss, -1).replace(/is-danger/g,'is-aim')}</div>
         ${v.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, i)}</div>`).join('')}
       </div>
       <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
