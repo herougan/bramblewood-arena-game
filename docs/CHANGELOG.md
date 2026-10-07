@@ -15,6 +15,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Skirmish and card editors: safer saves, validation, and typed values kept when adding rows.
 - Card editor: a live card preview, art (path, upload or remove) and Revert to original.
 - Bosses make an entrance; coins rain into your rewards; raindrops on cards in wet fights; the Conquest map follows the season.
+- Skirmish editor: Gold and Dust rewards per skirmish. Card editor: rarely used sections tucked away.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.

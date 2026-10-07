@@ -3844,6 +3844,7 @@ function closeCardEditor(){ editingCard=null; document.getElementById('editorOve
 // wipe anything typed but not yet saved. The wrapper snapshots the form first and puts the typed
 // values back afterwards (fields by id; skill and trigger rows by position, when rows were only
 // added). It also makes the editor a proper dialog: labelled fields, Escape to close, focus on Name.
+let editorMoreOpen = false;
 function snapshotEditorForm(overlay){
   const ids = {}; overlay.querySelectorAll('input[id], select[id], textarea[id]').forEach(el=>{ if(el.id!=='fCardId') ids[el.id] = el.type==='checkbox' ? el.checked : el.value; });
   const rows = sel=> [...overlay.querySelectorAll(sel)].map(r=> [...r.querySelectorAll('input,select,textarea')].map(el=> el.type==='checkbox' ? el.checked : el.value));
@@ -3870,6 +3871,17 @@ function renderEditor(){
   // The read-only id moves into the header line (audit #10) so the form opens on Identity.
   const idEl = document.getElementById('fCardId'); const meta = modal.querySelector('.modal-meta');
   if(idEl && meta){ const row = idEl.closest('.field-row'); if(!meta.querySelector('.ce-id')) meta.insertAdjacentHTML('afterbegin', `<span class="ce-id">${escapeHtml(editingCard.id || 'new card')}</span> · `); if(row) row.hidden = true; }
+  // Speech lines and the Creator's Note are rarely edited: tucked into one collapsed "More" box
+  // (open if either already has content, and kept open across re-renders once you open it).
+  if(first) editorMoreOpen = false;
+  const secs = ['fCreatorNote', 'fSpeechTrigger'].map(id=> { const el = document.getElementById(id); return el && el.closest('.section-divider'); }).filter(Boolean);
+  if(secs.length){
+    const hasContent = ((document.getElementById('fCreatorNote')||{}).value||'').trim() || Object.values(editingCard.speeches||{}).some(a=> (a||[]).some(l=> l && l.trim()));
+    const det = document.createElement('details'); det.className = 'ce-more'; det.open = editorMoreOpen || !!hasContent;
+    det.innerHTML = '<summary>More: Creator’s note and battlefield speech</summary>';
+    secs[0].before(det); secs.forEach(sec=> det.appendChild(sec));
+    det.addEventListener('toggle', ()=>{ editorMoreOpen = det.open; });
+  }
   mountEditorSide(modal);
   if(first){ const n = document.getElementById('fName'); if(n) setTimeout(()=> n.focus(), 30); }
 }
@@ -7996,6 +8008,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
         <label>Castle HP<input id="seHp" type="number" min="1" max="9999" value="${draft.hqHp||30}"></label>
+        ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
+          return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
+            <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
+            <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
         <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Gravity; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
@@ -8025,6 +8041,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       draft.hqHp = Math.max(1, Math.min(9999, Number(v('seHp'))||30)); draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
+      if(document.getElementById('seRw_first_gold')){
+        const r = {}; ['first','repeat'].forEach(k=> ['gold','dust'].forEach(c=>{ const v = document.getElementById(`seRw_${k}_${c}`).value; if(v !== '' && Number(v) >= 0){ r[k] = r[k] || {}; r[k][c] = Math.round(Number(v)); } }));
+        if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
+      }
     };
     overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
@@ -8047,7 +8067,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       persistNodeEdits(); applyNodeEdits();
@@ -9067,8 +9087,16 @@ const CONQUEST_NODE_REWARDS = {
 // between showing the (bigger) first-clear amount or the (smaller) repeat-clear trickle, so a
 // node you've already cleared honestly previews what fighting it AGAIN would pay, not a number
 // you can no longer earn there.
+// Per-skirmish reward override (2026-10-07, skirmish editor): node.rewards = {first:{gold,dust},
+// repeat:{gold,dust}} replaces any of the kind's defaults it sets; anything left blank keeps them.
+function nodeRewardTier(node){
+  const base = node && CONQUEST_NODE_REWARDS[node.kind]; if(!base) return null;
+  const o = (node && node.rewards) || {};
+  const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
+  return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
+}
 function cnpRewardsPreviewHTML(node, done){
-  const tier = CONQUEST_NODE_REWARDS[node.kind]; if(!tier) return '';
+  const tier = nodeRewardTier(node); if(!tier) return '';
   const payout = done ? tier.repeat : tier.first;
   const parts = [];
   if(payout.gold>0) parts.push(`${mapleLeafIconHTML()} ${payout.gold}`);
@@ -16688,7 +16716,7 @@ async function resolveRound(){
       const unlockBefore = snapshotUnlocks();
       completeConquestNode(m.conquestNode, rank);
       m.conquestRankEarned = rank; // read once by the post-match screen (renderMatchUI) below
-      const rewardTier = CONQUEST_NODE_REWARDS[m.conquestNode.kind];
+      const rewardTier = nodeRewardTier((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       if(rewardTier){
         const payout = isFirstClear ? rewardTier.first : rewardTier.repeat;
         if(payout.gold>0) grantCurrency('gold', payout.gold);
