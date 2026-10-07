@@ -16,6 +16,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Card editor: a live card preview, art (path, upload or remove) and Revert to original.
 - Bosses make an entrance; coins rain into your rewards; raindrops on cards in wet fights; the Conquest map follows the season.
 - Skirmish editor: Gold and Dust rewards per skirmish. Card editor: rarely used sections tucked away.
+- Every edit to a Conquest map in one list, with Revert all; the card editor keeps a History you can step back through.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.
