@@ -4623,6 +4623,8 @@
   .home-grid{position:relative;}
   .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.85; letter-spacing:0; margin-top:2px; max-width:92%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .home-play .home-sub{font-size:14px;}
+  .home-play.is-rejoin{background:linear-gradient(180deg,#3f8f5a,#22603a) !important; border-color:#9fe0b0 !important; box-shadow:0 0 0 2px rgba(159,224,176,.35), 0 0 22px rgba(80,200,120,.35) !important; animation:rejoinPulse 2.4s ease-in-out infinite;}
+  @keyframes rejoinPulse{50%{box-shadow:0 0 0 3px rgba(159,224,176,.55), 0 0 30px rgba(80,200,120,.5);}}
   @media (max-width:520px){ .home-tile .home-sub{white-space:normal; font-size:11px; line-height:1.2;} }
   .home-note{position:absolute; z-index:3; display:flex; flex-direction:column; align-items:flex-start; gap:1px; padding:10px 14px 9px; min-width:128px; border:0; cursor:pointer; text-align:left;
     color:#3b2712; background:linear-gradient(180deg,#f6e8c6,#e7cf98); box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(122,86,48,.35); border-radius:4px; transition:transform .18s;}

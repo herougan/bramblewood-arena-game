@@ -12960,11 +12960,21 @@ function startMatch(mode){
   }
   renderPlay();
 }
-function endMatch(){
+// 2026-10-08 (user: "if you leave a match by accident you should be able to rejoin it, with the Play
+// button changing colour and saying Rejoin"): Quit keeps the fight saved; Home's Play tile becomes
+// ▶ Rejoin until you go back in, or start something else. Forfeit and finishing still clear it.
+function leaveMatchResumable(){
+  const m = matchState;
+  if(m && !m.over){ const was = m.resolving; m.resolving = false; saveResumeSnapshot(); m.resolving = was; }
+  endMatch({keepResume:true});
+  switchTab('home');
+  showToast('⏸️ Fight saved. Press ▶ Rejoin on Home to carry on.', 'ok');
+}
+function endMatch(opts){
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving');
   hideCoachTip();
-  clearResumeSnapshot();
+  if(!(opts && opts.keepResume)) clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
   if(matchState && matchState.mode==='liveRanked') leaveLiveMatch(); // sends an abandon notice (if the match wasn't already over) and tears down the Realtime channel either way
@@ -13593,7 +13603,7 @@ function renderMatchUI(){
   `;
   root.classList.remove('testkit-mode');
   if(m.testKit) testKitArrangeLayout(root, tkKeep);
-  const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : endMatch));
+  const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : (RESUMABLE_MODES.has(m.mode) && !m.over ? leaveMatchResumable : endMatch)));
   const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   wireLeaderWidget();
   wireHudChrome();
@@ -20704,6 +20714,8 @@ function renderHome(){
   const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span>${sub[tab] ? `<small class="home-sub">${escapeHtml(sub[tab])}</small>` : ''}</button>` : '';
   const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
   const qn = tabOpen('quests') ? claimableQuestCount() : 0;
+  const rsnap = (!matchState && loadTutorialDone()) ? loadResumeSnapshot() : null;
+  const rejoin = rsnap ? `${(rsnap.conquestNode && rsnap.conquestNode.name) || RESUME_MODE_LABEL[rsnap.mode] || 'Your fight'} · round ${rsnap.round||1}` : '';
   root.innerHTML = `${homeSceneHTML()}
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
@@ -20711,7 +20723,8 @@ function renderHome(){
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
-        <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>
+        ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Rejoin</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
+          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
@@ -20720,6 +20733,7 @@ function renderHome(){
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
+  const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) renderHome(); });
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn'), cm = document.getElementById('homeCommunityMenu');

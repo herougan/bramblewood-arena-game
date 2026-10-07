@@ -165,6 +165,13 @@ async def main():
           return out; })()""")
         for pick, (pct, fixed_win) in tut.items():
             check(pct >= 70 and fixed_win, f'tutorial as {pick}: {pct}% simulated wins, fixed seed win={fixed_win} (want 70%+ and a fixed-seed win)')
+        # 7c: Quit keeps a Conquest fight resumable; Home's Play tile becomes Rejoin (2026-10-08)
+        await pg.evaluate("(()=>{ switchTab('play'); startConquestMatch('m1', CONQUEST_MAPS[0].nodes.find(n=> n.kind==='skirmish').key, {skipEnergyCost:true}); return 1; })()"); await pg.wait_for_timeout(1500)
+        await pg.evaluate("document.querySelectorAll('.vs-opener,.vs-screen').forEach(e=>e.remove()); renderMatchUI(); document.getElementById('quitMatchBtn').click(); 1"); await pg.wait_for_timeout(600)
+        check(await pg.evaluate("!!document.getElementById('homeRejoinBtn')"), 'after Quit, Home should offer Rejoin')
+        await pg.evaluate("document.getElementById('homeRejoinBtn').click(); 1"); await pg.wait_for_timeout(800)
+        check(await pg.evaluate("!!(matchState && matchState.mode==='conquest')"), 'Rejoin should bring the fight back')
+        await pg.evaluate("endMatch(); 1")
         # 8: Autobattler fight replay: draft a run, fight once, watch it step by step
         await pg.evaluate("""(()=>{ const d = getCardDefs(); const run = AutoB.newRun(4242, Date.now());
           while(run.phase==='draft'){ const o = AutoB.draftOffers(d, CHARACTER_DEFS, run); AutoB.applyDraftPick(run, o.options[0]); }
