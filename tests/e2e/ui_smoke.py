@@ -190,7 +190,7 @@ async def main():
             await pg.evaluate("localStorage.setItem('bramblewood_arena_tutorial_done','1'); document.getElementById('splashScreen').hidden=true; switchTab('home'); 1"); await pg.wait_for_timeout(600)
             check(await pg.evaluate("!!document.querySelector('#view-home .hs-back canvas.bw-shader')"), 'Home should get a shader layer')
             await pg.evaluate("playSubTab='conquest'; switchTab('play'); 1"); await pg.wait_for_timeout(600)
-            check(await pg.evaluate("!!document.querySelector('#conquestCanvas > canvas.bw-shader-map')"), 'the Conquest map should get a shader overlay')
+            check(await pg.evaluate("!!document.querySelector('#conquestLayout > canvas.bw-shader-map')"), 'the Conquest map should get a shader overlay')
             await pg.evaluate("setShadersEnabled(false); 1"); await pg.wait_for_timeout(100)
             check(await pg.evaluate("BramblewoodShaders._layers.size === 0 && !document.querySelector('canvas.bw-shader')"), 'turning shaders off should remove every layer')
         else: print('  (no WebGL here; shader check skipped)')

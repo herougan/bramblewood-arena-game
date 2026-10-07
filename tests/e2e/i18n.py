@@ -17,7 +17,7 @@ async def main():
         await pg.goto('file://' + os.path.join(ROOT, 'index.html')); await pg.wait_for_timeout(1300)
         await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('home')")
         langs = await pg.evaluate("BramblewoodI18n.LANGS.map(l=>l.code)")
-        playSel = "document.querySelector('.home-play span:last-child').textContent.trim()"
+        playSel = "document.querySelector('.home-play > span:nth-of-type(2)').textContent.trim()"
         for code in langs:
             if code == 'en': continue
             want = json.load(open(os.path.join(ROOT, 'lang', code + '.json'), encoding='utf-8')).get('Play')

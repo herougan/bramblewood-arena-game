@@ -2665,6 +2665,8 @@
   .dlg-timer circle{fill:none; stroke:#c9853a; stroke-width:3; stroke-dasharray:94.2; stroke-dashoffset:0;}
   /* Map feature spots + leaves reveal (2026-10-03) */
   .map-spot{position:absolute; transform:translate(-50%,-50%); z-index:6; display:flex; flex-direction:column; align-items:center; gap:2px; background:none; border:0; cursor:pointer; padding:0;}
+  .map-spot-links{position:absolute; inset:0; width:100%; height:100%; z-index:5; pointer-events:none; overflow:visible;}
+  .map-spot-links line{stroke:rgba(255,246,222,.32); stroke-width:1.6; stroke-dasharray:3 4; stroke-linecap:round; vector-effect:non-scaling-stroke;}
   .map-spot .map-spot-ico{width:46px; height:46px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:26px; background:rgba(255,248,230,.92); box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a;}
   .map-spot.is-new .map-spot-ico{animation:spotPulse 1.6s ease-in-out infinite;}
   @keyframes spotPulse{0%,100%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 0 rgba(255,210,122,.8);} 50%{box-shadow:0 6px 14px rgba(0,0,0,.4), 0 0 0 2px #e0b85a, 0 0 0 12px rgba(255,210,122,0);}}
@@ -2675,6 +2677,11 @@
   .leaves-cover{position:fixed; inset:0; z-index:1300; background:rgba(20,40,16,.96); overflow:hidden; pointer-events:none;}
   .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
+  .tip-ticker{position:relative; min-height:1.6em; overflow:hidden;}
+  .tip-ticker .tip-line{position:absolute; left:0; right:0; top:0; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both;}
+  .tip-ticker .tip-line.tip-out{animation:tipOut .6s ease-in both;}
+  @keyframes tipIn{from{opacity:0; transform:translateX(18px);} to{opacity:1; transform:none;}}
+  @keyframes tipOut{from{opacity:1; transform:none;} to{opacity:0; transform:translateX(-18px);}}
   .admin-unlock-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
   .recent-opps .ro-list{display:flex; flex-direction:column; gap:6px;}
   .recent-opps .ro-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:6px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
@@ -3982,6 +3989,23 @@
      above the Fight button instead. */
   .conquest-main > .conquest-node-panel{position:sticky; bottom:0; z-index:6; max-height:min(46%, 260px); overflow:auto; box-shadow:0 -6px 18px rgba(0,0,0,.25);}
   @media (max-width:820px){ .conquest-main > .conquest-node-panel{position:fixed; left:16px; right:16px; bottom:calc(88px + env(safe-area-inset-bottom, 0px)); max-height:32vh; z-index:40;} }
+  /* Best rank (2026-10-08, user: "more obvious, overlaying the top right of the skirmish detail pane:
+     a slightly off-rotated S in a glowing pink & purple foil hexagon"). A, B and C get gold, silver
+     and bronze foil; S gets the animated pink-violet foil and glow. */
+  .conquest-node-panel{overflow:visible !important;}
+  .rank-hex{position:absolute; top:-22px; right:16px; z-index:7; width:58px; height:64px; display:grid; place-items:center; rotate:-8deg; pointer-events:auto;
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
+  .rank-hex i{position:absolute; inset:0; clip-path:polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background:conic-gradient(from var(--fa, 0deg), #ffd36e, #fff2c2, #c98a1e, #ffe08a, #b8761a, #ffd36e);}
+  .rank-hex i::after{content:''; position:absolute; inset:4px; clip-path:inherit; background:linear-gradient(160deg, rgba(255,255,255,.35), rgba(255,255,255,0) 45%, rgba(0,0,0,.18));}
+  .rank-hex b{position:relative; font-family:'Baloo 2'; font-weight:800; font-size:34px; line-height:1; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.35), 0 0 10px rgba(255,255,255,.5); -webkit-text-stroke:1.5px rgba(70,30,60,.55);}
+  .rank-hex.rank-B i{background:conic-gradient(from var(--fa, 0deg), #e9eef5, #9aa6b6, #ffffff, #b9c3cf, #e9eef5);}
+  .rank-hex.rank-C i{background:conic-gradient(from var(--fa, 0deg), #e2a676, #9a5a2c, #f3c69e, #b06b38, #e2a676);}
+  .rank-hex.rank-S{filter:drop-shadow(0 0 10px rgba(255,90,210,.75)) drop-shadow(0 0 22px rgba(150,80,255,.55));}
+  .rank-hex.rank-S i{background:conic-gradient(from var(--fa, 0deg), #ff5fc8, #b46bff, #7ad7ff, #ff9be3, #8a4dff, #ff5fc8); animation:rankFoil 4s linear infinite;}
+  @property --fa{syntax:'<angle>'; inherits:false; initial-value:0deg;}
+  @keyframes rankFoil{to{--fa:360deg;}}
+  :where(html[data-fx="none"], html[data-fx="low"]) .rank-hex.rank-S i{animation:none;}
   .conquest-node-panel .cnp-head{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
   .conquest-node-panel .cnp-ico{font-size:30px;}
   .conquest-node-panel .cnp-name{font-family:'Baloo 2'; font-weight:800; font-size:16px;}
@@ -4583,6 +4607,20 @@
   .home-grid .home-play{grid-column:1 / -1; min-height:120px; font-size:28px; letter-spacing:.02em;}
   .home-grid .home-play .tab-emoji{font-size:38px;}
   .home-community-wrap{position:relative;}
+  /* Home (2026-10-08): live detail lines and pinned notes. */
+  .home-grid{position:relative;}
+  .home-tile .home-sub{display:block; font-family:'Nunito', system-ui, sans-serif; font-size:12.5px; font-weight:700; opacity:.85; letter-spacing:0; margin-top:2px; max-width:92%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .home-play .home-sub{font-size:14px;}
+  @media (max-width:520px){ .home-tile .home-sub{white-space:normal; font-size:11px; line-height:1.2;} }
+  .home-note{position:absolute; z-index:3; display:flex; flex-direction:column; align-items:flex-start; gap:1px; padding:10px 14px 9px; min-width:128px; border:0; cursor:pointer; text-align:left;
+    color:#3b2712; background:linear-gradient(180deg,#f6e8c6,#e7cf98); box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(122,86,48,.35); border-radius:4px; transition:transform .18s;}
+  .home-note b{font-family:'Baloo 2'; font-size:16px;} .home-note small{font-size:12px; opacity:.8;}
+  .home-note .pin{position:absolute; top:-12px; left:50%; translate:-50% 0; font-style:normal; font-size:18px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+  .home-note.note-quests{left:-150px; top:22px; rotate:-6deg;}
+  .home-note-wrap{position:absolute; right:-152px; top:150px; z-index:3;} .home-note-wrap .home-note{position:relative; rotate:5deg;}
+  .home-note:hover, .home-note:focus-visible{transform:scale(1.06) rotate(1deg);}
+  .home-note .home-badge{position:absolute; top:-8px; right:-8px;}
+  @media (max-width:860px){ .home-note.note-quests, .home-note-wrap{position:static; rotate:0deg;} .home-note-wrap .home-note{rotate:0deg;} .home-note.note-quests{grid-column:1;} .home-note-wrap{grid-column:2;} .home-note{width:100%; min-width:0; align-items:center; text-align:center;} .home-note .pin{display:none;} }
   .home-extras .home-menu-btn-small{width:130px !important; min-width:130px;}
   .home-community-wrap .home-menu-btn-small{width:130px;}
   .home-community-menu{position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); display:flex; flex-direction:column; gap:4px; padding:8px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 10px 24px rgba(0,0,0,.35); z-index:30; min-width:150px;}
@@ -4711,6 +4749,18 @@
   /* Conquest full-screen map (2026-10-03) */
   .conquest-main{position:relative;}
   /* D13 world atlas: every map as a compass diamond on one winding trail (lazy-filled cards). */
+  /* Conquest HUD in the map (2026-10-08, see placeConquestHud). */
+  .brand#brandHomeBtn{cursor:pointer;} .brand#brandHomeBtn:hover .mark{transform:rotate(-12deg) scale(1.08);} .brand#brandHomeBtn .mark{display:inline-block; transition:transform .2s;}
+  #appWrap.cq-hud:not(.in-match) #view-play{position:relative;}
+  #appWrap.cq-hud:not(.in-match) .play-subtabs-actions{position:absolute; z-index:20; top:calc(var(--cq-top, 0px) + 12px); right:104px; display:flex; align-items:center; gap:6px; margin:0;}
+  #appWrap.cq-hud:not(.in-match) .play-subtabs-actions .home-nav-btn{font-size:0; width:38px; height:38px; padding:0; display:flex; align-items:center; justify-content:center;} /* icon only, beside the compass */
+  #appWrap.cq-hud:not(.in-match) .play-subtabs-actions .home-nav-btn .tab-emoji{font-size:18px; margin:0;}
+  #appWrap.cq-hud.cq-no-tabs:not(.in-match) .play-subtabs-row{height:0; margin:0; padding:0; min-height:0;}
+  /* ...and the map takes the room the header used to need (the Fight button still floats below). */
+  @media (min-width:821px){ #appWrap.cq-hud:not(.in-match) .conquest-layout{height:calc(100dvh - 150px);} #appWrap.cq-hud.cq-no-tabs:not(.in-match) .conquest-layout{height:calc(100dvh - 104px);} }
+  body.conquest-immersive #appWrap.cq-hud .play-subtabs-actions{position:fixed; top:12px; z-index:60;}
+  @media (max-width:820px){ #appWrap.cq-hud:not(.in-match) .conquest-headline{margin-top:48px;} #appWrap.cq-hud:not(.in-match) .play-subtabs-actions{right:100px;} }
+  .conquest-map-item.home-chip .cmi-ico{font-size:22px;}
   .conquest-world-btn{position:absolute; top:12px; right:58px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .conquest-world-btn:hover, .conquest-world-btn:focus-visible{background:rgba(0,0,0,.6);}
   .conquest-layout.is-world{background:
@@ -4761,6 +4811,7 @@
   .entrance-bg.has-shader::after{content:''; position:absolute; inset:0; pointer-events:none; background:linear-gradient(180deg, rgba(12,18,8,.30) 0%, rgba(12,18,8,.55) 55%, rgba(12,18,8,.82) 100%);}
   .hs-back.has-shader{background:none;}
   .conquest-map-canvas > .bw-shader-map{z-index:0; border-radius:inherit;}
+  .conquest-layout{position:relative;} .conquest-layout > .bw-shader-map{z-index:0; border-radius:inherit;} .conquest-layout > .conquest-maps, .conquest-layout > .conquest-main{position:relative; z-index:1;}
   .rw-sec.rw-past{opacity:.55; filter:grayscale(.85); border-top:1px dashed currentColor; padding-top:8px;}
   .rw-sec.rw-past .rw-head{font-style:italic;}
   /* D16 battle fixes (2026-10-03) */
@@ -5780,7 +5831,7 @@
        .topbar-wrap/.content-wrap CSS for the full mechanism. -->
   <div class="topbar-wrap">
   <div class="topbar">
-    <div class="brand"><span class="mark">🌰</span><span class="word">Bramblewood Arena</span></div>
+    <div class="brand" id="brandHomeBtn" role="button" tabindex="0" title="Home" aria-label="Bramblewood Arena — Home"><span class="mark">🌰</span><span class="word">Bramblewood Arena</span></div>
     <!-- 2026-09-20, per explicit request ("Have a 'Home' landing page... contains the Play,
          Deck, Codex"): navigation between sections now happens from the Home menu itself (see
          renderHome() in arena_app.js), so the old always-visible Codex/Play/Forge/Simulator tab

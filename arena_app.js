@@ -1476,6 +1476,10 @@ async function refreshCloudCardAdmin(){
   cloudCardAdmin = false;
   if(!sbClient || !isSignedIn()) return;
   try{ const { data, error } = await sbClient.rpc('is_app_admin'); cloudCardAdmin = !error && data === true; }catch(e){}
+  // 2026-10-08 (user: "I want to edit the Skirmishes as either of my accounts"): both are server
+  // admins, but the edit buttons also waited on the Admin Mode switch in this browser. The first
+  // time an admin account signs in on a device, Admin Mode turns on (turning it off later sticks).
+  try{ if(cloudCardAdmin && localStorage.getItem(ADMIN_MODE_KEY) === null){ setAdminMode(true); if(currentTab==='play' && !matchState) renderPlay(); showToast('🛠️ Admin tools on: edit skirmishes from the map (✏️ / 🛠️ on a skirmish).', 'ok'); } }catch(e){}
   try{ if(document.getElementById('view-admin')) renderAdmin(); }catch(e){}
   try{ if(cloudCardAdmin && currentTab==='profile') renderProfile(); }catch(e){}
 }
@@ -7145,7 +7149,7 @@ function renderPlay(){
     // of those two sub-tabs actually renders below (see renderConquestSubTab/renderRaidSubTab) —
     // cleared unconditionally here first so switching to Player/Arena always drops back to the
     // normal content-width column instead of the class lingering from a previous visit.
-    if(wrap) wrap.classList.remove('wide-map');
+    if(wrap) wrap.classList.remove('wide-map', 'cq-hud');
     // Item #275 (2026-09-20, "The Home button should be renamed 'Back' when in Play Mode, on the
     // same line as the sub nav bar. Same for settings, on the sub nav bar."): the global topbar
     // hides itself entirely while on this tab (see switchTab's #appWrap.tab-play toggle + its
@@ -8041,7 +8045,7 @@ function playDialogue(id, opts){
 // earned (migrateFeatureUnlocks). Admin → "Unlock all features" / "Replay onboarding".
 const UNLOCKS_KEY = 'bramblewood_unlocks_v1';
 const FEATURE_SPOTS = [
-  {key:'deck', icon:'⛺', name:'Armoury Tent', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
+  {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
   {key:'nest', icon:'🪺', name:'Old Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notice Board', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   {key:'arena', icon:'🏟️', name:'The Arena', map:'m2', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
@@ -8078,14 +8082,19 @@ function activateSpot(spot){
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
 const MAP_ART_IDS = new Set(["m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
 function mapSpotsHTML(map, positions, progress){
-  return FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
+  // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
+  // spots sit further above their skirmish, joined to it by a faint dashed line.
+  const links = [];
+  const html = FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
     const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -18 : 14)));
+    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -27 : 14)));
+    if(sp.after) links.push(`<line x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
     return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
+  return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
 }
 // The leaves part to reveal the map (end of the tutorial).
 function leavesRevealToMap(){
@@ -9273,7 +9282,21 @@ async function moverLoop(el, spots, kind, token, cur, posStore, idx, resumed){
     cur = tgt; track();
     // rest on the plant: a little flutter
     if(kind==='butterfly') gsap.to(el, {scaleY:.7, duration:.18, repeat:5, yoyo:true});
-    await sleep(1200 + Math.random()*3200);
+    const rest = 1200 + Math.random()*3200;
+    // 2026-10-08 (user: "the butterflies should never be static — they circle around a spot, like a
+    // sine wave bent around a circle"): after the landing flutter they lift off and loop a rosette
+    // around the plant (radius R + a·sin(kθ)), easing in from and back out to the plant itself.
+    if((kind==='butterfly' || kind==='firefly') && fxAtLeast('low')){
+      await sleep(950); if(!alive()) return;
+      const loopMs = Math.max(600, rest - 950), dir = Math.random() < .5 ? -1 : 1, R = kind==='firefly' ? 7 : 11, a = R*0.32, k = 5, turns = Math.max(1, loopMs/2600);
+      const o = {t:0};
+      gsap.to(o, {t:1, duration: loopMs/1000, ease:'none', onUpdate: ()=>{
+        if(!alive()) return;
+        const th = dir * o.t * turns * Math.PI*2, env = Math.sin(Math.PI*o.t), r = env*(R + a*Math.sin(k*th));
+        gsap.set(el, {x: r*Math.cos(th), y: r*Math.sin(th)*0.65 - env*6, scaleX: Math.cos(th + dir*Math.PI/2) < 0 ? -1 : 1});
+      }, onComplete: ()=>{ if(alive()) gsap.set(el, {x:0, y:0}); }});
+      await sleep(loopMs);
+    } else await sleep(rest);
   }
 }
 function mapDecorHTML(mapId){
@@ -9836,6 +9859,64 @@ function conquestPanTo(mapId, body, progress){
   const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = reduce ? null : dir; renderConquestSubTab(body); };
   if(mainEl && !reduce){ mainEl.classList.add('world-out-' + dir); setTimeout(go, 230); } else go();
 }
+// 2026-10-08 (user: "settings, home and energy can be fitted into the existing map UI; then remove
+// the header and expand the map"): the Home / Settings / Energy cluster is overlaid on the map's top
+// right, beside the compass, and the row it used to sit on collapses when it has no sub-tabs.
+// 2026-10-08 (user): the Bramblewood Arena logo at the top left goes Home (not mid-match).
+(function wireBrandHome(){
+  const go = ()=>{ if(matchState && !matchState.over) return; if(typeof exitConquestImmersive==='function') exitConquestImmersive(); switchTab('home'); };
+  const bind = ()=>{ const b = document.getElementById('brandHomeBtn'); if(!b || b.dataset.wired) return; b.dataset.wired = '1';
+    b.addEventListener('click', go); b.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind); else setTimeout(bind, 0);
+})();
+// Rotating tips (2026-10-08, user: "this tip should change here and there, from a collection of
+// cool tips; they move and fade out"). Shuffled once per page, one every ~7 s, each sliding in,
+// holding, then drifting out. Pauses while the tab is hidden.
+const GAME_TIPS = [
+  '🪵 Drop a card on the Graveyard for +1 Lumber, once per turn.',
+  '⏳ The number in the ring is Wait: rounds before a card can strike.',
+  '🪽 Flyers dodge half the blows from cards that can’t fly.',
+  '👑 Your Leader can be summoned once a match. It uses your play for the turn.',
+  '☠️ From turn 20 it’s sudden death: any hit kills, and any castle hit ends it.',
+  '🏆 Your best clear on each skirmish earns a Rank. S is the rarest.',
+  '🎟️ PvP tickets refill at midnight: 10 a day.',
+  '🔥 Fire creatures burn away when they fall.',
+  '🌧️ It only rains about one hour in ten, and the rain follows you into battle.',
+  '✨ Hidden cards join your Codex the first time you see one in play.',
+  '📜 Quests come in tiers: claim one to reveal the next.',
+  '🔨 The Forge raises a card’s attack and health, up to level 10.',
+  '🦸 Build your own Hero card in Deck → Hero, all the way to level 100.',
+  '🧩 Ten Autobattler wins lets you cash out or go Endless.',
+  '⚔️ Each card strikes the one across from it; an empty lane hits the castle.',
+  '🎼 Battle music follows your rival’s people. Switch it off in Settings.',
+  '🐝 Summoned tokens shatter instead of falling: they were never really there.',
+  '👁️ Hover a card on the board to see where it will strike.',
+  '🏳️ Out of moves? Many rivals surrender, but bosses never do.',
+  '🗺️ More opens up as you cross the map: look for ! icons.',
+];
+function startTipTicker(el){
+  if(!el || el.dataset.ticking) return; el.dataset.ticking = '1';
+  const order = GAME_TIPS.slice().sort(()=> Math.random() - .5);
+  let i = 0;
+  const show = ()=>{
+    if(!el.isConnected) return;
+    if(document.hidden){ setTimeout(show, 2000); return; }
+    const next = order[i++ % order.length];
+    const out = el.querySelector('.tip-line');
+    if(out){ out.classList.add('tip-out'); setTimeout(()=> out.remove(), 600); }
+    const line = document.createElement('span'); line.className = 'tip-line'; line.textContent = next; el.appendChild(line);
+    setTimeout(show, 7000);
+  };
+  show();
+}
+function placeConquestHud(){
+  const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'), layout = document.getElementById('conquestLayout');
+  if(!wrap || !view || !layout) return;
+  wrap.classList.add('cq-hud');
+  const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
+  wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
+}
 function renderConquestSubTab(body){
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
@@ -9868,6 +9949,10 @@ function renderConquestSubTab(body){
   }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
+  // 2026-10-08 (user): Home lives in the map too, at the top of the region list.
+  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item home-chip" id="conquestHomeChip" role="button" tabindex="0" title="Back to Home"><div class="cmi-ico">🏠</div><div class="cmi-body"><div class="cmi-name">Home</div><div class="cmi-sub">Leave the map</div></div></div>`);
+  { const hc = document.getElementById('conquestHomeChip'); const go = ()=>{ exitConquestImmersive(); switchTab('home'); };
+    hc.addEventListener('click', go); hc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
   { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
     wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
   if(conquestWorldView) listEl.querySelectorAll('.conquest-map-item.selected:not(.world-chip)').forEach(el=> el.classList.remove('selected'));
@@ -9988,6 +10073,7 @@ function renderConquestSubTab(body){
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
+  placeConquestHud();
   if(conquestZoomIn){ mainEl.classList.add('world-zoom-in'); conquestZoomIn = false; }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
   {
@@ -10011,8 +10097,8 @@ function renderConquestSubTab(body){
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
-  try{ mountMapShader(document.getElementById('conquestCanvas'), map.id); }catch(e){}
-  try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(ak == null ? 0 : ak); }catch(e){}
+  try{ mountMapShader(conquestShaderHost(), map.id); }catch(e){}
+  try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   function nodeTooltipHTML(node){
@@ -10082,7 +10168,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
-        ${progress.ranks[nid] ? `<span class="conquest-rank-badge rank-${progress.ranks[nid]}" title="Your best clear here">Rank ${progress.ranks[nid]}</span>` : ''}
+        ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
       </div>
       ${earned ? `
         <div class="cnp-squad-row">
@@ -17064,7 +17150,7 @@ async function resolveRound(){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury Tent (your deck), the Old Nest and the Notice Board on the map. The Arena opens on the next region.'},
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury (your deck), the Old Nest and the Notice Board on the map. The Arena opens on the next region.'},
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -17292,7 +17378,7 @@ const QUEST_COUNTING_MODES = new Set(['ai','conquest','gauntlet','dungeon','asyn
 // battlefield's sky bleeds red and pulses slowly, so the rule change stays visible after the banner.
 // Raindrops on cards (2026-10-07, effects list two): on water and rain fields a few drops bead and
 // run slowly down the card art (CSS on each card's art box; High effects only).
-function isWetField(m){ try{ return [1, 6, 11].includes(battleWeatherKind(m)); }catch(e){ return false; } }
+function isWetField(m){ try{ return battleWeatherKind(m) === 11; }catch(e){ return false; } } // raindrops only when it's actually raining (2026-10-08)
 function suddenDeathSky(m){
   return !!(m && !m.over && m.round >= SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND));
 }
@@ -20543,14 +20629,30 @@ async function forgePrestige(btn){
    strip (Codex/Play/Forge/Simulator) as the app's primary navigation. Forge lives inside Codex
    now (see codexShell above) and the Simulator lives inside the new Deck section (below); Home
    itself just has four big section buttons plus a Settings/Profile row underneath. ---- */
+function homeTileDetails(){
+  const out = {};
+  try{
+    const p = loadConquestProgress();
+    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
+  }catch(e){}
+  try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · Lv ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
+  try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = `${ids.filter(id=> !isCardHiddenForPlayer(defs[id]) && !defs[id].locked).length} / ${ids.length} cards`; }catch(e){}
+  try{ const owned = Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length; out.nest = owned ? `${owned} card${owned===1?'':'s'} collected` : 'Win cards to fill it'; }catch(e){}
+  try{ const packs = (typeof SHOP_PACKS_DEFAULT!=='undefined' ? SHOP_PACKS_DEFAULT : []).filter(x=> packOnSale(x) && x.cost && x.cost.gold); if(packs.length){ const c = Math.min(...packs.map(x=> x.cost.gold)); out.shop = `Packs from ${c} 🍁`; } }catch(e){}
+  return out;
+}
 function renderHome(){
   // Home (2026-10-03, D1 — explicit: "Play has to be the biggest button - maybe its own 1x2, the rest
   // can be 2x2" + "I don't want too many menu items"): the global header (energy, profile chip, ⚙)
   // now shows here too, so Settings/Profile/Admin/Workshop left Home. Play is the hero; Deck, Codex,
   // Shop and Nest are a 2×2 grid; Quests and Community (Ranking/Friends/Guild) are the only extras.
   const root = document.getElementById('view-home');
-  const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span></button>` : '';
+  // 2026-10-08 (user: "the main page looks a bit boring; don't put quests as a button like that"):
+  // every tile carries one live detail line, and Quests / Community are notes pinned to the board.
+  const sub = homeTileDetails();
+  const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span>${sub[tab] ? `<small class="home-sub">${escapeHtml(sub[tab])}</small>` : ''}</button>` : '';
   const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
+  const qn = tabOpen('quests') ? claimableQuestCount() : 0;
   root.innerHTML = `${homeSceneHTML()}
     <div class="home-menu">
       <div class="home-menu-mark">🌰</div>
@@ -20558,15 +20660,13 @@ function renderHome(){
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
-        <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span></button>
+        <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>
         ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
-      </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
-      ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More opens up as you cross the map — look for <b>!</b> icons.</p>` : ''}
-      ${(tabOpen('quests') || community.length) ? `<div class="home-menu-row home-extras">
-        ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
-        ${community.length ? `<div class="home-community-wrap"><button class="btn ghost home-menu-btn-small" type="button" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><span class="tab-emoji">👥</span> Community</button>
+        ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
-      </div>` : ''}
+      </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
+      <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
@@ -20580,6 +20680,7 @@ function renderHome(){
   wireHomeMenuFlourish(root);
   wireHomeScene(root);
   try{ mountSceneShader(root.querySelector('.hs-back'), {scale: 0.5, intensity: 0.8}); }catch(e){}
+  startTipTicker(document.getElementById('homeTipTicker'));
 }
 // Home 2.5D scene (2026-10-03, D11: "some of the otters and hummingbirds on the main screen should be
 // layered in front w/ background opacity, so it looks 2.5d"): the splash scene sits far back, faded;
@@ -22105,7 +22206,7 @@ function placeOverlay(cls, html, ms){
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
 const PLACES = {
-  deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury Tent', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
   shop: {cls:'cart-scene', icon:'🧳', sign:'The Traveller’s Cart', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Old Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
@@ -22559,10 +22660,16 @@ function mountSceneShader(host, opts){
   const img = splashArtURL(); if(!img || img.indexOf('__SPLASH') >= 0) return null;
   return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true, depth: SPLASH_DEPTH_ART || null}, opts||{}));
 }
+// 2026-10-08 (user: "the clouds don't stretch out to the full map"): the map's weather layer covers
+// the whole map frame (under the region list too), not just the box the trail is drawn in.
+function conquestShaderHost(){ return document.getElementById('conquestLayout') || document.getElementById('conquestCanvas'); }
 function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;
   const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
-  return ShaderM.mount(host, {preset:'map', kind, prepend: true, className: 'bw-shader-map'});
+  // The frame persists between maps, so drop the previous layer (the shader loop frees a detached canvas).
+  host.querySelectorAll(':scope > canvas.bw-shader-map').forEach(c=> c.remove());
+  const rain = (typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') || (worldRaining() && mapIsOutdoors(mapId));
+  return ShaderM.mount(host, {preset:'map', kind: rain ? 11 : kind, prepend: true, className: 'bw-shader-map'});
 }
 // Battlefield weather (2026-10-03, effects experiment #5): the map overlay system, placed under
 // the cards and toned down. Rain on wet maps (and with the 🌧️ Rain atmosphere), the map's own look
@@ -22572,9 +22679,9 @@ function battleWeatherKind(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
   const override = loadBattlefieldBgOverride();
   const mapId = (override && override!=='auto' && override!=='calm') ? override : (m && m.conquestNode && m.conquestNode.mapId) || 'm1';
-  if(mapId==='m2' || mapId==='m8') return 11;
+  const k = ShaderM.MAP_KIND[mapId];
   if(matchIsRainy(m)) return 11;
-  const k = ShaderM.MAP_KIND[mapId]; return k == null ? 0 : k;
+  return k == null ? 0 : k;
 }
 // Passing showers (2026-10-05, user: "introduce rain effect, sometimes happens on the first map"):
 // about one Outskirts fight in three is fought in the rain — rolled once per fight, so a retry
@@ -22582,11 +22689,16 @@ function battleWeatherKind(m){
 function matchIsRainy(m){
   if(!m) return false;
   if(m.rainy == null){
-    const mapId = (m.conquestNode && m.conquestNode.mapId) || (m.mode==='conquest' ? 'm1' : null);
-    m.rainy = mapId === 'm1' && Math.random() < 0.33;
+    const mapId = (m.conquestNode && m.conquestNode.mapId) || 'm1';
+    m.rainy = worldRaining() && mapIsOutdoors(mapId); // decided once per fight, so it never stops mid-match
   }
   return !!m.rainy;
 }
+// World weather (2026-10-08, user: "if it's raining outside (low chance, 10% per hour), only then is
+// it raining inside"): one roll per clock hour, the same for every player, shared by the Conquest map
+// and the fights fought on it. Caves and the deep stay dry.
+function worldRaining(at){ const h = Math.floor((at || Date.now())/3600000); let x = Math.imul(h ^ 0x9e3779b9, 0x85ebca6b) >>> 0; x = (x ^ (x >>> 13)) >>> 0; x = Math.imul(x, 0xc2b2ae35) >>> 0; x = (x ^ (x >>> 16)) >>> 0; return (x % 100) < 10; }
+function mapIsOutdoors(mapId){ const k = (typeof ShaderM !== 'undefined' && ShaderM) ? ShaderM.MAP_KIND[mapId] : 0; return k !== 3 && k !== 6; }
 // Storm lightning (2026-10-06, effects "Coming next"): on storm and rain battlefields a bolt lights
 // the field now and then — a soft double flicker, a white point light high on the shader, and the
 // thunder rolls in half a second later. Gentle on purpose (two flickers, low peak, none with
@@ -22659,7 +22771,7 @@ function setShadersEnabled(on){
   if(!on){ if(ShaderM) ShaderM.destroyAll(); return; }
   mountEntranceShaders();
   try{ if(currentTab==='home') mountSceneShader(document.querySelector('#view-home .hs-back'), {scale: 0.5, intensity: 0.8});
-       if(currentTab==='play' && playSubTab==='conquest' && !matchState && !conquestWorldView) mountMapShader(document.getElementById('conquestCanvas'), conquestSelectedMap); }catch(e){}
+       if(currentTab==='play' && playSubTab==='conquest' && !matchState && !conquestWorldView) mountMapShader(conquestShaderHost(), conquestSelectedMap); }catch(e){}
 }
 try{ setTimeout(mountEntranceShaders, 50); }catch(e){}
 function wireSettingsButton(idSuffix){
