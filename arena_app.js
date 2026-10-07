@@ -1002,7 +1002,16 @@ const CHARACTER_DEFS = __CHARACTER_DEFS__;
 let liveCards = {};      // id -> full card def, overlays/extends baseline
 let liveDeletes = {};    // id -> true, for cards (baseline or custom) removed by an editor
 let liveTombstones = {}; // id -> {id, __deleted:true, deletedSnapshot, deletedAt} for the "Recently Deleted" panel
-let localTxns = [];      // in-memory fallback transaction log, used only when no live db is available
+// Fallback transaction log when no live db is available. 2026-10-07 (card editor undo history): kept
+// in this browser (last 120 entries) so a card's History survives a reload; uploaded art is too big
+// to keep in every entry, so it is stored as a marker and a restore keeps the card's current art.
+const TXNS_KEY = 'bramblewood_card_txns_v1';
+let localTxns = [];
+try{ localTxns = JSON.parse(localStorage.getItem(TXNS_KEY)||'[]') || []; }catch(e){ localTxns = []; }
+function persistLocalTxns(){
+  const slim = d=> d && typeof d.art==='string' && d.art.startsWith('data:') ? Object.assign({}, d, {art:'__uploaded__'}) : d;
+  try{ localStorage.setItem(TXNS_KEY, JSON.stringify(localTxns.slice(0,120).map(t=> Object.assign({}, t, {before:slim(t.before), after:slim(t.after)})))); }catch(e){}
+}
 let dbHandle = null;
 let dbUnsub = null;
 // Local card-edit persistence fallback (2026-09-22, in answer to an explicit question: "when I
@@ -1396,7 +1405,7 @@ function nowIso(){ return new Date().toISOString(); }
 async function logTxn(entry){
   entry.at = nowIso();
   entry.source = entry.source || 'Codex';
-  if(!dbHandle){ localTxns.unshift(entry); if(localTxns.length>300) localTxns.pop(); return; }
+  if(!dbHandle){ localTxns.unshift(entry); if(localTxns.length>300) localTxns.pop(); persistLocalTxns(); return; }
   try{ await dbHandle.collection('txns').add(entry); }catch(e){ /* logging must never block the actual card write */ }
 }
 // Published card edits (2026-10-02): admin card edits live in Supabase's public.card_overrides
@@ -1483,7 +1492,7 @@ async function cloudWriteCardOverride(id, row){
   }
 }
 async function saveCard(def){
-  const before = getCardDefs()[def.id] || null;
+  const before = rawCardDef(def.id) || getCardDefs()[def.id] || null;
   const action = before ? 'edited' : 'created';
   if(!dbHandle){
     const published = await cloudWriteCardOverride(def.id, {data:def, deleted:false, deleted_snapshot:null});
@@ -3335,7 +3344,7 @@ function renderTxnsTab(body){
 }
 function txnRowHTML(t){
   const when = t.at ? new Date(t.at).toLocaleString() : '';
-  const icon = {created:'🆕', edited:'✏️', deleted:'🗑', restored:'♻'}[t.action] || '•';
+  const icon = {created:'🆕', edited:'✏️', deleted:'🗑', restored:'♻', reverted:'↺'}[t.action] || '•';
   const cls = {created:'gold', edited:'', deleted:'exile', restored:'grace'}[t.action] || '';
   let detail = '';
   if(t.action==='edited' && t.before && t.after) detail = ' — ' + diffSummary(t.before, t.after);
@@ -3812,10 +3821,12 @@ function openNodeRewardsEditor(mapId, nodeKey){
   render();
   setTimeout(()=>{ const s = document.getElementById('nrSearch'); if(s) s.focus(); }, 50);
 }
-function openCardEditor(defId){
+function openCardEditor(defId, versionDef){
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
   editingCard = defId ? (rawCardDef(defId) || JSON.parse(JSON.stringify(getCardDefs()[defId]))) : blankCard();
+  // History → "Load": the earlier version goes into the form unsaved (art it can't restore stays as is).
+  if(versionDef){ const art = editingCard.art; editingCard = JSON.parse(JSON.stringify(versionDef)); if(editingCard.art==='__uploaded__'){ if(art) editingCard.art = art; else delete editingCard.art; } editingCard.__fromHistory = true; const ov = document.getElementById('editorOverlay'); if(ov) ov.innerHTML = ''; }
   delete editingCard.level;
   if(!editingCard.effects) editingCard.effects = {};
   if(!Array.isArray(editingCard.effects.triggers)) editingCard.effects.triggers = [];
@@ -3906,8 +3917,27 @@ function mountEditorSide(modal){
     </div>
     ${isBuiltIn && changed ? '<button type="button" class="btn small ghost ce-revert" id="ceRevert" title="Drop every edit and go back to the card as it shipped">↺ Revert to original</button>' : ''}
     <div class="ce-mode">${cloudCardAdmin ? '☁️ Saving publishes live for every player' : '💾 Saves in this browser only'}</div>
+    ${c.__fromHistory ? '<div class="ce-mode ce-unsaved">↶ An earlier version is loaded. Save to keep it.</div>' : ''}
+    ${c.id ? '<details class="ce-history" id="ceHistory"><summary>History</summary><div id="ceHistoryList" class="ce-hist-list">Loading…</div></details>' : ''}
   </aside>`);
+  if(c.id) fetchTxns().then(txns=>{
+    const list = document.getElementById('ceHistoryList'); if(!list || !editingCard || editingCard.id!==c.id) return;
+    const mine = txns.filter(t=> t.cardId===c.id).slice(0, 12);
+    if(!mine.length){ list.textContent = 'No saved changes yet.'; return; }
+    const ago = at=>{ const m = Math.round((Date.now() - new Date(at))/60000); return m<1 ? 'just now' : m<60 ? m+' min ago' : m<1440 ? Math.round(m/60)+' h ago' : new Date(at).toLocaleDateString(); };
+    const word = {created:'Created', edited:'Edited', deleted:'Deleted', restored:'Restored', reverted:'Reverted'};
+    list.innerHTML = mine.map((t, i)=>{
+      const what = t.action==='edited' && t.before && t.after ? diffSummary(t.before, t.after) : '';
+      return `<div class="ce-hist-row"><div><b>${word[t.action]||t.action}</b> <small>${ago(t.at)}</small>${what ? `<span>${escapeHtml(what)}</span>` : ''}</div>`
+        + (t.before ? `<button type="button" class="btn small ghost" data-hist="${i}" title="Load the card as it was before this change. Nothing is saved until you press Save.">↶ Before this</button>` : '') + '</div>';
+    }).join('');
+    list.querySelectorAll('[data-hist]').forEach(b=> b.addEventListener('click', ()=>{
+      if(!confirm('Load the version before this change into the editor? Anything you typed and did not save is replaced.')) return;
+      openCardEditor(c.id, mine[+b.dataset.hist].before);
+    }));
+  });
   const refresh = ()=>{
+    if(!editingCard || !document.getElementById('cePreview')) return; // the editor closed before the delayed redraw
     const d = editorDraftFromForm(); d.art = editingCard.art;
     const pv = document.getElementById('cePreview'); if(pv) pv.innerHTML = cardTileHTML(d, {inPlay:true});
     const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
@@ -4839,6 +4869,7 @@ async function onSaveEditor(){
     myUnlockedCardIds.delete(c.id);
     saveUnlockedCardIds();
   }
+  delete c.__fromHistory;
   const published = await saveCard(c);
   if(!published) showToast(`💾 ${c.name} saved in this browser` + (cloudCardAdmin ? '' : ' — sign in with an admin account to publish it for everyone') + '.', 'ok');
   closeCardEditor();
@@ -9183,7 +9214,9 @@ function abandonMapLayoutEdit(){
 function mapLayoutToolbarHTML(map){
   const custom = !!mapLayoutOverrides[map.id];
   if(!conquestLayoutEdit){
+    const nEdits = mapEditList(map).length;
     return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button><button type="button" class="btn small" id="mlNewSkirmish">➕ New skirmish</button>
+      ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
   const g = (v,l)=> `<button type="button" class="btn small ${mapLayoutGrid===v?'primary':'ghost'}" data-mlgrid="${v}">${l}</button>`;
@@ -9195,10 +9228,73 @@ function mapLayoutToolbarHTML(map){
     <button type="button" class="btn small primary" id="mlSave">💾 Save${cloudCardAdmin?' & publish':''}</button></span>
   </div>`;
 }
+// Map edits list (2026-10-07, editor audit: "no overview of what's been changed on a map"): every
+// skirmish edit, added skirmish and the custom layout, each revertible, plus Revert all. Deleted
+// keys stay retired after a revert so an old key's progress never carries over to a new skirmish.
+const SE_FIELD_LABEL = {name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
+function mapEditList(map){
+  const e = nodeEdits[map.id] || {}, out = [];
+  const nodeName = k=> { const n = map.nodes.find(x=> x.key===k); return n ? `${n.icon||''} ${n.name}`.trim() : k; };
+  (e.added||[]).forEach(n=> out.push({type:'added', key:n.key, label:`${n.icon||''} ${n.name}`.trim(), detail:'Added skirmish'}));
+  Object.keys(e.patches||{}).filter(k=> !isAddedNode(map.id, k)).forEach(k=> out.push({type:'patch', key:k, label:nodeName(k), detail:'Changed: ' + Object.keys(e.patches[k]).map(f=> SE_FIELD_LABEL[f]||f).join(', ')}));
+  if(mapLayoutOverrides[map.id]) out.push({type:'layout', key:'', label:'📐 Layout', detail:'Skirmishes moved by hand'});
+  return out;
+}
+function openMapEditsList(mapId){
+  const map = CONQUEST_MAPS.find(m=> m.id===mapId); if(!map) return;
+  let overlay = document.getElementById('mapEditsOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'mapEditsOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
+  const finish = async (msg, nodes, layout)=>{
+    persistNodeEdits(); applyNodeEdits();
+    const ok = [nodes ? await publishNodeEdits(mapId) : null, layout ? await publishMapLayout(mapId) : null].filter(v=> v!==null);
+    showToast(msg + (ok.length && ok.every(Boolean) ? ' — live for every player.' : ' in this browser.'), 'ok');
+    if(conquestSelectedNodeKey && !map.nodes.some(n=> n.key===conquestSelectedNodeKey)) conquestSelectedNodeKey = null;
+  };
+  const dropAdded = (e, key)=>{ e.added = (e.added||[]).filter(n=> n.key!==key); delete e.patches[key]; e.retired = [...new Set((e.retired||[]).concat(key))];
+    Object.values(e.patches).forEach(p=>{ if(Array.isArray(p.requires)) p.requires = p.requires.filter(k=> k!==key); }); (e.added||[]).forEach(n=>{ n.requires = (n.requires||[]).filter(k=> k!==key); }); };
+  const render = ()=>{
+    const items = mapEditList(map);
+    if(!items.length){ close(); return; }
+    overlay.innerHTML = `<div class="modal map-edits" role="dialog" aria-modal="true" aria-label="Edits to ${escapeAttr(map.name)}">
+      <div class="modal-head-row"><h2>📝 Edits to ${escapeHtml(map.name)}</h2><button type="button" class="modal-close-btn" id="meClose" aria-label="Close">✕</button></div>
+      <p class="se-mode ${cloudCardAdmin ? 'is-live' : ''}">${cloudCardAdmin ? '☁️ A revert is published for every player.' : '💾 Reverts apply in this browser only.'}</p>
+      <ul class="me-list">${items.map((it, i)=> `<li><div><b>${escapeHtml(it.label)}</b><small>${escapeHtml(it.detail)}</small></div>
+        ${it.type!=='layout' ? `<button type="button" class="btn small ghost" data-meopen="${i}">Open</button>` : ''}
+        <button type="button" class="btn small ghost" data-merevert="${i}">${it.type==='added' ? '🗑 Delete' : '↺ Revert'}</button></li>`).join('')}</ul>
+      <div class="se-actions"><span style="flex:1"></span><button type="button" class="btn" id="meRevertAll">↺ Revert all</button></div>
+    </div>`;
+    overlay.hidden = false;
+    document.getElementById('meClose').onclick = close;
+    overlay.querySelectorAll('[data-meopen]').forEach(b=> b.onclick = ()=>{ const it = items[+b.dataset.meopen]; close(); openSkirmishEditor(mapId, it.key); });
+    overlay.querySelectorAll('[data-merevert]').forEach(b=> b.onclick = async ()=>{
+      const it = items[+b.dataset.merevert], e = nodePatchFor(mapId);
+      if(!confirm(it.type==='added' ? `Delete the added skirmish ${it.label}?` : `Revert ${it.label} to the original?`)) return;
+      if(it.type==='layout'){ delete mapLayoutOverrides[mapId]; await finish('↺ Layout reverted', false, true); }
+      else { if(it.type==='added') dropAdded(e, it.key); else delete e.patches[it.key]; await finish(it.type==='added' ? '🗑 Skirmish deleted' : '↺ Skirmish reverted', true, false); }
+      render();
+    });
+    document.getElementById('meRevertAll').onclick = async ()=>{
+      const nAdded = items.filter(it=> it.type==='added').length;
+      if(!confirm(`Revert every edit to ${map.name}?${nAdded ? ` This also deletes ${nAdded} added skirmish${nAdded>1?'es':''}.` : ''}`)) return;
+      const e = nodePatchFor(mapId), hadNodes = items.some(it=> it.type!=='layout'), hadLayout = !!mapLayoutOverrides[mapId];
+      const retired = [...new Set((e.retired||[]).concat((e.added||[]).map(n=> n.key)))];
+      nodeEdits[mapId] = retired.length ? {patches:{}, added:[], retired} : undefined; if(!retired.length) delete nodeEdits[mapId];
+      if(hadLayout) delete mapLayoutOverrides[mapId];
+      await finish(`↺ ${map.name} back to the original`, hadNodes, hadLayout);
+      close();
+    };
+  };
+  overlay.onclick = ev=>{ if(ev.target===overlay) close(); };
+  overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); close(); } };
+  render();
+  setTimeout(()=>{ const f = overlay.querySelector('.me-list button'); if(f) f.focus(); }, 30);
+}
 function wireMapLayoutEditor(map, body){
   const rerender = ()=> renderConquestSubTab(body);
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
   on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
+  on('mlEdits', ()=> openMapEditsList(map.id));
   on('mlEdit', ()=>{
     conquestLayoutEdit = true;
     mapLayoutSnapshotMap = map.id;
