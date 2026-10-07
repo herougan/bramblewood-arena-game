@@ -1181,6 +1181,7 @@ function noteSighted(defIds){
     if(!d || !d.hidden || myDiscoveredCardIds.has(id)) continue;
     myDiscoveredCardIds.add(id); changed = true;
     discoverQueue.push(id);
+    try{ if(matchState && !matchState.over){ (matchState.discoveredThisMatch = matchState.discoveredThisMatch || []).push(id); } }catch(e){}
   }
   if(changed){ saveDiscovered(); pumpDiscoverQueue(); }
 }
@@ -1754,6 +1755,9 @@ const SoundKit = (()=>{
         t += V.gap * 0.6;
       }
     },
+    // Reward unlock (2026-10-08): a bright rising chime, then the padlock snapping open.
+    unlockChime(){ [659, 880, 1319].forEach((f, i)=> tone(f, 0.22, 'triangle', 0.05, i*0.07)); tone(1760, 0.4, 'sine', 0.03, 0.22); },
+    lockBreak(){ tone(320, 0.06, 'square', 0.05); tone(1900, 0.08, 'triangle', 0.04, 0.02); tone(2600, 0.12, 'sine', 0.03, 0.05); },
     // Trigger chime (2026-10-08): soft and neutral, under every triggered ability.
     trigger(){ tone(784, 0.14, 'sine', 0.035); tone(1175, 0.2, 'sine', 0.025, 0.06); tone(1568, 0.16, 'triangle', 0.01, 0.1); },
     // Knocked out (2026-10-06): a soft thump as the card falls back, then a dry rustle of leaves.
@@ -17927,8 +17931,14 @@ function rewardsPanelHTML(m){
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}</div>` : '').join('')}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span></div>` : '').join('')}</div>
       ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="Open your deck to swap ${cards.length===1?'it':'them'} in">🃏 Put ${cards.length===1?'it':'them'} in my deck</button>` : ''}</div>`);
+  }
+  // 2026-10-08 (user): cards first seen this match follow the unlocks, each with a "NEW!" reveal.
+  const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !cards.includes(id));
+  if(seen.length){
+    const defs = getCardDefs();
+    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">New cards seen</div><div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(defs[id].name)} — now in your Codex">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">NEW!</span></div>` : '').join('')}</div></div>`);
   }
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
@@ -18126,6 +18136,52 @@ function wireWinLossRewardAnim(){
     });
   });
   rewardsCheer();
+  try{ rewardCardsReveal(); }catch(e){}
+}
+// Reward cards (2026-10-08, user): each unlocked card gets a "Card unlocked!" splash and its padlock
+// shakes and breaks open; then each newly seen card gets a splash, a shine across it, and a flash
+// at its top-right corner that leaves a "NEW!" tag.
+function rewardCardsReveal(){
+  const unlocks = [...document.querySelectorAll('.rw-card.is-unlock')], seen = [...document.querySelectorAll('.rw-card.is-seen')];
+  if(!unlocks.length && !seen.length) return;
+  const rich = hasGsap() && fxAtLeast('low') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if(!rich){ unlocks.forEach(c=> c.classList.add('unlocked')); seen.forEach(c=> c.classList.add('shown')); return; }
+  const splash = (card, text, cls)=>{
+    const sp = document.createElement('span'); sp.className = 'rw-splash ' + cls; sp.innerHTML = `<i></i>${text ? `<b>${text}</b>` : ''}`; card.appendChild(sp);
+    gsap.fromTo(sp.querySelector('i'), {scale:.2, opacity:.95}, {scale:2.1, opacity:0, duration:.75, ease:'power2.out'});
+    const t = sp.querySelector('b'); if(t) gsap.timeline().fromTo(t, {scale:1.8, opacity:0, rotation:-8}, {scale:1, opacity:1, rotation:-4, duration:.35, ease:'back.out(2.2)'}).to(t, {opacity:0, y:-10, duration:.35, delay:.75});
+    setTimeout(()=> sp.remove(), 1700);
+  };
+  let t0 = 0.55;
+  unlocks.forEach((card, i)=>{
+    const lock = card.querySelector('.rw-lock'), at = t0 + i*0.9;
+    gsap.set(card.querySelector('.card-tile'), {filter:'grayscale(.8) brightness(.7)'});
+    const tl = gsap.timeline({delay:at});
+    tl.add(()=>{ splash(card, 'Card unlocked!', 'is-unlock'); try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.quick && SoundKit.quick(); }catch(e){} })
+      .to(lock, {rotation:-14, duration:.06, repeat:5, yoyo:true, ease:'sine.inOut'}, .1)
+      .add(()=>{ lock.classList.add('broken'); try{ SoundKit.lockBreak && SoundKit.lockBreak(); }catch(e){} lockShards(lock); }, .5)
+      .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1.35)', duration:.25, ease:'power2.out'}, .5)
+      .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1)', duration:.4, ease:'power1.out', clearProps:'filter'}, .75)
+      .fromTo(card, {scale:1}, {scale:1.08, duration:.18, yoyo:true, repeat:1, ease:'power2.out', clearProps:'scale'}, .5)
+      .add(()=> card.classList.add('unlocked'), .8);
+  });
+  t0 += unlocks.length*0.9 + (unlocks.length ? 0.3 : 0);
+  seen.forEach((card, i)=>{
+    const at = t0 + i*0.7;
+    gsap.timeline({delay:at})
+      .add(()=>{ splash(card, '', 'is-seen'); card.classList.add('shining'); try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){} })
+      .add(()=>{ card.classList.add('shown'); }, .45)
+      .add(()=> card.classList.remove('shining'), 1.1);
+  });
+}
+function lockShards(lock){
+  const r = lock.getBoundingClientRect();
+  ['🔒','✨','✨','·','✨'].forEach((g, i)=>{
+    const p = document.createElement('span'); p.className = 'lock-shard'; p.textContent = g; p.setAttribute('aria-hidden','true'); document.body.appendChild(p);
+    const ang = (i/5)*Math.PI*2 + Math.random()*.5, d = 30 + Math.random()*30;
+    gsap.fromTo(p, {x:r.left + r.width/2, y:r.top + r.height/2, opacity:1, scale: i ? .7 : .55, rotation:0},
+      {x:`+=${Math.cos(ang)*d}`, y:`+=${Math.sin(ang)*d + 30}`, rotation:(Math.random()*2-1)*180, opacity:0, duration:.75, ease:'power2.out', onComplete:()=> p.remove()});
+  });
 }
 function logText(ev){
   const defs = getCardDefs();
