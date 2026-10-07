@@ -1185,6 +1185,18 @@
   .grid-view.full-art .card-tile .ico{opacity:1;}
   /* Codex Stats pie charts (2026-09-16) */
   .pie-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-top:10px;}
+  .bw-text-dialog{z-index:2000;} .bw-text-dialog .modal{max-width:460px; width:min(460px, calc(100vw - 32px));}
+  .bw-text-dialog textarea{width:100%; box-sizing:border-box; font:13px ui-monospace, Menlo, monospace; padding:10px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); resize:vertical;}
+  .bw-text-dialog .btd-msg{min-height:1.2em; margin:6px 0 0; font-size:12.5px; color:var(--status-positive-ink);}
+  .forge-bench-toggle{align-self:flex-start; margin:0 0 10px;}
+  .codex-stats .group-header{display:flex; align-items:center; gap:10px; flex-wrap:wrap;} .codex-stats .group-header .btn{margin-left:auto;}
+  .cx-facts{display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:8px; margin:10px 0;}
+  .cx-fact{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:8px 10px; display:flex; flex-direction:column; box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .cx-fact b{font-family:'Baloo 2'; font-size:20px; line-height:1.1;} .cx-fact span{font-size:11.5px; color:var(--ink-muted);}
+  .cx-chart-pick{display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin:4px 0 8px; color:var(--page-ink, #f4efdc);}
+  .cx-chart-pick select{padding:6px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); font-weight:700; min-width:220px;}
+  .pie-one{max-width:560px;} .pie-one .pie-card{padding:16px 18px;}
+  .pie-svg .pie-slice{transition:transform .18s ease; transform-origin:64px 64px;} .pie-svg .pie-slice:hover{transform:scale(1.05);}
   .pie-card{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:12px; padding:12px 14px;}
   .pie-card h4{margin:0 0 8px; font-size:13px; color:var(--ink);}
   .pie-flex{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
@@ -5547,6 +5559,27 @@
   @media (hover:none){ .dt-change{opacity:1; top:-9px; right:-4px; z-index:3;} } /* always shown on touch, so it sits on the corner instead of over the card's name scroll */
   .dt-empty-leader{display:flex !important; background:color-mix(in srgb, var(--surface) 60%, transparent) !important; border-color:var(--surface-border) !important; color:var(--ink-muted);}
   .dt-info h2{color:var(--ink);}
+  /* Deck preview v2 (2026-10-08): smaller cards, smeared castle→leader background, mini charts, info tooltip. */
+  .deck-top > *:not(.dt-smear){position:relative; z-index:1;}
+  .dt-smear{position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5; overflow:hidden;}
+  .dt-smear > div{position:absolute; top:-30%; bottom:-30%; width:72%; filter:blur(26px) saturate(1.35);}
+  .dt-smear > .l{left:-12%; -webkit-mask-image:linear-gradient(90deg,#000 35%,transparent 92%); mask-image:linear-gradient(90deg,#000 35%,transparent 92%);}
+  .dt-smear > .r{right:-12%; -webkit-mask-image:linear-gradient(90deg,transparent 8%,#000 65%); mask-image:linear-gradient(90deg,transparent 8%,#000 65%);}
+  .dt-smear .card-tile{width:100% !important; height:100% !important; animation:none !important;}
+  .deck-top .dt-slot{width:96px;} .deck-top .dt-tile, .deck-top .dt-tile .card-tile, .deck-top .dt-empty-leader{width:96px !important; height:120px !important;}
+  .deck-top .dt-tile .stats .hp, .deck-top .dt-tile .castle-hp-bar-oncard{display:none;} /* castle HP lives in the tooltip now */
+  .deck-top .dt-cap b{max-width:96px; font-size:12px;}
+  .dt-info-tip{font-size:15px; margin-left:8px; cursor:help; vertical-align:middle; opacity:.75;} .dt-info-tip:hover{opacity:1;}
+  .dt-short{margin-left:8px; font-size:12px; font-weight:800; padding:2px 8px; border-radius:999px; background:rgba(181,101,29,.18); color:#b5651d; vertical-align:middle;}
+  .deck-top .dt-stats{grid-template-columns:repeat(3, minmax(0, 110px));}
+  .dt-charts{display:flex; gap:12px; flex-wrap:wrap;}
+  .dt-chart{margin:0; padding:6px 8px 4px; border-radius:12px; background:color-mix(in srgb, var(--surface) 70%, transparent); border:1px solid var(--surface-border); box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .dt-chart figcaption{font-size:11px; font-weight:800; color:var(--ink); display:flex; align-items:center; gap:4px;} .dt-chart figcaption small{font-weight:600; color:var(--ink-muted); margin-left:4px;}
+  .dt-chart .sw{display:inline-block; width:10px; height:3px; border-radius:2px;} .dt-chart .sw.cost{background:#c0843e;} .dt-chart .sw.wait{background:#4f8fdc;} .dt-chart .sw.atk{background:#d0554a; height:8px; width:8px;}
+  .dt-chart svg{display:block; width:170px; height:74px;}
+  .dt-chart text{font-size:8px; fill:var(--ink-muted);} .dt-chart .ax{stroke:var(--surface-border); stroke-width:1;}
+  .dt-chart polyline{fill:none; stroke-width:2; stroke-linejoin:round;} .dt-chart polyline.cost{stroke:#c0843e;} .dt-chart polyline.wait{stroke:#4f8fdc;}
+  .dt-chart circle.cost{fill:#c0843e;} .dt-chart circle.wait{fill:#4f8fdc;} .dt-chart rect.atk{fill:#d0554a; opacity:.85;}
   .dt-stats span{background:var(--surface) !important; border:1px solid var(--surface-border) !important; color:var(--ink);}
   .dt-stats b{color:var(--ink);} .dt-stats small{color:var(--ink-muted); opacity:1 !important;}
   .dt-stats .is-ok b{color:#3fae55 !important;} .dt-stats .is-short b{color:#d6873a !important;}
@@ -13525,7 +13558,7 @@ function renderCodex(){
     </div>
     <span id="codexResultCount"></span>
     <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
-    ${codexStatsHTML(defs)}`;
+    ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
   document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; renderCodexGrid(); });
   const cxFT = document.getElementById('cxFiltersToggle');
   if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
@@ -13567,7 +13600,9 @@ function svgPieChart(title, counts){
       : `M ${CX} ${CY} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
     return {path, color, label, count, pct:(frac*100).toFixed(1)};
   });
-  const svg = `<svg viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="${escapeAttr(title)}">${slices.map(s=>`<path d="${s.path}" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${escapeHtml(s.label)}: ${s.count} (${s.pct}%)</title></path>`).join('')}</svg>`;
+  // 2026-10-08 (user: "add a bit of shadow to the pies, to look more dynamic"): a soft drop shadow,
+  // a light sheen across the top, and slices that lift out on hover.
+  const svg = `<svg class="pie-svg" viewBox="-6 -4 140 142" width="150" height="152" role="img" aria-label="${escapeAttr(title)}"><defs><filter id="pieShadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="3.5" flood-color="#000" flood-opacity=".38"/></filter><radialGradient id="pieSheen" cx="38%" cy="28%" r="70%"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".55" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></radialGradient></defs><g filter="url(#pieShadow)">${slices.map(s=>`<path class="pie-slice" d="${s.path}" fill="${s.color}" stroke="var(--surface)" stroke-width="1"><title>${escapeHtml(s.label)}: ${s.count} (${s.pct}%)</title></path>`).join('')}</g><circle cx="${CX}" cy="${CY}" r="${R}" fill="url(#pieSheen)" pointer-events="none"/></svg>`;
   const legend = slices.map(s=>`<div class="pie-legend-row"><span class="pie-swatch" style="background:${s.color}"></span>${escapeHtml(s.label)} — ${s.count} (${s.pct}%)</div>`).join('');
   return `<div class="pie-card"><h4>${escapeHtml(title)}</h4><div class="pie-flex">${svg}<div class="pie-legend">${legend}</div></div></div>`;
 }
@@ -13649,19 +13684,41 @@ function codexStatsHTML(defs){
   skillEntries.forEach(([k,v],i)=>{ if(i<11) topSkills[k]=v; else otherTotal+=v; });
   if(otherTotal>0) topSkills['Other (long tail)'] = otherTotal;
 
-  return `<div class="section-divider group-header" style="margin-top:22px;"><span class="st-label">Codex Stats</span><span class="st-sub">Pie-chart breakdowns across all ${n} cards in the Codex.</span></div>
-  <div class="pie-grid">
-    ${svgPieChart('Type — Animal (broad classes)', animalCounts)}
-    ${svgPieChart('Type — Geographical', geoCounts)}
-    ${svgPieChart('Archetype (Ecclesia / Scrapper / Devilry)', mechArchCounts)}
-    ${svgPieChart('Wait Time', waitCounts)}
-    ${svgPieChart('Attack', atkCounts)}
-    ${svgPieChart('Cost', costCounts)}
-    ${svgPieChart('Lumber Given (Reward) on Kill', goldCounts)}
-    ${svgPieChart('Attack / Health Ratio', ratioCounts)}
-    ${svgPieChart('Skills / Passive Abilities', topSkills)}
+  // 2026-10-08 (user: "hide it by default, only show when someone clicks reveal; then pick the graph
+  // from a dropdown; also show other stats that matter"): collapsed until revealed, one chart at a
+  // time, plus headline numbers and four more breakdowns (rarity, health, people, where to get).
+  const rarityCounts = {}; list.forEach(d=>{ const r = (RARITY_DEFS.find(x=> x.key===(d.rarity||'common'))||{label:d.rarity||'Common'}).label; rarityCounts[r]=(rarityCounts[r]||0)+1; });
+  const hpBucket = v=> v<=3?'1–3' : v<=6?'4–6' : v<=10?'7–10' : v<=20?'11–20' : '21+';
+  const hpCounts = {}; list.forEach(d=>{ const b=hpBucket(d.health||0); hpCounts[b]=(hpCounts[b]||0)+1; });
+  const PEOPLE_LABEL = {legion:'Rivergate Legion', tribes:'Sunfeathers', road:'Road-folk', beast:'Beasts', hive:'The Hive', deep:'The Deep', folk:'Woodland folk'};
+  const peopleCounts = {}; list.forEach(d=>{ const ps = [...peopleOfCard(d)]; const label = PEOPLE_LABEL[ps[0]] || 'Woodland folk'; peopleCounts[label]=(peopleCounts[label]||0)+1; });
+  const SOURCE_LABEL = {base:'Starter / base', map:'Conquest maps', pack:'Card packs', event:'Events', unsorted:'Not obtainable yet'};
+  const sourceCounts = {}; list.forEach(d=>{ const k = (cardSourceOf(d)||{}).kind || 'unsorted'; const label = SOURCE_LABEL[k] || k; sourceCounts[label]=(sourceCounts[label]||0)+1; });
+  const CHARTS = [
+    ['rarity','Rarity', rarityCounts], ['people','People', peopleCounts], ['source','Where to get them', sourceCounts],
+    ['attack','Attack', atkCounts], ['health','Health', hpCounts], ['cost','Cost', costCounts], ['wait','Wait Time', waitCounts],
+    ['ratio','Attack / Health Ratio', ratioCounts], ['skills','Skills / Passive Abilities', topSkills],
+    ['animal','Type — Animal (broad classes)', animalCounts], ['geo','Type — Geographical', geoCounts],
+    ['arch','Archetype (Ecclesia / Scrapper / Devilry)', mechArchCounts], ['bounty','Lumber Given (Reward) on Kill', goldCounts],
+  ];
+  const avg = k=> (list.reduce((t,d)=> t + (d[k]||0), 0) / n).toFixed(1);
+  const pctOf = f=> Math.round(list.filter(f).length / n * 100) + '%';
+  const facts = [['Cards', list.length], ['Avg attack', avg('attack')], ['Avg health', avg('health')], ['Avg cost', avg('cost')],
+    ['Flying', pctOf(d=> (d.effects||{}).flying)], ['With abilities', pctOf(d=> Object.keys(d.effects||{}).some(k=> k!=='triggers') || ((d.effects||{}).triggers||[]).length)],
+    ['Unlocked by you', pctOf(d=> !d.locked && !isCardHiddenForPlayer(d))]];
+  const pick = CHARTS.find(c=> c[0]===codexStatsChart) || CHARTS[0];
+  return `<div class="codex-stats ${codexStatsOpen?'is-open':''}" id="codexStatsBox">
+    <div class="section-divider group-header" style="margin-top:22px;"><span class="st-label">Codex Stats</span><span class="st-sub">Breakdowns across all ${n} cards.</span>
+      <button type="button" class="btn small ${codexStatsOpen?'ghost':''}" onclick="toggleCodexStats()" aria-expanded="${codexStatsOpen}">${codexStatsOpen ? 'Hide' : '📊 Reveal stats'}</button></div>
+    ${codexStatsOpen ? `<div class="cx-facts">${facts.map(([k,v])=> `<div class="cx-fact"><b>${v}</b><span>${k}</span></div>`).join('')}</div>
+      <label class="cx-chart-pick">Chart <select onchange="setCodexStatsChart(this.value)" aria-label="Choose a chart">${CHARTS.map(c=> `<option value="${c[0]}" ${c===pick?'selected':''}>${escapeHtml(c[1])}</option>`).join('')}</select></label>
+      <div class="pie-one">${svgPieChart(pick[1], pick[2])}</div>` : ''}
   </div>`;
 }
+let codexStatsOpen = false, codexStatsChart = 'rarity', codexStatsDefs = null;
+function refreshCodexStats(){ const box = document.getElementById('codexStatsBox'); if(box) box.outerHTML = codexStatsHTML(codexStatsDefs || getCardDefs()); }
+function toggleCodexStats(){ codexStatsOpen = !codexStatsOpen; refreshCodexStats(); }
+function setCodexStatsChart(v){ codexStatsChart = v; refreshCodexStats(); }
 function renderCodexGrid(){
   const defs = getCardDefs();
   let ids = Object.keys(defs);
@@ -17336,6 +17393,23 @@ function deckHeroHalfHTML(d, side){
 // Hero editor): the castle and leader as real cards side by side, then the deck's name, its
 // signature (archetypes, averages), size and level, and the Hero if it's in. Replaces the old
 // split-colour banner; same id, so refreshDeckHeroBanner() keeps it current.
+// Two small charts for a deck: how many cards at each Cost and each Wait (two lines), and the
+// average Attack at each Wait (bars) — the speed/power trade-off at a glance.
+function deckMiniChartsHTML(counts){
+  const defs = getCardDefs(), XS = ['0','1','2','3','4+'], bin = v=> Math.min(4, Math.max(0, v|0));
+  const cost = [0,0,0,0,0], wait = [0,0,0,0,0], atkSum = [0,0,0,0,0];
+  Object.entries(counts||{}).forEach(([id, n])=>{ const d = defs[id]; if(!d || !(n>0)) return; cost[bin(d.cost||0)] += n; wait[bin(d.wait||0)] += n; atkSum[bin(d.wait||0)] += (d.attack||0)*n; });
+  const avgAtk = atkSum.map((a, i)=> wait[i] ? a / wait[i] : 0);
+  const W = 170, H = 74, P = {l:16, r:6, t:8, b:16}, iw = W - P.l - P.r, ih = H - P.t - P.b;
+  const x = i=> P.l + (i + 0.5) * iw / XS.length, y = (v, max)=> P.t + ih - (max ? v / max : 0) * ih;
+  const axis = XS.map((t, i)=> `<text x="${x(i)}" y="${H-4}" text-anchor="middle">${t}</text>`).join('') + `<line x1="${P.l}" x2="${W-P.r}" y1="${P.t+ih}" y2="${P.t+ih}" class="ax"/>`;
+  const m1 = Math.max(1, ...cost, ...wait);
+  const line = (vals, cls)=> `<polyline class="${cls}" points="${vals.map((v, i)=> `${x(i).toFixed(1)},${y(v, m1).toFixed(1)}`).join(' ')}"/>` + vals.map((v, i)=> `<circle class="${cls}" cx="${x(i).toFixed(1)}" cy="${y(v, m1).toFixed(1)}" r="2.6"><title>${v} card${v===1?'':'s'}</title></circle>`).join('');
+  const m2 = Math.max(1, ...avgAtk), bw = iw / XS.length * 0.56;
+  const bars = avgAtk.map((v, i)=> `<rect class="atk" x="${(x(i) - bw/2).toFixed(1)}" y="${y(v, m2).toFixed(1)}" width="${bw.toFixed(1)}" height="${(P.t + ih - y(v, m2)).toFixed(1)}" rx="2"><title>Wait ${XS[i]}: ${wait[i]} card${wait[i]===1?'':'s'}, avg attack ${v.toFixed(1)}</title></rect>`).join('');
+  return `<figure class="dt-chart"><figcaption><i class="sw cost"></i>Cost <i class="sw wait"></i>Wait <small>cards per value</small></figcaption><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cards by cost and by wait">${axis}${line(cost, 'cost')}${line(wait, 'wait')}</svg></figure>
+    <figure class="dt-chart"><figcaption><i class="sw atk"></i>Attack by Wait <small>average</small></figcaption><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Average attack at each wait">${axis}${bars}</svg></figure>`;
+}
 function deckHeroBannerHTML(){
   const defs = getCardDefs();
   const castle = CHARACTER_DEFS[myCharacterId] || Object.values(CHARACTER_DEFS)[0];
@@ -17346,21 +17420,25 @@ function deckHeroBannerHTML(){
   const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
   const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<span class="dt-empty-leader">👑<small>Tap to choose</small></span>`;
   const hero = (d.counts[HERO_ID] > 0 && typeof myHero !== 'undefined' && myHero) ? myHero : null;
+  // 2026-10-08 (user): smaller cards; the castle and leader art smeared across the background, left
+  // to right; Cost/Wait and Attack-by-Wait mini charts; card count, deck level and castle HP moved
+  // into a tooltip (a short deck still shows a visible warning).
+  const info = `${total}/${DECK_SIZE} cards · Deck level ${lvl} · ${castle ? escapeAttr(castle.name) : 'Castle'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
   return `<div class="deck-top" id="deckHeroBanner">
+    <div class="dt-smear" aria-hidden="true"><div class="l">${castleTile}</div>${leader ? `<div class="r">${cardTileHTML(leader, {inPlay:true})}</div>` : ''}</div>
     <div class="dt-pair">
-      <button type="button" class="dt-slot" data-loadout="castle" title="Choose your castle"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><span>🏰 Castle</span><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
-      <button type="button" class="dt-slot" data-loadout="leader" title="Choose your leader"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><span>👑 Leader</span><b>${leader ? escapeHtml(leader.name) : 'Not set'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
+      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your castle')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
+      <button type="button" class="dt-slot" data-loadout="leader" title="${escapeAttr(leader ? leader.name + ' — choose your leader' : 'Choose your leader')}"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><b>${leader ? escapeHtml(leader.name) : 'No leader'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
-      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span></h2>
+      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span><span class="dt-info-tip" tabindex="0" role="img" aria-label="${info}" data-tip="${info}">ℹ️</span>${total!==DECK_SIZE ? `<span class="dt-short">⚠ ${total}/${DECK_SIZE} cards</span>` : ''}</h2>
       <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
       <div class="dt-stats">
         <span><b>${sig.avgAtk}</b><small>⚔ avg attack</small></span>
         <span><b>${sig.avgHp}</b><small>❤ avg health</small></span>
         <span><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
-        <span class="${total===DECK_SIZE?'is-ok':'is-short'}"><b>${total}<i>/${DECK_SIZE}</i></b><small>🃏 cards</small></span>
-        <span><b>${lvl}</b><small>📈 deck level</small></span>
       </div>
+      <div class="dt-charts">${deckMiniChartsHTML(d.counts)}</div>
       ${hero ? `<div class="dt-hero">🦸 <b>${escapeHtml(hero.name)}</b> rides with this deck · Lv ${heroLevelFromXp(hero.xp).level}</div>` : ''}
     </div>
   </div>`;
@@ -20703,9 +20781,10 @@ const GAME_TIPS = [
   '🏳️ Out of moves? Many rivals surrender, but bosses never do.',
   '🗺️ More opens up as you cross the map: look for ! icons.',
 ];
-function startTipTicker(el){
+function startTipTicker(el, tips){
   if(!el || el.dataset.ticking) return; el.dataset.ticking = '1';
-  const order = GAME_TIPS.slice().sort(()=> Math.random() - .5);
+  const list = tips || GAME_TIPS;
+  const order = tips ? list.slice() : list.slice().sort(()=> Math.random() - .5); // a page's own list keeps its first line first
   let i = 0;
   const show = ()=>{
     if(!el.isConnected) return;
@@ -24493,8 +24572,8 @@ function renderMatchUI(){
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
-    const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); });
-    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
+    const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
+    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
     // while the card itself pops in with a spring overshoot and the trophy/skull/handshake
@@ -31257,14 +31336,19 @@ function dressForgePlace(root){
   }
 }
 // Materia bench in the Forge (2026-10-05): the same craft as the Hero Hall, where the user expects it.
+// 2026-10-08 (user: "reveal it only when a hero is selected; or if you have a hero, a small button
+// that opens the bigger UI"): no Hero, no bench; with a Hero it's one small button until opened.
+let forgeBenchOpen = false;
 function forgeMateriaBenchHTML(){
-  if(!myHero) return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>Raise a Hero first (Deck → 🦸 Hero). Crafting Materia here levels them up.</small></div><button type="button" class="btn small" data-fmb="hero">🦸 Raise a Hero</button></div>`;
+  if(!myHero) return '';
+  if(!forgeBenchOpen) return `<button type="button" class="btn small forge-bench-toggle" data-fmb="open" aria-expanded="false">💎 Materia bench · ${escapeHtml(myHero.name)} Lv ${heroLevelFromXp(myHero.xp).level}</button>`;
   const n = MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${myHero.materia[k.id]||0}</span>`).join('');
-  return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>${MATERIA_DUST_COST} ✨ → one crystal and +${MATERIA_HERO_XP} XP for ${escapeHtml(myHero.name)} (Lv ${heroLevelFromXp(myHero.xp).level})</small><span class="hero-materia">${n}</span></div><button type="button" class="btn primary small" data-fmb="craft" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft · ${MATERIA_DUST_COST} ✨</button></div>`;
+  return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>${MATERIA_DUST_COST} ✨ → one crystal and +${MATERIA_HERO_XP} XP for ${escapeHtml(myHero.name)} (Lv ${heroLevelFromXp(myHero.xp).level})</small><span class="hero-materia">${n}</span></div><button type="button" class="btn primary small" data-fmb="craft" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft · ${MATERIA_DUST_COST} ✨</button><button type="button" class="btn ghost small" data-fmb="close" aria-label="Close the Materia bench">✕</button></div>`;
 }
 function wireForgeMateriaBench(root){
   root.querySelectorAll('[data-fmb]').forEach(b=>{ if(b._fmb) return; b._fmb = 1; b.addEventListener('click', ()=>{
     if(b.dataset.fmb === 'hero'){ deckHeroView = true; switchTab('deck'); return; }
+    if(b.dataset.fmb === 'open' || b.dataset.fmb === 'close'){ forgeBenchOpen = b.dataset.fmb === 'open'; renderForge(); return; }
     if(craftMateria()) renderForge();
   }); });
 }
@@ -31584,7 +31668,8 @@ function wireHomeMenuFlourish(root){
 let deckSubTab = 'list'; // 'list' | 'sim' — mirrors playSubTab's own pattern
 let deckEditingId = null; // non-null while a specific deck's builder is open
 let deckHeroView = false; // Deck → 🦸 Hero: the Hero Hall instead of the deck builder
-let deckShowList = false; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
+var deckOpenBuilderOnce = false; // set by buttons that should land in the builder, not the list (2026-10-08)
+let deckShowList = true; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
 // ---- The Hero Hall (Deck → 🦸 Hero) ----
 let heroCreatePeople = 'legion';
 function renderHeroHall(body){
@@ -31709,12 +31794,14 @@ function renderDeckSection(){
            it up onto this row instead, using the exact same .play-subtabs-row/.play-subtabs-actions
            space-between pattern renderPlay() already uses for its own Energy-pill/Settings actions,
            so it now sits genuinely right-aligned and only shows on the "My Decks" sub-tab. -->
-      <div class="play-subtabs-actions">${deckSubTab==='list' ? `<button type="button" class="btn small ghost" id="deckToCodexBtn" title="Go to Codex">📇 Codex</button>` : ''}</div>
+      <div class="play-subtabs-actions">${deckSubTab==='list' ? `<button type="button" class="btn small ghost hero-hall-btn" id="deckHeroBtn" title="Your Hero — level it, spend its points, pick its skills">🦸 Hero${myHero && heroPointsFree(myHero)>0 ? '<span class="hero-dot" aria-label="points to spend"></span>' : ''}</button><button type="button" class="btn small ghost" id="deckToCodexBtn" title="Go to Codex">📇 Codex</button>` : ''}</div>
     </div>
     <div id="deckSubBody"></div>`;
   root.querySelectorAll('[data-decktab]').forEach(b=> b.addEventListener('click', ()=>{ deckSubTab = b.getAttribute('data-decktab'); renderDeckSection(); }));
   const codexBtn = document.getElementById('deckToCodexBtn');
   if(codexBtn) codexBtn.addEventListener('click', ()=> switchTab('codex'));
+  const heroBtn = document.getElementById('deckHeroBtn'); // the Hero Hall is reachable from the deck list too (2026-10-08)
+  if(heroBtn) heroBtn.addEventListener('click', ()=>{ deckHeroView = true; deckShowList = false; deckEditingId = activeDeckId; renderDeckSection(); });
   const body = document.getElementById('deckSubBody');
   if(deckSubTab==='sim' && !adminEntryVisible()) deckSubTab = 'list'; // D4 (2026-10-03): the Simulator is an admin tool now
   if(deckSubTab==='sim'){ body.innerHTML = '<div id="view-sim"></div>'; renderSim(); return; }
@@ -31765,24 +31852,46 @@ function renderDeckListTab(body){
 // Ctrl/Cmd+C still works from there) when the Clipboard API is unavailable or the browser denies
 // it — a locked-down/insecure context, an iframe without the permission, etc. — so the feature
 // never just silently fails with no way to actually get the code out.
+// In-game text dialog (2026-10-08, user: "the import deck code should be native UI, not Chrome
+// UI"): a parchment modal in the game's own style instead of window.prompt. Resolves to the text,
+// or null when cancelled. readonly mode shows a code to copy, with a Copy button.
+function bwTextDialog({title, body, value, placeholder, okLabel, readonly}){
+  return new Promise(resolve=>{
+    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
+    ov.innerHTML = `<div class="modal" role="dialog" aria-modal="true" aria-label="${escapeAttr(title)}">
+      <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
+      ${body ? `<p class="panel-sub">${escapeHtml(body)}</p>` : ''}
+      <textarea rows="3" spellcheck="false" ${readonly ? 'readonly' : ''} placeholder="${escapeAttr(placeholder||'')}">${escapeHtml(value||'')}</textarea>
+      <p class="btd-msg" aria-live="polite"></p>
+      <div class="modal-actions"><button type="button" class="btn ghost" data-x>${readonly ? 'Close' : 'Cancel'}</button>
+        <button type="button" class="btn primary" data-ok>${escapeHtml(okLabel || (readonly ? '📋 Copy' : 'OK'))}</button></div></div>`;
+    document.body.appendChild(ov);
+    const ta = ov.querySelector('textarea'), msg = ov.querySelector('.btd-msg');
+    const done = v=>{ ov.remove(); resolve(v); };
+    ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = ()=> done(null));
+    ov.onclick = e=>{ if(e.target === ov) done(null); };
+    ov.onkeydown = e=>{ if(e.key==='Escape'){ e.stopPropagation(); done(null); } else if(e.key==='Enter' && !e.shiftKey && !readonly){ e.preventDefault(); ov.querySelector('[data-ok]').click(); } };
+    ov.querySelector('[data-ok]').onclick = ()=>{
+      if(readonly){ ta.select(); let ok = false; try{ ok = document.execCommand('copy'); }catch(e){} msg.textContent = ok ? '📋 Copied!' : 'Selected: press Ctrl/⌘ + C to copy.'; if(ok) setTimeout(()=> done(ta.value), 600); return; }
+      done(ta.value);
+    };
+    setTimeout(()=>{ ta.focus(); if(readonly) ta.select(); }, 30);
+  });
+}
 function exportDeckCode(d, btnEl){
   const code = encodeDeckCode(d);
   const onCopied = ()=>{ SoundKit.codeCopy(); if(btnEl) floatText(btnEl, '📋 Copied!', 'heal'); };
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(code).then(onCopied, ()=>{
-      window.prompt('Copy this deck code:', code);
-    });
-  } else {
-    window.prompt('Copy this deck code:', code);
-  }
+  const fallback = ()=> bwTextDialog({title:'Deck code', body:'Copy this code and share it. Anyone can import it as a new deck.', value:code, readonly:true});
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(onCopied, fallback);
+  else fallback();
 }
 // Prompts for a pasted code, decodes it, and — on success — creates a brand-new deck from it
 // (never overwrites an existing one) so importing a friend's build can never clobber your own
 // work by mistake. Any dropped/defaulted fields (an unknown card, a missing Castle) are reported
 // back via a plain-language summary rather than silently importing something subtly different
 // from what the code actually said.
-function importDeckCodeFlow(btnEl){
-  const raw = window.prompt('Paste a Bramblewood deck code:');
+async function importDeckCodeFlow(btnEl){
+  const raw = await bwTextDialog({title:'Import a deck', body:'Paste a Bramblewood deck code. It becomes a new deck; none of yours are changed.', placeholder:'Paste the code here', okLabel:'⬇ Import'});
   if(raw==null || !raw.trim()) return; // cancelled or empty — not an error, just a no-op
   const result = decodeDeckCode(raw);
   if(!result.ok){
@@ -31945,7 +32054,7 @@ function renderNest(){
   const totalCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].length, 0);
   const foilCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].filter(c=>c.foil).length, 0);
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
-      <p class="panel-sub">Cards you've won or pulled from packs. Your starter cards are in your deck.</p>
+      <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
     </div>
     <div class="grid-view" id="nestGrid">${
@@ -31962,7 +32071,19 @@ function renderNest(){
     toggleCardCopyFoil(wrap.getAttribute('data-nestcard'), 0);
     renderNest();
   }));
+  startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS);
 }
+// 2026-10-08 (user: "the tooltip '1 copy owned · foil · click to toggle…' is intrusive; rotate tips
+// here and there in the Nest instead, changing the 'Cards you've won…' line"): the per-card hover
+// title is gone; what it said now takes turns with the Nest's own description.
+const NEST_TIPS = [
+  "Cards you've won or pulled from packs. Your starter cards are in your deck.",
+  '✨ Tap a card to switch its foil shimmer on or off.',
+  '🃏 A taller stack means more copies of that card.',
+  '🔨 Take a card to the Forge to raise its attack and health.',
+  '👁️ Hover a card (or hold it on a phone) to see everything it does.',
+  '🎁 Packs, first clears and quest rewards all land here.',
+];
 // Holographic foil (2026-10-03, effects experiment #1 — "(1) for ease immediately"). Pure CSS on the
 // real card (no WebGL): a rainbow band, a fine sparkle texture and a glare spot, blended with
 // colour-dodge so the art itself seems to catch the light. The pointer (or phone tilt) moves the
@@ -32029,7 +32150,7 @@ function nestCardHTML(id, d){
   // No visible count label on purpose — the stack's own thickness (see .nest-stack-* below) is
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
-  return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" title="${n} cop${n===1?'y':'ies'} owned${hasFoil?' · ✨ foil':''} — click to toggle the shimmer">
+  return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
     ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? holoClass(d) : ''})}
   </div>`;
 }
@@ -32458,7 +32579,7 @@ function renderProfile(){
     ${matchHistoryPanelHTML()}`;
   wireAvatarCustomizer();
   wireAboutYou();
-  const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckShowList = false; deckEditingId = null; switchTab('deck'); });
+  const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireAchievementsPanel();
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
@@ -33025,6 +33146,9 @@ function switchTab(tab){
   try{ document.body.dataset.tab = tab; }catch(e){}
   if(tab!=='play') exitConquestImmersive();
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
+  // 2026-10-08 (user: "the deck editor should land on the Manage decks page first"): entering Deck
+  // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
+  if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.

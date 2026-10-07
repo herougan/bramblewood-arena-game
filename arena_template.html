@@ -1185,6 +1185,18 @@
   .grid-view.full-art .card-tile .ico{opacity:1;}
   /* Codex Stats pie charts (2026-09-16) */
   .pie-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; margin-top:10px;}
+  .bw-text-dialog{z-index:2000;} .bw-text-dialog .modal{max-width:460px; width:min(460px, calc(100vw - 32px));}
+  .bw-text-dialog textarea{width:100%; box-sizing:border-box; font:13px ui-monospace, Menlo, monospace; padding:10px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); resize:vertical;}
+  .bw-text-dialog .btd-msg{min-height:1.2em; margin:6px 0 0; font-size:12.5px; color:var(--status-positive-ink);}
+  .forge-bench-toggle{align-self:flex-start; margin:0 0 10px;}
+  .codex-stats .group-header{display:flex; align-items:center; gap:10px; flex-wrap:wrap;} .codex-stats .group-header .btn{margin-left:auto;}
+  .cx-facts{display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:8px; margin:10px 0;}
+  .cx-fact{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:10px; padding:8px 10px; display:flex; flex-direction:column; box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .cx-fact b{font-family:'Baloo 2'; font-size:20px; line-height:1.1;} .cx-fact span{font-size:11.5px; color:var(--ink-muted);}
+  .cx-chart-pick{display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700; margin:4px 0 8px; color:var(--page-ink, #f4efdc);}
+  .cx-chart-pick select{padding:6px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); font-weight:700; min-width:220px;}
+  .pie-one{max-width:560px;} .pie-one .pie-card{padding:16px 18px;}
+  .pie-svg .pie-slice{transition:transform .18s ease; transform-origin:64px 64px;} .pie-svg .pie-slice:hover{transform:scale(1.05);}
   .pie-card{background:var(--surface-2); border:1px solid var(--surface-border); border-radius:12px; padding:12px 14px;}
   .pie-card h4{margin:0 0 8px; font-size:13px; color:var(--ink);}
   .pie-flex{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
@@ -5537,6 +5549,27 @@
   @media (hover:none){ .dt-change{opacity:1; top:-9px; right:-4px; z-index:3;} } /* always shown on touch, so it sits on the corner instead of over the card's name scroll */
   .dt-empty-leader{display:flex !important; background:color-mix(in srgb, var(--surface) 60%, transparent) !important; border-color:var(--surface-border) !important; color:var(--ink-muted);}
   .dt-info h2{color:var(--ink);}
+  /* Deck preview v2 (2026-10-08): smaller cards, smeared castle→leader background, mini charts, info tooltip. */
+  .deck-top > *:not(.dt-smear){position:relative; z-index:1;}
+  .dt-smear{position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5; overflow:hidden;}
+  .dt-smear > div{position:absolute; top:-30%; bottom:-30%; width:72%; filter:blur(26px) saturate(1.35);}
+  .dt-smear > .l{left:-12%; -webkit-mask-image:linear-gradient(90deg,#000 35%,transparent 92%); mask-image:linear-gradient(90deg,#000 35%,transparent 92%);}
+  .dt-smear > .r{right:-12%; -webkit-mask-image:linear-gradient(90deg,transparent 8%,#000 65%); mask-image:linear-gradient(90deg,transparent 8%,#000 65%);}
+  .dt-smear .card-tile{width:100% !important; height:100% !important; animation:none !important;}
+  .deck-top .dt-slot{width:96px;} .deck-top .dt-tile, .deck-top .dt-tile .card-tile, .deck-top .dt-empty-leader{width:96px !important; height:120px !important;}
+  .deck-top .dt-tile .stats .hp, .deck-top .dt-tile .castle-hp-bar-oncard{display:none;} /* castle HP lives in the tooltip now */
+  .deck-top .dt-cap b{max-width:96px; font-size:12px;}
+  .dt-info-tip{font-size:15px; margin-left:8px; cursor:help; vertical-align:middle; opacity:.75;} .dt-info-tip:hover{opacity:1;}
+  .dt-short{margin-left:8px; font-size:12px; font-weight:800; padding:2px 8px; border-radius:999px; background:rgba(181,101,29,.18); color:#b5651d; vertical-align:middle;}
+  .deck-top .dt-stats{grid-template-columns:repeat(3, minmax(0, 110px));}
+  .dt-charts{display:flex; gap:12px; flex-wrap:wrap;}
+  .dt-chart{margin:0; padding:6px 8px 4px; border-radius:12px; background:color-mix(in srgb, var(--surface) 70%, transparent); border:1px solid var(--surface-border); box-shadow:0 2px 6px rgba(0,0,0,.12);}
+  .dt-chart figcaption{font-size:11px; font-weight:800; color:var(--ink); display:flex; align-items:center; gap:4px;} .dt-chart figcaption small{font-weight:600; color:var(--ink-muted); margin-left:4px;}
+  .dt-chart .sw{display:inline-block; width:10px; height:3px; border-radius:2px;} .dt-chart .sw.cost{background:#c0843e;} .dt-chart .sw.wait{background:#4f8fdc;} .dt-chart .sw.atk{background:#d0554a; height:8px; width:8px;}
+  .dt-chart svg{display:block; width:170px; height:74px;}
+  .dt-chart text{font-size:8px; fill:var(--ink-muted);} .dt-chart .ax{stroke:var(--surface-border); stroke-width:1;}
+  .dt-chart polyline{fill:none; stroke-width:2; stroke-linejoin:round;} .dt-chart polyline.cost{stroke:#c0843e;} .dt-chart polyline.wait{stroke:#4f8fdc;}
+  .dt-chart circle.cost{fill:#c0843e;} .dt-chart circle.wait{fill:#4f8fdc;} .dt-chart rect.atk{fill:#d0554a; opacity:.85;}
   .dt-stats span{background:var(--surface) !important; border:1px solid var(--surface-border) !important; color:var(--ink);}
   .dt-stats b{color:var(--ink);} .dt-stats small{color:var(--ink-muted); opacity:1 !important;}
   .dt-stats .is-ok b{color:#3fae55 !important;} .dt-stats .is-short b{color:#d6873a !important;}
