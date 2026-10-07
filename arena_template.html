@@ -2057,6 +2057,13 @@
     background:radial-gradient(ellipse 60% 70% at var(--lx,50%) 0%, rgba(235,240,255,.9), rgba(200,215,255,.35) 45%, transparent 75%);
     animation:bfLightning 820ms ease-out forwards;}
   @keyframes bfLightning{0%{opacity:0;} 6%{opacity:.55;} 14%{opacity:.08;} 24%{opacity:.4;} 100%{opacity:0;}}
+  /* Cave lamp (2026-10-07, G5): see mountCaveLamp(). */
+  .bf-cave-lamp{position:absolute; inset:0; z-index:3; pointer-events:none; border-radius:inherit; --lx:50%; --ly:50%;
+    background:radial-gradient(circle at var(--lx) var(--ly), transparent 0, transparent 160px, rgba(8,6,18,.18) 300px, rgba(8,6,18,.32) 520px);
+    transition:opacity .4s;}
+  /* Hourglass flip on each Wait tick (2026-10-07, A7): see updateCardWaitDisplay(). */
+  .waitbadge .wait-flip{position:absolute; left:50%; top:-15px; margin-left:-6px; font-size:12px; line-height:1; pointer-events:none; animation:waitFlip 740ms cubic-bezier(.3,.7,.3,1) forwards;}
+  @keyframes waitFlip{0%{opacity:0; transform:translateY(4px) rotate(0);} 20%{opacity:1; transform:translateY(-2px) rotate(0);} 65%{opacity:1; transform:translateY(-4px) rotate(180deg);} 100%{opacity:0; transform:translateY(-8px) rotate(180deg);}}
   /* Card drag trail (2026-10-06): see dragTrail. */
   .drag-spark{position:fixed; z-index:2000; width:7px; height:7px; margin:-3.5px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, #fff8d6 0%, #ffd56a 45%, rgba(255,200,80,0) 72%); animation:dragSpark 540ms ease-out forwards;}
@@ -5734,7 +5741,12 @@
         <div class="settings-row">
           <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeVal">60%</span></div>
           <input type="range" id="musicVolumeSlider" min="0" max="100" step="1" aria-label="Music volume">
-          <div class="settings-row-note">The sound of each place: birds, wind, water, drips. Music comes later.</div>
+          <div class="settings-row-note">The sound of each place (birds, wind, water, drips) and the battle music.</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label"><span>🎼 Battle music</span></div>
+          <select id="battleMusicSelect" aria-label="Battle music"></select>
+          <div class="settings-row-note">A quiet tune in the rival's style that builds as the fight heats up.</div>
         </div>
         <div class="settings-row">
           <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeVal">100%</span></div>

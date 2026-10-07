@@ -1693,6 +1693,7 @@ const SoundKit = (()=>{
       musicVolume = Math.max(0, Math.min(1, v));
       try{ localStorage.setItem('bw_musicVolume', String(musicVolume)); }catch(e){}
       try{ if(typeof Ambience!=='undefined') Ambience.setVolume(musicVolume); }catch(e){}
+      try{ if(typeof BattleMusic!=='undefined') BattleMusic.setVolume(musicVolume); }catch(e){}
     },
     voiceTone,
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
@@ -2171,6 +2172,7 @@ const Ambience = (()=>{
     setVolume(v){ vol = v; const c = C(); if(master && c) master.gain.setTargetAtTime(vol*LEVEL, c.currentTime, 0.1); if(vol <= 0){ retire(cur); cur = null; } else apply(); },
     // Ducking (2026-10-05): dip under a big moment, then breathe back. depth 0..1 of the level kept.
     duck(keep, holdMs){
+      try{ BattleMusic.duck(keep, holdMs); }catch(e){}
       const c = C(); if(!master || !c || document.hidden) return;
       const t = c.currentTime, g = master.gain;
       try{ g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); }catch(e){}
@@ -2179,6 +2181,125 @@ const Ambience = (()=>{
     },
   };
 })();
+// ---- Battle music (2026-10-07, effects rec. S7: "a generative loop per people, which gets busier
+// as the fight heats up") -------------------------------------------------------------------------
+// Synthesised live like the ambience, quiet, battle only. The rival's people picks the band:
+//   Legion: frame drum and a low brass drone (D dorian) · Sunfeathers: pan flute, shaker, claps
+//   (D major pentatonic) · Road-folk: plucked strings over an accordion-like reed (G mixolydian);
+//   beasts, the Deep, the hive and plain folk borrow the nearest band with their own mode/tempo.
+// Three intensity levels, re-read every bar: calm → percussion joins (round 5+, or a castle under
+// 60%) → a bass ostinato and a busier melody (sudden death, or a castle under 30%). It rides the
+// 🎵 slider, has its own Settings switch (🎼 Battle music), ducks with the ambience under big
+// moments, and stops by itself when the fight ends or you leave the battle.
+const BATTLE_MUSIC_KEY = 'bramblewood_battle_music';
+function battleMusicOn(){ try{ return localStorage.getItem(BATTLE_MUSIC_KEY) !== 'off'; }catch(e){ return true; } }
+const BattleMusic = (()=>{
+  const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
+  const LEVEL = 0.5;
+  const vol = ()=> (typeof SoundKit!=='undefined' && SoundKit.getMusicVolume) ? SoundKit.getMusicVolume() : 0.6;
+  const BANDS = {
+    legion: {bpm:84,  root:146.83, mode:[0,2,3,5,7,9,10], prog:[0,3,4,0], lead:'brass', perc:'drum', pad:'drone'},
+    beast:  {bpm:76,  root:110.00, mode:[0,2,3,5,7,8,10], prog:[0,5,3,4], lead:'brass', perc:'drum', pad:'drone'},
+    tribes: {bpm:104, root:293.66, mode:[0,2,4,7,9],      prog:[0,3,4,0], lead:'flute', perc:'shaker', pad:'air'},
+    folk:   {bpm:98,  root:261.63, mode:[0,2,4,7,9],      prog:[0,4,3,0], lead:'flute', perc:'shaker', pad:'air'},
+    road:   {bpm:96,  root:196.00, mode:[0,2,4,5,7,9,10], prog:[0,5,3,4], lead:'pluck', perc:'tap',    pad:'reed'},
+    hive:   {bpm:112, root:220.00, mode:[0,2,3,5,7,8,10], prog:[0,0,5,4], lead:'pluck', perc:'tap',    pad:'reed'},
+    deep:   {bpm:62,  root:98.00,  mode:[0,2,3,5,7,9,10], prog:[0,3,5,4], lead:'flute', perc:null,     pad:'drone'},
+  };
+  let st = null, master = null, noiseBuf = null;
+  const r = (a,b)=> a + Math.random()*(b-a);
+  const pick = a=> a[Math.floor(Math.random()*a.length)];
+  function out(c){ if(!master){ master = c.createGain(); master.gain.value = 0; master.connect(c.destination); } return master; }
+  function noise(c){ if(noiseBuf) return noiseBuf; const n = c.sampleRate, b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for(let i=0;i<n;i++) d[i] = Math.random()*2-1; return (noiseBuf = b); }
+  const freqOf = (band, deg, oct)=>{ const m = band.mode, n = m.length; const o = Math.floor(deg/n) + (oct||0); return band.root * Math.pow(2, (m[((deg % n)+n)%n] + 12*o)/12); };
+  function env(c, g, t, a, peak, d){ g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + d); }
+  function osc(c, type, f, t, dur, peak, a, filt, detune){
+    const o = c.createOscillator(), g = c.createGain(); o.type = type; o.frequency.value = f; if(detune) o.detune.value = detune;
+    let node = o; if(filt){ const fl = c.createBiquadFilter(); fl.type = 'lowpass'; fl.frequency.value = filt; o.connect(fl); node = fl; }
+    node.connect(g); g.connect(st.bus); env(c, g, t, a || 0.01, peak, dur); o.start(t); o.stop(t + (a||0.01) + dur + 0.05); return o;
+  }
+  function nz(c, t, dur, peak, type, f, q){ const s = c.createBufferSource(); s.buffer = noise(c); const fl = c.createBiquadFilter(); fl.type = type; fl.frequency.value = f; fl.Q.value = q || 0.8; const g = c.createGain(); s.connect(fl); fl.connect(g); g.connect(st.bus); env(c, g, t, 0.004, peak, dur); s.start(t, Math.random()*0.5); s.stop(t + dur + 0.05); }
+  const VOICE = {
+    brass: (c, f, t, d)=>{ osc(c, 'sawtooth', f, t, d, 0.05, 0.08, 900); osc(c, 'sawtooth', f, t, d, 0.03, 0.08, 700, 7); },
+    flute: (c, f, t, d)=>{ const o = osc(c, 'sine', f, t, d, 0.06, 0.05); const v = c.createOscillator(), vg = c.createGain(); v.frequency.value = 5.2; vg.gain.value = f*0.012; v.connect(vg); vg.connect(o.frequency); v.start(t); v.stop(t + d + 0.1); nz(c, t, 0.08, 0.012, 'bandpass', f*2, 2); },
+    pluck: (c, f, t, d)=>{ osc(c, 'triangle', f, t, Math.min(d, 0.45), 0.07, 0.003); osc(c, 'sine', f*2, t, 0.18, 0.02, 0.002); },
+  };
+  const PERC = {
+    drum:   (c, t, s, lvl)=>{ if([0, 6, 8, 11].includes(s) || (lvl > 1 && s === 14)){ const o = c.createOscillator(), g = c.createGain(); o.frequency.setValueAtTime(s % 8 ? 110 : 85, t); o.frequency.exponentialRampToValueAtTime(48, t + 0.22); o.connect(g); g.connect(st.bus); env(c, g, t, 0.004, s % 8 ? 0.10 : 0.16, 0.26); o.start(t); o.stop(t + 0.32); nz(c, t, 0.05, 0.03, 'lowpass', 900); } },
+    shaker: (c, t, s, lvl)=>{ if(s % 2 === 0 || lvl > 1) nz(c, t, 0.05, s % 4 === 2 ? 0.035 : 0.018, 'highpass', 6500); if(lvl > 1 && (s === 4 || s === 12)){ nz(c, t, 0.08, 0.05, 'bandpass', 1500, 1.4); nz(c, t + 0.012, 0.06, 0.03, 'bandpass', 1300, 1.4); } },
+    tap:    (c, t, s, lvl)=>{ if(s % 4 === 0) nz(c, t, 0.06, 0.04, 'bandpass', s % 8 ? 2400 : 900, 3); if(lvl > 1 && s % 4 === 2) nz(c, t, 0.03, 0.02, 'highpass', 5000); },
+  };
+  const PAD = {
+    drone: (c, band, deg, t, d)=>{ osc(c, 'sawtooth', freqOf(band, deg, -1), t, d, 0.022, 0.6, 380); osc(c, 'sine', freqOf(band, deg + 4, -1), t, d, 0.016, 0.6); },
+    air:   (c, band, deg, t, d)=>{ [0, 2, 4].forEach(k=> osc(c, 'sine', freqOf(band, deg + k, 0), t, d, 0.012, 0.5)); },
+    reed:  (c, band, deg, t, d)=>{ [0, 2, 4].forEach(k=>{ const f = freqOf(band, deg + k, 0); osc(c, 'sawtooth', f, t, d, 0.008, 0.25, 1400, -6); osc(c, 'sawtooth', f, t, d, 0.008, 0.25, 1400, 6); }); },
+  };
+  function intensity(){
+    const m = typeof matchState !== 'undefined' ? matchState : null; if(!m) return 0;
+    let lo = 1; try{ [1, 2].forEach(p=>{ const h = m.players[p].hq; lo = Math.min(lo, h.hp / h.maxHp); }); }catch(e){}
+    if((typeof suddenDeathSky === 'function' && suddenDeathSky(m)) || lo < 0.3) return 2;
+    return (m.round >= 5 || lo < 0.6) ? 1 : 0;
+  }
+  function stillWanted(){ const m = typeof matchState !== 'undefined' ? matchState : null; return !!(m && !m.over && !m.testKit && currentTab === 'play' && battleMusicOn() && vol() > 0); }
+  function scheduleBar(c, t0){
+    const band = st.band, lvl = st.lvl = intensity(), spb = 60 / (band.bpm * (lvl > 1 ? 1.06 : 1)), step = spb / 4;
+    const deg = band.prog[st.bar % band.prog.length], barLen = step*16;
+    PAD[band.pad](c, band, deg, t0, barLen*0.95);
+    let last = deg + 7;
+    for(let s = 0; s < 16; s++){
+      const t = t0 + s*step + (s % 2 ? step*0.08 : 0); // a touch of swing
+      if(band.perc && lvl >= 1) PERC[band.perc](c, t, s, lvl);
+      if(lvl >= 2 && s % 4 === 0) osc(c, band.pad === 'air' ? 'triangle' : 'sine', freqOf(band, deg + (s === 8 ? 4 : 0), -2), t, step*3, 0.07, 0.01, 600);
+      const grid = band.lead === 'pluck' ? 2 : lvl >= 2 ? 2 : 4;
+      const chance = band.lead === 'pluck' ? 0.75 : [0.35, 0.5, 0.7][lvl];
+      if(s % grid === 0 && Math.random() < chance){
+        last = Math.max(deg + 3, Math.min(deg + 11, last + pick([-2, -1, -1, 1, 1, 2, 0, 4 - (last - deg) % 7])));
+        if(band.lead === 'pluck' && s % 4 === 2) last = deg + pick([2, 4, 7]);
+        VOICE[band.lead](c, freqOf(band, last, 0), t, step*grid*(band.lead === 'pluck' ? 0.9 : 1.6));
+      }
+    }
+    st.bar++;
+    return t0 + barLen;
+  }
+  function tick(){
+    if(!st) return;
+    const c = C(); if(!c || c.state !== 'running') return;
+    if(!stillWanted()){ stop(); return; }
+    if(document.hidden) return;
+    while(st.next < c.currentTime + 0.6) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
+  }
+  function play(people){
+    if(!battleMusicOn() || vol() <= 0) return;
+    const band = BANDS[people] || BANDS.folk;
+    if(st && st.band === band) return;
+    const c = C(); if(!c) return;
+    if(st) stop(true);
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 2.5); bus.connect(out(c));
+    master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.2);
+    st = {band, bus, bar:0, lvl:0, next: c.currentTime + 0.3, timer: setInterval(tick, 150)};
+  }
+  function stop(quick){
+    if(!st) return; const s = st; st = null; clearInterval(s.timer);
+    const c = C(); if(!c) return;
+    try{ s.bus.gain.cancelScheduledValues(c.currentTime); s.bus.gain.setValueAtTime(Math.max(0.0001, s.bus.gain.value), c.currentTime); s.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + (quick ? 0.4 : 1.8)); }catch(e){}
+    setTimeout(()=>{ try{ s.bus.disconnect(); }catch(e){} }, quick ? 600 : 2200);
+  }
+  return {
+    play, stop,
+    playing(){ return st ? Object.keys(BANDS).find(k=> BANDS[k] === st.band) : null; },
+    level(){ return st ? st.lvl : null; },
+    setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.1); if(v <= 0) stop(); },
+    duck(keep, holdMs){ const c = C(); if(!master || !c || !st) return; const t = c.currentTime, g = master.gain; try{ g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); }catch(e){} g.setTargetAtTime(vol()*LEVEL*(keep == null ? 0.5 : keep), t, 0.02); g.setTargetAtTime(vol()*LEVEL, t + (holdMs || 300)/1000, 0.25); },
+  };
+})();
+function rivalPeopleForMatch(m){
+  try{
+    if(m.conquestNode){ const map = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), node = map && map.nodes.find(n=> n.key === m.conquestNode.nodeId); if(node) return node.people || peopleOfDeck(node.deck); }
+    const p = m.players[2], counts = {};
+    (p.deck||[]).concat((p.hand||[]).map(c=> c.defId)).forEach(id=>{ const k = typeof id === 'string' ? id : id && id.defId; if(k) counts[k] = (counts[k]||0) + 1; });
+    return peopleOfDeck(counts);
+  }catch(e){ return 'folk'; }
+}
 function ambienceKindForMatch(m){
   if(typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') return 11;
   try{ if(matchIsRainy(m)) return 11; }catch(e){}
@@ -7062,6 +7183,7 @@ function renderPlay(){
                 <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
                 <input type="range" id="musicVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Music volume">
               </div>
+              <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectPlaySub" aria-label="Battle music"></select></div>
               <div class="settings-row">
                 <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValPlaySub">100%</span></div>
                 <input type="range" id="sfxVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -12914,6 +13036,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
         <input type="range" id="musicVolumeSliderHud" min="0" max="100" step="1" aria-label="Music volume">
       </div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectHud" aria-label="Battle music"></select></div>
       <div class="settings-row">
         <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValHud">100%</span></div>
         <input type="range" id="sfxVolumeSliderHud" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -13709,9 +13832,11 @@ function wireDropZones(){
   wireFacingHover();
   try{ mountBattleWeather(matchState); }catch(e){}
   if(!lightningTimer) try{ scheduleLightning(matchState); }catch(e){}
+  try{ mountCaveLamp(matchState); }catch(e){}
   try{ maybeDeckShuffle(matchState); }catch(e){}
   if(matchState && !matchState._pixRevealed){ matchState._pixRevealed = true; if(!document.querySelector('.vs-opener, .vs-screen')) try{ pixelReveal(); }catch(e){} }
   try{ Ambience.play(ambienceKindForMatch(matchState)); }catch(e){}
+  try{ if(matchState && !matchState.over && !matchState.testKit) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){}
   const logHud = document.getElementById('battleLogHudBtn');
   if(logHud) logHud.addEventListener('click', ()=>{ const t = document.getElementById('battleLogToggle'); if(t) t.click(); });
   const battleLogToggle = document.getElementById('battleLogToggle');
@@ -16174,6 +16299,8 @@ function updateCardWaitDisplay(uid, waitRemaining){
   }
   const numEl = badge.querySelector('.wait-num');
   if(numEl) numEl.textContent = waitRemaining;
+  // Hourglass flip (2026-10-07, effects A7): a small ⏳ turns over above the badge on each tick.
+  if(fxAtLeast('low')){ const g = document.createElement('span'); g.className = 'wait-flip'; g.textContent = '⏳'; g.setAttribute('aria-hidden', 'true'); badge.appendChild(g); setTimeout(()=> g.remove(), 760); }
   badge.classList.remove('tick-pulse'); void badge.offsetWidth; // restart the animation if it's already mid-pulse
   badge.classList.add('tick-pulse');
   setTimeout(()=> badge.classList.remove('tick-pulse'), 420);
@@ -22314,6 +22441,26 @@ function matchIsRainy(m){
 // thunder rolls in half a second later. Gentle on purpose (two flickers, low peak, none with
 // reduced motion) so it never becomes a strobe.
 var lightningTimer = null; // var: renderMatchUI can run (match resume) before this line executes
+// Cave lamp (2026-10-07, effects G5): in cave fights the dark closes in away from your pointer, so
+// the cards outside the lamplight go dim. One overlay above the board; the light centre follows the
+// pointer (one style write per frame at most) and drifts back to the middle when it leaves. Medium
+// effects and up; a light dim (about 30%) so every card stays readable.
+let caveLampMove = null;
+function mountCaveLamp(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const want = !!(m && !m.testKit && battleWeatherKind(m) === 3 && fxAtLeast('med'));
+  let el = bf.querySelector(':scope > .bf-cave-lamp');
+  if(!want){ if(el) el.remove(); return; }
+  if(el) return;
+  el = document.createElement('div'); el.className = 'bf-cave-lamp'; el.setAttribute('aria-hidden', 'true'); bf.appendChild(el);
+  if(caveLampMove) document.removeEventListener('pointermove', caveLampMove);
+  let raf = 0, px = 0, py = 0;
+  caveLampMove = ev=>{ px = ev.clientX; py = ev.clientY; if(raf) return; raf = requestAnimationFrame(()=>{ raf = 0;
+    const lamp = document.querySelector('#battlefieldEl > .bf-cave-lamp'); if(!lamp){ document.removeEventListener('pointermove', caveLampMove); caveLampMove = null; return; }
+    const r = lamp.getBoundingClientRect(); if(!r.width) return;
+    lamp.style.setProperty('--lx', ((px - r.left)/r.width*100).toFixed(1) + '%'); lamp.style.setProperty('--ly', ((py - r.top)/r.height*100).toFixed(1) + '%'); }); };
+  document.addEventListener('pointermove', caveLampMove, {passive:true});
+}
 function scheduleLightning(m){
   clearTimeout(lightningTimer); lightningTimer = null;
   if(!m || m.over || m.testKit) return;
@@ -22413,6 +22560,13 @@ function wireSettingsButton(idSuffix){
     shSel.innerHTML = can ? `<option value="on">On</option><option value="off">Off</option>` : `<option value="off">Not supported on this device</option>`;
     shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
     shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
+  }
+  const bmSel = document.getElementById('battleMusicSelect'+idSuffix);
+  if(bmSel){
+    bmSel.innerHTML = '<option value="on">On</option><option value="off">Off</option>';
+    bmSel.value = battleMusicOn() ? 'on' : 'off';
+    bmSel.addEventListener('change', ()=>{ try{ localStorage.setItem(BATTLE_MUSIC_KEY, bmSel.value); }catch(e){}
+      if(bmSel.value === 'off') BattleMusic.stop(); else if(matchState && !matchState.over) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); });
   }
   const fxSel = document.getElementById('fxSelect'+idSuffix);
   if(fxSel){

@@ -18,6 +18,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Skirmish editor: Gold and Dust rewards per skirmish. Card editor: rarely used sections tucked away.
 - Every edit to a Conquest map in one list, with Revert all; the card editor keeps a History you can step back through.
 - Autobattler: watch any fight round by round from its result screen.
+- Battle music: a quiet tune in your rival's style that builds as the fight heats up (Settings → Battle music). Wait ticks flip an hourglass; caves are lit by your lamp.
 
 ## 2026-10-06
 - Master hub: the Master doc, changelog, Effects Lab, Visual Library and Claude's guide as tabs on one page.
