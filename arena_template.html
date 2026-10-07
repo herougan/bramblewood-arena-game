@@ -1278,7 +1278,7 @@
   .pill-empty{font-size:12px; color:var(--ink-muted); font-style:italic;}
   .pill-rm{background:none; border:none; color:var(--ink-muted); cursor:pointer; font-weight:800; font-size:13px; width:18px; height:18px; line-height:1; border-radius:50%; display:flex; align-items:center; justify-content:center; padding:0;}
   .pill-rm:hover{background:var(--danger); color:var(--badge-ink);}
-  .pill-add-row{display:flex; gap:6px; margin-top:6px;}
+  .pill-add-row{display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;} .pill-add-row select{max-width:100%; min-width:0;}
   /* 2026-09-16 follow-up: deck-size warning is now a removable pill (shown only while the
      deck isn't exactly 20 cards), not a permanent text suffix next to the count. */
   .deck-size-warn-pill{display:inline-flex; align-items:center; background:var(--danger); color:var(--badge-ink); border-radius:999px; padding:2px 10px; font-size:11px; font-weight:800; letter-spacing:.2px; vertical-align:middle;}
@@ -1304,6 +1304,8 @@
   select option{background:var(--surface); color:var(--ink);}
   .pill-add-row select{flex:1; padding:5px 7px; font-size:12.5px; border:1px solid var(--surface-border); border-radius:7px; background:var(--surface); color:var(--ink);}
   .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
+  /* 2026-10-07 audit: the card editor's Save/Cancel stay reachable at the bottom of a long form. */
+  #editorOverlay .modal-actions{position:sticky; bottom:-1px; z-index:5; padding:10px 0; background:var(--surface); border-top:1px solid var(--surface-border);}
 
   /* ---- reference page ---- */
   .ref-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px;}
@@ -2124,6 +2126,24 @@
   @keyframes pageShade{from{opacity:1;} to{opacity:0;}}
   /* Pixel reveal (2026-10-07): see pixelReveal(). One canvas pixel per cell, scaled up without smoothing. */
   .pixel-reveal{position:fixed; inset:0; width:100vw; height:100vh; z-index:7900; pointer-events:none; image-rendering:pixelated; image-rendering:crisp-edges;}
+  /* Account facts + About you (2026-10-07). */
+  .account-facts{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:8px 0; font-size:14px;}
+  .account-facts dt{color:var(--ink-muted); font-weight:700;} .account-facts dd{margin:0; word-break:break-all;}
+  .admin-badge{display:inline-block; padding:1px 8px; border-radius:999px; background:color-mix(in srgb, var(--accent) 18%, var(--surface)); border:1px solid var(--accent); font-weight:800; font-size:12px;}
+  .about-you summary{cursor:pointer; list-style:none;} .about-you summary::-webkit-details-marker{display:none;}
+  .about-you summary h3{display:inline-flex; gap:8px; align-items:baseline; margin:0;} .about-you summary h3 small{font-size:12px; font-weight:600; color:var(--ink-muted);}
+  .ay-row{display:flex; align-items:center; gap:10px; margin:8px 0; flex-wrap:wrap;} .ay-row > span{min-width:70px; font-weight:700;}
+  .ay-row input, .ay-row select{font:inherit; padding:6px 8px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
+  .ay-row input{flex:1; min-width:160px;}
+  /* Effects quality (2026-10-07): see fxLevel(). Ambient, decorative animations step down by level. */
+  /* Specificity stays at one class (everything inside :where), so only the ambient idle/tremble
+     loops are cancelled — strike, dance and other real card animations still win. */
+  :where(html[data-fx="med"], html[data-fx="low"], html[data-fx="none"]) :where(#appWrap.in-match .board-card) .card-tile{animation:none;}
+  :where(html[data-fx="med"]) :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
+  html[data-fx="med"] .board-card .heat-haze, html[data-fx="low"] .board-card .heat-haze, html[data-fx="none"] .board-card .heat-haze{display:none;}
+  html[data-fx="low"] .board-card.is-frozen::after, html[data-fx="none"] .board-card.is-frozen::after{animation:none;}
+  html[data-fx="low"] .castle-dust, html[data-fx="none"] .castle-dust, html[data-fx="low"] .battlefield.sudden-death::before, html[data-fx="none"] .battlefield.sudden-death::before{animation:none;}
+  html[data-fx="none"] .card-tile .rarity-band, html[data-fx="none"] .card-tile.is-holo, html[data-fx="none"] .board-card.is-leader::before, html[data-fx="none"] .card-tile.rarity-tier-top::before{animation:none !important;}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -4798,13 +4818,9 @@
   .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden; contain:strict;}
   .leaf-sweep .ls-veil{position:absolute; top:0; bottom:0; left:0; width:60%; will-change:transform, opacity;
     background:linear-gradient(100deg, rgba(58,80,40,0) 0%, rgba(58,80,40,.32) 50%, rgba(58,80,40,0) 100%);
-    animation:lsVeil 1.1s cubic-bezier(.4,.1,.4,1) forwards;}
+    animation:lsVeil 1.6s cubic-bezier(.4,.1,.4,1) forwards;}
   @keyframes lsVeil{from{transform:translateX(-100%); opacity:0;} 20%{opacity:1;} to{transform:translateX(180%); opacity:0;}}
-  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; will-change:transform, opacity; opacity:0;
-    text-shadow:0 3px 3px rgba(0,0,0,.25); animation-name:lsLeaf; animation-timing-function:cubic-bezier(.35,.1,.45,1); animation-fill-mode:forwards;}
-  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 12%{opacity:1;}
-    50%{transform:translate(55vw, calc(var(--dy) * .5 - 3vh)) rotate(calc(var(--r) + 140deg));}
-    88%{opacity:.95;} 100%{transform:translate(calc(100vw + 120px), var(--dy)) rotate(calc(var(--r) + 300deg)); opacity:0;}}
+  .leaf-sweep i{position:absolute; left:0; top:0; font-style:normal; line-height:1; will-change:transform, opacity; opacity:0; text-shadow:0 3px 3px rgba(0,0,0,.25);}
   @media (prefers-reduced-motion: reduce){ .leaf-sweep{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
@@ -5653,6 +5669,11 @@
             <div class="settings-row">
               <div class="settings-row-label"><span>✨ Atmosphere</span></div>
               <select id="atmosphereSelect" aria-label="Atmosphere"></select>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-label"><span>🎆 Effects</span></div>
+              <select id="fxSelect" aria-label="Effects quality"></select>
+              <div class="settings-row-note">Lower this if the game feels slow. Gameplay feedback always stays.</div>
             </div>
             <div class="settings-row">
               <div class="settings-row-label"><span>🌊 Shader effects</span></div>

@@ -1278,7 +1278,7 @@
   .pill-empty{font-size:12px; color:var(--ink-muted); font-style:italic;}
   .pill-rm{background:none; border:none; color:var(--ink-muted); cursor:pointer; font-weight:800; font-size:13px; width:18px; height:18px; line-height:1; border-radius:50%; display:flex; align-items:center; justify-content:center; padding:0;}
   .pill-rm:hover{background:var(--danger); color:var(--badge-ink);}
-  .pill-add-row{display:flex; gap:6px; margin-top:6px;}
+  .pill-add-row{display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;} .pill-add-row select{max-width:100%; min-width:0;}
   /* 2026-09-16 follow-up: deck-size warning is now a removable pill (shown only while the
      deck isn't exactly 20 cards), not a permanent text suffix next to the count. */
   .deck-size-warn-pill{display:inline-flex; align-items:center; background:var(--danger); color:var(--badge-ink); border-radius:999px; padding:2px 10px; font-size:11px; font-weight:800; letter-spacing:.2px; vertical-align:middle;}
@@ -1304,6 +1304,8 @@
   select option{background:var(--surface); color:var(--ink);}
   .pill-add-row select{flex:1; padding:5px 7px; font-size:12.5px; border:1px solid var(--surface-border); border-radius:7px; background:var(--surface); color:var(--ink);}
   .modal-actions{display:flex; gap:10px; justify-content:flex-end; margin-top:18px;}
+  /* 2026-10-07 audit: the card editor's Save/Cancel stay reachable at the bottom of a long form. */
+  #editorOverlay .modal-actions{position:sticky; bottom:-1px; z-index:5; padding:10px 0; background:var(--surface); border-top:1px solid var(--surface-border);}
 
   /* ---- reference page ---- */
   .ref-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:12px;}
@@ -2124,6 +2126,24 @@
   @keyframes pageShade{from{opacity:1;} to{opacity:0;}}
   /* Pixel reveal (2026-10-07): see pixelReveal(). One canvas pixel per cell, scaled up without smoothing. */
   .pixel-reveal{position:fixed; inset:0; width:100vw; height:100vh; z-index:7900; pointer-events:none; image-rendering:pixelated; image-rendering:crisp-edges;}
+  /* Account facts + About you (2026-10-07). */
+  .account-facts{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; margin:8px 0; font-size:14px;}
+  .account-facts dt{color:var(--ink-muted); font-weight:700;} .account-facts dd{margin:0; word-break:break-all;}
+  .admin-badge{display:inline-block; padding:1px 8px; border-radius:999px; background:color-mix(in srgb, var(--accent) 18%, var(--surface)); border:1px solid var(--accent); font-weight:800; font-size:12px;}
+  .about-you summary{cursor:pointer; list-style:none;} .about-you summary::-webkit-details-marker{display:none;}
+  .about-you summary h3{display:inline-flex; gap:8px; align-items:baseline; margin:0;} .about-you summary h3 small{font-size:12px; font-weight:600; color:var(--ink-muted);}
+  .ay-row{display:flex; align-items:center; gap:10px; margin:8px 0; flex-wrap:wrap;} .ay-row > span{min-width:70px; font-weight:700;}
+  .ay-row input, .ay-row select{font:inherit; padding:6px 8px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
+  .ay-row input{flex:1; min-width:160px;}
+  /* Effects quality (2026-10-07): see fxLevel(). Ambient, decorative animations step down by level. */
+  /* Specificity stays at one class (everything inside :where), so only the ambient idle/tremble
+     loops are cancelled — strike, dance and other real card animations still win. */
+  :where(html[data-fx="med"], html[data-fx="low"], html[data-fx="none"]) :where(#appWrap.in-match .board-card) .card-tile{animation:none;}
+  :where(html[data-fx="med"]) :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
+  html[data-fx="med"] .board-card .heat-haze, html[data-fx="low"] .board-card .heat-haze, html[data-fx="none"] .board-card .heat-haze{display:none;}
+  html[data-fx="low"] .board-card.is-frozen::after, html[data-fx="none"] .board-card.is-frozen::after{animation:none;}
+  html[data-fx="low"] .castle-dust, html[data-fx="none"] .castle-dust, html[data-fx="low"] .battlefield.sudden-death::before, html[data-fx="none"] .battlefield.sudden-death::before{animation:none;}
+  html[data-fx="none"] .card-tile .rarity-band, html[data-fx="none"] .card-tile.is-holo, html[data-fx="none"] .board-card.is-leader::before, html[data-fx="none"] .card-tile.rarity-tier-top::before{animation:none !important;}
   .castle-dust{position:absolute; z-index:30; width:26px; height:26px; margin:-13px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(214,196,170,.85) 0%, rgba(160,140,115,.45) 45%, transparent 70%); opacity:0; animation:castleDust 1.1s ease-out forwards;}
   @keyframes castleDust{0%{opacity:0; transform:translateY(0) scale(.4);} 20%{opacity:.9;} 100%{opacity:0; transform:translateY(-38px) scale(2.2);}}
@@ -4808,13 +4828,9 @@
   .leaf-sweep{position:fixed; inset:0; z-index:8000; pointer-events:none; overflow:hidden; contain:strict;}
   .leaf-sweep .ls-veil{position:absolute; top:0; bottom:0; left:0; width:60%; will-change:transform, opacity;
     background:linear-gradient(100deg, rgba(58,80,40,0) 0%, rgba(58,80,40,.32) 50%, rgba(58,80,40,0) 100%);
-    animation:lsVeil 1.1s cubic-bezier(.4,.1,.4,1) forwards;}
+    animation:lsVeil 1.6s cubic-bezier(.4,.1,.4,1) forwards;}
   @keyframes lsVeil{from{transform:translateX(-100%); opacity:0;} 20%{opacity:1;} to{transform:translateX(180%); opacity:0;}}
-  .leaf-sweep i{position:absolute; left:-60px; font-style:normal; line-height:1; will-change:transform, opacity; opacity:0;
-    text-shadow:0 3px 3px rgba(0,0,0,.25); animation-name:lsLeaf; animation-timing-function:cubic-bezier(.35,.1,.45,1); animation-fill-mode:forwards;}
-  @keyframes lsLeaf{0%{transform:translate(0,0) rotate(var(--r)); opacity:0;} 12%{opacity:1;}
-    50%{transform:translate(55vw, calc(var(--dy) * .5 - 3vh)) rotate(calc(var(--r) + 140deg));}
-    88%{opacity:.95;} 100%{transform:translate(calc(100vw + 120px), var(--dy)) rotate(calc(var(--r) + 300deg)); opacity:0;}}
+  .leaf-sweep i{position:absolute; left:0; top:0; font-style:normal; line-height:1; will-change:transform, opacity; opacity:0; text-shadow:0 3px 3px rgba(0,0,0,.25);}
   @media (prefers-reduced-motion: reduce){ .leaf-sweep{display:none;} }
   /* Deck showcase (2026-10-04) — castle + leader up front, then the deck's signature */
   .deck-showcase{display:flex; gap:14px; align-items:stretch; margin:10px 0 12px;}
@@ -5663,6 +5679,11 @@
             <div class="settings-row">
               <div class="settings-row-label"><span>✨ Atmosphere</span></div>
               <select id="atmosphereSelect" aria-label="Atmosphere"></select>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-label"><span>🎆 Effects</span></div>
+              <select id="fxSelect" aria-label="Effects quality"></select>
+              <div class="settings-row-note">Lower this if the game feels slow. Gameplay feedback always stays.</div>
             </div>
             <div class="settings-row">
               <div class="settings-row-label"><span>🌊 Shader effects</span></div>
@@ -12036,6 +12057,7 @@ async function refreshCloudCardAdmin(){
   if(!sbClient || !isSignedIn()) return;
   try{ const { data, error } = await sbClient.rpc('is_app_admin'); cloudCardAdmin = !error && data === true; }catch(e){}
   try{ if(document.getElementById('view-admin')) renderAdmin(); }catch(e){}
+  try{ if(cloudCardAdmin && currentTab==='profile') renderProfile(); }catch(e){}
 }
 // Returns true when the write landed in the cloud; false means "keep it local" (with a toast).
 async function cloudWriteCardOverride(id, row){
@@ -12061,10 +12083,11 @@ async function saveCard(def){
     persistLocalCardOverlay();
     onCardsChanged();
     await logTxn({action, cardId:def.id, cardName:def.name, icon:def.icon, before, after:def});
-    return;
+    return published;
   }
   await dbHandle.collection('cards').doc(def.id).set(def);
   await logTxn({action, cardId:def.id, cardName:def.name, icon:def.icon, before, after:def});
+  return true;
 }
 async function deleteCustomCard(id){
   const snapshot = getCardDefs()[id] || null;
@@ -13019,10 +13042,38 @@ function codexShell(){
   </div>
   <div id="codexBody"></div>`;
 }
+// Effects quality (2026-10-07, user: "The effects are getting laggy... put a gfx setting in settings
+// to turn off some of the effects? maybe Effects: None - Low - Med - High"). One level gates every
+// decorative effect; gameplay feedback (damage numbers, hit flashes, deaths) always stays.
+//   High — everything.   Medium — no idle breathing, heat haze, drag sparkles or lightning flicker.
+//   Low — also no shaders, floating motes or match flourishes (shuffle, draw flip, parade, throne,
+//         pixel reveal, page turn, feathers, shatter); 5 leaves on page changes.
+//   None — also no page-change leaves and no ambient card shimmer anywhere.
+// Default: High; Medium on a low-power device; Low with reduced motion. Shaders keep their own
+// switch (and low-power default) unless you pick Low or None here, which turns them off too.
+var FX_KEY = 'bramblewood_fx_level', FX_ORDER = ['none','low','med','high'];
+function fxLevel(){
+  let v = null; try{ v = localStorage.getItem(FX_KEY); }catch(e){}
+  if(FX_ORDER.includes(v)) return v;
+  const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.connection && navigator.connection.saveData);
+  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return reduce ? 'low' : lowPower ? 'med' : 'high';
+}
+function fxExplicit(){ try{ return FX_ORDER.includes(localStorage.getItem(FX_KEY)); }catch(e){ return false; } }
+function fxAtLeast(l){ return FX_ORDER.indexOf(fxLevel()) >= FX_ORDER.indexOf(l); }
+function applyFxLevel(){ try{ document.documentElement.dataset.fx = fxLevel(); }catch(e){} }
+function setFxLevel(l){
+  try{ localStorage.setItem(FX_KEY, l); }catch(e){}
+  applyFxLevel();
+  try{ if(typeof battleWeather !== 'undefined' && battleWeather && !shadersEnabled()){ battleWeather.destroy(); battleWeather = null; } }catch(e){}
+  try{ if(typeof ShaderM !== 'undefined' && ShaderM && !shadersEnabled() && ShaderM.destroyAll) ShaderM.destroyAll(); }catch(e){}
+}
+applyFxLevel();
 // Page turn (2026-10-07, effects "Coming next"): switching Codex sections turns the page like a
 // book — the new section swings in from the right edge (forward) or the left (back), with a soft
 // shadow sweeping across it. Transform and opacity only, so it stays on the compositor.
 function codexPageTurn(dir){
+  if(!fxAtLeast('low') || fxLevel()==='low') return;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const body = document.getElementById('codexBody'); if(!body) return;
   body.classList.remove('page-turn-fwd', 'page-turn-back'); void body.offsetWidth;
@@ -13033,6 +13084,7 @@ function codexPageTurn(dir){
 // Pixel reveal (2026-10-07, effects "Coming next"): a battle without a versus opener appears through
 // a dissolving grid of dark squares, cleared in a random order, like an old game loading its stage.
 function pixelReveal(ms){
+  if(!fxAtLeast('med')) return;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const cv = document.createElement('canvas'); cv.className = 'pixel-reveal'; cv.setAttribute('aria-hidden', 'true');
   const W = innerWidth, H = innerHeight, CELL = Math.max(28, Math.round(Math.min(W, H) / 16));
@@ -14349,7 +14401,10 @@ function openNodeRewardsEditor(mapId, nodeKey){
   setTimeout(()=>{ const s = document.getElementById('nrSearch'); if(s) s.focus(); }, 50);
 }
 function openCardEditor(defId){
-  editingCard = defId ? JSON.parse(JSON.stringify(getCardDefs()[defId])) : blankCard();
+  // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
+  // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
+  editingCard = defId ? (rawCardDef(defId) || JSON.parse(JSON.stringify(getCardDefs()[defId]))) : blankCard();
+  delete editingCard.level;
   if(!editingCard.effects) editingCard.effects = {};
   if(!Array.isArray(editingCard.effects.triggers)) editingCard.effects.triggers = [];
   // Resist migration (2026-09-16): fold a legacy top-level `resist` array (the old bare
@@ -14373,7 +14428,36 @@ function openCardEditor(defId){
   renderEditor();
 }
 function closeCardEditor(){ editingCard=null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; }
+// 2026-10-07 audit: every "+ Add" / pill click re-renders the whole form from the model, which used to
+// wipe anything typed but not yet saved. The wrapper snapshots the form first and puts the typed
+// values back afterwards (fields by id; skill and trigger rows by position, when rows were only
+// added). It also makes the editor a proper dialog: labelled fields, Escape to close, focus on Name.
+function snapshotEditorForm(overlay){
+  const ids = {}; overlay.querySelectorAll('input[id], select[id], textarea[id]').forEach(el=>{ if(el.id!=='fCardId') ids[el.id] = el.type==='checkbox' ? el.checked : el.value; });
+  const rows = sel=> [...overlay.querySelectorAll(sel)].map(r=> [...r.querySelectorAll('input,select,textarea')].map(el=> el.type==='checkbox' ? el.checked : el.value));
+  return {ids, skills: rows('#skillRows .skill-row'), evergreen: rows('#evergreenRows .skill-row'), triggers: rows('#triggerRows .trigger-row')};
+}
+function restoreEditorForm(overlay, snap){
+  Object.entries(snap.ids).forEach(([id, v])=>{ const el = document.getElementById(id); if(!el || !overlay.contains(el)) return; if(el.type==='checkbox') el.checked = v; else if(el.value !== v && (el.tagName!=='SELECT' || [...el.options].some(o=> o.value===v))) el.value = v; });
+  const put = (sel, list)=>{ const rows = [...overlay.querySelectorAll(sel)]; if(rows.length < list.length) return; list.forEach((vals, i)=>{ const els = [...rows[i].querySelectorAll('input,select,textarea')]; if(els.length !== vals.length) return;
+    els.forEach((el, k)=>{ const v = vals[k]; if(el.type==='checkbox') el.checked = v; else if(el.tagName!=='SELECT' || [...el.options].some(o=> o.value===v)) el.value = v; el.dispatchEvent(new Event('input', {bubbles:true})); }); }); };
+  put('#skillRows .skill-row', snap.skills); put('#evergreenRows .skill-row', snap.evergreen); put('#triggerRows .trigger-row', snap.triggers);
+}
 function renderEditor(){
+  const overlay = document.getElementById('editorOverlay');
+  const first = !overlay.querySelector('.modal');
+  const snap = first ? null : snapshotEditorForm(overlay);
+  const scroll = first ? 0 : ((overlay.querySelector('.modal')||{}).scrollTop || 0);
+  renderEditorInner();
+  if(snap) restoreEditorForm(overlay, snap);
+  const modal = overlay.querySelector('.modal'); if(!modal) return;
+  modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); modal.setAttribute('aria-label', 'Card editor');
+  if(scroll) modal.scrollTop = scroll;
+  modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
+  overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
+  if(first){ const n = document.getElementById('fName'); if(n) setTimeout(()=> n.focus(), 30); }
+}
+function renderEditorInner(){
   const c = editingCard;
   const overlay = document.getElementById('editorOverlay');
   overlay.hidden = false;
@@ -14750,7 +14834,7 @@ function renderEditor(){
     c._skillRows[i] = {key:c._skillRows[i].key, value:[sel.value, v1El ? (Number(v1El.value)||1) : 1]};
     renderEditor();
   }));
-  document.getElementById('addTrigger').addEventListener('click', ()=>{ c.effects.triggers.push({on:'onSpawn', do:'gainGold', amount:1}); renderEditor(); });
+  document.getElementById('addTrigger').addEventListener('click', ()=>{ c.effects.triggers.push({on:'onSpawn', do:'gain', resource:'lumber', amount:1}); renderEditor(); });
   overlay.querySelectorAll('.trigger-row [data-rm]').forEach(b=> b.addEventListener('click', ()=>{ c.effects.triggers.splice(Number(b.getAttribute('data-rm')),1); renderEditor(); }));
   // On-trigger change: re-render (not just retitle) so the optional archetype filter dropdown
   // (see FILTERABLE_TRIGGERS), the sub-picker (see onSub just below), and the Do-action's own
@@ -15253,8 +15337,12 @@ function readEditorFormIntoCard(){
   return c;
 }
 async function onSaveEditor(){
+  // 2026-10-07 audit: validate before anything is written (a failed save used to mint a permanent id).
+  const nameNow = ((document.getElementById('fName')||{}).value||'').trim();
+  if(!nameNow){ showToast('Give the card a name first.', 'warn'); const n = document.getElementById('fName'); if(n) n.focus(); return; }
+  const bad = [...document.querySelectorAll('#editorOverlay .modal input[type="number"]')].find(el=> !el.disabled && el.value !== '' && (Number(el.value) < 0 || !Number.isInteger(Number(el.value))));
+  if(bad){ showToast('Numbers must be whole and 0 or more.', 'warn'); bad.focus(); bad.select && bad.select(); return; }
   const c = readEditorFormIntoCard();
-  if(!c.name){ alert('Give the card a name first.'); return; }
   // 2026-09-25 fix (explicit user report: "i can't lock and unlock cards for the player
   // anymore"): getCardDefs() additively ORs myUnlockedCardIds onto the baseline `locked` flag —
   // by design, a per-player unlock (Shop pack, tutorial reward, etc.) is never supposed to be
@@ -15272,7 +15360,8 @@ async function onSaveEditor(){
     myUnlockedCardIds.delete(c.id);
     saveUnlockedCardIds();
   }
-  await saveCard(c);
+  const published = await saveCard(c);
+  if(!published) showToast(`💾 ${c.name} saved in this browser` + (cloudCardAdmin ? '' : ' — sign in with an admin account to publish it for everyone') + '.', 'ok');
   closeCardEditor();
 }
 /* ============================================================
@@ -17477,6 +17566,7 @@ function renderPlay(){
               </div>
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             </div>
           </div>
@@ -18114,7 +18204,9 @@ const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tut
   'bramblewood_quests_v1','bramblewood_lifetime_stats_v1','bramblewood_avatar','bramblewood_pvp_tickets_v1','bramblewood_ab_run_v1','bramblewood_hero_v1',
   'bramblewood_gauntlet_streak_v1','bramblewood_gauntlet_best_v1','bramblewood_dungeon_run_v1','bramblewood_player_xp_v1','bramblewood_raid_attempts_v1','bramblewood_dialogue_flags_v1','bramblewood_unlocks_v1',
   // 2026-10-03: discoveries (hidden-card sightings), raid part attempts + claims (so a reward can't be claimed twice on two devices), recent opponents
-  'bramblewood_arena_discovered','bramblewood_raid_part_attempts_v1','bramblewood_raid_claims_v1','bramblewood_recent_opponents_v1'];
+  'bramblewood_arena_discovered','bramblewood_raid_part_attempts_v1','bramblewood_raid_claims_v1','bramblewood_recent_opponents_v1',
+  // 2026-10-07: optional personal details (hobby, birthday) — player_progress is readable only by its owner
+  'bramblewood_personal_v1'];
 // Keys merged (union) on pull instead of overwritten, because both devices may have added to them.
 const PROGRESS_MERGE_KEYS = {
   'bramblewood_arena_discovered': (a,b)=> JSON.stringify(Array.from(new Set([...(JSON.parse(a||'[]')||[]), ...(JSON.parse(b||'[]')||[])]))),
@@ -18381,7 +18473,7 @@ function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some
 function addSkirmishToMap(mapId){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); if(!map) return;
   const e = nodePatchFor(mapId); e.added = e.added || [];
-  let n = 1; while(map.nodes.some(x=> x.key===`${mapId}-c${n}`)) n++;
+  let n = 1; const retired = e.retired || []; while(map.nodes.some(x=> x.key===`${mapId}-c${n}`) || retired.includes(`${mapId}-c${n}`)) n++; // never reuse a deleted key (its progress/layout would carry over)
   const last = map.nodes.filter(x=> x.kind!=='tutorial').slice(-1)[0];
   const node = {key:`${mapId}-c${n}`, kind:'skirmish', name:'New Skirmish', icon:'⚔️', hqHp:30, flavor:'', deck: Object.assign({}, (last && last.deck) || {'otter-centurion':6}), requires: last ? [last.key] : []};
   e.added.push(node); persistNodeEdits(); applyNodeEdits();
@@ -18413,13 +18505,14 @@ function simulateSkirmishVsMyDeck(node, n){
   }
   return {wins, losses, draws, n, avgRounds: rounds/n, avgCastleLeft: wins ? castleLeft/wins : 0};
 }
-function openSkirmishEditor(mapId, nodeKey){
+let pendingSkirmishReopen = null; // a Test fight returns you to the editor with your unsaved draft (2026-10-07 audit)
+function openSkirmishEditor(mapId, nodeKey, draftOverride){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); const node = map && map.nodes.find(n=> n.key===nodeKey); if(!node) return;
   let overlay = document.getElementById('skirmishEditorOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'skirmishEditorOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
-  const draft = JSON.parse(JSON.stringify(node));
+  const draft = JSON.parse(JSON.stringify(draftOverride || node));
   draft.deck = draft.deck || {};
-  let q = '', simText = '', dirty = false;
+  let q = '', simText = '', dirty = !!draftOverride;
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
   const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(cur||'')===String(v)?'selected':''}>${escapeHtml(label)}</option>`;
   const render = ()=>{
@@ -18433,7 +18526,7 @@ function openSkirmishEditor(mapId, nodeKey){
       <div class="se-grid">
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
-        <label>Kind<select id="seKind">${SKIRMISH_KINDS.map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
+        <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
         <label>Castle HP<input id="seHp" type="number" min="1" max="9999" value="${draft.hqHp||30}"></label>
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
         <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Gravity; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
@@ -18460,7 +18553,7 @@ function openSkirmishEditor(mapId, nodeKey){
     overlay.hidden = false;
     const read = ()=>{
       const v = id=> (document.getElementById(id)||{}).value;
-      draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; draft.kind = v('seKind');
+      draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.hqHp = Math.max(1, Math.min(9999, Number(v('seHp'))||30)); draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
@@ -18475,6 +18568,11 @@ function openSkirmishEditor(mapId, nodeKey){
     document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
       simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% castle left when you win` : ''}.`; render(); };
     document.getElementById('seSave').onclick = async ()=>{
+      // 2026-10-07 audit: say so instead of silently keeping the old name or defaulting the HP.
+      const rawName = ((document.getElementById('seName')||{}).value||'').trim(), rawHp = Number((document.getElementById('seHp')||{}).value);
+      if(!rawName){ showToast('Give the skirmish a name first.', 'warn'); document.getElementById('seName').focus(); return; }
+      if(!(rawHp >= 1)){ showToast('Castle Health must be 1 or more.', 'warn'); document.getElementById('seHp').focus(); return; }
+      if(draft.kind !== 'tutorial' && !Object.keys(draft.deck||{}).length){ showToast('The enemy deck is empty — add at least one card.', 'warn'); return; }
       read();
       const e = nodePatchFor(mapId);
       if(isAddedNode(mapId, draft.key)){ e.added = e.added.map(n=> n.key===draft.key ? JSON.parse(JSON.stringify(draft)) : n); }
@@ -18498,15 +18596,21 @@ function openSkirmishEditor(mapId, nodeKey){
       playSubTab = 'conquest'; switchTab('play');
       const ok = startConquestMatch(mapId, draft.key, {skipEnergyCost:true});
       map.nodes[idx] = saved;
-      if(ok && matchState) matchState.adminTest = true;
+      if(ok && matchState){ matchState.adminTest = true; matchState.reopenSkirmishEditor = {mapId, key: draft.key, draft: JSON.parse(JSON.stringify(draft))}; }
     };
     const reset = document.getElementById('seReset');
     if(reset) reset.onclick = async ()=>{ if(!confirm('Drop every edit to this skirmish?')) return; const e = nodePatchFor(mapId); delete e.patches[draft.key]; persistNodeEdits(); applyNodeEdits(); await publishNodeEdits(mapId); showToast('↺ Skirmish reset.', 'ok'); close(); };
     const del = document.getElementById('seDelete');
-    if(del) del.onclick = async ()=>{ if(!confirm('Delete this added skirmish?')) return; const e = nodePatchFor(mapId); e.added = (e.added||[]).filter(n=> n.key!==draft.key); delete e.patches[draft.key]; persistNodeEdits(); applyNodeEdits(); await publishNodeEdits(mapId); conquestSelectedNodeKey = null; showToast('🗑 Skirmish deleted.', 'ok'); close(); };
+    if(del) del.onclick = async ()=>{ if(!confirm('Delete this added skirmish?')) return; const e = nodePatchFor(mapId); e.added = (e.added||[]).filter(n=> n.key!==draft.key); delete e.patches[draft.key];
+      // 2026-10-07 audit: anything that required the deleted node now requires what it required, so nothing is locked forever.
+      const inherit = draft.requires || []; const fix = n=>{ if((n.requires||[]).includes(draft.key)) n.requires = [...new Set(n.requires.filter(k=> k!==draft.key).concat(inherit))]; };
+      (e.added||[]).forEach(fix); map.nodes.forEach(n=>{ if(n.key!==draft.key && (n.requires||[]).includes(draft.key) && !isAddedNode(mapId, n.key)){ const pt = e.patches[n.key] = e.patches[n.key] || {}; pt.requires = [...new Set(n.requires.filter(k=> k!==draft.key).concat(inherit))]; } });
+      e.retired = [...new Set((e.retired||[]).concat(draft.key))]; persistNodeEdits(); applyNodeEdits(); await publishNodeEdits(mapId); conquestSelectedNodeKey = null; showToast('🗑 Skirmish deleted.', 'ok'); close(); };
   };
   overlay.onclick = ev=>{ if(ev.target===overlay){ if(dirty && !confirm('Close without saving your changes?')) return; close(); } };
+  overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(dirty && !confirm('Close without saving your changes?')) return; close(); } };
   render();
+  setTimeout(()=>{ const f = document.getElementById('seName'); if(f) f.focus(); }, 30);
 }
 // ---- Player level (2026-10-03, explicit: "You have a level... don't have a cap. The level xp
 // requirement should be exponential. Quests, progress and thresholds give a huge amount of xp - so
@@ -20101,6 +20205,7 @@ function renderConquestSubTab(body){
     if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
   }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
+  if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
   try{ mountMapShader(document.getElementById('conquestCanvas'), map.id); }catch(e){}
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(ak == null ? 0 : ak); }catch(e){}
@@ -23263,6 +23368,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   });
 }
 function renderMatchUI(){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const root = document.getElementById('view-play');
   // Task #94 (2026-09-16): a much bigger, near-full-screen battleground while a match is
   // actually on screen — see the #appWrap.in-match CSS in the template.
@@ -24179,6 +24285,7 @@ function spawnEntranceSettleMs(count, mult){
   return Math.round((staggerTailSec + perCardTweenSec) * 1000);
 }
 function renderBoard(opts){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   opts = opts || {};
   const m = matchState; if(!m) return;
   // A full rebuild below (row.innerHTML = ...) would silently orphan any placement-preview
@@ -24702,6 +24809,7 @@ function renderBoard(opts){
   // once released.
   function releaseNewElRects(waited){
     if(!newElRects) return;
+    try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
     // 2026-10-06 (snaps flake, Map 2): if another card in the same row is still pinned by its own
     // entrance, releasing this one now measures its slot with that sibling out of flow — it glides
     // to the wrong place and jumps when the sibling lands. Wait (a frame at a time, up to ~1.2 s)
@@ -25684,6 +25792,7 @@ function drawFlipNewHandCards(m, strip){
   drawFlipVfx(fresh, deck, opening ? 0.9 : 0);
 }
 function drawFlipVfx(cards, deck, baseDelay){
+  if(!fxAtLeast('med')) return;
   const d = deck.getBoundingClientRect();
   cards.forEach((el, i)=>{
     const r = el.getBoundingClientRect(); if(!r.width) return;
@@ -25698,6 +25807,7 @@ function drawFlipVfx(cards, deck, baseDelay){
   });
 }
 function renderHand(){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
   const strip = document.getElementById('handStrip'); if(!strip) return;
@@ -26486,6 +26596,7 @@ function bleedOutVfx(el, ms, tone){
 // lands sends a soft blue ring across the shader floor.
 const WATER_KINDS = new Set([1, 6, 11]);
 function waterRippleAt(el){
+  if(!fxAtLeast('med')) return;
   try{
     if(!el || !battleWeather || !battleWeather.wave || !WATER_KINDS.has(battleWeather.kindId)) return;
     const bf = document.getElementById('battlefieldEl'); if(!bf) return;
@@ -26498,7 +26609,7 @@ function waterRippleAt(el){
 function leaderThroneVfx(uid){
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
   try{ SoundKit.leaderFanfare(); }catch(e){}
-  if(!hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   const beam = document.createElement('div'); beam.className = 'throne-beam'; beam.setAttribute('aria-hidden','true');
   beam.style.cssText = `left:${r.left + r.width/2}px; top:${r.top + r.height}px; width:${r.width*1.3}px;`;
@@ -26517,6 +26628,7 @@ function leaderThroneVfx(uid){
 // Deck shuffle (2026-10-06, effects "Coming next"): at the start of a match both decks split and
 // riffle together twice. Waits for the versus opener to close so it's actually seen.
 function maybeDeckShuffle(m){
+  if(m && !fxAtLeast('med')){ m._deckShuffled = true; return; }
   if(!m || m._deckShuffled || m._shufflePending || (m.round||1) > 1) return;
   if(document.querySelector('.vs-opener, .vs-screen')){ m._shufflePending = true; setTimeout(()=>{ m._shufflePending = false; if(m === matchState) maybeDeckShuffle(m); }, 300); return; }
   m._deckShuffled = true;
@@ -26545,6 +26657,7 @@ function glitchVfx(el){
 }
 // Feather burst (2026-10-06): a flying unit sheds a few feathers when it's hit.
 function featherBurst(el){
+  if(!fxAtLeast('med')) return;
   if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   for(let i = 0; i < 5; i++){
@@ -26559,6 +26672,7 @@ function featherBurst(el){
 // Pixel shatter (2026-10-06): a token (summoned, not a real creature) breaks into a grid of squares
 // that scatter and fade. Each square is a clipped clone of the tile, so the art itself shatters.
 function pixelShatterVfx(el, ms){
+  if(!fxAtLeast('med')) return false;
   if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile'); if(!t) return false;
   const r = t.getBoundingClientRect(); if(!r.width) return false;
@@ -26575,6 +26689,7 @@ function pixelShatterVfx(el, ms){
   return true;
 }
 function deathVfx(uid){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const el = boardCardEl(uid);
   if(!el) return;
   const skull = document.createElement('div');
@@ -26636,9 +26751,18 @@ function glideFromRect(el, from){
 (function boardSnapGuard(){
   if(typeof window === 'undefined' || !window.requestAnimationFrame) return;
   let last = new WeakMap();
+  // Perf (2026-10-07): measuring every card every frame forces a style flush, which made idle
+  // ambient animations (breathing, tremble) cost main-thread time on every frame. Rows only
+  // change around renders and pin releases, so the guard now watches for ~2.5 s after any of those
+  // (snapGuardWake()) and sleeps otherwise; waking resets its memory so it never compares against
+  // positions from before the nap.
+  let awakeUntil = 0;
+  window.addEventListener('resize', ()=> window.snapGuardWake && window.snapGuardWake());
+  window.snapGuardWake = ()=>{ const now = performance.now(); if(now > awakeUntil) last = new WeakMap(); awakeUntil = now + 2500; };
   function tick(){
     requestAnimationFrame(tick);
     if(!matchState || !hasGsap()) return;
+    if(performance.now() > awakeUntil) return;
     const rows = document.querySelectorAll('#rowMine, #rowEnemy'); if(!rows.length) return;
     // Castle tiles and hand cards (2026-10-05): measured against the viewport. They move only
     // when the page around them reflows (the play column widening for a zoomed-out board, the
@@ -26690,6 +26814,7 @@ function glideFromRect(el, from){
   requestAnimationFrame(tick);
 })();
 function settleStrayBoardCards(waited){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   // a burnt-away element that is somehow still a live card (reused node, odd event order) comes back
   const m = matchState, alive = new Set();
   if(m && m.players) [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=> alive.add(String(c.uid)))));
@@ -27005,6 +27130,7 @@ async function resolveRound(){
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
     if(m.mode!=='sandbox') await showEndSign(m);
     m.over = true;
+    if(m.reopenSkirmishEditor) pendingSkirmishReopen = m.reopenSkirmishEditor;
     // Personal win/loss stats only mean something vs an AI opponent — a vs-PC pass-and-play
     // match (and a Conquest skirmish, tracked separately via conquest progress) doesn't add
     // to that same personal ledger. Sandbox (2026-09-22) is excluded for the same reason: a test
@@ -27256,7 +27382,7 @@ var dragTrail = (function(){
   }
   if(typeof document !== 'undefined') document.addEventListener('dragover', e=>{ if(on && (e.clientX || e.clientY)) spark(e.clientX, e.clientY); });
   return {
-    start(){ on = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
+    start(){ on = fxAtLeast('high') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); },
     stop(){ on = false; },
   };
 })();
@@ -27681,6 +27807,7 @@ function openWorkshopPage(){
 // Victory parade (2026-10-06, effects "Coming next"): under the Victory sign the winning side's
 // survivors hop in a wave from left to right, each raising a little banner, before the dance.
 function victoryParade(rowId, upOverride){
+  if(!fxAtLeast('med')) return;
   if(!hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const row = typeof rowId === 'string' ? document.getElementById(rowId) : rowId; if(!row) return;
   const cards = [...row.querySelectorAll(':scope .board-card')].filter(c=> !c.classList.contains('falling') && !c.classList.contains('burning') && !c.classList.contains('bleeding'))
@@ -28289,6 +28416,7 @@ function pushNeighborCards(el, opts){
 // column-collapse dust puff (collapse-landed, a different moment — a card sliding INTO a hole,
 // not a new card touching down).
 function playLandingImpact(uid){
+  try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const el = boardCardEl(uid); if(!el) return;
   el.classList.add('landing-impact');
   // 2026-09-17, per explicit request ("remove the fight explosion effect on SUMMON, it's out
@@ -31351,6 +31479,47 @@ function playerPreviewHTML(){
     </div>
   </div>`;
 }
+// About you (2026-10-07, user: "the account page should say my email and i should be able to enter
+// other details such as hobby and name and birthday if i want... I wanted to do birthday related
+// rewards"). Name and email already come from Google, so they're shown, not asked for. Hobby and
+// birthday are optional, saved on this device and in your own private progress row (only you can
+// read it), and the birthday is month and day only — enough for a gift, nothing more.
+const PERSONAL_KEY = 'bramblewood_personal_v1';
+function loadPersonal(){ try{ return JSON.parse(localStorage.getItem(PERSONAL_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function savePersonal(p){ try{ localStorage.setItem(PERSONAL_KEY, JSON.stringify(p)); }catch(e){} try{ livePushProgress(true); }catch(e){} }
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+function aboutYouHTML(){
+  const p = loadPersonal(); const [bm, bd] = (p.birthday || '').split('-').map(Number);
+  return `<details class="panel about-you" ${p.hobby || p.birthday ? '' : 'open'}><summary><h3>🌱 About you <small>optional</small></h3></summary>
+    <p class="panel-sub">Only you can see these. ${isSignedIn() ? 'Saved privately with your account.' : 'Saved on this device.'}</p>
+    <label class="ay-row"><span>Hobby</span><input type="text" id="ayHobby" maxlength="40" placeholder="e.g. birdwatching" value="${escapeAttr(p.hobby || '')}"></label>
+    <div class="ay-row"><span>Birthday</span><select id="ayBMonth" aria-label="Birthday month"><option value="">Month</option>${MONTHS.map((m, i)=> `<option value="${i+1}" ${bm===i+1?'selected':''}>${m}</option>`).join('')}</select>
+      <select id="ayBDay" aria-label="Birthday day"><option value="">Day</option>${Array.from({length:31}, (_, i)=> `<option value="${i+1}" ${bd===i+1?'selected':''}>${i+1}</option>`).join('')}</select></div>
+    <p class="panel-sub ay-note">🎂 On your birthday the Bramblewood leaves you a gift. No year needed.</p>
+  </details>`;
+}
+function wireAboutYou(){
+  const h = document.getElementById('ayHobby'), m = document.getElementById('ayBMonth'), d = document.getElementById('ayBDay');
+  if(!h) return;
+  const save = ()=>{
+    const p = loadPersonal(); p.hobby = h.value.trim().slice(0, 40);
+    if(m.value && d.value){ const md = `${String(m.value).padStart(2,'0')}-${String(d.value).padStart(2,'0')}`; if(md !== p.birthday){ p.birthday = md; } }
+    else if(!m.value && !d.value) delete p.birthday;
+    savePersonal(p); checkBirthdayGift();
+  };
+  h.addEventListener('change', save); m.addEventListener('change', save); d.addEventListener('change', save);
+}
+// Birthday gift: once per calendar year, on (or the first visit after midnight of) your birthday.
+const BIRTHDAY_GIFT = {gold: 300, gems: 25};
+function checkBirthdayGift(){
+  const p = loadPersonal(); if(!p.birthday) return;
+  const now = new Date(), today = `${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  if(today !== p.birthday || p.giftYear === now.getFullYear()) return;
+  p.giftYear = now.getFullYear(); savePersonal(p);
+  Object.entries(BIRTHDAY_GIFT).forEach(([k, v])=> grantCurrency(k, v));
+  try{ showToast(`🎂 Happy birthday${cloudUserLabel ? ', ' + String(cloudUserLabel).split(' ')[0] : ''}! The Bramblewood left you ${BIRTHDAY_GIFT.gold} Gold and ${BIRTHDAY_GIFT.gems} Gold Leaves.`, 'ok'); SoundKit.win && SoundKit.win(); }catch(e){}
+}
+setTimeout(()=>{ try{ checkBirthdayGift(); }catch(e){} }, 4000);
 function renderProfile(){
   const root = document.getElementById('view-profile');
   const rank = rankForRating(myRating);
@@ -31372,11 +31541,13 @@ function renderProfile(){
       <div class="panel cloud-account-panel" id="cloudAccountPanel">
         <h3>${isSignedIn() ? '☁️ Signed in' : '🔑 Sign in'}</h3>
         ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>
+        <dl class="account-facts"><dt>Email</dt><dd>${escapeHtml(cloudUserEmail || '—')}</dd>${cloudCardAdmin ? '<dt>Role</dt><dd><span class="admin-badge" title="Your account can publish card, skirmish and map edits for everyone">🛡 Admin</span></dd>' : ''}</dl>
         <p class="panel-sub">Your progress is synced to this account.</p>
         ${userHasPasswordIdentity() ? '' : `<details class="add-password"><summary>Add a password (to also Login with email)</summary>
           <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" minlength="8"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
         <button type="button" class="btn small" id="cloudSignOutBtn">Sign out</button>` : authFormHTML('profile')}
       </div>
+      ${aboutYouHTML()}
       <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
     ${playerPreviewHTML()}
@@ -31384,6 +31555,7 @@ function renderProfile(){
     ${achievementsPanelHTML()}
     ${matchHistoryPanelHTML()}`;
   wireAvatarCustomizer();
+  wireAboutYou();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireAchievementsPanel();
   wireMatchHistoryPanel();
@@ -31896,20 +32068,45 @@ async function setGameLanguage(code){
   if(got !== code) showToast('That language isn’t available yet.');
 }
 try{ if(I18nM) I18nM._boot(); }catch(e){}
-// Leaf sweep (2026-10-07 rework, user: "a rush of leaves... make it more spaced out. It seems to
-// be low FPS too"): 9 leaves instead of 22, spread over ~1.1 s instead of all at once, each on its
-// own drifting path. Every leaf is a composited layer (transform + opacity only, no per-leaf
-// filter), and the veil slides with a transform instead of repainting a background, so the sweep
-// stays smooth even while the next page is being built underneath it.
+// Leaf sweep (2026-10-07, second rework — user: "the leaves rush (smooth) to the middle of the
+// screen then to the right... space the leaves out randomly, or in a wave like pattern... smoothly
+// interpolate from edge -20% to the other edge +10%"). Each leaf now travels at an even pace from
+// 20% past the left edge to 10% past the right edge — no mid-screen waypoint everyone converges on.
+// Its height rides a gentle sine wave (its own amplitude, wavelength and phase), the leaves start at
+// random moments over ~0.7 s and at random heights, and each tumbles at its own rate. Keyframes are
+// computed here and played with the Web Animations API on transform/opacity only (compositor).
 function leafSweep(){
+  if(!fxAtLeast('low')) return;
+  if(document.querySelector('#editorOverlay:not([hidden]) .modal, #skirmishEditorOverlay:not([hidden]) .modal')) return; // never over an open editor
   const glyphs = ['🍂','🍁','🍃','🍂','🍁','🌿','🍃','🍂','🍁'];
-  let html = '<span class="ls-veil"></span>';
-  for(let i = 0; i < glyphs.length; i++){
-    const top = 6 + ((i*41) % 84), size = 24 + (i*11) % 18, delay = Math.round(i*120 + (i*53)%70), rot = (i*67) % 360;
-    const dur = 950 + (i*97) % 350, drift = ((i*29) % 18) - 6;
-    html += `<i style="top:${top}%; font-size:${size}px; animation-delay:${delay}ms; animation-duration:${dur}ms; --r:${rot}deg; --dy:${drift}vh">${glyphs[i]}</i>`;
+  const n = fxLevel() === 'low' ? 5 : glyphs.length;
+  const f = document.createElement('div'); f.className = 'leaf-sweep'; f.setAttribute('aria-hidden', 'true');
+  f.innerHTML = '<span class="ls-veil"></span>';
+  document.body.appendChild(f);
+  const W = innerWidth, H = innerHeight, STEPS = 10;
+  let longest = 0;
+  for(let i = 0; i < n; i++){
+    const leaf = document.createElement('i'); leaf.textContent = glyphs[i % glyphs.length];
+    leaf.style.fontSize = (22 + Math.random()*20).toFixed(0) + 'px';
+    f.appendChild(leaf);
+    const y0 = H * (0.08 + 0.84 * ((i + Math.random()*0.8) / n));   // spread down the screen, jittered
+    const amp = H * (0.03 + Math.random()*0.05), waves = 0.8 + Math.random()*1.0, phase = Math.random()*Math.PI*2;
+    const drift = H * (Math.random()*0.10 - 0.03);                     // a slight overall sink or rise
+    const r0 = Math.random()*360, spin = (Math.random() < .5 ? -1 : 1) * (200 + Math.random()*260);
+    const x0 = -0.20*W, x1 = 1.10*W;
+    const frames = [];
+    for(let k = 0; k <= STEPS; k++){
+      const t = k / STEPS;
+      const x = x0 + (x1 - x0) * t;
+      const y = y0 + drift * t + amp * Math.sin(phase + t * waves * Math.PI * 2);
+      const op = t < 0.08 ? t / 0.08 : t > 0.9 ? (1 - t) / 0.1 : 1;
+      frames.push({transform:`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${(r0 + spin*t).toFixed(1)}deg)`, opacity: op.toFixed(2)});
+    }
+    const dur = 1500 + Math.random()*700, delay = Math.random()*700;
+    longest = Math.max(longest, dur + delay);
+    try{ leaf.animate(frames, {duration: dur, delay, easing: 'linear', fill: 'both'}); }catch(e){ leaf.remove(); }
   }
-  placeOverlay('leaf-sweep', html, 2400);
+  setTimeout(()=> f.remove(), longest + 120);
 }
 function placeOverlay(cls, html, ms){
   const f = document.createElement('div'); f.className = cls; f.setAttribute('aria-hidden','true'); f.innerHTML = html || '';
@@ -32328,6 +32525,7 @@ function setAtmosphere(id){
     const inFight = typeof matchState !== 'undefined' && matchState && !matchState.over;
     if(inFight){ if(!paused){ ctx.clearRect(0,0,cv.width,cv.height); paused = true; document.body.classList.add('in-fight'); } return; }
     if(paused){ paused = false; document.body.classList.remove('in-fight'); }
+    if(!fxAtLeast('med')){ if(!cv._fxCleared){ ctx.clearRect(0,0,cv.width,cv.height); cv._fxCleared = true; } return; } cv._fxCleared = false;
     if(t - lastDraw < 32) return; lastDraw = t;
     ctx.clearRect(0,0,cv.width,cv.height);
     ps.forEach((q,i)=>{
@@ -32353,6 +32551,7 @@ const ShaderM = (typeof window!=='undefined' && window.BramblewoodShaders && win
 function shadersEnabled(){
   if(!ShaderM || !ShaderM.isSupported()) return false;
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  if(fxExplicit() && !fxAtLeast('med')) return false;
   let v = null; try{ v = localStorage.getItem(SHADER_KEY); }catch(e){}
   if(v) return v === 'on';
   const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.connection && navigator.connection.saveData);
@@ -32411,7 +32610,7 @@ function scheduleLightning(m){
 function lightningStrike(m){
   if(m !== matchState || !m || m.over || document.hidden) return;
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || !fxAtLeast('high');
   if(!reduce){
     const f = document.createElement('div'); f.className = 'bf-lightning'; f.setAttribute('aria-hidden','true');
     f.style.setProperty('--lx', (15 + Math.random()*70).toFixed(0) + '%');
@@ -32500,6 +32699,12 @@ function wireSettingsButton(idSuffix){
     shSel.innerHTML = can ? `<option value="on">On</option><option value="off">Off</option>` : `<option value="off">Not supported on this device</option>`;
     shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
     shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
+  }
+  const fxSel = document.getElementById('fxSelect'+idSuffix);
+  if(fxSel){
+    fxSel.innerHTML = [['high','High — everything'],['med','Medium'],['low','Low — fastest with effects'],['none','None']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+    fxSel.value = fxLevel();
+    fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast('Effects: ' + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
   }
   wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
