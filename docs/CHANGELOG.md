@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-08
+- Battles feel better: knock-outs fall with weight, flyers soar off the ground, and triggered abilities flash a rune.
+- Victory! (or Hurrah!) and Defeat!; unlocked cards break their padlock, newly seen cards get a NEW! tag.
+- Conquest: the map fills the screen with Home and Settings built in, weather covers it all, and it only rains about one hour in ten.
+- A livelier Home with rotating tips; Codex stats on demand; a clearer deck preview with charts.
+- Left a fight by accident? ▶ Rejoin from Home.
+
 ## 2026-10-07
 - Cards flip out of your deck as you draw them; the winners parade with banners.
 - The Codex and deck editor are much smoother (up to about 9× less work per frame); the page-change leaves are calmer and smoother.
