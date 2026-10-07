@@ -2499,10 +2499,16 @@ function castleHoverHTML(hqSide){
   // habit as attachDelayedTooltip above.
   const HOVER_POP_DELAY_MS = 300; // was 500ms; shortened 2026-09-30 per explicit request
   let hoverTimer = null;
+  // 2026-10-07 playtest (phones): after a tap re-renders the board, the browser sends a fake
+  // mouseover to whatever card now sits under the finger, and nothing on touch ever closes the
+  // popover that opens. On touch, only the very element that was touched may open it.
+  let touchedEl = null, lastTouchAt = 0;
+  document.addEventListener('pointerdown', e=>{ if(e.pointerType === 'touch' || e.pointerType === 'pen'){ lastTouchAt = Date.now(); touchedEl = e.target.closest && e.target.closest('[data-defid]'); } }, true);
   document.addEventListener('mouseover', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
+    if(Date.now() - lastTouchAt < 1500 && el !== touchedEl) return;
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     hoverTimer = setTimeout(()=>{
       hoverTimer = null;
@@ -5525,6 +5531,8 @@ function homeProfileBtnInner(){
 function showToast(message, kind){
   let host = document.getElementById('toastHost');
   if(!host){ host = document.createElement('div'); host.id = 'toastHost'; host.className = 'toast-host'; document.body.appendChild(host); }
+  // 2026-10-07 playtest: over the results screen, toasts sat on top of Next / Play again. They go to the top while it's up.
+  host.classList.toggle('at-top', !!document.querySelector('.winloss-overlay'));
   const t = document.createElement('div');
   t.className = 'toast' + (kind ? ' toast-'+kind : '');
   t.setAttribute('role', 'status');
@@ -10939,7 +10947,20 @@ function tutorialStageOpponentDeck(stage, pick){
     return countsFromIds(aggressive.length ? aggressive : rWait0, 3);
   }
   if(stage===6) return countsFromIds(rWait0.concat(rWait1), 2); // the toughest opponent in the series, right before the reward
-  return countsFromIds(rWait0, 2);
+  // Stage 1 (the one-fight tutorial). 2026-10-07 playtest: picking Otters lost about 9 fights in 10
+  // (every Sunfeather card flies, and fliers dodge half of all ground attacks), which left a new
+  // player stuck in the tutorial. The rival now brings its three weakest cards; against the Otters
+  // that's one weak flier (so the player meets Flying) plus two weak ground cards. Simulated over
+  // 300 seeds with rival HP 8: Otters 93%, Hummingbirds 100%, both 84%, and the fixed tutorial seed
+  // is a win for every pick.
+  const defs = getCardDefs();
+  const weak = ids=> ids.slice().sort((a,b)=> ((defs[a].attack||0)-(defs[b].attack||0)) || ((defs[a].health||0)-(defs[b].health||0)) || (a<b?-1:1));
+  const flies = id=> !!((defs[id].effects||{}).flying);
+  if(pick==='otters'){
+    const ids = weak(rWait0.filter(flies)).slice(0,1).concat(weak(tutorialBasicsByWait('otters', 0).filter(id=> !flies(id))).slice(0,2));
+    if(ids.length >= 2) return countsFromIds(ids, 2);
+  }
+  return countsFromIds(weak(rWait0).slice(0,3), 2);
 }
 let factionCountdownTimer = null;
 function showFactionScreen(){
@@ -11052,7 +11073,7 @@ function beginTutorialStage(stage){
 // Everything an admin may want to tune, editable in Admin → 🎓 Tutorial editor. Saved in this
 // browser and, for cloud admins, published as `__cfg:tutorial` so every new player gets it.
 // Decks are {cardId: copies}; null means "automatic" (the faction Basics, as before).
-const TUTORIAL_CFG_DEFAULT = {myHp:12, rivalHp:10, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+const TUTORIAL_CFG_DEFAULT = {myHp:12, rivalHp:8, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
 const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v1';
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
@@ -11243,6 +11264,11 @@ function grantTutorialSeriesRewards(pick){
 }
 // Win/loss modal copy for tutorial-mode matches -- pulled out of renderMatchUI's big template
 // literal so the stage-number/reward-callout logic reads clearly on its own.
+// 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
+function lossTitle(m){
+  try{ const h = m.players[2].hq; if(h.hp / h.maxHp <= 0.25) return 'So Close! Good Fight'; }catch(e){}
+  return 'Defeat — Good Fight';
+}
 function tutorialWinLossTitle(m){
   const stage = m.tutorialStage || 1;
   if(m.winner!==1) return 'Good Fight — Try Again';
@@ -13401,7 +13427,7 @@ function renderMatchUI(){
     <div class="pass-overlay winloss-overlay">
       <div class="pass-card winloss-card">
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
-        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':'So Close! Good Fight')}</h2>
+        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?'You Win!':lossTitle(m))}</h2>
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -13409,6 +13435,7 @@ function renderMatchUI(){
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
           <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
+          ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
           ${isTutorial?'':`<div class="winloss-secondary">
             <button class="btn" id="wlBackBtn" title="Close this and look at the final board">👀 See the board</button>
             <button class="btn ghost" id="wlQuitBtn">${m.mode==='conquest' ? '🗺️ Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? '🐙 Back to the raid' : '🚪 Leave'}</button>
@@ -13492,6 +13519,16 @@ function renderMatchUI(){
       // chatter — it should always play, not roll SPEECH_CHANCE like castleOnHit does.
       if(!isPc && m.winner!==0) maybeSpeakHQ('A', m.winner===1 ? 'castleOnWin' : 'castleOnLoss', {force:true});
     }
+    const skipTut = document.getElementById('wlSkipTutBtn');
+    if(skipTut) skipTut.addEventListener('click', ()=>{
+      // 2026-10-07 playtest: a loss used to offer only "Try Again", so a player who couldn't win was stuck.
+      const pick = m.tutorialFaction || loadFactionChoice() || 'both';
+      endMatch();
+      const firstTime = claimTutorialWin(pick);
+      conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest';
+      switchTab('play');
+      if(firstTime) showToast('🎓 Tutorial skipped. Your starter deck is ready, and the Outskirts are open.', 'ok');
+    });
     document.getElementById('wlPrimaryBtn').addEventListener('click', ()=>{
       const mode=m.mode;
       if(mode==='tutorial'){
@@ -13929,7 +13966,9 @@ function wireDropZones(){
         const m = matchState;
         if(!m || m.selectedUid==null) return;
         if(ownRow.classList.contains('row-play-disabled')) return;
-        if(e.target.closest('.board-card:not(.slot-target)')) return;
+        // 2026-10-07 playtest: taps on the dashed ✦ placeholder, or on your own cards, used to be
+        // ignored, and on a phone a full row left only ~8px of bare row to tap. With a card armed,
+        // any tap in your row now plays it on that half (nothing else listens for those taps).
         const rect = ownRow.getBoundingClientRect();
         let side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
         if(isSlotMatch(m)){ const t = nearestSlotTarget(ownRow, e.clientX); if(t) side = Number(t.getAttribute('data-slot')); }
@@ -15757,6 +15796,13 @@ async function playCardByUid(uid, side, dropPoint){
     // (gold/grace/devilry/exile) AND the one-play-per-turn rule; either way, a click/drop that
     // does nothing used to give zero feedback, which reads as the game just not responding.
     denyShake(handTileEl || document.querySelector(`.card-tile[data-handuid="${uid}"]`));
+    // 2026-10-07 playtest: the shake alone read as "the game isn't responding". Say why.
+    try{
+      const pl = m.players[activePid], hc = (pl.hand||[]).find(c=> c.uid===uid), d = hc && getCardDefs()[hc.defId];
+      const why = pl.playedThisTurn ? 'One play per turn. Press Pass turn to fight.'
+        : (d && (d.cost||0) > (pl.lumber||0)) ? `${d.name} needs ${d.cost} 🪵 Lumber (you have ${pl.lumber||0}). Drop a card on the Graveyard for +1.` : null;
+      if(why && Date.now() - (m._denyToastAt||0) > 2500){ m._denyToastAt = Date.now(); showToast(why, 'warn'); }
+    }catch(e){}
     return;
   }
   SoundKit.play();
@@ -16984,7 +17030,7 @@ async function resolveRound(){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'🏟️', label:'Arena', tip:'Quick battles, Gauntlet streaks, Dungeon runs and online play, from Play → Arena.'},
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury Tent (your deck), the Old Nest and the Notice Board on the map. The Arena opens on the next region.'},
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -20409,7 +20455,7 @@ function renderHome(){
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         <button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span></button>
         ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
-      </div>` : `<p class="home-tutorial-lock">🔒 Play, Deck, Codex, Shop and the Nest open once you finish the tutorial.</p>`}
+      </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       ${FEATURE_SPOTS.some(sp=> !featureUnlocked(sp.key)) ? `<p class="home-discover-hint">🗺️ More opens up as you cross the map — look for <b>!</b> icons.</p>` : ''}
       ${(tabOpen('quests') || community.length) ? `<div class="home-menu-row home-extras">
         ${tabOpen('quests') ? `<button class="btn ghost home-menu-btn-small" type="button" id="homeQuestsBtn"><span class="tab-emoji">📜</span> Quests</button>` : ''}
@@ -20884,7 +20930,7 @@ function renderNest(){
   const totalCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].length, 0);
   const foilCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].filter(c=>c.foil).length, 0);
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
-      <p class="panel-sub">Every card you've collected, all in one nest.</p>
+      <p class="panel-sub">Cards you've won or pulled from packs. Your starter cards are in your deck.</p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
     </div>
     <div class="grid-view" id="nestGrid">${
