@@ -1187,6 +1187,8 @@ function noteSighted(defIds){
 }
 function pumpDiscoverQueue(){
   if(discoverShowing || !discoverQueue.length) return;
+  // The win screen shows cards first seen this match under "New cards seen"; don't announce them twice.
+  if(matchState && matchState.over){ const seen = new Set(matchState.discoveredThisMatch||[]); for(let i = discoverQueue.length - 1; i >= 0; i--) if(seen.has(discoverQueue[i])) discoverQueue.splice(i, 1); if(!discoverQueue.length) return; }
   const id = discoverQueue.shift();
   const d = getCardDefs()[id]; if(!d){ pumpDiscoverQueue(); return; }
   discoverShowing = true;
@@ -6553,6 +6555,8 @@ function deckHeroHalfHTML(d, side){
 // split-colour banner; same id, so refreshDeckHeroBanner() keeps it current.
 // Two small charts for a deck: how many cards at each Cost and each Wait (two lines), and the
 // average Attack at each Wait (bars) — the speed/power trade-off at a glance.
+// The deck details button works on touch too: a tap shows the same text as the hover title.
+document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-deckinfo]'); if(b) showToast('ℹ️ ' + b.getAttribute('data-deckinfo')); });
 function deckMiniChartsHTML(counts){
   const defs = getCardDefs(), XS = ['0','1','2','3','4+'], bin = v=> Math.min(4, Math.max(0, v|0));
   const cost = [0,0,0,0,0], wait = [0,0,0,0,0], atkSum = [0,0,0,0,0];
@@ -6589,7 +6593,8 @@ function deckHeroBannerHTML(){
       <button type="button" class="dt-slot" data-loadout="leader" title="${escapeAttr(leader ? leader.name + ' — choose your leader' : 'Choose your leader')}"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><b>${leader ? escapeHtml(leader.name) : 'No leader'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
-      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span><span class="dt-info-tip" tabindex="0" role="img" aria-label="${info}" data-tip="${info}">ℹ️</span>${total!==DECK_SIZE ? `<span class="dt-short">⚠ ${total}/${DECK_SIZE} cards</span>` : ''}</h2>
+      <h2 class="dt-name" tabindex="0" role="button" title="Rename this deck" aria-label="Deck name: ${escapeAttr(active.name || 'My deck')}. Click to rename" data-rename-deck="${escapeAttr(active.id || '')}">${escapeHtml(active.name || 'My deck')}<span class="dt-edit" aria-hidden="true">✎</span></h2>
+      <div class="dt-name-row"><button type="button" class="dt-info-tip" title="${info}" aria-label="Deck details: ${info}" data-deckinfo="${info}">ℹ️ Details</button>${total!==DECK_SIZE ? `<span class="dt-short">⚠ ${total}/${DECK_SIZE} cards</span>` : ''}</div>
       <div class="ds-arch">${sig.archetypes.length ? sig.archetypes.map(a=> `<span class="ds-arch-chip">${escapeHtml(a)}</span>`).join('') : '<span class="ds-arch-chip is-mixed">Mixed</span>'}</div>
       <div class="dt-stats">
         <span><b>${sig.avgAtk}</b><small>⚔ avg attack</small></span>
@@ -8897,7 +8902,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered'];
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -12965,7 +12970,9 @@ function startMatch(mode){
 // ▶ Rejoin until you go back in, or start something else. Forfeit and finishing still clear it.
 function leaveMatchResumable(){
   const m = matchState;
-  if(m && !m.over){ const was = m.resolving; m.resolving = false; saveResumeSnapshot(); m.resolving = was; }
+  // Mid-round, the board is half-resolved (combat applied, round/draws not yet), so keep the
+  // snapshot saved before the round began instead of saving now (2026-10-08 review).
+  if(m && !m.over && !m.resolving) saveResumeSnapshot();
   endMatch({keepResume:true});
   switchTab('home');
   showToast('⏸️ Fight saved. Press ▶ Rejoin on Home to carry on.', 'ok');
@@ -21003,7 +21010,7 @@ function renderDeckListTab(body){
         ${myDecks.length>1?`<button class="btn small ghost" data-deletedeck="${d.id}">🗑</button>`:''}
       </div>
     </div>`).join('');
-  grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
+  grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
   grid.querySelectorAll('[data-selectdeck]').forEach(b=> b.addEventListener('click', ()=>{ switchActiveDeck(b.getAttribute('data-selectdeck')); renderDeckSection(); }));
   grid.querySelectorAll('[data-deletedeck]').forEach(b=> b.addEventListener('click', ()=>{
     if(confirm('Delete this deck? This cannot be undone.')){ deleteDeck(b.getAttribute('data-deletedeck')); renderDeckSection(); }
@@ -21016,7 +21023,7 @@ function renderDeckListTab(body){
     inp.addEventListener('click', e=> e.stopPropagation());
     inp.addEventListener('change', ()=>{ renameDeck(inp.getAttribute('data-deckid'), inp.value); renderDeckSection(); });
   });
-  document.getElementById('newDeckBtn').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
+  document.getElementById('newDeckBtn').addEventListener('click', ()=>{ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
   document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
 }
 // Copies `d`'s code to the clipboard (async Clipboard API, needs a real user gesture — this is
@@ -22320,6 +22327,8 @@ function switchTab(tab){
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   // 2026-10-08 (user: "the deck editor should land on the Manage decks page first"): entering Deck
   // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
+  if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); }
+  if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ try{ deckHeroView = false; }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
@@ -22794,8 +22803,8 @@ function battleWeatherKind(m){
 function matchIsRainy(m){
   if(!m) return false;
   if(m.rainy == null){
-    const mapId = (m.conquestNode && m.conquestNode.mapId) || 'm1';
-    m.rainy = worldRaining() && mapIsOutdoors(mapId); // decided once per fight, so it never stops mid-match
+    const mapId = m.conquestNode && m.conquestNode.mapId;
+    m.rainy = !!mapId && worldRaining() && mapIsOutdoors(mapId); // Conquest fights take their map's weather; decided once per fight
   }
   return !!m.rainy;
 }
