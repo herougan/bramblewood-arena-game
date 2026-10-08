@@ -5588,6 +5588,10 @@ const CURRENCY_META = {
   gems: {glyph:'🍂', label:'Gold Leaves'},
   dust: {glyph:'✨', label:'Magic Dust'},
   metal: {glyph:'🔩', label:'Metal'},
+  // Krooni (2026-10-08, user: "The golden bramble case should give crowns then. Use a rare European language ... like
+  // kronne"): Estonian for crowns. From the Golden Bramble Case; what it buys is still to be decided. Kept in this
+  // browser for now (the cloud currency table has no column for it yet).
+  kroon: {glyph:'👑', label:'Krooni'},
 };
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
@@ -5975,7 +5979,8 @@ async function cloudPullState(){
         // Raid Points (2026-09-29): synced like the other currencies, not local-only like Energy —
         // Online Raid is already a signed-in, cloud-backed feature, so its own gating resource
         // should follow a player across devices the same way gold/gems/dust/metal already do.
-        raidPoints: cur.raid_points!=null ? Number(cur.raid_points) : 3, raidPointsUpdatedAt: cur.raid_points_updated_at || null};
+        raidPoints: cur.raid_points!=null ? Number(cur.raid_points) : 3, raidPointsUpdatedAt: cur.raid_points_updated_at || null,
+        kroon: Number((myCurrencies && myCurrencies.kroon) || 0)}; // local-only until the cloud table gets a column
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -6327,7 +6332,7 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0};
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -13169,7 +13174,7 @@ function packEditorCardHTML(p, i){
       <label>Gold Leaves <input class="pe-in" type="number" min="0" data-k="cost.gems" value="${p.cost.gems||0}"></label>
       <label>Cards per pack <input class="pe-in" type="number" min="1" max="20" data-k="cards" value="${p.cards||3}"></label>
       <label>Pool <input class="pe-in" type="number" min="1" data-k="pool" value="${p.pool||1}" title="Cards whose From is this pack pool"></label>
-      <label>✨ Magic Dust <input class="pe-in" type="number" min="0" data-k="dust" value="${p.dust||0}"></label>
+      <label>👑 Krooni <input class="pe-in" type="number" min="0" data-k="kroon" value="${p.kroon||0}"></label>
       <label>🔩 Metal <input class="pe-in" type="number" min="0" data-k="metal" value="${p.metal||0}"></label>
       <label>Level-up chance <input class="pe-in" type="number" min="0" max="1" step="0.01" data-k="levelChance" value="${p.levelChance||0}"></label>
       <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="newGuaranteed" ${p.newGuaranteed?'checked':''}> One new card guaranteed</label>
@@ -13267,6 +13272,9 @@ function renderAdmin(){
       <h2>🛠️ Admin</h2>
       <p class="panel-sub">Testing tools — not part of the real player experience. Reset your own progress, or skip straight to any Conquest node.</p>
     </div>
+    <div class="panel admin-subpanel"><h3>💰 My currencies</h3><p class="panel-sub">Set your own balances (admins only). Saved to this browser and, where the cloud has a column for it, to your account.</p>
+      <div class="admin-cur-row">${Object.keys(CURRENCY_META).map(k=> `<label>${CURRENCY_META[k].glyph} ${escapeHtml(CURRENCY_META[k].label)}<input type="number" min="0" step="1" data-admin-cur="${k}" value="${Math.floor(myCurrencies[k]||0)}"></label>`).join('')}</div>
+      <button type="button" class="btn small primary" id="adminCurSave">💾 Set balances</button></div>
     <div class="panel admin-subpanel">
       <h3>Developer Mode</h3>
       <p class="panel-sub">Unlocks the testing-only surfaces: a 🧪 Sandbox Play tab (spawn any card straight onto either board and run real combat — no deck, no cost, no lock gates), a "Test card" flag in the card editor, and a matching Test filter in the Codex. Off by default.</p>
@@ -13351,6 +13359,9 @@ function renderAdmin(){
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bramblewood-card-edits-${new Date().toISOString().slice(0,10)}.json`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=> URL.revokeObjectURL(a.href), 2000);
   });
+  { const cs = document.getElementById('adminCurSave'); if(cs) cs.onclick = ()=>{ if(!adminAllowed()){ showToast('Admins only.', 'warn'); return; }
+      document.querySelectorAll('[data-admin-cur]').forEach(i=>{ const v = Math.max(0, Math.floor(Number(i.value)||0)); myCurrencies[i.dataset.adminCur] = v; });
+      saveCurrencies(); try{ refreshShopAfford && refreshShopAfford(); }catch(e){} showToast('💰 Balances set.', 'ok'); }; }
   const devModeChk = document.getElementById('adminDevModeChk');
   if(devModeChk) devModeChk.addEventListener('change', e=>{
     setDevMode(e.target.checked);
@@ -22495,9 +22506,9 @@ const SHOP_PACKS_DEFAULT = [
   //   rarityWeights how likely each rarity is, relative (blank = PACK_RARITY_WEIGHT)
   //   foilChance   chance each card comes out foil; foilGuaranteed = at least one foil per pack
   //   foilFinishes relative weights of the finish a foil card gets ('auto' = by rarity)
-  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:10, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
-  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:25, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false, comingSoon:true},
-  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:60, metal:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true, comingSoon:true},
+  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
+  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false, comingSoon:true},
+  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true, comingSoon:true},
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
@@ -22622,7 +22633,7 @@ function renderShop(){
     <div class="shop-pack-card ${packOnSale(p)?'':'is-soon'}">
       <div class="shop-pack-ico">${p.icon}</div>
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
-      <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
+      <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}${p.metal ? `<br>🔩 ${p.metal} Metal` : ''}${p.kroon ? `<br>👑 ${p.kroon} Krooni` : ''}</div>
       <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
       ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
       ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs: ${packSetCost(p, q).gold} Maple Leaves${p.cost.gems?` + ${packSetCost(p, q).gems} Gold Leaves`:''} (${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}% off). Sets let you skip or open them all at once.">×${q}<small class="sb-off">−${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}%</small></button>`).join('')}</div>` : ''}
@@ -22885,12 +22896,34 @@ function packCoverArt(pack){
   withArt.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b));
   return defs[withArt[0]].art;
 }
+// Pack glow and sparks (2026-10-08, user). Spark odds per card double with each rarity step: Common 0.1%, Uncommon
+// 0.2%, Rare 0.4%, Very Rare 0.8% ...; a super spark is half as likely again. A pack glows 55% of the time, in a
+// rarity's colour that hints at the best card: whatever colour it glows, the best card is at most two steps below it.
+// Very rarely (0.2%) a pack glows the top colour, spins and blinks black and white: it opens Legendary-and-up only.
+const PACK_JACKPOT_CHANCE = 0.002, PACK_GLOW_CHANCE = 0.55;
+const SPARK_STEP = {starter:0, common:0, uncommon:1, quest:1, rare:2, veryrare:3, superrare:4, epic:5, heroic:6, unique:7, questunique:7, legendary:8, mythic:9, ancient:10};
+function sparkChance(rarity){ return Math.min(1, 0.001 * Math.pow(2, SPARK_STEP[rarity||'common'] || 0)); }
+function rollPackGlow(results, defs){
+  const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
+  const best = Math.max(0, ...results.map(r=> tierOf(r.id)));
+  if(Math.random() >= PACK_GLOW_CHANCE) return null;
+  // usually the true colour, sometimes one or two steps higher (never more), sometimes lower
+  const shifts = [[0, 50], [1, 18], [2, 8], [-1, 16], [-2, 8]];
+  let r = Math.random()*100, sh = 0; for(const [k, w] of shifts){ r -= w; if(r <= 0){ sh = k; break; } }
+  const g = Math.max(1, Math.min(RARITY_TIER_BANDS.length - 1, best + sh));
+  return {tier:g, rarity:RARITY_TIER_BANDS[g]};
+}
 function purchasePackOnce(pack, prepaid){
-  const pulls = rollPackCards(pack);
+  let pulls = rollPackCards(pack);
   if(!pulls.length) return null;
+  let jackpot = false;
+  { const defs = getCardDefs(), top = packCardPool(defs, pack.pool||1).filter(id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('legendary'));
+    if(top.length && Math.random() < PACK_JACKPOT_CHANCE){ jackpot = true; pulls = pulls.map(()=> top[Math.floor(Math.random()*top.length)]); } }
   if(!prepaid){ myCurrencies.gold -= (pack.cost.gold||0); myCurrencies.gems -= (pack.cost.gems||0); }
-  grantCurrency('dust', pack.dust);
+  // 2026-10-08 (user: "Why is there +10 dust from buying the pack? ... nothing was destroyed"): Dust only comes from
+  // breaking cards down, never from buying a pack, whatever an older published pack config says.
   if(pack.metal) grantCurrency('metal', pack.metal);
+  if(pack.kroon) grantCurrency('kroon', pack.kroon);
   const foils = rollPackFoils(pack, pulls.length);
   const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
   let leveledId = null;
@@ -22899,7 +22932,8 @@ function purchasePackOnce(pack, prepaid){
     const candidates = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && getCardLevel(id)<10);
     if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; }
   }
-  return {results, leveledId};
+  const glow = jackpot ? {tier:RARITY_TIER_BANDS.length - 1, rarity:RARITY_TIER_BANDS[RARITY_TIER_BANDS.length - 1], jackpot:true} : rollPackGlow(results, getCardDefs());
+  return {results, leveledId, glow, jackpot};
 }
 function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) : {gold:(pack.cost.gold||0), gems:(pack.cost.gems||0)}; return (myCurrencies.gold||0) >= c.gold && (myCurrencies.gems||0) >= c.gems; }
 let packOpenStop = null;
@@ -22949,8 +22983,8 @@ function openPackAnimation(pack, opened, opts){
     if(currentTab==='shop') renderShop();
   };
   const topBar = ()=> `<div class="po2-top">
-      <span class="po2-count">${bundle ? `Pack ${packIdx+1} of ${opened.length}` : escapeHtml(pack.name)}</span>
-      ${bundle && phase!=='all' ? `<span class="po2-top-actions">${phase==='reveal' || phase==='pack' ? '<button type="button" class="po2-glass" id="poSkip">Skip</button>' : ''}<button type="button" class="po2-glass" id="poOpenAll">Open all</button></span>` : ''}
+      <span class="po2-count">${deckO && deckO.isPile && phase==='reveal' ? `${opened.length} packs · ${deckO.results.length} cards` : phase==='table' ? `${opened.length} packs` : bundle ? `Pack ${packIdx+1} of ${opened.length}` : escapeHtml(pack.name)}</span>
+      ${bundle && phase!=='all' ? `<span class="po2-top-actions">${(phase==='reveal' || phase==='pack') && !(deckO && deckO.isPile) ? '<button type="button" class="po2-glass" id="poSkip">Skip</button>' : ''}<button type="button" class="po2-glass" id="poOpenAll">${deckO && deckO.isPile ? 'Show all' : 'Open all'}</button></span>` : ''}
     </div>`;
   const wireTop = ()=>{
     const sk = overlay.querySelector('#poSkip'); if(sk) sk.onclick = ()=>{ clearTimers(); showSummary(); };
@@ -22960,10 +22994,9 @@ function openPackAnimation(pack, opened, opts){
   const showPack = ()=>{
     phase = 'pack'; cur = 0;
     const o = opened[packIdx];
-    const best = Math.max(...o.results.map(r=> tierOf(r.id)));
-    const leak = best >= 11 ? 'leak-gold' : best >= 7 ? 'leak-violet' : best >= 4 ? 'leak-blue' : '';
+    const glow = o.glow, glowCol = glow ? rarityStops(glow.rarity)[0] : '';
     overlay.innerHTML = topBar() + `<div class="po2-stage">
-      <div class="po2-pack ${leak}" id="poPack">
+      <div class="po2-pack ${glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" id="poPack" style="${glow ? `--leak:${glowCol}; --glow:${glowCol};` : ''}">
         <span class="po2-shadow" aria-hidden="true"></span><span class="po2-leak" aria-hidden="true"></span>
         <div class="po2-body">
           <div class="po2-liner" aria-hidden="true"></div>
@@ -22986,7 +23019,7 @@ function openPackAnimation(pack, opened, opts){
     const tear = ()=>{
       if(torn) return; torn = true; setProg(1);
       strip.classList.add('is-gone'); pk.classList.add('is-open'); hint.textContent = '';
-      sfx('swipeTone'); sfx('gold'); burst(pk, [pack.icon, '✨', '🐾'], 16);
+      sfx('swipeTone'); sfx('gold'); burst(pk, o.jackpot ? ['👑','🌟','✨','💎'] : [pack.icon, '✨', '🐾'], o.jackpot ? 40 : 16); if(o.jackpot) sfx('rareRise', true);
       later(()=> pk.classList.add('is-rising'), 450);
       later(()=> showReveal(), 1100);
     };
@@ -23012,18 +23045,20 @@ function openPackAnimation(pack, opened, opts){
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
       <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
-  const showReveal = ()=>{
+  let deckO = null;
+  const showReveal = pile=>{
     phase = 'reveal'; cur = 0;
-    const o = opened[packIdx];
-    overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div></div>
+    const o = deckO = pile || opened[packIdx];
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div>${o.isPile ? `<div class="po2-pile-count">${o.results.length} cards</div>` : ''}</div>
       <div class="po2-got" id="poGot" role="group" aria-label="Cards so far"></div>
       <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
     wireTop();
     const cards = [...overlay.querySelectorAll('.po2-card')];
     const layout = ()=> cards.forEach((c, i)=>{
       const k = i - cur;
-      c.style.setProperty('--k', String(Math.max(0, k)));
+      c.style.setProperty('--k', String(Math.min(6, Math.max(0, k)))); // the pile can be huge: only the next few fan out
       c.classList.toggle('is-current', k===0); c.classList.toggle('is-waiting', k>0);
       c.tabIndex = k===0 ? 0 : -1; c.style.zIndex = String(100 - Math.max(0,k));
     });
@@ -23032,12 +23067,20 @@ function openPackAnimation(pack, opened, opts){
       layout();
       const c = cards[cur]; if(!c) return;
       c.focus({preventScroll:true});
+      autoNext(()=> reveal(c), deckO.isPile ? 1100 : 2600);
       if(c.classList.contains('tease-rare') || c.classList.contains('tease-epic') || c.classList.contains('tease-legend')) sfx('rareRise', c.classList.contains('tease-legend'));
     };
+    let autoT = null;
+    const autoNext = (fn, ms)=>{ clearTimeout(autoT); autoT = setTimeout(()=>{ if(phase==='reveal' && !overlay.hidden) fn(); }, reduce ? Math.min(ms, 1200) : ms); timers.push(autoT); };
     const reveal = c=>{
       if(!c || c.classList.contains('is-revealed')) return;
       c.classList.add('is-revealed'); sfx('cardFlip');
-      const r = opened[packIdx].results[+c.dataset.i], d = defs[r.id];
+      const r = deckO.results[+c.dataset.i], d = defs[r.id];
+      // 2026-10-08: sparks (rarer cards spark far more often), and the card moves on by itself after 3 s.
+      const sp = sparkChance(d.rarity);
+      if(Math.random() < sp/2){ c.classList.add('is-superspark'); burst(c, ['🌟','💎','✨','🌈','✨'], 46); sfx('rareRise', true); }
+      else if(Math.random() < sp){ c.classList.add('is-spark'); burst(c, ['✨','⭐','✨'], 24); sfx('gold'); }
+      autoNext(()=> collect(c), deckO.isPile ? 1700 : 3000);
       c.setAttribute('aria-label', `${d.name}${r.isNew ? ', new card' : ''}`);
       if(r.isNew){
         later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 380);
@@ -23049,12 +23092,14 @@ function openPackAnimation(pack, opened, opts){
       }
     };
     const collect = c=>{
+      if(!c || c.classList.contains('is-collected')) return;
       const got = overlay.querySelector('#poGot');
-      const r = opened[packIdx].results[+c.dataset.i];
-      const mini = document.createElement('span'); mini.className = 'po2-mini'; mini.innerHTML = cardTileHTML(defs[r.id], {editable:false}); got.appendChild(mini);
+      const r = deckO.results[+c.dataset.i];
+      const [ra] = rarityStops(defs[r.id].rarity||'common');
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(defs[r.id], {editable:false}); got.appendChild(mini);
       c.classList.add('is-collected'); c.tabIndex = -1;
       cur++;
-      if(cur >= cards.length){ later(()=> showSummary(), 380); return; }
+      if(cur >= cards.length){ later(()=> (deckO.isPile ? showAll() : showSummary()), 380); return; }
       hint.textContent = '';
       enter();
     };
@@ -23077,13 +23122,13 @@ function openPackAnimation(pack, opened, opts){
   };
   // ---- 3. this pack's summary ----
   const footBits = o=>{
-    const bits = [`✨ +${pack.dust} Dust`]; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`);
+    const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon) bits.push(`👑 +${pack.kroon} Krooni`);
     if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
     return bits;
   };
   const footActions = ()=>{
     const left = opened.length - packIdx - 1;
-    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `<button type="button" class="po2-glass" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
+    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button><button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
   };
   const wireFoot = ()=>{
     const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
@@ -23104,36 +23149,81 @@ function openPackAnimation(pack, opened, opts){
       <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireTop(); wireFoot(); wireView();
+    wireTop(); wireFoot(); wireView(); wireTilt();
   };
   // ---- Open all (sets only): everything left, grouped ----
   const showAll = ()=>{
     phase = 'all';
     const rest = opened.slice(packIdx);
-    const tally = new Map(); let dust = 0, metal = 0; const levels = [];
-    rest.forEach(o=>{ dust += pack.dust; metal += pack.metal||0; if(o.leveledId) levels.push(o.leveledId);
+    const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
+    rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
       o.results.forEach(r=>{ const t = tally.get(r.id) || {n:0, isNew:false}; t.n++; t.isNew = t.isNew || r.isNew; tally.set(r.id, t); }); });
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(b) - tierOf(a)) || (defs[a].name||'').localeCompare(defs[b].name||''));
     const nNew = ids.filter(id=> tally.get(id).isNew).length;
-    const bits = [`${rest.length} packs`, `✨ +${dust} Dust`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
+    const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
       <div class="po2-sum-grid is-dense">${ids.map(id=> `<div class="po-card is-flipped po2-sum-card ${tally.get(id).isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: tierOf(id) >= 4 ? holoClass(defs[id]) : ''})}${tally.get(id).isNew?'<span class="po2-new-tag">NEW</span>':''}${tally.get(id).n > 1 ? `<span class="po2-x">×${tally.get(id).n}</span>` : ''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireFoot(); wireView();
+    wireFoot(); wireView(); wireTilt();
     sfx('gold');
+  };
+  // Summary cards lean toward the pointer (2026-10-08).
+  const wireTilt = ()=> overlay.querySelectorAll('.po2-sum-card').forEach(c=>{
+    if(reduce) return;
+    c.addEventListener('pointermove', e=>{ const r = c.getBoundingClientRect(); const x = (e.clientX - r.left)/r.width - .5, y = (e.clientY - r.top)/r.height - .5;
+      c.style.transform = `perspective(700px) rotateY(${(x*16).toFixed(1)}deg) rotateX(${(-y*14).toFixed(1)}deg) scale(1.04)`; });
+    c.addEventListener('pointerleave', ()=>{ c.style.transform = ''; });
+  });
+  // ---- Open-all table (2026-10-08, user: "When opening 10 packs or more ... all the packs are laid in front of you
+  // (max 25), and you slice all at once. Then they get piled into ONE HUGE deck for you to slowly reveal off.")
+  const showTable = ()=>{
+    phase = 'table';
+    const shown = opened.slice(0, 25);
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-table-stage">
+      <div class="po2-table" id="poTable" style="--n:${shown.length}">${shown.map((o, i)=>{ const g = o.glow ? rarityStops(o.glow.rarity)[0] : ''; return `<div class="po2-tpack ${o.glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" style="--i:${i}; ${g ? `--glow:${g};` : ''}"><span class="po2-tpack-ico">${pack.icon}</span><span class="po2-tpack-cut"></span></div>`; }).join('')}
+        <div class="po2-slash" id="poSlash" aria-hidden="true"></div></div>
+      ${opened.length > 25 ? `<p class="po2-hint">+${opened.length - 25} more packs in the pile</p>` : ''}
+    </div>
+    <div class="po2-hint" id="poHint" aria-live="polite">Slash across all the packs to open them at once</div>`;
+    wireTop();
+    const tbl = overlay.querySelector('#poTable'), slash = overlay.querySelector('#poSlash'), hint = overlay.querySelector('#poHint');
+    let sx = null, minX = 0, maxX = 0, done = false, trail = [];
+    const cut = ()=>{
+      if(done) return; done = true; sfx('swipeTone'); sfx('gold');
+      const packs = [...tbl.querySelectorAll('.po2-tpack')], tr = tbl.getBoundingClientRect();
+      packs.forEach(pk=>{ const x = (pk.getBoundingClientRect().left - tr.left)/Math.max(1, tr.width); later(()=>{ pk.classList.add('is-open'); burst(pk, ['✨','🐾'], 4); }, Math.round(x*420)); });
+      if(opened.some(o=> o.jackpot)) later(()=> sfx('rareRise', true), 500);
+      later(()=>{ tbl.classList.add('is-gathering'); hint.textContent = ''; }, 820);
+      later(()=>{
+        const all = []; opened.forEach(o=> o.results.forEach(r=> all.push(r)));
+        const tierOfR = r=> tierOf(r.id);
+        // the pile: shuffled, with the rarest cards saved for last
+        all.sort(()=> Math.random() - .5); all.sort((a, b)=> tierOfR(a) - tierOfR(b));
+        showReveal({results: all, isPile: true});
+      }, 1500);
+    };
+    tbl.addEventListener('pointerdown', e=>{ sx = e.clientX; minX = maxX = e.clientX; trail = []; try{ tbl.setPointerCapture(e.pointerId); }catch(_){} });
+    tbl.addEventListener('pointermove', e=>{ if(sx === null || done) return; minX = Math.min(minX, e.clientX); maxX = Math.max(maxX, e.clientX);
+      const r = tbl.getBoundingClientRect(); slash.style.left = (minX - r.left) + 'px'; slash.style.width = (maxX - minX) + 'px'; slash.style.top = (e.clientY - r.top) + 'px'; slash.classList.add('is-on');
+      if(maxX - minX > r.width*0.55) cut(); });
+    const up = ()=>{ if(sx === null) return; sx = null; slash.classList.remove('is-on'); if(!done) hint.textContent = 'Slash all the way across'; };
+    tbl.addEventListener('pointerup', up); tbl.addEventListener('pointercancel', up);
+    tbl.tabIndex = 0; tbl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); cut(); } });
+    tbl.addEventListener('click', ()=>{ if(maxX - minX < 8) cut(); });
+    tbl.focus({preventScroll:true});
   };
   onKey = e=>{
     if(overlay.hidden) return;
     if(e.key === 'Escape'){
       e.preventDefault(); e.stopImmediatePropagation();
-      if(phase === 'pack' || phase === 'reveal'){ clearTimers(); showSummary(); } else close();
+      if(phase === 'table' || (deckO && deckO.isPile && phase === 'reveal')){ clearTimers(); showAll(); } else if(phase === 'pack' || phase === 'reveal'){ clearTimers(); showSummary(); } else close();
     }
   };
   document.addEventListener('keydown', onKey, true);
   packOpenStop = close;
-  showPack();
+  if(bundle && opened.length >= 10) showTable(); else showPack();
 }
 
 /* ============================================================

@@ -5274,6 +5274,46 @@
   /* Emotes stay on the board: hidden once the results are up. */
   body.match-ended .speech-bubble.is-emote{display:none;}
   /* ---- 2026-10-08 late batch ---- */
+  /* Pack opening v3 (2026-10-08) */
+  .po2-pack.has-glow .po2-leak{opacity:.95;} .po2-pack.has-glow .po2-body{box-shadow:0 0 0 2px var(--glow), 0 0 34px 8px color-mix(in srgb, var(--glow) 65%, transparent), 0 10px 24px rgba(0,0,0,.35);}
+  .po2-pack.has-glow.is-idle{animation:po2Float 3.2s ease-in-out infinite, po2GlowPulse 1.6s ease-in-out infinite;}
+  @keyframes po2GlowPulse{50%{filter:brightness(1.12);}}
+  .po2-pack.is-jackpot .po2-body{animation:po2Jackpot .9s linear infinite;}
+  @keyframes po2Jackpot{0%{transform:rotate(0); filter:invert(0) brightness(1.3);} 25%{filter:invert(1) grayscale(1);} 50%{transform:rotate(180deg); filter:invert(0) grayscale(1) brightness(1.6);} 75%{filter:invert(1) grayscale(1);} 100%{transform:rotate(360deg); filter:invert(0) brightness(1.3);}}
+  .po2-rar{position:absolute; left:50%; bottom:-14px; z-index:7; transform:translateX(-50%) scale(.6); opacity:0; white-space:nowrap; pointer-events:none;
+    font:900 15px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#fff; padding:5px 14px; border-radius:999px;
+    background:linear-gradient(135deg, var(--rarity-a), var(--rarity-b)); box-shadow:0 4px 14px rgba(0,0,0,.45), 0 0 18px var(--rarity-a); text-shadow:0 1px 2px rgba(0,0,0,.6); transition:opacity .25s, transform .35s cubic-bezier(.2,1.4,.4,1);}
+  .po2-card.is-revealed .po2-rar{opacity:1; transform:translateX(-50%) scale(1);}
+  .po2-card.is-revealed .po2-front{box-shadow:0 0 0 3px var(--rarity-a), 0 0 40px 10px color-mix(in srgb, var(--rarity-a) 55%, transparent);}
+  /* NEW!: a yellow border that flashes, then fades away (the NEW! tag stays) */
+  .po2-card.is-new-moment .po2-front{animation:po2NewBorder 1.4s ease-out forwards !important;}
+  @keyframes po2NewBorder{0%{box-shadow:0 0 0 5px #ffd75e, 0 0 40px 12px rgba(255,215,94,.85);} 100%{box-shadow:0 0 0 3px var(--rarity-a), 0 0 40px 10px color-mix(in srgb, var(--rarity-a) 55%, transparent);}}
+  .po2-card.is-spark .po2-front{animation:po2SparkFlash .9s ease-out;} .po2-card.is-superspark .po2-front{animation:po2SuperSpark 1.4s ease-out;}
+  @keyframes po2SparkFlash{0%{filter:brightness(2.2);} 100%{filter:none;}}
+  @keyframes po2SuperSpark{0%{filter:brightness(3) saturate(2) hue-rotate(0);} 50%{filter:brightness(1.6) hue-rotate(180deg);} 100%{filter:none;}}
+  .po2-got{flex-wrap:wrap; max-width:min(92vw, 900px); gap:6px;}
+  .po2-mini{box-shadow:0 0 0 2px var(--rarity-a, transparent), 0 0 10px color-mix(in srgb, var(--rarity-a, transparent) 60%, transparent); border-radius:8px;}
+  .po2-mini.is-new{animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1), po2MiniNew 1.4s ease-out;}
+  @keyframes po2MiniNew{0%{box-shadow:0 0 0 3px #ffd75e, 0 0 14px #ffd75e;}}
+  .po2-sum-card{transition:transform .18s ease-out; transform-style:preserve-3d;}
+  .po2-sum-card.is-new .card-tile{box-shadow:none; animation:po2NewBorder 1.6s ease-out;}
+  .po2 .pack-open-foot{position:sticky; bottom:0; z-index:6; padding:10px 14px; border-radius:14px; background:rgba(18,11,28,.88); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
+  .po2-pile-count{margin-top:16px; font:800 13px 'Baloo 2',system-ui,sans-serif; opacity:.7;}
+  /* the open-all table */
+  .po2-table{position:relative; display:grid; grid-template-columns:repeat(auto-fit, minmax(64px, 1fr)); gap:12px; width:min(92vw, 760px); padding:22px; border-radius:20px; touch-action:none; cursor:crosshair;
+    background:radial-gradient(ellipse at center, rgba(120,80,40,.35), rgba(40,24,10,.55)); box-shadow:inset 0 0 0 2px rgba(255,220,160,.2);}
+  .po2-tpack{position:relative; aspect-ratio:.64; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:26px;
+    background:linear-gradient(160deg, #c98a3a, #7a4a18); border:2px solid #f3d38c; box-shadow:0 6px 12px rgba(0,0,0,.4); animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1) both; animation-delay:calc(var(--i) * 30ms);}
+  .po2-tpack.has-glow{box-shadow:0 0 0 2px var(--glow), 0 0 18px 4px color-mix(in srgb, var(--glow) 70%, transparent), 0 6px 12px rgba(0,0,0,.4);}
+  .po2-tpack.is-jackpot{animation:po2Jackpot .9s linear infinite;}
+  .po2-tpack-cut{position:absolute; left:-4%; right:-4%; top:16%; height:3px; background:#fff; box-shadow:0 0 10px #fff; transform:scaleX(0); transform-origin:0 50%;}
+  .po2-tpack.is-open{animation:po2TOpen .5s ease-out forwards;} .po2-tpack.is-open .po2-tpack-cut{transition:transform .14s; transform:scaleX(1);}
+  @keyframes po2TOpen{30%{transform:translateY(-6px) rotate(-3deg);} 100%{transform:translateY(-2px); filter:brightness(1.3);}}
+  .po2-table.is-gathering .po2-tpack{transition:transform .6s cubic-bezier(.6,0,.4,1), opacity .6s; transform:translate(calc((50% - var(--i) * 0px)), 0) scale(.4); opacity:0;}
+  .po2-slash{position:absolute; height:4px; margin-top:-2px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0), #fff, rgba(255,255,255,0)); box-shadow:0 0 14px #fff; opacity:0; pointer-events:none;}
+  .po2-slash.is-on{opacity:1;}
+  @media (prefers-reduced-motion: reduce){ .po2-pack.is-jackpot .po2-body, .po2-tpack.is-jackpot{animation:none;} }
+  .admin-cur-row{display:flex; flex-wrap:wrap; gap:8px 14px; margin:6px 0 10px;} .admin-cur-row label{display:flex; flex-direction:column; gap:2px; font-size:12px; font-weight:700;} .admin-cur-row input{width:110px; font:inherit; padding:5px 8px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
   /* Screen changes: the Codex page turn, a touch quicker and gentler. */
   .view-turn-fwd, .view-turn-back{animation:viewTurnFwd 380ms cubic-bezier(.2,.7,.25,1) both; transform-origin:0% 50%;}
   .view-turn-back{animation-name:viewTurnBack; transform-origin:100% 50%;}
