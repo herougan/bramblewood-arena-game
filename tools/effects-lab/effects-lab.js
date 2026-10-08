@@ -22,7 +22,7 @@
     floatText(card, t, cls);
     try{ recoilEl(card, /crit/.test(cls||'') ? 1.5 : 0.9); }catch(e){}
     try{
-      if(/crit/.test(cls||'')){ critStampVfx(card); SoundKit.critTone(); SoundKit.hitAt(9, true); }
+      if(/crit/.test(cls||'')){ SoundKit.critTone(); SoundKit.hitAt(9, true); }
       else if(/poison/.test(cls||'')) SoundKit.bubble(); else if(/bleed/.test(cls||'')) SoundKit.bleedTick();
       else if(cls==='heal') SoundKit.healTone(); else if(cls==='gold') SoundKit.gold(); else if(cls==='blocked') SoundKit.shield();
       else if(cls==='cold') SoundKit.freezeChime(); else SoundKit.hitAt(Math.abs(parseInt(t.replace(/[^\d-]/g,''),10))||1, Math.abs(parseInt(t,10)) >= 8);
@@ -227,7 +227,7 @@
     ready(){ const t = $('#readyStage .card-tile'); if(!t) return; t.classList.add('ready-flare'); S('readyChime');
       if(window.gsap) gsap.timeline().to(t, {y:-12, duration:.14, ease:'power2.out'}).to(t, {y:0, duration:.3, ease:'bounce.out', clearProps:'transform'});
       setTimeout(()=> t.classList.remove('ready-flare'), 700); },
-    crit(){ const c = $('#critStage .board-card') || $('#critStage .card-tile'); if(!c) return; floatText(c, '-11', 'crit'); try{ critStampVfx(c); SoundKit.critTone(); SoundKit.hitAt(11, true); SkillFX.knock(c.querySelector('.card-tile')||c, -90, 1.2); }catch(e){} },
+    crit(){ const c = $('#critStage .board-card') || $('#critStage .card-tile'); if(!c) return; floatText(c, '-11', 'crit'); try{ SoundKit.critTone(); SoundKit.hitAt(11, true); SkillFX.knock(c.querySelector('.card-tile')||c, -90, 1.2); }catch(e){} },
   };
   cardRun.low = ()=>{ const w = $('#lowStage'); const t = w && w.querySelector('.card-tile'); if(!t) return; const on = !w.classList.contains('lowhp'); w.classList.toggle('lowhp', on); t.style.animation = on ? 'lowHpTremble 2.4s ease-in-out infinite' : ''; const hp = t.querySelector('.stats .hp'); if(hp){ hp.style.color = on ? '#ff8a7a' : ''; hp.style.textShadow = on ? '0 0 6px rgba(255,60,40,.7)' : ''; } };
   $$('[data-crack]').forEach(b=> b.addEventListener('click', ()=>{ const t = $('#crackStage .card-tile'); if(!t) return; const n = +b.dataset.crack;

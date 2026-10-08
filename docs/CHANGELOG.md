@@ -7,6 +7,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Damage numbers burst out with an icon (👊 for crits) and pop higher on enemy cards; gold sounds sparkly.
 - Cards emote: 22 emoji moods in battle, including reactions to poison, freezing, stuns and kills.
 - Fixed a landed card occasionally jumping into its slot.
+- The victory toss finishes before the results appear.
 - Foils: no more red line; Starlight sparkles are their own finish; a new Lattice foil to try.
 - Effects Lab in tabs, with card sizes, damage numbers and weather.
 - Cards lean as you drag them across the board and land at that angle; a card dropped nowhere flies back to your hand.

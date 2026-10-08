@@ -30,12 +30,13 @@ Size comes from the container's CSS, not from the function. Because everything s
 | Market | `.mk-item` | |
 | Auto-battle offers | `.ab-offer` | |
 | Starter-deck step, leader picker | `.lp-tile` | |
+| Board card | `boardCardHTML` → `cardTileHTML(d, {live})` | Since 2026-10-08 the wrapper adds HP bars, statuses, fly shadow and Flip hooks around the shared face. |
+| Hand card | `renderHand` → `cardTileHTML(d, {hand})` | Since 2026-10-08. |
 
 ## Displays that are *not* `cardTileHTML`
 
 | Display | Function | Why separate | Plan |
 |---|---|---|---|
-| Board card | `boardCardHTML` | Wraps the same `.card-tile` markup, written out inline, with HP bars, statuses, fly shadow and Flip hooks | **Consolidate next:** call `cardTileHTML(d, {inPlay:true, extraClass})` inside the wrapper. It must not change the tile's DOM order, because the GSAP Flip measurement depends on it. |
 | Hover pop-over | `fullCardHTML` | Text-heavy rules card (abilities, tags, pitch yield); not a picture | Keep. |
 | Castle tiles | `castleTileHTML`, `matchCastleTileHTML` | Castles are not cards | Keep. |
 | Trench | `trenchTileHTML` | Compact row cell for the Trench mode | Could become `cardTileHTML` at mini size. |
@@ -46,7 +47,7 @@ Size comes from the container's CSS, not from the function. Because everything s
 
 These are all classes, so they work on every display above:
 
-- Foil finishes: `is-holo holo-<finish>`, via `holoClass` / `copyFinishClass`.
+- Foil finishes: `is-holo holo-<finish>`, via `holoClass` / `copyFinishClass`. `holo-starlight` (star sparkles) is a separate layer that can sit on any finish; Legendary and up wear Cosmos + Starlight.
 - Shiny hue shift: `is-shiny` plus `--shiny-hue`.
 - Skins: `skin-<id>`, from `UnitFX.SKINS`.
 - Rarity frame: `rarity-tier-*`.

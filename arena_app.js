@@ -3991,7 +3991,7 @@ function openCardInspector(defId, opts){
   opts = opts || {};
   const d = getCardDefs()[defId]; if(!d) return;
   if(cardInspectStop) cardInspectStop();
-  const ownFoil = opts.foil ? holoClass(d).replace('is-holo','').trim() : '';
+  const ownFoil = opts.foil ? holoClass(d).replace('is-holo','').trim().split(/\s+/)[0] : ''; // the finish only (Cosmos also wears Starlight, added in renderFace)
   // Players see Plain plus the foil they own; admins get every finish (it doubles as the
   // treatment centre's in-game preview).
   const finishes = [''].concat(adminModeEnabled ? CI_FINISHES : (ownFoil ? [ownFoil] : []));
@@ -4019,7 +4019,7 @@ function openCardInspector(defId, opts){
   let tile = null;
   const renderFace = ()=>{
     const skinCls = skin && window.UnitFX && UnitFX.SKINS[skin] ? ' has-skin ' + (UnitFX.SKINS[skin].tileClass||'') : '';
-    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
+    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish + (finish === 'holo-cosmos' ? ' holo-starlight' : '') : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
     tile = front.querySelector('.card-tile');
     if(finish) decorateHolo(front);
   };
@@ -13661,6 +13661,7 @@ function leaveMatchResumable(){
   showToast('⏸️ Fight saved. Press ▶ Continue (on Home or the map) to carry on.', 'ok');
 }
 function endMatch(opts){
+  try{ EMOTE_LAST_HIT.clear(); }catch(e){}
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
   hideCoachTip();
@@ -15213,7 +15214,7 @@ function renderBoard(opts){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
     // visible too, so a change in any of them must trigger a rebuild.
     const slotSig = slotView ? `S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
-    return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]d${dance?1:0}`;
+    return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
   const sig2 = rowSignature(p2Rows, dancingSide===2);
   const sig1 = rowSignature(p1Rows, dancingSide===1);
@@ -17635,7 +17636,9 @@ function glideFromRect(el, from){
           // (2026-10-05, "cards still rush to the right on victory") a jump of more than ~2 card
           // widths isn't a reflow snap — it's a measurement taken while a Flip had every card
           // stacked at the row's origin. Gliding that sent the whole row flying in from the side.
-          if(Math.abs(dx) > 12 && Math.abs(dx) < Math.max(160, pos.w * 1.6) && Math.abs(dy) < 40){
+          // (2026-10-08) widened from 1.6 to 2.5 card widths: on phones a token shifted two slots (160 px) and
+          // slipped past the old cap uncorrected.
+          if(Math.abs(dx) > 12 && Math.abs(dx) < Math.max(180, pos.w * 2.5) && Math.abs(dy) < 40){
             // dx is in screen pixels; the card lives inside the (possibly zoomed) board, so its own
             // x is in board pixels — divide by the board's scale or a zoomed-out board under-corrects.
             const sc = (typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
@@ -18757,11 +18760,12 @@ function openWorkshopPage(){
 // rest. Only the inner .card-tile moves, through additive WAAPI (translate/rotate/scale), so it never
 // fights the board's own positioning and always ends exactly where it started.
 function victoryParade(rowId, upOverride){
-  if(!fxAtLeast('low') || reducedMotion()) return;
-  const row = typeof rowId === 'string' ? document.getElementById(rowId) : rowId; if(!row) return;
+  if(!fxAtLeast('low') || reducedMotion()) return 0;
+  const row = typeof rowId === 'string' ? document.getElementById(rowId) : rowId; if(!row) return 0;
   const cards = [...row.querySelectorAll(':scope .board-card')].filter(c=> c.querySelector('.card-tile') && !c.classList.contains('falling') && !c.classList.contains('burning') && !c.classList.contains('bleeding'))
     .sort((a, b)=> a.getBoundingClientRect().left - b.getBoundingClientRect().left);
   const n = cards.length;
+  if(!n) return 0;
   cards.forEach((c, i)=>{
     const t = c.querySelector('.card-tile'); if(!t.animate) return;
     const h = c.getBoundingClientRect().height || 120;
@@ -18785,6 +18789,7 @@ function victoryParade(rowId, upOverride){
     if(i === 0 || Math.random() < 0.5) setTimeout(()=>{ try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} }, 250 + i*110 + 720);
     if(i % 2 === 0 && typeof maybeEmote === 'function') setTimeout(()=>{ try{ maybeEmote(c.getAttribute('data-uid') || ('toss' + i), 'win', {force:true, el:c}); }catch(e){} }, 250 + i*110 + 1150);
   });
+  return 250 + (n - 1)*110 + 1250; // ms until the last card has landed (showEndSign waits for it)
 }
 async function showEndSign(m){
   const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
@@ -18810,7 +18815,8 @@ async function showEndSign(m){
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
   battlefield.appendChild(el);
   try{ if(kind==='victory' && SoundKit.win) SoundKit.win(); else if(kind==='defeat' && SoundKit.lose) SoundKit.lose(); }catch(e){}
-  if(m.winner===1 || m.winner===2) try{ victoryParade(m.winner===1 ? 'rowMine' : 'rowEnemy'); }catch(e){}
+  let tossMs = 0;
+  if(m.winner===1 || m.winner===2) try{ tossMs = victoryParade(m.winner===1 ? 'rowMine' : 'rowEnemy') || 0; }catch(e){}
   // 2026-10-08 emotes: a couple of the beaten side's survivors sulk.
   if(m.winner===1 || m.winner===2) try{ const lose = document.getElementById(m.winner===1 ? 'rowEnemy' : 'rowMine');
     [...(lose ? lose.querySelectorAll('.board-card[data-uid]') : [])].slice(0, 3).forEach((c, i)=> setTimeout(()=> maybeEmote(c.getAttribute('data-uid'), 'loss', {el:c}), 600 + i*260)); }catch(e){}
@@ -18827,7 +18833,9 @@ async function showEndSign(m){
     }
   }
   const mult = Math.min(2, m.speedMult || 1);
-  await sleep(Math.round(1700/mult));
+  // 2026-10-08 review: the board re-renders right after this sign, replacing the tossed cards, so let
+  // the last winner land first (the toss is the payoff; it is not shortened by fast-forward).
+  await sleep(Math.max(Math.round(1700/mult), tossMs));
   el.classList.add('fight-sign-out');
   await sleep(220); el.remove();
 }
@@ -19663,7 +19671,8 @@ function floatText(el, text, cls){
   const icon = (raw.match(pictoRe) || []).join('').replace(/️/g, '');
   const num = raw.replace(pictoRe, '').trim() || raw;
   // 2026-10-08: every number (not just crits) bursts out on a starburst in its own colour; the burst fades fast.
-  const burst = /\d/.test(num) && num.length <= 4;
+  const calm = reducedMotion() || !fxAtLeast('low');
+  const burst = !calm && /\d/.test(num) && num.length <= 4;
   f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
   f.dataset.t = raw;
   // Placement (2026-10-08, user: "The numbers should appear higher on the card (opposing field). For our side
@@ -19675,7 +19684,7 @@ function floatText(el, text, cls){
   const dy0 = Math.random()*10-5;
   const top0 = enemyRow ? 12 : 40;
   const travel = 0.9 + Math.random()*0.2;
-  const big = classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
+  const big = calm ? 1.1 : classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
   if(hasGsap()){
     // 2026-10-03: GSAP owns the motion (the old CSS bounce read as a second number).
@@ -19690,7 +19699,7 @@ function floatText(el, text, cls){
       .to(f, {opacity:0, y:-54*travel, duration:.3, ease:'power1.in'}, '>-0.12');
     if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
   } else {
-    f.style.top = (top0 - 46 + dy0)+'%';
+    f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }
@@ -20111,15 +20120,6 @@ const DangerPulse = (()=>{
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
 const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed']};
-function critStampVfx(el){
-  if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
-  const t = el.querySelector('.card-tile') || el;
-  const st = document.createElement('div'); st.className = 'crit-stamp'; st.setAttribute('aria-hidden','true'); st.innerHTML = '<span class="cs-burst"></span>'; // 2026-10-08: no CRIT word
-  t.appendChild(st);
-  gsap.timeline({onComplete:()=> st.remove()})
-    .fromTo(st, {xPercent:-50, yPercent:-50, scale:.4, rotation:-24, opacity:0}, {scale:1.2, rotation:-12, opacity:1, duration:.09, ease:'power3.out'})
-    .to(st, {scale:1, opacity:0, duration:.2, ease:'power2.in'});
-}
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
 // cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
@@ -20200,7 +20200,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // special happened" floats on top of each other.
   // Crits (2026-10-06, user: "we need a symbol for being hit critically"): the number itself gets
   // the crit look (a gold starburst behind a bigger number) and a CRIT! stamp lands on the card —
-  // see flashDmg/critStampVfx. Only the sound is cued here.
+  // see flashDmg/floatText (👊 number on a burst). Only the sound is cued here.
   if(ev.crit && !ev.ambush && (targetEl||attEl)){ setTimeout(()=> { SoundKit.critTone(); }, Math.max(0, animMs().windup-20)); }
   // Rend (2026-09-16 mechanic, same audit): bypasses Armor entirely, but a Rend hit against an
   // armored target looked pixel-identical to a hit against a target with no Armor at all — no
@@ -20374,7 +20374,7 @@ function renderVfxForEvent(ev){
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
         if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
       if(ev.type==='hit' || ev.type==='hitHQ') maybeEmote(ev.attUid, 'attack'); // 2026-10-08 emotes
-      if(ev.type==='hit' && ev.targetUid!=null) EMOTE_LAST_HIT.set(String(ev.targetUid), ev.attUid);
+      if(ev.type==='hit' && ev.targetUid!=null) EMOTE_LAST_HIT.set(String(ev.targetUid), {by:ev.attUid, round:(matchState && matchState.round) || 0});
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
@@ -20382,7 +20382,7 @@ function renderVfxForEvent(ev){
       // hitHQ is excluded above.
       if(ev.type==='hit') maybeSpeak(ev.targetUid, null, 'onHit');
       if(ev.type==='hit'){ try{ const tc = currentCardByUid(ev.targetUid), td = tc && getCardDefs()[tc.defId], mx = (tc && (tc.maxHp || (td && td.health))) || 0;
-        maybeEmote(ev.targetUid, ev.armorBlocked && !(ev.dmg>0) ? 'blocked' : (ev.dmgType==='heat' && Math.random()<0.5) ? 'burning' : (tc && mx && tc.hp > 0 && tc.hp <= mx*0.25) ? 'lowHp' : (ev.crit || (ev.dmg||0) >= 8) ? 'hurtBig' : 'hurt'); }catch(e){} }
+        if(tc && tc.hp > 0) maybeEmote(ev.targetUid, ev.armorBlocked && !(ev.dmg>0) ? 'blocked' : (ev.dmgType==='heat' && Math.random()<0.5) ? 'burning' : (tc && mx && tc.hp > 0 && tc.hp <= mx*0.25) ? 'lowHp' : (ev.crit || (ev.dmg||0) >= 8) ? 'hurtBig' : 'hurt'); }catch(e){} }
       if(ev.armorBlocked) SoundKit.clang();
       if(ev.type==='hitHQ'){
         // 2026-09-19 ("then there needs to be a (larger) hit animation" for castle hits):
@@ -20723,8 +20723,10 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
-    { const killer = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid)); if(killer!=null) setTimeout(()=> maybeEmote(killer, 'kill'), 350); } }
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death', {force: Math.random() < EMOTE_CHANCE.death});
+    { const k = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid));
+      // only a hit this same round counts as the kill (a poison tick rounds later isn't the attacker's)
+      if(k && k.by!=null && k.round === ((matchState && matchState.round) || 0)) setTimeout(()=> maybeEmote(k.by, 'kill'), 350); } }
   // Center collapse-in (item #4, 2026-09-16): the actual slide into place is free — the
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
