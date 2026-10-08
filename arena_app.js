@@ -3874,6 +3874,13 @@ function openCardDetail(defId){
 // way. The text problem: past 90° you'd see the face mirrored, so the card has a proper BACK
 // (backface-visibility) and is never shown reversed. At rest it sways gently (±18°), so the text
 // stays readable; drag to turn it (with a flick it keeps spinning), ↻ for a full turn.
+// Full-screen overlays (card viewer, pack opener) make everything else on the page inert so focus
+// can't wander behind them; the returned function undoes exactly what it set.
+function bwInertOthers(keep){
+  const done = [];
+  [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
+  return ()=> done.forEach(el=>{ el.inert = false; });
+}
 const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism'];
 const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism'};
 let cardInspectStop = null;
@@ -3933,7 +3940,8 @@ function openCardInspector(defId, opts){
   const loop = (now)=>{
     const dt = Math.min(0.05, (now - prev)/1000); prev = now;
     if(!dragging){
-      if(Math.abs(omega) > 40){
+      if(still){ theta = base; omega = 0; }
+      else if(Math.abs(omega) > 40){
         theta += omega*dt; omega *= Math.pow(0.35, dt);          // flick coasts, then slows
         base = Math.round(theta/360)*360; swayFrom = now;
       } else {
@@ -3953,17 +3961,18 @@ function openCardInspector(defId, opts){
   stage.addEventListener('pointermove', e=>{
     if(!dragging) return;
     const now = performance.now(), dx = e.clientX - lastX, dts = Math.max(0.008, (now - lastT)/1000);
-    theta += dx*0.55; omega = omega*0.5 + (dx*0.55/dts)*0.5; lastX = e.clientX; lastT = now;
+    theta += dx*0.55; omega = still ? 0 : omega*0.5 + (dx*0.55/dts)*0.5; lastX = e.clientX; lastT = now; if(still) base = theta;
   });
-  const endDrag = ()=>{ if(!dragging) return; dragging = false; if(Math.abs(omega) <= 40){ base = Math.round(theta/360)*360; swayFrom = performance.now(); } };
+  const endDrag = ()=>{ if(!dragging) return; dragging = false; if(still){ base = Math.round(theta/180)*180; return; } if(Math.abs(omega) <= 40){ base = Math.round(theta/360)*360; swayFrom = performance.now(); } };
   stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
   ov.querySelector('.ci-spinbtn').addEventListener('click', ()=>{ omega = still ? 0 : 900; if(still){ base += 360; } });
   const onKey = e=>{
     if(e.key === 'Escape'){ e.stopImmediatePropagation(); e.preventDefault(); close(); }
     else if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){ e.preventDefault(); base += e.key==='ArrowRight' ? 180 : -180; swayFrom = performance.now(); }
   };
+  const unInert = bwInertOthers(ov);
   const close = ()=>{
-    cancelAnimationFrame(raf); window.removeEventListener('keydown', onKey, true); ov.remove(); cardInspectStop = null;
+    cancelAnimationFrame(raf); window.removeEventListener('keydown', onKey, true); unInert(); ov.remove(); cardInspectStop = null;
     if(opts.returnFocus && opts.returnFocus.focus) opts.returnFocus.focus();
   };
   cardInspectStop = close;
@@ -21587,8 +21596,10 @@ function purchasePackOnce(pack){
   return {results, leveledId};
 }
 function canAffordPacks(pack, qty){ return (myCurrencies.gold||0) >= (pack.cost.gold||0)*qty && (myCurrencies.gems||0) >= (pack.cost.gems||0)*qty; }
+let packOpenStop = null;
 function buyPack(packId, btnEl, qty){
   qty = Math.max(1, qty|0 || 1);
+  const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return;
   const pack = getShopPacks().find(p=>p.id===packId);
   if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
   if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
@@ -21602,6 +21613,7 @@ function buyPack(packId, btnEl, qty){
 }
 function openPackAnimation(pack, opened, opts){
   opts = opts || {};
+  if(packOpenStop) packOpenStop();
   // Back-compat: (pack, results[], {leveledId}) from older callers.
   if(Array.isArray(opened) && opened.length && opened[0] && opened[0].id !== undefined) opened = [{results: opened, leveledId: opts.leveledId || null}];
   const defs = getCardDefs();
@@ -21614,15 +21626,18 @@ function openPackAnimation(pack, opened, opts){
   overlay.className = 'pack-open-overlay po2';
   overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true'); overlay.setAttribute('aria-label', 'Opening ' + pack.name);
   overlay.hidden = false;
+  document.documentElement.classList.add('po2-open');
+  const unInert = bwInertOthers(overlay);
   const art = packCoverArt(pack);
-  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null, cleanup = [];
+  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null;
   const later = (fn, ms)=> timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms));
   const clearTimers = ()=>{ timers.forEach(clearTimeout); timers = []; };
   const sfx = (name, ...a)=>{ try{ SoundKit[name] && SoundKit[name](...a); }catch(e){} };
   const burst = (el, emojis, count)=>{ if(reduce) return; try{ emojiBurstVfx.burst(el, {emojis, count}); }catch(e){} };
   const close = ()=>{
-    clearTimers(); cleanup.forEach(f=> f()); cleanup = [];
+    clearTimers(); packOpenStop = null;
     if(onKey) document.removeEventListener('keydown', onKey, true);
+    unInert(); document.documentElement.classList.remove('po2-open');
     overlay.hidden = true; overlay.innerHTML = '';
     if(currentTab==='shop') renderShop();
   };
@@ -21646,7 +21661,7 @@ function openPackAnimation(pack, opened, opts){
           <div class="po2-liner" aria-hidden="true"></div>
           <div class="po2-art" style="${art ? `background-image:url('${escapeAttr(art)}')` : ''}"></div>
           <span class="po2-foil" aria-hidden="true"></span>
-          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards · Pack 1</small></div>
+          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards${bundle ? ` · ${packIdx+1}/${opened.length}` : ''}</small></div>
           <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
         </div>
         <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
@@ -21677,6 +21692,8 @@ function openPackAnimation(pack, opened, opts){
     const release = ()=>{ if(startX === null) return; startX = null; pk.classList.remove('is-gripped'); if(!torn && prog < 0.85){ hint.textContent = 'Keep dragging all the way across'; pk.classList.add('is-nudge'); later(()=> pk.classList.remove('is-nudge'), 500); } };
     strip.addEventListener('pointerup', release); strip.addEventListener('pointercancel', release);
     strip.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tear(); } });
+    // A plain click (screen readers, switch access) tears it too; a real drag already did.
+    strip.addEventListener('click', ()=>{ if(prog < 0.05) tear(); });
     if(!reduce){ later(()=> pk.classList.add('is-idle'), 300); }
     strip.focus({preventScroll:true});
   };
@@ -21802,6 +21819,7 @@ function openPackAnimation(pack, opened, opts){
     }
   };
   document.addEventListener('keydown', onKey, true);
+  packOpenStop = close;
   showPack();
 }
 
