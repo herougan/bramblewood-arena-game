@@ -1,6 +1,6 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-08). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-09). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
@@ -137,6 +137,63 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
   - Only Yeti King
   - Leave as is
 - **Default:** Apply both
+
+**B2. Skirmish balance audit proposals** · Decide · Balance · asked 2026-10-09
+- skirmish-balance-audit-2026-10-08.md proposes HP changes on 72 nodes and 33 deck swaps to smooth the zig-zag difficulty curve (15 walls, 19 trivial fights). Thistle Fields, Pebble Beach and the Grotto were tuned separately on 2026-10-09.
+  - Apply all
+  - Apply walls and trivial fights only
+  - Leave as is
+- **Default:** Apply walls and trivial fights only
+
+**B3. Enemy deck level reads 0 on most nodes** · Decide · Balance · asked 2026-10-09
+- Most enemy cards have no rarity set (171 of 355 cards), so the skirmish panel's Enemy deck Lv counts them as Base and shows 0. Option: infer a weight from each card's power (attack, health, skills, cost) when it has no rarity.
+  - Infer from power
+  - Set rarities on all cards (a content pass)
+  - Leave as is
+- **Default:** Infer from power
+
+**C2. Lock the battle type in the skirmish editor?** · Clarify · Conquest · asked 2026-10-09
+- You said 'You CANNOT change the battle type once it's been set in the skirmish editor'. In a local test the change saved fine. Is that a bug you hit (it reverted?), or a request to lock the field after the first save?
+  - It's a bug: it reverts
+  - Lock it after the first save
+
+**C3. Victory shift and the castle's white gradient** · Clarify · Battle · asked 2026-10-09
+- Couldn't reproduce either. Which cards move at the end of a fight, and when? Where does the white gradient on the castle show (fight, map, results)? A screenshot would settle both.
+
+**E9. What do Krooni 👑 buy?** · Decide · Economy · asked 2026-10-09
+- The Golden case gives 3 Krooni. Nothing spends them yet, and they're kept on this device only (no database column). Ideas: cosmetic finishes, a Krooni-only pack, or Hero rarity boosts.
+  - Cosmetics
+  - A Krooni pack
+  - Hero boosts
+  - Decide later
+- **Default:** Decide later
+
+**E10. Promotion cost and level** · Decide · Economy · asked 2026-10-09
+- Worker Ant promotes at Lv 3 for 60 Maple Leaves + 20 Dust. The ant goes back to Lv 0, so it can be promoted again into the other choices. Ant Warrior uses the Soldier Ant's art for now.
+  - Keep
+  - Higher level (5)
+  - Free promotion, keep the level
+- **Default:** Keep
+
+**E11. Nurse master bonus** · Decide · Economy · asked 2026-10-09
+- The Nest Nurse (a Unique+ card or the Wandering Traveller) is in, but what it does is still open. Ideas: eggs hatch 25% faster; a small chance a hatch comes out Shiny.
+  - Faster hatching
+  - Shiny chance
+  - Both
+- **Default:** Faster hatching
+
+**D19. Archetypes: which to build first** · Decide · Design · asked 2026-10-09
+- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions.
+  - Follow the suggested order
+  - Start with Evolution
+  - Start with the trio
+- **Default:** Follow the suggested order
+
+**T10. New Unique cards can break the raid ghost generator** · Note · Tech · asked 2026-10-09
+- Making the Wandering Traveller Unique left stage-5 ghost decks under 20 cards, so it was reverted. The generator needs a fallback before more Unique cards are added.
+  - Fix the generator next
+  - Later
+- **Default:** Fix the generator next
 
 ## Decided
 

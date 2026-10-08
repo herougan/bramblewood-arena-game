@@ -125,6 +125,23 @@ for t, f, src in GUIDE:
     if txt is None: continue
     docs_html += f'<details class="card" id="doc-{f[:-3]}"><summary><b>claude/{f}</b><small>Read before: {H.escape(t[0].lower() + t[1:])}</small></summary><div class="doc">{md_html(txt)}</div></details>'
 skills_html = ''.join(skill_card(f) for f in SKILLS)
+# Design tab (2026-10-09, user: "In our master artefact, come up with skills and effects + audit what we
+# have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
+# sheets and audits, newest first, each a collapsible card (the first one open).
+DESIGN = [
+  ('Archetypes: 10 + the Elder / Outer / Forgotten trio', 'archetypes-design-2026-10-09.md'),
+  ('Skills and effects audit, 11 new skills', 'skills-audit-2026-10-08.md'),
+  ('Skirmish balance audit', 'skirmish-balance-audit-2026-10-08.md'),
+  ('Card stage plan (~60 cards, tutorial set)', 'card-stage-plan-2026-10-08.md'),
+  ('Grab-bag randomness', 'grab-bag-randomness-2026-10-08.md'),
+  ('Card displays and reuse', 'card-displays.md'),
+]
+design_html = '<div class="doc guide"><h1>Design</h1><p class="lede">Design sheets and audits. Nothing here is built unless its status says so; reply in chat to adopt or change any of it.</p>'
+for k, (t, f) in enumerate(DESIGN):
+    pth = os.path.join(ROOT, 'docs', f)
+    if not os.path.exists(pth): continue
+    design_html += f'<details class="card" id="design-{f[:-3]}"{" open" if k == 0 else ""}><summary><b>{H.escape(t)}</b><small>claude/{f}</small></summary><div class="doc">{md_html(open(pth, encoding="utf-8").read())}</div></details>'
+design_html += '</div>'
 rules_html = ''.join(f'<li>{r}</li>' for r in RULES)
 guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
   '<p class="lede">What Claude reads and follows before working on Bramblewood. Skills are step-by-step procedures; the docs below are the rules and context for each area.</p>'
@@ -237,6 +254,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <nav role="tablist" aria-label="Pages">
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">📜 Master</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
+<button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
@@ -254,6 +272,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="dec-chips" id="decKinds" role="group" aria-label="Type"></div>
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc">{changelog}</article></section>
+<section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>
 <script>

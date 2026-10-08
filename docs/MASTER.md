@@ -2,7 +2,7 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you: 25 items.** They now live in the hub's **🗳️ Decisions** tab (search, filters, Yet / Done), generated from [`decisions.json`](decisions.json); [`decisions.md`](decisions.md) is the same list as text. The biggest: **S1** "apply it" for the admin player list, **S2** anti-cheat tier 1 ([`security-review-2026-10-08.md`](security-review-2026-10-08.md)), **B1** Open-mode difficulty tweaks ([`difficulty-open-mode-2026-10-08.md`](difficulty-open-mode-2026-10-08.md)), **A1–A3** the AI art pipeline ([`asset-pipeline-action-items.md`](asset-pipeline-action-items.md)), **F3** Enchant/Refine numbers, **G2** siding.
+> ➡️ **Waiting on you: 34 items.** They now live in the hub's **🗳️ Decisions** tab (search, filters, Yet / Done), generated from [`decisions.json`](decisions.json); [`decisions.md`](decisions.md) is the same list as text. The biggest: **S1** "apply it" for the admin player list, **S2** anti-cheat tier 1 ([`security-review-2026-10-08.md`](security-review-2026-10-08.md)), **B1** Open-mode difficulty tweaks ([`difficulty-open-mode-2026-10-08.md`](difficulty-open-mode-2026-10-08.md)), **A1–A3** the AI art pipeline ([`asset-pipeline-action-items.md`](asset-pipeline-action-items.md)), **F3** Enchant/Refine numbers, **G2** siding.
 
 **🧭 Master hub:** [one page with tabs for this doc, the changelog, the Effects Lab, the Visual Library and Claude's guide](https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J). Claude's guide lists the standing instructions, the skills Claude uses, and which doc to read before each kind of task. The Effects Lab tab has a "Coming next" list of effects marked TBC.
 
@@ -17,7 +17,8 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now plays a reveal before the results: each card won appears as a dark card back, a shine builds and fades to reveal it with a NEW! tag, then new fights, features and titles drop onto the board as glazed tokens with a slight shake (tap or any key skips). **Flyers** sway on their own layer, so hits and lunges add to the flight instead of fighting it (GSAP was folding the CSS lift into its own offset, which is what jerked them home), and they keep flying during the battle phase. **Conquest:** the admin layout bar no longer hides under the map title; the page always has an opaque background; switching maps is a quick 0.3 s dip instead of a 1–2.6 s slide; the edge chips are an arrow and the map's emoji; the skirmish panel has Fight centred on its top edge, a big **Enemy deck Lv** badge, and rewards on the right. **Deck level** now counts from 0 for a deck of unlevelled Base cards (rarer cards and levels raise it), so starting enemies are Lv 0 (PvP matching keeps the old score). **Admin tools** (Admin Mode, the Shift debug bar, map and skirmish editors) need a server admin account or a local copy. **Esprit** is now +X/+Y whenever any ally is played (not just a shared type). Hand cards show Wait pips like Cost. The +Lumber tip sits above the Graveyard and above a tapped card, never on top of a card. Water fights: softer glints and caustics that cross-fade between two patterns. "When out of moves": Auto / Surrenders / Offers a draw / Infinite imps. Emotes hide once the results are up. Earlier 2026-10-08 (10:45 pm): an independent review of tonight's battle effects found 5 issues, all fixed: the victory toss was cut off mid-air by the results re-render (the Victory sign now waits for the last winner to land), the card viewer labelled a Legendary foil "holo-cosmos holo-starlight", a kill emote could credit a card that hit rounds earlier, a dying card's hurt emote blocked its death emote, and damage-number bursts ignored reduced motion and Effects quality None (the leftover CRIT! stamp code is gone too). **Snap test:** still flags about 1 case in 4–5 runs (a landing card that its drop-in left offset, caught by the guard a frame late in the slow test browser); a phone case where a token slid two slots (160 px) past the guard's limit is now corrected. Earlier 2026-10-08 (10 pm): **Emotes** grew to 22 moods and now also react to statuses (🤢 poisoned, 🥶 frozen, 😵‍💫 stunned, 😴 asleep, 🙈 blinded, ⚡ shocked, 😡 berserk, 💪 buffed), fire hits (🥵) and kills (the killer cheers 😎). **Snap fix:** the known "landed token jumps ~50 px" was a drop-in cut short by a second render, leaving the card's offset behind until something cleared it; the board guard now glides any leftover offset home (repro went from 1–6 jumps a run to about 1 in 5 runs, and the full snap test is clean). This doc's update history was trimmed to the latest entry. Earlier 2026-10-08 (9:30 pm): **Victory:** the endless dance is gone; winners get a one-shot toss (launched up, knocked about, a squash landing, then rest, some cheering 🥳), and after the end no card glides across the board when the layout changes (the likely "blown about" cause). **Damage numbers:** every number bursts out big and recoils to size on a starburst in its colour that fades fast, with an icon in front (👊 crit, 🩸 🔥 ❄️ ☠️ 💚 🛡 🪙); no CRIT! word; enemy-row numbers start high on the card, yours spread 15% wider; gold sounds sparkly. **Foils:** the red line was the rarity band's glow stopping dead at the band's edge (removed); **Starlight** (the star sparkles) is its own finish, which Legendary cards wear over Cosmos; new **Lattice** finish (foil lines crossed at ±43°) to try. **Emotes:** emoji moods on board cards (summoned, attacking, hurt, low Health, dodged, healed, death, idle, win, loss…). **Effects Lab** is tabbed, with new Card displays (every size, in-battle states, each part highlighted), Damage numbers and Weather (rain, storm, snow, embers, mist, underwater, wind, caves, sudden death) tabs; Draw resets, Win and the drag trail work, deaths match the game. Older updates: headlines in [`CHANGELOG.md`](CHANGELOG.md), full wording in this file's git history (trimmed 2026-10-08; it had grown to ~15,000 characters)._
+_Last updated: 2026-10-09 (morning): your overnight queue and the 23:54 list. **Maps:** Thistle Fields 🌼 and Pebble Beach 🏖️ now sit between the Outskirts and Sunken Hollow (13 main maps). Pebble Beach has a sea cave that opens **Smugglers' Grotto**, the first **sub-map**: you zoom into the cave mouth, and inside are the first elites and rarer rewards. **Promotion:** a Worker Ant at Lv 3 becomes an Ant Warrior, Forager Ant or Soldier Ant (Forge). **Hero rarity** climbs from Common to Legendary as it levels. **Eggs:** the first one drops on the 4th map. **Opening screen** redone. **Design:** the archetype sheet (10 + the Elder / Outer / Forgotten trio) and the four audits are in the hub's 📐 Design tab. Earlier updates: [`CHANGELOG.md`](CHANGELOG.md)._
+
 
 ## Quick check: what we do NOT have
 - ⛔ **NFTs or blockchain:** none.
@@ -51,6 +52,7 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
   - It levels to **100** from battles (win +30, +10 if played; loss +10) and from crafting 💎 Materia (25 ✨ → +30 XP, in the Hall or the Forge bench).
   - You spend stat points (+1 Attack = 5, +1 Health = 1, Wait 0 = 25) and pick 1 of 3 skills at Levels 5/15/30/50/75/100.
   - Cost rises 1 → 4 with level. A maxed Hero is level with the top Legendaries.
+  - **Rarity rises with level** (new): Common → Uncommon (5) → Rare (15) → Epic (30) → Heroic (50) → Unique (70) → Legendary (90).
   - **Single-player only for now:** it's removed from ghost, raid and live decks until the server can check it.
 - **Where:**
   - `canonical/cards.json` (the data)
@@ -137,6 +139,8 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
   - **Event** (no live events yet)
 - **Pack 1 = 33 cards.** Packs give real cards (3/5/8; the bigger two guarantee one new card). Opening (2026-10-08): tear the foil booster, then one large card at a time with a rarity tease and a NEW! moment; sets of 10/25/50/100 unlock Skip and Open all (`openPackAnimation`, `PACK_BUNDLES`).
 - Owned copies show in the **Nest**. The **Forge** levels cards up with currency.
+- **Promotion** (new): a card with `promotesTo` can turn into one of those cards once it reaches `promoteAt` (Forge → Upgrade). The first is the Worker Ant → Ant Warrior / Forager Ant / Soldier Ant at Lv 3 (60 Maple Leaves + 20 Dust). Decks get the new card and the old one returns to Lv 0, so you can raise it again and take another path.
+- **Nest eggs:** the first egg drops on a first clear on the 4th map; it hatches into a random card after 8 hours (`EGG_KINDS`).
 - **Where:**
   - `cardSourceOf`, `cardWhereToGetText`, `SHOP_PACKS_DEFAULT`, `levelUpCost` in `arena_app.js`
   - `context-economy-progression.md`
@@ -157,7 +161,8 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
 ### Modes
 
 **11. Conquest, onboarding and dialogue** ✅
-- 11 maps of skirmish, elite, boss and raid-boss nodes. Each costs Energy.
+- 13 maps of skirmish, elite, boss and raid-boss nodes, plus sub-maps. Each fight costs Energy, which climbs map by map (bosses cost double).
+- **Sub-maps** (new): a map can hide a cave whose entrance opens after a given node. Clicking it zooms into the cave and a whole new map appears. The first is Smugglers' Grotto under Pebble Beach (first elites, Uncommon/Rare rewards). A sub-map is a normal map with `sub:true`, `parent` and `entry` in `CONQUEST_MAPS`; it never shows in the region list or atlas.
 - **Joined world:** unlocked maps with progress, plus one "Next: … 🔒". Neighbour maps peek in at the edges; tabs, edges and swipes pan the world to that map.
 - Results show rank, rewards, unlocks and a Next Battle button. Admins can drag nodes on the map.
 - **Conquest-first onboarding:**
@@ -166,8 +171,8 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
     - ⛺ Deck/Codex after 1-1
     - 🪺 Nest after 1-2
     - 📜 Quests after 1-3
-    - 🏟️ Arena when map 2 opens
-    - 🛒 Shop when map 3 opens
+    - 🏟️ Arena when map 2 (Thistle Fields) opens
+    - 🛒 Shop when map 3 (Pebble Beach) opens
     - 🧩 Autobattler after 3-2
     - 🐲 Raid when map 4 opens
   - Clicking one: a short speech, then straight in.
@@ -295,7 +300,7 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
   - the Deep.
 
   Skirmish rivals speak and are labelled by their people.
-- **Map art:** procedural pixel terrain for all 11 maps (`tools/make_map_backgrounds.py`). Battles are fought on that terrain. AI art can replace it through `tools/gen_map_bg_ai.py` (OpenRouter; blocked from Claude's workspace).
+- **Map art:** procedural pixel terrain for all 14 maps (13 main maps plus the grotto) (`tools/make_map_backgrounds.py`). Battles are fought on that terrain. AI art can replace it through `tools/gen_map_bg_ai.py` (OpenRouter; blocked from Claude's workspace).
 - **Effects** ([catalogue](effects-catalogue.md)):
   - holo foil by rarity; gold-leaf rims on Legendary+;
   - bleed-out and burn deaths, castle collapse;
@@ -336,6 +341,15 @@ _Last updated: 2026-10-08 (11:45 pm): your two lists. **Rewards:** winning now p
   - `assemble_arena.py`
 
 ---
+
+## Design (not built yet)
+- **Archetypes** 📝 ([sheet](archetypes-design-2026-10-09.md), also in the hub's 📐 Design tab):
+  - **Yours:** Ecclesia, Devilry, Scrapper, Evolution, Spawn/Hatchery, Mechanica.
+  - **Proposed:** Swarm, Tide, Pack Bond, Trickster.
+  - **The trio:** Elder Ones (sleep, then Awaken), Outer Ones (breach in from a Void pile), Forgotten Ones (return from Exile). They feed each other in a ring; all three on the board unlock a Convergence card.
+  - Suggested first build: an active Exile zone, which Ecclesia, the Forgotten Ones and Scrapper all need.
+- **Skills audit** ([doc](skills-audit-2026-10-08.md)): which skills earn their place, and 11 new ones.
+- **Skirmish balance audit** ([doc](skirmish-balance-audit-2026-10-08.md)), **card stage plan** ([doc](card-stage-plan-2026-10-08.md)), **grab-bag randomness** ([doc](grab-bag-randomness-2026-10-08.md)).
 
 ## Parked (hidden, kept in code)
 - **Online Raid:** hidden 2026-10-03.

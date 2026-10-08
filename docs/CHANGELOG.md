@@ -2,6 +2,41 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-09
+- Two new maps between the Outskirts and Sunken Hollow: **Thistle Fields** 🌼 (meadow critters) and **Pebble Beach** 🏖️ (crabs, gulls, pelicans). Map 1 and 2 progress stays open.
+- First sub-map: a sea cave on Pebble Beach opens **Smugglers' Grotto** after Gull Gang. You zoom into the cave mouth; inside are the first elites and rarer rewards (Uncommon and Rare eels, an octopus).
+- The Arena and the Shop now open on maps 2 and 3 (Thistle Fields and Pebble Beach), so they arrive at the same point as before.
+- The first Nest egg drops on the 4th map (now Sunken Hollow).
+- **Promotion:** in the Forge, a Worker Ant at Lv 3 can become an Ant Warrior (new), a Forager Ant or a Soldier Ant. Your decks get the new card; the ant goes back to Lv 0.
+- Your Hero's rarity climbs with its level: Common, then Uncommon at 5 and so on up to Legendary at 90.
+- A new opening screen: a slim panel on the left, the scene bright on the right with a fan of real cards, a letter-drop title with a gold sheen, and drifting tips.
+- Archetype design sheet: 10 archetypes and the Elder / Outer / Forgotten Ones trio. It's in the hub's new 📐 Design tab, with the skills, balance, card-stage and grab-bag audits.
+- No sideways scrollbar flash during page turns.
+
+## 2026-10-08 (late)
+- Skirmish nodes: green when cleared (no tick), with a sheen.
+- The card viewer is "Inspect"; only admins pick foils there.
+- 11 critters and a Guppy join the card list.
+- A small cave in Sunken Hollow to chat with; the 4th visit gives the Tiny Cave Dweller.
+- Critical HP colour stays at 0 HP; attack turns pink when it's below 25% of printed.
+- Skirmish Armour (a blue bar) replaces castle HP in skirmishes. Skirmishes can have a castle and optional CPU leaders, which the CPU may summon.
+- Armour shows as 🛡 pips.
+- Bites crunch, with the back teeth closing a beat later.
+- **Packs v3:**
+  - packs glow with a hint of their best card; rare jackpot packs;
+  - sparks on rare pulls; a rarity banner;
+  - auto-advance, a collection tray and a sticky footer;
+  - 10 or more packs lay out on a table to slash at once into one pile;
+  - packs no longer give Dust;
+  - the Golden case gives Krooni 👑.
+- Admins can set their own currencies.
+- The Nest Nurse (Unique+ or the Wandering Traveller); eggs hatch into a random card.
+- Page-turn transitions between screens.
+- The Wandering Traveller is everyone's default leader.
+- Energy climbs by map: 1 then 2 on map 1, 2 then 3 on map 2, 4 on map 3, then 5, 6, 7… Bosses cost double; "Full" at max.
+- Header controls are all the same height; tips drift slowly and fade out with a zoom.
+- The skirmish editor can make a new card and drop it straight into the deck.
+
 ## 2026-10-08
 - A reward reveal after a win: cards shine into view with NEW!, and new fights drop onto the board.
 - Flying units keep flying through the fight and no longer jerk back after a hit.
