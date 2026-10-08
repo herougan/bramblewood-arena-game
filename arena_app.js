@@ -2675,7 +2675,7 @@ function codexShell(){
     <button class="btn small ${codexSubTab==='forge'?'primary':''}" data-codextab="forge">🔨 Forge</button>
     <button class="btn small ${codexSubTab==='reference'?'primary':''}" data-codextab="reference">📚 Reference</button>
     <button class="btn small ${codexSubTab==='halloffame'?'primary':''}" data-codextab="halloffame">🏛 Hall of Fame</button>
-    ${adminModeEnabled ? `<button class="btn small ${codexSubTab==='deleted'?'primary':''}" data-codextab="deleted">🗑 Recently Deleted</button>
+    ${adminModeEnabled ? `<button class="btn small ${codexSubTab==='deleted'?'primary':''}" data-codextab="deleted">🗑 Deleted</button>
     <button class="btn small ${codexSubTab==='txns'?'primary':''}" data-codextab="txns">🧾 Log</button>` : ''}
     <!-- 2026-09-26 (#2, "add a quick button to codex from deck view... and same from codex to
          deck"): a direct cross-nav shortcut in the same top-right corner Play's own sub-tab row
@@ -3344,7 +3344,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
-      <div class="stats"><span class="atk">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
       ${poisonTagHTML(d)}
       ${abilityBadges(d)}
       ${live.bottomHTML||''}
@@ -3418,7 +3418,7 @@ function abilityBadges(d){
   if(e.bounty) out.push(`🏆${e.bounty}`);
   if(e.explode) out.push(`💣${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
-  if(e.armor) out.push(`🛡${e.armor}`);
+  if(e.armor) out.push(e.armor <= 5 ? '🛡'.repeat(e.armor) : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour
   if(e.thorns) out.push(`🌵${e.thorns}`);
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
@@ -3578,7 +3578,7 @@ function referenceHTML(){
 function renderDeletedTab(body){
   const entries = Object.values(liveTombstones).filter(t=>t.deletedSnapshot).sort((a,b)=> (b.deletedAt||'').localeCompare(a.deletedAt||''));
   body.innerHTML = `
-    <div class="panel"><h2>🗑 Recently Deleted</h2><p class="panel-sub">Any card removed from the live roster — restoring puts it back exactly as it was the moment it was deleted, whether it started life as a roster card or a custom one.</p>
+    <div class="panel"><h2>🗑 Deleted</h2><p class="panel-sub">Any card removed from the live roster — restoring puts it back exactly as it was the moment it was deleted, whether it started life as a roster card or a custom one.</p>
       ${entries.length? `<div class="grid-view">${entries.map(t=>deletedTileHTML(t)).join('')}</div>` : '<div class="empty-hint">Nothing deleted yet.</div>'}
     </div>`;
   body.querySelectorAll('[data-restore]').forEach(btn=> btn.addEventListener('click', async ()=>{
@@ -3928,7 +3928,7 @@ function openCardDetail(defId){
   overlay.innerHTML = `<div class="modal card-detail-card">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
-      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}<button type="button" class="cd-inspect-btn" id="cdInspectBtn" title="Open the card large and turn it in the light"><span aria-hidden="true">🔍</span> <span>View large</span></button></div>
+      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}<button type="button" class="cd-inspect-btn" id="cdInspectBtn" title="Inspect the card up close and turn it in the light"><span aria-hidden="true">🔍</span> <span>Inspect</span></button></div>
       <div class="cd-info">
       <h2 class="cd-name">${escapeHtml(d.name||'')}</h2>
       <div class="cd-chips">${chips}</div>
@@ -3999,14 +3999,16 @@ function openCardInspector(defId, opts){
   const ownFoil = opts.foil ? holoClass(d).replace('is-holo','').trim().split(/\s+/)[0] : ''; // the finish only (Cosmos also wears Starlight, added in renderFace)
   // Players see Plain plus the foil they own; admins get every finish (it doubles as the
   // treatment centre's in-game preview).
-  const finishes = [''].concat(adminModeEnabled ? CI_FINISHES : (ownFoil ? [ownFoil] : []));
+  // 2026-10-08 (user: "Disable the non-admin from selecting the sheen type"): players see the card in the finish
+  // they own; only admins get the finish picker (it doubles as the treatment centre's in-game preview).
+  const finishes = adminModeEnabled ? [''].concat(CI_FINISHES) : [];
   let finish = ownFoil;
   // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
   const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
   let skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
   const ov = document.createElement('div');
   ov.className = 'card-inspect'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
-  ov.setAttribute('aria-label', 'Card viewer: ' + (d.name||''));
+  ov.setAttribute('aria-label', 'Inspect: ' + (d.name||''));
   ov.innerHTML = `<button type="button" class="ci-x" aria-label="${'Close'}">✕</button>
     <div class="ci-stage"><div class="ci-shadow"></div><div class="ci-spin">
       <div class="ci-face ci-front"></div>
@@ -6841,7 +6843,9 @@ function saveMyCharacter(){ if(deckDraftActive()) return markDeckDirty(); try{ l
 let myLeaderId = loadMyLeader();
 function loadMyLeader(){
   try{ const raw = localStorage.getItem('bramblewood_arena_leader'); if(raw) return raw; }catch(e){}
-  return null;
+  // 2026-10-08 (user: "WHERE'S MY WANDERING GUY AS MY LEADER?! - all game modes have leaders"): with no leader
+  // chosen yet, the Wandering Traveller (your tutorial leader) leads you in every mode.
+  return 'wandering-traveller';
 }
 function saveMyLeader(){ if(deckDraftActive()) return markDeckDirty(); try{ if(myLeaderId) localStorage.setItem('bramblewood_arena_leader', myLeaderId); else localStorage.removeItem('bramblewood_arena_leader'); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 function leaderSlotHTML(){
@@ -8602,6 +8606,31 @@ function mapWellHTML(){
     <span class="mw-roof" aria-hidden="true"></span><span class="mw-posts" aria-hidden="true"></span><span class="mw-bucket" aria-hidden="true"></span><span class="mw-ring" aria-hidden="true"></span>
     ${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`;
 }
+// The little cave in Sunken Hollow (2026-10-08, user: "Add a small cave in the sunken hollow map. Nothing but text.
+// After talking to it a few times, it grants a tiny cave dweller card - it holds a tiny gold chipped shell.")
+const CAVE_M2_LINES = [
+  'Something small shuffles in the dark. It goes quiet when you lean in.',
+  'A tiny voice: “Go away.” A pause. “…Unless you brought snacks.”',
+  'Two bright eyes. A clink of something metal. “Mine. Found it fair.”',
+  '“Fine. You can come in. But the shell stays with me.”',
+];
+function mapCaveHTML(){
+  const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
+  return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" style="left:22%; top:30%;" title="A small cave" aria-label="A small cave">
+    <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${n ? '' : '<span class="map-spot-new">!</span>'}</button>`;
+}
+function visitSmallCave(el){
+  const flags = loadDialogueFlags(), n = Number(flags['cave_m2_talks']||0);
+  try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
+  const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
+  if(n >= CAVE_M2_LINES.length){ showSpeechBubble(el, '🐚 The cave dweller waves its little shell at you.'); return; }
+  showSpeechBubble(el, CAVE_M2_LINES[n]);
+  setDialogueFlag('cave_m2_talks', n + 1);
+  if(n + 1 === CAVE_M2_LINES.length){
+    setTimeout(()=>{ unlockCardForPlayer('tiny-cave-dweller', 'secret'); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
+      showToast('🐚 Tiny Cave Dweller joined your Nest, gold shell and all.', 'ok'); if(el){ el.classList.remove('is-new'); el.classList.add('is-done'); } }, 1600);
+  }
+}
 function visitOldWell(el){
   if(loadDialogueFlags()['seen:well_m1']){
     try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
@@ -8656,15 +8685,36 @@ function addSkirmishToMap(mapId){
   e.added.push(node); persistNodeEdits(); applyNodeEdits();
   openSkirmishEditor(mapId, node.key);
 }
+// Skirmish castle (2026-10-08, user: "I shouldn't be able to select the Castle health in skirmishes. Instead I can set a
+// 'Skirmish Armour', which adds a blue health on top of the castle's health ... I get to select the Leader and Castle"):
+// the castle's Health comes from the chosen castle; Skirmish Armour (node.armour) is a blue shield on top. Older nodes
+// that only have hqHp keep the same total: the castle up to its own Health, the rest as Armour.
+function skirmishCastle(node){
+  const base = (node.characterId && CHARACTER_DEFS[node.characterId]) || CHARACTER_DEFS.castle || {health:30};
+  const baseHp = Number(base.health) || 30;
+  let hp, shield;
+  if(node.armour !== null && node.armour !== undefined && Number.isFinite(Number(node.armour))){ hp = baseHp; shield = Math.max(0, Math.round(Number(node.armour))); }
+  else { const total = Number(node.hqHp) || baseHp; hp = Math.min(baseHp, total); shield = Math.max(0, total - baseHp); }
+  const character = node.characterId && CHARACTER_DEFS[node.characterId] ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health:hp}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
+  return {character, hp, shield, total: hp + shield};
+}
+function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
+function applySkirmishSetup(players, node){
+  const sc = skirmishCastle(node);
+  players[2].hq.shield = sc.shield; players[2].hq.maxShield = sc.shield;
+  const defs = getCardDefs();
+  const leaders = (node.leaders||[]).filter(id=> defs[id]);
+  if(leaders.length) players[2].reserveLeaders = leaders.slice();
+}
 function simulateSkirmishVsMyDeck(node, n){
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
   const myChar = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS.castle;
-  const enemyChar = node.characterId && CHARACTER_DEFS[node.characterId] ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health: node.hqHp}) : {id:'sim-enemy', name:node.name, health: node.hqHp||30, effects:{}};
+  const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
     const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE});
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
-    P[2].loopCards = [];
+    P[2].loopCards = []; applySkirmishSetup(P, node);
     engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
     let r = 1, over = false, lastSig = null, stalled = 0;
     for(; r<=DRAW_ROUND_CAP && !over; r++){
@@ -8705,12 +8755,13 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
-        <label>Castle HP<input id="seHp" type="number" min="1" max="9999" value="${draft.hqHp||30}"></label>
+        <label title="A blue shield on top of the castle's own Health; it soaks hits first">Skirmish Armour 🔷<input id="seArmour" type="number" min="0" max="9999" value="${skirmishCastle(draft).shield}"></label>
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
-        <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
+        <label>Castle<select id="seChar">${opt('', draft.characterId, `Plain castle (${(CHARACTER_DEFS.castle||{health:30}).health} HP)`)}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, `${CHARACTER_DEFS[id].name} (${CHARACTER_DEFS[id].health} HP)`)).join('')}</select></label>
+        <div class="se-wide se-leaders"><b>👑 Leaders</b> <small>optional · the CPU may bring each one out once</small><div class="se-leader-chips">${(draft.leaders||[]).map(id=> `<span class="dchip">${escapeHtml((getCardDefs()[id]||{}).icon||'')} ${escapeHtml((getCardDefs()[id]||{}).name||id)} <button type="button" class="se-x" data-leader-rm="${escapeAttr(id)}" aria-label="Remove">✕</button></span>`).join('') || '<small>None</small>'}<select id="seLeaderAdd" aria-label="Add a leader"><option value="">＋ Add a leader…</option>${Object.values(getCardDefs()).filter(d=> d && !d.token && !d.test && !(draft.leaders||[]).includes(d.id)).sort((a,b)=> (a.name||'').localeCompare(b.name||'')).map(d=> `<option value="${escapeAttr(d.id)}">${escapeHtml(d.name||d.id)}</option>`).join('')}</select></div></div>
         <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
@@ -8737,8 +8788,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const read = ()=>{
       const v = id=> (document.getElementById(id)||{}).value;
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
-      draft.hqHp = Math.max(1, Math.min(9999, Number(v('seHp'))||30)); draft.flavor = v('seFlavor')||'';
+      draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      if(document.getElementById('seArmour')){ draft.armour = Math.max(0, Math.min(9999, Math.round(Number(v('seArmour'))||0))); draft.hqHp = skirmishCastle(draft).total; }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
       if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
       if(document.getElementById('seRw_first_gold')){
@@ -8749,6 +8801,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
     overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
+    { const la = document.getElementById('seLeaderAdd'); if(la) la.onchange = ()=>{ read(); if(la.value){ draft.leaders = [...(draft.leaders||[]), la.value]; dirty = true; render(); } }; }
+    overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); draft.leaders = (draft.leaders||[]).filter(x=> x!==b.dataset.leaderRm); if(!draft.leaders.length) delete draft.leaders; dirty = true; render(); });
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
     overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
     const search = document.getElementById('seSearch');
@@ -8757,9 +8811,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% castle left when you win` : ''}.`; render(); };
     document.getElementById('seSave').onclick = async ()=>{
       // 2026-10-07 audit: say so instead of silently keeping the old name or defaulting the HP.
-      const rawName = ((document.getElementById('seName')||{}).value||'').trim(), rawHp = Number((document.getElementById('seHp')||{}).value);
+      const rawName = ((document.getElementById('seName')||{}).value||'').trim();
       if(!rawName){ showToast('Give the skirmish a name first.', 'warn'); document.getElementById('seName').focus(); return; }
-      if(!(rawHp >= 1)){ showToast('Castle Health must be 1 or more.', 'warn'); document.getElementById('seHp').focus(); return; }
       if(draft.kind !== 'tutorial' && !Object.keys(draft.deck||{}).length){ showToast('The enemy deck is empty — add at least one card.', 'warn'); return; }
       read();
       const e = nodePatchFor(mapId);
@@ -8767,7 +8820,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       persistNodeEdits(); applyNodeEdits();
@@ -10052,7 +10105,7 @@ function mapLayoutToolbarHTML(map){
 // Map edits list (2026-10-07, editor audit: "no overview of what's been changed on a map"): every
 // skirmish edit, added skirmish and the custom layout, each revertible, plus Revert all. Deleted
 // keys stay retired after a revert so an old key's progress never carries over to a new skirmish.
-const SE_FIELD_LABEL = {name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
+const SE_FIELD_LABEL = {armour:'Skirmish Armour', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
 function mapEditList(map){
   const e = nodeEdits[map.id] || {}, out = [];
   const nodeName = k=> { const n = map.nodes.find(x=> x.key===k); return n ? `${n.icon||''} ${n.name}`.trim() : k; };
@@ -10681,7 +10734,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
-      ${map.id==='m1' ? mapWellHTML() : ''}
+      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -10697,7 +10750,7 @@ function renderConquestSubTab(body){
         if(node.kind==='tutorial'){
           const tDone = loadTutorialDone();
           return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(node.name+' — '+(node.flavor||''))}">
-            <span class="map-node-ico">${node.icon}</span>${tDone?'<span class="map-node-check">✓</span>':''}
+            <span class="map-node-ico">${node.icon}</span>
           </button>`;
         }
         if(false){
@@ -10708,7 +10761,7 @@ function renderConquestSubTab(body){
           // .map-node-lock already uses for the locked state right below — reads as "a specific,
           // already-cleared place" instead of a blank dot.
           return `<div class="map-node kind-tutorial done" style="${style}" title="${node.icon} ${node.name} — ${node.flavor||''}">
-            <span class="map-node-ico">${node.icon}</span><span class="map-node-check">✓</span>
+            <span class="map-node-ico">${node.icon}</span>
           </div>`;
         }
         // Item #2 (2026-09-19, "missions should be locked and have a locked emoji over a
@@ -10730,7 +10783,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${done?'<span class="map-node-check">✓</span>':''}
+          <span class="map-node-ico">${node.icon}</span>
         </button>`;
       }).join('')}
     </div>
@@ -10775,6 +10828,7 @@ function renderConquestSubTab(body){
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); visitOldWell(w); }); }
+  { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); visitSmallCave(c); }); }
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
@@ -10785,7 +10839,7 @@ function renderConquestSubTab(body){
     // not fightable nodes and cost nothing.
     const energyCost = ENERGY_COST[node.kind];
     return `<div class="ctt-title">${node.icon} ${node.name}</div>
-      <div class="ctt-kind">${KIND_LABEL[node.kind]} · 🏰 ${node.hqHp} HP${energyCost?` · ${energyCost}⚡`:''}</div>
+      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
   }
@@ -10842,7 +10896,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard';
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}) + ', ' + _t('yours {n}', {n:mine}))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b><small>${escapeHtml(_t('yours {n}', {n:mine}))}</small></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
@@ -12256,9 +12310,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
-  const enemyCharacter = node.characterId && CHARACTER_DEFS[node.characterId]
-    ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health:node.hqHp})
-    : {id:'conquest-enemy', name:node.name, health:node.hqHp, effects:{}};
+  const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myDeckCounts, enemyDeck = node.deck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
     myGlad = pickGladiatorLeader(myDeckCounts, myLeaderId);
@@ -12271,6 +12323,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     1: engine.newPlayer(1, myDeck, myCharacter),
     2: engine.newPlayer(2, enemyDeck, enemyCharacter),
   };
+  if(battleMode!=='gladiator') applySkirmishSetup(players, node);
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   if(battleMode==='gladiator'){
@@ -12425,7 +12478,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
-      <div class="vs-sub">🏰 ${node.hqHp||''} HP</div>
+      <div class="vs-sub">${castleLineText(node)}</div>
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
     <div class="vs-skip">Tap to skip</div>`;
@@ -14346,6 +14399,7 @@ function renderMatchUI(){
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : (RESUMABLE_MODES.has(m.mode) && !m.over ? leaveMatchResumable : endMatch)));
   const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   wireLeaderWidget();
+  try{ castleShieldSync('A'); castleShieldSync('B'); }catch(e){}
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
   // native `title="..."` tooltip on the deck pile with a themed one showing the same X/Y count;
@@ -16503,6 +16557,8 @@ function boardCardHTML(c, defs, opts){
   // aura), so the board visibly reflects the buff even though it's never baked into c.atk.
   const effAtk = c.atk + (c.rallyBonus||0);
   const atkLabel = effAtk!==c.atk ? `⚔${effAtk}<span class="rally-note">(${c.atk}+${effAtk-c.atk})</span>` : `⚔${effAtk}`;
+  // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
+  const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
   const badges = [];
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
@@ -16550,7 +16606,7 @@ function boardCardHTML(c, defs, opts){
       ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}`;
   return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
-      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${flies?'</div>':''}
@@ -17112,7 +17168,7 @@ function renderHUD(){
 // 0 = intact, 1 = ≤66% HP, 2 = ≤33%, 3 = ≤15% (and 0 HP).
 function crackStage(hp, maxHp){ const f = maxHp>0 ? hp/maxHp : 1; return f<=0.15 ? 3 : f<=0.33 ? 2 : f<=0.66 ? 1 : 0; }
 // Low-HP tremble (2026-10-06): a unit at a quarter of its health or less shivers now and then.
-function isLowHp(c){ return c && c.hp>0 && c.maxHp>0 && c.hp/c.maxHp<=0.25; }
+function isLowHp(c){ return !!(c && c.maxHp>0 && c.hp/c.maxHp<=0.25); } // 2026-10-08: 0 HP keeps the critical colour
 function updateCastleCracks(el, hp, maxHp){
   const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
   const prev = [1,2,3].find(n=> tile.classList.contains('crack-'+n)) || 0;
@@ -17161,6 +17217,22 @@ function updateHqHpDisplay(side, hpOverride){
   if(hpText) hpText.textContent = `❤${Math.max(0,hp)}`;
   updateCastleCracks(el, hp, hq.maxHp);
   updateHpRibbon(side, hp);
+  castleShieldSync(side);
+}
+// Skirmish Armour on the castle tile (2026-10-08): a blue bar over the Health bar and a 🔷 number while any is left.
+function castleShieldSync(side){
+  const m = matchState; if(!m) return;
+  const hq = m.players[side==='A' ? 1 : 2].hq, el = hqTileEl(side); if(!el || !hq) return;
+  const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
+  const sh = Math.max(0, hq.shield||0), max = Math.max(1, hq.maxShield||0);
+  let badge = tile.querySelector(':scope > .castle-shield'), bar = tile.querySelector('.castle-hp-bar-oncard-shield');
+  if(!(hq.maxShield > 0)){ if(badge) badge.remove(); if(bar) bar.remove(); return; }
+  if(!badge){ badge = document.createElement('div'); badge.className = 'castle-shield'; tile.appendChild(badge); }
+  badge.textContent = '🔷' + sh; badge.classList.toggle('is-broken', sh <= 0);
+  badge.title = sh > 0 ? `Skirmish Armour: ${sh} — soaks hits before the castle's Health` : 'Skirmish Armour broken';
+  const track = tile.querySelector('.castle-hp-bar-oncard');
+  if(track && !bar){ bar = document.createElement('div'); bar.className = 'castle-hp-bar-oncard-shield'; track.appendChild(bar); }
+  if(bar) bar.style.width = (sh/max*100).toFixed(1) + '%';
 }
 // Status badges/overlays (poison ☠, bleed 🩸, stun 💫) now refresh on the specific board
 // card the instant a hit applies them (2026-09-16, per explicit request: "poison... should
@@ -18091,6 +18163,8 @@ async function resolveRound(){
         const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId);
         cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward'));
         if(cardIds.length) m.conquestCardsEarned = cardIds;
+        // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
+        if(m.conquestNode.mapId==='m4' && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', 'm4'); }
       }
       { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
@@ -22566,6 +22640,50 @@ function renderShop(){
 // #3's foil shimmer (and not copy #1's) is a real architecture change (giving every board/hand
 // card instance a copyIdx, threading it through deck-save/match-start/render) well beyond what a
 // v1 collection screen needs; this screen is the ownership record, ready for that hookup later.
+// ---- Nest: Nurse master and eggs (2026-10-08) ----
+// User: "For Nest, you can select a Nurse master. Must be Unique and above (which the wanderer is). Start with none,
+// but you can't have none after you choose your first one. You can only swap." and "can there be egg cards you carry
+// in your nest, and they grow into a random card? Prep for this system. Collect your first egg on the 4th map."
+// Eggs are stored now and shown on a shelf; they hatch after a real-time wait into a random card from their pool.
+// The Nurse master tends them (for now: shown as the egg-keeper; its bonus is a design decision still open).
+const NEST_KEY = 'bramblewood_nest_v1';
+function nestState(){ try{ const n = JSON.parse(localStorage.getItem(NEST_KEY)||'{}'); return {nurse: n.nurse || null, eggs: Array.isArray(n.eggs) ? n.eggs : []}; }catch(e){ return {nurse:null, eggs:[]}; } }
+function saveNestState(n){ try{ localStorage.setItem(NEST_KEY, JSON.stringify(n)); }catch(e){} }
+function nurseEligible(id){ const d = getCardDefs()[id]; if(!d || d.token || d.test) return false; return id === 'wandering-traveller' || RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= RARITY_TIER_BANDS.indexOf('unique'); }
+const EGG_KINDS = {
+  woodland: {name:'Woodland Egg', icon:'🥚', hatchHours:8, pool: d=> !d.token && !d.test && !d.hero && ['starter','common','uncommon', undefined].includes(d.rarity)},
+};
+function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] ? kind : 'woodland'; const now = Date.now();
+  n.eggs.push({id:'egg'+now.toString(36)+Math.floor(Math.random()*1e4), kind:k, laidAt:now, hatchAt: now + EGG_KINDS[k].hatchHours*3600e3, from: from||''}); saveNestState(n);
+  try{ showToast(`${EGG_KINDS[k].icon} You found a ${EGG_KINDS[k].name}! It's in your Nest, keeping warm.`, 'ok'); }catch(e){} }
+function hatchEgg(eggId){
+  const n = nestState(); const egg = n.eggs.find(e=> e.id===eggId); if(!egg || Date.now() < egg.hatchAt) return null;
+  const defs = getCardDefs(), pool = Object.values(defs).filter(d=> d && (EGG_KINDS[egg.kind]||EGG_KINDS.woodland).pool(d));
+  if(!pool.length) return null;
+  const d = pool[Math.floor(Math.random()*pool.length)];
+  n.eggs = n.eggs.filter(e=> e.id!==eggId); saveNestState(n);
+  unlockCardForPlayer(d.id, 'egg'); return d.id;
+}
+function nestKeeperHTML(){
+  const n = nestState(), defs = getCardDefs();
+  const nurse = n.nurse && defs[n.nurse];
+  const fmt = ms=>{ const h = Math.floor(ms/3600e3), m = Math.ceil((ms%3600e3)/60e3); return h ? `${h}h ${m}m` : `${m}m`; };
+  const eggs = n.eggs.map(e=>{ const k = EGG_KINDS[e.kind]||EGG_KINDS.woodland, left = e.hatchAt - Date.now();
+    return `<button type="button" class="nest-egg ${left<=0?'is-ready':''}" data-egg="${escapeAttr(e.id)}" ${left>0?'disabled':''} title="${escapeAttr(k.name)}"><span class="ne-ico">${k.icon}</span><small>${left>0 ? escapeHtml(fmt(left)) : 'Hatch!'}</small></button>`; }).join('');
+  return `<div class="nest-keeper">
+    <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend your Nest.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
+    <div class="nk-eggs"><b>🥚 Eggs</b>${eggs || '<small>No eggs yet. Rumour says the fourth map hides one.</small>'}</div>
+  </div>`;
+}
+function openNursePicker(){
+  const defs = getCardDefs(), n = nestState();
+  const ids = Object.keys(defs).filter(id=> nurseEligible(id) && ((myCardCopies[id]||[]).length || id==='wandering-traveller'));
+  const choice = ids.map(id=> ({id, label:`${defs[id].icon||''} ${defs[id].name}`}));
+  if(!choice.length){ showToast('You need a Unique card or better to be your Nurse master.', 'warn'); return; }
+  const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.innerHTML = `<div class="modal" role="dialog" aria-label="Choose your Nurse master" style="max-width:420px"><h3>🧑‍🍼 Choose your Nurse master</h3><p class="panel-sub">Once you have one, you can swap but never go back to none.</p><div class="lp-grid">${choice.map(c=> `<button type="button" class="lp-item ${c.id===n.nurse?'is-on':''}" data-nurse="${escapeAttr(c.id)}"><span class="lp-tile">${cardTileHTML(defs[c.id], {inPlay:true})}</span><b>${escapeHtml(defs[c.id].name)}</b></button>`).join('')}</div><div class="modal-actions"><button type="button" class="btn" data-close>Close</button></div></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e=>{ const b = e.target.closest('[data-nurse]'); if(b){ const st = nestState(); st.nurse = b.dataset.nurse; saveNestState(st); ov.remove(); renderNest(); return; } if(e.target===ov || e.target.closest('[data-close]')) ov.remove(); });
+}
 function renderNest(){
   const root = document.getElementById('view-nest');
   const defs = getCardDefs();
@@ -22575,6 +22693,7 @@ function renderNest(){
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
+      ${nestKeeperHTML()}
       ${(()=>{ const ds = disenchantSummary(); return `<div class="nest-actions"><button type="button" class="btn small" id="nestDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button></div>`; })()}
     </div>
     <div class="grid-view" id="nestGrid">${
@@ -22583,6 +22702,8 @@ function renderNest(){
           <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
+  { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
+  root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ const id = hatchEgg(b.dataset.egg); if(id){ const d = getCardDefs()[id]; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(`🐣 It hatched: ${d.icon||''} ${d.name}!`, 'ok'); renderNest(); } });
   // 2026-09-28, per explicit request ("don't have the checkbox w the 1x... show a card that looks
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
@@ -23998,10 +24119,14 @@ function switchTab(tab){
     // 2026-10-08 (user: "Clicking play or any other button should instantly transit you"): no entrance
     // that covers the new screen (the tent flaps and cart awning hid it for ~0.8 s). Only the Nest's
     // drifting down remains, and it never covers anything.
-    if(place && currentTabBeforeSwitch!==tab && !reduced && tab==='nest') place.enter();
-    // In-world transition (immersion #4): any other screen change is carried by a gust of leaves
-    // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
-    else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
+    // 2026-10-08 (user: "I like how the Hall of Fame and Deleted sections transition in/out ... make the rest like
+    // that. Forge's transition is too exaggerated"): every screen change is now the Codex's quick page turn (forward
+    // when moving right along the menu, back when moving left). The leaf gust and the Nest's falling down are retired.
+    if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
+      const ORDER = ['home','play','deck','nest','shop','codex','profile','achievements','ranking','admin'];
+      const v = document.getElementById('view-' + tab), dir = ORDER.indexOf(tab) >= ORDER.indexOf(currentTabBeforeSwitch) ? 'fwd' : 'back';
+      if(v){ v.classList.remove('view-turn-fwd','view-turn-back'); void v.offsetWidth; v.classList.add('view-turn-' + dir); setTimeout(()=> v.classList.remove('view-turn-' + dir), 420); }
+    }
   }catch(e){}
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';

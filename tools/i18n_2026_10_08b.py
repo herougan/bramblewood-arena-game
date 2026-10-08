@@ -197,6 +197,20 @@ T = {
 'Tap to skip': ['Touchez pour passer','Tippen zum Überspringen','Toca para saltar','Tocca per saltare','Toque para saltar','I-tap para laktawan','தவிர்க்கத் தட்டவும்','Ketuk untuk lewati','点击跳过','點擊跳過','タップでスキップ','탭하여 건너뛰기'],
 'NEW!': ['NOUVEAU !','NEU!','¡NUEVO!','NUOVO!','NOVO!','BAGO!','புதியது!','BARU!','新!','新!','NEW!','NEW!'],
 'Rewards': ['Récompenses','Belohnungen','Recompensas','Ricompense','Recompensas','Mga gantimpala','வெகுமதிகள்','Hadiah','奖励','獎勵','報酬','보상'],
+'Harvest Mouse': ['Souris des moissons','Zwergmaus','Ratón espiguero','Topolino delle risaie','Rato-das-colheitas','Dagang-ani','அறுவடை எலி','Tikus panen','巢鼠','巢鼠','カヤネズミ','멧밭쥐'],
+'Garden Snail': ['Escargot des jardins','Gartenschnecke','Caracol de jardín','Chiocciola','Caracol-de-jardim','Suso sa hardin','தோட்ட நத்தை','Siput kebun','花园蜗牛','花園蝸牛','カタツムリ','정원 달팽이'],
+'Hedgehog Scout': ['Hérisson éclaireur','Igel-Späher','Erizo explorador','Riccio esploratore','Ouriço batedor','Hedgehog na tagamanman','முள்ளம்பன்றி சாரணர்','Landak pengintai','刺猬斥候','刺蝟斥候','ハリネズミの斥候','고슴도치 정찰병'],
+'Meadow Frog': ['Grenouille des prés','Wiesenfrosch','Rana del prado','Rana dei prati','Rã-do-prado','Palaka sa parang','புல்வெளித் தவளை','Katak padang','草地蛙','草地蛙','野のカエル','들판 개구리'],
+'Pill Bug': ['Cloporte','Rollassel','Cochinilla','Porcellino di terra','Tatuzinho','Kuto-kuto','உருளை வண்டு','Kutu bola','球潮虫','球潮蟲','ダンゴムシ','공벌레'],
+'Sparrow Chick': ['Poussin moineau','Spatzenküken','Polluelo de gorrión','Pulcino di passero','Filhote de pardal','Inakay na maya','சிட்டுக்குருவிக் குஞ்சு','Anak pipit','麻雀雏鸟','麻雀雛鳥','スズメのヒナ','아기 참새'],
+'Rabbit Kit': ['Lapereau','Kaninchenjunges','Gazapo','Coniglietto','Láparo','Kuneho-kuting','முயல் குட்டி','Anak kelinci','小兔','小兔','子ウサギ','아기 토끼'],
+'Beetle Grunt': ['Scarabée fantassin','Käferkrieger','Escarabajo soldado','Scarabeo fante','Besouro soldado','Kawal na salagubang','வண்டு வீரன்','Prajurit kumbang','甲虫步兵','甲蟲步兵','カブトムシ兵','딱정벌레 병사'],
+'Earthworm': ['Ver de terre','Regenwurm','Lombriz','Lombrico','Minhoca','Bulate','மண்புழு','Cacing tanah','蚯蚓','蚯蚓','ミミズ','지렁이'],
+'Dormouse': ['Loir','Siebenschläfer','Lirón','Ghiro','Arganaz','Dormouse','தூங்கு எலி','Tikus dorm','睡鼠','睡鼠','ヤマネ','겨울잠쥐'],
+'Guppy': ['Guppy','Guppy','Guppy','Guppy','Guaru','Guppy','கப்பி மீன்','Gupi','孔雀鱼','孔雀魚','グッピー','구피'],
+'Tiny Cave Dweller': ['Minuscule troglodyte','Winziger Höhlenbewohner','Diminuto cavernícola','Minuscolo cavernicolo','Pequeno morador da caverna','Munting taga-kuweba','சிறு குகைவாசி','Penghuni gua mungil','小小穴居者','小小穴居者','小さな洞窟の住人','작은 동굴 주민'],
+'Inspect': ['Inspecter','Ansehen','Inspeccionar','Ispeziona','Inspecionar','Siyasatin','ஆய்வு செய்','Periksa','检视','檢視','詳しく見る','살펴보기'],
+'Armour': ['Armure','Rüstung','Armadura','Armatura','Armadura','Baluti','கவசம்','Zirah','护甲','護甲','アーマー','방어구'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

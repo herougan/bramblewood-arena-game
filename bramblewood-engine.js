@@ -638,8 +638,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       syncGladiatorHq(pl);
       return reduced;
     }
-    pl.hq.hp = Math.max(0, pl.hq.hp - reduced);
-    if(suddenDeath && suddenDeathCastles && reduced>0) pl.hq.hp = 0; // sudden death: a castle hit ends the game
+    // Skirmish Armour (2026-10-08): a blue shield on top of the castle's Health soaks hits first.
+    let toHp = reduced;
+    if(pl.hq.shield > 0 && toHp > 0){ const soak = Math.min(pl.hq.shield, toHp); pl.hq.shield -= soak; toHp -= soak; }
+    pl.hq.hp = Math.max(0, pl.hq.hp - toHp);
+    if(suddenDeath && suddenDeathCastles && reduced>0){ pl.hq.hp = 0; pl.hq.shield = 0; } // sudden death: a castle hit ends the game
     return reduced;
   }
   function pickRandomEnemyTarget(enemyPl){
@@ -1883,6 +1886,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiTakeTurn(players, sideOf, aiId, stats, events){
     const ai = players[aiId];
     const affordable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid));
+    // Skirmish leaders (2026-10-08): a skirmish can give the CPU optional leaders (reserveLeaders). Each can be
+    // summoned once; the CPU brings one out now and then, or whenever it has nothing else it can play.
+    if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
+      const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
+      if(ready.length && (!affordable.length || rnd() < 0.35)){
+        const id = ready[Math.floor(rnd()*ready.length)];
+        if(summonLeader(players, sideOf, aiId, id, rnd() < 0.5 ? 'left' : 'right', stats, events)){ ai.reserveLeaders = ai.reserveLeaders.filter(x=> x!==id); return; }
+      }
+    }
     if(affordable.length){
       const pick = affordable[Math.floor(rnd()*affordable.length)];
       const side = rnd() < 0.5 ? 'left' : 'right';

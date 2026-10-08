@@ -7344,7 +7344,7 @@
       ]
     },
     "flavor": "No banner, no faction \u2014 just a walking stick, a full pack, and a knack for showing up exactly when a new adventure needs a guide.",
-    "locked": true,
+    "locked": false,
     "archetypes": [
       "Traveller"
     ],
@@ -7613,6 +7613,237 @@
     "uuid": "b1043351-8511-40d9-9687-5be6e5503b20",
     "effects": {
       "flying": true
+    }
+  },
+  {
+    "id": "harvest-mouse",
+    "name": "Harvest Mouse",
+    "icon": "\ud83d\udc2d",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 3,
+    "flavor": "Lives in the wheat. Knows every stalk by name.",
+    "locked": true,
+    "archetypes": [
+      "Mouse"
+    ],
+    "rarity": "starter",
+    "numericId": 345,
+    "uuid": "c445baab-1305-42ea-a7cf-d37aa2c8d6a6"
+  },
+  {
+    "id": "garden-snail",
+    "name": "Garden Snail",
+    "icon": "\ud83d\udc0c",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 6,
+    "flavor": "Slow to arrive. Slower to leave.",
+    "locked": true,
+    "archetypes": [
+      "Snail"
+    ],
+    "rarity": "starter",
+    "numericId": 346,
+    "uuid": "70989dc7-54e1-4bc8-8162-0c5dfd1e57c4",
+    "effects": {
+      "armor": 1
+    }
+  },
+  {
+    "id": "hedgehog-scout",
+    "name": "Hedgehog Scout",
+    "icon": "\ud83e\udd94",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "flavor": "Curls up first, asks questions later.",
+    "locked": true,
+    "archetypes": [
+      "Hedgehog"
+    ],
+    "rarity": "common",
+    "numericId": 347,
+    "uuid": "ac3fc7b5-03dd-4378-9b38-cd05904cab23",
+    "effects": {
+      "thorns": 1
+    }
+  },
+  {
+    "id": "meadow-frog",
+    "name": "Meadow Frog",
+    "icon": "\ud83d\udc38",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "flavor": "Jumps into every puddle and every fight.",
+    "locked": true,
+    "archetypes": [
+      "Frog"
+    ],
+    "rarity": "common",
+    "numericId": 348,
+    "uuid": "9f05a1a8-6862-4f67-a55a-ff6576a1bc66"
+  },
+  {
+    "id": "pill-bug",
+    "name": "Pill Bug",
+    "icon": "\ud83e\udeb2",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "flavor": "Rolls into a ball. Rolls back out. Repeat.",
+    "locked": true,
+    "archetypes": [
+      "Insect"
+    ],
+    "rarity": "starter",
+    "numericId": 349,
+    "uuid": "f2627bae-89a6-47ac-95b6-ac3012ae5627",
+    "effects": {
+      "armor": 1
+    }
+  },
+  {
+    "id": "sparrow-chick",
+    "name": "Sparrow Chick",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "flavor": "Hungry, loud, and surprisingly brave.",
+    "locked": true,
+    "archetypes": [
+      "Bird"
+    ],
+    "rarity": "starter",
+    "numericId": 350,
+    "uuid": "7d95ff4d-7977-412a-ae37-faa5d85f60be",
+    "effects": {
+      "flying": true
+    }
+  },
+  {
+    "id": "rabbit-kit",
+    "name": "Rabbit Kit",
+    "icon": "\ud83d\udc07",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 2,
+    "flavor": "First to the clover. First to the fight.",
+    "locked": true,
+    "archetypes": [
+      "Rabbit"
+    ],
+    "rarity": "common",
+    "numericId": 351,
+    "uuid": "1104c731-5272-4f22-aa86-46101adce9b1",
+    "effects": {
+      "quick": true
+    }
+  },
+  {
+    "id": "beetle-grunt",
+    "name": "Beetle Grunt",
+    "icon": "\ud83e\udeb2",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 4,
+    "flavor": "Polished shell, simple orders, no complaints.",
+    "locked": true,
+    "archetypes": [
+      "Insect"
+    ],
+    "rarity": "common",
+    "numericId": 352,
+    "uuid": "1d170243-d451-4c3e-bf21-149c28b7e786"
+  },
+  {
+    "id": "earthworm",
+    "name": "Earthworm",
+    "icon": "\ud83e\udeb1",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "flavor": "Cut it in half and it just keeps working.",
+    "locked": true,
+    "archetypes": [
+      "Worm"
+    ],
+    "rarity": "starter",
+    "numericId": 353,
+    "uuid": "4f515231-c34f-415e-97d0-8f79c800ac53",
+    "effects": {
+      "regen": 1
+    }
+  },
+  {
+    "id": "dormouse",
+    "name": "Dormouse",
+    "icon": "\ud83d\udc01",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 5,
+    "flavor": "Asleep for most of the war. Awake for the important part.",
+    "locked": true,
+    "archetypes": [
+      "Mouse"
+    ],
+    "rarity": "common",
+    "numericId": 354,
+    "uuid": "85366ed9-2182-445c-86e2-0219ceeb614b"
+  },
+  {
+    "id": "guppy",
+    "name": "Guppy",
+    "icon": "\ud83d\udc1f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "flavor": "Bright, tiny, and absolutely sure it is a shark.",
+    "locked": true,
+    "archetypes": [
+      "Fish"
+    ],
+    "rarity": "starter",
+    "numericId": 355,
+    "uuid": "6940384c-89aa-4c03-b39a-4b29099b741e"
+  },
+  {
+    "id": "tiny-cave-dweller",
+    "name": "Tiny Cave Dweller",
+    "icon": "\ud83d\udc1a",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "flavor": "Clutches a chipped little shell of gold. Will not explain where it got it.",
+    "locked": true,
+    "archetypes": [
+      "Cave"
+    ],
+    "rarity": "uncommon",
+    "numericId": 356,
+    "uuid": "eb6cae14-759b-4ddc-90a6-3591f9bf15a0",
+    "effects": {
+      "armor": 1,
+      "onSpawnGold": 1
+    },
+    "source": {
+      "kind": "secret",
+      "id": "m2",
+      "node": "cave"
     }
   }
 ]

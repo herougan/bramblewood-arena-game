@@ -84,11 +84,19 @@
       path(svg, d, 'ufx-gash').style.animationDelay = (i*40) + 'ms';
     }
   }
+  // Bite (2026-10-08, user: "the bite should really crunch down, the back teeth lagging 0.1s behind, then opening, then
+  // fading out immediately. It has that punch"): front jaws snap shut past their mark (a crunch), the back row follows
+  // 0.1 s later, a flash marks the crunch, then the jaws spring open and vanish.
   function bite(target){
-    const svg = overlay(target, 'ufx-bite', 720); if(!svg) return;
-    const teeth = (y, dir)=>{ let d = ''; for(let i = 0; i < 6; i++){ const x = 20 + i*12; d += `M${x} ${y} L${x + 6} ${y + dir*14} L${x + 12} ${y} `; } return d; };
-    path(svg, teeth(36, 1), 'ufx-teeth ufx-top');
-    path(svg, teeth(94, -1), 'ufx-teeth ufx-bot');
+    const svg = overlay(target, 'ufx-bite', 560); if(!svg) return;
+    const teeth = (y, dir, x0, n, w, h)=>{ let d = ''; for(let i = 0; i < n; i++){ const x = x0 + i*w; d += `M${x} ${y} L${x + w/2} ${y + dir*h} L${x + w} ${y} `; } return d; };
+    path(svg, teeth(40, 1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-top');
+    path(svg, teeth(90, -1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-bot');
+    path(svg, teeth(36, 1, 18, 6, 11, 15), 'ufx-teeth ufx-top');
+    path(svg, teeth(94, -1, 18, 6, 11, 15), 'ufx-teeth ufx-bot');
+    const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 14); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
+    const tile = target && (target.querySelector('.card-tile') || target);
+    if(tile && tile.animate) try{ tile.animate([{scale:'1 1'}, {scale:'1.04 .94', offset:.3}, {scale:'.99 1.02', offset:.6}, {scale:'1 1'}], {duration:260, delay:90, composite:'add'}); }catch(e){}
   }
   function sting(target){
     const svg = overlay(target, 'ufx-sting', 620); if(!svg) return;
