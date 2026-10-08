@@ -42,7 +42,7 @@ async def main():
             await pg.evaluate("myCurrencies.dust=60; renderDeckSection(); 1"); await pg.wait_for_timeout(200)
             xp0 = await pg.evaluate("myHero.xp"); await pg.click('#heroCraftBtn'); await pg.wait_for_timeout(300)
             if await pg.evaluate("myHero.xp") - xp0 != 30: bad.append('materia craft did not give 30 XP')
-            if await pg.evaluate("Object.values(myHero.materia).reduce((a,b)=>a+b,0)") != 1: bad.append('no materia crystal')
+            if await pg.evaluate("Object.values(materiaStore()).reduce((a,b)=>a+b,0)") != 1: bad.append('no materia crystal (player store, 2026-10-08)')
             await pg.click('#heroDeckBtn'); await pg.wait_for_timeout(300)
             if not await pg.evaluate("myDeckCounts.hero===1"): bad.append('hero not added to deck')
             # the Hero takes a slot: drop one other card so the deck is legal again

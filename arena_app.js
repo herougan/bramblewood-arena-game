@@ -3322,16 +3322,37 @@ function cardTileHTML(d, opts){
   // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
   const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
   const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
-  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  // One card face everywhere (2026-10-08, user: "As much as possible, we want to reuse code"): the
+  // battlefield card (opts.live: live attack/HP/Wait, status overlays and stacks) and the hand card
+  // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
+  const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
+  if(live){
+    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+      ${live.waitHTML||''}
+      ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
+      ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
+      ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
+      ${live.overlaysHTML||''}
+      <div class="ico">${cardIcoHTML(d)}</div>
+      <div class="rarity-band"></div>
+      <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
+      <div class="stats"><span class="atk">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
+      ${poisonTagHTML(d)}
+      ${abilityBadges(d)}
+      ${live.bottomHTML||''}
+    </div>`;
+  }
+  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
-    ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
-    ${isCustom?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
+    ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
+    ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
     ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
+    ${d.wait>0&&!hand?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
@@ -3339,7 +3360,7 @@ function cardTileHTML(d, opts){
     <div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>
     ${isCastle?'':poisonTagHTML(d)}
     ${abilityBadges(d)}
-    ${isCastle?'':pitchYieldBadgeHTML(d)}
+    ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
 // Discard/pitch resource badge (2026-09-20, per explicit request: "Resources on discard
@@ -14920,7 +14941,7 @@ function ffBtnTitle(mult){ return (!mult || mult<=1) ? 'Playback speed: normal �
 // always used (still governs its own entranceTl construction below), just given a name.
 function entranceCardTweenDur(mult){
   mult = mult || 1;
-  if(sharpBoard()) return Math.max(0.12, (380/mult)/1000);
+  if(sharpBoard()) return Math.max(0.2, (380/mult)/1000); // floor: at 3× a shorter landing raced the pin release (snap test)
   return Math.max(0.16, (420*1.5/mult)/1000);
 }
 // Total wall-clock time (ms) for `count` simultaneously-spawned cards' STAGGERED entrance
@@ -16424,13 +16445,7 @@ function boardCardHTML(c, defs, opts){
   const abilityBadgeHTML = abilityBadges(d);
   // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
   const flies = !!((d.effects||{}).flying);
-  return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''} ${shinyU?'is-shiny':''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}${shinyU?`; --shiny-hue:${shinyHue(c.defId)}deg`:''}">
-      ${c.wait>0?waitBadgeHTML(c.wait, d.wait):''}
-      ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
-      ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
-      ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
-      ${c.stunned?`<div class="status-overlay stun-overlay">💫</div>`:''}
+  const overlaysHTML = `      ${c.stunned?`<div class="status-overlay stun-overlay">💫</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?`<div class="status-overlay freeze-overlay">❄</div>`:''}
       ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
@@ -16439,15 +16454,13 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
-      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}
-      <div class="ico">${cardIcoHTML(d)}</div>
-      <div class="rarity-band"></div>
-      <div class="nm">${escapeHtml(d.name||c.defId)}</div>
-      <div class="stats"><span class="atk">${atkLabel}</span><span class="hp">❤${c.hp}</span></div>
-      ${poisonTagHTML(d)}
-      ${abilityBadgeHTML}
-      ${badges.length?`<div class="badges-bottom">${badges.join('')}</div>`:''}
-    </div>
+      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}`;
+  return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
+      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, hp: c.hp, fallbackName: c.defId,
+      overlaysHTML,
+      bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
+    }})}
   </div>`;
 }
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
@@ -16508,19 +16521,9 @@ function renderHand(){
     const can = m.engine.canPlay(me, hc.defId, hc.uid);
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard) && !m.resolving;
-    const [rA, rB] = rarityStops(d.rarity||'common');
-    const costParts = costBadgeParts(d);
     const whyNot = can ? '' : unplayableReason(me, d);
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${can?'playable':'unplayable'} ${d.art?'':'no-art'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-defid="${hc.defId}" data-handuid="${hc.uid}" style="--rarity-a:${rA}; --rarity-b:${rB}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}>
-      ${whyNot?`<div class="whynot-tag">${escapeHtml(whyNot)}</div>`:''}
-      ${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-      ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
-      ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
-      <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
-      <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
-      ${poisonTagHTML(d)}
-      ${abilityBadges(d)}
-    </div>`;
+    return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''}`,
+      extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
   drawFlipNewHandCards(m, strip);
   if(prevHandRects.size && !reducedMotion()){
