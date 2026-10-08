@@ -3,6 +3,11 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- Winners are tossed into the air at the end of a fight instead of dancing forever.
+- Damage numbers burst out with an icon (👊 for crits) and pop higher on enemy cards; gold sounds sparkly.
+- Cards emote: 16 emoji moods in battle.
+- Foils: no more red line; Starlight sparkles are their own finish; a new Lattice foil to try.
+- Effects Lab in tabs, with card sizes, damage numbers and weather.
 - Cards lean as you drag them across the board and land at that angle; a card dropped nowhere flies back to your hand.
 - Skill text starts with the keyword ("Bleed 2 — …").
 - The results window fits on screen; after a fight only the board stays when you look at it.

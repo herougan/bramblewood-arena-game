@@ -394,6 +394,8 @@
      positioning (appended to document.body) escapes that clip entirely, same fix already used
      for .conquest-tooltip elsewhere in this file. */
   .speech-bubble{position:fixed; max-width:150px; width:max-content; background:var(--speech-bubble-bg); color:var(--speech-bubble-ink); font-size:11.5px; font-weight:700; line-height:1.25; text-align:center; padding:6px 10px; border-radius:12px; border:1.5px solid var(--surface-border); box-shadow:0 4px 12px rgba(0,0,0,.22); opacity:0; pointer-events:none; z-index:500; transform:translateY(6px) scale(.7);}
+  /* Emotes (2026-10-08): emoji-only bubbles, round and a little bigger. */
+  .speech-bubble.is-emote{font-size:22px; line-height:1; padding:4px 7px; border-radius:999px; max-width:none;}
   .speech-bubble::after{content:''; position:absolute; left:50%; top:100%; transform:translateX(-50%); border:6px solid transparent; border-top-color:var(--speech-bubble-bg);}
   /* Task #124: the "Signed in as X" pill (see initUserAuth() in arena_app.js) — same shape as
      .db-pill, kept `hidden` by default and only revealed once the `user` capability actually
@@ -612,16 +614,19 @@
   .card-tile.rarity-tier-mid .rarity-band{animation-duration:9s; filter:saturate(1.35) brightness(1.05);}
   .card-tile.rarity-tier-high .rarity-band{
     animation-duration:7s, 3.2s; filter:saturate(1.5) brightness(1.1);
-    box-shadow:0 -6px 16px -6px color-mix(in srgb, var(--rarity-a, transparent) 55%, transparent);
   }
   .card-tile.rarity-tier-top .rarity-band{
     animation-duration:5.5s, 2.6s; filter:saturate(1.7) brightness(1.16);
-    box-shadow:0 -9px 20px -6px color-mix(in srgb, var(--rarity-a, transparent) 75%, transparent);
   }
   /* Gold-leaf frame (effects catalogue "chrome / embossed gold", 2026-10-04): Legendary and up get a
      polished gold rim (the ::before ring, masked to a 3px band on the card's edge) with a bright streak
      sliding across it every few seconds. */
   @property --gold-x{syntax:'<percentage>'; inherits:false; initial-value:-40%;}
+  /* 2026-10-08 (user: "why is there a red line there?"): High and Top tiers used to put a glow (box-shadow) above
+     the rarity band. A box-shadow isn't drawn under its own box, so the glow stopped dead at the band's top edge:
+     a hard coloured line across the art, worst on big and foil cards. The glow is gone; the band's own soft
+     gradient carries the colour. */
+  .card-tile .rarity-band{box-shadow:none !important;}
   .card-tile.rarity-tier-top::before{inset:-2px; border-radius:14px; z-index:3; pointer-events:none; padding:3px; box-sizing:border-box;
     -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor;
             mask:linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
@@ -2051,9 +2056,9 @@
      crack layers that appear at ≤66%, ≤33% and ≤15% HP; a new crack lands with a little jolt. */
   .card-tile .castle-cracks{position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit; opacity:0;
     background-repeat:no-repeat; background-size:100% 100%; transition:opacity .25s ease;}
-  .card-tile.crack-1 .castle-cracks{opacity:.8; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
-  .card-tile.crack-2 .castle-cracks{opacity:.85; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
-  .card-tile.crack-3 .castle-cracks{opacity:.9; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(255,230,190,.35)' stroke-width='.7' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-1 .castle-cracks{opacity:.8; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-2 .castle-cracks{opacity:.85; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
+  .card-tile.crack-3 .castle-cracks{opacity:.9; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M8 18 L22 30 L19 41 L33 52 L30 60' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M22 30 L30 27' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M92 70 L80 78 L84 90 L70 99 L73 112' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M80 78 L74 72' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M84 90 L93 96' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E"),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M50 4 L46 20 L56 34 L48 50 L58 64 L52 80' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M56 34 L68 38' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M48 50 L36 54 L32 66' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(20,10,4,.85)' stroke-width='1.8' stroke-linejoin='bevel'/%3E%3Cpath d='M58 64 L70 70' fill='none' stroke='rgba(255,246,228,.75)' stroke-width='.9' transform='translate(.9 .6)'/%3E%3C/svg%3E");}
   .card-tile.crack-3 .ico{filter:saturate(.75) brightness(.9);}
   .card-tile.crack-new{animation:crackJolt 480ms cubic-bezier(.3,.7,.4,1);}
   @keyframes crackJolt{0%{translate:0 0;} 15%{translate:-3px 1px;} 30%{translate:3px -1px;} 45%{translate:-2px 0;} 65%{translate:1px 0;} 100%{translate:0 0;}}
@@ -2334,7 +2339,8 @@
      instead of every card bouncing in lockstep unison.
      NOTE: Playwright drives this HTML directly, so the animation is real CSS, not JS-timed —
      it simply loops for as long as the win modal (or board) is showing, no timer to manage. */
-  .board-card.is-dancing .card-tile{animation:cardDance 640ms ease-in-out calc(var(--dance-delay, 0s)) infinite;}
+  /* 2026-10-08: the endless dance is retired; winners get a one-shot toss instead (victoryParade in arena_app.js). */
+  .board-card.is-dancing .card-tile{animation:none;}
   @keyframes cardDance{
     0%{transform:translateY(0) rotate(0deg) scale(1);}
     20%{transform:translateY(-10px) rotate(-8deg) scale(1.05);}
@@ -5493,6 +5499,16 @@
   .card-tile.holo-reverse .holo-layer{-webkit-mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); -webkit-mask-clip:content-box, border-box; -webkit-mask-composite:xor; mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); mask-clip:content-box, border-box; mask-composite:exclude; padding:7% 7% 9%; box-sizing:border-box; background-image:repeating-linear-gradient(115deg, hsl(0 95% 62%) 0%, hsl(45 95% 60%) 6%, hsl(120 85% 58%) 12%, hsl(190 95% 60%) 18%, hsl(260 90% 68%) 24%, hsl(320 95% 65%) 30%, hsl(360 95% 62%) 36%); background-size:300% 300%; background-position:var(--hbx) var(--hby); opacity:.75;}
   .card-tile.holo-prism .holo-layer{background-image:repeating-conic-gradient(from 0deg at var(--hx) var(--hy), hsl(0 95% 66%) 0deg 12deg, hsl(55 95% 62%) 12deg 24deg, hsl(140 85% 60%) 24deg 36deg, hsl(200 95% 64%) 36deg 48deg, hsl(270 90% 70%) 48deg 60deg); opacity:.32; filter:blur(.4px) saturate(1.3);}
   .card-tile.holo-prism.holo-active .holo-layer{opacity:.5;}
+  /* Lattice (2026-10-08, user: "a grid of foil effects ... angled 43 degrees"): fine foil lines crossed at ±43°,
+     each catching the rainbow as the light moves. */
+  .card-tile.holo-lattice .holo-layer{background-image:repeating-linear-gradient(115deg, hsl(0 95% 62%) 0%, hsl(45 95% 60%) 6%, hsl(120 85% 58%) 12%, hsl(190 95% 60%) 18%, hsl(260 90% 68%) 24%, hsl(320 95% 65%) 30%, hsl(360 95% 62%) 36%);
+    background-size:300% 300%; background-position:var(--hbx) var(--hby); opacity:.62; filter:saturate(1.3);
+    -webkit-mask-image:repeating-linear-gradient(43deg, #000 0 1.2px, transparent 1.2px 7px), repeating-linear-gradient(-43deg, #000 0 1.2px, transparent 1.2px 7px);
+            mask-image:repeating-linear-gradient(43deg, #000 0 1.2px, transparent 1.2px 7px), repeating-linear-gradient(-43deg, #000 0 1.2px, transparent 1.2px 7px);}
+  .card-tile.holo-lattice.holo-active .holo-layer, .card-tile.holo-lattice.holo-tilt .holo-layer{opacity:.85;}
+  /* Starlight (2026-10-08): the twinkling star sparkles, now their own finish; decorateHolo adds .holo-glitter.
+     A starlight-only card keeps a faint sheen so it still reads as foil. */
+  .card-tile.holo-starlight:not(.holo-cosmos):not(.holo-rainbow):not(.holo-pearl):not(.holo-hex):not(.holo-etched):not(.holo-ice):not(.holo-gold):not(.holo-reverse):not(.holo-prism):not(.holo-lattice) .holo-layer{opacity:.12;}
   @media (prefers-reduced-motion: reduce){ .card-tile.is-holo{animation:none !important; transform:none !important;} }
   /* Rarity variants (2026-10-04): pearl = soft pastel sheen; cosmos = deep-space band + glitter */
   .card-tile.holo-pearl .holo-layer{
@@ -5992,14 +6008,17 @@
   .dmg-float .df-num::before{color:var(--edge); -webkit-text-stroke:7px var(--edge); paint-order:stroke fill; text-shadow:0 3px 0 var(--edge), 0 5px 6px rgba(0,0,0,.55);}
   .dmg-float .df-num::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
     -webkit-background-clip:text; background-clip:text;}
-  .dmg-float .df-ico{font-size:.78em; line-height:1; filter:drop-shadow(0 2px 0 rgba(0,0,0,.55)) drop-shadow(0 0 6px rgba(0,0,0,.35));}
+  .dmg-float .df-ico{color:#fff; -webkit-text-stroke:0; font-size:.78em; line-height:1; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 6px rgba(0,0,0,.35); /* 2026-10-08: a drop-shadow filter on an emoji blanked it in some renderers */}
   /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
   .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}
   .dmg-float .df-burst{position:absolute; left:50%; top:50%; width:1.9em; height:1.9em; margin:-.95em 0 0 -.95em; z-index:-1;
     background:radial-gradient(circle, #fff6c8 0 18%, #ffcf3a 34%, #ff8a1c 58%, rgba(255,120,20,0) 72%);
     clip-path:polygon(50% 0,59% 30%,85% 12%,72% 40%,100% 50%,72% 60%,85% 88%,59% 70%,50% 100%,41% 70%,15% 88%,28% 60%,0 50%,28% 40%,15% 12%,41% 30%);
-    animation:critBurst .9s ease-out forwards;}
-  @keyframes critBurst{0%{transform:scale(.2) rotate(0);} 25%{transform:scale(1.1) rotate(20deg);} 100%{transform:scale(1) rotate(60deg); opacity:.0;}}
+    animation:critBurst .32s ease-out forwards;}
+  @keyframes critBurst{0%{transform:scale(.2) rotate(0);} 30%{transform:scale(1.2) rotate(20deg); opacity:1;} 100%{transform:scale(.9) rotate(40deg); opacity:0;}}
+  /* 2026-10-08: every number bursts on a starburst in its own colour (crit keeps the hot gold). */
+  .dmg-float:not(.crit) .df-burst{width:1.6em; height:1.6em; margin:-.8em 0 0 -.8em; background:radial-gradient(circle, var(--g1, #fff6c8) 0 18%, var(--g2, #ffcf3a) 40%, color-mix(in srgb, var(--g2, #ff8a1c) 0%, transparent) 72%);}
+  .dmg-float.cold{--g1:#f0fbff; --g2:#7cc8ff; --edge:#06203a;}
   .crit-stamp{position:absolute; left:50%; top:46%; z-index:14; pointer-events:none;}
   .crit-stamp b{position:relative; display:block; font:400 clamp(14px, 20cqw, 28px)/1 'Lilita One','Baloo 2',sans-serif; color:#fff2d0; letter-spacing:1px; padding:2px 8px;
     border:3px solid #ff5a3a; border-radius:8px; background:rgba(120,10,0,.7); text-shadow:0 2px 0 #5a0a00; white-space:nowrap;}
@@ -13644,7 +13663,7 @@ const SoundKit = (()=>{
       try{ fn(); } finally { curPan = prev; }
     },
     death(){ tone(90,0.3,'sawtooth',0.12); },
-    gold(){ tone(880,0.08,'triangle',0.12); tone(1320,0.09,'triangle',0.09,0.05); },
+    gold(){ /* 2026-10-08: sparkly — a quick rising glitter of bell tones */ tone(1568,0.07,'triangle',0.09); tone(2093,0.08,'sine',0.08,0.035); tone(2637,0.09,'sine',0.07,0.07); tone(3136,0.12,'sine',0.055,0.105); tone(4186,0.18,'sine',0.035,0.14); tone(3520,0.16,'sine',0.03,0.2); },
     // Card unlocking (2026-09-22, style-guide enforcement pass): a brand-new card is a bigger,
     // rarer reward moment than the routine "level up a card you already own" pack outcome, but
     // both were calling the exact same shared starFallVfx.celebrate() -> SoundKit.gold() "cha-
@@ -15738,8 +15757,8 @@ function bwInertOthers(keep){
   [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
   return ()=> done.forEach(el=>{ el.inert = false; });
 }
-const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism'];
-const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism'};
+const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-starlight'];
+const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
 function openCardInspector(defId, opts){
   opts = opts || {};
@@ -18479,7 +18498,7 @@ function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
 // rarity default (pearl / rainbow / cosmos, see holoClass). '' for a plain copy.
 function copyFinishClass(d, copy){
   if(!copy || !copy.foil) return '';
-  return copy.finish && copy.finish !== 'auto' ? 'is-holo holo-' + copy.finish : holoClass(d);
+  return copy.finish && copy.finish !== 'auto' ? 'is-holo holo-' + copy.finish + (copy.finish === 'cosmos' ? ' holo-starlight' : '') : holoClass(d);
 }
 // What a card's best copy looks like (the Nest shows one tile per card): Shiny recolour and/or
 // the finish of its best foil copy.
@@ -27015,7 +27034,10 @@ function renderBoard(opts){
   // wired up for GSAP's internal plugin system.
   // Skip the Flip machinery entirely on a board with no cards yet (nothing to match, and
   // asking GSAP to operate on an empty selector just logs a harmless-but-noisy console warning).
-  const gsapFlip = hasGsap() && typeof Flip !== 'undefined' && !!document.querySelector(FLIP_SEL);
+  // 2026-10-08 (user: "the victory blowing our creatures randomly still happens"): once the match is over the
+  // layout changes (hand and controls hide) and the winners celebrate; a Flip glide then would sweep every card
+  // across the board from its old spot. After the end, cards simply sit where they are.
+  const gsapFlip = hasGsap() && typeof Flip !== 'undefined' && !m.over && !!document.querySelector(FLIP_SEL);
   let flipState = null, prevRects = null, flipTargetCount = 0;
   // Bugfix (2026-09-17, found while wiring up tasks #125/#126): GSAP's Flip.from()/onEnter
   // never actually distinguishes "a brand new uid with no prior recorded state" from an
@@ -28469,6 +28491,7 @@ async function playCardByUid(uid, side, dropPoint){
   if(capturedHandOrigin && playEv) pendingEntranceOrigins.set(String(playEv.uid), capturedHandOrigin);
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   await afterPlayerAction(activePid);
+  if(playEv){ maybeEmote(playEv.uid, 'summon'); }
   if(playEv) maybeSpeak(playEv.uid, 'onSummon'); // item 8's speech framework — board has rendered by now, see afterPlayerAction above
 }
 // Pitch yield (2026-09-17, per explicit request: "For card creation, by default, all creatures
@@ -30489,27 +30512,39 @@ function openWorkshopPage(){
 // leaves and sparkles on a win. Not shortened much by fast-forward — it's the payoff moment.
 // Victory parade (2026-10-06, effects "Coming next"): under the Victory sign the winning side's
 // survivors hop in a wave from left to right, each raising a little banner, before the dance.
+// Victory toss (2026-10-08, user: "I like the idea of the victory launching your units a bit into the air and
+// knocking them about"): replaces the hop-and-banner parade and the endless dance. Each winner is launched
+// up, spins a little, bumps sideways as if knocked by its neighbour, lands with a squash and settles at
+// rest. Only the inner .card-tile moves, through additive WAAPI (translate/rotate/scale), so it never
+// fights the board's own positioning and always ends exactly where it started.
 function victoryParade(rowId, upOverride){
-  if(!fxAtLeast('med')) return;
-  if(!hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+  if(!fxAtLeast('low') || reducedMotion()) return;
   const row = typeof rowId === 'string' ? document.getElementById(rowId) : rowId; if(!row) return;
-  const cards = [...row.querySelectorAll(':scope .board-card')].filter(c=> !c.classList.contains('falling') && !c.classList.contains('burning') && !c.classList.contains('bleeding'))
+  const cards = [...row.querySelectorAll(':scope .board-card')].filter(c=> c.querySelector('.card-tile') && !c.classList.contains('falling') && !c.classList.contains('burning') && !c.classList.contains('bleeding'))
     .sort((a, b)=> a.getBoundingClientRect().left - b.getBoundingClientRect().left);
-  const up = upOverride || (rowId === 'rowMine' ? -1 : 1);
+  const n = cards.length;
   cards.forEach((c, i)=>{
-    const r = c.getBoundingClientRect();
-    const flag = document.createElement('div'); flag.className = 'parade-flag'; flag.textContent = '🚩'; flag.setAttribute('aria-hidden','true');
-    flag.style.cssText = `left:${r.left + r.width/2}px; top:${r.top}px;`; document.body.appendChild(flag);
-    const t0 = 0.25 + i*0.12;
-    gsap.timeline({delay:t0})
-      .to(c, {y:14*up, rotation:-4, duration:.14, ease:'power2.out'})
-      .to(c, {y:0, rotation:4, duration:.18, ease:'bounce.out'})
-      .to(c, {y:10*up, rotation:0, duration:.12, ease:'power2.out'})
-      .to(c, {y:0, duration:.16, ease:'bounce.out', clearProps:'y,rotation'});
-    gsap.timeline({delay:t0, onComplete:()=> flag.remove()})
-      .fromTo(flag, {y:0, opacity:0, scale:.4, rotation:-20}, {y:-22, opacity:1, scale:1, rotation:0, duration:.3, ease:'back.out(2.4)'})
-      .to(flag, {rotation:10, duration:.25, yoyo:true, repeat:2, ease:'sine.inOut'})
-      .to(flag, {y:-34, opacity:0, duration:.35, ease:'power1.in'});
+    const t = c.querySelector('.card-tile'); if(!t.animate) return;
+    const h = c.getBoundingClientRect().height || 120;
+    const lift = -(0.32 + Math.random()*0.18) * h;       // up into the air (screen up on both rows)
+    const away = (i - (n - 1)/2) * 6 + (Math.random()*10 - 5); // fan out a little from the middle
+    const spin = (Math.random() < 0.5 ? -1 : 1) * (10 + Math.random()*14);
+    const knock = (Math.random() < 0.5 ? -1 : 1) * (6 + Math.random()*8); // bumped by a neighbour
+    const px = v=> v.toFixed(1) + 'px', dg = v=> v.toFixed(1) + 'deg';
+    try{
+      t.animate([
+        {translate:'0px 0px', rotate:'0deg', scale:'1 1', offset:0},
+        {translate:`0px ${px(h*0.04)}`, rotate:'0deg', scale:'1.06 .9', offset:0.08},                      // crouch
+        {translate:`${px(away*0.6)} ${px(lift)}`, rotate:dg(spin), scale:'.96 1.06', offset:0.3},           // launched
+        {translate:`${px(away + knock)} ${px(lift*0.7)}`, rotate:dg(-spin*0.6), scale:'1 1', offset:0.42},  // knocked about
+        {translate:`${px(away*0.4)} 0px`, rotate:dg(spin*0.25), scale:'1.08 .88', offset:0.58},              // lands, squash
+        {translate:`${px(away*0.2)} ${px(lift*0.28)}`, rotate:dg(-spin*0.2), scale:'.98 1.03', offset:0.72}, // little bounce
+        {translate:'0px 0px', rotate:'0deg', scale:'1.03 .96', offset:0.86},
+        {translate:'0px 0px', rotate:'0deg', scale:'1 1', offset:1},
+      ], {duration:1250, delay:250 + i*110, easing:'cubic-bezier(.25,.7,.35,1)', composite:'add'});
+    }catch(e){}
+    if(i === 0 || Math.random() < 0.5) setTimeout(()=>{ try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} }, 250 + i*110 + 720);
+    if(i % 2 === 0 && typeof maybeEmote === 'function') setTimeout(()=>{ try{ maybeEmote(c.getAttribute('data-uid') || ('toss' + i), 'win', {force:true, el:c}); }catch(e){} }, 250 + i*110 + 1150);
   });
 }
 async function showEndSign(m){
@@ -30537,6 +30572,9 @@ async function showEndSign(m){
   battlefield.appendChild(el);
   try{ if(kind==='victory' && SoundKit.win) SoundKit.win(); else if(kind==='defeat' && SoundKit.lose) SoundKit.lose(); }catch(e){}
   if(m.winner===1 || m.winner===2) try{ victoryParade(m.winner===1 ? 'rowMine' : 'rowEnemy'); }catch(e){}
+  // 2026-10-08 emotes: a couple of the beaten side's survivors sulk.
+  if(m.winner===1 || m.winner===2) try{ const lose = document.getElementById(m.winner===1 ? 'rowEnemy' : 'rowMine');
+    [...(lose ? lose.querySelectorAll('.board-card[data-uid]') : [])].slice(0, 3).forEach((c, i)=> setTimeout(()=> maybeEmote(c.getAttribute('data-uid'), 'loss', {el:c}), 600 + i*260)); }catch(e){}
   if(kind==='victory' && hasGsap()){
     const r = battlefield.getBoundingClientRect();
     for(let i=0;i<28;i++){
@@ -31368,45 +31406,52 @@ function denyShake(el){
   setTimeout(()=> el.classList.remove('deny-shake'), 420);
   SoundKit.deny();
 }
+// Number icons (2026-10-08, user: "add a Punch emoji before the number. Same for bleed, fire, cold, poison,
+// heal, blocked (def symbol), gold"): a bare number with one of these classes gets its icon in front.
+const FLOAT_ICON = {crit:'👊', bleed:'🩸', 'bleed-tick':'🩸', heat:'🔥', cold:'❄️', poison:'☠️', 'poison-tick':'☠️', heal:'💚', blocked:'🛡', gold:'🪙'};
 function floatText(el, text, cls){
   if(!el) return;
   const f = document.createElement('div');
+  let raw = String(text);
+  const classes = String(cls || '').split(/\s+/).filter(Boolean);
+  const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍]+/gu;
+  const isNumber = /^[+-]?\d+$/.test(raw.trim());
+  if(isNumber && !pictoRe.test(raw)){ const k = classes.find(c=> FLOAT_ICON[c]); if(k) raw = FLOAT_ICON[k] + ' ' + raw; }
+  pictoRe.lastIndex = 0;
   const heavyHit = /^-\d+$/.test(String(text)) && Math.abs(parseInt(text, 10)) >= 8 && !cls;
   f.className = 'dmg-float'+(cls?(' '+cls):'')+(heavyHit?' heavy':'');
-  // 2026-10-06 (user: "for the poison and bleed hits, the icon should accompany it"): the icon is
-  // its own element beside the number, so the number's gradient fill can't wash out the emoji.
-  const raw = String(text);
-  const icon = (raw.match(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu) || []).join('').replace(/\uFE0F/g, '');
-  const num = raw.replace(/[\p{Extended_Pictographic}\u2600-\u27BF\uFE0F\u200D]+/gu, '').trim() || raw;
-  f.innerHTML = (cls && /\bcrit\b/.test(cls) ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
+  // 2026-10-06: the icon is its own element beside the number, so the number's gradient fill can't wash out the emoji.
+  const icon = (raw.match(pictoRe) || []).join('').replace(/️/g, '');
+  const num = raw.replace(pictoRe, '').trim() || raw;
+  // 2026-10-08: every number (not just crits) bursts out on a starburst in its own colour; the burst fades fast.
+  const burst = /\d/.test(num) && num.length <= 4;
+  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
   f.dataset.t = raw;
-  // Item #2 (2026-09-16, "damage text shouldn't just fly up, they should have some
-  // amount of random x-force"): a little random horizontal drift baked in per-instance.
-  // Floating-number coverage audit (2026-09-18, "with some variation in x and y so a burst of
-  // simultaneous numbers doesn't stack unreadably on top of each other"): x already varied —
-  // added a randomized starting Y offset plus a per-instance travel-distance jitter too, so
-  // several floats landing on the same element in the same instant (Sweep's 2-3 simultaneous
-  // hit numbers, several statusFx procs off one card in one round, a resource-pill ping that
-  // lands right as a hit number is still rising) fan out instead of stacking in lockstep.
-  const dx = Math.random()*24-12;
+  // Placement (2026-10-08, user: "The numbers should appear higher on the card (opposing field). For our side
+  // ... greater x-variation (by 15%)"): enemy-row numbers start high on the card; ours keep their spot and fan
+  // out 15% wider. Small random y and travel jitter keep simultaneous numbers from stacking.
+  const enemyRow = !!el.closest('#rowEnemy, [data-row="enemy"]'), mineRow = !!el.closest('#rowMine, [data-row="mine"]');
+  const spread = mineRow ? 13.8 : 12;
+  const dx = Math.random()*spread*2 - spread;
   const dy0 = Math.random()*10-5;
+  const top0 = enemyRow ? 12 : 40;
   const travel = 0.9 + Math.random()*0.2;
+  const big = classes.includes('crit') ? 1.75 : heavyHit ? 1.6 : 1.45;
   el.appendChild(f);
   if(hasGsap()){
-    // 2026-10-03 ("damage numbers sometimes seem duplicated — 2 numbers thrown up right after each
-    // other"): the .dmg-float CSS bounce keyframes (up, down, UP AGAIN) kept running underneath
-    // GSAP's tween and, being an animation, overrode it — that second hop read as a second number.
-    // GSAP owns the motion now. Also (same report: castle numbers "too high up and not obvious"):
-    // every float — unit or castle — now starts at the same spot INSIDE its target (28% down) at
-    // the same size, so numbers are consistent and never pushed off the top of the screen.
+    // 2026-10-03: GSAP owns the motion (the old CSS bounce read as a second number).
+    // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
-    gsap.set(f, {position:'absolute', left:'50%', top:`calc(40% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.6});
+    const b = f.querySelector('.df-burst');
+    gsap.set(f, {position:'absolute', left:'50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
-      .to(f, {opacity:1, scale:1.1, y:-20*travel, x:dx*0.4, duration:.16, ease:'back.out(2.6)'})
-      .to(f, {y:-46*travel, x:dx, duration:.55, ease:'power1.out'}, '<0.02')
-      .to(f, {opacity:0, y:-58*travel, duration:.35, ease:'power1.in'}, '>-0.1');
+      .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
+      .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
+      .to(f, {y:-42*travel, x:dx, duration:.6, ease:'power1.out'}, '<')
+      .to(f, {opacity:0, y:-54*travel, duration:.3, ease:'power1.in'}, '>-0.12');
+    if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
   } else {
-    f.style.top = (-6+dy0)+'px';
+    f.style.top = (top0 - 46 + dy0)+'%';
     f.style.setProperty('--dx', dx.toFixed(1)+'px');
     setTimeout(()=> f.remove(), 1150);
   }
@@ -31826,15 +31871,15 @@ const DangerPulse = (()=>{
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
-const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','debuff'], decay:['🦠','poison'], bleed:['🩸','bleed']};
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed']};
 function critStampVfx(el){
   if(!el || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const t = el.querySelector('.card-tile') || el;
-  const st = document.createElement('div'); st.className = 'crit-stamp'; st.setAttribute('aria-hidden','true'); st.innerHTML = '<span class="cs-burst"></span><b>CRIT!</b>';
+  const st = document.createElement('div'); st.className = 'crit-stamp'; st.setAttribute('aria-hidden','true'); st.innerHTML = '<span class="cs-burst"></span>'; // 2026-10-08: no CRIT word
   t.appendChild(st);
   gsap.timeline({onComplete:()=> st.remove()})
-    .fromTo(st, {xPercent:-50, yPercent:-50, scale:2.4, rotation:-24, opacity:0}, {scale:1, rotation:-12, opacity:1, duration:.14, ease:'power4.in'})
-    .to(st, {opacity:0, y:-8, duration:.3, delay:.5});
+    .fromTo(st, {xPercent:-50, yPercent:-50, scale:.4, rotation:-24, opacity:0}, {scale:1.2, rotation:-12, opacity:1, duration:.09, ease:'power3.out'})
+    .to(st, {scale:1, opacity:0, duration:.2, ease:'power2.in'});
 }
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
@@ -31875,7 +31920,7 @@ function flashDmg(uid, dmg, blocked, dmgType, crit){
   recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   const di = DMG_ICON[dmgType];
   if(blocked) floatText(el, '🛡 0', 'blocked');
-  else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
+  else if(crit) floatText(el, '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); // 👊 added by floatText; no CRIT! stamp (2026-10-08)
   else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   hitExplosionVfx(uid, dmgType);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
@@ -32080,7 +32125,7 @@ function renderVfxForEvent(ev){
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
-      if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
+      if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); maybeEmote(ev.targetUid, 'dodge'); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
       if(ufx && !ev.ranged && !ev.armorBlocked && ufx.hit && ufx.hit!=='blunt' && fxAtLeast('low')){
@@ -32089,12 +32134,15 @@ function renderVfxForEvent(ev){
       { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
         if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
+      if(ev.type==='hit' || ev.type==='hitHQ') maybeEmote(ev.attUid, 'attack'); // 2026-10-08 emotes
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
       // authored an On Hit line of its own. Melee-only, same "no card face to bubble over" reason
       // hitHQ is excluded above.
       if(ev.type==='hit') maybeSpeak(ev.targetUid, null, 'onHit');
+      if(ev.type==='hit'){ try{ const tc = currentCardByUid(ev.targetUid), td = tc && getCardDefs()[tc.defId], mx = (tc && (tc.maxHp || (td && td.health))) || 0;
+        maybeEmote(ev.targetUid, ev.armorBlocked && !(ev.dmg>0) ? 'blocked' : (tc && mx && tc.hp > 0 && tc.hp <= mx*0.25) ? 'lowHp' : (ev.crit || (ev.dmg||0) >= 8) ? 'hurtBig' : 'hurt'); }catch(e){} }
       if(ev.armorBlocked) SoundKit.clang();
       if(ev.type==='hitHQ'){
         // 2026-09-19 ("then there needs to be a (larger) hit animation" for castle hits):
@@ -32253,7 +32301,7 @@ function renderVfxForEvent(ev){
   // heal (2026-09-16): Regeneration N and the 'heal' custom-trigger action both push this —
   // mirrors Sap's heal-float/replay-snapshot pattern above, just from a non-drain source.
   if(ev.type==='heal'){
-    const el = boardCardEl(ev.targetUid);
+    const el = boardCardEl(ev.targetUid); maybeEmote(ev.targetUid, 'healed');
     // Bloom (2026-09-17): Regeneration's support-flavored cousin, heals a DIFFERENT ally
     // instead of itself — same 'heal' event envelope (Regen/the 'heal' skill action both
     // reuse it too), distinguished here just by attUid!==targetUid, so it gets its own tone
@@ -32430,7 +32478,7 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); }
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death'); }
   // Center collapse-in (item #4, 2026-09-16): the actual slide into place is free — the
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
@@ -34218,13 +34266,13 @@ const NEST_TIPS = [
 // band plus twinkling glitter) for Legendary and up.
 function holoClass(d){
   const i = RARITY_TIER_BANDS.indexOf((d && d.rarity) || 'common');
-  return 'is-holo ' + (i >= 11 ? 'holo-cosmos' : (i >= 4 && i <= 6) ? 'holo-pearl' : 'holo-rainbow');
+  return 'is-holo ' + (i >= 11 ? 'holo-cosmos holo-starlight' : (i >= 4 && i <= 6) ? 'holo-pearl' : 'holo-rainbow');
 }
 function decorateHolo(root){
   (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
     if(t.querySelector(':scope > .holo-layer')) return;
     const l = document.createElement('span'); l.className = 'holo-layer'; l.setAttribute('aria-hidden','true'); t.appendChild(l);
-    if(t.classList.contains('holo-cosmos')){
+    if(t.classList.contains('holo-starlight')){ // 2026-10-08: the star sparkles are their own finish, Starlight
       const gl = document.createElement('span'); gl.className = 'holo-glitter'; gl.setAttribute('aria-hidden','true');
       gl.innerHTML = Array.from({length:9}, (_, k)=> `<i style="left:${(11 + (k*37)%80)}%;top:${(9 + (k*53)%82)}%;animation-delay:${(k*0.37)%2.6}s"></i>`).join('');
       t.appendChild(gl);
@@ -35669,6 +35717,7 @@ setInterval(()=>{
   if(!liveUids.length) return;
   const uid = liveUids[Math.floor(Math.random()*liveUids.length)];
   maybeSpeak(uid, null, 'idle');
+  if(Math.random() < 0.5) maybeEmote(uid, 'idle');
 }, 4000);
 // Task #94: keep the fullscreen button's icon/title in sync even when fullscreen is exited
 // via Esc/F11 rather than the button itself (no renderMatchUI re-render happens on that path).
@@ -36677,10 +36726,10 @@ const SPEECH_CHANCE = 0.28;
 // doesn't stack two bubbles on top of each other mid-animation.
 const SPEECH_COOLDOWN_MS = 2600;
 const lastSpokeAt = new Map(); // uid -> timestamp, module-scoped so it survives across renders
-function showSpeechBubble(el, text){
+function showSpeechBubble(el, text, extraClass){
   if(!el) return;
   const b = document.createElement('div');
-  b.className = 'speech-bubble';
+  b.className = 'speech-bubble' + (extraClass ? ' ' + extraClass : '');
   b.textContent = text;
   // Appended to <body> (not `el`) and positioned with fixed left/top computed from the card's
   // own getBoundingClientRect() — see the CSS comment on .speech-bubble. This is what lets the
@@ -36742,6 +36791,37 @@ function pickCustomSpeechLine(defId, triggerKey){
 // omitted, so existing onSummon/onAttack/onDeath call sites need no changes. Passing `bank:null`
 // (a brand-new trigger like 'onHit'/'onSkill' with no generic scaffold bank of its own) skips the
 // generic fallback entirely — silence unless this specific card actually wrote a line for it.
+// Card emotes (2026-10-08, user: "let's add more emotes for the cards"): small emoji bubbles for moments
+// that don't need words. Same cooldown map as speech, so a card never talks and emotes at once.
+const EMOTE_BANKS = {
+  summon:  ['😤','💪','✨','🫡','😼','🙌'],
+  attack:  ['😠','💢','⚔️','😤','👊','🔥'],
+  hurt:    ['😣','💦','😖','🤕','😬'],
+  hurtBig: ['😵','💥','😫','🤯'],
+  lowHp:   ['😰','🥵','😨','🩹','🙏'],
+  dodge:   ['😜','💨','😎','🤸'],
+  blocked: ['🛡️','😏','💪'],
+  healed:  ['😌','💚','🥰','✨'],
+  frozen:  ['🥶','❄️'],
+  poisoned:['🤢','🤮'],
+  burning: ['🥵','🔥'],
+  kill:    ['😎','🏆','😏','💀'],
+  death:   ['😵','💫','👻','🪦'],
+  idle:    ['🥱','🤔','👀','🎵','😴','🙂','🫣'],
+  win:     ['🥳','🎉','😄','🙌','🤩','💃'],
+  loss:    ['😭','😩','😞','🏳️'],
+};
+const EMOTE_CHANCE = {summon:.35, attack:.22, hurt:.18, hurtBig:.5, lowHp:.45, dodge:.6, blocked:.4, healed:.4, frozen:.5, poisoned:.4, burning:.4, kill:.55, death:.35, idle:.25, win:1, loss:.7};
+function maybeEmote(uid, kind, opts){
+  if(uid==null || !fxAtLeast('low')) return false;
+  const bank = EMOTE_BANKS[kind]; if(!bank) return false;
+  const force = !!(opts && opts.force), now = Date.now(), key = String(uid);
+  if(!force){ if(now - (lastSpokeAt.get(key)||0) < SPEECH_COOLDOWN_MS) return false; if(Math.random() > (EMOTE_CHANCE[kind] || .3)) return false; }
+  const el = (opts && opts.el) || boardCardEl(uid); if(!el || !el.isConnected) return false;
+  lastSpokeAt.set(key, now);
+  showSpeechBubble(el, bank[Math.floor(Math.random()*bank.length)], 'is-emote');
+  return true;
+}
 function maybeSpeak(uid, bank, customTriggerKey){
   if(uid==null) return;
   const trigKey = customTriggerKey || SPEECH_BANK_TO_CUSTOM_TRIGGER[bank];

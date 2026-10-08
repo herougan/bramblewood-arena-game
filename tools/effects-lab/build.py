@@ -13,8 +13,17 @@ page_css = r'''
 .lab h1{font-family:'Baloo 2',system-ui,sans-serif; font-size:clamp(28px,4vw,40px); margin:0; line-height:1.05;}
 .lab .lede{max-width:70ch; color:var(--ink-muted); margin:6px 0 0;}
 .lab nav.toc{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 8px; position:sticky; top:env(safe-area-inset-top,0px); z-index:50; padding:8px 0; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(6px);}
-.lab nav.toc a{font:700 13px 'Baloo 2',system-ui,sans-serif; padding:5px 12px; border-radius:999px; background:var(--surface-2); color:var(--ink); text-decoration:none; border:1px solid var(--surface-border);}
-.lab section{margin-top:28px;}
+.lab nav.toc button{cursor:pointer; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:5px 12px; border-radius:999px; background:var(--surface-2); color:var(--ink); text-decoration:none; border:1px solid var(--surface-border);}
+.lab section{margin-top:18px;} .lab section[hidden]{display:none !important;}
+.lab nav.toc button[aria-selected=true]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent-strong);}
+.disp-row{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-end;} .disp-row figure{margin:0; display:flex; flex-direction:column; align-items:center; gap:6px;} .disp-row figcaption{font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); text-align:center;}
+.disp-parts{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-end;} .disp-parts{padding-top:10px;} .disp-parts .levelbadge{display:block;} .disp-parts figure{margin:0; display:flex; flex-direction:column; align-items:center; gap:6px;} .disp-parts figcaption{font:700 13px 'Baloo 2',system-ui,sans-serif;}
+.disp-focus > :not([data-focus]):not(.stats), .disp-focus > .stats > :not([data-focus]), .disp-focus::before, .disp-focus::after{opacity:.16; transition:opacity .2s;} .disp-focus > .ico[data-focus] ~ *{opacity:.16;} .disp-focus [data-focus]{opacity:1 !important; outline:2px dashed #ffd56e; outline-offset:2px; border-radius:6px;} .disp-focus > .ico[data-focus]{outline-offset:-4px;}
+.disp-h{font:800 16px 'Baloo 2',system-ui,sans-serif; margin:18px 0 8px;}
+.atmo-lab{position:relative; height:320px; border-radius:16px; overflow:hidden; background:#2c3b22;}
+.atmo-lab .bf-cards{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:18px; z-index:2; pointer-events:none;} .atmo-lab .bf-cards .card-tile{width:96px !important; height:120px !important;}
+.atmo-lab .field-snow{z-index:4;}
+.num-stage{position:relative; min-height:200px;}
 html body{background:var(--bg) !important; background-image:none !important;} body::before,body::after{display:none !important;}
 .lab h2{font-family:'Baloo 2',system-ui,sans-serif; font-size:24px; margin:0 0 4px;}
 .lab .sec-sub{color:var(--ink-muted); margin:0 0 14px; max-width:75ch;}
@@ -81,7 +90,9 @@ TREATS = [('', 'No foil', 'The everyday print.', 'live'),
   ('holo-ice', 'Cracked ice', 'Shattered-ice shards that flash as you tilt.', 'new'),
   ('holo-gold', 'Gold leaf', 'A warm gold sheen with a gold rim: a prestige or event finish.', 'new'),
   ('holo-reverse', 'Reverse holo', 'Rainbow foil on the frame, with the art left plain.', 'new'),
-  ('holo-prism', 'Prism', 'Sharp prismatic facets that turn around the light.', 'new')]
+  ('holo-prism', 'Prism', 'Sharp prismatic facets that turn around the light.', 'new'),
+  ('holo-lattice', 'Lattice', 'A grid of fine foil lines crossed at 43°, each line catching the rainbow as the light moves.', 'new'),
+  ('holo-starlight', 'Starlight', 'Twinkling four-point star sparkles. Its own layer: Legendary cards wear it over Cosmos, and it can go over any finish.', 'live')]
 def treat_tile(k, cls):
     t = C(k)
     return t.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ', 1) if cls else t
@@ -93,7 +104,7 @@ TREAT_JSON = json.dumps({k: cards[k]['plain'] for k in TREAT_KEYS})
 TREAT_CARDS = treat_cards('legendary')
 def stage_card(k, holo=False, extra=''):
     return f'<div class="board-card" data-demo="{k}">{C(k, "holo" if holo else "plain")}</div>'
-html = f'''<title>Bramblewood Effects Lab</title>
+html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>{gamecss}</style>
 <style>{page_css}</style>
@@ -102,7 +113,9 @@ html = f'''<title>Bramblewood Effects Lab</title>
   <h1>Bramblewood Effects Lab</h1>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
-<nav class="toc"><a href="#skills">Skills ✨new</a><a href="#cardnew">Card ideas ✨new</a><a href="#treatments">Card treatments ✨new</a><a href="#cards">Cards</a><a href="#combat">Combat</a><a href="#battlefield">Battlefield shaders</a><a href="#screens">Screens</a><a href="#sound">Sound</a><a href="#ambience">Ambience</a><a href="#tbc">Coming next</a><a href="#all">Full list</a></nav>
+<nav class="toc" role="tablist" aria-label="Effects">
+  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+</nav>
 
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
@@ -142,17 +155,33 @@ html = f'''<title>Bramblewood Effects Lab</title>
   <div class="fx"><h3>Leader throne <span class="st live">Live</span></h3><div class="stage dark" id="throneStage">{{C_THRONE}}</div><div class="btns"><button class="btn small" data-card="throne">👑 Summon leader</button></div><p>The leader rises on a pillar of light, a crown drops onto it and a short fanfare plays.</p><div class="where">Summoning your leader</div></div>
   <div class="fx"><h3>Deck shuffle <span class="st live">Live</span></h3><div class="stage" id="shuffleStage"><div class="deck-widget hq-tile" style="width:96px;height:124px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px"><div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div></div></div><div class="btns"><button class="btn small" data-card="shuffle">🔀 Shuffle</button></div><p>At the start of a match both decks split and riffle together twice, with a papery riffle sound.</p><div class="where">Match start, after the versus opener</div></div>
   <div class="fx"><h3>Draw flip <span class="st live">Live</span></h3><div class="stage" id="drawStage" style="justify-content:space-around"><div class="deck-widget hq-tile" style="width:70px;height:92px;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px"><div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div></div><div style="width:84px">{{C_DRAW}}</div></div><div class="btns"><button class="btn small" data-card="draw">🃏 Draw</button></div><p>A card that comes into your hand flies out of your deck face down and flips face up in its slot. The opening hand deals one by one after the shuffle.</p><div class="where">Every draw</div></div>
-  <div class="fx"><h3>Victory parade <span class="st live">Live</span></h3><div class="stage dark" id="paradeStage" style="gap:6px">{{C_P1}}{{C_P2}}{{C_P3}}</div><div class="btns"><button class="btn small" data-card="parade">🚩 Win</button></div><p>Under the Victory sign the winners hop in a wave from left to right, each raising a little banner, before they dance.</p><div class="where">Match end, winning side</div></div>
+  <div class="fx"><h3>Victory toss <span class="st live">Live</span></h3><div class="stage dark" id="paradeStage" style="gap:6px">{{C_P1}}{{C_P2}}{{C_P3}}</div><div class="btns"><button class="btn small" data-card="parade">🚩 Win</button></div><p>Under the Victory sign the winners are launched into the air one after another, get knocked about, land with a squash and settle back in place. Some cheer with an emote.</p><div class="where">Match end, winning side</div></div>
+  <div class="fx"><h3>Card emotes <span class="st live">Live</span></h3><div class="stage dark" id="emoteStage">{stage_card('bee')}</div><div class="btns" id="emoteBtns"></div><p>Small emoji bubbles for moments that don't need words: summoned, attacking, hurt, low Health, dodging, healed, a kill, defeat and victory, and idle fidgets. They share the speech cooldown, so a card never talks and emotes at once.</p><div class="where">Board units during a battle</div></div>
   <div class="fx"><h3>Heat haze <span class="st live">Live</span></h3><div class="stage dark" id="hazeStage">{stage_card('fire')}</div><p>Fire creatures have hot air shimmering up off the card: faint wavy bands drifting upward.</p><div class="where">Fire and volcanic units on the board</div></div>
-  <div class="fx"><h3>Crit stamp <span class="st live">Live</span></h3><div class="stage dark" id="critStage">{{C_CRIT}}</div><div class="btns"><button class="btn small" data-card="crit">▶ Critical hit</button></div><p>A slanted CRIT! stamp on a gold starburst slams onto the card; the number gets the crit look.</p></div>
+  <div class="fx"><h3>Critical hit <span class="st live">Live</span></h3><div class="stage dark" id="critStage">{{C_CRIT}}</div><div class="btns"><button class="btn small" data-card="crit">▶ Critical hit</button></div><p>A 👊 number bursts out big on a gold starburst and recoils to size; a quick flash on the card. No CRIT! word any more.</p></div>
 </div></section>
 
 <section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">The first list is all built. Here is the next one, not built yet; veto or reorder freely.</p>
 <div class="fx-grid"><div class="fx tbc"><h3>🔗 Combo counter <span class="st idea">TBC</span></h3><p>Several hits in one round build a x2, x3… counter over the board. Waiting on a decision: cosmetic only, a small reward per step, or drop it.</p></div><div class="fx tbc"><h3>🧭 Card tilt in hand <span class="st idea">On hold</span></h3><p>Hand cards lean toward the pointer. On hold: the style guide keeps the magnetic tilt out of the hand strip, because it fights the drag and selection motion there.</p></div></div></section>
 
-<section id="treatments"><h2>Card treatment centre <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. The first four are live in the game today; the rest are ready to assign to print variants, pack rarities or events.</p>
-<div class="bf-controls"><label>Card <select id="treatCard">{TREAT_OPTS}</select></label><label class="sk-slow"><input type="checkbox" id="treatAuto" checked> Auto-tilt</label></div>
+<section id="treatments"><h2>Foils</h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. The first four are live in the game today; the rest are ready to assign to print variants, pack rarities or events.</p>
+<div class="bf-controls"><label>Card <select id="treatCard">{TREAT_OPTS}</select></label><label class="sk-slow"><input type="checkbox" id="treatAuto" checked> Auto-tilt</label><label class="sk-slow"><input type="checkbox" id="treatStar"> ＋ Starlight on every card</label></div>
 <div class="treat-grid">{TREAT_CARDS}</div></section>
+
+<section id="displays"><h2>Card displays</h2><p class="sec-sub">Every size a card is drawn at, all from the same card face, and the parts that make up the face. Use it to judge legibility at each size.</p>
+<div class="bf-controls"><label>Card <select id="dispCard">{TREAT_OPTS}</select></label></div>
+<h3 class="disp-h">Sizes</h3><div class="disp-row" id="dispSizes"></div>
+<h3 class="disp-h">In a battle</h3><div class="disp-row" id="dispBattle"></div>
+<h3 class="disp-h">Parts</h3><div class="disp-parts show-levels" id="dispParts"></div>
+</section>
+
+<section id="numbers"><h2>Damage numbers <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Each number bursts out of the hit, then recoils back to size; the burst behind it fades fast. An icon in front says what kind of hit it was. On the enemy row numbers pop higher on the card; on yours they spread out more sideways. Press a button to hit the card.</p>
+<div class="fx-grid">
+  <div class="fx"><h3>Enemy card</h3><div class="stage dark num-stage" id="numEnemy">{stage_card('fire')}</div></div>
+  <div class="fx"><h3>Your card</h3><div class="stage dark num-stage" id="numMine">{stage_card('bee')}</div></div>
+</div>
+<div class="btns" id="numBtns" style="margin-top:10px"></div>
+</section>
 
 <section id="cards"><h2>Cards</h2><p class="sec-sub">How cards look at rest and in your collection.</p>
 <div class="fx-grid">
@@ -172,8 +201,8 @@ html = f'''<title>Bramblewood Effects Lab</title>
 <div class="fx-grid">
   <div class="fx"><h3>Damage numbers <span class="st live">Live</span></h3>
     <div class="stage" id="dmgStage">{stage_card('fire')}</div>
-    <div class="btns"><button class="btn small" data-dmg="-3|">−3</button><button class="btn small" data-dmg="-12|">−12 heavy</button><button class="btn small primary" data-dmg="-11|crit">✸ Critical</button><button class="btn small" data-dmg="☠️ -2|poison-tick">☠️ Poison</button><button class="btn small" data-dmg="🩸 -2|bleed-tick">🩸 Bleed</button><button class="btn small" data-dmg="🔥 -4|heat">🔥 Fire hit</button><button class="btn small" data-dmg="❄️ -3|debuff">❄️ Cold hit</button><button class="btn small" data-dmg="+4|heal">Heal</button><button class="btn small" data-dmg="🛡 0|blocked">Blocked</button><button class="btn small" data-dmg="+2|gold">Gold</button></div>
-    <p>Chunky face, lit gradient, separate outline; tinted by type with its icon beside the number; bigger for 8+. Critical hits get a spinning gold starburst and a CRIT! stamp on the card.</p><div class="where">All hits, ticks and gains</div></div>
+    <div class="btns"><button class="btn small" data-dmg="-3|">−3</button><button class="btn small" data-dmg="-12|">−12 heavy</button><button class="btn small primary" data-dmg="-11|crit">👊 Critical</button><button class="btn small" data-dmg="-2|poison-tick">☠️ Poison</button><button class="btn small" data-dmg="-2|bleed-tick">🩸 Bleed</button><button class="btn small" data-dmg="-4|heat">🔥 Fire hit</button><button class="btn small" data-dmg="-3|cold">❄️ Cold hit</button><button class="btn small" data-dmg="+4|heal">💚 Heal</button><button class="btn small" data-dmg="0|blocked">🛡 Blocked</button><button class="btn small" data-dmg="+2|gold">🪙 Gold</button></div>
+    <p>Chunky face, lit gradient, separate outline; tinted by type with its icon in front. Every number bursts out on a starburst in its colour and recoils to size; the burst fades fast. More in the Damage numbers tab.</p><div class="where">All hits, ticks and gains</div></div>
   <div class="fx"><h3>Impact squash and recoil <span class="st live">Live</span></h3>
     <div class="stage" id="squashStage">{stage_card('ant')}</div>
     <div class="btns"><button class="btn small" data-act="squash">▶ Hit</button><button class="btn small" data-act="squashHeavy">▶ Heavy hit (with hit-stop)</button></div>
@@ -186,9 +215,9 @@ html = f'''<title>Bramblewood Effects Lab</title>
     <div class="stage" id="statusStage">{stage_card('bee')}</div>
     <div class="btns"><button class="btn small" data-st="frost">❄️ Freeze</button><button class="btn small" data-st="shock">🌩 Shock</button><button class="btn small" data-st="feather">🪶 Hit a flyer</button><button class="btn small" data-st="shatter">💥 Token dies</button></div>
     <p><b>Frost creep:</b> ice crystals grow in from the corners of a frozen unit. <b>Shock:</b> a short RGB-split glitch. <b>Flyers</b> shed feathers when hit. <b>Tokens</b> shatter into squares instead of crumbling.</p><div class="where">Status effects, hits on flyers, token deaths</div></div>
-  <div class="fx"><h3>Victory dance <span class="st live">Live</span></h3>
+  <div class="fx"><h3>Victory dance <span class="st idea">Retired</span></h3>
     <div class="stage">{stage_card('bee').replace('class="board-card"', 'class="board-card is-dancing" style="--dance-delay:0s"',1)}{stage_card('rare').replace('class="board-card"', 'class="board-card is-dancing" style="--dance-delay:.09s"',1)}</div>
-    <p>The winner's survivors bob and wiggle in a loose wave.</p><div class="where">Match end</div></div>
+    <p>Replaced by the victory toss (Card ideas tab): the endless wiggle is gone.</p><div class="where">Match end</div></div>
   <div class="fx"><h3>Attack preview <span class="st live">Live</span></h3>
     <div class="stage dark"><svg class="dash-demo" viewBox="0 0 300 150"><line x1="150" y1="135" x2="150" y2="15"/></svg></div>
     <p>Hovering a card draws a line beneath the cards to what it will hit; the dashes flow toward the target.</p><div class="where">Battlefield hover</div></div>
@@ -208,7 +237,10 @@ html = f'''<title>Bramblewood Effects Lab</title>
 </section>
 
 <section id="screens"><h2>Screens and atmosphere</h2>
-<div class="fx-grid">
+<h3 class="disp-h">Weather and atmosphere</h3><p class="sec-sub">The weather a fight can have, on the game's own battlefield layer: pick one.</p>
+<div class="atmo-lab battlefield" id="atmoLab"><div class="bf-cards">{C('common')}{C('fire')}{C('bee')}</div></div>
+<div class="bf-controls" id="atmoBtns"><button class="btn small" data-atmo="clear">☀️ Clear (Outskirts)</button><button class="btn small" data-atmo="rain">🌧️ Rain</button><button class="btn small" data-atmo="storm">⛈️ Storm</button><button class="btn small" data-atmo="snow">❄️ Snow (Frozen Ground)</button><button class="btn small" data-atmo="embers">🌋 Embers and ash</button><button class="btn small" data-atmo="mist">🌫️ Swamp mist</button><button class="btn small" data-atmo="deep">🌊 Underwater</button><button class="btn small" data-atmo="sky">☁️ High winds (Eyrie)</button><button class="btn small" data-atmo="caves">🕯️ Caves</button><button class="btn small" data-atmo="sudden">☠️ Sudden-death sky</button></div>
+<div class="fx-grid" style="margin-top:16px">
   <div class="fx"><h3>Low-castle danger pulse <span class="st live">Live</span></h3><div class="stage dark" style="min-height:140px"><div class="mini-vignette"></div><span style="color:#f3e3bf;font-weight:800">Castle under 25%</span></div><p>A red edge pulses with the heartbeat; faster under 10%.</p><div class="where">Battles</div></div>
   <div class="fx"><h3>Pack light leak <span class="st live">Live</span></h3><div class="stage dark"><div class="leak-pack pack-open-pack leak-gold" id="leakPack"><span>🏆</span>Golden Case</div></div><div class="btns"><button class="btn small" data-leak="leak-blue">Rare</button><button class="btn small" data-leak="leak-violet">Epic</button><button class="btn small" data-leak="leak-gold">Legendary</button></div><p>Rays leak from the seams in the colour of the best card inside before the pack bursts.</p><div class="where">Shop pack openings</div></div>
   <div class="fx"><h3>Floating motes <span class="st live">Live</span></h3><div class="stage" style="min-height:150px"><canvas class="motes" id="motes"></canvas></div><p>Golden motes by day, green fireflies at night; drawn from one sprite at 30 fps and paused during fights.</p><div class="where">Menus (live clock)</div></div>
@@ -235,6 +267,7 @@ var matchState = null;
 SkillFX.setImages('assets/fx/arrow.png', 'assets/fx/fire_arrow.png');
 </script>
 <script>
+var FX_KEY = 'bramblewood_fx_level', FX_ORDER = ['none','low','med','high'];
 const RARITY_TIER_BANDS = ['starter','common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic','ancient'];
 const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', icon:'💧', name:'Tide'}}, {{id:'grove', icon:'🌿', name:'Grove'}}, {{id:'stone', icon:'🪨', name:'Stone'}}];
 {fx}
@@ -245,5 +278,5 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
  '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
 for k,v in rep.items(): html=html.replace(k, v)
-open(f'{ROOT}/.fxcat/effects.html','w').write(html)
+open(f'{ROOT}/.fxcat/effects.html','w',encoding='utf-8').write(html)
 print(len(html))
