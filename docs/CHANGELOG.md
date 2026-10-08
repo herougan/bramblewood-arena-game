@@ -3,6 +3,11 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- The Forge has three benches: Upgrade, Refine (finer foils) and Enchant (Materia).
+- Shiny cards fight as Shiny units, and so do the units they spawn.
+- Decks save when you press Save.
+- Sharper battle motion in Open fights; dragged cards fly back to your hand.
+- A livelier front screen: dancing otters and a standoff.
 - Pick your ★ main deck; decks can go over 20 while you build, and only a 20-card main deck can be played.
 - Shiny is a colour shift of the art; set discounts are 5/6/7/7.5%.
 - Pack editor (admin): odds, foil chance and finishes, and what's inside each pack. Foils from packs are real foil copies.

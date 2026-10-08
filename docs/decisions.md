@@ -106,6 +106,30 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
   - CodeQL is enough
 - **Default:** CodeQL is enough
 
+**A1. API keys + monthly caps for GPT Image and fal/Kling** · Do · Art · asked 2026-10-08
+- Create the keys yourself, keep them as local environment variables (never in the repo), set a monthly cap in each dashboard. Nothing is bought without your OK. See asset-pipeline-action-items.md.
+  - Done
+  - Not yet
+- **Default:** Not yet
+
+**A2. Train a Bramblewood pixel LoRA?** · Decide · Art · asked 2026-10-08
+- FLUX.2 [dev] trained on ~30 of our PixelLab cards (~$6.40 per 1,000 steps on fal), for Maps 9–10 cards and Home sprites while PixelLab is capped.
+  - Yes, test on 10 cards
+  - Not yet
+- **Default:** Yes, test on 10 cards
+
+**A3. 30 s trailer from Kling clips** · Decide · Marketing · asked 2026-10-08
+- 5–6 Kling 3.0 image-to-video clips (splash crowd, pack tear, Shiny reveal, Ember Chipmunk fire, castle fall) cut with gameplay capture.
+  - Go
+  - Later
+- **Default:** Later
+
+**F3. Enchant and Refine numbers** · Confirm · Cards · asked 2026-10-08
+- Enchant: Ember +1⚔ (scorch), Stone +3❤, Tide +2❤, Grove +1⚔+1❤. Refine costs from 40✨+100🍁 (Foil) up to 200✨+450🍁+10🍂 (Gold leaf). Tide is currently a weaker Stone; give it something of its own?
+  - Keep
+  - Retune
+- **Default:** Keep
+
 ## Decided
 
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
@@ -194,3 +218,9 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
 
 **E8. Over-size decks and the main deck** · Decide · Decks · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Decks can hold any number of cards while building (calm 'N over' note, no red shake). ★ Main deck is chosen explicitly and is what you play with; only a 20-card main deck can be played.
+
+**F1. Upgrade / Refine / Enchant** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
+- **Outcome:** Forge has three tabs. Upgrade = level 1–10 then Prestige. Refine = your best copy up the finish ladder Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf (costs rise; Prism/Gold need Gold Leaves); never makes Shiny. Enchant = socket one Materia (Ember +1⚔ and scorching hits, Stone +3❤, Tide +2❤, Grove +1⚔+1❤); crystals are the player's now, crafted from Dust without a Hero.
+
+**F2. Shiny in battle** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
+- **Outcome:** Shiny is rolled in the one grant function, so any card received can be Shiny. A card you own a Shiny copy of is Shiny in your hand and on the board, and units it spawns are Shiny too.
