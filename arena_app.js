@@ -1058,7 +1058,28 @@ function currentCardDataHash(){
   return _cardHashMemo.hash;
 }
 const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : '';
+// Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
+// getCardDefs ~280 times (~125 ms). The result is now reused within the same synchronous task while
+// its inputs look unchanged (a cheap signature over everything it reads), and dropped at the next tick.
+let _cardDefsCache = null, _cardDefsSig = '', _cardDefsTick = false;
+function _cardDefsSignature(){
+  let lv = 0; for(const k in myCardLevels) lv += (myCardLevels[k]||0) * (k.length + 7);
+  let pr = 0; for(const k in myCardPrestige) pr += (myCardPrestige[k]||0) * (k.length + 3);
+  return [Object.keys(liveCards).length, Object.keys(liveDeletes).length, myUnlockedCardIds ? myUnlockedCardIds.size : 0, lv, pr,
+    (typeof testKitDefsOverlay!=='undefined' && testKitDefsOverlay) ? Object.keys(testKitDefsOverlay).length : -1,
+    (typeof myHero!=='undefined' && myHero) ? JSON.stringify(myHero).length + ':' + (myHero.xp||0) + ':' + (myHero.level||0) : 'nohero',
+    (typeof mySightedCardIds!=='undefined' && mySightedCardIds && mySightedCardIds.size) || 0].join('|');
+}
+function invalidateCardDefs(){ _cardDefsCache = null; }
 function getCardDefs(){
+  const sig = _cardDefsSignature();
+  if(_cardDefsCache && sig === _cardDefsSig) return _cardDefsCache;
+  const res = buildCardDefs();
+  _cardDefsCache = res; _cardDefsSig = sig;
+  if(!_cardDefsTick){ _cardDefsTick = true; setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, 0); }
+  return res;
+}
+function buildCardDefs(){
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -7120,6 +7141,15 @@ function deckSignature(d){
   const fmt = v=> n ? (Math.round(v/n*10)/10).toFixed(1) : '–';
   return {n, archetypes, avgAtk: fmt(atk), avgHp: fmt(hp), avgCost: fmt(cost)};
 }
+// The deck's own cards on its preview (2026-10-08, user: "The card preview (cards in the deck) now
+// should be changed to showing the cards"): every distinct card as a small tile, cheapest first,
+// with its copy count.
+function deckCardsStripHTML(d){
+  const defs = getCardDefs(), counts = d.counts || {};
+  const ids = Object.keys(counts).filter(id=> defs[id] && counts[id] > 0).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
+  if(!ids.length) return '<p class="panel-sub dm-empty">No cards yet. Edit the deck to add some.</p>';
+  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> `<span class="dm-card" title="${escapeAttr(defs[id].name)} ×${counts[id]}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1 ? `<b class="dm-x">×${counts[id]}</b>` : ''}</span>`).join('')}</div>`;
+}
 function deckShowcaseHTML(d, opts){
   opts = opts || {};
   const defs = getCardDefs();
@@ -9068,6 +9098,11 @@ function loadResumeSnapshot(){
 // small "Resume / Discard" card instead of dropping you straight back into the match.
 const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'Quick Battle', conquest:'Conquest fight', gauntlet:'Gauntlet fight', tutorial:'tutorial fight'};
 function tryResumeAbandonedMatch(){
+  // 2026-10-08 (user: "Unfinished fight: makes the Play button a different colour and change the text
+  // to Continue ... There is no option to discard or resume. Clicking the button continues."): no
+  // pop-up offer any more; Home's Play tile becomes Continue.
+  return false;
+  // eslint-disable-next-line no-unreachable
   const snap = loadResumeSnapshot(); if(!snap) return false;
   switchTab('home');
   document.querySelectorAll('.resume-offer').forEach(e=> e.remove());
@@ -10205,7 +10240,7 @@ function placeConquestHud(){
   const snap = (!matchState && loadTutorialDone()) ? loadResumeSnapshot() : null, main = document.getElementById('conquestMain');
   if(main && !main.querySelector('.cq-rejoin') && snap){
     const name = (snap.conquestNode && snap.conquestNode.name) || RESUME_MODE_LABEL[snap.mode] || 'your fight';
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'cq-rejoin'; b.innerHTML = `<span>▶</span> Rejoin <b>${escapeHtml(name)}</b> <small>round ${snap.round||1}</small>`;
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'cq-rejoin'; b.innerHTML = `<span>▶</span> Continue <b>${escapeHtml(name)}</b> <small>round ${snap.round||1}</small>`;
     b.onclick = ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) b.remove(); };
     main.appendChild(b);
   }
@@ -13107,9 +13142,9 @@ function renderMyDeckPanels(){
   const unlockedIds = allIds.filter(id=>!defs[id].locked).sort(sortFn);
   const lockedIds = allIds.filter(id=>defs[id].locked).sort(sortFn);
   document.getElementById('myDeckPool').innerHTML =
-    unlockedIds.map(id=>cardTileHTML(defs[id], {magnetic:true})).join('') +
-    (lockedIds.length ? `<div class="lock-divider">🔒 Locked — not usable in a deck yet</div>` : '') +
-    lockedIds.map(id=>cardTileHTML(defs[id])).join('');
+    // 2026-10-08 (user: "The locked cards shouldn't appear in the deck editor's card selector. The card
+    // selector only shows cards the user literally owns"): locked cards are left out (they live in the Codex).
+    (unlockedIds.map(id=>cardTileHTML(defs[id], {magnetic:true})).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
@@ -16059,7 +16094,7 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
-      ${(matchState && isWetField(matchState))?'<span class="rain-drops" aria-hidden="true"></span>':''}
+      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
       <div class="nm">${d.name||c.defId}</div>
@@ -21197,7 +21232,7 @@ function renderHome(){
       ${levelBadgeHTML()}
       ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
-        ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Rejoin</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
+        ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
@@ -21470,11 +21505,12 @@ function renderDeckListTab(body){
         ${d.id===activeDeckId?'<span class="deck-active-badge">ACTIVE</span>':''}
       </div>
       ${deckShowcaseHTML(d)}
+      ${deckCardsStripHTML(d)}
       <div class="deck-menu-card-actions">
         <button class="btn small" data-editdeck="${d.id}">✏️ Edit</button>
         ${d.id!==activeDeckId?`<button class="btn small" data-selectdeck="${d.id}">✅ Make Active</button>`:''}
         <button class="btn small" data-exportdeck="${d.id}" title="Copy a shareable code for this deck">📋 Code</button>
-        ${myDecks.length>1?`<button class="btn small ghost" data-deletedeck="${d.id}">🗑</button>`:''}
+        <button class="btn small ghost dm-delete" data-deletedeck="${d.id}" ${myDecks.length>1 ? '' : 'disabled aria-disabled="true"'} title="${myDecks.length>1 ? 'Delete this deck' : 'You need at least one deck'}">🗑 Delete</button>
       </div>
     </div>`).join('');
   grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
@@ -21714,14 +21750,15 @@ function renderNest(){
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
   // front-of-stack copy (index 0) — the one visual "shimmer or not" state the stack itself can show.
-  root.querySelectorAll('[data-nestview]').forEach(b=> b.addEventListener('click', e=>{
-    e.stopPropagation();
-    const id = b.dataset.nestview; openCardInspector(id, {foil: (myCardCopies[id]||[]).some(c=> c && c.foil), returnFocus: b});
-  }));
-  root.querySelectorAll('[data-nestcard]').forEach(wrap=> wrap.addEventListener('click', ()=>{
-    toggleCardCopyFoil(wrap.getAttribute('data-nestcard'), 0);
-    renderNest();
-  }));
+  // 2026-10-08 (user: "Why does clicking a card in the Nest toggle foil? ... just clicking the card
+  // launches the card close-up view."): a click opens the large viewer; foil is no longer a toggle.
+  root.querySelectorAll('[data-nestcard]').forEach(wrap=>{
+    const id = wrap.getAttribute('data-nestcard');
+    wrap.tabIndex = 0; wrap.setAttribute('role', 'button');
+    const open = ()=> openCardInspector(id, {foil: (myCardCopies[id]||[]).some(c=> c && c.foil), returnFocus: wrap});
+    wrap.addEventListener('click', open);
+    wrap.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
+  });
   startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS);
 }
 // 2026-10-08 (user: "the tooltip '1 copy owned · foil · click to toggle…' is intrusive; rotate tips
@@ -21729,7 +21766,7 @@ function renderNest(){
 // title is gone; what it said now takes turns with the Nest's own description.
 const NEST_TIPS = [
   "Cards you've won or pulled from packs. Your starter cards are in your deck.",
-  '✨ Tap a card to switch its foil shimmer on or off.',
+  '🔍 Tap a card to see it up close and spin it in the light.',
   '🃏 A taller stack means more copies of that card.',
   '🔨 Take a card to the Forge to raise its attack and health.',
   '👁️ Hover a card (or hold it on a phone) to see everything it does.',
@@ -21803,7 +21840,6 @@ function nestCardHTML(id, d){
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
     ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? holoClass(d) : ''})}
-    <button type="button" class="nest-view-btn" data-nestview="${id}" title="View large" aria-label="View ${escapeAttr(d.name || id)} large">🔍</button>
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -23075,7 +23111,10 @@ function switchTab(tab){
     if(tab==='home') Ambience.play('home'); else if(place) Ambience.play(place.ambience); else if(tab!=='play') Ambience.stop();
     Object.entries(PLACES).forEach(([t, pl])=>{ const v = document.getElementById('view-' + t); if(v){ v.classList.add(pl.cls); v.dataset.sign = pl.icon + ' ' + (window.i18 ? i18(pl.sign) : pl.sign); } });
     const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(place && currentTabBeforeSwitch!==tab && !reduced) place.enter();
+    // 2026-10-08 (user: "Clicking play or any other button should instantly transit you"): no entrance
+    // that covers the new screen (the tent flaps and cart awning hid it for ~0.8 s). Only the Nest's
+    // drifting down remains, and it never covers anything.
+    if(place && currentTabBeforeSwitch!==tab && !reduced && tab==='nest') place.enter();
     // In-world transition (immersion #4): any other screen change is carried by a gust of leaves
     // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
     else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
