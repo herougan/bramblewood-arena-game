@@ -7052,15 +7052,16 @@ function randomAiDeck(){
 // requirement is visible at a glance, not just enforced with a surprise alert() at Start/Run
 // time. 2026-09-16 follow-up: the warning half is now its own removable pill (was a plain text
 // suffix) that disappears entirely once the deck is exactly 20 — only the plain count remains.
+const _t = (en, vars)=> (typeof window!=='undefined' && window.i18) ? window.i18(en, vars) : String(en).replace(/\{(\w+)\}/g, (m, k)=> vars && vars[k]!=null ? vars[k] : m);
 function deckSizeBadgeHTML(counts){
   const total = deckTotal(counts);
   const ok = total===DECK_SIZE;
   // 2026-10-08 (user: "Allow them to add cards [beyond 20], for convenience. But they cannot use the
   // deck if it's not legal"): over or under is a calm note, never a red alarm. Play checks legality.
-  const countHTML = `<b style="color:${ok?'var(--health)':'var(--ink)'}">${total}/${DECK_SIZE} cards</b>`;
+  const countHTML = `<b style="color:${ok?'var(--health)':'var(--ink)'}">${escapeHtml(_t('{n}/{max} cards', {n:total, max:DECK_SIZE}))}</b>`;
   const diff = total - DECK_SIZE;
-  const warnPillHTML = ok ? ' <span class="deck-size-ok-pill">✓ ready to play</span>'
-    : ` <span class="deck-size-warn-pill">${diff > 0 ? `${diff} over · take ${diff} out to play` : `${-diff} more to play`}</span>`;
+  const warnPillHTML = ok ? ` <span class="deck-size-ok-pill">✓ ${_t('ready to play')}</span>`
+    : ` <span class="deck-size-warn-pill">${diff > 0 ? _t('{n} over · take {n} out to play', {n:diff}) : _t('{n} more to play', {n:-diff})}</span>`;
   return `${countHTML}${warnPillHTML}`;
 }
 
@@ -19846,7 +19847,7 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
     const def = getCardDefs()[id];
     if(def && editionCapReached(counts, id, getCardDefs())){
       const el = poolTileEl || chipEl;
-      denyShake(el); if(el) floatText(el, `Max ${maxCopiesForRarity(def.rarity)} per deck`, 'debuff');
+      denyShake(el); if(el) floatText(el, _t('Max {n} per deck', {n:maxCopiesForRarity(def.rarity)}), 'debuff');
       return;
     }
   }
@@ -21566,10 +21567,10 @@ function refineAnvilHTML(id, sel){
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${copy && copy.shiny ? ' <span class="forge-prestige-tag">✦ Shiny</span>' : ''}</h3>
     <div class="rf-ladder" aria-label="Finish ladder">${ladder}</div>
-    <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? `Refines your best copy (of ${(myCardCopies[id]||[]).length}).` : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
+    <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? escapeHtml(_t('Refines your best copy (of {n}).', {n:(myCardCopies[id]||[]).length})) : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
     ${next ? `
       <div class="forge-cost-row">${costChipsHTML(next.cost)}</div>
-      <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ Refine to ${escapeHtml(next.label)}</button>
+      <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ ${escapeHtml(_t('Refine to {finish}', {finish:_t(next.label)}))}</button>
     ` : `<p class="forge-note forge-done">The finest finish there is. 🏆</p>`}`;
 }
 function enchantAnvilHTML(id, sel){
@@ -21581,7 +21582,7 @@ function enchantAnvilHTML(id, sel){
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     <p class="forge-note">${cur ? `Enchanted with ${(MATERIA_KINDS.find(k=> k.id===cur)||{}).icon||''} ${escapeHtml((MATERIA_KINDS.find(k=> k.id===cur)||{}).name||cur)}: ${escapeHtml(ENCHANTS[cur] ? ENCHANTS[cur].label : '')}. Socketing another crystal replaces it.` : 'No enchantment yet. Pick a crystal:'}</p>
-    <div class="ench-grid">${MATERIA_KINDS.map(k=> `<button type="button" class="ench-opt ${cur===k.id?'is-on':''}" data-enchant="${k.id}" ${(st[k.id]||0) < 1 || cur===k.id ? 'aria-disabled="true"' : ''}><span class="eo-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${escapeHtml(ENCHANTS[k.id].label)}</small><span class="eo-have">you have ${st[k.id]||0}</span></button>`).join('')}</div>`;
+    <div class="ench-grid">${MATERIA_KINDS.map(k=> `<button type="button" class="ench-opt ${cur===k.id?'is-on':''}" data-enchant="${k.id}" ${(st[k.id]||0) < 1 || cur===k.id ? 'aria-disabled="true"' : ''}><span class="eo-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${escapeHtml(ENCHANTS[k.id].label)}</small><span class="eo-have">${escapeHtml(_t('you have {n}', {n:st[k.id]||0}))}</span></button>`).join('')}</div>`;
 }
 async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;
@@ -21625,7 +21626,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
     ${!maxed ? `
       <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
-      <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 Temper to Lv ${L+1}</button>
+      <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>
       ${afford ? '' : `<p class="forge-note">Win fights or open packs for more Dust and Maple Leaves.</p>`}
     ` : `
       <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
