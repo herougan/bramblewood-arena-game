@@ -4023,6 +4023,13 @@
   /* Best rank (2026-10-08, user: "more obvious, overlaying the top right of the skirmish detail pane:
      a slightly off-rotated S in a glowing pink & purple foil hexagon"). A, B and C get gold, silver
      and bronze foil; S gets the animated pink-violet foil and glow. */
+  /* Glass buttons on the map's dark scrims (2026-10-08, user: "the button text is black against the
+     background; make it more viewable, maybe glassmorphism"). */
+  .conquest-scrim .btn:not(.primary){color:#fff8ea !important; background:linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,.08)) !important;
+    border:1px solid rgba(255,255,255,.38) !important; box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 12px rgba(0,0,0,.25) !important;
+    -webkit-backdrop-filter:blur(8px) saturate(1.4); backdrop-filter:blur(8px) saturate(1.4); text-shadow:0 1px 2px rgba(0,0,0,.5);}
+  .conquest-scrim .btn:not(.primary):hover, .conquest-scrim .btn:not(.primary):focus-visible{background:linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,.14)) !important; border-color:rgba(255,255,255,.6) !important;}
+  .conquest-scrim .btn.primary{box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 14px rgba(0,0,0,.3);}
   .conquest-node-panel{overflow:visible !important;}
   .rank-hex{position:absolute; top:-22px; right:16px; z-index:7; width:58px; height:64px; display:grid; place-items:center; rotate:-8deg; pointer-events:auto;
     filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
