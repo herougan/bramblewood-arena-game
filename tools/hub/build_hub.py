@@ -76,6 +76,7 @@ def md_html(md):
     body = body.replace('href="https://claude.ai/artifact/XDiA1b9zrLfM1UNFCFTpFE"', 'href="#lab" data-tab="lab"')
     body = body.replace('href="https://claude.ai/artifact/1u6czN5TbFBN4zwisxECKU"', 'href="#library" data-tab="library"')
     if HUB_URL: body = body.replace(f'href="{HUB_URL}"', 'href="#master" data-tab="master"')
+    body = body.replace('href="decisions.md"', 'href="#decisions" data-tab="decisions"')
     return re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', body)
 rd = lambda *p: open(os.path.join(ROOT, *p), encoding='utf-8').read()
 body = md_html(rd('docs', 'MASTER.md'))
@@ -132,6 +133,27 @@ guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
   f'<h2>Read before…</h2><table><thead><tr><th>Task</th><th>Doc</th></tr></thead><tbody>{rows}</tbody></table>'
   '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth.</p>' + docs_html + '</div>')
 
+
+# Decisions tab (2026-10-08, user: "the decisions.md should be in the artefact too, with filters and
+# a search bar. Once decided, it moves to DONE. The main decisions tab is for decisions that are YET
+# to be decided."). docs/decisions.json is the source; decisions.md is regenerated from it too.
+import json as _json
+_dec_path = os.path.join(ROOT, 'docs', 'decisions.json')
+DECISIONS = _json.load(open(_dec_path, encoding='utf-8')) if os.path.exists(_dec_path) else {'items': []}
+def _dec_md(d):
+    out = ['# Bramblewood Arena — Decisions', '', '_Generated from `decisions.json` (' + d.get('updated','') + '). The hub has a searchable, filterable version: YET (waiting on you) and DONE._', '']
+    for st, title in (('YET', 'Waiting on you'), ('DONE', 'Decided')):
+        out += ['## ' + title, '']
+        for it in [i for i in d['items'] if i['status'] == st]:
+            out.append(f"**{it['id']}. {it['title']}** · {it['kind']} · {it['area']} · asked {it.get('asked','')}" + (f" · decided {it['decided']}" if it.get('decided') else ''))
+            if it.get('body'): out.append('- ' + it['body'])
+            for o in it.get('options') or []: out.append('  - ' + o)
+            if it.get('default'): out.append('- **Default:** ' + it['default'])
+            if it.get('outcome'): out.append('- **Outcome:** ' + it['outcome'])
+            out.append('')
+    return '\n'.join(out)
+open(os.path.join(ROOT, 'docs', 'decisions.md'), 'w', encoding='utf-8').write(_dec_md(DECISIONS))
+decisions_json = _json.dumps(DECISIONS, ensure_ascii=False).replace('</', '<\\/')
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bramblewood Master Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -186,10 +208,35 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .pg-i{{font-size:24px; line-height:1;}}
 .pg b{{display:block; font-family:'Baloo 2',system-ui,sans-serif;}}
 .pg small{{color:var(--ink-muted); font-size:13px;}}
+.dec{{max-width:960px; margin:0 auto; padding:20px 16px 80px;}}
+.dec-head h2{{font:800 26px 'Baloo 2',system-ui,sans-serif; margin:0;}} .dec-head p{{color:var(--ink-muted); margin:2px 0 14px;}}
+.dec-bar{{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px;}}
+.dec-seg{{display:flex; background:var(--surface-2); border:1px solid var(--line); border-radius:999px; padding:3px;}}
+.dec-seg button{{font:700 13px Nunito,system-ui,sans-serif; border:0; background:transparent; color:var(--ink-muted); padding:6px 12px; border-radius:999px; cursor:pointer;}}
+.dec-seg button[aria-pressed=true]{{background:var(--accent); color:var(--accent-ink);}}
+.dec-seg b{{font-weight:800; margin-left:4px; opacity:.85;}}
+#decQ{{flex:1; min-width:180px; font:15px Nunito,system-ui,sans-serif; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink);}}
+.dec-chips{{display:flex; flex-wrap:wrap; gap:6px; margin:0 0 8px;}}
+.dec-chips button{{font:700 12px Nunito,system-ui,sans-serif; border:1px solid var(--line); background:var(--surface); color:var(--ink-muted); padding:3px 10px; border-radius:999px; cursor:pointer;}}
+.dec-chips button[aria-pressed=true]{{background:var(--ink); color:var(--bg); border-color:var(--ink);}}
+.dec-list{{display:grid; gap:10px; margin-top:12px;}}
+.dec-card{{background:var(--surface); border:1px solid var(--line); border-left:5px solid #d9a53a; border-radius:12px; padding:12px 14px;}}
+.dec-card.done{{border-left-color:var(--accent); opacity:.92;}}
+.dec-top{{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap;}}
+.dec-id{{font:800 13px ui-monospace,Menlo,monospace; background:var(--surface-2); padding:1px 7px; border-radius:6px;}}
+.dec-title{{font:800 17px 'Baloo 2',system-ui,sans-serif;}}
+.dec-meta{{margin-left:auto; display:flex; gap:6px; flex-wrap:wrap;}}
+.dec-tag{{font:700 11px Nunito,system-ui,sans-serif; padding:1px 8px; border-radius:999px; background:var(--surface-2); color:var(--ink-muted);}}
+.dec-body{{margin:6px 0 0; font-size:14.5px;}}
+.dec-opts{{margin:6px 0 0; padding-left:20px; font-size:14px;}}
+.dec-def, .dec-out{{margin:6px 0 0; font-size:14px;}} .dec-out{{color:var(--accent);}}
+.dec-date{{font-size:12px; color:var(--ink-muted); margin-top:6px;}}
+.dec-empty{{color:var(--ink-muted); padding:20px; text-align:center;}}
 </style></head><body>
 <header><h1>🌿 Bramblewood</h1><a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play ↗</a>
 <nav role="tablist" aria-label="Pages">
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">📜 Master</button>
+<button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
@@ -199,10 +246,41 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc">{body}</article></section>
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
+<section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions" hidden><div class="dec">
+<div class="dec-head"><h2>Decisions</h2><p>What's waiting on you, and what's been decided. Reply in chat with the id and your choice, e.g. "E1 yes".</p></div>
+<div class="dec-bar"><div class="dec-seg" role="group" aria-label="Status"><button data-st="YET" aria-pressed="true">⏳ Yet to decide <b id="cYET"></b></button><button data-st="DONE" aria-pressed="false">✅ Done <b id="cDONE"></b></button><button data-st="ALL" aria-pressed="false">All</button></div>
+<input type="search" id="decQ" placeholder="Search decisions…" aria-label="Search decisions"></div>
+<div class="dec-chips" id="decAreas" role="group" aria-label="Area"></div>
+<div class="dec-chips" id="decKinds" role="group" aria-label="Type"></div>
+<div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc">{changelog}</article></section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>
 <script>
+const DEC = {decisions_json};
+(function(){{
+  const items = DEC.items || [], esc = s=> String(s||'').replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
+  let st = 'YET', area = '', kind = '', q = '';
+  const count = s=> items.filter(i=> i.status===s).length;
+  document.getElementById('cYET').textContent = count('YET'); document.getElementById('cDONE').textContent = count('DONE');
+  const chips = (el, vals, get, set)=>{{ el.innerHTML = '<button data-v="" aria-pressed="true">All</button>' + vals.map(v=> `<button data-v="${{esc(v)}}" aria-pressed="false">${{esc(v)}}</button>`).join('');
+    el.onclick = e=>{{ const b = e.target.closest('button'); if(!b) return; set(b.dataset.v); el.querySelectorAll('button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }}; }};
+  chips(document.getElementById('decAreas'), [...new Set(items.map(i=> i.area))].sort(), ()=>area, v=> area = v);
+  chips(document.getElementById('decKinds'), [...new Set(items.map(i=> i.kind))].sort(), ()=>kind, v=> kind = v);
+  document.querySelectorAll('.dec-seg button').forEach(b=> b.onclick = ()=>{{ st = b.dataset.st; document.querySelectorAll('.dec-seg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
+  document.getElementById('decQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
+  function render(){{
+    const list = items.filter(i=> (st==='ALL' || i.status===st) && (!area || i.area===area) && (!kind || i.kind===kind) && (!q || JSON.stringify(i).toLowerCase().includes(q)));
+    document.getElementById('decList').innerHTML = list.length ? list.map(i=> `<article class="dec-card ${{i.status==='DONE'?'done':''}}">
+      <div class="dec-top"><span class="dec-id">${{esc(i.id)}}</span><span class="dec-title">${{esc(i.title)}}</span><span class="dec-meta"><span class="dec-tag">${{i.status==='DONE'?'✅ Done':'⏳ Yet'}}</span><span class="dec-tag">${{esc(i.kind)}}</span><span class="dec-tag">${{esc(i.area)}}</span></span></div>
+      ${{i.body ? `<p class="dec-body">${{esc(i.body)}}</p>` : ''}}
+      ${{(i.options||[]).length && i.status!=='DONE' ? `<ul class="dec-opts">${{i.options.map(o=> `<li>${{esc(o)}}</li>`).join('')}}</ul>` : ''}}
+      ${{i.default && i.status!=='DONE' ? `<p class="dec-def"><b>Default:</b> ${{esc(i.default)}}</p>` : ''}}
+      ${{i.outcome ? `<p class="dec-out"><b>Outcome:</b> ${{esc(i.outcome)}}</p>` : ''}}
+      <div class="dec-date">Asked ${{esc(i.asked||'—')}}${{i.decided ? ' · decided ' + esc(i.decided) : ''}}</div></article>`).join('') : '<p class="dec-empty">Nothing matches.</p>';
+  }}
+  render();
+}})();
 const tabs = [...document.querySelectorAll('[role=tab]')];
 function show(id){{
   if(!document.getElementById('p-'+id)) id = 'master';

@@ -98,6 +98,14 @@ They are **friends with the large beasts**: the great stags, bears, boars and bi
 
 **Voice:** short, hungry, menacing. *"You smell like supper."*
 
+### Dogs and cats: friends of both (decided 2026-10-08)
+**Dogs and cats are neutral creatures, not pets and not beasts.** They're friends of both peoples: a hound might run messages for an Otter cohort one season and guard a Hummingbird camp the next. They choose whom they help.
+- **War dogs** fight alongside whoever they've sworn to. They stay **four-legged**: no armour-wearing biped knights. They carry their weapon **in their mouth** (a short blade, a spiked club, a torch), and wear at most a collar, a harness or a light barding.
+- **Cats** are the same: independent allies, quick and proud, never owned. Big wild cats (lynx, leopard) remain beasts (see Carnivores); house-sized cats are the neutral kind.
+- **On the board:** neutral cards both decks can use; loyalty and escort effects (guard an ally, follow a leader), not pack-hunting Frenzy.
+- **Art:** quadrupeds, weapon held in the jaws, practical straps; no human-style armour suits.
+- **Voice:** warm, loyal, a little cheeky. *"I go where the friendly smell goes."*
+
 ### The few societies
 Only a handful of creatures live in true societies: **ants, bees, termites and other hives**. They're collective and tireless, with a strange sort of fairness, all for the hive. They're neutral powers with their own territory (the hills, the hives).
 
@@ -147,8 +155,8 @@ Bosses are named characters from the plot where possible: Shieldback, Vesper, Au
 | Dominion Nestguard; "Sunfeather Dominion" in the old doc | "Dominion" reads as an empire; the Hummingbirds are tribes now | "Sunfeather Nestguard"; call the faction "the Sunfeather Tribes" |
 | The old caste system (rank by colour) | Tribal, not a caste hierarchy | Keep the colours as **tribe** names (Crimson Wing tribe, etc.) |
 | Stag Knight, Bee Knight, Dolphin Knight, Cataphract Destrier | Medieval knights don't fit a pre-Roman world | Stag → "Stag Champion" (beast-bonded); Bee → "Bee Warden"; Dolphin → "Dolphin Outrider"; Cataphract → "War Destrier" |
-| War Hound, Armored Mastiff, Shepherd's Bark | Carnivores should be beasts, but these read as tamed | Either the Otters' kennels (like Roman war-dogs) or make them wild |
+| War Hound, Armored Mastiff, Shepherd's Bark | ✅ Settled 2026-10-08 | Neutral friends of both peoples (see "Dogs and cats"); war dogs carry weapons in their mouths and stay four-legged. Art passes should drop any biped/armoured-knight look. |
 | Raccoon Warlord, Raccoon Bandit | Raccoons aren't covered by your list | Treat raccoons as road-folk (bandits and thieves), alongside rats |
 | Rodent King | Fits as a rat road-gang boss | Keep; flavour as "king of the road" |
 
-**Open question for you:** are dogs Legion war-dogs or wild beasts? And are the beasts that befriend the Hummingbirds only the big ones (stags, bears, big cats, boars), or any beast?
+**Answered:** dogs (and house cats) are neutral friends of both peoples. **Still open:** are the beasts that befriend the Hummingbirds only the big ones (stags, bears, big cats, boars), or any beast?

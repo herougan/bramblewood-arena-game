@@ -11086,7 +11086,7 @@ root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shiel
 //    swaps any text node, title, aria-label or placeholder whose English text (ignoring leading
 //    emoji/symbols and surrounding spaces) is in the language pack. Labels and buttons therefore
 //    translate without touching the code that renders them. Anything inside [translate="no"],
-//    .nm (card names), inputs and textareas is left alone.
+//    inputs and textareas is left alone. Card names (.nm) translate too since 2026-10-08 (user: "Translate card names").
 //
 // Packs: lang/<code>.json, {"English text": "translation"}. The build turns each into
 // assets/lang/<code>.js (loaded on demand) or inlines them all with BW_INLINE=1. Missing strings
@@ -11124,7 +11124,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=8a5546b18b", "es": "assets/lang/es.js?v=5146ecd929", "fr": "assets/lang/fr.js?v=dfd397055d", "id": "assets/lang/id.js?v=8faadf4b9a", "it": "assets/lang/it.js?v=1e8ec80c1c", "ja": "assets/lang/ja.js?v=d087b2824c", "ko": "assets/lang/ko.js?v=1fc6d87843", "pt": "assets/lang/pt.js?v=d91bc920af", "ta": "assets/lang/ta.js?v=c96fba91eb", "tl": "assets/lang/tl.js?v=30292d836c", "zh-Hans": "assets/lang/zh-Hans.js?v=1f60a175c7", "zh-Hant": "assets/lang/zh-Hant.js?v=9c3c0ee901"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1aa6955ddb", "es": "assets/lang/es.js?v=4f6277d52e", "fr": "assets/lang/fr.js?v=1285917cee", "id": "assets/lang/id.js?v=1845b5b505", "it": "assets/lang/it.js?v=fd2a9b5081", "ja": "assets/lang/ja.js?v=f42701df35", "ko": "assets/lang/ko.js?v=45750ee853", "pt": "assets/lang/pt.js?v=a7ff50dfb5", "ta": "assets/lang/ta.js?v=a4498e1810", "tl": "assets/lang/tl.js?v=cb2801943d", "zh-Hans": "assets/lang/zh-Hans.js?v=7202a07199", "zh-Hant": "assets/lang/zh-Hant.js?v=4cc7c3cd82"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -11157,7 +11157,7 @@ function translateText(s){
   return null;
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
-function skip(el){ return !el || el.closest && el.closest('[translate="no"], .nm, input, textarea, script, style, .no-i18n'); }
+function skip(el){ return !el || el.closest && el.closest('[translate="no"], input, textarea, script, style, .no-i18n'); }
 function walk(rootNode){
   if(!rootNode) return;
   const els = rootNode.nodeType === 1 ? [rootNode, ...rootNode.querySelectorAll('*')] : [];

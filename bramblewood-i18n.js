@@ -8,7 +8,7 @@
 //    swaps any text node, title, aria-label or placeholder whose English text (ignoring leading
 //    emoji/symbols and surrounding spaces) is in the language pack. Labels and buttons therefore
 //    translate without touching the code that renders them. Anything inside [translate="no"],
-//    .nm (card names), inputs and textareas is left alone.
+//    inputs and textareas is left alone. Card names (.nm) translate too since 2026-10-08 (user: "Translate card names").
 //
 // Packs: lang/<code>.json, {"English text": "translation"}. The build turns each into
 // assets/lang/<code>.js (loaded on demand) or inlines them all with BW_INLINE=1. Missing strings
@@ -79,7 +79,7 @@ function translateText(s){
   return null;
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
-function skip(el){ return !el || el.closest && el.closest('[translate="no"], .nm, input, textarea, script, style, .no-i18n'); }
+function skip(el){ return !el || el.closest && el.closest('[translate="no"], input, textarea, script, style, .no-i18n'); }
 function walk(rootNode){
   if(!rootNode) return;
   const els = rootNode.nodeType === 1 ? [rootNode, ...rootNode.querySelectorAll('*')] : [];
