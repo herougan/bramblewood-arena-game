@@ -9964,6 +9964,14 @@ function placeConquestHud(){
   const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'), layout = document.getElementById('conquestLayout');
   if(!wrap || !view || !layout) return;
   wrap.classList.add('cq-hud');
+  // A saved fight can be rejoined from the map as well as from Home (2026-10-08).
+  const snap = (!matchState && loadTutorialDone()) ? loadResumeSnapshot() : null, main = document.getElementById('conquestMain');
+  if(main && !main.querySelector('.cq-rejoin') && snap){
+    const name = (snap.conquestNode && snap.conquestNode.name) || RESUME_MODE_LABEL[snap.mode] || 'your fight';
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'cq-rejoin'; b.innerHTML = `<span>▶</span> Rejoin <b>${escapeHtml(name)}</b> <small>round ${snap.round||1}</small>`;
+    b.onclick = ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) b.remove(); };
+    main.appendChild(b);
+  }
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
   requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
@@ -12975,7 +12983,7 @@ function leaveMatchResumable(){
   if(m && !m.over && !m.resolving) saveResumeSnapshot();
   endMatch({keepResume:true});
   switchTab('home');
-  showToast('⏸️ Fight saved. Press ▶ Rejoin on Home to carry on.', 'ok');
+  showToast('⏸️ Fight saved. Press ▶ Rejoin (on Home or the map) to carry on.', 'ok');
 }
 function endMatch(opts){
   SoundKit.stopAll();
