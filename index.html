@@ -1297,7 +1297,12 @@
   .pill-add-row{display:flex; gap:6px; margin-top:6px; flex-wrap:wrap;} .pill-add-row select{max-width:100%; min-width:0;}
   /* 2026-09-16 follow-up: deck-size warning is now a removable pill (shown only while the
      deck isn't exactly 20 cards), not a permanent text suffix next to the count. */
-  .deck-size-warn-pill{display:inline-flex; align-items:center; background:var(--danger); color:var(--badge-ink); border-radius:999px; padding:2px 10px; font-size:11px; font-weight:800; letter-spacing:.2px; vertical-align:middle;}
+  .deck-size-warn-pill, .deck-size-ok-pill{display:inline-flex; align-items:center; background:rgba(181,101,29,.16); color:#9a5418; border-radius:999px; padding:2px 10px; font-size:11px; font-weight:800; letter-spacing:.2px; vertical-align:middle;}
+  .deck-size-ok-pill{background:color-mix(in srgb, var(--health) 16%, transparent); color:var(--health);}
+  .dc-warn{display:inline-grid; place-items:center; width:15px; height:15px; border-radius:50%; background:#c9822f; color:#fff; font-size:10px; font-weight:900; margin-left:2px;}
+  .deck-main-tag{font:800 12.5px 'Baloo 2',system-ui,sans-serif; color:#5e3f05; background:#f3d77e; box-shadow:0 1px 3px rgba(0,0,0,.3); border-radius:999px; padding:4px 10px; align-self:center;}
+  .deck-illegal-badge{font-size:10px; font-weight:800; color:#9a5418; background:rgba(181,101,29,.16); border-radius:6px; padding:2px 6px; flex-shrink:0;}
+  .deck-menu-card.is-illegal .deck-showcase{opacity:.85;}
   .passive-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin-bottom:10px;}
   .passive-item{display:flex; align-items:center; gap:6px; background:var(--bg); border:1px solid var(--surface-border); border-radius:9px; padding:6px 9px;}
   .passive-item label{font-size:12.5px; font-weight:700; flex:1;}
@@ -18332,8 +18337,12 @@ function randomAiDeck(){
 function deckSizeBadgeHTML(counts){
   const total = deckTotal(counts);
   const ok = total===DECK_SIZE;
+  // 2026-10-08 (user: "Allow them to add cards [beyond 20], for convenience. But they cannot use the
+  // deck if it's not legal"): over or under is a calm note, never a red alarm. Play checks legality.
   const countHTML = `<b style="color:${ok?'var(--health)':'var(--ink)'}">${total}/${DECK_SIZE} cards</b>`;
-  const warnPillHTML = ok ? '' : ` <span class="deck-size-warn-pill">needs exactly ${DECK_SIZE}</span>`;
+  const diff = total - DECK_SIZE;
+  const warnPillHTML = ok ? ' <span class="deck-size-ok-pill">✓ ready to play</span>'
+    : ` <span class="deck-size-warn-pill">${diff > 0 ? `${diff} over · take ${diff} out to play` : `${-diff} more to play`}</span>`;
   return `${countHTML}${warnPillHTML}`;
 }
 
@@ -18375,6 +18384,14 @@ if(!myDecks){
   activeDeckId = myDecks[0].id; saveActiveDeckId();
 }
 function getActiveDeck(){ return myDecks.find(d=>d.id===activeDeckId) || myDecks[0]; }
+// Main deck (2026-10-08, user: "deck editor ... with main deck selection"): the deck you PLAY with.
+// The editor still loads whichever deck you are editing into the working globals (every builder
+// call site reads them), so leaving the Deck screen puts the main deck back (restoreMainDeck).
+let mainDeckId = (()=>{ try{ return localStorage.getItem('bramblewood_arena_main_deck') || null; }catch(e){ return null; } })();
+if(!mainDeckId || !myDecks.find(d=> d.id===mainDeckId)) mainDeckId = activeDeckId;
+function setMainDeck(id){ if(!myDecks.find(d=> d.id===id)) return; mainDeckId = id; try{ localStorage.setItem('bramblewood_arena_main_deck', id); }catch(e){} }
+function deckIsLegal(d){ return !!d && deckTotal(d.counts||{}) === DECK_SIZE; }
+function restoreMainDeck(){ if(mainDeckId && activeDeckId !== mainDeckId && myDecks.find(d=> d.id===mainDeckId)) switchActiveDeck(mainDeckId); }
 // Called right after ANY of the three legacy save*() functions (saveMyDeck/saveMyCharacter/
 // saveMyLeader) run, so an edit made through the existing deck-builder UI (which only ever
 // touches the bare globals) is reflected back into myDecks immediately.
@@ -18412,7 +18429,8 @@ function deleteDeck(id){
   if(idx<0) return false;
   myDecks.splice(idx,1);
   saveMyDecks();
-  if(activeDeckId===id) switchActiveDeck(myDecks[0].id);
+  if(mainDeckId===id) setMainDeck(myDecks[0].id);
+  if(activeDeckId===id) switchActiveDeck(mainDeckId || myDecks[0].id);
   return true;
 }
 // Small Castle|Leader|Deck pill-preview row for one deck — used on the Deck Menu list. Reuses
@@ -19124,7 +19142,7 @@ function startDungeonFight(){
     // fight in this same run reads the attritioned copy saved in DUNGEON_RUN_KEY instead, which
     // is allowed to have fewer than 20 cards left — that shrinkage IS the mode.
     if(deckTotal(myDeckCounts)!==DECK_SIZE){
-      alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE} to enter the Dungeon. Head to the Deck tab to adjust it.`);
+      showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE} to enter the Dungeon. Head to the Deck tab to adjust it.`, 'warn');
       return;
     }
     run = {stage:1, deckCounts:{...myDeckCounts}, castleHp:null};
@@ -19214,7 +19232,7 @@ async function findLiveRankedMatch(){
     return;
   }
   if(deckTotal(myDeckCounts)!==DECK_SIZE){
-    alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE} before queueing. Open Deck from Home to adjust it.`);
+    showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE} before queueing. Open Deck from Home to adjust it.`, 'warn');
     return;
   }
   liveQueueing = true;
@@ -24689,8 +24707,9 @@ function wireCardTileFlourish(root){
 // One deck-size gate shared by every mode that fights with your own deck (Conquest and Raid used
 // to skip it, so a 21-card deck could start a Conquest fight — found in the 2026-10-03 story pass).
 function deckSizeOkOrWarn(){
+  if(typeof restoreMainDeck==='function' && currentTab!=='deck') restoreMainDeck();
   if(deckTotal(myDeckCounts)===DECK_SIZE) return true;
-  alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`);
+  showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`, 'warn');
   return false;
 }
 function startMatch(mode){
@@ -24700,7 +24719,7 @@ function startMatch(mode){
   // a match until exactly 20. DEFAULT_DECK (the AI opponent's fixed deck, below) already
   // totals exactly 20 on its own, so this only ever gates the PLAYER's own deck.
   if(deckTotal(myDeckCounts)!==DECK_SIZE){
-    alert(`Your deck has ${deckTotal(myDeckCounts)} cards — it needs to be exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`);
+    showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`, 'warn');
     return;
   }
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
@@ -30954,7 +30973,8 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
   if(!remove && enforceRarityLimit){
     const def = getCardDefs()[id];
     if(def && editionCapReached(counts, id, getCardDefs())){
-      denyShake(poolTileEl || chipEl);
+      const el = poolTileEl || chipEl;
+      denyShake(el); if(el) floatText(el, `Max ${maxCopiesForRarity(def.rarity)} per deck`, 'debuff');
       return;
     }
   }
@@ -32963,10 +32983,11 @@ function renderDeckSection(){
     if(activeDeckId!==deckEditingId) switchActiveDeck(deckEditingId);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
-          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===activeDeckId?'<span class="dc-star" title="Active deck for Play">★</span>':''}${escapeHtml(d.name)}</button>`).join('')}
+          ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===mainDeckId?'<span class="dc-star" title="Main deck: the one you play with">★</span>':''}${escapeHtml(d.name)}${deckIsLegal(d)?'':'<span class="dc-warn" title="Not ready to play: needs exactly '+DECK_SIZE+' cards">!</span>'}</button>`).join('')}
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
         </div>
         <div class="play-subtabs-actions">
+          ${deckEditingId===mainDeckId ? '<span class="deck-main-tag" title="You play with this deck">★ Main deck</span>' : '<button type="button" class="btn small" id="deckMakeMainBtn" title="Play with this deck">★ Make main deck</button>'}
           <button type="button" class="btn small ${deckHeroView?'primary':'ghost'} hero-hall-btn" id="deckHeroBtn" title="Your Hero — level it, spend its points, pick its skills">🦸 Hero${myHero && heroPointsFree(myHero)>0 ? '<span class="hero-dot" aria-label="points to spend"></span>' : ''}</button>
           <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
           <button type="button" class="btn small ghost" id="deckEditorToCodexBtn" title="Go to Codex">📇 Codex</button>
@@ -32976,6 +32997,8 @@ function renderDeckSection(){
     // Clicking the deck you're already in renames it (it's obvious which deck you mean).
     root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
     document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
+    const mm = document.getElementById('deckMakeMainBtn');
+    if(mm) mm.addEventListener('click', ()=>{ setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
     document.getElementById('deckHeroBtn').addEventListener('click', ()=>{ deckHeroView = !deckHeroView; renderDeckSection(); });
@@ -33012,7 +33035,7 @@ function renderDeckSection(){
 }
 function renderDeckListTab(body){
   body.innerHTML = `<div class="panel"><h2>🃏 My Decks</h2>
-      <p class="panel-sub">Edit a deck, or make one your active deck for Play. Each deck remembers its own Castle (Bramble), Leader, and card list.</p>
+      <p class="panel-sub">Your ★ main deck is the one you play with. Decks can hold any number of cards while you build; only a ${DECK_SIZE}-card deck can be played.</p>
       <div class="deck-menu-grid" id="deckMenuGrid"></div>
       <div class="deck-menu-bottom-actions">
         <button class="btn primary" id="newDeckBtn">➕ New Deck</button>
@@ -33021,22 +33044,23 @@ function renderDeckListTab(body){
     </div>`;
   const grid = document.getElementById('deckMenuGrid');
   grid.innerHTML = myDecks.map(d=> `
-    <div class="deck-menu-card ${d.id===activeDeckId?'active':''}" data-deckid="${d.id}">
+    <div class="deck-menu-card ${d.id===mainDeckId?'active':''} ${deckIsLegal(d)?'':'is-illegal'}" data-deckid="${d.id}">
       <div class="deck-menu-card-head">
         <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
-        ${d.id===activeDeckId?'<span class="deck-active-badge">ACTIVE</span>':''}
+        ${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}
+        ${deckIsLegal(d)?'':`<span class="deck-illegal-badge" title="Needs exactly ${DECK_SIZE} cards to play">${deckTotal(d.counts||{})}/${DECK_SIZE}</span>`}
       </div>
       ${deckShowcaseHTML(d)}
       ${deckCardsStripHTML(d)}
       <div class="deck-menu-card-actions">
-        <button class="btn small" data-editdeck="${d.id}">✏️ Edit</button>
-        ${d.id!==activeDeckId?`<button class="btn small" data-selectdeck="${d.id}">✅ Make Active</button>`:''}
+        <button class="btn small primary" data-editdeck="${d.id}">✏️ Edit</button>
+        ${d.id!==mainDeckId?`<button class="btn small" data-selectdeck="${d.id}" title="Play with this deck">★ Make main</button>`:''}
         <button class="btn small" data-exportdeck="${d.id}" title="Copy a shareable code for this deck">📋 Code</button>
         <button class="btn small ghost dm-delete" data-deletedeck="${d.id}" ${myDecks.length>1 ? '' : 'disabled aria-disabled="true"'} title="${myDecks.length>1 ? 'Delete this deck' : 'You need at least one deck'}">🗑 Delete</button>
       </div>
     </div>`).join('');
   grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
-  grid.querySelectorAll('[data-selectdeck]').forEach(b=> b.addEventListener('click', ()=>{ switchActiveDeck(b.getAttribute('data-selectdeck')); renderDeckSection(); }));
+  grid.querySelectorAll('[data-selectdeck]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.getAttribute('data-selectdeck'); setMainDeck(id); switchActiveDeck(id); renderDeckSection(); }));
   grid.querySelectorAll('[data-deletedeck]').forEach(b=> b.addEventListener('click', ()=>{
     if(confirm('Delete this deck? This cannot be undone.')){ deleteDeck(b.getAttribute('data-deletedeck')); renderDeckSection(); }
   }));
@@ -34657,6 +34681,7 @@ function switchTab(tab){
   // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
   if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); document.body.classList.remove('conquest-full'); }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ try{ deckHeroView = false; }catch(e){} }
+  if(tab!=='deck' && currentTabBeforeSwitch==='deck'){ try{ restoreMainDeck(); }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
