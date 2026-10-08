@@ -11934,13 +11934,13 @@ const PASSIVE_DEFS = [
   // should be simple like 'Hide' or 'Lunge'"): trimmed the "(legacy)"/"%" suffixes off Sweep,
   // Stun (on hit) %, and Reflect % below — those three were the only labels in this list that
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
-  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Also hits the next ${v} live card(s) further down the same flank.`},
+  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Also hits the next ${v} live card${v===1?'':'s'} further down the same flank.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
-  {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round(s) before attacking again.`},
+  {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
   {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`Getting hit queues ${v} bonus armor + a skipped attack, active next round.`},
   {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy HQ directly.`},
   {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Sweep and Swipe extra hits can't be evaded.`},
@@ -12004,7 +12004,7 @@ const PASSIVE_DEFS = [
   // picker (c.mechanicLine / the "Archetype" field further down the editor), NOT the Type Tags
   // pill list above (River/Otter/Insect/...) — the two systems share the word "archetype" in
   // this codebase's UI copy, which is worth untangling if it keeps causing confusion.
-  {key:'inherentDarkness', category:'evergreen', mechLineGate:'devilry', label:'Inherent Darkness', kind:'number', min:0, desc:v=>`While Ready (Per Turn), generates ${v} Dark Point(s) for this card's owner every round. Only selectable on a Devilry-archetype card.`},
+  {key:'inherentDarkness', category:'evergreen', mechLineGate:'devilry', label:'Inherent Darkness', kind:'number', min:0, desc:v=>`While Ready (Per Turn), generates ${v} Dark Point${v===1?'':'s'} for this card's owner every round. Only selectable on a Devilry-archetype card.`},
   {key:'coreEvil', category:'evergreen', mechLineGate:'devilry', label:'Core Evil', kind:'boolean', desc:()=>`Generates 1 Dark Point the moment this card is pitched (stacks with the Devilry archetype's own discard bonus, if this card also has one). Only selectable on a Devilry-archetype card.`},
   // Frenzy and Rend (2026-09-16, Bramblewood's takes on Tyrant Unleashed's "Flurry" and
   // "Pierce") — found missing from this list entirely during the 2026-09-21 Skills/VFX/SFX
@@ -12654,8 +12654,8 @@ function describeEffects(def, liveCard){
   const e = def.effects || {};
   if(def.cost) lines.push(`Costs ${def.cost} lumber to play.`); // 2026-09-22: cards are paid for in Lumber now, not Gold
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
-  if(def.exileCost) lines.push(`Also requires exiling ${def.exileCost.count} card(s) from your ${def.exileCost.zone} to play.`);
-  if(def.wait) lines.push(`Wait ${def.wait} — takes ${def.wait} round(s) after entering play before it can fight.`);
+  if(def.exileCost) lines.push(`Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`);
+  if(def.wait) lines.push(`Wait ${def.wait} — takes ${def.wait} round${def.wait===1?'':'s'} after entering play before it can fight.`);
   if(e.bounty) lines.push(`Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
   if(e.explode) lines.push(`Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every

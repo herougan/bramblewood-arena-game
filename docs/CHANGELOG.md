@@ -3,6 +3,8 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- Cards lean as you drag them across the board and land at that angle; a card dropped nowhere flies back to your hand.
+- Skill text starts with the keyword ("Bleed 2 — …").
 - The results window fits on screen; after a fight only the board stays when you look at it.
 - Skirmish rewards show what the first clear gives, with your rank beside them.
 - The Forge has three benches: Upgrade, Refine (finer foils) and Enchant (Materia).
