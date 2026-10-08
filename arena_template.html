@@ -4942,7 +4942,7 @@
   @keyframes po2Sink{to{translate:0 40vh; opacity:0;}}
   /* the reveal */
   .po2-deck{--cw:min(58vh * .8, 80vw, 360px); position:relative; width:var(--cw); aspect-ratio:4/5; margin-right:calc(var(--cw) * .1);}
-  .po2-card{position:absolute; inset:0; padding:0; border:0; background:none; cursor:pointer; perspective:1300px; --k:0;
+  .po2-card{position:absolute; inset:0; padding:0; border:0; background:none; cursor:pointer; perspective:1300px; touch-action:none; --k:0;
     transform:translate(calc(var(--k) * 16px), calc(var(--k) * -9px)) rotate(calc(var(--k) * 3.5deg)) scale(calc(1 - var(--k) * .035));
     transition:transform .5s cubic-bezier(.2,.8,.3,1), opacity .4s ease, filter .4s ease; animation:po2DealIn .5s cubic-bezier(.2,.9,.3,1.15) both; animation-delay:calc(var(--k) * 70ms);}
   @keyframes po2DealIn{from{translate:0 40vh; opacity:0}}

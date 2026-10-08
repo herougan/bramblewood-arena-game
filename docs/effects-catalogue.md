@@ -64,6 +64,23 @@ Six techniques, cheapest and most compatible first. The tag in brackets is how t
 | **Iridescent / pearl** | A soft shift between pastel hues by viewing angle, gentler than holo | Uncommon/rare frames, leader cards | [CSS] the holo recipe with a low-saturation conic gradient and `soft-light` | 📝 |
 | **Stained glass** | Jewel-tone panes with dark lead lines and light shining through | Ecclesia/Grace cards, the Grace resource | [CSS] clip-path panes, or [Art shader] on the card art: Voronoi cells plus a glow | 📝 |
 
+### Card treatment centre (2026-10-08)
+The Effects Lab's **Card treatment centre** shows every print finish on the same card (pick the card, hover or auto-tilt to move the light). Classes are `is-holo holo-<name>` in `arena_template.html`; `decorateHolo()` adds the layers and the pointer drives `--hx --hy --hbx --hby`.
+
+| Finish | Look | Status |
+|---|---|---|
+| Pearl | soft pastel sheen | ✅ live (Rare–Super Rare foils) |
+| Rainbow holo | classic rainbow band | ✅ live (Epic–Quest Unique, foil commons) |
+| Cosmos | deep-space band and twinkling glitter | ✅ live (Legendary and up) |
+| Hex | honeycomb lattice that lights up in rainbow | 🆕 ready to assign |
+| Etched | engraved metal lines on the frame only; the art stays clean | 🆕 ready to assign |
+| Cracked ice | shattered-ice shards that flash as you tilt | 🆕 ready to assign |
+| Gold leaf | warm gold sheen and gold rim (prestige/event) | 🆕 ready to assign |
+| Reverse holo | rainbow foil on the frame, art left plain | 🆕 ready to assign |
+| Prism | sharp prismatic facets that turn with the light | 🆕 ready to assign |
+
+The same finishes can be previewed in game from **Codex → 🔍 View large** (admins see all of them; players see Plain and the foil they own). There the light is driven by the card's turn (trig on the spin angle) rather than the pointer.
+
 ## Battle effects
 
 | Effect | What it looks like | Where | How | Status |
