@@ -2219,6 +2219,16 @@
   #editorOverlay .modal{width:min(860px, 100%);}
   .ce-side{float:right; width:190px; margin:0 0 12px 18px; position:sticky; top:0; z-index:4; display:flex; flex-direction:column; gap:10px; padding:10px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .ce-preview{display:flex; justify-content:center;} .ce-preview .card-tile{width:150px; height:196px;}
+  /* editor preview: one flash on open, then a pointer-following glint (2026-10-08) */
+  .ce-preview{perspective:700px;}
+  .ce-preview .card-tile{transform:rotateX(var(--ce-tx,0deg)) rotateY(var(--ce-ty,0deg)); transition:transform .25s ease-out;}
+  .ce-preview .card-tile.rarity-tier-top::before{animation-iteration-count:1; animation-duration:1.5s;}
+  .ce-preview.ce-flashed .card-tile.rarity-tier-top::before{animation:none;}
+  .ce-preview.ce-hover .card-tile.rarity-tier-top::before{--gold-x:var(--ce-mx,50%);}
+  .ce-glint{position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; opacity:0; transition:opacity .25s;
+    background:radial-gradient(circle at var(--ce-mx,50%) var(--ce-my,30%), rgba(255,255,255,.42) 0%, rgba(255,255,255,.1) 24%, transparent 50%); mix-blend-mode:soft-light;}
+  .ce-preview.ce-hover .ce-glint{opacity:1;}
+  @media (prefers-reduced-motion: reduce){ .ce-preview .card-tile{transform:none;} }
   .ce-art{display:flex; flex-direction:column; gap:6px; font-size:13px;}
   .ce-art-row{display:flex; gap:8px; align-items:center;} .ce-art-row small{display:block; color:var(--ink-muted); font-size:11.5px;}
   .ce-art-thumb{width:40px; height:40px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1px solid var(--surface-border); font-size:22px; flex:none;}
@@ -5080,6 +5090,8 @@
   .nest-actions{display:flex; gap:8px; justify-content:center; margin-top:6px;}
   .bwc-list{max-height:200px; overflow:auto; margin:0 0 10px; padding-left:18px; font-size:13px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
+  .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
+  .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
   @keyframes shinyTwinkle{50%{transform:scale(1.25) rotate(20deg); opacity:.7;}}
   .shop-bundle small.sb-off{display:block; font-size:9.5px; font-weight:800; color:#2f7a3a; line-height:1;}
   /* the old well on the Outskirts (2026-10-08) */

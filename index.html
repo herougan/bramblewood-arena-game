@@ -2219,6 +2219,16 @@
   #editorOverlay .modal{width:min(860px, 100%);}
   .ce-side{float:right; width:190px; margin:0 0 12px 18px; position:sticky; top:0; z-index:4; display:flex; flex-direction:column; gap:10px; padding:10px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .ce-preview{display:flex; justify-content:center;} .ce-preview .card-tile{width:150px; height:196px;}
+  /* editor preview: one flash on open, then a pointer-following glint (2026-10-08) */
+  .ce-preview{perspective:700px;}
+  .ce-preview .card-tile{transform:rotateX(var(--ce-tx,0deg)) rotateY(var(--ce-ty,0deg)); transition:transform .25s ease-out;}
+  .ce-preview .card-tile.rarity-tier-top::before{animation-iteration-count:1; animation-duration:1.5s;}
+  .ce-preview.ce-flashed .card-tile.rarity-tier-top::before{animation:none;}
+  .ce-preview.ce-hover .card-tile.rarity-tier-top::before{--gold-x:var(--ce-mx,50%);}
+  .ce-glint{position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; opacity:0; transition:opacity .25s;
+    background:radial-gradient(circle at var(--ce-mx,50%) var(--ce-my,30%), rgba(255,255,255,.42) 0%, rgba(255,255,255,.1) 24%, transparent 50%); mix-blend-mode:soft-light;}
+  .ce-preview.ce-hover .ce-glint{opacity:1;}
+  @media (prefers-reduced-motion: reduce){ .ce-preview .card-tile{transform:none;} }
   .ce-art{display:flex; flex-direction:column; gap:6px; font-size:13px;}
   .ce-art-row{display:flex; gap:8px; align-items:center;} .ce-art-row small{display:block; color:var(--ink-muted); font-size:11.5px;}
   .ce-art-thumb{width:40px; height:40px; border-radius:8px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1px solid var(--surface-border); font-size:22px; flex:none;}
@@ -5090,6 +5100,8 @@
   .nest-actions{display:flex; gap:8px; justify-content:center; margin-top:6px;}
   .bwc-list{max-height:200px; overflow:auto; margin:0 0 10px; padding-left:18px; font-size:13px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
+  .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
+  .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
   @keyframes shinyTwinkle{50%{transform:scale(1.25) rotate(20deg); opacity:.7;}}
   .shop-bundle small.sb-off{display:block; font-size:9.5px; font-weight:800; color:#2f7a3a; line-height:1;}
   /* the old well on the Outskirts (2026-10-08) */
@@ -14568,6 +14580,10 @@ function battlefieldMapClass(m){
 // in the woodland-hive language the rest of the card world already uses, while keeping the same
 // underlying fact (this card only ever enters play spawned by another card).
 const SPAWN_ONLY_TOOLTIP = "Nest-born — hatched into play by another card, never drafted or bought on its own";
+// Shiny (2026-10-08, user: "it's a hue shift. Leave the prism finish for certain foil treatments"):
+// a Shiny copy keeps its normal frame but its art is recoloured by a fixed per-card hue
+// (deterministic from the id, 90–270deg so it never lands near the original colours).
+function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch.charCodeAt(0)) >>> 0; return 90 + (h % 181); }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -14614,7 +14630,7 @@ function cardTileHTML(d, opts){
   // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
   const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
   const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
-  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
+  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
@@ -15594,7 +15610,31 @@ function mountEditorSide(modal){
   const refresh = ()=>{
     if(!editingCard || !document.getElementById('cePreview')) return; // the editor closed before the delayed redraw
     const d = editorDraftFromForm(); d.art = editingCard.art;
-    const pv = document.getElementById('cePreview'); if(pv) pv.innerHTML = cardTileHTML(d, {inPlay:true});
+    // Preview (2026-10-08, user: "flashes too much... flash once only, then the 2nd flash follows the
+    // mouse"): only re-draw when the markup actually changed, play the gold streak once on the first
+    // draw (.ce-flashed stops it replaying on every keystroke), and afterwards the glint and the rim
+    // streak track the pointer — the same lean-toward-the-cursor idea as the main-menu buttons.
+    const pv = document.getElementById('cePreview');
+    if(pv){
+      const html = cardTileHTML(d, {inPlay:true});
+      if(pv.dataset.html !== html){
+        pv.dataset.html = html; pv.innerHTML = html + '';
+        const tile = pv.querySelector('.card-tile'); if(tile) tile.insertAdjacentHTML('beforeend', '<span class="ce-glint" aria-hidden="true"></span>');
+        if(!pv.dataset.wired){
+          pv.dataset.wired = '1';
+          setTimeout(()=> pv.classList.add('ce-flashed'), 1600);
+          pv.addEventListener('pointermove', e=>{
+            const t = pv.querySelector('.card-tile'); if(!t) return;
+            const r = t.getBoundingClientRect();
+            const x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)), y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height));
+            t.style.setProperty('--ce-mx', (x*100).toFixed(1)+'%'); t.style.setProperty('--ce-my', (y*100).toFixed(1)+'%');
+            t.style.setProperty('--ce-tx', ((0.5 - y)*12).toFixed(2)+'deg'); t.style.setProperty('--ce-ty', ((x - 0.5)*12).toFixed(2)+'deg');
+            pv.classList.add('ce-hover', 'ce-flashed');
+          });
+          pv.addEventListener('pointerleave', ()=>{ pv.classList.remove('ce-hover'); const t = pv.querySelector('.card-tile'); if(t){ t.style.setProperty('--ce-tx','0deg'); t.style.setProperty('--ce-ty','0deg'); } });
+        }
+      }
+    }
     const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
     const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
   };
@@ -33349,7 +33389,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
-    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-holo holo-prism is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
+    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -33386,7 +33426,8 @@ function rollPackCards(pack){
 // Escape still works as a way out for keyboard users: it jumps to the pack's summary, then closes.
 const PACK_BUNDLES = [10, 25, 50, 100];
 // Set discounts (2026-10-08, user: "10 = 5% discount. 25 get 12.5%. 50 get 15% and so on").
-const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.125, 50:0.15, 100:0.20};
+// 2026-10-08 (user): 1/10/25/50/100 packs → 0/5/6/7/7.5% off.
+const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.06, 50:0.07, 100:0.075};
 function packSetCost(pack, qty){
   const d = PACK_BUNDLE_DISCOUNT[qty] || 0, c = pack.cost || {};
   return {gold: Math.round((c.gold||0)*qty*(1-d)), gems: Math.round((c.gems||0)*qty*(1-d)), discount:d};
@@ -33524,7 +33565,7 @@ function openPackAnimation(pack, opened, opts){
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-holo holo-prism is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
     </button>`; }).join('');
   const showReveal = ()=>{

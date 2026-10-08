@@ -3253,6 +3253,10 @@ function battlefieldMapClass(m){
 // in the woodland-hive language the rest of the card world already uses, while keeping the same
 // underlying fact (this card only ever enters play spawned by another card).
 const SPAWN_ONLY_TOOLTIP = "Nest-born — hatched into play by another card, never drafted or bought on its own";
+// Shiny (2026-10-08, user: "it's a hue shift. Leave the prism finish for certain foil treatments"):
+// a Shiny copy keeps its normal frame but its art is recoloured by a fixed per-card hue
+// (deterministic from the id, 90–270deg so it never lands near the original colours).
+function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch.charCodeAt(0)) >>> 0; return 90 + (h % 181); }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -3299,7 +3303,7 @@ function cardTileHTML(d, opts){
   // Castle cracks (2026-10-06): the castle tile cracks in three stages as it loses HP — see crackStage().
   const crackCls = hasLiveHp ? (' crack-'+crackStage(opts.liveHp, d.health)) : '';
   const hpBarHTML = hasLiveHp ? `<div class="castle-hp-bar-oncard"><div class="castle-hp-bar-oncard-fill" style="width:${Math.max(0,(opts.liveHp/d.health)*100)}%"></div></div>` : '';
-  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}">
+  return `<div class="card-tile ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
@@ -4279,7 +4283,31 @@ function mountEditorSide(modal){
   const refresh = ()=>{
     if(!editingCard || !document.getElementById('cePreview')) return; // the editor closed before the delayed redraw
     const d = editorDraftFromForm(); d.art = editingCard.art;
-    const pv = document.getElementById('cePreview'); if(pv) pv.innerHTML = cardTileHTML(d, {inPlay:true});
+    // Preview (2026-10-08, user: "flashes too much... flash once only, then the 2nd flash follows the
+    // mouse"): only re-draw when the markup actually changed, play the gold streak once on the first
+    // draw (.ce-flashed stops it replaying on every keystroke), and afterwards the glint and the rim
+    // streak track the pointer — the same lean-toward-the-cursor idea as the main-menu buttons.
+    const pv = document.getElementById('cePreview');
+    if(pv){
+      const html = cardTileHTML(d, {inPlay:true});
+      if(pv.dataset.html !== html){
+        pv.dataset.html = html; pv.innerHTML = html + '';
+        const tile = pv.querySelector('.card-tile'); if(tile) tile.insertAdjacentHTML('beforeend', '<span class="ce-glint" aria-hidden="true"></span>');
+        if(!pv.dataset.wired){
+          pv.dataset.wired = '1';
+          setTimeout(()=> pv.classList.add('ce-flashed'), 1600);
+          pv.addEventListener('pointermove', e=>{
+            const t = pv.querySelector('.card-tile'); if(!t) return;
+            const r = t.getBoundingClientRect();
+            const x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)), y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height));
+            t.style.setProperty('--ce-mx', (x*100).toFixed(1)+'%'); t.style.setProperty('--ce-my', (y*100).toFixed(1)+'%');
+            t.style.setProperty('--ce-tx', ((0.5 - y)*12).toFixed(2)+'deg'); t.style.setProperty('--ce-ty', ((x - 0.5)*12).toFixed(2)+'deg');
+            pv.classList.add('ce-hover', 'ce-flashed');
+          });
+          pv.addEventListener('pointerleave', ()=>{ pv.classList.remove('ce-hover'); const t = pv.querySelector('.card-tile'); if(t){ t.style.setProperty('--ce-tx','0deg'); t.style.setProperty('--ce-ty','0deg'); } });
+        }
+      }
+    }
     const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
     const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
   };
@@ -22034,7 +22062,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
-    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-holo holo-prism is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
+    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -22071,7 +22099,8 @@ function rollPackCards(pack){
 // Escape still works as a way out for keyboard users: it jumps to the pack's summary, then closes.
 const PACK_BUNDLES = [10, 25, 50, 100];
 // Set discounts (2026-10-08, user: "10 = 5% discount. 25 get 12.5%. 50 get 15% and so on").
-const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.125, 50:0.15, 100:0.20};
+// 2026-10-08 (user): 1/10/25/50/100 packs → 0/5/6/7/7.5% off.
+const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.06, 50:0.07, 100:0.075};
 function packSetCost(pack, qty){
   const d = PACK_BUNDLE_DISCOUNT[qty] || 0, c = pack.cost || {};
   return {gold: Math.round((c.gold||0)*qty*(1-d)), gems: Math.round((c.gems||0)*qty*(1-d)), discount:d};
@@ -22209,7 +22238,7 @@ function openPackAnimation(pack, opened, opts){
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-holo holo-prism is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
     </button>`; }).join('');
   const showReveal = ()=>{
