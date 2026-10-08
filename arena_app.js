@@ -14919,6 +14919,7 @@ function ffBtnTitle(mult){ return (!mult || mult<=1) ? 'Playback speed: normal �
 // always used (still governs its own entranceTl construction below), just given a name.
 function entranceCardTweenDur(mult){
   mult = mult || 1;
+  if(sharpBoard()) return Math.max(0.12, (380/mult)/1000);
   return Math.max(0.16, (420*1.5/mult)/1000);
 }
 // Total wall-clock time (ms) for `count` simultaneously-spawned cards' STAGGERED entrance
@@ -14937,8 +14938,9 @@ function entranceCardTweenDur(mult){
 // entranceTl uses, so it can never drift out of sync with the real animation again.
 function spawnEntranceSettleMs(count, mult){
   const dur = entranceCardTweenDur(mult);
-  const perCardTweenSec = Math.max(.2, dur*0.85) + Math.max(.12, dur*0.4) - 0.02;
-  const staggerTailSec = Math.max(0, (count||1)-1) * 0.05;
+  const sharp = sharpBoard();
+  const perCardTweenSec = sharp ? Math.max(.14, dur*0.85) + Math.max(.08, dur*0.25) - 0.02 : Math.max(.2, dur*0.85) + Math.max(.12, dur*0.4) - 0.02;
+  const staggerTailSec = Math.max(0, (count||1)-1) * (sharp ? 0.03 : 0.05);
   return Math.round((staggerTailSec + perCardTweenSec) * 1000);
 }
 function renderBoard(opts){
@@ -15420,7 +15422,8 @@ function renderBoard(opts){
       // single duration, is what guarantees they can only ever revert to static flow together —
       // see the long bugfix comment above for why anything less (independently-timed reverts,
       // even ones that both "should" line up on paper) reliably desyncs in practice.
-      entranceTotalDur = (newElRects.length-1)*0.05 + Math.max(.2, dur*0.85) + Math.max(.12, dur*0.4);
+      entranceTotalDur = sharpBoard() ? (newElRects.length-1)*0.03 + Math.max(.14, dur*0.85) + Math.max(.08, dur*0.25)
+        : (newElRects.length-1)*0.05 + Math.max(.2, dur*0.85) + Math.max(.12, dur*0.4);
     }
   }
   const sharedDuration = entranceTotalDur>dur ? entranceTotalDur : dur;
@@ -15506,7 +15509,7 @@ function renderBoard(opts){
     const flipTimeline = Flip.from(flipState, {
       targets: flipTargets,
       duration: sharedDuration,
-      ease: 'back.out(1.6)',
+      ease: sharpBoard() ? 'power3.out' : 'back.out(1.6)',
       absolute: true,
       nested: true,
       onLeave: elements => gsap.to(elements, {opacity:0, scale:.7, duration:Math.max(.12, dur*0.5), ease:'power1.in'}),
@@ -15743,8 +15746,9 @@ function renderBoard(opts){
           }
           pendingEntranceOrigins.delete(String(uid));
         }
+        const sharp = sharpBoard();
         const entranceTl = gsap.timeline({
-          delay: i*0.05,
+          delay: i*(sharp ? 0.03 : 0.05),
           onComplete: ()=>{
             enteringUids.delete(uid);
             el.classList.remove('is-entering');
@@ -15772,8 +15776,8 @@ function renderBoard(opts){
           const totalDur = Math.max(.2, dur*0.85);
           entranceTl
             .fromTo(el, fromVars, Object.assign({}, spawnPeakVars, {duration: totalDur*0.42, ease:'power2.out'}))
-            .to(el, {opacity:1, scale:1.08, x:0, y:0, rotate:0, duration: totalDur*0.58, ease:'power1.in'})
-            .to(el, {scale:1, duration:Math.max(.12, dur*0.4), ease:'back.out(3)'}, '>-0.02');
+            .to(el, {opacity:1, scale:sharp ? 1.03 : 1.08, x:0, y:0, rotate:0, duration: totalDur*0.58, ease: sharp ? 'power3.in' : 'power1.in'})
+            .to(el, {scale:1, duration:Math.max(.08, dur*(sharp ? 0.25 : 0.4)), ease: sharp ? 'power3.out' : 'back.out(3)'}, '>-0.02');
         } else if(isHandPlay){
           // 2026-09-22 (explicit feedback: "The placement of cards from hand - animation could be
           // swifter (and more satisfying)"): a real hand-drop used to share the exact same
@@ -15791,12 +15795,12 @@ function renderBoard(opts){
           // the ask.
           const handDur = Math.max(0.12, dur*0.62);
           entranceTl
-            .fromTo(el, fromVars, {opacity:1, scale:1.08, x:0, y:0, rotate:0, duration:Math.max(.14, handDur*0.82), ease:'power2.in'})
-            .to(el, {scale:1, duration:Math.max(.09, handDur*0.5), ease:'back.out(4)'}, '>-0.02');
+            .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.04 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.12, handDur*0.82), ease: sharp ? 'power4.in' : 'power2.in'})
+            .to(el, {scale:1, duration:Math.max(.07, handDur*(sharp ? 0.3 : 0.5)), ease: sharp ? 'power3.out' : 'back.out(4)'}, '>-0.02');
         } else {
           entranceTl
-            .fromTo(el, fromVars, {opacity:1, scale:1.08, x:0, y:0, rotate:0, duration:Math.max(.2, dur*0.85), ease:'power2.in'})
-            .to(el, {scale:1, duration:Math.max(.12, dur*0.4), ease:'back.out(3)'}, '>-0.02');
+            .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.03 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.14, dur*0.85), ease: sharp ? 'power3.in' : 'power2.in'})
+            .to(el, {scale:1, duration:Math.max(.08, dur*(sharp ? 0.25 : 0.4)), ease: sharp ? 'power3.out' : 'back.out(3)'}, '>-0.02');
         }
         // See enteringTimelines' own declaration comment (Cause F) for the full why: a plain
         // gsap.killTweensOf(el) later (in the enteringEls force-reset block, or anywhere else)
@@ -16495,6 +16499,9 @@ function renderHand(){
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
   const strip = document.getElementById('handStrip'); if(!strip) return;
   noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
+  // Hand collapse (2026-10-08, user: "When you play a card, your hand collapses with the same
+  // animations"): remember where each card sat, then slide the survivors into their new places.
+  const prevHandRects = new Map([...strip.querySelectorAll('[data-handuid]')].map(el=> [el.getAttribute('data-handuid'), el.getBoundingClientRect()]));
   strip.innerHTML = me.hand.map(hc=>{
     const d = defs[hc.defId]; if(!d) return '';
     const can = m.engine.canPlay(me, hc.defId, hc.uid);
@@ -16515,6 +16522,14 @@ function renderHand(){
     </div>`;
   }).join('');
   drawFlipNewHandCards(m, strip);
+  if(prevHandRects.size && !reducedMotion()){
+    strip.querySelectorAll('[data-handuid]').forEach(el=>{
+      const was = prevHandRects.get(el.getAttribute('data-handuid')); if(!was || !el.animate) return;
+      const now = el.getBoundingClientRect(), dx = was.left - now.left, dy = was.top - now.top;
+      if(Math.abs(dx) < 2 && Math.abs(dy) < 2) return;
+      try{ el.animate([{translate:`${dx.toFixed(1)}px ${dy.toFixed(1)}px`}, {translate:'0px 0px'}], {duration: Math.min(260, 140 + Math.abs(dx)*0.4), easing:'cubic-bezier(.2,.85,.25,1)', composite:'add'}); }catch(e){}
+    });
+  }
   strip.querySelectorAll('[data-handuid]').forEach(el=>{
     const uid = Number(el.getAttribute('data-handuid'));
     // Tap-to-arm: click a card, then click a drop zone — the fallback for touch/keyboard
@@ -16553,7 +16568,7 @@ function renderHand(){
       // they should have a more obvious indicator"): the graveyard lights up with what this card
       // would pitch for the moment you pick it up, and grows when you're over it.
     });
-    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); handDragGhost.stop(); });
+    el.addEventListener('dragend', ()=>{ if(!handDragGhost.isReturning()) el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); handDragGhost.stop(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -17494,7 +17509,7 @@ function glideFromRect(el, from){
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
   const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
   dx /= sc; dy /= sc;
-  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration:Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease:'power2.out', clearProps:'x,y'});
+  gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
 }
 // Layout-snap guard (2026-10-04, "cards sometimes teleport to the right"). Several things can
 // reflow a row outside a Flip animation: a pinned entrant released, a dying card removed, the
@@ -18128,13 +18143,32 @@ async function resolveRound(){
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
 // while it's dragged. Throttled to one sparkle per 40 ms and at most 14 alive; none with reduced motion.
+// 2026-10-08 (user: "dragging a card over your hand then releasing it makes the card hang. It
+// should just fly towards your hand again"): a drop that lands nowhere useful used to be a cancelled
+// drag, which the browser finishes with its own slow snap-back before dragend fires, leaving our ghost
+// hanging. While a hand card is dragged, the whole page accepts the drop (so it ends at once), and any
+// drop no target claimed flies the ghost back into its slot in the hand.
 var handDragGhost = (function(){
-  let ghost = null, offX = 0, offY = 0;
+  let ghost = null, offX = 0, offY = 0, src = null, returning = false;
+  const allow = e=>{ if(ghost){ e.preventDefault(); if(e.dataTransfer && !e.defaultPrevented) try{ e.dataTransfer.dropEffect = 'move'; }catch(_){} } };
+  const onDrop = e=>{ if(!ghost || e.defaultPrevented) return; e.preventDefault(); flyHome(); };
+  function flyHome(){
+    if(!ghost || returning) return;
+    returning = true;
+    const g = ghost, from = g.getBoundingClientRect(), to = src && src.isConnected ? src.getBoundingClientRect() : null;
+    const done = ()=>{ g.remove(); if(src) src.classList.remove('dragging'); if(ghost === g) ghost = null; returning = false; };
+    if(!to || reducedMotion() || !g.animate){ done(); return; }
+    const dx = to.left - from.left, dy = to.top - from.top;
+    const a = g.animate([{transform:'translate(0,0)'}, {transform:`translate(${dx}px, ${dy}px)`}], {duration: Math.min(260, 120 + Math.hypot(dx, dy)*0.35), easing:'cubic-bezier(.3,.7,.2,1)', fill:'forwards'});
+    a.onfinish = done; setTimeout(done, 400);
+  }
   const blank = (typeof Image !== 'undefined') ? (()=>{ const i = new Image(); i.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; return i; })() : null;
   const move = e=>{ if(!ghost || (!e.clientX && !e.clientY)) return; ghost.style.left = (e.clientX - offX) + 'px'; ghost.style.top = (e.clientY - offY) + 'px'; };
   return {
     start(el, e){
       try{ e.dataTransfer.setDragImage(blank, 0, 0); }catch(_){ return; }
+      src = el; returning = false;
+      document.addEventListener('dragover', allow, false); document.addEventListener('dragenter', allow, false); document.addEventListener('drop', onDrop, false);
       const r = el.getBoundingClientRect();
       offX = e.clientX - r.left; offY = e.clientY - r.top;
       ghost = el.cloneNode(true); ghost.classList.remove('dragging'); ghost.classList.add('hand-drag-ghost'); ghost.removeAttribute('id'); ghost.setAttribute('aria-hidden','true');
@@ -18143,7 +18177,13 @@ var handDragGhost = (function(){
       document.body.appendChild(ghost);
       document.addEventListener('dragover', move, true); document.addEventListener('drag', move, true);
     },
-    stop(){ if(ghost){ ghost.remove(); ghost = null; } document.removeEventListener('dragover', move, true); document.removeEventListener('drag', move, true); },
+    isReturning(){ return returning; },
+    stop(){
+      document.removeEventListener('dragover', move, true); document.removeEventListener('drag', move, true);
+      document.removeEventListener('dragover', allow, false); document.removeEventListener('dragenter', allow, false); document.removeEventListener('drop', onDrop, false);
+      if(returning) return; // the fly-home cleans up after itself
+      if(ghost){ ghost.remove(); ghost = null; }
+    },
   };
 })();
 var dragTrail = (function(){
@@ -19292,10 +19332,14 @@ function hasGsap(){ return typeof gsap !== 'undefined'; }
 // renderMatchUI and delayForEvent) so >> speeds the attack-feel animations up too, not just
 // the gap between events. `death` is deliberately NOT derived from the same 1.5x slowdown —
 // see delayForEvent's comment ("death animations can chain together 2x faster").
+// Sharp board (2026-10-08, user: "In this new schema (no collapse combat), the death anims, the
+// placement anims, the movement anims need to be more sharp"): in Open/Gladiator (fixed-slot)
+// fights, deaths, landings and reflows are shorter and land without the springy overshoot.
+function sharpBoard(){ return !!(typeof matchState!=='undefined' && matchState && isSlotMatch(matchState)); }
 function animMs(){
   const mult = (matchState && matchState.speedMult) || 1;
   const sd = (ms, floor)=> Math.max(floor||40, Math.round(ms/mult));
-  return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(480,120) };
+  return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(sharpBoard() ? 320 : 480,120) };
 }
 function boardCardEl(uid){ return document.querySelector(`.board-card[data-uid="${uid}"]`); }
 // Task #125 (2026-09-17, "it should land there with some measurable impact! Then push the
