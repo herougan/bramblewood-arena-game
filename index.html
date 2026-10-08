@@ -5104,6 +5104,22 @@
   .deck-menu-card .deck-showcase{margin-bottom:6px;}
   .nest-actions{display:flex; gap:8px; justify-content:center; margin-top:6px;}
   .bwc-list{max-height:200px; overflow:auto; margin:0 0 10px; padding-left:18px; font-size:13px;}
+  /* pack editor (admin, 2026-10-08) */
+  .pe-list{display:grid; gap:14px;}
+  .pe-pack{border:1px solid var(--surface-border); border-radius:12px; padding:10px 14px 14px; background:var(--surface-2); min-width:0;}
+  .pe-pack legend{font:800 15px 'Baloo 2',system-ui,sans-serif; padding:0 6px;} .pe-pack legend small{font-weight:600; color:var(--ink-muted);}
+  .pe-pack h4{margin:12px 0 6px; font-size:13.5px;} .pe-pack h4 small{font-weight:600; color:var(--ink-muted); margin-left:6px;}
+  .pe-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px 12px;}
+  .pe-grid label, .pe-weights label{display:flex; flex-direction:column; gap:2px; font-size:12px; font-weight:700; color:var(--ink-muted);}
+  .pe-grid input:not([type=checkbox]), .pe-weights input{width:100%; box-sizing:border-box; padding:4px 6px; font-size:13px;}
+  .pe-grid .pe-chk{flex-direction:row; align-items:center; gap:6px; color:var(--ink);}
+  .pe-weights{display:grid; grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:6px 10px;}
+  .pe-weights small{font-weight:800; color:var(--ink);}
+  .pe-pool{display:flex; flex-wrap:wrap; gap:6px;}
+  .pe-chip{display:inline-flex; align-items:center; gap:4px; font-size:12.5px; font-weight:700; padding:3px 4px 3px 9px; border-radius:999px; background:var(--surface); border:1.5px solid var(--rarity-a);}
+  .pe-x{border:0; background:transparent; cursor:pointer; font-size:11px; padding:2px 5px; border-radius:50%; color:var(--ink-muted);} .pe-x:hover{background:rgba(0,0,0,.08); color:var(--danger);}
+  .pe-add{margin-top:8px;} .pe-add select{max-width:100%;}
+  .pe-actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
@@ -12829,6 +12845,7 @@ function applyCloudCfgRow(r){
   const mr = /^__cfg:raid:(.+)$/.exec(r.id);
   if(mr){ applyCloudRaidDef(mr[1], r); return; }
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
+  if(r.id==='__cfg:shop-packs'){ applyCloudShopPacks(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
   if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
@@ -15377,6 +15394,12 @@ function openCardInspector(defId, opts){
 // plus its Hidden flag. Edits the RAW stored card (never getCardDefs' leveled/derived copy) and
 // saves through the normal saveCard path, so it syncs and logs like any other edit.
 function rawCardDef(id){ return JSON.parse(JSON.stringify(liveCards[id] || CARD_DEFS_BASELINE[id] || null)); }
+// From → Pack: a pool picker that names the packs drawing from each pool (2026-10-08).
+function packPoolOptionsHTML(sel){
+  const packs = getShopPacks(), pools = [...new Set(packs.map(p=> p.pool||1).concat([sel]))].sort((a,b)=> a-b);
+  const next = Math.max(...pools) + 1;
+  return pools.map(n=>{ const names = packs.filter(p=> (p.pool||1)===n).map(p=> p.name); return `<option value="${n}" ${n===sel?'selected':''}>Pool ${n}${names.length ? ': ' + escapeHtml(names.join(', ')) : ' (no pack uses it yet)'}</option>`; }).join('') + `<option value="${next}">Pool ${next} (new)</option>`;
+}
 function codexPlacementHTML(d){
   const raw = rawCardDef(d.id) || d;
   const src = raw.source || {};
@@ -15384,18 +15407,18 @@ function codexPlacementHTML(d){
   const autoLabel = auto.kind==='base' ? (auto.tutorialReward ? 'auto: Tutorial reward' : 'auto: Base') : 'not obtainable';
   const maps = CONQUEST_MAPS.map((m,i)=>`<option value="${escapeAttr(m.id)}" ${src.kind==='map'&&src.id===m.id?'selected':''}>${i+1}. ${escapeHtml(m.name)}</option>`).join('');
   return `<div class="panel cd-placement" id="cdPlacement">
-    <h4>📂 Codex placement <span class="panel-sub-inline">(admin)</span></h4>
+    <h4>📂 From <span class="panel-sub-inline">(admin · where players get this card)</span></h4>
     <div class="cdp-row">
       <select id="cdpKind" aria-label="Source type">
         <option value="" ${!src.kind?'selected':''}>Unassigned (${escapeHtml(autoLabel)})</option>
         <option value="base" ${src.kind==='base'?'selected':''}>Tutorial & Base</option>
         <option value="map" ${src.kind==='map'?'selected':''}>Skirmish reward</option>
-        <option value="pack" ${src.kind==='pack'?'selected':''}>Pack</option>
+        <option value="pack" ${src.kind==='pack'?'selected':''}>Pack (Shop)</option>
         <option value="event" ${src.kind==='event'?'selected':''}>Event</option>
       </select>
       <select id="cdpMap" aria-label="Map" ${src.kind==='map'?'':'hidden'}>${maps}</select>
       <select id="cdpNode" aria-label="Skirmish" ${src.kind==='map'?'':'hidden'}>${nodeOptionsHTML(src.kind==='map' ? src.id : CONQUEST_MAPS[0].id, src.node)}</select>
-      <input id="cdpPackTier" type="number" min="1" step="1" aria-label="Pack tier" placeholder="Pack tier" value="${src.kind==='pack'?escapeAttr(String(src.tier||1)):'1'}" ${src.kind==='pack'?'':'hidden'}>
+      <select id="cdpPackTier" aria-label="Which pack pool" ${src.kind==='pack'?'':'hidden'}>${packPoolOptionsHTML(src.kind==='pack' ? (parseInt(src.tier,10)||1) : 1)}</select>
       <input id="cdpEventTheme" type="text" aria-label="Event theme" placeholder="Theme (e.g. Christmas)" value="${src.kind==='event'?escapeAttr(src.theme||''):''}" ${src.kind==='event'?'':'hidden'}>
       <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
     </div>
@@ -17893,13 +17916,13 @@ const CARD_UNLOCK_SOURCES = {
   skirmishReward: 'Skirmish reward',
   achievement: 'Achievement',
 };
-function unlockCardForPlayer(id, source){
+function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
   // The Nest (2026-09-27, item 10): every real grant now also adds an owned COPY, even when the
   // defId is already unlocked — see grantCardCopy's own comment. This runs before the
   // already-unlocked early-return below so a 2nd/3rd/4th pull of the same card still counts as
   // owning more copies, not a silent no-op.
-  grantCardCopy(id);
+  grantCardCopy(id, copyOpts);
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
   myUnlockedCardIds.add(id);
@@ -17976,16 +17999,33 @@ migrateCardCopiesFromUnlocks();
 // every copy you receive has a 1 in 200 chance to be Shiny — it wears the Prism finish and a ✦.
 const SHINY_CHANCE = 0.005;
 let lastGrantWasShiny = false;
-function grantCardCopy(id){
+function grantCardCopy(id, opts){
   if(!id) return;
   if(!myCardCopies[id]) myCardCopies[id] = [];
   const shiny = Math.random() < SHINY_CHANCE;
   lastGrantWasShiny = shiny;
-  myCardCopies[id].push(shiny ? {foil:false, shiny:true} : {foil:false});
+  // A copy can be foil (with a finish rolled by the pack, see rollPackFoils) and/or Shiny.
+  const copy = {foil: !!(opts && opts.foil)};
+  if(copy.foil && opts.finish && opts.finish !== 'auto') copy.finish = opts.finish;
+  if(shiny) copy.shiny = true;
+  myCardCopies[id].push(copy);
   saveCardCopies();
   if(shiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(`✦ Shiny! Your new ${d ? d.name : 'card'} came out Shiny.`, 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
 function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
+// The holo classes for one owned copy: its own finish when the pack gave it one, else the
+// rarity default (pearl / rainbow / cosmos, see holoClass). '' for a plain copy.
+function copyFinishClass(d, copy){
+  if(!copy || !copy.foil) return '';
+  return copy.finish && copy.finish !== 'auto' ? 'is-holo holo-' + copy.finish : holoClass(d);
+}
+// What a card's best copy looks like (the Nest shows one tile per card): Shiny recolour and/or
+// the finish of its best foil copy.
+function bestCopyClass(id, d){
+  const copies = myCardCopies[id] || [];
+  const foil = copies.find(c=> c && c.foil && c.finish) || copies.find(c=> c && c.foil);
+  return [ownsShiny(id) ? 'is-shiny' : '', copyFinishClass(d, foil)].filter(Boolean).join(' ');
+}
 // Disenchanting (2026-10-08, user: "the player CANNOT disenchant their BASE cards or QUEST cards for
 // materia ... There is a quick disenchant all extra copies button (leaving at least 1 copy per card).
 // Upgraded or levelled cards/cards with skin are never disenchanted."). Extra plain copies of other
@@ -24237,64 +24277,119 @@ function wireAdminManageCards(){
 // override so it survives reloads without touching the shipped default array. Admin-Mode-only
 // (see adminModeEnabled) — explicitly framed by the request itself as a stopgap until a real
 // server-side admin app exists, so this stays a plain inline editable table, not a fancy form.
+// ---- Pack editor (2026-10-08, replaces the Roll Table) ------------------------------------------
+// One card per pack: price, size, odds of each rarity, foil chance and which finishes foils get,
+// and the pool of cards it draws from. Adding/removing a pool card edits that card's From field
+// (the same field as the Codex placement panel), so both places always agree. "Publish" writes the
+// table to card_overrides `__cfg:shop-packs` (live for everyone); "Save here" keeps it on this device.
+let packEditorDraft = null;
+function rarityLabelOf(k){ const r = RARITY_DEFS.find(x=> x.key===k); return r ? r.label : k; }
+function packEditorCardHTML(p, i){
+  const odds = packOddsSummary(p), defs = getCardDefs();
+  const pct = v=> (Math.round(v*1000)/10) + '%';
+  const rar = RARITY_TIER_BANDS.filter(k=> k!=='quest' && k!=='questunique');
+  const ffTot = FOIL_FINISHES.reduce((t,f)=> t + Math.max(0, +(p.foilFinishes[f.key]||0)), 0) || 1;
+  const poolIds = odds.pool.slice().sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') || (defs[a].name||'').localeCompare(defs[b].name||''));
+  const addable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && packPoolOf(defs[id]) !== (p.pool||1)).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
+  const sharing = packsUsingPool(p.pool||1).filter(x=> x.id !== p.id).map(x=> x.name);
+  return `<fieldset class="pe-pack" data-packidx="${i}">
+    <legend>${escapeHtml(p.icon||'📦')} ${escapeHtml(p.name)} <small>(${escapeHtml(p.id)})</small></legend>
+    <div class="pe-grid">
+      <label>Name <input class="pe-in" data-k="name" value="${escapeAttr(p.name)}"></label>
+      <label>Icon <input class="pe-in w-52" data-k="icon" value="${escapeAttr(p.icon||'')}"></label>
+      <label>Maple Leaves <input class="pe-in" type="number" min="0" data-k="cost.gold" value="${p.cost.gold||0}"></label>
+      <label>Gold Leaves <input class="pe-in" type="number" min="0" data-k="cost.gems" value="${p.cost.gems||0}"></label>
+      <label>Cards per pack <input class="pe-in" type="number" min="1" max="20" data-k="cards" value="${p.cards||3}"></label>
+      <label>Pool <input class="pe-in" type="number" min="1" data-k="pool" value="${p.pool||1}" title="Cards whose From is this pack pool"></label>
+      <label>✨ Magic Dust <input class="pe-in" type="number" min="0" data-k="dust" value="${p.dust||0}"></label>
+      <label>🔩 Metal <input class="pe-in" type="number" min="0" data-k="metal" value="${p.metal||0}"></label>
+      <label>Level-up chance <input class="pe-in" type="number" min="0" max="1" step="0.01" data-k="levelChance" value="${p.levelChance||0}"></label>
+      <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="newGuaranteed" ${p.newGuaranteed?'checked':''}> One new card guaranteed</label>
+      <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="comingSoon" ${p.comingSoon?'checked':''}> Coming soon (not on sale)</label>
+    </div>
+    <h4>Rarity odds <small>relative weights · chance per card in brackets (from this pool)</small></h4>
+    <div class="pe-weights">${rar.map(k=> `<label>${escapeHtml(rarityLabelOf(k))}<input class="pe-in" type="number" min="0" step="0.05" data-k="rarityWeights.${k}" value="${p.rarityWeights[k] ?? ''}"><small>${odds.by[k] ? pct(odds.by[k]/odds.tot) : '–'}</small></label>`).join('')}</div>
+    <h4>Foils <small>about ${Math.round(odds.foils*100)/100} foil card(s) per pack</small></h4>
+    <div class="pe-grid">
+      <label>Foil chance per card <input class="pe-in" type="number" min="0" max="1" step="0.01" data-k="foilChance" value="${p.foilChance||0}"></label>
+      <label class="pe-chk"><input class="pe-in" type="checkbox" data-k="foilGuaranteed" ${p.foilGuaranteed?'checked':''}> At least one foil per pack</label>
+    </div>
+    <div class="pe-weights">${FOIL_FINISHES.map(f=> `<label title="${escapeAttr(f.hint||'')}">${escapeHtml(f.label)}<input class="pe-in" type="number" min="0" step="1" data-k="foilFinishes.${f.key}" value="${p.foilFinishes[f.key] ?? 0}"><small>${pct(Math.max(0, +(p.foilFinishes[f.key]||0))/ffTot)}</small></label>`).join('')}</div>
+    <h4>What's inside · pool ${p.pool||1} <small>${odds.pool.length} card(s)${sharing.length ? ' · shared with ' + escapeHtml(sharing.join(', ')) : ''}</small></h4>
+    <div class="pe-pool">${poolIds.map(id=> `<span class="pe-chip" style="--rarity-a:${(RARITY_DEFS.find(r=> r.key===(defs[id].rarity||'common'))||{}).color||'#777'}">${escapeHtml(defs[id].icon||'')} ${escapeHtml(defs[id].name)}<button type="button" class="pe-x" data-pe-remove="${escapeAttr(id)}" aria-label="Take ${escapeAttr(defs[id].name)} out of this pool">✕</button></span>`).join('') || '<span class="panel-sub">Empty: nothing can come out of this pack.</span>'}</div>
+    <div class="pe-add"><select class="pe-add-sel" aria-label="Add a card to this pool"><option value="">➕ Add a card to pool ${p.pool||1}…</option>${addable.map(id=> `<option value="${escapeAttr(id)}">${escapeHtml(defs[id].name)} · ${escapeHtml(rarityLabelOf(defs[id].rarity||'common'))}${packPoolOf(defs[id]) ? ' (now pool ' + packPoolOf(defs[id]) + ')' : ''}</option>`).join('')}</select></div>
+  </fieldset>`;
+}
 function renderRollTableAdminHTML(){
-  const packs = getShopPacks();
-  const rows = packs.map((p,i)=>`
-    <tr data-packidx="${i}">
-      <td><input type="text" class="rt-name" value="${escapeAttr(p.name)}" class="w-120"></td>
-      <td><input type="number" class="rt-cost-gold" value="${p.cost.gold||0}" min="0" class="w-64"></td>
-      <td><input type="number" class="rt-cost-gems" value="${p.cost.gems||0}" min="0" class="w-60"></td>
-      <td><input type="number" class="rt-dust" value="${p.dust||0}" min="0" class="w-60"></td>
-      <td><input type="number" class="rt-metal" value="${p.metal||0}" min="0" class="w-52"></td>
-      <td><input type="number" class="rt-levelchance" value="${p.levelChance||0}" min="0" max="1" step="0.01" class="w-64"></td>
-      <td><input type="number" class="rt-unlockchance" value="${p.unlockChance||0}" min="0" max="1" step="0.01" class="w-64"></td>
-    </tr>`).join('');
-  return `<div class="panel admin-subpanel">
-      <h3>🎲 Roll Table — Shop pack odds</h3>
-      <p class="panel-sub">Edits what each Shop pack costs and pays out. Chances are 0–1 (e.g. 0.3 = 30%). Saves to this device only.</p>
-      <div style="overflow-x:auto;">
-        <table class="rt-table" id="rollTableEditor" style="width:100%; border-collapse:collapse; font-size:13px;">
-          <thead><tr>
-            <th style="text-align:left;">Pack</th><th>Maple Leaves</th><th>Gold Leaves</th><th>✨ Magic Dust</th><th>🔩 Metal</th><th>Level %</th><th>Unlock %</th>
-          </tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
+  const packs = packEditorDraft || getShopPacks();
+  return `<div class="panel admin-subpanel" id="packEditor">
+      <h3>📦 Pack editor</h3>
+      <p class="panel-sub">What each pack costs, how many cards come out, the odds of each rarity, how often cards come out foil and in which finish, and which cards are inside. A card's pool is its <b>From</b> field (also editable in the Codex placement panel). ${cloudShopPacks ? 'A published table is live.' : 'Using the shipped table (nothing published yet).'}</p>
+      <div class="pe-list">${packs.map(packEditorCardHTML).join('')}</div>
+      <div class="pe-actions">
+        <button class="btn primary small" id="rtPublishBtn" type="button" ${cloudCardAdmin ? '' : 'disabled title="Sign in with an admin account to publish"'}>🌍 Publish for everyone</button>
+        <button class="btn small" id="rtSaveBtn" type="button">💾 Save on this device</button>
+        <button class="btn small ghost" id="rtResetBtn" type="button">↺ Back to shipped defaults</button>
       </div>
-      <div style="display:flex; gap:8px; margin-top:10px;">
-        <button class="btn primary small" id="rtSaveBtn" type="button">💾 Save roll table</button>
-        <button class="btn small ghost" id="rtResetBtn" type="button">↺ Reset to defaults</button>
-      </div>
-      <p class="panel-sub" id="rtSavedLine" style="margin-top:6px;"></p>
+      <p class="panel-sub" id="rtSavedLine" aria-live="polite"></p>
     </div>`;
 }
-function wireRollTableAdmin(){
-  const saveBtn = document.getElementById('rtSaveBtn');
-  if(!saveBtn) return; // panel only exists in the DOM when Admin Mode is on
-  saveBtn.addEventListener('click', ()=>{
-    const packs = getShopPacks().map(p=>({...p, cost:{...p.cost}}));
-    document.querySelectorAll('#rollTableEditor tbody tr[data-packidx]').forEach(tr=>{
-      const i = Number(tr.getAttribute('data-packidx'));
-      if(!packs[i]) return;
-      packs[i] = {
-        ...packs[i],
-        name: tr.querySelector('.rt-name').value || packs[i].name,
-        cost: { gold: Math.max(0, Number(tr.querySelector('.rt-cost-gold').value)||0), gems: Math.max(0, Number(tr.querySelector('.rt-cost-gems').value)||0) },
-        dust: Math.max(0, Number(tr.querySelector('.rt-dust').value)||0),
-        metal: Math.max(0, Number(tr.querySelector('.rt-metal').value)||0),
-        levelChance: Math.min(1, Math.max(0, Number(tr.querySelector('.rt-levelchance').value)||0)),
-        unlockChance: Math.min(1, Math.max(0, Number(tr.querySelector('.rt-unlockchance').value)||0)),
-      };
+function packEditorRead(){
+  const packs = (packEditorDraft || getShopPacks()).map(p=> JSON.parse(JSON.stringify(p)));
+  document.querySelectorAll('#packEditor .pe-pack').forEach(fs=>{
+    const p = packs[+fs.dataset.packidx]; if(!p) return;
+    fs.querySelectorAll('.pe-in').forEach(inp=>{
+      const path = inp.dataset.k.split('.');
+      let v = inp.type==='checkbox' ? inp.checked : inp.type==='number' ? (inp.value==='' ? undefined : Math.max(0, +inp.value||0)) : inp.value.trim();
+      if(['foilChance','levelChance'].includes(path[0]) && v !== undefined) v = Math.min(1, v);
+      if(['cards','pool'].includes(path[0])) v = Math.max(1, Math.round(v||1));
+      let o = p; for(let k = 0; k < path.length-1; k++){ o[path[k]] = o[path[k]] || {}; o = o[path[k]]; }
+      if(v === undefined) delete o[path[path.length-1]]; else o[path[path.length-1]] = v;
     });
-    saveShopPacksOverride(packs);
-    const line = document.getElementById('rtSavedLine');
-    if(line) line.textContent = `✓ Saved ${new Date().toLocaleTimeString()} — the Shop now uses this table.`;
   });
-  const resetBtn = document.getElementById('rtResetBtn');
-  if(resetBtn) resetBtn.addEventListener('click', ()=>{
-    if(!confirm('Reset the Roll Table back to its shipped defaults?')) return;
-    resetShopPacksOverride();
-    renderAdmin();
+  return packs;
+}
+function wireRollTableAdmin(){
+  const root = document.getElementById('packEditor');
+  if(!root) return; // panel only exists in the DOM when Admin Mode is on
+  const line = document.getElementById('rtSavedLine');
+  const rerender = ()=>{ const y = window.scrollY; root.outerHTML = renderRollTableAdminHTML(); wireRollTableAdmin(); window.scrollTo(0, y); };
+  root.addEventListener('change', e=>{
+    if(e.target.classList.contains('pe-add-sel')){
+      const id = e.target.value; if(!id) return;
+      const p = packEditorRead()[+e.target.closest('.pe-pack').dataset.packidx];
+      setCardPackPool(id, p.pool||1).then(()=>{ packEditorDraft = packEditorRead(); rerender(); });
+      return;
+    }
+    if(e.target.classList.contains('pe-in')){ packEditorDraft = packEditorRead(); rerender(); }
   });
+  root.querySelectorAll('[data-pe-remove]').forEach(b=> b.addEventListener('click', ()=>{
+    packEditorDraft = packEditorRead();
+    setCardPackPool(b.dataset.peRemove, 0).then(rerender);
+  }));
+  document.getElementById('rtSaveBtn').addEventListener('click', ()=>{
+    const packs = packEditorRead(); saveShopPacksOverride(packs); packEditorDraft = null;
+    line.textContent = `✓ Saved on this device ${new Date().toLocaleTimeString()}.${cloudShopPacks ? ' A published table still wins for everyone: publish to replace it.' : ''}`;
+  });
+  document.getElementById('rtPublishBtn').addEventListener('click', async ()=>{
+    const packs = packEditorRead(); saveShopPacksOverride(packs);
+    line.textContent = 'Publishing…';
+    try{ await publishShopPacks(packs); cloudShopPacks = packs; packEditorDraft = null; line.textContent = `✓ Published ${new Date().toLocaleTimeString()}: live for every player.`; }
+    catch(err){ line.textContent = '⚠ Could not publish: ' + (err && err.message || err); }
+  });
+  document.getElementById('rtResetBtn').addEventListener('click', async ()=>{
+    const ok = await bwConfirm({title:'Back to shipped defaults?', body:'Clears the table saved on this device' + (cloudShopPacks && cloudCardAdmin ? ' and the published one' : '') + '. Card pools (each card\'s From) are not changed.', okLabel:'Reset', focusCancel:true});
+    if(!ok) return;
+    resetShopPacksOverride(); packEditorDraft = null;
+    if(cloudShopPacks && cloudCardAdmin){ try{ await publishShopPacks(null); cloudShopPacks = null; }catch(e){} }
+    rerender();
+  });
+}
+// Sets a card's From to pack pool `pool` (0 = take it out of every pack → Unassigned).
+async function setCardPackPool(id, pool){
+  const raw = rawCardDef(id); if(!raw) return;
+  if(pool) raw.source = {kind:'pack', tier:pool}; else delete raw.source;
+  await saveCard(raw);
 }
 function renderAdmin(){
   const root = document.getElementById('view-admin'); if(!root) return;
@@ -33175,24 +33270,57 @@ const SHOP_PACKS_DEFAULT = [
   // cards (2026-10-03, D2): packs now hold real cards — Pack 1's 33-card pool (canonical/cards.json
   // source {kind:'pack', tier:1}). `cards` = how many come out; `newGuaranteed` = at least one you
   // don't own yet, while any remain. unlockChance is kept for old admin overrides but unused.
-  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:10, metal:0, levelChance:0.2, unlockChance:0.04},
-  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:25, metal:1, levelChance:0.4, unlockChance:0.10},
-  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:60, metal:3, levelChance:0.8, unlockChance:0.20},
+  // Pack contents and foils (2026-10-08, user: "how to divvy foil treatments in a pack AND what's in a
+  // pack in the first place... BOTH in a pack editor and in the card itself 'From' field"):
+  //   pool         which cards can come out: every card whose From is {kind:'pack', tier:<pool>}
+  //   rarityWeights how likely each rarity is, relative (blank = PACK_RARITY_WEIGHT)
+  //   foilChance   chance each card comes out foil; foilGuaranteed = at least one foil per pack
+  //   foilFinishes relative weights of the finish a foil card gets ('auto' = by rarity)
+  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:10, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
+  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:25, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false, comingSoon:true},
+  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:60, metal:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true, comingSoon:true},
 ];
+const FOIL_FINISHES = [
+  {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
+  {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'cosmos', label:'Cosmos'},
+  {key:'prism', label:'Prism'}, {key:'hex', label:'Hex'}, {key:'etched', label:'Etched'},
+  {key:'ice', label:'Cracked ice'}, {key:'reverse', label:'Reverse'}, {key:'gold', label:'Gold'},
+];
+const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3};
+function normalizePack(p){
+  const o = Object.assign({pool:1, foilChance:0.04, foilGuaranteed:false}, p);
+  o.cost = Object.assign({gold:0, gems:0}, p.cost||{});
+  o.foilFinishes = Object.assign({}, p.foilFinishes && Object.keys(p.foilFinishes).length ? p.foilFinishes : PACK_FOIL_FINISHES_DEFAULT);
+  o.rarityWeights = Object.assign({}, PACK_RARITY_WEIGHT, p.rarityWeights||{});
+  if(o.comingSoon === undefined) o.comingSoon = SHOP_PACKS_COMING_SOON.has(o.id);
+  return o;
+}
+// Published pack table (admin, card_overrides row `__cfg:shop-packs`): live for every player.
+let cloudShopPacks = null;
+function applyCloudShopPacks(r){
+  cloudShopPacks = (!r.deleted && r.data && Array.isArray(r.data.packs) && r.data.packs.length) ? r.data.packs : null;
+  try{ if(currentTab==='shop') renderShop(); }catch(e){}
+}
+async function publishShopPacks(packs){
+  const row = packs ? {data:{kind:'shop-packs', packs}, deleted:false, deleted_snapshot:null} : {data:null, deleted:true, deleted_snapshot:null};
+  return cloudWriteCardOverride('__cfg:shop-packs', row);
+}
 // D14 (2026-10-03, explicit: "Don't let the latest chests/cases/packs be purchaseable except for
 // Sprout Pouch for now"): these show as "Coming soon" and can't be bought, even under an admin override.
 const SHOP_PACKS_COMING_SOON = new Set(['silver', 'gold']);
-function packOnSale(p){ return p && !SHOP_PACKS_COMING_SOON.has(p.id) && p.available!==false; }
+function packOnSale(p){ return p && !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon) && p.available!==false; }
 const SHOP_PACKS_OVERRIDE_KEY = 'bramblewood_arena_shop_packs_override';
 function getShopPacks(){
+  // Published (cloud) table first, then an unpublished edit on this device, then the shipped default.
+  if(cloudShopPacks) return cloudShopPacks.map(normalizePack);
   try{
     const raw = localStorage.getItem(SHOP_PACKS_OVERRIDE_KEY);
     if(raw){
       const parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
+      if(Array.isArray(parsed) && parsed.length) return parsed.map(normalizePack);
     }
   }catch(e){ /* fall through to the shipped default below */ }
-  return SHOP_PACKS_DEFAULT;
+  return SHOP_PACKS_DEFAULT.map(normalizePack);
 }
 function saveShopPacksOverride(packs){
   try{ localStorage.setItem(SHOP_PACKS_OVERRIDE_KEY, JSON.stringify(packs)); }catch(e){}
@@ -33413,29 +33541,58 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
-    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
+    ${cardTileHTML(d, {editable:false, extraClass: bestCopyClass(id, d)})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
 }
 function packUnlockCandidates(defs){
   defs = defs || getCardDefs();
   return Object.keys(defs).filter(id=>{ const d = defs[id]; return d.locked && !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
 }
-// Pack 1 pool: every card placed in a pack (any tier for now). Locked or not — packs give copies.
-function packCardPool(defs){
+// A pack's pool: every card whose From is that pack pool ({kind:'pack', tier:N}; no tier = 1).
+// Without a pool number it is every pack card. Locked or not — packs give copies.
+function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? (parseInt(src.tier, 10) || 1) : 0; }
+function packCardPool(defs, pool){
   defs = defs || getCardDefs();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; return !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || hofBlocked(d, defs)) return false; const n = packPoolOf(d); return n && (!pool || n === pool); });
 }
-const PACK_RARITY_WEIGHT = {starter:6, common:6, uncommon:3, rare:1.5, epic:0.6, legendary:0.25, mythic:0.1, ancient:0.05};
+function packsUsingPool(n){ return getShopPacks().filter(p=> (p.pool||1) === n); }
+// Every rarity band has a weight (a missing one used to fall back to 4, i.e. more common than Uncommon).
+const PACK_RARITY_WEIGHT = {starter:6, common:6, uncommon:3, quest:0, rare:1.5, veryrare:1, superrare:0.8, epic:0.6, heroic:0.4, unique:0.3, questunique:0, legendary:0.25, mythic:0.1, ancient:0.05};
 function rollPackCards(pack){
-  const defs = getCardDefs(), pool = packCardPool(defs);
+  const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
   if(!pool.length) return [];
-  const w = id=> PACK_RARITY_WEIGHT[defs[id].rarity||'common'] || 4;
+  const weights = Object.assign({}, PACK_RARITY_WEIGHT, pack.rarityWeights||{});
+  const w = id=>{ const v = weights[defs[id].rarity||'common']; return v === undefined ? 4 : Math.max(0, +v||0); };
   const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); let r = Math.random()*tot; for(const id of list){ r -= w(id); if(r<=0) return id; } return list[list.length-1]; };
   const out = [];
   const unowned = pool.filter(id=> !(myCardCopies[id]||[]).length && !myUnlockedCardIds.has(id));
   if(pack.newGuaranteed && unowned.length) out.push(pick(unowned));
   while(out.length < (pack.cards||3)) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
+}
+// Which pulls come out foil, and in which finish. null = plain.
+function pickFoilFinish(pack){
+  const f = pack.foilFinishes || PACK_FOIL_FINISHES_DEFAULT;
+  const keys = Object.keys(f).filter(k=> (+f[k]||0) > 0);
+  if(!keys.length) return 'auto';
+  let r = Math.random() * keys.reduce((t,k)=> t + (+f[k]), 0);
+  for(const k of keys){ r -= +f[k]; if(r <= 0) return k; }
+  return keys[keys.length-1];
+}
+function rollPackFoils(pack, n){
+  const out = Array.from({length:n}, ()=> Math.random() < (+pack.foilChance||0) ? pickFoilFinish(pack) : null);
+  if(pack.foilGuaranteed && n && !out.some(Boolean)) out[Math.floor(Math.random()*n)] = pickFoilFinish(pack);
+  return out;
+}
+// Odds summary for the pack editor: chance per rarity for one card, and expected foils per pack.
+function packOddsSummary(pack){
+  const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
+  const weights = Object.assign({}, PACK_RARITY_WEIGHT, pack.rarityWeights||{});
+  const by = {}; let tot = 0;
+  pool.forEach(id=>{ const r = defs[id].rarity||'common'; const v = Math.max(0, +(weights[r] ?? 4)||0); by[r] = (by[r]||0) + v; tot += v; });
+  const n = pack.cards||3, fc = +pack.foilChance||0;
+  const foils = pack.foilGuaranteed ? n*fc + Math.pow(1-fc, n) : n*fc;
+  return {pool, tot, by, foils};
 }
 // Pack opening v2 (2026-10-08, agreed with the user):
 //  - the pack is a foil booster wrapper with faction art on the front and, once torn, a cute
@@ -33449,6 +33606,7 @@ function rollPackCards(pack){
 //  - Skip / Open all exist only when you bought a set of packs (10, 25, 50 or 100).
 // Escape still works as a way out for keyboard users: it jumps to the pack's summary, then closes.
 const PACK_BUNDLES = [10, 25, 50, 100];
+function pullClass(r, d){ return [r.shiny ? 'is-shiny' : '', r.foil ? copyFinishClass(d, {foil:true, finish:r.finish}) : ''].filter(Boolean).join(' '); }
 // Set discounts (2026-10-08, user: "10 = 5% discount. 25 get 12.5%. 50 get 15% and so on").
 // 2026-10-08 (user): 1/10/25/50/100 packs → 0/5/6/7/7.5% off.
 const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.06, 50:0.07, 100:0.075};
@@ -33471,7 +33629,8 @@ function purchasePackOnce(pack, prepaid){
   if(!prepaid){ myCurrencies.gold -= (pack.cost.gold||0); myCurrencies.gems -= (pack.cost.gems||0); }
   grantCurrency('dust', pack.dust);
   if(pack.metal) grantCurrency('metal', pack.metal);
-  const results = pulls.map(id=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; unlockCardForPlayer(id, 'shopPack'); return {id, isNew: wasNew, shiny: lastGrantWasShiny}; });
+  const foils = rollPackFoils(pack, pulls.length);
+  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
     const defs = getCardDefs();
@@ -33589,7 +33748,7 @@ function openPackAnimation(pack, opened, opts){
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
     </button>`; }).join('');
   const showReveal = ()=>{
@@ -33680,7 +33839,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(defs[r.id]) : ''})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
+      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireTop(); wireFoot(); wireView();

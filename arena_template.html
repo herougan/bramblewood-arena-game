@@ -5094,6 +5094,22 @@
   .deck-menu-card .deck-showcase{margin-bottom:6px;}
   .nest-actions{display:flex; gap:8px; justify-content:center; margin-top:6px;}
   .bwc-list{max-height:200px; overflow:auto; margin:0 0 10px; padding-left:18px; font-size:13px;}
+  /* pack editor (admin, 2026-10-08) */
+  .pe-list{display:grid; gap:14px;}
+  .pe-pack{border:1px solid var(--surface-border); border-radius:12px; padding:10px 14px 14px; background:var(--surface-2); min-width:0;}
+  .pe-pack legend{font:800 15px 'Baloo 2',system-ui,sans-serif; padding:0 6px;} .pe-pack legend small{font-weight:600; color:var(--ink-muted);}
+  .pe-pack h4{margin:12px 0 6px; font-size:13.5px;} .pe-pack h4 small{font-weight:600; color:var(--ink-muted); margin-left:6px;}
+  .pe-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px 12px;}
+  .pe-grid label, .pe-weights label{display:flex; flex-direction:column; gap:2px; font-size:12px; font-weight:700; color:var(--ink-muted);}
+  .pe-grid input:not([type=checkbox]), .pe-weights input{width:100%; box-sizing:border-box; padding:4px 6px; font-size:13px;}
+  .pe-grid .pe-chk{flex-direction:row; align-items:center; gap:6px; color:var(--ink);}
+  .pe-weights{display:grid; grid-template-columns:repeat(auto-fill, minmax(92px, 1fr)); gap:6px 10px;}
+  .pe-weights small{font-weight:800; color:var(--ink);}
+  .pe-pool{display:flex; flex-wrap:wrap; gap:6px;}
+  .pe-chip{display:inline-flex; align-items:center; gap:4px; font-size:12.5px; font-weight:700; padding:3px 4px 3px 9px; border-radius:999px; background:var(--surface); border:1.5px solid var(--rarity-a);}
+  .pe-x{border:0; background:transparent; cursor:pointer; font-size:11px; padding:2px 5px; border-radius:50%; color:var(--ink-muted);} .pe-x:hover{background:rgba(0,0,0,.08); color:var(--danger);}
+  .pe-add{margin-top:8px;} .pe-add select{max-width:100%;}
+  .pe-actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
