@@ -7320,6 +7320,7 @@ function deckBreakdownHTML(deckIds, defs){
 }
 function renderPlay(){
   const root = document.getElementById('view-play');
+  document.body.classList.remove('conquest-full');
   if(!matchState){
     const wrap = document.getElementById('appWrap');
     if(wrap) wrap.classList.remove('in-match'); // task #94: back to the normal-width layout outside a match
@@ -8225,8 +8226,8 @@ function playDialogue(id, opts){
 const UNLOCKS_KEY = 'bramblewood_unlocks_v1';
 const FEATURE_SPOTS = [
   {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
-  {key:'nest', icon:'🪺', name:'Old Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
-  {key:'quests', icon:'📜', name:'Notice Board', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
+  {key:'nest', icon:'🪺', name:'Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
+  {key:'quests', icon:'📜', name:'Notices', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   {key:'arena', icon:'🏟️', name:'The Arena', map:'m2', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'m3', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
@@ -10015,11 +10016,26 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.c
 // Clicking a diamond zooms into that map. Art stays per-map: no 4K world painting needed.
 let conquestWorldView = false;
 let conquestZoomIn = false;
+// 2026-10-08 (user: "Going from map to world map should have a zoom-like animation as well"): the
+// map shrinks away and blurs, then the World settles in from slightly too close — the reverse of
+// picking a diamond on the World.
 function openConquestWorld(body){
   abandonMapLayoutEdit();
-  conquestWorldView = true; conquestSelectedNodeKey = null;
-  renderConquestSubTab(body || document.getElementById('playSubBody'));
+  const go = ()=>{ conquestWorldView = true; conquestSelectedNodeKey = null; renderConquestSubTab(body || document.getElementById('playSubBody'));
+    const w = document.getElementById('conquestMain'); if(w && w.animate && !reducedMotion()) w.animate([{transform:'scale(1.35)', opacity:0, filter:'blur(6px)'}, {transform:'none', opacity:1, filter:'blur(0px)'}], {duration:380, easing:'cubic-bezier(.2,.8,.3,1)'}); };
+  const mainEl = document.getElementById('conquestMain');
+  if(conquestWorldView || !mainEl || !mainEl.animate || reducedMotion()){ go(); return; }
+  mainEl.animate([{transform:'none', opacity:1, filter:'blur(0px)'}, {transform:'scale(.6)', opacity:0, filter:'blur(8px)'}], {duration:280, easing:'ease-in', fill:'forwards'});
+  setTimeout(go, 270);
 }
+// Map-to-map travel time (2026-10-08, user: "The FURTHER the two maps are, the transition should take
+// slightly longer. every map adds 0.3s to the length, slowly decaying to 0.1s per every added map").
+function mapTravelMs(steps){
+  let t = 250;
+  for(let k = 1; k <= Math.max(1, steps); k++) t += 100 + 200*Math.pow(0.72, k - 1);
+  return Math.round(Math.min(t, 2600));
+}
+let conquestPanAnim = null;
 function compassDiamondSVG(mapId, locked){
   const g = 'cd-' + mapId;
   return `<svg class="compass-diamond" viewBox="0 0 100 100" aria-hidden="true">
@@ -10101,8 +10117,16 @@ function conquestPanTo(mapId, body, progress){
   const dir = to > from ? 'right' : 'left';
   const mainEl = document.getElementById('conquestMain');
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = reduce ? null : dir; renderConquestSubTab(body); };
-  if(mainEl && !reduce){ mainEl.classList.add('world-out-' + dir); setTimeout(go, 230); } else go();
+  // 2026-10-08 (user: "there should be a translate animation where everything is blurred then the
+  // new background moves in. Blend the transition a bit"): the old map slides off and blurs into a
+  // haze, the new one slides in out of the same haze; the longer the trip, the longer the glide.
+  const T = mapTravelMs(Math.abs(to - from)), outMs = Math.round(T*0.42);
+  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:T - outMs}; renderConquestSubTab(body); };
+  if(mainEl && !reduce && mainEl.animate){
+    const sx = dir==='right' ? -16 : 16;
+    mainEl.animate([{transform:'none', filter:'blur(0px)', opacity:1}, {transform:`translateX(${sx}%)`, filter:'blur(10px)', opacity:.3}], {duration:outMs, easing:'cubic-bezier(.5,0,.75,.4)', fill:'forwards'});
+    setTimeout(go, outMs - 10);
+  } else go();
 }
 // 2026-10-08 (user: "settings, home and energy can be fitted into the existing map UI; then remove
 // the header and expand the map"): the Home / Settings / Energy cluster is overlaid on the map's top
@@ -10172,6 +10196,9 @@ function placeConquestHud(){
   requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
 }
 function renderConquestSubTab(body){
+  // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
+  // whole window now (the ⛶ button still switches the browser itself to full screen).
+  if(!matchState) document.body.classList.add('conquest-full');
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
   // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
@@ -10353,6 +10380,11 @@ function renderConquestSubTab(body){
       });
     }
     if(conquestPanDir){ mainEl.classList.add('world-in-' + conquestPanDir); conquestPanDir = null; }
+    if(conquestPanAnim && mainEl.animate){
+      const sx = conquestPanAnim.dir==='right' ? 20 : -20;
+      mainEl.animate([{transform:`translateX(${sx}%)`, filter:'blur(10px)', opacity:.3}, {transform:'none', filter:'blur(0px)', opacity:1}], {duration:conquestPanAnim.ms, easing:'cubic-bezier(.2,.75,.25,1)'});
+      conquestPanAnim = null;
+    }
     const selChip = listEl.querySelector('.conquest-map-item.selected');
     if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
   }
@@ -17489,7 +17521,7 @@ async function resolveRound(){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury (your deck), the Old Nest and the Notice Board on the map. The Arena opens on the next region.'},
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury (your deck), the Nest and Notices on the map. The Arena opens on the next region.'},
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -22872,7 +22904,7 @@ function placeOverlay(cls, html, ms){
 const PLACES = {
   deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
   shop: {cls:'cart-scene', icon:'🧳', sign:'The Traveller’s Cart', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
-  nest: {cls:'nest-scene', icon:'🪺', sign:'The Old Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
+  nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
@@ -22882,7 +22914,7 @@ function switchTab(tab){
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   // 2026-10-08 (user: "the deck editor should land on the Manage decks page first"): entering Deck
   // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
-  if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); }
+  if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); document.body.classList.remove('conquest-full'); }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ try{ deckHeroView = false; }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;

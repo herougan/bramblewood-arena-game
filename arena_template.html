@@ -5603,6 +5603,14 @@
   body.conquest-immersive .content-wrap{max-width:none !important; padding:0 !important;}
   body.conquest-immersive .conquest-layout{position:fixed; inset:0; z-index:50; height:100vh !important; height:100dvh !important; border-radius:0; border:0;}
   body.conquest-immersive .conquest-map-canvas{min-height:calc(100dvh - 140px);}
+  body.conquest-full:not(.conquest-immersive) .topbar-wrap{display:none !important;}
+  @media (max-width:820px){ body.conquest-full .conquest-maps{padding-top:56px !important; max-height:216px !important;} body.conquest-full #appWrap.cq-hud #view-play .play-subtabs-actions{right:12px !important;} }
+  /* no transform/backdrop-filter here: either would trap the fixed Home/Settings cluster inside this row */
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{position:fixed; left:0; right:0; bottom:14px; width:fit-content; margin:0 auto; z-index:60; padding:4px; border-radius:999px; background:rgba(20,14,8,.72);}
+  body.conquest-full .content-wrap{max-width:none !important; padding:0 !important;}
+  body.conquest-full .conquest-layout{position:fixed; inset:0; z-index:50; height:100vh !important; height:100dvh !important; border-radius:0 !important; border:0 !important; margin:0 !important; max-width:none !important; width:100% !important;}
+  body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 140px);}
+  body.conquest-full #appWrap.cq-hud #view-play .play-subtabs-actions{position:fixed; top:12px; z-index:60;}
 
   /* ===== Card legibility pass (2026-10-05, user: "the top and bottom pills are still a bit difficult
      to see", "damage numbers could be improved in fidelity", "on iPad the name is too big") ===== */
