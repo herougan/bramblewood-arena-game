@@ -21148,10 +21148,36 @@ function dressForgePlace(root){
   root.dataset.sign = '⚒️ ' + (window.i18 ? i18('The Forge') : 'The Forge');
   if(!root.querySelector(':scope > .forge-sparks')) root.insertAdjacentHTML('afterbegin', '<div class="forge-sparks" aria-hidden="true">' + Array.from({length:12}, (_, k)=> `<i style="left:${(k*37)%92 + 4}%; animation-delay:${(k*0.53)%4}s; animation-duration:${3 + (k*0.71)%2.5}s"></i>`).join('') + '</div>');
   try{ Ambience.play('forge'); }catch(e){}
+  scheduleForgeFlareUp();
   if(!forgeEnteredAt){
     forgeEnteredAt = Date.now();
     if(!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) placeOverlay('forge-flare', '', 900);
   }
+}
+// Hearth flare-ups (2026-10-08, user: "Forge - fires and sparks, every 45-75s, appearing randomly"):
+// while the Forge is on screen, every 45–75 s the hearth roars up at a random spot along the bottom
+// edge: tongues of flame lick upward and a fan of sparks sprays out, with a whoosh. It never covers
+// a control for long (≈1.4 s) and never takes clicks. Off with reduced motion or Effects = None.
+let forgeFlareTimer = null;
+function forgeOnScreen(){ const v = document.getElementById('view-forge') || document.querySelector('.forge-scene'); return !!(v && v.offsetParent && !document.hidden); }
+function scheduleForgeFlareUp(){
+  if(forgeFlareTimer) return;
+  forgeFlareTimer = setTimeout(()=>{ forgeFlareTimer = null; if(forgeOnScreen()){ forgeFlareUp(); scheduleForgeFlareUp(); } }, 45000 + Math.random()*30000);
+}
+function forgeFlareUp(){
+  const host = document.querySelector('.forge-scene'); if(!host || !fxAtLeast('low') || reducedMotion()) return;
+  const b = document.createElement('div'); b.className = 'forge-flareup'; b.setAttribute('aria-hidden','true');
+  const x = 8 + Math.random()*84; b.style.left = x + '%';
+  b.innerHTML = Array.from({length:5}, (_, k)=> `<i class="ff-tongue" style="--o:${(k-2)*14}px; --h:${70 + Math.random()*90}px; animation-delay:${(k*0.06).toFixed(2)}s"></i>`).join('');
+  host.appendChild(b);
+  const n = fxAtLeast('high') ? 22 : 12;
+  for(let i = 0; i < n; i++){
+    const sp = document.createElement('i'); sp.className = 'ff-spark'; b.appendChild(sp);
+    const ang = (-90 + (Math.random()*110 - 55)) * Math.PI/180, dist = 90 + Math.random()*170;
+    if(sp.animate) sp.animate([{transform:'translate(0,0) scale(1)', opacity:1}, {transform:`translate(${(Math.cos(ang)*dist).toFixed(0)}px, ${(Math.sin(ang)*dist).toFixed(0)}px) scale(.3)`, opacity:0}], {duration: 700 + Math.random()*700, delay: Math.random()*250, easing:'cubic-bezier(.2,.7,.4,1)', fill:'forwards'});
+  }
+  try{ SoundKit.burnAway ? SoundKit.burnAway() : null; }catch(e){}
+  setTimeout(()=> b.remove(), 1700);
 }
 // Materia bench in the Forge (2026-10-05): the same craft as the Hero Hall, where the user expects it.
 // 2026-10-08 (user: "reveal it only when a hero is selected; or if you have a hero, a small button
