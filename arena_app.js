@@ -904,7 +904,10 @@ function describeEffects(def, liveCard){
   if(def.wait) lines.push(`Wait ${def.wait} — takes ${def.wait} round(s) after entering play before it can fight.`);
   if(e.bounty) lines.push(`Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
   if(e.explode) lines.push(`Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
-  PASSIVE_DEFS.forEach(p=>{ if(e[p.key]) lines.push(p.desc(e[p.key])); });
+  // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
+  // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
+  // the keyword first and reads the rule after.
+  PASSIVE_DEFS.forEach(p=>{ const v = e[p.key]; if(!v) return; const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : p.label; lines.push(`${head} — ${p.desc(v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -15788,7 +15791,9 @@ function renderBoard(opts){
             // opacity means the card is already visibly THERE, right where the mouse let go, on
             // the very first painted frame — only its position/scale/rotation animate from there,
             // so there's nothing left that could read as a gap between release and landing.
-            fromVars = {opacity:1, scale:.58, x:dx, y:Math.min(dy, -46), rotate:(Math.random()*22-11)};
+            // 2026-10-08 (user: "When I let go, the landing card should have the same orientation"):
+            // a dragged card starts its landing at the exact tilt it had in your hand, then settles.
+            fromVars = {opacity:1, scale: origin.w && fr.width ? Math.max(.4, Math.min(1.2, origin.w / fr.width)) : .58, x:dx, y: origin.rotate!=null ? dy : Math.min(dy, -46), rotate: origin.rotate!=null ? origin.rotate : (Math.random()*22-11)};
           } else {
             // "Spawned from a point" (born from the drone, an onDeathSpawn token, etc.) — kept
             // as the more dramatic shrink-and-lunge-in look, unchanged from before. Task list
@@ -16669,7 +16674,8 @@ async function playCardByUid(uid, side, dropPoint){
   // click-to-play/tap-arm play (no drag at all — dropPoint is undefined there) still has no real
   // release point to use, so it correctly falls back to the hand tile's own position below.
   if(dropPoint){
-    capturedHandOrigin = {x: dropPoint.x, y: dropPoint.y, kind:'hand'};
+    const gc = (typeof window!=='undefined' && window.__bwDropCenter) || null; // the dragged ghost's own centre, so the landing starts exactly where the card was drawn
+    capturedHandOrigin = {x: gc ? gc.x : dropPoint.x, y: gc ? gc.y : dropPoint.y, kind:'hand', rotate: (typeof window!=='undefined' && window.__bwDropTilt!=null) ? window.__bwDropTilt : undefined, w: (typeof window!=='undefined' && window.__bwDropW) || null};
   } else if(handTileEl){
     const hr = handTileEl.getBoundingClientRect();
     // kind:'hand' — see the entrance-tween branch in renderBoard() for why this needs its own
@@ -25048,6 +25054,108 @@ function maybeSpeakHQ(side, bank, opts){
    card via tap). This shim only ever matters for the handful of interactions that are
    drag-only today (dropping straight onto the battlefield row, deck-editor drag-to-add, and
    the Leader slot, which currently has no click alternative at all). */
+// Hand card drag (2026-10-08, user: "the drag and drop anim onto hand isn't fixed yet", "as I drag the
+// card across the board, the angle it is turning should change from the far left to the far right,
+// maybe (-30, 30) degrees", "when I let go, the landing card should have the same orientation").
+// The browser's own drag-and-drop can't do either: macOS plays its own slow snap-back on a drop that
+// lands nowhere (the "hang"), and its drag image can't rotate. So mouse and pen drags of hand cards
+// are driven by pointer events instead: our ghost follows the pointer and leans with its position
+// over the battlefield; the same dragstart/dragover/drop/dragend events are dispatched to the same
+// drop targets (so every existing drop zone keeps working); a drop no target accepts flies the card
+// straight back into its slot. Touch keeps the touch shim below, which uses the same tilt and fly-home.
+const HandDrag = (function(){
+  const MAX_TILT = 30;
+  function tiltAt(x){
+    const bf = document.getElementById('battlefieldEl') || document.getElementById('battlefieldInner');
+    const r = bf ? bf.getBoundingClientRect() : {left:0, width:innerWidth};
+    const t = Math.max(-1, Math.min(1, (x - (r.left + r.width/2)) / Math.max(1, r.width/2)));
+    return t * MAX_TILT;
+  }
+  function flyHome(ghost, src, done){
+    const finish = ()=>{ if(ghost && ghost.isConnected) ghost.remove(); if(done) done(); };
+    if(!ghost || !src || !src.isConnected || reducedMotion() || !ghost.animate){ finish(); return; }
+    const from = ghost.getBoundingClientRect(), to = src.getBoundingClientRect();
+    const dx = (to.left + to.width/2) - (from.left + from.width/2), dy = (to.top + to.height/2) - (from.top + from.height/2);
+    const rot0 = parseFloat(ghost.style.rotate) || 0;
+    const a = ghost.animate([{translate:'0px 0px', rotate: rot0 + 'deg', scale:1.06}, {translate:`${dx}px ${dy}px`, rotate:'0deg', scale:1}],
+      {duration: Math.min(280, 140 + Math.hypot(dx, dy)*0.3), easing:'cubic-bezier(.3,.7,.2,1)', fill:'forwards'});
+    let ended = false; const end = ()=>{ if(ended) return; ended = true; finish(); };
+    a.onfinish = end; setTimeout(end, 420);
+  }
+  return {tiltAt, flyHome, MAX_TILT};
+})();
+(function initHandPointerDrag(){
+  const THRESHOLD = 6;
+  let cand = null, sx = 0, sy = 0, offX = 0, offY = 0, ghost = null, active = false, tilt = 0, last = null, dt = null, pid = null, suppressClick = false;
+  const isHandCard = el=> el && el.closest && el.closest('#handStrip [data-handuid]');
+  // Mouse/pen drags of hand cards never start the browser's own drag.
+  document.addEventListener('dragstart', e=>{ if(e.isTrusted && isHandCard(e.target)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+  const fakeDT = ()=>{ const store = {}; return {setData:(k, v)=>{ store[k] = String(v); }, getData:k=> store[k] || '', setDragImage(){}, effectAllowed:'move', dropEffect:'move', types:['text/plain']}; };
+  function fire(type, el, x, y, extra){
+    if(!el) return null;
+    const ev = new Event(type, {bubbles:true, cancelable:true});
+    ev.dataTransfer = dt; ev.clientX = x; ev.clientY = y; ev.bwPointerDrag = true;
+    if(extra) Object.assign(ev, extra);
+    el.dispatchEvent(ev); return ev;
+  }
+  const under = (x, y)=>{ if(ghost) ghost.style.visibility = 'hidden'; const el = document.elementFromPoint(x, y); if(ghost) ghost.style.visibility = ''; return el; };
+  function begin(x, y){
+    active = true; dt = fakeDT(); last = null;
+    const r = cand.getBoundingClientRect();
+    offX = sx - r.left; offY = sy - r.top;
+    ghost = cand.cloneNode(true);
+    ghost.classList.remove('dragging', 'armed'); ghost.classList.add('hand-drag-ghost', 'is-pointer-drag'); ghost.removeAttribute('id'); ghost.removeAttribute('data-handuid'); ghost.setAttribute('aria-hidden', 'true');
+    ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px';
+    ghost.style.setProperty('--gx', (offX / r.width * 100).toFixed(0) + '%'); ghost.style.setProperty('--gy', (offY / r.height * 100).toFixed(0) + '%');
+    document.body.appendChild(ghost);
+    tilt = HandDrag.tiltAt(x);
+    fire('dragstart', cand, x, y);
+    move(x, y);
+  }
+  function move(x, y){
+    if(!ghost) return;
+    ghost.style.left = (x - offX) + 'px'; ghost.style.top = (y - offY) + 'px';
+    tilt += (HandDrag.tiltAt(x) - tilt) * 0.35;                       // eased, so it leans rather than snaps
+    ghost.style.rotate = tilt.toFixed(1) + 'deg';
+    const t = under(x, y);
+    if(t !== last){ if(last) fire('dragleave', last, x, y, {relatedTarget:t}); if(t) fire('dragenter', t, x, y); last = t; }
+    if(t) fire('dragover', t, x, y);
+  }
+  function end(x, y, cancelled){
+    const src = cand, g = ghost;
+    if(active){
+      const t = cancelled ? null : under(x, y);
+      let accepted = false;
+      if(t){
+        window.__bwDropTilt = Math.round(tilt); window.__bwDropW = g ? g.offsetWidth * 1.06 : null;
+        if(g){ const gr = g.getBoundingClientRect(); window.__bwDropCenter = {x: gr.left + gr.width/2, y: gr.top + gr.height/2}; }
+        try{ const ev = fire('drop', t, x, y); accepted = !!(ev && ev.defaultPrevented); }
+        finally{ window.__bwDropTilt = null; window.__bwDropW = null; window.__bwDropCenter = null; }
+      }
+      if(last && last !== t) fire('dragleave', last, x, y);
+      if(accepted){ if(g) g.remove(); fire('dragend', src, x, y); }
+      else HandDrag.flyHome(g, src, ()=>{ if(src) src.classList.remove('dragging'); fire('dragend', src, x, y); });
+      suppressClick = true; setTimeout(()=> suppressClick = false, 0);
+    }
+    cand = null; ghost = null; active = false; last = null; dt = null; pid = null;
+  }
+  document.addEventListener('pointerdown', e=>{
+    if(e.pointerType === 'touch' || e.button !== 0) return;
+    const el = isHandCard(e.target);
+    if(!el || el.getAttribute('draggable') !== 'true') return;
+    cand = el; sx = e.clientX; sy = e.clientY; pid = e.pointerId;
+  });
+  document.addEventListener('pointermove', e=>{
+    if(!cand || e.pointerId !== pid) return;
+    if(!active){ if(Math.hypot(e.clientX - sx, e.clientY - sy) < THRESHOLD) return; begin(e.clientX, e.clientY); }
+    else move(e.clientX, e.clientY);
+    e.preventDefault();
+  });
+  document.addEventListener('pointerup', e=>{ if(cand && e.pointerId === pid) end(e.clientX, e.clientY, false); });
+  document.addEventListener('pointercancel', e=>{ if(cand && e.pointerId === pid) end(e.clientX, e.clientY, true); });
+  window.addEventListener('blur', ()=>{ if(cand) end(sx, sy, true); });
+  document.addEventListener('click', e=>{ if(suppressClick){ e.stopPropagation(); e.preventDefault(); suppressClick = false; } }, true);
+})();
 (function initTouchDragShim(){
   const DRAG_THRESHOLD_PX = 10;
   let candidate = null;   // the [draggable] element touched, before the threshold is crossed
@@ -25082,12 +25190,22 @@ function maybeSpeakHQ(side, bank, opts){
     fireDragEvent('dragstart', dragEl, touch);
   }
   function endDrag(touch){
+    let keepGhost = false;
     if(dragActive){
       const target = elementUnderGhost(touch.clientX, touch.clientY);
-      if(target) fireDragEvent('drop', target, touch);
+      const isHand = dragEl && dragEl.closest('#handStrip');
+      let accepted = false;
+      if(target){
+        if(isHand && ghost){ window.__bwDropTilt = Math.round(ghost._tilt||0); }
+        const ev = new Event('drop', {bubbles:true, cancelable:true}); ev.dataTransfer = dt; ev.clientX = touch.clientX; ev.clientY = touch.clientY;
+        try{ target.dispatchEvent(ev); accepted = ev.defaultPrevented; } finally { window.__bwDropTilt = null; }
+      }
+      // A hand card dropped where nothing takes it flies back into the hand (same as with a mouse).
+      if(isHand && !accepted && ghost){ keepGhost = true; const g = ghost; g.style.transform = 'none'; g.style.left = (touch.clientX - g.offsetWidth/2) + 'px'; g.style.top = (touch.clientY - g.offsetHeight/2) + 'px'; HandDrag.flyHome(g, dragEl); }
       fireDragEvent('dragend', dragEl, touch);
     }
-    if(ghost){ ghost.remove(); ghost = null; }
+    if(ghost && !keepGhost){ ghost.remove(); }
+    ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
   }
   document.addEventListener('touchstart', (e)=>{
@@ -25106,7 +25224,7 @@ function maybeSpeakHQ(side, bank, opts){
       beginDrag(touch);
     }
     e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
-    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; }
+    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1)+'deg'; } }
     const target = elementUnderGhost(touch.clientX, touch.clientY);
     if(target !== lastTarget){
       if(lastTarget) fireDragEvent('dragleave', lastTarget, touch, {relatedTarget:target});
