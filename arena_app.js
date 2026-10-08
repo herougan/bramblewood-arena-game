@@ -8244,7 +8244,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
         <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
-        <div class="se-wide se-req"><span>Requires (must clear first):</span>${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.key)}</label>`).join('')}</div>
+        <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
+          <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
       <h3 class="se-h">Enemy deck · ${total} cards</h3>
       <div class="se-deck">${deckIds.length ? deckIds.map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health+(defs[id].wait?' · W'+defs[id].wait:'') : ''}</span>
@@ -8267,6 +8268,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       draft.hqHp = Math.max(1, Math.min(9999, Number(v('seHp'))||30)); draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
+      if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
       if(document.getElementById('seRw_first_gold')){
         const r = {}; ['first','repeat'].forEach(k=> ['gold','dust'].forEach(c=>{ const v = document.getElementById(`seRw_${k}_${c}`).value; if(v !== '' && Number(v) >= 0){ r[k] = r[k] || {}; r[k][c] = Math.round(Number(v)); } }));
         if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
@@ -8293,7 +8295,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       persistNodeEdits(); applyNodeEdits();
@@ -9442,7 +9444,7 @@ function isNodeVisible(map, node, index, progress){
   // else gated on the immediately-preceding array entry.
   if(Array.isArray(node.requires)){
     if(node.requires.length===0) return true;
-    return node.requires.every(reqKey => {
+    return node.requires[node.requiresAny ? 'some' : 'every'](reqKey => { // requiresAny (2026-10-08): any one of them is enough
       // A `requires` entry pointing at a virtual tutorial marker node (0-1/0-2 on Map 1) is
       // treated as always-satisfied rather than read off progress.completed — those nodes are
       // never actually fought/completed through normal play (they just visually represent the
@@ -9488,11 +9490,36 @@ function abandonMapLayoutEdit(){
   if(mapLayoutSnapshotMap){ if(mapLayoutSnapshot) mapLayoutOverrides[mapLayoutSnapshotMap] = mapLayoutSnapshot; else delete mapLayoutOverrides[mapLayoutSnapshotMap]; }
   conquestLayoutEdit = false; mapLayoutSnapshot = null; mapLayoutSnapshotMap = null;
 }
+// Chain editing on the map (2026-10-08, user: "the otter AND the scorpion are both linked to the
+// raccoon; I want to be able to select the linking"): 🔗 Edit links, then click a skirmish and the
+// skirmish it should unlock. Clicking an existing pair unlinks it. Saved like any skirmish edit.
+let conquestLinkEdit = false, conquestLinkFrom = null;
+function nodeRequiresAncestors(map, key, seen){ seen = seen || new Set(); const n = map.nodes.find(x=> x.key===key); (n && n.requires || []).forEach(k=>{ if(!seen.has(k)){ seen.add(k); nodeRequiresAncestors(map, k, seen); } }); return seen; }
+async function toggleNodeLink(map, fromKey, toKey){
+  const to = map.nodes.find(n=> n.key===toKey), from = map.nodes.find(n=> n.key===fromKey); if(!to || !from) return;
+  if(to.kind==='tutorial'){ showToast('The tutorial marker can’t require anything.', 'warn'); return; }
+  const reqs = (to.requires||[]).slice(), has = reqs.includes(fromKey);
+  if(!has && nodeRequiresAncestors(map, fromKey).has(toKey)){ showToast(`That would make a loop: ${from.name} already comes after ${to.name}.`, 'warn'); return; }
+  const next = has ? reqs.filter(k=> k!==fromKey) : reqs.concat(fromKey);
+  const e = nodePatchFor(map.id);
+  if(isAddedNode(map.id, toKey)) e.added = e.added.map(n=> n.key===toKey ? Object.assign({}, n, {requires: next}) : n);
+  else {
+    const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===map.id)||{nodes:[]}).nodes.find(n=> n.key===toKey) || {};
+    const pt = Object.assign({}, e.patches[toKey]||{});
+    if(JSON.stringify(next) === JSON.stringify(base.requires||[])) delete pt.requires; else pt.requires = next;
+    if(Object.keys(pt).length) e.patches[toKey] = pt; else delete e.patches[toKey];
+  }
+  persistNodeEdits(); applyNodeEdits();
+  const published = await publishNodeEdits(map.id);
+  showToast(`🔗 ${from.icon||''} ${from.name} ${has ? '✂ no longer unlocks' : '→ now unlocks'} ${to.icon||''} ${to.name}${!has || next.length ? '' : ' (it now opens with the map)'}${published ? ' · published' : ''}`, 'ok');
+}
 function mapLayoutToolbarHTML(map){
   const custom = !!mapLayoutOverrides[map.id];
+  if(conquestLinkEdit) return `<div class="map-layout-bar conquest-scrim editing"><span class="ml-note"><b>🔗 Editing links.</b> Click a skirmish, then the one it should unlock. Click a linked pair again to unlink.</span>
+    <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button><button type="button" class="btn small" id="mlNewSkirmish">➕ New skirmish</button>
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit">📐 Edit layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Edit links</button><button type="button" class="btn small" id="mlNewSkirmish">➕ New skirmish</button>
       ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
@@ -9572,6 +9599,24 @@ function wireMapLayoutEditor(map, body){
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
   on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
   on('mlEdits', ()=> openMapEditsList(map.id));
+  on('mlLinks', ()=>{ conquestLinkEdit = true; conquestLinkFrom = null; rerender(); });
+  on('mlLinksDone', ()=>{ conquestLinkEdit = false; conquestLinkFrom = null; rerender(); });
+  if(conquestLinkEdit){
+    const cv = document.getElementById('conquestCanvas');
+    if(cv && !cv.dataset.linkWired){ cv.dataset.linkWired = '1';
+      cv.classList.add('link-editing');
+      if(conquestLinkFrom){ const f = cv.querySelector(`[data-lkey="${conquestLinkFrom}"]`); if(f) f.classList.add('link-from'); }
+      cv.addEventListener('click', async ev=>{
+        if(!conquestLinkEdit) return;
+        const t = ev.target.closest('[data-lkey]'); if(!t) return;
+        ev.stopPropagation(); ev.preventDefault();
+        const key = t.getAttribute('data-lkey');
+        if(!conquestLinkFrom || conquestLinkFrom === key){ conquestLinkFrom = conquestLinkFrom === key ? null : key; cv.querySelectorAll('.link-from').forEach(x=> x.classList.remove('link-from')); if(conquestLinkFrom) t.classList.add('link-from'); return; }
+        const from = conquestLinkFrom; conquestLinkFrom = null;
+        await toggleNodeLink(map, from, key); rerender();
+      }, true);
+    }
+  }
   on('mlEdit', ()=>{
     conquestLayoutEdit = true;
     mapLayoutSnapshotMap = map.id;
@@ -10054,7 +10099,15 @@ function renderConquestSubTab(body){
       const j = nodeIndexByKey[reqKey];
       if(j===undefined) return;
       if(map.nodes[j].kind==='tutorial') return; // the tutorial stands alone — no trail line to it
-      edgeLines.push(`<line data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${positions[j].x}" y1="${positions[j].y}" x2="${positions[i].x}" y2="${positions[i].y}" />`);
+      // 2026-10-08 (user: "the otter AND the scorpion are both linked to the raccoon"): a link that
+      // would run straight behind another skirmish bows around it as a curve, so it never looks
+      // like a chain through the skirmish in the middle.
+      const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
+      const blocked = positions.some((P, k)=>{ if(k===i || k===j) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
+      const cls = n.requiresAny && reqs.length > 1 ? 'is-any' : '';
+      if(blocked){ const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18), cx = (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy = (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1);
+        edgeLines.push(`<path class="${cls} is-curve" data-a="${map.nodes[j].key}" data-b="${n.key}" d="M ${A.x} ${A.y} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${B.x} ${B.y}" />`); }
+      else edgeLines.push(`<line ${cls ? `class="${cls}" ` : ''}data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" />`);
     });
   });
   // Item #5 (2026-09-18, "the green background represents the map... make it encompass the

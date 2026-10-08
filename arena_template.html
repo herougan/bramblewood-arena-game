@@ -3906,6 +3906,14 @@
   .map-mover.mv-firefly{filter:drop-shadow(0 0 6px rgba(255,240,120,.95));}
   .map-trail-svg{position:absolute; inset:0; width:100%; height:100%;}
   .map-trail-svg polyline, .map-trail-svg line{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
+  .map-trail-svg path{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
+  .conquest-layout.has-map-art .map-trail-svg path{stroke:rgba(255,248,225,.85); stroke-width:.75; filter:drop-shadow(0 0 1.2px rgba(0,0,0,.75));}
+  .map-trail-svg .is-any{stroke-dasharray:.6,1.4; opacity:.8;} /* 'any one of these' links are dotted */
+  .conquest-map-canvas.link-editing .map-trail-svg{pointer-events:none;} .conquest-map-canvas.link-editing .map-node-hidden{z-index:4; pointer-events:auto;}
+  .conquest-map-canvas.link-editing [data-lkey]{cursor:crosshair; outline:2px dashed rgba(255,230,160,.55); outline-offset:3px;}
+  .conquest-map-canvas.link-editing [data-lkey].link-from{outline:3px solid #ffd66e; box-shadow:0 0 18px rgba(255,210,100,.8);}
+  .se-req{display:flex; flex-direction:column; gap:6px;} .se-req-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px;} .se-req-head small{flex-basis:100%; color:var(--ink-muted); font-size:11.5px;}
+  .se-req-list{display:flex; flex-wrap:wrap; gap:6px 12px;} .se-req-list small{color:var(--ink-muted); font-size:10.5px;}
   /* Map decoration (2026-09-29, "Draw a pond emoji or something in this outskirts - it's abit
      empty"): purely cosmetic sprinkles laid over the trail canvas's empty grid space (see
      mapDecorHTML's own comment in arena_app.js for why those gaps exist). z-index 0 keeps them
