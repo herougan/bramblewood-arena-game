@@ -17704,11 +17704,21 @@ function showCoachTip(tip, anchorEl){
     }
     b.classList.remove('anchor-lost');
     if(tip.action && tip.done && matchState && tip.done(matchState)){ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 500); return; }
-    const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight;
-    let x = Math.max(8, Math.min(window.innerWidth - bw - 8, r.left + r.width/2 - bw/2));
+    const r = anchorEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight, W = window.innerWidth, H = window.innerHeight;
+    let x = Math.max(8, Math.min(W - bw - 8, r.left + r.width/2 - bw/2));
     let y = r.top - bh - 14, below = false;
     if(y < 8){ y = r.bottom + 14; below = true; }
-    if(y + bh > window.innerHeight - 8){ y = Math.max(8, window.innerHeight - bh - 8); }
+    if(y + bh > H - 8){ y = Math.max(8, H - bh - 8); }
+    // 2026-10-08 (playtest, phones): the tip covered your Leader or a castle while explaining
+    // something else. Try sliding sideways, then flipping above/below, and keep the first spot that
+    // covers neither (the tip's own target excepted); otherwise keep the default spot.
+    const keep = [...document.querySelectorAll('.leader-widget, [data-hq]')].filter(el=> el !== anchorEl && !el.contains(anchorEl) && !anchorEl.contains(el)).map(el=> el.getBoundingClientRect()).filter(k=> k.width);
+    const hits = (cx, cy)=> keep.some(k=> cx < k.right + 4 && cx + bw > k.left - 4 && cy < k.bottom + 4 && cy + bh > k.top - 4);
+    if(hits(x, y)){
+      const ys = [y, below ? r.top - bh - 14 : r.bottom + 14].filter(v=> v >= 8 && v + bh <= H - 8);
+      const xs = [x].concat(...keep.map(k=> [k.right + 8, k.left - bw - 8])).filter(v=> v >= 8 && v + bw <= W - 8);
+      outer: for(const cy of ys) for(const cx of xs) if(!hits(cx, cy)){ x = cx; below = cy > r.top; y = cy; break outer; }
+    }
     b.style.left = x+'px'; b.style.top = y+'px';
     b.classList.toggle('below', below);
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
