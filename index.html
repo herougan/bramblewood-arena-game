@@ -1165,7 +1165,10 @@
      hover away via the tile's own title tooltip. Clicking the stack toggles the front card's own
      foil shimmer (see toggleCardCopyFoil's "individual for now" comment) — the one foil state a
      stack can visibly show without a whole separate per-copy picker UI. */
-  .nest-card-wrap{position:relative; width:100%;} /* was fit-content: since card tiles became size containers (2026-10-03) fit-content collapsed them to ~18px */
+  .nest-card-wrap{position:relative; width:100%;}
+  .nest-view-btn{position:absolute; right:4px; bottom:4px; z-index:9; width:30px; height:30px; border-radius:50%; border:1px solid rgba(255,255,255,.5); background:rgba(30,20,10,.55); color:#fff; font-size:14px; cursor:pointer; opacity:0; transition:opacity .15s; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);}
+  .nest-card-wrap:hover .nest-view-btn, .nest-view-btn:focus-visible{opacity:1;}
+  @media (hover:none){ .nest-view-btn{opacity:.9;} } /* was fit-content: since card tiles became size containers (2026-10-03) fit-content collapsed them to ~18px */
   .nest-card-wrap > .card-tile{width:100%;}
   .nest-card-wrap::before, .nest-card-wrap::after{content:''; position:absolute; inset:0; z-index:-1; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .nest-card-wrap::before{display:none;}
@@ -4995,7 +4998,7 @@
   /* summaries */
   .po2-summary{gap:18px;}
   .po2-sum-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:min(980px, 100%);}
-  .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:default !important;}
+  .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:zoom-in !important;}
   .po2-sum-grid.is-dense{gap:10px;} .po2-sum-grid.is-dense .po2-sum-card{width:clamp(78px, 14vw, 116px) !important;}
   .po2-sum-card .card-tile{width:100%;}
   .po2-sum-card.is-new .card-tile{box-shadow:0 0 0 3px #ffd75e, 0 0 24px 4px rgba(255,215,94,.6);}
@@ -32485,6 +32488,10 @@ function renderNest(){
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
   // front-of-stack copy (index 0) — the one visual "shimmer or not" state the stack itself can show.
+  root.querySelectorAll('[data-nestview]').forEach(b=> b.addEventListener('click', e=>{
+    e.stopPropagation();
+    const id = b.dataset.nestview; openCardInspector(id, {foil: (myCardCopies[id]||[]).some(c=> c && c.foil), returnFocus: b});
+  }));
   root.querySelectorAll('[data-nestcard]').forEach(wrap=> wrap.addEventListener('click', ()=>{
     toggleCardCopyFoil(wrap.getAttribute('data-nestcard'), 0);
     renderNest();
@@ -32570,6 +32577,7 @@ function nestCardHTML(id, d){
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
     ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? holoClass(d) : ''})}
+    <button type="button" class="nest-view-btn" data-nestview="${id}" title="View large" aria-label="View ${escapeAttr(d.name || id)} large">🔍</button>
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -32818,15 +32826,20 @@ function openPackAnimation(pack, opened, opts){
     const next = overlay.querySelector('#poNext'); if(next) next.onclick = ()=>{ packIdx++; showPack(); };
     const f = overlay.querySelector('#poNext') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
   };
+  // Tap any card in a summary to see it large (the Codex card viewer, on top of the opener).
+  const wireView = ()=> overlay.querySelectorAll('[data-poview]').forEach(c=>{
+    const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c});
+    c.addEventListener('click', go); c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
+  });
   const showSummary = ()=>{
     phase = 'summary';
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}">${cardTileHTML(defs[r.id], {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(defs[r.id]) : ''})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
+      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(defs[r.id]) : ''})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireTop(); wireFoot();
+    wireTop(); wireFoot(); wireView();
   };
   // ---- Open all (sets only): everything left, grouped ----
   const showAll = ()=>{
@@ -32840,10 +32853,10 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`, `✨ +${dust} Dust`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(id=> `<div class="po-card is-flipped po2-sum-card ${tally.get(id).isNew?'is-new':''}">${cardTileHTML(defs[id], {editable:false, extraClass: tierOf(id) >= 4 ? holoClass(defs[id]) : ''})}${tally.get(id).isNew?'<span class="po2-new-tag">NEW</span>':''}${tally.get(id).n > 1 ? `<span class="po2-x">×${tally.get(id).n}</span>` : ''}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(id=> `<div class="po-card is-flipped po2-sum-card ${tally.get(id).isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: tierOf(id) >= 4 ? holoClass(defs[id]) : ''})}${tally.get(id).isNew?'<span class="po2-new-tag">NEW</span>':''}${tally.get(id).n > 1 ? `<span class="po2-x">×${tally.get(id).n}</span>` : ''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
-    wireFoot();
+    wireFoot(); wireView();
     sfx('gold');
   };
   onKey = e=>{

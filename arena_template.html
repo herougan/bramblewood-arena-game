@@ -1165,7 +1165,10 @@
      hover away via the tile's own title tooltip. Clicking the stack toggles the front card's own
      foil shimmer (see toggleCardCopyFoil's "individual for now" comment) — the one foil state a
      stack can visibly show without a whole separate per-copy picker UI. */
-  .nest-card-wrap{position:relative; width:100%;} /* was fit-content: since card tiles became size containers (2026-10-03) fit-content collapsed them to ~18px */
+  .nest-card-wrap{position:relative; width:100%;}
+  .nest-view-btn{position:absolute; right:4px; bottom:4px; z-index:9; width:30px; height:30px; border-radius:50%; border:1px solid rgba(255,255,255,.5); background:rgba(30,20,10,.55); color:#fff; font-size:14px; cursor:pointer; opacity:0; transition:opacity .15s; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);}
+  .nest-card-wrap:hover .nest-view-btn, .nest-view-btn:focus-visible{opacity:1;}
+  @media (hover:none){ .nest-view-btn{opacity:.9;} } /* was fit-content: since card tiles became size containers (2026-10-03) fit-content collapsed them to ~18px */
   .nest-card-wrap > .card-tile{width:100%;}
   .nest-card-wrap::before, .nest-card-wrap::after{content:''; position:absolute; inset:0; z-index:-1; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border);}
   .nest-card-wrap::before{display:none;}
@@ -4985,7 +4988,7 @@
   /* summaries */
   .po2-summary{gap:18px;}
   .po2-sum-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:min(980px, 100%);}
-  .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:default !important;}
+  .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:zoom-in !important;}
   .po2-sum-grid.is-dense{gap:10px;} .po2-sum-grid.is-dense .po2-sum-card{width:clamp(78px, 14vw, 116px) !important;}
   .po2-sum-card .card-tile{width:100%;}
   .po2-sum-card.is-new .card-tile{box-shadow:0 0 0 3px #ffd75e, 0 0 24px 4px rgba(255,215,94,.6);}

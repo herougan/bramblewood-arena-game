@@ -96,6 +96,10 @@ async def main():
         check(await pg.evaluate("document.querySelectorAll('.po-card.is-flipped').length") == 3, 'the Sprout Pouch should reveal 3 cards')
         after = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
         check(after - before == 3, f'pack should add 3 copies (added {after-before})')
+        await pg.evaluate("document.querySelector('[data-poview]').click(); 1"); await pg.wait_for_timeout(400)
+        check(await pg.evaluate("!!document.querySelector('.card-inspect')"), 'tapping a card in the pack summary should open it large')
+        await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
+        check(await pg.evaluate("!document.querySelector('.card-inspect') && !document.getElementById('packOpenOverlay').hidden"), 'Escape should close only the card viewer over the pack summary')
         await pg.click('#poDone'); await pg.wait_for_timeout(300)
         # 4a: a set of 10 offers Skip and Open all; Open all shows everything grouped
         await pg.click('[data-buypack="bronze"][data-qty="10"]'); await pg.wait_for_timeout(500)

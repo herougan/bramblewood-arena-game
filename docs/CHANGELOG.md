@@ -4,7 +4,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-10-08
 - Opening a pack is an event now: tear the foil wrapper, then turn each card one at a time, with a rarity glow and a big NEW! for cards you've never had. Buy a set of 10–100 packs to skip or open them all at once.
-- Codex → 🔍 View large: spin any card in the light.
+- Codex → 🔍 View large: spin any card in the light. Also from the Nest (🔍) and from a pack's summary.
 - Effects Lab: a card treatment centre with 10 foil finishes.
 - Skirmish chains can be re-linked in the editor (all or any of the earlier skirmishes).
 - Battles feel better: knock-outs fall with weight, flyers soar off the ground, and triggered abilities flash a rune.
