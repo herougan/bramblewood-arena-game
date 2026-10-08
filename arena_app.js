@@ -1439,12 +1439,39 @@ async function logTxn(entry){
 // next load. If the table is missing/unreachable or you're not an admin, edits fall back to the
 // old this-browser-only overlay below.
 let cloudCardAdmin = false;
+// Live updates (2026-10-08, user: "skirmish layout changes (from a different browser) did not reflect
+// until I refreshed"): while the game is open it asks for anything published since its last look —
+// every 30 s while the tab is visible, and straight away when you come back to the tab — and
+// redraws the map or Codex if something changed. (Polling, so no database change was needed.)
+let cloudOverridesSince = '';
+async function pollCloudOverrides(){
+  if(!sbClient || document.hidden || !cloudOverridesSince) return;
+  try{
+    const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at').gt('updated_at', cloudOverridesSince);
+    if(error || !Array.isArray(data) || !data.length) return;
+    let cards = false, cfg = false;
+    data.forEach(r=>{
+      if(r.updated_at > cloudOverridesSince) cloudOverridesSince = r.updated_at;
+      if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); cfg = true; return; }
+      cloudOverrideIds.add(r.id); cards = true;
+      if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
+      else if(r.data){ liveCards[r.id] = r.data; delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
+    });
+    if(cards) onCardsChanged();
+    if(cfg && currentTab==='play' && !matchState && playSubTab==='conquest' && !conquestLayoutEdit && !conquestLinkEdit){
+      const body = document.getElementById('playSubBody'); if(body) renderConquestSubTab(body);
+    }
+  }catch(e){}
+}
+setInterval(pollCloudOverrides, 30000);
+document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) pollCloudOverrides(); });
 const cloudOverrideIds = new Set();
 async function loadCloudCardOverrides(){
   if(!sbClient) return;
   try{
     const { data, error } = await sbClient.from('card_overrides').select('id, data, deleted, deleted_snapshot, updated_at');
     if(error || !Array.isArray(data)) return;
+    data.forEach(r=>{ if(r.updated_at && r.updated_at > cloudOverridesSince) cloudOverridesSince = r.updated_at; });
     data.forEach(r=>{
       // `__cfg:*` rows are admin-published game config (e.g. map layouts), not cards.
       if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); return; }
@@ -6585,11 +6612,45 @@ migrateCardCopiesFromUnlocks();
 // an actual additional copy now, instead of the pre-Nest behavior where unlockCardForPlayer's
 // duplicate check silently no-opped every pull after the first). New copies start non-foil;
 // see toggleCardCopyFoil() for how a specific copy's foil state changes later.
+// Shiny (2026-10-08, user: "When receiving cards, 0.5% chance to be Shiny. Same for BASE and QUEST."):
+// every copy you receive has a 1 in 200 chance to be Shiny — it wears the Prism finish and a ✦.
+const SHINY_CHANCE = 0.005;
+let lastGrantWasShiny = false;
 function grantCardCopy(id){
   if(!id) return;
   if(!myCardCopies[id]) myCardCopies[id] = [];
-  myCardCopies[id].push({foil:false});
+  const shiny = Math.random() < SHINY_CHANCE;
+  lastGrantWasShiny = shiny;
+  myCardCopies[id].push(shiny ? {foil:false, shiny:true} : {foil:false});
   saveCardCopies();
+  if(shiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(`✦ Shiny! Your new ${d ? d.name : 'card'} came out Shiny.`, 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
+}
+function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
+// Disenchanting (2026-10-08, user: "the player CANNOT disenchant their BASE cards or QUEST cards for
+// materia ... There is a quick disenchant all extra copies button (leaving at least 1 copy per card).
+// Upgraded or levelled cards/cards with skin are never disenchanted."). Extra plain copies of other
+// cards turn into Magic Dust (what Materia is crafted from), by rarity.
+const DISENCHANT_DUST = {common:5, uncommon:8, rare:15, veryrare:20, superrare:30, epic:40, heroic:50, unique:60, legendary:100, mythic:150, ancient:200};
+function disenchantableCopies(id){
+  const d = getCardDefs()[id], copies = myCardCopies[id] || [];
+  if(!d || d.token || copies.length < 2) return [];
+  const r = d.rarity || 'common';
+  if(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique') return [];
+  if(getCardLevel(id) > 0 || myCardPrestige[id]) return [];
+  // keep one copy (the best one: a shiny or foil first), melt the other plain ones
+  const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil)));
+  return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil));
+}
+function disenchantSummary(){
+  const defs = getCardDefs(); let copies = 0, dust = 0; const per = [];
+  Object.keys(myCardCopies).forEach(id=>{ const idx = disenchantableCopies(id); if(!idx.length) return; const each = DISENCHANT_DUST[(defs[id]||{}).rarity] || 5; copies += idx.length; dust += each*idx.length; per.push({id, n:idx.length, dust:each*idx.length}); });
+  return {copies, dust, per};
+}
+function disenchantAllExtras(){
+  const sum = disenchantSummary(); if(!sum.copies) return sum;
+  sum.per.forEach(({id})=>{ const drop = new Set(disenchantableCopies(id)); myCardCopies[id] = (myCardCopies[id]||[]).filter((c, i)=> !drop.has(i)); });
+  saveCardCopies(); grantCurrency('dust', sum.dust); saveCurrencies();
+  return sum;
 }
 // Toggles ONE specific owned copy's foil state (the Nest screen's per-copy chip click) — never
 // touches any other copy of the same card, per "individual for now".
@@ -8160,6 +8221,14 @@ const DIALOGUES = {
     {who:'whisper', text:'Ten wins and you\'re a legend. Five losses and you\'re a story.', options:[{label:'Deal.', goto:'go'}], silent:'go'},
     {label:'go', who:'whisper', text:'…Don\'t tell the Marshal you saw me.'},
   ]},
+  well_m1: {lines:[
+    {who:'swiftpaw', text:'Huh. The old well. Otters drew water here long before the border war.'},
+    {who:'shieldback', text:'And hummingbirds drank from the bucket when nobody was looking. Nobody minded, back then.'},
+    {who:'traveller', text:'Toss a leaf in, they say, and the Bramblewood remembers who was kind to it.', options:[{label:'Toss in a leaf.', goto:'toss'}, {label:'Keep walking.', goto:'walk'}], silent:'walk'},
+    {label:'toss', who:'swiftpaw', text:'…Did it just splash back?', goto:'end'},
+    {label:'walk', who:'shieldback', text:'Good. Superstition never won a skirmish.', goto:'end'},
+    {label:'end', who:'traveller', text:'Wells are patient. So are the friends you make on both sides of the river.'},
+  ]},
   unlock_nest: {lines:[
     {who:'swiftpaw', text:'An old nest. Somebody kept their cards here once.'},
     {who:'swiftpaw', text:'Everything you win ends up in yours now. Want a look?', options:[{label:'Show me.', goto:'go'}], silent:'go'},
@@ -8223,9 +8292,11 @@ function playDialogue(id, opts){
         });
         const reply = document.createElement('div');
         reply.className = 'dlg-line dlg-mine';
-        reply.innerHTML = `<div class="dlg-body"><div class="dlg-name">You</div><div class="dlg-text">${escapeHtml(choice ? choice.label : '…')}</div></div>`;
+        reply.innerHTML = `<div class="dlg-body"><div class="dlg-name">You</div><div class="dlg-text">${escapeHtml(choice ? choice.label : '…')}</div></div><span class="dlg-portrait dlg-me">${avatarHTML(loadAvatar(), 34)}</span>`;
         b.querySelector('.dlg-replies').remove();
+        b.classList.remove('dlg-to-you'); // 2026-10-08 (user: "the conversation is a little broken"): answered lines stop glowing
         dock.appendChild(reply);
+        if(hasGsap()) gsap.from(reply, {x: 40, opacity: 0, duration: .3, ease: 'power3.out'});
         while(dock.children.length > 3) dock.firstElementChild.remove();
         replies.push(choice ? choice.label : '…');
         const target = choice ? choice.goto : line.silent;
@@ -8306,6 +8377,31 @@ function mapSpotsHTML(map, positions, progress){
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
+}
+// The old well (2026-10-08, user: "a well object in the first map, that triggers a conversation in
+// the top left. This only happens once."). A small stone well by the pond on the Outskirts; the first
+// visit plays a short scene (with a choice), after that it just ripples.
+function mapWellHTML(){
+  const seen = !!loadDialogueFlags()['seen:well_m1'];
+  return `<button type="button" class="map-well ${seen ? '' : 'is-new'}" id="mapWell" style="left:67%; top:79%;" title="An old well" aria-label="An old well">
+    <span class="mw-roof" aria-hidden="true"></span><span class="mw-posts" aria-hidden="true"></span><span class="mw-bucket" aria-hidden="true"></span><span class="mw-ring" aria-hidden="true"></span>
+    ${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`;
+}
+function visitOldWell(el){
+  if(loadDialogueFlags()['seen:well_m1']){
+    try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
+    if(el){ el.classList.remove('is-rippling'); void el.offsetWidth; el.classList.add('is-rippling'); }
+    showToast('💧 The water is still. Something down there remembers you.');
+    return;
+  }
+  el && el.classList.remove('is-new'); const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
+  playDialogue('well_m1', {once:true, onDone: replies=>{
+    if(replies.includes('Toss in a leaf.')){
+      grantCurrency('gold', 25); saveCurrencies();
+      setTimeout(()=> showToast('🍁 A leaf floats back up… with friends. +25 Maple Leaves.', 'ok'), 400);
+    }
+    if(el){ el.classList.add('is-rippling'); }
+  }});
 }
 // The leaves part to reveal the map (end of the tutorial).
 function leavesRevealToMap(){
@@ -10359,6 +10455,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
+      ${map.id==='m1' ? mapWellHTML() : ''}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -10448,6 +10545,7 @@ function renderConquestSubTab(body){
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
+  { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); visitOldWell(w); }); }
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
@@ -11691,6 +11789,46 @@ function showTutorialDeckPicker(){
 // 2026-09-25: routed through unlockCardForPlayer() (see its own comment) instead of touching
 // myUnlockedCardIds directly -- same net effect, now going through the one shared, logged unlock
 // path every card-reward source should use going forward.
+// The starter deck, handed over (2026-10-08): after the last tutorial fight the player sees the 20
+// cards they've earned (plus the tutorial reward cards) and must press "Add to deck"; the cards fly
+// into the deck box, and only then does the map open.
+function openStarterDeckStep(pick, onDone){
+  const defs = getCardDefs(), counts = buildFactionStarterDeck(pick);
+  const rewards = grantTutorialSeriesRewardsPreview(pick);
+  const ids = Object.keys(counts).filter(id=> defs[id]).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || defs[a].name.localeCompare(defs[b].name));
+  const ov = document.createElement('div'); ov.className = 'modal-overlay starter-step';
+  ov.innerHTML = `<div class="modal starter-modal" role="dialog" aria-modal="true" aria-label="Your starter deck">
+    <h2>🃏 Your first deck</h2>
+    <p class="panel-sub">You've earned these cards. Add them to your deck to take them onto the map.</p>
+    <div class="ss-grid">${ids.map(id=> `<div class="ss-card">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}</div>`).join('')}</div>
+    ${rewards.length ? `<p class="ss-bonus">🎁 Tutorial rewards, also yours: ${rewards.filter(id=> defs[id]).map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}</p>` : ''}
+    <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count">0/${deckTotal(counts)}</b></div>
+      <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
+  </div>`;
+  document.body.appendChild(ov);
+  const btn = ov.querySelector('#ssAdd'), box = ov.querySelector('.ss-deckbox'), countEl = ov.querySelector('.ss-count');
+  setTimeout(()=> btn.focus(), 40);
+  btn.onclick = ()=>{
+    btn.disabled = true;
+    const tiles = [...ov.querySelectorAll('.ss-card')], total = deckTotal(counts), br = box.getBoundingClientRect();
+    let added = 0;
+    const finish = ()=>{ countEl.textContent = `${total}/${total}`; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
+      btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 700); };
+    if(!hasGsap() || reducedMotion()){ finish(); return; }
+    tiles.forEach((t, i)=>{
+      const r = t.getBoundingClientRect(), id = ids[i];
+      gsap.to(t, {x: br.left + br.width/2 - (r.left + r.width/2), y: br.top + br.height/2 - (r.top + r.height/2), scale:.25, opacity:0, duration:.45, delay:i*0.05, ease:'power2.in',
+        onComplete:()=>{ added += counts[id] || 1; countEl.textContent = `${Math.min(added, total)}/${total}`; box.classList.remove('is-bump'); void box.offsetWidth; box.classList.add('is-bump'); try{ SoundKit.draw && SoundKit.draw(); }catch(e){} if(i === tiles.length - 1) finish(); }});
+    });
+  };
+}
+function grantTutorialSeriesRewardsPreview(pick){
+  const out = [];
+  if(pick==='otters' || pick==='both') out.push('river-warden');
+  if(pick==='hummingbirds' || pick==='both') out.push('sunspire-envoy');
+  out.push('quarry-mole');
+  return out;
+}
 function claimTutorialWin(pick){
   if(matchState && matchState.adminTest){ showToast('🎓 Tutorial test finished — nothing was granted.', 'ok'); return false; }
   const firstTime = !loadTutorialDone();
@@ -14026,10 +14164,11 @@ function renderMatchUI(){
         endMatch();
         if(!won){ beginTutorialStage(stage); return; }
         if(stage >= TUTORIAL_STAGE_COUNT){
-          const firstTime = claimTutorialWin(pick);
-          conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest';
-          switchTab('play');
-          if(firstTime) showToast('🎓 Tutorial complete! Your first two fights on the Outskirts are open.', 'ok');
+          const toMap = (firstTime)=>{ conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play');
+            if(firstTime) showToast('🎓 Tutorial complete! Your first two fights on the Outskirts are open.', 'ok'); };
+          // 2026-10-08 (user: "after winning, he is forced to click 'Add to deck' in a tutorial, filling their deck")
+          if(!loadTutorialDone() && !m.adminTest) openStarterDeckStep(pick, ()=> toMap(claimTutorialWin(pick)));
+          else toMap(claimTutorialWin(pick));
         } else {
           beginTutorialStage(stage+1);
         }
@@ -21537,6 +21676,23 @@ function renderDeckListTab(body){
 // In-game text dialog (2026-10-08, user: "the import deck code should be native UI, not Chrome
 // UI"): a parchment modal in the game's own style instead of window.prompt. Resolves to the text,
 // or null when cancelled. readonly mode shows a code to copy, with a Copy button.
+function bwConfirm({title, body, list, okLabel}){
+  return new Promise(resolve=>{
+    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
+    ov.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-label="${escapeAttr(title)}">
+      <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
+      <p class="panel-sub">${escapeHtml(body||'')}</p>
+      ${list && list.length ? `<ul class="bwc-list">${list.map(x=> `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
+      <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-ok>${escapeHtml(okLabel||'OK')}</button></div></div>`;
+    document.body.appendChild(ov);
+    const done = v=>{ ov.remove(); resolve(v); };
+    ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = ()=> done(false));
+    ov.onclick = e=>{ if(e.target === ov) done(false); };
+    ov.onkeydown = e=>{ if(e.key==='Escape'){ e.stopPropagation(); done(false); } };
+    ov.querySelector('[data-ok]').onclick = ()=> done(true);
+    setTimeout(()=> ov.querySelector('[data-ok]').focus(), 30);
+  });
+}
 function bwTextDialog({title, body, value, placeholder, okLabel, readonly}){
   return new Promise(resolve=>{
     const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
@@ -21715,7 +21871,7 @@ function renderShop(){
       <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
       <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
       ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
-      ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs — ${(p.cost.gold||0)*q} Maple Leaves${p.cost.gems?` + ${p.cost.gems*q} Gold Leaves`:''}. Sets let you skip or open them all at once.">×${q}</button>`).join('')}</div>` : ''}
+      ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs: ${packSetCost(p, q).gold} Maple Leaves${p.cost.gems?` + ${packSetCost(p, q).gems} Gold Leaves`:''} (${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}% off). Sets let you skip or open them all at once.">×${q}<small class="sb-off">−${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}%</small></button>`).join('')}</div>` : ''}
     </div>`).join('');
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn, +(btn.dataset.qty||1)))));
@@ -21739,6 +21895,7 @@ function renderNest(){
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
+      ${(()=>{ const ds = disenchantSummary(); return `<div class="nest-actions"><button type="button" class="btn small" id="nestDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button></div>`; })()}
     </div>
     <div class="grid-view" id="nestGrid">${
       ownedIds.length ? ownedIds.map(id=> nestCardHTML(id, defs[id])).join('')
@@ -21760,6 +21917,16 @@ function renderNest(){
     wrap.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
   });
   startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS);
+  const dis = document.getElementById('nestDisBtn');
+  if(dis) dis.onclick = async ()=>{
+    const ds = disenchantSummary(); if(!ds.copies) return;
+    const defs = getCardDefs();
+    const ok = await bwConfirm({title:'♻️ Disenchant extras', body:`Melt ${ds.copies} extra cop${ds.copies===1?'y':'ies'} into ✨ ${ds.dust} Magic Dust? One copy of every card stays, and Base, Quest, levelled, foil and Shiny cards are never touched.`, list: ds.per.slice(0, 12).map(p=> `${defs[p.id] ? defs[p.id].name : p.id} ×${p.n} → ✨ ${p.dust}`), okLabel:'Disenchant'});
+    if(!ok) return;
+    const done = disenchantAllExtras();
+    showToast(`♻️ Disenchanted ${done.copies} cop${done.copies===1?'y':'ies'} for ✨ ${done.dust} Magic Dust.`, 'ok');
+    renderNest();
+  };
 }
 // 2026-10-08 (user: "the tooltip '1 copy owned · foil · click to toggle…' is intrusive; rotate tips
 // here and there in the Nest instead, changing the 'Cards you've won…' line"): the per-card hover
@@ -21839,7 +22006,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
-    ${cardTileHTML(d, {editable:false, extraClass: hasFoil ? holoClass(d) : ''})}
+    ${cardTileHTML(d, {editable:false, extraClass: ownsShiny(id) ? 'is-holo holo-prism is-shiny' : hasFoil ? holoClass(d) : ''})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
 }
 function packUnlockCandidates(defs){
@@ -21875,6 +22042,12 @@ function rollPackCards(pack){
 //  - Skip / Open all exist only when you bought a set of packs (10, 25, 50 or 100).
 // Escape still works as a way out for keyboard users: it jumps to the pack's summary, then closes.
 const PACK_BUNDLES = [10, 25, 50, 100];
+// Set discounts (2026-10-08, user: "10 = 5% discount. 25 get 12.5%. 50 get 15% and so on").
+const PACK_BUNDLE_DISCOUNT = {10:0.05, 25:0.125, 50:0.15, 100:0.20};
+function packSetCost(pack, qty){
+  const d = PACK_BUNDLE_DISCOUNT[qty] || 0, c = pack.cost || {};
+  return {gold: Math.round((c.gold||0)*qty*(1-d)), gems: Math.round((c.gems||0)*qty*(1-d)), discount:d};
+}
 function packCoverArt(pack){
   // The wrapper's art: the pool's headline card (highest rarity with art), fixed per pack so the
   // wrapper never hints at what's inside this particular pack.
@@ -21884,14 +22057,13 @@ function packCoverArt(pack){
   withArt.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b));
   return defs[withArt[0]].art;
 }
-function purchasePackOnce(pack){
+function purchasePackOnce(pack, prepaid){
   const pulls = rollPackCards(pack);
   if(!pulls.length) return null;
-  myCurrencies.gold -= (pack.cost.gold||0);
-  myCurrencies.gems -= (pack.cost.gems||0);
+  if(!prepaid){ myCurrencies.gold -= (pack.cost.gold||0); myCurrencies.gems -= (pack.cost.gems||0); }
   grantCurrency('dust', pack.dust);
   if(pack.metal) grantCurrency('metal', pack.metal);
-  const results = pulls.map(id=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; unlockCardForPlayer(id, 'shopPack'); return {id, isNew: wasNew}; });
+  const results = pulls.map(id=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; unlockCardForPlayer(id, 'shopPack'); return {id, isNew: wasNew, shiny: lastGrantWasShiny}; });
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
     const defs = getCardDefs();
@@ -21900,7 +22072,7 @@ function purchasePackOnce(pack){
   }
   return {results, leveledId};
 }
-function canAffordPacks(pack, qty){ return (myCurrencies.gold||0) >= (pack.cost.gold||0)*qty && (myCurrencies.gems||0) >= (pack.cost.gems||0)*qty; }
+function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) : {gold:(pack.cost.gold||0), gems:(pack.cost.gems||0)}; return (myCurrencies.gold||0) >= c.gold && (myCurrencies.gems||0) >= c.gems; }
 let packOpenStop = null;
 function buyPack(packId, btnEl, qty){
   qty = Math.max(1, qty|0 || 1);
@@ -21909,7 +22081,8 @@ function buyPack(packId, btnEl, qty){
   if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
   if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
   const opened = [];
-  for(let i=0; i<qty; i++){ const o = purchasePackOnce(pack); if(!o) break; opened.push(o); }
+  if(qty > 1){ const c = packSetCost(pack, qty); myCurrencies.gold -= c.gold; myCurrencies.gems -= c.gems; }
+  for(let i=0; i<qty; i++){ const o = purchasePackOnce(pack, qty > 1); if(!o) break; opened.push(o); }
   saveCurrencies();
   if(opened.some(o=> o.leveledId)) saveCardLevels();
   try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
@@ -22008,7 +22181,7 @@ function openPackAnimation(pack, opened, opts){
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(d) : ''})}</span></span>
+      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: r.shiny ? 'is-holo holo-prism is-shiny' : tierOf(r.id) >= 4 ? holoClass(d) : ''})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
     </button>`; }).join('');
   const showReveal = ()=>{

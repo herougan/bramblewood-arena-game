@@ -2668,7 +2668,11 @@
   .dialogue-dock{position:fixed; left:12px; top:76px; z-index:1100; display:flex; flex-direction:column; gap:8px; width:min(360px, calc(100vw - 24px)); pointer-events:none;}
   .dlg-line{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:14px; background:rgba(255,248,230,.95); color:#2b2117; box-shadow:0 8px 20px rgba(0,0,0,.35);}
   .dlg-line.dlg-to-you{box-shadow:0 0 0 2px #e0b85a, 0 8px 20px rgba(0,0,0,.35);}
-  .dlg-line.dlg-mine{background:rgba(214,236,255,.95); margin-left:40px;}
+  .dlg-line{background:#fff8e6 !important; width:100%; box-sizing:border-box;}
+  .dlg-line.dlg-mine{background:#dcecff !important; margin-left:auto; width:auto; max-width:82%; justify-content:flex-end; text-align:right; border-bottom-right-radius:4px;}
+  .dlg-line.dlg-mine .dlg-me{display:inline-flex; align-items:center; justify-content:center; overflow:hidden; background:#cfe2fa;}
+  .dlg-line:not(.dlg-mine){border-bottom-left-radius:4px;}
+  .dlg-body{min-width:0;}
   .dlg-portrait{width:40px; height:40px; border-radius:50%; object-fit:cover; flex:0 0 auto; image-rendering:pixelated; box-shadow:0 0 0 2px rgba(0,0,0,.15);}
   .dlg-portrait-ico{display:inline-flex; align-items:center; justify-content:center; font-size:24px; background:#efe3c4;}
   .dlg-name{font-size:11.5px; font-weight:900; opacity:.75; text-transform:uppercase; letter-spacing:.04em;}
@@ -5073,6 +5077,38 @@
   .dm-x{position:absolute; right:-4px; bottom:-4px; z-index:5; font:900 11px 'Baloo 2',system-ui,sans-serif; padding:0 5px; border-radius:999px; background:#2b1d10; color:#ffe2a6; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .dm-delete{margin-left:auto;} .dm-delete:disabled{opacity:.45; cursor:not-allowed;}
   .deck-menu-card .deck-showcase{margin-bottom:6px;}
+  .nest-actions{display:flex; gap:8px; justify-content:center; margin-top:6px;}
+  .bwc-list{max-height:200px; overflow:auto; margin:0 0 10px; padding-left:18px; font-size:13px;}
+  .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
+  @keyframes shinyTwinkle{50%{transform:scale(1.25) rotate(20deg); opacity:.7;}}
+  .shop-bundle small.sb-off{display:block; font-size:9.5px; font-weight:800; color:#2f7a3a; line-height:1;}
+  /* the old well on the Outskirts (2026-10-08) */
+  .map-well{position:absolute; transform:translate(-50%,-50%); z-index:6; width:44px; height:52px; padding:0; border:0; background:none; cursor:pointer;}
+  .map-well .mw-ring{position:absolute; left:4px; right:4px; bottom:2px; height:18px; border-radius:50%/40%; background:repeating-linear-gradient(90deg, #8a8f96 0 7px, #6c7178 7px 8px, #9aa0a6 8px 14px, #6c7178 14px 15px); box-shadow:inset 0 -4px 0 rgba(0,0,0,.25), 0 3px 4px rgba(0,0,0,.35);}
+  .map-well .mw-ring::after{content:''; position:absolute; left:5px; right:5px; top:2px; height:7px; border-radius:50%; background:radial-gradient(ellipse at 50% 40%, #6fb6d9, #24506a); }
+  .map-well .mw-posts{position:absolute; left:8px; right:8px; bottom:12px; height:26px; border-left:3px solid #6b4423; border-right:3px solid #6b4423;}
+  .map-well .mw-roof{position:absolute; left:2px; right:2px; top:4px; height:12px; background:linear-gradient(180deg,#a0522d,#7a3b1d); clip-path:polygon(50% 0, 100% 100%, 0 100%); filter:drop-shadow(0 2px 1px rgba(0,0,0,.3));}
+  .map-well .mw-bucket{position:absolute; left:50%; top:20px; width:8px; height:7px; margin-left:-4px; background:#8b5a2b; border-radius:0 0 2px 2px; animation:mwSwing 3s ease-in-out infinite; transform-origin:50% -6px;}
+  .map-well .mw-bucket::before{content:''; position:absolute; left:3px; top:-6px; width:1px; height:6px; background:#ddd;}
+  @keyframes mwSwing{50%{rotate:8deg;}}
+  .map-well .map-spot-new{position:absolute; top:-8px; right:-6px;}
+  .map-well:hover{filter:brightness(1.12);} .map-well:focus-visible{outline:3px solid #ffd98a; outline-offset:3px; border-radius:8px;}
+  .map-well.is-rippling .mw-ring::after{animation:mwRipple 1.2s ease-out;}
+  @keyframes mwRipple{30%{box-shadow:0 0 0 3px rgba(190,230,255,.8);} 100%{box-shadow:0 0 0 8px rgba(190,230,255,0);}}
+  @media (prefers-reduced-motion:reduce){ .map-well .mw-bucket{animation:none;} }
+  /* map dialogue sits clear of the map rail and HUD (2026-10-08 playtest) */
+  @media (min-width:821px){ body.conquest-full .dialogue-dock{left:290px; top:120px;} }
+  @media (max-width:820px){ body.conquest-full .dialogue-dock{top:236px;} }
+  /* starter deck hand-over (2026-10-08) */
+  .starter-modal{max-width:min(860px, 94vw); width:min(860px, 94vw); text-align:center;}
+  .ss-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:12px 0; max-height:52vh; overflow:auto; padding:6px;}
+  .ss-card{position:relative; width:82px;} .ss-card .card-tile{width:100% !important; pointer-events:none;}
+  .ss-bonus{font-size:13px; color:var(--ink-muted);}
+  .ss-foot{display:flex; align-items:center; justify-content:center; gap:18px; margin-top:8px;}
+  .ss-deckbox{display:flex; flex-direction:column; align-items:center; justify-content:center; width:70px; height:88px; border-radius:10px; font-size:26px;
+    background:repeating-linear-gradient(45deg, rgba(0,0,0,.13) 0 6px, transparent 6px 13px), #2f5b3a; border:2px solid #d7b46a; color:#fff;}
+  .ss-deckbox small{font-size:10px; text-transform:uppercase; letter-spacing:.06em;} .ss-deckbox b{font-size:12px;}
+  .ss-deckbox.is-bump{animation:ssBump .18s ease-out;} @keyframes ssBump{50%{transform:scale(1.12);}}
   .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
   .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
   .shop-bundle{min-width:46px; padding:4px 10px !important;}
