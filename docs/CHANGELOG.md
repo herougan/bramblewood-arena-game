@@ -3,6 +3,8 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- The results window fits on screen; after a fight only the board stays when you look at it.
+- Skirmish rewards show what the first clear gives, with your rank beside them.
 - The Forge has three benches: Upgrade, Refine (finer foils) and Enchant (Materia).
 - Shiny cards fight as Shiny units, and so do the units they spawn.
 - Decks save when you press Save.
