@@ -2531,10 +2531,18 @@ function castleHoverHTML(hqSide){
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false;
+      pop.hidden = false; popSrc = el;
       positionPop(el);
     }, HOVER_POP_DELAY_MS);
   });
+  // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
+  // popover stuck (e.g. over the Victory screen). Close it once its card is gone or no longer hovered.
+  let popSrc = null;
+  document.addEventListener('mousemove', ()=>{
+    if(pop.hidden || !popSrc) return;
+    if(!popSrc.isConnected || !popSrc.matches(':hover')){ pop.hidden = true; popSrc = null; }
+  }, {passive:true});
+  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; popSrc = null; };
   document.addEventListener('mouseout', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
@@ -9526,6 +9534,27 @@ function nodeRewardTier(node){
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
 }
+// Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
+// show as cards on the right of the title + the leaves & materia rewards. If already received,
+// it's grey. The first clear rewards change to re-clear rewards after the first time."): the
+// card rewards as small real cards (a card back for a still-hidden one), then the currency
+// payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
+// (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
+function cnpRewardStripHTML(mapId, node, done){
+  const defs = getCardDefs();
+  const ids = nodeRewardCardIds(mapId, node.key);
+  const tier = nodeRewardTier(node);
+  const pay = tier ? (done ? tier.repeat : tier.first) : {gold:0, dust:0};
+  const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
+    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" title="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    : `<span class="cnp-rw-card ${done?'is-got':''}" title="${escapeAttr(defs[id].name + (done ? ' — already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+  const cur = [];
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" title="Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" title="Magic Dust">✨ ${pay.dust}</span>`);
+  if(!cards && !cur.length) return '';
+  const label = done ? 'Clear again' : 'First clear';
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
+}
 function cnpRewardsPreviewHTML(node, done){
   const tier = nodeRewardTier(node); if(!tier) return '';
   const payout = done ? tier.repeat : tier.first;
@@ -10401,6 +10430,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+        ${cnpRewardStripHTML(map.id, selectedNode, done)}
         ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
       </div>
       ${earned ? `
@@ -10409,8 +10439,7 @@ function renderConquestSubTab(body){
           <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle" aria-label="${revealed?'Hide the enemy deck':'Show the enemy deck'}">${revealed?'🙈 Hide':'👁 Show'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
       ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
-      ${nodeRewardCardsLineHTML(map.id, selectedNode.key, done)}
-      ${cnpRewardsPreviewHTML(selectedNode, done)}
+      ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
@@ -10434,8 +10463,12 @@ function renderConquestSubTab(body){
   // the hover tooltip already covers name/kind/HP/flavor/squad, so this doesn't need to repeat
   // it (per the explicit "I don't need the explanation box" call above).
   if(fabEl){
-    if(selectedNode && !progress.completed.includes(conquestNodeId(map.id, selectedNode.key))){
+    // 2026-10-08 playtest: a cleared skirmish had no Fight button (yet showed "Clear again"); it
+    // now offers "Fight again".
+    if(selectedNode && !selectedNode.virtual){
+      const again = progress.completed.includes(conquestNodeId(map.id, selectedNode.key));
       fabEl.hidden = false;
+      fabEl.innerHTML = again ? '⚔️ Fight again' : '⚔️ Fight';
       fabEl.onclick = ()=> startConquestMatch(map.id, selectedNode.key);
     } else {
       fabEl.hidden = true;
@@ -13771,9 +13804,15 @@ function renderMatchUI(){
     </div>
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card">
+      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : ''}">
+        ${isTutorial ? '' : `<div class="wl-corner">
+          <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
+          <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
+        </div>`}
+        ${(!isPc && m.winner===1) ? '<div class="wl-rays" aria-hidden="true"></div>' : ''}
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
-        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
+        <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
+        ${gloryBadgesHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -13782,10 +13821,7 @@ function renderMatchUI(){
           ${nextBattleButtonHTML(m)}
           <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
           ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
-          ${isTutorial?'':`<div class="winloss-secondary">
-            <button class="btn" id="wlBackBtn" title="Close this and look at the final board">👀 See the board</button>
-            <button class="btn ghost" id="wlQuitBtn">${m.mode==='conquest' ? '🗺️ Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? '🐙 Back to the raid' : '🚪 Leave'}</button>
-          </div>`}
+
         </div>
       </div>
     </div>` : ''}
@@ -13805,6 +13841,15 @@ function renderMatchUI(){
   // over it does nothing) -- their remaining deck composition isn't information a player should be
   // able to pull up on demand, even though the count alone (how many cards they have left) already
   // was visible before this change, via the old native tooltip.
+  // 2026-10-08 (user: "Clicking the deck should show you the remaining cards in the deck, but not
+  // the order. And greyed out after, are all the cards you have taken out of the deck.")
+  const myDeckWidget = document.getElementById(activePid===2 ? 'deckWidgetTop' : 'deckWidgetBottom');
+  if(myDeckWidget){
+    myDeckWidget.classList.add('is-clickable'); myDeckWidget.setAttribute('role','button'); myDeckWidget.tabIndex = 0;
+    myDeckWidget.setAttribute('aria-label', 'Your deck: see the cards left');
+    myDeckWidget.onclick = ()=> openMatchDeckView(activePid);
+    myDeckWidget.onkeydown = e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openMatchDeckView(activePid); } };
+  }
   (function wireDeckHoverReveal(){
     const mine = activePid;
     const widgets = [
@@ -13844,6 +13889,7 @@ function renderMatchUI(){
   const passBtn = document.getElementById('passReadyBtn');
   if(passBtn) passBtn.addEventListener('click', ()=>{ m.awaitingPass = false; renderMatchUI(); });
   if(showWinModal){
+    try{ window.hideCardPop && window.hideCardPop(); }catch(e){}
     // Task #203 (UX consultant pass): the win modal previously had a mount animation but no
     // actual celebratory payoff — for the youth audience this targets, that "win" beat is one of
     // the single highest-value moments to make feel rewarding. Reuses the EXISTING star-fall
@@ -14160,7 +14206,7 @@ function wireDropZones(){
       const hc = m.players[viewerHandPid(m)].hand.find(c=> c.uid===m.selectedUid); if(!hc) return;
       showResourceTipAbove(null, hc.defId, e.clientX, e.clientY); showPitchBadge(hc.defId);
     });
-    discardZone.addEventListener('pointerleave', ()=>{ if(!discardDragActive){ hideResourceTip(); hidePitchBadge(); } });
+    discardZone.addEventListener('pointerleave', ()=>{ if(!discardDragActive){ hideResourceTip(); const m = matchState; if(!(m && m.selectedUid!=null)) hidePitchBadge(); } });
     discardZone.addEventListener('dragover', e=>{
       e.preventDefault(); discardZone.classList.add('dragover');
       const m = matchState;
@@ -14184,9 +14230,12 @@ function wireDropZones(){
       if(discardZone.contains(e.relatedTarget)) return; // moved onto a child span, not actually leaving
       discardZone.classList.remove('dragover');
       discardDragActive = false;
-      hideResourceTip(); hidePitchBadge();
+      hideResourceTip();
       const m = matchState;
+      const stillHeld = document.querySelector('#handStrip .card-tile.dragging');
       if(m && m.selectedUid==null){ discardZone.innerHTML = discardGraveyardHTML(); discardZone.title = discardZoneTitle(null); }
+      if(stillHeld) showPitchBadge(stillHeld.getAttribute('data-defid'));
+      else if(!(m && m.selectedUid!=null)) hidePitchBadge();
     });
     discardZone.addEventListener('drop', e=>{
       e.preventDefault(); discardZone.classList.remove('dragover');
@@ -16066,11 +16115,15 @@ function renderHand(){
       e.dataTransfer.effectAllowed = 'move';
       el.classList.add('dragging');
       dragTrail.start();
+      showPitchBadge(el.getAttribute('data-defid'));
+      // 2026-10-08: our own drag ghost instead of the browser's drag image, which is always drawn
+      // above the page and hid the "+1 Lumber" tip. (The touch shim already draws its own ghost.)
+      if(e.isTrusted && e.dataTransfer && e.dataTransfer.setDragImage) handDragGhost.start(el, e);
       // Pitch preview (2026-10-05, user: "when the player is hovering the card over the graveyard
       // they should have a more obvious indicator"): the graveyard lights up with what this card
       // would pitch for the moment you pick it up, and grows when you're over it.
     });
-    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); });
+    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); handDragGhost.stop(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -16241,6 +16294,14 @@ function showPitchBadge(defId){
   // showResourceTipAbove, positioned at the cursor).
   const z = document.getElementById('dropDiscard'); if(!z || !defId) return;
   z.classList.add('pitch-ready');
+  // 2026-10-08 (user: "When holding the card but not over the graveyard, the tooltip will lie on
+  // top of the graveyard and be visible"): while a card is held, its yield rests on the graveyard;
+  // over the graveyard it moves onto the card itself (showResourceTipAbove).
+  const {resource, amount} = pitchYieldOf(defId);
+  const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
+  let b = z.querySelector('.pitch-badge');
+  if(!b){ b = document.createElement('span'); b.className = 'pitch-badge'; b.setAttribute('aria-hidden','true'); z.appendChild(b); }
+  b.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
 }
 function hidePitchBadge(){
   const z = document.getElementById('dropDiscard'); if(!z) return;
@@ -16311,7 +16372,7 @@ function positionResourceTipAbove(targetEl, cx, cy){
   if(!tip) return;
   if(cx!=null && cy!=null){
     tip.style.left = cx + 'px';
-    tip.style.top = (cy - 74) + 'px'; // rides just above the card being dragged, following it
+    tip.style.top = cy + 'px'; // 2026-10-08: centred ON the held card (the drag ghost sits under it)
     return;
   }
   if(!targetEl) return;
@@ -16353,6 +16414,7 @@ function refreshDiscardZone(){
   // preview now only ever appears from the discardZone dragover handler further up (a genuine
   // hover/drag moment over the pile itself), so simply arming a card no longer shows it.
   hideResourceTip();
+  if(hc) showPitchBadge(hc.defId); else hidePitchBadge();
 }
 async function discardCardByUid(uid){
   const m = matchState; if(!m||m.resolving) return;
@@ -16773,6 +16835,7 @@ function deathStyleFor(uid){
 function fallDeathVfx(el, ms){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile') || el;
+  if(el.classList.contains('is-flying')) return flyerFallVfx(el, t, ms);
   el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
   // 2026-10-08 (user: "start slow, then speed up until it hits the floor — it looks like 3
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
@@ -16787,6 +16850,26 @@ function fallDeathVfx(el, ms){
       .to(t, {rotationX:86, duration:.08, ease:'power1.in'})
       .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
   }
+  return true;
+}
+// Flyer death (2026-10-08, user: "they fall to the ground (spinning slightly <5 degrees,
+// +translation) and when they hit the board, they burst into leaves"): the lifted card drops under
+// gravity with a small drift and turn, its shadow grows to meet it, and on touchdown it bursts.
+function flyerFallVfx(el, t, ms){
+  if(!hasGsap()) return false;
+  el.classList.add('falling', 'fly-falling');
+  t.style.animation = 'none';
+  const shadow = el.querySelector('.fly-shadow');
+  const side = Math.random() < 0.5 ? -1 : 1, fall = Math.max(0.32, ms*0.55/1000);
+  gsap.timeline()
+    .to(t, {y:12, x:side*(8 + Math.random()*8), rotation:side*(2.5 + Math.random()*2), filter:'grayscale(.6) brightness(.85)', duration:fall, ease:'power2.in'})
+    .add(()=>{
+      leafPuff(el); leafPuff(el); impactDust(el);
+      try{ featherBurst(el); }catch(e){}
+      try{ SoundKit.knockOut(); }catch(e){}
+    })
+    .to(t, {scale:.82, opacity:0, duration:.16, ease:'power2.out'});
+  if(shadow) gsap.to(shadow, {scaleX:1.25, opacity:1, duration:fall, ease:'power2.in', onComplete:()=> gsap.to(shadow, {opacity:0, duration:.2})});
   return true;
 }
 // A low ring of dust that skids out along the floor where the card landed.
@@ -17612,6 +17695,24 @@ async function resolveRound(){
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
 // while it's dragged. Throttled to one sparkle per 40 ms and at most 14 alive; none with reduced motion.
+var handDragGhost = (function(){
+  let ghost = null, offX = 0, offY = 0;
+  const blank = (typeof Image !== 'undefined') ? (()=>{ const i = new Image(); i.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; return i; })() : null;
+  const move = e=>{ if(!ghost || (!e.clientX && !e.clientY)) return; ghost.style.left = (e.clientX - offX) + 'px'; ghost.style.top = (e.clientY - offY) + 'px'; };
+  return {
+    start(el, e){
+      try{ e.dataTransfer.setDragImage(blank, 0, 0); }catch(_){ return; }
+      const r = el.getBoundingClientRect();
+      offX = e.clientX - r.left; offY = e.clientY - r.top;
+      ghost = el.cloneNode(true); ghost.classList.remove('dragging'); ghost.classList.add('hand-drag-ghost'); ghost.removeAttribute('id'); ghost.setAttribute('aria-hidden','true');
+      ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px'; ghost.style.left = r.left + 'px'; ghost.style.top = r.top + 'px';
+      ghost.style.setProperty('--gx', (offX / r.width * 100).toFixed(0) + '%'); ghost.style.setProperty('--gy', (offY / r.height * 100).toFixed(0) + '%');
+      document.body.appendChild(ghost);
+      document.addEventListener('dragover', move, true); document.addEventListener('drag', move, true);
+    },
+    stop(){ if(ghost){ ghost.remove(); ghost = null; } document.removeEventListener('dragover', move, true); document.removeEventListener('drag', move, true); },
+  };
+})();
 var dragTrail = (function(){
   let on = false, last = 0, alive = 0;
   function spark(x, y){
@@ -18274,10 +18375,21 @@ function lossTipHTML(m){
   const canDeck = tabOpen('deck');
   return `<div class="loss-tip"><span class="loss-tip-ico" aria-hidden="true">💡</span><div class="loss-tip-body"><div>${tip}</div>${canDeck ? '<button type="button" class="btn small" id="wlReworkDeckBtn">🃏 Rework my deck</button>' : ''}</div></div>`;
 }
+// Win screen header (2026-10-08, user: "The Hurrah! screen can be improved. +First Clear is blending
+// too much into the background. This is a very glorious screen"): the rank as a big foil hexagon
+// and First Clear as a gold ribbon, right under the title.
+function gloryBadgesHTML(m){
+  if(!m.conquestRankEarned || m.winner!==1) return '';
+  const reward = m.conquestRewardEarned;
+  return `<div class="wl-glory">
+    <span class="rank-hex wl-rank rank-${m.conquestRankEarned}" title="Graded on how much of your own castle HP you still had left" aria-label="Rank ${m.conquestRankEarned}"><i aria-hidden="true"></i><b>${m.conquestRankEarned}</b></span>
+    ${reward && reward.isFirstClear ? `<span class="wl-firstclear" title="First time clearing this fight — a bigger one-off bonus"><span>✨ First Clear ✨</span></span>` : ''}
+  </div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
-  if(m.conquestRankEarned){
+  if(m.conquestRankEarned && m.winner!==1){
     secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="Graded on how much of your own castle HP you still had left">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
   }
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
@@ -18454,8 +18566,11 @@ function matchStatsHTML(m){
     </div>` : '';
   return `<div class="winloss-stats">
     ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
-    <div class="winloss-stats-head"><span></span><span>${sideLabel('A')}</span><span>${sideLabel('B')}</span></div>
-    ${rows.map(r=>{ const cls = cellCls(r); return `<div class="winloss-stats-row"><span class="wls-label">${r.label}</span><span class="wls-val ${cls.A}">${totals.A[r.key]}</span><span class="wls-val ${cls.B}">${totals.B[r.key]}</span></div>`; }).join('')}
+    <div class="wls-compact" aria-label="Fight stats">
+      <span title="Damage you dealt (enemy: ${totals.B.dealt})">⚔️ <b>${totals.A.dealt}</b> dealt</span>
+      <span title="Damage you took (enemy took ${totals.B.taken})">🛡️ <b>${totals.A.taken}</b> taken</span>
+      <span title="Your biggest single hit (enemy: ${totals.B.biggestHit})">💥 <b>${totals.A.biggestHit}</b> best hit</span>
+    </div>
   </div>`;
 }
 // 2026-09-26 ("is there any reward animation for finishing a skirmish, do it"): the win/loss
@@ -19388,10 +19503,29 @@ function critStampVfx(el){
     .fromTo(st, {xPercent:-50, yPercent:-50, scale:2.4, rotation:-24, opacity:0}, {scale:1, rotation:-12, opacity:1, duration:.14, ease:'power4.in'})
     .to(st, {opacity:0, y:-8, duration:.3, delay:.5});
 }
+// Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
+// quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
+// cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
+// own `translate`/`rotate` (additive, so it composes with a flyer's soar or an attack lunge).
+function recoilEl(el, power){
+  if(!el) return;
+  const tile = el.querySelector('.card-tile') || el;
+  if(reducedMotion() || !tile.animate){ shakeEl(el); return; }
+  const dir = el.closest('#rowMine') ? 1 : -1, k = Math.max(0.6, Math.min(1.6, power || 1));
+  const sx = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.random()*3) * k;
+  try{
+    tile.animate([
+      {translate:'0px 0px', rotate:'0deg'},
+      {translate:`${sx.toFixed(1)}px ${(dir*10*k).toFixed(1)}px`, rotate:`${(sx*0.6).toFixed(1)}deg`, offset:0.22},
+      {translate:`${(-sx*0.2).toFixed(1)}px ${(-dir*1.5*k).toFixed(1)}px`, rotate:`${(-sx*0.12).toFixed(1)}deg`, offset:0.62},
+      {translate:'0px 0px', rotate:'0deg'},
+    ], {duration: Math.max(180, Math.min(320, animMs().impactPad*1.2 || 260)), easing:'cubic-bezier(.2,.75,.3,1)', composite:'add'});
+  }catch(e){ shakeEl(el); }
+}
 function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
-  shakeEl(el);
+  recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   const di = DMG_ICON[dmgType];
   if(blocked) floatText(el, '🛡 0', 'blocked');
   else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
@@ -20128,6 +20262,32 @@ function recentOpponentsPlayerHTML(){
     const top = Object.keys(o.deck).sort((a,b)=> o.deck[b]-o.deck[a]).slice(0,5).map(id=> defs[id] ? defs[id].icon : '').join('');
     return `<button type="button" class="ro-row ro-btn" data-ro-view="${i}"><span class="ro-res ${o.result||''}">${o.result==='win'?'W':o.result==='loss'?'L':'D'}</span>
       <span class="ro-name"><b>${escapeHtml(o.name||'Opponent')}</b><span class="ro-meta">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${top}</span></span></button>`; }).join('')}</div></div>`;
+}
+function openMatchDeckView(pid){
+  const m = matchState; if(!m) return;
+  const pl = m.players[pid], defs = getCardDefs(); if(!pl) return;
+  const real = id=> defs[id] && !defs[id].token;
+  const tally = list=>{ const t = {}; list.forEach(id=>{ if(real(id)) t[id] = (t[id]||0) + 1; }); return t; };
+  const left = tally(pl.deck || []);
+  const outIds = [].concat((pl.hand||[]).map(c=> c.defId), (allCardsOnBoard(pl)||[]).filter(c=> !c.isLeader && !c.leader).map(c=> c.defId), (pl.graveyard||[]).map(g=> g.defId), (pl.exile||[]).map(g=> g.defId))
+    .filter(id=> id && id !== m.leaderDefId);
+  const out = tally(outIds);
+  const order = ids=> ids.sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
+  const nLeft = (pl.deck||[]).length;
+  const tile = (id, n, gone)=> `<div class="mdv-card ${gone?'is-gone':''}">${cardTileHTML(defs[id], {inPlay:true})}${n>1?`<span class="ro-x">×${n}</span>`:''}</div>`;
+  let overlay = document.getElementById('matchDeckOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'matchDeckOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  overlay.innerHTML = `<div class="modal ro-deck-modal mdv-modal" role="dialog" aria-label="Your deck">
+    <div class="modal-head-row"><h2>🃏 Your deck</h2><button class="modal-close-btn" id="mdvClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub"><b>${nLeft}</b> card${nLeft===1?'':'s'} left, in no particular order. Cards you've already drawn are greyed out.</p>
+    <div class="pool-grid ro-deck-grid">${order(Object.keys(left)).map(id=> tile(id, left[id], false)).join('')}${order(Object.keys(out)).map(id=> tile(id, out[id], true)).join('')}</div>
+  </div>`;
+  overlay.hidden = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; document.removeEventListener('keydown', onKey, true); };
+  const onKey = e=>{ if(e.key==='Escape'){ e.stopImmediatePropagation(); close(); } };
+  document.addEventListener('keydown', onKey, true);
+  overlay.querySelector('#mdvClose').onclick = close;
+  overlay.onclick = e=>{ if(e.target===overlay) close(); };
 }
 function openRecentOpponentDeck(i){
   const o = loadRecentOpponents()[i]; if(!o) return;

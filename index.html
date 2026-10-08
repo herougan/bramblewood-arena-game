@@ -2061,13 +2061,13 @@
      like they are soaring"): a 9px lift on the independent translate property, a slow sway, and a
      soft shadow on the felt that shrinks as they rise. A low-HP flyer's tremble (below) wins, so a
      badly hurt flyer sinks back down. */
-  :where(#appWrap.in-match .board-card.is-flying) .card-tile{translate:0 -9px; animation:flySoar 3.4s ease-in-out infinite;}
+  :where(#appWrap.in-match .board-card.is-flying) .card-tile{translate:5px -9px; animation:flySoar 3.4s ease-in-out infinite;}
   :where(#appWrap.in-match .board-card.is-flying:nth-child(2n)) .card-tile{animation-delay:-1.1s;}
   .board-card .fly-shadow{display:none;}
-  #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:10%; right:10%; bottom:-14px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
+  #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:6%; right:14%; bottom:-14px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
     background:radial-gradient(ellipse at center, rgba(0,0,0,.6), rgba(0,0,0,.28) 45%, transparent 72%); animation:flyShadow 3.4s ease-in-out infinite;}
   #appWrap.in-match .board-card.is-flying:nth-child(2n) .fly-shadow{animation-delay:-1.1s;}
-  @keyframes flySoar{0%,100%{translate:0 -9px; rotate:0deg;} 22%{translate:1.5px -12px; rotate:.8deg;} 50%{translate:0 -8px; rotate:0deg;} 74%{translate:-1.5px -12px; rotate:-.8deg;}}
+  @keyframes flySoar{0%,100%{translate:5px -9px; rotate:.6deg;} 22%{translate:7px -12px; rotate:1.3deg;} 50%{translate:5px -8px; rotate:.6deg;} 74%{translate:3px -12px; rotate:-.3deg;}}
   @keyframes flyShadow{0%,100%{transform:scaleX(1); opacity:1;} 22%,74%{transform:scaleX(.86); opacity:.75;} 50%{transform:scaleX(1.03); opacity:1;}}
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
@@ -2078,7 +2078,7 @@
      motion pauses while a round resolves; flyers stay up but stop swaying. Same :where()
      specificity, so strike/death animations still win. */
   :where(html.bw-resolving #appWrap.in-match .board-card) .card-tile{animation:none;}
-  :where(html.bw-resolving #appWrap.in-match .board-card.is-flying) .card-tile{animation:none; translate:0 -9px;}
+  :where(html.bw-resolving #appWrap.in-match .board-card.is-flying) .card-tile{animation:none; translate:5px -9px;}
   html.bw-resolving #appWrap.in-match .board-card.is-flying .fly-shadow{animation:none;}
   @media (prefers-reduced-motion: reduce){ :where(.board-card) .card-tile, .card-tile.crack-new{animation:none;} }
   /* Sudden-death red sky (2026-10-06): see suddenDeathSky(). Plain alpha (no blend mode) to stay cheap. */
@@ -4894,6 +4894,66 @@
      reveal with a fanned stack, rarity tease, NEW! moment. The "meta" look (plum spotlight, paw
      prints) is deliberately apart from the rest of the game. */
   html.po2-open #starFallLayer{z-index:9600;} html.po2-open .toast-host{z-index:9700;}
+  /* 2026-10-08 (user: the middle two cards are visible in the A v B screen; they should fade in after) */
+  #appWrap.in-match .center-slot-empty{transition:opacity 1.1s ease .15s;}
+  body:has(.vs-opener, .vs-screen) #appWrap .center-slot-empty{opacity:0; transition:none;}
+  body:has(.vs-opener, .vs-screen) .coach-tip{visibility:hidden;}
+  .hand-drag-ghost{position:fixed !important; z-index:9999; pointer-events:none; margin:0 !important; opacity:.95; transform-origin:var(--gx,50%) var(--gy,50%); rotate:-4deg; scale:1.06; filter:drop-shadow(0 14px 18px rgba(0,0,0,.45)); transition:none !important;}
+  .deck-widget.is-clickable{cursor:pointer;} .deck-widget.is-clickable:hover{filter:brightness(1.1);}
+  .mdv-card{position:relative;} .mdv-card .card-tile{width:100%;}
+  .mdv-card.is-gone .card-tile{filter:grayscale(1) brightness(.75); opacity:.5;}
+  /* node panel reward strip (2026-10-08) */
+  .conquest-node-panel .cnp-head{flex-wrap:wrap;}
+  .cnp-rw{display:flex; align-items:center; gap:8px; margin-left:auto; padding:4px 8px 4px 10px; border-radius:12px; background:rgba(0,0,0,.22); border:1px solid rgba(255,220,150,.25);}
+  .cnp-rw-k{font:800 10.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:#ffe2a6; writing-mode:horizontal-tb; max-width:56px; line-height:1.15; text-align:right;}
+  .cnp-rw.is-done .cnp-rw-k{color:rgba(255,255,255,.65);}
+  .cnp-rw-items{display:flex; align-items:center; gap:6px;}
+  .cnp-rw-card{position:relative; width:46px; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
+  .cnp-rw-card .card-tile{width:100% !important; pointer-events:none;}
+  .cnp-rw-card:hover{transform:scale(2.6) translateY(-6px); z-index:20;}
+  .cnp-rw-card.is-got .card-tile, .cnp-rw-card.is-got .cnp-rw-back{filter:grayscale(1) brightness(.7);}
+  .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
+  .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
+  .cnp-rw.is-done .cnp-rw-cur{opacity:.8; font-size:12.5px;}
+  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} .cnp-rw-card{width:38px;} }
+  /* Win screen (2026-10-08): a glorious version for wins; corner 👀/✕; compact stats */
+  .winloss-card{position:relative;}
+  .wl-corner{position:absolute; top:10px; right:10px; display:flex; gap:6px; z-index:5;}
+  .wl-corner-btn{width:36px; height:36px; border-radius:50%; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .wl-corner-btn:hover{filter:brightness(1.08);}
+  .wls-compact{display:flex; flex-wrap:wrap; justify-content:center; gap:6px 16px; font-size:12.5px; color:var(--ink-muted); margin:10px 0 0; grid-column:1 / -1 !important;}
+  .wls-compact b{color:var(--ink); font-weight:800;}
+  .winloss-card:has(.rw-panel) .winloss-stats{display:block !important;}
+  .winloss-card .winloss-stats{background:transparent !important; border:0 !important; padding:0 !important; text-align:center !important;}
+  .winloss-card .winloss-stats > .rw-panel{margin:0 auto !important;}
+  .wl-glory{display:flex; align-items:center; justify-content:center; gap:22px; margin:6px 0 16px; flex-wrap:wrap;}
+  .rank-hex.wl-rank{position:relative !important; top:auto !important; right:auto !important; transform:scale(1.35); margin:0 8px;}
+  .winloss-card.is-glory .rw-cur{background:rgba(255,255,255,.14) !important; color:#fff !important; border-color:rgba(255,220,150,.35) !important; font-size:18px;}
+  .winloss-card.is-glory .rw-cur .cur-label{color:#ffe2a6 !important; opacity:1 !important;}
+  .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(130px, 16vw, 170px) !important; height:auto !important;}
+  .winloss-card.is-glory .rw-unlocks .card-tile{aspect-ratio:4/5;}
+  .winloss-card .winloss-actions:not(:has(> .btn ~ .btn)){display:flex !important; flex-direction:column; align-items:center;}
+  .winloss-card .winloss-actions:not(:has(> .btn ~ .btn)) > .btn{max-width:360px; width:100%;}
+  .wl-firstclear{position:relative; display:inline-block; padding:8px 34px; font:900 clamp(18px, 2.6vw, 24px) 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#3a2306;
+    background:linear-gradient(180deg, #ffe9a3, #f2c14e 55%, #d99a1e); clip-path:polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%); filter:drop-shadow(0 4px 8px rgba(0,0,0,.35)); overflow:hidden;}
+  .wl-firstclear::after{content:''; position:absolute; inset:0; background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%); translate:-120% 0; animation:wlShine 2.6s ease-in-out .6s infinite;}
+  @keyframes wlShine{0%{translate:-120% 0} 45%,100%{translate:120% 0}}
+  .pass-card.winloss-card.is-glory{background:radial-gradient(ellipse 80% 55% at 50% 0%, #6b3f8f 0%, #3a1f52 45%, #1d1029 100%) !important; color:#fbf1dc; border:2px solid #e9b44c !important; box-shadow:0 0 0 4px rgba(233,180,76,.25), 0 30px 80px rgba(0,0,0,.6) !important; overflow-x:hidden;}
+  .winloss-card.is-glory .wl-rays{position:absolute; left:50%; top:-260px; width:720px; height:720px; margin-left:-360px; border-radius:50%; pointer-events:none; z-index:0; opacity:.35;
+    background:repeating-conic-gradient(from 0deg, rgba(255,215,120,.55) 0deg 6deg, transparent 6deg 18deg); -webkit-mask:radial-gradient(closest-side, #000 20%, transparent 72%); mask:radial-gradient(closest-side, #000 20%, transparent 72%); animation:wlRays 40s linear infinite;}
+  @keyframes wlRays{to{rotate:360deg;}}
+  .winloss-card.is-glory > *:not(.wl-rays){position:relative; z-index:1;}
+  .winloss-card.is-glory .wl-corner{position:absolute;}
+  .winloss-card.is-glory .wl-title{font:900 clamp(40px, 6vw, 64px)/1 'Baloo 2',system-ui,sans-serif !important; letter-spacing:.02em; background:linear-gradient(180deg, #fff6d6 10%, #ffd36b 55%, #e09a22); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 4px 0 #5a2d0c) drop-shadow(0 0 22px rgba(255,200,90,.45)); margin:0 0 6px !important;}
+  .winloss-card.is-glory .pass-ico{font-size:44px !important;}
+  .winloss-card.is-glory .rw-panel{background:rgba(255,255,255,.07) !important; border:1px solid rgba(255,220,150,.25) !important; color:#fbf1dc;}
+  .winloss-card.is-glory .rw-head{color:#ffd98a !important;}
+  .winloss-card.is-glory .wls-compact{color:rgba(251,241,220,.65);} .winloss-card.is-glory .wls-compact b{color:#fff;}
+  .winloss-card.is-glory .wl-corner-btn{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.3); color:#fff;}
+  .winloss-card.is-glory .winloss-actions .btn:not(.primary){background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.3);}
+  :where(html[data-fx="none"], html[data-fx="low"]) .wl-rays, :where(html[data-fx="none"]) .wl-firstclear::after{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .wl-rays, .wl-firstclear::after{animation:none !important;} }
   .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
   .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
   .shop-bundle{min-width:46px; padding:4px 10px !important;}
@@ -5726,12 +5786,12 @@
   .discardzone{position:relative;}
   .discardzone.pitch-ready{box-shadow:0 0 0 2px #e9b44c, 0 0 18px rgba(233,180,76,.55) !important; animation:pitchReady 1.1s ease-in-out infinite;}
   @keyframes pitchReady{50%{box-shadow:0 0 0 3px #ffd56e, 0 0 26px rgba(255,213,110,.75);}}
-  .pitch-badge{position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%) scale(.9); display:flex; flex-direction:column; align-items:center; gap:0;
+  .pitch-badge{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(.95); display:flex; flex-direction:column; align-items:center; gap:0;
     padding:6px 14px 7px; border-radius:14px; background:linear-gradient(180deg,#4a3018,#24170a); border:2px solid #e9b44c; color:#ffd56e; white-space:nowrap;
     box-shadow:0 8px 20px rgba(0,0,0,.45); pointer-events:none; z-index:50; transition:transform .15s ease;}
   .pitch-badge b{font:800 22px/1.05 'Baloo 2',system-ui,sans-serif; text-shadow:0 2px 0 rgba(0,0,0,.5);}
   .pitch-badge small{font:700 11px/1.1 'Baloo 2',system-ui,sans-serif; color:#f3e3bf; opacity:.85; letter-spacing:.04em; text-transform:uppercase;}
-  .discardzone.dragover .pitch-badge{transform:translateX(-50%) scale(1.25);}
+  .discardzone.dragover .pitch-badge{opacity:0;}
   .discardzone.dragover.pitch-ready{transform:scale(1.12) !important;}
   @media (prefers-reduced-motion:reduce){ .discardzone.pitch-ready{animation:none;} }
   /* The "+1 Lumber" confirmation after a pitch: quieter now that the preview carries the news. */
@@ -13578,10 +13638,18 @@ function castleHoverHTML(hqSide){
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false;
+      pop.hidden = false; popSrc = el;
       positionPop(el);
     }, HOVER_POP_DELAY_MS);
   });
+  // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
+  // popover stuck (e.g. over the Victory screen). Close it once its card is gone or no longer hovered.
+  let popSrc = null;
+  document.addEventListener('mousemove', ()=>{
+    if(pop.hidden || !popSrc) return;
+    if(!popSrc.isConnected || !popSrc.matches(':hover')){ pop.hidden = true; popSrc = null; }
+  }, {passive:true});
+  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; popSrc = null; };
   document.addEventListener('mouseout', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
@@ -20573,6 +20641,27 @@ function nodeRewardTier(node){
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
 }
+// Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
+// show as cards on the right of the title + the leaves & materia rewards. If already received,
+// it's grey. The first clear rewards change to re-clear rewards after the first time."): the
+// card rewards as small real cards (a card back for a still-hidden one), then the currency
+// payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
+// (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
+function cnpRewardStripHTML(mapId, node, done){
+  const defs = getCardDefs();
+  const ids = nodeRewardCardIds(mapId, node.key);
+  const tier = nodeRewardTier(node);
+  const pay = tier ? (done ? tier.repeat : tier.first) : {gold:0, dust:0};
+  const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
+    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" title="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    : `<span class="cnp-rw-card ${done?'is-got':''}" title="${escapeAttr(defs[id].name + (done ? ' — already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+  const cur = [];
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" title="Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" title="Magic Dust">✨ ${pay.dust}</span>`);
+  if(!cards && !cur.length) return '';
+  const label = done ? 'Clear again' : 'First clear';
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
+}
 function cnpRewardsPreviewHTML(node, done){
   const tier = nodeRewardTier(node); if(!tier) return '';
   const payout = done ? tier.repeat : tier.first;
@@ -21448,6 +21537,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+        ${cnpRewardStripHTML(map.id, selectedNode, done)}
         ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
       </div>
       ${earned ? `
@@ -21456,8 +21546,7 @@ function renderConquestSubTab(body){
           <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle" aria-label="${revealed?'Hide the enemy deck':'Show the enemy deck'}">${revealed?'🙈 Hide':'👁 Show'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
       ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
-      ${nodeRewardCardsLineHTML(map.id, selectedNode.key, done)}
-      ${cnpRewardsPreviewHTML(selectedNode, done)}
+      ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
@@ -21481,8 +21570,12 @@ function renderConquestSubTab(body){
   // the hover tooltip already covers name/kind/HP/flavor/squad, so this doesn't need to repeat
   // it (per the explicit "I don't need the explanation box" call above).
   if(fabEl){
-    if(selectedNode && !progress.completed.includes(conquestNodeId(map.id, selectedNode.key))){
+    // 2026-10-08 playtest: a cleared skirmish had no Fight button (yet showed "Clear again"); it
+    // now offers "Fight again".
+    if(selectedNode && !selectedNode.virtual){
+      const again = progress.completed.includes(conquestNodeId(map.id, selectedNode.key));
       fabEl.hidden = false;
+      fabEl.innerHTML = again ? '⚔️ Fight again' : '⚔️ Fight';
       fabEl.onclick = ()=> startConquestMatch(map.id, selectedNode.key);
     } else {
       fabEl.hidden = true;
@@ -24818,9 +24911,15 @@ function renderMatchUI(){
     </div>
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card">
+      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : ''}">
+        ${isTutorial ? '' : `<div class="wl-corner">
+          <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
+          <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
+        </div>`}
+        ${(!isPc && m.winner===1) ? '<div class="wl-rays" aria-hidden="true"></div>' : ''}
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
-        <h2>${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
+        <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
+        ${gloryBadgesHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -24829,10 +24928,7 @@ function renderMatchUI(){
           ${nextBattleButtonHTML(m)}
           <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
           ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
-          ${isTutorial?'':`<div class="winloss-secondary">
-            <button class="btn" id="wlBackBtn" title="Close this and look at the final board">👀 See the board</button>
-            <button class="btn ghost" id="wlQuitBtn">${m.mode==='conquest' ? '🗺️ Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? '🐙 Back to the raid' : '🚪 Leave'}</button>
-          </div>`}
+
         </div>
       </div>
     </div>` : ''}
@@ -24852,6 +24948,15 @@ function renderMatchUI(){
   // over it does nothing) -- their remaining deck composition isn't information a player should be
   // able to pull up on demand, even though the count alone (how many cards they have left) already
   // was visible before this change, via the old native tooltip.
+  // 2026-10-08 (user: "Clicking the deck should show you the remaining cards in the deck, but not
+  // the order. And greyed out after, are all the cards you have taken out of the deck.")
+  const myDeckWidget = document.getElementById(activePid===2 ? 'deckWidgetTop' : 'deckWidgetBottom');
+  if(myDeckWidget){
+    myDeckWidget.classList.add('is-clickable'); myDeckWidget.setAttribute('role','button'); myDeckWidget.tabIndex = 0;
+    myDeckWidget.setAttribute('aria-label', 'Your deck: see the cards left');
+    myDeckWidget.onclick = ()=> openMatchDeckView(activePid);
+    myDeckWidget.onkeydown = e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openMatchDeckView(activePid); } };
+  }
   (function wireDeckHoverReveal(){
     const mine = activePid;
     const widgets = [
@@ -24891,6 +24996,7 @@ function renderMatchUI(){
   const passBtn = document.getElementById('passReadyBtn');
   if(passBtn) passBtn.addEventListener('click', ()=>{ m.awaitingPass = false; renderMatchUI(); });
   if(showWinModal){
+    try{ window.hideCardPop && window.hideCardPop(); }catch(e){}
     // Task #203 (UX consultant pass): the win modal previously had a mount animation but no
     // actual celebratory payoff — for the youth audience this targets, that "win" beat is one of
     // the single highest-value moments to make feel rewarding. Reuses the EXISTING star-fall
@@ -25207,7 +25313,7 @@ function wireDropZones(){
       const hc = m.players[viewerHandPid(m)].hand.find(c=> c.uid===m.selectedUid); if(!hc) return;
       showResourceTipAbove(null, hc.defId, e.clientX, e.clientY); showPitchBadge(hc.defId);
     });
-    discardZone.addEventListener('pointerleave', ()=>{ if(!discardDragActive){ hideResourceTip(); hidePitchBadge(); } });
+    discardZone.addEventListener('pointerleave', ()=>{ if(!discardDragActive){ hideResourceTip(); const m = matchState; if(!(m && m.selectedUid!=null)) hidePitchBadge(); } });
     discardZone.addEventListener('dragover', e=>{
       e.preventDefault(); discardZone.classList.add('dragover');
       const m = matchState;
@@ -25231,9 +25337,12 @@ function wireDropZones(){
       if(discardZone.contains(e.relatedTarget)) return; // moved onto a child span, not actually leaving
       discardZone.classList.remove('dragover');
       discardDragActive = false;
-      hideResourceTip(); hidePitchBadge();
+      hideResourceTip();
       const m = matchState;
+      const stillHeld = document.querySelector('#handStrip .card-tile.dragging');
       if(m && m.selectedUid==null){ discardZone.innerHTML = discardGraveyardHTML(); discardZone.title = discardZoneTitle(null); }
+      if(stillHeld) showPitchBadge(stillHeld.getAttribute('data-defid'));
+      else if(!(m && m.selectedUid!=null)) hidePitchBadge();
     });
     discardZone.addEventListener('drop', e=>{
       e.preventDefault(); discardZone.classList.remove('dragover');
@@ -27113,11 +27222,15 @@ function renderHand(){
       e.dataTransfer.effectAllowed = 'move';
       el.classList.add('dragging');
       dragTrail.start();
+      showPitchBadge(el.getAttribute('data-defid'));
+      // 2026-10-08: our own drag ghost instead of the browser's drag image, which is always drawn
+      // above the page and hid the "+1 Lumber" tip. (The touch shim already draws its own ghost.)
+      if(e.isTrusted && e.dataTransfer && e.dataTransfer.setDragImage) handDragGhost.start(el, e);
       // Pitch preview (2026-10-05, user: "when the player is hovering the card over the graveyard
       // they should have a more obvious indicator"): the graveyard lights up with what this card
       // would pitch for the moment you pick it up, and grows when you're over it.
     });
-    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); });
+    el.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); hidePitchBadge(); hideResourceTip(); dragTrail.stop(); handDragGhost.stop(); });
   });
 }
 // The AI now commits its own action the INSTANT the player commits theirs (2026-09-14, per
@@ -27288,6 +27401,14 @@ function showPitchBadge(defId){
   // showResourceTipAbove, positioned at the cursor).
   const z = document.getElementById('dropDiscard'); if(!z || !defId) return;
   z.classList.add('pitch-ready');
+  // 2026-10-08 (user: "When holding the card but not over the graveyard, the tooltip will lie on
+  // top of the graveyard and be visible"): while a card is held, its yield rests on the graveyard;
+  // over the graveyard it moves onto the card itself (showResourceTipAbove).
+  const {resource, amount} = pitchYieldOf(defId);
+  const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
+  let b = z.querySelector('.pitch-badge');
+  if(!b){ b = document.createElement('span'); b.className = 'pitch-badge'; b.setAttribute('aria-hidden','true'); z.appendChild(b); }
+  b.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
 }
 function hidePitchBadge(){
   const z = document.getElementById('dropDiscard'); if(!z) return;
@@ -27358,7 +27479,7 @@ function positionResourceTipAbove(targetEl, cx, cy){
   if(!tip) return;
   if(cx!=null && cy!=null){
     tip.style.left = cx + 'px';
-    tip.style.top = (cy - 74) + 'px'; // rides just above the card being dragged, following it
+    tip.style.top = cy + 'px'; // 2026-10-08: centred ON the held card (the drag ghost sits under it)
     return;
   }
   if(!targetEl) return;
@@ -27400,6 +27521,7 @@ function refreshDiscardZone(){
   // preview now only ever appears from the discardZone dragover handler further up (a genuine
   // hover/drag moment over the pile itself), so simply arming a card no longer shows it.
   hideResourceTip();
+  if(hc) showPitchBadge(hc.defId); else hidePitchBadge();
 }
 async function discardCardByUid(uid){
   const m = matchState; if(!m||m.resolving) return;
@@ -27820,6 +27942,7 @@ function deathStyleFor(uid){
 function fallDeathVfx(el, ms){
   if(!el || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return false;
   const t = el.querySelector('.card-tile') || el;
+  if(el.classList.contains('is-flying')) return flyerFallVfx(el, t, ms);
   el.classList.add('falling'); el.style.setProperty('--fall-ms', ms + 'ms');
   // 2026-10-08 (user: "start slow, then speed up until it hits the floor — it looks like 3
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
@@ -27834,6 +27957,26 @@ function fallDeathVfx(el, ms){
       .to(t, {rotationX:86, duration:.08, ease:'power1.in'})
       .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
   }
+  return true;
+}
+// Flyer death (2026-10-08, user: "they fall to the ground (spinning slightly <5 degrees,
+// +translation) and when they hit the board, they burst into leaves"): the lifted card drops under
+// gravity with a small drift and turn, its shadow grows to meet it, and on touchdown it bursts.
+function flyerFallVfx(el, t, ms){
+  if(!hasGsap()) return false;
+  el.classList.add('falling', 'fly-falling');
+  t.style.animation = 'none';
+  const shadow = el.querySelector('.fly-shadow');
+  const side = Math.random() < 0.5 ? -1 : 1, fall = Math.max(0.32, ms*0.55/1000);
+  gsap.timeline()
+    .to(t, {y:12, x:side*(8 + Math.random()*8), rotation:side*(2.5 + Math.random()*2), filter:'grayscale(.6) brightness(.85)', duration:fall, ease:'power2.in'})
+    .add(()=>{
+      leafPuff(el); leafPuff(el); impactDust(el);
+      try{ featherBurst(el); }catch(e){}
+      try{ SoundKit.knockOut(); }catch(e){}
+    })
+    .to(t, {scale:.82, opacity:0, duration:.16, ease:'power2.out'});
+  if(shadow) gsap.to(shadow, {scaleX:1.25, opacity:1, duration:fall, ease:'power2.in', onComplete:()=> gsap.to(shadow, {opacity:0, duration:.2})});
   return true;
 }
 // A low ring of dust that skids out along the floor where the card landed.
@@ -28659,6 +28802,24 @@ async function resolveRound(){
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
 // while it's dragged. Throttled to one sparkle per 40 ms and at most 14 alive; none with reduced motion.
+var handDragGhost = (function(){
+  let ghost = null, offX = 0, offY = 0;
+  const blank = (typeof Image !== 'undefined') ? (()=>{ const i = new Image(); i.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; return i; })() : null;
+  const move = e=>{ if(!ghost || (!e.clientX && !e.clientY)) return; ghost.style.left = (e.clientX - offX) + 'px'; ghost.style.top = (e.clientY - offY) + 'px'; };
+  return {
+    start(el, e){
+      try{ e.dataTransfer.setDragImage(blank, 0, 0); }catch(_){ return; }
+      const r = el.getBoundingClientRect();
+      offX = e.clientX - r.left; offY = e.clientY - r.top;
+      ghost = el.cloneNode(true); ghost.classList.remove('dragging'); ghost.classList.add('hand-drag-ghost'); ghost.removeAttribute('id'); ghost.setAttribute('aria-hidden','true');
+      ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px'; ghost.style.left = r.left + 'px'; ghost.style.top = r.top + 'px';
+      ghost.style.setProperty('--gx', (offX / r.width * 100).toFixed(0) + '%'); ghost.style.setProperty('--gy', (offY / r.height * 100).toFixed(0) + '%');
+      document.body.appendChild(ghost);
+      document.addEventListener('dragover', move, true); document.addEventListener('drag', move, true);
+    },
+    stop(){ if(ghost){ ghost.remove(); ghost = null; } document.removeEventListener('dragover', move, true); document.removeEventListener('drag', move, true); },
+  };
+})();
 var dragTrail = (function(){
   let on = false, last = 0, alive = 0;
   function spark(x, y){
@@ -29321,10 +29482,21 @@ function lossTipHTML(m){
   const canDeck = tabOpen('deck');
   return `<div class="loss-tip"><span class="loss-tip-ico" aria-hidden="true">💡</span><div class="loss-tip-body"><div>${tip}</div>${canDeck ? '<button type="button" class="btn small" id="wlReworkDeckBtn">🃏 Rework my deck</button>' : ''}</div></div>`;
 }
+// Win screen header (2026-10-08, user: "The Hurrah! screen can be improved. +First Clear is blending
+// too much into the background. This is a very glorious screen"): the rank as a big foil hexagon
+// and First Clear as a gold ribbon, right under the title.
+function gloryBadgesHTML(m){
+  if(!m.conquestRankEarned || m.winner!==1) return '';
+  const reward = m.conquestRewardEarned;
+  return `<div class="wl-glory">
+    <span class="rank-hex wl-rank rank-${m.conquestRankEarned}" title="Graded on how much of your own castle HP you still had left" aria-label="Rank ${m.conquestRankEarned}"><i aria-hidden="true"></i><b>${m.conquestRankEarned}</b></span>
+    ${reward && reward.isFirstClear ? `<span class="wl-firstclear" title="First time clearing this fight — a bigger one-off bonus"><span>✨ First Clear ✨</span></span>` : ''}
+  </div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
-  if(m.conquestRankEarned){
+  if(m.conquestRankEarned && m.winner!==1){
     secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="Graded on how much of your own castle HP you still had left">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
   }
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
@@ -29501,8 +29673,11 @@ function matchStatsHTML(m){
     </div>` : '';
   return `<div class="winloss-stats">
     ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
-    <div class="winloss-stats-head"><span></span><span>${sideLabel('A')}</span><span>${sideLabel('B')}</span></div>
-    ${rows.map(r=>{ const cls = cellCls(r); return `<div class="winloss-stats-row"><span class="wls-label">${r.label}</span><span class="wls-val ${cls.A}">${totals.A[r.key]}</span><span class="wls-val ${cls.B}">${totals.B[r.key]}</span></div>`; }).join('')}
+    <div class="wls-compact" aria-label="Fight stats">
+      <span title="Damage you dealt (enemy: ${totals.B.dealt})">⚔️ <b>${totals.A.dealt}</b> dealt</span>
+      <span title="Damage you took (enemy took ${totals.B.taken})">🛡️ <b>${totals.A.taken}</b> taken</span>
+      <span title="Your biggest single hit (enemy: ${totals.B.biggestHit})">💥 <b>${totals.A.biggestHit}</b> best hit</span>
+    </div>
   </div>`;
 }
 // 2026-09-26 ("is there any reward animation for finishing a skirmish, do it"): the win/loss
@@ -30435,10 +30610,29 @@ function critStampVfx(el){
     .fromTo(st, {xPercent:-50, yPercent:-50, scale:2.4, rotation:-24, opacity:0}, {scale:1, rotation:-12, opacity:1, duration:.14, ease:'power4.in'})
     .to(st, {opacity:0, y:-8, duration:.3, delay:.5});
 }
+// Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
+// quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
+// cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
+// own `translate`/`rotate` (additive, so it composes with a flyer's soar or an attack lunge).
+function recoilEl(el, power){
+  if(!el) return;
+  const tile = el.querySelector('.card-tile') || el;
+  if(reducedMotion() || !tile.animate){ shakeEl(el); return; }
+  const dir = el.closest('#rowMine') ? 1 : -1, k = Math.max(0.6, Math.min(1.6, power || 1));
+  const sx = (Math.random() < 0.5 ? -1 : 1) * (2 + Math.random()*3) * k;
+  try{
+    tile.animate([
+      {translate:'0px 0px', rotate:'0deg'},
+      {translate:`${sx.toFixed(1)}px ${(dir*10*k).toFixed(1)}px`, rotate:`${(sx*0.6).toFixed(1)}deg`, offset:0.22},
+      {translate:`${(-sx*0.2).toFixed(1)}px ${(-dir*1.5*k).toFixed(1)}px`, rotate:`${(-sx*0.12).toFixed(1)}deg`, offset:0.62},
+      {translate:'0px 0px', rotate:'0deg'},
+    ], {duration: Math.max(180, Math.min(320, animMs().impactPad*1.2 || 260)), easing:'cubic-bezier(.2,.75,.3,1)', composite:'add'});
+  }catch(e){ shakeEl(el); }
+}
 function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
-  shakeEl(el);
+  recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   const di = DMG_ICON[dmgType];
   if(blocked) floatText(el, '🛡 0', 'blocked');
   else if(crit){ floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); critStampVfx(el); }
@@ -31175,6 +31369,32 @@ function recentOpponentsPlayerHTML(){
     const top = Object.keys(o.deck).sort((a,b)=> o.deck[b]-o.deck[a]).slice(0,5).map(id=> defs[id] ? defs[id].icon : '').join('');
     return `<button type="button" class="ro-row ro-btn" data-ro-view="${i}"><span class="ro-res ${o.result||''}">${o.result==='win'?'W':o.result==='loss'?'L':'D'}</span>
       <span class="ro-name"><b>${escapeHtml(o.name||'Opponent')}</b><span class="ro-meta">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${top}</span></span></button>`; }).join('')}</div></div>`;
+}
+function openMatchDeckView(pid){
+  const m = matchState; if(!m) return;
+  const pl = m.players[pid], defs = getCardDefs(); if(!pl) return;
+  const real = id=> defs[id] && !defs[id].token;
+  const tally = list=>{ const t = {}; list.forEach(id=>{ if(real(id)) t[id] = (t[id]||0) + 1; }); return t; };
+  const left = tally(pl.deck || []);
+  const outIds = [].concat((pl.hand||[]).map(c=> c.defId), (allCardsOnBoard(pl)||[]).filter(c=> !c.isLeader && !c.leader).map(c=> c.defId), (pl.graveyard||[]).map(g=> g.defId), (pl.exile||[]).map(g=> g.defId))
+    .filter(id=> id && id !== m.leaderDefId);
+  const out = tally(outIds);
+  const order = ids=> ids.sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
+  const nLeft = (pl.deck||[]).length;
+  const tile = (id, n, gone)=> `<div class="mdv-card ${gone?'is-gone':''}">${cardTileHTML(defs[id], {inPlay:true})}${n>1?`<span class="ro-x">×${n}</span>`:''}</div>`;
+  let overlay = document.getElementById('matchDeckOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'matchDeckOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
+  overlay.innerHTML = `<div class="modal ro-deck-modal mdv-modal" role="dialog" aria-label="Your deck">
+    <div class="modal-head-row"><h2>🃏 Your deck</h2><button class="modal-close-btn" id="mdvClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub"><b>${nLeft}</b> card${nLeft===1?'':'s'} left, in no particular order. Cards you've already drawn are greyed out.</p>
+    <div class="pool-grid ro-deck-grid">${order(Object.keys(left)).map(id=> tile(id, left[id], false)).join('')}${order(Object.keys(out)).map(id=> tile(id, out[id], true)).join('')}</div>
+  </div>`;
+  overlay.hidden = false;
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; document.removeEventListener('keydown', onKey, true); };
+  const onKey = e=>{ if(e.key==='Escape'){ e.stopImmediatePropagation(); close(); } };
+  document.addEventListener('keydown', onKey, true);
+  overlay.querySelector('#mdvClose').onclick = close;
+  overlay.onclick = e=>{ if(e.target===overlay) close(); };
 }
 function openRecentOpponentDeck(i){
   const o = loadRecentOpponents()[i]; if(!o) return;
