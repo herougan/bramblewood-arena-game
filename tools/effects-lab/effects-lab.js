@@ -263,3 +263,29 @@
   cardRun.parade = ()=> victoryParade($('#paradeStage'), -1);
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));
 })();
+
+// Card treatment centre (2026-10-08): swap the card across every finish, and an auto-tilt that
+// walks the light around each card so the foils show without hovering.
+(function(){
+  const sel = document.getElementById('treatCard'), auto = document.getElementById('treatAuto'); if(!sel) return;
+  const stages = [...document.querySelectorAll('.treat-stage')];
+  sel.addEventListener('change', ()=>{ const html = (window.TREAT_CARDS||{})[sel.value]; if(!html) return;
+    stages.forEach(st=>{ const cls = st.dataset.treat; st.innerHTML = cls ? html.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ') : html; });
+    if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments')); });
+  let t0 = performance.now();
+  const loop = now=>{
+    if(auto && auto.checked){
+      const a = (now - t0) / 1600;
+      document.querySelectorAll('#treatments .card-tile.is-holo:not(.holo-active)').forEach((el, i)=>{
+        const px = 0.5 + Math.cos(a + i*0.6)*0.42, py = 0.5 + Math.sin(a*1.3 + i*0.6)*0.36;
+        el.style.setProperty('--hx', (px*100).toFixed(1)+'%'); el.style.setProperty('--hy', (py*100).toFixed(1)+'%');
+        el.style.setProperty('--hbx', (50 + (px-0.5)*60).toFixed(1)+'%'); el.style.setProperty('--hby', (50 + (py-0.5)*60).toFixed(1)+'%');
+        el.style.setProperty('--hrx', ((0.5-py)*12).toFixed(2)+'deg'); el.style.setProperty('--hry', ((px-0.5)*16).toFixed(2)+'deg');
+        el.classList.add('holo-tilt');
+      });
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+  if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments'));
+})();

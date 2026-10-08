@@ -15,9 +15,13 @@ page_css = r'''
 .lab nav.toc{display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 8px; position:sticky; top:env(safe-area-inset-top,0px); z-index:50; padding:8px 0; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(6px);}
 .lab nav.toc a{font:700 13px 'Baloo 2',system-ui,sans-serif; padding:5px 12px; border-radius:999px; background:var(--surface-2); color:var(--ink); text-decoration:none; border:1px solid var(--surface-border);}
 .lab section{margin-top:28px;}
+html body{background:var(--bg) !important; background-image:none !important;} body::before,body::after{display:none !important;}
 .lab h2{font-family:'Baloo 2',system-ui,sans-serif; font-size:24px; margin:0 0 4px;}
 .lab .sec-sub{color:var(--ink-muted); margin:0 0 14px; max-width:75ch;}
 .fx.tbc{opacity:.85; border-style:dashed;} .fx.tbc h3{font-size:15px;}
+.treat-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr)); gap:14px;}
+.fx.treat{align-items:center; text-align:center;} .fx.treat h3{justify-content:center;}
+.treat-stage{padding:10px 0 4px; perspective:800px;} .treat-stage .card-tile{width:150px !important; height:188px !important; margin:0 auto;}
 .fx-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:14px;}
 .fx{background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px; min-width:0;}
 .fx h3{margin:0; font:800 15px 'Baloo 2',system-ui,sans-serif; display:flex; align-items:center; gap:8px; justify-content:space-between;}
@@ -68,6 +72,25 @@ page_css = r'''
 @media (max-width:560px){ .sk-row{gap:8px;} .sk-row .card-tile{width:76px !important; height:95px !important;} .skill-arena{gap:44px;} }
 @media (max-width:560px){ .bf-lab{height:300px;} .bf-lab .bf-cards .card-tile{width:72px !important; height:90px !important;} }
 '''
+TREATS = [('', 'No foil', 'The everyday print.', 'live'),
+  ('holo-pearl', 'Pearl', 'A soft pastel sheen. Rare to Super Rare.', 'live'),
+  ('holo-rainbow', 'Rainbow holo', 'The classic rainbow foil. Epic to Quest Unique, and foil commons.', 'live'),
+  ('holo-cosmos', 'Cosmos', 'A deep-space band with twinkling glitter. Legendary and up.', 'live'),
+  ('holo-hex', 'Hex foil', 'A honeycomb lattice that lights up in rainbow as it catches the light.', 'new'),
+  ('holo-etched', 'Etched foil', 'Engraved metal lines on the frame only; the art stays clean.', 'new'),
+  ('holo-ice', 'Cracked ice', 'Shattered-ice shards that flash as you tilt.', 'new'),
+  ('holo-gold', 'Gold leaf', 'A warm gold sheen with a gold rim: a prestige or event finish.', 'new'),
+  ('holo-reverse', 'Reverse holo', 'Rainbow foil on the frame, with the art left plain.', 'new'),
+  ('holo-prism', 'Prism', 'Sharp prismatic facets that turn around the light.', 'new')]
+def treat_tile(k, cls):
+    t = C(k)
+    return t.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ', 1) if cls else t
+TREAT_KEYS = ['legendary', 'epic', 'rare', 'fire', 'bee', 'common']
+def treat_cards(k):
+    return ''.join(f'<div class="fx treat"><div class="treat-stage" data-treat="{c}">{treat_tile(k, c)}</div><h3>{n} <span class="st {"live" if st=="live" else "idea"}">{"Live" if st=="live" else "New"}</span></h3><p>{d}</p></div>' for c, n, d, st in TREATS)
+TREAT_OPTS = ''.join(f'<option value="{k}">{cards[k]["name"]}</option>' for k in TREAT_KEYS)
+TREAT_JSON = json.dumps({k: cards[k]['plain'] for k in TREAT_KEYS})
+TREAT_CARDS = treat_cards('legendary')
 def stage_card(k, holo=False, extra=''):
     return f'<div class="board-card" data-demo="{k}">{C(k, "holo" if holo else "plain")}</div>'
 html = f'''<title>Bramblewood Effects Lab</title>
@@ -79,7 +102,7 @@ html = f'''<title>Bramblewood Effects Lab</title>
   <h1>Bramblewood Effects Lab</h1>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
-<nav class="toc"><a href="#skills">Skills ✨new</a><a href="#cardnew">Card ideas ✨new</a><a href="#cards">Cards</a><a href="#combat">Combat</a><a href="#battlefield">Battlefield shaders</a><a href="#screens">Screens</a><a href="#sound">Sound</a><a href="#ambience">Ambience</a><a href="#tbc">Coming next</a><a href="#all">Full list</a></nav>
+<nav class="toc"><a href="#skills">Skills ✨new</a><a href="#cardnew">Card ideas ✨new</a><a href="#treatments">Card treatments ✨new</a><a href="#cards">Cards</a><a href="#combat">Combat</a><a href="#battlefield">Battlefield shaders</a><a href="#screens">Screens</a><a href="#sound">Sound</a><a href="#ambience">Ambience</a><a href="#tbc">Coming next</a><a href="#all">Full list</a></nav>
 
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
@@ -126,6 +149,10 @@ html = f'''<title>Bramblewood Effects Lab</title>
 
 <section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">The first list is all built. Here is the next one, not built yet; veto or reorder freely.</p>
 <div class="fx-grid"><div class="fx tbc"><h3>🔗 Combo counter <span class="st idea">TBC</span></h3><p>Several hits in one round build a x2, x3… counter over the board. Waiting on a decision: cosmetic only, a small reward per step, or drop it.</p></div><div class="fx tbc"><h3>🧭 Card tilt in hand <span class="st idea">On hold</span></h3><p>Hand cards lean toward the pointer. On hold: the style guide keeps the magnetic tilt out of the hand strip, because it fights the drag and selection motion there.</p></div></div></section>
+
+<section id="treatments"><h2>Card treatment centre <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. The first four are live in the game today; the rest are ready to assign to print variants, pack rarities or events.</p>
+<div class="bf-controls"><label>Card <select id="treatCard">{TREAT_OPTS}</select></label><label class="sk-slow"><input type="checkbox" id="treatAuto" checked> Auto-tilt</label></div>
+<div class="treat-grid">{TREAT_CARDS}</div></section>
 
 <section id="cards"><h2>Cards</h2><p class="sec-sub">How cards look at rest and in your collection.</p>
 <div class="fx-grid">
@@ -212,9 +239,10 @@ const RARITY_TIER_BANDS = ['starter','common','uncommon','quest','rare','veryrar
 const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', icon:'💧', name:'Tide'}}, {{id:'grove', icon:'🌿', name:'Grove'}}, {{id:'stone', icon:'🪨', name:'Stone'}}];
 {fx}
 </script>
+<script>window.TREAT_CARDS = {TREAT_JSON};</script>
 <script src="effects-lab.js"></script>
 '''
-rep={'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
+rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
  '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
 for k,v in rep.items(): html=html.replace(k, v)
 open(f'{ROOT}/.fxcat/effects.html','w').write(html)
