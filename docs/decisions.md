@@ -130,6 +130,14 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
   - Retune
 - **Default:** Keep
 
+**B1. Open-mode difficulty tweaks** · Decide · Balance · asked 2026-10-08
+- Re-simulated under Open fights (difficulty-open-mode-2026-10-08.md): Maps 1–4 got easier; Map 3's first two skirmishes (16 HP) are now easier than Map 2's; the Frost Yeti King (130 HP) is a 0% wall. Proposed: Badger Warband and Quill Line to ~22 HP; Yeti King to ~90 HP or make its fight Gravity (collapsing) as a special.
+  - Apply both
+  - Only Map 3
+  - Only Yeti King
+  - Leave as is
+- **Default:** Apply both
+
 ## Decided
 
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
