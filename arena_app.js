@@ -5567,6 +5567,7 @@ function wireAchievementsPanel(){
       if(window.starFallVfx) starFallVfx.celebrate(btn, 3);
       const panel = document.querySelector('.achievements-panel');
       if(panel) panel.outerHTML = achievementsPanelHTML();
+      try{ if(window.renderTopbar) renderTopbar(); }catch(e){}
       wireAchievementsPanel();
     });
   });
@@ -8619,32 +8620,49 @@ function claimQuest(kind, id){
   refreshQuestBadge();
 }
 function medalTier(counter, value){ const m = STAT_MEDALS.find(x=> x.counter===counter); let t = -1; if(m) m.steps.forEach((s,i)=>{ if(value>=s) t = i; }); return t; }
+// Notices (2026-10-08, user: "Quest UI ... looks a bit simple. Like the wonderful job you've done with
+// the Nest and Forge"): a cork board. Each quest is a pinned paper note (tilted a touch, with its own
+// icon, a twine progress bar and the reward), claimable ones glow with a wax-seal Claim button, and
+// claimed ones get a CLAIMED stamp. Medals hang underneath as real medallions.
+const QUEST_ICON = {energyConquest:'⚡', pvpTickets:'🎟️', unitsDefeated:'⚔️', wins:'🏆', conquestWins:'🗺️', pvpWins:'🥊', raidsJoined:'🐙'};
 function questsModalHTML(){
   const q = loadQuestState(), st = loadLifetimeStats();
   const resetIn = (ms)=>{ const h = Math.floor(ms/3600000), d = Math.floor(h/24); return d ? `${d}d ${h%24}h` : `${h}h ${Math.floor((ms%3600000)/60000)}m`; };
   const now = new Date(), nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay()+6)%7)));
+  const rewardChips = r=> Object.entries(r).map(([k,v])=> `<span class="qn-rw" title="${escapeAttr((CURRENCY_META[k]||{label:k}).label)}">${(CURRENCY_META[k]||{}).glyph||''} ${v}</span>`).join('');
+  let noteN = 0;
   const section = (kind, title, ms)=>{
     const counts = q[kind], claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
     const tiers = visibleQuestTiers(kind, q);
     const hidden = QUEST_TIERS[kind].length - tiers.length;
-    return `<section class="qs-section"><h3>${title} <span class="qs-reset">resets in ${resetIn(ms)}</span></h3>
-      ${tiers.map((t,ti)=> `<div class="qs-tier"><div class="qs-tier-head">Tier ${ti+1} · each: ${Object.entries(t.reward).map(([k,v])=> `${(CURRENCY_META[k]||{}).glyph||''} ${v}`).join(' ')}</div>
-        ${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id);
-          return `<div class="qs-quest ${got?'is-claimed':''}"><div class="qs-q-label">${escapeHtml(x.label)}</div>
-            <div class="qs-bar"><div style="width:${Math.round(v/x.goal*100)}%"></div></div><div class="qs-q-num">${v}/${x.goal}</div>
-            ${got ? '<span class="qs-done">✓ Claimed</span>' : `<button class="btn small ${done?'primary':''}" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'}>Claim</button>`}</div>`; }).join('')}
+    return `<section class="qn-board qn-${kind}">
+      <div class="qn-sign"><b>${title}</b><span>resets in ${resetIn(ms)}</span></div>
+      ${tiers.map((t,ti)=> `<div class="qn-tier"><div class="qn-tier-k">Tier ${ti+1}<span class="qn-tier-rw">each ${rewardChips(t.reward)}</span></div>
+        <div class="qn-notes">${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id); const rot = ((noteN++ * 37) % 5) - 2;
+          return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg">
+            <span class="qn-pin" aria-hidden="true"></span>
+            <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
+            <div class="qn-label">${escapeHtml(x.label)}</div>
+            <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
+            ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+          </div>`; }).join('')}</div>
       </div>`).join('')}
-      ${hidden>0 ? `<div class="qs-more">🔒 ${hidden} more tier${hidden===1?'':'s'} (smaller rewards) after this one</div>` : ''}
+      ${hidden>0 ? `<div class="qn-more">🔒 ${hidden} more tier${hidden===1?'':'s'} pinned underneath, revealed when this one is done</div>` : ''}
     </section>`;
   };
   const medals = STAT_MEDALS.map(m=>{ const v = st[m.counter]||0, t = medalTier(m.counter, v), next = m.steps[t+1];
-    return `<div class="qs-medal ${t>=0?'has-medal':''}" title="${next!=null ? `Next: ${MEDAL_NAMES[t+1]} at ${next.toLocaleString()}` : 'Top medal reached'}"><span class="qs-medal-ico">${t>=0 ? MEDAL_ICONS[t] : '▫️'}</span>
-      <span class="qs-medal-l">${m.icon} ${m.label}</span><span class="qs-medal-v">${v.toLocaleString()}</span></div>`; }).join('');
-  return `<div class="modal quests-modal" role="dialog" aria-labelledby="qsTitle">
-    <div class="modal-head-row"><h2 id="qsTitle">📜 Quests</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
-    ${section('daily', 'Daily', msUntilLocalMidnight())}
-    ${section('weekly', 'Weekly', nextMon - now)}
-    <section class="qs-section"><h3>Medals <span class="qs-reset">lifetime stats — for bragging, not power</span></h3><div class="qs-medals">${medals}</div></section>
+    const pct = next!=null ? Math.round(Math.min(1, v/next)*100) : 100;
+    return `<div class="qn-medal tier-${t}" title="${next!=null ? `Next: ${MEDAL_NAMES[t+1]} at ${next.toLocaleString()}` : 'Top medal reached'}">
+      <span class="qn-medallion" style="--p:${pct}"><span>${t>=0 ? MEDAL_ICONS[t] : m.icon}</span></span>
+      <span class="qn-medal-l">${escapeHtml(m.label)}</span><span class="qn-medal-v">${v.toLocaleString()}${next!=null ? `<small> / ${next.toLocaleString()}</small>` : ''}</span></div>`; }).join('');
+  return `<div class="modal quests-modal qn-modal" role="dialog" aria-labelledby="qsTitle">
+    <div class="modal-head-row qn-head"><h2 id="qsTitle">📌 Notices</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
+    <p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+    <div class="qn-cork">
+      ${section('daily', 'Daily', msUntilLocalMidnight())}
+      ${section('weekly', 'Weekly', nextMon - now)}
+    </div>
+    <section class="qn-medals-wrap"><div class="qn-sign qn-sign-dark"><b>Medals</b><span>lifetime stats: for bragging, not power</span></div><div class="qn-medals">${medals}</div></section>
   </div>`;
 }
 let questsKeyHandler = null;
@@ -22309,50 +22327,126 @@ function checkBirthdayGift(){
   try{ showToast(`🎂 Happy birthday${cloudUserLabel ? ', ' + String(cloudUserLabel).split(' ')[0] : ''}! The Bramblewood left you ${BIRTHDAY_GIFT.gold} Gold and ${BIRTHDAY_GIFT.gems} Gold Leaves.`, 'ok'); SoundKit.win && SoundKit.win(); }catch(e){}
 }
 setTimeout(()=>{ try{ checkBirthdayGift(); }catch(e){} }, 4000);
+// Profile (2026-10-08 redesign, user: "The Profile page in general does not look very nice ...
+// there's no framework - things are being anchored randomly"; "The title should be shown above the
+// profile icon ... Fuse this UI with the 'Your Character' UI. Clicking the logo opens a subpane that
+// lets you edit this"; "It also [shows] your level and collection total level ... Collection % ...
+// Skin collection %"; "Achievements should be its own page"). One header card (title over the
+// avatar, name, level, rank), a row of four collection tiles, then two columns: left is play
+// (wallet, achievements, what rivals see), right is account (sign-in, about you, log out).
+function collectionStats(){
+  const defs = getCardDefs();
+  const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !d.hero; });
+  const owned = ids.filter(id=> !defs[id].locked || (myCardCopies[id]||[]).length);
+  const levelSum = owned.reduce((t, id)=> t + getCardLevel(id), 0);
+  // Skins (for now): each card has its plain print and its foil. Owning the card unlocks the plain
+  // one; owning a foil copy unlocks the foil. More finishes will add to the total.
+  const SKINS_PER_CARD = 2;
+  const skins = owned.length + owned.filter(id=> (myCardCopies[id]||[]).some(c=> c && c.foil)).length;
+  return {total: ids.length, owned: owned.length, levelSum, levelMax: ids.length*10, skins, skinTotal: ids.length*SKINS_PER_CARD};
+}
+function profileHeroHTML(){
+  const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
+  const name = myProfile ? myProfile.name : 'Guest';
+  return `<section class="pf-hero">
+    <button type="button" class="pf-avatar-btn" id="pfAvatarBtn" title="Edit your character" aria-label="Edit your character (${escapeAttr(avatarTitleLabel(av))})">
+      <span class="pf-title">${escapeHtml(avatarTitleLabel(av))}</span>
+      <span class="pf-avatar">${avatarHTML(av, 104)}</span>
+      <span class="pf-edit" aria-hidden="true">✏️</span>
+    </button>
+    <div class="pf-who">
+      <h2 class="pf-name">${escapeHtml(name)}</h2>
+      <div class="pf-status">${isSignedIn() ? '<span class="pf-dot ok"></span>Synced to your account' : '<span class="pf-dot"></span>Guest · saved on this device'}${cloudCardAdmin ? ' · <span class="admin-badge">🛡 Admin</span>' : ''}</div>
+      <div class="pf-level"><b>⭐ Level ${L.level}</b><span class="pf-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><small>${L.into}/${L.need} XP</small></div>
+    </div>
+    <div class="pf-rank" title="From Online Raid and Ranked results">
+      <span class="conquest-rank-badge">${rank.label}</span>
+      <small>Rating ${Math.round(myRating)}</small>
+    </div>
+  </section>`;
+}
+function profileTilesHTML(){
+  const c = collectionStats(), L = playerLevelInfo();
+  const pct = (a, b)=> b ? Math.round(a/b*100) : 0;
+  const tile = (ico, big, label, sub, bar, tip)=> `<div class="pf-tile" title="${escapeAttr(tip)}"><span class="pf-tile-ico">${ico}</span><b>${big}</b><span class="pf-tile-k">${label}</span>${bar!=null ? `<span class="pf-tile-bar"><span style="width:${bar}%"></span></span>` : ''}<small>${sub}</small></div>`;
+  return `<section class="pf-tiles">
+    ${tile('⭐', L.level, 'Player level', `${L.into}/${L.need} XP to ${L.level+1}`, Math.round(L.into/L.need*100), 'Your player level, from wins, first clears, medals and quests')}
+    ${tile('📚', c.levelSum, 'Collection level', `the sum of every owned card's level (max ${c.levelMax})`, pct(c.levelSum, c.levelMax), 'Every card you own, added up by its Forge level')}
+    ${tile('🗂️', pct(c.owned, c.total) + '%', 'Collection', `${c.owned} of ${c.total} cards unlocked`, pct(c.owned, c.total), 'How many of the game’s cards you have unlocked')}
+    ${tile('🎨', pct(c.skins, c.skinTotal) + '%', 'Skins', `${c.skins} of ${c.skinTotal} (plain + foil per card)`, pct(c.skins, c.skinTotal), 'Each card has a plain print and a foil; more finishes are coming')}
+  </section>`;
+}
+function profileAchievementsCardHTML(){
+  const ctx = achievementContext();
+  const claimed = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
+  const ready = ACHIEVEMENT_DEFS.filter(d=> { const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length;
+  return `<button type="button" class="panel pf-achv-card" id="pfAchvBtn">
+    <span class="pf-achv-ico">🏆</span>
+    <span class="pf-achv-body"><b>Achievements</b><small>${claimed}/${ACHIEVEMENT_DEFS.length} claimed${ready ? ` · <em>${ready} ready to claim</em>` : ''}</small>
+      <span class="pf-tile-bar"><span style="width:${Math.round(claimed/ACHIEVEMENT_DEFS.length*100)}%"></span></span></span>
+    <span class="pf-go" aria-hidden="true">›</span>
+  </button>`;
+}
+function profileAccountHTML(){
+  if(!isSignedIn()) return `<div class="panel pf-account" id="cloudAccountPanel"><h3>🔑 Sign in</h3><p class="panel-sub">Save your progress to an account and play online. <span id="cloudSyncStatusLine"></span></p>${authFormHTML('profile')}</div>`;
+  return `<div class="panel pf-account" id="cloudAccountPanel">
+    <h3>☁️ Account</h3>
+    <dl class="pf-facts">
+      <dt>Signed in as</dt><dd><b>${escapeHtml(cloudUserLabel || 'Your account')}</b>${cloudUserEmail && cloudUserEmail !== cloudUserLabel ? `<small>${escapeHtml(cloudUserEmail)}</small>` : ''}</dd>
+      <dt>Sync</dt><dd id="cloudSyncStatusLine">Checking…</dd>
+    </dl>
+    ${userHasPasswordIdentity() ? '' : `<details class="add-password"><summary>Add a password (to also log in with email)</summary>
+      <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" minlength="8"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
+    <button type="button" class="btn small" id="cloudSignOutBtn">Sign out</button>
+  </div>`;
+}
+function openCharacterEditor(){
+  let ov = document.getElementById('pfCharOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'pfCharOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  ov.innerHTML = `<div class="modal pf-char-modal" role="dialog" aria-label="Your character"><button type="button" class="modal-close-btn" id="pfCharClose" aria-label="Close">✕</button>${avatarCustomizerHTML()}</div>`;
+  ov.hidden = false;
+  wireAvatarCustomizer();
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey, true); if(currentTab==='profile') renderProfile(); };
+  const onKey = e=>{ if(e.key==='Escape'){ e.stopImmediatePropagation(); close(); } };
+  document.addEventListener('keydown', onKey, true);
+  ov.querySelector('#pfCharClose').onclick = close;
+  ov.onclick = e=>{ if(e.target===ov) close(); };
+}
+function renderAchievementsPage(){
+  const root = document.getElementById('view-achievements'); if(!root) return;
+  root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="achvBackBtn">← Profile</button></div>${achievementsPanelHTML()}`;
+  document.getElementById('achvBackBtn').onclick = ()=> switchTab('profile');
+  wireAchievementsPanel();
+}
 function renderProfile(){
   const root = document.getElementById('view-profile');
-  const rank = rankForRating(myRating);
-  root.innerHTML = `<div class="panel profile-panel">
-      <h2>👤 Profile</h2>
-      <div class="profile-card">
-        <div class="profile-avatar">${avatarHTML(loadAvatar(), 72)}</div>
-        <div class="profile-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div>
+  root.innerHTML = `<div class="pf">
+    ${profileHeroHTML()}
+    ${profileTilesHTML()}
+    <div class="pf-grid">
+      <div class="pf-col">
+        <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].map(k=> currencyPillHTML(k)).join('')}</div></div>
+        ${profileAchievementsCardHTML()}
+        ${playerPreviewHTML()}
       </div>
-      <div class="profile-title-row"><span class="avatar-title-chip">${escapeHtml(avatarTitleLabel(loadAvatar()))}</span></div>
-      <div class="profile-stats-row">
-        ${['gold','gems','dust','metal'].map(k=> currencyPillHTML(k)).join('')}
+      <div class="pf-col">
+        ${profileAccountHTML()}
+        ${aboutYouHTML()}
+        <button class="btn danger pf-logout" id="logoutBtn">🚪 Log out of this device</button>
       </div>
-      <div class="profile-rank-row">
-        <span class="conquest-rank-badge profile-rank-badge">${rank.label}</span>
-        <span class="profile-rank-sub">Rating ${Math.round(myRating)} — from Online Raid and Ranked results</span>
-      </div>
-      <p class="panel-sub">Your name and progress are saved on this device by default. <span id="cloudSyncStatusLine">Checking cloud sync…</span></p>
-      <div class="panel cloud-account-panel" id="cloudAccountPanel">
-        <h3>${isSignedIn() ? '☁️ Signed in' : '🔑 Sign in'}</h3>
-        ${isSignedIn() ? `<div class="account-identity"><span class="account-identity-ico">✅</span><div><b>${escapeHtml(cloudUserLabel || cloudUserEmail || 'Your account')}</b>${cloudUserEmail && cloudUserEmail!==cloudUserLabel ? `<div class="panel-sub-inline">${escapeHtml(cloudUserEmail)}</div>` : ''}</div></div>
-        <dl class="account-facts"><dt>Email</dt><dd>${escapeHtml(cloudUserEmail || '—')}</dd>${cloudCardAdmin ? '<dt>Role</dt><dd><span class="admin-badge" title="Your account can publish card, skirmish and map edits for everyone">🛡 Admin</span></dd>' : ''}</dl>
-        <p class="panel-sub">Your progress is synced to this account.</p>
-        ${userHasPasswordIdentity() ? '' : `<details class="add-password"><summary>Add a password (to also Login with email)</summary>
-          <form id="addPasswordForm" class="auth-email-form"><input id="addPasswordInput" type="password" placeholder="New password (8+ characters)" autocomplete="new-password" minlength="8"><div class="auth-actions"><button type="submit" class="btn primary">Save password</button></div><div class="cloud-link-msg" id="addPasswordMsg" hidden></div></form></details>`}
-        <button type="button" class="btn small" id="cloudSignOutBtn">Sign out</button>` : authFormHTML('profile')}
-      </div>
-      ${aboutYouHTML()}
-      <button class="btn danger" id="logoutBtn">🚪 Log Out</button>
     </div>
-    ${playerPreviewHTML()}
-    ${avatarCustomizerHTML()}
-    ${achievementsPanelHTML()}
-    ${matchHistoryPanelHTML()}`;
-  wireAvatarCustomizer();
+    ${matchHistoryPanelHTML()}
+  </div>`;
+  document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
+  document.getElementById('pfAchvBtn').onclick = ()=> switchTab('achievements');
   wireAboutYou();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
-  wireAchievementsPanel();
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     if(!confirm('Log out? Your decks, currencies, and cards all stay saved on this device — logging back in (even under a different name) won\'t lose any of it.')) return;
     clearMyProfile();
-    matchHistoryList = null; // don't let a re-login (possibly a different account) show a stale cached list
+    matchHistoryList = null;
     showLoginScreen();
   });
   const signOutBtn = document.getElementById('cloudSignOutBtn');
@@ -22362,7 +22456,7 @@ function renderProfile(){
     showToast('Signed out — playing as a guest on this device.');
   });
   const statusLine = document.getElementById('cloudSyncStatusLine');
-  if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? 'Cloud sync active — your progress is backed up.' : (cloudReady ? 'Playing as guest — not signed in.' : 'Connecting…'));
+  if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? '✅ Active, your progress is backed up' : (cloudReady ? 'Playing as a guest.' : 'Connecting…'));
   wireAuthForm('profile', mode=>{
     showToast(mode==='create' ? '✅ Account created — everything you’ve done so far is now synced.' : '✅ Logged in — this device now has your synced progress.', 'ok');
     renderProfile(); refreshAuthGateUI();
@@ -22373,7 +22467,7 @@ function renderProfile(){
     const pw = document.getElementById('addPasswordInput').value; const m = document.getElementById('addPasswordMsg');
     const say = (t,err)=>{ m.hidden=false; m.textContent=t; m.classList.toggle('error',!!err); };
     if(pw.length<8){ say('Use at least 8 characters.', true); return; }
-    try{ const { data, error } = await sbClient.auth.updateUser({password:pw}); if(error) throw error; if(data && data.user) cloudSessionUser = data.user; say('Saved — you can now also Login with your email and this password.'); }
+    try{ const { data, error } = await sbClient.auth.updateUser({password:pw}); if(error) throw error; if(data && data.user) cloudSessionUser = data.user; say('Saved — you can now also log in with your email and this password.'); }
     catch(err){ say(authErrorText(err), true); }
   });
 }
@@ -22941,6 +23035,7 @@ function switchTab(tab){
   document.getElementById('view-nest').hidden = tab!=='nest';
   document.getElementById('view-profile').hidden = tab!=='profile';
   document.getElementById('view-ranking').hidden = tab!=='ranking';
+  { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
   document.getElementById('view-guild').hidden = tab!=='guild';
   { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
   document.getElementById('view-admin').hidden = tab!=='admin';
@@ -22962,6 +23057,7 @@ function switchTab(tab){
   if(tab==='nest') safeRender('Nest', renderNest);
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
+  if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
