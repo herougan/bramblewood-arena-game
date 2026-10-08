@@ -17615,6 +17615,18 @@ function glideFromRect(el, from){
         const pos = {x:r.left - rr.left, y:r.top - rr.top, w:r.width};
         const prev = last.get(el);
         const busy = el.classList.contains('is-entering') || el.style.position==='absolute' || gsap.isTweening(el) || flippingEls.has(String(el.dataset.uid)) || getComputedStyle(el).position==='absolute';
+        // 2026-10-08 (snap test: "a landed card jumps ~50 px down"): a second render mid-entrance kills the
+        // drop-in and can leave the card's outer x/y offset behind with nothing animating it; whatever clears
+        // that offset later snaps the card into its slot. A resting card never keeps an offset on purpose,
+        // so glide any stray one home as soon as it's seen.
+        if(!busy && !el.matches('.falling, .burning, .bleeding, .ghost-preview')){
+          const ox = +gsap.getProperty(el, 'x') || 0, oy = +gsap.getProperty(el, 'y') || 0;
+          if(Math.abs(ox) > 2 || Math.abs(oy) > 2){
+            gsap.to(el, {x:0, y:0, duration: Math.min(.24, .1 + Math.hypot(ox, oy)/1600), ease:'power2.out', clearProps:'x,y'});
+            last.set(el, {x:pos.x, y:pos.y, w:pos.w, busy:true});
+            return;
+          }
+        }
         // (2026-10-05) No "was animating last frame" exemption: an animation that ends normally
         // ends where the card visibly is, so a jump on the frame it's released IS a snap (a Flip
         // or entrance whose target went stale because the row changed mid-slide).
@@ -20362,6 +20374,7 @@ function renderVfxForEvent(ev){
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
         if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
       if(ev.type==='hit' || ev.type==='hitHQ') maybeEmote(ev.attUid, 'attack'); // 2026-10-08 emotes
+      if(ev.type==='hit' && ev.targetUid!=null) EMOTE_LAST_HIT.set(String(ev.targetUid), ev.attUid);
       if(ev.type==='hit') maybeSpeak(ev.attUid, 'onAttack'); // item 8's speech framework — melee-only, not HQ hits (no card face to bubble over)
       // On Hit (2026-09-29): the DEFENDER's own custom line, if it wrote one -- no generic
       // scaffold bank backs this (bank:null), so it stays silent for any card that hasn't
@@ -20369,7 +20382,7 @@ function renderVfxForEvent(ev){
       // hitHQ is excluded above.
       if(ev.type==='hit') maybeSpeak(ev.targetUid, null, 'onHit');
       if(ev.type==='hit'){ try{ const tc = currentCardByUid(ev.targetUid), td = tc && getCardDefs()[tc.defId], mx = (tc && (tc.maxHp || (td && td.health))) || 0;
-        maybeEmote(ev.targetUid, ev.armorBlocked && !(ev.dmg>0) ? 'blocked' : (tc && mx && tc.hp > 0 && tc.hp <= mx*0.25) ? 'lowHp' : (ev.crit || (ev.dmg||0) >= 8) ? 'hurtBig' : 'hurt'); }catch(e){} }
+        maybeEmote(ev.targetUid, ev.armorBlocked && !(ev.dmg>0) ? 'blocked' : (ev.dmgType==='heat' && Math.random()<0.5) ? 'burning' : (tc && mx && tc.hp > 0 && tc.hp <= mx*0.25) ? 'lowHp' : (ev.crit || (ev.dmg||0) >= 8) ? 'hurtBig' : 'hurt'); }catch(e){} }
       if(ev.armorBlocked) SoundKit.clang();
       if(ev.type==='hitHQ'){
         // 2026-09-19 ("then there needs to be a (larger) hit animation" for castle hits):
@@ -20476,6 +20489,11 @@ function renderVfxForEvent(ev){
     // without needing a call at each of their many separate action sites. Custom-only (bank:null)
     // — silent unless this specific card actually wrote an On Skill line.
     maybeSpeak(ev.attUid, null, 'onSkill');
+    // 2026-10-08 emotes: the card on the receiving end of a status reacts; self-buffs pump up.
+    { const ON_TARGET = {poison:'poisoned', freeze:'frozen', bleed:'hurt', expose:'hurt', stun:'dazed', stunOnHit:'dazed', stagger:'dazed', paralyze:'dazed', sleep:'sleepy', blind:'blinded', shock:'shocked', cleanse:'healed', addWait:'sleepy'};
+      const ON_SELF = {berserk:'rage', momentum:'pumped', grit:'pumped', esprit:'pumped'};
+      if(ev.targetUid!=null && ON_TARGET[ev.kind]) maybeEmote(ev.targetUid, ON_TARGET[ev.kind]);
+      else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
@@ -20705,7 +20723,8 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death'); }
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
+    { const killer = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid)); if(killer!=null) setTimeout(()=> maybeEmote(killer, 'kill'), 350); } }
   // Center collapse-in (item #4, 2026-09-16): the actual slide into place is free — the
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
@@ -25032,13 +25051,20 @@ const EMOTE_BANKS = {
   frozen:  ['🥶','❄️'],
   poisoned:['🤢','🤮'],
   burning: ['🥵','🔥'],
-  kill:    ['😎','🏆','😏','💀'],
+  kill:    ['😎','🏆','😏','💀','🫡'],
+  dazed:   ['😵‍💫','💫','🥴'],
+  sleepy:  ['😴','💤','🥱'],
+  blinded: ['🙈','😵','🫣'],
+  shocked: ['⚡','😱','🫨'],
+  rage:    ['😡','🤬','💢','👹'],
+  pumped:  ['💪','😤','🔥','✊'],
   death:   ['😵','💫','👻','🪦'],
   idle:    ['🥱','🤔','👀','🎵','😴','🙂','🫣'],
   win:     ['🥳','🎉','😄','🙌','🤩','💃'],
   loss:    ['😭','😩','😞','🏳️'],
 };
-const EMOTE_CHANCE = {summon:.35, attack:.22, hurt:.18, hurtBig:.5, lowHp:.45, dodge:.6, blocked:.4, healed:.4, frozen:.5, poisoned:.4, burning:.4, kill:.55, death:.35, idle:.25, win:1, loss:.7};
+const EMOTE_CHANCE = {dazed:.55, sleepy:.6, blinded:.5, shocked:.5, rage:.6, pumped:.4, summon:.35, attack:.22, hurt:.18, hurtBig:.5, lowHp:.45, dodge:.6, blocked:.4, healed:.4, frozen:.5, poisoned:.4, burning:.4, kill:.55, death:.35, idle:.25, win:1, loss:.7};
+const EMOTE_LAST_HIT = new Map(); // target uid -> last attacker uid, so a kill can be cheered
 function maybeEmote(uid, kind, opts){
   if(uid==null || !fxAtLeast('low')) return false;
   const bank = EMOTE_BANKS[kind]; if(!bank) return false;
