@@ -13416,7 +13416,7 @@ function leaveMatchResumable(){
   if(m && !m.over && !m.resolving) saveResumeSnapshot();
   endMatch({keepResume:true});
   switchTab('home');
-  showToast('⏸️ Fight saved. Press ▶ Rejoin (on Home or the map) to carry on.', 'ok');
+  showToast('⏸️ Fight saved. Press ▶ Continue (on Home or the map) to carry on.', 'ok');
 }
 function endMatch(opts){
   SoundKit.stopAll();
@@ -18075,7 +18075,9 @@ async function acceptDrawOffer(){
 const FORFEIT_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','raidOffline','raidOnline','pvp']);
 async function forfeitMatch(){
   const m = matchState; if(!m || m.over || m.resolving || !FORFEIT_MODES.has(m.mode)) return;
-  if(!confirm('Forfeit this match? It counts as a loss.')) return;
+  // 2026-10-08 playtest: an in-game dialog (not the browser's), and Forfeit is the cancel-focused choice
+  if(!(await bwConfirm({title:'🏳️ Forfeit this match?', body:'It counts as a loss. Quit instead keeps the fight so you can continue later.', okLabel:'Forfeit', focusCancel:true}))) return;
+  if(matchState !== m || m.over) return;
   m.forcedWinner = 2; m.endReason = 'forfeit';
   await resolveRound();
 }
@@ -21676,7 +21678,7 @@ function renderDeckListTab(body){
 // In-game text dialog (2026-10-08, user: "the import deck code should be native UI, not Chrome
 // UI"): a parchment modal in the game's own style instead of window.prompt. Resolves to the text,
 // or null when cancelled. readonly mode shows a code to copy, with a Copy button.
-function bwConfirm({title, body, list, okLabel}){
+function bwConfirm({title, body, list, okLabel, focusCancel}){
   return new Promise(resolve=>{
     const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
     ov.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-label="${escapeAttr(title)}">
@@ -21690,7 +21692,7 @@ function bwConfirm({title, body, list, okLabel}){
     ov.onclick = e=>{ if(e.target === ov) done(false); };
     ov.onkeydown = e=>{ if(e.key==='Escape'){ e.stopPropagation(); done(false); } };
     ov.querySelector('[data-ok]').onclick = ()=> done(true);
-    setTimeout(()=> ov.querySelector('[data-ok]').focus(), 30);
+    setTimeout(()=> ov.querySelector(focusCancel ? '.modal-actions [data-x]' : '[data-ok]').focus(), 30);
   });
 }
 function bwTextDialog({title, body, value, placeholder, okLabel, readonly}){
