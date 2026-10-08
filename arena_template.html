@@ -4024,7 +4024,7 @@
   /* Phones: the map pane wraps under the region strip and is clipped, so the panel floats just
      above the Fight button instead. */
   .conquest-main > .conquest-node-panel{position:sticky; bottom:0; z-index:6; max-height:min(46%, 260px); overflow:auto; box-shadow:0 -6px 18px rgba(0,0,0,.25);}
-  @media (max-width:820px){ .conquest-main > .conquest-node-panel{position:fixed; left:16px; right:16px; bottom:calc(88px + env(safe-area-inset-bottom, 0px)); max-height:32vh; z-index:40;} }
+  @media (max-width:820px){ .conquest-main > .conquest-node-panel{position:fixed; left:16px; right:16px; bottom:calc(100px + env(safe-area-inset-bottom, 0px)); max-height:32vh; z-index:40;} }
   /* Best rank (2026-10-08, user: "more obvious, overlaying the top right of the skirmish detail pane:
      a slightly off-rotated S in a glowing pink & purple foil hexagon"). A, B and C get gold, silver
      and bronze foil; S gets the animated pink-violet foil and glow. */
@@ -4050,6 +4050,8 @@
   @keyframes rankFoil{to{--fa:360deg;}}
   :where(html[data-fx="none"], html[data-fx="low"]) .rank-hex.rank-S i{animation:none;}
   .conquest-node-panel .cnp-head{display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .conquest-node-panel .cnp-fight{margin-left:auto; flex:0 0 auto; font-family:'Baloo 2'; font-weight:800; font-size:16px; padding:10px 24px; border-radius:999px; box-shadow:0 6px 16px rgba(0,0,0,.35);}
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;}
   .conquest-node-panel .cnp-ico{font-size:30px;}
   .conquest-node-panel .cnp-name{font-family:'Baloo 2'; font-weight:800; font-size:16px;}
   .conquest-node-panel .cnp-kind{font-size:12px; color:rgba(255,255,255,.75);}

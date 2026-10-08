@@ -10672,6 +10672,7 @@ function renderConquestSubTab(body){
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done)}
         ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
+        ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
       ${earned ? `
         <div class="cnp-squad-row">
@@ -10681,6 +10682,10 @@ function renderConquestSubTab(body){
       ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
+    // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
+    // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
+    const fb = document.getElementById('cnpFightBtn');
+    if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
     const nrBtn = document.getElementById('cnpEditRewards');
@@ -10705,15 +10710,7 @@ function renderConquestSubTab(body){
   if(fabEl){
     // 2026-10-08 playtest: a cleared skirmish had no Fight button (yet showed "Clear again"); it
     // now offers "Fight again".
-    if(selectedNode && !selectedNode.virtual){
-      const again = progress.completed.includes(conquestNodeId(map.id, selectedNode.key));
-      fabEl.hidden = false;
-      fabEl.innerHTML = again ? '⚔️ Fight again' : '⚔️ Fight';
-      fabEl.onclick = ()=> startConquestMatch(map.id, selectedNode.key);
-    } else {
-      fabEl.hidden = true;
-      fabEl.onclick = null;
-    }
+    fabEl.hidden = true; fabEl.onclick = null; // superseded by #cnpFightBtn in the panel (2026-10-08)
   }
 }
 /* ---- Offline Raid (2026-10-03: "raid (chosen to be offline only for now) which loads the
