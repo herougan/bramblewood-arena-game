@@ -57,12 +57,6 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
   - Change the numbers
 - **Default:** Keep
 
-**E3. Shiny look** · Confirm · Cards · asked 2026-10-08
-- Shiny copies (0.5%) wear the Prism finish plus a twinkling ✦.
-  - Keep
-  - Use another finish
-- **Default:** Keep
-
 **C1. Which cards get the six new finishes** · Decide · Cards · asked 2026-10-08
 - Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige?
 
@@ -87,10 +81,38 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
 - You noted the Nest overlaps the Codex. Kept for now. Ideas when you're ready: the Nest as your trophy shelf (Shinies, foils, prestige), or merge it into Codex as an Owned filter.
 - **Default:** Keep for now
 
+**S1. Apply the admin player list function** · Decide · Server · asked 2026-10-08
+- The Admin → Players portal reads one admin-only, read-only database function (admin_list_players: profiles, levels, currencies, cards, matches; no emails). Written in supabase/proposed/20261008_admin_list_players.sql. Applying it (and the panel that reads it, already drafted) was held for your OK.
+  - Say "apply it" (admin list)
+  - Wait
+- **Default:** Apply
+
+**S2. Anti-cheat tier 1** · Decide · Security · asked 2026-10-08
+- Players can currently edit their own rating and currencies from the browser console. Tier 1 makes rating read-only and refuses any single write that adds more than 2,000 Maple / 200 Gold Leaves. supabase/proposed/20261008_anticheat_tier1.sql.
+  - Apply tier 1
+  - Change the caps
+  - Wait
+- **Default:** Apply tier 1
+
+**S3. Turn on leaked-password protection** · Do · Security · asked 2026-10-08
+- Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login.
+  - Done
+  - Skip
+- **Default:** Done
+
+**S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08
+- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token.
+  - Add SonarCloud
+  - CodeQL is enough
+- **Default:** CodeQL is enough
+
 ## Decided
 
+**E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
+- **Outcome:** Hue shift, not a foil: the art is recoloured by a fixed per-card hue (90–270°), soft white glow, twinkling ✦. Prism stays a foil treatment.
+
 **E4. Pack set discounts** · Decide · Economy · asked 2026-10-08 · decided 2026-10-08
-- **Outcome:** 10 packs 5%, 25 packs 12.5%, 50 packs 15%, 100 packs 20%. Built.
+- **Outcome:** Revised 2026-10-08: 1/10/25/50/100 packs = 0/5/6/7/7.5% off. Built.
 
 **G3. Skirmish default mode** · Decide · Battle · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** All Conquest skirmishes default to Open (no collapsing). Gravity (collapsing) is special, set per skirmish. Built.
@@ -166,3 +188,9 @@ _Generated from `decisions.json` (2026-10-08). The hub has a searchable, filtera
 
 **D8. Trench** · Decide · Raids · asked 2026-10-02 · decided 2026-10-03
 - **Outcome:** Built: you play your row; allies CPU; telegraphed columns.
+
+**E7. Pack contents and foil odds** · Decide · Economy · asked 2026-10-08 · decided 2026-10-08
+- **Outcome:** Pack editor (Admin): per pack price, size, pool, rarity weights, foil chance per card, guaranteed foil, and finish weights (By rarity 60, Prism 9, Hex 8, Etched 7, Ice 7, Reverse 6, Gold 3). Sprout Pouch 4% foil per card, Acorn Chest 8%, Golden Bramble Case 12% with one guaranteed. A card's From picks its pack pool. Publishes live as __cfg:shop-packs.
+
+**E8. Over-size decks and the main deck** · Decide · Decks · asked 2026-10-08 · decided 2026-10-08
+- **Outcome:** Decks can hold any number of cards while building (calm 'N over' note, no red shake). ★ Main deck is chosen explicitly and is what you play with; only a 20-card main deck can be played.

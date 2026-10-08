@@ -3,6 +3,11 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- Pick your ★ main deck; decks can go over 20 while you build, and only a 20-card main deck can be played.
+- Shiny is a colour shift of the art; set discounts are 5/6/7/7.5%.
+- Pack editor (admin): odds, foil chance and finishes, and what's inside each pack. Foils from packs are real foil copies.
+- Claw marks, bites, stings and pecks when units hit, each with its own sound; the first skin, Ember Chipmunk, breathes fire.
+- Security headers and a weekly CodeQL scan.
 - A glorious win screen; reward cards beside every skirmish's name; Fight again on cleared skirmishes.
 - Skirmishes no longer collapse by default; Tundra fights are fought on Frozen Ground.
 - Hits recoil, flyers fall with a burst of leaves, and lightning lights the cards from where it strikes.

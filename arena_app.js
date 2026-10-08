@@ -3324,7 +3324,7 @@ function cardTileHTML(d, opts){
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
-    <div class="nm">${d.name}</div>
+    <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     <div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>
     ${isCastle?'':poisonTagHTML(d)}
@@ -3553,7 +3553,7 @@ function deletedTileHTML(t){
   const when = t.deletedAt ? new Date(t.deletedAt).toLocaleString() : '';
   return `<div class="card-tile" style="cursor:default;">
     <div class="ico">${d.icon||'❔'}</div>
-    <div class="nm">${d.name||t.id}</div>
+    <div class="nm">${escapeHtml(d.name||t.id)}</div>
     <div class="stats"><span class="atk">⚔${d.attack||0}</span><span class="hp">❤${d.health||1}</span></div>
     <div style="font-size:10px; color:var(--ink-muted); text-align:center; margin-top:4px;">${when}</div>
     <button class="btn small primary" style="width:100%; margin-top:6px;" data-restore="${t.id}">♻ Restore</button>
@@ -14806,7 +14806,7 @@ function showPlacementPreview(row, side){
   // cardTileHTML's own waitbadge exactly so the preview genuinely previews what you're about to get.
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
-    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${d.name}</div>
+    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
     <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
@@ -16349,7 +16349,7 @@ function boardCardHTML(c, defs, opts){
       ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}
       <div class="ico">${cardIcoHTML(d)}</div>
       <div class="rarity-band"></div>
-      <div class="nm">${d.name||c.defId}</div>
+      <div class="nm">${escapeHtml(d.name||c.defId)}</div>
       <div class="stats"><span class="atk">${atkLabel}</span><span class="hp">❤${c.hp}</span></div>
       ${poisonTagHTML(d)}
       ${abilityBadgeHTML}
@@ -16420,7 +16420,7 @@ function renderHand(){
       ${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
-      <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${d.name}</div>
+      <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
       <div class="stats"><span class="atk">⚔${d.attack}</span><span class="hp">❤${d.health}</span></div>
       ${poisonTagHTML(d)}
       ${abilityBadges(d)}
