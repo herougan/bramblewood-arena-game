@@ -2856,13 +2856,6 @@
     max-width:min(560px, calc(100vw - 32px)); padding:12px 16px; border-radius:14px; background:#fff8e6; color:#2b2117; box-shadow:0 12px 32px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; animation:coachIn .25s ease-out;}
   .draw-offer .do-ico{font-size:28px;} .draw-offer .do-title{font-weight:800;} .draw-offer .do-sub{font-size:13px; opacity:.8;}
   .draw-offer .do-actions{display:flex; gap:8px;} .draw-offer .btn.ghost{color:#2b2117; border-color:rgba(43,33,23,.35);}
-  .resume-offer{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1200; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;
-    max-width:min(560px, calc(100vw - 32px)); padding:12px 16px; border-radius:14px; background:#fff8e6; color:#2b2117; box-shadow:0 12px 32px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; animation:coachIn .25s ease-out;}
-  .resume-offer .ro-ico{font-size:26px;}
-  .resume-offer .ro-title{font-weight:800;}
-  .resume-offer .ro-sub{font-size:13px; opacity:.8;}
-  .resume-offer .ro-actions{display:flex; gap:8px;}
-  .resume-offer .btn.ghost{color:#2b2117; border-color:rgba(43,33,23,.35);}
   .coach-tip{position:fixed; z-index:1150; max-width:300px; padding:12px 14px; border-radius:12px; background:#fff8e6; color:#2b2117; box-shadow:0 10px 28px rgba(0,0,0,.35), 0 0 0 2px #e0b85a; font-size:14px; line-height:1.45; display:flex; flex-direction:column; gap:8px; animation:coachIn .25s ease-out;}
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
@@ -5120,6 +5113,29 @@
   .pe-x{border:0; background:transparent; cursor:pointer; font-size:11px; padding:2px 5px; border-radius:50%; color:var(--ink-muted);} .pe-x:hover{background:rgba(0,0,0,.08); color:var(--danger);}
   .pe-add{margin-top:8px;} .pe-add select{max-width:100%;}
   .pe-actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  /* unit FX: hit marks, fire breath, skins (2026-10-08, bramblewood-unitfx.js) */
+  .ufx-mark{position:absolute; inset:0; width:100%; height:100%; z-index:9; pointer-events:none; overflow:visible;}
+  .ufx-gash, .ufx-gash-under{fill:none; stroke-linecap:round; stroke-dasharray:110; stroke-dashoffset:110; animation:ufxDraw .16s cubic-bezier(.3,.8,.4,1) forwards, ufxFade .5s ease-in .26s forwards;}
+  .ufx-gash{stroke:#fff6f0; stroke-width:2.2; filter:drop-shadow(0 0 2px #ff3b2f);}
+  .ufx-gash-under{stroke:#8a0f12; stroke-width:5.5; opacity:.85;}
+  .ufx-teeth{fill:#fffdf6; stroke:#5a0d0d; stroke-width:1.2; opacity:0; animation:ufxFade .45s ease-in .3s forwards;}
+  .ufx-top{animation:ufxBiteTop .18s cubic-bezier(.5,0,.8,.4) forwards, ufxFade .4s ease-in .3s forwards;}
+  .ufx-bot{animation:ufxBiteBot .18s cubic-bezier(.5,0,.8,.4) forwards, ufxFade .4s ease-in .3s forwards;}
+  .ufx-star{stroke:#ffe66b; stroke-width:2; stroke-linecap:round; fill:none; transform-box:fill-box; transform-origin:center; animation:ufxPop .22s ease-out both, ufxFade .35s ease-in .22s forwards;}
+  .ufx-dot{fill:#7a1d10; animation:ufxFade .4s ease-in .2s forwards;}
+  .ufx-dent{fill:rgba(60,30,10,.55); stroke:rgba(255,240,210,.8); stroke-width:1; transform-box:fill-box; transform-origin:center; animation:ufxPop .14s ease-out both, ufxFade .35s ease-in .25s forwards;}
+  .ufx-scorch{fill:rgba(40,16,4,.55); filter:blur(1.5px); animation:ufxFade .6s ease-in .3s forwards;}
+  @keyframes ufxDraw{to{stroke-dashoffset:0;}}
+  @keyframes ufxFade{to{opacity:0;}}
+  @keyframes ufxPop{from{transform:scale(.2); opacity:0;} to{transform:scale(1); opacity:1;}}
+  @keyframes ufxBiteTop{from{transform:translateY(-26px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+  @keyframes ufxBiteBot{from{transform:translateY(26px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+  .ufx-jet{position:fixed; width:0; height:0; z-index:100000; pointer-events:none; transform-origin:0 0;}
+  .ufx-jet i{position:absolute; border-radius:50%; filter:blur(.5px) drop-shadow(0 0 6px rgba(255,120,20,.8));
+    background:radial-gradient(circle, #fffbe0 0%, #ffd23a 30%, #ff7a12 58%, rgba(200,40,0,.0) 72%);}
+  .card-tile.skin-ember .ico{filter:sepia(.35) saturate(1.8) hue-rotate(-18deg) brightness(1.05);}
+  .card-tile.skin-ember{box-shadow:0 0 0 2px #ff8a2a, 0 0 12px 2px rgba(255,110,20,.55);}
+  .card-tile.skin-ember::after{content:'🔥'; position:absolute; left:4px; bottom:30px; font-size:14px; z-index:8; filter:drop-shadow(0 0 3px #ff7a12); pointer-events:none;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
@@ -11130,6 +11146,153 @@ function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || '';
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring};
 })(typeof window !== 'undefined' ? window : globalThis);
 
+/* ============================================================
+   Unit FX, hit styles and skins (2026-10-08)
+   User: "more sfx samples ... hit vfx such as claw marks" and "Prepare a construct such that some
+   units have special vfx, sfx, or even skins that do. Maybe a fire breathing skin of a familiar
+   card - then it literally blows fire (vfx) to an enemy card."
+
+   How a unit looks and sounds when it fights is resolved in three layers, later ones winning:
+     1. its hit style, guessed from its name and type tags (claw / bite / sting / peck / blunt);
+     2. the card's own `fx` field in its definition, e.g. {hit:'claw', attack:'fireBreath', sfx:'roar'};
+     3. the skin its owner has equipped, from UnitFX.SKINS below.
+   A skin can also restyle the card itself (`tileClass`, a CSS class added to its tile) and swap
+   its art (`art`). Skins are owned per player (localStorage for now; server-side later).
+
+   Everything here is DOM-only and self-contained, so the Effects Lab can call it too.
+   ============================================================ */
+(function(){
+  const HIT_RULES = [
+    [/\b(cat|kitten|fox|wolf|bear|lynx|tiger|lion|panther|cheetah|leopard|jaguar|raccoon|trash panda|badger|wolverine|hyena|eagle|hawk|falcon|owl|griffin|dragon|drake|mole|yeti|macaque|monkey)\b/i, 'claw'],
+    [/\b(dog|hound|jackal|croc|crocodile|alligator|shark|snake|serpent|viper|eel|moray|piranha|rat|crab|hippo|turtle)\b/i, 'bite'],
+    [/\b(bee|wasp|hornet|scorpion|mosquito|leech|urchin|porcupine|hedgehog|ant|spider)\b/i, 'sting'],
+    [/\b(bird|sparrow|robin|toucan|hummingbird|crow|raven|woodpecker|chick|duck|goose|finch|parrot|heron|stork|kiwi|pelican|fledgling|courier)\b/i, 'peck'],
+  ];
+  function guessHit(def){
+    if(!def) return 'blunt';
+    const text = [def.name || '', def.id || '', ...(Array.isArray(def.archetypes) ? def.archetypes : [])].join(' ').replace(/-/g, ' ');
+    for(const [re, style] of HIT_RULES) if(re.test(text)) return style;
+    return 'blunt';
+  }
+
+  // ---- Skins -------------------------------------------------------------------------------
+  // base: the card it dresses; fx: overrides for layer 3; tileClass/art: the look on the card.
+  const SKINS = {
+    'acorn-chipmunk:ember': {
+      base: 'acorn-chipmunk', name: 'Ember Chipmunk', icon: '🔥',
+      blurb: 'A chipmunk who ate one chilli too many. It breathes a jet of fire at whatever it attacks.',
+      fx: {attack: 'fireBreath', hit: 'burn', sfx: 'fireBreath'},
+      tileClass: 'skin-ember',
+    },
+  };
+  const OWN_KEY = 'bramblewood_skins_owned_v1', EQUIP_KEY = 'bramblewood_skins_equipped_v1';
+  const read = (k, d)=>{ try{ return JSON.parse(localStorage.getItem(k) || 'null') || d; }catch(e){ return d; } };
+  const write = (k, v)=>{ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  let owned = new Set(read(OWN_KEY, [])), equipped = read(EQUIP_KEY, {});
+  function skinsFor(defId){ return Object.keys(SKINS).filter(k=> SKINS[k].base === defId).map(k=> Object.assign({id:k, owned: owned.has(k)}, SKINS[k])); }
+  function grantSkin(id){ if(SKINS[id]){ owned.add(id); write(OWN_KEY, [...owned]); } }
+  function equipSkin(defId, skinId){
+    if(skinId && (!SKINS[skinId] || SKINS[skinId].base !== defId || !owned.has(skinId))) return false;
+    if(skinId) equipped[defId] = skinId; else delete equipped[defId];
+    write(EQUIP_KEY, equipped); return true;
+  }
+  function equippedSkin(defId){ const k = equipped[defId]; return k && SKINS[k] && owned.has(k) ? k : null; }
+
+  // The resolved FX for one unit. `mine` = it's the local player's card (skins only show on yours
+  // until skins are synced between players).
+  function resolve(def, mine){
+    const out = {hit: guessHit(def), attack: null, sfx: null, skin: null};
+    if(def && def.fx) Object.assign(out, def.fx);
+    const sk = def && mine ? equippedSkin(def.id) : null;
+    if(sk){ Object.assign(out, SKINS[sk].fx || {}); out.skin = sk; }
+    return out;
+  }
+
+  // ---- Hit marks ---------------------------------------------------------------------------
+  const NS = 'http://www.w3.org/2000/svg';
+  function overlay(target, cls, ms){
+    const tile = target && (target.querySelector('.card-tile') || target);
+    if(!tile) return null;
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 130'); svg.setAttribute('preserveAspectRatio', 'none');
+    svg.setAttribute('class', 'ufx-mark ' + cls); svg.setAttribute('aria-hidden', 'true');
+    tile.appendChild(svg);
+    setTimeout(()=> svg.remove(), ms || 700);
+    return svg;
+  }
+  function path(svg, d, cls){ const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); if(cls) p.setAttribute('class', cls); svg.appendChild(p); return p; }
+  const rnd = (a, b)=> a + Math.random()*(b - a);
+  function claw(target){
+    const svg = overlay(target, 'ufx-claw', 760); if(!svg) return;
+    const tilt = rnd(-14, 14), x0 = rnd(26, 40);
+    for(let i = 0; i < 3; i++){
+      const x = x0 + i*14, y1 = 26 + i*3 + rnd(-3, 3), y2 = 104 - i*4 + rnd(-3, 3);
+      const d = `M${x + tilt*0.6} ${y1} Q ${x + 6} ${(y1 + y2)/2} ${x - tilt*0.6 + 4} ${y2}`;
+      path(svg, d, 'ufx-gash-under').style.animationDelay = (i*40) + 'ms';
+      path(svg, d, 'ufx-gash').style.animationDelay = (i*40) + 'ms';
+    }
+  }
+  function bite(target){
+    const svg = overlay(target, 'ufx-bite', 720); if(!svg) return;
+    const teeth = (y, dir)=>{ let d = ''; for(let i = 0; i < 6; i++){ const x = 20 + i*12; d += `M${x} ${y} L${x + 6} ${y + dir*14} L${x + 12} ${y} `; } return d; };
+    path(svg, teeth(36, 1), 'ufx-teeth ufx-top');
+    path(svg, teeth(94, -1), 'ufx-teeth ufx-bot');
+  }
+  function sting(target){
+    const svg = overlay(target, 'ufx-sting', 620); if(!svg) return;
+    const cx = rnd(38, 62), cy = rnd(48, 80); let d = '';
+    for(let i = 0; i < 8; i++){ const a = i/8*Math.PI*2, r1 = 3, r2 = i % 2 ? 11 : 18; d += `M${cx + Math.cos(a)*r1} ${cy + Math.sin(a)*r1} L${cx + Math.cos(a)*r2} ${cy + Math.sin(a)*r2} `; }
+    path(svg, d, 'ufx-star');
+    const dot = document.createElementNS(NS, 'circle'); dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('r', 3.2); dot.setAttribute('class', 'ufx-dot'); svg.appendChild(dot);
+  }
+  function peck(target){
+    const svg = overlay(target, 'ufx-peck', 600); if(!svg) return;
+    for(let i = 0; i < 3; i++){
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('cx', rnd(30, 70)); c.setAttribute('cy', rnd(40, 95)); c.setAttribute('r', rnd(3, 5));
+      c.setAttribute('class', 'ufx-dent'); c.style.animationDelay = (i*70) + 'ms'; svg.appendChild(c);
+    }
+  }
+  function burn(target){
+    const svg = overlay(target, 'ufx-burn', 900); if(!svg) return;
+    path(svg, `M${rnd(25, 35)} 110 C 30 80, 55 85, 50 55 C 62 75, 78 70, 72 110 Z`, 'ufx-scorch');
+  }
+  const MARKS = {claw, bite, sting, peck, burn};
+  function hitMark(style, target){ const f = MARKS[style]; if(f) f(target); }
+
+  // ---- Fire breath ---------------------------------------------------------------------------
+  // A jet of flame puffs from the attacker's mouth (upper middle of its tile) to the target,
+  // each puff growing, reddening and fading as it travels. ms = how long the jet lasts.
+  function fireBreath(fromEl, toEl, ms){
+    if(!fromEl || !toEl || !document.body.animate) return;
+    const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect();
+    const sx = a.left + a.width/2, sy = a.top + a.height*0.38;
+    const ex = b.left + b.width/2, ey = b.top + b.height/2;
+    const dx = ex - sx, dy = ey - sy, len = Math.hypot(dx, dy), ang = Math.atan2(dy, dx);
+    const jet = document.createElement('div'); jet.className = 'ufx-jet'; jet.setAttribute('aria-hidden', 'true');
+    jet.style.left = sx + 'px'; jet.style.top = sy + 'px'; jet.style.transform = `rotate(${ang}rad)`;
+    document.body.appendChild(jet);
+    const dur = ms || 520, n = 22;
+    for(let i = 0; i < n; i++){
+      const p = document.createElement('i'); jet.appendChild(p);
+      const spread = rnd(-0.2, 0.2)*Math.min(len, 400)*0.4, size = rnd(26, 46);
+      p.style.width = p.style.height = size + 'px'; p.style.left = p.style.top = (-size/2) + 'px';
+      p.animate([
+        {transform:`translate(0px, 0px) scale(.35)`, opacity:0, filter:'hue-rotate(10deg)'},
+        {opacity:1, offset:0.15},
+        {transform:`translate(${len*0.55}px, ${spread*0.5}px) scale(1.1)`, opacity:.95, offset:0.55},
+        {transform:`translate(${len*1.02}px, ${spread}px) scale(1.9)`, opacity:0, filter:'hue-rotate(-25deg) brightness(.8)'},
+      ], {duration: dur*0.75, delay: i/n*dur*0.55, easing:'cubic-bezier(.2,.6,.4,1)', fill:'both'});
+    }
+    setTimeout(()=> jet.remove(), dur + 120);
+  }
+  const ATTACKS = {fireBreath};
+  function attackFx(kind, fromEl, toEl, ms){ const f = ATTACKS[kind]; if(f) f(fromEl, toEl, ms); }
+
+  window.UnitFX = {guessHit, resolve, hitMark, attackFx, fireBreath, claw, bite, sting, peck, burn,
+    SKINS, skinsFor, grantSkin, equipSkin, equippedSkin};
+})();
+
 // Translation layer (2026-10-05, "support the major European languages, Tagalog, Tamil, Bahasa,
 // Chinese (both), Japanese and Korean"). English is the source language and the fallback.
 //
@@ -13246,6 +13409,14 @@ const SoundKit = (()=>{
     buzz(){ for(let i=0;i<3;i++) tone(220+i*30,0.09,'sawtooth',0.05,i*0.05); },
     drip(){ tone(700,0.05,'sine',0.09); tone(500,0.08,'sine',0.06,0.09); },
     clang(){ tone(1400,0.06,'square',0.1); noise(0.05,0.06); },
+    // Hit-style cues (2026-10-08, "more sfx samples"): one per UnitFX hit style, plus fire breath.
+    claw(){ for(let i = 0; i < 3; i++) fnoise(0.09, 0.07, {type:'highpass', freq:5200, freqEnd:1800, q:0.9, attack:0.004, delay:i*0.045}); tone(140, 0.07, 'triangle', 0.05, 0.02); },
+    bite(){ fnoise(0.12, 0.09, {type:'lowpass', freq:1400, freqEnd:400, crackle:0.08, attack:0.003}); sweep(220, 90, 0.1, 'square', 0.04, 0.01); fnoise(0.05, 0.06, {type:'bandpass', freq:2600, q:2, delay:0.07, attack:0.002}); },
+    sting(){ sweep(2400, 5200, 0.06, 'sawtooth', 0.035); tone(3200, 0.04, 'sine', 0.04, 0.05); },
+    peck(){ for(let i = 0; i < 3; i++){ tone(1700 + i*120, 0.025, 'square', 0.05, i*0.06); fnoise(0.03, 0.04, {type:'bandpass', freq:3000, q:3, delay:i*0.06, attack:0.002}); } },
+    burn(){ fnoise(0.45, 0.05, {type:'bandpass', freq:900, freqEnd:2600, q:0.7, crackle:0.05, attack:0.03}); },
+    fireBreath(ms){ const d = Math.max(0.35, (ms||520)/1000); fnoise(d, 0.11, {type:'lowpass', freq:380, freqEnd:1600, q:0.8, attack:0.06}); fnoise(d*0.9, 0.05, {type:'bandpass', freq:2200, freqEnd:900, q:0.6, crackle:0.12, attack:0.05, delay:0.05}); sweep(110, 60, d, 'sawtooth', 0.03); },
+    roar(){ fnoise(0.6, 0.09, {type:'lowpass', freq:600, freqEnd:200, q:1.2, attack:0.05}); sweep(160, 70, 0.55, 'sawtooth', 0.05); },
     growl(){ tone(80,0.35,'sawtooth',0.09); },
     play(){ tone(440,0.09,'triangle',0.08); },
     exile(){ tone(300,0.2,'sine',0.07); tone(200,0.22,'sine',0.05,0.08); },
@@ -15302,6 +15473,9 @@ function openCardInspector(defId, opts){
   // treatment centre's in-game preview).
   const finishes = [''].concat(adminModeEnabled ? CI_FINISHES : (ownFoil ? [ownFoil] : []));
   let finish = ownFoil;
+  // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
+  const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
+  let skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
   const ov = document.createElement('div');
   ov.className = 'card-inspect'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
   ov.setAttribute('aria-label', 'Card viewer: ' + (d.name||''));
@@ -15313,20 +15487,40 @@ function openCardInspector(defId, opts){
     <div class="ci-bar">
       <b class="ci-name">${escapeHtml(d.name||'')}</b>
       ${finishes.length > 1 ? `<div class="ci-finishes" role="group" aria-label="${'Finish'}">${finishes.map(f=> `<button type="button" class="ci-fin${f===finish?' is-on':''}" data-fin="${f}">${escapeHtml(CI_FINISH_NAMES[f]||f)}</button>`).join('')}</div>` : ''}
-      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button></div>
-      <small class="ci-hint">Drag the card to turn it</small>
+      ${skins.length ? `<div class="ci-finishes ci-skins" role="group" aria-label="Skin"><button type="button" class="ci-fin ci-skin${!skin?' is-on':''}" data-skin="">Default</button>${skins.map(k=> `<button type="button" class="ci-fin ci-skin${k.id===skin?' is-on':''}" data-skin="${escapeAttr(k.id)}" title="${escapeAttr(k.blurb||'')}">${escapeHtml(k.icon||'')} ${escapeHtml(k.name)}${k.owned ? '' : ' 🔒'}</button>`).join('')}</div>` : ''}
+      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button>${skins.length ? '<button type="button" class="btn small ci-fxbtn">▶ Attack</button>' : ''}</div>
+      <small class="ci-hint ci-skin-msg" aria-live="polite">Drag the card to turn it</small>
     </div>`;
   document.body.appendChild(ov);
   const front = ov.querySelector('.ci-front'), spin = ov.querySelector('.ci-spin'), shadow = ov.querySelector('.ci-shadow'), stage = ov.querySelector('.ci-stage');
   let tile = null;
   const renderFace = ()=>{
-    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '')}) + '<span class="ci-sheen" aria-hidden="true"></span>';
+    const skinCls = skin && window.UnitFX && UnitFX.SKINS[skin] ? ' has-skin ' + (UnitFX.SKINS[skin].tileClass||'') : '';
+    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
     tile = front.querySelector('.card-tile');
     if(finish) decorateHolo(front);
   };
   renderFace();
-  ov.querySelectorAll('.ci-fin').forEach(b=> b.addEventListener('click', ()=>{
-    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
+  ov.querySelectorAll('.ci-skin').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.skin || null, msg = ov.querySelector('.ci-skin-msg');
+    const k = id && skins.find(x=> x.id===id);
+    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = b.textContent.replace(' 🔒',''); }
+    skin = id; ov.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
+    if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `Equipped: ${k.name}. Your copies wear it in battle.` : 'Default look equipped.'; }
+    else msg.textContent = `Preview only: you don't own ${k.name} yet.`;
+  }));
+  const fxb = ov.querySelector('.ci-fxbtn');
+  if(fxb) fxb.addEventListener('click', ()=>{
+    const fx = UnitFX.resolve(Object.assign({}, d), false), sk = skin && UnitFX.SKINS[skin];
+    const kind = (sk && sk.fx && sk.fx.attack) || fx.attack, hit = (sk && sk.fx && sk.fx.hit) || fx.hit;
+    const r = stage.getBoundingClientRect(), tgt = document.createElement('div');
+    tgt.style.cssText = `position:fixed; left:${Math.min(innerWidth - 60, r.right + 40)}px; top:${r.top + r.height*0.3}px; width:40px; height:52px; pointer-events:none;`;
+    document.body.appendChild(tgt); setTimeout(()=> tgt.remove(), 1200);
+    if(kind){ UnitFX.attackFx(kind, tile, tgt, 600); if(SoundKit[kind]) SoundKit[kind](600); }
+    else if(hit && hit!=='blunt'){ UnitFX.hitMark(hit, tile); if(SoundKit[hit]) SoundKit[hit](); }
+  });
+  ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(b=> b.addEventListener('click', ()=>{
+    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
   }));
   const TILT = -9;                       // axis lean, degrees from vertical
   const still = reducedMotion();
@@ -15469,15 +15663,6 @@ function wireCodexPlacement(defId){
 // and can never disagree. Rewards are granted on the player's FIRST clear of the node.
 // Node panel line: which cards a first clear grants (hidden, undiscovered ones show as a mystery),
 // plus the admin's Edit rewards button.
-function nodeRewardCardsLineHTML(mapId, nodeKey, done){
-  const defs = getCardDefs();
-  const ids = nodeRewardCardIds(mapId, nodeKey);
-  const chips = ids.map(id=> isCardHiddenForPlayer(defs[id]) ? '<span class="dchip">❓ Mystery card</span>' : `<span class="dchip">${defs[id].icon||'🃏'} ${escapeHtml(defs[id].name)}</span>`).join('');
-  const label = done ? 'Card rewards (already claimed):' : 'First clear also unlocks:';
-  const line = ids.length ? `<div class="cnp-card-rewards"><span class="cnp-card-rewards-label">${label}</span> ${chips}</div>` : '';
-  const btn = adminModeEnabled ? `<button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button>` : '';
-  return line || btn ? `<div class="cnp-card-rewards-row">${line}${btn}</div>` : '';
-}
 function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
   return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey; });
@@ -18054,12 +18239,6 @@ function disenchantAllExtras(){
 }
 // Toggles ONE specific owned copy's foil state (the Nest screen's per-copy chip click) — never
 // touches any other copy of the same card, per "individual for now".
-function toggleCardCopyFoil(id, copyIdx){
-  const copies = myCardCopies[id];
-  if(!copies || !copies[copyIdx]) return;
-  copies[copyIdx].foil = !copies[copyIdx].foil;
-  saveCardCopies();
-}
 // Developer Mode (2026-09-22, Test Suite feature — tasks #309-314, per batch #17's own status
 // write-up flagging this as the natural next slice: "the Developer Mode toggle, the test:true
 // card flag + Codex Test filter, letting Jay create test cards, the Sandbox Test Battle mode, the
@@ -20609,23 +20788,8 @@ const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'Quick Battle', conquest:'Conques
 function tryResumeAbandonedMatch(){
   // 2026-10-08 (user: "Unfinished fight: makes the Play button a different colour and change the text
   // to Continue ... There is no option to discard or resume. Clicking the button continues."): no
-  // pop-up offer any more; Home's Play tile becomes Continue.
+  // pop-up offer any more; Home's Play tile becomes Continue. Kept as a no-op for its callers.
   return false;
-  // eslint-disable-next-line no-unreachable
-  const snap = loadResumeSnapshot(); if(!snap) return false;
-  switchTab('home');
-  document.querySelectorAll('.resume-offer').forEach(e=> e.remove());
-  const card = document.createElement('div');
-  card.className = 'resume-offer'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-label', 'Unfinished fight');
-  const what = (snap.conquestNode && snap.conquestNode.name) ? `${snap.conquestNode.name} (${RESUME_MODE_LABEL[snap.mode]||'fight'})` : (RESUME_MODE_LABEL[snap.mode] || 'fight');
-  card.innerHTML = `<div class="ro-ico">⏸️</div><div class="ro-body"><div class="ro-title">You have an unfinished fight</div>
-    <div class="ro-sub">${escapeHtml(what)} · round ${snap.round||1}</div></div>
-    <div class="ro-actions"><button type="button" class="btn small ghost" id="roDiscard">Discard</button><button type="button" class="btn small primary" id="roResume">▶ Resume</button></div>`;
-  document.body.appendChild(card);
-  card.querySelector('#roResume').onclick = ()=>{ card.remove(); resumeAbandonedMatchNow(); };
-  card.querySelector('#roDiscard').onclick = ()=>{ card.remove(); clearResumeSnapshot(); showToast('Unfinished fight discarded.'); };
-  setTimeout(()=>{ try{ card.querySelector('#roResume').focus(); }catch(e){} }, 50);
-  return true;
 }
 function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
@@ -21117,15 +21281,6 @@ function cnpRewardStripHTML(mapId, node, done){
   if(!cards && !cur.length) return '';
   const label = done ? 'Clear again' : 'First clear';
   return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
-}
-function cnpRewardsPreviewHTML(node, done){
-  const tier = nodeRewardTier(node); if(!tier) return '';
-  const payout = done ? tier.repeat : tier.first;
-  const parts = [];
-  if(payout.gold>0) parts.push(`${mapleLeafIconHTML()} ${payout.gold}`);
-  if(payout.dust>0) parts.push(`✨ ${payout.dust}`);
-  if(!parts.length) return '';
-  return `<div class="cnp-rewards-preview" title="${done?'Reward for clearing this node again':'Reward for clearing this node the first time'}">${done?'Clear again:':'First clear:'} ${parts.join('&nbsp;&nbsp;')}</div>`;
 }
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
@@ -21750,7 +21905,7 @@ function placeConquestHud(){
   if(main && !main.querySelector('.cq-rejoin') && snap){
     const name = (snap.conquestNode && snap.conquestNode.name) || RESUME_MODE_LABEL[snap.mode] || 'your fight';
     const b = document.createElement('button'); b.type = 'button'; b.className = 'cq-rejoin'; b.innerHTML = `<span>▶</span> Continue <b>${escapeHtml(name)}</b> <small>round ${snap.round||1}</small>`;
-    b.onclick = ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) b.remove(); };
+    b.onclick = ()=>{ if(!resumeAbandonedMatchNow()) b.remove(); };
     main.appendChild(b);
   }
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
@@ -31272,6 +31427,16 @@ function recoilEl(el, power){
     ], {duration: Math.max(180, Math.min(320, animMs().impactPad*1.2 || 260)), easing:'cubic-bezier(.2,.75,.3,1)', composite:'add'});
   }catch(e){ shakeEl(el); }
 }
+// Skins on the board (2026-10-08): your own cards in play and in hand wear their equipped skin's
+// tileClass. Applied after each render by a light observer, so no render path needs to know.
+function applySkinClasses(root){
+  if(!window.UnitFX) return;
+  (root || document).querySelectorAll('#rowMine .card-tile[data-defid], #handStrip .card-tile[data-defid]').forEach(t=>{
+    const sk = UnitFX.equippedSkin(t.dataset.defid), cls = sk && UnitFX.SKINS[sk].tileClass;
+    if(cls && !t.classList.contains(cls)){ t.classList.add(cls, 'has-skin'); t.dataset.skin = sk; }
+  });
+}
+(()=>{ let q = false; new MutationObserver(()=>{ if(q) return; q = true; requestAnimationFrame(()=>{ q = false; if(document.getElementById('rowMine')) applySkinClasses(); }); }).observe(document.documentElement, {childList:true, subtree:true}); })();
 function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -31454,6 +31619,12 @@ function renderVfxForEvent(ev){
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
+    // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
+    const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
+    if(ufx && ufx.attack && !ev.ranged && fxAtLeast('med') && !reducedMotion()){
+      const atkEl = attEl || boardCardEl(ev.attUid);
+      setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
+    }
     if(ev.ranged){
       if(!arrowShot) SoundKit.launch();
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
@@ -31480,6 +31651,9 @@ function renderVfxForEvent(ev){
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
+      if(ufx && !ev.ranged && !ev.armorBlocked && ufx.hit && ufx.hit!=='blunt' && fxAtLeast('low')){
+        try{ if(!reducedMotion()) UnitFX.hitMark(ufx.hit, targetEl); if(SoundKit[ufx.hit]) SoundKit.at(targetEl, ()=> SoundKit[ufx.hit]()); }catch(e){}
+      }
       { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
         if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
@@ -32879,7 +33053,7 @@ function renderHome(){
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
-  const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) renderHome(); });
+  const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn'), cm = document.getElementById('homeCommunityMenu');
@@ -33543,10 +33717,6 @@ function nestCardHTML(id, d){
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
     ${cardTileHTML(d, {editable:false, extraClass: bestCopyClass(id, d)})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
-}
-function packUnlockCandidates(defs){
-  defs = defs || getCardDefs();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; return d.locked && !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
 }
 // A pack's pool: every card whose From is that pack pool ({kind:'pack', tier:N}; no tier = 1).
 // Without a pool number it is every pack card. Locked or not — packs give copies.
@@ -34860,7 +35030,6 @@ function switchTab(tab){
     // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
     else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
   }catch(e){}
-  if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';

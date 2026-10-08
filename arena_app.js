@@ -1898,6 +1898,14 @@ const SoundKit = (()=>{
     buzz(){ for(let i=0;i<3;i++) tone(220+i*30,0.09,'sawtooth',0.05,i*0.05); },
     drip(){ tone(700,0.05,'sine',0.09); tone(500,0.08,'sine',0.06,0.09); },
     clang(){ tone(1400,0.06,'square',0.1); noise(0.05,0.06); },
+    // Hit-style cues (2026-10-08, "more sfx samples"): one per UnitFX hit style, plus fire breath.
+    claw(){ for(let i = 0; i < 3; i++) fnoise(0.09, 0.07, {type:'highpass', freq:5200, freqEnd:1800, q:0.9, attack:0.004, delay:i*0.045}); tone(140, 0.07, 'triangle', 0.05, 0.02); },
+    bite(){ fnoise(0.12, 0.09, {type:'lowpass', freq:1400, freqEnd:400, crackle:0.08, attack:0.003}); sweep(220, 90, 0.1, 'square', 0.04, 0.01); fnoise(0.05, 0.06, {type:'bandpass', freq:2600, q:2, delay:0.07, attack:0.002}); },
+    sting(){ sweep(2400, 5200, 0.06, 'sawtooth', 0.035); tone(3200, 0.04, 'sine', 0.04, 0.05); },
+    peck(){ for(let i = 0; i < 3; i++){ tone(1700 + i*120, 0.025, 'square', 0.05, i*0.06); fnoise(0.03, 0.04, {type:'bandpass', freq:3000, q:3, delay:i*0.06, attack:0.002}); } },
+    burn(){ fnoise(0.45, 0.05, {type:'bandpass', freq:900, freqEnd:2600, q:0.7, crackle:0.05, attack:0.03}); },
+    fireBreath(ms){ const d = Math.max(0.35, (ms||520)/1000); fnoise(d, 0.11, {type:'lowpass', freq:380, freqEnd:1600, q:0.8, attack:0.06}); fnoise(d*0.9, 0.05, {type:'bandpass', freq:2200, freqEnd:900, q:0.6, crackle:0.12, attack:0.05, delay:0.05}); sweep(110, 60, d, 'sawtooth', 0.03); },
+    roar(){ fnoise(0.6, 0.09, {type:'lowpass', freq:600, freqEnd:200, q:1.2, attack:0.05}); sweep(160, 70, 0.55, 'sawtooth', 0.05); },
     growl(){ tone(80,0.35,'sawtooth',0.09); },
     play(){ tone(440,0.09,'triangle',0.08); },
     exile(){ tone(300,0.2,'sine',0.07); tone(200,0.22,'sine',0.05,0.08); },
@@ -3954,6 +3962,9 @@ function openCardInspector(defId, opts){
   // treatment centre's in-game preview).
   const finishes = [''].concat(adminModeEnabled ? CI_FINISHES : (ownFoil ? [ownFoil] : []));
   let finish = ownFoil;
+  // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
+  const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
+  let skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
   const ov = document.createElement('div');
   ov.className = 'card-inspect'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
   ov.setAttribute('aria-label', 'Card viewer: ' + (d.name||''));
@@ -3965,20 +3976,40 @@ function openCardInspector(defId, opts){
     <div class="ci-bar">
       <b class="ci-name">${escapeHtml(d.name||'')}</b>
       ${finishes.length > 1 ? `<div class="ci-finishes" role="group" aria-label="${'Finish'}">${finishes.map(f=> `<button type="button" class="ci-fin${f===finish?' is-on':''}" data-fin="${f}">${escapeHtml(CI_FINISH_NAMES[f]||f)}</button>`).join('')}</div>` : ''}
-      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button></div>
-      <small class="ci-hint">Drag the card to turn it</small>
+      ${skins.length ? `<div class="ci-finishes ci-skins" role="group" aria-label="Skin"><button type="button" class="ci-fin ci-skin${!skin?' is-on':''}" data-skin="">Default</button>${skins.map(k=> `<button type="button" class="ci-fin ci-skin${k.id===skin?' is-on':''}" data-skin="${escapeAttr(k.id)}" title="${escapeAttr(k.blurb||'')}">${escapeHtml(k.icon||'')} ${escapeHtml(k.name)}${k.owned ? '' : ' 🔒'}</button>`).join('')}</div>` : ''}
+      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button>${skins.length ? '<button type="button" class="btn small ci-fxbtn">▶ Attack</button>' : ''}</div>
+      <small class="ci-hint ci-skin-msg" aria-live="polite">Drag the card to turn it</small>
     </div>`;
   document.body.appendChild(ov);
   const front = ov.querySelector('.ci-front'), spin = ov.querySelector('.ci-spin'), shadow = ov.querySelector('.ci-shadow'), stage = ov.querySelector('.ci-stage');
   let tile = null;
   const renderFace = ()=>{
-    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '')}) + '<span class="ci-sheen" aria-hidden="true"></span>';
+    const skinCls = skin && window.UnitFX && UnitFX.SKINS[skin] ? ' has-skin ' + (UnitFX.SKINS[skin].tileClass||'') : '';
+    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
     tile = front.querySelector('.card-tile');
     if(finish) decorateHolo(front);
   };
   renderFace();
-  ov.querySelectorAll('.ci-fin').forEach(b=> b.addEventListener('click', ()=>{
-    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
+  ov.querySelectorAll('.ci-skin').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.skin || null, msg = ov.querySelector('.ci-skin-msg');
+    const k = id && skins.find(x=> x.id===id);
+    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = b.textContent.replace(' 🔒',''); }
+    skin = id; ov.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
+    if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `Equipped: ${k.name}. Your copies wear it in battle.` : 'Default look equipped.'; }
+    else msg.textContent = `Preview only: you don't own ${k.name} yet.`;
+  }));
+  const fxb = ov.querySelector('.ci-fxbtn');
+  if(fxb) fxb.addEventListener('click', ()=>{
+    const fx = UnitFX.resolve(Object.assign({}, d), false), sk = skin && UnitFX.SKINS[skin];
+    const kind = (sk && sk.fx && sk.fx.attack) || fx.attack, hit = (sk && sk.fx && sk.fx.hit) || fx.hit;
+    const r = stage.getBoundingClientRect(), tgt = document.createElement('div');
+    tgt.style.cssText = `position:fixed; left:${Math.min(innerWidth - 60, r.right + 40)}px; top:${r.top + r.height*0.3}px; width:40px; height:52px; pointer-events:none;`;
+    document.body.appendChild(tgt); setTimeout(()=> tgt.remove(), 1200);
+    if(kind){ UnitFX.attackFx(kind, tile, tgt, 600); if(SoundKit[kind]) SoundKit[kind](600); }
+    else if(hit && hit!=='blunt'){ UnitFX.hitMark(hit, tile); if(SoundKit[hit]) SoundKit[hit](); }
+  });
+  ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(b=> b.addEventListener('click', ()=>{
+    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
   }));
   const TILT = -9;                       // axis lean, degrees from vertical
   const still = reducedMotion();
@@ -4121,15 +4152,6 @@ function wireCodexPlacement(defId){
 // and can never disagree. Rewards are granted on the player's FIRST clear of the node.
 // Node panel line: which cards a first clear grants (hidden, undiscovered ones show as a mystery),
 // plus the admin's Edit rewards button.
-function nodeRewardCardsLineHTML(mapId, nodeKey, done){
-  const defs = getCardDefs();
-  const ids = nodeRewardCardIds(mapId, nodeKey);
-  const chips = ids.map(id=> isCardHiddenForPlayer(defs[id]) ? '<span class="dchip">❓ Mystery card</span>' : `<span class="dchip">${defs[id].icon||'🃏'} ${escapeHtml(defs[id].name)}</span>`).join('');
-  const label = done ? 'Card rewards (already claimed):' : 'First clear also unlocks:';
-  const line = ids.length ? `<div class="cnp-card-rewards"><span class="cnp-card-rewards-label">${label}</span> ${chips}</div>` : '';
-  const btn = adminModeEnabled ? `<button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button>` : '';
-  return line || btn ? `<div class="cnp-card-rewards-row">${line}${btn}</div>` : '';
-}
 function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
   return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey; });
@@ -6706,12 +6728,6 @@ function disenchantAllExtras(){
 }
 // Toggles ONE specific owned copy's foil state (the Nest screen's per-copy chip click) — never
 // touches any other copy of the same card, per "individual for now".
-function toggleCardCopyFoil(id, copyIdx){
-  const copies = myCardCopies[id];
-  if(!copies || !copies[copyIdx]) return;
-  copies[copyIdx].foil = !copies[copyIdx].foil;
-  saveCardCopies();
-}
 // Developer Mode (2026-09-22, Test Suite feature — tasks #309-314, per batch #17's own status
 // write-up flagging this as the natural next slice: "the Developer Mode toggle, the test:true
 // card flag + Codex Test filter, letting Jay create test cards, the Sandbox Test Battle mode, the
@@ -9261,23 +9277,8 @@ const RESUME_MODE_LABEL = {pvp:'PvP fight', ai:'Quick Battle', conquest:'Conques
 function tryResumeAbandonedMatch(){
   // 2026-10-08 (user: "Unfinished fight: makes the Play button a different colour and change the text
   // to Continue ... There is no option to discard or resume. Clicking the button continues."): no
-  // pop-up offer any more; Home's Play tile becomes Continue.
+  // pop-up offer any more; Home's Play tile becomes Continue. Kept as a no-op for its callers.
   return false;
-  // eslint-disable-next-line no-unreachable
-  const snap = loadResumeSnapshot(); if(!snap) return false;
-  switchTab('home');
-  document.querySelectorAll('.resume-offer').forEach(e=> e.remove());
-  const card = document.createElement('div');
-  card.className = 'resume-offer'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-label', 'Unfinished fight');
-  const what = (snap.conquestNode && snap.conquestNode.name) ? `${snap.conquestNode.name} (${RESUME_MODE_LABEL[snap.mode]||'fight'})` : (RESUME_MODE_LABEL[snap.mode] || 'fight');
-  card.innerHTML = `<div class="ro-ico">⏸️</div><div class="ro-body"><div class="ro-title">You have an unfinished fight</div>
-    <div class="ro-sub">${escapeHtml(what)} · round ${snap.round||1}</div></div>
-    <div class="ro-actions"><button type="button" class="btn small ghost" id="roDiscard">Discard</button><button type="button" class="btn small primary" id="roResume">▶ Resume</button></div>`;
-  document.body.appendChild(card);
-  card.querySelector('#roResume').onclick = ()=>{ card.remove(); resumeAbandonedMatchNow(); };
-  card.querySelector('#roDiscard').onclick = ()=>{ card.remove(); clearResumeSnapshot(); showToast('Unfinished fight discarded.'); };
-  setTimeout(()=>{ try{ card.querySelector('#roResume').focus(); }catch(e){} }, 50);
-  return true;
 }
 function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
@@ -9769,15 +9770,6 @@ function cnpRewardStripHTML(mapId, node, done){
   if(!cards && !cur.length) return '';
   const label = done ? 'Clear again' : 'First clear';
   return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
-}
-function cnpRewardsPreviewHTML(node, done){
-  const tier = nodeRewardTier(node); if(!tier) return '';
-  const payout = done ? tier.repeat : tier.first;
-  const parts = [];
-  if(payout.gold>0) parts.push(`${mapleLeafIconHTML()} ${payout.gold}`);
-  if(payout.dust>0) parts.push(`✨ ${payout.dust}`);
-  if(!parts.length) return '';
-  return `<div class="cnp-rewards-preview" title="${done?'Reward for clearing this node again':'Reward for clearing this node the first time'}">${done?'Clear again:':'First clear:'} ${parts.join('&nbsp;&nbsp;')}</div>`;
 }
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
@@ -10402,7 +10394,7 @@ function placeConquestHud(){
   if(main && !main.querySelector('.cq-rejoin') && snap){
     const name = (snap.conquestNode && snap.conquestNode.name) || RESUME_MODE_LABEL[snap.mode] || 'your fight';
     const b = document.createElement('button'); b.type = 'button'; b.className = 'cq-rejoin'; b.innerHTML = `<span>▶</span> Continue <b>${escapeHtml(name)}</b> <small>round ${snap.round||1}</small>`;
-    b.onclick = ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) b.remove(); };
+    b.onclick = ()=>{ if(!resumeAbandonedMatchNow()) b.remove(); };
     main.appendChild(b);
   }
   const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
@@ -19924,6 +19916,16 @@ function recoilEl(el, power){
     ], {duration: Math.max(180, Math.min(320, animMs().impactPad*1.2 || 260)), easing:'cubic-bezier(.2,.75,.3,1)', composite:'add'});
   }catch(e){ shakeEl(el); }
 }
+// Skins on the board (2026-10-08): your own cards in play and in hand wear their equipped skin's
+// tileClass. Applied after each render by a light observer, so no render path needs to know.
+function applySkinClasses(root){
+  if(!window.UnitFX) return;
+  (root || document).querySelectorAll('#rowMine .card-tile[data-defid], #handStrip .card-tile[data-defid]').forEach(t=>{
+    const sk = UnitFX.equippedSkin(t.dataset.defid), cls = sk && UnitFX.SKINS[sk].tileClass;
+    if(cls && !t.classList.contains(cls)){ t.classList.add(cls, 'has-skin'); t.dataset.skin = sk; }
+  });
+}
+(()=>{ let q = false; new MutationObserver(()=>{ if(q) return; q = true; requestAnimationFrame(()=>{ q = false; if(document.getElementById('rowMine')) applySkinClasses(); }); }).observe(document.documentElement, {childList:true, subtree:true}); })();
 function flashDmg(uid, dmg, blocked, dmgType, crit){
   const el = boardCardEl(uid);
   if(!el) return;
@@ -20106,6 +20108,12 @@ function renderVfxForEvent(ev){
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
+    // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
+    const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
+    if(ufx && ufx.attack && !ev.ranged && fxAtLeast('med') && !reducedMotion()){
+      const atkEl = attEl || boardCardEl(ev.attUid);
+      setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
+    }
     if(ev.ranged){
       if(!arrowShot) SoundKit.launch();
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
@@ -20132,6 +20140,9 @@ function renderVfxForEvent(ev){
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
+      if(ufx && !ev.ranged && !ev.armorBlocked && ufx.hit && ufx.hit!=='blunt' && fxAtLeast('low')){
+        try{ if(!reducedMotion()) UnitFX.hitMark(ufx.hit, targetEl); if(SoundKit[ufx.hit]) SoundKit.at(targetEl, ()=> SoundKit[ufx.hit]()); }catch(e){}
+      }
       { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
         if(heavy){ hitStop(70); try{ Ambience.duck(0.45, 350); }catch(e){} } }
@@ -21531,7 +21542,7 @@ function renderHome(){
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
-  const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); if(!resumeAbandonedMatchNow()) renderHome(); });
+  const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn'), cm = document.getElementById('homeCommunityMenu');
@@ -22195,10 +22206,6 @@ function nestCardHTML(id, d){
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
     ${cardTileHTML(d, {editable:false, extraClass: bestCopyClass(id, d)})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
-}
-function packUnlockCandidates(defs){
-  defs = defs || getCardDefs();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; return d.locked && !d.token && !d.test && !hofBlocked(d, defs) && cardSourceOf(d).kind==='pack'; });
 }
 // A pack's pool: every card whose From is that pack pool ({kind:'pack', tier:N}; no tier = 1).
 // Without a pool number it is every pack card. Locked or not — packs give copies.
@@ -23512,7 +23519,6 @@ function switchTab(tab){
     // sweeping across. Purely decorative (never blocks a click); places keep their own entrances.
     else if(!place && currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState) leafSweep();
   }catch(e){}
-  if(tab!=='home') document.querySelectorAll('.resume-offer').forEach(e=> e.remove()); // leaving Home dismisses the resume offer (the snapshot stays until a new fight replaces it)
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';
