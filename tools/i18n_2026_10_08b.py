@@ -190,6 +190,13 @@ T = {
 '{n}/{max} cards': ['{n}/{max} cartes','{n}/{max} Karten','{n}/{max} cartas','{n}/{max} carte','{n}/{max} cartas','{n}/{max} card','{n}/{max} அட்டைகள்','{n}/{max} kartu','{n}/{max} 张','{n}/{max} 張','{n}/{max}枚','{n}/{max}장'],
 'Deck Lv {n}': ['Deck niv. {n}','Deck-Stufe {n}','Mazo nv. {n}','Mazzo liv. {n}','Baralho nv. {n}','Deck Lv {n}','அடுக்கு நிலை {n}','Dek Lv {n}','卡组等级 {n}','牌組等級 {n}','デッキLv{n}','덱 레벨 {n}'],
 'yours {n}': ['le vôtre {n}','deins {n}','el tuyo {n}','il tuo {n}','o seu {n}','sa iyo {n}','உங்களுடையது {n}','punyamu {n}','你的 {n}','你的 {n}','あなた {n}','내 덱 {n}'],
+'Enemy deck': ['Deck ennemi','Gegnerdeck','Mazo enemigo','Mazzo nemico','Baralho inimigo','Deck ng kalaban','எதிரி அடுக்கு','Dek musuh','敌方卡组','敵方牌組','敵デッキ','적 덱'],
+'Lv {n}': ['Niv. {n}','Stufe {n}','Nv. {n}','Liv. {n}','Nv. {n}','Lv {n}','நிலை {n}','Lv {n}','等级 {n}','等級 {n}','Lv{n}','레벨 {n}'],
+'Enemy deck level {n}': ['Niveau du deck ennemi {n}','Gegnerdeck-Stufe {n}','Nivel del mazo enemigo {n}','Livello del mazzo nemico {n}','Nível do baralho inimigo {n}','Antas ng deck ng kalaban {n}','எதிரி அடுக்கு நிலை {n}','Level dek musuh {n}','敌方卡组等级 {n}','敵方牌組等級 {n}','敵デッキLv{n}','적 덱 레벨 {n}'],
+'New fight: {name}': ['Nouveau combat : {name}','Neuer Kampf: {name}','Nuevo combate: {name}','Nuova battaglia: {name}','Nova luta: {name}','Bagong laban: {name}','புதிய போர்: {name}','Pertarungan baru: {name}','新战斗:{name}','新戰鬥:{name}','新しい戦い:{name}','새 전투: {name}'],
+'Tap to skip': ['Touchez pour passer','Tippen zum Überspringen','Toca para saltar','Tocca per saltare','Toque para saltar','I-tap para laktawan','தவிர்க்கத் தட்டவும்','Ketuk untuk lewati','点击跳过','點擊跳過','タップでスキップ','탭하여 건너뛰기'],
+'NEW!': ['NOUVEAU !','NEU!','¡NUEVO!','NUOVO!','NOVO!','BAGO!','புதியது!','BARU!','新!','新!','NEW!','NEW!'],
+'Rewards': ['Récompenses','Belohnungen','Recompensas','Ricompense','Recompensas','Mga gantimpala','வெகுமதிகள்','Hadiah','奖励','獎勵','報酬','보상'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

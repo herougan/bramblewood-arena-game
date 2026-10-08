@@ -1835,17 +1835,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     sources.forEach(src=>{
       const def = CARD_DEFS[src.defId];
       runCustomTriggers(players, sideOf, playerId, src, def, allyHook, stats, events, {spawnedCard:newlyPlacedCard});
-      // Esprit N (anthem, item #14): "Gain +N/+0 when a unit of the same type [archetype]
-      // enters the field" — a permanent self-buff, distinct from Rally's live team-wide aura.
-      // Only fires on a genuine archetype overlap with the card that was just played (kind
-      // 'played' only — see the function comment above).
-      if(kind==='played' && src.hp>0 && def && def.effects && def.effects.esprit){
-        const srcArchetypes = def.archetypes || [];
-        const shares = srcArchetypes.some(a=> newArchetypes.includes(a));
-        if(shares){
-          src.atk += def.effects.esprit; src.baseAtk += def.effects.esprit;
-          if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:def.effects.esprit});
-        }
+      // Esprit X/Y (anthem, item #14; 2026-10-08: any ally now, not just a shared archetype, and Health too via
+      // espritHp): a permanent self-buff whenever another ally is played (kind 'played' only, as before).
+      if(kind==='played' && src.hp>0 && def && def.effects && (def.effects.esprit || def.effects.espritHp)){
+        const ea = def.effects.esprit || 0, eh = def.effects.espritHp || 0;
+        src.atk += ea; src.baseAtk += ea;
+        if(eh){ src.hp += eh; if(typeof src.maxHp === 'number') src.maxHp += eh; }
+        if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:ea, hp:eh});
       }
     });
     // On Enemy Spawn/Played (2026-09-16, split 2026-09-27): mirrors the ally hook above but

@@ -127,8 +127,11 @@ void main(){
     o = add(o, vec3(1.0, 0.92, 0.6), shafts(uv, t)*0.34);
     o = add(o, vec3(0.8, 1.0, 0.4), sparks(q, 9.0, t, vec2(0.05, -0.06), 0.14, 0.18));
   } else if(k == 1 || k == 6){ // water / coral: caustics, glints, bubbles
-    float c = caustic(uv*vec2(aspect, 1.0)*0.9 + vec2(t*0.01, 0.0), t*0.45);
-    o = add(o, vec3(0.75, 0.95, 1.0), c*0.42);
+    // 2026-10-08: two caustic patterns at different scales and speeds fade into each other, a little softer.
+    float cA = caustic(uv*vec2(aspect, 1.0)*0.9 + vec2(t*0.01, 0.0), t*0.45);
+    float cB = caustic(uv*vec2(aspect, 1.0)*1.25 + vec2(-t*0.012, t*0.006) + 3.7, t*0.38 + 11.0);
+    float c = mix(cA, cB, smoothstep(0.15, 0.85, 0.5 + 0.5*sin(t*0.35)));
+    o = add(o, vec3(0.75, 0.95, 1.0), c*0.3);
     o = add(o, vec3(0.0, 0.1, 0.2), smoothstep(0.4, 1.0, uv.y)*0.18);
     if(k == 6){ vec2 bq = q*10.0 + vec2(0.0, t*0.9); vec2 id = floor(bq); vec2 f = fract(bq) - 0.5; float h = hash(id);
       float r = length(f - (vec2(hash(id+2.0), 0.0) - 0.5)*0.5 - vec2(sin(t*2.0 + h*9.0)*0.08, 0.0));
@@ -206,12 +209,18 @@ void main(){
     if(u_felt > 1.5){
       vec2 gq = q * 7.0;
       if(k == 1 || k == 6 || k == 7){            // wet: slow-moving specular glints toward the lamp
-        float w1 = fbm(gq*0.8 + vec2(t*0.08, t*0.05)), w2 = fbm(gq*0.8 + vec2(0.01, 0.0) + vec2(t*0.08, t*0.05));
-        float w3 = fbm(gq*0.8 + vec2(0.0, 0.01) + vec2(t*0.08, t*0.05));
-        vec3 wn = normalize(vec3((w1 - w2)*40.0, (w1 - w3)*40.0, 1.0));
+        // 2026-10-08 (user: "weaken the water shine ... make it more dynamic ... overlay two patterns and let them
+        // fade into each other"): two glint layers drifting in different directions and scales cross-fade on a
+        // slow cycle, softer (lower exponent) and at about 40% of the old strength.
         vec3 H = normalize(L + vec3(0.0, 0.0, 1.0));
-        float spec = pow(max(dot(wn, H), 0.0), 60.0) * (0.4 + 0.6*pool);
-        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.35;
+        vec2 fa = gq*0.8 + vec2(t*0.08, t*0.05), fb = gq*1.15 + vec2(-t*0.06, t*0.075) + 7.3;
+        float a1 = fbm(fa), a2 = fbm(fa + vec2(0.01, 0.0)), a3 = fbm(fa + vec2(0.0, 0.01));
+        float b1 = fbm(fb), b2 = fbm(fb + vec2(0.01, 0.0)), b3 = fbm(fb + vec2(0.0, 0.01));
+        float sa = pow(max(dot(normalize(vec3((a1 - a2)*34.0, (a1 - a3)*34.0, 1.0)), H), 0.0), 36.0);
+        float sb = pow(max(dot(normalize(vec3((b1 - b2)*34.0, (b1 - b3)*34.0, 1.0)), H), 0.0), 36.0);
+        float mixAB = 0.5 + 0.5*sin(t*0.42);
+        float spec = mix(sa, sb, smoothstep(0.15, 0.85, mixAB)) * (0.4 + 0.6*pool);
+        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.14;
         outc.a += 0.05;                            // a damp darkening
       } else if(k == 2 || k == 8 || k == 10){    // ash: glowing cracks that breathe
         float c = abs(fbm(gq*0.9) - 0.5);

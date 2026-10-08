@@ -3,6 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-08
+- A reward reveal after a win: cards shine into view with NEW!, and new fights drop onto the board.
+- Flying units keep flying through the fight and no longer jerk back after a hit.
+- Skirmish panel: Fight on top, a big enemy deck level, rewards on the right. Starting enemies are Lv 0.
+- Faster map-to-map transitions; simpler edge arrows.
+- Esprit: +X/+Y whenever any ally is played.
+- Admin tools only for admins.
 - Winners are tossed into the air at the end of a fight instead of dancing forever.
 - Damage numbers burst out with an icon (👊 for crits) and pop higher on enemy cards; gold sounds sparkly.
 - Cards emote: 22 emoji moods in battle, including reactions to poison, freezing, stuns and kills.

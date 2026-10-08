@@ -57,7 +57,7 @@
     function updateVisibility(){
       const isOpen = !bar.hidden;
       const stillHovering = isOpen ? inBarRect() : inTopMiddleZone();
-      bar.hidden = !(shiftHeld && stillHovering);
+      bar.hidden = !(shiftHeld && stillHovering && adminAllowed()); // admins and local dev only (2026-10-08)
     }
     document.addEventListener('mousemove', e=>{
       mouseX = e.clientX; mouseY = e.clientY;
@@ -210,7 +210,11 @@ const PASSIVE_DEFS = [
   // canonical data this same pass; the engine's every-round rallyBonus recompute is left in place,
   // inert, as a harmless no-op now that nothing sets effects.rally -- same backward-compat stance
   // as every other retired mechanic in this file (gainGold, the old Arrow N missile, etc).
-  {key:'esprit', category:'evergreen', label:'Esprit', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently whenever another ally of a shared archetype enters play.`},
+  // Esprit (2026-10-08, user: "just gain +X/+Y when an ally enters. Not just same archetype"): any ally you play
+  // counts now, and it can grow Health too (effects.espritHp). Two numbers in the editor: Attack, Health.
+  {key:'esprit', category:'evergreen', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} permanently whenever another ally enters play.`; },
+    get:e=> (e.esprit || e.espritHp) ? [e.esprit||0, e.espritHp||0] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0) e.esprit = a; if(h>0) e.espritHp = h; }},
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
@@ -222,7 +226,7 @@ const PASSIVE_DEFS = [
   {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every landed melee hit also punches ${v} flat damage straight through to the enemy castle, on top of whatever it did to its actual target.`},
   {key:'gash', category:'evergreen', label:'Gash', kind:'number', min:0, desc:v=>`On Spawn: immediately gashes the opposing creature for ${v} bleed stacks, once.`},
   {key:'overwhelm', category:'passive', label:'Overwhelm', kind:'boolean', desc:()=>`A killing blow's leftover damage — whatever was left over once the target's HP hit 0 — carries through to the enemy castle.`},
-  {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently whenever ANY ally of yours dies (no shared-archetype requirement, unlike Esprit).`},
+  {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently whenever ANY ally of yours dies.`},
   {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
   {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently every time it lands a killing blow.`},
@@ -503,8 +507,8 @@ function CHAIN_BREAK_OPTIONS(){
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, mechLineGate:p.mechLineGate,
-    get:e=> e[p.key],
-    apply:(e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } },
+    get: p.get || (e=> e[p.key]), placeholders:p.placeholders,
+    apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
     key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', desc:()=>'A lit fuse, ticking every round regardless of Wait/Stun. At 0, deals Damage to whatever is opposite (or the HQ if empty), once.',
@@ -907,7 +911,7 @@ function describeEffects(def, liveCard){
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
   // the keyword first and reads the rule after.
-  PASSIVE_DEFS.forEach(p=>{ const v = e[p.key]; if(!v) return; const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : p.label; lines.push(`${head} — ${p.desc(v)}`); });
+  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; } const v = e[p.key]; if(!v) return; const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : p.label; lines.push(`${head} — ${p.desc(v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -1540,6 +1544,7 @@ async function refreshCloudCardAdmin(){
   cloudCardAdmin = false;
   if(!sbClient || !isSignedIn()) return;
   try{ const { data, error } = await sbClient.rpc('is_app_admin'); cloudCardAdmin = !error && data === true; }catch(e){}
+  syncAdminModeToAccount();
   // 2026-10-08 (user: "I want to edit the Skirmishes as either of my accounts"): both are server
   // admins, but the edit buttons also waited on the Admin Mode switch in this browser. The first
   // time an admin account signs in on a device, Admin Mode turns on (turning it off later sticks).
@@ -3355,7 +3360,7 @@ function cardTileHTML(d, opts){
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-    ${d.wait>0&&!hand?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
@@ -4899,7 +4904,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${row.value||1}">`;
   else if(s.kind==='twoNumber'){
     const vals = Array.isArray(row.value)?row.value:[1,1];
-    valueHtml = `<input type="number" min="0" class="w-60" placeholder="Timer" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="Damage" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
+    const ph = s.placeholders || ['Timer','Damage'];
+    valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
   } else if(s.kind==='select'){
     const opts = resistOptionsList();
     valueHtml = `<select data-sk="val" data-i="${i}">${opts.map(o=>`<option value="${o}" ${row.value===o?'selected':''}>${resistOptionLabel(o)}</option>`).join('')}</select>`;
@@ -5947,7 +5953,7 @@ function resetCloudIdentity(){
   cloudUserId = null; cloudIsAnonymous = true; cloudUserEmail = null; cloudUserLabel = null; cloudUserAvatar = null;
   cloudSessionUser = null;
   if(typeof socialTeardown==='function') socialTeardown();
-  cloudCardAdmin = false;
+  cloudCardAdmin = false; try{ syncAdminModeToAccount(); }catch(e){}
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
 }
@@ -6787,9 +6793,21 @@ function setDevMode(on){
 // "the workflow for editing cards this way won't be forever... in the future there will be a
 // server-side app that handles admin stuff." This is that stopgap, not the final answer.
 const ADMIN_MODE_KEY = 'bramblewood_arena_adminmode';
+// 2026-10-08 (user: "Shift option and editor capabilities should not be available for non-admins"):
+// admin tools (Admin Mode, the Shift debug bar, map/skirmish editors) need a server admin account, or a
+// local copy of the game (file:// or localhost) for development and the test suites. The stored switch
+// is only honoured once one of those is true; for everyone else Admin Mode stays off.
+function isDevHost(){ try{ const h = location.hostname; return location.protocol === 'file:' || h === 'localhost' || h === '127.0.0.1' || /\.local$/.test(h); }catch(e){ return false; } }
+function adminAllowed(){ return isDevHost() || (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin === true); }
 let adminModeEnabled = false;
-try{ adminModeEnabled = localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){}
+try{ adminModeEnabled = isDevHost() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){}
+function syncAdminModeToAccount(){
+  const was = adminModeEnabled;
+  try{ adminModeEnabled = adminAllowed() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){ adminModeEnabled = false; }
+  if(was !== adminModeEnabled){ try{ if(currentTab==='play' && !matchState) renderPlay(); }catch(e){} }
+}
 function setAdminMode(on){
+  if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; return; }
   adminModeEnabled = !!on;
   try{ localStorage.setItem(ADMIN_MODE_KEY, adminModeEnabled?'1':'0'); }catch(e){}
 }
@@ -7419,7 +7437,7 @@ function deckPreviewPillsHTML(d){
     <span class="deck-pill deck-pill-castle" title="Castle (Bramble)">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
-    <span class="deck-pill deck-pill-level" title="Deck level — each card's rarity weight × its level, leader counts double">📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
+    <span class="deck-pill deck-pill-level" title="Deck level — 0 for a deck of unlevelled Base cards; rarer cards and card levels raise it (the leader counts double)">📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
   </div>`;
 }
 // Deck level (2026-10-03): Σ rarity weight × card level (forged level, minimum 1); the leader
@@ -7427,11 +7445,27 @@ function deckPreviewPillsHTML(d){
 // Enemy deck level (2026-10-08, user: "The Skirmishes should say the difficulty level of the enemy.
 // Maybe deck level is enough"): the same Deck level formula as your own decks, with the enemy's cards
 // at their base level, so the two numbers compare directly.
+// Deck level (2026-10-08, user: "Tutorial and base cards start at lvl 0 ... so the starting enemies have very
+// low level, starting at 0"): how far a deck sits above an all-Base, unlevelled deck. Each card adds
+// rarityWeight × (1 + its level) − 1, so a Base/Common card at level 0 adds nothing, a level gives
+// +rarityWeight, and rarer cards add more; the leader counts double. Starting enemies are Lv 0.
+function deckLevelFrom(counts, levelOf, leaders){
+  const defs = getCardDefs(), W = (typeof BramblewoodAutobattle!=='undefined' && BramblewoodAutobattle.rarityWeight) || (()=> 1);
+  const one = id=>{ const d = defs[String(id).split('~')[0]]; if(!d) return 0; return W(d) * (1 + Math.max(0, levelOf(String(id).split('~')[0]) || 0)) - 1; };
+  let t = 0;
+  Object.keys(counts||{}).forEach(id=>{ t += (counts[id]||0) * one(id); });
+  (leaders||[]).filter(Boolean).forEach(id=>{ t += 2 * one(id); });
+  return Math.max(0, Math.round(t));
+}
 function enemyDeckLevel(node){
-  if(!node || !node.deck || typeof BramblewoodAutobattle==='undefined') return 0;
-  return BramblewoodAutobattle.deckLevelOf(getCardDefs(), node.deck, ()=> 1, node.leaderId ? [node.leaderId] : []);
+  if(!node || !node.deck) return 0;
+  return deckLevelFrom(node.deck, ()=> 0, node.leaderId ? [node.leaderId] : []);
 }
 function mainDeckLevel(counts, leaderId){
+  return deckLevelFrom(counts, id=> getCardLevel(id), leaderId ? [leaderId] : []);
+}
+// PvP matchmaking keeps the older power score (rarity × max(1, level)), so stored ghost decks stay comparable.
+function deckPowerLevel(counts, leaderId){
   if(typeof BramblewoodAutobattle==='undefined') return 0;
   return BramblewoodAutobattle.deckLevelOf(getCardDefs(), counts, id=> Math.max(1, (myCardLevels||{})[id]||0), leaderId ? [leaderId] : []);
 }
@@ -8678,7 +8712,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
         <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
-        <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
+        <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
         <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
@@ -9273,7 +9307,7 @@ function loadPvpDecks(){ try{ return JSON.parse(localStorage.getItem(PVP_DECKS_K
 // thin), with a light pull toward decks near your deck level — see matchPvp in bramblewood-ghosts.js.
 // Candidates: live PvP decks, this browser's recorded decks, and seeded strangers for every tier.
 const PVP_RECENT_KEY = 'bramblewood_pvp_recent_owners_v1';
-function myPvpDeckLevel(){ return mainDeckLevel(myDeckCounts, myLeaderId) || 1; }
+function myPvpDeckLevel(){ return deckPowerLevel(myDeckCounts, myLeaderId) || 1; }
 function pvpCandidates(){
   const defs = getCardDefs(), mine = myGhostOwnerId();
   liveRefreshGhosts('pvp');
@@ -10452,12 +10486,15 @@ function conquestPanTo(mapId, body, progress){
   // 2026-10-08 (user: "there should be a translate animation where everything is blurred then the
   // new background moves in. Blend the transition a bit"): the old map slides off and blurs into a
   // haze, the new one slides in out of the same haze; the longer the trip, the longer the glide.
-  const T = mapTravelMs(Math.abs(to - from)), outMs = Math.round(T*0.42);
-  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:T - outMs}; renderConquestSubTab(body); };
+  // 2026-10-08 (user: "moving between maps should have a transition animation (simple and very fast)"):
+  // the old 16% slide-and-blur (up to 2.6 s) uncovered whatever was behind the map. Now: a quick dip
+  // through a dark veil (110 ms out, 170 ms in) with a small nudge in the travel direction.
+  const outMs = 110;
+  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:170}; renderConquestSubTab(body); };
   if(mainEl && !reduce && mainEl.animate){
-    const sx = dir==='right' ? -16 : 16;
-    mainEl.animate([{transform:'none', filter:'blur(0px)', opacity:1}, {transform:`translateX(${sx}%)`, filter:'blur(10px)', opacity:.3}], {duration:outMs, easing:'cubic-bezier(.5,0,.75,.4)', fill:'forwards'});
-    setTimeout(go, outMs - 10);
+    const sx = dir==='right' ? -18 : 18;
+    mainEl.animate([{transform:'none', opacity:1}, {transform:`translateX(${sx}px)`, opacity:0}], {duration:outMs, easing:'ease-in', fill:'forwards'});
+    setTimeout(go, outMs);
   } else go();
 }
 // 2026-10-08 (user: "settings, home and energy can be fitted into the existing map UI; then remove
@@ -10707,7 +10744,10 @@ function renderConquestSubTab(body){
   {
     const idx = CONQUEST_MAPS.indexOf(map), prev = CONQUEST_MAPS[idx-1], next = CONQUEST_MAPS[idx+1];
     const canvasEl = document.getElementById('conquestCanvas');
-    const edge = (m, side)=> m ? `<button type="button" class="world-edge world-edge-${side} ${isMapUnlocked(m, progress)?'':'is-locked'}" ${isMapUnlocked(m, progress)?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(m.name)}">${side==='left'?'‹ ':''}<span>${isMapUnlocked(m, progress)?m.icon:'🔒'} ${escapeHtml(m.name)}</span>${side==='right'?' ›':''}</button>` : '';
+    // 2026-10-08 (user: "simplified to just an arrow + emoji"): the edge chips are an arrow and the map's emoji;
+    // the name stays in the tooltip and for screen readers.
+    const edge = (m, side)=>{ if(!m) return ''; const open = isMapUnlocked(m, progress), lbl = (side==='left' ? 'Back to ' : 'On to ') + m.name + (open ? '' : ' (locked)');
+      return `<button type="button" class="world-edge world-edge-${side} ${open?'':'is-locked'}" ${open?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(lbl)}" aria-label="${escapeAttr(lbl)}">${side==='left'?'<b aria-hidden="true">‹</b>':''}<span aria-hidden="true">${open?m.icon:'🔒'}</span>${side==='right'?'<b aria-hidden="true">›</b>':''}</button>`; };
     if(canvasEl){
       canvasEl.insertAdjacentHTML('beforeend', edge(prev,'left') + edge(next,'right'));
       canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); conquestPanTo(b.dataset.worldGo, body, progress); }));
@@ -10720,8 +10760,8 @@ function renderConquestSubTab(body){
     }
     if(conquestPanDir){ mainEl.classList.add('world-in-' + conquestPanDir); conquestPanDir = null; }
     if(conquestPanAnim && mainEl.animate){
-      const sx = conquestPanAnim.dir==='right' ? 20 : -20;
-      mainEl.animate([{transform:`translateX(${sx}%)`, filter:'blur(10px)', opacity:.3}, {transform:'none', filter:'blur(0px)', opacity:1}], {duration:conquestPanAnim.ms, easing:'cubic-bezier(.2,.75,.25,1)'});
+      const sx = conquestPanAnim.dir==='right' ? 18 : -18;
+      mainEl.animate([{transform:`translateX(${sx}px)`, opacity:0}, {transform:'none', opacity:1}], {duration:conquestPanAnim.ms, easing:'ease-out'});
       conquestPanAnim = null;
     }
     const selChip = listEl.querySelector('.conquest-map-item.selected');
@@ -10801,9 +10841,11 @@ function renderConquestSubTab(body){
     panelEl.hidden = false;
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}${(()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); if(!ev) return ''; const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard'; return ` · <span class="cnp-lvl ${cls}">⚔ ${escapeHtml(_t('Deck Lv {n}', {n:ev}))}<small> · ${escapeHtml(_t('yours {n}', {n:mine}))}</small></span>`; })()}</div></div>
+      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+        ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard';
+          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}) + ', ' + _t('yours {n}', {n:mine}))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b><small>${escapeHtml(_t('yours {n}', {n:mine}))}</small></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
-        ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
       ${earned ? `
         <div class="cnp-squad-row">
@@ -16507,11 +16549,11 @@ function boardCardHTML(c, defs, opts){
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
       ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}`;
   return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
+    ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}
+    }})}${flies?'</div>':''}
   </div>`;
 }
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
@@ -16872,15 +16914,18 @@ function discardZoneTitle(defId){
 function positionResourceTipAbove(targetEl, cx, cy){
   const tip = document.getElementById('graveyardDragTip');
   if(!tip) return;
+  // 2026-10-08 (user: "the +1 Lumber tooltip ... should appear ABOVE the graveyard. Tooltips should always not
+  // BLOCK the card"): while dragging, the yield stays on the badge above the Graveyard (it brightens when the
+  // card is over it) instead of riding on the card; for a tapped (armed) card it sits just above the card.
   if(cx!=null && cy!=null){
-    tip.style.left = cx + 'px';
-    tip.style.top = cy + 'px'; // 2026-10-08: centred ON the held card (the drag ghost sits under it)
+    tip.hidden = true;
+    const z = document.getElementById('dropDiscard'); if(z) z.classList.add('pitch-hot');
     return;
   }
   if(!targetEl) return;
   const r = targetEl.getBoundingClientRect();
   tip.style.left = (r.left + r.width/2) + 'px';
-  tip.style.top = (r.top + r.height/2) + 'px'; // centered over the armed card itself
+  tip.style.top = (r.top - 6) + 'px'; // above the armed card, never over it
 }
 function showResourceTipAbove(targetEl, defId, cx, cy){
   const tip = document.getElementById('graveyardDragTip');
@@ -16894,6 +16939,7 @@ function showResourceTipAbove(targetEl, defId, cx, cy){
 function hideResourceTip(){
   const tip = document.getElementById('graveyardDragTip');
   if(tip) tip.hidden = true;
+  const z = document.getElementById('dropDiscard'); if(z) z.classList.remove('pitch-hot');
 }
 function refreshDiscardZone(){
   const m = matchState; if(!m) return;
@@ -18205,6 +18251,10 @@ async function resolveRound(){
   // comment) right as control hands back to the player, instead of letting it bleed into their
   // next turn.
   SoundKit.stopAll();
+  // 2026-10-08 (user: "There must be a hurrah when receiving an award! ... Only after the hurrah is complete or
+  // clicking through it then you get the menu"): cards won are revealed one at a time, then new fights and
+  // features drop onto the board, before the results window opens.
+  if(m.over && m.winner === (m.mode==='liveRanked' ? m.liveMySeat : 1)){ try{ await playRewardReveal(m); }catch(e){ console.warn('reward reveal', e); } }
   m.resolving = false; document.documentElement.classList.remove('bw-resolving');
   renderMatchUI();
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; setTimeout(()=> ids.forEach(icePulseVfx), 120); }
@@ -18791,6 +18841,71 @@ function victoryParade(rowId, upOverride){
   });
   return 250 + (n - 1)*110 + 1250; // ms until the last card has landed (showEndSign waits for it)
 }
+// Reward reveal (2026-10-08). Cards: a dark card back on a dim stage, a shine builds, flashes, then fades off to
+// reveal the card with a NEW! tag. Unlocks (new fights, features, titles): glazed tokens drop from the sky onto the
+// board with a very slight shake. A click, tap or key skips straight to the results.
+function playRewardReveal(m){
+  const defs = getCardDefs();
+  const cards = [...new Set(m.rewardCardIds || m.conquestCardsEarned || [])].filter(id=> defs[id]);
+  const unlocks = [...(m.unlockedFights||[]).map(f=> ({icon:(f.node && f.node.icon) || '⚔️', label: _t('New fight: {name}', {name:(f.node && f.node.name) || ''})})),
+                   ...(m.unlockedActivities||[]).map(a=> ({icon:a.icon || '✨', label:a.label || ''}))];
+  if(!cards.length && !unlocks.length) return Promise.resolve();
+  if(!fxAtLeast('low') || reducedMotion() || !hasGsap()) return Promise.resolve();
+  return new Promise(resolve=>{
+    let done = false, timers = [];
+    const stage = document.createElement('div'); stage.className = 'rr-stage'; stage.setAttribute('role','dialog'); stage.setAttribute('aria-label', _t('Rewards'));
+    stage.innerHTML = `<div class="rr-dim"></div><div class="rr-hint">${escapeHtml(_t('Tap to skip'))}</div>`;
+    document.body.appendChild(stage);
+    const later = (fn, ms)=> timers.push(setTimeout(()=>{ if(!done) fn(); }, ms));
+    const finish = ()=>{ if(done) return; done = true; timers.forEach(clearTimeout); document.removeEventListener('keydown', onKey, true);
+      gsap.to(stage, {opacity:0, duration:.18, onComplete:()=> stage.remove()}); setTimeout(resolve, 120); };
+    const onKey = e=>{ if(e.key==='Tab') return; e.preventDefault(); finish(); };
+    stage.addEventListener('pointerdown', finish); document.addEventListener('keydown', onKey, true);
+    let t = 0;
+    cards.forEach((id, i)=>{
+      later(()=>{
+        stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, scale:.9, duration:.2, onComplete:()=> c.remove()}));
+        const c = document.createElement('div'); c.className = 'rr-card';
+        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t('NEW!'))}</span></div><div class="rr-back"><span>🌰</span></div><div class="rr-shine"></div>`;
+        stage.appendChild(c);
+        const back = c.querySelector('.rr-back'), front = c.querySelector('.rr-front'), shine = c.querySelector('.rr-shine'), tag = c.querySelector('.rr-new');
+        gsap.set(front, {opacity:0}); gsap.set(tag, {scale:0, rotation:-14});
+        try{ SoundKit.rareRise && SoundKit.rareRise(defs[id].rarity==='legendary' || defs[id].rarity==='mythic'); }catch(e){}
+        gsap.timeline()
+          .fromTo(c, {y:60, scale:.7, opacity:0}, {y:0, scale:1, opacity:1, duration:.35, ease:'back.out(1.6)'})
+          .fromTo(shine, {opacity:0, scale:.6}, {opacity:1, scale:1.25, duration:.75, ease:'power2.in'}, '+=0.05')
+          .add(()=>{ back.style.opacity = '0'; gsap.set(front, {opacity:1}); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} })
+          .to(shine, {opacity:0, scale:1.6, duration:.6, ease:'power2.out'})
+          .to(tag, {scale:1, rotation:-8, duration:.4, ease:'back.out(3)'}, '-=0.35');
+      }, t);
+      t += 2300;
+    });
+    if(unlocks.length){
+      later(()=>{
+        stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, duration:.2, onComplete:()=> c.remove()}));
+        gsap.to(stage.querySelector('.rr-dim'), {opacity:.25, duration:.3});
+        const bf = document.querySelector('.battlefield'), br = bf ? bf.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
+        unlocks.forEach((u, k)=>{
+          later(()=>{
+            const tok = document.createElement('div'); tok.className = 'rr-token';
+            tok.innerHTML = `<span class="rr-token-ico">${escapeHtml(u.icon)}</span><span class="rr-token-lbl">${escapeHtml(u.label)}</span>`;
+            stage.appendChild(tok);
+            const n = unlocks.length, x = br.left + br.width * ((k + 1) / (n + 1)), y = br.top + br.height * 0.5;
+            gsap.set(tok, {left:x, top:y, xPercent:-50, yPercent:-50});
+            gsap.timeline()
+              .fromTo(tok, {y:-(y + 120), rotation:(k%2 ? 10 : -10), scale:1.15}, {y:0, rotation:0, scale:1, duration:.5, ease:'power3.in'})
+              .add(()=>{ try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){}
+                const host = bf || document.body; gsap.fromTo(host, {y:0}, {y:3, duration:.04, yoyo:true, repeat:3, ease:'none', clearProps:'y'});
+                const dust = document.createElement('span'); dust.className = 'rr-dust'; tok.appendChild(dust); setTimeout(()=> dust.remove(), 600); })
+              .to(tok, {scaleY:.86, scaleX:1.1, duration:.07}).to(tok, {scaleX:1, scaleY:1, duration:.3, ease:'elastic.out(1, .5)'});
+          }, k*380);
+        });
+      }, t);
+      t += unlocks.length*380 + 1500;
+    }
+    later(finish, t + 200);
+  });
+}
 async function showEndSign(m){
   const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
   const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
@@ -19356,7 +19471,7 @@ function logText(ev){
         // (both fell through to the raw `|| ev.kind` fallback, printing the bare word "bleed" or
         // "esprit" as the whole sentence) and went unnoticed until this follow-up pass.
         bleed: `bled ${nm(ev.targetDefId)} (+${ev.amount} 🩸)`,
-        esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔, permanent) 🤝`,
+        esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔${ev.hp ? ' +'+ev.hp+'❤' : ''}, permanent) 🤝`,
       }[ev.kind] || ev.kind;
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
@@ -20540,7 +20655,7 @@ function renderVfxForEvent(ev){
     // since — like Berserk/Momentum — the permanent Attack gain shows up via the normal stat
     // display at the end of the round, not a status badge).
     else if(ev.kind==='bleed'){ SoundKit.bleedApply(); if(el) floatText(el, '+'+ev.amount+'🩸', 'bleed'); if(rc) rc.bleed = (rc.bleed||0) + ev.amount; }
-    else if(ev.kind==='esprit'){ const attEl = boardCardEl(ev.attUid); SoundKit.espritTone(); if(attEl) floatText(attEl, '🤝 +'+ev.amount+'⚔', 'gold'); }
+    else if(ev.kind==='esprit'){ const attEl = boardCardEl(ev.attUid); SoundKit.espritTone(); if(attEl) floatText(attEl, '🤝 +'+(ev.amount||0)+'⚔'+(ev.hp ? ' +'+ev.hp+'❤' : ''), 'gold'); }
     if(ev.kind==='poison' || ev.kind==='stun' || ev.kind==='scar' || ev.kind==='cleanse' || ev.kind==='freeze' || ev.kind==='sleep' || ev.kind==='paralyze' || ev.kind==='stunOnHit' || ev.kind==='blind' || ev.kind==='shock' || ev.kind==='corrode' || ev.kind==='bleed' || ev.kind==='stagger') updateCardStatusDisplay(ev.targetUid);
   }
   // heal (2026-09-16): Regeneration N and the 'heal' custom-trigger action both push this —
