@@ -3820,7 +3820,7 @@ function openCardDetail(defId){
   overlay.innerHTML = `<div class="modal card-detail-card">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
-      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}</div>
+      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}<button type="button" class="cd-inspect-btn" id="cdInspectBtn" title="Open the card large and turn it in the light"><span aria-hidden="true">🔍</span> <span>View large</span></button></div>
       <div class="cd-info">
       <h2 class="cd-name">${escapeHtml(d.name||'')}</h2>
       <div class="cd-chips">${chips}</div>
@@ -3846,6 +3846,11 @@ function openCardDetail(defId){
   overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
   const editBtn = document.getElementById('cdEditBtn');
   if(editBtn) editBtn.addEventListener('click', ()=>{ close(); openCardEditor(defId); });
+  const inspectBtn = document.getElementById('cdInspectBtn');
+  const inspect = ()=> openCardInspector(defId, {foil: ownsFoil, returnFocus: inspectBtn});
+  if(inspectBtn) inspectBtn.addEventListener('click', inspect);
+  const bigTile = overlay.querySelector('.card-pop-visual-tile');
+  if(bigTile){ bigTile.style.cursor = 'zoom-in'; bigTile.addEventListener('click', inspect); }
   if(adminModeEnabled) wireCodexPlacement(defId);
   const signInBtn = document.getElementById('cdSignInStatsBtn');
   if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to track your usage stats', ()=> openCardDetail(defId)));
@@ -3859,6 +3864,113 @@ function openCardDetail(defId){
       }
     });
   }
+}
+// Card inspector (2026-10-08, user: "Cards should be displayed prominently and in large size, to
+// appreciate the card. In the codex, the player can somehow open the card in large and spin the
+// card around one tilted axis, with shine and all that ... (but your text...)"). The card is real
+// DOM, so the spin is a CSS 3D transform — rotate(T) rotateY(θ) rotate(-T) turns it about an axis
+// tilted T from vertical — and the light is trig on θ: the sheen band slides with sin θ, the face
+// dims with |cos θ|, the foil vars (--hx/--hbx…) track the turn, and the shadow swings the other
+// way. The text problem: past 90° you'd see the face mirrored, so the card has a proper BACK
+// (backface-visibility) and is never shown reversed. At rest it sways gently (±18°), so the text
+// stays readable; drag to turn it (with a flick it keeps spinning), ↻ for a full turn.
+const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism'];
+const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism'};
+let cardInspectStop = null;
+function openCardInspector(defId, opts){
+  opts = opts || {};
+  const d = getCardDefs()[defId]; if(!d) return;
+  if(cardInspectStop) cardInspectStop();
+  const ownFoil = opts.foil ? holoClass(d).replace('is-holo','').trim() : '';
+  // Players see Plain plus the foil they own; admins get every finish (it doubles as the
+  // treatment centre's in-game preview).
+  const finishes = [''].concat(adminModeEnabled ? CI_FINISHES : (ownFoil ? [ownFoil] : []));
+  let finish = ownFoil;
+  const ov = document.createElement('div');
+  ov.className = 'card-inspect'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
+  ov.setAttribute('aria-label', 'Card viewer: ' + (d.name||''));
+  ov.innerHTML = `<button type="button" class="ci-x" aria-label="${'Close'}">✕</button>
+    <div class="ci-stage"><div class="ci-shadow"></div><div class="ci-spin">
+      <div class="ci-face ci-front"></div>
+      <div class="ci-face ci-back" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
+    </div></div>
+    <div class="ci-bar">
+      <b class="ci-name">${escapeHtml(d.name||'')}</b>
+      ${finishes.length > 1 ? `<div class="ci-finishes" role="group" aria-label="${'Finish'}">${finishes.map(f=> `<button type="button" class="ci-fin${f===finish?' is-on':''}" data-fin="${f}">${escapeHtml(CI_FINISH_NAMES[f]||f)}</button>`).join('')}</div>` : ''}
+      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button></div>
+      <small class="ci-hint">Drag the card to turn it</small>
+    </div>`;
+  document.body.appendChild(ov);
+  const front = ov.querySelector('.ci-front'), spin = ov.querySelector('.ci-spin'), shadow = ov.querySelector('.ci-shadow'), stage = ov.querySelector('.ci-stage');
+  let tile = null;
+  const renderFace = ()=>{
+    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish : '')}) + '<span class="ci-sheen" aria-hidden="true"></span>';
+    tile = front.querySelector('.card-tile');
+    if(finish) decorateHolo(front);
+  };
+  renderFace();
+  ov.querySelectorAll('.ci-fin').forEach(b=> b.addEventListener('click', ()=>{
+    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
+  }));
+  const TILT = -9;                       // axis lean, degrees from vertical
+  const still = reducedMotion();
+  let theta = 0, omega = 0, base = 0, dragging = false, lastX = 0, lastT = 0, t0 = performance.now(), prev = t0, raf = 0, swayFrom = t0;
+  const apply = (now)=>{
+    const r = theta * Math.PI/180, s = Math.sin(r), c = Math.cos(r);
+    spin.style.transform = `rotate(${TILT}deg) rotateY(${theta.toFixed(2)}deg) rotate(${-TILT}deg)`;
+    // Light from the upper left: the face is brightest square-on and dims edge-on.
+    front.style.setProperty('--ci-sheen', (50 - 140*s).toFixed(1) + '%');
+    front.style.setProperty('--ci-sheen-a', (0.10 + 0.45*Math.max(0, 1 - Math.abs(s - 0.35)*1.6)).toFixed(3));
+    front.style.setProperty('--ci-dim', (0.62 + 0.38*Math.abs(c)).toFixed(3));
+    shadow.style.transform = `translateX(${(-26*s).toFixed(1)}px) scaleX(${(0.25 + 0.75*Math.abs(c)).toFixed(3)})`;
+    if(tile && finish){
+      const px = 0.5 - 0.45*s, py = 0.38 + 0.12*Math.sin(r*2 + now/2600);
+      tile.style.setProperty('--hx', (px*100).toFixed(1)+'%'); tile.style.setProperty('--hy', (py*100).toFixed(1)+'%');
+      tile.style.setProperty('--hbx', (50 + (px-0.5)*90).toFixed(1)+'%'); tile.style.setProperty('--hby', (50 + (py-0.5)*90).toFixed(1)+'%');
+      tile.classList.add('holo-active');
+    }
+  };
+  const loop = (now)=>{
+    const dt = Math.min(0.05, (now - prev)/1000); prev = now;
+    if(!dragging){
+      if(Math.abs(omega) > 40){
+        theta += omega*dt; omega *= Math.pow(0.35, dt);          // flick coasts, then slows
+        base = Math.round(theta/360)*360; swayFrom = now;
+      } else {
+        omega = 0;
+        const sway = still ? 0 : 18*Math.sin((now - swayFrom)/1000*0.9) * Math.min(1, (now - swayFrom)/1500);
+        theta += ((base + sway) - theta) * Math.min(1, dt*4);    // settle face-up, then sway
+      }
+    }
+    apply(now);
+    raf = requestAnimationFrame(loop);
+  };
+  raf = requestAnimationFrame(loop);
+  stage.addEventListener('pointerdown', e=>{
+    dragging = true; omega = 0; lastX = e.clientX; lastT = performance.now();
+    try{ stage.setPointerCapture(e.pointerId); }catch(_){}
+  });
+  stage.addEventListener('pointermove', e=>{
+    if(!dragging) return;
+    const now = performance.now(), dx = e.clientX - lastX, dts = Math.max(0.008, (now - lastT)/1000);
+    theta += dx*0.55; omega = omega*0.5 + (dx*0.55/dts)*0.5; lastX = e.clientX; lastT = now;
+  });
+  const endDrag = ()=>{ if(!dragging) return; dragging = false; if(Math.abs(omega) <= 40){ base = Math.round(theta/360)*360; swayFrom = performance.now(); } };
+  stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
+  ov.querySelector('.ci-spinbtn').addEventListener('click', ()=>{ omega = still ? 0 : 900; if(still){ base += 360; } });
+  const onKey = e=>{
+    if(e.key === 'Escape'){ e.stopImmediatePropagation(); e.preventDefault(); close(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){ e.preventDefault(); base += e.key==='ArrowRight' ? 180 : -180; swayFrom = performance.now(); }
+  };
+  const close = ()=>{
+    cancelAnimationFrame(raf); window.removeEventListener('keydown', onKey, true); ov.remove(); cardInspectStop = null;
+    if(opts.returnFocus && opts.returnFocus.focus) opts.returnFocus.focus();
+  };
+  cardInspectStop = close;
+  window.addEventListener('keydown', onKey, true);
+  ov.querySelector('.ci-x').addEventListener('click', close);
+  ov.addEventListener('click', e=>{ if(e.target === ov) close(); });
+  ov.querySelector('.ci-x').focus();
 }
 // Codex placement (2026-10-02, admin): where a card comes from — decides its Codex tier/section —
 // plus its Hidden flag. Edits the RAW stored card (never getCardDefs' leveled/derived copy) and
