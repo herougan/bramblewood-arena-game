@@ -2727,8 +2727,11 @@
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .tip-ticker{position:relative; min-height:2.9em; overflow:hidden;} /* room for a tip that wraps to two lines */
   @media (max-width:520px){ .tip-ticker{min-height:4.2em;} }
-  .tip-ticker .tip-line{position:absolute; left:0; right:0; top:0; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both;}
-  .tip-ticker .tip-line.tip-out{animation:tipOut .6s ease-in both;}
+  .tip-ticker .tip-line{position:absolute; left:0; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
+  .tip-ticker .tip-line.tip-out{animation:tipOutZoom .42s ease-in forwards;}
+  @keyframes tipDrift{from{translate:0 0;} to{translate:-22px 0;}}
+  @keyframes tipOutZoom{from{opacity:1;} to{opacity:0; scale:.86;}}
+  @media (prefers-reduced-motion: reduce){ .tip-ticker .tip-line{animation:tipIn .3s both;} }
   @keyframes tipIn{from{opacity:0; transform:translateX(18px);} to{opacity:1; transform:none;}}
   @keyframes tipOut{from{opacity:1; transform:none;} to{opacity:0; transform:translateX(-18px);}}
   .admin-unlock-row{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:8px 0;}
@@ -5274,6 +5277,13 @@
   /* Emotes stay on the board: hidden once the results are up. */
   body.match-ended .speech-bubble.is-emote{display:none;}
   /* ---- 2026-10-08 late batch ---- */
+  .se-search-row{display:flex; gap:8px; align-items:center;} .se-search-row input{flex:1; min-width:0;}
+  .se-leaders{display:flex; flex-direction:column; gap:6px;} .se-leader-chips{display:flex; flex-wrap:wrap; gap:6px; align-items:center;} .se-x{border:0; background:none; cursor:pointer; padding:0 2px;}
+  /* Header controls share one height; the ⚙️ sits dead centre in a circle of that height. */
+  .topbar .energy-pill, .topbar .account-chip, .topbar .settings-btn, #view-play .energy-pill, #view-play .settings-btn{height:30px; box-sizing:border-box;}
+  .settings-btn{width:30px !important; height:30px !important; line-height:1; font-size:15px; padding:0 !important;}
+  .settings-btn > *, .settings-btn{font-family:'Noto Color Emoji','Apple Color Emoji','Segoe UI Emoji',sans-serif;}
+  .account-chip{display:inline-flex; align-items:center;}
   /* Pack opening v3 (2026-10-08) */
   .po2-pack.has-glow .po2-leak{opacity:.95;} .po2-pack.has-glow .po2-body{box-shadow:0 0 0 2px var(--glow), 0 0 34px 8px color-mix(in srgb, var(--glow) 65%, transparent), 0 10px 24px rgba(0,0,0,.35);}
   .po2-pack.has-glow.is-idle{animation:po2Float 3.2s ease-in-out infinite, po2GlowPulse 1.6s ease-in-out infinite;}

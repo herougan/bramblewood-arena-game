@@ -211,6 +211,7 @@ T = {
 'Tiny Cave Dweller': ['Minuscule troglodyte','Winziger Höhlenbewohner','Diminuto cavernícola','Minuscolo cavernicolo','Pequeno morador da caverna','Munting taga-kuweba','சிறு குகைவாசி','Penghuni gua mungil','小小穴居者','小小穴居者','小さな洞窟の住人','작은 동굴 주민'],
 'Inspect': ['Inspecter','Ansehen','Inspeccionar','Ispeziona','Inspecionar','Siyasatin','ஆய்வு செய்','Periksa','检视','檢視','詳しく見る','살펴보기'],
 'Armour': ['Armure','Rüstung','Armadura','Armatura','Armadura','Baluti','கவசம்','Zirah','护甲','護甲','アーマー','방어구'],
+'Full': ['Plein','Voll','Lleno','Pieno','Cheio','Puno','நிறைவு','Penuh','已满','已滿','満タン','가득'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

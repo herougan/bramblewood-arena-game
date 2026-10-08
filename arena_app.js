@@ -4264,7 +4264,8 @@ function openCardEditor(defId, versionDef){
   ensureCardMeta(editingCard);
   renderEditor();
 }
-function closeCardEditor(){ editingCard=null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; }
+let cardEditorHooks = null; // {saved(id), closed()} while another editor waits on this one (skirmish editor's New card)
+function closeCardEditor(){ editingCard=null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; const h = cardEditorHooks; cardEditorHooks = null; if(h && h.closed) try{ h.closed(); }catch(e){} }
 // 2026-10-07 audit: every "+ Add" / pill click re-renders the whole form from the model, which used to
 // wipe anything typed but not yet saved. The wrapper snapshots the form first and puts the typed
 // values back afterwards (fields by id; skill and trigger rows by position, when rows were only
@@ -5310,6 +5311,7 @@ async function onSaveEditor(){
   }
   delete c.__fromHistory;
   const published = await saveCard(c);
+  if(cardEditorHooks && cardEditorHooks.saved) try{ cardEditorHooks.saved(c.id); showToast(`➕ ${c.name} added to the skirmish deck.`, 'ok'); }catch(e){}
   if(!published) showToast(`💾 ${c.name} saved in this browser` + (cloudCardAdmin ? '' : ' — sign in with an admin account to publish it for everyone') + '.', 'ok');
   closeCardEditor();
 }
@@ -6369,6 +6371,26 @@ const ENERGY_REGEN_MS = 60 * 1000; // "You refill 1 per 1 minute" -- verbatim.
 // the cheap frequent fight, a Raid Boss is the rare endgame one) -- Online Raid sits between Elite
 // and Boss since it's a real (if quick) PvE test, not a warm-up fight.
 const ENERGY_COST = {skirmish:1, elite:2, boss:3, raidboss:4, finalboss:5, onlineRaid:2};
+// Energy per Conquest fight (2026-10-08, user): it climbs quickly, then settles. Map 1: the first skirmish costs 1,
+// the rest 2. Map 2: the first 2, the rest 3. Map 3: all 4. Then all 5 for two maps, all 6 for three, all 7 for four,
+// and so on. A map's boss always costs double.
+function mapEnergyBase(mapIdx){
+  if(mapIdx <= 0) return [1, 2];
+  if(mapIdx === 1) return [2, 3];
+  if(mapIdx === 2) return [4, 4];
+  let i = mapIdx - 3, c = 5, run = 2;
+  while(i >= run){ i -= run; c++; run++; }
+  return [c, c];
+}
+function nodeEnergyCost(mapOrId, node){
+  if(!node || node.kind==='tutorial') return 0;
+  const map = typeof mapOrId === 'string' ? CONQUEST_MAPS.find(m=> m.id===mapOrId) : (mapOrId || CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)));
+  const idx = Math.max(0, CONQUEST_MAPS.indexOf(map));
+  const [first, rest] = mapEnergyBase(idx);
+  if(/boss/.test(node.kind||'')) return rest * 2;
+  const real = map ? map.nodes.filter(n=> n.kind!=='tutorial') : [];
+  return real[0] && real[0].key === node.key ? first : rest;
+}
 function loadEnergyState(){
   try{
     const raw = localStorage.getItem(ENERGY_KEY);
@@ -6431,7 +6453,8 @@ function formatEnergyCountdown(ms){
 function refreshEnergyHud(){
   const s = settleEnergy();
   const nextMs = msUntilNextEnergyTick();
-  const text = nextMs===null ? `${s.current}/${ENERGY_MAX}` : `${s.current}/${ENERGY_MAX} · +1 in ${formatEnergyCountdown(nextMs)}`;
+  // 2026-10-08 (user: "When energy is 20/20, just say full").
+  const text = s.current >= ENERGY_MAX ? _t('Full') : nextMs===null ? `${s.current}/${ENERGY_MAX}` : `${s.current}/${ENERGY_MAX} · +1 in ${formatEnergyCountdown(nextMs)}`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
@@ -8778,7 +8801,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       <h3 class="se-h">Enemy deck · ${total} cards</h3>
       <div class="se-deck">${deckIds.length ? deckIds.map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health+(defs[id].wait?' · W'+defs[id].wait:'') : ''}</span>
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${draft.deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
-      <input type="text" id="seSearch" placeholder="Search a card to add to the enemy deck…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="se-search-row"><input type="text" id="seSearch" placeholder="Search a card to add to the enemy deck…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       <div class="se-actions">
@@ -8810,6 +8833,11 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); draft.leaders = (draft.leaders||[]).filter(x=> x!==b.dataset.leaderRm); if(!draft.leaders.length) delete draft.leaders; dirty = true; render(); });
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
     overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
+    // 2026-10-08 (user: "in the add cards section, can I also create a new card - it loads the same UI. When I click
+    // save, it immediately puts one of them in the deck"): the card editor opens on top; Save adds a copy here.
+    { const nc = document.getElementById('seNewCard'); if(nc) nc.onclick = ()=>{ read(); overlay.hidden = true;
+        cardEditorHooks = {saved: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, closed: ()=>{ overlay.hidden = false; render(); }};
+        openCardEditor(null); }; }
     const search = document.getElementById('seSearch');
     search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
     document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
@@ -10599,10 +10627,12 @@ function startTipTicker(el, tips){
     if(!el.isConnected) return;
     if(document.hidden){ setTimeout(show, 2000); return; }
     const next = order[i++ % order.length];
-    const out = el.querySelector('.tip-line');
-    if(out){ out.classList.add('tip-out'); setTimeout(()=> out.remove(), 600); }
-    const line = document.createElement('span'); line.className = 'tip-line'; line.textContent = next; el.appendChild(line);
-    setTimeout(show, 7000);
+    // 2026-10-08 (user): the tip keeps drifting very slowly while it shows (so it reads as temporary), leaves with a
+    // fade and a zoom-out, the next one waits for most of that, and each tip stays twice as long (14 s).
+    const out = el.querySelector('.tip-line:not(.tip-out)');
+    if(out){ try{ out.style.translate = getComputedStyle(out).translate; }catch(e){} out.classList.add('tip-out'); setTimeout(()=> out.remove(), 450); }
+    setTimeout(()=>{ if(!el.isConnected) return; const line = document.createElement('span'); line.className = 'tip-line'; line.textContent = next; el.appendChild(line); }, out ? 280 : 0);
+    setTimeout(show, 14000);
   };
   show();
 }
@@ -10842,7 +10872,7 @@ function renderConquestSubTab(body){
     // keyed the same way KIND_LABEL is) -- this tooltip just never surfaced that cost before you
     // committed to it. Skipped for the two virtual tutorial markers (kind:'tutorial') -- they're
     // not fightable nodes and cost nothing.
-    const energyCost = ENERGY_COST[node.kind];
+    const energyCost = nodeEnergyCost(map, node);
     return `<div class="ctt-title">${node.icon} ${node.name}</div>
       <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
@@ -10901,7 +10931,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard';
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}) + ', ' + _t('yours {n}', {n:mine}))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b><small>${escapeHtml(_t('yours {n}', {n:mine}))}</small></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
@@ -12304,7 +12334,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
-    const cost = ENERGY_COST[node.kind] || ENERGY_COST.skirmish;
+    const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
       alert(`Not enough Energy for ${node.name} -- this fight costs ${cost}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
       return false;
@@ -19237,14 +19267,14 @@ function rewardsPanelHTML(m){
     secs.push(`<div class="rw-sec"><div class="rw-head">Unlocked</div><div class="rw-row">${m.unlockedActivities.map(a=>`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`).join('')}</div></div>`);
   }
   if((m.unlockedFights||[]).length){
-    secs.push(`<div class="rw-sec"><div class="rw-head">New fights</div><div class="rw-row">${m.unlockedFights.map(f=>{ const n = f.node; const e = ENERGY_COST[n.kind];
+    secs.push(`<div class="rw-sec"><div class="rw-head">New fights</div><div class="rw-row">${m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(`${n.name} — ${KIND_LABEL[n.kind]||n.kind} · 🏰 ${n.hqHp} HP${e?` · ${e}⚡`:''}${n.flavor?'. '+n.flavor:''}`)}"><span>${n.icon}</span></span>`; }).join('')}</div></div>`);
   }
   return secs.length ? `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>` : '';
 }
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
-  const e = ENERGY_COST[nb.node.kind] || ENERGY_COST.skirmish;
+  const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
   if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
   return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
 }
