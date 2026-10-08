@@ -1112,6 +1112,16 @@ function buildCardDefs(){
       level: lvl,
     });
   });
+  // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
+  if(typeof myCardEnchants !== 'undefined' && myCardEnchants) Object.keys(myCardEnchants).forEach(id=>{
+    const e = ENCHANTS[myCardEnchants[id]], base = out[id];
+    if(!e || !base || id===HERO_ID) return;
+    out[id] = Object.assign({}, base, {
+      attack: base.attack!=null ? base.attack + (e.atk||0) : base.attack,
+      health: base.health!=null ? base.health + (e.hp||0) : base.health,
+      enchant: myCardEnchants[id], fx: e.fx ? Object.assign({}, base.fx||{}, e.fx) : base.fx,
+    });
+  });
   // Prestige tiers (2026-09-23, batch #27) — cosmetic-only, stamped as a SEPARATE pass from the
   // stat-affecting leveling pass above so it's unmistakably clear (here and to anyone reading
   // getCardDefs later) that prestigeTier never touches attack/health. Only meaningful for a maxed
@@ -7254,13 +7264,71 @@ function statKeyFor(side, defId){ return side + '|' + defId; }
 // a crystal of one of four kinds, kept for socketing later.
 const MATERIA_KINDS = [{id:'ember', icon:'🔥', name:'Ember'}, {id:'tide', icon:'💧', name:'Tide'}, {id:'grove', icon:'🌿', name:'Grove'}, {id:'stone', icon:'🪨', name:'Stone'}];
 const MATERIA_DUST_COST = 25, MATERIA_HERO_XP = 30;
+// Materia belongs to the player now (2026-10-08), not the Hero: it is what Enchanting spends.
+// A Hero's old crystals move over once. Crafting still gives a Hero XP when you have one.
+var myMateria = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_materia_v1')||'null'); }catch(e){ return null; } })();
+function saveMateria(){ try{ localStorage.setItem('bramblewood_materia_v1', JSON.stringify(myMateria)); }catch(e){} }
+function materiaStore(){
+  if(!myMateria){ myMateria = {}; try{ if(typeof myHero!=='undefined' && myHero && myHero.materia) Object.assign(myMateria, myHero.materia); }catch(e){} saveMateria(); }
+  return myMateria;
+}
+// Enchanting (2026-10-08, user: "Split refinement, enchantment, and upgrading"): socket one Materia
+// crystal into a card for a small, permanent bonus. One socket per card; a new crystal replaces the
+// old one (the old crystal is used up). Values are a first pass, easy to retune here.
+const ENCHANTS = {
+  ember: {atk:1, hp:0, label:'+1 ⚔ · its hits scorch', fx:{hit:'burn'}},
+  stone: {atk:0, hp:3, label:'+3 ❤'},
+  tide:  {atk:0, hp:2, label:'+2 ❤'},
+  grove: {atk:1, hp:1, label:'+1 ⚔ +1 ❤'},
+};
+var myCardEnchants = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_enchants_v1')||'{}') || {}; }catch(e){ return {}; } })();
+function saveCardEnchants(){ try{ localStorage.setItem('bramblewood_enchants_v1', JSON.stringify(myCardEnchants)); }catch(e){} }
+function enchantCard(id, kind){
+  const st = materiaStore();
+  if(!ENCHANTS[kind] || (st[kind]||0) < 1) return false;
+  st[kind]--; saveMateria();
+  myCardEnchants[id] = kind; saveCardEnchants(); invalidateCardDefs();
+  return true;
+}
+// Refining (2026-10-08, user: "Refinement is to upgrade the foil treatment. You can never make
+// something Shiny besides getting it in a pack"): raises your best copy one step up the finish
+// ladder. Shiny is never touched here; it only comes from receiving a card (grantCardCopy).
+const REFINE_LADDER = [
+  {key:null, label:'Plain'},
+  {key:'auto', label:'Foil', cost:{dust:40, gold:100}},
+  {key:'hex', label:'Hex', cost:{dust:60, gold:150}},
+  {key:'etched', label:'Etched', cost:{dust:80, gold:200}},
+  {key:'ice', label:'Cracked ice', cost:{dust:100, gold:250}},
+  {key:'reverse', label:'Reverse', cost:{dust:120, gold:300}},
+  {key:'prism', label:'Prism', cost:{dust:150, gold:350, gems:5}},
+  {key:'gold', label:'Gold leaf', cost:{dust:200, gold:450, gems:10}},
+];
+function copyRefineRank(c){
+  if(!c || !c.foil) return 0;
+  const i = REFINE_LADDER.findIndex(r=> r.key === (c.finish || 'auto'));
+  return i < 0 ? 1 : i; // pack-only finishes (rainbow / pearl / cosmos) sit on the Foil step
+}
+function bestCopyIndex(id){
+  const copies = myCardCopies[id] || []; let best = -1, rank = -1;
+  copies.forEach((c, i)=>{ const r = copyRefineRank(c) + (c && c.shiny ? 0.5 : 0); if(r > rank){ rank = r; best = i; } });
+  return best;
+}
+function canAffordCost(c){ return (myCurrencies.dust||0) >= (c.dust||0) && (myCurrencies.gold||0) >= (c.gold||0) && (myCurrencies.gems||0) >= (c.gems||0); }
+function refineCard(id){
+  const i = bestCopyIndex(id); if(i < 0) return null;
+  const c = myCardCopies[id][i], r = copyRefineRank(c), next = REFINE_LADDER[r+1];
+  if(!next || !canAffordCost(next.cost)) return null;
+  myCurrencies.dust -= next.cost.dust||0; myCurrencies.gold -= next.cost.gold||0; myCurrencies.gems -= next.cost.gems||0; saveCurrencies();
+  c.foil = true; if(next.key === 'auto') delete c.finish; else c.finish = next.key; // never sets shiny
+  saveCardCopies();
+  return next;
+}
 function craftMateria(){
-  if(!myHero){ showToast('Create your Hero first — Deck → 🦸 Hero.'); return false; }
   if((myCurrencies.dust||0) < MATERIA_DUST_COST){ showToast(`Need ${MATERIA_DUST_COST} ✨ Magic Dust to craft Materia.`); return false; }
   myCurrencies.dust -= MATERIA_DUST_COST; saveCurrencies();
   const k = MATERIA_KINDS[Math.floor(Math.random()*MATERIA_KINDS.length)];
-  myHero.materia[k.id] = (myHero.materia[k.id]||0) + 1;
-  heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`);
+  const st = materiaStore(); st[k.id] = (st[k.id]||0) + 1; saveMateria();
+  if(myHero) heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`);
   try{ SoundKit.materiaForm(); }catch(e){}
   try{ materiaBurstVfx(k); }catch(e){}
   return k;
@@ -15008,7 +15076,7 @@ function renderBoard(opts){
     let html = '';
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl);
-      if(c){ html += boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), extraClass: c.gladiatorLeader ? 'is-gladiator-leader' : ''}); continue; }
+      if(c){ html += boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: c.gladiatorLeader ? 'is-gladiator-leader' : ''}); continue; }
       if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target" data-slot="${sl}" title="Play here"><span class="slot-target-plus">＋</span></div>`;
       else html += `<div class="board-card empty-slot" aria-hidden="true"></div>`;
     }
@@ -15035,8 +15103,8 @@ function renderBoard(opts){
       return '';
     };
     if(slotView) return slotRowHTML(pl, rows, dance, scatter, nextDanceStyle);
-    const left = [...rows.left].reverse().map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle()}));
-    const right = rows.right.map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle()}));
+    const left = [...rows.left].reverse().map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle(),pid:pl.id}));
+    const right = rows.right.map(c=>boardCardHTML(c,defs,{dance,scatter,danceStyle:nextDanceStyle(),pid:pl.id}));
     // Center slot (2026-09-16, per explicit request): a real, single combat lane of its
     // own — the first card either side plays (and any card played while it's empty) lands
     // here, directly between the two flanks. Empty, it gets its own distinct
@@ -15051,7 +15119,7 @@ function renderBoard(opts){
     // a plain gap now, same as any other momentarily-empty slot, not a standing invitation.
     const centerCard = rows.center[0];
     const totalCards = rows.left.length + rows.center.length + rows.right.length;
-    const center = centerCard ? boardCardHTML(centerCard, defs, {dance,scatter,danceStyle:nextDanceStyle()})
+    const center = centerCard ? boardCardHTML(centerCard, defs, {dance,scatter,danceStyle:nextDanceStyle(),pid:pl.id})
       : (totalCards===0
           ? `<div class="board-card center-slot-empty" aria-hidden="true"><div class="center-slot-inner">✦</div></div>`
           : `<div class="board-card empty-slot" aria-hidden="true"></div>`);
@@ -16254,8 +16322,31 @@ function waitBadgeHTML(waitRemaining, waitTotal){
 // the top of the card. Two faint wavy bands drifting upward, on the compositor (transform/opacity
 // only); none with reduced motion.
 function isFieryDef(d){ return !!(d && (d.dmgType==='heat' || (d.archetypes||[]).includes('Volcanic'))); }
+// Shiny units (2026-10-08, user: "Shiny cards play as shiny units and if they do, they spawn shiny
+// units"): a card you own a Shiny copy of fights Shiny (same hue shift as in the Nest), and every unit
+// it spawns is Shiny too (spawn events carry their source: nearUid / fromUid, tracked in m.shinyUids).
+function localPid(m){ return (m && m.mode==='liveRanked') ? (m.liveMySeat||1) : 1; }
+function isShinyUnit(m, c, pid){
+  if(!m || !c) return false;
+  if(m.shinyUids && m.shinyUids.has(c.uid)) return true;
+  if(pid == null || pid !== localPid(m)) return false;
+  const d = getCardDefs()[c.defId];
+  return !!(d && !d.token && ownsShiny(c.defId));
+}
+function noteShinySpawn(m, ev){
+  if(!m) return;
+  const src = ev.nearUid != null ? ev.nearUid : ev.fromUid;
+  if(src == null) return;
+  const mine = ev.side === (localPid(m)===1 ? 'A' : 'B');
+  const rc = m.replayCards && m.replayCards[src];
+  const srcShiny = (m.shinyUids && m.shinyUids.has(src)) || (mine && rc && isShinyUnit(m, {uid:src, defId:rc.defId}, localPid(m)));
+  if(!srcShiny) return;
+  m.shinyUids = m.shinyUids || new Set();
+  (ev.uids || (ev.placements||[]).map(p=> p.uid)).forEach(u=> m.shinyUids.add(u));
+}
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
+  const shinyU = isShinyUnit(matchState, c, opts.pid);
   const d = defs[c.defId]||{}; const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
   const [rA, rB] = rarityStops(d.rarity||'common');
   // Status VFX (item #13): poisoned/bled/stunned each get their own tint + overlay icon on the
@@ -16329,7 +16420,7 @@ function boardCardHTML(c, defs, opts){
   // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
   const flies = !!((d.effects||{}).flying);
   return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}">
+    ${flies?'<span class="fly-shadow" aria-hidden="true"></span>':''}<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''} ${shinyU?'is-shiny':''}" data-defid="${c.defId}" style="--rarity-a:${rA}; --rarity-b:${rB}${shinyU?`; --shiny-hue:${shinyHue(c.defId)}deg`:''}">
       ${c.wait>0?waitBadgeHTML(c.wait, d.wait):''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -17620,6 +17711,7 @@ async function resolveRound(){
       rr.center.push(ev.uid);
       renderBoard({collapseLandingUids:[ev.uid]});
     } else if(ev.type==='spawn' && (ev.cause==='onAttackedSpawn' || ev.cause==='onDeathSpawn' || ev.cause==='triggerSpawn')){
+      try{ noteShinySpawn(matchState, ev); }catch(e){}
       // Live-reflow every spawn cause the instant it happens (2026-09-17, fixing "spawning
       // units should appear at the Left or Right, not in the centre then teleporting") — both
       // onAttackedSpawn (task #126, always one shared `lane`) and onDeathSpawn (previously NOT
@@ -19917,6 +20009,10 @@ function recoilEl(el, power){
 // tileClass. Applied after each render by a light observer, so no render path needs to know.
 function applySkinClasses(root){
   if(!window.UnitFX) return;
+  // Shiny in hand: the cards you hold of which you own a Shiny copy (see isShinyUnit for the board).
+  (root || document).querySelectorAll('#handStrip .card-tile[data-defid]:not(.is-shiny)').forEach(t=>{
+    if(ownsShiny(t.dataset.defid)){ t.classList.add('is-shiny'); t.style.setProperty('--shiny-hue', shinyHue(t.dataset.defid) + 'deg'); }
+  });
   (root || document).querySelectorAll('#rowMine .card-tile[data-defid], #handStrip .card-tile[data-defid]').forEach(t=>{
     const sk = UnitFX.equippedSkin(t.dataset.defid), cls = sk && UnitFX.SKINS[sk].tileClass;
     if(cls && !t.classList.contains(cls)){ t.classList.add(cls, 'has-skin'); t.dataset.skin = sk; }
@@ -21260,6 +21356,7 @@ let forgeSelectedId = null;
 // the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
 // to its new stats. Reduced motion skips straight to the result.
 let forgeFilter = 'all', forgeSearch = '', forgeSort = 'name', forgeBusy = false;
+let forgeMode = 'upgrade'; // 'upgrade' (level + prestige) | 'refine' (foil finish) | 'enchant' (Materia socket)
 function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
 function forgeStatsAt(id, level){
   const b = forgeBaseDef(id) || {}; const m = levelStatMultiplier(level);
@@ -21314,10 +21411,9 @@ function forgeFlareUp(){
 // that opens the bigger UI"): no Hero, no bench; with a Hero it's one small button until opened.
 let forgeBenchOpen = false;
 function forgeMateriaBenchHTML(){
-  if(!myHero) return '';
-  if(!forgeBenchOpen) return `<button type="button" class="btn small forge-bench-toggle" data-fmb="open" aria-expanded="false">💎 Materia bench · ${escapeHtml(myHero.name)} Lv ${heroLevelFromXp(myHero.xp).level}</button>`;
-  const n = MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${myHero.materia[k.id]||0}</span>`).join('');
-  return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>${MATERIA_DUST_COST} ✨ → one crystal and +${MATERIA_HERO_XP} XP for ${escapeHtml(myHero.name)} (Lv ${heroLevelFromXp(myHero.xp).level})</small><span class="hero-materia">${n}</span></div><button type="button" class="btn primary small" data-fmb="craft" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft · ${MATERIA_DUST_COST} ✨</button><button type="button" class="btn ghost small" data-fmb="close" aria-label="Close the Materia bench">✕</button></div>`;
+  const n = MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${materiaStore()[k.id]||0}</span>`).join('');
+  const heroLine = myHero ? ` and +${MATERIA_HERO_XP} XP for ${escapeHtml(myHero.name)}` : '';
+  return `<div class="forge-materia-bench"><span class="fmb-icon">💎</span><div class="fmb-text"><b>Materia bench</b><small>${MATERIA_DUST_COST} ✨ → one random crystal${heroLine}</small><span class="hero-materia">${n}</span></div><button type="button" class="btn primary small" data-fmb="craft" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft · ${MATERIA_DUST_COST} ✨</button></div>`;
 }
 function wireForgeMateriaBench(root){
   root.querySelectorAll('[data-fmb]').forEach(b=>{ if(b._fmb) return; b._fmb = 1; b.addEventListener('click', ()=>{
@@ -21330,8 +21426,10 @@ function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
   setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r){ dressForgePlace(r); wireForgeMateriaBench(r); } }, 0);
   const defs = getCardDefs();
-  let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token);
+  let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && id!==HERO_ID);
+  if(forgeMode==='refine') ids = ids.filter(id=> (myCardCopies[id]||[]).length);
   if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;
+  const forgeReady = forgeReadyFor;
   const readyCount = ids.filter(forgeReady).length;
   const q = forgeSearch.trim().toLowerCase();
   let shown = ids.filter(id=> !q || defs[id].name.toLowerCase().includes(q));
@@ -21351,7 +21449,7 @@ function renderForge(){
       <div class="forge-embers" aria-hidden="true">${Array.from({length:14}, (_,k)=> `<i style="--x:${(k*7.3)%100}%; --d:${(2.6+(k%5)*0.7).toFixed(1)}s; --delay:${(k*0.37%3).toFixed(2)}s"></i>`).join('')}</div>
       <div class="forge-hero-text">
         <h2>🔨 The Forge</h2>
-        <p>Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a finish that shows your mastery; stats stay the same.</p>
+        <p>${FORGE_MODES[forgeMode].blurb}</p>
       </div>
       <div class="forge-wallet" aria-label="Forge currencies">
         <span class="forge-coin dust" title="Magic Dust">✨ ${myCurrencies.dust||0}</span>
@@ -21359,19 +21457,20 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
-    ${forgeMateriaBenchHTML()}
+    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     <div class="forge-layout">
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
           <div class="forge-chips" role="group" aria-label="Filter">
-            ${[['all','All'],['ready',`🔨 Ready${readyCount?` (${readyCount})`:''}`],['leveled','Levelled'],['max','Max']].map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
+            ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
           <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
         </div>
         <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
       </div>
-      <div class="panel forge-anvil" id="forgeDetail">${sel ? forgeAnvilHTML(forgeSelectedId, sel, L, maxed) : `
+      <div class="panel forge-anvil" id="forgeDetail">${sel ? (forgeMode==='refine' ? refineAnvilHTML(forgeSelectedId, sel) : forgeMode==='enchant' ? enchantAnvilHTML(forgeSelectedId, sel) : forgeAnvilHTML(forgeSelectedId, sel, L, maxed)) : `
         <div class="forge-anvil-empty">
           <div class="anvil-art" aria-hidden="true"><span class="anvil-top"></span><span class="anvil-waist"></span><span class="anvil-foot"></span></div>
           <p>Pick a card to bring it to the anvil.</p>
@@ -21380,7 +21479,8 @@ function renderForge(){
       </div>
     </div>`;
   const poolEl = document.getElementById('forgePool');
-  if(shown.length) poolEl.innerHTML = shown.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: id===forgeSelectedId?'selected':''})}${forgeReady(id)?'<span class="forge-ready-badge" title="You can temper this now">🔨</span>':''}</div>`).join('');
+  const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
+  if(shown.length) poolEl.innerHTML = shown.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}</div>`).join('');
   poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
   const search = document.getElementById('forgeSearch');
   search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
@@ -21391,6 +21491,74 @@ function renderForge(){
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
   const preBtn = document.getElementById('forgePrestigeBtn');
   if(preBtn) preBtn.addEventListener('click', ()=> forgePrestige(preBtn));
+  root.querySelectorAll('[data-forgemode]').forEach(b=> b.addEventListener('click', ()=>{ if(forgeBusy) return; forgeMode = b.dataset.forgemode; if(forgeFilter==='max' || forgeFilter==='leveled') forgeFilter = 'all'; renderForge(); }));
+  const rfBtn = document.getElementById('forgeRefineBtn');
+  if(rfBtn) rfBtn.addEventListener('click', ()=> forgeRefine(rfBtn));
+  root.querySelectorAll('[data-enchant]').forEach(b=> b.addEventListener('click', ()=> forgeEnchant(b)));
+}
+const FORGE_MODES = {
+  upgrade: {icon:'🔨', label:'Upgrade', blurb:'Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a mark of mastery; stats stay the same.'},
+  refine:  {icon:'✨', label:'Refine', blurb:'Refine your best copy of a card into a finer foil: Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf. Shiny can’t be made here; it only comes out of packs and rewards.'},
+  enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
+};
+function forgeReadyFor(id){
+  if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
+  if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
+  const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false);
+}
+function costChipsHTML(cost){
+  const chip = (glyph, need, have, label)=> need ? `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>` : '';
+  return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves') + chip('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
+}
+function refineAnvilHTML(id, sel){
+  const i = bestCopyIndex(id), copy = (myCardCopies[id]||[])[i], r = copyRefineRank(copy), next = REFINE_LADDER[r+1];
+  const nowCls = copyFinishClass(sel, copy) + (copy && copy.shiny ? ' is-shiny' : '');
+  const ladder = REFINE_LADDER.map((st, k)=> `<span class="rf-step ${k<=r?'on':''} ${k===r+1?'next':''}" title="${escapeAttr(st.label)}">${escapeHtml(st.label)}</span>`).join('<i aria-hidden="true">›</i>');
+  return `
+    <div class="anvil-stage refine-stage" id="anvilStage">
+      <div class="forge-glow" aria-hidden="true"></div>
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview ' + nowCls})}</div>
+      ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
+    </div>
+    <h3 class="forge-name">${escapeHtml(sel.name)}${copy && copy.shiny ? ' <span class="forge-prestige-tag">✦ Shiny</span>' : ''}</h3>
+    <div class="rf-ladder" aria-label="Finish ladder">${ladder}</div>
+    <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? `Refines your best copy (of ${(myCardCopies[id]||[]).length}).` : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
+    ${next ? `
+      <div class="forge-cost-row">${costChipsHTML(next.cost)}</div>
+      <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ Refine to ${escapeHtml(next.label)}</button>
+    ` : `<p class="forge-note forge-done">The finest finish there is. 🏆</p>`}`;
+}
+function enchantAnvilHTML(id, sel){
+  const cur = myCardEnchants[id], st = materiaStore();
+  return `
+    <div class="anvil-stage" id="anvilStage">
+      <div class="forge-glow" aria-hidden="true"></div>
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
+    </div>
+    <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
+    <p class="forge-note">${cur ? `Enchanted with ${(MATERIA_KINDS.find(k=> k.id===cur)||{}).icon||''} ${escapeHtml((MATERIA_KINDS.find(k=> k.id===cur)||{}).name||cur)}: ${escapeHtml(ENCHANTS[cur] ? ENCHANTS[cur].label : '')}. Socketing another crystal replaces it.` : 'No enchantment yet. Pick a crystal:'}</p>
+    <div class="ench-grid">${MATERIA_KINDS.map(k=> `<button type="button" class="ench-opt ${cur===k.id?'is-on':''}" data-enchant="${k.id}" ${(st[k.id]||0) < 1 || cur===k.id ? 'aria-disabled="true"' : ''}><span class="eo-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${escapeHtml(ENCHANTS[k.id].label)}</small><span class="eo-have">you have ${st[k.id]||0}</span></button>`).join('')}</div>`;
+}
+async function forgeRefine(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId, d = getCardDefs()[id];
+  const i = bestCopyIndex(id), copy = myCardCopies[id][i];
+  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
+  const step = refineCard(id);
+  if(!step){ denyShake(btn); return; }
+  forgeBusy = true; btn.disabled = true;
+  const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
+  try{ await forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }catch(e){}
+  forgeBusy = false; renderForge();
+  showToast(`✨ ${d.name} refined to ${step.label}.`, 'ok');
+}
+function forgeEnchant(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const kind = btn.dataset.enchant;
+  if(btn.getAttribute('aria-disabled')==='true' || !enchantCard(forgeSelectedId, kind)){ denyShake(btn); return; }
+  try{ SoundKit.materiaForm(); materiaBurstVfx(MATERIA_KINDS.find(k=> k.id===kind)); }catch(e){}
+  renderForge();
+  showToast(`💎 ${getCardDefs()[forgeSelectedId].name} enchanted: ${ENCHANTS[kind].label}.`, 'ok');
 }
 function forgeAnvilHTML(id, sel, L, maxed){
   const now = forgeStatsAt(id, L), next = forgeStatsAt(id, Math.min(10, L+1));
@@ -21738,7 +21906,7 @@ function renderHeroHall(body){
       <div class="hero-block"><h3>Skills</h3>${skills}</div>
       <div class="hero-block"><h3>💎 Materia</h3>
         <p class="panel-sub">Craft a crystal from ${MATERIA_DUST_COST} ✨ Dust. Your Hero gains ${MATERIA_HERO_XP} XP each time. Crystals are kept for socketing, coming later.</p>
-        <div class="hero-materia">${MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${h.materia[k.id]||0}</span>`).join('')}</div>
+        <div class="hero-materia">${MATERIA_KINDS.map(k=> `<span title="${escapeAttr(k.name)}">${k.icon} ${materiaStore()[k.id]||0}</span>`).join('')}</div>
         <button type="button" class="btn primary" id="heroCraftBtn" ${(myCurrencies.dust||0) < MATERIA_DUST_COST ? 'disabled' : ''}>💎 Craft Materia · ${MATERIA_DUST_COST} ✨</button>
         <small class="hero-dust">You have ${myCurrencies.dust||0} ✨</small>
       </div>

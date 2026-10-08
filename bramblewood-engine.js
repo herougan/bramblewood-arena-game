@@ -2220,7 +2220,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       }
       if(cdef.effects && cdef.effects.onDeathSpawn){
-        spawns.push({pl, side, slot:card.slot, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
+        spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
       }
       // move to graveyard (unless a custom onDeath trigger exiles it instead, OR this card
@@ -2283,7 +2283,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         placements.push({uid:tok.uid, lane:side});
         spawnedTokens.push(tok);
       }
-      if(recordEvents && events) events.push({type:'spawn', side:sideOf(s.pl.id), defId:s.defId, count:s.count, cause:'onDeathSpawn', placements});
+      if(recordEvents && events) events.push({type:'spawn', side:sideOf(s.pl.id), defId:s.defId, count:s.count, cause:'onDeathSpawn', placements, fromUid:s.fromUid});
       // On Ally/Enemy Spawn (2026-09-27): On Death: Spawn is the other genuine "spawned from a
       // unit" case (a dying card's own ability, not a hand play) — see fireSpawnFamilyTriggers's
       // comment for the played/spawned split this feeds.

@@ -5131,6 +5131,23 @@
   .card-tile.skin-ember .ico{filter:sepia(.35) saturate(1.8) hue-rotate(-18deg) brightness(1.05);}
   .card-tile.skin-ember{box-shadow:0 0 0 2px #ff8a2a, 0 0 12px 2px rgba(255,110,20,.55);}
   .card-tile.skin-ember::after{content:'🔥'; position:absolute; left:4px; bottom:30px; font-size:14px; z-index:8; filter:drop-shadow(0 0 3px #ff7a12); pointer-events:none;}
+  /* Forge modes: Upgrade / Refine / Enchant (2026-10-08) */
+  .forge-modes{display:flex; gap:6px; justify-content:center; margin:10px auto 12px; padding:4px; width:fit-content; border-radius:999px; background:rgba(20,12,6,.55);}
+  .forge-mode{border:0; background:transparent; color:#f3e2c2; font:800 14px 'Baloo 2',system-ui,sans-serif; padding:7px 16px; border-radius:999px; cursor:pointer;}
+  .forge-mode.on{background:linear-gradient(#ffb15a, #e0782a); color:#2b1406; box-shadow:0 2px 8px rgba(255,140,40,.45);}
+  .forge-mode:hover:not(.on){background:rgba(255,255,255,.08);}
+  .refine-stage{display:flex; align-items:center; justify-content:center; gap:10px;}
+  .rf-arrow{font-size:26px; font-weight:900; color:#ffcf7a; text-shadow:0 0 8px rgba(255,140,40,.6);}
+  .rf-next{opacity:.92;}
+  .rf-ladder{display:flex; flex-wrap:wrap; align-items:center; gap:3px; justify-content:center; margin:6px 0; font-size:11.5px; font-weight:700;}
+  .rf-ladder i{opacity:.4; font-style:normal;}
+  .rf-step{padding:2px 7px; border-radius:999px; background:rgba(0,0,0,.12); opacity:.6;}
+  .rf-step.on{background:#e7c26a; color:#3a2604; opacity:1;} .rf-step.next{outline:2px dashed #e0782a; opacity:1;}
+  .ench-grid{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; margin-top:8px;}
+  .ench-opt{display:flex; flex-direction:column; align-items:center; gap:2px; padding:10px 8px; border-radius:12px; border:1px solid var(--surface-border); background:var(--surface-2); cursor:pointer; font:inherit; color:inherit;}
+  .ench-opt .eo-ico{font-size:24px;} .ench-opt small{font-size:12px; color:var(--ink-muted); text-align:center;} .ench-opt .eo-have{font-size:11px; font-weight:800;}
+  .ench-opt.is-on{border-color:#e0782a; box-shadow:0 0 0 2px rgba(224,120,42,.35);} .ench-opt[aria-disabled=true]{opacity:.55; cursor:not-allowed;}
+  .forge-ench-badge{position:absolute; left:4px; top:4px; z-index:9; font-size:15px; filter:drop-shadow(0 0 4px rgba(255,255,255,.7)); pointer-events:none;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
