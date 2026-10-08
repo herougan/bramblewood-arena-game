@@ -5158,6 +5158,36 @@
   .ench-opt .eo-ico{font-size:24px;} .ench-opt small{font-size:12px; color:var(--ink-muted); text-align:center;} .ench-opt .eo-have{font-size:11px; font-weight:800;}
   .ench-opt.is-on{border-color:#e0782a; box-shadow:0 0 0 2px rgba(224,120,42,.35);} .ench-opt[aria-disabled=true]{opacity:.55; cursor:not-allowed;}
   .forge-ench-badge{position:absolute; left:4px; top:4px; z-index:9; font-size:15px; filter:drop-shadow(0 0 4px rgba(255,255,255,.7)); pointer-events:none;}
+  /* Lively splash (2026-10-08, bramblewood-splash.js): dancing otters in three depth bands, a camera
+     push-in while the crowd parts, then an otter-vs-hummingbird standoff in the gap. */
+  .splash-stage{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .ss-cam{position:absolute; inset:0; transform-origin:50% 92%; transition:transform 5.6s cubic-bezier(.35,0,.2,1) .4s;}
+  .splash-stage.is-playing .ss-cam{transform:scale(1.32);}
+  .ss-band{position:absolute; inset:0; filter:blur(calc((1 - var(--depth)) * 1.6px)) brightness(calc(.55 + var(--depth) * .45));}
+  .ss-dancer{position:absolute; transform:translate(-50%, -100%); transition:translate 2.8s cubic-bezier(.45,0,.2,1) 2.2s;}
+  .splash-stage.is-playing .ss-dancer, .splash-stage.is-still .ss-dancer{translate:var(--out) 0;}
+  .ss-sprite{display:block; image-rendering:pixelated; background-repeat:no-repeat; background-position:0 0;}
+  .ss-otter{animation:ssFrame var(--hop,.5s) steps(1) infinite var(--delay,0s), ssHop var(--hop,.5s) ease-in-out infinite var(--delay,0s);}
+  .ss-flip{scale:-1 1;}
+  @keyframes ssFrame{0%{background-position:0 0;} 50%{background-position:calc(-1 * var(--fw)) 0;}}
+  @keyframes ssHop{0%,100%{transform:translateY(0) rotate(-4deg);} 50%{transform:translateY(-16%) rotate(4deg);}}
+  .ss-duel{position:absolute; left:50%; top:93%; display:flex; align-items:flex-end; gap:min(18vw, 190px); transform:translate(-50%, -100%) scale(.55); opacity:0;
+    transition:opacity .9s ease 3.6s, transform 1.3s cubic-bezier(.2,.9,.25,1.15) 3.6s;}
+  .splash-stage.is-playing .ss-duel, .splash-stage.is-still .ss-duel{opacity:1; transform:translate(-50%, -100%) scale(1);}
+  .ss-fighter{position:relative; display:block;}
+  .ss-shake{animation:ssFrame 1.1s steps(1) infinite, ssShake .16s linear infinite;}
+  .ss-hover{animation:ssFrame .14s steps(1) infinite, ssHover 1.5s ease-in-out infinite;}
+  @keyframes ssShake{0%,100%{transform:translate(0,0);} 25%{transform:translate(1px,-1px);} 75%{transform:translate(-1px,0);}}
+  @keyframes ssHover{0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);}}
+  .ss-spear{position:absolute; left:78%; top:44%; width:min(17vw, 172px); height:5px; background:#7a4e22; box-shadow:0 0 0 1px #2b170c; transform-origin:0 50%; rotate:-7deg; animation:ssJab 1.6s ease-in-out infinite;}
+  .ss-spear::after{content:''; position:absolute; right:-14px; top:-6px; border-left:16px solid #d6dde4; border-top:8px solid transparent; border-bottom:8px solid transparent; filter:drop-shadow(0 0 1px #2b170c);}
+  @keyframes ssJab{0%,70%,100%{translate:0 0;} 80%{translate:10px -1px;}}
+  .ss-staff{position:absolute; left:58%; top:-8%; width:6px; height:118%; background:#6b4423; box-shadow:0 0 0 1px #2b170c; rotate:10deg;}
+  .ss-staff::before{content:''; position:absolute; left:50%; top:-14px; width:20px; height:20px; margin-left:-10px; border-radius:50%; background:radial-gradient(circle, #fff 0 18%, #9ff3ff 30%, #3bc6e8 60%, rgba(59,198,232,0) 72%); animation:ssOrb 1.3s ease-in-out infinite;}
+  @keyframes ssOrb{0%,100%{transform:scale(1); filter:brightness(1);} 50%{transform:scale(1.35); filter:brightness(1.4);}}
+  .splash-stage.is-still *{animation:none !important; transition:none !important;}
+  .entrance.leaving .splash-stage{opacity:0; transition:opacity .8s ease-in;}
+  @media (max-width:520px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
@@ -11313,6 +11343,145 @@ root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shiel
 
   window.UnitFX = {guessHit, resolve, hitMark, attackFx, fireBreath, claw, bite, sting, peck, burn,
     SKINS, skinsFor, grantSkin, equipSkin, equippedSkin};
+})();
+
+/* ============================================================
+   Lively splash (2026-10-08)
+   User: "The background splash at the start needs to be more lively. Maybe dancing otters (2.5d,
+   many layers), as we zoom in, and they move outwards. Leaving maybe an angry otter pointing a
+   spear at an angry hummingbird with a staff."
+
+   A layered pixel-art scene over the splash painting: three depth bands of otters dance (two-frame
+   sprites, nearer ones bigger, sharper and faster); the camera pushes in while the crowd parts to
+   the sides, nearer otters moving further (parallax); in the gap an angry otter levels a spear at an
+   angry hummingbird holding a staff. Sprites are drawn from small character grids at load (no image
+   files). Reduced motion or Effects: None shows the final standoff, still.
+   ============================================================ */
+(function(){
+  const PAL = {
+    O:'#2b170c', B:'#8a5a33', b:'#6e4526', L:'#e0bd92', N:'#1a0d06', E:'#120a05', W:'#ffffff',
+    G:'#33a85e', D:'#1c6b3a', T:'#d8344a', K:'#2a2a2a', V:'#bfefff', v:'#7fd3f0', Y:'#f2c94c', R:'#c0262d',
+  };
+  // Otter, facing right. Arms are overlaid per frame.
+  const OTTER = [
+    '....O....O......',
+    '....OOOOOO......',
+    '...OBBBBBBO.....',
+    '...OBEBBEBO.....',
+    '...OBBLLBBO.....',
+    '...OBLNNLBO.....',
+    '....OLLLLO......',
+    '....OBBBBO......',
+    '...OBBLLBBO.....',
+    '...OBLLLLBO.....',
+    '..OBBLLLLBBO....',
+    '..OBBLLLLBBO....',
+    '..OBBLLLLBBO....',
+    '...OBBLLBBO.....',
+    '...OBBBBBBO.OOO.',
+    '...OBBOOBBOOBBO.',
+    '...OBO..OBOBBO..',
+    '..OBBO.OBBOOO...',
+    '..OOOO.OOOO.....',
+  ];
+  const ARMS_UP = [[1,4,'O'],[2,4,'O'],[1,5,'B'],[2,5,'O'],[1,6,'O'],[2,6,'B'],[2,7,'O'],[3,7,'B'],
+                   [12,4,'O'],[13,4,'O'],[12,5,'O'],[13,5,'B'],[12,6,'B'],[13,6,'O'],[11,7,'O'],[12,7,'B']];
+  const ARMS_DOWN = [[1,9,'O'],[2,9,'B'],[1,10,'O'],[1,11,'B'],[1,12,'O'],
+                     [12,9,'B'],[13,9,'O'],[13,10,'O'],[13,11,'B'],[13,12,'O']];
+  // Angry brows: a dark line slanting down toward the nose, and a red anger mark.
+  const BROWS = [[4,2,'O'],[5,3,'O'],[9,2,'O'],[8,3,'O'],[4,3,'B'],[9,3,'B']];
+  // Hummingbird, facing left (long beak, red throat); the wing has two positions.
+  const BIRD = [
+    '..................',
+    '..................',
+    '..................',
+    '..................',
+    '.....DDG..........',
+    '....DGGGGD........',
+    'KKKDGEGGGGD.......',
+    '...DTTGGGGGD......',
+    '....DTTGGGGGD.....',
+    '.....DGGGGGGGD....',
+    '......DDGGGDDDDD..',
+    '........DDD..DDDD.',
+    '.........O.O......',
+  ];
+  const fromArt = (rows, y0)=> rows.flatMap((r, y)=> r.split('').map((ch, x)=> ch === '.' ? null : [x, y0 + y, ch]).filter(Boolean));
+  const WING_UP = fromArt(['..........VV', '.........VVvV', '........VVvVV', '.......VVvVV', '........VVV'], 0);
+  const WING_DOWN = fromArt(['........VVVV', '.........VvVVV', '..........VvVV'], 6);
+  const BIRD_BROWS = [[4,5,'O'],[5,5,'O'],[6,5,'E']];
+  function sheet(grid, frames){
+    const h = grid.length, w = grid[0].length;
+    const c = document.createElement('canvas'); c.width = w*frames.length; c.height = h;
+    const g = c.getContext('2d');
+    frames.forEach((over, f)=>{
+      const rows = grid.map(r=> r.split(''));
+      over.forEach(([x, y, ch])=>{ if(rows[y] && x < w) rows[y][x] = ch; });
+      rows.forEach((r, y)=> r.forEach((ch, x)=>{ if(PAL[ch]){ g.fillStyle = PAL[ch]; g.fillRect(f*w + x, y, 1, 1); } }));
+    });
+    return {url: c.toDataURL(), w, h, frames: frames.length};
+  }
+  function sprite(sh, cls, px){
+    const el = document.createElement('span');
+    el.className = 'ss-sprite ' + (cls||'');
+    el.style.cssText = `width:${sh.w*px}px; height:${sh.h*px}px; background-image:url(${sh.url}); background-size:${sh.w*sh.frames*px}px ${sh.h*px}px;`;
+    el.style.setProperty('--fw', (sh.w*px) + 'px');
+    return el;
+  }
+
+  function build(splash){
+    if(!splash || splash.querySelector('.splash-stage')) return;
+    const still = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || document.documentElement.getAttribute('data-fx') === 'none';
+    const dancer = sheet(OTTER, [ARMS_UP, ARMS_DOWN]);
+    const fighter = sheet(OTTER, [ARMS_DOWN.concat(BROWS), ARMS_DOWN.concat(BROWS)]);
+    const bird = sheet(BIRD, [WING_UP.concat(BIRD_BROWS), WING_DOWN.concat(BIRD_BROWS)]);
+
+    const stage = document.createElement('div');
+    stage.className = 'splash-stage' + (still ? ' is-still' : '');
+    stage.setAttribute('aria-hidden', 'true');
+    const cam = document.createElement('div'); cam.className = 'ss-cam'; stage.appendChild(cam);
+
+    // Three depth bands: far (small, hazy, slow) → near (big, crisp, quick).
+    const bands = [{n:9, px:4, y:60, depth:.35}, {n:7, px:6, y:72, depth:.7}, {n:5, px:9, y:88, depth:1}];
+    let k = 0;
+    bands.forEach((b, bi)=>{
+      const band = document.createElement('div'); band.className = 'ss-band'; band.style.setProperty('--depth', b.depth); band.style.zIndex = 1 + bi;
+      for(let i = 0; i < b.n; i++){
+        const x = (i + 0.5) / b.n * 100 + ((k*37) % 7 - 3);            // spread across, a little jitter
+        const side = x < 50 ? -1 : 1;
+        const o = sprite(dancer, 'ss-otter' + (i % 2 ? ' ss-flip' : ''), b.px);
+        const holder = document.createElement('span'); holder.className = 'ss-dancer';
+        holder.style.left = x + '%'; holder.style.top = (b.y + ((k*13) % 5) - 2) + '%';
+        holder.style.setProperty('--out', (side * (10 + b.depth*20 + Math.abs(x - 50)*0.3)).toFixed(1) + 'vw');
+        holder.style.setProperty('--hop', (0.42 + ((k*7) % 5)*0.04 - b.depth*0.06).toFixed(2) + 's');
+        holder.style.setProperty('--delay', (-((k*0.13) % 0.5)).toFixed(2) + 's');
+        holder.appendChild(o); band.appendChild(holder); k++;
+      }
+      cam.appendChild(band);
+    });
+
+    // The standoff, revealed in the gap as the crowd parts.
+    const duel = document.createElement('div'); duel.className = 'ss-duel';
+    const otterSide = document.createElement('span'); otterSide.className = 'ss-fighter ss-otter-f';
+    otterSide.appendChild(sprite(fighter, 'ss-shake', 6));
+    const spear = document.createElement('span'); spear.className = 'ss-spear'; otterSide.appendChild(spear);
+    const birdSide = document.createElement('span'); birdSide.className = 'ss-fighter ss-bird-f';
+    birdSide.appendChild(sprite(bird, 'ss-hover', 7));
+    const staff = document.createElement('span'); staff.className = 'ss-staff'; birdSide.appendChild(staff);
+    duel.append(otterSide, birdSide);
+    cam.appendChild(duel);
+
+    const bg = splash.querySelector('.entrance-bg');
+    if(bg && bg.nextSibling) splash.insertBefore(stage, bg.nextSibling); else splash.prepend(stage);
+  }
+  // The show starts when the splash is actually seen: when the loading screen lifts (see runLoader).
+  function play(){
+    const st = document.querySelector('#splashScreen .splash-stage');
+    if(st && !st.classList.contains('is-still')) requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.add('is-playing')));
+  }
+  function init(){ build(document.getElementById('splashScreen')); if(!document.getElementById('bwLoader')) play(); }
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.SplashStage = {build, play};
 })();
 
 // Translation layer (2026-10-05, "support the major European languages, Tagalog, Tamil, Bahasa,
@@ -35602,7 +35771,7 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
   const fill = document.getElementById('bwLoaderFill'), stepEl = document.getElementById('bwLoaderStep');
   let pct = 0, shadersDone = false, closed = false;
   const add = (n, label)=>{ pct = Math.min(100, pct + n); if(fill) fill.style.width = pct.toFixed(0) + '%'; el.setAttribute('aria-valuenow', String(Math.round(pct))); if(label && stepEl) stepEl.textContent = label; maybeClose(); };
-  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); };
+  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); try{ window.SplashStage && SplashStage.play(); }catch(e){} };
   const t0 = performance.now();
   function maybeClose(){ if(shadersDone && pct >= 50) setTimeout(close, Math.max(180, 700 - (performance.now() - t0))); } // never a sub-second flash
   setTimeout(close, 8000);

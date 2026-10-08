@@ -24069,7 +24069,7 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
   const fill = document.getElementById('bwLoaderFill'), stepEl = document.getElementById('bwLoaderStep');
   let pct = 0, shadersDone = false, closed = false;
   const add = (n, label)=>{ pct = Math.min(100, pct + n); if(fill) fill.style.width = pct.toFixed(0) + '%'; el.setAttribute('aria-valuenow', String(Math.round(pct))); if(label && stepEl) stepEl.textContent = label; maybeClose(); };
-  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); };
+  const close = ()=>{ if(closed) return; closed = true; if(fill) fill.style.width = '100%'; el.classList.add('is-done'); setTimeout(()=> el.remove(), 500); try{ window.SplashStage && SplashStage.play(); }catch(e){} };
   const t0 = performance.now();
   function maybeClose(){ if(shadersDone && pct >= 50) setTimeout(close, Math.max(180, 700 - (performance.now() - t0))); } // never a sub-second flash
   setTimeout(close, 8000);

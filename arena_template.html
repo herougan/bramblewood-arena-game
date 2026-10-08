@@ -5148,6 +5148,36 @@
   .ench-opt .eo-ico{font-size:24px;} .ench-opt small{font-size:12px; color:var(--ink-muted); text-align:center;} .ench-opt .eo-have{font-size:11px; font-weight:800;}
   .ench-opt.is-on{border-color:#e0782a; box-shadow:0 0 0 2px rgba(224,120,42,.35);} .ench-opt[aria-disabled=true]{opacity:.55; cursor:not-allowed;}
   .forge-ench-badge{position:absolute; left:4px; top:4px; z-index:9; font-size:15px; filter:drop-shadow(0 0 4px rgba(255,255,255,.7)); pointer-events:none;}
+  /* Lively splash (2026-10-08, bramblewood-splash.js): dancing otters in three depth bands, a camera
+     push-in while the crowd parts, then an otter-vs-hummingbird standoff in the gap. */
+  .splash-stage{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .ss-cam{position:absolute; inset:0; transform-origin:50% 92%; transition:transform 5.6s cubic-bezier(.35,0,.2,1) .4s;}
+  .splash-stage.is-playing .ss-cam{transform:scale(1.32);}
+  .ss-band{position:absolute; inset:0; filter:blur(calc((1 - var(--depth)) * 1.6px)) brightness(calc(.55 + var(--depth) * .45));}
+  .ss-dancer{position:absolute; transform:translate(-50%, -100%); transition:translate 2.8s cubic-bezier(.45,0,.2,1) 2.2s;}
+  .splash-stage.is-playing .ss-dancer, .splash-stage.is-still .ss-dancer{translate:var(--out) 0;}
+  .ss-sprite{display:block; image-rendering:pixelated; background-repeat:no-repeat; background-position:0 0;}
+  .ss-otter{animation:ssFrame var(--hop,.5s) steps(1) infinite var(--delay,0s), ssHop var(--hop,.5s) ease-in-out infinite var(--delay,0s);}
+  .ss-flip{scale:-1 1;}
+  @keyframes ssFrame{0%{background-position:0 0;} 50%{background-position:calc(-1 * var(--fw)) 0;}}
+  @keyframes ssHop{0%,100%{transform:translateY(0) rotate(-4deg);} 50%{transform:translateY(-16%) rotate(4deg);}}
+  .ss-duel{position:absolute; left:50%; top:93%; display:flex; align-items:flex-end; gap:min(18vw, 190px); transform:translate(-50%, -100%) scale(.55); opacity:0;
+    transition:opacity .9s ease 3.6s, transform 1.3s cubic-bezier(.2,.9,.25,1.15) 3.6s;}
+  .splash-stage.is-playing .ss-duel, .splash-stage.is-still .ss-duel{opacity:1; transform:translate(-50%, -100%) scale(1);}
+  .ss-fighter{position:relative; display:block;}
+  .ss-shake{animation:ssFrame 1.1s steps(1) infinite, ssShake .16s linear infinite;}
+  .ss-hover{animation:ssFrame .14s steps(1) infinite, ssHover 1.5s ease-in-out infinite;}
+  @keyframes ssShake{0%,100%{transform:translate(0,0);} 25%{transform:translate(1px,-1px);} 75%{transform:translate(-1px,0);}}
+  @keyframes ssHover{0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);}}
+  .ss-spear{position:absolute; left:78%; top:44%; width:min(17vw, 172px); height:5px; background:#7a4e22; box-shadow:0 0 0 1px #2b170c; transform-origin:0 50%; rotate:-7deg; animation:ssJab 1.6s ease-in-out infinite;}
+  .ss-spear::after{content:''; position:absolute; right:-14px; top:-6px; border-left:16px solid #d6dde4; border-top:8px solid transparent; border-bottom:8px solid transparent; filter:drop-shadow(0 0 1px #2b170c);}
+  @keyframes ssJab{0%,70%,100%{translate:0 0;} 80%{translate:10px -1px;}}
+  .ss-staff{position:absolute; left:58%; top:-8%; width:6px; height:118%; background:#6b4423; box-shadow:0 0 0 1px #2b170c; rotate:10deg;}
+  .ss-staff::before{content:''; position:absolute; left:50%; top:-14px; width:20px; height:20px; margin-left:-10px; border-radius:50%; background:radial-gradient(circle, #fff 0 18%, #9ff3ff 30%, #3bc6e8 60%, rgba(59,198,232,0) 72%); animation:ssOrb 1.3s ease-in-out infinite;}
+  @keyframes ssOrb{0%,100%{transform:scale(1); filter:brightness(1);} 50%{transform:scale(1.35); filter:brightness(1.4);}}
+  .splash-stage.is-still *{animation:none !important; transition:none !important;}
+  .entrance.leaving .splash-stage{opacity:0; transition:opacity .8s ease-in;}
+  @media (max-width:520px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
