@@ -6779,7 +6779,7 @@ function loadMyCharacter(){
   }catch(e){}
   return 'castle';
 }
-function saveMyCharacter(){ try{ localStorage.setItem('bramblewood_arena_character', myCharacterId); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
+function saveMyCharacter(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_character', myCharacterId); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 // Item #10 (2026-09-18): "there should be a 'red' highlighted slot 'pill' with default text
 // (greyed out) 'missing leader'. Drag the card there to add it as leader. In the future, only
 // >Unique cards can be leaders." — that Unique-only restriction is explicitly future work, not
@@ -6791,7 +6791,7 @@ function loadMyLeader(){
   try{ const raw = localStorage.getItem('bramblewood_arena_leader'); if(raw) return raw; }catch(e){}
   return null;
 }
-function saveMyLeader(){ try{ if(myLeaderId) localStorage.setItem('bramblewood_arena_leader', myLeaderId); else localStorage.removeItem('bramblewood_arena_leader'); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
+function saveMyLeader(){ if(deckDraftActive()) return markDeckDirty(); try{ if(myLeaderId) localStorage.setItem('bramblewood_arena_leader', myLeaderId); else localStorage.removeItem('bramblewood_arena_leader'); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 function leaderSlotHTML(){
   const defs = getCardDefs();
   const d = myLeaderId && defs[myLeaderId];
@@ -6999,7 +6999,7 @@ function loadMyDeck(){
   }catch(e){}
   return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
 }
-function saveMyDeck(){ try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
+function saveMyDeck(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 function deckTotal(counts){ return Object.values(counts).reduce((a,b)=>a+b,0); }
 // Valid deck size (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not allow
 // a deck with <20 or >20 cards."). Enforced at the point a deck is actually USED (starting a
@@ -7623,7 +7623,7 @@ function renderPlayerSubTab(body){
   body.innerHTML = `
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
-      <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card below to add a copy; tap it in your deck list to take one out. Changes save as you go.</p>
+      <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card below to add a copy; tap it in your deck list to take one out. Press 💾 Save deck to keep your changes.</p>
       <h3 class="deck-section-h">🃏 Cards</h3>
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
@@ -21645,6 +21645,40 @@ function wireHomeMenuFlourish(root){
    "Simulator is moved into the Deck menu.") ---- */
 let deckSubTab = 'list'; // 'list' | 'sim' — mirrors playSubTab's own pattern
 let deckEditingId = null; // non-null while a specific deck's builder is open
+// Explicit Save (2026-10-08, user: "Need to press save to save Deck"): while the builder is open its
+// edits only change the working copy (myDeckCounts / myCharacterId / myLeaderId). Save writes them to
+// the deck; Discard reloads the deck as saved. Leaving with unsaved edits asks first.
+var deckDraftOn = false, deckDirty = false;
+function deckDraftActive(){ return deckDraftOn; }
+function markDeckDirty(){ if(!deckDirty){ deckDirty = true; } refreshDeckSaveBar(); }
+function refreshDeckSaveBar(){
+  const bar = document.getElementById('deckSaveBar'); if(!bar) return;
+  bar.classList.toggle('is-dirty', deckDirty);
+  bar.querySelector('.dsb-state').textContent = deckDirty ? 'Unsaved changes' : 'All changes saved';
+  bar.querySelectorAll('button').forEach(b=> b.disabled = !deckDirty);
+}
+function commitDeckDraft(){
+  deckDraftOn = false;
+  try{ saveMyDeck(); saveMyCharacter(); saveMyLeader(); } finally { deckDraftOn = !!deckEditingId; }
+  deckDirty = false; refreshDeckSaveBar();
+  try{ SoundKit.codeImport && SoundKit.codeImport(); }catch(e){}
+}
+function discardDeckDraft(){
+  const id = activeDeckId;
+  deckDraftOn = false; deckDirty = false;
+  try{ switchActiveDeck(id); } finally { deckDraftOn = !!deckEditingId; }
+}
+function endDeckDraft(){ deckDraftOn = false; deckDirty = false; document.getElementById('deckSaveBar')?.remove(); }
+// Runs `then` once any unsaved edits are saved or discarded (or the player stays). Returns false if it had to ask.
+function deckLeaveGuard(then){
+  if(!deckDirty){ then(); return true; }
+  const d = getActiveDeck();
+  bwChoice({title:'Save your deck?', body:`You changed ${d ? '“' + d.name + '”' : 'this deck'} without saving.`,
+    choices:[{key:'save', label:'💾 Save', primary:true}, {key:'discard', label:'Discard changes'}, {key:'stay', label:'Keep editing', ghost:true}]})
+  .then(k=>{ if(k==='save'){ commitDeckDraft(); then(); } else if(k==='discard'){ discardDeckDraft(); then(); } });
+  return false;
+}
+try{ window.addEventListener('beforeunload', e=>{ if(deckDirty){ e.preventDefault(); e.returnValue = ''; } }); }catch(e){}
 let deckHeroView = false; // Deck → 🦸 Hero: the Hero Hall instead of the deck builder
 var deckOpenBuilderOnce = false; // set by buttons that should land in the builder, not the list (2026-10-08)
 let deckShowList = true; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
@@ -21735,7 +21769,11 @@ function renderDeckSection(){
     // Editing a specific deck reuses the exact same "Build your deck" UI the old Player sub-tab
     // had (renderPlayerSubTab) — it always edits whichever deck is ACTIVE, so opening the editor
     // for a non-active deck switches to it first (see switchActiveDeck's own comment above).
-    if(activeDeckId!==deckEditingId) switchActiveDeck(deckEditingId);
+    if(activeDeckId!==deckEditingId){ endDeckDraft(); switchActiveDeck(deckEditingId); }
+    deckDraftOn = true;
+    // The save bar floats over the page (body-level, so the tab's transforms can't trap it).
+    document.getElementById('deckSaveBar')?.remove();
+    document.body.insertAdjacentHTML('beforeend', `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
           ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===mainDeckId?'<span class="dc-star" title="Main deck: the one you play with">★</span>':''}${escapeHtml(d.name)}${deckIsLegal(d)?'':'<span class="dc-warn" title="Not ready to play: needs exactly '+DECK_SIZE+' cards">!</span>'}</button>`).join('')}
@@ -21750,17 +21788,21 @@ function renderDeckSection(){
       </div>
       <div id="deckBuilderBody"></div>`;
     // Clicking the deck you're already in renames it (it's obvious which deck you mean).
-    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckEditingId = b.dataset.switchdeck; renderDeckSection(); }));
-    document.getElementById('deckNewChip').addEventListener('click', ()=>{ const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); });
+    root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = b.dataset.switchdeck; renderDeckSection(); }); }));
+    document.getElementById('deckNewChip').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); }));
+    document.getElementById('deckSaveBtn').addEventListener('click', ()=>{ commitDeckDraft(); showToast('💾 Deck saved.', 'ok'); renderDeckSection(); });
+    document.getElementById('deckDiscardBtn').addEventListener('click', ()=>{ discardDeckDraft(); renderDeckSection(); });
     const mm = document.getElementById('deckMakeMainBtn');
-    if(mm) mm.addEventListener('click', ()=>{ setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
-    document.getElementById('deckManageBtn').addEventListener('click', ()=>{ deckEditingId = null; deckShowList = true; renderDeckSection(); });
+    if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
+    document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
+
     document.getElementById('deckHeroBtn').addEventListener('click', ()=>{ deckHeroView = !deckHeroView; renderDeckSection(); });
     if(deckHeroView) renderHeroHall(document.getElementById('deckBuilderBody'));
     else renderPlayerSubTab(document.getElementById('deckBuilderBody'));
     return;
   }
+  endDeckDraft();
   root.innerHTML = `
     <div class="play-subtabs-row">
       <div class="play-subtabs" role="tablist">
@@ -21838,6 +21880,20 @@ function renderDeckListTab(body){
 // In-game text dialog (2026-10-08, user: "the import deck code should be native UI, not Chrome
 // UI"): a parchment modal in the game's own style instead of window.prompt. Resolves to the text,
 // or null when cancelled. readonly mode shows a code to copy, with a Copy button.
+function bwChoice({title, body, choices}){
+  return new Promise(resolve=>{
+    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
+    ov.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-label="${escapeAttr(title)}">
+      <div class="modal-head-row"><h2>${escapeHtml(title)}</h2></div>
+      <p class="panel-sub">${escapeHtml(body||'')}</p>
+      <div class="modal-actions">${choices.map(c=> `<button type="button" class="btn ${c.primary?'primary':c.ghost?'ghost':''}" data-k="${escapeAttr(c.key)}">${escapeHtml(c.label)}</button>`).join('')}</div></div>`;
+    document.body.appendChild(ov);
+    const done = k=>{ ov.remove(); resolve(k); };
+    ov.querySelectorAll('[data-k]').forEach(b=> b.onclick = ()=> done(b.dataset.k));
+    ov.onkeydown = e=>{ if(e.key==='Escape'){ e.stopPropagation(); done('stay'); } };
+    setTimeout(()=> (ov.querySelector('.btn.primary') || ov.querySelector('button')).focus(), 30);
+  });
+}
 function bwConfirm({title, body, list, okLabel, focusCancel}){
   return new Promise(resolve=>{
     const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
@@ -23487,6 +23543,8 @@ const PLACES = {
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
+  if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
+  if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
   try{ document.body.dataset.tab = tab; }catch(e){}
