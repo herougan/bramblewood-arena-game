@@ -21662,6 +21662,7 @@ function openPackAnimation(pack, opened, opts){
     const leak = best >= 11 ? 'leak-gold' : best >= 7 ? 'leak-violet' : best >= 4 ? 'leak-blue' : '';
     overlay.innerHTML = topBar() + `<div class="po2-stage">
       <div class="po2-pack ${leak}" id="poPack">
+        <span class="po2-shadow" aria-hidden="true"></span><span class="po2-leak" aria-hidden="true"></span>
         <div class="po2-body">
           <div class="po2-liner" aria-hidden="true"></div>
           <div class="po2-art" style="${art ? `background-image:url('${escapeAttr(art)}')` : ''}"></div>
@@ -21714,7 +21715,7 @@ function openPackAnimation(pack, opened, opts){
     phase = 'reveal'; cur = 0;
     const o = opened[packIdx];
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div></div>
-      <div class="po2-got" id="poGot" aria-label="Cards so far"></div>
+      <div class="po2-got" id="poGot" role="group" aria-label="Cards so far"></div>
       <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
     wireTop();
     const cards = [...overlay.querySelectorAll('.po2-card')];
