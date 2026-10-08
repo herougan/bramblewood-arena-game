@@ -5356,6 +5356,20 @@
   .map-subcave.is-done .msc-ico{filter:drop-shadow(0 0 4px rgba(120,255,160,.8));}
   .submap-iris{position:fixed; z-index:60; overflow:hidden; pointer-events:none;}
   .submap-iris > span{position:absolute; width:0; height:0; transform:translate(-50%,-50%); border-radius:50%; box-shadow:0 0 0 300vmax #05080b, inset 0 0 40px 20px #05080b;}
+  /* Promotion (2026-10-09) */
+  .forge-promote{margin-top:14px; padding:10px 12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,215,120,.14), rgba(255,215,120,.04)); border:1px solid rgba(255,215,120,.35);}
+  .forge-promote.is-locked{opacity:.75; background:rgba(0,0,0,.12); border-style:dashed;}
+  .forge-promote .fp-head{font-weight:800; letter-spacing:.02em; margin-bottom:4px;}
+  .fp-choices{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:8px 0;}
+  .fp-choice{position:relative; padding:3px; border-radius:10px; border:2px solid transparent; background:rgba(0,0,0,.15); cursor:pointer;}
+  .fp-choice .card-tile{width:70px; pointer-events:none;}
+  .fp-choices{gap:6px; flex-wrap:nowrap;}
+  .fp-choice:hover{border-color:rgba(255,215,120,.55);}
+  .fp-choice.selected{border-color:var(--gold, #f5c542); box-shadow:0 0 0 3px rgba(245,197,66,.25), 0 6px 16px rgba(0,0,0,.35); transform:translateY(-2px);}
+  .fp-owned{position:absolute; top:-6px; right:-6px; width:20px; height:20px; border-radius:50%; background:#2f9e55; color:#fff; font-size:12px; display:grid; place-items:center; box-shadow:0 2px 4px rgba(0,0,0,.4);}
+  .hero-rarity{display:flex; align-items:center; gap:8px; margin:4px 0 2px;}
+  .hero-rarity .hr-now{font-weight:800; font-size:12px; padding:2px 9px; border-radius:999px; color:#fff; background:var(--hr); box-shadow:inset 0 1px 0 rgba(255,255,255,.3);}
+  .hero-rarity small{opacity:.75;}
   @keyframes mscGlow{0%,100%{opacity:.75;} 50%{opacity:1;}}
   @media (prefers-reduced-motion: reduce){ .map-subcave .msc-ico{animation:none;} }
   .map-cave:hover .mc-mouth{box-shadow:inset 0 3px 4px rgba(0,0,0,.7), 0 0 10px rgba(255,214,120,.35);}

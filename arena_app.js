@@ -6665,6 +6665,7 @@ const CARD_UNLOCK_SOURCES = {
   eventReward: 'Event reward',
   skirmishReward: 'Skirmish reward',
   achievement: 'Achievement',
+  promotion: 'Promotion',
 };
 function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
@@ -7280,6 +7281,11 @@ function heroSkillOffer(h, atLevel){
   const a = pool.slice(); for(let i = a.length-1; i > 0; i--){ const j = Math.floor(rnd()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a.slice(0, 3);
 }
+// Hero rarity climbs with level (2026-10-09, user: "Hero: the cards can gain rarity over their
+// upgrading"). A new hero starts Common and ends Legendary at the top of the ladder.
+const HERO_RARITY_STEPS = [[1,'common'],[5,'uncommon'],[15,'rare'],[30,'epic'],[50,'heroic'],[70,'unique'],[90,'legendary']];
+function heroRarityForLevel(L){ let r = 'common'; HERO_RARITY_STEPS.forEach(([at, k])=>{ if(L >= at) r = k; }); return r; }
+function heroNextRarity(L){ const n = HERO_RARITY_STEPS.find(([at])=> at > L); return n ? {level:n[0], rarity:n[1]} : null; }
 function heroDef(){
   const h = myHero; if(!h) return null;
   const P = HERO_PEOPLES[h.people], L = heroLevelFromXp(h.xp).level;
@@ -7293,7 +7299,7 @@ function heroDef(){
   return {id:HERO_ID, name: h.name || P.label, icon: P.icon, art: artDef.art || '', hero:true, heroLevel:L,
     attack: P.base.attack + h.alloc.atk, health: P.base.health + h.alloc.hp,
     cost: 1 + (L>=20) + (L>=50) + (L>=80), wait: Math.max(0, 1 - h.alloc.speed),
-    rarity:'unique', archetypes: P.archetypes.slice(), effects, locked:false,
+    rarity: heroRarityForLevel(L), archetypes: P.archetypes.slice(), effects, locked:false,
     flavor: `${P.label} · Level ${L}. Built by your own hand, one battle at a time.`};
 }
 function heroGainXp(n, why){
@@ -21852,7 +21858,7 @@ function forgeStatsAt(id, level){
   const b = forgeBaseDef(id) || {}; const m = levelStatMultiplier(level);
   return {attack: b.attack!=null ? Math.max(1, Math.round(b.attack*m)) : null, health: b.health!=null ? Math.max(1, Math.round(b.health*m)) : null};
 }
-function forgeReady(id){ const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
+function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
 function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
@@ -21981,6 +21987,9 @@ function renderForge(){
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
   const preBtn = document.getElementById('forgePrestigeBtn');
   if(preBtn) preBtn.addEventListener('click', ()=> forgePrestige(preBtn));
+  root.querySelectorAll('[data-promote]').forEach(b=> b.addEventListener('click', ()=>{ if(forgeBusy) return; forgePromotePick = b.dataset.promote; renderForge(); }));
+  const proBtn = document.getElementById('forgePromoteBtn');
+  if(proBtn) proBtn.addEventListener('click', ()=> forgePromote(proBtn));
   root.querySelectorAll('[data-forgemode]').forEach(b=> b.addEventListener('click', ()=>{ if(forgeBusy) return; forgeMode = b.dataset.forgemode; if(forgeFilter==='max' || forgeFilter==='leveled') forgeFilter = 'all'; renderForge(); }));
   const rfBtn = document.getElementById('forgeRefineBtn');
   if(rfBtn) rfBtn.addEventListener('click', ()=> forgeRefine(rfBtn));
@@ -22080,7 +22089,52 @@ function forgeAnvilHTML(id, sel, L, maxed){
         <div class="forge-cost-row">${forgeCostChipsHTML(tier.cost)}</div>
         <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
-    `}`;
+    `}${forgePromotionHTML(id, sel, L)}`;
+}
+// Promotion (2026-10-09, user: "some cards can be promoted - this changes the card to another card.
+// For now, we can try basic ant as an example. And it can become Ant Warrior or 2 other Ant cards.
+// (Their rarities usually start as uncommon or below)"). A card lists `promotesTo` (its choices) and
+// `promoteAt` (the level it must reach). Promoting unlocks the chosen card, turns every copy of the
+// old card in your decks into it, and sends the old card back to level 0 — so you can raise it again
+// later and take one of the other paths.
+const PROMOTE_COST = {gold:60, dust:20};
+let forgePromotePick = null;
+function promotionTargets(id){ const d = getCardDefs()[id], defs = getCardDefs(); return d && Array.isArray(d.promotesTo) ? d.promotesTo.filter(t=> defs[t]) : []; }
+function forgePromotionHTML(id, sel, L){
+  const targets = promotionTargets(id); if(!targets.length) return '';
+  const defs = getCardDefs(), at = Math.max(1, Number(sel.promoteAt)||3);
+  if(L < at) return `<div class="forge-promote is-locked"><div class="fp-head">⬆ ${escapeHtml(_t('Promotion at Lv {n}', {n:at}))}</div><p class="forge-note">${targets.map(t=> `${defs[t].icon||''} ${escapeHtml(defs[t].name)}`).join(' · ')}</p></div>`;
+  if(!targets.includes(forgePromotePick)) forgePromotePick = null;
+  const afford = myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust;
+  const pick = forgePromotePick && defs[forgePromotePick];
+  return `<div class="forge-promote">
+    <div class="fp-head">⬆ ${escapeHtml(_t('Promote'))}</div>
+    <p class="forge-note">${escapeHtml(_t('Pick what it becomes. Your decks get the new card; this one goes back to level 0.'))}</p>
+    <div class="fp-choices">${targets.map(t=> `<button type="button" class="fp-choice ${t===forgePromotePick?'selected':''}" data-promote="${escapeAttr(t)}" aria-pressed="${t===forgePromotePick}">${cardTileHTML(defs[t], {inPlay:true})}${myUnlockedCardIds.has(t) ? '<span class="fp-owned">✓</span>' : ''}</button>`).join('')}</div>
+    <div class="forge-cost-row">${forgeCostChipsHTML(PROMOTE_COST)}</div>
+    <button type="button" class="btn primary forge-act" id="forgePromoteBtn" ${pick && afford ? '' : 'aria-disabled="true"'}>⬆ ${pick ? escapeHtml(_t('Promote to {name}', {name:pick.name})) : escapeHtml(_t('Pick a promotion'))}</button>
+  </div>`;
+}
+async function forgePromote(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId, to = forgePromotePick, defs = getCardDefs(), d = defs[id];
+  const at = Math.max(1, Number(d && d.promoteAt)||3);
+  if(!to || !promotionTargets(id).includes(to) || getCardLevel(id) < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); return; }
+  forgeBusy = true; btn.disabled = true;
+  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview'});
+  myCurrencies.gold -= PROMOTE_COST.gold; myCurrencies.dust -= PROMOTE_COST.dust; saveCurrencies();
+  unlockCardForPlayer(to, 'promotion');
+  myCardLevels[id] = 0; saveCardLevels();
+  const swap = counts=>{ if(!counts || !counts[id]) return false; counts[to] = (counts[to]||0) + counts[id]; delete counts[id]; return true; };
+  let changed = false;
+  try{ (myDecks||[]).forEach(dk=> { if(swap(dk.counts)) changed = true; }); }catch(e){}
+  if(swap(myDeckCounts)) changed = true;
+  if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
+  logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
+  const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
+  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  forgeBusy = false; forgePromotePick = null; forgeSelectedId = to; renderForge();
+  showToast(`⬆ ${escapeHtml(d.name)} was promoted to ${escapeHtml(defs[to].name)}!${changed ? ' Your decks have the new card.' : ''}`, 'ok');
 }
 // The smithing sequence. Resolves once the card has flipped to its new face.
 function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
@@ -22381,6 +22435,7 @@ function renderHeroHall(body){
       <div class="hero-info">
         <h2>🦸 ${escapeHtml(d.name)} <small>${escapeHtml(P.label)}</small></h2>
         <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? `<span class="hero-xpbar"><span style="width:${Math.round(lv.into/lv.need*100)}%"></span></span><small>${lv.into} / ${lv.need} XP</small>` : '<small>Max level</small>'}</div>
+        ${(()=>{ const r = rarityDef(d.rarity), nx = heroNextRarity(L); return `<div class="hero-rarity"><span class="hr-now" style="--hr:${r.color||'#eab308'}">${escapeHtml(_t(r.label))}</span>${nx ? `<small>${escapeHtml(_t('{rarity} at Level {n}', {rarity:_t(rarityDef(nx.rarity).label), n:nx.level}))}</small>` : `<small>${escapeHtml(_t('Top rarity'))}</small>`}</div>`; })()}
         <div class="hero-facts"><span>🪵 Costs ${d.cost}</span><span>⏳ Wait ${d.wait}</span><span>⚔ ${h.battles||0} battles · ${h.wins||0} wins</span></div>
         <div class="hero-deck-row">${inDeck ? '<span class="hero-in-deck">✓ In your active deck</span><button type="button" class="btn small ghost" id="heroDeckBtn">Take out of deck</button>' : '<button type="button" class="btn primary" id="heroDeckBtn">🃏 Add to my deck</button>'}</div>
         <p class="panel-sub hero-howto">XP: win with your Hero in the deck <b>+30</b> (+10 if it took the field), lose or draw <b>+10</b>, craft Materia <b>+${MATERIA_HERO_XP}</b>. Live and online matches don't carry your Hero yet.</p>
