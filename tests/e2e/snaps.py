@@ -20,7 +20,7 @@ WATCH="""(()=>{ window.__jumps=[]; window.__lastRender=null;
     const inner=document.getElementById('battlefieldInner'); const ir=inner?inner.getBoundingClientRect():null;
     const camMoved = lastInner && ir && (Math.abs(ir.left-lastInner.left)>0.5 || Math.abs(ir.top-lastInner.top)>0.5 || Math.abs(ir.width-lastInner.width)>0.5);
     lastInner = ir;
-    const groups=[['board','#rowMine .board-card, #rowEnemy .board-card'],['hand','#handStrip .card-tile, #handStrip > *'],['castle','[data-hq]']];
+    const groups=[['board','#rowMine .board-card:not(.slot-target):not(.empty-slot), #rowEnemy .board-card:not(.slot-target):not(.empty-slot)'],['hand','#handStrip .card-tile, #handStrip > *'],['castle','[data-hq]']];
     groups.forEach(([g,sel])=> document.querySelectorAll(sel).forEach(el=>{
       const r=el.getBoundingClientRect(); if(!r.width) return; const p=last.get(el); const b=busy(el);
       if(p && !b && !p.b && !(g==='board' && camMoved) && Math.abs(r.width-p.w)<2){

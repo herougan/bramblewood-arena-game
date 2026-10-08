@@ -5048,6 +5048,23 @@
   .qn-medal-l{font-weight:800; font-size:12.5px; color:#fbf1dc;} .qn-medal-v{font:800 14px 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;} .qn-medal-v small{opacity:.6; font-size:11px;}
   @media (max-width:720px){ .qn-cork{grid-template-columns:1fr; padding:12px;} .qn-notes{grid-template-columns:repeat(2, minmax(0,1fr));} }
   @media (prefers-reduced-motion:reduce){ .qn-note.is-ready .qn-claim{animation:none;} }
+  /* Field effects (2026-10-08): the Field card beside the enemy deck, snowfall, and the ice pulse */
+  .field-card{flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 4px; position:relative; cursor:help;}
+  .field-card.field-frozen{background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.55), transparent 60%), linear-gradient(180deg,#bfe6ff,#6aa9d8) !important; border:2px solid #e8f7ff !important; color:#0f3350; box-shadow:inset 0 0 0 3px rgba(255,255,255,.35), 0 3px 0 rgba(0,0,0,.2), 0 0 14px rgba(160,220,255,.55);}
+  .field-card .castle-label{font-family:'Nunito'; font-weight:800; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; opacity:.8;}
+  .field-card .fc-ico{font-size:26px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.25)); animation:fcSpin 12s linear infinite;}
+  .field-card .fc-name{font:800 11px 'Baloo 2',system-ui,sans-serif;}
+  @keyframes fcSpin{to{rotate:360deg;}}
+  .field-snow{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:3; border-radius:inherit;}
+  .field-snow i{position:absolute; top:-12px; color:#fff; font-style:normal; opacity:.85; text-shadow:0 0 4px rgba(180,220,255,.9); animation:fieldSnow linear infinite;}
+  @keyframes fieldSnow{0%{top:-14px; translate:0 0; rotate:0deg;} 100%{top:104%; translate:var(--dx,0px) 0; rotate:240deg;}}
+  .ice-pulse{position:absolute; inset:-14%; border-radius:18%; pointer-events:none; z-index:9;
+    background:radial-gradient(closest-side, rgba(255,255,255,.0) 40%, rgba(200,240,255,.85) 62%, rgba(120,200,255,.55) 78%, transparent 100%);
+    box-shadow:0 0 22px rgba(160,220,255,.9), inset 0 0 18px rgba(255,255,255,.8); animation:icePulse .75s cubic-bezier(.2,.8,.3,1) forwards;}
+  .ice-pulse::after{content:'❄'; position:absolute; left:50%; top:50%; translate:-50% -50%; font-size:2.4em; color:#fff; text-shadow:0 0 10px #9fd8ff;}
+  @keyframes icePulse{0%{transform:scale(1.25); opacity:0;} 18%{opacity:1;} 100%{transform:scale(.55); opacity:0;}}
+  :where(html[data-fx="none"]) .field-snow, :where(html[data-fx="none"]) .field-card .fc-ico{display:none;}
+  @media (prefers-reduced-motion:reduce){ .field-snow{display:none;} .field-card .fc-ico{animation:none;} }
   .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
   .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
   .shop-bundle{min-width:46px; padding:4px 10px !important;}
@@ -19530,7 +19547,7 @@ function simulateSkirmishVsMyDeck(node, n){
   const myChar = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS.castle;
   const enemyChar = node.characterId && CHARACTER_DEFS[node.characterId] ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health: node.hqHp}) : {id:'sim-enemy', name:node.name, health: node.hqHp||30, effects:{}};
   for(let i=0;i<n;i++){
-    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || 'gravity'});
+    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE});
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, myDeckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
     P[2].loopCards = [];
@@ -19580,7 +19597,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
-        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Gravity; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Open: no collapsing; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
@@ -22972,9 +22989,12 @@ const Registry = {
     remember(p){ if(p && p.id) Registry.users._cache.set(p.id, p); },
   },
 };
+// 2026-10-08 (user: "Set all the skirmishes to the default mode of non-collapsing. Collapsing is
+// special."): Conquest fights default to Open (fixed slots, gaps stay); Gravity is opt-in per skirmish.
+const CONQUEST_DEFAULT_MODE = 'open';
 const conquestBattleModePick = {}; // nid -> mode key, remembered for this session
 function battleModePickerHTML(nid){
-  const cur = conquestBattleModePick[nid] || Registry.defaultBattleMode();
+  const cur = conquestBattleModePick[nid] || CONQUEST_DEFAULT_MODE;
   return `<div class="battle-mode-picker" role="radiogroup" aria-label="Battle type">
     <div class="bmp-label">Battle type</div>
     <div class="bmp-options">${Registry.battleModes().map(v=>
@@ -23046,7 +23066,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
   if(!deckSizeOkOrWarn()) return false;
-  const battleMode = (opts && opts.battleMode) || node.battleMode || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || 'gravity';
+  const battleMode = (opts && opts.battleMode) || node.battleMode || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || CONQUEST_DEFAULT_MODE;
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
@@ -24982,6 +25002,7 @@ function renderMatchUI(){
         <div class="ico deck-back-mark">🌰</div>
         ${p2.exile.length>0?`<div class="removal-badge" title="Removal Zone">🌫 ${p2.exile.length}</div>`:''}
       </div>
+      ${fieldEffectCardHTML(m)}
       <div class="top-row-controls">
         <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
@@ -25001,6 +25022,7 @@ function renderMatchUI(){
       </div>
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
+      ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow" aria-hidden="true">${Array.from({length: fxAtLeast('high') ? 28 : 14}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -28941,6 +28963,7 @@ async function resolveRound(){
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+    try{ applyFieldEffectsNewTurn(m); }catch(e){ console.warn('field effect', e); }
     if(m.mode==='pvp') aiActNow(); // "They always go first": the stranger plays before you plan
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
@@ -28949,6 +28972,7 @@ async function resolveRound(){
   SoundKit.stopAll();
   m.resolving = false; document.documentElement.classList.remove('bw-resolving');
   renderMatchUI();
+  if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; setTimeout(()=> ids.forEach(icePulseVfx), 120); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
 }
@@ -28995,6 +29019,53 @@ const QUEST_COUNTING_MODES = new Set(['ai','conquest','gauntlet','dungeon','asyn
 // battlefield's sky bleeds red and pulses slowly, so the rule change stays visible after the banner.
 // Raindrops on cards (2026-10-07, effects list two): on water and rain fields a few drops bead and
 // run slowly down the card art (CSS on each card's art box; High effects only).
+// Field effects (2026-10-08, user: "For the frozen: add a field effect. (This will look like a card
+// beside the opponent's deck) Add snowflakes that fall. Maybe every turn, a random card on each side
+// of the field +1 wait, and has the freeze sfx/vfx that fades and also grows smaller (quickly), like a
+// pulse of ice."). Fights on frozen ground (the Tundra's battlefield) show a Field card by the enemy
+// deck, snow drifts over the board, and at the start of every turn one card on each side is chilled
+// (+1 Wait). The pick is seeded from the round and the board, so a resumed fight chills the same card.
+const FIELD_EFFECTS = {
+  frozen: {name:'Frozen Ground', icon:'❄️', short:'Frozen', text:'At the start of every turn, one random card on each side of the field gets +1 Wait.'},
+};
+function fieldEffectOf(m){
+  if(!m || m.mode==='tutorial') return null;
+  if(m.fieldEffect !== undefined) return m.fieldEffect;
+  const mapId = m.conquestNode && m.conquestNode.mapId;
+  const kind = mapId && typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mapId] : null;
+  m.fieldEffect = kind === 5 ? 'frozen' : null;
+  return m.fieldEffect;
+}
+function fieldEffectCardHTML(m){
+  const f = FIELD_EFFECTS[fieldEffectOf(m)]; if(!f) return '';
+  return `<div class="field-card hq-tile field-${fieldEffectOf(m)}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text)}">
+    <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.short)}</div></div>`;
+}
+function applyFieldEffectsNewTurn(m){
+  if(fieldEffectOf(m) !== 'frozen' || m.over) return;
+  const chilled = [];
+  [1, 2].forEach(pid=>{
+    const cards = allCardsOnBoard(m.players[pid]).filter(c=> c && !c.gap && c.hp > 0);
+    if(!cards.length) return;
+    let h = (m.round * 2654435761 + pid * 40503 + cards.length * 97) >>> 0;
+    h = (h ^ (h >>> 13)) >>> 0;
+    const c = cards[h % cards.length];
+    c.wait = (c.wait || 0) + 1;
+    chilled.push(c.uid);
+  });
+  if(!chilled.length) return;
+  m._fieldChilled = chilled;
+  try{ SoundKit.freezeChime(); }catch(e){}
+}
+function icePulseVfx(uid){
+  const el = boardCardEl(uid); if(!el) return;
+  const tile = el.querySelector('.card-tile') || el;
+  try{ floatText(el, '❄ +1 Wait', 'debuff'); }catch(e){}
+  if(reducedMotion() || !fxAtLeast('low')) return;
+  const p = document.createElement('span'); p.className = 'ice-pulse'; p.setAttribute('aria-hidden','true');
+  tile.appendChild(p);
+  setTimeout(()=> p.remove(), 900);
+}
 function isWetField(m){ try{ return battleWeatherKind(m) === 11; }catch(e){ return false; } } // raindrops only when it's actually raining (2026-10-08)
 function suddenDeathSky(m){
   return !!(m && !m.over && m.round >= SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND));

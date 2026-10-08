@@ -24,7 +24,7 @@ WATCH="""(()=>{ window.__jumps=[]; window.__lastRender=null;
     const inner=document.getElementById('battlefieldInner'); const ir=inner?inner.getBoundingClientRect():null;
     const camMoved = lastInner && ir && (Math.abs(ir.left-lastInner.left)>0.5 || Math.abs(ir.top-lastInner.top)>0.5 || Math.abs(ir.width-lastInner.width)>0.5);
     lastInner = ir;
-    const groups=[['board','#rowMine .board-card, #rowEnemy .board-card'],['hand','#handStrip .card-tile, #handStrip > *'],['castle','[data-hq]']];
+    const groups=[['board','#rowMine .board-card:not(.slot-target):not(.empty-slot), #rowEnemy .board-card:not(.slot-target):not(.empty-slot)'],['hand','#handStrip .card-tile, #handStrip > *'],['castle','[data-hq]']];
     groups.forEach(([g,sel])=> document.querySelectorAll(sel).forEach(el=>{
       const r=el.getBoundingClientRect(); if(!r.width) return; const p=last.get(el); const b=busy(el); const H=hist.get(el)||[]; H.push({t:Math.round(performance.now()), x:Math.round(r.left), b, pos:el.style.position, tf:el.style.transform.slice(0,40), cls:el.className.slice(11,60), sib:[...el.parentNode.children].indexOf(el)+'/'+el.parentNode.children.length, sp:[...el.parentNode.children].map(c=>(c.style.position[0]||'-')+(c.classList.contains('is-entering')?'E':'')+(window.gsap&&gsap.isTweening(c)?'T':'')).join(' '), fl:(typeof flippingEls!=='undefined')&&flippingEls.has(String(el.dataset.uid)), rowW:Math.round(el.parentNode.getBoundingClientRect().width), rowX:Math.round(el.parentNode.getBoundingClientRect().left)}); if(H.length>40) H.shift(); hist.set(el,H);
       if(p && !b && !p.b && !(g==='board' && camMoved) && Math.abs(r.width-p.w)<2){

@@ -5038,6 +5038,23 @@
   .qn-medal-l{font-weight:800; font-size:12.5px; color:#fbf1dc;} .qn-medal-v{font:800 14px 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;} .qn-medal-v small{opacity:.6; font-size:11px;}
   @media (max-width:720px){ .qn-cork{grid-template-columns:1fr; padding:12px;} .qn-notes{grid-template-columns:repeat(2, minmax(0,1fr));} }
   @media (prefers-reduced-motion:reduce){ .qn-note.is-ready .qn-claim{animation:none;} }
+  /* Field effects (2026-10-08): the Field card beside the enemy deck, snowfall, and the ice pulse */
+  .field-card{flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 4px; position:relative; cursor:help;}
+  .field-card.field-frozen{background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.55), transparent 60%), linear-gradient(180deg,#bfe6ff,#6aa9d8) !important; border:2px solid #e8f7ff !important; color:#0f3350; box-shadow:inset 0 0 0 3px rgba(255,255,255,.35), 0 3px 0 rgba(0,0,0,.2), 0 0 14px rgba(160,220,255,.55);}
+  .field-card .castle-label{font-family:'Nunito'; font-weight:800; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; opacity:.8;}
+  .field-card .fc-ico{font-size:26px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.25)); animation:fcSpin 12s linear infinite;}
+  .field-card .fc-name{font:800 11px 'Baloo 2',system-ui,sans-serif;}
+  @keyframes fcSpin{to{rotate:360deg;}}
+  .field-snow{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:3; border-radius:inherit;}
+  .field-snow i{position:absolute; top:-12px; color:#fff; font-style:normal; opacity:.85; text-shadow:0 0 4px rgba(180,220,255,.9); animation:fieldSnow linear infinite;}
+  @keyframes fieldSnow{0%{top:-14px; translate:0 0; rotate:0deg;} 100%{top:104%; translate:var(--dx,0px) 0; rotate:240deg;}}
+  .ice-pulse{position:absolute; inset:-14%; border-radius:18%; pointer-events:none; z-index:9;
+    background:radial-gradient(closest-side, rgba(255,255,255,.0) 40%, rgba(200,240,255,.85) 62%, rgba(120,200,255,.55) 78%, transparent 100%);
+    box-shadow:0 0 22px rgba(160,220,255,.9), inset 0 0 18px rgba(255,255,255,.8); animation:icePulse .75s cubic-bezier(.2,.8,.3,1) forwards;}
+  .ice-pulse::after{content:'❄'; position:absolute; left:50%; top:50%; translate:-50% -50%; font-size:2.4em; color:#fff; text-shadow:0 0 10px #9fd8ff;}
+  @keyframes icePulse{0%{transform:scale(1.25); opacity:0;} 18%{opacity:1;} 100%{transform:scale(.55); opacity:0;}}
+  :where(html[data-fx="none"]) .field-snow, :where(html[data-fx="none"]) .field-card .fc-ico{display:none;}
+  @media (prefers-reduced-motion:reduce){ .field-snow{display:none;} .field-card .fc-ico{animation:none;} }
   .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
   .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
   .shop-bundle{min-width:46px; padding:4px 10px !important;}
