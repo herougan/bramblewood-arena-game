@@ -7421,6 +7421,13 @@ function deckPreviewPillsHTML(d){
 }
 // Deck level (2026-10-03): Σ rarity weight × card level (forged level, minimum 1); the leader
 // counts double. Same formula as the Autobattler (bramblewood-autobattle.js deckLevelOf).
+// Enemy deck level (2026-10-08, user: "The Skirmishes should say the difficulty level of the enemy.
+// Maybe deck level is enough"): the same Deck level formula as your own decks, with the enemy's cards
+// at their base level, so the two numbers compare directly.
+function enemyDeckLevel(node){
+  if(!node || !node.deck || typeof BramblewoodAutobattle==='undefined') return 0;
+  return BramblewoodAutobattle.deckLevelOf(getCardDefs(), node.deck, ()=> 1, node.leaderId ? [node.leaderId] : []);
+}
 function mainDeckLevel(counts, leaderId){
   if(typeof BramblewoodAutobattle==='undefined') return 0;
   return BramblewoodAutobattle.deckLevelOf(getCardDefs(), counts, id=> Math.max(1, (myCardLevels||{})[id]||0), leaderId ? [leaderId] : []);
@@ -8667,7 +8674,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
-        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Open: no collapsing; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
@@ -9846,6 +9853,27 @@ function nodeRewardTier(node){
 // card rewards as small real cards (a card back for a still-hidden one), then the currency
 // payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
 // (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
+// Reward card blow-up (2026-10-08, user: "make the mini-card blow-up more legible"): instead of
+// scaling the 46-px tile up (blurry, and its badges collide), hovering or focusing a reward card
+// shows a real full-size card face above it.
+function wireRewardZoom(root){
+  if(!root) return;
+  const show = el=>{
+    hide(); const d = getCardDefs()[el.dataset.zoom]; if(!d) return;
+    const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
+    z.innerHTML = cardTileHTML(d, {inPlay:true}); document.body.appendChild(z);
+    const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
+    const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
+    const top = r.top - zh - 10 >= 8 ? r.top - zh - 10 : Math.min(innerHeight - zh - 8, r.bottom + 10);
+    z.style.left = left + 'px'; z.style.top = top + 'px';
+    requestAnimationFrame(()=> z.classList.add('is-in'));
+  };
+  const hide = ()=> document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
+  root.querySelectorAll('[data-zoom]').forEach(el=>{
+    el.addEventListener('pointerenter', ()=> show(el)); el.addEventListener('pointerleave', hide);
+    el.addEventListener('focus', ()=> show(el)); el.addEventListener('blur', hide);
+  });
+}
 function cnpRewardStripHTML(mapId, node, done, rank){
   // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
   // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
@@ -9858,7 +9886,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const pay = tier ? tier.first : {gold:0, dust:0};
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -10500,12 +10528,18 @@ function renderConquestSubTab(body){
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
   if(!matchState) document.body.classList.add('conquest-full');
+  document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
   // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
   // Allow for a full-screen button in conquest"): Conquest now sits in the same content column as
   // Arena; the ⛶ button gives the immersive full-screen map instead.
   if(wrapEl) wrapEl.classList.remove('wide-map');
+  // 2026-10-08 (user: "Clicking a skirmish shouldn't reset my y-scroll"): this re-renders the whole
+  // pane, so remember where the map pane (and the page) were scrolled and put them back after.
+  const prevMain = body.querySelector('.conquest-main');
+  const keepScroll = prevMain ? prevMain.scrollTop : null, keepPage = window.scrollY;
+  setTimeout(()=>{ const nm = body.querySelector('.conquest-main'); if(nm && keepScroll != null) nm.scrollTop = keepScroll; if(Math.abs(window.scrollY - keepPage) > 2) window.scrollTo(0, keepPage); }, 0);
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
   // itself (see attachDelayedTooltip's call in renderPlay). Just a bare heading here.
@@ -10764,7 +10798,7 @@ function renderConquestSubTab(body){
     panelEl.hidden = false;
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}${(()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); if(!ev) return ''; const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard'; return ` · <span class="cnp-lvl ${cls}">⚔ ${escapeHtml(_t('Deck Lv {n}', {n:ev}))}<small> · ${escapeHtml(_t('yours {n}', {n:mine}))}</small></span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
         ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
@@ -10778,6 +10812,7 @@ function renderConquestSubTab(body){
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
+    wireRewardZoom(panelEl);
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     const seBtn = document.getElementById('cnpEditSkirmish');

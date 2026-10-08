@@ -4931,7 +4931,8 @@
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
   .cnp-rw-card{position:relative; width:46px; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
   .cnp-rw-card .card-tile{width:100% !important; pointer-events:none;}
-  .cnp-rw-card:hover{transform:scale(2.6) translateY(-6px); z-index:20;}
+  .cnp-rw-card:hover, .cnp-rw-card:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
+  .cnp-rw-zoom{position:fixed; z-index:200; width:150px; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5;}
   .cnp-rw-card.is-got .card-tile, .cnp-rw-card.is-got .cnp-rw-back{filter:grayscale(1) brightness(.7);}
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
@@ -5218,6 +5219,19 @@
      are hidden; the board stays to look at. */
   body.match-ended #handStrip, body.match-ended .drop-row, body.match-ended #dropDiscard, body.match-ended #leaderWidgetWrap, body.match-ended .coach-tip{visibility:hidden !important; pointer-events:none !important;}
   .wl-reopen{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:80; display:flex; gap:8px;}
+  /* Conquest: less scrolling, sturdier glass (2026-10-08, user: "minimise the y-scrolling" and "the
+     translucent UI on the conquest page should have slightly higher opacity"). In full-window
+     Conquest the map title floats over the map and the skirmish panel floats above the mode dock,
+     so the map itself is one screen tall. */
+  body.conquest-full .conquest-main{padding-top:12px; padding-bottom:12px;}
+  body.conquest-full .conquest-main > .conquest-headline{position:absolute; top:16px; left:18px; z-index:7; margin:0; max-width:min(520px, 46%);}
+  body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 24px); margin-top:0;}
+  @media (min-width:821px){ body.conquest-full .conquest-main > .conquest-node-panel{position:absolute; left:18px; right:18px; bottom:16px; margin:0;} body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;} }
+  @media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline{position:static; max-width:none; margin-bottom:8px;} body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 220px);} }
+  .conquest-scrim{background:rgba(10,12,8,.62) !important; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);}
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{background:rgba(20,14,8,.84);}
+  .cnp-lvl{font-weight:800; padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.12);} .cnp-lvl small{font-weight:600; opacity:.8;}
+  .cnp-lvl.is-even{color:#b8f0a8;} .cnp-lvl.is-close{color:#ffe08a;} .cnp-lvl.is-hard{color:#ffab9a;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
@@ -11570,7 +11584,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=841f03da11", "es": "assets/lang/es.js?v=e79678a173", "fr": "assets/lang/fr.js?v=932190bc2f", "id": "assets/lang/id.js?v=cd4665d8c0", "it": "assets/lang/it.js?v=9b498c6846", "ja": "assets/lang/ja.js?v=56733dab5c", "ko": "assets/lang/ko.js?v=e8425f383e", "pt": "assets/lang/pt.js?v=2ccb6895db", "ta": "assets/lang/ta.js?v=0e88e477b2", "tl": "assets/lang/tl.js?v=4a1bd46668", "zh-Hans": "assets/lang/zh-Hans.js?v=54abb4fb0a", "zh-Hant": "assets/lang/zh-Hant.js?v=5550b2f837"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c371eb81d4", "es": "assets/lang/es.js?v=4ec6975344", "fr": "assets/lang/fr.js?v=5b8da45dff", "id": "assets/lang/id.js?v=8743928271", "it": "assets/lang/it.js?v=dfb8072506", "ja": "assets/lang/ja.js?v=a5807c8694", "ko": "assets/lang/ko.js?v=388e8e5053", "pt": "assets/lang/pt.js?v=1970a28de1", "ta": "assets/lang/ta.js?v=f6a8cc6171", "tl": "assets/lang/tl.js?v=16e4b7c5fb", "zh-Hans": "assets/lang/zh-Hans.js?v=ac4a9180f2", "zh-Hant": "assets/lang/zh-Hant.js?v=9aabe7b50d"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -19161,6 +19175,13 @@ function deckPreviewPillsHTML(d){
 }
 // Deck level (2026-10-03): Σ rarity weight × card level (forged level, minimum 1); the leader
 // counts double. Same formula as the Autobattler (bramblewood-autobattle.js deckLevelOf).
+// Enemy deck level (2026-10-08, user: "The Skirmishes should say the difficulty level of the enemy.
+// Maybe deck level is enough"): the same Deck level formula as your own decks, with the enemy's cards
+// at their base level, so the two numbers compare directly.
+function enemyDeckLevel(node){
+  if(!node || !node.deck || typeof BramblewoodAutobattle==='undefined') return 0;
+  return BramblewoodAutobattle.deckLevelOf(getCardDefs(), node.deck, ()=> 1, node.leaderId ? [node.leaderId] : []);
+}
 function mainDeckLevel(counts, leaderId){
   if(typeof BramblewoodAutobattle==='undefined') return 0;
   return BramblewoodAutobattle.deckLevelOf(getCardDefs(), counts, id=> Math.max(1, (myCardLevels||{})[id]||0), leaderId ? [leaderId] : []);
@@ -20407,7 +20428,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <label>Castle<select id="seChar">${opt('', draft.characterId, 'Plain castle')}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, CHARACTER_DEFS[id].name)).join('')}</select></label>
-        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default (Open: no collapsing; player picks on elites)')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto (bosses never surrender)')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never surrenders (loop imps)')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
@@ -21586,6 +21607,27 @@ function nodeRewardTier(node){
 // card rewards as small real cards (a card back for a still-hidden one), then the currency
 // payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
 // (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
+// Reward card blow-up (2026-10-08, user: "make the mini-card blow-up more legible"): instead of
+// scaling the 46-px tile up (blurry, and its badges collide), hovering or focusing a reward card
+// shows a real full-size card face above it.
+function wireRewardZoom(root){
+  if(!root) return;
+  const show = el=>{
+    hide(); const d = getCardDefs()[el.dataset.zoom]; if(!d) return;
+    const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
+    z.innerHTML = cardTileHTML(d, {inPlay:true}); document.body.appendChild(z);
+    const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
+    const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
+    const top = r.top - zh - 10 >= 8 ? r.top - zh - 10 : Math.min(innerHeight - zh - 8, r.bottom + 10);
+    z.style.left = left + 'px'; z.style.top = top + 'px';
+    requestAnimationFrame(()=> z.classList.add('is-in'));
+  };
+  const hide = ()=> document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
+  root.querySelectorAll('[data-zoom]').forEach(el=>{
+    el.addEventListener('pointerenter', ()=> show(el)); el.addEventListener('pointerleave', hide);
+    el.addEventListener('focus', ()=> show(el)); el.addEventListener('blur', hide);
+  });
+}
 function cnpRewardStripHTML(mapId, node, done, rank){
   // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
   // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
@@ -21598,7 +21640,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const pay = tier ? tier.first : {gold:0, dust:0};
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -22240,12 +22282,18 @@ function renderConquestSubTab(body){
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
   if(!matchState) document.body.classList.add('conquest-full');
+  document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const wrapEl = document.getElementById('appWrap');
   // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
   // Allow for a full-screen button in conquest"): Conquest now sits in the same content column as
   // Arena; the ⛶ button gives the immersive full-screen map instead.
   if(wrapEl) wrapEl.classList.remove('wide-map');
+  // 2026-10-08 (user: "Clicking a skirmish shouldn't reset my y-scroll"): this re-renders the whole
+  // pane, so remember where the map pane (and the page) were scrolled and put them back after.
+  const prevMain = body.querySelector('.conquest-main');
+  const keepScroll = prevMain ? prevMain.scrollTop : null, keepPage = window.scrollY;
+  setTimeout(()=>{ const nm = body.querySelector('.conquest-main'); if(nm && keepScroll != null) nm.scrollTop = keepScroll; if(Math.abs(window.scrollY - keepPage) > 2) window.scrollTo(0, keepPage); }, 0);
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
   // itself (see attachDelayedTooltip's call in renderPlay). Just a bare heading here.
@@ -22504,7 +22552,7 @@ function renderConquestSubTab(body){
     panelEl.hidden = false;
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}${(()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); if(!ev) return ''; const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard'; return ` · <span class="cnp-lvl ${cls}">⚔ ${escapeHtml(_t('Deck Lv {n}', {n:ev}))}<small> · ${escapeHtml(_t('yours {n}', {n:mine}))}</small></span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
         ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
@@ -22518,6 +22566,7 @@ function renderConquestSubTab(body){
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
+    wireRewardZoom(panelEl);
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     const seBtn = document.getElementById('cnpEditSkirmish');

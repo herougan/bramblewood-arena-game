@@ -188,6 +188,8 @@ T = {
 'Refines your best copy (of {n}).': ['Affine votre meilleur exemplaire (sur {n}).','Veredelt dein bestes Exemplar (von {n}).','Refina tu mejor copia (de {n}).','Raffina la tua copia migliore (su {n}).','Refina a sua melhor cópia (de {n}).','Pinupino ang pinakamagandang kopya mo (sa {n}).','உங்கள் சிறந்த பிரதியை மெருகேற்றும் ({n} இல்).','Memurnikan salinan terbaikmu (dari {n}).','精炼你最好的一张(共 {n} 张)。','精煉你最好的一張(共 {n} 張)。','一番良い1枚を精錬します({n}枚中)。','가장 좋은 사본을 정제합니다({n}장 중).'],
 'Temper to Lv {n}': ['Tremper au niv. {n}','Härten auf Stufe {n}','Templar a nv. {n}','Tempra al liv. {n}','Temperar para nv. {n}','Patibayin sa Lv {n}','நிலை {n} க்கு வலுப்படுத்து','Tempa ke Lv {n}','锻造至 {n} 级','鍛造至 {n} 級','Lv{n}に鍛える','{n}레벨로 단련'],
 '{n}/{max} cards': ['{n}/{max} cartes','{n}/{max} Karten','{n}/{max} cartas','{n}/{max} carte','{n}/{max} cartas','{n}/{max} card','{n}/{max} அட்டைகள்','{n}/{max} kartu','{n}/{max} 张','{n}/{max} 張','{n}/{max}枚','{n}/{max}장'],
+'Deck Lv {n}': ['Deck niv. {n}','Deck-Stufe {n}','Mazo nv. {n}','Mazzo liv. {n}','Baralho nv. {n}','Deck Lv {n}','அடுக்கு நிலை {n}','Dek Lv {n}','卡组等级 {n}','牌組等級 {n}','デッキLv{n}','덱 레벨 {n}'],
+'yours {n}': ['le vôtre {n}','deins {n}','el tuyo {n}','il tuo {n}','o seu {n}','sa iyo {n}','உங்களுடையது {n}','punyamu {n}','你的 {n}','你的 {n}','あなた {n}','내 덱 {n}'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

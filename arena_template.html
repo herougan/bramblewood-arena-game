@@ -4921,7 +4921,8 @@
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
   .cnp-rw-card{position:relative; width:46px; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
   .cnp-rw-card .card-tile{width:100% !important; pointer-events:none;}
-  .cnp-rw-card:hover{transform:scale(2.6) translateY(-6px); z-index:20;}
+  .cnp-rw-card:hover, .cnp-rw-card:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
+  .cnp-rw-zoom{position:fixed; z-index:200; width:150px; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5;}
   .cnp-rw-card.is-got .card-tile, .cnp-rw-card.is-got .cnp-rw-back{filter:grayscale(1) brightness(.7);}
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
@@ -5208,6 +5209,19 @@
      are hidden; the board stays to look at. */
   body.match-ended #handStrip, body.match-ended .drop-row, body.match-ended #dropDiscard, body.match-ended #leaderWidgetWrap, body.match-ended .coach-tip{visibility:hidden !important; pointer-events:none !important;}
   .wl-reopen{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:80; display:flex; gap:8px;}
+  /* Conquest: less scrolling, sturdier glass (2026-10-08, user: "minimise the y-scrolling" and "the
+     translucent UI on the conquest page should have slightly higher opacity"). In full-window
+     Conquest the map title floats over the map and the skirmish panel floats above the mode dock,
+     so the map itself is one screen tall. */
+  body.conquest-full .conquest-main{padding-top:12px; padding-bottom:12px;}
+  body.conquest-full .conquest-main > .conquest-headline{position:absolute; top:16px; left:18px; z-index:7; margin:0; max-width:min(520px, 46%);}
+  body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 24px); margin-top:0;}
+  @media (min-width:821px){ body.conquest-full .conquest-main > .conquest-node-panel{position:absolute; left:18px; right:18px; bottom:16px; margin:0;} body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;} }
+  @media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline{position:static; max-width:none; margin-bottom:8px;} body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 220px);} }
+  .conquest-scrim{background:rgba(10,12,8,.62) !important; backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px);}
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{background:rgba(20,14,8,.84);}
+  .cnp-lvl{font-weight:800; padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.12);} .cnp-lvl small{font-weight:600; opacity:.8;}
+  .cnp-lvl.is-even{color:#b8f0a8;} .cnp-lvl.is-close{color:#ffe08a;} .cnp-lvl.is-hard{color:#ffab9a;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
