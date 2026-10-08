@@ -9846,20 +9846,25 @@ function nodeRewardTier(node){
 // card rewards as small real cards (a card back for a still-hidden one), then the currency
 // payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
 // (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
-function cnpRewardStripHTML(mapId, node, done){
+function cnpRewardStripHTML(mapId, node, done, rank){
+  // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
+  // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
+  // rank." + "Remove the non-dom-object tooltip"): always the first-clear haul, greyed with a tick
+  // once won; currencies stacked, then the cards (hover blows them up), then the best rank. No
+  // native title tooltips; names go in aria-labels.
   const defs = getCardDefs();
   const ids = nodeRewardCardIds(mapId, node.key);
   const tier = nodeRewardTier(node);
-  const pay = tier ? (done ? tier.repeat : tier.first) : {gold:0, dust:0};
+  const pay = tier ? tier.first : {gold:0, dust:0};
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" title="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" title="${escapeAttr(defs[id].name + (done ? ' — already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
   const cur = [];
-  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" title="Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
-  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" title="Magic Dust">✨ ${pay.dust}</span>`);
-  if(!cards && !cur.length) return '';
-  const label = done ? 'Clear again' : 'First clear';
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
+  const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
+  if(!cards && !cur.length && !rankHTML) return '';
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}">${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
 }
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
@@ -10760,8 +10765,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
-        ${cnpRewardStripHTML(map.id, selectedNode, done)}
-        ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
+        ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
         ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
       ${earned ? `
@@ -13620,7 +13624,7 @@ function leaveMatchResumable(){
 }
 function endMatch(opts){
   SoundKit.stopAll();
-  document.documentElement.classList.remove('bw-resolving');
+  document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
   hideCoachTip();
   if(!(opts && opts.keepResume)) clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
@@ -14088,6 +14092,7 @@ function renderMatchUI(){
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
   const showWinModal = m.over && !m.winModalDismissed;
+  try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
   const deckTotals = m.deckTotals || {1:p1.deck.length, 2:p2.deck.length};
   const holdingCard = m.selectedUid!=null;
   // 2026-09-26 (#4): from here on, "the top nav bar (of the battle mode)" is what this .hud div
@@ -14230,6 +14235,7 @@ function renderMatchUI(){
       </h2>
       <div class="battle-log" id="battleLog"></div>
     </div>
+    ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
       <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : ''}">
@@ -14391,6 +14397,7 @@ function renderMatchUI(){
       endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
+    const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); });
     const wlNext = document.getElementById('wlNextBattleBtn');
     if(wlNext) wlNext.addEventListener('click', ()=>{
       const nb = m.nextBattle; if(!nb) return;

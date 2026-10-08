@@ -4912,6 +4912,10 @@
   /* node panel reward strip (2026-10-08) */
   .conquest-node-panel .cnp-head{flex-wrap:wrap;}
   .cnp-rw{display:flex; align-items:center; gap:8px; margin-left:auto; padding:4px 8px 4px 10px; border-radius:12px; background:rgba(0,0,0,.22); border:1px solid rgba(255,220,150,.25);}
+  .cnp-rw-curs{display:flex; flex-direction:column; gap:3px; align-items:stretch;}
+  .cnp-rw-curs .cnp-rw-cur{justify-content:flex-start;}
+  .cnp-rw .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; transform:none; margin-left:4px; flex:0 0 auto;}
+  .cnp-rw.is-done .cnp-rw-curs{filter:grayscale(.6); opacity:.9;}
   .cnp-rw-k{font:800 10.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:#ffe2a6; writing-mode:horizontal-tb; max-width:56px; line-height:1.15; text-align:right;}
   .cnp-rw.is-done .cnp-rw-k{color:rgba(255,255,255,.65);}
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
@@ -4922,7 +4926,6 @@
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
   .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
-  .cnp-rw.is-done .cnp-rw-cur{opacity:.8; font-size:12.5px;}
   @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} .cnp-rw-card{width:38px;} }
   /* Win screen (2026-10-08): a glorious version for wins; corner 👀/✕; compact stats */
   .winloss-card{position:relative;}
@@ -4951,7 +4954,7 @@
     background:repeating-conic-gradient(from 0deg, rgba(255,215,120,.55) 0deg 6deg, transparent 6deg 18deg); -webkit-mask:radial-gradient(closest-side, #000 20%, transparent 72%); mask:radial-gradient(closest-side, #000 20%, transparent 72%); animation:wlRays 40s linear infinite;}
   @keyframes wlRays{to{rotate:360deg;}}
   .winloss-card.is-glory > *:not(.wl-rays){position:relative; z-index:1;}
-  .winloss-card.is-glory .wl-corner{position:absolute;}
+  .winloss-card.is-glory .wl-corner{position:absolute; z-index:5 !important;}
   .winloss-card.is-glory .wl-title{font:900 clamp(40px, 6vw, 64px)/1 'Baloo 2',system-ui,sans-serif !important; letter-spacing:.02em; background:linear-gradient(180deg, #fff6d6 10%, #ffd36b 55%, #e09a22); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 4px 0 #5a2d0c) drop-shadow(0 0 22px rgba(255,200,90,.45)); margin:0 0 6px !important;}
   .winloss-card.is-glory .pass-ico{font-size:44px !important;}
   .winloss-card.is-glory .rw-panel{background:rgba(255,255,255,.07) !important; border:1px solid rgba(255,220,150,.25) !important; color:#fbf1dc;}
@@ -5178,6 +5181,33 @@
   .splash-stage.is-still *{animation:none !important; transition:none !important;}
   .entrance.leaving .splash-stage{opacity:0; transition:opacity .8s ease-in;}
   @media (max-width:520px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
+  /* Results fit the screen (2026-10-08, user: "Try to make the reward window fit in the screen"):
+     everything scales with the window HEIGHT, the cards won sit beside the other rewards instead of
+     above them, and the rank + First Clear ride on one line under the title. */
+  .winloss-card.is-glory{padding-top:clamp(10px, 2.5vh, 24px) !important; padding-bottom:clamp(10px, 2.5vh, 22px) !important;}
+  .winloss-card.is-glory .pass-ico{font-size:clamp(22px, 4.5vh, 44px) !important;}
+  .winloss-card.is-glory .wl-title{font-size:clamp(30px, min(6vw, 8vh), 64px) !important; margin:0 0 2px !important;}
+  .winloss-card.is-glory .wl-glory{gap:14px; margin:2px 0 clamp(6px, 1.6vh, 14px);}
+  .winloss-card.is-glory .rank-hex.wl-rank{transform:scale(clamp(.9, calc(100vh / 760), 1.35));}
+  .winloss-card.is-glory .wl-firstclear{font-size:clamp(14px, 2.4vh, 22px); padding:5px 26px;}
+  .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{display:grid; grid-template-columns:auto minmax(0, 1fr); gap:clamp(6px, 1.4vh, 14px) 22px; align-items:start; padding:clamp(8px, 1.6vh, 16px); margin-bottom:clamp(6px, 1.4vh, 14px) !important;}
+  .winloss-card.is-glory .rw-panel > .rw-sec{grid-column:2; padding:0 !important; text-align:left;}
+  .winloss-card.is-glory .rw-panel > .rw-sec .rw-row, .winloss-card.is-glory .rw-panel > .rw-sec .rw-cards{justify-content:flex-start;}
+  .winloss-card.is-glory .rw-panel > .rw-unlocks{grid-column:1; grid-row:1 / span 8; text-align:center;}
+  .winloss-card.is-glory .rw-panel > .rw-unlocks .rw-cards{justify-content:center;}
+  .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(84px, 19vh, 160px) !important;}
+  .winloss-card.is-glory .rw-seen .card-tile, .winloss-card.is-glory .rw-seen .rw-card{width:clamp(60px, 11vh, 96px) !important; height:auto !important;}
+  .winloss-card.is-glory .rw-head{margin-bottom:4px !important;}
+  .winloss-card.is-glory .rw-to-deck{margin-top:6px;}
+  .winloss-card.is-glory .winloss-actions .btn.big{padding-top:clamp(8px, 1.5vh, 14px); padding-bottom:clamp(8px, 1.5vh, 14px);}
+  .winloss-card.is-glory .wls-compact{margin-top:4px;}
+  @media (max-width:560px){ .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{grid-template-columns:auto minmax(0,1fr); gap:8px 12px;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(76px, 24vw, 120px) !important;} .winloss-card.is-glory .wl-glory{gap:8px;} }
+  @media (max-height:720px){ .winloss-card.is-glory .pass-ico{display:none;} .winloss-card.is-glory .rank-hex.wl-rank{transform:scale(.8);} .winloss-card.is-glory .wl-glory{margin-top:0;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(80px, 17vh, 120px) !important;} }
+  /* After the fight (2026-10-08, user: "Upon winning, even if you view the board, the controls should
+     be gone. Remove skip turn."): once the match is over, the hand, the Graveyard drop and Pass turn
+     are hidden; the board stays to look at. */
+  body.match-ended #handStrip, body.match-ended .drop-row, body.match-ended #dropDiscard, body.match-ended #leaderWidgetWrap, body.match-ended .coach-tip{visibility:hidden !important; pointer-events:none !important;}
+  .wl-reopen{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:80; display:flex; gap:8px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}

@@ -128,11 +128,19 @@
     if(bg && bg.nextSibling) splash.insertBefore(stage, bg.nextSibling); else splash.prepend(stage);
   }
   // The show starts when the splash is actually seen: when the loading screen lifts (see runLoader).
+  // The scene is built only after the page has loaded, so it can never hold up the load itself.
+  let wantPlay = false;
   function play(){
+    wantPlay = true;
     const st = document.querySelector('#splashScreen .splash-stage');
     if(st && !st.classList.contains('is-still')) requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.add('is-playing')));
   }
-  function init(){ build(document.getElementById('splashScreen')); if(!document.getElementById('bwLoader')) play(); }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function init(){
+    const sp = document.getElementById('splashScreen');
+    if(!sp || sp.hidden) return;
+    build(sp);
+    if(wantPlay || !document.getElementById('bwLoader')) play();
+  }
+  if(document.readyState === 'complete') setTimeout(init, 0); else window.addEventListener('load', ()=> setTimeout(init, 0), {once:true});
   window.SplashStage = {build, play};
 })();

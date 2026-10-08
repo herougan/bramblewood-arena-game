@@ -4922,6 +4922,10 @@
   /* node panel reward strip (2026-10-08) */
   .conquest-node-panel .cnp-head{flex-wrap:wrap;}
   .cnp-rw{display:flex; align-items:center; gap:8px; margin-left:auto; padding:4px 8px 4px 10px; border-radius:12px; background:rgba(0,0,0,.22); border:1px solid rgba(255,220,150,.25);}
+  .cnp-rw-curs{display:flex; flex-direction:column; gap:3px; align-items:stretch;}
+  .cnp-rw-curs .cnp-rw-cur{justify-content:flex-start;}
+  .cnp-rw .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; transform:none; margin-left:4px; flex:0 0 auto;}
+  .cnp-rw.is-done .cnp-rw-curs{filter:grayscale(.6); opacity:.9;}
   .cnp-rw-k{font:800 10.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:#ffe2a6; writing-mode:horizontal-tb; max-width:56px; line-height:1.15; text-align:right;}
   .cnp-rw.is-done .cnp-rw-k{color:rgba(255,255,255,.65);}
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
@@ -4932,7 +4936,6 @@
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
   .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
-  .cnp-rw.is-done .cnp-rw-cur{opacity:.8; font-size:12.5px;}
   @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} .cnp-rw-card{width:38px;} }
   /* Win screen (2026-10-08): a glorious version for wins; corner 👀/✕; compact stats */
   .winloss-card{position:relative;}
@@ -4961,7 +4964,7 @@
     background:repeating-conic-gradient(from 0deg, rgba(255,215,120,.55) 0deg 6deg, transparent 6deg 18deg); -webkit-mask:radial-gradient(closest-side, #000 20%, transparent 72%); mask:radial-gradient(closest-side, #000 20%, transparent 72%); animation:wlRays 40s linear infinite;}
   @keyframes wlRays{to{rotate:360deg;}}
   .winloss-card.is-glory > *:not(.wl-rays){position:relative; z-index:1;}
-  .winloss-card.is-glory .wl-corner{position:absolute;}
+  .winloss-card.is-glory .wl-corner{position:absolute; z-index:5 !important;}
   .winloss-card.is-glory .wl-title{font:900 clamp(40px, 6vw, 64px)/1 'Baloo 2',system-ui,sans-serif !important; letter-spacing:.02em; background:linear-gradient(180deg, #fff6d6 10%, #ffd36b 55%, #e09a22); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 4px 0 #5a2d0c) drop-shadow(0 0 22px rgba(255,200,90,.45)); margin:0 0 6px !important;}
   .winloss-card.is-glory .pass-ico{font-size:44px !important;}
   .winloss-card.is-glory .rw-panel{background:rgba(255,255,255,.07) !important; border:1px solid rgba(255,220,150,.25) !important; color:#fbf1dc;}
@@ -5188,6 +5191,33 @@
   .splash-stage.is-still *{animation:none !important; transition:none !important;}
   .entrance.leaving .splash-stage{opacity:0; transition:opacity .8s ease-in;}
   @media (max-width:520px){ .ss-duel{gap:16vw;} .ss-spear{width:15vw;} }
+  /* Results fit the screen (2026-10-08, user: "Try to make the reward window fit in the screen"):
+     everything scales with the window HEIGHT, the cards won sit beside the other rewards instead of
+     above them, and the rank + First Clear ride on one line under the title. */
+  .winloss-card.is-glory{padding-top:clamp(10px, 2.5vh, 24px) !important; padding-bottom:clamp(10px, 2.5vh, 22px) !important;}
+  .winloss-card.is-glory .pass-ico{font-size:clamp(22px, 4.5vh, 44px) !important;}
+  .winloss-card.is-glory .wl-title{font-size:clamp(30px, min(6vw, 8vh), 64px) !important; margin:0 0 2px !important;}
+  .winloss-card.is-glory .wl-glory{gap:14px; margin:2px 0 clamp(6px, 1.6vh, 14px);}
+  .winloss-card.is-glory .rank-hex.wl-rank{transform:scale(clamp(.9, calc(100vh / 760), 1.35));}
+  .winloss-card.is-glory .wl-firstclear{font-size:clamp(14px, 2.4vh, 22px); padding:5px 26px;}
+  .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{display:grid; grid-template-columns:auto minmax(0, 1fr); gap:clamp(6px, 1.4vh, 14px) 22px; align-items:start; padding:clamp(8px, 1.6vh, 16px); margin-bottom:clamp(6px, 1.4vh, 14px) !important;}
+  .winloss-card.is-glory .rw-panel > .rw-sec{grid-column:2; padding:0 !important; text-align:left;}
+  .winloss-card.is-glory .rw-panel > .rw-sec .rw-row, .winloss-card.is-glory .rw-panel > .rw-sec .rw-cards{justify-content:flex-start;}
+  .winloss-card.is-glory .rw-panel > .rw-unlocks{grid-column:1; grid-row:1 / span 8; text-align:center;}
+  .winloss-card.is-glory .rw-panel > .rw-unlocks .rw-cards{justify-content:center;}
+  .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(84px, 19vh, 160px) !important;}
+  .winloss-card.is-glory .rw-seen .card-tile, .winloss-card.is-glory .rw-seen .rw-card{width:clamp(60px, 11vh, 96px) !important; height:auto !important;}
+  .winloss-card.is-glory .rw-head{margin-bottom:4px !important;}
+  .winloss-card.is-glory .rw-to-deck{margin-top:6px;}
+  .winloss-card.is-glory .winloss-actions .btn.big{padding-top:clamp(8px, 1.5vh, 14px); padding-bottom:clamp(8px, 1.5vh, 14px);}
+  .winloss-card.is-glory .wls-compact{margin-top:4px;}
+  @media (max-width:560px){ .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{grid-template-columns:auto minmax(0,1fr); gap:8px 12px;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(76px, 24vw, 120px) !important;} .winloss-card.is-glory .wl-glory{gap:8px;} }
+  @media (max-height:720px){ .winloss-card.is-glory .pass-ico{display:none;} .winloss-card.is-glory .rank-hex.wl-rank{transform:scale(.8);} .winloss-card.is-glory .wl-glory{margin-top:0;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(80px, 17vh, 120px) !important;} }
+  /* After the fight (2026-10-08, user: "Upon winning, even if you view the board, the controls should
+     be gone. Remove skip turn."): once the match is over, the hand, the Graveyard drop and Pass turn
+     are hidden; the board stays to look at. */
+  body.match-ended #handStrip, body.match-ended .drop-row, body.match-ended #dropDiscard, body.match-ended #leaderWidgetWrap, body.match-ended .coach-tip{visibility:hidden !important; pointer-events:none !important;}
+  .wl-reopen{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:80; display:flex; gap:8px;}
   .shiny-mark{position:absolute; top:6px; right:6px; z-index:8; font-size:16px; color:#fff; text-shadow:0 0 6px #ff7bd5, 0 0 12px #7bd5ff; pointer-events:none; animation:shinyTwinkle 1.8s ease-in-out infinite;}
   .card-tile.is-shiny .ico{filter:hue-rotate(var(--shiny-hue,180deg)) saturate(1.2) brightness(1.04);}
   .card-tile.is-shiny{box-shadow:0 0 10px 1px rgba(255,255,255,.4), 0 0 0 1.5px rgba(255,255,255,.55);}
@@ -11475,12 +11505,20 @@ root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shiel
     if(bg && bg.nextSibling) splash.insertBefore(stage, bg.nextSibling); else splash.prepend(stage);
   }
   // The show starts when the splash is actually seen: when the loading screen lifts (see runLoader).
+  // The scene is built only after the page has loaded, so it can never hold up the load itself.
+  let wantPlay = false;
   function play(){
+    wantPlay = true;
     const st = document.querySelector('#splashScreen .splash-stage');
     if(st && !st.classList.contains('is-still')) requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.add('is-playing')));
   }
-  function init(){ build(document.getElementById('splashScreen')); if(!document.getElementById('bwLoader')) play(); }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  function init(){
+    const sp = document.getElementById('splashScreen');
+    if(!sp || sp.hidden) return;
+    build(sp);
+    if(wantPlay || !document.getElementById('bwLoader')) play();
+  }
+  if(document.readyState === 'complete') setTimeout(init, 0); else window.addEventListener('load', ()=> setTimeout(init, 0), {once:true});
   window.SplashStage = {build, play};
 })();
 
@@ -21548,20 +21586,25 @@ function nodeRewardTier(node){
 // card rewards as small real cards (a card back for a still-hidden one), then the currency
 // payout. After a clear the cards stay, greyed with a tick, and the payout switches to the
 // (much smaller) clear-again amounts. Pure CSS hover-zoom, so nothing pops up or hides the panel.
-function cnpRewardStripHTML(mapId, node, done){
+function cnpRewardStripHTML(mapId, node, done, rank){
+  // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
+  // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
+  // rank." + "Remove the non-dom-object tooltip"): always the first-clear haul, greyed with a tick
+  // once won; currencies stacked, then the cards (hover blows them up), then the best rank. No
+  // native title tooltips; names go in aria-labels.
   const defs = getCardDefs();
   const ids = nodeRewardCardIds(mapId, node.key);
   const tier = nodeRewardTier(node);
-  const pay = tier ? (done ? tier.repeat : tier.first) : {gold:0, dust:0};
+  const pay = tier ? tier.first : {gold:0, dust:0};
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" title="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" title="${escapeAttr(defs[id].name + (done ? ' — already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
   const cur = [];
-  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" title="Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
-  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" title="Magic Dust">✨ ${pay.dust}</span>`);
-  if(!cards && !cur.length) return '';
-  const label = done ? 'Clear again' : 'First clear';
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${escapeAttr(label + ' rewards')}"><span class="cnp-rw-k">${label}</span><div class="cnp-rw-items">${cards}${cur.join('')}</div></div>`;
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
+  const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
+  if(!cards && !cur.length && !rankHTML) return '';
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}">${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
 }
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
@@ -22462,8 +22505,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · 🏰 ${selectedNode.hqHp} HP${ENERGY_COST[selectedNode.kind]?` · ${ENERGY_COST[selectedNode.kind]}⚡`:''}</div></div>
-        ${cnpRewardStripHTML(map.id, selectedNode, done)}
-        ${progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]}" title="Your best clear here: Rank ${progress.ranks[nid]}" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
+        ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
         ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       </div>
       ${earned ? `
@@ -25322,7 +25364,7 @@ function leaveMatchResumable(){
 }
 function endMatch(opts){
   SoundKit.stopAll();
-  document.documentElement.classList.remove('bw-resolving');
+  document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
   hideCoachTip();
   if(!(opts && opts.keepResume)) clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
@@ -25790,6 +25832,7 @@ function renderMatchUI(){
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
   const showWinModal = m.over && !m.winModalDismissed;
+  try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
   const deckTotals = m.deckTotals || {1:p1.deck.length, 2:p2.deck.length};
   const holdingCard = m.selectedUid!=null;
   // 2026-09-26 (#4): from here on, "the top nav bar (of the battle mode)" is what this .hud div
@@ -25932,6 +25975,7 @@ function renderMatchUI(){
       </h2>
       <div class="battle-log" id="battleLog"></div>
     </div>
+    ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
       <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : ''}">
@@ -26093,6 +26137,7 @@ function renderMatchUI(){
       endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
+    const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); });
     const wlNext = document.getElementById('wlNextBattleBtn');
     if(wlNext) wlNext.addEventListener('click', ()=>{
       const nb = m.nextBattle; if(!nb) return;
