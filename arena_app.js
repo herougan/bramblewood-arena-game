@@ -24739,7 +24739,54 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
     return;
   }
   renderEntranceAuth();
+  try{ dressEntrance(splash); }catch(e){}
 })();
+// Opening screen dressing (2026-10-09): letter-by-letter title, a floating fan of real cards that
+// swap every few seconds, and a drifting tip. Everything stops once the splash is gone.
+function dressEntrance(splash){
+  const title = document.getElementById('entranceLogoTitle');
+  if(title && !title.dataset.dressed){
+    title.dataset.dressed = '1';
+    const text = title.textContent;
+    title.setAttribute('aria-label', text);
+    title.innerHTML = [...text].map((ch, i)=> ch===' ' ? '<span class="tl sp" aria-hidden="true"> </span>' : `<span class="tl" aria-hidden="true" style="--i:${i}">${escapeHtml(ch)}</span>`).join('');
+    // once every letter has landed, fold the letters back into plain text so the gold sheen (a text-clipped
+    // gradient) can run across the whole word — transformed letters would each clip on their own.
+    setTimeout(()=>{ title.textContent = text; title.classList.add('is-wordmark'); }, 150 + text.length*45 + 650);
+  }
+  const fan = document.getElementById('entranceFan');
+  const defs = getCardDefs();
+  const withArt = id=> defs[id] && defs[id].art && !defs[id].token && !defs[id].test && !defs[id].hero;
+  const pool = Object.keys(defs).filter(withArt);
+  const rare = pool.filter(id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('rare'));
+  const pickFrom = (arr, not)=>{ const a = arr.filter(x=> !not.includes(x)); return a.length ? a[Math.floor(Math.random()*a.length)] : null; };
+  const SLOTS = [{r:'-12deg', x:'-128px', y:'26px', d:'0s'}, {r:'0deg', x:'0px', y:'-14px', d:'-1.8s'}, {r:'11deg', x:'128px', y:'28px', d:'-3.6s'}];
+  const ids = [withArt('otter-centurion') ? 'otter-centurion' : pickFrom(pool, []), null, withArt('dominion-nestguard') ? 'dominion-nestguard' : pickFrom(pool, [])];
+  ids[1] = pickFrom(rare.length ? rare : pool, ids);
+  const tile = id=> { const d = defs[id]; return cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''}); };
+  if(fan && ids.every(Boolean)){
+    fan.innerHTML = ids.map((id, k)=> `<div class="ef-card" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===1?3:1}">${tile(id)}</div>`).join('');
+    try{ decorateHolo(fan); }catch(e){}
+  }
+  const tipEl = document.getElementById('entranceTip');
+  const tips = (typeof GAME_TIPS!=='undefined' ? GAME_TIPS.slice() : []).sort(()=> Math.random()-.5);
+  let tipI = 0, swapK = 0;
+  const showTip = ()=>{ if(!tipEl || !tips.length) return; tipEl.classList.remove('on'); setTimeout(()=>{ const t = tips[tipI++ % tips.length]; tipEl.innerHTML = `<b>${escapeHtml(_t('Tip'))}</b>${escapeHtml(_t(typeof t==='string' ? t : (t && t.text) || ''))}`; tipEl.classList.add('on'); }, 600); };
+  setTimeout(showTip, 1800);
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const timer = setInterval(()=>{
+    if(splash.hidden || splash.classList.contains('leaving')){ clearInterval(timer); return; }
+    if(document.hidden) return;
+    showTip();
+    if(reduce || !fan) return;
+    // swap one side card for another (the centre stays the showpiece until its turn comes)
+    const k = [0, 2, 1][swapK++ % 3], el = fan.children[k]; if(!el) return;
+    const current = [...fan.querySelectorAll('.card-tile')].map(t=> t.getAttribute('data-defid'));
+    const next = pickFrom(k===1 && rare.length ? rare : pool, current); if(!next) return;
+    el.classList.add('is-swapping');
+    setTimeout(()=>{ el.innerHTML = tile(next); try{ decorateHolo(el); }catch(e){} el.classList.remove('is-swapping'); }, 520);
+  }, 7000);
+}
 
 /* ---- Settings panel: music/SFX/voice volume sliders (Task list item 7, 2026-09-18, "Creating
    a settings menu... the sounds setting should be moved there. There should be volume sliders

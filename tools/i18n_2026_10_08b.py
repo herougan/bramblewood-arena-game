@@ -223,6 +223,7 @@ T = {
 'Pick a promotion': ['Choisissez une promotion','Wähle eine Beförderung','Elige un ascenso','Scegli una promozione','Escolha uma promoção','Pumili ng promotion','ஒரு பதவி உயர்வைத் தேர்ந்தெடு','Pilih promosi','选择晋升方向','選擇晉升方向','昇格先を選ぶ','승급 대상을 고르세요'],
 '{rarity} at Level {n}': ['{rarity} au niveau {n}','{rarity} ab Stufe {n}','{rarity} en el nivel {n}','{rarity} al livello {n}','{rarity} no nível {n}','{rarity} sa Level {n}','நிலை {n}-இல் {rarity}','{rarity} di Level {n}','{n} 级成为{rarity}','{n} 級成為{rarity}','レベル{n}で{rarity}','레벨 {n}에 {rarity}'],
 'Top rarity': ['Rareté maximale','Höchste Seltenheit','Rareza máxima','Rarità massima','Raridade máxima','Pinakamataas na rarity','உச்ச அரிதுநிலை','Kelangkaan tertinggi','最高稀有度','最高稀有度','最高レア','최고 희귀도'],
+'Tip': ['Astuce','Tipp','Consejo','Suggerimento','Dica','Tip','குறிப்பு','Tips','提示','提示','ヒント','팁'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):
