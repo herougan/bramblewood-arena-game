@@ -146,7 +146,7 @@ async def main():
     # 2. bought cards reachable
     pg, errs = await fresh(b)
     await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; switchTab('shop'); 1"); await pg.wait_for_timeout(400)
-    await pg.click('[data-buypack="bronze"]'); await pg.wait_for_timeout(400); await pg.click('#poSkip'); await pg.wait_for_timeout(400)
+    await pg.click('[data-buypack="bronze"]:not([data-qty])'); await pg.wait_for_timeout(400); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(400)
     got = await pg.evaluate("[...document.querySelectorAll('.po-card .card-tile')].map(e=>e.dataset.defid)")
     await pg.click('#poNest'); await pg.wait_for_timeout(500)
     if await pg.evaluate("currentTab")!='nest': bad('pack: "See them in the Nest" did not open the Nest')
@@ -207,7 +207,7 @@ async def main():
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
         if await pg.evaluate("(()=>{ const p=document.getElementById('settingsPanelHud'); return !!p && !p.hidden; })()"): bad('match: settings does not close on Escape')
     await pg.evaluate("endMatch(); isSignedIn=()=>true; myCurrencies.gold=1000; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
-    await pg.click('[data-buypack="bronze"]'); await pg.wait_for_timeout(400)
+    await pg.click('[data-buypack="bronze"]:not([data-qty])'); await pg.wait_for_timeout(400)
     await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(300)
     if await pg.evaluate("(()=>{ const o=document.getElementById('packOpenOverlay'); return !!o && !o.hidden; })()"): bad('pack opening cannot be closed with Escape')
     if errs: bad(f'settings/pack: page errors {errs[:2]}')

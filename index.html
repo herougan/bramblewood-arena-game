@@ -4887,6 +4887,124 @@
   /* D16 "fit the viewport": the page's 60px bottom padding (room for floating buttons elsewhere) pushed the battle ~35px past an 860px screen */
   #appWrap.in-match{padding-bottom:12px;}
 
+  /* Pack opening v2 (2026-10-08) — openPackAnimation(): foil booster, tear strip, one-at-a-time
+     reveal with a fanned stack, rarity tease, NEW! moment. The "meta" look (plum spotlight, paw
+     prints) is deliberately apart from the rest of the game. */
+  .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
+  .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
+  .shop-bundle{min-width:46px; padding:4px 10px !important;}
+  .po2{position:fixed; inset:0; z-index:8000; display:flex; flex-direction:column; align-items:center; justify-content:safe center; gap:14px; padding:56px 16px 20px; overflow-y:auto; color:#fbeefe;
+    --paw:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='%23ffffff'%3E%3Cellipse cx='14' cy='18.5' rx='5.6' ry='4.6'/%3E%3Ccircle cx='7.4' cy='11.4' r='2.4'/%3E%3Ccircle cx='11.6' cy='7.6' r='2.4'/%3E%3Ccircle cx='16.4' cy='7.6' r='2.4'/%3E%3Ccircle cx='20.6' cy='11.4' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+    background:radial-gradient(ellipse 60% 55% at 50% 42%, rgba(120,70,150,.55), transparent 70%), linear-gradient(180deg, #1f1430, #120b1c) !important;}
+  .po2::before{content:''; position:fixed; inset:0; pointer-events:none; opacity:.05; background-image:var(--paw); background-size:56px 56px; transform:rotate(-12deg) scale(1.3);}
+  .po2.po2-flash::after{content:''; position:fixed; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 45%, rgba(255,240,200,.75), transparent 60%); animation:po2Flash .6s ease-out forwards;}
+  @keyframes po2Flash{from{opacity:1} to{opacity:0}}
+  .po2-top{position:fixed; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; gap:10px; padding:max(12px, env(safe-area-inset-top)) 16px 10px; z-index:5;}
+  .po2-count{font:800 14px 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; opacity:.85;}
+  .po2-top-actions{display:flex; gap:8px;}
+  .po2-glass{font:800 13px 'Nunito',system-ui,sans-serif; padding:7px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.12); color:#fff; cursor:pointer; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);}
+  .po2-glass:hover{background:rgba(255,255,255,.2);}
+  .po2-stage{position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%;}
+  .po2-hint{min-height:1.4em; font:700 14px 'Nunito',system-ui,sans-serif; opacity:.8; text-align:center;}
+  /* the pack */
+  .po2-pack{--pw:min(56vh * .64, 70vw, 300px); position:relative; width:var(--pw); aspect-ratio:.64; filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)); transition:transform .3s ease;}
+  .po2-pack.is-idle{animation:po2Float 3.2s ease-in-out infinite;}
+  .po2-pack.is-gripped{transform:scale(1.02);}
+  .po2-pack.is-nudge{animation:po2Nudge .45s ease;}
+  @keyframes po2Float{0%,100%{translate:0 0; rotate:-1.2deg} 50%{translate:0 -8px; rotate:1.2deg}}
+  @keyframes po2Nudge{0%,100%{rotate:0deg} 25%{rotate:-3deg} 60%{rotate:2.5deg}}
+  .po2-body, .po2-strip-face{background:
+      linear-gradient(115deg, #d8c3ff 0%, #ffc9e8 22%, #fff1b8 44%, #bff3ff 66%, #d9c5ff 88%, #ffd6ec 100%);}
+  .po2-body{position:absolute; left:0; right:0; top:12%; bottom:0; border-radius:4px 4px 8px 8px; overflow:hidden;}
+  .po2-foil{position:absolute; inset:0; pointer-events:none; mix-blend-mode:color-dodge; opacity:.5;
+    background:repeating-linear-gradient(115deg, hsl(0 95% 70%) 0%, hsl(50 95% 68%) 7%, hsl(140 85% 66%) 14%, hsl(200 95% 70%) 21%, hsl(270 90% 74%) 28%, hsl(330 95% 72%) 35%, hsl(360 95% 70%) 42%);
+    background-size:300% 300%; animation:po2Foil 5s linear infinite;}
+  @keyframes po2Foil{from{background-position:0% 30%} to{background-position:100% 70%}}
+  .po2-art{position:absolute; left:9%; right:9%; top:9%; height:56%; border-radius:10px; background:#2b1d3a center/cover no-repeat; image-rendering:pixelated; box-shadow:inset 0 0 0 3px rgba(255,255,255,.75), 0 4px 10px rgba(60,20,80,.35);}
+  .po2-label{position:absolute; left:6%; right:6%; bottom:9%; display:flex; flex-direction:column; align-items:center; gap:0; padding:8px 6px 7px; border-radius:12px; background:linear-gradient(180deg, #5a2d7a, #3a1a55); color:#fff; box-shadow:0 0 0 2px #ffd98a, 0 6px 14px rgba(40,10,60,.4); text-align:center;}
+  .po2-label .po2-ico{font-size:clamp(20px, 4vh, 30px); line-height:1; margin-top:-22px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+  .po2-label b{font:800 clamp(16px, 2.6vh, 21px) 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
+  .po2-label small{font:700 11px 'Nunito',system-ui,sans-serif; opacity:.8; letter-spacing:.05em; text-transform:uppercase;}
+  .po2-crimp{position:absolute; left:0; right:0; height:7%; background:repeating-linear-gradient(90deg, rgba(80,40,110,.22) 0 2px, transparent 2px 6px);}
+  .po2-crimp-b{bottom:0; -webkit-mask:conic-gradient(from 135deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% 100%/12px 100% repeat-x; mask:conic-gradient(from 135deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% 100%/12px 100% repeat-x;}
+  .po2-body{-webkit-mask:linear-gradient(#000 0 0) top/100% calc(100% - 6px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/12px 6px repeat-x; mask:linear-gradient(#000 0 0) top/100% calc(100% - 6px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/12px 6px repeat-x;}
+  .po2-liner{position:absolute; left:0; right:0; top:0; height:9%; background:#f2a3c4 var(--paw) 0 50%/22px 22px repeat-x; box-shadow:inset 0 8px 10px rgba(90,20,60,.45); opacity:0; transition:opacity .25s;}
+  .po2-pack.is-open .po2-liner{opacity:1;}
+  /* the tear strip */
+  .po2-strip{position:absolute; left:0; right:0; top:0; height:13%; padding:0; border:0; background:none; cursor:ew-resize; touch-action:none; --tear:0;}
+  .po2-strip:focus-visible{outline:3px solid #ffd98a; outline-offset:3px;}
+  .po2-strip-face{position:absolute; inset:0; display:block; transform-origin:100% 100%; transform:rotate(calc(var(--tear) * -9deg)) translateY(calc(var(--tear) * -8px));
+    -webkit-mask:linear-gradient(#000 0 0) bottom/100% calc(100% - 6px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 6px repeat-x; mask:linear-gradient(#000 0 0) bottom/100% calc(100% - 6px) no-repeat, conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/12px 6px repeat-x;}
+  .po2-strip-face .po2-crimp{top:6px; height:calc(100% - 10px);}
+  .po2-strip-face::after{content:''; position:absolute; left:3%; right:3%; bottom:3px; border-bottom:3px dashed rgba(90,40,120,.7);}
+  .po2-strip::after{content:'✂'; position:absolute; left:-10px; bottom:-8px; font-size:24px; color:#3a1a55; text-shadow:0 0 3px #fff, 0 0 6px #fff; animation:po2Snip 1.4s ease-in-out infinite; pointer-events:none;}
+  .po2-strip.is-gone::after, .po2-strip.is-tearing::after{display:none;}
+  @keyframes po2Snip{0%,100%{translate:0 0} 50%{translate:14px 0}}
+  .po2-rip{position:absolute; left:0; bottom:0; height:8px; width:calc(var(--tear) * 100%); background:linear-gradient(180deg, #2a1240, #5a2d7a); clip-path:polygon(0 30%, 4% 0, 8% 60%, 12% 10%, 16% 70%, 20% 0, 24% 60%, 28% 20%, 32% 80%, 36% 10%, 40% 70%, 44% 0, 48% 60%, 52% 20%, 56% 80%, 60% 10%, 64% 60%, 68% 0, 72% 70%, 76% 20%, 80% 80%, 84% 0, 88% 60%, 92% 10%, 96% 70%, 100% 30%, 100% 100%, 0 100%); filter:drop-shadow(0 -1px 0 #fff);}
+  .po2-strip.is-gone{pointer-events:none;} .po2-strip.is-gone .po2-strip-face{animation:po2StripOff .7s cubic-bezier(.3,.6,.4,1) forwards;}
+  @keyframes po2StripOff{to{transform:translate(42%, -160%) rotate(-28deg); opacity:0;}}
+  .po2-pack.is-open.leak-blue{filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 -10px 26px rgba(80,160,255,.85));}
+  .po2-pack.is-open.leak-violet{filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 -10px 28px rgba(190,100,255,.9));}
+  .po2-pack.is-open.leak-gold{filter:drop-shadow(0 22px 26px rgba(0,0,0,.55)) drop-shadow(0 -12px 34px rgba(255,205,90,.95));}
+  .po2-pack::before{content:''; position:absolute; left:14%; right:14%; top:14%; aspect-ratio:4/5; border-radius:8px; z-index:-1; background:repeating-linear-gradient(45deg, rgba(0,0,0,.12) 0 6px, transparent 6px 13px), #2f5b3a; box-shadow:inset 0 0 0 3px #d7b46a; transition:transform .6s cubic-bezier(.2,.8,.3,1);}
+  .po2-pack.is-rising::before{transform:translateY(-62%);}
+  .po2-pack.is-rising{animation:po2Sink .65s ease-in .25s forwards;}
+  @keyframes po2Sink{to{translate:0 40vh; opacity:0;}}
+  /* the reveal */
+  .po2-deck{--cw:min(58vh * .8, 80vw, 360px); position:relative; width:var(--cw); aspect-ratio:4/5; margin-right:calc(var(--cw) * .1);}
+  .po2-card{position:absolute; inset:0; padding:0; border:0; background:none; cursor:pointer; perspective:1300px; --k:0;
+    transform:translate(calc(var(--k) * 16px), calc(var(--k) * -9px)) rotate(calc(var(--k) * 3.5deg)) scale(calc(1 - var(--k) * .035));
+    transition:transform .5s cubic-bezier(.2,.8,.3,1), opacity .4s ease, filter .4s ease; animation:po2DealIn .5s cubic-bezier(.2,.9,.3,1.15) both; animation-delay:calc(var(--k) * 70ms);}
+  @keyframes po2DealIn{from{translate:0 40vh; opacity:0}}
+  .po2-card.is-waiting{filter:brightness(.62);}
+  .po2-card.is-collected{transform:translateY(46vh) scale(.18); opacity:0; pointer-events:none;}
+  .po2-card:focus-visible{outline:none;} .po2-card:focus-visible .po2-flip{outline:3px solid #ffd98a; outline-offset:4px; border-radius:7%;}
+  .po2-flip{position:absolute; inset:0; transform-style:preserve-3d; transition:transform .65s cubic-bezier(.3,.7,.25,1.05);}
+  .po2-card.is-revealed .po2-flip{transform:rotateY(180deg);}
+  .po2-back, .po2-front{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:6%;}
+  .po2-back{display:flex; align-items:center; justify-content:center; overflow:hidden;
+    background:repeating-linear-gradient(45deg, rgba(0,0,0,.13) 0 8px, transparent 8px 17px), radial-gradient(circle at 50% 44%, rgba(255,215,120,.35), transparent 60%), #2f5b3a;
+    border:4px solid #d7b46a; box-shadow:inset 0 0 0 7px #2f5b3a, inset 0 0 0 9px rgba(215,180,106,.7), 0 14px 26px rgba(0,0,0,.5);}
+  .po2-back-crest{font-size:calc(var(--cw) * .3); filter:drop-shadow(0 3px 2px rgba(0,0,0,.45));}
+  .po2-front{transform:rotateY(180deg);}
+  .po2-front .card-tile{width:100% !important; height:100% !important; margin:0 !important; transform:none !important; animation:none !important; box-sizing:border-box;}
+  .po2-card.is-revealed .po2-front{box-shadow:0 0 0 2px var(--rarity-a), 0 0 30px var(--rarity-b), 0 16px 28px rgba(0,0,0,.5);}
+  /* rarity tease on the face-down current card */
+  .po2-card.is-current.tease-rare:not(.is-revealed) .po2-back{animation:po2Tease 1.1s ease-in-out infinite alternate; --tc:rgba(80,160,255,.95);}
+  .po2-card.is-current.tease-epic:not(.is-revealed) .po2-back{animation:po2Tease .9s ease-in-out infinite alternate; --tc:rgba(190,100,255,.95);}
+  .po2-card.is-current.tease-legend:not(.is-revealed) .po2-back{animation:po2Tease .7s ease-in-out infinite alternate, po2Rattle 1.4s ease-in-out infinite; --tc:rgba(255,205,90,1);}
+  @keyframes po2Tease{from{box-shadow:inset 0 0 0 7px #2f5b3a, inset 0 0 0 9px rgba(215,180,106,.7), 0 0 14px 2px var(--tc);} to{box-shadow:inset 0 0 0 7px #2f5b3a, inset 0 0 0 9px rgba(215,180,106,.7), 0 0 44px 12px var(--tc);}}
+  @keyframes po2Rattle{0%,70%,100%{rotate:0deg} 75%{rotate:-1.6deg} 82%{rotate:1.4deg} 90%{rotate:-.8deg}}
+  .po2-sparks{position:absolute; inset:-6%; pointer-events:none; z-index:3;}
+  .po2-card.is-revealed .po2-sparks, .po2-card:not(.is-current) .po2-sparks{display:none;}
+  .po2-sparks i{position:absolute; width:6px; height:6px; border-radius:50%; background:#ffe9a8; box-shadow:0 0 8px 2px #ffd25e; animation:po2Spark 1.6s ease-out infinite;}
+  .po2-sparks i:nth-child(1){left:8%; top:20%;} .po2-sparks i:nth-child(2){left:90%; top:30%; animation-delay:.3s;} .po2-sparks i:nth-child(3){left:20%; top:88%; animation-delay:.6s;}
+  .po2-sparks i:nth-child(4){left:82%; top:80%; animation-delay:.9s;} .po2-sparks i:nth-child(5){left:50%; top:2%; animation-delay:1.1s;} .po2-sparks i:nth-child(6){left:2%; top:55%; animation-delay:1.3s;}
+  @keyframes po2Spark{0%{transform:scale(.2); opacity:0} 30%{opacity:1} 100%{transform:translateY(-26px) scale(1.2); opacity:0}}
+  /* the NEW! moment */
+  .po2-new{position:absolute; left:50%; top:-4%; z-index:7; pointer-events:none; opacity:0; transform:translate(-50%, 0) rotate(-10deg) scale(3);}
+  .po2-new b{display:block; font:900 calc(var(--cw) * .17) 'Baloo 2',system-ui,sans-serif; letter-spacing:.02em; color:#fff6c9; padding:0 .25em; border-radius:.2em;
+    background:linear-gradient(135deg, #ff5d73, #ff9f43 45%, #ffd75e); -webkit-text-stroke:2px #7a1530; text-shadow:0 4px 0 #7a1530, 0 0 26px rgba(255,215,94,.9); box-shadow:0 8px 22px rgba(0,0,0,.45);}
+  .po2-card.is-new-moment .po2-new{animation:po2Stamp .55s cubic-bezier(.2,1.4,.4,1) forwards;}
+  .po2-card.is-new-moment .po2-front{animation:poGlow 1.6s ease-in-out infinite alternate;}
+  @keyframes po2Stamp{to{opacity:1; transform:translate(-50%, 0) rotate(-10deg) scale(1);}}
+  .po2-got{display:flex; gap:6px; justify-content:center; min-height:58px;}
+  .po2-mini{width:46px; animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1);} .po2-mini .card-tile{width:100% !important; pointer-events:none;}
+  @keyframes po2Pop{from{transform:scale(.3); opacity:0}}
+  /* summaries */
+  .po2-summary{gap:18px;}
+  .po2-sum-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:min(980px, 100%);}
+  .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:default !important;}
+  .po2-sum-grid.is-dense{gap:10px;} .po2-sum-grid.is-dense .po2-sum-card{width:clamp(78px, 14vw, 116px) !important;}
+  .po2-sum-card .card-tile{width:100%;}
+  .po2-sum-card.is-new .card-tile{box-shadow:0 0 0 3px #ffd75e, 0 0 24px 4px rgba(255,215,94,.6);}
+  .po2-new-tag{position:absolute; top:-8px; left:50%; translate:-50% 0; z-index:7; font:900 12px 'Baloo 2',system-ui,sans-serif; padding:1px 9px; border-radius:999px; color:#fff; background:linear-gradient(135deg, #ff5d73, #ff9f43); box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .po2-x{position:absolute; right:-6px; bottom:-6px; z-index:7; font:900 13px 'Baloo 2',system-ui,sans-serif; padding:1px 8px; border-radius:999px; color:#2b1d10; background:#fff1c9; box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .po2 .pack-open-foot p{color:#fbeefe;}
+  @media (prefers-reduced-motion:reduce){
+    .po2-pack.is-idle, .po2 .po2-foil, .po2-card, .po2-card .po2-back, .po2-sparks i{animation:none !important;}
+    .po2-flip, .po2-card{transition-duration:.01s !important;}
+  }
   /* Card inspector (2026-10-08) — openCardInspector(): the card large, turning about a tilted axis */
   .card-detail-card .card-pop-visual{flex-direction:column; align-items:center; gap:8px;}
   .card-detail-card .card-pop-visual-tile{pointer-events:auto;}
@@ -10746,7 +10864,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=3f2203918c", "es": "assets/lang/es.js?v=55c1046764", "fr": "assets/lang/fr.js?v=0ef048e8cc", "id": "assets/lang/id.js?v=d805d1411e", "it": "assets/lang/it.js?v=0d86c72c44", "ja": "assets/lang/ja.js?v=709e913979", "ko": "assets/lang/ko.js?v=3152dd9dc0", "pt": "assets/lang/pt.js?v=64539cbbd6", "ta": "assets/lang/ta.js?v=0bf15ede17", "tl": "assets/lang/tl.js?v=d1694bda26", "zh-Hans": "assets/lang/zh-Hans.js?v=18d20ad13a", "zh-Hant": "assets/lang/zh-Hant.js?v=3b7fbb54fc"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=8a5546b18b", "es": "assets/lang/es.js?v=5146ecd929", "fr": "assets/lang/fr.js?v=dfd397055d", "id": "assets/lang/id.js?v=8faadf4b9a", "it": "assets/lang/it.js?v=1e8ec80c1c", "ja": "assets/lang/ja.js?v=d087b2824c", "ko": "assets/lang/ko.js?v=1fc6d87843", "pt": "assets/lang/pt.js?v=d91bc920af", "ta": "assets/lang/ta.js?v=c96fba91eb", "tl": "assets/lang/tl.js?v=30292d836c", "zh-Hans": "assets/lang/zh-Hans.js?v=1f60a175c7", "zh-Hant": "assets/lang/zh-Hant.js?v=9c3c0ee901"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -32266,7 +32384,7 @@ function shopCurrencyRowInnerHTML(){
 function refreshShopAfford(){
   document.querySelectorAll('#shopPackGrid [data-buypack]').forEach(btn=>{
     const pack = getShopPacks().find(p=>p.id===btn.getAttribute('data-buypack'));
-    btn.disabled = !canAffordPack(pack);
+    btn.disabled = !canAffordPacks(pack, +(btn.dataset.qty||1));
   });
   const row = document.getElementById('shopCurrencyRow');
   if(row) row.innerHTML = shopCurrencyRowInnerHTML();
@@ -32322,9 +32440,10 @@ function renderShop(){
       <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}<br>✨ ${p.dust} Dust${p.metal?` · 🔩 ${p.metal} Metal`:''}</div>
       <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
       ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
+      ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs — ${(p.cost.gold||0)*q} Maple Leaves${p.cost.gems?` + ${p.cost.gems*q} Gold Leaves`:''}. Sets let you skip or open them all at once.">×${q}</button>`).join('')}</div>` : ''}
     </div>`).join('');
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
-  grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn))));
+  grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn, +(btn.dataset.qty||1)))));
 }
 // The Nest (2026-09-27, item 10, per explicit request: "now we need to build the Nest or Repo —
 // containing cards you OWN. Each card is fungible... I think individual for now"). v1 scope: a
@@ -32464,89 +32583,260 @@ function rollPackCards(pack){
   while(out.length < (pack.cards||3)) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
 }
-function buyPack(packId, btnEl){
-  const pack = getShopPacks().find(p=>p.id===packId);
-  if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPack(pack)){ if(btnEl) denyShake(btnEl); return; }
+// Pack opening v2 (2026-10-08, agreed with the user):
+//  - the pack is a foil booster wrapper with faction art on the front and, once torn, a cute
+//    paw-print liner inside — a deliberately "meta" look, apart from the rest of the game;
+//  - you tear it by dragging (or swiping) across the crimped top strip;
+//  - cards come out one at a time, large and centred, with the rest fanned just behind it so you
+//    can see how many are left; tap/click it, swipe across it, or just sweep the mouse across it
+//    (no button held) to turn it over;
+//  - a face-down card teases its rarity (blue / violet / gold glow, sparks for Legendary+) and a
+//    card you've never had gets a big NEW! moment;
+//  - Skip / Open all exist only when you bought a set of packs (10, 25, 50 or 100).
+// Escape still works as a way out for keyboard users: it jumps to the pack's summary, then closes.
+const PACK_BUNDLES = [10, 25, 50, 100];
+function packCoverArt(pack){
+  // The wrapper's art: the pool's headline card (highest rarity with art), fixed per pack so the
+  // wrapper never hints at what's inside this particular pack.
+  const defs = getCardDefs();
+  const withArt = packCardPool(defs).filter(id=> defs[id].art);
+  if(!withArt.length) return '';
+  withArt.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b));
+  return defs[withArt[0]].art;
+}
+function purchasePackOnce(pack){
   const pulls = rollPackCards(pack);
-  if(!pulls.length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
+  if(!pulls.length) return null;
   myCurrencies.gold -= (pack.cost.gold||0);
   myCurrencies.gems -= (pack.cost.gems||0);
   grantCurrency('dust', pack.dust);
   if(pack.metal) grantCurrency('metal', pack.metal);
-  saveCurrencies();
   const results = pulls.map(id=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; unlockCardForPlayer(id, 'shopPack'); return {id, isNew: wasNew}; });
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
     const defs = getCardDefs();
     const candidates = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && getCardLevel(id)<10);
-    if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; saveCardLevels(); }
+    if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; }
   }
-  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
-  refreshShopAfford();
-  openPackAnimation(pack, results, {leveledId});
+  return {results, leveledId};
 }
-// Pack opening (2026-10-03, D2): the pack shakes, bursts open, the cards fan out face-down, then flip
-// one by one (tap any card to flip it now, "Reveal all" to skip). New cards get a ribbon and a
-// brighter rarity glow; a summary line lists the Dust/Metal and any free level-up.
-function openPackAnimation(pack, results, extra){
-  let overlay = document.getElementById('packOpenOverlay');
-  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'packOpenOverlay'; overlay.className = 'modal-overlay pack-open-overlay'; document.body.appendChild(overlay); }
+function canAffordPacks(pack, qty){ return (myCurrencies.gold||0) >= (pack.cost.gold||0)*qty && (myCurrencies.gems||0) >= (pack.cost.gems||0)*qty; }
+function buyPack(packId, btnEl, qty){
+  qty = Math.max(1, qty|0 || 1);
+  const pack = getShopPacks().find(p=>p.id===packId);
+  if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
+  if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
+  const opened = [];
+  for(let i=0; i<qty; i++){ const o = purchasePackOnce(pack); if(!o) break; opened.push(o); }
+  saveCurrencies();
+  if(opened.some(o=> o.leveledId)) saveCardLevels();
+  try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
+  refreshShopAfford();
+  openPackAnimation(pack, opened, {bundle: qty > 1 ? qty : 0});
+}
+function openPackAnimation(pack, opened, opts){
+  opts = opts || {};
+  // Back-compat: (pack, results[], {leveledId}) from older callers.
+  if(Array.isArray(opened) && opened.length && opened[0] && opened[0].id !== undefined) opened = [{results: opened, leveledId: opts.leveledId || null}];
   const defs = getCardDefs();
-  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const bits = [`✨ +${pack.dust} Dust`]; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`);
-  if(extra.leveledId && defs[extra.leveledId]) bits.push(`⭐ ${escapeHtml(defs[extra.leveledId].name)} reached Lv ${getCardLevel(extra.leveledId)}`);
-  const newCount = results.filter(r=> r.isNew).length;
-  // Pack reveal build-up (2026-10-05, effects rec. A5): light leaks from the pack's seams before it
-  // bursts, coloured by the best card inside (blue for Rare, violet for Epic, gold for Legendary+),
-  // and each Rare+ card holds its breath (a glow and a rising shimmer) before it flips.
+  const reduce = reducedMotion();
+  const bundle = !!opts.bundle;
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
-  const bestTier = Math.max(...results.map(r=> tierOf(r.id)));
-  const leak = bestTier >= 11 ? 'leak-gold' : bestTier >= 7 ? 'leak-violet' : bestTier >= 4 ? 'leak-blue' : '';
-  overlay.innerHTML = `<div class="pack-open-stage" role="dialog" aria-label="Opening ${escapeAttr(pack.name)}">
-    <div class="pack-open-pack ${leak}" id="poPack"><span class="po-ico">${pack.icon}</span><span class="po-name">${escapeHtml(pack.name)}</span></div>
-    <div class="pack-open-cards" id="poCards">${results.map((r,i)=> { const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
-      return `<button type="button" class="po-card ${r.isNew?'is-new':''} ${tierOf(r.id) >= 4 ? 'is-rare' : ''} ${tierOf(r.id) >= 11 ? 'is-legend' : ''}" data-po="${i}" style="--i:${i}; --n:${results.length}; --rarity-a:${rA}; --rarity-b:${rB}" aria-label="Flip card ${i+1}">
-        <span class="po-inner"><span class="po-back">🌰</span><span class="po-front">${cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''})}${r.isNew ? '<span class="po-new">NEW</span>' : ''}</span></span></button>`; }).join('')}</div>
-    <div class="pack-open-foot" id="poFoot" hidden><p>${newCount ? `<b>${newCount} new card${newCount===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>
-      <div class="po-actions"><button type="button" class="btn" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button></div></div>
-    <button type="button" class="btn ghost po-skip" id="poSkip">Reveal all</button>
-  </div>`;
+  const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
+  let overlay = document.getElementById('packOpenOverlay');
+  if(!overlay){ overlay = document.createElement('div'); overlay.id = 'packOpenOverlay'; document.body.appendChild(overlay); }
+  overlay.className = 'pack-open-overlay po2';
+  overlay.setAttribute('role','dialog'); overlay.setAttribute('aria-modal','true'); overlay.setAttribute('aria-label', 'Opening ' + pack.name);
   overlay.hidden = false;
-  const cards = [...overlay.querySelectorAll('.po-card')];
-  let flipped = 0, timers = [];
-  let onKey = null;
-  const close = ()=>{ timers.forEach(clearTimeout); if(onKey) document.removeEventListener('keydown', onKey); overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='shop') renderShop(); };
-  const finish = ()=>{ const f = overlay.querySelector('#poFoot'); if(f) f.hidden = false; const sk = overlay.querySelector('#poSkip'); if(sk) sk.hidden = true; };
-  const flip = (el, now)=>{
-    if(!el || el.classList.contains('is-flipped') || el.classList.contains('is-charging')) return;
-    if(!now && !reduce && el.classList.contains('is-rare')){
-      el.classList.add('is-charging');
-      try{ SoundKit.rareRise(el.classList.contains('is-legend')); }catch(e){}
-      timers.push(setTimeout(()=>{ el.classList.remove('is-charging'); flip(el, true); }, el.classList.contains('is-legend') ? 750 : 480));
-      return;
-    }
-    el.classList.add('is-flipped'); flipped++;
-    const isNew = el.classList.contains('is-new');
-    try{ isNew ? SoundKit.unlock() : SoundKit.draw(); }catch(e){}
-    if(isNew && !reduce){ try{ emojiBurstVfx.burst(el, {emojis:['✨','🌟','🔓'], count:12}); }catch(e){} }
-    if(flipped >= cards.length) finish();
+  const art = packCoverArt(pack);
+  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null, cleanup = [];
+  const later = (fn, ms)=> timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms));
+  const clearTimers = ()=>{ timers.forEach(clearTimeout); timers = []; };
+  const sfx = (name, ...a)=>{ try{ SoundKit[name] && SoundKit[name](...a); }catch(e){} };
+  const burst = (el, emojis, count)=>{ if(reduce) return; try{ emojiBurstVfx.burst(el, {emojis, count}); }catch(e){} };
+  const close = ()=>{
+    clearTimers(); cleanup.forEach(f=> f()); cleanup = [];
+    if(onKey) document.removeEventListener('keydown', onKey, true);
+    overlay.hidden = true; overlay.innerHTML = '';
+    if(currentTab==='shop') renderShop();
   };
-  cards.forEach(el=> el.addEventListener('click', ()=> flip(el)));
-  overlay.querySelector('#poSkip').onclick = ()=>{ timers.forEach(clearTimeout); cards.forEach(c=>{ c.classList.remove('is-charging'); flip(c, true); }); };
-  overlay.querySelector('#poDone').onclick = close;
-  overlay.querySelector('#poNest').onclick = ()=>{ close(); switchTab('nest'); };
-  overlay.onclick = e=>{ if(e.target===overlay && flipped >= cards.length) close(); };
-  // Flow audit 2026-10-03: Escape first reveals everything, a second Escape closes.
-  onKey = e=>{ if(e.key!=='Escape' || overlay.hidden) return; e.preventDefault(); if(flipped < cards.length){ timers.forEach(clearTimeout); cards.forEach(c=>{ c.classList.remove('is-charging'); flip(c, true); }); } else close(); };
-  document.addEventListener('keydown', onKey);
-  // timeline: shake → burst → fan out → auto-flip one by one
-  const pk = overlay.querySelector('#poPack');
-  const T = reduce ? [0, 0, 0, 120] : [0, 700, 1050, 1500];
-  try{ SoundKit.pickup(); }catch(e){}
-  timers.push(setTimeout(()=> pk.classList.add('is-shaking'), T[0]));
-  timers.push(setTimeout(()=>{ pk.classList.add('is-burst'); try{ SoundKit.gold(); }catch(e){} if(!reduce){ try{ emojiBurstVfx.burst(pk, {emojis:[pack.icon,'✨','🍂'], count:20}); }catch(e){} } }, T[1]));
-  timers.push(setTimeout(()=> overlay.querySelector('#poCards').classList.add('is-out'), T[2]));
-  cards.forEach((el,i)=> timers.push(setTimeout(()=> flip(el), T[3] + i*(reduce ? 60 : 420))));
+  const topBar = ()=> `<div class="po2-top">
+      <span class="po2-count">${bundle ? `Pack ${packIdx+1} of ${opened.length}` : escapeHtml(pack.name)}</span>
+      ${bundle && phase!=='all' ? `<span class="po2-top-actions">${phase==='reveal' || phase==='pack' ? '<button type="button" class="po2-glass" id="poSkip">Skip</button>' : ''}<button type="button" class="po2-glass" id="poOpenAll">Open all</button></span>` : ''}
+    </div>`;
+  const wireTop = ()=>{
+    const sk = overlay.querySelector('#poSkip'); if(sk) sk.onclick = ()=>{ clearTimers(); showSummary(); };
+    const oa = overlay.querySelector('#poOpenAll'); if(oa) oa.onclick = ()=>{ clearTimers(); showAll(); };
+  };
+  // ---- 1. the pack ----
+  const showPack = ()=>{
+    phase = 'pack'; cur = 0;
+    const o = opened[packIdx];
+    const best = Math.max(...o.results.map(r=> tierOf(r.id)));
+    const leak = best >= 11 ? 'leak-gold' : best >= 7 ? 'leak-violet' : best >= 4 ? 'leak-blue' : '';
+    overlay.innerHTML = topBar() + `<div class="po2-stage">
+      <div class="po2-pack ${leak}" id="poPack">
+        <div class="po2-body">
+          <div class="po2-liner" aria-hidden="true"></div>
+          <div class="po2-art" style="${art ? `background-image:url('${escapeAttr(art)}')` : ''}"></div>
+          <span class="po2-foil" aria-hidden="true"></span>
+          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards · Pack 1</small></div>
+          <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
+        </div>
+        <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
+          <span class="po2-strip-face"><span class="po2-crimp" aria-hidden="true"></span><span class="po2-rip" aria-hidden="true"></span></span>
+        </button>
+      </div>
+    </div>
+    <div class="po2-hint" id="poHint" aria-live="polite">Drag across the top to tear it open</div>`;
+    wireTop();
+    const pk = overlay.querySelector('#poPack'), strip = overlay.querySelector('#poStrip'), hint = overlay.querySelector('#poHint');
+    sfx('pickup');
+    let startX = null, prog = 0, lastStep = 0, torn = false;
+    const setProg = p=>{ prog = Math.max(prog, Math.min(1, p)); strip.style.setProperty('--tear', prog.toFixed(3)); strip.classList.add('is-tearing'); if(prog - lastStep > 0.22){ lastStep = prog; sfx('pageTurn'); } };
+    const tear = ()=>{
+      if(torn) return; torn = true; setProg(1);
+      strip.classList.add('is-gone'); pk.classList.add('is-open'); hint.textContent = '';
+      sfx('swipeTone'); sfx('gold'); burst(pk, [pack.icon, '✨', '🐾'], 16);
+      later(()=> pk.classList.add('is-rising'), 450);
+      later(()=> showReveal(), 1100);
+    };
+    strip.addEventListener('pointerdown', e=>{ startX = e.clientX; try{ strip.setPointerCapture(e.pointerId); }catch(_){} pk.classList.add('is-gripped'); });
+    strip.addEventListener('pointermove', e=>{
+      if(startX === null || torn) return;
+      const w = strip.getBoundingClientRect().width || 200;
+      setProg(Math.abs(e.clientX - startX) / (w*0.8));
+      if(prog >= 0.85) tear();
+    });
+    const release = ()=>{ if(startX === null) return; startX = null; pk.classList.remove('is-gripped'); if(!torn && prog < 0.85){ hint.textContent = 'Keep dragging all the way across'; pk.classList.add('is-nudge'); later(()=> pk.classList.remove('is-nudge'), 500); } };
+    strip.addEventListener('pointerup', release); strip.addEventListener('pointercancel', release);
+    strip.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); tear(); } });
+    if(!reduce){ later(()=> pk.classList.add('is-idle'), 300); }
+    strip.focus({preventScroll:true});
+  };
+  // ---- 2. one card at a time ----
+  const cardsHTML = o=> o.results.map((r, i)=>{
+    const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
+    return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
+      <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
+      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(d) : ''})}</span></span>
+      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+    </button>`; }).join('');
+  const showReveal = ()=>{
+    phase = 'reveal'; cur = 0;
+    const o = opened[packIdx];
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div></div>
+      <div class="po2-got" id="poGot" aria-label="Cards so far"></div>
+      <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
+    wireTop();
+    const cards = [...overlay.querySelectorAll('.po2-card')];
+    const layout = ()=> cards.forEach((c, i)=>{
+      const k = i - cur;
+      c.style.setProperty('--k', String(Math.max(0, k)));
+      c.classList.toggle('is-current', k===0); c.classList.toggle('is-waiting', k>0);
+      c.tabIndex = k===0 ? 0 : -1; c.style.zIndex = String(100 - Math.max(0,k));
+    });
+    const hint = overlay.querySelector('#poHint');
+    const enter = ()=>{
+      layout();
+      const c = cards[cur]; if(!c) return;
+      c.focus({preventScroll:true});
+      if(c.classList.contains('tease-rare') || c.classList.contains('tease-epic') || c.classList.contains('tease-legend')) sfx('rareRise', c.classList.contains('tease-legend'));
+    };
+    const reveal = c=>{
+      if(!c || c.classList.contains('is-revealed')) return;
+      c.classList.add('is-revealed'); sfx('cardFlip');
+      const r = opened[packIdx].results[+c.dataset.i], d = defs[r.id];
+      c.setAttribute('aria-label', `${d.name}${r.isNew ? ', new card' : ''}`);
+      if(r.isNew){
+        later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 380);
+        later(()=> overlay.classList.remove('po2-flash'), 900);
+        hint.textContent = 'New card! It’s in your Nest now.';
+      } else {
+        if(tierOf(r.id) >= 4) burst(c, ['✨'], 10);
+        hint.textContent = cur < cards.length - 1 ? 'Tap again for the next card' : 'Tap to finish';
+      }
+    };
+    const collect = c=>{
+      const got = overlay.querySelector('#poGot');
+      const r = opened[packIdx].results[+c.dataset.i];
+      const mini = document.createElement('span'); mini.className = 'po2-mini'; mini.innerHTML = cardTileHTML(defs[r.id], {editable:false}); got.appendChild(mini);
+      c.classList.add('is-collected'); c.tabIndex = -1;
+      cur++;
+      if(cur >= cards.length){ later(()=> showSummary(), 380); return; }
+      hint.textContent = '';
+      enter();
+    };
+    const act = c=>{ if(!c || +c.dataset.i !== cur) return; if(!c.classList.contains('is-revealed')) reveal(c); else collect(c); };
+    cards.forEach(c=>{
+      c.addEventListener('click', ()=> act(c));
+      // Sweep to reveal: the mouse crossing most of the card in one quick pass (no button held),
+      // or a finger swipe across it.
+      let sweep = [];
+      c.addEventListener('pointermove', e=>{
+        if(+c.dataset.i !== cur || c.classList.contains('is-revealed')) return;
+        if(e.pointerType === 'mouse' && e.buttons) return;
+        const now = performance.now(); sweep.push([now, e.clientX]); sweep = sweep.filter(p=> now - p[0] < 380);
+        const xs = sweep.map(p=> p[1]); const w = c.getBoundingClientRect().width || 1;
+        if(Math.max(...xs) - Math.min(...xs) > w*0.6){ sweep = []; reveal(c); }
+      });
+      c.addEventListener('pointerleave', ()=>{ sweep = []; });
+    });
+    enter();
+  };
+  // ---- 3. this pack's summary ----
+  const footBits = o=>{
+    const bits = [`✨ +${pack.dust} Dust`]; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`);
+    if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
+    return bits;
+  };
+  const footActions = ()=>{
+    const left = opened.length - packIdx - 1;
+    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `<button type="button" class="po2-glass" id="poNest">🪺 See them in the Nest</button><button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
+  };
+  const wireFoot = ()=>{
+    const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
+    const nest = overlay.querySelector('#poNest'); if(nest) nest.onclick = ()=>{ close(); switchTab('nest'); };
+    const next = overlay.querySelector('#poNext'); if(next) next.onclick = ()=>{ packIdx++; showPack(); };
+    const f = overlay.querySelector('#poNext') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
+  };
+  const showSummary = ()=>{
+    phase = 'summary';
+    const o = opened[packIdx];
+    const nNew = o.results.filter(r=> r.isNew).length;
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
+      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}">${cardTileHTML(defs[r.id], {editable:false, extraClass: tierOf(r.id) >= 4 ? holoClass(defs[r.id]) : ''})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
+      <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
+    </div>`;
+    wireTop(); wireFoot();
+  };
+  // ---- Open all (sets only): everything left, grouped ----
+  const showAll = ()=>{
+    phase = 'all';
+    const rest = opened.slice(packIdx);
+    const tally = new Map(); let dust = 0, metal = 0; const levels = [];
+    rest.forEach(o=>{ dust += pack.dust; metal += pack.metal||0; if(o.leveledId) levels.push(o.leveledId);
+      o.results.forEach(r=>{ const t = tally.get(r.id) || {n:0, isNew:false}; t.n++; t.isNew = t.isNew || r.isNew; tally.set(r.id, t); }); });
+    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(b) - tierOf(a)) || (defs[a].name||'').localeCompare(defs[b].name||''));
+    const nNew = ids.filter(id=> tally.get(id).isNew).length;
+    const bits = [`${rest.length} packs`, `✨ +${dust} Dust`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
+    packIdx = opened.length - 1;
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
+      <div class="po2-sum-grid is-dense">${ids.map(id=> `<div class="po-card is-flipped po2-sum-card ${tally.get(id).isNew?'is-new':''}">${cardTileHTML(defs[id], {editable:false, extraClass: tierOf(id) >= 4 ? holoClass(defs[id]) : ''})}${tally.get(id).isNew?'<span class="po2-new-tag">NEW</span>':''}${tally.get(id).n > 1 ? `<span class="po2-x">×${tally.get(id).n}</span>` : ''}</div>`).join('')}</div>
+      <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
+    </div>`;
+    wireFoot();
+    sfx('gold');
+  };
+  onKey = e=>{
+    if(overlay.hidden) return;
+    if(e.key === 'Escape'){
+      e.preventDefault(); e.stopImmediatePropagation();
+      if(phase === 'pack' || phase === 'reveal'){ clearTimers(); showSummary(); } else close();
+    }
+  };
+  document.addEventListener('keydown', onKey, true);
+  showPack();
 }
 
 /* ============================================================
