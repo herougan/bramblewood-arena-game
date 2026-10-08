@@ -103,7 +103,8 @@ async def main():
         await pg.click('#poDone'); await pg.wait_for_timeout(300)
         # 4a: a set of 10 offers Skip and Open all; Open all shows everything grouped
         await pg.click('[data-buypack="bronze"][data-qty="10"]'); await pg.wait_for_timeout(500)
-        check(await pg.query_selector('#poSkip') is not None and await pg.query_selector('#poOpenAll') is not None, 'a set of packs should offer Skip and Open all')
+        # 2026-10-08 Packs v3: 10+ packs lay out on a table to slash at once; Open all is still offered
+        check(await pg.query_selector('#poTable') is not None and await pg.query_selector('#poOpenAll') is not None, 'a set of 10 packs should show the table with Open all')
         await pg.click('#poOpenAll'); await pg.wait_for_timeout(500)
         n_all = await pg.evaluate("[...document.querySelectorAll('.po2-all .po2-sum-card')].reduce((t,e)=> t + (parseInt((e.querySelector('.po2-x')||{}).textContent?.slice(1)) || 1), 0)")
         check(n_all == 30, f'Open all on 10 packs should show 30 cards (saw {n_all})')
@@ -143,10 +144,10 @@ async def main():
         check(edge is not None, 'the next map should peek in at the right edge')
         if edge:
             await edge.click(); await pg.wait_for_timeout(600)
-            check(await pg.evaluate("conquestSelectedMap") == 'm2', 'the edge should pan to the next map')
+            check(await pg.evaluate("conquestSelectedMap") == 'mf', 'the edge should pan to the next map (Thistle Fields)')
         # 6b: D13 world atlas — compass diamonds, lazy cards, click zooms into a map
         await pg.click('#conquestWorldBtn'); await pg.wait_for_timeout(500)
-        check(await pg.evaluate("document.querySelectorAll('.world-diamond').length") == await pg.evaluate("CONQUEST_MAPS.length"), 'the world view should show one diamond per map')
+        check(await pg.evaluate("document.querySelectorAll('.world-diamond').length") == await pg.evaluate("mainConquestMaps().length"), 'the world view should show one diamond per main map (sub-maps hide)')
         check(await pg.evaluate("[...document.querySelectorAll('[data-lazy]')].some(e=> !e.dataset.filled)"), 'world cards far down should load lazily')
         await pg.click('[data-world-map="m1"]'); await pg.wait_for_timeout(600)
         check(await pg.evaluate("conquestSelectedMap==='m1' && !conquestWorldView && !!document.getElementById('conquestCanvas')"), 'a world diamond should zoom into its map')

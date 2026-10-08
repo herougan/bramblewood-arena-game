@@ -5330,6 +5330,8 @@
   @media (prefers-reduced-motion: reduce){ .po2-pack.is-jackpot .po2-body, .po2-tpack.is-jackpot{animation:none;} }
   .admin-cur-row{display:flex; flex-wrap:wrap; gap:8px 14px; margin:6px 0 10px;} .admin-cur-row label{display:flex; flex-direction:column; gap:2px; font-size:12px; font-weight:700;} .admin-cur-row input{width:110px; font:inherit; padding:5px 8px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
   /* Screen changes: the Codex page turn, a touch quicker and gentler. */
+  /* 2026-10-09: the page turn swings the view a little past the right edge; clip it so no sideways scrollbar flashes */
+  .content-wrap{overflow-x:clip;}
   .view-turn-fwd, .view-turn-back{animation:viewTurnFwd 380ms cubic-bezier(.2,.7,.25,1) both; transform-origin:0% 50%;}
   .view-turn-back{animation-name:viewTurnBack; transform-origin:100% 50%;}
   @keyframes viewTurnFwd{from{transform:perspective(1600px) rotateY(-16deg) translateX(26px); opacity:.35;} to{transform:none; opacity:1;}}

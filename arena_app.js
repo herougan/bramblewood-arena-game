@@ -8589,8 +8589,9 @@ const FEATURE_SPOTS = [
   {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
   {key:'nest', icon:'🪺', name:'Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notices', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
-  {key:'arena', icon:'🏟️', name:'The Arena', map:'m2', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
-  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'m3', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
+  // 2026-10-09: with Thistle Fields and Pebble Beach inserted, Arena and Shop move to maps 2 and 3 so they still open at the same point in the journey.
+  {key:'arena', icon:'🏟️', name:'The Arena', map:'mf', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'mb', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'raid', icon:'🐲', name:'Raid Banner', map:'m4', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
 ];

@@ -5343,6 +5343,8 @@
   @media (prefers-reduced-motion: reduce){ .po2-pack.is-jackpot .po2-body, .po2-tpack.is-jackpot{animation:none;} }
   .admin-cur-row{display:flex; flex-wrap:wrap; gap:8px 14px; margin:6px 0 10px;} .admin-cur-row label{display:flex; flex-direction:column; gap:2px; font-size:12px; font-weight:700;} .admin-cur-row input{width:110px; font:inherit; padding:5px 8px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink);}
   /* Screen changes: the Codex page turn, a touch quicker and gentler. */
+  /* 2026-10-09: the page turn swings the view a little past the right edge; clip it so no sideways scrollbar flashes */
+  .content-wrap{overflow-x:clip;}
   .view-turn-fwd, .view-turn-back{animation:viewTurnFwd 380ms cubic-bezier(.2,.7,.25,1) both; transform-origin:0% 50%;}
   .view-turn-back{animation-name:viewTurnBack; transform-origin:100% 50%;}
   @keyframes viewTurnFwd{from{transform:perspective(1600px) rotateY(-16deg) translateX(26px); opacity:.35;} to{transform:none; opacity:1;}}
@@ -11805,7 +11807,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9e0e135666", "es": "assets/lang/es.js?v=33b09514a6", "fr": "assets/lang/fr.js?v=3e57ac8418", "id": "assets/lang/id.js?v=82738d2725", "it": "assets/lang/it.js?v=4056e49e64", "ja": "assets/lang/ja.js?v=0696e059b3", "ko": "assets/lang/ko.js?v=c6950f0a49", "pt": "assets/lang/pt.js?v=8ab4467a83", "ta": "assets/lang/ta.js?v=2f7bae2490", "tl": "assets/lang/tl.js?v=a5270e01b8", "zh-Hans": "assets/lang/zh-Hans.js?v=8bf36c2638", "zh-Hant": "assets/lang/zh-Hant.js?v=f5aa9fd7b5"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=bff7d52d85", "es": "assets/lang/es.js?v=d43d3be1cc", "fr": "assets/lang/fr.js?v=5a6e23f82d", "id": "assets/lang/id.js?v=e256a40e5f", "it": "assets/lang/it.js?v=3da805b430", "ja": "assets/lang/ja.js?v=7e0a99ad6b", "ko": "assets/lang/ko.js?v=23a2945545", "pt": "assets/lang/pt.js?v=ad1299b5f6", "ta": "assets/lang/ta.js?v=d6c118d453", "tl": "assets/lang/tl.js?v=e7a7161c1b", "zh-Hans": "assets/lang/zh-Hans.js?v=e7c844217e", "zh-Hant": "assets/lang/zh-Hant.js?v=1404984697"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -20564,8 +20566,9 @@ const FEATURE_SPOTS = [
   {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
   {key:'nest', icon:'🪺', name:'Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notices', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
-  {key:'arena', icon:'🏟️', name:'The Arena', map:'m2', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
-  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'m3', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
+  // 2026-10-09: with Thistle Fields and Pebble Beach inserted, Arena and Shop move to maps 2 and 3 so they still open at the same point in the journey.
+  {key:'arena', icon:'🏟️', name:'The Arena', map:'mf', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'mb', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'raid', icon:'🐲', name:'Raid Banner', map:'m4', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
 ];
