@@ -16732,11 +16732,22 @@ function pixelShatterVfx(el, ms){
   const t = el.querySelector('.card-tile'); if(!t) return false;
   const r = t.getBoundingClientRect(); if(!r.width) return false;
   const COLS = 4, ROWS = 5, w = r.width/COLS, h = r.height/ROWS;
+  // 2026-10-08 (snap-test flake): each piece used to be a full clone of the card (20 per token, with
+  // images and animations), which cost ~35 ms of script and 100-150 ms of painting per token, enough
+  // to freeze a round where several tokens died. Pieces are now plain tiles showing their slice of
+  // the card art (or the card's rarity colours when it has none).
+  const img = t.querySelector('.ico img'), cs = getComputedStyle(t);
+  const ca = (cs.getPropertyValue('--rarity-a') || '#8a7a5a').trim(), cb = (cs.getPropertyValue('--rarity-b') || '#4a3f2c').trim();
+  const frag = document.createDocumentFragment(), bits = [];
   for(let row = 0; row < ROWS; row++) for(let col = 0; col < COLS; col++){
     const bit = document.createElement('div'); bit.className = 'shatter-bit'; bit.setAttribute('aria-hidden','true');
-    bit.style.cssText = `left:${r.left + col*w}px; top:${r.top + row*h}px; width:${Math.ceil(w)}px; height:${Math.ceil(h)}px;`;
-    const c = t.cloneNode(true); c.style.width = r.width + 'px'; c.style.height = r.height + 'px'; c.style.left = (-col*w) + 'px'; c.style.top = (-row*h) + 'px';
-    bit.appendChild(c); document.body.appendChild(bit);
+    const bg = img && img.src ? `url("${img.src}") ${(-col*w).toFixed(1)}px ${(-row*h).toFixed(1)}px / ${r.width.toFixed(1)}px ${r.height.toFixed(1)}px no-repeat, ${ca}`
+      : `linear-gradient(160deg, ${ca}, ${cb}) ${(-col*w).toFixed(1)}px ${(-row*h).toFixed(1)}px / ${r.width.toFixed(1)}px ${r.height.toFixed(1)}px`;
+    bit.style.cssText = `left:${r.left + col*w}px; top:${r.top + row*h}px; width:${Math.ceil(w)}px; height:${Math.ceil(h)}px; background:${bg};`;
+    frag.appendChild(bit); bits.push([bit, row, col]);
+  }
+  document.body.appendChild(frag);
+  for(const [bit, row, col] of bits){
     const dx = (col - (COLS-1)/2) * (18 + Math.random()*26), dy = (row - (ROWS-1)/2) * (10 + Math.random()*16) + 30;
     gsap.to(bit, {x:dx, y:dy, rotation:(Math.random()*2 - 1)*60, scale:.5, opacity:0, duration:(ms/1000)*(0.7 + Math.random()*0.4), delay:Math.random()*0.08, ease:'power2.out', onComplete:()=> bit.remove()});
   }

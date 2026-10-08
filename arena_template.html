@@ -2147,7 +2147,7 @@
   /* Feather burst (2026-10-06): flyers shed feathers when hit. See featherBurst(). */
   .feather-puff{position:fixed; left:0; top:0; z-index:1200; font-size:19px; pointer-events:none; will-change:transform,opacity;}
   /* Pixel shatter (2026-10-06): tokens break into squares instead of crumbling. See pixelShatterVfx(). */
-  .shatter-bit{position:fixed; z-index:1200; pointer-events:none; overflow:hidden; will-change:transform,opacity;}
+  .shatter-bit{position:fixed; z-index:1200; pointer-events:none; overflow:hidden; will-change:transform,opacity; border-radius:2px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 1px 2px rgba(0,0,0,.35);}
   .shatter-bit > .card-tile{position:absolute; margin:0 !important; animation:none !important;}
   @media (prefers-reduced-motion: reduce){ .board-card.is-frozen::after{animation:none;} .card-tile.glitch, .card-tile.glitch .ico{animation:none;} }
   /* Leader throne (2026-10-06): see leaderThroneVfx(). */
