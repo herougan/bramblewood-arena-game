@@ -1460,6 +1460,8 @@
      falls through to the plain var(--bg) rule above, unchanged. */
   .battlefield.map-m1{background:radial-gradient(ellipse at 50% 20%, #4f7a3a, transparent 65%), linear-gradient(180deg, #3c6b34 0%, #274a26 55%, #1a3320 100%);}
   .battlefield.map-m2{background:radial-gradient(ellipse at 50% 15%, #3f8f96, transparent 65%), linear-gradient(180deg, #1f5b6b 0%, #163f52 55%, #0e2838 100%);}
+  .battlefield.map-mf{background:radial-gradient(ellipse at 50% 20%, #a6c95c, transparent 65%), linear-gradient(180deg, #7fa83e 0%, #557d2a 55%, #33521c 100%);}
+  .battlefield.map-mb{background:radial-gradient(ellipse at 50% 15%, #f3e2b0, transparent 60%), linear-gradient(180deg, #3f9fb5 0%, #c9b07a 45%, #8f7a4f 100%);}
   .battlefield.map-m3{background:radial-gradient(ellipse at 50% 15%, #d9793f, transparent 60%), linear-gradient(180deg, #5c3524 0%, #3a2420 55%, #241715 100%);}
   .battlefield.map-m4{background:radial-gradient(ellipse at 50% 20%, #5b6672, transparent 65%), linear-gradient(180deg, #333c46 0%, #23282f 55%, #14171b 100%);}
   .battlefield.map-m5{background:radial-gradient(ellipse at 50% 15%, #e0b45c, transparent 60%), linear-gradient(180deg, #b8873f 0%, #8a6430 55%, #5c4321 100%);}
@@ -3898,6 +3900,9 @@
   .map-theme-m8{--mt-a:#384a2e; --mt-b:#212e1a; --mt-c:#10160c;}
   .map-theme-m9{--mt-a:#d9481f; --mt-b:#8f2a10; --mt-c:#401407;}
   .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;}
+  .map-theme-mf{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}  /* Thistle Fields (2026-10-09) */
+  .map-theme-mb{--mt-a:#ecd9a4; --mt-b:#3f9fb5; --mt-c:#1e5f78;}  /* Pebble Beach (2026-10-09) */
+  .map-theme-mg{--mt-a:#2f5f66; --mt-b:#1d3a44; --mt-c:#0c1a22;}  /* Smugglers' Grotto sub-map (2026-10-09) */
   /* m11 (2026-09-24 campaign redesign) is now "The Sundered Peak," the campaign's final map —
      reuses the dark-red gradient that previously lived at the old m14 slot (same map, same
      name/theme, just renumbered as the new structure's last regular map). */
@@ -5339,6 +5344,20 @@
   .map-cave{position:absolute; transform:translate(-50%,-50%); z-index:6; width:58px; height:42px; padding:0; border:0; background:none; cursor:pointer;}
   .map-cave .mc-rock{position:absolute; inset:0; border-radius:50% 50% 14px 14px / 70% 70% 20% 20%; background:radial-gradient(circle at 35% 28%, #9a9486, #6a645a 55%, #3f3a33); box-shadow:0 5px 10px rgba(0,0,0,.4), inset 0 3px 0 rgba(255,255,255,.18);}
   .map-cave .mc-mouth{position:absolute; left:50%; bottom:0; width:24px; height:20px; transform:translateX(-50%); border-radius:12px 12px 2px 2px; background:radial-gradient(ellipse at 50% 85%, #000, #1c1813 70%); box-shadow:inset 0 3px 4px rgba(0,0,0,.7);}
+  /* Sub-map entrance (2026-10-09): a bigger cave mouth with the sub-map's icon, its name under it */
+  .map-subcave{width:72px; height:52px;}
+  .map-subcave .mc-mouth{width:32px; height:26px;}
+  .map-subcave .msc-ico{position:absolute; left:50%; bottom:3px; transform:translateX(-50%); font-size:15px; filter:drop-shadow(0 0 4px rgba(120,220,255,.8)); animation:mscGlow 2.4s ease-in-out infinite;}
+  .map-subcave .msc-name{position:absolute; left:50%; top:100%; transform:translateX(-50%); margin-top:3px; white-space:nowrap; font:700 11px/1.2 var(--font-ui, system-ui); color:#fff; padding:2px 7px; border-radius:999px; background:rgba(10,20,26,.72); box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .map-subcave:hover .mc-rock, .map-subcave:focus-visible .mc-rock{filter:brightness(1.15);}
+  .map-subcave:hover{transform:translate(-50%,-50%) scale(1.06);}
+  .map-subcave.is-locked{cursor:default; opacity:.75; filter:saturate(.5);}
+  .map-subcave.is-locked .msc-ico{animation:none; filter:none; font-size:12px;}
+  .map-subcave.is-done .msc-ico{filter:drop-shadow(0 0 4px rgba(120,255,160,.8));}
+  .submap-iris{position:fixed; z-index:60; overflow:hidden; pointer-events:none;}
+  .submap-iris > span{position:absolute; width:0; height:0; transform:translate(-50%,-50%); border-radius:50%; box-shadow:0 0 0 300vmax #05080b, inset 0 0 40px 20px #05080b;}
+  @keyframes mscGlow{0%,100%{opacity:.75;} 50%{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .map-subcave .msc-ico{animation:none;} }
   .map-cave:hover .mc-mouth{box-shadow:inset 0 3px 4px rgba(0,0,0,.7), 0 0 10px rgba(255,214,120,.35);}
   .map-cave.is-done .mc-mouth::after{content:'🐚'; position:absolute; left:50%; top:3px; transform:translateX(-50%); font-size:11px;}
   /* Skirmish Armour on a castle: a blue bar over the Health bar and a 🔷 count. */

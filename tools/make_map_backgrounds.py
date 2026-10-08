@@ -294,7 +294,44 @@ def m11(rng):  # The Sundered Peak: scorched crimson rock, rifts, embers
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and k[1:].isdigit()}
+def mf(rng):  # Thistle Fields (2026-10-09): sunny meadow, hedgerows, flowers, a few round trees
+    img = dither_palette(fbm(rng, W, H), ['#5f8a2e', '#6f9a36', '#82ad40', '#98bf4c', '#aecf5e'])
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, TUFT, {'a': '#c8df7a'}, 260, avoid_band=False)
+    scatter(img, rng, BUSH, {'a': '#5f9a45', 'b': '#3f7432'}, 70, density=dens)
+    scatter(img, rng, ROUND, {'a': '#6aa84f', 'b': '#3f7a34', 'c': '#5a3a22'}, 14, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#c9bfa0', 'b': '#8f8670'}, 14)
+    sparkle(img, rng, 120, '#ffe57a'); sparkle(img, rng, 90, '#c79bf2'); sparkle(img, rng, 70, '#ffffff')
+    return img
+
+
+def mb(rng):  # Pebble Beach (2026-10-09): sea along the top, wet sand, dry sand, rock pools, shells
+    img = dither_palette(fbm(rng, W, H, (48, 24, 12, 6)), ['#d8c08a', '#e2cb94', '#ead5a0', '#f0dfab', '#f6e8bf'])
+    ys = np.mgrid[0:H, 0:W][0] / H
+    wave = fbm(rng, W, H, (32, 16), (0.7, 0.3))
+    blend_mask(img, np.clip((0.30 - ys + (wave - 0.5) * 0.12) * 14, 0, 1), '#c9b07a')   # wet sand
+    blend_mask(img, np.clip((0.24 - ys + (wave - 0.5) * 0.12) * 14, 0, 1), '#e9f4f2')   # foam line
+    blend_mask(img, np.clip((0.21 - ys + (wave - 0.5) * 0.12) * 14, 0, 1), '#3f9fb5')   # shallows
+    blend_mask(img, np.clip((0.12 - ys + (wave - 0.5) * 0.10) * 14, 0, 1), '#22708f')   # deep
+    ponds(img, rng, 3, '#2e7f96', '#5fb3c0', '#b8a070', 6, 11)
+    scatter(img, rng, BOULDER, {'a': '#9a948a', 'b': '#625d55'}, 18, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#b0a898', 'b': '#7a7366'}, 40, avoid_band=False)
+    scatter(img, rng, TUFT, {'a': '#8fae5a'}, 40, avoid_band=False)
+    sparkle(img, rng, 60, '#ffffff'); sparkle(img, rng, 40, '#f2a6b8')
+    return img
+
+
+def mg(rng):  # Smugglers' Grotto sub-map (2026-10-09): wet dark stone, tide pools, glowing jellies, crates
+    img = dither_palette(fbm(rng, W, H), ['#0c1a22', '#12262e', '#1a333b', '#22404a', '#2f525c'])
+    ponds(img, rng, 5, '#0a2a3a', '#17506a', '#1a333b', 8, 18, avoid_band=False)
+    scatter(img, rng, BOULDER, {'a': '#3f5a62', 'b': '#1a2c33'}, 46, shadow_w=lambda w: w)
+    scatter(img, rng, CRYSTAL, {'a': '#9ff3e6', 'b': '#3fbfb0'}, 16, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#8a6a42', 'b': '#5a4228'}, 10)  # old smugglers' crates
+    sparkle(img, rng, 110, '#8ff0ff'); sparkle(img, rng, 30, '#ffd36b')
+    return img
+
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg'))}
 
 
 def make(map_id):
@@ -307,7 +344,7 @@ def make(map_id):
 
 
 if __name__ == '__main__':
-    ids = sys.argv[1:] or sorted(PAINTERS, key=lambda k: int(k[1:]))
+    ids = sys.argv[1:] or sorted(PAINTERS, key=lambda k: int(k[1:]) if k[1:].isdigit() else 0)
     for mid in ids:
         p = make(mid)
         print('wrote', os.path.relpath(p, ROOT), os.path.getsize(p) // 1024, 'KB')

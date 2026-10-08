@@ -1282,6 +1282,8 @@ function conquestNodeLabel(mapId, nodeKey){
   const mi = mapIndexOf(mapId);
   return f ? `Map ${mi+1} · ${f.map.name} — ${f.node.name}` : `${mapId} / ${nodeKey}`;
 }
+// Main maps only (sub-maps are reached through their parent's entrance, 2026-10-09).
+function mainConquestMaps(){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).filter(m=> !m.sub); }
 function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
 // A sortable section key + human label for a card's Codex group.
 function codexSectionOf(d){
@@ -3249,6 +3251,9 @@ const MAP_BATTLEFIELD_CLASS = {
   m9:'map-m9',   // Basalt Foundry -- dark basalt/lava
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
+  mf:'map-mf',   // Thistle Fields -- sunny meadow (2026-10-09)
+  mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
+  mg:'map-m4',   // Smugglers' Grotto (sub-map) -- borrows the cave look
 };
 // Battlefield background picker (2026-09-30, queued backlog item: "player-selectable, independent
 // of which Conquest map you're on, plus a new 'extremely undistracting' calm background option").
@@ -6385,7 +6390,8 @@ function mapEnergyBase(mapIdx){
 function nodeEnergyCost(mapOrId, node){
   if(!node || node.kind==='tutorial') return 0;
   const map = typeof mapOrId === 'string' ? CONQUEST_MAPS.find(m=> m.id===mapOrId) : (mapOrId || CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)));
-  const idx = Math.max(0, CONQUEST_MAPS.indexOf(map));
+  const main = mainConquestMaps(), parent = map && map.sub ? CONQUEST_MAPS.find(m=> m.id===map.parent) : null;
+  const idx = Math.max(0, main.indexOf(parent || map));
   const [first, rest] = mapEnergyBase(idx);
   if(/boss/.test(node.kind||'')) return rest * 2;
   const real = map ? map.nodes.filter(n=> n.kind!=='tutorial') : [];
@@ -8609,7 +8615,7 @@ function activateSpot(spot){
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
-const MAP_ART_IDS = new Set(["m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
+const MAP_ART_IDS = new Set(["mf","mb","mg","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
 function mapSpotsHTML(map, positions, progress){
   // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
   // spots sit further above their skirmish, joined to it by a faint dashed line.
@@ -8642,6 +8648,64 @@ const CAVE_M2_LINES = [
   'Two bright eyes. A clink of something metal. “Mine. Found it fair.”',
   '“Fine. You can come in. But the shell stays with me.”',
 ];
+// Sub-map entrances (2026-10-09). A dark cave mouth on the parent map; locked until its `entry.after`
+// node is cleared (then a "!" until you first go in).
+let conquestSubZoom = null;
+function subMapEntrancesHTML(map, progress){
+  return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry).map(sm=>{
+    const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
+    const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
+    const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
+    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
+    return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : 'disabled'} style="left:${sm.entry.x}%; top:${sm.entry.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span><span class="msc-ico" aria-hidden="true">${open ? sm.icon : '🔒'}</span>${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+  }).join('');
+}
+// "Boom, transition-zooms into the cave": the parent map zooms into the cave mouth and goes dark, then
+// the sub-map grows out of the dark. Leaving reverses it with a quick pull-back.
+function enterSubMap(id, el, body){
+  const sm = CONQUEST_MAPS.find(m=> m.id===id); if(!sm || !isMapUnlocked(sm, loadConquestProgress())) return;
+  try{ setDialogueFlag('submap_seen:'+id, true); }catch(e){}
+  abandonMapLayoutEdit();
+  const mainEl = document.getElementById('conquestMain');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const go = ()=>{ conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'in'; renderConquestSubTab(body); };
+  if(!mainEl || reduce || !mainEl.animate || !el) return go();
+  const mr = mainEl.getBoundingClientRect(), r = el.getBoundingClientRect();
+  mainEl.style.transformOrigin = `${r.left + r.width/2 - mr.left}px ${r.top + r.height/2 - mr.top}px`;
+  try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
+  // An iris closes on the cave mouth while the map dives into it (the map art lives on the layout
+  // behind #conquestMain, so the iris is what sells the "into the cave" part).
+  const iris = subMapIris(mr, r.left + r.width/2 - mr.left, r.top + r.height/2 - mr.top);
+  const cx = r.left + r.width/2 - mr.left, cy = r.top + r.height/2 - mr.top;
+  const big = 2 * Math.hypot(Math.max(cx, mr.width-cx), Math.max(cy, mr.height-cy));
+  iris.firstChild.animate([{width:big+'px', height:big+'px'}, {width:'0px', height:'0px'}], {duration:470, easing:'ease-in', fill:'forwards'});
+  const a = mainEl.animate([{transform:'none', filter:'none'}, {transform:'scale(5)', filter:'brightness(0)'}], {duration:470, easing:'cubic-bezier(.6,0,.9,.4)', fill:'forwards'});
+  a.onfinish = ()=>{ mainEl.style.transformOrigin = ''; go();
+    // …and opens again from the middle of the new map.
+    const m2 = document.getElementById('conquestMain'); const nr = m2 ? m2.getBoundingClientRect() : mr;
+    iris.style.left = nr.left+'px'; iris.style.top = nr.top+'px'; iris.style.width = nr.width+'px'; iris.style.height = nr.height+'px';
+    iris.firstChild.style.left = (nr.width/2)+'px'; iris.firstChild.style.top = (nr.height/2)+'px';
+    const big2 = Math.hypot(nr.width, nr.height) * 1.05;
+    const o = iris.firstChild.animate([{width:'0px', height:'0px'}, {width:big2+'px', height:big2+'px'}], {duration:600, easing:'cubic-bezier(.4,0,.3,1)', fill:'forwards'});
+    o.onfinish = ()=> iris.remove(); setTimeout(()=> iris.remove(), 900);
+  };
+}
+function subMapIris(rect, cx, cy){
+  document.querySelectorAll('.submap-iris').forEach(e=> e.remove());
+  const w = document.createElement('div'); w.className = 'submap-iris'; w.setAttribute('aria-hidden', 'true');
+  w.style.cssText = `left:${rect.left}px; top:${rect.top}px; width:${rect.width}px; height:${rect.height}px;`;
+  w.innerHTML = `<span style="left:${cx}px; top:${cy}px;"></span>`;
+  document.body.appendChild(w); return w;
+}
+function leaveSubMap(sm, body){
+  const mainEl = document.getElementById('conquestMain');
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const go = ()=>{ conquestSelectedMap = sm.parent; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'out'; renderConquestSubTab(body); };
+  if(!mainEl || reduce || !mainEl.animate) return go();
+  const a = mainEl.animate([{transform:'none', opacity:1}, {transform:'scale(.6)', opacity:0}], {duration:220, easing:'ease-in', fill:'forwards'});
+  a.onfinish = go;
+}
 function mapCaveHTML(){
   const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
   return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" style="left:22%; top:30%;" title="A small cave" aria-label="A small cave">
@@ -9620,9 +9684,28 @@ const CONQUEST_MAPS = [
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:20, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"quillback-elder":2,"pond-duck":4}, hqHp:30, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
+  // Two new maps between the Outskirts and the Hollow (2026-10-09, user: "I want some 2 more maps in
+  // between the first one and the water one. Maybe one is slightly more 'field'y. I also want a beach
+  // level!"). Built from the new critters and the shore cards; tuned with tools/autotune_map.js.
+  { id:"mf", name:"Thistle Fields", icon:"🌼", blurb:"Open meadow past the tree-line — hedgerows, burrows and a lot of small, busy things.", unlockAfter:"m1", sequential:true,
+    nodes: [
+      { key:"f-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"rabbit-kit":4,"fox-kit":3,"cricket-drummer":3,"harvest-mouse":2}, hqHp:20, flavor:"Every hedge here has ears in it.", requires:[] },
+      { key:"f-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":2,"field-mouse":3}, hqHp:22, flavor:"The drumming stops the moment you step into the grass.", requires:["f-1"] },
+      { key:"f-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":3,"quarry-mole":3,"earthworm":3,"mouse-sapper":1}, hqHp:22, flavor:"The field looks flat. Underneath it is not.", requires:["f-1"] },
+      { key:"f-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":1,"hedgehog-scout":3,"quarry-mole":1}, hqHp:24, flavor:"Someone has been digging trenches under the thistles.", requires:["f-2","f-3"] },
+      { key:"f-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":3,"beetle-grunt":3,"burrow-rabbit":3,"jackrabbit-sprinter":2,"fox-kit":1}, hqHp:32, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["f-4"] },
+    ]},
+  { id:"mb", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", unlockAfter:"mf", sequential:true,
+    nodes: [
+      { key:"b-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"tide-pool-crab":4,"open-ocean-hermit-crab":3,"guppy":2,"gull-thief":3}, hqHp:22, flavor:"Low tide leaves a lot of angry things behind.", requires:[] },
+      { key:"b-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":3,"pelican-diver":2,"open-ocean-hermit-crab":3}, hqHp:24, flavor:"They are not after you. They are after your lunch.", requires:["b-1"] },
+      { key:"b-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":2,"tide-pool-crab":4,"sulfur-vent-crab":2,"fiddler-crab-swarm":2}, hqHp:24, flavor:"A whole street of shells, and every one of them is occupied.", requires:["b-1"] },
+      { key:"b-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":1,"open-ocean-hermit-crab":3,"fiddler-crab-swarm":2}, hqHp:26, flavor:"Watch the sky. Then watch it again.", requires:["b-2","b-3"] },
+      { key:"b-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":3}, hqHp:36, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["b-4"] },
+    ]},
   // Map 2 retuned 2026-10-04 (D18 draft, tools/difficulty_curve.js): aimed at a deck built from Map 1's
   // new skirmish rewards — first node ~90%, 2-2 ~60%, elites ~45%, boss ~30-40%.
-  { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"m1", sequential:true,
+  { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"mb", sequential:true,
     nodes: [
       { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:26, flavor:"The shallows here are only shallow at low tide.", requires:[] },
       { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"otter-riverguard":2,"shrine-bell-ringer":4,"open-ocean-hermit-crab":4}, hqHp:28, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
@@ -9733,6 +9816,20 @@ const CONQUEST_MAPS = [
       { key:"11-7", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":3,"hanging-loafer":3,"cave-warlord":2}, hqHp:164, flavor:"It has not hurried in centuries. It has never needed to.", requires:["11-6"] },
       { key:"11-8", kind:"finalboss", name:"The Cave Warlord", icon:"👑", deck:{"cave-warlord":4,"grizzly-vanguard":3,"silverback-brawler":3}, hqHp:350, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["11-7"] },
     ]},
+  // Sub-maps (2026-10-09, user: "I want a little Cave map when I click into another cave icon on the
+  // map… only accessible from that map. Then it boom, transition-zooms into the cave… a whole map
+  // appears with more skirmishes available! Rarer rewards too! They will feature our first elite
+  // skirmishes."). A sub-map is an ordinary map with `sub:true` and a `parent`; it sits at the END of
+  // this list so the main maps' order (energy curve, the 4th-map egg) is unchanged. It never shows in
+  // the region list, the world atlas or the ‹ › edges — the only way in is its entrance on the parent
+  // map (`entry`: where the cave mouth sits, and which parent node opens it).
+  { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"b-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
+    nodes: [
+      { key:"g-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:26, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
+      { key:"g-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"raccoon-nightcrew":2,"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1}, hqHp:34, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
+      { key:"g-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"glowworm-cluster":2,"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2}, hqHp:36, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
+      { key:"g-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3}, hqHp:40, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["g-2","g-3"] },
+    ]},
 ];
 // ---- Skirmish editor overlay (2026-10-03): admin edits to nodes ride on top of the definitions
 // above. CONQUEST_MAPS_BASELINE keeps the original; applyNodeEdits() rebuilds every map's node list
@@ -9837,8 +9934,10 @@ const MAP_BIOMES = {
   swamp:   {trees:['🌳','🌲'], small:['🪷','🍄','🌿','🐸','🪵','🌾'], mover:{emoji:'✨', kind:'firefly', n:5}},
   forge:   {trees:['🗿','🪨'], small:['🔥','🪨','⚙️','🪨','💨'], mover:{emoji:'🔥', kind:'firefly', n:4}},
   alpine:  {trees:['🌲','🏔️','🌲'], small:['🪨','🌿','🪶','❄️','🌼'], mover:{emoji:'🦅', kind:'bird', n:2}},
+  meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
+  beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
 };
-const MAP_BIOME_OF = {m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mf:'meadow', mb:'beach', mg:'cave', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -9928,7 +10027,15 @@ function mapDecorHTML(mapId){
   }).join('');
 }
 function isMapUnlocked(map, progress){
+  if(map.sub){
+    const parent = CONQUEST_MAPS.find(m=> m.id===map.parent);
+    if(!parent || !isMapUnlocked(parent, progress)) return false;
+    return !(map.entry && map.entry.after) || progress.completed.includes(conquestNodeId(parent.id, map.entry.after));
+  }
   if(!map.unlockAfter) return true;
+  // Grandfathered (2026-10-09): two maps were inserted before Sunken Hollow, so a map you already
+  // fought on stays open even if its new predecessor isn't cleared yet.
+  if(map.nodes.some(n=> progress.completed.includes(conquestNodeId(map.id, n.key)))) return true;
   const prev = CONQUEST_MAPS.find(m=>m.id===map.unlockAfter);
   if(!prev) return true;
   // A map "clears" once every one of the PREVIOUS map's story nodes (everything except an
@@ -10500,7 +10607,7 @@ function compassDiamondSVG(mapId, locked){
   </svg>`;
 }
 function renderConquestWorld(mainEl, body, progress){
-  const maps = CONQUEST_MAPS;
+  const maps = mainConquestMaps();
   const narrow = (mainEl.clientWidth || innerWidth) < 600;
   const lanes = narrow ? [30, 70] : [50, 74, 50, 26];
   const ROW = narrow ? 132 : 168;
@@ -10681,12 +10788,13 @@ function renderConquestSubTab(body){
   const listEl = document.getElementById('conquestMapList');
   // D6 (2026-10-03): unlocked maps only, plus ONE compact "Next: … 🔒" teaser — locked maps no longer
   // take a third of the width. Each shows its progress so the tab doubles as a progress view.
-  const firstLocked = CONQUEST_MAPS.find(m=> !isMapUnlocked(m, progress));
-  listEl.innerHTML = CONQUEST_MAPS.filter(m=> isMapUnlocked(m, progress)).map(map=>{
+  const firstLocked = mainConquestMaps().find(m=> !isMapUnlocked(m, progress));
+  const selMain = (CONQUEST_MAPS.find(m=> m.id===conquestSelectedMap)||{}).sub ? CONQUEST_MAPS.find(m=> m.id===conquestSelectedMap).parent : conquestSelectedMap;
+  listEl.innerHTML = mainConquestMaps().filter(m=> isMapUnlocked(m, progress)).map(map=>{
     const fightable = map.nodes.filter(n=> n.kind!=='raidboss' && n.kind!=='tutorial');
     const doneN = fightable.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
     const cleared = doneN===fightable.length;
-    return `<div class="conquest-map-item ${map.id===conquestSelectedMap?'selected':''}" data-mapid="${map.id}" role="button" tabindex="0">
+    return `<div class="conquest-map-item ${map.id===selMain?'selected':''}" data-mapid="${map.id}" role="button" tabindex="0">
       <div class="cmi-ico">${map.icon}</div>
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
@@ -10769,7 +10877,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
-      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}
+      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -10830,20 +10938,21 @@ function renderConquestSubTab(body){
   if(conquestZoomIn){ mainEl.classList.add('world-zoom-in'); conquestZoomIn = false; }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
   {
-    const idx = CONQUEST_MAPS.indexOf(map), prev = CONQUEST_MAPS[idx-1], next = CONQUEST_MAPS[idx+1];
+    const main = mainConquestMaps(), idx = main.indexOf(map), parentMap = map.sub ? CONQUEST_MAPS.find(m=> m.id===map.parent) : null;
+    const prev = map.sub ? parentMap : main[idx-1], next = map.sub ? null : main[idx+1];
     const canvasEl = document.getElementById('conquestCanvas');
     // 2026-10-08 (user: "simplified to just an arrow + emoji"): the edge chips are an arrow and the map's emoji;
     // the name stays in the tooltip and for screen readers.
-    const edge = (m, side)=>{ if(!m) return ''; const open = isMapUnlocked(m, progress), lbl = (side==='left' ? 'Back to ' : 'On to ') + m.name + (open ? '' : ' (locked)');
+    const edge = (m, side)=>{ if(!m) return ''; const open = isMapUnlocked(m, progress), lbl = (map.sub ? 'Climb back out to ' : side==='left' ? 'Back to ' : 'On to ') + m.name + (open ? '' : ' (locked)');
       return `<button type="button" class="world-edge world-edge-${side} ${open?'':'is-locked'}" ${open?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(lbl)}" aria-label="${escapeAttr(lbl)}">${side==='left'?'<b aria-hidden="true">‹</b>':''}<span aria-hidden="true">${open?m.icon:'🔒'}</span>${side==='right'?'<b aria-hidden="true">›</b>':''}</button>`; };
     if(canvasEl){
       canvasEl.insertAdjacentHTML('beforeend', edge(prev,'left') + edge(next,'right'));
-      canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); conquestPanTo(b.dataset.worldGo, body, progress); }));
+      canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(map.sub) leaveSubMap(map, body); else conquestPanTo(b.dataset.worldGo, body, progress); }));
       let sx = null, sy = null;
       canvasEl.addEventListener('pointerdown', e=>{ if(conquestLayoutEdit) return; sx = e.clientX; sy = e.clientY; });
       canvasEl.addEventListener('pointerup', e=>{
         if(sx==null) return; const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
-        if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.5){ const m = dx < 0 ? next : prev; if(m && isMapUnlocked(m, progress)) conquestPanTo(m.id, body, progress); }
+        if(Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)*1.5){ const m = dx < 0 ? next : prev; if(m && isMapUnlocked(m, progress)){ if(map.sub) leaveSubMap(map, body); else conquestPanTo(m.id, body, progress); } }
       });
     }
     if(conquestPanDir){ mainEl.classList.add('world-in-' + conquestPanDir); conquestPanDir = null; }
@@ -10864,6 +10973,10 @@ function renderConquestSubTab(body){
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); visitOldWell(w); }); }
   { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); visitSmallCave(c); }); }
+  mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); enterSubMap(b.dataset.submap, b, body); }));
+  if(conquestSubZoom && mainEl.animate){ const z = conquestSubZoom; conquestSubZoom = null;
+    mainEl.animate(z==='in' ? [{transform:'scale(.55)', opacity:0, filter:'brightness(0)'}, {transform:'scale(1.04)', opacity:1, filter:'brightness(.8)', offset:.7}, {transform:'none', opacity:1, filter:'none'}]
+                            : [{transform:'scale(1.5)', opacity:0}, {transform:'none', opacity:1}], {duration: z==='in' ? 520 : 300, easing:'cubic-bezier(.2,.8,.3,1)'}); }
   function nodeTooltipHTML(node){
     const defs = getCardDefs();
     const squad = Object.entries(node.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`${d.icon} ${d.name} ×${n}`:null; }).filter(Boolean).join(', ');
@@ -18205,7 +18318,8 @@ async function resolveRound(){
         cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward'));
         if(cardIds.length) m.conquestCardsEarned = cardIds;
         // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
-        if(m.conquestNode.mapId==='m4' && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', 'm4'); }
+        // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
+        if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', CONQUEST_MAPS[3].id); }
       }
       { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
