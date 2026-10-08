@@ -5109,6 +5109,19 @@
     background:repeating-linear-gradient(45deg, rgba(0,0,0,.13) 0 6px, transparent 6px 13px), #2f5b3a; border:2px solid #d7b46a; color:#fff;}
   .ss-deckbox small{font-size:10px; text-transform:uppercase; letter-spacing:.06em;} .ss-deckbox b{font-size:12px;}
   .ss-deckbox.is-bump{animation:ssBump .18s ease-out;} @keyframes ssBump{50%{transform:scale(1.12);}}
+  /* lightning on open ground + directional card light (2026-10-08) */
+  .bf-bolt{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:7; animation:boltFlicker .5s steps(1) forwards;}
+  .bf-bolt polyline{fill:none; stroke-linejoin:round; stroke-linecap:round;}
+  .bf-bolt .bolt-glow{stroke:rgba(170,200,255,.55); stroke-width:10; filter:blur(4px);}
+  .bf-bolt .bolt-core{stroke:#fff; stroke-width:2.6;}
+  @keyframes boltFlicker{0%{opacity:1} 18%{opacity:.2} 30%{opacity:1} 55%{opacity:.85} 100%{opacity:0}}
+  .bf-bolt-hit{position:absolute; width:180px; height:110px; margin:-55px 0 0 -90px; border-radius:50%; pointer-events:none; z-index:2;
+    background:radial-gradient(closest-side, rgba(255,255,255,.95), rgba(170,205,255,.55) 35%, rgba(255,170,80,.18) 65%, transparent); mix-blend-mode:screen; animation:boltHit 1.3s ease-out forwards;}
+  @keyframes boltHit{0%{opacity:1; transform:scale(.6);} 20%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:scale(1.15);}}
+  .bolt-lit{position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; mix-blend-mode:screen;
+    background:linear-gradient(var(--ba), rgba(225,238,255,calc(var(--bs) * .95)) 0%, rgba(200,220,255,calc(var(--bs) * .35)) 32%, transparent 62%);
+    animation:boltLit .85s ease-out forwards;}
+  @keyframes boltLit{0%{opacity:1} 15%{opacity:.25} 28%{opacity:1} 100%{opacity:0}}
   .shop-bundles{display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:center; margin-top:8px;}
   .shop-bundles-k{font:800 11px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; opacity:.7;}
   .shop-bundle{min-width:46px; padding:4px 10px !important;}

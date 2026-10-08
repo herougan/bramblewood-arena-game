@@ -23794,17 +23794,51 @@ function scheduleLightning(m){
   const [lo, hi] = kind === 10 ? [9, 22] : [18, 40];
   lightningTimer = setTimeout(()=>{ lightningStrike(m); scheduleLightning(matchState); }, (lo + Math.random()*(hi-lo))*1000);
 }
+// 2026-10-08 (user: "it'll be cool if a lightning flashes rarely, striking a part of the *empty*
+// field. This lights up the cards on the field ... not a flat flash on the card but a directional
+// one, from the central point of where the lightning hit"): the bolt now comes down on a patch of
+// open ground (a spot clear of every card), leaves a brief scorch glow, and each card catches the
+// light on the side facing the strike — brighter the closer it stands.
+function emptyFieldPoint(bf){
+  const b = bf.getBoundingClientRect();
+  const cards = [...bf.querySelectorAll('.board-card:not(.slot-target):not(.empty-slot):not(.center-slot-empty)')].map(c=> c.getBoundingClientRect()).filter(r=> r.width);
+  for(let t = 0; t < 40; t++){
+    const x = b.left + b.width*(0.08 + Math.random()*0.84), y = b.top + b.height*(0.15 + Math.random()*0.7);
+    if(cards.every(r=> x < r.left - 30 || x > r.right + 30 || y < r.top - 20 || y > r.bottom + 20)) return {x, y, b};
+  }
+  return null;
+}
 function lightningStrike(m){
   if(m !== matchState || !m || m.over || document.hidden) return;
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || !fxAtLeast('high');
+  const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || !fxAtLeast('med');
+  const p = emptyFieldPoint(bf);
+  if(!p){ try{ Ambience.thunder(0.4 + Math.random()*0.4); }catch(e){} return; } // no open ground: thunder only
+  const fx = (p.x - p.b.left)/p.b.width, fy = (p.y - p.b.top)/p.b.height;
   if(!reduce){
-    const f = document.createElement('div'); f.className = 'bf-lightning'; f.setAttribute('aria-hidden','true');
-    f.style.setProperty('--lx', (15 + Math.random()*70).toFixed(0) + '%');
-    bf.appendChild(f); setTimeout(()=> f.remove(), 900);
+    // the bolt: a jagged path from above the board down to the strike point
+    const top = -24, lx = p.x - p.b.left, ly = p.y - p.b.top;
+    let pts = [], x = lx + (Math.random()*80 - 40), y = top;
+    const steps = 9; for(let i = 0; i <= steps; i++){ const k = i/steps; pts.push(`${(x + (lx - x)*k + (i && i < steps ? (Math.random()*36 - 18) : 0)).toFixed(1)},${(y + (ly - y)*k).toFixed(1)}`); }
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'bf-bolt'); svg.setAttribute('aria-hidden', 'true');
+    svg.innerHTML = `<polyline points="${pts.join(' ')}" class="bolt-glow"/><polyline points="${pts.join(' ')}" class="bolt-core"/>`;
+    bf.appendChild(svg); setTimeout(()=> svg.remove(), 520);
+    const hit = document.createElement('div'); hit.className = 'bf-bolt-hit'; hit.setAttribute('aria-hidden','true');
+    hit.style.left = lx + 'px'; hit.style.top = ly + 'px'; bf.appendChild(hit); setTimeout(()=> hit.remove(), 1400);
+    // directional light on every card
+    bf.querySelectorAll('.board-card:not(.slot-target):not(.empty-slot):not(.center-slot-empty) .card-tile').forEach(t=>{
+      const r = t.getBoundingClientRect(); if(!r.width) return;
+      const dx = (r.left + r.width/2) - p.x, dy = (r.top + r.height/2) - p.y, dist = Math.hypot(dx, dy);
+      const strength = Math.max(0, 1 - dist / (p.b.width*1.0)); if(strength < 0.05) return;
+      const angle = Math.atan2(dx, -dy) * 180/Math.PI; // CSS gradient direction: away from the strike
+      const lit = document.createElement('span'); lit.className = 'bolt-lit'; lit.setAttribute('aria-hidden','true');
+      lit.style.setProperty('--ba', angle.toFixed(0) + 'deg'); lit.style.setProperty('--bs', strength.toFixed(2));
+      t.appendChild(lit); setTimeout(()=> lit.remove(), 900);
+    });
   }
-  try{ if(battleWeather && battleWeather.flash) battleWeather.flash(0.15 + Math.random()*0.7, 0.05, [0.85, 0.9, 1], reduce ? 0.35 : 0.8, 0.7, 700); }catch(e){}
-  try{ Ambience.thunder(0.5 + Math.random()*0.6); }catch(e){}
+  try{ if(battleWeather && battleWeather.flash){ battleWeather.flash(fx, fy, [0.85, 0.9, 1], reduce ? 0.4 : 1, 0.55, 800); if(battleWeather.wave && !reduce) battleWeather.wave(fx, fy, [0.8, 0.88, 1], 0.7, 700); } }catch(e){}
+  try{ Ambience.thunder(0.6 + Math.random()*0.4); }catch(e){}
 }
 function mountBattleWeather(m){
   const bf = document.getElementById('battlefieldEl');
