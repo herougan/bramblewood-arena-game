@@ -1,12 +1,12 @@
 # Action items
 
-_Updated 2026-10-10, 1:40 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-10, 2:40 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
 | ID | What | My suggestion |
 |---|---|---|
-| **B6** ⚠️ | The hummingbird starter deck beats the otter starter deck **~99%** of the time (all flyers, Diurnal, 2 copies each of 10 solid cards) | F: hummingbird Basics with 2+ Attack lose 1 Attack, otter 1-Attack fillers gain 1, Otter Guard and River Carp get **Reach** (ignores the Flying dodge). Measured ~47% |
+| **B6** ✅ | Your new basic set fixes it: otter starter vs hummingbird starter is **52.9%**. The per-card spread inside the set is wide (Duck Paddler 79% … Otter Kit 26%): see the [starter-decks note](starter-decks-2026-10-10.md) | Balance within the set (your pass) |
 | **D20** | Devilry is built from your list. Six of the rules were my readings. **Darkness is gained:** +1 each time one of your units perishes, shown only if your deck has a Devilry card | Keep all six |
 | **D23** | Next: Ecclesia with your Prayer value? | Yes |
 | **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |

@@ -211,6 +211,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //    (trench roll-through to the next row, or a boss castle shielded while its entities stand).
   let passUpkeepIds = null, passAttackerIds = null, currentAttacker = null;
   let curInitiative = 2;
+  let passOnlyUid = null; // Test Kit's manual Attack: only this card acts in the pass
   function inUpkeep(pl){ return !passUpkeepIds || passUpkeepIds.includes(pl.id); }
   function isSuddenDeath(){ return suddenDeath; }
   function allBoardCards(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
@@ -1688,6 +1689,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const enemy = players[otherId(pid)];
       [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{
         if(c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0) return;
+        if(passOnlyUid && c.uid !== passOnlyUid) return;
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return;
         const shots = [];
         if(fx.arrow > 0) shots.push({amount: fx.arrow, dmgType: 'physical', fire: false});
@@ -2689,11 +2691,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
     curPlayers = players;
-    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
+    if(!(pass && pass.onlyUid)) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
+    passOnlyUid = (pass && pass.onlyUid) || null;
     try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
-    finally { passUpkeepIds = null; passAttackerIds = null; currentAttacker = null; }
+    finally { passUpkeepIds = null; passAttackerIds = null; passOnlyUid = null; currentAttacker = null; }
   }
   function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
     curInitiative = firstAttackerSide || 2; // On Turn Start's 'yours'/'opponent's' = who strikes first this round
@@ -2782,6 +2785,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           pl.row[sideKey].forEach(card=>{
             const uid = card.uid;
             if(handledUids.has(uid) || poolMeta.has(uid)) return;
+            if(passOnlyUid && uid !== passOnlyUid) return;
             // Not ready yet (hp<=0: already dead; wait!==0: still counting down — a wait value
             // never ticks down mid-round on its own, only an explicit effect like
             // reduceWaitOfSpawned can drop it to 0 early, which is exactly why this ISN'T added
@@ -3311,7 +3315,45 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  /* ---- Test Kit manual controls (2026-10-10, user: "let me also control combat with manual attack, do 1 damage etc
+     buttons. Attack button makes the test card attack. If they have an alternate attack type or on-hit effect, it
+     happens"). These run the real combat code, never a copy of it. ---- */
+  function findBoardCard(players, uid){
+    for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue; const c = allBoardCards(pl).find(x=> x.uid===uid); if(c) return {pl, pid, card:c}; }
+    return null;
+  }
+  // One swing by this card only: its arrow volley, its attack with every on-hit effect, Sweep/Swipe, Frenzy, Thorns
+  // back at it, kills and reflow. No upkeep: nothing ticks, no Wait counts down, no round passes.
+  function debugAttack(players, sideOf, uid, stats, events){
+    const f = findBoardCard(players, uid); if(!f || f.card.hp<=0) return false;
+    const w = f.card.wait; f.card.wait = 0;
+    resolveCombat(players, sideOf, stats, events, f.pid, {upkeepIds:[], onlyUid:uid});
+    if(f.card.hp>0 && w>0) f.card.wait = w;
+    return true;
+  }
+  // N plain damage to a card from no one: it can't be dodged; On Attacked, Bleed and death all follow as normal.
+  function debugDamage(players, sideOf, uid, amount, stats, events){
+    const f = findBoardCard(players, uid); if(!f || f.card.hp<=0) return 0;
+    const c = f.card, dmg = damageCardFlat(c, Math.max(0, amount|0), 'true', null);
+    if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'true', ranged:true});
+    if(c.hp>0){ bleedTick(sideOf, f.pid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, f.pid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
+    removeDeadCards(players, sideOf, {}, stats, events);
+    return dmg;
+  }
+  function debugHeal(players, sideOf, uid, amount, stats, events){
+    const f = findBoardCard(players, uid); if(!f) return 0;
+    const n = applyHeal(f.card, amount, sideOf(f.pid), events);
+    if(n > 0) fireHealTriggers(players, sideOf, f.pid, f.card, f.card, n, stats, events);
+    return n;
+  }
+  // Fire one of this card's own trigger hooks by hand (On Round Start, On Turn Start, On Death, On Attacked...).
+  function debugFireTrigger(players, sideOf, uid, hook, stats, events){
+    const f = findBoardCard(players, uid); if(!f) return false;
+    runCustomTriggers(players, sideOf, f.pid, f.card, CARD_DEFS[f.card.defId], hook, stats, events);
+    removeDeadCards(players, sideOf, {}, stats, events);
+    return true;
+  }
+  return { debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

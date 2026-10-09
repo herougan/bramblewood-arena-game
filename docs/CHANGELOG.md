@@ -3,6 +3,20 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **New basic cards (your list):**
+  - shared: Duck Paddler, Pond Trout, Meadow Frog, Forager Ant, Bee Knight and the new **Crossed-Eyes** (2/3 Flying);
+  - Otters: Otter Kit, Otter Centurion and the new **Fleetfoot'd** (2/4 Quick);
+  - Hummingbirds: Cobalt Fledgling, Crimson Recruit, Mosswing (shortened names);
+  - leader: Wandering Traveller.
+  - All start at level 0. Starter decks are the shared six ×2 plus your side's three (×3, ×3, ×2).
+  - Otter starter vs Hummingbird starter is now 52.9% (was ~1%). The tutorial stays an easy win (87% / 82% / 98% by side).
+- **Rarity is on the card border now** (green Uncommon, blue Rare…), not the bottom band. The band is a plain dark scrim for readability.
+- **"Per Turn" is now "On Turn Start"**, with a first option for whose turn: both (every round), yours or the opponent's. Your turn is the round where you strike first.
+- **Card editor:** the preview and art panel has its own right-hand column and no longer covers the form when you scroll.
+- **Test Kit:**
+  - **Manual combat:** ⚔ Attack (one real swing with every on-hit effect, arrows, Sweep and Frenzy; no round passes), 🛡 Get attacked, −1 / −5 / +1 / +5 and ☠ Kill on your card or the enemy facing it, and ▶ Fire any trigger moment.
+  - **One skill at a time:** ◀ ▶ steps through all 69 skills.
+  - **Custom triggers:** the Test Card has the card editor's own trigger rows. Cloning a card brings its triggers along, editable.
 - **Skirmish editor, gallery pickers:**
   - "Enemy deck" is now just **Deck**, with an **Open card gallery** button: card tiles, search, an All/In this deck switch, tap to add a copy, − to remove one;
   - **Castle** opens a castle gallery;

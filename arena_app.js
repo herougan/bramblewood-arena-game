@@ -12193,7 +12193,9 @@ function tutorialStagePlayerDeck(stage, pick, arrangedIds){
 // other side's cards, same spirit as the original single-fight tutorial's opponent.
 function tutorialStageOpponentDeck(stage, pick){
   const rival = rivalOf(pick);
-  const rWait0 = tutorialBasicsByWait(rival, 0), rWait1 = tutorialBasicsByWait(rival, 1);
+  // 2026-10-10: the rival brings only its OWN side's basics (not the shared six), so the one-fight tutorial stays an easy win.
+  const ownOnly = (f, w)=>{ const d = getCardDefs(), by = x=> basicCardIds(x).filter(id=> (d[id].wait||0)===w); return f==='both' ? [...by('otters'), ...by('hummingbirds')] : by(f); };
+  const rWait0 = ownOnly(rival, 0), rWait1 = ownOnly(rival, 1);
   if(stage===2){
     // The "low health, high attack" side of the matchup: only the harder-hitting half of the
     // rival's Wait-0 Basics (Attack 2+, excluding the very weakest Attack-1 starter tier), leaner
@@ -12213,10 +12215,13 @@ function tutorialStageOpponentDeck(stage, pick){
   const weak = ids=> ids.slice().sort((a,b)=> ((defs[a].attack||0)-(defs[b].attack||0)) || ((defs[a].health||0)-(defs[b].health||0)) || (a<b?-1:1));
   const flies = id=> !!((defs[id].effects||{}).flying);
   if(pick==='otters'){
-    const ids = weak(rWait0.filter(flies)).slice(0,1).concat(weak(tutorialBasicsByWait('otters', 0).filter(id=> !flies(id))).slice(0,2));
+    const ids = weak(rWait0.filter(flies)).slice(0,1).concat(weak(ownOnly('otters', 0).filter(id=> !flies(id))).slice(0,2));
     if(ids.length >= 2) return countsFromIds(ids, 2);
   }
-  return countsFromIds(weak(rWait0).slice(0,3), 2);
+  // 2026-10-10: the three weakest of its own basics plus the shared six, leaving out Quick and Swarm (they race a 12 HP castle).
+  const calm = id=> { const fx = defs[id].effects||{}; return !fx.quick && !fx.swarm; };
+  const pool = [...new Set([...rWait0, ...sharedBasicIds().filter(id=> (defs[id].wait||0)===0)])].filter(calm);
+  return countsFromIds(weak(pool.length >= 3 ? pool : rWait0).slice(0,3), 3); // 9 cards: a smaller deck runs out and the AI then plays free 4/4 Bee Tanks
 }
 let factionCountdownTimer = null;
 function showFactionScreen(){
@@ -13100,20 +13105,20 @@ function testKitDefaultState(){
     sel: TESTKIT_CARD_ID, search: '', attack: 1, health: 100, dmgType: 'physical',
     skills: {}, extraEffects: {}, skillSearch: '', others: 'random', speed: 1,
     running: true, fieldNo: 0, round: 0, lastReason: '', counts: {}, busy: false, token: 0,
-    stall: 0, subjectUid: null,
+    stall: 0, subjectUid: null, triggers: [], tour: -1, manualTarget: 'subject', hook: 'onRoundStart',
   };
 }
 // UX: remember the last setup (card, stats, skills, speed) so a tester iterating on one card
 // doesn't rebuild it from scratch every visit. Per-browser convenience only.
 function testKitLoadPrefs(){
   const s = testKitDefaultState();
-  try{ const p = JSON.parse(localStorage.getItem(TESTKIT_PREFS_KEY)||'null'); if(p && typeof p==='object') ['sel','attack','health','dmgType','skills','extraEffects','others','speed'].forEach(k=>{ if(p[k]!==undefined) s[k]=p[k]; }); }catch(e){}
+  try{ const p = JSON.parse(localStorage.getItem(TESTKIT_PREFS_KEY)||'null'); if(p && typeof p==='object') ['sel','attack','health','dmgType','skills','extraEffects','others','speed','triggers'].forEach(k=>{ if(p[k]!==undefined) s[k]=p[k]; }); }catch(e){}
   if(!TESTKIT_SPEEDS.includes(s.speed)) s.speed = 1;
   return s;
 }
 function testKitSavePrefs(){
   if(!testKit) return;
-  try{ localStorage.setItem(TESTKIT_PREFS_KEY, JSON.stringify({sel:testKit.sel, attack:testKit.attack, health:testKit.health, dmgType:testKit.dmgType, skills:testKit.skills, extraEffects:testKit.extraEffects, others:testKit.others, speed:testKit.speed})); }catch(e){}
+  try{ localStorage.setItem(TESTKIT_PREFS_KEY, JSON.stringify({sel:testKit.sel, attack:testKit.attack, health:testKit.health, dmgType:testKit.dmgType, skills:testKit.skills, extraEffects:testKit.extraEffects, triggers:testKit.triggers, others:testKit.others, speed:testKit.speed})); }catch(e){}
 }
 function testKitSkillDefault(sd){
   if(sd.kind==='boolean') return true;
@@ -13128,6 +13133,7 @@ function testKitSkillDefs(){ return Registry.skills().filter(sd=> TESTKIT_SKILL_
 function testKitBuildDefs(){
   const e = JSON.parse(JSON.stringify(testKit.extraEffects||{}));
   testKitSkillDefs().forEach(sd=>{ if(testKit.skills[sd.key]!==undefined){ try{ sd.apply(e, testKit.skills[sd.key]); }catch(err){} } });
+  if((testKit.triggers||[]).length) e.triggers = [...(e.triggers||[]), ...JSON.parse(JSON.stringify(testKit.triggers))];
   testKitDefsOverlay = {
     [TESTKIT_CARD_ID]: {id:TESTKIT_CARD_ID, name:'Test Card', icon:'🧪', attack:Math.max(0, Number(testKit.attack)||0), health:Math.max(1, Number(testKit.health)||1), cost:0, wait:0, rarity:'common', dmgType:testKit.dmgType||'physical', effects:e, token:true, test:true, flavor:'Built in the Test Kit.'},
     [TESTKIT_DUMMY_ID]: {id:TESTKIT_DUMMY_ID, name:'Training Dummy', icon:'🎯', attack:0, health:30, cost:0, wait:0, rarity:'common', dmgType:'physical', effects:{}, token:true, test:true, flavor:'Takes hits. Never hits back.'},
@@ -13305,6 +13311,7 @@ function testKitPanelHTML(){
     <div class="tk-head"><h2>🧪 Test Kit</h2></div>
     <div class="tk-transport" id="tkTransport">${testKitTransportHTML()}</div>
     <div class="tk-status" id="tkStatus" aria-live="polite">${testKitStatusHTML()}</div>
+    ${testKitManualHTML()}
     <section class="tk-section">
       <h3>Card under test</h3>
       <div class="tk-combo">
@@ -13323,8 +13330,10 @@ function testKitPanelHTML(){
       </div>
       ${Object.keys(testKit.extraEffects||{}).length ? `<div class="tk-extra">+ copied extras: ${Object.keys(testKit.extraEffects).map(escapeHtml).join(', ')} <button type="button" class="tk-link" id="tkClearExtra">clear</button></div>` : ''}
       <div class="tk-skill-head"><span>Skills <small id="tkSkillCount">(${Object.keys(testKit.skills).length} on)</small></span>${Object.keys(testKit.skills).length?'<button type="button" class="tk-link" id="tkClearSkills">clear all</button>':''}</div>
+      ${testKitTourHTML()}
       <input type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}" autocomplete="off">
       <div class="tk-skills" id="tkSkills">${testKitSkillListHTML()}</div>
+      ${testKitTriggersHTML()}
     </section>` : ''}
     <section class="tk-section">
       <h3>Everyone else</h3>
@@ -13393,8 +13402,107 @@ function testKitSkillsChanged(){
   // UX: debounce typing so "50" doesn't reset the field twice ("5", then "50").
   testKitSkillDebounce = setTimeout(()=> testKitRequestReset('Test card changed'), 450);
 }
+/* ---- Test Kit additions (2026-10-10, user: "improve the test lab UI ... so I can test EACH skill or custom trigger"
+   and "let me also control combat with manual attack, do 1 damage etc buttons. Attack button makes the test card
+   attack. If they have an alternate attack type or on-hit effect, it happens"). ---- */
+// Skill tour: step through every skill one at a time (the Test Card gets just that one skill).
+function testKitTourHTML(){
+  const all = testKitSkillDefs(), i = testKit.tour, cur = i >= 0 && all[i];
+  return `<div class="tk-tour"><span class="tk-tour-label">One at a time</span><button type="button" class="btn small" id="tkTourPrev" aria-label="Previous skill">◀</button><span class="tk-tour-name">${cur ? `${i+1}/${all.length} · ${escapeHtml(cur.label)}` : `${all.length} skills`}</span><button type="button" class="btn small" id="tkTourNext" aria-label="Next skill">▶</button></div>`;
+}
+function testKitTourGo(d){
+  const all = testKitSkillDefs(); if(!all.length) return;
+  testKit.tour = testKit.tour < 0 ? (d > 0 ? 0 : all.length - 1) : (testKit.tour + d + all.length) % all.length;
+  const sd = all[testKit.tour]; testKit.skills = {[sd.key]: testKitSkillDefault(sd)};
+  testKitRerenderPanel(); testKitSavePrefs(); testKitRequestReset(`Skill tour: ${sd.label}`);
+}
+// Custom triggers on the Test Card: the card editor's own trigger row (same picker, same fields, same engine data).
+function testKitTriggersHTML(){
+  const list = testKit.triggers || [];
+  return `<div class="tk-skill-head"><span>Custom triggers <small>(${list.length})</small></span>${list.length ? '<button type="button" class="tk-link" id="tkClearTrigs">clear all</button>' : ''}</div>
+    <div class="tk-trigs" id="tkTrigs">${list.map((t,i)=> `<div class="tk-trig" data-tki="${i}">${triggerRowHTML(t,i)}</div>`).join('') || '<p class="tk-hint">None yet. A trigger is "On (something), Do (something)", e.g. On Attacked, Do Heal 2.</p>'}</div>
+    <button type="button" class="btn small" id="tkAddTrig">＋ Add trigger</button>`;
+}
+// Manual combat: the auto loop pauses and each button runs one real engine step, replayed with full VFX.
+const TESTKIT_HOOKS = ()=> TRIGGER_DEFS.filter(t=> !['onExile','onDiscard'].includes(t.key));
+function testKitManualHTML(){
+  const tgt = testKit.manualTarget || 'subject';
+  return `<section class="tk-section tk-manual" id="tkManual">
+    <h3>Manual combat</h3>
+    <div class="tk-manual-row">
+      <button type="button" class="btn small primary" data-tkact="attack" title="Your test card attacks once: arrows, its attack, every on-hit effect, Sweep, Frenzy. No round passes">⚔ Attack</button>
+      <button type="button" class="btn small" data-tkact="enemyAttack" title="The enemy facing your test card attacks once">🛡 Get attacked</button>
+    </div>
+    <div class="tk-seg tk-target" role="radiogroup" aria-label="Damage and heal target">
+      <button type="button" class="tk-speed-btn ${tgt==='subject'?'is-on':''}" data-tktarget="subject" role="radio" aria-checked="${tgt==='subject'}">On my test card</button>
+      <button type="button" class="tk-speed-btn ${tgt==='enemy'?'is-on':''}" data-tktarget="enemy" role="radio" aria-checked="${tgt==='enemy'}">On the enemy facing it</button>
+    </div>
+    <div class="tk-manual-row">
+      <button type="button" class="btn small" data-tkact="dmg" data-n="1">−1</button>
+      <button type="button" class="btn small" data-tkact="dmg" data-n="5">−5</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="1">＋1</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="5">＋5</button>
+      <button type="button" class="btn small" data-tkact="kill" title="Deal enough damage to kill it (death triggers fire)">☠ Kill</button>
+    </div>
+    <div class="tk-manual-row">
+      <select id="tkHook" aria-label="Trigger to fire">${TESTKIT_HOOKS().map(t=> `<option value="${t.key}" ${testKit.hook===t.key?'selected':''}>${escapeHtml(t.label)}</option>`).join('')}</select>
+      <button type="button" class="btn small" data-tkact="hook" title="Run this card's own custom triggers for that moment, right now">▶ Fire</button>
+    </div>
+    <p class="tk-hint">Pauses autoplay. "Fire" runs custom triggers only; built-in skills act in real combat.</p>
+  </section>`;
+}
+function testKitEnemyFacingUid(m){
+  const mine = testKitAllCards(m, 1), theirs = testKitAllCards(m, 2); if(!theirs.length) return null;
+  const subj = mine.find(c=> c.uid===testKit.subjectUid);
+  if(subj && Number.isInteger(subj.slot)){ const best = theirs.slice().sort((a,b)=> Math.abs((a.slot||0)-subj.slot) - Math.abs((b.slot||0)-subj.slot))[0]; return best.uid; }
+  const i = Math.max(0, mine.findIndex(c=> c.uid===testKit.subjectUid));
+  return theirs[Math.min(theirs.length-1, Math.round(i * (theirs.length-1) / Math.max(1, mine.length-1)))].uid;
+}
+async function testKitManual(act, n){
+  const m = matchState; if(!m || !m.testKit || testKit.busy || m.resolving) return;
+  if(testKit.running){ testKit.running = false; testKitRefreshTransport(); }
+  const subjectAlive = testKitAllCards(m, 1).some(c=> c.uid===testKit.subjectUid);
+  if(!subjectAlive && act!=='enemyAttack'){ testKitBuildField('Test card died'); }
+  const enemyUid = testKitEnemyFacingUid(m);
+  const tgt = (testKit.manualTarget==='enemy') ? enemyUid : testKit.subjectUid;
+  const E = m.engine, P = m.players, so = m.sideOf;
+  testKit.busy = true;
+  try{
+    await resolveRound({manual:true, run: events=>{
+      if(act==='attack') E.debugAttack(P, so, testKit.subjectUid, m.stats, events);
+      else if(act==='enemyAttack'){ if(enemyUid) E.debugAttack(P, so, enemyUid, m.stats, events); }
+      else if(act==='dmg') E.debugDamage(P, so, tgt, n, m.stats, events);
+      else if(act==='heal') E.debugHeal(P, so, tgt, n, m.stats, events);
+      else if(act==='kill') E.debugDamage(P, so, tgt, 99999, m.stats, events);
+      else if(act==='hook') E.debugFireTrigger(P, so, tgt, testKit.hook, m.stats, events);
+      return false;
+    }});
+    [1,2].forEach(pid=>{ m.players[pid].hq.hp = m.players[pid].hq.maxHp; });
+    m.over = false; m.winner = 0; updateHqHpDisplay('A'); updateHqHpDisplay('B');
+  } finally { testKit.busy = false; testKitRefreshStatus(); testKitRefreshTransport(); }
+}
+function wireTestKitExtras(){
+  const on = (id, f)=>{ const el = document.getElementById(id); if(el) el.onclick = f; };
+  on('tkTourPrev', ()=> testKitTourGo(-1)); on('tkTourNext', ()=> testKitTourGo(1));
+  document.querySelectorAll('#tkManual [data-tkact]').forEach(b=> b.onclick = ()=> testKitManual(b.dataset.tkact, Number(b.dataset.n)||0));
+  document.querySelectorAll('#tkManual [data-tktarget]').forEach(b=> b.onclick = ()=>{ testKit.manualTarget = b.dataset.tktarget; document.querySelectorAll('#tkManual [data-tktarget]').forEach(x=>{ x.classList.toggle('is-on', x===b); x.setAttribute('aria-checked', x===b); }); });
+  { const h = document.getElementById('tkHook'); if(h) h.onchange = ()=>{ testKit.hook = h.value; }; }
+  on('tkAddTrig', ()=>{ testKit.triggers = [...(testKit.triggers||[]), {on:'onAttacked', do:'heal', amount:2, who:'self'}]; testKitRerenderPanel(); testKitSkillsChanged(); });
+  on('tkClearTrigs', ()=>{ testKit.triggers = []; testKitRerenderPanel(); testKitSkillsChanged(); });
+  const box = document.getElementById('tkTrigs'); if(!box) return;
+  box.addEventListener('change', e=>{
+    const wrap = e.target.closest('.tk-trig'); if(!wrap) return;
+    const i = Number(wrap.dataset.tki), row = wrap.querySelector('.trigger-row'); if(!row) return;
+    let t; try{ t = readTriggerRow(row); }catch(err){ return; }
+    const fam = TRIGGER_FAMILIES.find(f=> f.familyKey===t.on); if(fam) t.on = fam.subs[0].key; // picked a family: start on its first option
+    if(e.target.matches('[data-t="do"]')){ const keep = {on:t.on, do:t.do}; if(t.filterArchetype) keep.filterArchetype = t.filterArchetype; if(t.turnOf) keep.turnOf = t.turnOf; t = keep; } // new action: drop the old action's fields
+    testKit.triggers[i] = t; testKitRerenderPanel(); testKitSkillsChanged();
+  });
+  box.addEventListener('click', e=>{ const rm = e.target.closest('[data-rm]'); if(!rm) return; e.preventDefault(); const wrap = rm.closest('.tk-trig'); if(!wrap) return; testKit.triggers.splice(Number(wrap.dataset.tki), 1); testKitRerenderPanel(); testKitSkillsChanged(); });
+}
 function wireTestKitPanel(){
   wireTestKitTransport();
+  wireTestKitExtras();
   const search = document.getElementById('tkSearch');
   const opts = document.getElementById('tkOptions');
   const choose = id=>{
@@ -13422,7 +13530,8 @@ function wireTestKitPanel(){
     // Whatever the simple skill rows can't express (custom triggers, Progeny, …) rides along untouched.
     const probe = {}; testKitSkillDefs().forEach(sd=>{ if(skills[sd.key]!==undefined) try{ sd.apply(probe, skills[sd.key]); }catch(e){} });
     Object.keys(probe).forEach(k=> delete eff[k]);
-    testKit.skills = skills; testKit.extraEffects = eff; testKit.sel = TESTKIT_CARD_ID;
+    testKit.triggers = Array.isArray(eff.triggers) ? eff.triggers : []; delete eff.triggers; // editable in the trigger list
+    testKit.skills = skills; testKit.extraEffects = eff; testKit.sel = TESTKIT_CARD_ID; testKit.tour = -1;
     testKitRerenderPanel(); testKitRequestReset(`Cloned ${d.name}`);
   };
   const num = (id, key, min)=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', ()=>{ const v = Math.max(min, Math.floor(Number(el.value)||0)); testKit[key] = v; const row = document.querySelector('.tk-opt-test .tk-opt-stats'); if(row) row.textContent = `⚔${testKit.attack} ❤${testKit.health}`; testKitSkillsChanged(); }); };
@@ -13434,7 +13543,7 @@ function wireTestKitPanel(){
       const t = e.target;
       if(t.matches('[data-tkskilltoggle]')){
         const key = t.getAttribute('data-tkskilltoggle'); const sd = testKitSkillDefs().find(s=>s.key===key);
-        if(t.checked) testKit.skills[key] = testKitSkillDefault(sd); else delete testKit.skills[key];
+        testKit.tour = -1; if(t.checked) testKit.skills[key] = testKitSkillDefault(sd); else delete testKit.skills[key];
         testKitRerenderPanel(); testKitSkillsChanged(); return;
       }
       if(t.matches('select[data-tkskill]')){ const key = t.getAttribute('data-tkskill'); const v = testKit.skills[key]; if(Array.isArray(v)){ v[0] = t.value; testKitSkillsChanged(); } }
@@ -18377,7 +18486,9 @@ function settleStrayBoardCards(waited){
   });
   if(deferred) requestAnimationFrame(()=> settleStrayBoardCards((waited||0) + 1));
 }
-async function resolveRound(){
+// opts.run(events) (2026-10-10, Test Kit manual controls): replay a custom engine step (one attack, N damage) through the
+// same animation pipeline as a real round; opts.manual keeps the round number, draws and round start where they are.
+async function resolveRound(opts){
   const m = matchState; if(!m||m.over||m.resolving) return;
   m.resolving = true; document.documentElement.classList.add('bw-resolving'); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
   const events = [];
@@ -18417,7 +18528,7 @@ async function resolveRound(){
   setupEnemyBehaviour(m);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
-  let over = (m.forcedWinner!=null) ? true : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
+  let over = (m.forcedWinner!=null) ? true : (opts && opts.run) ? !!opts.run(events) : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
   // combat), with a pulsing zoom-in 'next turn' banner and sequential... decrement animation"):
   // the engine still generates waitTick/ready exactly where it always has (endOfRoundUpkeep, the
@@ -18887,7 +18998,7 @@ async function resolveRound(){
         }).then(({error})=>{ if(error) console.warn('report_live_match_result failed', error); });
       }
     }
-  } else {
+  } else if(!(opts && opts.manual)){
     m.players[1].playedThisTurn=false; m.players[1].discardUsedThisTurn=false;
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
     if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
