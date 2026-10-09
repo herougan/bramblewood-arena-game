@@ -179,7 +179,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // 2026-09-27 batch: On Ally/Enemy Played (the "played from hand" half of the played/spawned
   // split — see fireSpawnFamilyTriggers in this file), On Ally/Enemy Ready, and On Move.
   'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','addWait','missile'];
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -562,7 +562,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:1}); }));
       removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'rain'){
-      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); if(h > 0){ c.hp += h;
+      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const h = applyHeal(c, 2, sideOf(pid), events); if(h > 0){
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, heal:h}); } }));
     }
     if(field && field.rounds != null){ field.rounds -= 1; if(field.rounds <= 0){ if(recordEvents && events) events.push({type:'fieldEnd', field:f, back: baseField ? baseField.id : null}); field = baseField; baseField = null; } }
@@ -576,6 +576,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // +1 damage for every N OTHER Swarm allies on the same board. curPlayers is the live board, set at the
   // start of each combat pass and on every play, so the count is current when a hit is computed.
   let curPlayers = null;
+  // Curses (2026-10-10, Devilry's Desecrate N: "The land is now cursed, where the target stands. It deals N damage every
+  // turn to any unit standing on that field. It stacks linearly."). Keyed by the owner's cell: in slot battles the slot
+  // number, otherwise the lane and position. Cleanse N removes curse points from the cell its unit stands on.
+  const curses = {};
+  function cellKeyOf(players, pid, c){
+    const pl = players && players[pid]; if(!pl || !c) return null;
+    if(slotMode && c.slot != null) return pid + ':s' + c.slot;
+    for(const lane of ['left','center','right']){ const i = pl.row[lane].indexOf(c); if(i >= 0) return pid + ':' + lane + i; }
+    return null;
+  }
+  function curseCell(players, pid, c, n, events){
+    const k = cellKeyOf(players, pid, c); if(!k || !(n > 0)) return;
+    curses[k] = (curses[k]||0) + n;
+    if(recordEvents && events) events.push({type:'curse', cell:k, total:curses[k], targetUid:c.uid, targetDefId:c.defId, slot:c.slot, pid});
+  }
+  function getCurses(){ return Object.assign({}, curses); }
   function swarmBonus(card){
     const def = card && CARD_DEFS[card.defId]; const n = def && def.effects && Number(def.effects.swarm);
     if(!(n > 0) || !curPlayers) return 0;
@@ -609,6 +625,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         amt += kingSlayerBonus;
       }
     }
+    // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
+    // it only weakens attacks aimed at this card.
+    { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0) amt = Math.max(0, amt - sc); }
     if(targetCard.exposed>0){ amt += targetCard.exposed; targetCard.exposed = 0; } // Expose: bonus dmg on the next hit taken, consumed here (before Armor, so Armor still partially mitigates it)
     // Scar (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Mark"): unlike Expose, this
     // NEVER clears on its own -- every future hit this card takes gets the bonus, permanently
@@ -966,8 +985,31 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // equal to its own current stack every time it performs an attack, defends against one, or
   // casts a skill — "every skill, attack, and defend it does." Flat, no resist/armor pipeline,
   // mirroring Poison's own tick (see applyPoisonTicks / damageCardFlat).
+  // Heal (2026-10-10, user: "Heal N heals for N health. But if they have bleed counters - it removes them instead (if
+  // there's extra heal left over, it goes to health)"). Every explicit heal (the Heal action, Regeneration, Bloom,
+  // Spring Rain) goes through here. Returns the HP actually restored.
+  function applyHeal(card, amount, side, events){
+    let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
+    const stanch = Math.min(n, card.bleed|0);
+    if(stanch > 0){ card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
+    const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0) card.hp += healed;
+    return healed;
+  }
+  function cleanseCounters(players, pid, c, budget){
+    let n = budget|0, removed = 0;
+    const take = (k)=>{ if(n<=0 || !(c[k]>0)) return; const d = Math.min(n, c[k]|0); c[k] -= d; n -= d; removed += d; };
+    // a curse on the cell it stands on (Desecrate) comes off first
+    const cell = cellKeyOf(players, pid, c);
+    if(cell && curses[cell] > 0 && n > 0){ const d = Math.min(n, curses[cell]); curses[cell] -= d; n -= d; removed += d; if(!curses[cell]) delete curses[cell]; }
+    ['poison','bleed','decay','corrode','scar','exposed','shocked'].forEach(take);
+    ['stunned','frozen','asleep','paralyzed','blind','staggered'].forEach(k=>{ if(n>0 && c[k]){ c[k] = typeof c[k]==='number' ? Math.max(0, c[k]-1) : false; n--; removed++; } });
+    return removed;
+  }
   function bleedTick(sideOf, ownerId, card, stats, events, cause){
     if(!card || card.hp<=0 || !(card.bleed>0)) return;
+    // 2026-10-10 (user: "Cards with wait shouldn't trigger bleed on themselves. (They can't act!)"): a unit still
+    // under Wait doesn't bleed from its own skills or attacks; it still bleeds when it's hit ('defend').
+    if((cause==='skill' || cause==='attack') && (card.wait||0) > 0) return;
     const dmg = damageCardFlat(card, card.bleed, 'bleed');
     ensureStat(stats, sideOf(ownerId), card.defId).taken += dmg;
     if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause});
@@ -995,7 +1037,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(kind==='freeze'){ defCard.frozen = Math.max(defCard.frozen||0, duration); defCard._frozenJustSet = true; }
     else if(kind==='sleep'){ defCard.asleep = Math.max(defCard.asleep||0, duration); defCard._asleepJustSet = true; }
     else if(kind==='paralyze'){ defCard.paralyzed = Math.max(defCard.paralyzed||0, duration); defCard._paralyzedJustSet = true; }
-    else if(kind==='stunOnHit'){ defCard.stunned = true; defCard._stunnedJustSet = true; }
+    else if(kind==='stunOnHit'){ defCard.stunned = (defCard.stunned|0) + 1; defCard._stunnedJustSet = true; }
     else if(kind==='blind'){ defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; }
     else if(kind==='shock'){ defCard.shocked = Math.max(defCard.shocked||0, duration); defCard._shockedJustSet = true; }
     else if(kind==='stagger'){ defCard.staggered = Math.max(defCard.staggered||0, duration); defCard._staggeredJustSet = true; }
@@ -1781,8 +1823,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
           // result), same live-value convention as 'attack' resolving to boardCard.atk elsewhere.
           const healAmount = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : (t.amount||0);
-          const healed = Math.min(boardCard.maxHp - boardCard.hp, healAmount);
-          if(healed>0){ boardCard.hp += healed; fireHealTriggers(players, sideOf, playerId, boardCard, boardCard, healed, stats, events); }
+          const healed = applyHeal(boardCard, healAmount, mySide, events);
+          if(healed>0){ fireHealTriggers(players, sideOf, playerId, boardCard, boardCard, healed, stats, events); }
           break;
         }
         // Poison/Bleed/Expose/Stun/Increase Wait (2026-09-30): target generalized to who/sub via
@@ -1810,7 +1852,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         case 'stun': {
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent');
-          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, null, stats, events, mySide, 'stun', c=>{ c.stunned = true; c._stunnedJustSet = true; });
+          applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, null, stats, events, mySide, 'stun', c=>{ c.stunned = (c.stunned|0) + (t.count||1); c._stunnedJustSet = true; });
           break;
         }
         // addWait (2026-09-26, new basic action — "add a new set of basic abilities, triggers,
@@ -1908,6 +1950,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // own turn"), matching how buffAttack/buffHealth above default to affecting the
         // caster rather than needing an explicit target.
         case 'cleanse': {
+          // Cleanse N (2026-10-10, user: "Cleanse N - cleanses curses for example"): with an amount, removes up to N
+          // harmful counters, curses on its cell first (Desecrate), then poison, bleed, decay, corrosion, scar, expose
+          // and the skip-a-turn statuses. Without an amount it clears everything, as before.
+          if(t.amount){ const n = cleanseCounters(players, playerId, boardCard, t.amount);
+            if(n > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:n});
+            break; }
           const hadAny = boardCard.poison>0 || boardCard.bleed>0 || boardCard.stunned || boardCard.exposed>0 || boardCard.scar>0 || boardCard.frozen>0 || boardCard.asleep>0 || boardCard.paralyzed>0 || boardCard.blind>0 || boardCard.shocked>0 || boardCard.corrode>0 || boardCard.staggered>0;
           boardCard.poison = 0; boardCard.bleed = 0; boardCard.stunned = false; boardCard.exposed = 0; boardCard.scar = 0;
           boardCard.frozen = 0; boardCard.asleep = 0; boardCard.paralyzed = 0; boardCard.blind = 0; boardCard.shocked = 0; boardCard.corrode = 0; boardCard.staggered = 0;
@@ -2092,12 +2140,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const p1=players[1], p2=players[2];
     const poisoned = [];
     [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.poison>0) poisoned.push({pl,card:c}); })));
-    if(!poisoned.length) return;
+    // Curses tick alongside poison: every unit standing on a cursed cell takes the cell's total.
+    const cursed = [];
+    if(Object.keys(curses).length) [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const k = cellKeyOf(players, pl.id, c); if(k && curses[k] > 0) cursed.push({pl, card:c, n:curses[k]}); })));
+    if(!poisoned.length && !cursed.length) return;
     for(const {pl,card} of poisoned){
       if(card.hp<=0) continue;
       const dmg = damageCardFlat(card, card.poison, 'poison');
       ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg});
+    }
+    for(const {pl,card,n} of cursed){
+      if(card.hp<=0) continue;
+      const dmg = damageCardFlat(card, n, 'curse');
+      ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
+      if(recordEvents && events) events.push({type:'curseTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg});
     }
     removeDeadCards(players, sideOf, {}, stats, events);
   }
@@ -2150,18 +2207,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the board, capped at its own max HP — feeds the new On Heal/On Healed/On Ally Healed
         // triggers (see fireHealTriggers) exactly like any other heal source.
         if(c.hp>0 && def.effects && def.effects.regen){
-          const healed = Math.min(c.maxHp - c.hp, def.effects.regen);
-          if(healed>0){ c.hp += healed; fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
+          const healed = applyHeal(c, def.effects.regen, sideOf(pl.id), events);
+          if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }
         // Bloom (2026-09-17): Regeneration's support-flavored cousin — instead of healing
         // itself, it heals a random OTHER damaged ally on the same board, every round it's on
         // the field. No-op if every other ally is already at full HP (or there are none).
-        if(c.hp>0 && def.effects && def.effects.bloom){
-          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && o.hp<o.maxHp);
+        if(c.hp>0 && def.effects && def.effects.bloom && !c.stunned){ // a stunned unit skips its upkeep actions
+          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0));
           if(others.length){
             const bloomTarget = others[Math.floor(rnd()*others.length)];
-            const bloomHealed = Math.min(bloomTarget.maxHp - bloomTarget.hp, def.effects.bloom);
-            if(bloomHealed>0){ bloomTarget.hp += bloomHealed; fireHealTriggers(players, sideOf, pl.id, c, bloomTarget, bloomHealed, stats, events); }
+            const bloomHealed = applyHeal(bloomTarget, def.effects.bloom, sideOf(pl.id), events);
+            if(bloomHealed>0){ fireHealTriggers(players, sideOf, pl.id, c, bloomTarget, bloomHealed, stats, events); }
           }
         }
         runCustomTriggers(players, sideOf, pl.id, c, def, 'onRoundStart', stats, events);
@@ -2256,7 +2313,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // `stunned` read back false immediately after. Now uses the identical justSet-survives-one-
       // round convention the comment above (frozen/asleep/paralyzed/blind/shock/corrode) already
       // documents as the reason THEY need it.
-      if(c.stunned){ if(c._stunnedJustSet) c._stunnedJustSet = false; else c.stunned = false; return; } // Stun: skip this round's wait decrement entirely; clear starting the round AFTER it was set
+      // Stun counters (2026-10-10, user: "the unit removes a stun counter, then skips their turn including what it does
+      // during upkeep"): each stunned round removes one counter and skips the Wait countdown.
+      if(c.stunned){ if(c._stunnedJustSet) c._stunnedJustSet = false; else c.stunned = Math.max(0, (c.stunned|0) - 1); return; } // Stun: skip this round's wait decrement entirely; clear starting the round AFTER it was set
       if(c.frozen>0 || c.asleep>0) return; // Frozen/Asleep: also skip the wait decrement while active, same as Stun
       // Chronos wait-countdown (2026-09-17, per explicit request): every ordinary decrement
       // that DOESN'T reach 0 pushes its own 'waitTick' event (used purely for the UI's
@@ -2823,6 +2882,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           defCard.poison = (defCard.poison||0) + attDef.effects.poison;
           aStat.poisonApplied += attDef.effects.poison;
         }
+        if(attDef.effects && attDef.effects.desecrate) curseCell(players, a.enemyId, defCard, Number(attDef.effects.desecrate), events); // Desecrate N: curse the cell the target stands on
         // Decay (passive, 2026-09-29): mirrors Poison's on-hit stacking exactly, but as its own
         // separate stack (card.decay, ticked by applyDecayTicks) — see that function's comment
         // for how it differs from Poison at tick time (Decay also saps Attack, not just HP).
@@ -3104,7 +3164,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { roundStart, getField, setField, getPhase, getTide, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

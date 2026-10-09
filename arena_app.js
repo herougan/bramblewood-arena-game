@@ -191,6 +191,9 @@ const PASSIVE_DEFS = [
   // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
+  // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
+  {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
+  {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
   {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
@@ -499,7 +502,8 @@ const ACTION_DEFS = [
   // NOT, since this isn't damage, it's direct removal).
   {key:'exile', label:'Exile', fields:['who','sub'], whoOptions:['self','ally','enemy'], desc:'Send a target to the Removal Zone instead of the graveyard. "Themselves" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal self', fields:['amount'], desc:"Restore this card's own current HP (capped at its existing max — unlike Buff, this never raises the cap itself). Fires On Heal/On Healed/On Ally Healed."},
+  {key:'heal', label:'Heal self', fields:['amount'], desc:"Restore this card's own current HP (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."},
+  {key:'cleanse', label:'Cleanse', fields:['amount'], desc:"Cleanse N: remove up to N harmful counters from this card: a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -5135,7 +5139,8 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal itself for ${amt} (capped at its own max HP)`; break;
+    case 'heal': doText = `heal itself for ${amt} (Bleed first, capped at its own max HP)`; break;
+    case 'cleanse': doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from itself (curses first)` : `cleanse itself of every ailment`; break;
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
     default: doText = aDef.label.toLowerCase();
   }
@@ -14375,7 +14380,15 @@ function showFacing(uid){
   const line = (x2, y2)=> `<line x1="${cx(sr).toFixed(1)}" y1="${cy(sr).toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
   let html = '';
   if(f.foes.length){
-    f.foes.forEach(u=>{ const t = boardCardEl(u); if(!t) return; t.classList.add('is-faced'); const tr = t.getBoundingClientRect(); html += line(cx(tr), cy(tr)); });
+    // Scare (2026-10-10): the line to a Scare unit is a trembling wave, to show the fear.
+    const wavy = (x2, y2)=>{ const x1 = cx(sr), y1 = cy(sr), dx = x2-x1, dy = y2-y1, len = Math.hypot(dx, dy) || 1, nx = -dy/len, ny = dx/len, n = Math.max(6, Math.round(len/14));
+      let d = `M${x1.toFixed(1)} ${y1.toFixed(1)}`; for(let k=1;k<=n;k++){ const t = k/n, a = (k===n ? 0 : (k%2 ? 5 : -5)); d += ` L${(x1+dx*t+nx*a).toFixed(1)} ${(y1+dy*t+ny*a).toFixed(1)}`; }
+      return `<path class="facing-scared" d="${d}"/>`; };
+    const defsNow = getCardDefs();
+    f.foes.forEach(u=>{ const t = boardCardEl(u); if(!t) return; t.classList.add('is-faced'); const tr = t.getBoundingClientRect();
+      const fc = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(u))).find(Boolean);
+      const sc = fc && defsNow[fc.defId] && defsNow[fc.defId].effects && defsNow[fc.defId].effects.scare;
+      html += sc ? wavy(cx(tr), cy(tr)) : line(cx(tr), cy(tr)); });
   } else {
     const castleSide = f.pid===1 ? 'B' : 'A';
     const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
@@ -15516,11 +15529,16 @@ function renderBoard(opts){
     const bySlot = new Map();
     [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) bySlot.set(c.slot, c); });
     let html = '';
+    // Desecrate (2026-10-10): cursed cells show a sigil with their damage per round, occupied or not.
+    const curseMap = (()=>{ try{ return m.engine.getCurses ? m.engine.getCurses() : {}; }catch(e){ return {}; } })();
     for(let sl=-slotRange; sl<=slotRange; sl++){
-      const c = bySlot.get(sl);
-      if(c){ html += boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: c.gladiatorLeader ? 'is-gladiator-leader' : ''}); continue; }
-      if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target" data-slot="${sl}" title="Play here"><span class="slot-target-plus">＋</span></div>`;
-      else html += `<div class="board-card empty-slot" aria-hidden="true"></div>`;
+      const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
+      const mark = cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '';
+      if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
+        if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
+        html += h; continue; }
+      if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target${cur ? ' is-cursed' : ''}" data-slot="${sl}" title="Play here${cur ? ` (cursed: ${cur} a round)` : ''}"><span class="slot-target-plus">＋</span>${mark}</div>`;
+      else html += `<div class="board-card empty-slot${cur ? ' is-cursed' : ''}" aria-hidden="true">${mark}</div>`;
     }
     return html;
   }
@@ -15585,7 +15603,8 @@ function renderBoard(opts){
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
     // visible too, so a change in any of them must trigger a rebuild.
-    const slotSig = slotView ? `S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
+    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}); }catch(e){ return ''; } })();
+    const slotSig = slotView ? `K${curseSig}S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
   const sig2 = rowSignature(p2Rows, dancingSide===2);
@@ -19528,7 +19547,15 @@ function rewardsPanelHTML(m){
     secs.push(`<div class="rw-sec"><div class="rw-head">New fights</div><div class="rw-row">${m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(`${n.name} — ${KIND_LABEL[n.kind]||n.kind} · 🏰 ${n.hqHp} HP${e?` · ${e}⚡`:''}${n.flavor?'. '+n.flavor:''}`)}"><span>${n.icon}</span></span>`; }).join('')}</div></div>`);
   }
-  return secs.length ? `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>` : '';
+  if(!secs.length) return '';
+  // 2026-10-10 (user: "Centre the cards and rewards in their own halves"): when cards were won, the panel splits
+  // into two equal halves, the cards on the left and everything else on the right, each centred.
+  const ui = secs.findIndex(x=> x.startsWith('<div class="rw-sec rw-unlocks"'));
+  if(ui >= 0 && secs.length > 1){
+    const rest = secs.filter((_, i)=> i !== ui);
+    return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards">${secs[ui]}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
+  }
+  return `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>`;
 }
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
@@ -19769,6 +19796,8 @@ function logText(ev){
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
+    case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
+    case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
     case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
     case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
@@ -19830,7 +19859,8 @@ function logText(ev){
         stun: `stunned ${nm(ev.targetDefId)} 💫`,
         debuffAttack: `lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}`,
         scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡, permanent)`,
-        cleanse: `cleansed itself of all ailments ✨`,
+        cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
+        stanch: `stopped ${ev.amount} Bleed with its healing 🩹`,
         grit: `toughened up from the fight (+${ev.amount}⚔, permanent) 💪`,
         blind: `blinded ${nm(ev.targetDefId)} 👁 (its next attacks may miss)`,
         shock: `shocked ${nm(ev.targetDefId)} ⚡ (+50% damage taken)`,
@@ -20280,6 +20310,13 @@ function dmgGlyph(dmgType){
     default: return '➶';
   }
 }
+// Cleanse / stanch (2026-10-10, user: "There should be a cleansing anim"): a rising band of light and motes.
+function cleanseVfx(el){
+  if(!el || reducedMotion() || !fxAtLeast('low')) return;
+  const tile = el.querySelector('.card-tile') || el; const fx = document.createElement('span'); fx.className = 'cleanse-fx'; fx.setAttribute('aria-hidden','true');
+  fx.innerHTML = Array.from({length:7}, (_, k)=> `<i style="left:${10 + k*12}%; animation-delay:${(k%3)*0.08}s"></i>`).join('');
+  tile.appendChild(fx); setTimeout(()=> fx.remove(), 1100);
+}
 function animateAttacker(attUid, isMine, opts){
   opts = opts || {};
   if(attUid==null) return;
@@ -20344,7 +20381,9 @@ function animateAttacker(attUid, isMine, opts){
       // same small in-row jab.
       const leanX = opts.leanX || 0;
       const rot = opts.toCastle ? Math.max(-10, Math.min(10, leanX*0.18)) : 0;
-      gsap.timeline({onComplete:()=> { attackingUids.delete(String(attUid)); el.classList.remove('is-attacking'); }})
+      const tl = gsap.timeline({onComplete:()=> { attackingUids.delete(String(attUid)); el.classList.remove('is-attacking'); }});
+      if(opts.scared){ try{ floatText(el, '😨', 'debuff'); }catch(e){} tl.to(tile, {keyframes:[{x:-4, rotation:-3},{x:4, rotation:3},{x:-3, rotation:-2},{x:3, rotation:2},{x:0, rotation:0}], duration:Math.max(.25, windup/1000), ease:'none'}); }
+      tl
         .to(tile, {y:dir*9, x:leanX*0.35, rotation:rot*0.4, scale:.95, duration:windup/1000, ease:'power2.in'})
         .to(tile, {y:dir*-15, x:leanX, rotation:rot, scale:opts.toCastle?1.1:1.06, duration:(strike*0.55)/1000, ease:'back.out(3)'})
         .to(tile, {y:0, x:0, rotation:0, scale:1, duration:(strike*0.45)/1000, ease:'power2.out', clearProps:'transform'});
@@ -20822,7 +20861,9 @@ function renderVfxForEvent(ev){
     // hasn't attacked at all reads as if it just did. Ranged/triggered hits already get their
     // own projectile travelling to the target (below) as the visual cue for "this card just
     // acted" — that's enough; they no longer also lunge.
-    if(!ev.ranged) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ'});
+    // Scare (2026-10-10, user: "the attacking line is wobbly - to represent the fear"): an attack aimed at a Scare unit trembles.
+    const scaredOf = (()=>{ try{ const td = ev.targetDefId && getCardDefs()[ev.targetDefId]; return !!(td && td.effects && td.effects.scare) && ev.type!=='hitHQ'; }catch(e){ return false; } })();
+    if(!ev.ranged) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf});
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -21004,7 +21045,8 @@ function renderVfxForEvent(ev){
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
-    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el) floatText(el, '✨ Cleansed', 'heal'); if(rc){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; } }
+    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; } }
+    else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
     // Stun-on-hit (heat, reuses the existing stunOnHit->'stun' visual below).
@@ -21269,6 +21311,7 @@ function renderVfxForEvent(ev){
   // Fields and day/night (2026-10-09)
   if(ev.type==='fieldTick' && ev.field!=='frozen'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.dmg ? `🔥-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){} }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
+  if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls — Nocturnal units hit +1.' : '☀️ Day breaks — Diurnal units hit +1.', 'ok'); }catch(e){} }
   if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }
