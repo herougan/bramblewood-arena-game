@@ -1,32 +1,37 @@
 # Action items
 
-_Updated 2026-10-09, 10 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-09, 10:20 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls that unblock the most
 
 | ID | What | My suggestion |
 |---|---|---|
 | **B4** | Cards costing 3+ Lumber (all five dragons included) lose in simulation; no number tweak fixed it | Big cards do something the moment they're played |
-| **B5** | Give the 199 cards with no rarity one from their measured strength, then apply the 64 one-stat fixes | Rarity pass, then stat fixes |
-| **B2** | Retune every map with the new Auto-tune (the old audit is stale after today's CPU fix) | Retune all maps |
 | **D19** | Which archetype to build first | Active Exile zone, then Swarm |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
 
-All 35 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "B5 yes".
+All 31 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "B5 yes".
 
 ## 2. What I'm working on
 
-- **Card balancing** (⚖️ Balance tab, [report](card-balance-2026-10-09.md)):
-  - Every card is measured by real simulated matches, with a target band per rarity.
-  - Next, once you answer B5: the rarity pass and the stat fixes, then re-measure.
+- **Card balancing** (⚖️ Balance tab, [report](card-balance-2026-10-09.md)): done on "continue" with my defaults (B5, revertible):
+  - every card now has a rarity (capped at Rare for now);
+  - 39 extreme outliers moved half-way toward their fix;
+  - 162 of 288 cards are now in their rarity's band (was 124).
+  - Next: expensive cards (B4) once you pick a direction.
 - **Skirmish editing:** the editor can now:
   - simulate a fight against a new player's likely deck at that point;
   - auto-tune the Skirmish Armour to the fight's target win rate;
   - show the whole map's difficulty as a coloured strip.
 
-  Next, once you answer B2: retune every map the same way, and write a short "how to tune a skirmish" guide.
+  - **Every map retuned** (B2, revertible): 85 of 96 fights moved toward their target win rate. The table is in `docs/balance/retune-all.json`.
+  - Still too easy: Sunken Hollow and 3-2. They need stronger cards than their maps have.
 - **CPU opponent:** it now saves Lumber for costly cards. Before this, enemies almost never played them.
+
+## ⚠️ Incident today
+
+The live game failed to load from **09:10 to 10:12**: a stray comment broke the main script. Fixed and redeployed. The test suite now parses every script before anything ships, and it catches this exact bug.
 
 ## 3. Things only you can do (outside chat)
 
