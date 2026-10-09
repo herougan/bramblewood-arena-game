@@ -260,17 +260,17 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 8,
    "skills": [
     "swarm"
    ],
-   "winRate": 80.8,
+   "winRate": 48.3,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base"
   },
@@ -626,9 +626,9 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 8,
+   "health": 10,
    "skills": [],
-   "winRate": 26.7,
+   "winRate": 31.7,
    "band": [
     35,
     60
@@ -746,15 +746,15 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 6,
    "skills": [],
-   "winRate": 21.7,
+   "winRate": 53.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -788,7 +788,7 @@
     "onDeathSpawn",
     "bounty"
    ],
-   "winRate": 41.7,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -1212,12 +1212,12 @@
    "rarity": "common",
    "cost": 2,
    "wait": 3,
-   "attack": 3,
+   "attack": 4,
    "health": 36,
    "skills": [
     "bounty"
    ],
-   "winRate": 30.8,
+   "winRate": 34.2,
    "band": [
     35,
     60
@@ -2048,15 +2048,15 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 6,
    "skills": [],
-   "winRate": 21.7,
+   "winRate": 53.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -2166,17 +2166,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 4,
-   "attack": 3,
+   "attack": 4,
    "health": 22,
    "skills": [
     "bounty"
    ],
-   "winRate": 30,
+   "winRate": 43.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -2677,11 +2677,11 @@
    "cost": 1,
    "wait": 0,
    "attack": 1,
-   "health": 5,
+   "health": 6,
    "skills": [
     "poison"
    ],
-   "winRate": 31.7,
+   "winRate": 34.2,
    "band": [
     35,
     60
@@ -2963,12 +2963,12 @@
    "cost": 1,
    "wait": 2,
    "attack": 6,
-   "health": 11,
+   "health": 12,
    "skills": [
     "stealth",
     "tide"
    ],
-   "winRate": 30.8,
+   "winRate": 32.5,
    "band": [
     35,
     60
@@ -3108,13 +3108,13 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 3,
+   "attack": 4,
    "health": 8,
    "skills": [
     "reload",
     "flying"
    ],
-   "winRate": 18.3,
+   "winRate": 32.5,
    "band": [
     35,
     60
@@ -3293,12 +3293,12 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 5,
+   "health": 6,
    "skills": [
     "onReadyGrace",
     "nocturnal"
    ],
-   "winRate": 20.8,
+   "winRate": 23.3,
    "band": [
     35,
     60
@@ -3556,18 +3556,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 3,
    "skills": [
     "flying",
     "triggers"
    ],
-   "winRate": 27.5,
+   "winRate": 53.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },
@@ -3764,15 +3764,15 @@
    "rarity": "common",
    "cost": 2,
    "wait": 1,
-   "attack": 3,
+   "attack": 4,
    "health": 16,
    "skills": [],
-   "winRate": 33.3,
+   "winRate": 41.7,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -3843,12 +3843,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 2,
+   "attack": 3,
    "health": 7,
    "skills": [
     "triggers"
    ],
-   "winRate": 15,
+   "winRate": 30,
    "band": [
     35,
     60
@@ -3863,12 +3863,12 @@
    "rarity": "common",
    "cost": 2,
    "wait": 2,
-   "attack": 2,
+   "attack": 3,
    "health": 20,
    "skills": [
     "triggers"
    ],
-   "winRate": 26.7,
+   "winRate": 30.8,
    "band": [
     35,
     60
@@ -3986,17 +3986,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
+   "attack": 3,
    "health": 10,
    "skills": [
     "quick"
    ],
-   "winRate": 89.2,
+   "winRate": 59.2,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack"
   },
@@ -4027,11 +4027,11 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 5,
+   "health": 4,
    "skills": [
     "evasive"
    ],
-   "winRate": 71.7,
+   "winRate": 63.3,
    "band": [
     35,
     60
@@ -4067,11 +4067,11 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 10,
+   "health": 8,
    "skills": [
     "thorns"
    ],
-   "winRate": 85.8,
+   "winRate": 78.3,
    "band": [
     35,
     60
@@ -4148,17 +4148,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 10,
    "skills": [
     "rage"
    ],
-   "winRate": 72.5,
+   "winRate": 52.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack"
   },
@@ -4271,11 +4271,11 @@
    "cost": 0,
    "wait": 1,
    "attack": 1,
-   "health": 16,
+   "health": 12,
    "skills": [
     "armor"
    ],
-   "winRate": 67.5,
+   "winRate": 65.8,
    "band": [
     35,
     60
@@ -4394,11 +4394,11 @@
    "cost": 1,
    "wait": 1,
    "attack": 4,
-   "health": 16,
+   "health": 14,
    "skills": [
     "guardian"
    ],
-   "winRate": 77.5,
+   "winRate": 70,
    "band": [
     35,
     60
@@ -4473,17 +4473,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 9,
    "skills": [
     "evasive"
    ],
-   "winRate": 20.8,
+   "winRate": 45.8,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },
@@ -4493,17 +4493,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
+   "attack": 3,
    "health": 8,
    "skills": [
     "quick"
    ],
-   "winRate": 82.5,
+   "winRate": 50,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },
@@ -4513,17 +4513,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 12,
    "skills": [
     "onReadyGrace"
    ],
-   "winRate": 26.7,
+   "winRate": 36.7,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -4763,19 +4763,19 @@
    "rarity": "common",
    "cost": 2,
    "wait": 0,
-   "attack": 2,
+   "attack": 3,
    "health": 7,
    "skills": [
     "sleep",
     "flying",
     "nocturnal"
    ],
-   "winRate": 32.5,
+   "winRate": 35,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -5539,11 +5539,11 @@
    "cost": 2,
    "wait": 2,
    "attack": 6,
-   "health": 10,
+   "health": 12,
    "skills": [
     "stagger"
    ],
-   "winRate": 33.3,
+   "winRate": 34.2,
    "band": [
     35,
     60
@@ -5729,17 +5729,17 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 4,
    "skills": [
     "thorns"
    ],
-   "winRate": 21.7,
+   "winRate": 51.7,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },
@@ -5749,15 +5749,15 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 3,
    "health": 3,
    "skills": [],
-   "winRate": 25.8,
+   "winRate": 45.8,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },
@@ -5808,17 +5808,17 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 3,
    "health": 2,
    "skills": [
     "quick"
    ],
-   "winRate": 25.8,
+   "winRate": 49.2,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base"
   },
@@ -5829,14 +5829,14 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 6,
+   "health": 7,
    "skills": [],
-   "winRate": 27.5,
+   "winRate": 45,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map"
   },

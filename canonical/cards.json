@@ -259,7 +259,7 @@
     "icon": "\ud83d\udc1c",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
+    "attack": 2,
     "health": 8,
     "flavor": "Mandibles built for one purpose. It has never once used them for anything else.",
     "locked": false,
@@ -677,7 +677,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 8,
+    "health": 10,
     "flavor": "Slow, squishy, and somehow always still standing at the end of the round.",
     "locked": true,
     "archetypes": [
@@ -808,7 +808,7 @@
     "icon": "\ud83c\udf31",
     "cost": 0,
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "health": 6,
     "flavor": "Barely a seedling. Somehow already armed.",
     "locked": true,
@@ -1339,7 +1339,7 @@
     "icon": "\ud83d\udc22",
     "cost": 2,
     "wait": 3,
-    "attack": 3,
+    "attack": 4,
     "health": 36,
     "resist": [
       "acid"
@@ -2310,7 +2310,7 @@
     "icon": "\ud83d\udc38",
     "cost": 0,
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "health": 6,
     "flavor": "Croaks once before every fight. Nobody's figured out if it's a warning or a taunt.",
     "locked": true,
@@ -2442,7 +2442,7 @@
     "icon": "\ud83e\udda5",
     "cost": 1,
     "wait": 4,
-    "attack": 3,
+    "attack": 4,
     "health": 22,
     "effects": {
       "bounty": 1
@@ -3094,7 +3094,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 1,
-    "health": 5,
+    "health": 6,
     "archetypes": [
       "Rainforest"
     ],
@@ -3433,7 +3433,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 6,
-    "health": 11,
+    "health": 12,
     "archetypes": [
       "Coral Reef"
     ],
@@ -3611,7 +3611,7 @@
     "icon": "\ud83e\udda4",
     "cost": 1,
     "wait": 1,
-    "attack": 3,
+    "attack": 4,
     "health": 8,
     "archetypes": [
       "Mountain"
@@ -3826,7 +3826,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 5,
+    "health": 6,
     "archetypes": [
       "Cave",
       "Insect"
@@ -4163,7 +4163,7 @@
     "icon": "\ud83d\udd4a\ufe0f",
     "cost": 0,
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "health": 3,
     "archetypes": [
       "Coastal"
@@ -4413,7 +4413,7 @@
     "icon": "\ud83e\udd41",
     "cost": 2,
     "wait": 1,
-    "attack": 3,
+    "attack": 4,
     "health": 16,
     "archetypes": [
       "Rainforest",
@@ -4507,7 +4507,7 @@
     "icon": "\ud83e\udd8a",
     "cost": 1,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 7,
     "archetypes": [
       "Taiga",
@@ -4533,7 +4533,7 @@
     "icon": "\ud83d\udc22",
     "cost": 2,
     "wait": 2,
-    "attack": 2,
+    "attack": 3,
     "health": 20,
     "archetypes": [
       "Rainforest",
@@ -4699,7 +4699,7 @@
     "icon": "\ud83d\udc15",
     "cost": 1,
     "wait": 0,
-    "attack": 4,
+    "attack": 3,
     "health": 10,
     "archetypes": [
       "Desert"
@@ -4752,7 +4752,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "archetypes": [
       "Frost"
     ],
@@ -4805,7 +4805,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 10,
+    "health": 8,
     "archetypes": [
       "Porcupine"
     ],
@@ -4910,7 +4910,7 @@
     "icon": "\ud83e\udda1",
     "cost": 1,
     "wait": 0,
-    "attack": 3,
+    "attack": 2,
     "health": 10,
     "archetypes": [
       "Badger"
@@ -5081,7 +5081,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 16,
+    "health": 12,
     "archetypes": [
       "Sloth"
     ],
@@ -5255,7 +5255,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 16,
+    "health": 14,
     "archetypes": [
       "Dog"
     ],
@@ -5373,7 +5373,7 @@
     "icon": "\ud83d\udc38",
     "cost": 1,
     "wait": 1,
-    "attack": 2,
+    "attack": 3,
     "health": 9,
     "archetypes": [
       "Frog"
@@ -5401,7 +5401,7 @@
     "icon": "\ud83d\udc07",
     "cost": 1,
     "wait": 0,
-    "attack": 4,
+    "attack": 3,
     "health": 8,
     "archetypes": [
       "Rabbit"
@@ -5429,7 +5429,7 @@
     "icon": "\ud83d\udd14",
     "cost": 1,
     "wait": 1,
-    "attack": 2,
+    "attack": 3,
     "health": 12,
     "archetypes": [
       "Shrine"
@@ -5760,7 +5760,7 @@
     "icon": "\ud83e\udd8b",
     "cost": 2,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 7,
     "effects": {
       "sleep": {
@@ -7891,7 +7891,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 6,
-    "health": 10,
+    "health": 12,
     "dmgType": "physical",
     "effects": {
       "stagger": {
@@ -8313,7 +8313,7 @@
     "icon": "\ud83e\udd94",
     "cost": 0,
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "health": 4,
     "flavor": "Curls up first, asks questions later.",
     "locked": true,
@@ -8338,7 +8338,7 @@
     "icon": "\ud83d\udc38",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 3,
     "flavor": "Jumps into every puddle and every fight.",
     "locked": true,
@@ -8401,7 +8401,7 @@
     "icon": "\ud83d\udc07",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "flavor": "First to the clover. First to the fight.",
     "locked": true,
@@ -8422,7 +8422,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 7,
     "flavor": "Polished shell, simple orders, no complaints.",
     "locked": true,
     "archetypes": [

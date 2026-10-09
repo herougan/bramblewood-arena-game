@@ -925,7 +925,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
     if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
-    if(dd.flying && !ad.flying && rnd() < 0.5){ lastMissReason = 'flying'; return false; }
+    if(dd.flying && !ad.flying && !ad.reach && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
     if(fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)

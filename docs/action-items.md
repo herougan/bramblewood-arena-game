@@ -1,11 +1,12 @@
 # Action items
 
-_Updated 2026-10-09, 11:55 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-10, 12:20 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
 | ID | What | My suggestion |
 |---|---|---|
+| **B6** ⚠️ | The hummingbird starter deck beats the otter starter deck **~99%** of the time (all flyers, Diurnal, 2 copies each of 10 solid cards) | F: hummingbird Basics with 2+ Attack lose 1 Attack, otter 1-Attack fillers gain 1, Otter Guard and River Carp get **Reach** (ignores the Flying dodge). Measured ~47% |
 | **D19** | Archetypes: Swarm, Tide, the Exile zone and the Forgotten Ones are built. What next? | Devilry circles |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
@@ -16,7 +17,8 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 
 - **Card balance** (⚖️ Balance tab, [report](card-balance-2026-10-09.md)):
   - every card has a rarity and is measured in simulated matches;
-  - the extreme outliers were moved half-way toward balance.
+  - two passes moved outliers half-way toward balance: 171 of 294 cards are now in band;
+  - still out of band: Rares that are only Rare because the rarity pass was capped at Rare, walls and Lumber makers (a win-rate test can't value them), and the 3+ cost cards.
 - **Big cards now come out:**
   - you chose Lumber from cards, not free income (B4);
   - 31 enemy decks with 3+ cost cards now carry their map's Lumber maker (Toucan Courier on the savanna, Coral Polyp Colony on the reef, Beaver Builders on the Tundra…);

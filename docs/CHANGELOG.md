@@ -3,6 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-09 (night)
+- **Second card-balance pass:**
+  - 29 common and uncommon outliers moved half-way toward their rarity band: e.g. Dune Jackal 3 Attack, Jackrabbit Sprinter 3 Attack, Soldier Ant 2 Attack, Shepherd's Bark 14 Health, Rabbit Kit 3/2, Peak Condor 4 Attack.
+  - Cards in band: 155 → 171 of 294.
+  - Every map was retuned for it; seven fights needed card swaps, and Hedgerow Scouts kept its rabbits and foxes.
+- **Found:** the hummingbird starter deck beats the otter starter deck ~99% of the time in simulation. Fixes are measured; it's your call (B6).
+- New skill **Reach** (attacks ignore Flying's dodge), ready for the B6 fix; no card has it yet.
 - **The Removal Zone comes alive:**
   - Every card sent there gives its owner 1 Echo 🕯️, shown on the deck badge.
   - **Remember N** cards come back from it once you have N Echoes.

@@ -17,8 +17,8 @@
 
    | Cost | Cards | Median win % |
    |---|---|---|
-   | 0 | 117 | 46.7 |
-   | 1 | 86 | 68.8 |
+   | 0 | 117 | 49.2 |
+   | 1 | 86 | 62.5 |
    | 2 | 61 | 48.3 |
    | 3+ | 30 | 37.9 |
 
@@ -35,10 +35,10 @@
 
 | Rarity | Cards | Median win % |
 |---|---|---|
-| common | 156 | 41.7 |
+| common | 156 | 43.8 |
 | rare | 81 | 75.8 |
 | starter | 36 | 42.9 |
-| uncommon | 16 | 61.2 |
+| uncommon | 16 | 59.5 |
 | legendary | 5 | 38.3 |
 
 ## Strongest cheap cards (cost 0–1)
@@ -81,15 +81,15 @@
 | Termite Mound | common | 1 / 1 | 0/22 | 14.2 |
 | Meadow Rabbit | starter | 0 / 0 | 1/4 | 14.2 |
 | Blessed Avatar | common | 0 / 2 | 6/20 | 15 |
-| Trickster Fox | common | 1 / 0 | 2/7 | 15 |
 | Worker Ant | starter | 0 / 0 | 1/3 | 15.8 |
 | Chipmunk Hoarder | common | 0 / 1 | 1/5 | 17.5 |
-| Peak Condor | common | 1 / 1 | 3/8 | 18.3 |
 | Pill Bug | starter | 0 / 0 | 1/4 | 18.3 |
 | Beaver Lumberjack | common | 0 / 1 | 1/4 | 19.2 |
-| Glowworm Cluster | common | 0 / 1 | 2/5 | 20.8 |
-| Camouflage Frog | common | 1 / 1 | 2/9 | 20.8 |
 | Cobalt Talon Fledgling | starter | 0 / 0 | 1/2 | 20.8 |
+| Sparrow Chick | starter | 0 / 0 | 1/2 | 20.8 |
+| Field Mouse | common | 0 / 0 | 1/5 | 21.7 |
+| Marsh Gas Toad | common | 1 / 1 | 0/10 | 21.7 |
+| Toucan Courier | common | 0 / 0 | 1/4 | 22.5 |
 
 ## Suggested fixes for cards that have a rarity (0)
 
