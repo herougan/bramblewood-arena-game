@@ -18,7 +18,7 @@ const charById = {}; (Array.isArray(chars) ? chars : Object.values(chars)).forEa
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const i = src.indexOf('const CONQUEST_MAPS = ['); const j = src.indexOf('\n];', i);
 const CONQUEST_MAPS = eval(src.slice(i + 'const CONQUEST_MAPS = '.length, j + 2));
-const basics = f=> Object.keys(defs).filter(id=> defs[id].basic && defs[id].faction===f).sort();
+const basics = f=> Object.keys(defs).filter(id=> defs[id].basic && (defs[id].basicSet||defs[id].faction)===f).sort();
 const starter = {}; if(FACTION==='otters') basics('otters').forEach(id=> starter[id]=1); else basics('hummingbirds').forEach(id=> starter[id]=2);
 function play(deckA, deckB, hpA, charB, hpB, seed, mode){
   const rnd = E.mulberry32(seed);

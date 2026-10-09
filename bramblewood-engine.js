@@ -210,6 +210,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //  - pl.onHqHit(amount, attackerCard): if it returns a number, that replaces the castle hit
   //    (trench roll-through to the next row, or a boss castle shielded while its entities stand).
   let passUpkeepIds = null, passAttackerIds = null, currentAttacker = null;
+  let curInitiative = 2;
   function inUpkeep(pl){ return !passUpkeepIds || passUpkeepIds.includes(pl.id); }
   function isSuddenDeath(){ return suddenDeath; }
   function allBoardCards(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right]; }
@@ -1756,6 +1757,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Generic "once" flag: this exact trigger fires at most once for this
       // specific board-card INSTANCE (not the card definition, so every copy
       // of a card in play gets its own one-time use).
+      // On Turn Start (perTurn) whose-turn parameter (2026-10-10): 'self' fires only on rounds this card's owner
+      // strikes first, 'enemy' only on the opponent's; unset/'both' = every round (the original Per Turn).
+      if(hook==='perTurn' && t.turnOf && t.turnOf!=='both' && ((t.turnOf==='self') !== (curInitiative===playerId))) return;
       if(t.once){
         const key = 'once:'+hook+':'+i;
         if(boardCard.firedOnce[key]) return;
@@ -2692,6 +2696,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     finally { passUpkeepIds = null; passAttackerIds = null; currentAttacker = null; }
   }
   function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
+    curInitiative = firstAttackerSide || 2; // On Turn Start's 'yours'/'opponent's' = who strikes first this round
     // Ordering (2026-09-16, per explicit request: "Poison should happen first") — Poison now
     // ticks BEFORE any round-start trigger (Renewal cleanse, Regeneration, On Round Start, Per
     // Turn). Previously Renewal ran first and could cleanse a stack away before it ever dealt

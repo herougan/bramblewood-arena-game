@@ -272,7 +272,7 @@ const PASSIVE_DEFS = [
   // picker (c.mechanicLine / the "Archetype" field further down the editor), NOT the Type Tags
   // pill list above (River/Otter/Insect/...) — the two systems share the word "archetype" in
   // this codebase's UI copy, which is worth untangling if it keeps causing confusion.
-  {key:'inherentDarkness', category:'evergreen', mechLineGate:'devilry', label:'Inherent Darkness', kind:'number', min:0, desc:v=>`While Ready (Per Turn), generates ${v} Dark Point${v===1?'':'s'} for this card's owner every round. Only selectable on a Devilry-archetype card.`},
+  {key:'inherentDarkness', category:'evergreen', mechLineGate:'devilry', label:'Inherent Darkness', kind:'number', min:0, desc:v=>`While Ready (On Turn Start), generates ${v} Dark Point${v===1?'':'s'} for this card's owner every round. Only selectable on a Devilry-archetype card.`},
   {key:'coreEvil', category:'evergreen', mechLineGate:'devilry', label:'Core Evil', kind:'boolean', desc:()=>`Generates 1 Dark Point the moment this card is pitched (stacks with the Devilry archetype's own discard bonus, if this card also has one). Only selectable on a Devilry-archetype card.`},
   // Frenzy and Rend (2026-09-16, Bramblewood's takes on Tyrant Unleashed's "Flurry" and
   // "Pierce") — found missing from this list entirely during the 2026-09-21 Skills/VFX/SFX
@@ -348,7 +348,7 @@ const TRIGGER_DEFS = [
   // where the card is simply sitting at Wait=0 already. "Per Turn" below is the hook that
   // actually re-fires every such round; this fixed text says so, so no future card design gets
   // fooled the way this feature nearly did.
-  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "Per Turn" instead.'},
+  {key:'onReady', label:'On Ready', desc:'the moment this card\'s Wait first reaches 0 — fires ONCE, not every round. For an effect that repeats every round this card is Ready, use "On Turn Start" instead.'},
   {key:'onDeath', label:'On Death', desc:'the moment this card dies'},
   {key:'onAttacked', label:'On Attacked', desc:'every time this card is hit (melee or ranged/skill) and survives'},
   {key:'onAttack', label:'On Attack', desc:'every time this card commits to attacking this round (before its target resolves)'},
@@ -379,7 +379,10 @@ const TRIGGER_DEFS = [
   // 2026-09-16 batch: seven new hooks. All seven support the optional archetype/type-tag
   // filter (see the card editor's custom-trigger row) — "On Ally Spawn, filtered to Ant" reads
   // as its own trigger in practice even though it's really On Ally Spawn + a condition.
-  {key:'perTurn', label:'Per Turn', desc:'every round this card is Ready (Wait = 0, and not Stunned/Frozen/Asleep/Paralyzed) — unlike On Round Start, this does NOT fire while the card is still charging up or locked down'},
+  // Renamed "Per Turn" -> "On Turn Start" (2026-10-10, user). Its first parameter picks whose turn: both (every
+  // round, the old behaviour), yours or the opponent's. Both sides plan and then resolve together, so "your turn" is
+  // the round where you strike first (initiative alternates every round).
+  {key:'perTurn', label:'On Turn Start', desc:"the start of a turn while this card is Ready (Wait 0, not Stunned/Frozen/Asleep/Paralyzed). Pick whose turn: both (every round), yours (the rounds you strike first) or the opponent's (the rounds they strike first)"},
   {key:'onEnemySpawn', label:'On Enemy Spawn', desc:"every time a card the OPPONENT controls is put into play by a card's ABILITY (the Spawn action, On Death: Spawn) — not a hand play. For a hand play, use \"On Enemy Played\" instead"},
   {key:'onColumnSpawn', label:'On Column Spawn', desc:'every time ANY card (either side) is spawned into this card\'s own lane/column'},
   {key:'onAllyDie', label:'On Ally Die', desc:"every time a DIFFERENT card this player controls dies — the flip side of On Death, which only fires for this card's own death"},
@@ -464,7 +467,7 @@ const ACTION_DEFS = [
   // existing Per Turn trigger. Consumes exactly 1 Stone (no-ops if the owner has none that turn)
   // and produces Amount Elemental Energy — the fixed 1-Stone cost keeps this a simple two-field
   // ask (trigger + amount) rather than a fully generic resource-conversion system.
-  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with Per Turn. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
+  {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with On Turn Start. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
   {key:'drawCard', label:'Draw', fields:['count'], desc:"This card's owner draws that many cards."},
   {key:'exileGrave', label:'Exile from graveyard', fields:['count'], desc:"Move that many random cards from the owner's graveyard to the Removal Zone. Each one gives 1 Echo."},
   {key:'spawnCard', label:'Spawn', fields:['defId','count'], desc:'Spawn copies of another card onto this row.'},
@@ -3636,7 +3639,7 @@ function referenceHTML(){
     <div class="ref-card mech-devilry-swatch"><span class="kind">Resource</span><b>😈 Devilry — ★ Dark Points</b><p>A third currency, mirroring Grace exactly. Its abilities show in a dark, blood-red box. 😈 marks the Devilry archetype itself; ★ is the resource symbol — you'll see it on any card with a "Gain Dark Points" ability, and in the HUD. Discarding a Devilry-line card (imps, demons, and other Devilry units) grants a bonus +1 Dark Point on top of its normal discard yield.</p></div>
     <div class="ref-card"><span class="kind">Resource</span><b>🪨 Stone</b><p>Dormant for now — discarding a card no longer grants it (see Lumber). Only a card's own "Gain stone" custom trigger can produce any; the HUD pill only appears while one is in play.</p></div>
     <div class="ref-card"><span class="kind">Resource</span><b>🪵 Lumber</b><p>Earned by pitching ANY card from hand (Structure or not) — the basic discard resource. Also the fuel the Refine action consumes.</p></div>
-    <div class="ref-card"><span class="kind">Resource</span><b>✨ Elemental Energy</b><p>The advanced resource — not pitchable directly. Only the Refine action produces it, by consuming 1 Lumber per proc (pair Refine with the Per Turn trigger).</p></div>
+    <div class="ref-card"><span class="kind">Resource</span><b>✨ Elemental Energy</b><p>The advanced resource — not pitchable directly. Only the Refine action produces it, by consuming 1 Lumber per proc (pair Refine with the On Turn Start trigger).</p></div>
     <div class="ref-card"><span class="kind">Metadata</span><b>Archetype</b><p>Optionally Grace (Ecclesia), Exile (Scrapper), or Devilry — unlocks that line's cost field and color treatment.</p></div>
     <div class="ref-card"><span class="kind">Metadata</span><b>Type Tags</b><p>Freeform-ish labels (animal type, geography, and Structure) — shown on hover, matched by name-based synergy triggers. A card with no "Structure" tag is a Unit.</p></div>
   </div></div>
@@ -4409,6 +4412,14 @@ function mountEditorSide(modal){
     ${c.__fromHistory ? '<div class="ce-mode ce-unsaved">↶ An earlier version is loaded. Save to keep it.</div>' : ''}
     ${c.id ? '<details class="ce-history" id="ceHistory"><summary>History</summary><div id="ceHistoryList" class="ce-hist-list">Loading…</div></details>' : ''}
   </aside>`);
+  // 2026-10-10 (user: "this section in the card editor follows the scroll and blocks the UI. Can you move it to the
+  // right?"): the panel used to float over the form and stay stuck while the form scrolled under it. The form now
+  // sits in its own left column and the panel in a right column of its own, so it can stay in view without covering.
+  { const side = modal.querySelector('.ce-side'), body = document.createElement('div'), main = document.createElement('div');
+    body.className = 'ce-body'; main.className = 'ce-main';
+    while(side.nextSibling) main.appendChild(side.nextSibling);
+    side.parentNode.insertBefore(body, side); body.appendChild(main); body.appendChild(side);
+    modal.classList.add('has-ce-side'); }
   if(c.id) fetchTxns().then(txns=>{
     const list = document.getElementById('ceHistoryList'); if(!list || !editingCard || editingCard.id!==c.id) return;
     const mine = txns.filter(t=> t.cardId===c.id).slice(0, 12);
@@ -5044,10 +5055,12 @@ function triggerRowHTML(t,i){
   const familyVal = family ? family.familyKey : t.on;
   const topOptions = topLevelTriggerOptions();
   const onFamilyHtml = `<select data-t="onFamily" data-i="${i}" title="${escapeAttr(family ? family.desc : ((TRIGGER_DEFS.find(x=>x.key===t.on)||{}).desc||''))}">${[...topOptions].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.value}" title="${escapeAttr(x.desc)}" ${familyVal===x.value?'selected':''}>${x.label}</option>`).join('')}</select>`;
+  const TURN_OF = [['both','both turns'],['self','your turn'],['enemy',"opponent's turn"]];
+  const turnOfHtml = t.on==='perTurn' ? `<select data-t="turnOf" data-i="${i}" title="Whose turn: both = every round; yours = rounds you strike first; opponent's = rounds they strike first">${TURN_OF.map(([v,l])=> `<option value="${v}" ${(t.turnOf||'both')===v?'selected':''}>${l}</option>`).join('')}</select>` : '';
   const onSubHtml = family ? `<select data-t="onSub" data-i="${i}" title="${escapeAttr((TRIGGER_DEFS.find(x=>x.key===t.on)||{}).desc||'')}">${family.subs.map(s=>`<option value="${s.key}" title="${escapeAttr((TRIGGER_DEFS.find(x=>x.key===s.key)||{}).desc||'')}" ${t.on===s.key?'selected':''}>${s.sub}</option>`).join('')}</select>` : '';
   return `<div class="trigger-block">
   <div class="trigger-row">
-    <span>On</span>${onFamilyHtml}${onSubHtml}
+    <span>On</span>${onFamilyHtml}${onSubHtml}${turnOfHtml}
     ${filterHtml}
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
@@ -5090,6 +5103,8 @@ function readTriggerRow(row){
   if(matchModeEl) t.matchMode = matchModeEl.value;
   const filterArchEl = row.querySelector('[data-t="filterArchetype"]');
   if(filterArchEl && filterArchEl.value) t.filterArchetype = filterArchEl.value;
+  const turnOfEl = row.querySelector('[data-t="turnOf"]');
+  if(on==='perTurn' && turnOfEl && turnOfEl.value!=='both') t.turnOf = turnOfEl.value;
   const countEl = row.querySelector('[data-t="count"]');
   if(countEl && countEl.value!=='') t.count = Number(countEl.value)||1;
   const dmgEl = row.querySelector('[data-t="dmgType"]');
@@ -5113,7 +5128,7 @@ function readTriggerRow(row){
 function triggerPreviewText(t){
   const FILL = '<<>>';
   const trig = TRIGGER_DEFS.find(x=>x.key===t.on);
-  const trigLabel = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : trig.label) : FILL;
+  const trigLabel = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
   const aDef = ACTION_DEFS.find(x=>x.key===t.do);
   if(!aDef) return `${trigLabel}, ${FILL}.`;
   const amt = t.amount==='attack' ? 'its own Attack' : t.amount==='health' ? 'its own Health' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
@@ -12087,10 +12102,13 @@ function saveTutorialStage(n){ try{ localStorage.setItem('bramblewood_arena_tuto
 // Reads the new Basics tier straight off card data (rather than a hardcoded id list) so future
 // edits to canonical/cards.json (retuning a stat, adding a 21st Otter Basic, etc.) never need a
 // matching change here.
+// 2026-10-10 (user's new basic set): every basic card carries basicSet 'shared' | 'otters' | 'hummingbirds'.
+// basicCardIds(faction) is that faction's own basics; sharedBasicIds() the six both sides get.
 function basicCardIds(faction){
   const defs = getCardDefs();
-  return Object.keys(defs).filter(id => defs[id].basic && defs[id].faction===faction).sort();
+  return Object.keys(defs).filter(id => defs[id].basic && (defs[id].basicSet || defs[id].faction)===faction).sort();
 }
+function sharedBasicIds(){ const defs = getCardDefs(); return Object.keys(defs).filter(id => defs[id].basic && defs[id].basicSet==='shared').sort(); }
 // Otters: 20 unique Basics x1 copy = a clean 20-card deck. Hummingbirds: 10 unique Basics x2
 // copies = the same 20, reflecting the "mini-roster" scope Jay asked for relative to the Otter
 // side's full 20. 'Both' (the 15s-timeout default) splits the difference with a fixed, evenly-
@@ -12098,11 +12116,13 @@ function basicCardIds(faction){
 // build the player's real, persisted starting deck once the whole tutorial series is complete --
 // see the header comment above for why individual skirmishes never touch this.
 function buildFactionStarterDeck(pick){
-  const otterIds = basicCardIds('otters'), hbIds = basicCardIds('hummingbirds');
-  const counts = {};
-  if(pick==='otters'){ otterIds.forEach(id=> counts[id]=1); }
-  else if(pick==='hummingbirds'){ hbIds.forEach(id=> counts[id]=2); }
-  else { otterIds.slice(0,10).forEach(id=> counts[id]=1); hbIds.slice(0,5).forEach(id=> counts[id]=2); }
+  // 2026-10-10: 20 cards = the six shared basics x2 (12) + the side's three basics (8: x3, x3, and x2 for the
+  // strongest). 'Both' (the timeout default) takes one basic from each side's three instead.
+  const defs = getCardDefs(), power = id=> (defs[id].attack||0) + (defs[id].health||0) + 2*(defs[id].wait||0);
+  const counts = {}; sharedBasicIds().forEach(id=> counts[id] = 2);
+  const side = pick==='otters' || pick==='hummingbirds' ? basicCardIds(pick)
+    : [...basicCardIds('otters').slice(0,2), ...basicCardIds('hummingbirds').slice(0,1)];
+  side.sort((a,b)=> power(a) - power(b)).forEach((id, i, arr)=> counts[id] = (counts[id]||0) + (i === arr.length - 1 ? 2 : 3));
   return counts;
 }
 function rivalOf(pick){ return pick==='otters' ? 'hummingbirds' : (pick==='hummingbirds' ? 'otters' : 'both'); }
@@ -12112,7 +12132,7 @@ function rivalOf(pick){ return pick==='otters' ? 'hummingbirds' : (pick==='hummi
 // feature real cards from both sides rather than an arbitrary single faction.
 function tutorialBasicsByWait(pick, wantWait){
   const defs = getCardDefs();
-  const forFaction = f => basicCardIds(f).filter(id => (defs[id].wait||0)===wantWait);
+  const forFaction = f => [...basicCardIds(f), ...sharedBasicIds()].filter(id => (defs[id].wait||0)===wantWait); // 2026-10-10: a side's basics include the shared six
   if(pick!=='both') return forFaction(pick);
   const o = forFaction('otters'), h = forFaction('hummingbirds');
   return o.slice(0, Math.ceil(o.length/2)).concat(h.slice(0, Math.ceil(h.length/2)));

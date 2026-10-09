@@ -1,5 +1,47 @@
 # Starter decks: the Basic cards (2026-10-10)
 
+## ✅ Your new basic set (built 2026-10-10, 2 am)
+| Set | Cards |
+|---|---|
+| **Shared** (both sides) | Duck Paddler, Pond Trout, Meadow Frog, Forager Ant, Bee Knight, **Crossed-Eyes** (new: 2/3 Flying, the cross-eyed pigeon) |
+| **Otters** | Otter Kit, Otter Centurion, **Fleetfoot'd** (new: 2/4 Quick) |
+| **Hummingbirds** | Cobalt Fledgling, Crimson Recruit, Mosswing |
+| **Leader** | Wandering Traveller |
+
+- **Renamed (display only, ids unchanged):** Cobalt Talon Fledgling → Cobalt Fledgling, Crimson Wing Recruit → Crimson Recruit, Mosswing Laborer → Mosswing. Otter Centurion kept its name; say if you want just "Centurion".
+- **Starter deck (20):** the six shared ×2, plus your side's three as ×3, ×3 and ×2 (the strongest gets 2). "Both" takes two otter and one hummingbird basic.
+- **All basics start at level 0.** The old 30 starter cards are still owned by everyone (rarity Starter) but are no longer the basics.
+- **Players who already finished the tutorial keep their saved decks.** New players get the new set.
+- **The tutorial fight** uses your side's basics plus the shared six: won 100% (Otters), 99% (Hummingbirds) and 100% (Both) over 300 games.
+- **Meadow Frog** is still also the first-clear reward of Hedgerow Scouts (Thistle Fields). Swap that reward if you like.
+
+### Measured: starter vs starter
+Otters win **52.9%** of games against Hummingbirds (400 games). It was ~1% with the old decks (B6), so the shared core fixes B6.
+
+### Measured: each basic within the set
+Reference deck: 2 of each basic. Test deck: the same with 4 more copies of one card. About 50% is average.
+
+| Card | Set | Stats | Win % |
+|---|---|---|---|
+| Duck Paddler | shared | 3/6 Wait 1, Flying | 78.8 |
+| Otter Centurion | otters | 3/9 Wait 1 | 67.0 |
+| Bee Knight | shared | 2/3, Flying, Swarm, Diurnal | 62.5 |
+| Crimson Recruit | hummingbirds | 2/3, Flying, Diurnal | 53.4 |
+| Forager Ant | shared | 2/4, Swarm, Hive Mind | 50.5 |
+| Crossed-Eyes | shared | 2/3, Flying | 47.5 |
+| Meadow Frog | shared | 3/3 | 42.9 |
+| Fleetfoot'd | otters | 2/4, Quick | 42.9 |
+| Mosswing | hummingbirds | 1/5, Flying | 42.9 |
+| Pond Trout | shared | 2/4 | 36.5 |
+| Cobalt Fledgling | hummingbirds | 1/2, Flying, Diurnal | 30.0 |
+| Otter Kit | otters | 1/3 | 26.1 |
+
+The spread is wide: Duck Paddler and Otter Centurion are well above the rest, and Otter Kit and Cobalt Fledgling well below. I've left the numbers for your balancing pass.
+
+---
+
+## Before 2026-10-10 (the old basics, for reference)
+
 For your reorganisation. **Win %** is each card measured on its own against the reference deck (see the ⚖️ Balance tab): about 50% is average, and the starter band is 20–48%.
 
 ## How it works today

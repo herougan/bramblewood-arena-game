@@ -6823,6 +6823,23 @@
   .skirmish-editor .se-slot .se-x{position:absolute; top:-7px; right:-7px; width:24px; height:24px; border-radius:50%; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); display:grid; place-items:center; font-size:11px; z-index:3; cursor:pointer;}
   .skirmish-editor .se-h-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:14px 0 6px;}
   .skirmish-editor .se-h-row .se-h{margin:0;}
+  /* Card editor: form left, preview/art panel in its own right column (2026-10-10) */
+  .modal.has-ce-side{width:min(980px, 100%);}
+  .ce-body{display:flex; align-items:flex-start; gap:20px;}
+  .ce-body > .ce-main{flex:1 1 auto; min-width:0;}
+  .ce-body > .ce-side{float:none; flex:0 0 200px; width:200px; margin:0; position:sticky; top:0; max-height:calc(100vh - 120px); overflow:auto;}
+  @media (max-width: 700px){ .ce-body{flex-direction:column-reverse;} .ce-body > .ce-side{flex:none; width:auto; position:static; max-height:none;} }
+  /* Rarity lives on the border (2026-10-10, user: "is the blue hue on the card representative of its rarity? It
+     should be the borders!"). The bottom band used to carry the rarity colour; it is now a plain dark scrim that only
+     keeps the name and stats readable, and the card's border takes the rarity colour instead (lighter at the top,
+     the rarity's second colour at the bottom). Legendary and up keep their gold-leaf rim on top of this. */
+  .card-tile{border-width:2px; border-style:solid;
+    border-color:color-mix(in srgb, var(--rarity-a, var(--surface-border)) 78%, #1c1710)
+                 color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 70%, #1c1710)
+                 color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 62%, #1c1710)
+                 color-mix(in srgb, var(--rarity-a, var(--surface-border)) 70%, #1c1710);}
+  .card-tile .rarity-band{background:linear-gradient(180deg, transparent 0%, rgba(12,10,8,.28) 45%, rgba(12,10,8,.55) 100%) !important;
+    background-size:100% 100% !important; animation:none !important; filter:none !important;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
