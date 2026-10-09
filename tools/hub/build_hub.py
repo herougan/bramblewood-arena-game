@@ -134,6 +134,9 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
   ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
+  ('Starter decks: every Basic card, for reorganising', 'starter-decks-2026-10-10.md'),
+  ('Card levels: base level and growth schedule', 'card-levels-2026-10-10.md'),
+  ('Inspiration: what to borrow from Hearthstone', 'inspo-hearthstone-2026-10-10.md'),
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
   ('How to tune a skirmish', 'skirmish-tuning-guide.md'),
   ('Archetypes: 10 + the Elder / Outer / Forgotten trio', 'archetypes-design-2026-10-09.md'),
@@ -258,7 +261,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .bal{{max-width:1100px; margin:0 auto; padding:20px 16px 80px;}}
 .bal-wrap{{overflow-x:auto; margin-top:12px; border-radius:12px; border:1px solid var(--line, rgba(127,127,127,.25));}}
 .bal-t{{width:100%; border-collapse:collapse; font-size:13.5px;}}
-.bal-t th{{position:sticky; top:0; text-align:left; padding:8px 10px; background:var(--card, #f6f1e4); cursor:pointer; white-space:nowrap; user-select:none;}}
+.bal-t th{{position:sticky; top:0; text-align:left; padding:8px 10px; background:var(--surface-2); color:var(--ink); font-weight:800; border-bottom:2px solid var(--line); cursor:pointer; white-space:nowrap; user-select:none;}}
 .bal-t th[aria-sort]::after{{content:' ▾'; opacity:.6;}} .bal-t th[aria-sort=ascending]::after{{content:' ▴';}}
 .bal-t td{{padding:6px 10px; border-top:1px solid var(--line, rgba(127,127,127,.18)); white-space:nowrap;}}
 .bal-t td.wr{{font-variant-numeric:tabular-nums; font-weight:700;}}
@@ -337,7 +340,7 @@ const DEC = {decisions_json};
     document.querySelectorAll('.bal-t th').forEach(th=> th.dataset.k===key ? th.setAttribute('aria-sort', dir>0?'ascending':'descending') : th.removeAttribute('aria-sort'));
   }}
   document.querySelectorAll('.bal-t th').forEach(th=> th.onclick = ()=>{{ if(key===th.dataset.k) dir = -dir; else {{ key = th.dataset.k; dir = (key==='name'||key==='rarity'||key==='fix') ? 1 : -1; }} render(); }});
-  document.querySelectorAll('#balSeg button').forEach(b=> b.onclick = ()=>{{ v = b.dataset.v; document.querySelectorAll('#balSeg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
+  document.querySelectorAll('#balSeg button').forEach(b=> b.onclick = ()=>{{ v = b.dataset.v; if(key==='winRate') dir = v==='weak' ? 1 : -1; /* too weak: weakest first */ document.querySelectorAll('#balSeg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
   document.getElementById('balQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
   render();
 }})();

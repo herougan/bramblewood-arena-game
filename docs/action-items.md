@@ -1,22 +1,24 @@
 # Action items
 
-_Updated 2026-10-10, 12:20 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-10, 1:40 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
 | ID | What | My suggestion |
 |---|---|---|
 | **B6** ⚠️ | The hummingbird starter deck beats the otter starter deck **~99%** of the time (all flyers, Diurnal, 2 copies each of 10 solid cards) | F: hummingbird Basics with 2+ Attack lose 1 Attack, otter 1-Attack fillers gain 1, Otter Guard and River Carp get **Reach** (ignores the Flying dodge). Measured ~47% |
-| **D20** | Devilry is built from your list. Six of the rules were my readings (e.g. a Dark Summon is an extra play that costs Darkness; Darkness comes from perished units) | Keep all six |
+| **D20** | Devilry is built from your list. Six of the rules were my readings. **Darkness is gained:** +1 each time one of your units perishes, shown only if your deck has a Devilry card | Keep all six |
 | **D23** | Next: Ecclesia with your Prayer value? | Yes |
 | **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |
 | **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
-| **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
 
 ## 2. Where things stand
+
+- **New tonight:** Caged Fight (Arena → Challenges), red top edges on opponent cards, the victory-shift fix, and the Codex reveal-as-you-go. Hearthstone ideas are in [their own note](inspo-hearthstone-2026-10-10.md).
+- **Starter decks:** you're reorganising them. Every Basic is in [the list](starter-decks-2026-10-10.md), with suggestions (shared leader, 2 shared cards, rival cards as map 1–2 rewards).
 
 - **Card balance** (⚖️ Balance tab, [report](card-balance-2026-10-09.md)):
   - every card has a rarity and is measured in simulated matches;

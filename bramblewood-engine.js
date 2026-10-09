@@ -239,9 +239,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function legalSlots(pl){
     if(!slotMode) return [];
     const occ = occupiedSlots(pl);
-    if(occ.size===0) return [0];
+    // A cage (Caged Fight) takes its slot but isn't one of your cards: it doesn't open the slots beside it.
+    const own = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0 && !c.cageOf) own.add(c.slot); });
+    if(own.size===0) return occ.has(0) ? [-1, 1].filter(n=> !occ.has(n)) : [0];
     const out = new Set();
-    occ.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
+    own.forEach(sl=>{ [sl-1, sl+1].forEach(n=>{ if(!occ.has(n)) out.add(n); }); });
     return [...out].sort((a,b)=>a-b);
   }
   // Resolves a placement request to a concrete slot: a number is taken as-is if legal; a
@@ -654,6 +656,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'sacrifice', side:sideOf(pid), uid:fod.uid, defId:fod.defId, forDefId:h.defId, discount:n});
     removeDeadCards(players, sideOf, {}, stats, events);
     return placeCard(players, sideOf, pid, handUid, slotMode && slot != null ? slot : (lane==='center' ? 'left' : lane), stats, events, {discount:n});
+  }
+  // ---- Caged Fight (2026-10-10, user: "Leader is trapped 4 squares to the right, on the opponent's board ... Depending on
+  // deck level of A + B/100 (rounded) = cage level (max 10, min 0) ... 6 HP at lvl 1 (5 hp at lvl 0), growing by 2 per
+  // level. Lvl 10 would be 25 hp. PVP is both ways."). The cage is a unit on the HOST player's board that never acts and
+  // blocks its column. When it breaks, the caged leader is freed onto its owner's board for free, as close to the cage's
+  // column as possible.
+  function cageHpForLevel(lv){ const L = Math.max(0, Math.min(10, Math.round(lv||0))); return L===0 ? 5 : L===10 ? 25 : 4 + 2*L; }
+  function placeCage(players, sideOf, hostPid, ownerPid, slot, leaderDefId, hp, events){
+    if(!slotMode || !CARD_DEFS[leaderDefId]) return null;
+    if(!CARD_DEFS.__cage) CARD_DEFS.__cage = derivedDefs.__cage = {id:'__cage', name:'Cage', icon:'⛓️', attack:0, health:hp, wait:0, cost:0, token:true, effects:{}};
+    const host = players[hostPid]; const c = makeBoardCard('__cage');
+    c.hp = c.maxHp = hp; c.atk = c.baseAtk = 0; c.wait = 0; c.cageOf = leaderDefId; c.cageOwner = ownerPid;
+    putInSlot(host, c, slot);
+    if(recordEvents && events) events.push({type:'cage', side:sideOf(hostPid), uid:c.uid, owner:sideOf(ownerPid), leaderDefId, hp, slot});
+    return c;
   }
   // Beware N: a card in your Removal Zone can be cast from there (normal costs) while you have N or more Darkness.
   function canCastFromExile(pl, defId){ const d = CARD_DEFS[defId]; const b = d && d.effects && Number(d.effects.beware); return b > 0 && (pl.devilry||0) >= b && canPlay(pl, defId, null); }
@@ -2507,9 +2524,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
-    const spawns = [];
+    const spawns = [], freed = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
+      if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
       const cdef = CARD_DEFS[card.defId];
       // Revive (once) — a "named skill" preset (2026-09-14): the FIRST time this card would
       // die, it comes back instead — restored to 1 HP, every status cleared, no death/kill/
@@ -2598,6 +2616,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     });
     [p1,p2].forEach(pl=>{
       ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0); });
+    });
+    freed.forEach(f=>{
+      const owner = players[f.owner]; if(!owner) return;
+      const legal = slotMode ? legalSlots(owner) : [];
+      const want = Number.isInteger(f.slot) ? f.slot : 0;
+      const slot = legal.length ? legal.slice().sort((a,b)=> Math.abs(a-want) - Math.abs(b-want))[0] : null;
+      if(recordEvents && events) events.push({type:'cageBroken', side:f.hostSide, uid:f.uid, owner:sideOf(f.owner), leaderDefId:f.leaderDefId});
+      if(slot!=null || !slotMode) debugSpawnCard(players, sideOf, f.owner, f.leaderDefId, slot!=null ? slot : 'right', stats, events);
+      owner.leaderFreed = true;
     });
     spawns.forEach(s=>{
       // The dying card's own slot was just vacated by the filter pass above, so an
@@ -2762,6 +2789,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.asleep>0){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
+            if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
             if(card.shellSkip){ skipTurn('shell', card, ownId); handledUids.add(uid); return; }
             if(effAtk(card)<=0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; }
@@ -3278,7 +3306,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

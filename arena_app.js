@@ -1145,21 +1145,14 @@ function buildCardDefs(){
   // health here — see levelStatMultiplier's own comment for the curve and its one known
   // cross-player-sharing limitation. `level` is stamped onto the returned def too, purely for
   // display (the Forge/Codex/deck-editor card tiles read it to show a level badge).
+  // Levels (2026-10-10): every card carries its base level; stats move only above it, on the LEVEL_STEPS levels.
   Object.keys(out).forEach(id=>{
-    const lvl = myCardLevels[id];
-    if(!lvl || id===HERO_ID) return;
-    const base = out[id];
+    const base = out[id]; if(!base || id===HERO_ID) return;
+    const b = cardBaseLevel(base), lvl = Math.max(b, Math.min(10, myCardLevels[id]||0));
+    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); return; }
     if(base.attack==null && base.health==null) return;
-    const mult = levelStatMultiplier(lvl);
-    // Rebalanced 2026-09-23 (batch #27) — see levelStatMultiplier's own comment for the full
-    // data-backed reasoning. No additive floor anymore (a data-confirmed balance risk even at
-    // +1) — pure percentage rounding, `Math.max(1, ...)` only guards against ever rounding a
-    // stat down to 0.
-    out[id] = Object.assign({}, base, {
-      attack: base.attack!=null ? Math.max(1, Math.round(base.attack*mult)) : base.attack,
-      health: base.health!=null ? Math.max(1, Math.round(base.health*mult)) : base.health,
-      level: lvl,
-    });
+    const st = statsAtLevel(base, lvl);
+    out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
   });
   // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
   if(typeof myCardEnchants !== 'undefined' && myCardEnchants) Object.keys(myCardEnchants).forEach(id=>{
@@ -1252,10 +1245,24 @@ const discoverQueue = [];
 let discoverShowing = false;
 // Call with any defIds the player can currently SEE. Cheap no-op for everything that isn't an
 // undiscovered hidden card, so it's safe to call from every render.
+// Seen cards (2026-10-10, user: "Don't show locked or hidden cards in the Codex. Unless they've been seen before."): every
+// card the player has seen anywhere (a match, a reward). Seeded once from fights already cleared, so returning players keep
+// the enemy cards they've met.
+const SEEN_KEY = 'bramblewood_arena_seen';
+let mySeenCardIds = (()=>{ try{ const raw = localStorage.getItem(SEEN_KEY); if(raw) return new Set(JSON.parse(raw)); }catch(e){} return null; })();
+function seenCardIds(){
+  if(mySeenCardIds) return mySeenCardIds;
+  mySeenCardIds = new Set(myDiscoveredCardIds);
+  try{ const prog = loadConquestProgress(); (prog.completed||[]).forEach(cid=>{ CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{ if(conquestNodeId(m.id, n.key)===cid) Object.keys(n.deck||{}).forEach(id=> mySeenCardIds.add(id)); })); }); }catch(e){}
+  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...mySeenCardIds])); }catch(e){}
+  return mySeenCardIds;
+}
 function noteSighted(defIds){
   if(!defIds) return;
   const defs = getCardDefs();
   let changed = false;
+  { const seen = seenCardIds(); let added = false; for(const id of defIds){ if(id && defs[id] && !seen.has(id)){ seen.add(id); added = true; } }
+    if(added){ try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); }catch(e){} } }
   for(const id of defIds){
     const d = defs[id];
     if(!d || !d.hidden || myDiscoveredCardIds.has(id)) continue;
@@ -1328,17 +1335,30 @@ function conquestNodeLabel(mapId, nodeKey){
 function mainConquestMaps(){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).filter(m=> !m.sub); }
 function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
 // A sortable section key + human label for a card's Codex group.
+// Codex tiers (2026-10-10, user: "at the start, don't break into tiers. Also name the map tiers by theme, not by 'Tier 1
+// Maps'. Only once they defeat the base game (up to map 20), then it splits."): until the base game is beaten (the first
+// 20 main maps cleared, or every main map if there are fewer), all base, map and pack cards are one group. After that
+// they split into themed tiers.
+const BASE_GAME_MAPS = 20;
+const CODEX_TIER_THEMES = ['The Wildwood', 'The Far Reaches', 'The Old Powers', 'The Edge of the Map'];
+function baseGameBeaten(){
+  try{ const mains = mainConquestMaps().slice(0, BASE_GAME_MAPS); return mains.length > 0 && mains.every(m=> conquestMapCleared(m.id)); }catch(e){ return false; }
+}
+function codexTierName(tier){ return CODEX_TIER_THEMES[tier-1] || `Further lands ${tier}`; }
 function codexSectionOf(d){
   const src = cardSourceOf(d);
-  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:'Tier 1 · Tutorial, Base & Maps 1–10', tier:1};
+  const split = baseGameBeaten(); // admins see what players see; the "View by" options organise for editing
+  const mapTier = idx=> idx < BASE_GAME_MAPS ? 1 : 2 + Math.floor((idx - BASE_GAME_MAPS)/10);
+  if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:'Your journey: base cards, map rewards and packs', tier:1};
+  if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:`${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}`, tier:1};
   if(src.kind==='map'){
-    const idx = Math.max(0, mapIndexOf(src.id));
-    const tier = Math.floor(idx/10)+1;
-    return {key:`${tier}-0`, order:[tier,0,0,''], label: tier===1 ? 'Tier 1 · Tutorial, Base & Maps 1–10' : `Tier ${tier} · Maps ${(tier-1)*10+1}–${tier*10}`, tier};
+    const idx = Math.max(0, mainConquestMaps().findIndex(m=> m.id===src.id || m.id===(CONQUEST_MAPS.find(x=> x.id===src.id)||{}).parent));
+    const tier = mapTier(idx);
+    return {key:`${tier}-0`, order:[tier,0,0,''], label: tier===1 ? `${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}` : `${codexTierName(tier)} · maps ${BASE_GAME_MAPS + (tier-2)*10 + 1}–${BASE_GAME_MAPS + (tier-1)*10}`, tier};
   }
   if(src.kind==='pack'){
     const tier = Math.max(1, Number(src.tier)||1);
-    return {key:`${tier}-1`, order:[tier,1,0,''], label:`Tier ${tier} · Pack Tier ${tier}`, tier};
+    return {key:`${tier}-1`, order:[tier,1,0,''], label:`${codexTierName(tier)} · card packs`, tier};
   }
   if(src.kind==='event'){
     const theme = (src.theme||'Event').trim(), name = (src.name||'').trim();
@@ -1567,6 +1587,11 @@ function applyCloudCfgRow(r){
   try{ if(document.getElementById('conquestCanvas') && !conquestLayoutEdit) renderPlay(); }catch(e){}
 }
 function applyCloudNodeEdits(mapId, r){
+  // C2 (2026-10-10, user: the skirmish battle type "reverts"): an edit saved only in this browser (the publish didn't go
+  // through) used to be overwritten by the older cloud copy on the next load. The newer of the two now wins, and a newer
+  // local edit is published again.
+  const localAt = (nodeEdits[mapId] && nodeEdits[mapId]._localAt) || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
+  if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) publishNodeEdits(mapId); }, 4000); return; }
   if(r.deleted || !r.data || !r.data.edits) delete nodeEdits[mapId]; else nodeEdits[mapId] = r.data.edits;
   persistNodeEdits();
   try{ applyNodeEdits(); if(document.getElementById('conquestCanvas') && !conquestLayoutEdit) renderPlay(); }catch(e){}
@@ -3039,8 +3064,9 @@ function renderCodexGrid(){
   }
   // 2026-10-02: Hidden cards the player hasn't discovered don't exist as far as they know (admin
   // still sees them, tagged), and Hall of Fame variants live in their own Codex tab.
-  ids = ids.filter(id=> !isHofVariant(defs[id]) && (adminModeEnabled || !isCardHiddenForPlayer(defs[id])));
-  const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && (adminModeEnabled || !isCardHiddenForPlayer(defs[id]))).length;
+  const codexVisible = id=> adminModeEnabled || (!isCardHiddenForPlayer(defs[id]) && (!defs[id].locked || seenCardIds().has(id))); // players: owned, unlocked or seen only
+  ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
+  const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id)).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
   document.getElementById('codexResultCount').textContent = `${ids.length} of ${totalVisible} cards (${unlockedCount} unlocked)`;
   // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
@@ -3385,7 +3411,7 @@ function cardTileHTML(d, opts){
     return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
-      ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
+      ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d)}</div>
@@ -3402,7 +3428,7 @@ function cardTileHTML(d, opts){
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
-    ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
+    ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
@@ -6632,7 +6658,28 @@ function spendRaidPoint(cost){
 // only by level) after landing on this final curve.
 function levelStatMultiplier(level){
   const L = Math.max(0, Math.min(10, level||0));
-  return 1 + 0.01*L + 0.0005*L*L; // 1.01x @ L1, 1.0625x @ L5, 1.15x @ L10
+  return 1 + 0.01*L + 0.0005*L*L; // legacy curve, kept for callers outside getCardDefs (autobattler power)
+}
+// ---- Card levels (2026-10-10, user: "How can we make the tutorial cards + starting deck cards start at level 0 but
+// everything starts at level 1. Codify this." + "The major stat upgrades are at 0->1, 3, 6, 9. 10 is minor, and 2, 4, 5,
+// 7, 8 are usually no-increase. For cards with big numbers, sometimes we can fit upgrades all the way from lvl 1-10.") ----
+// A card's printed stats are its stats at its BASE level: 0 for starter-deck and tutorial cards, 1 for everything else.
+// Above the base level, stats grow only on the LEVEL_STEPS levels. A card can override any level with
+// def.levelStats = {"3": {attack, health}, ...} (absolute stats at that level), e.g. a big-number card that gains a little
+// on every level. Higher-level numbers are to be filled in later; the defaults below are placeholders.
+const LEVEL_STEPS = {1:'major', 2:null, 3:'major', 4:null, 5:null, 6:'major', 7:null, 8:null, 9:'major', 10:'minor'};
+const LEVEL_STEP_GAIN = {major:0.10, minor:0.05};
+function cardBaseLevel(d){
+  if(!d) return 1;
+  return (d.basic || d.rarity==='starter' || d.tutorial || d.id==='wandering-traveller') ? 0 : 1;
+}
+function statsAtLevel(d, L){
+  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(10, L|0));
+  const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
+  if(ov) return {attack: ov.attack!=null ? ov.attack : d.attack, health: ov.health!=null ? ov.health : d.health};
+  let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l]; if(k) g += LEVEL_STEP_GAIN[k]; }
+  const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
+  return {attack: r(d.attack), health: r(d.health)};
 }
 function loadCardLevels(){
   try{ const raw = localStorage.getItem('bramblewood_arena_levels'); if(raw) return JSON.parse(raw)||{}; }catch(e){}
@@ -6678,7 +6725,7 @@ function prestigeUpCard(defId){
   myCardPrestige[defId] = getCardPrestige(defId)+1; saveCardPrestige();
   return true;
 }
-function getCardLevel(defId){ return Math.max(0, Math.min(10, myCardLevels[defId]||0)); }
+function getCardLevel(defId){ const d = (typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || (typeof liveCards!=='undefined' && liveCards[defId]) || null; return Math.max(cardBaseLevel(d), Math.min(10, myCardLevels[defId]||0)); } // never below the card's base level
 // Card unlocking (2026-09-22, closing the gap batch #19 flagged: "player_card_unlocks sync was
 // scoped down to only level>0 cards, since real card unlocking doesn't exist yet"). A per-player
 // Set of card ids this player has unlocked via Shop packs (see SHOP_PACKS' new unlockChance
@@ -7550,7 +7597,7 @@ function deckLevelFrom(counts, levelOf, leaders){
 }
 function enemyDeckLevel(node){
   if(!node || !node.deck) return 0;
-  return deckLevelFrom(node.deck, ()=> 0, node.leaderId ? [node.leaderId] : []);
+  const defs = getCardDefs(); return deckLevelFrom(node.deck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), node.leaderId ? [node.leaderId] : []); // enemy cards at their base level
 }
 function mainDeckLevel(counts, leaderId){
   return deckLevelFrom(counts, id=> getCardLevel(id), leaderId ? [leaderId] : []);
@@ -8831,7 +8878,7 @@ function leavesRevealToMap(){
 // Save publishes live for everyone (card_overrides) when you're a cloud admin. ➕ New skirmish adds
 // a node to the map (place it with 📐 Edit layout). ----
 const SKIRMISH_KINDS = ['skirmish','elite','boss','raidboss','finalboss'];
-function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; return e; }
+function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); if(!map) return;
@@ -9055,7 +9102,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
-      persistNodeEdits(); applyNodeEdits();
+      nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
       const published = await publishNodeEdits(mapId);
       showToast(published ? `☁️ ${draft.name} published — live for every player.` : `💾 ${draft.name} saved in this browser.`, 'ok');
       dirty = false; close();
@@ -9678,7 +9725,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch'];
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -9748,6 +9795,11 @@ function renderArenaSubTab(body){
           <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row</span>
           <span class="gauntlet-streak-line">🔥 ${loadGauntletStreak()} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
         </button>
+        <div class="arena-mode-btn caged-panel" id="cagedPanel">
+          <span class="amb-ico">⛓️</span><span class="amb-lbl">Caged Fight</span>
+          <span class="amb-sub">Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.</span>
+          <div class="dungeon-panel-actions"><button class="btn primary" id="startCagedAiBtn">vs Computer</button><button class="btn ghost" id="startCagedPcBtn" title="Both leaders caged">Pass &amp; Play</button></div>
+        </div>
         <div class="arena-mode-btn dungeon-panel" id="dungeonPanel">
           <span class="amb-ico">🗝️</span><span class="amb-lbl">Dungeon</span>
           <span class="amb-sub">3 fights; losses carry over</span>
@@ -9778,6 +9830,8 @@ function renderArenaSubTab(body){
   const asyncBtn = document.getElementById('startAsyncBtn'); if(asyncBtn) asyncBtn.addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
   const pvpBtn = document.getElementById('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp'));
   document.getElementById('startGauntletBtn').addEventListener('click', ()=> startMatch('gauntlet'));
+  { const a = document.getElementById('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
+    const b = document.getElementById('startCagedPcBtn'); if(b) b.addEventListener('click', ()=> startMatch('pc', {caged:true})); }
   document.getElementById('startDungeonBtn').addEventListener('click', startDungeonFight);
   const abandonDungeonBtn = document.getElementById('abandonDungeonBtn');
   if(abandonDungeonBtn) abandonDungeonBtn.addEventListener('click', ()=>{
@@ -11198,7 +11252,7 @@ function renderConquestSubTab(body){
           ${revealed ? `<div class="cnp-squad">${squadChips}</div>` : ''}
           <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle" aria-label="${revealed?'Hide the enemy deck':'Show the enemy deck'}">${revealed?'🙈 Hide':'👁 Show'}</button>
         </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
-      ${selectedNode.kind==='elite' ? battleModePickerHTML(nid) : ''}
+      ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
@@ -12586,7 +12640,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else beginTutorialStage(1); return true; }
   if(!deckSizeOkOrWarn()) return false;
-  const battleMode = (opts && opts.battleMode) || node.battleMode || (node.kind==='elite' && conquestBattleModePick[conquestNodeId(mapId, nodeKey)]) || CONQUEST_DEFAULT_MODE;
+  const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
@@ -13997,7 +14051,8 @@ function arenaRulesetPillHTML(rs){
   if(!rs) return '';
   return `<div class="arena-rules-pill" title="${escapeAttr(rs.name + ': ' + rs.text)}"><span aria-hidden="true">${rs.icon}</span><b>${escapeHtml(rs.name)}</b><small>${escapeHtml(rs.text)}</small></div>`;
 }
-function startMatch(mode){
+function startMatch(mode, opts){
+  opts = opts || {};
   // Deck size gate (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not
   // allow a deck with <20 or >20 cards.") — checked here rather than hard-blocking every
   // pool click, so a deck-in-progress can sit above/below 20 mid-build; it just can't START
@@ -14008,7 +14063,7 @@ function startMatch(mode){
     return;
   }
   const arenaRuleset = todaysArenaRuleset();
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: opts.caged ? 'open' : undefined}); // Caged Fight needs fixed slots
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
@@ -14045,7 +14100,20 @@ function startMatch(mode){
   // The side that plays second opens with one more card ("draw 2 if you start 2nd"): the PvP stranger always plays
   // first, so you're second there; everywhere else the opponent plays after you.
   if(arenaRuleset.secondDraw){ const second = mode==='pvp' ? 1 : 2; engine.draw(players[second], arenaRuleset.secondDraw, second===1 ? 'A' : 'B', stats, []); }
-  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, arenaRuleset,
+  // Caged Fight (2026-10-10): your leader starts caged on the enemy board, 4 slots to your right. Cage level =
+  // round((your deck level + the enemy's) / 100), 0–10. In Pass & Play it's both ways: player 2's leader is caged on your
+  // board, 4 to their right (slot -4, since the rows face each other).
+  let caged = null;
+  if(opts.caged){
+    const myLeader = myLeaderId || 'wandering-traveller';
+    const enemyCounts = Object.fromEntries(players[2].deck.concat(players[2].hand.map(h=> h.defId)).reduce((mm, id)=> mm.set(id, (mm.get(id)||0)+1), new Map()));
+    const A = mainDeckLevel(myDeckCounts, myLeader), B = deckLevelFrom(enemyCounts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || getCardDefs()[id]), []);
+    const level = Math.max(0, Math.min(10, Math.round((A + B) / 100))), hp = engine.cageHpForLevel(level);
+    engine.placeCage(players, id=> id===1?'A':'B', 2, 1, 4, myLeader, hp, []);
+    if(mode==='pc') engine.placeCage(players, id=> id===1?'A':'B', 1, 2, -4, 'wandering-traveller', hp, []);
+    caged = {level, hp, A, B};
+  }
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, arenaRuleset, caged, battleMode: caged ? 'open' : undefined,
     mode: mode==='pc' ? 'pc' : (mode==='async' ? 'async' : (mode==='pvp' ? 'pvp' : (mode==='gauntlet' ? 'gauntlet' : 'ai'))), active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // Epic A (2026-09-18, "Leader slot + in-match summon"): snapshotted once at match start —
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
@@ -14167,6 +14235,9 @@ function leaderWidgetHTML(m){
   const defs = getCardDefs();
   const d = defs[m.leaderDefId];
   if(!d) return '';
+  if(m.caged){ const me = m.players[myPidInMatch(m)]; if(me && me.leaderFreed) return '';
+    return `<div class="leader-widget is-caged-leader" id="leaderWidget" data-defid="${m.leaderDefId}" title="Your leader is caged on the enemy board, 4 to the right. Break the cage (${m.caged.hp} HP) to free it.">
+      ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}<div class="leader-ribbon">⛓️ Caged</div></div>`; }
   // CSRE (2026-09-20): don't print "Summon · 0🪙" for a free leader — same zero-cost hiding
   // rule as costBadgeParts()/cardTileHTML's own cost badge just above.
   const cost = m.engine.costOfCard(m.leaderDefId);
@@ -14211,6 +14282,7 @@ async function attemptSummonLeader(preferredLane){
   }
   const widgetEl = document.getElementById('leaderWidget');
   if(!m.leaderDefId || m.leaderUid!=null){ denyShake(widgetEl); return; }
+  if(m.caged){ denyShake(widgetEl); showToast('⛓️ Your leader is caged on the enemy board. Break the cage to free it.', 'warn'); return; }
   const activePid = activePlayerId(m);
   const me = m.players[activePid];
   // 2026-10-03 (user report: "I couldn't play my Wandering Traveller on the left of my Dominion
@@ -14607,7 +14679,7 @@ function renderMatchUI(){
       ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}
       ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}
       ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
-      ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}
+      ${deckHasDevilry(m, me)?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(me) : 1) - (me.darkUsed||0))}</small></span>`:''}
       ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
   `;
   const tkKeep = testKitCaptureForRerender(m);
@@ -15576,8 +15648,13 @@ function renderBoard(opts){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
     if(showTargets && m.engine.legalSlots) m.engine.legalSlots(m.players[viewerPid]).forEach(sl=> legalForViewer.add(sl));
     [p1Rows, p2Rows].forEach(rows=> [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) slotRange = Math.max(slotRange, Math.abs(c.slot)); }));
+    // 2026-10-10 (user: "The victory mechanic sometimes pushes the cards to the extreme right ... Is there 2 grids?"): the
+    // width used to count only the slots shown as "+" targets, which vanish while a round resolves and after the match,
+    // so the grid shrank and the cards jumped. It now always counts every legal slot, and never shrinks during a match.
+    if(m.engine.legalSlots) [1,2].forEach(pid=>{ try{ m.engine.legalSlots(m.players[pid]).forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl))); }catch(e){} });
     legalForViewer.forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl)));
-    slotRange = Math.max(1, slotRange);
+    slotRange = Math.max(1, slotRange, m._slotRange || 0);
+    m._slotRange = slotRange;
   }
   function slotRowHTML(pl, rows, dance, scatter, nextDanceStyle){
     const bySlot = new Map();
@@ -16828,6 +16905,14 @@ function fitBattlefieldZoom(){
 // live DOM mutations during event replay — this function only ever renders the ring's REST
 // state for a given (remaining, total) pair, on a fresh full render.
 // Devilry (2026-10-10): the card frame with a dark aura, the Dark Summon mark, and a Ritual's progress on the board.
+// Darkness is only shown to a player whose deck has at least one Devilry card (2026-10-10, user: "The attribute is only
+// relevant and visible if your deck contains at least one devilry card").
+function deckHasDevilry(m, pl){
+  if(!pl) return false; if(pl._hasDevilry !== undefined) return pl._hasDevilry;
+  const defs = getCardDefs(), isD = x=>{ const d = defs[x && (x.defId || x)]; return !!(d && (isDevilryDef(d) || d.mechanicLine==='devilry' || d.devilryCost)); };
+  const any = (pl.deck||[]).some(isD) || (pl.hand||[]).some(isD) || (pl.graveyard||[]).some(isD) || (pl.exile||[]).some(isD) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(isD));
+  pl._hasDevilry = any; return any;
+}
 function isDevilryDef(d){ return !!(d && (d.darkSummon || (Array.isArray(d.archetypes) && (d.archetypes.includes('Imp') || d.archetypes.includes('Devil'))))); }
 function ritualChipHTML(c, pid){
   try{ const m = matchState; if(!m || !m.engine.ritualProgress || c.ritualDone) return '';
@@ -16878,7 +16963,9 @@ function noteShinySpawn(m, ev){
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
   const shinyU = isShinyUnit(matchState, c, opts.pid);
-  const d = defs[c.defId]||{}; const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
+  // Caged Fight (2026-10-10): a cage shows the trapped leader, greyed, behind translucent bars.
+  const caged = !!c.cageOf; const cagedDef = caged ? (defs[c.cageOf]||{}) : null;
+  const d = caged ? Object.assign({}, cagedDef, {id: c.cageOf, name: (cagedDef.name||'Leader'), effects:{}, wait:0}) : (defs[c.defId]||{}); const raging = (d.effects&&d.effects.rage) && (c.hp/c.maxHp)<0.5;
   const [rA, rB] = rarityStops(d.rarity||'common');
   // Status VFX (item #13): poisoned/bled/stunned each get their own tint + overlay icon on the
   // card frame, not just a badge number — see .board-card.is-* in arena_template.html.
@@ -16961,13 +17048,14 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
-      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${ritualChipHTML(c, opts.pid)}`;
-  return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${ritualChipHTML(c, opts.pid)}${caged ? `<div class="cage-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="cage-tag">⛓️ Caged</div>` : ''}`;
+  const cageCls = caged ? `is-caged ${c.cageOwner === viewerHandPid(matchState) ? 'is-mine-caged' : ''}` : '';
+  return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}
+    }})}${flies?'</div>':''}<span class="owner-edge" aria-hidden="true"></span>
   </div>`;
 }
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
@@ -17324,7 +17412,7 @@ const RESOURCE_TOOLTIP = {
   stone: 'Stone — dormant for now. Only a card\'s own "Gain stone" ability can produce any.',
   lumber: 'Lumber — earned by discarding a card from your hand. Some abilities (like Refine) consume it too.',
   grace: 'Grace — Ecclesia\'s currency. Earned by On Spawn/On Ready effects, spent on cards with a Grace Cost.',
-  devilry: 'Devilry ("Dark Points") — the dark mirror of Grace. Earned by On Spawn/On Ready effects and by discarding a Devilry-line card (+1 bonus Dark Point on top of its normal discard yield), spent on cards with a Devilry Cost.',
+  devilry: 'Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.',
   elementalenergy: 'Elemental Energy — the advanced resource. Only produced by a card\'s Refine ability, which consumes Lumber.',
 };
 // 2026-09-19 ("Add tooltip for what resources you would get on discard"): the discard/graveyard
@@ -19906,6 +19994,8 @@ function logText(ev){
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
+    case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
+    case 'cageBroken': return {cls:'gold', text: ev.owner==='A' ? `🔓 The cage breaks: ${nm(ev.leaderDefId)} is free and joins your side!` : `🔓 The enemy breaks their leader's cage: ${nm(ev.leaderDefId)} joins them.`};
     case 'devour': return {cls:'gold', text:`🫦 ${nm(ev.defId)} devours ${nm(ev.eatenDefId)}: +${ev.attack}/+${ev.health}.`};
     case 'sacrifice': return {cls:'poison', text:`⛧ ${sideLabel(ev.side)} sacrifices ${nm(ev.defId)} to summon ${nm(ev.forDefId)} (${ev.discount} cheaper).`};
     case 'beware': return {cls:'poison', text:`👁️ ${nm(ev.defId)} crawls out of the Removal Zone (${ev.darkness} Darkness).`};
@@ -21426,6 +21516,7 @@ function renderVfxForEvent(ev){
   // Fields and day/night (2026-10-09)
   if(ev.type==='fieldTick' && ev.field!=='frozen'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.dmg ? `🔥-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){} }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
+  if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast('🔓 Your leader is free!', 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls — Nocturnal units hit +1.' : '☀️ Day breaks — Diurnal units hit +1.', 'ok'); }catch(e){} }

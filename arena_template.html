@@ -4981,6 +4981,27 @@
 
   /* Phone toasts (2026-10-10, screenshots: toasts sat on Pass turn and on the Conquest tab bar) go to the top. */
   @media (max-width:600px){ .toast-host{bottom:auto !important; top:calc(10px + env(safe-area-inset-top, 0px)) !important;} .rr-token{max-width:92vw;} .rr-token-lbl{overflow:hidden; text-overflow:ellipsis;} }
+
+
+  /* Caged Fight (2026-10-10, user: "It looks like your leader, slightly greyed out, and on top of it a card sized cage, but
+     the art has a lot of transparency to see your card enough") */
+  .board-card.is-caged .card-tile{filter:grayscale(.55) brightness(.82);}
+  .board-card.is-caged .cage-bars{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:10px; display:flex; justify-content:space-evenly;
+    border:3px solid rgba(70,72,80,.85); border-top-width:6px; border-bottom-width:6px; box-shadow:inset 0 0 0 1px rgba(255,255,255,.15), 0 2px 6px rgba(0,0,0,.5);
+    background:linear-gradient(180deg, rgba(150,155,165,.18), rgba(40,42,48,.12));}
+  .board-card.is-caged .cage-bars i{display:block; width:3.5%; min-width:3px; height:100%; background:linear-gradient(90deg, #4a4d55, #c7cbd3 45%, #5a5e66); opacity:.78; box-shadow:1px 0 2px rgba(0,0,0,.45);}
+  .board-card.is-caged .cage-tag{position:absolute; left:50%; top:-10px; transform:translateX(-50%); z-index:7; font:800 10.5px 'Baloo 2',system-ui,sans-serif; color:#eef1f6; background:#3a3d45; border:1px solid #8a8f99; border-radius:999px; padding:0 7px; white-space:nowrap;}
+  .board-card.is-caged.is-mine-caged .cage-tag{background:#2f5a35; border-color:#7fd08a;}
+  .leader-widget.is-caged-leader{filter:grayscale(.6); opacity:.75; cursor:not-allowed;}
+  .caged-panel .amb-sub{max-width:240px;}
+  /* Whose card is it (2026-10-10, user: "very subtly mark the cards so players know which cards are theirs ... a slight red fade
+     on the border on the top"): units on the opponent's row get a faint red fade along their top edge. Mostly matters when
+     a card changes sides (Mind Control) or a caged leader sits on the other board. */
+  .board-card > .owner-edge{display:none;}
+  #rowEnemy .board-card > .owner-edge{display:block; position:absolute; left:6%; right:6%; top:-1px; height:9px; z-index:5; pointer-events:none; border-radius:8px 8px 0 0;
+    background:linear-gradient(180deg, rgba(225,70,70,.75), rgba(225,70,70,0)); filter:blur(.3px);}
+  .board-card[style*="--scatter"] > .owner-edge, .board-card.scatter > .owner-edge{display:none !important;}
+  #rowEnemy .board-card.is-mine-caged > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.8), rgba(110,200,120,0));}
   /* Mobile Conquest (2026-10-10, user: "sometimes conquest is not scrollable"): on phones the headline and the admin
      toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
      covered the fight nodes. The content area now scrolls, with room for the tab bar, and the fight panel scrolls
@@ -6698,6 +6719,20 @@
   .bwl-bar span{display:block; height:100%; width:0; border-radius:inherit; background:linear-gradient(90deg,#c9853a,#ffd56e); transition:width .25s ease;}
   .bwl-step{font:600 13px 'Nunito', system-ui, sans-serif; opacity:.75; min-height:1.2em;}
   @media (prefers-reduced-motion: reduce){ .bwl-acorn{animation:none;} }
+  /* Proportional card text (2026-10-10, user: "if the card is blown up by 2.5x ... the font e.g. 10 should become 25"): every
+     card text size is a fixed fraction of the card's OUTER width (the container's inner width 100cqw plus ~16px of padding),
+     with no upper cap, so text keeps the same size relative to the card at any scale and wraps the same way. --cw is the
+     outer width; a small floor stays for legibility on tiny tiles. */
+  .card-tile{--cw:calc(100cqw + 16px);}
+  .card-tile .nm{font-size:max(8px, calc(var(--cw) * .09)) !important;}
+  @media (min-width:700px) and (max-width:1366px) and (pointer:coarse){ .card-tile .nm{font-size:max(8px, calc(var(--cw) * .082)) !important;} }
+  .card-tile .atk, .card-tile .hp{font-size:max(10px, calc(var(--cw) * .155)) !important; bottom:max(2px, calc(var(--cw) * .025));}
+  .card-tile .atk{left:max(3px, calc(var(--cw) * .05));} .card-tile .hp{right:max(3px, calc(var(--cw) * .05));}
+  .card-tile .costbadge, .card-tile .waitbadge{font-size:max(8px, calc(var(--cw) * .078)); height:max(14px, calc(var(--cw) * .148)); min-width:max(16px, calc(var(--cw) * .197));}
+  .card-tile .poison-tag{font-size:max(9px, calc(var(--cw) * .107)) !important;}
+  .card-tile .badges .abadge{font-size:max(9px, calc(var(--cw) * .107));}
+  .card-tile .badges-bottom .abadge{font-size:max(9px, calc(var(--cw) * .103));}
+  .card-tile .whynot-tag{font-size:max(8px, calc(var(--cw) * .082));}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

@@ -3,6 +3,24 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **Caged Fight (new, Arena → Challenges):**
+  - your leader starts caged on the enemy board, 4 columns to the right, greyed under a translucent cage;
+  - cage level = round((your deck level + enemy deck level) / 100), 0–10; cage HP is 5 at level 0, 6 at 1, then +2 a level, 25 at level 10;
+  - break the cage to free your leader beside it. Until then, the leader can't be summoned;
+  - vs Computer, or Pass & Play where both leaders are caged.
+- **Opponent cards** have a faint red fade along their top edge (green on your own caged leader), so ownership is clear after Mind Control.
+- **Victory no longer pushes cards right:** the board grid kept shrinking when the "+" targets vanished. Both rows now share one grid that never shrinks mid-match.
+- **Skirmish editor (C2):** the battle type is set only inside Edit skirmish, and a saved choice no longer reverts.
+- **Codex:**
+  - locked or unseen cards stay hidden until you've seen them (in hand, on a board, or as a reward);
+  - one "Your journey" list until you beat the first 20 maps, then themed sections (The Wildwood, The Far Reaches, The Old Powers, The Edge of the Map).
+- **Card text scales with the card:** a card shown 2.5× larger has 2.5× larger text, wrapped the same.
+- **Card levels codified:**
+  - tutorial and starter cards start at level 0, everything else at 1;
+  - major stat steps at 1, 3, 6 and 9, a minor one at 10.
+- **Darkness** shows only if your deck has a Devilry card, as "★ held · ⛧ left".
+- **Balance tab:** "Too weak" lists the weakest first, and the table header is readable.
+- **Docs:** the archetypes note was rewritten (Swarm and Tide are keyword families, not archetypes), plus a starter-decks list, card levels, and Hearthstone inspiration.
 - **Phone fixes (from your screenshots):**
   - Conquest scrolls on phones, and the fight panel scrolls too, with Fight pinned at the top. The chosen fight scrolls into view above the panel.
   - The tab bar no longer covers the trail.
