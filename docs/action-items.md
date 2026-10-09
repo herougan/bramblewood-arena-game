@@ -1,12 +1,12 @@
 # Action items
 
-_Updated 2026-10-09, 11 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-09, 11:30 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
 | ID | What | My suggestion |
 |---|---|---|
-| **D19** | Archetypes: Swarm and Tide are built. What next? | The Exile zone (groundwork for three more) |
+| **D19** | Archetypes: Swarm, Tide and the Exile zone are built. What next? | The Forgotten Ones (on top of the Exile zone) |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
 
@@ -33,6 +33,8 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 - **Archetypes:**
   - **Swarm** (ants and bees) is the first.
   - **Tide** (reef and beach) is new tonight. 🌊 Flow and 🐚 Ebb alternate each round: Tide units hit +1 on Flow and take 1 less on Ebb, and Wash pushes the enemy opposite back once. The water fights were retuned for it.
+  - **The Exile zone** (new tonight): cards sent there give Echoes 🕯️, and Remember cards come back once you have enough. New cards: Echo Keeper, Marsh Wisp and Bog Revenant.
+- **Fixed tonight:** ten fights that were far too hard, including Map 1's boss (~5% → ~43%) and the Condor Sovereign (10-9).
 - **Draggable map tiles** are in the layout editor.
 
 ## 3. Things only you can do (outside chat)
@@ -40,7 +42,7 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 - **The claude.ai project is full.** Today's design notes are in this hub but couldn't be saved there. The old game-design v30–v40 addenda are the easiest to remove.
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
 - **Art:** PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:
-  - the five field cards, Beaver Lumberjack and Courier Pigeon;
+  - the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp and Bog Revenant;
   - Ant Warrior, the critters and the Grotto rewards.
 
 ## ⚠️ Earlier today

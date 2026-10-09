@@ -8700,5 +8700,93 @@
     "flavor": "Brings a letter. Sometimes it even brings the right one.",
     "numericId": 364,
     "uuid": "4210d1d7-b49c-4f72-833b-69c87f71c452"
+  },
+  {
+    "id": "echo-keeper",
+    "name": "Echo Keeper",
+    "icon": "\ud83d\udd6f\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 6,
+    "rarity": "common",
+    "locked": false,
+    "archetypes": [
+      "Swamp"
+    ],
+    "effects": {
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "exileGrave",
+          "count": 2
+        }
+      ]
+    },
+    "flavor": "It lights a candle for each name it lets go. The names don't stay gone.",
+    "numericId": 365,
+    "uuid": "ae6a2356-18b9-4920-8a6d-54c2f77c513d"
+  },
+  {
+    "id": "marsh-wisp",
+    "name": "Marsh Wisp",
+    "icon": "\ud83d\udc7b",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 5,
+    "rarity": "common",
+    "locked": true,
+    "archetypes": [
+      "Swamp"
+    ],
+    "effects": {
+      "remember": 2,
+      "triggers": [
+        {
+          "on": "onDeath",
+          "do": "exileSelf"
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "8-1"
+    },
+    "flavor": "Put it out and it drifts off. Light two candles and it drifts back.",
+    "numericId": 366,
+    "uuid": "24ae4ee7-eec4-4328-ab87-b367c9f3693f"
+  },
+  {
+    "id": "bog-revenant",
+    "name": "Bog Revenant",
+    "icon": "\ud83e\udddf",
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 9,
+    "rarity": "rare",
+    "locked": true,
+    "archetypes": [
+      "Swamp"
+    ],
+    "effects": {
+      "remember": 3,
+      "triggers": [
+        {
+          "on": "onDeath",
+          "do": "exileSelf"
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "8-6"
+    },
+    "flavor": "The mire keeps what it drowns. Sometimes it gives one back.",
+    "numericId": 367,
+    "uuid": "e45d4dc9-79ba-4762-baf4-3333efd2ca1b"
   }
 ]

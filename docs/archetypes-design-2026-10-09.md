@@ -176,7 +176,16 @@ A deck can run one, two or all three. Running all three unlocks the **Convergenc
 ---
 
 ## Suggested build order
-1. **Active Exile zone.** Unblocks Ecclesia fuse-back, the Forgotten Ones and Scrap spending.
+1. **Active Exile zone.** ✅ Built 2026-10-09 (default on "continue"; revertible). Unblocks Ecclesia fuse-back, the Forgotten Ones and Scrap spending.
+   - **Echoes 🕯️:** every card sent to your Removal Zone, from hand, graveyard or board, gives you 1 Echo. It's shown on the deck badge (🌫 cards · 🕯️ Echoes).
+   - **Remember N:** a card waiting in your Removal Zone returns to the board at the start of a round once you have N Echoes, which are spent. One return per side a round.
+   - **New action, Exile from graveyard N:** gives N Echoes. It's in the card editor.
+   - **First cards:**
+     - Echo Keeper (Base, 2/6, exiles 2 from your graveyard when played);
+     - Marsh Wisp (Swampmire 8-1, 3/5, Remember 2, exiles itself on death);
+     - Bog Revenant (Swampmire 8-6, Rare 5/9, Remember 3, exiles itself on death).
+   - **Measured:** Wisps alone 49%, with Keepers 65%. Without Remember, the same Wisp deck wins 18%.
+   - **Not built yet:** Ecclesia fuse-back, Scrap from the graveyard, Breach and Rifts. They can all use Echoes and Remember.
 2. **Swarm.** ✅ Built. Small: one passive and one death trigger. Ants and bees already exist, and Promotion feeds it.
 3. **Tide.** ✅ Built (taken ahead of the Exile zone as the default on "continue"; revertible).
 4. **Devilry circles.** A board/hand check before summoning.

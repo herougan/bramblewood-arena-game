@@ -1,81 +1,191 @@
 [
  {
+  "map": "m1",
+  "key": "1-4",
+  "kind": "boss",
+  "target": 35,
+  "before": 5,
+  "after": 43,
+  "hp": [
+   30,
+   57
+  ],
+  "swaps": 1,
+  "deck": {
+   "glacier-wolf-pack": 3,
+   "pond-duck": 4,
+   "otter-kit": 2
+  }
+ },
+ {
+  "map": "mf",
+  "key": "f-5",
+  "kind": "boss",
+  "target": 35,
+  "before": 12,
+  "after": 23,
+  "hp": [
+   30,
+   30
+  ],
+  "swaps": 1,
+  "deck": {
+   "beetle-battering-ram": 1,
+   "beetle-grunt": 3,
+   "burrow-rabbit": 3,
+   "jackrabbit-sprinter": 2,
+   "fox-kit": 1,
+   "mouse-sapper": 2
+  }
+ },
+ {
   "map": "mg",
-  "key": "g-3",
+  "key": "g-2",
   "kind": "elite",
   "target": 45,
   "before": 10,
   "after": 47,
   "hp": [
    25,
-   46
+   47
   ],
   "swaps": 1,
   "deck": {
-   "reef-manta-glider": 2,
-   "open-ocean-hermit-crab": 4,
-   "sulfur-vent-crab": 2,
-   "blind-cave-fish": 2,
-   "otter-riverguard": 2
+   "trash-panda-trickster": 4,
+   "gull-thief": 3,
+   "otter-riverguard": 1,
+   "reef-manta-glider": 2
   }
  },
  {
-  "map": "m7",
-  "key": "7-6",
+  "map": "m4",
+  "key": "4-2",
+  "kind": "skirmish",
+  "target": 80,
+  "before": 47,
+  "after": 68,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "glowworm-cluster": 2,
+   "blind-cave-fish": 4,
+   "barrow-leech-bat": 2,
+   "bat-swarmling": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-4",
+  "kind": "skirmish",
+  "target": 70,
+  "before": 57,
+  "after": 70,
+  "hp": [
+   14,
+   22
+  ],
+  "swaps": 1,
+  "deck": {
+   "echo-screecher": 3,
+   "bat-swarmling": 2,
+   "vampire-roost": 2,
+   "stalactite-golem": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-5",
+  "kind": "skirmish",
+  "target": 65,
+  "before": 42,
+  "after": 60,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "sulfur-cinder-moth": 4,
+   "barrow-leech-bat": 2,
+   "cave-flitter": 2,
+   "bat-swarmling": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-7",
   "kind": "elite",
   "target": 45,
-  "before": 7,
+  "before": 18,
   "after": 45,
   "hp": [
    25,
+   42
+  ],
+  "swaps": 1,
+  "deck": {
+   "vampire-roost": 2,
+   "echo-screecher": 3,
+   "bat-swarmling": 2,
+   "stalactite-golem": 2
+  }
+ },
+ {
+  "map": "m5",
+  "key": "5-2",
+  "kind": "skirmish",
+  "target": 77,
+  "before": 57,
+  "after": 68,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "jaguar-stalker": 1,
+   "toucan-courier": 3,
+   "acacia-giraffe": 2,
+   "savanna-cheetah": 2,
+   "plains-zebra": 2
+  }
+ },
+ {
+  "map": "m10",
+  "key": "10-1",
+  "kind": "skirmish",
+  "target": 85,
+  "before": 70,
+  "after": 80,
+  "hp": [
+   24,
+   14
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-9",
+  "kind": "elite",
+  "target": 45,
+  "before": 7,
+  "after": 47,
+  "hp": [
+   88,
    39
   ],
   "swaps": 1,
   "deck": {
-   "coral-reef-shark": 3,
-   "orca-vanguard": 2,
-   "moray-ambusher": 1,
-   "coral-polyp-colony": 1,
-   "sea-turtle-elder": 2
-  }
- },
- {
-  "map": "m9",
-  "key": "9-1",
-  "kind": "skirmish",
-  "target": 85,
-  "before": 58,
-  "after": 85,
-  "hp": [
-   14,
-   17
-  ],
-  "swaps": 2,
-  "deck": {
-   "cinder-hornet": 4,
-   "ember-jackal": 2,
-   "beaver-lumberjack": 2,
-   "phoenix-fledgling": 2
-  }
- },
- {
-  "map": "m9",
-  "key": "9-3",
-  "kind": "skirmish",
-  "target": 68,
-  "before": 40,
-  "after": 70,
-  "hp": [
-   14,
-   16
-  ],
-  "swaps": 1,
-  "deck": {
-   "sulfur-vent-crab": 1,
-   "obsidian-scorpion": 2,
-   "pyroclast-wyrm": 2,
-   "beaver-lumberjack": 3,
-   "cinder-hornet": 2
+   "peak-condor": 1,
+   "eyrie-warden": 1,
+   "chipmunk-stockpiler": 3,
+   "alpine-avalanche": 2,
+   "rockslide-ram": 1,
+   "mountain-goat-climber": 2
   }
  }
 ]

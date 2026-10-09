@@ -3,6 +3,14 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-09 (night)
+- **The Removal Zone comes alive:**
+  - Every card sent there gives its owner 1 Echo 🕯️, shown on the deck badge.
+  - **Remember N** cards come back from it once you have N Echoes.
+  - Three new cards: **Echo Keeper** (Base), **Marsh Wisp** and **Bog Revenant** (Sable Swampmire rewards). Two swamp fights now use them.
+- **Fights that were far too hard are fixed:**
+  - The tuner wanted castle HP below the minimum, so these had been skipped.
+  - Map 1's boss went from ~5% to ~43% for a new player's likely deck; the Grotto stash, the Roost and three cave skirmishes, the Condor Sovereign (10-9) and others were also fixed.
+  - The main cause was Raccoon Nightcrew (7 Attack, Nocturnal). It was swapped out where it doesn't belong.
 - **Tide, the second archetype:**
   - From round 2 the water alternates 🌊 Flow and 🐚 Ebb every round.
   - Tide units hit +1 on Flow and take 1 less per hit on Ebb.

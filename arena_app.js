@@ -190,6 +190,8 @@ const PASSIVE_DEFS = [
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'boolean', desc:()=>`Hits +1 by day.`},
   // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
+  // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
+  {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board.`},
   {key:'wash', category:'passive', label:'Wash', kind:'boolean', desc:()=>`On Flow rounds, the enemy card facing this one gets +1 Wait (once per enemy card).`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
@@ -457,6 +459,7 @@ const ACTION_DEFS = [
   // ask (trigger + amount) rather than a fully generic resource-conversion system.
   {key:'refine', label:'Refine', fields:['amount'], desc:"Pair with Per Turn. Consumes 1 Lumber from this card's owner (no-op if they have none) and produces Amount Elemental Energy — the advanced resource."},
   {key:'drawCard', label:'Draw', fields:['count'], desc:"This card's owner draws that many cards."},
+  {key:'exileGrave', label:'Exile from graveyard', fields:['count'], desc:"Move that many random cards from the owner's graveyard to the Removal Zone. Each one gives 1 Echo."},
   {key:'spawnCard', label:'Spawn', fields:['defId','count'], desc:'Spawn copies of another card onto this row.'},
   // Buff (2026-09-30, merges buffAttack/buffHealth/buffAlly into one action, per explicit
   // request/example: "Buff is simplified to just 'Buff', then the next parameter is who - Ally,
@@ -3584,7 +3587,7 @@ function referenceHTML(){
   <div class="panel"><h3 class="ref-heading">Triggers — the "On" half of a custom trigger</h3><div class="ref-grid">${TRIGGER_DEFS.map(t=>`<div class="ref-card"><span class="kind">Trigger</span><b>${t.label}</b><p>Fires ${t.desc}.</p></div>`).join('')}</div></div>
   <div class="panel"><h3 class="ref-heading">Actions — the "Do" half of a custom trigger</h3><div class="ref-grid">${ACTION_DEFS.map(a=>`<div class="ref-card"><span class="kind">Action</span><b>${a.label}</b><p>${a.desc}</p></div>`).join('')}</div></div>
   <div class="panel"><h3 class="ref-heading">New zones &amp; resources</h3><div class="ref-grid">
-    <div class="ref-card"><span class="kind">Zone</span><b>🌫 Removal Zone</b><p>Cards here are out of the match entirely — not on board, graveyard, or redrawable.</p></div>
+    <div class="ref-card"><span class="kind">Zone</span><b>🌫 Removal Zone</b><p>Cards here can't be drawn again. Each card sent here gives its owner 1 Echo 🕯️; a Remember card here returns to the board once you have enough Echoes.</p></div>
     <div class="ref-card"><span class="kind">Resource</span><b>🕊️ Grace</b><p>A second currency. On Spawn/Ready → Gain Grace generates it; Grace Cost spends it.</p></div>
     <div class="ref-card mech-devilry-swatch"><span class="kind">Resource</span><b>😈 Devilry — ★ Dark Points</b><p>A third currency, mirroring Grace exactly. Its abilities show in a dark, blood-red box. 😈 marks the Devilry archetype itself; ★ is the resource symbol — you'll see it on any card with a "Gain Dark Points" ability, and in the HUD. Discarding a Devilry-line card (imps, demons, and other Devilry units) grants a bonus +1 Dark Point on top of its normal discard yield.</p></div>
     <div class="ref-card"><span class="kind">Resource</span><b>🪨 Stone</b><p>Dormant for now — discarding a card no longer grants it (see Lumber). Only a card's own "Gain stone" custom trigger can produce any; the HUD pill only appears while one is in play.</p></div>
@@ -5096,6 +5099,7 @@ function triggerPreviewText(t){
     case 'gainDevilry': doText = `gain ${amt} Dark Point${amt===1?'':'s'} (★)`; break;
     case 'refine': doText = `consume 1 lumber (if any) to produce ${amt} Elemental Energy`; break;
     case 'drawCard': doText = `draw ${count} card${count===1?'':'s'}`; break;
+    case 'exileGrave': doText = `exile ${count} card${count===1?'':'s'} from your graveyard (+${count} Echo${count===1?'':'es'})`; break;
     case 'spawnCard': { const sd = getCardDefs()[defId]; doText = `spawn ${count} ${sd ? sd.name : defId}`; break; }
     // Bugfix 2026-09-30 (found during verification of the Custom Triggers redesign above): a
     // buff/debuff that only sets ONE of amount/amount2 (very common — most buffs are Attack-only
@@ -9794,7 +9798,7 @@ const CONQUEST_MAPS = [
       { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":4,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2}, hqHp:29, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial"] },
       { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:34, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial"] },
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:34, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
-      { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"raccoon-nightcrew":2}, hqHp:30, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
+      { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":2}, hqHp:57, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
   // Two new maps between the Outskirts and the Hollow (2026-10-09, user: "I want some 2 more maps in
   // between the first one and the water one. Maybe one is slightly more 'field'y. I also want a beach
@@ -9806,7 +9810,7 @@ const CONQUEST_MAPS = [
       { key:"f-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2}, hqHp:22, flavor:"The drumming stops the moment you step into the grass.", requires:["f-1"] },
       { key:"f-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":4,"quarry-mole":4,"mouse-sapper":2,"badger-berserker":2}, hqHp:14, flavor:"The field looks flat. Underneath it is not.", requires:["f-1"] },
       { key:"f-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":3,"hedgehog-scout":2,"beetle-battering-ram":1}, hqHp:15, flavor:"Someone has been digging trenches under the thistles.", requires:["f-2","f-3"] },
-      { key:"f-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":3,"beetle-grunt":3,"burrow-rabbit":3,"jackrabbit-sprinter":2,"fox-kit":1}, hqHp:30, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["f-4"] },
+      { key:"f-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":3,"burrow-rabbit":3,"jackrabbit-sprinter":2,"fox-kit":1,"mouse-sapper":2}, hqHp:30, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["f-4"] },
     ]},
   { id:"mb", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", unlockAfter:"mf", sequential:true,
     nodes: [
@@ -9839,19 +9843,19 @@ const CONQUEST_MAPS = [
   { id:"m4", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", unlockAfter:"m3", sequential:true,
     nodes: [
       { key:"4-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"cave-flitter":4,"bat-swarmling":5,"cave-bat-swarm":3}, hqHp:14, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
-      { key:"4-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":4}, hqHp:14, flavor:"Lit just brightly enough to see what finds you.", requires:["4-1"] },
+      { key:"4-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"bat-swarmling":2}, hqHp:14, flavor:"Lit just brightly enough to see what finds you.", requires:["4-1"] },
       { key:"4-3", kind:"skirmish", name:"Cinder Vents", icon:"🔥", deck:{"sulfur-cinder-moth":6,"cave-bat-swarm":2,"barrow-leech-bat":2}, hqHp:19, flavor:"The heat down here comes from somewhere nobody has mapped.", requires:["4-2"] },
-      { key:"4-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"cave-flitter":2,"bat-swarmling":2,"vampire-roost":2}, hqHp:14, flavor:"Every sound down here comes back changed.", requires:["4-3"] },
-      { key:"4-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"cave-bat-swarm":2,"barrow-leech-bat":2,"cave-flitter":2}, hqHp:14, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["4-4"] },
+      { key:"4-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"bat-swarmling":2,"vampire-roost":2,"stalactite-golem":2}, hqHp:22, flavor:"Every sound down here comes back changed.", requires:["4-3"] },
+      { key:"4-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"barrow-leech-bat":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:14, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["4-4"] },
       { key:"4-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"bat-swarmling":2}, hqHp:18, flavor:"The right tunnel glows. That is not a comfort.", requires:["4-4"] },
-      { key:"4-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"vampire-roost":2,"echo-screecher":5,"bat-swarmling":2}, hqHp:25, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["4-5", "4-6"] },
+      { key:"4-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"vampire-roost":2,"echo-screecher":3,"bat-swarmling":2,"stalactite-golem":2}, hqHp:42, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["4-5", "4-6"] },
       { key:"4-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"stalactite-golem":1,"deep-cave-troll":4,"echo-screecher":1,"tiny-cave-dweller":2}, hqHp:137, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["4-7"] },
       { key:"m4-raid", kind:"raidboss", name:"The Deep Troll King", icon:"👹", deck:{"deep-cave-troll":6,"stalactite-golem":2,"vampire-roost":1}, hqHp:150, flavor:"Every tunnel in the dark eventually leads back to him.", requires:["4-8"] },
     ]},
   { id:"m5", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", unlockAfter:"m4", sequential:true,
     nodes: [
       { key:"5-1", people:"folk", kind:"skirmish", name:"Zebra Stampede", icon:"🦓", deck:{"plains-zebra":4,"dust-hyena":4,"howler-monkey":2}, hqHp:16, flavor:"The herd runs before you even see what spooked it.", requires:[] },
-      { key:"5-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"jaguar-stalker":1,"toucan-courier":3,"acacia-giraffe":2,"howler-monkey":2,"savanna-cheetah":2}, hqHp:14, flavor:"They call to each other long before they close in.", requires:["5-1"] },
+      { key:"5-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"jaguar-stalker":1,"toucan-courier":3,"acacia-giraffe":2,"savanna-cheetah":2,"plains-zebra":2}, hqHp:14, flavor:"They call to each other long before they close in.", requires:["5-1"] },
       { key:"5-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"howler-monkey":4,"toucan-courier":2,"dust-hyena":2,"plains-zebra":2}, hqHp:95, flavor:"The trees carry the warning further than any scout could.", requires:["5-2"] },
       { key:"5-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"toucan-courier":4,"jaguar-stalker":3,"plains-zebra":1,"acacia-giraffe":2}, hqHp:14, flavor:"Every flock overhead is reporting straight back to the pride.", requires:["5-3"] },
       { key:"5-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"acacia-giraffe":3,"savanna-cheetah":4,"plains-zebra":3}, hqHp:25, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", requires:["5-4"] },
@@ -9884,12 +9888,12 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m8", name:"Sable Swampmire", icon:"🐊", blurb:"A second, blacker wetland — everything here bites first and asks later.", unlockAfter:"m7", sequential:true,
     nodes: [
-      { key:"8-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":4,"gangrenous-leech":4,"marsh-gas-toad":2}, hqHp:43, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
+      { key:"8-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":3,"gangrenous-leech":4,"marsh-gas-toad":2,"marsh-wisp":1}, hqHp:32, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", deck:{"swamp-alligator":3,"mire-witch-heron":4,"cypress-root-lurker":3}, hqHp:110, flavor:"The roots move only when you stop watching them.", requires:["8-1"] },
       { key:"8-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"marsh-gas-toad":2,"bog-leech":4,"gangrenous-leech":2,"constrictor-coil":2}, hqHp:51, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["8-2"] },
       { key:"8-4", kind:"skirmish", name:"Root Snare", icon:"🌿", deck:{"cypress-root-lurker":4,"mire-witch-heron":3,"adder-ambusher":3}, hqHp:72, flavor:"The mire does not attack. It waits for you to step wrong.", requires:["8-3"] },
       { key:"8-5", kind:"elite", name:"Venomlord's Coil", icon:"🐍", deck:{"venomlord-serpent":2,"constrictor-coil":3,"adder-ambusher":1,"beaver-builder":3}, hqHp:42, flavor:"It only needs to catch you once.", characterId:"plains-terrace", requires:["8-4"] },
-      { key:"8-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"crocodile-ambusher":4,"swamp-alligator":3,"constrictor-coil":3}, hqHp:69, flavor:"The bank looks empty right up until it isn’t.", requires:["8-5"] },
+      { key:"8-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"crocodile-ambusher":4,"swamp-alligator":1,"bog-revenant":2,"echo-keeper":2,"constrictor-coil":3}, hqHp:53, flavor:"The bank looks empty right up until it isn’t.", requires:["8-5"] },
       { key:"8-7", kind:"elite", name:"Adder Gauntlet", icon:"🐍", deck:{"adder-ambusher":1,"venomlord-serpent":3,"constrictor-coil":3,"beaver-builder":3}, hqHp:42, flavor:"Every step through here is a small negotiation with the grass.", requires:["8-6"] },
       { key:"8-8", kind:"boss", name:"The Alligator King", icon:"👑", deck:{"swamp-alligator":1,"crocodile-ambusher":3,"venomlord-serpent":2,"beaver-builder":3}, hqHp:73, flavor:"Every stretch of the Swampmire is somebody else’s territory until his teeth say otherwise.", requires:["8-7"] },
       { key:"m8-raid", kind:"raidboss", name:"Wound Reaver's Domain", icon:"💀", deck:{"wound-reaver":3,"gangrenous-leech":4,"swamp-alligator":3}, hqHp:230, flavor:"The Swampmire does not heal. It just remembers where you bled.", requires:["8-8"] },
@@ -9907,7 +9911,7 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m10", name:"Eyrie Heights", icon:"🏔️", blurb:"Sheer alpine cliffs above the Foundry’s smoke — the air here belongs to whatever can still fly in it.", unlockAfter:"m9", sequential:true,
     nodes: [
-      { key:"10-1", people:"folk", kind:"skirmish", name:"Goat Trail Runners", icon:"🐐", deck:{"mountain-goat-climber":4,"peak-condor":4,"golden-eagle-diver":2}, hqHp:24, flavor:"The trail looks impassable right up until something runs it anyway.", requires:[] },
+      { key:"10-1", people:"folk", kind:"skirmish", name:"Goat Trail Runners", icon:"🐐", deck:{"mountain-goat-climber":4,"peak-condor":4,"golden-eagle-diver":2}, hqHp:14, flavor:"The trail looks impassable right up until something runs it anyway.", requires:[] },
       { key:"10-2", kind:"skirmish", name:"Avalanche Ridge", icon:"❄️", deck:{"alpine-avalanche":3,"rockslide-ram":4,"mountain-goat-climber":1,"peak-condor":2}, hqHp:21, flavor:"One wrong step here and the whole ridge answers for it.", requires:["10-1"] },
       { key:"10-3", people:"folk", kind:"skirmish", name:"Cliffside Herd", icon:"🐐", deck:{"mountain-goat-climber":4,"rockslide-ram":4,"peak-condor":2}, hqHp:26, flavor:"They climb where nothing with hooves should be able to.", requires:["10-2"] },
       { key:"10-4", kind:"skirmish", name:"Ridge Fork", icon:"🏔️", deck:{"golden-eagle-diver":2,"peak-condor":3,"eyrie-warden":2,"chipmunk-stockpiler":3}, hqHp:39, flavor:"The trail splits here. Both branches look equally unfriendly.", requires:["10-3"] },
@@ -9915,7 +9919,7 @@ const CONQUEST_MAPS = [
       { key:"10-6", kind:"elite", name:"East Ledge", icon:"🐐", deck:{"rockslide-ram":4,"mountain-goat-climber":3,"alpine-avalanche":3}, hqHp:27, flavor:"The east path is quieter. That is the problem with it.", requires:["10-4"] },
       { key:"10-7", kind:"elite", name:"Eyrie Wardens", icon:"🦅", deck:{"eyrie-warden":3,"golden-eagle-diver":2,"peak-condor":1,"chipmunk-stockpiler":3}, hqHp:25, flavor:"They nest where nothing without wings can ever reach them.", characterId:"plains-terrace", requires:["10-4"] },
       { key:"10-8", kind:"elite", name:"Summit Approach", icon:"🏔️", deck:{"alpine-avalanche":1,"rockslide-ram":4,"eyrie-warden":2,"chipmunk-stockpiler":3}, hqHp:25, flavor:"All three trails end at the same wall of snow.", requires:["10-5", "10-6", "10-7"] },
-      { key:"10-9", kind:"elite", name:"The Condor Sovereign", icon:"👑", deck:{"peak-condor":1,"eyrie-warden":1,"chipmunk-stockpiler":3,"alpine-avalanche":2,"rockslide-ram":1,"golden-eagle-diver":2}, hqHp:88, flavor:"Every eyrie on the Heights answers to one set of wings.", requires:["10-8"] },
+      { key:"10-9", kind:"elite", name:"The Condor Sovereign", icon:"👑", deck:{"peak-condor":1,"eyrie-warden":1,"chipmunk-stockpiler":3,"alpine-avalanche":2,"rockslide-ram":1,"mountain-goat-climber":2}, hqHp:39, flavor:"Every eyrie on the Heights answers to one set of wings.", requires:["10-8"] },
       { key:"10-10", kind:"boss", name:"The Avalanche Colossus", icon:"🗻", deck:{"alpine-avalanche":1,"rockslide-ram":2,"eyrie-warden":2,"peak-condor":2,"chipmunk-stockpiler":3}, hqHp:34, flavor:"The mountain itself decided it had had enough visitors.", requires:["10-9"] },
     ]},
   { id:"m11", name:"The Sundered Peak", icon:"🗻", blurb:"The campaign’s final approach — apex predators, no scouts left to send ahead of you. Ten regions down. One throne left.", unlockAfter:"m10", sequential:true,
@@ -9939,7 +9943,7 @@ const CONQUEST_MAPS = [
   { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"b-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
       { key:"g-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:54, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
-      { key:"g-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"raccoon-nightcrew":2,"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1}, hqHp:25, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
+      { key:"g-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1,"reef-manta-glider":2}, hqHp:47, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
       { key:"g-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"otter-riverguard":2}, hqHp:46, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
       { key:"g-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3,"blind-cave-fish":2}, hqHp:28, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["g-2","g-3"] },
     ]},
@@ -14554,7 +14558,7 @@ function renderMatchUI(){
       <div class="deck-widget hq-tile" id="deckWidgetTop">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
-        ${p2.exile.length>0?`<div class="removal-badge" title="Removal Zone">🌫 ${p2.exile.length}</div>`:''}
+        ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
       ${fieldEffectCardHTML(m)}
       <div class="top-row-controls">
@@ -14585,7 +14589,7 @@ function renderMatchUI(){
       <div class="deck-widget hq-tile" id="deckWidgetBottom">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
-        ${p1.exile.length>0?`<div class="removal-badge" title="Removal Zone">🌫 ${p1.exile.length}</div>`:''}
+        ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
@@ -19762,6 +19766,7 @@ function logText(ev){
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
+    case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone.`};
     case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
     case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};

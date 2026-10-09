@@ -5958,6 +5958,68 @@
    "verdict": "weak",
    "locked": false,
    "source": "base"
+  },
+  {
+   "id": "echo-keeper",
+   "name": "Echo Keeper",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 50.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "marsh-wisp",
+   "name": "Marsh Wisp",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "remember",
+    "triggers"
+   ],
+   "winRate": 45.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "bog-revenant",
+   "name": "Bog Revenant",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 9,
+   "skills": [
+    "remember",
+    "triggers"
+   ],
+   "winRate": 73.3,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
   }
  ]
 }

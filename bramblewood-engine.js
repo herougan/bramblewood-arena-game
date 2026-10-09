@@ -179,7 +179,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // 2026-09-27 batch: On Ally/Enemy Played (the "played from hand" half of the played/spawned
   // split — see fireSpawnFamilyTriggers in this file), On Ally/Enemy Ready, and On Move.
   'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','addWait','missile'];
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','addWait','missile'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -333,7 +333,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // `startGold` effect now seeds starting Lumber instead of starting Gold, same amount.
       id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, grace:0, devilry:0, stone:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
       deck:buildDeckIdsFrom(cardCounts, rnd), hand:[], row:{left:[], center:[], right:[]},
-      graveyard:[], exile:[], castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
+      graveyard:[], exile:[], echoes:0, castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
       playedThisTurn:false, discardUsedThisTurn:false,
       character: character || null,
       firstUnitAtkBonus: (chEffects.firstUnitAtkBonus||0), firstUnitBonusUsed:false,
@@ -525,6 +525,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         draw(players[1], 1, sideOf(1), stats, events); draw(players[2], 1, sideOf(2), stats, events);
       }
     }
+    // The active Exile zone (2026-10-09, D19 next step; archetypes-design-2026-10-09.md, the Forgotten Ones):
+    // every card that goes to a player's Exile gives them 1 Echo 🕯️. A card with Remember N waiting in Exile
+    // comes back to the board at the start of a round once its owner has N Echoes (spent). One return per side a round.
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.exile.length) return;
+      for(let i=0; i<pl.exile.length; i++){
+        const d = CARD_DEFS[pl.exile[i].defId], n = d && d.effects && Number(d.effects.remember);
+        if(!(n > 0) || (pl.echoes||0) < n) continue;
+        if(recordEvents && events) events.push({type:'remember', side:sideOf(pid), defId:d.id, spent:n});
+        if(!debugSpawnCard(players, sideOf, pid, d.id, rnd() < .5 ? 'left' : 'right', stats, events)){ if(recordEvents && events) events.pop(); break; }
+        pl.exile.splice(i, 1); pl.echoes -= n; break;
+      }
+    });
     if(getTide() === 'flow'){
       if(recordEvents && events) events.push({type:'tide', tide:'flow', round});
       [1,2].forEach(pid=>{ const me = players[pid], foe = players[pid===1 ? 2 : 1]; if(!me || !foe) return;
@@ -1230,7 +1242,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!pl.graveyard.length) break;
         const idx = Math.floor(rnd()*pl.graveyard.length);
         const [g] = pl.graveyard.splice(idx,1);
-        pl.exile.push(g);
+        pl.exile.push(g); pl.echoes = (pl.echoes||0) + 1;
         ensureStat(stats, sideOfPl, g.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:sideOfPl, defId:g.defId, zone:'graveyard'});
         fireOnExile(players, sideOf, playerId, g.defId, stats, events);
@@ -1240,7 +1252,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const pick = pool[Math.floor(rnd()*pool.length)];
         const idx = pl.hand.findIndex(h=>h.uid===pick.uid);
         const [h] = pl.hand.splice(idx,1);
-        pl.exile.push({defId:h.defId});
+        pl.exile.push({defId:h.defId}); pl.echoes = (pl.echoes||0) + 1;
         ensureStat(stats, sideOfPl, h.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:sideOfPl, defId:h.defId, zone:'hand'});
         fireOnExile(players, sideOf, playerId, h.defId, stats, events);
@@ -1655,6 +1667,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           break;
         }
         case 'drawCard': draw(pl, t.count||1, mySide, stats, events); break;
+        // Exile from your graveyard (2026-10-09, the active Exile zone): each card moved gives its owner 1 Echo.
+        case 'exileGrave': {
+          for(let k=0; k<(t.count||1) && pl.graveyard.length; k++){
+            const [g] = pl.graveyard.splice(Math.floor(rnd()*pl.graveyard.length), 1);
+            pl.exile.push(g); pl.echoes = (pl.echoes||0) + 1; ensureStat(stats, mySide, g.defId).exiled++;
+            if(recordEvents && events) events.push({type:'exile', side:mySide, defId:g.defId, zone:'graveyard'});
+            fireOnExile(players, sideOf, playerId, g.defId, stats, events);
+          }
+          break;
+        }
         // Deal damage (2026-09-30): target generalized to who/sub (see the long comment above
         // ACTION_DEFS in arena_app.js) — old cards that still carry a bare `target` (no `who`,
         // pre-migration save data) fall back to the exact same reading they always had via the
@@ -2373,7 +2395,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // above — a live removal tagged to land in the Removal Zone instead of the graveyard, same
       // decision this card's own On-Death-exile would make, just triggered by someone else's turn.
       if(hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone){
-        pl.exile.push({defId:card.defId});
+        pl.exile.push({defId:card.defId}); pl.echoes = (pl.echoes||0) + 1;
         ensureStat(stats, mySide, card.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:mySide, defId:card.defId, zone:'board'});
       } else {
