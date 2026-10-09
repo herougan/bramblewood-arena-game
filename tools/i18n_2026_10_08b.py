@@ -226,6 +226,8 @@ T = {
 'Tip': ['Astuce','Tipp','Consejo','Suggerimento','Dica','Tip','குறிப்பு','Tips','提示','提示','ヒント','팁'],
 'Day': ['Jour','Tag','Día','Giorno','Dia','Araw','பகல்','Siang','白天','白天','昼','낮'],
 'Night': ['Nuit','Nacht','Noche','Notte','Noite','Gabi','இரவு','Malam','夜晚','夜晚','夜','밤'],
+'Flow': ['Flux','Flut','Pleamar','Flusso','Cheia','Taog','ஏற்றம்','Pasang','涨潮','漲潮','満ち潮','밀물'],
+'Ebb': ['Reflux','Ebbe','Bajamar','Riflusso','Vazante','Kati','இறக்கம்','Surut','退潮','退潮','引き潮','썰물'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

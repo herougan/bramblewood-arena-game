@@ -19,6 +19,8 @@ const args = process.argv.slice(2);
 const N = +(args.find(a=> /^\d+$/.test(a)) || 60);
 const SUGGEST = args.includes('--suggest');
 const MODE = (args.find(a=> a.startsWith('--mode=')) || '--mode=open').slice(7);
+// --only=a,b,c measures just those cards (writes docs/balance/card-balance-partial.json, leaving the full report alone).
+const ONLY = ((args.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
 
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
 const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = d; });
@@ -56,7 +58,7 @@ const BANDS = {
 const bandOf = d=> BANDS[d.rarity || 'common'] || BANDS.common;
 
 const t0 = Date.now();
-const rows = fieldable.map(id=>{
+const rows = fieldable.filter(id=> !ONLY.length || ONLY.includes(id)).map(id=>{
   const d = defs[id], wr = winRate(id), [lo, hi] = bandOf(d);
   const verdict = wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
   return {id, name:d.name, rarity:d.rarity || null, cost:d.cost||0, wait:d.wait||0, attack:d.attack||0, health:d.health||0,
@@ -89,6 +91,6 @@ rows.forEach(r=>{ if(r.rarity) return; const wr = r.winRate/100; let best = 'com
   RAR_ORDER.forEach(k=>{ const [lo, hi] = BANDS[k], d = Math.abs(wr - (lo+hi)/2); if(d < bd){ bd = d; best = k; } }); r.suggestRarity = best; });
 const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MODE, filler: FILLER, bands: BANDS, rows};
 fs.mkdirSync(path.join(ROOT, 'docs', 'balance'), {recursive: true});
-fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'card-balance.json'), JSON.stringify(out, null, 1) + '\n');
+fs.writeFileSync(path.join(ROOT, 'docs', 'balance', ONLY.length ? 'card-balance-partial.json' : 'card-balance.json'), JSON.stringify(out, null, 1) + '\n');
 const cnt = v=> rows.filter(r=> r.verdict===v).length;
 console.log(`${rows.length} cards, ${N} games each, ${((Date.now()-t0)/1000).toFixed(0)}s: ${cnt('strong')} too strong, ${cnt('weak')} too weak, ${cnt('ok')} in band`);

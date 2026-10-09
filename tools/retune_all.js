@@ -49,8 +49,10 @@ function target(map, n){
   if(n.kind==='elite') return .45; if(n.kind==='boss' || n.kind==='finalboss') return .35; if(n.kind==='raidboss') return .2;
   const sk = map.nodes.filter(x=> x.kind==='skirmish'); return .85 - .25 * (Math.max(0, sk.indexOf(n)) / Math.max(1, sk.length-1));
 }
-function tuneHp(deck, nd, ch, hp0, mode, tgt){
-  let lo = Math.max(8, Math.round(hp0*0.35)), hi = Math.round(hp0*2), best = hp0, bestR = rate(deck, nd, ch, hp0, mode);
+// Castle-HP floors (2026-10-09): below these a fight ends before it starts, so past them the tuner swaps cards instead.
+const HP_FLOOR = {skirmish:14, elite:25, boss:30, finalboss:30};
+function tuneHp(deck, nd, ch, hp0, mode, tgt, kind){
+  let lo = Math.max(HP_FLOOR[kind] || 8, Math.round(hp0*0.35)), hi = Math.round(hp0*2), best = hp0, bestR = rate(deck, nd, ch, hp0, mode);
   while(lo <= hi){ const mid = Math.floor((lo+hi)/2), r = rate(deck, nd, ch, mid, mode); if(Math.abs(r-tgt) < Math.abs(bestR-tgt) - 1e-9 || (Math.abs(r-tgt) === Math.abs(bestR-tgt) && Math.abs(mid-hp0) < Math.abs(best-hp0))){ best = mid; bestR = r; } if(r > tgt) lo = mid+1; else hi = mid-1; }
   return {hp: best, r: bestR};
 }
@@ -73,7 +75,7 @@ for(const map of order){
     if(ONLY.length && !ONLY.includes(map.id) && !ONLY.includes(n.key)){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; }
     const deck = buildDeck(myOwned), ch = n.characterId && charById[n.characterId], tgt = target(map, n), mode = n.battleMode || 'open';
     let nd = Object.assign({}, n.deck), before = rate(deck, nd, ch, n.hqHp, mode);
-    let t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt), swaps = 0;
+    let t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind), swaps = 0;
     // Too far off with HP alone: trade two copies at a time with cards from this map's other fights
     // (so the theme holds): out goes the enemy's strongest (too hard) or weakest (too easy) card, in
     // comes the weakest / strongest card of the map pool.
@@ -88,7 +90,7 @@ for(const map of order){
       if(inn === out) break;
       const k = Math.min(2, nd[out]); nd[out] -= k; if(!nd[out]) delete nd[out]; nd[inn] = (nd[inn]||0) + k;
       if(Object.keys(nd).length < 2) break;
-      swaps++; t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt);
+      swaps++; t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind);
     }
     out.push({map: map.id, key: n.key, kind: n.kind, target: Math.round(tgt*100), before: Math.round(before*100), after: Math.round(t.r*100), hp: [n.hqHp, t.hp], swaps, deck: swaps ? nd : null});
     console.log(`${map.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(Math.round(tgt*100)).padStart(3)}%  ${String(Math.round(before*100)).padStart(3)}% → ${String(Math.round(t.r*100)).padStart(3)}%  HP ${n.hqHp} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);

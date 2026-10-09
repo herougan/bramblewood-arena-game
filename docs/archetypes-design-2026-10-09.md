@@ -102,7 +102,14 @@ Plus the special trio: **Elder Ones · Outer Ones · Forgotten Ones** (below). P
   - Balance impact is small: every Swarm card moved under 10 points; Swarm 2 was too strong in testing.
   - Covered by `tests/swarm.js`.
 
-### 8. Tide (proposal: the Deep, reefs, the beach)
+### 8. Tide (✅ built 2026-10-09: reefs, the beach, the Grotto)
+- **As built** (simpler than the proposal below, so it reads at a glance):
+  - From round 2 the water alternates **🌊 Flow** (even rounds) and **🐚 Ebb** (odd rounds). A pill next to Day/Night shows it, only in fights where a Tide card is in either deck.
+  - **Tide** (18 cards: reef fish, eels, crabs, the Tide Spirit, Dolphin Knight…): hits +1 on Flow; takes 1 less per hit on Ebb (never below 1).
+  - **Wash** (Tide Spirit, Riptide Eel, Coral Current Eel, Octopus Tactician, Dolphin Knight): on Flow, the enemy card facing it gets +1 Wait, once per enemy card. Uncapped, Wash took Dolphin Knight to 100% and Tide Spirit to 97%.
+  - Not built: Shell untargetable on Ebb, +2 health on Ebb. They're still possible later.
+  - Code: `getTide` in `bramblewood-engine.js`; covered by `tests/tide.js`.
+- **The original proposal:**
 - **Hook:** a shared **Ebb / Flow** phase that flips each round. Both players see it on the board edge as a little wave.
 - **On Flow:** Tide units get +1 attack and **Wash** (push the enemy unit opposite back 1 Wait).
 - **On Ebb:** Tide units get +2 health, and **Shell** units can't be targeted.
@@ -170,8 +177,8 @@ A deck can run one, two or all three. Running all three unlocks the **Convergenc
 
 ## Suggested build order
 1. **Active Exile zone.** Unblocks Ecclesia fuse-back, the Forgotten Ones and Scrap spending.
-2. **Swarm.** Small: one passive and one death trigger. Ants and bees already exist, and Promotion feeds it.
-3. **Tide.** One shared phase flag plus two passives. Gives the water maps an identity.
+2. **Swarm.** ✅ Built. Small: one passive and one death trigger. Ants and bees already exist, and Promotion feeds it.
+3. **Tide.** ✅ Built (taken ahead of the Exile zone as the default on "continue"; revertible).
 4. **Devilry circles.** A board/hand check before summoning.
 5. **Elder Ones.** Sleeping state plus a counter.
 6. **Evolution ride.** The big board-model change; last.

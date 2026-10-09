@@ -188,6 +188,9 @@ const PASSIVE_DEFS = [
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'boolean', desc:()=>`Hits +1 at night.`},
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'boolean', desc:()=>`Hits +1 by day.`},
+  // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
+  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
+  {key:'wash', category:'passive', label:'Wash', kind:'boolean', desc:()=>`On Flow rounds, the enemy card facing this one gets +1 Wait (once per enemy card).`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
@@ -9807,19 +9810,19 @@ const CONQUEST_MAPS = [
     ]},
   { id:"mb", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", unlockAfter:"mf", sequential:true,
     nodes: [
-      { key:"b-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"tide-pool-crab":4,"open-ocean-hermit-crab":3,"gull-thief":3,"otter-riverguard":2}, hqHp:90, flavor:"Low tide leaves a lot of angry things behind.", requires:[] },
-      { key:"b-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":2,"pelican-diver":3,"open-ocean-hermit-crab":4}, hqHp:23, flavor:"They are not after you. They are after your lunch.", requires:["b-1"] },
-      { key:"b-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":4,"tide-pool-crab":3,"sulfur-vent-crab":3,"pelican-diver":1}, hqHp:24, flavor:"A whole street of shells, and every one of them is occupied.", requires:["b-1"] },
-      { key:"b-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":2,"open-ocean-hermit-crab":4}, hqHp:37, flavor:"Watch the sky. Then watch it again.", requires:["b-2","b-3"] },
-      { key:"b-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4}, hqHp:80, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["b-4"] },
+      { key:"b-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"tide-pool-crab":4,"open-ocean-hermit-crab":3,"gull-thief":3,"otter-riverguard":2}, hqHp:39, flavor:"Low tide leaves a lot of angry things behind.", requires:[] },
+      { key:"b-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":2,"pelican-diver":3,"open-ocean-hermit-crab":4}, hqHp:20, flavor:"They are not after you. They are after your lunch.", requires:["b-1"] },
+      { key:"b-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":4,"tide-pool-crab":3,"sulfur-vent-crab":3,"pelican-diver":1}, hqHp:14, flavor:"A whole street of shells, and every one of them is occupied.", requires:["b-1"] },
+      { key:"b-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":2,"open-ocean-hermit-crab":4}, hqHp:25, flavor:"Watch the sky. Then watch it again.", requires:["b-2","b-3"] },
+      { key:"b-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4}, hqHp:64, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["b-4"] },
     ]},
   // Map 2 retuned 2026-10-04 (D18 draft, tools/difficulty_curve.js): aimed at a deck built from Map 1's
   // new skirmish rewards — first node ~90%, 2-2 ~60%, elites ~45%, boss ~30-40%.
   { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"mb", sequential:true,
     nodes: [
-      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:95, flavor:"The shallows here are only shallow at low tide.", requires:[] },
+      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:41, flavor:"The shallows here are only shallow at low tide.", requires:[] },
       { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"open-ocean-hermit-crab":3,"kraken-spawnling":2,"humpback-elder":2,"beaver-builder":3}, hqHp:33, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
-      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"beaver-builder":3}, hqHp:45, flavor:"They surface in formation. That is the last warning you get.", requires:["2-2"] },
+      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"beaver-builder":3}, hqHp:34, flavor:"They surface in formation. That is the last warning you get.", requires:["2-2"] },
       { key:"2-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"orca-vanguard":2,"humpback-elder":1,"beaver-builder":3}, hqHp:51, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["2-3"] },
       { key:"2-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":1,"humpback-elder":1,"open-ocean-hermit-crab":4,"otter-riverguard":1,"beaver-builder":3}, hqHp:52, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["2-4"] },
     ]},
@@ -9869,15 +9872,15 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m7", name:"Coral Current", icon:"🐠", blurb:"A second, deeper reef system — faster water, faster teeth.", unlockAfter:"m6", sequential:true,
     nodes: [
-      { key:"7-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":1,"tide-pool-crab":2,"gull-thief":4,"coral-polyp-colony":3,"sea-turtle-elder":2}, hqHp:177, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
+      { key:"7-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":1,"tide-pool-crab":2,"gull-thief":4,"coral-polyp-colony":3,"sea-turtle-elder":2}, hqHp:126, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
       { key:"7-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"moray-ambusher":4,"riptide-eel":4,"coral-current-eel":2}, hqHp:23, flavor:"The current here is faster than it has any right to be.", requires:["7-1"] },
-      { key:"7-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":4,"orca-vanguard":2,"riptide-eel":2,"coral-polyp-colony":2}, hqHp:22, flavor:"Every pool along this stretch hides something with claws.", requires:["7-2"] },
+      { key:"7-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":4,"orca-vanguard":2,"riptide-eel":2,"coral-polyp-colony":2}, hqHp:15, flavor:"Every pool along this stretch hides something with claws.", requires:["7-2"] },
       { key:"7-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":4,"coral-current-eel":4,"moray-ambusher":2}, hqHp:39, flavor:"The channel pulls harder than the current should allow.", requires:["7-3"] },
-      { key:"7-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2}, hqHp:27, flavor:"The reef forks here — two currents, two dangers.", requires:["7-4"] },
-      { key:"7-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":3,"orca-vanguard":2,"moray-ambusher":1,"coral-polyp-colony":3}, hqHp:25, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["7-5"] },
+      { key:"7-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2}, hqHp:23, flavor:"The reef forks here — two currents, two dangers.", requires:["7-4"] },
+      { key:"7-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":3,"orca-vanguard":2,"moray-ambusher":1,"coral-polyp-colony":1,"sea-turtle-elder":2}, hqHp:39, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["7-5"] },
       { key:"7-7", kind:"elite", name:"Eel Nest", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":4,"moray-ambusher":2}, hqHp:88, flavor:"The other current is calmer. That is not the same as safer.", requires:["7-5"] },
-      { key:"7-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":3,"coral-polyp-colony":3,"coral-reef-shark":3}, hqHp:63, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["7-6", "7-7"] },
-      { key:"7-9", kind:"boss", name:"The Orca Vanguard King", icon:"🐋", deck:{"coral-reef-shark":1,"moray-ambusher":1,"coral-polyp-colony":3,"sea-turtle-elder":2,"orca-vanguard":2}, hqHp:45, flavor:"The whole Current clears out the moment his pod surfaces.", requires:["7-8"] },
+      { key:"7-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":3,"coral-polyp-colony":3,"coral-reef-shark":3}, hqHp:51, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["7-6", "7-7"] },
+      { key:"7-9", kind:"boss", name:"The Orca Vanguard King", icon:"🐋", deck:{"coral-reef-shark":1,"moray-ambusher":1,"coral-polyp-colony":3,"sea-turtle-elder":2,"orca-vanguard":2}, hqHp:34, flavor:"The whole Current clears out the moment his pod surfaces.", requires:["7-8"] },
     ]},
   { id:"m8", name:"Sable Swampmire", icon:"🐊", blurb:"A second, blacker wetland — everything here bites first and asks later.", unlockAfter:"m7", sequential:true,
     nodes: [
@@ -9893,9 +9896,9 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m9", name:"Basalt Foundry", icon:"🌋", blurb:"A furnace of cracked black stone — everything here glows from the inside.", unlockAfter:"m8", sequential:true,
     nodes: [
-      { key:"9-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"cinder-hornet":4,"ember-jackal":4,"sulfur-vent-crab":2}, hqHp:14, flavor:"The smoke arrives well before the swarm does.", requires:[] },
+      { key:"9-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"cinder-hornet":4,"ember-jackal":2,"beaver-lumberjack":2,"phoenix-fledgling":2}, hqHp:17, flavor:"The smoke arrives well before the swarm does.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Salamander Vents", icon:"🦎", deck:{"magma-salamander":4,"obsidian-scorpion":4,"ash-cloud-condor":2}, hqHp:34, flavor:"Every vent has something living just beneath the heat shimmer.", requires:["9-1"] },
-      { key:"9-3", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"sulfur-vent-crab":3,"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3}, hqHp:14, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["9-2"] },
+      { key:"9-3", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"sulfur-vent-crab":1,"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3,"cinder-hornet":2}, hqHp:16, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["9-2"] },
       { key:"9-4", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ash-cloud-condor":4,"ember-jackal":4,"obsidian-scorpion":2}, hqHp:28, flavor:"The ash never really settles here. Neither does anything else.", requires:["9-3"] },
       { key:"9-5", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"ember-jackal":1,"beaver-lumberjack":3}, hqHp:29, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"cinder-hornet":2,"phoenix-fledgling":1,"magma-titan":2,"beaver-lumberjack":2}, hqHp:25, flavor:"The heat reaches you a full second before the shadow does.", requires:["9-5"] },
@@ -9935,10 +9938,10 @@ const CONQUEST_MAPS = [
   // map (`entry`: where the cave mouth sits, and which parent node opens it).
   { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"b-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
-      { key:"g-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:83, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
+      { key:"g-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:54, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
       { key:"g-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"raccoon-nightcrew":2,"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1}, hqHp:25, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
-      { key:"g-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"raccoon-nightcrew":2}, hqHp:25, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
-      { key:"g-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3,"blind-cave-fish":2}, hqHp:33, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["g-2","g-3"] },
+      { key:"g-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"otter-riverguard":2}, hqHp:46, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
+      { key:"g-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3,"blind-cave-fish":2}, hqHp:28, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["g-2","g-3"] },
     ]},
 ];
 // ---- Skirmish editor overlay (2026-10-03): admin edits to nodes ride on top of the definitions
@@ -18705,14 +18708,30 @@ function fieldOverlayHTML(id){
   return '';
 }
 function dayNightOn(m){ return !!(m && m.engine && m.engine.getPhase && m.mode!=='tutorial' && m.mode!=='liveRanked'); }
+// Tide (2026-10-09): the Flow/Ebb pill only shows in fights where a Tide card is in either deck.
+function matchHasTide(m){
+  if(m._hasTide !== undefined) return m._hasTide;
+  if(!m.players || !m.players[1] || !m.players[2]) return false; // not set up yet: don't cache
+  const DEFS = getCardDefs(); const isT = id=>{ const d = DEFS[id && (id.defId || id)]; return !!(d && d.effects && d.effects.tide); };
+  let yes = false;
+  try{ [1,2].forEach(p=>{ const pl = m.players[p]; if(!pl) return;
+    if((pl.deck||[]).some(isT) || (pl.hand||[]).some(isT) || (pl.graveyard||[]).some(isT) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && isT(c)))) yes = true; }); }catch(e){}
+  return (m._hasTide = yes);
+}
+function tidePillHTML(m){
+  const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
+  if(!t || !matchHasTide(m)) return '';
+  const flow = t==='flow';
+  return `<div class="phase-pill tide-${t}" title="${flow ? 'Flow: Tide units hit +1, and Wash units push the card facing them back 1 Wait. Ebb next round.' : 'Ebb: Tide units take 1 less from each hit. Flow next round.'}" aria-label="Tide: ${flow ? 'Flow' : 'Ebb'}"><span aria-hidden="true">${flow ? '🌊' : '🐚'}</span><b>${flow ? _t('Flow') : _t('Ebb')}</b></div>`;
+}
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField();
   const phase = dayNightOn(m) ? m.engine.getPhase() : null;
   const roundInPhase = ((Math.max(1, m.round||1) - 1) % 3) + 1;
   const phaseHTML = phase ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night: Nocturnal units hit +1. Day returns after round ' : 'Day: Diurnal units hit +1. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/3)*3}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of 3"><span aria-hidden="true">${phase==='night' ? '🌙' : '☀️'}</span><b>${phase==='night' ? _t('Night') : _t('Day')}</b><small>${roundInPhase}/3</small></div>` : '';
-  if(!f) return phaseHTML;
+  if(!f) return phaseHTML + tidePillHTML(m);
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  return phaseHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
+  return phaseHTML + tidePillHTML(m) + `<div class="field-card hq-tile field-${id}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
     <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}</div>`;
 }
 function icePulseVfx(uid){
@@ -19743,6 +19762,8 @@ function logText(ev){
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
+    case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
+    case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
     case 'fieldTick': return ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +1 Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
@@ -21240,6 +21261,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='lumber') floatResourceGain(ev, '🪵', 'hudLumberPill', SoundKit.gold);
   // Fields and day/night (2026-10-09)
   if(ev.type==='fieldTick' && ev.field!=='frozen'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.dmg ? `🔥-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){} }
+  if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls — Nocturnal units hit +1.' : '☀️ Day breaks — Diurnal units hit +1.', 'ok'); }catch(e){} }
   if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }
   if(ev.type==='elementalEnergy') floatResourceGain(ev, '✨', 'hudElementalEnergyPill', SoundKit.grace);

@@ -1,16 +1,81 @@
 [
  {
-  "map": "m6",
-  "key": "6-8",
-  "kind": "boss",
-  "target": 35,
-  "before": 30,
-  "after": 35,
+  "map": "mg",
+  "key": "g-3",
+  "kind": "elite",
+  "target": 45,
+  "before": 10,
+  "after": 47,
   "hp": [
-   189,
-   99
+   25,
+   46
   ],
-  "swaps": 0,
-  "deck": null
+  "swaps": 1,
+  "deck": {
+   "reef-manta-glider": 2,
+   "open-ocean-hermit-crab": 4,
+   "sulfur-vent-crab": 2,
+   "blind-cave-fish": 2,
+   "otter-riverguard": 2
+  }
+ },
+ {
+  "map": "m7",
+  "key": "7-6",
+  "kind": "elite",
+  "target": 45,
+  "before": 7,
+  "after": 45,
+  "hp": [
+   25,
+   39
+  ],
+  "swaps": 1,
+  "deck": {
+   "coral-reef-shark": 3,
+   "orca-vanguard": 2,
+   "moray-ambusher": 1,
+   "coral-polyp-colony": 1,
+   "sea-turtle-elder": 2
+  }
+ },
+ {
+  "map": "m9",
+  "key": "9-1",
+  "kind": "skirmish",
+  "target": 85,
+  "before": 58,
+  "after": 85,
+  "hp": [
+   14,
+   17
+  ],
+  "swaps": 2,
+  "deck": {
+   "cinder-hornet": 4,
+   "ember-jackal": 2,
+   "beaver-lumberjack": 2,
+   "phoenix-fledgling": 2
+  }
+ },
+ {
+  "map": "m9",
+  "key": "9-3",
+  "kind": "skirmish",
+  "target": 68,
+  "before": 40,
+  "after": 70,
+  "hp": [
+   14,
+   16
+  ],
+  "swaps": 1,
+  "deck": {
+   "sulfur-vent-crab": 1,
+   "obsidian-scorpion": 2,
+   "pyroclast-wyrm": 2,
+   "beaver-lumberjack": 3,
+   "cinder-hornet": 2
+  }
  }
 ]

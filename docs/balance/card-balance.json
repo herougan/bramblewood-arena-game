@@ -1,6 +1,6 @@
 {
  "generated": "2026-10-09",
- "games": 80,
+ "games": 60,
  "mode": "open",
  "filler": [
   "warren-scout",
@@ -77,21 +77,14 @@
    "attack": 3,
    "health": 9,
    "skills": [],
-   "winRate": 80.6,
+   "winRate": 76.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 9,
-    "to": 7,
-    "winRate": 71.3,
-    "dist": 0.07750000000000001
-   }
+   "source": "base"
   },
   {
    "id": "ent",
@@ -102,21 +95,14 @@
    "attack": 3,
    "health": 20,
    "skills": [],
-   "winRate": 85,
+   "winRate": 86.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 61.9,
-    "dist": 0.016249999999999987
-   }
+   "source": "base"
   },
   {
    "id": "dolphin-knight",
@@ -124,15 +110,18 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 4,
-   "health": 6,
-   "skills": [],
-   "winRate": 73.8,
+   "attack": 3,
+   "health": 4,
+   "skills": [
+    "tide",
+    "wash"
+   ],
+   "winRate": 76.7,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack"
   },
@@ -149,21 +138,14 @@
     "swarm",
     "diurnal"
    ],
-   "winRate": 69.4,
+   "winRate": 66.7,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 3,
-    "to": 2,
-    "winRate": 51.3,
-    "dist": 0.0525000000000001
-   }
+   "source": "base"
   },
   {
    "id": "bee-drone",
@@ -179,21 +161,14 @@
     "diurnal",
     "triggers"
    ],
-   "winRate": 91.3,
+   "winRate": 91.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 6,
-    "to": 4,
-    "winRate": 69.4,
-    "dist": 0.05874999999999997
-   }
+   "source": "base"
   },
   {
    "id": "caustic-scorpion",
@@ -207,7 +182,7 @@
     "poison",
     "bounty"
    ],
-   "winRate": 65,
+   "winRate": 65.8,
    "band": [
     45,
     68
@@ -228,12 +203,12 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 35,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base"
   },
@@ -249,7 +224,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 40.8,
    "band": [
     35,
     60
@@ -270,7 +245,7 @@
     "swarm",
     "hiveMind"
    ],
-   "winRate": 53.1,
+   "winRate": 49.2,
    "band": [
     35,
     60
@@ -290,21 +265,14 @@
    "skills": [
     "swarm"
    ],
-   "winRate": 80,
+   "winRate": 80.8,
    "band": [
     45,
     68
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 8,
-    "to": 6,
-    "winRate": 48.8,
-    "dist": 0.07750000000000007
-   }
+   "source": "base"
   },
   {
    "id": "ant-warrior",
@@ -318,7 +286,7 @@
     "rage",
     "swarm"
    ],
-   "winRate": 56.3,
+   "winRate": 55.8,
    "band": [
     45,
     68
@@ -339,7 +307,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 46.9,
+   "winRate": 50.8,
    "band": [
     35,
     60
@@ -359,21 +327,14 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 51.3,
+   "winRate": 45,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 6,
-    "winRate": 66.3,
-    "dist": 0.02749999999999997
-   }
+   "source": "pack"
   },
   {
    "id": "otter-shieldback",
@@ -386,7 +347,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 59.4,
+   "winRate": 56.7,
    "band": [
     45,
     68
@@ -415,14 +376,7 @@
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 4,
-    "to": 2,
-    "winRate": 76.3,
-    "dist": 0.12749999999999995
-   }
+   "source": "pack"
   },
   {
    "id": "owl-sentinel",
@@ -437,7 +391,7 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 55.6,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -460,7 +414,7 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 53.8,
+   "winRate": 56.7,
    "band": [
     35,
     60
@@ -478,7 +432,7 @@
    "attack": 2,
    "health": 6,
    "skills": [],
-   "winRate": 57.5,
+   "winRate": 53.3,
    "band": [
     45,
     68
@@ -498,7 +452,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 75,
+   "winRate": 74.2,
    "band": [
     52,
     75
@@ -518,21 +472,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 31.3,
+   "winRate": 35.8,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 7,
-    "winRate": 36.9,
-    "dist": 0.10624999999999996
-   }
+   "source": "base"
   },
   {
    "id": "alley-cat",
@@ -543,7 +490,7 @@
    "attack": 3,
    "health": 4,
    "skills": [],
-   "winRate": 60.6,
+   "winRate": 56.7,
    "band": [
     52,
     75
@@ -563,21 +510,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 76.9,
+   "winRate": 74.2,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 10,
-    "to": 9,
-    "winRate": 71.9,
-    "dist": 0.08374999999999999
-   }
+   "source": "base"
   },
   {
    "id": "war-panther",
@@ -590,7 +530,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 35.6,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -608,7 +548,7 @@
    "attack": 2,
    "health": 10,
    "skills": [],
-   "winRate": 61.9,
+   "winRate": 58.3,
    "band": [
     52,
     75
@@ -629,7 +569,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 48.1,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -649,21 +589,14 @@
    "skills": [
     "poison"
    ],
-   "winRate": 88.1,
+   "winRate": 85,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 73.1,
-    "dist": 0.09624999999999995
-   }
+   "source": "base"
   },
   {
    "id": "webspire-sentinel",
@@ -677,7 +610,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 45,
+   "winRate": 48.3,
    "band": [
     35,
     60
@@ -695,21 +628,14 @@
    "attack": 1,
    "health": 8,
    "skills": [],
-   "winRate": 28.8,
+   "winRate": 26.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 8,
-    "to": 11,
-    "winRate": 38.1,
-    "dist": 0.09375
-   }
+   "source": "base"
   },
   {
    "id": "tunnel-wyrm",
@@ -722,7 +648,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 51.9,
+   "winRate": 47.5,
    "band": [
     45,
     68
@@ -744,7 +670,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.1,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -762,7 +688,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -790,14 +716,7 @@
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 1,
-    "winRate": 63.8,
-    "dist": 0.0024999999999999467
-   }
+   "source": "base"
   },
   {
    "id": "monarch-wingblade",
@@ -812,21 +731,14 @@
     "bounty",
     "flying"
    ],
-   "winRate": 91.9,
+   "winRate": 91.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 3,
-    "winRate": 71.3,
-    "dist": 0.07750000000000001
-   }
+   "source": "base"
   },
   {
    "id": "bramble-sprout",
@@ -837,21 +749,14 @@
    "attack": 1,
    "health": 6,
    "skills": [],
-   "winRate": 24.4,
+   "winRate": 21.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 57.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "base"
   },
   {
    "id": "thornvine-lasher",
@@ -862,21 +767,14 @@
    "attack": 3,
    "health": 9,
    "skills": [],
-   "winRate": 80.6,
+   "winRate": 76.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 9,
-    "to": 7,
-    "winRate": 71.3,
-    "dist": 0.07750000000000001
-   }
+   "source": "base"
   },
   {
    "id": "fungal-colossus",
@@ -890,7 +788,7 @@
     "onDeathSpawn",
     "bounty"
    ],
-   "winRate": 36.3,
+   "winRate": 41.7,
    "band": [
     35,
     60
@@ -912,7 +810,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 36.7,
    "band": [
     35,
     60
@@ -932,21 +830,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 75.6,
+   "winRate": 73.3,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 3,
-    "to": 2,
-    "winRate": 53.8,
-    "dist": 0.09750000000000003
-   }
+   "source": "base"
   },
   {
    "id": "tide-spirit",
@@ -955,9 +846,12 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 9,
-   "skills": [],
-   "winRate": 52.5,
+   "health": 5,
+   "skills": [
+    "tide",
+    "wash"
+   ],
+   "winRate": 60,
    "band": [
     52,
     75
@@ -977,7 +871,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 40.6,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -995,7 +889,7 @@
    "attack": 4,
    "health": 6,
    "skills": [],
-   "winRate": 55,
+   "winRate": 53.3,
    "band": [
     35,
     60
@@ -1016,7 +910,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 40,
+   "winRate": 41.7,
    "band": [
     35,
     60
@@ -1034,7 +928,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -1052,21 +946,14 @@
    "attack": 4,
    "health": 7,
    "skills": [],
-   "winRate": 91.9,
+   "winRate": 90.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 71.3,
-    "dist": 0.07750000000000001
-   }
+   "source": "base"
   },
   {
    "id": "pufferfish-bulwark",
@@ -1074,12 +961,13 @@
    "rarity": "common",
    "cost": 1,
    "wait": 2,
-   "attack": 3,
+   "attack": 2,
    "health": 20,
    "skills": [
-    "bounty"
+    "bounty",
+    "tide"
    ],
-   "winRate": 54.4,
+   "winRate": 51.7,
    "band": [
     35,
     60
@@ -1098,9 +986,10 @@
    "health": 22,
    "skills": [
     "sweep",
-    "bounty"
+    "bounty",
+    "tide"
    ],
-   "winRate": 50.6,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -1120,7 +1009,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 66.3,
+   "winRate": 64.2,
    "band": [
     52,
     75
@@ -1142,7 +1031,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 36.3,
+   "winRate": 35.8,
    "band": [
     35,
     60
@@ -1163,7 +1052,7 @@
     "onSpawnGold",
     "nocturnal"
    ],
-   "winRate": 66.9,
+   "winRate": 63.3,
    "band": [
     52,
     75
@@ -1184,7 +1073,7 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 42.5,
+   "winRate": 47.5,
    "band": [
     35,
     60
@@ -1204,21 +1093,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 83.8,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 4,
-    "winRate": 63.8,
-    "dist": 0.0024999999999999467
-   }
+   "source": "base"
   },
   {
    "id": "beetle-battering-ram",
@@ -1233,21 +1115,14 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 91.9,
+   "winRate": 91.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 2,
-    "winRate": 67.5,
-    "dist": 0.040000000000000036
-   }
+   "source": "base"
   },
   {
    "id": "crocodile-ambusher",
@@ -1260,7 +1135,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 45.6,
+   "winRate": 50,
    "band": [
     35,
     60
@@ -1281,7 +1156,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 73.8,
+   "winRate": 71.7,
    "band": [
     52,
     75
@@ -1301,7 +1176,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 74.4,
+   "winRate": 73.3,
    "band": [
     52,
     75
@@ -1322,21 +1197,14 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 91.9,
+   "winRate": 91.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 18,
-    "to": 10,
-    "winRate": 71.9,
-    "dist": 0.08374999999999999
-   }
+   "source": "base"
   },
   {
    "id": "turtle-bastion",
@@ -1349,21 +1217,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 26.3,
+   "winRate": 30.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 7,
-    "winRate": 39.4,
-    "dist": 0.08124999999999999
-   }
+   "source": "base"
   },
   {
    "id": "chipmunk-skirmisher",
@@ -1374,7 +1235,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -1397,21 +1258,14 @@
     "diurnal",
     "triggers"
    ],
-   "winRate": 92.5,
+   "winRate": 90,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 2,
-    "winRate": 60,
-    "dist": 0.03500000000000003
-   }
+   "source": "base"
   },
   {
    "id": "octopus-tactician",
@@ -1423,9 +1277,11 @@
    "health": 22,
    "skills": [
     "sweep",
-    "bounty"
+    "bounty",
+    "tide",
+    "wash"
    ],
-   "winRate": 52.5,
+   "winRate": 58.3,
    "band": [
     52,
     75
@@ -1446,7 +1302,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 69.4,
+   "winRate": 71.7,
    "band": [
     52,
     75
@@ -1468,7 +1324,7 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 48.1,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -1486,21 +1342,14 @@
    "attack": 3,
    "health": 7,
    "skills": [],
-   "winRate": 95,
+   "winRate": 94.2,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 67.5,
-    "dist": 0.040000000000000036
-   }
+   "source": "base"
   },
   {
    "id": "snapper-hatchling",
@@ -1511,12 +1360,12 @@
    "attack": 1,
    "health": 12,
    "skills": [],
-   "winRate": 36.9,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base"
   },
@@ -1531,21 +1380,14 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 30,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 6,
-    "to": 8,
-    "winRate": 38.1,
-    "dist": 0.09375
-   }
+   "source": "base"
   },
   {
    "id": "eyrie-warden",
@@ -1561,7 +1403,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 41.3,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -1581,7 +1423,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 44.4,
+   "winRate": 48.3,
    "band": [
     35,
     60
@@ -1603,7 +1445,7 @@
     "bounty",
     "flying"
    ],
-   "winRate": 45.6,
+   "winRate": 49.2,
    "band": [
     35,
     60
@@ -1621,7 +1463,7 @@
    "attack": 2,
    "health": 8,
    "skills": [],
-   "winRate": 69.4,
+   "winRate": 66.7,
    "band": [
     52,
     75
@@ -1641,21 +1483,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 81.9,
+   "winRate": 80.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 4,
-    "winRate": 70,
-    "dist": 0.06499999999999995
-   }
+   "source": "base"
   },
   {
    "id": "grizzly-vanguard",
@@ -1669,7 +1504,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 48.1,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -1691,7 +1526,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -1709,7 +1544,7 @@
    "attack": 2,
    "health": 7,
    "skills": [],
-   "winRate": 61.9,
+   "winRate": 62.5,
    "band": [
     52,
     75
@@ -1727,7 +1562,7 @@
    "attack": 4,
    "health": 12,
    "skills": [],
-   "winRate": 61.3,
+   "winRate": 57.5,
    "band": [
     52,
     75
@@ -1747,7 +1582,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 38.1,
+   "winRate": 43.3,
    "band": [
     35,
     60
@@ -1787,7 +1622,7 @@
    "attack": 3,
    "health": 5,
    "skills": [],
-   "winRate": 67.5,
+   "winRate": 63.3,
    "band": [
     52,
     75
@@ -1808,21 +1643,14 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 92.5,
+   "winRate": 90,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 3,
-    "winRate": 55,
-    "dist": 0.08499999999999996
-   }
+   "source": "base"
   },
   {
    "id": "fox-warchief",
@@ -1836,7 +1664,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 51.9,
+   "winRate": 55.8,
    "band": [
     35,
     60
@@ -1856,7 +1684,7 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 38.1,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -1876,21 +1704,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 6.9,
+   "winRate": 7.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 3,
-    "winRate": 42.5,
-    "dist": 0.04999999999999999
-   }
+   "source": "base"
   },
   {
    "id": "lodge-engineer",
@@ -1904,7 +1725,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 61.9,
+   "winRate": 65,
    "band": [
     45,
     68
@@ -1945,21 +1766,14 @@
    "skills": [
     "poison"
    ],
-   "winRate": 77.5,
+   "winRate": 75.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 4,
-    "winRate": 70.6,
-    "dist": 0.07125000000000004
-   }
+   "source": "base"
   },
   {
    "id": "adder-ambusher",
@@ -1972,7 +1786,7 @@
    "skills": [
     "poison"
    ],
-   "winRate": 68.8,
+   "winRate": 67.5,
    "band": [
     52,
     75
@@ -1993,7 +1807,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 52.5,
+   "winRate": 56.7,
    "band": [
     35,
     60
@@ -2015,7 +1829,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 36.3,
+   "winRate": 35.8,
    "band": [
     35,
     60
@@ -2036,21 +1850,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 89.4,
+   "winRate": 88.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 69.4,
-    "dist": 0.05874999999999997
-   }
+   "source": "pack"
   },
   {
    "id": "echo-screecher",
@@ -2065,21 +1872,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 83.1,
+   "winRate": 80.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "health",
-    "from": 8,
-    "to": 5,
-    "winRate": 73.8,
-    "dist": 0.10250000000000004
-   }
+   "source": "map"
   },
   {
    "id": "vampire-roost",
@@ -2094,21 +1894,14 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 33.8,
+   "winRate": 38.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 6,
-    "winRate": 35.6,
-    "dist": 0.11874999999999997
-   }
+   "source": "map"
   },
   {
    "id": "field-mouse",
@@ -2121,21 +1914,14 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 25,
+   "winRate": 21.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 51.3,
-    "dist": 0.03749999999999998
-   }
+   "source": "base"
   },
   {
    "id": "mouse-sapper",
@@ -2146,21 +1932,14 @@
    "attack": 3,
    "health": 9,
    "skills": [],
-   "winRate": 25.6,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 4,
-    "winRate": 44.4,
-    "dist": 0.03125
-   }
+   "source": "base"
   },
   {
    "id": "rodent-king",
@@ -2174,7 +1953,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 60.6,
+   "winRate": 64.2,
    "band": [
     45,
     68
@@ -2192,7 +1971,7 @@
    "attack": 2,
    "health": 9,
    "skills": [],
-   "winRate": 72.5,
+   "winRate": 68.3,
    "band": [
     52,
     75
@@ -2212,21 +1991,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 80,
+   "winRate": 79.2,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 4,
-    "winRate": 63.8,
-    "dist": 0.0024999999999999467
-   }
+   "source": "base"
   },
   {
    "id": "warhorse-charger",
@@ -2239,7 +2011,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 51.9,
+   "winRate": 54.2,
    "band": [
     35,
     60
@@ -2261,7 +2033,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -2279,21 +2051,14 @@
    "attack": 1,
    "health": 6,
    "skills": [],
-   "winRate": 24.4,
+   "winRate": 21.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 57.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "base"
   },
   {
    "id": "poison-dart-croaker",
@@ -2306,7 +2071,7 @@
    "skills": [
     "poison"
    ],
-   "winRate": 40.6,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -2328,12 +2093,12 @@
     "nocturnal",
     "triggers"
    ],
-   "winRate": 35,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base"
   },
@@ -2346,7 +2111,7 @@
    "attack": 3,
    "health": 4,
    "skills": [],
-   "winRate": 56.9,
+   "winRate": 57.5,
    "band": [
     52,
     75
@@ -2366,21 +2131,14 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 96.9,
+   "winRate": 97.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 2,
-    "winRate": 64.4,
-    "dist": 0.008750000000000036
-   }
+   "source": "base"
   },
   {
    "id": "buck-brawler",
@@ -2393,7 +2151,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 38.1,
+   "winRate": 43.3,
    "band": [
     35,
     60
@@ -2413,21 +2171,14 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 27.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 4,
-    "winRate": 40,
-    "dist": 0.07499999999999996
-   }
+   "source": "base"
   },
   {
    "id": "ancient-sloth-titan",
@@ -2441,21 +2192,14 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 33.1,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 8,
-    "winRate": 34.4,
-    "dist": 0.13124999999999998
-   }
+   "source": "base"
   },
   {
    "id": "pond-paddler",
@@ -2468,21 +2212,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 76.3,
+   "winRate": 71.7,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 4,
-    "winRate": 73.1,
-    "dist": 0.09624999999999995
-   }
+   "source": "base"
   },
   {
    "id": "mallard-marauder",
@@ -2496,21 +2233,14 @@
     "flying",
     "triggers"
    ],
-   "winRate": 91.9,
+   "winRate": 93.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 2,
-    "winRate": 60,
-    "dist": 0.03500000000000003
-   }
+   "source": "base"
   },
   {
    "id": "glacial-ape-king",
@@ -2524,7 +2254,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -2545,7 +2275,7 @@
     "poison",
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -2567,7 +2297,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 39.4,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -2588,21 +2318,14 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 90.6,
+   "winRate": 90,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 14,
-    "to": 6,
-    "winRate": 66.3,
-    "dist": 0.02749999999999997
-   }
+   "source": "base"
   },
   {
    "id": "stone-turtle-warden",
@@ -2615,7 +2338,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 41.3,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -2635,21 +2358,14 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 80.6,
+   "winRate": 78.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 71.9,
-    "dist": 0.08374999999999999
-   }
+   "source": "base"
   },
   {
    "id": "berserker-boar",
@@ -2662,7 +2378,7 @@
    "skills": [
     "rage"
    ],
-   "winRate": 50,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -2682,7 +2398,7 @@
    "skills": [
     "swipe"
    ],
-   "winRate": 55,
+   "winRate": 59.2,
    "band": [
     35,
     60
@@ -2703,7 +2419,7 @@
     "render",
     "flying"
    ],
-   "winRate": 54.4,
+   "winRate": 54.2,
    "band": [
     35,
     60
@@ -2725,7 +2441,7 @@
     "diurnal",
     "triggers"
    ],
-   "winRate": 41.9,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -2767,7 +2483,7 @@
    "skills": [
     "onReadyGrace"
    ],
-   "winRate": 46.3,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -2787,7 +2503,7 @@
    "skills": [
     "onSpawnGrace"
    ],
-   "winRate": 43.8,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -2805,21 +2521,14 @@
    "attack": 6,
    "health": 20,
    "skills": [],
-   "winRate": 14.4,
+   "winRate": 15,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 7,
-    "winRate": 14.4,
-    "dist": 0.33125
-   }
+   "source": "base"
   },
   {
    "id": "hollow-oath-keeper",
@@ -2830,7 +2539,7 @@
    "attack": 4,
    "health": 16,
    "skills": [],
-   "winRate": 50.6,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -2851,7 +2560,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 57.5,
+   "winRate": 60.8,
    "band": [
     45,
     68
@@ -2871,21 +2580,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 95.6,
+   "winRate": 95,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 20,
-    "to": 12,
-    "winRate": 80.6,
-    "dist": 0.17125
-   }
+   "source": "base"
   },
   {
    "id": "nest",
@@ -2898,21 +2600,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 24.4,
+   "winRate": 24.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 18,
-    "to": 26,
-    "winRate": 33.8,
-    "dist": 0.13749999999999996
-   }
+   "source": "base"
   },
   {
    "id": "howler-monkey",
@@ -2925,7 +2620,7 @@
    "skills": [
     "nocturnal"
    ],
-   "winRate": 63.1,
+   "winRate": 61.7,
    "band": [
     45,
     68
@@ -2945,21 +2640,14 @@
    "skills": [
     "quick"
    ],
-   "winRate": 84.4,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 4,
-    "winRate": 71.9,
-    "dist": 0.08374999999999999
-   }
+   "source": "base"
   },
   {
    "id": "toucan-courier",
@@ -2973,21 +2661,14 @@
     "onSpawnGold",
     "diurnal"
    ],
-   "winRate": 25.6,
+   "winRate": 22.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 54.4,
-    "dist": 0.06874999999999998
-   }
+   "source": "pack"
   },
   {
    "id": "poison-dart-frog",
@@ -3000,21 +2681,14 @@
    "skills": [
     "poison"
    ],
-   "winRate": 30.6,
+   "winRate": 31.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 7,
-    "winRate": 42.5,
-    "dist": 0.04999999999999999
-   }
+   "source": "base"
   },
   {
    "id": "strangler-vine",
@@ -3027,7 +2701,7 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 72.5,
+   "winRate": 71.7,
    "band": [
     52,
     75
@@ -3047,7 +2721,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 36.9,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -3067,21 +2741,14 @@
    "skills": [
     "quick"
    ],
-   "winRate": 93.1,
+   "winRate": 92.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 3,
-    "winRate": 48.1,
-    "dist": 0.15375
-   }
+   "source": "pack"
   },
   {
    "id": "dust-hyena",
@@ -3094,21 +2761,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 83.1,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 8,
-    "to": 6,
-    "winRate": 58.8,
-    "dist": 0.04749999999999999
-   }
+   "source": "base"
   },
   {
    "id": "termite-mound",
@@ -3121,21 +2781,14 @@
    "skills": [
     "armor"
    ],
-   "winRate": 14.4,
+   "winRate": 14.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 2,
-    "winRate": 56.3,
-    "dist": 0.08750000000000002
-   }
+   "source": "base"
   },
   {
    "id": "plains-zebra",
@@ -3148,21 +2801,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 50.6,
+   "winRate": 46.7,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 9,
-    "to": 10,
-    "winRate": 58.1,
-    "dist": 0.053749999999999964
-   }
+   "source": "pack"
   },
   {
    "id": "snow-owl-sentinel",
@@ -3177,21 +2823,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 76.3,
+   "winRate": 75.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 59.4,
-    "dist": 0.04125000000000001
-   }
+   "source": "base"
   },
   {
    "id": "tundra-musk-ox",
@@ -3204,7 +2843,7 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 45.6,
+   "winRate": 50,
    "band": [
     35,
     60
@@ -3224,21 +2863,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 80,
+   "winRate": 78.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 55,
-    "dist": 0.08499999999999996
-   }
+   "source": "pack"
   },
   {
    "id": "permafrost-mammoth",
@@ -3253,7 +2885,7 @@
     "nocturnal",
     "triggers"
    ],
-   "winRate": 39.4,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -3273,21 +2905,14 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 83.8,
+   "winRate": 83.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 10,
-    "to": 6,
-    "winRate": 56.9,
-    "dist": 0.06625000000000003
-   }
+   "source": "pack"
   },
   {
    "id": "clownfish-scout",
@@ -3298,9 +2923,10 @@
    "attack": 1,
    "health": 5,
    "skills": [
-    "guardian"
+    "guardian",
+    "tide"
    ],
-   "winRate": 42.5,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -3318,9 +2944,10 @@
    "attack": 7,
    "health": 14,
    "skills": [
-    "crit"
+    "crit",
+    "tide"
    ],
-   "winRate": 61.3,
+   "winRate": 64.2,
    "band": [
     45,
     68
@@ -3338,23 +2965,17 @@
    "attack": 6,
    "health": 11,
    "skills": [
-    "stealth"
+    "stealth",
+    "tide"
    ],
-   "winRate": 18.1,
+   "winRate": 30.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 9,
-    "winRate": 37.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "pack"
   },
   {
    "id": "sea-turtle-elder",
@@ -3366,23 +2987,17 @@
    "health": 30,
    "skills": [
     "armor",
-    "revive"
+    "revive",
+    "tide"
    ],
-   "winRate": 28.1,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 4,
-    "winRate": 37.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "map"
   },
   {
    "id": "coral-polyp-colony",
@@ -3393,23 +3008,17 @@
    "attack": 0,
    "health": 14,
    "skills": [
-    "onReadyGold"
+    "onReadyGold",
+    "tide"
    ],
-   "winRate": 26.9,
+   "winRate": 29.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 1,
-    "winRate": 48.1,
-    "dist": 0.006250000000000033
-   }
+   "source": "pack"
   },
   {
    "id": "mountain-goat-climber",
@@ -3422,21 +3031,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 42.5,
+   "winRate": 36.7,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 7,
-    "to": 10,
-    "winRate": 58.1,
-    "dist": 0.053749999999999964
-   }
+   "source": "base"
   },
   {
    "id": "golden-eagle-diver",
@@ -3451,21 +3053,14 @@
     "diurnal",
     "triggers"
    ],
-   "winRate": 88.8,
+   "winRate": 87.5,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 2,
-    "winRate": 66.3,
-    "dist": 0.02749999999999997
-   }
+   "source": "base"
   },
   {
    "id": "alpine-avalanche",
@@ -3478,7 +3073,7 @@
    "skills": [
     "swipe"
    ],
-   "winRate": 51.3,
+   "winRate": 54.2,
    "band": [
     35,
     60
@@ -3498,21 +3093,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 86.3,
+   "winRate": 85.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 3,
-    "winRate": 73.1,
-    "dist": 0.09624999999999995
-   }
+   "source": "base"
   },
   {
    "id": "peak-condor",
@@ -3526,21 +3114,14 @@
     "reload",
     "flying"
    ],
-   "winRate": 21.3,
+   "winRate": 18.3,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 5,
-    "winRate": 48.1,
-    "dist": 0.006250000000000033
-   }
+   "source": "base"
   },
   {
    "id": "bog-leech",
@@ -3553,21 +3134,14 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 75.6,
+   "winRate": 75.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 4,
-    "winRate": 68.1,
-    "dist": 0.04625000000000001
-   }
+   "source": "base"
   },
   {
    "id": "swamp-alligator",
@@ -3580,7 +3154,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 44.4,
+   "winRate": 48.3,
    "band": [
     35,
     60
@@ -3601,7 +3175,7 @@
     "render",
     "flying"
    ],
-   "winRate": 43.1,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -3621,21 +3195,14 @@
    "skills": [
     "explode"
    ],
-   "winRate": 20,
+   "winRate": 21.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 2,
-    "winRate": 37.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "base"
   },
   {
    "id": "cypress-root-lurker",
@@ -3648,7 +3215,7 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 42.5,
+   "winRate": 45.8,
    "band": [
     35,
     60
@@ -3670,21 +3237,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 93.1,
+   "winRate": 90.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 71.3,
-    "dist": 0.07750000000000001
-   }
+   "source": "pack"
   },
   {
    "id": "blind-cave-fish",
@@ -3697,7 +3257,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 43.1,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -3717,21 +3277,14 @@
    "skills": [
     "shell"
    ],
-   "winRate": 20.6,
+   "winRate": 23.3,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 10,
-    "winRate": 26.9,
-    "dist": 0.20625
-   }
+   "source": "map"
   },
   {
    "id": "glowworm-cluster",
@@ -3745,21 +3298,14 @@
     "onReadyGrace",
     "nocturnal"
    ],
-   "winRate": 23.8,
+   "winRate": 20.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 7,
-    "winRate": 52.5,
-    "dist": 0.050000000000000044
-   }
+   "source": "pack"
   },
   {
    "id": "deep-cave-troll",
@@ -3773,7 +3319,7 @@
     "rage",
     "triggers"
    ],
-   "winRate": 38.1,
+   "winRate": 38.3,
    "band": [
     35,
     60
@@ -3793,21 +3339,14 @@
    "skills": [
     "fireArrow"
    ],
-   "winRate": 76.3,
+   "winRate": 74.2,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 67.5,
-    "dist": 0.040000000000000036
-   }
+   "source": "base"
   },
   {
    "id": "ash-cloud-condor",
@@ -3821,7 +3360,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 70,
+   "winRate": 71.7,
    "band": [
     52,
     75
@@ -3842,21 +3381,14 @@
     "armor",
     "poison"
    ],
-   "winRate": 76.9,
+   "winRate": 75.8,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 67.5,
-    "dist": 0.040000000000000036
-   }
+   "source": "base"
   },
   {
    "id": "sulfur-vent-crab",
@@ -3867,9 +3399,10 @@
    "attack": 1,
    "health": 9,
    "skills": [
-    "thorns"
+    "thorns",
+    "tide"
    ],
-   "winRate": 50.6,
+   "winRate": 66.7,
    "band": [
     45,
     68
@@ -3889,7 +3422,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -3909,21 +3442,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 85,
+   "winRate": 83.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 70,
-    "dist": 0.06499999999999995
-   }
+   "source": "pack"
   },
   {
    "id": "boreal-elk",
@@ -3936,12 +3462,12 @@
    "skills": [
     "sweep"
    ],
-   "winRate": 58.8,
+   "winRate": 61.7,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base"
   },
@@ -3956,21 +3482,14 @@
    "skills": [
     "explode"
    ],
-   "winRate": 31.3,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 1,
-    "winRate": 48.8,
-    "dist": 0.012500000000000011
-   }
+   "source": "base"
   },
   {
    "id": "snowshoe-hare",
@@ -3983,12 +3502,12 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 36.3,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack"
   },
@@ -4001,21 +3520,14 @@
    "attack": 4,
    "health": 14,
    "skills": [],
-   "winRate": 31.9,
+   "winRate": 38.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 5,
-    "winRate": 38.8,
-    "dist": 0.08749999999999997
-   }
+   "source": "pack"
   },
   {
    "id": "tide-pool-crab",
@@ -4026,23 +3538,17 @@
    "attack": 1,
    "health": 5,
    "skills": [
-    "armor"
+    "armor",
+    "tide"
    ],
-   "winRate": 30.6,
+   "winRate": 48.3,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 7,
-    "winRate": 41.9,
-    "dist": 0.05624999999999997
-   }
+   "source": "pack"
   },
   {
    "id": "gull-thief",
@@ -4056,21 +3562,14 @@
     "flying",
     "triggers"
    ],
-   "winRate": 25,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 55,
-    "dist": 0.07500000000000007
-   }
+   "source": "map"
   },
   {
    "id": "riptide-eel",
@@ -4079,25 +3578,20 @@
    "cost": 1,
    "wait": 1,
    "attack": 7,
-   "health": 8,
+   "health": 5,
    "skills": [
-    "reload"
+    "reload",
+    "tide",
+    "wash"
    ],
-   "winRate": 36.3,
+   "winRate": 58.3,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 7,
-    "to": 8,
-    "winRate": 56.3,
-    "dist": 0.0025000000000000577
-   }
+   "source": "map"
   },
   {
    "id": "barnacle-fortress",
@@ -4110,21 +3604,14 @@
    "skills": [
     "armor"
    ],
-   "winRate": 13.1,
+   "winRate": 13.3,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 0,
-    "to": 2,
-    "winRate": 56.3,
-    "dist": 0.08750000000000002
-   }
+   "source": "base"
   },
   {
    "id": "pelican-diver",
@@ -4138,7 +3625,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 70.6,
+   "winRate": 70,
    "band": [
     52,
     75
@@ -4158,7 +3645,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 52.5,
+   "winRate": 50,
    "band": [
     35,
     60
@@ -4178,7 +3665,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 48.1,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -4196,23 +3683,17 @@
    "attack": 1,
    "health": 3,
    "skills": [
-    "swipe"
+    "swipe",
+    "tide"
    ],
-   "winRate": 23.1,
+   "winRate": 40.8,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 45,
-    "dist": 0.024999999999999967
-   }
+   "source": "map"
   },
   {
    "id": "mangrove-kingfisher",
@@ -4226,21 +3707,14 @@
     "evasive",
     "flying"
    ],
-   "winRate": 76.3,
+   "winRate": 73.3,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 56.3,
-    "dist": 0.07250000000000001
-   }
+   "source": "base"
   },
   {
    "id": "gangrenous-leech",
@@ -4254,7 +3728,7 @@
     "poison",
     "fester"
    ],
-   "winRate": 50,
+   "winRate": 46.7,
    "band": [
     45,
     68
@@ -4275,7 +3749,7 @@
     "bleed",
     "rupture"
    ],
-   "winRate": 72.5,
+   "winRate": 70.8,
    "band": [
     52,
     75
@@ -4293,21 +3767,14 @@
    "attack": 3,
    "health": 16,
    "skills": [],
-   "winRate": 28.8,
+   "winRate": 33.3,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 4,
-    "winRate": 37.5,
-    "dist": 0.09999999999999998
-   }
+   "source": "base"
   },
   {
    "id": "swarm-matriarch",
@@ -4328,14 +3795,7 @@
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 0,
-    "winRate": 67.5,
-    "dist": 0.040000000000000036
-   }
+   "source": "base"
   },
   {
    "id": "feral-tuskboar",
@@ -4348,21 +3808,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 76.3,
+   "winRate": 76.7,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 61.9,
-    "dist": 0.016249999999999987
-   }
+   "source": "base"
   },
   {
    "id": "ravenous-wolverine",
@@ -4375,21 +3828,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 95,
+   "winRate": 93.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 12,
-    "to": 8,
-    "winRate": 87.5,
-    "dist": 0.24
-   }
+   "source": "base"
   },
   {
    "id": "trickster-fox",
@@ -4402,21 +3848,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 13.1,
+   "winRate": 15,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 31.3,
-    "dist": 0.16249999999999998
-   }
+   "source": "base"
   },
   {
    "id": "old-growth-tortoise",
@@ -4429,21 +3868,14 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 23.8,
+   "winRate": 26.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 5,
-    "winRate": 36.9,
-    "dist": 0.10624999999999996
-   }
+   "source": "base"
   },
   {
    "id": "shimmerwing-stag",
@@ -4456,21 +3888,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 44.4,
+   "winRate": 46.7,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 8,
-    "winRate": 55,
-    "dist": 0.08499999999999996
-   }
+   "source": "base"
   },
   {
    "id": "open-ocean-hermit-crab",
@@ -4479,11 +3904,12 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 8,
+   "health": 6,
    "skills": [
-    "armor"
+    "armor",
+    "tide"
    ],
-   "winRate": 44.4,
+   "winRate": 55.8,
    "band": [
     35,
     60
@@ -4501,9 +3927,10 @@
    "attack": 5,
    "health": 16,
    "skills": [
-    "evasive"
+    "evasive",
+    "tide"
    ],
-   "winRate": 48.1,
+   "winRate": 49.2,
    "band": [
     35,
     60
@@ -4523,7 +3950,7 @@
    "skills": [
     "expose"
    ],
-   "winRate": 55,
+   "winRate": 59.2,
    "band": [
     35,
     60
@@ -4564,21 +3991,14 @@
    "skills": [
     "quick"
    ],
-   "winRate": 90.6,
+   "winRate": 89.2,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 62.5,
-    "dist": 0.15000000000000002
-   }
+   "source": "pack"
   },
   {
    "id": "sandstorm-roc",
@@ -4591,7 +4011,7 @@
    "skills": [
     "swipe"
    ],
-   "winRate": 55,
+   "winRate": 56.7,
    "band": [
     35,
     60
@@ -4611,21 +4031,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 76.3,
+   "winRate": 71.7,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 5,
-    "to": 3,
-    "winRate": 47.5,
-    "dist": 0
-   }
+   "source": "base"
   },
   {
    "id": "glacier-wolf-pack",
@@ -4638,7 +4051,7 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 56.9,
+   "winRate": 59.2,
    "band": [
     35,
     60
@@ -4658,21 +4071,14 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 86.3,
+   "winRate": 85.8,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 0,
-    "winRate": 51.3,
-    "dist": 0.03749999999999998
-   }
+   "source": "pack"
   },
   {
    "id": "quillback-elder",
@@ -4685,7 +4091,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 41.3,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -4706,12 +4112,12 @@
     "onSpawnGold",
     "nocturnal"
    ],
-   "winRate": 38.1,
+   "winRate": 33.3,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack"
   },
@@ -4727,7 +4133,7 @@
     "stealth",
     "nocturnal"
    ],
-   "winRate": 44.4,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -4747,21 +4153,14 @@
    "skills": [
     "rage"
    ],
-   "winRate": 75,
+   "winRate": 72.5,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 53.1,
-    "dist": 0.05625000000000002
-   }
+   "source": "pack"
   },
   {
    "id": "badger-trench-digger",
@@ -4774,7 +4173,7 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 46.3,
+   "winRate": 49.2,
    "band": [
     35,
     60
@@ -4801,14 +4200,7 @@
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 3,
-    "winRate": 45,
-    "dist": 0.024999999999999967
-   }
+   "source": "base"
   },
   {
    "id": "chipmunk-cavalry",
@@ -4821,7 +4213,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 58.8,
+   "winRate": 55.8,
    "band": [
     35,
     60
@@ -4837,11 +4229,12 @@
    "cost": 1,
    "wait": 1,
    "attack": 3,
-   "health": 12,
+   "health": 10,
    "skills": [
-    "evasive"
+    "evasive",
+    "tide"
    ],
-   "winRate": 58.8,
+   "winRate": 60,
    "band": [
     35,
     60
@@ -4862,7 +4255,7 @@
     "swipe",
     "triggers"
    ],
-   "winRate": 41.3,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -4882,21 +4275,14 @@
    "skills": [
     "armor"
    ],
-   "winRate": 68.1,
+   "winRate": 67.5,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "health",
-    "from": 16,
-    "to": 8,
-    "winRate": 60,
-    "dist": 0.125
-   }
+   "source": "map"
   },
   {
    "id": "canopy-sloth-guardian",
@@ -4909,7 +4295,7 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 40,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -4930,7 +4316,7 @@
     "swipe",
     "flying"
    ],
-   "winRate": 50,
+   "winRate": 47.5,
    "band": [
     35,
     60
@@ -4950,21 +4336,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 63.1,
+   "winRate": 60.8,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 36.9,
-    "dist": 0.10624999999999996
-   }
+   "source": "map"
   },
   {
    "id": "otter-riverguard",
@@ -4977,7 +4356,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 46.3,
+   "winRate": 51.7,
    "band": [
     35,
     60
@@ -4999,7 +4378,7 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 39.4,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -5019,21 +4398,14 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 76.9,
+   "winRate": 77.5,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 2,
-    "winRate": 47.5,
-    "dist": 0
-   }
+   "source": "map"
   },
   {
    "id": "feral-tomcat",
@@ -5046,7 +4418,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 58.8,
+   "winRate": 58.3,
    "band": [
     35,
     60
@@ -5066,21 +4438,14 @@
    "skills": [
     "poison"
    ],
-   "winRate": 60.6,
+   "winRate": 60.8,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 48.1,
-    "dist": 0.006250000000000033
-   }
+   "source": "map"
   },
   {
    "id": "pack-rat-looter",
@@ -5093,7 +4458,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 41.3,
+   "winRate": 39.2,
    "band": [
     35,
     60
@@ -5113,21 +4478,14 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 25,
+   "winRate": 20.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 48.1,
-    "dist": 0.006250000000000033
-   }
+   "source": "map"
   },
   {
    "id": "jackrabbit-sprinter",
@@ -5140,21 +4498,14 @@
    "skills": [
     "quick"
    ],
-   "winRate": 85.6,
+   "winRate": 82.5,
    "band": [
     35,
     60
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 55.6,
-    "dist": 0.08125000000000004
-   }
+   "source": "map"
   },
   {
    "id": "shrine-bell-ringer",
@@ -5167,21 +4518,14 @@
    "skills": [
     "onReadyGrace"
    ],
-   "winRate": 24.4,
+   "winRate": 26.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 40,
-    "dist": 0.07499999999999996
-   }
+   "source": "base"
   },
   {
    "id": "ember-jackal",
@@ -5194,21 +4538,14 @@
    "skills": [
     "frenzy"
    ],
-   "winRate": 93.8,
+   "winRate": 93.3,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 75,
-    "dist": 0.11499999999999999
-   }
+   "source": "base"
   },
   {
    "id": "magma-titan",
@@ -5222,12 +4559,12 @@
     "scar",
     "triggers"
    ],
-   "winRate": 35,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base"
   },
@@ -5243,7 +4580,7 @@
     "renewal",
     "flying"
    ],
-   "winRate": 38.1,
+   "winRate": 41.7,
    "band": [
     35,
     60
@@ -5263,7 +4600,7 @@
    "skills": [
     "grit"
    ],
-   "winRate": 39.4,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -5306,21 +4643,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 85.6,
+   "winRate": 85,
    "band": [
     52,
     75
    ],
    "verdict": "strong",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "health",
-    "from": 9,
-    "to": 5,
-    "winRate": 65.6,
-    "dist": 0.02124999999999999
-   }
+   "source": "pack"
   },
   {
    "id": "coral-current-eel",
@@ -5328,26 +4658,21 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
-   "health": 7,
+   "attack": 3,
+   "health": 6,
    "skills": [
-    "poison"
+    "poison",
+    "tide",
+    "wash"
    ],
-   "winRate": 81.9,
+   "winRate": 74.2,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 59.4,
-    "dist": 0.04125000000000001
-   }
+   "source": "pack"
   },
   {
    "id": "frost-thistle-lynx",
@@ -5360,7 +4685,7 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 48.1,
+   "winRate": 54.2,
    "band": [
     35,
     60
@@ -5380,7 +4705,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 41.9,
+   "winRate": 36.7,
    "band": [
     35,
     60
@@ -5402,7 +4727,7 @@
     "nocturnal",
     "triggers"
    ],
-   "winRate": 48.1,
+   "winRate": 50,
    "band": [
     35,
     60
@@ -5423,21 +4748,14 @@
     "freeze",
     "triggers"
    ],
-   "winRate": 34.4,
+   "winRate": 34.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 5,
-    "winRate": 35.6,
-    "dist": 0.11874999999999997
-   }
+   "source": "base"
   },
   {
    "id": "nightshade-moth",
@@ -5452,21 +4770,14 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 30,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 4,
-    "winRate": 39.4,
-    "dist": 0.08124999999999999
-   }
+   "source": "base"
   },
   {
    "id": "voltaic-eel",
@@ -5480,21 +4791,14 @@
     "paralyze",
     "triggers"
    ],
-   "winRate": 34.4,
+   "winRate": 34.2,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 7,
-    "winRate": 38.1,
-    "dist": 0.25375000000000003
-   }
+   "source": "map"
   },
   {
    "id": "cinder-hornet",
@@ -5508,7 +4812,7 @@
     "stunOnHit",
     "flying"
    ],
-   "winRate": 45,
+   "winRate": 46.7,
    "band": [
     35,
     60
@@ -5529,21 +4833,14 @@
     "regen",
     "triggers"
    ],
-   "winRate": 31.9,
+   "winRate": 30.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 5,
-    "winRate": 34.4,
-    "dist": 0.13124999999999998
-   }
+   "source": "base"
   },
   {
    "id": "rot-swollen-carcass",
@@ -5557,21 +4854,14 @@
     "onDeathSpawn",
     "triggers"
    ],
-   "winRate": 31.3,
+   "winRate": 30.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 7,
-    "winRate": 35,
-    "dist": 0.125
-   }
+   "source": "base"
   },
   {
    "id": "king-maker",
@@ -5584,7 +4874,7 @@
    "skills": [
     "kingSlayer"
    ],
-   "winRate": 61.3,
+   "winRate": 59.2,
    "band": [
     52,
     75
@@ -5602,21 +4892,14 @@
    "attack": 1,
    "health": 3,
    "skills": [],
-   "winRate": 15,
+   "winRate": 12.5,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 26.9,
-    "dist": 0.07124999999999998
-   }
+   "source": "base"
   },
   {
    "id": "otter-paddler",
@@ -5627,7 +4910,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     20,
     48
@@ -5645,21 +4928,14 @@
    "attack": 3,
    "health": 8,
    "skills": [],
-   "winRate": 76.9,
+   "winRate": 75.8,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 8,
-    "to": 6,
-    "winRate": 45,
-    "dist": 0.11000000000000004
-   }
+   "source": "base"
   },
   {
    "id": "honey-bee",
@@ -5675,7 +4951,7 @@
     "hiveMind",
     "diurnal"
    ],
-   "winRate": 33.8,
+   "winRate": 34.2,
    "band": [
     20,
     48
@@ -5697,7 +4973,7 @@
     "swarm",
     "diurnal"
    ],
-   "winRate": 47.5,
+   "winRate": 46.7,
    "band": [
     20,
     48
@@ -5718,21 +4994,14 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 73.8,
+   "winRate": 73.3,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 36.3,
-    "dist": 0.02250000000000002
-   }
+   "source": "base"
   },
   {
    "id": "worker-ant",
@@ -5746,21 +5015,14 @@
     "swarm",
     "hiveMind"
    ],
-   "winRate": 18.8,
+   "winRate": 15.8,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 36.3,
-    "dist": 0.02250000000000002
-   }
+   "source": "base"
   },
   {
    "id": "tunnel-ant",
@@ -5773,7 +5035,7 @@
    "skills": [
     "swarm"
    ],
-   "winRate": 35,
+   "winRate": 31.7,
    "band": [
     20,
     48
@@ -5793,21 +5055,14 @@
    "skills": [
     "swarm"
    ],
-   "winRate": 48.8,
+   "winRate": 43.3,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 6,
-    "to": 5,
-    "winRate": 33.8,
-    "dist": 0.0024999999999999467
-   }
+   "source": "base"
   },
   {
    "id": "silver-minnow",
@@ -5818,21 +5073,14 @@
    "attack": 1,
    "health": 2,
    "skills": [],
-   "winRate": 11.3,
+   "winRate": 10,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 3,
-    "winRate": 31.3,
-    "dist": 0.02749999999999997
-   }
+   "source": "base"
   },
   {
    "id": "pond-trout",
@@ -5843,7 +5091,7 @@
    "attack": 2,
    "health": 4,
    "skills": [],
-   "winRate": 38.1,
+   "winRate": 33.3,
    "band": [
     20,
     48
@@ -5861,21 +5109,14 @@
    "attack": 3,
    "health": 7,
    "skills": [],
-   "winRate": 71.3,
+   "winRate": 69.2,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 43.8,
-    "dist": 0.09750000000000003
-   }
+   "source": "base"
   },
   {
    "id": "duckling",
@@ -5888,7 +5129,7 @@
    "skills": [
     "flying"
    ],
-   "winRate": 24.4,
+   "winRate": 25.8,
    "band": [
     20,
     48
@@ -5908,21 +5149,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 76.3,
+   "winRate": 71.7,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 34.4,
-    "dist": 0.003750000000000031
-   }
+   "source": "base"
   },
   {
    "id": "duck-paddler",
@@ -5935,21 +5169,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 94.4,
+   "winRate": 95,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 6,
-    "to": 2,
-    "winRate": 36.3,
-    "dist": 0.02250000000000002
-   }
+   "source": "base"
   },
   {
    "id": "meadow-rabbit",
@@ -5960,21 +5187,14 @@
    "attack": 1,
    "health": 4,
    "skills": [],
-   "winRate": 18.1,
+   "winRate": 14.2,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 38.1,
-    "dist": 0.04125000000000001
-   }
+   "source": "base"
   },
   {
    "id": "cottontail",
@@ -5985,7 +5205,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     20,
     48
@@ -6003,21 +5223,14 @@
    "attack": 3,
    "health": 7,
    "skills": [],
-   "winRate": 71.3,
+   "winRate": 69.2,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 43.8,
-    "dist": 0.09750000000000003
-   }
+   "source": "base"
   },
   {
    "id": "chipmunk-forager",
@@ -6028,21 +5241,14 @@
    "attack": 1,
    "health": 3,
    "skills": [],
-   "winRate": 15,
+   "winRate": 12.5,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 26.9,
-    "dist": 0.07124999999999998
-   }
+   "source": "base"
   },
   {
    "id": "acorn-chipmunk",
@@ -6053,7 +5259,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     20,
     48
@@ -6074,7 +5280,7 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 22.5,
+   "winRate": 20.8,
    "band": [
     20,
     48
@@ -6095,21 +5301,14 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 68.1,
+   "winRate": 65,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 32.5,
-    "dist": 0.014999999999999958
-   }
+   "source": "base"
   },
   {
    "id": "mosswing-laborer",
@@ -6122,7 +5321,7 @@
    "skills": [
     "flying"
    ],
-   "winRate": 34.4,
+   "winRate": 30.8,
    "band": [
     20,
     48
@@ -6164,21 +5363,14 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 84.4,
+   "winRate": 82.5,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 42.5,
-    "dist": 0.08500000000000002
-   }
+   "source": "base"
   },
   {
    "id": "sunthroat-courier",
@@ -6192,21 +5384,14 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 68.1,
+   "winRate": 64.2,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 37.5,
-    "dist": 0.03500000000000003
-   }
+   "source": "base"
   },
   {
    "id": "voidfeather-scout",
@@ -6219,21 +5404,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 71.3,
+   "winRate": 69.2,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 4,
-    "to": 2,
-    "winRate": 36.3,
-    "dist": 0.02250000000000002
-   }
+   "source": "base"
   },
   {
    "id": "crimson-wing-duelist-cadet",
@@ -6247,21 +5425,14 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 89.4,
+   "winRate": 88.3,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 1,
-    "winRate": 37.5,
-    "dist": 0.03500000000000003
-   }
+   "source": "base"
   },
   {
    "id": "cobalt-talon-skirmisher",
@@ -6282,14 +5453,7 @@
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 1,
-    "winRate": 43.8,
-    "dist": 0.09750000000000003
-   }
+   "source": "base"
   },
   {
    "id": "dominion-nestguard",
@@ -6302,21 +5466,14 @@
    "skills": [
     "flying"
    ],
-   "winRate": 78.8,
+   "winRate": 80,
    "band": [
     20,
     48
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 2,
-    "winRate": 22.5,
-    "dist": 0.11499999999999996
-   }
+   "source": "base"
   },
   {
    "id": "river-warden",
@@ -6327,21 +5484,14 @@
    "attack": 5,
    "health": 15,
    "skills": [],
-   "winRate": 40,
+   "winRate": 46.7,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 8,
-    "winRate": 58.1,
-    "dist": 0.053749999999999964
-   }
+   "source": "base"
   },
   {
    "id": "sunspire-envoy",
@@ -6355,7 +5505,7 @@
     "esprit",
     "flying"
    ],
-   "winRate": 65,
+   "winRate": 65.8,
    "band": [
     52,
     75
@@ -6373,21 +5523,14 @@
    "attack": 2,
    "health": 10,
    "skills": [],
-   "winRate": 61.9,
+   "winRate": 58.3,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "health",
-    "from": 10,
-    "to": 9,
-    "winRate": 52.5,
-    "dist": 0.050000000000000044
-   }
+   "source": "map"
   },
   {
    "id": "bramblewood-bonebreaker",
@@ -6400,21 +5543,14 @@
    "skills": [
     "stagger"
    ],
-   "winRate": 30,
+   "winRate": 33.3,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 8,
-    "winRate": 35.6,
-    "dist": 0.11874999999999997
-   }
+   "source": "base"
   },
   {
    "id": "wandering-traveller",
@@ -6434,14 +5570,7 @@
    ],
    "verdict": "strong",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 6,
-    "to": 2,
-    "winRate": 63.1,
-    "dist": 0.003750000000000031
-   }
+   "source": "base"
   },
   {
    "id": "red-dragon",
@@ -6457,21 +5586,14 @@
     "stunOnHit",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     70,
     97
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 10,
-    "to": 11,
-    "winRate": 38.8,
-    "dist": 0.44749999999999995
-   }
+   "source": "base"
   },
   {
    "id": "white-dragon",
@@ -6487,21 +5609,14 @@
     "freeze",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     70,
     97
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 10,
-    "to": 11,
-    "winRate": 38.8,
-    "dist": 0.44749999999999995
-   }
+   "source": "base"
   },
   {
    "id": "blue-dragon",
@@ -6517,21 +5632,14 @@
     "paralyze",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     70,
     97
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 10,
-    "to": 11,
-    "winRate": 38.8,
-    "dist": 0.44749999999999995
-   }
+   "source": "base"
   },
   {
    "id": "green-dragon",
@@ -6546,21 +5654,14 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     70,
     97
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 10,
-    "to": 11,
-    "winRate": 38.8,
-    "dist": 0.44749999999999995
-   }
+   "source": "base"
   },
   {
    "id": "black-dragon",
@@ -6575,21 +5676,14 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.3,
    "band": [
     70,
     97
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 10,
-    "to": 11,
-    "winRate": 38.8,
-    "dist": 0.44749999999999995
-   }
+   "source": "base"
   },
   {
    "id": "harvest-mouse",
@@ -6600,21 +5694,14 @@
    "attack": 1,
    "health": 3,
    "skills": [],
-   "winRate": 15,
+   "winRate": 12.5,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 26.9,
-    "dist": 0.07124999999999998
-   }
+   "source": "base"
   },
   {
    "id": "garden-snail",
@@ -6627,7 +5714,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 25.6,
+   "winRate": 25,
    "band": [
     20,
     48
@@ -6647,21 +5734,14 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 28.8,
+   "winRate": 21.7,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 53.8,
-    "dist": 0.0625
-   }
+   "source": "map"
   },
   {
    "id": "meadow-frog",
@@ -6672,21 +5752,14 @@
    "attack": 2,
    "health": 3,
    "skills": [],
-   "winRate": 26.9,
+   "winRate": 25.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 45,
-    "dist": 0.024999999999999967
-   }
+   "source": "map"
   },
   {
    "id": "pill-bug",
@@ -6699,12 +5772,12 @@
    "skills": [
     "armor"
    ],
-   "winRate": 23.1,
+   "winRate": 18.3,
    "band": [
     20,
     48
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base"
   },
@@ -6720,7 +5793,7 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 22.5,
+   "winRate": 20.8,
    "band": [
     20,
     48
@@ -6740,21 +5813,14 @@
    "skills": [
     "quick"
    ],
-   "winRate": 29.4,
+   "winRate": 25.8,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 50.6,
-    "dist": 0.03125
-   }
+   "source": "base"
   },
   {
    "id": "beetle-grunt",
@@ -6765,21 +5831,14 @@
    "attack": 2,
    "health": 6,
    "skills": [],
-   "winRate": 28.8,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 3,
-    "winRate": 45,
-    "dist": 0.024999999999999967
-   }
+   "source": "map"
   },
   {
    "id": "earthworm",
@@ -6792,21 +5851,14 @@
    "skills": [
     "regen"
    ],
-   "winRate": 11.3,
+   "winRate": 10,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 3,
-    "winRate": 30,
-    "dist": 0.03999999999999998
-   }
+   "source": "base"
   },
   {
    "id": "dormouse",
@@ -6817,7 +5869,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 44.2,
    "band": [
     35,
     60
@@ -6835,21 +5887,14 @@
    "attack": 1,
    "health": 2,
    "skills": [],
-   "winRate": 11.3,
+   "winRate": 10,
    "band": [
     20,
     48
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 3,
-    "winRate": 31.3,
-    "dist": 0.02749999999999997
-   }
+   "source": "base"
   },
   {
    "id": "tiny-cave-dweller",
@@ -6864,21 +5909,14 @@
     "onSpawnGold",
     "nocturnal"
    ],
-   "winRate": 34.4,
+   "winRate": 29.2,
    "band": [
     45,
     68
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "secret",
-   "suggest": {
-    "stat": "health",
-    "from": 4,
-    "to": 5,
-    "winRate": 53.8,
-    "dist": 0.02750000000000008
-   }
+   "source": "secret"
   },
   {
    "id": "beaver-lumberjack",
@@ -6891,21 +5929,14 @@
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 20,
+   "winRate": 19.2,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 3,
-    "winRate": 40.6,
-    "dist": 0.06874999999999998
-   }
+   "source": "base"
   },
   {
    "id": "courier-pigeon",
@@ -6926,14 +5957,7 @@
    ],
    "verdict": "weak",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "health",
-    "from": 2,
-    "to": 4,
-    "winRate": 47.5,
-    "dist": 0
-   }
+   "source": "base"
   }
  ]
 }

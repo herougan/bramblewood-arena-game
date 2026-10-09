@@ -42,8 +42,8 @@
     "icon": "\ud83d\udc2c",
     "cost": 0,
     "wait": 1,
-    "attack": 4,
-    "health": 6,
+    "attack": 3,
+    "health": 4,
     "flavor": "Rides the moat like open water. Lance first, questions never.",
     "locked": true,
     "archetypes": [
@@ -57,7 +57,11 @@
       "kind": "pack",
       "tier": 1
     },
-    "rarity": "rare"
+    "rarity": "rare",
+    "effects": {
+      "tide": true,
+      "wash": true
+    }
   },
   {
     "id": "bee-knight",
@@ -922,7 +926,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 9,
+    "health": 5,
     "dmgType": "cold",
     "resist": [
       "heat"
@@ -934,7 +938,11 @@
     ],
     "numericId": 39,
     "uuid": "bb5ad042-f2e4-4f4d-8452-aaeba1320030",
-    "rarity": "rare"
+    "rarity": "rare",
+    "effects": {
+      "tide": true,
+      "wash": true
+    }
   },
   {
     "id": "stoneheart-golem",
@@ -1054,14 +1062,15 @@
     "icon": "\ud83d\udc21",
     "cost": 1,
     "wait": 2,
-    "attack": 3,
+    "attack": 2,
     "health": 20,
     "resist": [
       "poison"
     ],
     "flavor": "Doubles in size the moment anything gets close. Its own toxins never touch it.",
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "tide": true
     },
     "locked": true,
     "archetypes": [
@@ -1081,7 +1090,8 @@
     "health": 22,
     "effects": {
       "sweep": 1,
-      "bounty": 1
+      "bounty": 1,
+      "tide": true
     },
     "flavor": "Circles the battlefield once, then bites through however much line is in the way.",
     "locked": true,
@@ -1405,7 +1415,9 @@
     "health": 22,
     "effects": {
       "sweep": 1,
-      "bounty": 1
+      "bounty": 1,
+      "tide": true,
+      "wash": true
     },
     "flavor": "Eight arms, eight opinions on how this fight should go. Usually gets its way.",
     "locked": true,
@@ -3378,7 +3390,8 @@
       "Coral Reef"
     ],
     "effects": {
-      "guardian": true
+      "guardian": true,
+      "tide": true
     },
     "flavor": "Small, orange, and somehow always exactly where the hit was headed.",
     "locked": true,
@@ -3403,7 +3416,8 @@
       "Coral Reef"
     ],
     "effects": {
-      "crit": true
+      "crit": true,
+      "tide": true
     },
     "flavor": "Circles once out of professional courtesy. Then does not.",
     "locked": true,
@@ -3424,7 +3438,8 @@
       "Coral Reef"
     ],
     "effects": {
-      "stealth": true
+      "stealth": true,
+      "tide": true
     },
     "flavor": "Lives in a hole in the reef and in your nightmares, respectively.",
     "locked": true,
@@ -3450,7 +3465,8 @@
     ],
     "effects": {
       "armor": 4,
-      "revive": true
+      "revive": true,
+      "tide": true
     },
     "flavor": "Has outlived several reefs. Intends to outlive this fight too.",
     "locked": true,
@@ -3477,7 +3493,8 @@
       "Structure"
     ],
     "effects": {
-      "onReadyGold": 1
+      "onReadyGold": 1,
+      "tide": true
     },
     "flavor": "Builds itself one grain at a time, and never once stops billing for it.",
     "locked": true,
@@ -3949,7 +3966,8 @@
       "Volcanic"
     ],
     "effects": {
-      "thorns": 1
+      "thorns": 1,
+      "tide": true
     },
     "flavor": "Lives somewhere that would kill almost anything else instantly. Unbothered.",
     "locked": true,
@@ -4125,7 +4143,8 @@
       "Coastal"
     ],
     "effects": {
-      "armor": 1
+      "armor": 1,
+      "tide": true
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pinch out of a fight.",
     "locked": true,
@@ -4179,12 +4198,14 @@
     "cost": 1,
     "wait": 1,
     "attack": 7,
-    "health": 8,
+    "health": 5,
     "archetypes": [
       "Coastal"
     ],
     "effects": {
-      "reload": 1
+      "reload": 1,
+      "tide": true,
+      "wash": true
     },
     "flavor": "One vicious pull, then it needs the current to reset.",
     "locked": true,
@@ -4307,7 +4328,8 @@
       "Mangrove"
     ],
     "effects": {
-      "swipe": true
+      "swipe": true,
+      "tide": true
     },
     "flavor": "One waving claw is a threat display. A thousand is a tactic.",
     "locked": true,
@@ -4561,12 +4583,13 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 8,
+    "health": 6,
     "archetypes": [
       "Ocean"
     ],
     "effects": {
-      "armor": 1
+      "armor": 1,
+      "tide": true
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pick a fight with.",
     "dmgType": "physical",
@@ -4594,7 +4617,8 @@
       "Ocean"
     ],
     "effects": {
-      "evasive": true
+      "evasive": true,
+      "tide": true
     },
     "flavor": "Barrel-rolls through the surf as if the fight were a suggestion.",
     "dmgType": "physical",
@@ -4994,12 +5018,13 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 12,
+    "health": 10,
     "archetypes": [
       "Cephalopod"
     ],
     "effects": {
-      "evasive": true
+      "evasive": true,
+      "tide": true
     },
     "flavor": "By the time the color pattern registers as a threat, it already isn't there.",
     "dmgType": "physical",
@@ -5591,10 +5616,12 @@
     "icon": "\ud83d\udc1f",
     "cost": 1,
     "wait": 0,
-    "attack": 4,
-    "health": 7,
+    "attack": 3,
+    "health": 6,
     "effects": {
-      "poison": 2
+      "poison": 2,
+      "tide": true,
+      "wash": true
     },
     "archetypes": [
       "Ocean",

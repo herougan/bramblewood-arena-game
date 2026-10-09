@@ -1,12 +1,12 @@
 # Action items
 
-_Updated 2026-10-09, 10 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-09, 11 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
 | ID | What | My suggestion |
 |---|---|---|
-| **D19** | Archetypes: Swarm is built. What next? | The Exile zone, then Tide |
+| **D19** | Archetypes: Swarm and Tide are built. What next? | The Exile zone (groundwork for three more) |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
 
@@ -30,7 +30,10 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
   - every map was retuned for the new rules against a new player's likely deck;
   - bosses keep their namesake card (the Glacial Ape-King fights with its Ape-King);
   - the editor's tuning tools and the [tuning guide](skirmish-tuning-guide.md) are in place.
-- **Swarm** (ants and bees) is the first archetype; **draggable map tiles** are in the layout editor.
+- **Archetypes:**
+  - **Swarm** (ants and bees) is the first.
+  - **Tide** (reef and beach) is new tonight. 🌊 Flow and 🐚 Ebb alternate each round: Tide units hit +1 on Flow and take 1 less on Ebb, and Wash pushes the enemy opposite back once. The water fights were retuned for it.
+- **Draggable map tiles** are in the layout editor.
 
 ## 3. Things only you can do (outside chat)
 

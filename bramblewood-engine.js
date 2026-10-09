@@ -507,6 +507,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const ph = getPhase();
     return (e.nocturnal && ph==='night') || (e.diurnal && ph==='day') ? 1 : 0;
   }
+  // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
+  // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
+  // hit +1, and Wash units push the enemy card facing them back 1 Wait (once per enemy card); on Ebb, Tide units take
+  // 1 less damage per hit (never below 1). Round 1 (and modes with no cycle) has no tide.
+  function getTide(){ return turnNo > 0 ? (turnNo % 2 === 1 ? 'flow' : 'ebb') : null; }
+  function isTide(card){ const d = card && CARD_DEFS[card.defId]; return !!(d && d.effects && d.effects.tide); }
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function roundStart(players, round, sideOf, stats, events){
@@ -519,6 +525,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         draw(players[1], 1, sideOf(1), stats, events); draw(players[2], 1, sideOf(2), stats, events);
       }
     }
+    if(getTide() === 'flow'){
+      if(recordEvents && events) events.push({type:'tide', tide:'flow', round});
+      [1,2].forEach(pid=>{ const me = players[pid], foe = players[pid===1 ? 2 : 1]; if(!me || !foe) return;
+        ['left','center','right'].forEach(lane=> (me.row[lane]||[]).forEach((c, i)=>{
+          if(!c || c.gap || !(c.hp > 0)) return; const d = CARD_DEFS[c.defId]; if(!(d && d.effects && d.effects.wash)) return;
+          const t = (foe.row[lane]||[])[i]; if(!t || t.gap || !(t.hp > 0) || t.washed) return; // each enemy card can be washed back only once
+          t.wait = (t.wait||0) + 1; t.washed = true;
+          if(recordEvents && events) events.push({type:'wash', side:sideOf(pid), uid:c.uid, defId:c.defId, targetUid:t.uid, targetDefId:t.defId});
+        })); });
+    } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
     if(!field) return;
     const f = field.id;
     if(f === 'frozen'){
@@ -582,7 +598,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + phaseBonus(attCard); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + phaseBonus(attCard) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
+    if(isTide(targetCard) && getTide()==='ebb' && amt > 1) amt -= 1; // Ebb: Tide units take 1 less per hit (never below 1)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
@@ -3060,7 +3077,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { roundStart, getField, setField, getPhase, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { roundStart, getField, setField, getPhase, getTide, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
