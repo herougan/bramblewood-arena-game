@@ -194,7 +194,8 @@
    "attack": 6,
    "health": 58,
    "skills": [
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 36.9,
    "band": [
@@ -715,7 +716,8 @@
    "health": 50,
    "skills": [
     "flying",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -789,7 +791,8 @@
    "skills": [
     "flying",
     "bounty",
-    "paralyze"
+    "paralyze",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -844,9 +847,10 @@
    "attack": 7,
    "health": 38,
    "skills": [
-    "bounty"
+    "bounty",
+    "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -1136,7 +1140,8 @@
    "health": 52,
    "skills": [
     "onReadyDamage",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -1233,7 +1238,8 @@
    "health": 58,
    "skills": [
     "onReadyDamage",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -1761,9 +1767,10 @@
    "attack": 8,
    "health": 28,
    "skills": [
-    "rage"
+    "rage",
+    "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 38.1,
    "band": [
     35,
     60
@@ -2098,7 +2105,8 @@
    "attack": 1,
    "health": 18,
    "skills": [
-    "regen"
+    "regen",
+    "triggers"
    ],
    "winRate": 36.9,
    "band": [
@@ -2119,9 +2127,10 @@
    "health": 48,
    "skills": [
     "onReadyGold",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
-   "winRate": 37.5,
+   "winRate": 38.8,
    "band": [
     35,
     60
@@ -2140,7 +2149,8 @@
    "health": 40,
    "skills": [
     "onReadyGold",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.8,
    "band": [
@@ -2241,7 +2251,8 @@
    "skills": [
     "onReadyDamage",
     "bounty",
-    "flying"
+    "flying",
+    "triggers"
    ],
    "winRate": 38.8,
    "band": [
@@ -2612,7 +2623,8 @@
    "attack": 13,
    "health": 62,
    "skills": [
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -2652,7 +2664,8 @@
    "attack": 4,
    "health": 16,
    "skills": [
-    "freeze"
+    "freeze",
+    "triggers"
    ],
    "winRate": 36.9,
    "band": [
@@ -2748,7 +2761,8 @@
    "health": 45,
    "skills": [
     "sweep",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -2818,7 +2832,8 @@
    "health": 50,
    "skills": [
     "flying",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -3102,7 +3117,8 @@
    "attack": 8,
    "health": 40,
    "skills": [
-    "thorns"
+    "thorns",
+    "triggers"
    ],
    "winRate": 37.5,
    "band": [
@@ -3224,9 +3240,10 @@
    "health": 38,
    "skills": [
     "poison",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
-   "winRate": 37.5,
+   "winRate": 38.1,
    "band": [
     35,
     60
@@ -3244,9 +3261,10 @@
    "attack": 9,
    "health": 34,
    "skills": [
-    "swipe"
+    "swipe",
+    "triggers"
    ],
-   "winRate": 39.4,
+   "winRate": 38.1,
    "band": [
     35,
     60
@@ -3332,9 +3350,10 @@
    "attack": 6,
    "health": 26,
    "skills": [
-    "scar"
+    "scar",
+    "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -3891,9 +3910,10 @@
    "health": 36,
    "skills": [
     "sweep",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.1,
    "band": [
     35,
     60
@@ -4230,9 +4250,10 @@
    "attack": 9,
    "health": 34,
    "skills": [
-    "sweep"
+    "sweep",
+    "triggers"
    ],
-   "winRate": 38.8,
+   "winRate": 38.1,
    "band": [
     35,
     60
@@ -4554,9 +4575,10 @@
    "attack": 7,
    "health": 16,
    "skills": [
-    "rend"
+    "rend",
+    "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -4895,7 +4917,8 @@
    "skills": [
     "flying",
     "bounty",
-    "stunOnHit"
+    "stunOnHit",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -5040,7 +5063,8 @@
    "attack": 4,
    "health": 48,
    "skills": [
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 37.5,
    "band": [
@@ -5135,7 +5159,8 @@
    "attack": 3,
    "health": 20,
    "skills": [
-    "onDeathSpawn"
+    "onDeathSpawn",
+    "triggers"
    ],
    "winRate": 36.9,
    "band": [
@@ -6308,7 +6333,8 @@
    "health": 34,
    "skills": [
     "poison",
-    "bounty"
+    "bounty",
+    "triggers"
    ],
    "winRate": 37.5,
    "band": [
@@ -6382,7 +6408,8 @@
    "attack": 3,
    "health": 10,
    "skills": [
-    "paralyze"
+    "paralyze",
+    "triggers"
    ],
    "winRate": 36.9,
    "band": [
@@ -6555,7 +6582,8 @@
    "skills": [
     "flying",
     "bounty",
-    "freeze"
+    "freeze",
+    "triggers"
    ],
    "winRate": 38.1,
    "band": [
@@ -6675,9 +6703,10 @@
    "attack": 10,
    "health": 50,
    "skills": [
-    "bounty"
+    "bounty",
+    "triggers"
    ],
-   "winRate": 36.9,
+   "winRate": 38.1,
    "band": [
     35,
     60

@@ -20,7 +20,7 @@
    | 0 | 113 | 56.3 |
    | 1 | 84 | 65.0 |
    | 2 | 61 | 45.6 |
-   | 3+ | 30 | 37.5 |
+   | 3+ | 30 | 38.1 |
 
    1-cost cards are the sweet spot. Cards costing 3 or more lose to the reference deck: a match is usually over in ~17 rounds, and a 3–4 cost card with Wait 4–5 arrives too late to matter.
 3. **The five Legendary dragons are among the weakest cards in the game** (about 38%), for the same reason.

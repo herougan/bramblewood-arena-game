@@ -168,12 +168,12 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** Follow the suggested order
 
 **B4. Cards that cost 3+ Lumber don't pay off** · Decide · Balance · asked 2026-10-09
-- In simulation, 3+ cost cards (all five Legendary dragons included) score ~38%, below a plain reference deck: matches end in ~17 rounds and a 3–4 cost card with Wait 4–5 arrives too late. Tested start-with-2-Lumber, +1 Lumber every 2 rounds, −1 cost and Wait, and +15% stats per cost: none fixed it. Options: give big cards an immediate effect when played (a roar, a summon, damage), cut their Wait to 1–2, add Lumber-generating cards (Builders, from the Scrapper archetype), or check real players' matches first.
-  - Big cards act when played
-  - Shorter Wait on big cards
-  - Lumber engines
-  - Check real matches first
-- **Default:** Big cards act when played
+- Cards costing 3+ Lumber (all five dragons included) score ~38% in simulation. 2026-10-09, taking the default on 'continue': all 30 got an arrival effect (dragons breathe 4 on every enemy; brutes hit the enemy opposite for 2× their cost; Elder Willow, Elderhorn Monarch and Riverworks Bastion refund 2 Lumber; the slow small ones delay the enemy opposite by 2 Wait). It didn't move them: the real cause is that Lumber only comes from discarding cards, so a 4-cost card costs five cards in all. Tested a passive income with the CPU saving properly: +1 Lumber every 2 rounds gives cost-2 cards 75%, cost-3+ 51%, dragons 60% (free cards fall to ~24%, as cheap cards should); every round is too much (dragons 96%); every 3 rounds is too little (45%).
+  - +1 Lumber every 2 rounds (core rules change)
+  - +1 every 3 rounds
+  - Keep discard-only Lumber; make big cards cheaper
+  - Leave as is
+- **Default:** +1 Lumber every 2 rounds (core rules change)
 
 ## Decided
 

@@ -149,7 +149,17 @@
     ],
     "flavor": "Less a warrior, more a siege engine that occasionally roars. Give it five turns to get moving.",
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "locked": true,
     "archetypes": [
@@ -689,7 +699,17 @@
     "health": 45,
     "effects": {
       "sweep": 1,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "A worm the size of a siege engine, because someone fed it entirely too well.",
     "locked": true,
@@ -831,7 +851,14 @@
     "health": 48,
     "effects": {
       "onReadyGold": 1,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "gainLumber",
+          "amount": 2
+        }
+      ]
     },
     "flavor": "Roots older than the castle it now leans protectively over, and just as slow to give anything up.",
     "locked": true,
@@ -953,6 +980,13 @@
           "dmgType": "physical",
           "who": "enemy",
           "sub": "random"
+        },
+        {
+          "on": "onSpawn",
+          "do": "addWait",
+          "amount": 1,
+          "who": "enemy",
+          "sub": "all"
         }
       ]
     },
@@ -1077,7 +1111,17 @@
     ],
     "effects": {
       "poison": 3,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Patient, armored, and in absolutely no hurry to lose. The bite is the least of the problem.",
     "locked": true,
@@ -1469,7 +1513,17 @@
         "dmgType": "physical"
       },
       "bounty": 1,
-      "flying": true
+      "flying": true,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Watches from a height nothing else can reach, then arrives before the watching is noticed.",
     "locked": true,
@@ -1593,7 +1647,17 @@
         "amount": 8,
         "dmgType": "physical"
       },
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 8,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Wakes up exactly once a fight, and the ground remembers it for longer than that.",
     "locked": true,
@@ -1671,7 +1735,14 @@
     "health": 40,
     "effects": {
       "onReadyGold": 1,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "gainLumber",
+          "amount": 2
+        }
+      ]
     },
     "flavor": "The oldest set of antlers in the Bramblewood. Even the raccoons pay it tribute.",
     "locked": true,
@@ -1825,7 +1896,14 @@
       "cold"
     ],
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "gainLumber",
+          "amount": 2
+        }
+      ]
     },
     "flavor": "A fortress of logs and mud that has outlasted three winters and at least one siege.",
     "locked": true,
@@ -1913,7 +1991,17 @@
     ],
     "effects": {
       "poison": 3,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Immune to its own venom, which is the only mercy anyone's ever found in it.",
     "locked": true,
@@ -2160,7 +2248,17 @@
         "amount": 6,
         "dmgType": "physical"
       },
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 8,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Armored nose to tail in wood-fired steel. The rider is almost beside the point.",
     "locked": true,
@@ -2224,7 +2322,17 @@
       "acid"
     ],
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Older than the castle, wider than the moat, and in absolutely no hurry to leave the mud.",
     "locked": true,
@@ -2321,7 +2429,17 @@
     "attack": 6,
     "health": 58,
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Has been hanging from that same branch since before the castle had a name. In no rush to change that.",
     "locked": true,
@@ -2395,7 +2513,17 @@
       "cold"
     ],
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 8,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "The Yeti's elder. Rarely leaves the high passes, and the passes are grateful for that.",
     "locked": true,
@@ -2444,7 +2572,17 @@
     "health": 36,
     "effects": {
       "sweep": 1,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Hunts in a pack that never needs to be told the plan twice.",
     "locked": true,
@@ -3152,7 +3290,17 @@
       "Tundra"
     ],
     "effects": {
-      "sweep": 1
+      "sweep": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Thawed out ill-tempered and has not warmed up since.",
     "locked": true,
@@ -3658,7 +3806,17 @@
       "Cave"
     ],
     "effects": {
-      "rage": true
+      "rage": true,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Calm right up until it very much is not.",
     "locked": true,
@@ -4454,7 +4612,17 @@
       "Cetacean"
     ],
     "effects": {
-      "thorns": 3
+      "thorns": 3,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Old enough to remember when this reef was someone else's territory.",
     "dmgType": "physical",
@@ -4822,7 +4990,17 @@
       "Cephalopod"
     ],
     "effects": {
-      "swipe": true
+      "swipe": true,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "Small for its family. The family is not a useful comparison.",
     "dmgType": "physical",
@@ -5240,7 +5418,17 @@
     "attack": 6,
     "health": 26,
     "effects": {
-      "scar": 2
+      "scar": 2,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "dmgType": "heat",
     "resist": [
@@ -5308,7 +5496,17 @@
     "attack": 7,
     "health": 16,
     "effects": {
-      "rend": true
+      "rend": true,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 6,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "dmgType": "heat",
     "archetypes": [
@@ -5466,7 +5664,16 @@
       "freeze": {
         "chance": 40,
         "duration": 2
-      }
+      },
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "addWait",
+          "amount": 2,
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "dmgType": "cold",
     "archetypes": [
@@ -5518,7 +5725,16 @@
       "paralyze": {
         "chance": 40,
         "duration": 2
-      }
+      },
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "addWait",
+          "amount": 2,
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "dmgType": "acid",
     "archetypes": [
@@ -5568,7 +5784,16 @@
     "attack": 1,
     "health": 18,
     "effects": {
-      "regen": 3
+      "regen": 3,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "addWait",
+          "amount": 2,
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "dmgType": "physical",
     "archetypes": [
@@ -5610,7 +5835,16 @@
       "onDeathSpawn": {
         "defId": "maggot-swarmling",
         "count": 3
-      }
+      },
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "addWait",
+          "amount": 2,
+          "who": "enemy",
+          "sub": "adjacent"
+        }
+      ]
     },
     "flavor": "It stopped moving on its own days ago. Everything still living inside it hasn't noticed yet.",
     "locked": true,
@@ -7646,7 +7880,17 @@
     "effects": {
       "flying": true,
       "bounty": 1,
-      "stunOnHit": 50
+      "stunOnHit": 50,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 4,
+          "dmgType": "heat",
+          "who": "enemy",
+          "sub": "all"
+        }
+      ]
     },
     "flavor": "It doesn't burn the field. It just breathes, and the field forgets it was ever green.",
     "locked": true,
@@ -7678,7 +7922,17 @@
       "freeze": {
         "chance": 50,
         "duration": 1
-      }
+      },
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 4,
+          "dmgType": "cold",
+          "who": "enemy",
+          "sub": "all"
+        }
+      ]
     },
     "flavor": "The blizzard isn't weather. It's the White Dragon turning over in its sleep.",
     "locked": true,
@@ -7710,7 +7964,17 @@
       "paralyze": {
         "chance": 50,
         "duration": 1
-      }
+      },
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 4,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "all"
+        }
+      ]
     },
     "flavor": "Its roar arrives as a crackle in your fur. Then nothing moves for a while.",
     "locked": true,
@@ -7738,7 +8002,17 @@
     ],
     "effects": {
       "flying": true,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 4,
+          "dmgType": "poison",
+          "who": "enemy",
+          "sub": "all"
+        }
+      ]
     },
     "flavor": "The swamp gas you smelled for three days was not the swamp.",
     "locked": true,
@@ -7766,7 +8040,17 @@
     ],
     "effects": {
       "flying": true,
-      "bounty": 1
+      "bounty": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "damage",
+          "amount": 4,
+          "dmgType": "physical",
+          "who": "enemy",
+          "sub": "all"
+        }
+      ]
     },
     "flavor": "Where it nests, even the stone rots.",
     "locked": true,

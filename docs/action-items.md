@@ -6,7 +6,7 @@ _Updated 2026-10-09, 10:20 am. The short list of what matters now. Everything el
 
 | ID | What | My suggestion |
 |---|---|---|
-| **B4** | Cards costing 3+ Lumber (all five dragons included) lose in simulation; no number tweak fixed it | Big cards do something the moment they're played |
+| **B4** | Cards costing 3+ Lumber lose because Lumber only comes from discarding cards. Arrival effects are in, but they weren't enough. A passive +1 Lumber every 2 rounds fixed the curve in simulation (dragons 38% → 60%) | +1 Lumber every 2 rounds (a core rules change, so it's your call) |
 | **D19** | Which archetype to build first | Active Exile zone, then Swarm |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
@@ -19,7 +19,7 @@ All 31 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
   - every card now has a rarity (capped at Rare for now);
   - 39 extreme outliers moved half-way toward their fix;
   - 162 of 288 cards are now in their rarity's band (was 124).
-  - Next: expensive cards (B4) once you pick a direction.
+  - The 30 cards costing 3+ now each do something when played. The real fix for them is B4.
 - **Skirmish editing:** the editor can now:
   - simulate a fight against a new player's likely deck at that point;
   - auto-tune the Skirmish Armour to the fight's target win rate;
