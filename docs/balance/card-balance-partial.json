@@ -1,0 +1,113 @@
+{
+ "generated": "2026-10-09",
+ "games": 60,
+ "mode": "open",
+ "filler": [
+  "warren-scout",
+  "fawn-scout",
+  "bee-sentry",
+  "mouse-sapper",
+  "poison-dart-croaker"
+ ],
+ "bands": {
+  "starter": [
+   0.2,
+   0.48
+  ],
+  "common": [
+   0.35,
+   0.6
+  ],
+  "uncommon": [
+   0.45,
+   0.68
+  ],
+  "quest": [
+   0.45,
+   0.68
+  ],
+  "rare": [
+   0.52,
+   0.75
+  ],
+  "veryrare": [
+   0.56,
+   0.8
+  ],
+  "superrare": [
+   0.6,
+   0.84
+  ],
+  "epic": [
+   0.62,
+   0.87
+  ],
+  "heroic": [
+   0.64,
+   0.89
+  ],
+  "unique": [
+   0.66,
+   0.92
+  ],
+  "questunique": [
+   0.66,
+   0.92
+  ],
+  "legendary": [
+   0.7,
+   0.97
+  ],
+  "mythic": [
+   0.72,
+   1
+  ],
+  "ancient": [
+   0.75,
+   1
+  ]
+ },
+ "rows": [
+  {
+   "id": "cinder-imp",
+   "name": "Cinder Imp",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "sacrifice"
+   ],
+   "winRate": 58.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "sacrifice",
+    "onSpawnDevilry"
+   ],
+   "winRate": 60.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map"
+  }
+ ]
+}

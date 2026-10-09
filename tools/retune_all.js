@@ -26,14 +26,15 @@ const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.
 const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
 const BORROW = {}; ((process.argv.find(a=> a.startsWith('--borrow=')) || '').slice(9)).split(',').filter(Boolean).forEach(x=>{ const [m, from] = x.split(':'); BORROW[m] = (from||'').split('+'); });
 
-const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.wait||0)*0.5); };
+const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // a Ritual card is slow to wake; // devilryCost (2026-10-10): Darkness is scarce, so dark cards rank lower
 const CAP = {legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
 const isBase = c=> !c.token && !c.test && !c.hallOfFame && c.id!=='wandering-traveller' && !(c.source && c.source.kind) && (c.rarity==='starter' || c.basic || !c.locked);
 const rewardsOf = (mid, key)=> cards.filter(c=> c.source && c.source.kind==='map' && c.source.id===mid && c.source.node===key).map(c=> c.id);
 function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a) || (a<b?-1:1)); const deck = {}; let n = 0; for(const id of ids){ const k = Math.min(4, CAP[defs[id].rarity] || 10, 20-n); if(k<=0) break; deck[id] = k; n += k; } return deck; }
 
+let CURRENT_RULES = null; // node.rules (2026-10-10)
 function play(A, B, charB, hpB, mode, seed){
-  const e = E.makeSimEngine(defs, E.mulberry32(seed), {battleMode: mode || 'open'}); const so = p=> p===1 ? 'A' : 'B';
+  const e = E.makeSimEngine(defs, E.mulberry32(seed), {battleMode: mode || 'open', rules: CURRENT_RULES || undefined}); const so = p=> p===1 ? 'A' : 'B';
   if(CURRENT_FIELD) e.setField(CURRENT_FIELD, null, 'map'); // the Tundra is fought on Frozen Ground
   const P = {1: e.newPlayer(1, A, Object.assign({}, charById.castle, {health:30})), 2: e.newPlayer(2, B, Object.assign({}, charB || charById.castle, {health: hpB}))}; const st = {};
   P[2].loopCards = []; // as in real Conquest fights (unless the node says never surrender)
@@ -73,6 +74,7 @@ for(const map of order){
     if(!n.deck || n.kind==='tutorial'){ continue; }
     if(n.kind==='raidboss'){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; } // raid bosses are tuned in the Raid editor
     if(ONLY.length && !ONLY.includes(map.id) && !ONLY.includes(n.key)){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; }
+    CURRENT_RULES = n.rules || null;
     const deck = buildDeck(myOwned), ch = n.characterId && charById[n.characterId], tgt = target(map, n), mode = n.battleMode || 'open';
     let nd = Object.assign({}, n.deck), before = rate(deck, nd, ch, n.hqHp, mode);
     let t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind), swaps = 0;

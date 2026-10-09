@@ -179,7 +179,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // 2026-09-27 batch: On Ally/Enemy Played (the "played from hand" half of the played/spawned
   // split — see fireSpawnFamilyTriggers in this file), On Ally/Enemy Ready, and On Move.
   'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile'];
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -353,6 +353,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(let i=0;i<n;i++){
       if(player.deck.length===0) return;
       const defId = player.deck.pop();
+      player.drawnTotal = (player.drawnTotal||0) + 1; // Ritual tally (2026-10-10)
       if(player.hand.length >= MAX_HAND){
         player.graveyard.push({defId});
         player.lumber += 1;
@@ -491,7 +492,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   };
   let field = opts.field && FIELDS[opts.field] ? {id: opts.field, rounds: null} : null;
   const dayNight = opts.dayNight !== false;
-  let phase = 'day';
+  // Arena rules (2026-10-10, user: "the arena mode changes rapidly, so the player is inclined to build many different
+  // kind of decks (even maybe all-nights and all-brights)"): opts.rules = {phase:'cycle'|'nightFirst'|'day'|'night',
+  // lumberEvery:N (each side +1 Lumber every N rounds), field:<id> (permanent field, same as opts.field)}.
+  const rules = opts.rules || {};
+  const phaseMode = rules.phase || 'cycle';
+  const phaseFixed = phaseMode==='day' || phaseMode==='night';
+  let phase = phaseMode==='night' || phaseMode==='nightFirst' ? 'night' : 'day';
+  if(!field && rules.field && FIELDS[rules.field]) field = {id: rules.field, rounds: null};
   function getField(){ return field ? Object.assign({}, field, FIELDS[field.id]) : null; }
   let turnNo = 0; // counts rounds that have started, so "one field card per turn" needs no extra resets
   let baseField = null; // a permanent (map) field waits underneath a played one and returns when it ends
@@ -503,7 +511,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function phaseBonus(card){
     const e = card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects; if(!e) return 0;
     // Only once the cycle is running: modes that never call roundStart (the tutorial, live ranked) have no day or night.
-    if(!turnNo && !(field && field.id==='moon')) return 0;
+    if(!turnNo && !(field && field.id==='moon') && !phaseFixed) return 0;
     const ph = getPhase();
     return (e.nocturnal && ph==='night') || (e.diurnal && ph==='day') ? 1 : 0;
   }
@@ -517,8 +525,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function roundStart(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
-    if(dayNight && round > 1){
-      const before = phase; phase = ((round - 1) % 6) < 3 ? 'day' : 'night';
+    if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
+      [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
+        if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
+    }
+    if(dayNight && round > 1 && !phaseFixed){
+      const before = phase; const first = ((round - 1) % 6) < 3; phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
       if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
       if(phase === 'day' && before === 'night'){
         if(recordEvents && events) events.push({type:'dawn', round});
@@ -592,6 +604,66 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'curse', cell:k, total:curses[k], targetUid:c.uid, targetDefId:c.defId, slot:c.slot, pid});
   }
   function getCurses(){ return Object.assign({}, curses); }
+  // ---- Devilry (2026-10-10, the user's Devilry list) ----
+  // Dark Summon: cards with def.darkSummon use a separate allowance, 1 a turn by default (pl.darkBonus adds more),
+  // instead of the turn's normal play. The allowance resets at each combat.
+  // Ritual {perished, drawn, castleDamage}: no Wait, but it can't act until, counted from when it entered, that many
+  // units have perished (either side), its owner has drawn that many cards and dealt that much castle damage.
+  let perishedTotal = 0;
+  function darkPerTurn(pl){ return 1 + (pl.darkBonus||0); }
+  function ritualProgress(pl, card){
+    const def = CARD_DEFS[card.defId], r = def && def.effects && def.effects.ritual; if(!r || !card.ritualBase) return null;
+    const b = card.ritualBase;
+    return {perished:[Math.max(0, perishedTotal - b.p), r.perished||0], drawn:[Math.max(0, (pl.drawnTotal||0) - b.d), r.drawn||0], castleDamage:[Math.max(0, (pl.castleDealt||0) - b.c), r.castleDamage||0]};
+  }
+  function ritualMet(pl, card){
+    if(card.ritualDone) return true; const pr = ritualProgress(pl, card); if(!pr) return true;
+    const met = Object.values(pr).every(([have, need])=> have >= need); if(met) card.ritualDone = true; return met;
+  }
+  // Devour, Sacrifice and Beware need per-unit skills sometimes (Devour can grant one), so a devoured unit moves to a
+  // derived definition: a copy of its card with the granted skills merged in. derivedDefs is exported so the app can
+  // render it.
+  const derivedDefs = {}; let derivedSeq = 0;
+  function deriveDef(card, grant){
+    const base = CARD_DEFS[card.defId]; const id = (base.derivedFrom || base.id) + '~dv' + (++derivedSeq);
+    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, effects: Object.assign({}, base.effects||{}, grant)});
+    card.defId = id; return id;
+  }
+  function devour(players, sideOf, pid, targetUid, handUid, stats, events){
+    const pl = players[pid]; if(!pl || pl.playedThisTurn || (pl.skipTurns||0) > 0) return false;
+    const tgt = allLive(pl).find(c=> c.uid===targetUid); const dv = tgt && CARD_DEFS[tgt.defId].effects && CARD_DEFS[tgt.defId].effects.devour;
+    if(!dv || tgt.devoured) return false;
+    const idx = pl.hand.findIndex(h=> h.uid===handUid); if(idx < 0) return false;
+    const [h] = pl.hand.splice(idx, 1); pl.graveyard.push({defId:h.defId}); pl.playedThisTurn = true;
+    const a = dv.attack||0, hp = dv.health||0;
+    tgt.atk += a; tgt.baseAtk += a; tgt.hp += hp; tgt.maxHp += hp; tgt.devoured = true;
+    if(dv.grant && typeof dv.grant==='object') deriveDef(tgt, dv.grant);
+    ensureStat(stats, sideOf(pid), h.defId).played++;
+    if(recordEvents && events) events.push({type:'devour', side:sideOf(pid), uid:tgt.uid, defId:tgt.defId, eatenDefId:h.defId, attack:a, health:hp, grant: dv.grant || null});
+    return true;
+  }
+  // Sacrifice N sits on the fodder: play a Dark Summon card onto that unit and the unit dies; the new card costs N less
+  // (Darkness first, then Lumber) and takes its place.
+  function sacrificeSummon(players, sideOf, pid, handUid, fodderUid, stats, events){
+    const pl = players[pid]; const h = pl.hand.find(x=> x.uid===handUid); const def = h && CARD_DEFS[h.defId];
+    if(!def || !def.darkSummon) return false;
+    const fod = allLive(pl).find(c=> c.uid===fodderUid); const n = fod && Number((CARD_DEFS[fod.defId].effects||{}).sacrifice);
+    if(!(n > 0) || !canPlay(pl, h.defId, handUid, n)) return false;
+    const slot = fod.slot, lane = ['left','center','right'].find(l=> pl.row[l].includes(fod));
+    fod.hp = 0; fod.sacrificed = true;
+    if(recordEvents && events) events.push({type:'sacrifice', side:sideOf(pid), uid:fod.uid, defId:fod.defId, forDefId:h.defId, discount:n});
+    removeDeadCards(players, sideOf, {}, stats, events);
+    return placeCard(players, sideOf, pid, handUid, slotMode && slot != null ? slot : (lane==='center' ? 'left' : lane), stats, events, {discount:n});
+  }
+  // Beware N: a card in your Removal Zone can be cast from there (normal costs) while you have N or more Darkness.
+  function canCastFromExile(pl, defId){ const d = CARD_DEFS[defId]; const b = d && d.effects && Number(d.effects.beware); return b > 0 && (pl.devilry||0) >= b && canPlay(pl, defId, null); }
+  function castFromExile(players, sideOf, pid, exileIndex, side, stats, events){
+    const pl = players[pid]; const e = pl.exile[exileIndex]; if(!e || !canCastFromExile(pl, e.defId)) return false;
+    const h = {uid:uidCounter++, defId:e.defId}; pl.exile.splice(exileIndex, 1); pl.hand.push(h);
+    if(recordEvents && events) events.push({type:'beware', side:sideOf(pid), defId:e.defId, darkness:pl.devilry});
+    if(placeCard(players, sideOf, pid, h.uid, side, stats, events)) return true;
+    pl.hand.splice(pl.hand.indexOf(h), 1); pl.exile.splice(exileIndex, 0, e); return false; // couldn't place: put it back
+  }
   function swarmBonus(card){
     const def = card && CARD_DEFS[card.defId]; const n = def && def.effects && Number(def.effects.swarm);
     if(!(n > 0) || !curPlayers) return 0;
@@ -763,6 +835,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const ld = gladiatorLeaderOf(pl);
       if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && reduced>0) ? ld.hp : reduced;
       syncGladiatorHq(pl);
+      tallyCastleDealt(pl, reduced);
       return reduced;
     }
     // Skirmish Armour (2026-10-08): a blue shield on top of the castle's Health soaks hits first.
@@ -770,8 +843,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(pl.hq.shield > 0 && toHp > 0){ const soak = Math.min(pl.hq.shield, toHp); pl.hq.shield -= soak; toHp -= soak; }
     pl.hq.hp = Math.max(0, pl.hq.hp - toHp);
     if(suddenDeath && suddenDeathCastles && reduced>0){ pl.hq.hp = 0; pl.hq.shield = 0; } // sudden death: a castle hit ends the game
+    tallyCastleDealt(pl, reduced);
     return reduced;
   }
+  function tallyCastleDealt(defPl, n){ const ap = curPlayers && curPlayers[defPl.id===1 ? 2 : 1]; if(ap && n > 0) ap.castleDealt = (ap.castleDealt||0) + n; }
   function pickRandomEnemyTarget(enemyPl){
     const cards = [];
     ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0) cards.push(c); }));
@@ -1306,11 +1381,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }
   }
-  function canPlay(pl, defId, excludeUid){
-    const cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId), exCost = exileCostOfCard(defId);
+  function canPlay(pl, defId, excludeUid, discount){
+    let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
+    if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
+    if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
     // Field cards (2026-10-09) are a free extra action: they don't use the turn's play, but only one a turn.
     const isField = CARD_DEFS[defId] && CARD_DEFS[defId].field;
-    if(isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
+    const isDark = CARD_DEFS[defId] && CARD_DEFS[defId].darkSummon;
+    if(isDark ? (pl.darkUsed||0) >= darkPerTurn(pl) : isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
     if(cost > pl.lumber) return false; // 2026-09-22: card cost is now paid in Lumber, not Gold
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
@@ -1318,12 +1396,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return true;
   }
 
-  function placeCard(players, sideOf, playerId, uid, side, stats, events){
+  function placeCard(players, sideOf, playerId, uid, side, stats, events, popts){
     const pl = players[playerId];
     const idx = pl.hand.findIndex(h=>h.uid===uid);
     if(idx===-1) return false;
     const hc = pl.hand[idx];
-    if(!canPlay(pl, hc.defId, uid)) return false;
+    const discount = (popts && popts.discount) || 0;
+    if(!canPlay(pl, hc.defId, uid, discount)) return false;
     const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
     const fdef = CARD_DEFS[hc.defId];
     if(fdef && fdef.field && FIELDS[fdef.field.id]){
@@ -1340,11 +1419,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(slotMode && targetSlot===null) return false;
     pl.hand.splice(idx,1);
-    pl.lumber -= costOfCard(hc.defId);
+    { let dC = devilryCostOfCard(hc.defId), lC = costOfCard(hc.defId); if(discount > 0){ const fd = Math.min(dC, discount); dC -= fd; lC = Math.max(0, lC - (discount - fd)); }
+      pl.lumber -= lC; pl.devilry -= dC; }
     pl.grace -= graceCostOfCard(hc.defId);
-    pl.devilry -= devilryCostOfCard(hc.defId);
     payExileCost(players, sideOf, playerId, exileCostOfCard(hc.defId), uid, stats, events);
-    pl.playedThisTurn = true;
+    if(fdef && fdef.darkSummon) pl.darkUsed = (pl.darkUsed||0) + 1; else pl.playedThisTurn = true;
     const boardCard = makeBoardCard(hc.defId);
     // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
     // to whichever card is the very first one this player plays in the match.
@@ -1485,6 +1564,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
 
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
+    { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     const def = CARD_DEFS[boardCard.defId];
     if(!def.effects) return;
     const pl = players[playerId];
@@ -1949,6 +2029,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Self-only for now (pair with 'on: onReady' for "cures itself at the start of its
         // own turn"), matching how buffAttack/buffHealth above default to affecting the
         // caster rather than needing an explicit target.
+        // Mind Control (2026-10-10): takes a unit from the opposing field and puts it on this side (a free slot needed).
+        case 'mindControl': {
+          const target = resolveGeneralTarget(players, playerId, boardCard, 'enemy', t.sub || 'random');
+          if(!target || !target.card || target.card.hp<=0) break;
+          const c = target.card, foe = players[otherId(playerId)];
+          let mySlot = null; if(slotMode){ mySlot = resolvePlacementSlot(pl, rnd() < .5 ? 'left' : 'right'); if(mySlot===null) break; }
+          for(const lane of ['left','center','right']){ const k = foe.row[lane].indexOf(c); if(k >= 0){ foe.row[lane].splice(k, 1); break; } }
+          if(slotMode){ syncSlots(foe); putInSlot(pl, c, mySlot); } else { (pl.row.center.length ? pl.row[rnd() < .5 ? 'left' : 'right'] : pl.row.center).push(c); }
+          if(recordEvents && events) events.push({type:'mindControl', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:c.defId, targetUid:c.uid, slot:c.slot});
+          break;
+        }
+        // Player Stun (2026-10-10): the enemy player skips their next turn (plays no cards).
+        case 'stunPlayer': {
+          const foe = players[otherId(playerId)]; foe.skipTurns = (foe.skipTurns||0) + (t.count||1);
+          if(recordEvents && events) events.push({type:'stunPlayer', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, turns: t.count||1});
+          break;
+        }
         case 'cleanse': {
           // Cleanse N (2026-10-10, user: "Cleanse N - cleanses curses for example"): with an amount, removes up to N
           // harmful counters, curses on its cell first (Desecrate), then poison, bleed, decay, corrosion, scar, expose
@@ -2102,8 +2199,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       }
     }
-    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid));
-    if(playable.length){
+    // Devilry (2026-10-10): cast a Beware card from exile, or feed a Devourer, before the normal play.
+    if(!ai.playedThisTurn){ const ix = ai.exile.findIndex(e=> canCastFromExile(ai, e.defId)); if(ix >= 0 && rnd() < 0.7) castFromExile(players, sideOf, aiId, ix, rnd() < .5 ? 'left' : 'right', stats, events); }
+    if(!ai.playedThisTurn && ai.hand.length > 1){ const dv = allLive(ai).find(c=> !c.devoured && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.devour);
+      if(dv && rnd() < 0.4){ const food = ai.hand.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a); devour(players, sideOf, aiId, dv.uid, food.uid, stats, events); } }
+    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon));
+    const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
+    if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
+    if(playable.length && !ai.playedThisTurn){
       const costly = playable.filter(hc=> costOfCard(hc.defId) > 0);
       const pick = costly.length && rnd() < 0.8 ? costly.reduce((a, b)=> costOfCard(b.defId) > costOfCard(a.defId) ? b : a) : playable[Math.floor(rnd()*playable.length)];
       const side = rnd() < 0.5 ? 'left' : 'right';
@@ -2425,6 +2528,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return;
       }
       ensureStat(stats, mySide, card.defId).deaths += 1;
+      // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
+      perishedTotal += 1; pl.devilry = (pl.devilry||0) + 1;
       const credit = killCredit[card.uid];
       const bounty = (cdef.effects && cdef.effects.bounty) || 0;
       if(recordEvents && events) events.push({type:'death', side:mySide, defId:card.defId, uid:card.uid});
@@ -2553,6 +2658,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
     curPlayers = players;
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
     try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
@@ -2656,6 +2762,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.asleep>0){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
+            if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
             if(card.shellSkip){ skipTurn('shell', card, ownId); handledUids.add(uid); return; }
             if(effAtk(card)<=0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; }
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
@@ -2795,7 +2902,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const liveOwnCols = combatColumnsOf(players[a.attId]);
       const liveEnemyCols = combatColumnsOf(players[a.enemyId]);
       // Stealth: ignores normal targeting entirely and always hits the enemy HQ directly.
-      const target = (attDef.effects && attDef.effects.stealth) ? {kind:'hq'} : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col);
+      let target = (attDef.effects && attDef.effects.stealth) ? {kind:'hq'} : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col);
+      // Pitchfork (2026-10-10, Devilry): hits a random unit among the three facing it (left, centre, right), then the
+      // units beside that one too (cards only, never the castle).
+      if(attDef.effects && attDef.effects.pitchfork && !attDef.effects.stealth){
+        const cand = [-1, 0, 1].map(d=> liveSelf.col + d).filter(col=> { const e = liveEnemyCols[col]; return e && e.kind==='card' && e.card.hp>0; });
+        if(cand.length){ const col = cand[Math.floor(rnd()*cand.length)]; const e = liveEnemyCols[col]; e.col = col; target = e; }
+      }
       if(!target){ pending = pickNextAttacker(); continue; }
       const dmgType = attDef.dmgType || 'physical';
       const mySide = sideOf(a.attId);
@@ -3067,7 +3180,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // scoped inside `target.kind==='card'` (same as Sweep and the old Swipe above) — if the
         // primary attack itself resolved straight to the castle (0 facing, or an unlucky 50/50 on
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
-        if(attDef.effects && attDef.effects.swipe){
+        if(attDef.effects && (attDef.effects.swipe || attDef.effects.pitchfork)){
           [target.col - 1, target.col + 1].forEach(flankCol=>{
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
@@ -3099,6 +3212,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                 runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
               }
             } else {
+              if(!attDef.effects.swipe) return; // Pitchfork: an empty side is just empty
               // Empty (or off-board) flank column: redirect this swipe swing straight to the
               // castle, same damageHQ path (bulwark reduction included) the primary castle hit
               // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
@@ -3164,7 +3278,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

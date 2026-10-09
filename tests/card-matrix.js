@@ -107,7 +107,7 @@ const secs = ((Date.now()-t0)/1000).toFixed(1);
 console.log(`card-matrix: ${pairs.length} duels, ${nSquads} squads, ${nMatches} matches in ${secs}s`);
 console.log(`  failures: ${failures.length}   golden diffs: ${diffs.length}   stalemates (review): ${stalemates.length}`);
 failures.slice(0,25).forEach(f=> console.log(`  FAIL [${f.kind}] ${f.key}\n       ${f.detail}`));
-diffs.slice(0,25).forEach(d=> console.log('  DIFF '+d));
+diffs.slice(0,25).forEach(d=> console.log("  DIFF "+d)); if(process.env.DIFF_SUMMARY){ const k = {}; diffs.forEach(d=>{ const t = d.split(" ")[0]; k[t]=(k[t]||0)+1; }); console.log("  summary", JSON.stringify(k)); const ch = diffs.filter(d=> d.startsWith("changed")).map(d=> d.split("\n")[0]); console.log("  changed keys", ch.slice(0,40).join(" | ")); }
 if(diffs.length>25) console.log(`  … ${diffs.length-25} more diffs (run with --update if the change is intended)`);
 if(args.has('--stalemates')) stalemates.forEach(s=> console.log('  STALE '+s));
 fs.mkdirSync(path.join(__dirname, 'out'), {recursive:true});

@@ -8828,5 +8828,308 @@
     "flavor": "Nobody can say what it was called. Every time it comes back, it is a little more certain of itself.",
     "numericId": 368,
     "uuid": "f8a20238-eb0e-498f-9d55-91afa5645e0f"
+  },
+  {
+    "id": "cinder-imp",
+    "name": "Cinder Imp",
+    "icon": "\ud83d\ude08",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "locked": false,
+    "archetypes": [
+      "Imp",
+      "Volcanic"
+    ],
+    "darkSummon": true,
+    "effects": {
+      "sacrifice": 1
+    },
+    "flavor": "It turns up whenever someone mutters a wish near a fire. It is not the help they wanted.",
+    "numericId": 369,
+    "uuid": "9d348052-00a6-41dd-b107-7dd1bc3f9242",
+    "devilryCost": 2,
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "ash-imp",
+    "name": "Ash Imp",
+    "icon": "\ud83d\udc7a",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 3,
+    "rarity": "common",
+    "archetypes": [
+      "Imp",
+      "Volcanic"
+    ],
+    "darkSummon": true,
+    "effects": {
+      "sacrifice": 2,
+      "onSpawnDevilry": 1
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-1"
+    },
+    "flavor": "Made of what's left after a fire, and very proud of it.",
+    "locked": true,
+    "numericId": 370,
+    "uuid": "069a45aa-8113-41c8-a4b1-4972d18b3b43",
+    "devilryCost": 2,
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "pit-glutton",
+    "name": "Pit Glutton",
+    "icon": "\ud83e\udee6",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 9,
+    "rarity": "rare",
+    "archetypes": [
+      "Devil",
+      "Volcanic"
+    ],
+    "effects": {
+      "devour": {
+        "attack": 3,
+        "health": 3,
+        "grant": {
+          "arrow": 2
+        }
+      }
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-2"
+    },
+    "flavor": "Feed it once and it learns to spit what it ate.",
+    "locked": true,
+    "numericId": 371,
+    "uuid": "bcad8421-cf07-4b0d-920e-a968ac075fcd",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "brimstone-hound",
+    "name": "Brimstone Hound",
+    "icon": "\ud83d\udc15\u200d\ud83e\uddba",
+    "cost": 0,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "uncommon",
+    "archetypes": [
+      "Devil",
+      "Dog",
+      "Volcanic"
+    ],
+    "darkSummon": true,
+    "devilryCost": 3,
+    "effects": {
+      "pitchfork": true
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-3"
+    },
+    "flavor": "It bites whatever is nearest, then whatever is next to that.",
+    "locked": true,
+    "numericId": 372,
+    "uuid": "ad8b1218-2417-43fd-af22-ea99aed6cf03",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "blackmass-acolyte",
+    "name": "Blackmass Acolyte",
+    "icon": "\ud83d\udd6f\ufe0f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 6,
+    "rarity": "uncommon",
+    "archetypes": [
+      "Devil"
+    ],
+    "effects": {
+      "desecrate": 1
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-4"
+    },
+    "flavor": "Every step it takes leaves the ground a little less holy.",
+    "locked": true,
+    "numericId": 373,
+    "uuid": "c785901b-ac47-4973-ba2e-e4b7ca3c5cea",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "dread-bell",
+    "name": "Dread Bell",
+    "icon": "\ud83d\udd14",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 10,
+    "rarity": "uncommon",
+    "archetypes": [
+      "Devil",
+      "Structure"
+    ],
+    "darkSummon": true,
+    "devilryCost": 2,
+    "effects": {
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "stunPlayer",
+          "count": 1
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-4"
+    },
+    "flavor": "When it rings, nobody on the other side remembers what they were about to do.",
+    "locked": true,
+    "numericId": 374,
+    "uuid": "92c8fc6a-d534-438c-a202-d1dcd182b601",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "tithe-collector",
+    "name": "Tithe Collector",
+    "icon": "\ud83e\uddfe",
+    "cost": 0,
+    "wait": 1,
+    "attack": 4,
+    "health": 8,
+    "rarity": "uncommon",
+    "archetypes": [
+      "Devil"
+    ],
+    "exileCost": {
+      "zone": "hand",
+      "count": 1
+    },
+    "effects": {},
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-5"
+    },
+    "flavor": "It takes one card from your hand. You never find out which one until it's gone.",
+    "locked": true,
+    "numericId": 375,
+    "uuid": "604184ff-9f5f-42ad-8fdf-2bf3df3a801e",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "lurking-dread",
+    "name": "Lurking Dread",
+    "icon": "\ud83d\udc41\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "rare",
+    "archetypes": [
+      "Devil"
+    ],
+    "effects": {
+      "beware": 4,
+      "scare": 2,
+      "triggers": [
+        {
+          "on": "onDeath",
+          "do": "exileSelf"
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-6"
+    },
+    "flavor": "Put it down and it waits in the dark until there's enough dark to climb back out.",
+    "locked": true,
+    "numericId": 376,
+    "uuid": "6bcd573d-f0b4-4962-97ef-ae4e150583e0",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "puppeteer-imp",
+    "name": "Puppeteer Imp",
+    "icon": "\ud83c\udfad",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "rare",
+    "archetypes": [
+      "Imp"
+    ],
+    "darkSummon": true,
+    "devilryCost": 3,
+    "effects": {
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "mindControl",
+          "sub": "random"
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-7"
+    },
+    "flavor": "It never fights. It just finds someone on the other side who will.",
+    "locked": true,
+    "numericId": 377,
+    "uuid": "c8b29932-6e8d-4123-a827-800ed3d93592",
+    "mechanicLine": "devilry"
+  },
+  {
+    "id": "the-sixfold",
+    "name": "The Sixfold",
+    "icon": "\ud83d\udc79",
+    "cost": 0,
+    "wait": 0,
+    "attack": 8,
+    "health": 20,
+    "rarity": "epic",
+    "archetypes": [
+      "Devil"
+    ],
+    "effects": {
+      "ritual": {
+        "perished": 6,
+        "drawn": 6,
+        "castleDamage": 6
+      }
+    },
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-8"
+    },
+    "flavor": "Six must fall, six must be drawn, six must bleed the walls. Then it opens its eyes.",
+    "locked": true,
+    "numericId": 378,
+    "uuid": "ed457f56-5db9-4f62-a2c8-3950581fc44b",
+    "mechanicLine": "devilry"
   }
 ]

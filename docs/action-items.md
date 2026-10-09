@@ -7,7 +7,10 @@ _Updated 2026-10-10, 12:20 am. The short list of what matters now. Everything el
 | ID | What | My suggestion |
 |---|---|---|
 | **B6** ⚠️ | The hummingbird starter deck beats the otter starter deck **~99%** of the time (all flyers, Diurnal, 2 copies each of 10 solid cards) | F: hummingbird Basics with 2+ Attack lose 1 Attack, otter 1-Attack fillers gain 1, Otter Guard and River Carp get **Reach** (ignores the Flying dodge). Measured ~47% |
-| **D19** | Archetypes: Swarm, Tide, the Exile zone and the Forgotten Ones are built. What next? | Devilry circles |
+| **D20** | Devilry is built from your list. Six of the rules were my readings (e.g. a Dark Summon is an extra play that costs Darkness; Darkness comes from perished units) | Keep all six |
+| **D23** | Next: Ecclesia with your Prayer value? | Yes |
+| **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |
+| **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
 
@@ -37,6 +40,8 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
   - **Tide** (reef and beach) is new tonight. 🌊 Flow and 🐚 Ebb alternate each round: Tide units hit +1 on Flow and take 1 less on Ebb, and Wash pushes the enemy opposite back once. The water fights were retuned for it.
   - **The Exile zone and the Forgotten Ones** (new tonight): cards sent there give Echoes 🕯️; Remember cards come back once you have enough, +1/+1 per Echo. New cards: Echo Keeper, Marsh Wisp, Bog Revenant and The Unremembered.
 - **Fixed tonight:** ten fights that were far too hard, including Map 1's boss (~5% → ~43%), the Thistle Baron (~12% → ~32%) and the Condor Sovereign (10-9).
+  - **Devilry** (new): Dark Summons ⛧, Darkness ★ from perished units, Devour, Ritual, Pitchfork, Sacrifice, Offering, Beware, Scare and Desecrate, plus ten new cards (Cinder Imp, then the Basalt Foundry rewards).
+- **Arena rules** (new): a different rule set every day (always night, always day, night first, Lumber every 3 rounds, Frost, Fog), shown on the Arena tab.
 - **Draggable map tiles** are in the layout editor.
 
 ## 3. Things only you can do (outside chat)
@@ -44,7 +49,7 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 - **The claude.ai project is full.** Today's design notes are in this hub but couldn't be saved there. The old game-design v30–v40 addenda are the easiest to remove.
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
 - **Art:** PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:
-  - the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant and The Unremembered;
+  - the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant, The Unremembered and the ten Devilry cards;
   - Ant Warrior, the critters and the Grotto rewards.
 
 ## ⚠️ Earlier today

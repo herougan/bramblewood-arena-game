@@ -17,7 +17,7 @@ const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const i = src.indexOf('const CONQUEST_MAPS = ['); const j = src.indexOf('\n];', i);
 const MAPS = eval(src.slice(i + 'const CONQUEST_MAPS = '.length, j + 2));
 const MAP = process.argv[2] || 'm3', N = +process.argv[3] || 80;
-const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.wait||0)*0.5); };
+const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // a Ritual card is slow to wake;
 const CAP = {legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4};
 function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a)); const deck = {}; let n = 0; for(const id of ids){ const k = Math.min(4, CAP[defs[id].rarity] || 10, 20-n); if(k<=0) break; deck[id] = k; n += k; } return deck; }
 function play(A, B, charB, hpB, seed){

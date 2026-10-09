@@ -1,6 +1,6 @@
 # Archetypes: design sheet (2026-10-09)
 
-**Status:** 📝 Designed, not built. Only the flat costs exist in the engine today (`prayerCost`, `devilryCost`, `exileCost`) plus Dark Points income, the Lumber and Elemental Energy resources, and (new) card Promotion and Nest eggs outside battle.
+**Status:** partly built. Swarm, Tide, the Exile zone, the Forgotten Ones and Devilry are in the game (see the 2026-10-10 section below); the rest are designed only. Before 2026-10-09: designed, not built. Only the flat costs exist in the engine today (`prayerCost`, `devilryCost`, `exileCost`) plus Dark Points income, the Lumber and Elemental Energy resources, and (new) card Promotion and Nest eggs outside battle.
 
 **Where this comes from**
 - **Yours:** the 2026-09-14 and 2026-09-18 design talks ([`game-design-v31-addendum.md`](game-design-v31-addendum.md), "Future design vision" in [`game-design.md`](game-design.md)). Your ideas are marked **(yours)**.
@@ -36,6 +36,63 @@ If an idea can't name all three, it's a keyword, not an archetype.
 Plus the special trio: **Elder Ones · Outer Ones · Forgotten Ones** (below). Plus **Splash** (yours; archetype still unknown, kept as an open item).
 
 ---
+
+### Your 2026-10-10 direction (supersedes the older notes below where they differ)
+
+**Devilry, ✅ built 2026-10-10** (my readings of your list are marked *reading*; each is revertible):
+
+| Keyword | As built |
+|---|---|
+| **Dark Summon ⛧** | Cards marked ⛧ (top right, like Wait) use a separate allowance: 1 a turn, on top of your normal play. *Reading:* it's an extra play, not a replacement. Measured, a free extra play every turn was far too strong (100%), so every Dark Summon card also costs Darkness ★. |
+| **Darkness ★** | *Reading of "dark actions":* every one of your units that perishes gives you 1 Darkness. Some Imps give more (Ash Imp +1 on arrival). |
+| **Devour** | Drag a card from your hand onto the devourer. It eats it (to the graveyard) and gains its Devour bonus, e.g. Pit Glutton +3/+3 and Arrow 2. Once per devourer, and it uses your play for the turn. A granted skill makes the unit a "derived" copy of its card. |
+| **Ritual** | No Wait, but it can't act until its conditions are met, counted from when it arrived. Units perished counts both sides; cards drawn and castle damage are yours. The Sixfold: 6 / 6 / 6, 8/20. The board shows its progress. |
+| **Pitchfork** | Hits a random unit among the three facing it, then the units beside that one. Never the castle. |
+| **Imp / Devil** | New card types 😈 / 👹. Every Imp, Devil and Dark Summon card has a dark red aura creeping in from its frame. |
+| **Sacrifice N** | On the fodder unit. Drop a Dark Summon card onto it: the fodder perishes (and gives Darkness), and the new card costs N less, Darkness first, then Lumber. |
+| **Offering N** | *Name for your "____"*: exile N random cards from your hand as a cost. The engine already supported it. |
+| **Beware N** | With N+ Darkness, you can cast it from your Removal Zone (tap your 🌫 badge; it glows red when a card is castable). Lurking Dread exiles itself when it dies, so it keeps coming back. |
+| **Scare N** | Attacks aimed at it hit for N less. The attacker trembles, and the hover attack line wobbles. |
+| **Desecrate N** | Each landed hit curses the cell its target stands on: N more damage a round to whoever stands there. Stacks, persists, and shows a 🜏 sigil. |
+
+- **New cards:**
+  - Cinder Imp (Base);
+  - nine Basalt Foundry rewards: Ash Imp, Pit Glutton, Brimstone Hound, Blackmass Acolyte, Dread Bell, Tithe Collector, Lurking Dread, Puppeteer Imp, The Sixfold.
+  - All are measured in their rarity band.
+- **Ashfall Line** (9-4) now fields a Blackmass Acolyte.
+
+**General skills, built:**
+- Heal removes Bleed first, then heals with what's left.
+- Cleanse N removes curses first, with a cleansing animation.
+- Stun is counters: each round the unit loses one and skips its whole turn, including its Wait countdown and Bloom.
+- A unit still under Wait no longer bleeds from its own actions.
+- **Mind Control:** takes an enemy unit to your side (Puppeteer Imp).
+- **Player Stun:** the enemy skips their turn (Dread Bell).
+- **Reach** (from B6) ignores Flying's dodge.
+
+**Not built yet:**
+- **Fast Forward:** N counters let a unit run its upkeep and attack N extra times before the main combat order. It needs a pre-combat pass in the engine; it's next if you want it.
+- **Backstab:** you weren't sure. Suggestion: "+N damage when hitting a unit that is facing a different target" (rewards Pitchfork and Sweep angles).
+
+**Ecclesia, your new model (to build next):**
+- **Prayer value** = the sum of Prayer N on your board + the number of cards in your Removal Zone.
+- Once a turn, when summoning an Ecclesia card, you can exile a card from your hand for +1 Prayer for that summon.
+- Ecclesia cards need a Prayer value (a threshold, not spent).
+- Effect ideas from you: Worship, Divine Retribution, Lightning, Midas Touch, Healing, Satiety. The Exile zone and Echoes are already in place for it.
+
+**Scrapper, your new model:**
+- Constructions with very long Wait and high costs.
+- Mining tools and ways to cut Wait.
+- **Stone** comes only from pitching Scrapper cards, so mining ramp has a price.
+- Scrappers feed on perished allies and enemies and on the graveyard, and they build small bots ("tinkermabobs and digeridoos").
+- No archetype locks you in: decks can mix freely.
+
+**Evolution, your new model:** adaptation and big bodies.
+
+**Arena rules** (also 2026-10-10, see fields-and-day-night):
+- The Arena's rule set rotates daily: Standard, The Long Night, Midsummer, Dusk Start, Timber Fair (+1 Lumber every 3 rounds), Frost Week and Fog on the Moor.
+- In every Arena set, whoever plays second opens with an extra card.
+- Conquest fights can set their own rules.
 
 ### 1. Ecclesia (yours)
 - **Resource:** Noble 🕊️ and Ignoble 🗝️ coins. Each one cancels one of the other, so you lean one way at a time.

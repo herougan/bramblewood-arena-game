@@ -1,6 +1,6 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-09). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-10). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
@@ -160,6 +160,40 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
   - Both
 - **Default:** Faster hatching
 
+**D20. Devilry: my readings of your list (all built, all revertible)** · Decide · Design · asked 2026-10-10
+- Built as I read them: (1) Dark Summon is a second play each turn, just for ⛧ cards, and every Dark Summon card also costs Darkness (a free extra play measured at 100%). (2) Darkness comes from your own units perishing (+1 each); 'dark actions' were left open. (3) Devour uses your play for the turn and works once per devourer. (4) Ritual's 'units perished' counts both sides. (5) Sacrifice N sits on the fodder; the discount comes off Darkness first, then Lumber. (6) Your blank keyword is named Offering N.
+  - Keep all six
+  - Change some (tell me which)
+- **Default:** Keep all six
+
+**D21. Backstab: what should it do?** · Decide · Design · asked 2026-10-10
+- You listed Backstab as a neutral skill without a rule. Suggestion: Backstab N, +N damage when it hits a unit that is facing a different target (rewards Pitchfork, Sweep and off-centre angles).
+  - Use the suggestion
+  - Something else (tell me)
+  - Drop it
+- **Default:** Use the suggestion
+
+**D22. Fast Forward counters: build next?** · Decide · Design · asked 2026-10-10
+- Your rule: with N counters, a unit runs its turn, upkeep included, N extra times before joining the main action order. It needs a pre-combat pass in the engine, about half a day of work with tests.
+  - Build it next
+  - After Ecclesia
+  - Later
+- **Default:** After Ecclesia
+
+**D23. Ecclesia next, with your Prayer value?** · Decide · Design · asked 2026-10-10
+- Prayer value = the sum of Prayer N on your board + the cards in your Removal Zone, +1 once a turn by exiling a hand card when summoning an Ecclesia card. Ecclesia cards need a Prayer value (a threshold, not spent). Effect ideas: Worship, Divine Retribution, Lightning, Midas Touch, Healing, Satiety.
+  - Build Ecclesia next
+  - Scrapper next
+  - Evolution next
+- **Default:** Build Ecclesia next
+
+**D24. Arena rules: daily rotation and the second-player card** · Decide · Balance · asked 2026-10-10
+- Built: the Arena's rule set changes daily (Standard, Long Night, Midsummer, Dusk Start, Timber Fair with +1 Lumber every 3 rounds, Frost Week, Fog on the Moor). In every Arena set, whoever plays second opens with an extra card. Conquest keeps day-first, no extra card and no free Lumber unless a fight sets its own rules; Live Ranked plays Standard. Should Conquest also give the second player the extra card (it would need a retune)?
+  - Keep Conquest as is
+  - Add the second-player card to Conquest too
+  - Change the rotation
+- **Default:** Keep Conquest as is
+
 **B6. The hummingbird starter deck beats the otter starter deck ~99% of the time** · Decide · Balance · asked 2026-10-09
 - Starter vs starter in simulation (300 matches): otters win 0.9%. All 10 hummingbird Basics fly (dodge half of ground attacks), most are Diurnal (+1 by day), and they run 2 copies each of 10 solid cards against the otters' 20 singles with several 1-Attack fillers. Removing Diurnal alone: 3.7%; a gentler 1-in-3 dodge: 3.3%. Packages that land near even: (C) the 7 hummingbird Basics with 2+ Attack lose 1 Attack, and 5 otter ground Basics (Otter Guard, River Carp, Otter Paddler, Burrow Rabbit, Ant Scout) gain Reach (their attacks ignore the Flying dodge): 47.7%. (F) the same hummingbird nerf, +1 Attack on 6 otter 1-Attack fillers (Honey Bee, Silver Minnow, Duckling, Otter Kit, Worker Ant, Chipmunk Forager), and Reach on Otter Guard and River Carp only: 46.8%. Reach is already in the engine (no card uses it yet). Not applied because it changes the faction players picked, their saved decks and the tutorial.
   - F: nerf hummingbirds, lift otter fillers, Reach on 2
@@ -169,12 +203,12 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** F: nerf hummingbirds, lift otter fillers, Reach on 2
 
 **D19. Archetypes: which to build first** · Decide · Design · asked 2026-10-09
-- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions. 2026-10-09 (default taken on 'continue'): Swarm built first (Swarm N + Hive Mind on ants and bees). Then Tide (taken on 'continue', revertible): Flow/Ebb each round from round 2; Tide +1 on Flow, -1 damage taken on Ebb; Wash pushes the facing enemy +1 Wait once; 18 water cards tagged, 7 trimmed back into band, 28 water fights retuned. Then the active Exile zone (also on 'continue', revertible): Echoes 🕯️ (+1 per card sent to your Removal Zone) and Remember N (returns from the zone at N Echoes), with Echo Keeper, Marsh Wisp and Bog Revenant. Then the Forgotten Ones (also on 'continue', revertible): Remember returns +1/+1 per Echo spent, the Forgotten tag, and The Unremembered (Swampmire boss reward). Next suggested: Devilry circles.
-  - Devilry circles next
-  - Elder Ones next (completes a pair with the Forgotten)
+- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions. 2026-10-09 (default taken on 'continue'): Swarm built first (Swarm N + Hive Mind on ants and bees). Then Tide (taken on 'continue', revertible): Flow/Ebb each round from round 2; Tide +1 on Flow, -1 damage taken on Ebb; Wash pushes the facing enemy +1 Wait once; 18 water cards tagged, 7 trimmed back into band, 28 water fights retuned. Then the active Exile zone (also on 'continue', revertible): Echoes 🕯️ (+1 per card sent to your Removal Zone) and Remember N (returns from the zone at N Echoes), with Echo Keeper, Marsh Wisp and Bog Revenant. Then the Forgotten Ones (also on 'continue', revertible): Remember returns +1/+1 per Echo spent, the Forgotten tag, and The Unremembered (Swampmire boss reward). 2026-10-10: Devilry built from your new list (see D20). Next suggested: Ecclesia with your Prayer value (D23).
+  - Ecclesia next (D23)
+  - Scrapper next
   - Evolution next
   - Pause archetypes
-- **Default:** Devilry circles next
+- **Default:** Ecclesia next (D23)
 
 ## Decided
 

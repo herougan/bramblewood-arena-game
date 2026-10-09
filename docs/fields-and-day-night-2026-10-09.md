@@ -52,6 +52,27 @@ Day and night, the new tags and the new cards moved 56 of 96 fights more than 12
 - Wolfsbane Tundra was too easy on Frozen Ground, so it was retuned with borrowed alpine cards.
 - Its boss is still at ~80%, because its deck relies on 4-cost cards.
 
+## Arena rules (2026-10-10)
+
+**Your direction:** "Im thinking if the day night thing is normal, or if the skirmish always starts light or night. ... draw 1 per turn, draw 2 if you start 2nd. Gaining 1 lumber per three turns. All these are field effects. I'm thinking the arena mode changes rapidly."
+
+- **Built:** every Arena fight that day (Quick Battle, Gauntlet, Pass & Play, PvP, Async) uses the day's rule set. The Arena tab shows it under "Today's Arena", and a pill shows it in the match.
+
+| Rule set | Rules |
+|---|---|
+| 🌗 Standard | Day first, then night every 3 rounds |
+| 🌙 The Long Night | Always night |
+| ☀️ Midsummer | Always day |
+| 🌆 Dusk Start | Night first |
+| 🪵 Timber Fair | +1 Lumber to both sides every 3 rounds |
+| ❄️ Frost Week | Frozen Ground all match |
+| 🌫️ Fog on the Moor | Thick Fog all match |
+
+- **Draws:** every set draws 1 a turn (as before), and whoever plays second opens with 1 extra card.
+- **Live Ranked** plays Standard until lockstep is verified.
+- **Conquest** is unchanged; a fight can set its own `rules` ({phase, lumberEvery, field}).
+- **Engine:** `makeSimEngine(..., {rules})`.
+
 ## Ideas for later
 
 - More fields: Rainstorm (Flying grounded), Earthquake (shuffle positions), Eclipse (no day/night bonus), Tailwind (Quick for everyone).

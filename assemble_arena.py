@@ -88,7 +88,7 @@ ARCHETYPE_ICON = {
     "Turtle": "🐢", "Chipmunk": "🐿️", "Eagle": "🦅", "Cephalopod": "🐙",
     "Bear": "🐻", "Deer": "🦌", "Fox": "🦊", "Beaver": "🦫", "Snake": "🐍",
     "Bat": "🦇", "Mouse": "🐭", "Horse": "🐴", "Frog": "🐸", "Rabbit": "🐇",
-    "Sloth": "🦥", "Duck": "🦆", "Shrine": "🙏", "Forgotten": "🕯️",
+    "Sloth": "🦥", "Duck": "🦆", "Shrine": "🙏", "Forgotten": "🕯️", "Imp": "😈", "Devil": "👹",
     # 2026-09-14 "biome expansion" (item #9): new archetypes for biomes not yet covered.
     "Rainforest": "🌴", "Savanna": "🌾", "Tundra": "🦣", "Coral Reef": "🪸", "Mountain": "⛰️",
     "Swamp": "🐊", "Cave": "🦇", "Volcanic": "🌋", "Taiga": "🌲", "Coastal": "🌊", "Mangrove": "🌱",

@@ -192,6 +192,8 @@ const PASSIVE_DEFS = [
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits a random unit among the three facing it (left, centre, right), then the units beside that one too.`},
+  {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
   {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
@@ -503,6 +505,8 @@ const ACTION_DEFS = [
   {key:'exile', label:'Exile', fields:['who','sub'], whoOptions:['self','ally','enemy'], desc:'Send a target to the Removal Zone instead of the graveyard. "Themselves" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
   {key:'heal', label:'Heal self', fields:['amount'], desc:"Restore this card's own current HP (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."},
+  {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
+  {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount'], desc:"Cleanse N: remove up to N harmful counters from this card: a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
@@ -935,7 +939,13 @@ function describeEffects(def, liveCard){
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
-  if(def.exileCost) lines.push(`Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`);
+  if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
+  if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
+  if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
+  if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', ') : '';
+    lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
+  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
+  if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`Wait ${def.wait} — takes ${def.wait} round${def.wait===1?'':'s'} after entering play before it can fight.`);
   if(e.bounty) lines.push(`Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
   if(e.explode) lines.push(`Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
@@ -1085,6 +1095,7 @@ loadLocalCardOverlay();
 const IntegrityM = (typeof window!=='undefined' && window.BramblewoodIntegrity) || null;
 function effectiveCardDefsForHash(){
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
+  try{ if(typeof matchState!=='undefined' && matchState && matchState.engine && matchState.engine.derivedDefs) Object.assign(out, matchState.engine.derivedDefs); }catch(e){} // Devour (2026-10-10): a devoured unit uses a derived card
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
   return out;
 }
@@ -3371,7 +3382,7 @@ function cardTileHTML(d, opts){
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
   const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
   if(live){
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
       ${d.level?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -3386,7 +3397,7 @@ function cardTileHTML(d, opts){
       ${live.bottomHTML||''}
     </div>`;
   }
-  return `<div class="card-tile ${d.field?'is-field':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
@@ -3396,7 +3407,8 @@ function cardTileHTML(d, opts){
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
-    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}`}
+    ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
+    ${d.darkSummon?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
@@ -5140,6 +5152,8 @@ function triggerPreviewText(t){
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
     case 'heal': doText = `heal itself for ${amt} (Bleed first, capped at its own max HP)`; break;
+    case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
+    case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
     case 'cleanse': doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from itself (curses first)` : `cleanse itself of every ailment`; break;
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
     default: doText = aDef.label.toLowerCase();
@@ -8853,7 +8867,7 @@ function applySkirmishSetup(players, node){
 // What a player would most likely own arriving at this node: every Base card, plus the reward cards of
 // every node on earlier maps and of the nodes before this one on its own map. The deck is the 20
 // strongest of those (respecting copy limits, at most 4 of a card), the same way tools/autotune_map.js builds it.
-function skirmishCardScore(d){ return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.wait||0)*0.5); }
+function skirmishCardScore(d){ return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // same model as tools/retune_all.js
 function expectedPlayerDeck(mapId, nodeKey){
   const defs = getCardDefs(), owned = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d.token && !d.test && !d.hero && !d.hallOfFame && id!=='wandering-traveller' && cardSourceOf(d).kind==='base') owned.add(id); }); // the Traveller is everyone's leader, not a deck card
@@ -8883,7 +8897,7 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
   const myChar = playerChar || CHARACTER_DEFS.castle;
   const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
-    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE});
+    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: node.rules || undefined});
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, deckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
     P[2].loopCards = []; applySkirmishSetup(P, node);
@@ -9710,6 +9724,7 @@ function renderArenaSubTab(body){
   body.innerHTML = `
     <div class="panel" style="text-align:center;">
       <p class="panel-sub">${deckSizeBadgeHTML(myDeckCounts)} · ${(CHARACTER_DEFS[myCharacterId]||{}).name||'—'}</p>
+      <div class="arena-today"><span class="arena-today-k">Today's Arena</span>${arenaRulesetPillHTML(todaysArenaRuleset())}<span class="arena-today-sub">Changes every day. Ranked Live always plays Standard.</span></div>
       <!-- 2026-09-26 (user report, screenshot: "the cards are all over the place. make them
            consistently sized") — these used to be five separate .arena-mode-row flex containers,
            one per mode-group, each centering and sizing its own 1-3 buttons independently with a
@@ -9910,7 +9925,7 @@ const CONQUEST_MAPS = [
       { key:"9-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"cinder-hornet":4,"ember-jackal":2,"beaver-lumberjack":2,"phoenix-fledgling":2}, hqHp:17, flavor:"The smoke arrives well before the swarm does.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Salamander Vents", icon:"🦎", deck:{"magma-salamander":4,"obsidian-scorpion":4,"ash-cloud-condor":2}, hqHp:34, flavor:"Every vent has something living just beneath the heat shimmer.", requires:["9-1"] },
       { key:"9-3", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"sulfur-vent-crab":1,"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3,"cinder-hornet":2}, hqHp:16, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["9-2"] },
-      { key:"9-4", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ash-cloud-condor":4,"ember-jackal":4,"obsidian-scorpion":2}, hqHp:28, flavor:"The ash never really settles here. Neither does anything else.", requires:["9-3"] },
+      { key:"9-4", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ash-cloud-condor":4,"ember-jackal":3,"obsidian-scorpion":2,"blackmass-acolyte":1}, hqHp:21, flavor:"The ash never really settles here. Neither does anything else.", requires:["9-3"] },
       { key:"9-5", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"ember-jackal":1,"beaver-lumberjack":3}, hqHp:29, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"cinder-hornet":2,"phoenix-fledgling":1,"magma-titan":2,"beaver-lumberjack":2}, hqHp:25, flavor:"The heat reaches you a full second before the shadow does.", requires:["9-5"] },
       { key:"9-7", kind:"elite", name:"The Pyroclast Wyrm", icon:"🐉", deck:{"pyroclast-wyrm":1,"magma-titan":2,"obsidian-scorpion":2,"beaver-lumberjack":3}, hqHp:25, flavor:"It surfaces once, does what it came to do, and sinks back into the rock.", requires:["9-6"] },
@@ -12580,7 +12595,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     bumpQuestCounter('energyConquest', cost);
   }
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: node.rules || undefined}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const enemyCharacter = skirmishCastle(node).character;
@@ -13954,6 +13969,30 @@ function deckSizeOkOrWarn(){
   showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`, 'warn');
   return false;
 }
+// Arena rule sets (2026-10-10, user: "Im thinking if the day night thing is normal, or if the skirmish always starts
+// light or night. ... draw 1 per turn, draw 2 if you start 2nd. Gaining 1 lumber per three turns. All these are field
+// effects. I'm thinking the arena mode changes rapidly, so the player is inclined to build many different kind of
+// decks (even maybe all-nights and all-brights)"). The Arena's rule set rotates daily; every Arena fight that day
+// (Quick Battle, Gauntlet, Pass & Play, PvP, Async) uses it. Live Ranked stays Standard until lockstep is verified.
+// Engine side: makeSimEngine(..., {rules}) in bramblewood-engine.js. secondDraw: whoever plays second opens with 1 more.
+const ARENA_RULESETS = [
+  {id:'standard',  icon:'🌗', name:'Standard',     text:'Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.', rules:{phase:'cycle'}, secondDraw:1},
+  {id:'longnight', icon:'🌙', name:'The Long Night', text:'It is night all match: Nocturnal units hit +1, Diurnal never do.', rules:{phase:'night'}, secondDraw:1},
+  {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match: Diurnal units hit +1, Nocturnal never do.', rules:{phase:'day'}, secondDraw:1},
+  {id:'dusk',      icon:'🌆', name:'Dusk Start',    text:'The match starts at night; day comes after round 3.', rules:{phase:'nightFirst'}, secondDraw:1},
+  {id:'timber',    icon:'🪵', name:'Timber Fair',   text:'Both sides gain 1 Lumber every 3 rounds, on top of what cards give.', rules:{phase:'cycle', lumberEvery:3}, secondDraw:1},
+  {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frozen Ground all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
+  {id:'fogmoor',   icon:'🌫️', name:'Fog on the Moor', text:'Thick Fog all match: attacks miss 1 in 3, except from Flying units.', rules:{phase:'cycle', field:'fog'}, secondDraw:1},
+];
+function todaysArenaRuleset(d){
+  const day = Math.floor(((d || new Date()).getTime() - new Date().getTimezoneOffset()*60000) / 86400000);
+  try{ const forced = localStorage.getItem('bramblewood_arena_ruleset'); const f = ARENA_RULESETS.find(r=> r.id===forced); if(f) return f; }catch(e){}
+  return ARENA_RULESETS[((day % ARENA_RULESETS.length) + ARENA_RULESETS.length) % ARENA_RULESETS.length];
+}
+function arenaRulesetPillHTML(rs){
+  if(!rs) return '';
+  return `<div class="arena-rules-pill" title="${escapeAttr(rs.name + ': ' + rs.text)}"><span aria-hidden="true">${rs.icon}</span><b>${escapeHtml(rs.name)}</b><small>${escapeHtml(rs.text)}</small></div>`;
+}
 function startMatch(mode){
   // Deck size gate (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not
   // allow a deck with <20 or >20 cards.") — checked here rather than hard-blocking every
@@ -13964,7 +14003,8 @@ function startMatch(mode){
     showToast(`Your main deck has ${deckTotal(myDeckCounts)} cards. It needs exactly ${DECK_SIZE}. Open Deck from Home to adjust it.`, 'warn');
     return;
   }
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
+  const arenaRuleset = todaysArenaRuleset();
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
@@ -13998,7 +14038,10 @@ function startMatch(mode){
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
-  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
+  // The side that plays second opens with one more card ("draw 2 if you start 2nd"): the PvP stranger always plays
+  // first, so you're second there; everywhere else the opponent plays after you.
+  if(arenaRuleset.secondDraw){ const second = mode==='pvp' ? 1 : 2; engine.draw(players[second], arenaRuleset.secondDraw, second===1 ? 'A' : 'B', stats, []); }
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, arenaRuleset,
     mode: mode==='pc' ? 'pc' : (mode==='async' ? 'async' : (mode==='pvp' ? 'pvp' : (mode==='gauntlet' ? 'gauntlet' : 'ai'))), active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // Epic A (2026-09-18, "Leader slot + in-match summon"): snapshotted once at match start —
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
@@ -14604,7 +14647,7 @@ function renderMatchUI(){
       <div class="deck-widget hq-tile" id="deckWidgetBottom">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
-        ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
+        ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge is-mine" role="button" tabindex="0" data-open-exile="1" data-can-cast="${p1.exile.some(e=> m.engine.canCastFromExile && m.engine.canCastFromExile(p1, e.defId)) ? 1 : 0}" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
@@ -15203,6 +15246,9 @@ function wireDropZones(){
         if(payload===LEADER_DRAG_PAYLOAD){ attemptSummonLeader(side); return; }
         const uid = Number(payload);
         if(!uid) return;
+        // Devilry (2026-10-10): dropped on one of your own units — feed a Devourer, or sacrifice a Sacrifice unit for a Dark Summon.
+        { const onto = e.target && e.target.closest && e.target.closest('.board-card[data-uid]');
+          if(onto && devilryDropOnto(Number(onto.getAttribute('data-uid')), uid)) return; }
         // 2026-09-21 ("fly from where you let go of the card") — the real drop point, straight off
         // this same drop event, dropping directly on the battlefield being the most common play style.
         playCardByUid(uid, side, {x:e.clientX, y:e.clientY});
@@ -16773,6 +16819,15 @@ function fitBattlefieldZoom(){
 // fade) are layered on top of this markup by updateCardWaitDisplay()/playReadyFlourish() as
 // live DOM mutations during event replay — this function only ever renders the ring's REST
 // state for a given (remaining, total) pair, on a fresh full render.
+// Devilry (2026-10-10): the card frame with a dark aura, the Dark Summon mark, and a Ritual's progress on the board.
+function isDevilryDef(d){ return !!(d && (d.darkSummon || (Array.isArray(d.archetypes) && (d.archetypes.includes('Imp') || d.archetypes.includes('Devil'))))); }
+function ritualChipHTML(c, pid){
+  try{ const m = matchState; if(!m || !m.engine.ritualProgress || c.ritualDone) return '';
+    const pr = m.engine.ritualProgress(m.players[pid || 1], c); if(!pr) return '';
+    const part = (ico, [have, need])=> need ? `<span class="${have>=need ? 'ok' : ''}">${ico}${Math.min(have, need)}/${need}</span>` : '';
+    return `<div class="ritual-chip" title="Ritual: it acts once these are met (counted since it arrived): units perished, cards drawn, castle damage dealt">${part('☠', pr.perished)}${part('🂠', pr.drawn)}${part('🏰', pr.castleDamage)}</div>`;
+  }catch(e){ return ''; }
+}
 function waitBadgeHTML(waitRemaining, waitTotal){
   const total = Math.max(1, waitTotal||waitRemaining||1);
   const frac = Math.max(0, Math.min(1, waitRemaining/total));
@@ -16898,7 +16953,7 @@ function boardCardHTML(c, defs, opts){
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
-      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}`;
+      ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${ritualChipHTML(c, opts.pid)}`;
   return `<div class="board-card ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
@@ -16909,7 +16964,48 @@ function boardCardHTML(c, defs, opts){
 }
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
 // card in your hand you can't play right now.
+function myPidInMatch(m){ return m.mode==='pc' ? (m.active||1) : (m.mode==='liveRanked' ? (m.liveMySeat||1) : 1); }
+// Devilry drops (2026-10-10). Returns true when the drop was used.
+function devilryDropOnto(targetUid, handUid){
+  const m = matchState; if(!m || m.over || m.resolving || m.mode==='liveRanked') return false; // live ranked: not synced yet
+  const pid = myPidInMatch(m), pl = m.players[pid], defs = getCardDefs();
+  const tgt = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(c=> c.uid===targetUid); if(!tgt) return false;
+  const h = pl.hand.find(x=> x.uid===handUid); if(!h) return false;
+  const td = defs[tgt.defId] || {}, hd = defs[h.defId] || {}, te = td.effects || {};
+  const ev = [];
+  let done = false;
+  if(hd.darkSummon && te.sacrifice) done = m.engine.sacrificeSummon(m.players, m.sideOf, pid, handUid, targetUid, m.stats, ev);
+  else if(te.devour && !tgt.devoured) done = m.engine.devour(m.players, m.sideOf, pid, targetUid, handUid, m.stats, ev);
+  if(!done){
+    if(te.devour && tgt.devoured) showToast(`${td.name} has already devoured.`, 'warn');
+    else if(te.devour && pl.playedThisTurn) showToast('Devouring uses your play for the turn, and you have already played.', 'warn');
+    else if(te.sacrifice && hd.darkSummon) showToast(`Can't summon ${hd.name} over ${td.name} right now.`, 'warn');
+    return te.devour || (te.sacrifice && hd.darkSummon); // the drop was aimed at it: don't also place the card
+  }
+  ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(e){} });
+  if(ev.some(x=> x.type==='devour')){ try{ SoundKit.coin && SoundKit.coin(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(targetUid); if(el){ floatText(el, ev.find(x=> x.type==='devour').attack ? `🫦 +${ev.find(x=> x.type==='devour').attack}/+${ev.find(x=> x.type==='devour').health}` : '🫦', 'gold'); shakeEl(el); } }, 60); }
+  renderMatchUI();
+  return true;
+}
+// Beware (2026-10-10): cards in your Removal Zone you can cast right now.
+function openExileCastPanel(){
+  const m = matchState; if(!m || m.over || m.resolving) return;
+  const pid = myPidInMatch(m), pl = m.players[pid], defs = getCardDefs();
+  const rows = pl.exile.map((e, i)=>{ const d = defs[e.defId] || {name:e.defId}; const can = m.engine.canCastFromExile && m.engine.canCastFromExile(pl, e.defId) && m.mode!=='liveRanked';
+    const bw = d.effects && d.effects.beware;
+    return `<div class="exile-row"><span class="exile-ico">${d.icon||'🃏'}</span><span class="exile-nm">${escapeHtml(d.name||'')}</span>${bw ? `<small>Beware ${bw}</small>` : ''}${can ? `<button class="btn small primary" data-exile-cast="${i}">Cast</button>` : ''}</div>`; }).join('') || '<p class="panel-sub">Nothing here yet.</p>';
+  const ov = document.createElement('div'); ov.className = 'modal-overlay exile-overlay';
+  ov.innerHTML = `<div class="modal exile-modal" role="dialog" aria-modal="true" aria-label="Your Removal Zone"><h3>🌫 Your Removal Zone</h3><p class="panel-sub">Darkness ★ ${pl.devilry||0} · Echoes 🕯️ ${pl.echoes||0}. A Beware card can be cast from here while your Darkness is high enough.</p><div class="exile-list">${rows}</div><div class="modal-actions"><button class="btn" data-exile-close>Close</button></div></div>`;
+  document.body.appendChild(ov);
+  const close = ()=> ov.remove();
+  ov.addEventListener('click', e=>{ if(e.target===ov || e.target.closest('[data-exile-close]')) close();
+    const b = e.target.closest('[data-exile-cast]'); if(b){ const ev = []; if(m.engine.castFromExile(m.players, m.sideOf, pid, Number(b.getAttribute('data-exile-cast')), Math.random() < .5 ? 'left' : 'right', m.stats, ev)){ ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(err){} }); close(); renderMatchUI(); } else showToast('No room to cast it, or it costs more than you have.', 'warn'); } });
+}
+document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-open-exile]'); if(b) openExileCastPanel(); });
+document.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && e.target.closest && e.target.closest('[data-open-exile]')){ e.preventDefault(); openExileCastPanel(); } });
 function unplayableReason(pl, d){
+  if((pl.skipTurns||0) > 0) return '🔔 Stunned: you skip this turn';
+  if(d.darkSummon) return (pl.darkUsed||0) >= 1 && (pl.devilry||0) >= (d.devilryCost||0) ? 'Dark Summon already used this turn' : `Needs ${d.devilryCost||0}★ Darkness — you have ${pl.devilry||0}★`;
   if(pl.playedThisTurn) return 'Already played this turn';
   const need = [];
   if((d.cost||0) > (pl.lumber||0)) need.push(`${d.cost}🪵`);
@@ -18754,9 +18850,10 @@ function fieldEffectCardHTML(m){
   const phase = dayNightOn(m) ? m.engine.getPhase() : null;
   const roundInPhase = ((Math.max(1, m.round||1) - 1) % 3) + 1;
   const phaseHTML = phase ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night: Nocturnal units hit +1. Day returns after round ' : 'Day: Diurnal units hit +1. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/3)*3}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of 3"><span aria-hidden="true">${phase==='night' ? '🌙' : '☀️'}</span><b>${phase==='night' ? _t('Night') : _t('Day')}</b><small>${roundInPhase}/3</small></div>` : '';
-  if(!f) return phaseHTML + tidePillHTML(m);
+  const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
+  if(!f) return phaseHTML + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  return phaseHTML + tidePillHTML(m) + `<div class="field-card hq-tile field-${id}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
+  return phaseHTML + tidePillHTML(m) + rsHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
     <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}</div>`;
 }
 function icePulseVfx(uid){
@@ -19796,6 +19893,11 @@ function logText(ev){
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
+    case 'devour': return {cls:'gold', text:`🫦 ${nm(ev.defId)} devours ${nm(ev.eatenDefId)}: +${ev.attack}/+${ev.health}.`};
+    case 'sacrifice': return {cls:'poison', text:`⛧ ${sideLabel(ev.side)} sacrifices ${nm(ev.defId)} to summon ${nm(ev.forDefId)} (${ev.discount} cheaper).`};
+    case 'beware': return {cls:'poison', text:`👁️ ${nm(ev.defId)} crawls out of the Removal Zone (${ev.darkness} Darkness).`};
+    case 'mindControl': return {cls:'poison', text:`🎭 ${nm(ev.attDefId)} takes control of ${nm(ev.targetDefId)}.`};
+    case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
     case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
@@ -19838,7 +19940,7 @@ function logText(ev){
     // "lumber", or "elementalEnergy" as its entire battle-log line instead of a real sentence.
     // Same icons floatResourceGain() already uses for these three (see renderVfxForEvent).
     case 'stone': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪨.`};
-    case 'lumber': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
+    case 'lumber': return ev.rule ? {cls:'gold', text:`🪵 Timber Fair: ${sideLabel(ev.side)} gains +${ev.amount} Lumber.`} : {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
     case 'elementalEnergy': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} ✨.`};
     // 2026-09-21 audit: `heal` (a dedicated healer-target event, engine's fireHealAction — distinct
     // from `sap`'s attacker-heals-self-off-the-hit shape) had no case either, and `chainBreak`

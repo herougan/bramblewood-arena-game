@@ -2,6 +2,26 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10
+- **UI:**
+  - the victory screen puts Cards won and Rewards in two centred halves;
+  - the map's house button is centred;
+  - the card detail uses the game's dark theme instead of washed-out grey.
+- **Rules:**
+  - Heal removes Bleed counters first.
+  - Stun is counters, and a stunned unit skips its whole turn, upkeep included.
+  - Waiting units don't bleed from their own actions.
+  - Cleanse N (curses first) has a proper cleansing animation.
+- **Devilry:**
+  - Dark Summon ⛧ (1 a turn, on top of your normal play, costs Darkness ★);
+  - Darkness from perished units;
+  - the keywords Devour, Ritual, Pitchfork, Sacrifice, Offering, Beware, Scare and Desecrate;
+  - Imp 😈 and Devil 👹 card types with a dark aura on the frame;
+  - Mind Control and Player Stun;
+  - **ten new cards:** Cinder Imp (Base) and nine Basalt Foundry rewards, including The Sixfold.
+- **Arena rules:** the Arena's rule set rotates daily (Long Night, Midsummer, Dusk Start, Timber Fair, Frost Week, Fog on the Moor, Standard), and whoever plays second opens with an extra card. Conquest fights can set their own rules.
+- Reach (ignores Flying's dodge) is in the card editor.
+
 ## 2026-10-09 (night)
 - **Second card-balance pass:**
   - 29 common and uncommon outliers moved half-way toward their rarity band: e.g. Dune Jackal 3 Attack, Jackrabbit Sprinter 3 Attack, Soldier Ant 2 Attack, Shepherd's Bark 14 Health, Rabbit Kit 3/2, Peak Condor 4 Attack.
