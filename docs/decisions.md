@@ -130,11 +130,6 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
   - Retune
 - **Default:** Keep
 
-**C2. Lock the battle type in the skirmish editor?** · Clarify · Conquest · asked 2026-10-09
-- You said 'You CANNOT change the battle type once it's been set in the skirmish editor'. In a local test the change saved fine. Is that a bug you hit (it reverted?), or a request to lock the field after the first save?
-  - It's a bug: it reverts
-  - Lock it after the first save
-
 **C3. Victory shift and the castle's white gradient** · Clarify · Battle · asked 2026-10-09
 - Couldn't reproduce either. Which cards move at the end of a fight, and when? Where does the white gradient on the castle show (fight, map, results)? A screenshot would settle both.
 
@@ -161,7 +156,7 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Faster hatching
 
 **D20. Devilry: my readings of your list (all built, all revertible)** · Decide · Design · asked 2026-10-10
-- Built as I read them: (1) Dark Summon is a second play each turn, just for ⛧ cards, and every Dark Summon card also costs Darkness (a free extra play measured at 100%). (2) Darkness comes from your own units perishing (+1 each); 'dark actions' were left open. (3) Devour uses your play for the turn and works once per devourer. (4) Ritual's 'units perished' counts both sides. (5) Sacrifice N sits on the fodder; the discount comes off Darkness first, then Lumber. (6) Your blank keyword is named Offering N.
+- Built as I read them: (1) Dark Summon is a second play each turn, just for ⛧ cards, and every Dark Summon card also costs Darkness (a free extra play measured at 100%). (2) Darkness comes from your own units perishing (+1 each); 'dark actions' were left open. (3) Devour uses your play for the turn and works once per devourer. (4) Ritual's 'units perished' counts both sides. (5) Sacrifice N sits on the fodder; the discount comes off Darkness first, then Lumber. (6) Your blank keyword is named Offering N. 2026-10-10 (you: 'darkness is not clear. Is it gained? idk'): yes, it is gained: +1 each time one of YOUR units perishes (Ash Imp adds +1 on arrival). It's shown only if your deck has at least one Devilry card: the pill reads '★ 3 · ⛧ 1' (Darkness held, dark summons left this turn), and each gain floats a ★ +1. You gain 1 dark summon per turn; it doesn't stack.
   - Keep all six
   - Change some (tell me which)
 - **Default:** Keep all six
@@ -330,6 +325,11 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
   - Leave as is
 - **Default:** Badge from simulated win rate
 - **Outcome:** Mostly resolved by B5: every card now has a rarity, so the enemy deck level is no longer 0 everywhere.
+
+**C2. Lock the battle type in the skirmish editor?** · Clarify · Conquest · asked 2026-10-09
+- You said 'You CANNOT change the battle type once it's been set in the skirmish editor'. In a local test the change saved fine. Is that a bug you hit (it reverted?), or a request to lock the field after the first save? 2026-10-10: fixed. The battle type is set only in Edit skirmish (the picker outside the editor is gone), and a local save no longer gets overwritten by an older cloud copy.
+  - It's a bug: it reverts
+  - Lock it after the first save
 
 **T10. New Unique cards can break the raid ghost generator** · Note · Tech · asked 2026-10-09
 - Making the Wandering Traveller Unique left stage-5 ghost decks under 20 cards, so it was reverted. The generator needs a fallback before more Unique cards are added.
