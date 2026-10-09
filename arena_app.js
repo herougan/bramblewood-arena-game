@@ -9786,17 +9786,17 @@ const CONQUEST_MAPS = [
   // new skirmish rewards — first node ~90%, 2-2 ~60%, elites ~45%, boss ~30-40%.
   { id:"m2", name:"Sunken Hollow", icon:"🌊", blurb:"A flooded lowland — reef-runners and things that never surface first.", unlockAfter:"mb", sequential:true,
     nodes: [
-      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:26, flavor:"The shallows here are only shallow at low tide.", requires:[] },
-      { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"otter-riverguard":2}, hqHp:54, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
-      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"otter-riverguard":2,"reef-manta-glider":1}, hqHp:65, flavor:"They surface in formation. That is the last warning you get.", requires:["2-2"] },
-      { key:"2-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"river-carp":3,"pond-trout":3}, hqHp:38, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["2-3"] },
-      { key:"2-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":1,"humpback-elder":1,"open-ocean-hermit-crab":4,"river-carp":1,"otter-riverguard":1,"reef-manta-glider":2}, hqHp:78, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["2-4"] },
+      { key:"2-1", kind:"skirmish", name:"Reef Skirmishers", icon:"🐡", deck:{"open-ocean-hermit-crab":4,"pond-trout":4,"silver-minnow":2,"reef-manta-glider":1}, hqHp:50, flavor:"The shallows here are only shallow at low tide.", requires:[] },
+      { key:"2-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"otter-riverguard":2}, hqHp:82, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["2-1"] },
+      { key:"2-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"otter-riverguard":2,"reef-manta-glider":1}, hqHp:85, flavor:"They surface in formation. That is the last warning you get.", requires:["2-2"] },
+      { key:"2-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"river-carp":3,"orca-vanguard":2,"humpback-elder":1}, hqHp:75, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["2-3"] },
+      { key:"2-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":1,"humpback-elder":1,"open-ocean-hermit-crab":4,"river-carp":1,"otter-riverguard":1,"reef-manta-glider":2}, hqHp:156, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["2-4"] },
     ]},
   // Maps 3–4 auto-tuned 2026-10-04 (D18, tools/autotune_map.js) against a deck built from the earlier maps' rewards.
   { id:"m3", name:"The Ashen Peak", icon:"🌋", blurb:"Scorched high ground — only the toughest hides make it this far up.", unlockAfter:"m2", sequential:true,
     nodes: [
       { key:"3-1", kind:"skirmish", name:"Badger Warband", icon:"🦡", deck:{"badger-trench-digger":4,"honey-badger-fury":2,"quillback-elder":2,"porcupine-roller":2}, hqHp:31, flavor:"They dug in before you even reached the tree line.", requires:[] },
-      { key:"3-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"honey-badger-fury":3,"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"scraper-of-skies":1}, hqHp:32, flavor:"Every approach here has already been staked out.", requires:["3-1"] },
+      { key:"3-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"honey-badger-fury":3,"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"scraper-of-skies":1}, hqHp:48, flavor:"Every approach here has already been staked out.", requires:["3-1"] },
       { key:"3-3", kind:"elite", name:"Porcupine Bastion", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"scraper-of-skies":2,"honey-badger-fury":2}, hqHp:80, flavor:"Every approach to the Bastion is already covered in quills.", characterId:"plains-terrace", requires:["3-2"] },
       { key:"3-4", kind:"elite", name:"Sky Marks", icon:"🦅", deck:{"eagle-sharpshooter":4,"sandstorm-roc":4,"scraper-of-skies":2}, hqHp:75, flavor:"You hear the marks called before you ever see the wings.", requires:["3-3"] },
       { key:"3-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", deck:{"scraper-of-skies":2,"eagle-sharpshooter":4,"sandstorm-roc":4}, hqHp:64, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["3-4"] },
@@ -18549,6 +18549,8 @@ async function resolveRound(){
     m.round += 1;
     if(m.round === SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND)) showSuddenDeathBanner(m);
     const drawEvents = [];
+    if(m.lumberTrickle == null) m.lumberTrickle = (m.mode==='liveRanked' || m.mode==='tutorial') ? 0 : loadLumberTrickle(); // live matches stay on the standard rules (both clients must agree)
+    if(m.lumberTrickle && m.engine.roundIncome) m.engine.roundIncome(m.players, m.round, m.lumberTrickle, m.sideOf || (id=> id===1?'A':'B'), drawEvents);
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
@@ -19736,7 +19738,7 @@ function logText(ev){
     // "lumber", or "elementalEnergy" as its entire battle-log line instead of a real sentence.
     // Same icons floatResourceGain() already uses for these three (see renderVfxForEvent).
     case 'stone': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪨.`};
-    case 'lumber': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
+    case 'lumber': return {cls:'gold', text: ev.trickle ? `Lumber trickle: +${ev.amount} 🪵 (${ev.side==='A' ? 'you' : 'enemy'}).` : `${nm(ev.defId)} generated +${ev.amount} 🪵.`};
     case 'elementalEnergy': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} ✨.`};
     // 2026-09-21 audit: `heal` (a dedicated healer-target event, engine's fireHealAction — distinct
     // from `sap`'s attacker-heals-self-off-the-hit shape) had no case either, and `chainBreak`
@@ -21192,7 +21194,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='grace') floatResourceGain(ev, '🕊️', 'hudGracePill', SoundKit.grace);
   if(ev.type==='devilry') floatResourceGain(ev, '★', 'hudDevilryPill', SoundKit.devilryTone);
   if(ev.type==='stone') floatResourceGain(ev, '🪨', 'hudStonePill', SoundKit.gold);
-  if(ev.type==='lumber') floatResourceGain(ev, '🪵', 'hudLumberPill', SoundKit.gold);
+  if(ev.type==='lumber' && !(ev.trickle && ev.side!=='A')) floatResourceGain(ev, '🪵', 'hudLumberPill', SoundKit.gold);
   if(ev.type==='elementalEnergy') floatResourceGain(ev, '✨', 'hudElementalEnergyPill', SoundKit.grace);
   // Item drop (item #3, 2026-09-16): a bounty payout now visibly drops a coin out of the
   // kill (gravity + side variation + a little rotation), sourced from the dying card's own
@@ -24882,6 +24884,15 @@ const ATMOSPHERES = [
 const ATMO_KEY = 'bramblewood_atmosphere_v1';
 // Immersion #5 (2026-10-05, "a living clock"): 'live' — the default for anyone who hasn't picked an
 // atmosphere — follows the player's own local time: dawn 5–8, day 8–17, dusk 17–20, night 20–5.
+// Lumber trickle (2026-10-09, experimental, decision B4): off by default; a per-device setting until decided.
+const LUMBER_TRICKLE_KEY = 'bramblewood_lumber_trickle_v1';
+function loadLumberTrickle(){ try{ const v = parseInt(localStorage.getItem(LUMBER_TRICKLE_KEY), 10); return v===2 || v===3 ? v : 0; }catch(e){ return 0; } }
+(function wireLumberTrickle(){
+  const bind = ()=>{ const el = document.getElementById('lumberTrickleSelect'); if(!el || el.dataset.wired) return; el.dataset.wired = '1';
+    el.value = String(loadLumberTrickle());
+    el.addEventListener('change', ()=>{ try{ localStorage.setItem(LUMBER_TRICKLE_KEY, el.value); }catch(e){} showToast(el.value==='0' ? 'Lumber trickle off.' : `🪵 Lumber trickle on: +1 Lumber every ${el.value} rounds, from your next fight.`, 'ok'); }); };
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind); else setTimeout(bind, 0);
+})();
 function loadAtmosphere(){ try{ return localStorage.getItem(ATMO_KEY) || 'live'; }catch(e){ return 'live'; } }
 function timeOfDay(d){ const h = (d || new Date()).getHours(); return h>=5 && h<8 ? 'dawn' : h>=8 && h<17 ? 'day' : h>=17 && h<20 ? 'dusk' : 'night'; }
 function currentTimeOfDay(){ return document.body && document.body.dataset.tod || timeOfDay(); }

@@ -2959,7 +2959,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  return { damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  // Lumber trickle (2026-10-09, experimental rule for decision B4): every `every` rounds both sides get
+  // +1 Lumber on top of what discarding gives. Off unless a caller passes a number (Settings toggle in
+  // the game, opts.lumberTrickle in simulations). Simulated: every 2 rounds makes 3+ cost cards viable.
+  function roundIncome(players, round, every, sideOf, events){
+    if(!(every > 0) || round % every !== 0) return;
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
+      if(recordEvents && events) events.push({type:'lumber', side: sideOf(pid), amount:1, trickle:true}); });
+  }
+  return { roundIncome, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -2992,6 +3000,7 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
     players[1].discardUsedThisTurn = false;
     players[2].discardUsedThisTurn = false;
     if(recordEvents) events.push({type:'roundStart', round});
+    if(opts.lumberTrickle) engine.roundIncome(players, round, opts.lumberTrickle, sideOf, events);
     engine.aiTakeTurn(players, sideOf, 1, stats, events);
     engine.aiTakeTurn(players, sideOf, 2, stats, events);
     // Alternate which side wins a same-column tie round to round (see resolveCombat's own

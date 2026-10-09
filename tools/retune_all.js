@@ -21,6 +21,10 @@ let src = fs.readFileSync(APP, 'utf8');
 const i0 = src.indexOf('const CONQUEST_MAPS = ['), j0 = src.indexOf('\n];', i0);
 const MAPS = eval(src.slice(i0 + 'const CONQUEST_MAPS = '.length, j0 + 2));
 const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.includes('--apply');
+// --only=m2,3-2 limits the run to those maps / fight keys; --borrow=m2:m7+mb lets a map's swaps also draw
+// themed cards from other maps' fights (e.g. Sunken Hollow borrowing reef and beach cards).
+const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
+const BORROW = {}; ((process.argv.find(a=> a.startsWith('--borrow=')) || '').slice(9)).split(',').filter(Boolean).forEach(x=>{ const [m, from] = x.split(':'); BORROW[m] = (from||'').split('+'); });
 
 const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.wait||0)*0.5); };
 const CAP = {legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
@@ -63,13 +67,15 @@ for(const map of order){
   for(const n of map.nodes){
     if(!n.deck || n.kind==='tutorial'){ continue; }
     if(n.kind==='raidboss'){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; } // raid bosses are tuned in the Raid editor
+    if(ONLY.length && !ONLY.includes(map.id) && !ONLY.includes(n.key)){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; }
     const deck = buildDeck(myOwned), ch = n.characterId && charById[n.characterId], tgt = target(map, n), mode = n.battleMode || 'open';
     let nd = Object.assign({}, n.deck), before = rate(deck, nd, ch, n.hqHp, mode);
     let t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt), swaps = 0;
     // Too far off with HP alone: trade two copies at a time with cards from this map's other fights
     // (so the theme holds): out goes the enemy's strongest (too hard) or weakest (too easy) card, in
     // comes the weakest / strongest card of the map pool.
-    const pool = [...new Set(map.nodes.flatMap(x=> Object.keys(x.deck||{})))].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a));
+    const poolMaps = [map].concat((BORROW[map.id]||[]).map(id=> MAPS.find(m=> m.id===id)).filter(Boolean));
+    const pool = [...new Set(poolMaps.flatMap(mm=> mm.nodes.filter(x=> x.kind!=='raidboss').flatMap(x=> Object.keys(x.deck||{}))))].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a));
     while(Math.abs(t.r - tgt) > .12 && swaps < 4){
       const ids = Object.keys(nd).sort((a,b)=> score(b)-score(a));
       const easy = t.r > tgt;
@@ -86,7 +92,7 @@ for(const map of order){
     if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id));
   }
 }
-fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'retune-all.json'), JSON.stringify(out, null, 1) + '\n');
+fs.writeFileSync(path.join(ROOT, 'docs', 'balance', ONLY.length ? 'retune-partial.json' : 'retune-all.json'), JSON.stringify(out, null, 1) + '\n');
 if(APPLY){
   let s = src;
   for(const o of out){

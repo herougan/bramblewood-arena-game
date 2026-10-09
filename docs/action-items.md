@@ -1,12 +1,12 @@
 # Action items
 
-_Updated 2026-10-09, 10:20 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-09, 11:50 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls that unblock the most
 
 | ID | What | My suggestion |
 |---|---|---|
-| **B4** | Cards costing 3+ Lumber lose because Lumber only comes from discarding cards. Arrival effects are in, but they weren't enough. A passive +1 Lumber every 2 rounds fixed the curve in simulation (dragons 38% → 60%) | +1 Lumber every 2 rounds (a core rules change, so it's your call) |
+| **B4** | Cards costing 3+ Lumber lose because Lumber only comes from discarding cards. A passive +1 Lumber every 2 rounds fixed the curve in simulation (dragons 38% → 60%). **Try it:** Settings → 🪵 Lumber trickle (experimental, off by default) | Make +1 every 2 rounds the standard rule |
 | **D19** | Which archetype to build first | Active Exile zone, then Swarm |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 | **C2** | The skirmish editor's battle type: a bug that reverts, or lock it after the first save? | Tell me which |
@@ -26,7 +26,8 @@ All 31 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
   - show the whole map's difficulty as a coloured strip.
 
   - **Every map retuned** (B2, revertible): 85 of 96 fights moved toward their target win rate. The table is in `docs/balance/retune-all.json`.
-  - Still too easy: Sunken Hollow and 3-2. They need stronger cards than their maps have.
+  - Sunken Hollow and 3-2 retuned with themed cards borrowed from Coral Current, Pebble Beach and Wolfsbane Tundra. Every Sunken Hollow fight except the boss is now on target; the boss is at 45% against a 35% target.
+  - [How to tune a skirmish](skirmish-tuning-guide.md) is in the 📐 Design tab.
 - **CPU opponent:** it now saves Lumber for costly cards. Before this, enemies almost never played them.
 
 ## ⚠️ Incident today

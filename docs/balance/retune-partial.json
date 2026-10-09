@@ -1,0 +1,92 @@
+[
+ {
+  "map": "m2",
+  "key": "2-1",
+  "kind": "skirmish",
+  "target": 85,
+  "before": 98,
+  "after": 97,
+  "hp": [
+   26,
+   50
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-2",
+  "kind": "skirmish",
+  "target": 60,
+  "before": 85,
+  "after": 60,
+  "hp": [
+   54,
+   82
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-3",
+  "kind": "elite",
+  "target": 45,
+  "before": 75,
+  "after": 45,
+  "hp": [
+   65,
+   85
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-4",
+  "kind": "elite",
+  "target": 45,
+  "before": 88,
+  "after": 55,
+  "hp": [
+   38,
+   75
+  ],
+  "swaps": 2,
+  "deck": {
+   "kraken-spawnling": 1,
+   "open-ocean-hermit-crab": 4,
+   "river-carp": 3,
+   "orca-vanguard": 2,
+   "humpback-elder": 1
+  }
+ },
+ {
+  "map": "m2",
+  "key": "2-5",
+  "kind": "boss",
+  "target": 35,
+  "before": 72,
+  "after": 45,
+  "hp": [
+   78,
+   156
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-2",
+  "kind": "skirmish",
+  "target": 60,
+  "before": 78,
+  "after": 60,
+  "hp": [
+   32,
+   48
+  ],
+  "swaps": 0,
+  "deck": null
+ }
+]

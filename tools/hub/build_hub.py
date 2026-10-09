@@ -134,6 +134,7 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
+  ('How to tune a skirmish', 'skirmish-tuning-guide.md'),
   ('Archetypes: 10 + the Elder / Outer / Forgotten trio', 'archetypes-design-2026-10-09.md'),
   ('Skills and effects audit, 11 new skills', 'skills-audit-2026-10-08.md'),
   ('Skirmish balance audit', 'skirmish-balance-audit-2026-10-08.md'),
