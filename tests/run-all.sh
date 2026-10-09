@@ -6,6 +6,7 @@ set -u
 cd "$(dirname "$0")/.."
 fail=0
 run(){ echo "▶ $*"; "$@" || fail=1; echo; }
+run node tests/syntax.js
 run node tests/card-matrix.js
 run node tests/scenarios.js
 run node tests/two-player.js
