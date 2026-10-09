@@ -8,6 +8,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Lumber and draws from cards:** Beaver Lumberjack (+2 Lumber when played), Courier Pigeon (draw a card). The experimental Lumber trickle is gone.
 - **Map editor:** drag the Armoury, Nest, Notices, the well and the caves; they publish with the layout.
 - Every map retuned for the new rules.
+- **Enemies play their big cards:** 31 enemy decks with 3+ cost cards now carry their map's Lumber maker, and were retuned.
+- Bosses keep their namesake card again (the Glacial Ape-King, the Orca Vanguard King, Titan's Shadow, the Cave Warlord). The Tundra boss has a proper Tundra deck.
+- Each field has its own look on the board: rain, fog, heat shimmer, moonlight.
 
 ## 2026-10-09
 - Two new maps between the Outskirts and Sunken Hollow: **Thistle Fields** 🌼 (meadow critters) and **Pebble Beach** 🏖️ (crabs, gulls, pelicans). Map 1 and 2 progress stays open.

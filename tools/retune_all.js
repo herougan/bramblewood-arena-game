@@ -20,7 +20,7 @@ const APP = path.join(ROOT, 'arena_app.js');
 let src = fs.readFileSync(APP, 'utf8');
 const i0 = src.indexOf('const CONQUEST_MAPS = ['), j0 = src.indexOf('\n];', i0);
 const MAPS = eval(src.slice(i0 + 'const CONQUEST_MAPS = '.length, j0 + 2));
-const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.includes('--apply');
+const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.includes('--apply'), HP_ONLY = process.argv.includes('--hp-only'); // --hp-only: never swap cards (keeps a boss's namesake in its deck)
 // --only=m2,3-2 limits the run to those maps / fight keys; --borrow=m2:m7+mb lets a map's swaps also draw
 // themed cards from other maps' fights (e.g. Sunken Hollow borrowing reef and beach cards).
 const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
@@ -79,7 +79,7 @@ for(const map of order){
     // comes the weakest / strongest card of the map pool.
     const poolMaps = [map].concat((BORROW[map.id]||[]).map(id=> MAPS.find(m=> m.id===id)).filter(Boolean));
     const pool = [...new Set(poolMaps.flatMap(mm=> mm.nodes.filter(x=> x.kind!=='raidboss').flatMap(x=> Object.keys(x.deck||{}))))].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a));
-    while(Math.abs(t.r - tgt) > .12 && swaps < 4){
+    while(!HP_ONLY && Math.abs(t.r - tgt) > .12 && swaps < 4){
       const ids = Object.keys(nd).sort((a,b)=> score(b)-score(a));
       const easy = t.r > tgt;
       const out = easy ? ids[ids.length-1] : ids[0];
