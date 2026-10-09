@@ -24,9 +24,11 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json')
 const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = d; });
 const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId).sort();
 
-// The filler: plain, effect-free commons/starters around the middle of the pack (stable list so
-// reports compare run to run).
-const FILLER = ['otter-paddler', 'tunnel-ant', 'meadow-rabbit', 'otter-guard', 'bee-sentry', 'cricket-drummer'].filter(id=> defs[id]);
+// The reference: a mid-strength mix (two plain cost-0 units, a flyer, a cost-1 tank and a poisoner)
+// picked from a first pass so an average card lands near 50% and strong cards still have room to
+// show (against plain filler anything decent won ~98%). Both decks share it, so only the tested card
+// differs.
+const FILLER = ['warren-scout', 'fawn-scout', 'bee-sentry', 'mouse-sapper', 'poison-dart-croaker'].filter(id=> defs[id]);
 function fillerDeck(n){ const d = {}; for(let i=0;i<n;i++){ const id = FILLER[i % FILLER.length]; d[id] = (d[id]||0) + 1; } return d; }
 const OPP = fillerDeck(20);
 const COPIES_BY_COST = [8, 6, 4, 3];
@@ -45,11 +47,11 @@ function winRate(id, over){
   return w / N;
 }
 
-// What each rarity should deliver, as a win-rate band for the 8-copy test deck. Starters sit near
-// the filler; each rarity step is meant to be a visible step up.
+// What each rarity should deliver, as a win-rate band for the test deck against the reference. A
+// Starter is a bit below the reference, Common around it, and each rarity step a visible step up.
 const BANDS = {
-  starter:[.35,.62], common:[.45,.72], uncommon:[.55,.80], quest:[.55,.80], rare:[.62,.86], veryrare:[.66,.90], superrare:[.70,.92],
-  epic:[.72,.94], heroic:[.74,.95], unique:[.76,.97], questunique:[.76,.97], legendary:[.80,.99], mythic:[.82,1], ancient:[.85,1],
+  starter:[.20,.48], common:[.35,.60], uncommon:[.45,.68], quest:[.45,.68], rare:[.52,.75], veryrare:[.56,.80], superrare:[.60,.84],
+  epic:[.62,.87], heroic:[.64,.89], unique:[.66,.92], questunique:[.66,.92], legendary:[.70,.97], mythic:[.72,1], ancient:[.75,1],
 };
 const bandOf = d=> BANDS[d.rarity || 'common'] || BANDS.common;
 
@@ -64,7 +66,7 @@ const rows = fieldable.map(id=>{
 
 // Suggest a fix for outliers: step Attack, then Health, toward the band (max 4 steps each).
 if(SUGGEST){
-  rows.filter(r=> r.verdict!=='ok').forEach(r=>{
+  rows.filter(r=> r.verdict!=='ok' && r.rarity).forEach(r=>{ // unrated cards get a suggested rarity instead (below)
     const d = defs[r.id], [lo, hi] = bandOf(d), target = (lo + hi) / 2, dir = r.verdict==='strong' ? -1 : 1;
     let best = null;
     for(const stat of ['attack', 'health']){
@@ -81,6 +83,10 @@ if(SUGGEST){
   });
 }
 
+// Suggested rarity for cards with none set: the rarity whose band centre is nearest the measured win rate.
+const RAR_ORDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary'];
+rows.forEach(r=>{ if(r.rarity) return; const wr = r.winRate/100; let best = 'common', bd = 9;
+  RAR_ORDER.forEach(k=>{ const [lo, hi] = BANDS[k], d = Math.abs(wr - (lo+hi)/2); if(d < bd){ bd = d; best = k; } }); r.suggestRarity = best; });
 const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MODE, filler: FILLER, bands: BANDS, rows};
 fs.mkdirSync(path.join(ROOT, 'docs', 'balance'), {recursive: true});
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'card-balance.json'), JSON.stringify(out, null, 1) + '\n');

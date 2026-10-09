@@ -1,0 +1,6434 @@
+{
+ "generated": "2026-10-09",
+ "games": 80,
+ "mode": "open",
+ "filler": [
+  "warren-scout",
+  "fawn-scout",
+  "bee-sentry",
+  "mouse-sapper",
+  "poison-dart-croaker"
+ ],
+ "bands": {
+  "starter": [
+   0.2,
+   0.48
+  ],
+  "common": [
+   0.35,
+   0.6
+  ],
+  "uncommon": [
+   0.45,
+   0.68
+  ],
+  "quest": [
+   0.45,
+   0.68
+  ],
+  "rare": [
+   0.52,
+   0.75
+  ],
+  "veryrare": [
+   0.56,
+   0.8
+  ],
+  "superrare": [
+   0.6,
+   0.84
+  ],
+  "epic": [
+   0.62,
+   0.87
+  ],
+  "heroic": [
+   0.64,
+   0.89
+  ],
+  "unique": [
+   0.66,
+   0.92
+  ],
+  "questunique": [
+   0.66,
+   0.92
+  ],
+  "legendary": [
+   0.7,
+   0.97
+  ],
+  "mythic": [
+   0.72,
+   1
+  ],
+  "ancient": [
+   0.75,
+   1
+  ]
+ },
+ "rows": [
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 20,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [],
+   "winRate": 47.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 66.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 4,
+   "skills": [],
+   "winRate": 61.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 24,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "alpine-avalanche",
+   "name": "Alpine Avalanche",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 15,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 49.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": null,
+   "cost": 3,
+   "wait": 6,
+   "attack": 6,
+   "health": 58,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 30,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 49.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [],
+   "winRate": 55.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 34.4,
+    "dist": 0.003750000000000031
+   }
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "skills": [
+    "rage"
+   ],
+   "winRate": 58.1,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "antler-skirmisher",
+   "name": "Antler Skirmisher",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 12,
+   "skills": [],
+   "winRate": 62.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 78.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "unique"
+  },
+  {
+   "id": "armored-mastiff",
+   "name": "Armored Mastiff",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 6,
+   "health": 28,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 63.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "badger-berserker",
+   "name": "Badger Berserker",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 6,
+   "health": 14,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 81.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "badger-sapper",
+   "name": "Badger Sapper",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 7,
+   "health": 24,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "badger-trench-digger",
+   "name": "Badger Trench Digger",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 22,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 46.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack"
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 0,
+   "health": 20,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 12.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 9,
+   "skills": [
+    "sap",
+    "flying"
+   ],
+   "winRate": 75,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 20,
+   "skills": [
+    "grit"
+   ],
+   "winRate": 41.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 8,
+   "skills": [],
+   "winRate": 76.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "beaver-builder",
+   "name": "Beaver Builder",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 51.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 76.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 34.4,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 56.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 63.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 33.8,
+    "dist": 0.0024999999999999467
+   }
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 5,
+   "health": 20,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 85,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 4,
+   "skills": [],
+   "winRate": 19.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 7,
+    "winRate": 49.4,
+    "dist": 0.018750000000000044
+   }
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 6,
+   "health": 16,
+   "skills": [
+    "rage"
+   ],
+   "winRate": 48.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 5,
+   "attack": 10,
+   "health": 50,
+   "skills": [
+    "flying",
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 10,
+    "to": 11,
+    "winRate": 38.1,
+    "dist": 0.45375
+   }
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "rarity": null,
+   "cost": 0,
+   "wait": 2,
+   "attack": 6,
+   "health": 20,
+   "skills": [],
+   "winRate": 15.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 5,
+   "attack": 10,
+   "health": 44,
+   "skills": [
+    "flying",
+    "bounty",
+    "paralyze"
+   ],
+   "winRate": 38.1,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 10,
+    "to": 11,
+    "winRate": 38.1,
+    "dist": 0.45375
+   }
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 6,
+   "health": 18,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "rarity": null,
+   "cost": 3,
+   "wait": 4,
+   "attack": 7,
+   "health": 38,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 79.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "unique"
+  },
+  {
+   "id": "bone-diviner",
+   "name": "Bone Diviner",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 20,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 52.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 17,
+   "skills": [
+    "sweep"
+   ],
+   "winRate": 48.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [],
+   "winRate": 22.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "name": "Bonebreaker",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 10,
+   "skills": [
+    "stagger"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 6,
+   "health": 10,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 73.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "superrare"
+  },
+  {
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 10,
+   "skills": [],
+   "winRate": 93.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "buck-brawler",
+   "name": "Buck Brawler",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 20,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 43.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [],
+   "winRate": 80,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 5,
+    "winRate": 43.8,
+    "dist": 0.09750000000000003
+   }
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 9,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 21.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 45,
+    "dist": 0.024999999999999967
+   }
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "name": "Canopy Sloth Guardian",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 30,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 41.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "poison",
+    "flying"
+   ],
+   "winRate": 100,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Cataphract Destrier",
+   "rarity": null,
+   "cost": 4,
+   "wait": 4,
+   "attack": 11,
+   "health": 52,
+   "skills": [
+    "onReadyDamage",
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 5,
+   "health": 15,
+   "skills": [
+    "poison",
+    "bounty"
+   ],
+   "winRate": 58.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "cave-bat-swarm",
+   "name": "Cave Bat Swarm",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "swipe",
+    "flying"
+   ],
+   "winRate": 100,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 90,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": null,
+   "cost": 4,
+   "wait": 5,
+   "attack": 12,
+   "health": 58,
+   "skills": [
+    "onReadyDamage",
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 86.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 55.6,
+    "dist": 0.08125000000000004
+   }
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [],
+   "winRate": 10.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 26.9,
+    "dist": 0.07124999999999998
+   }
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "onReadyGold"
+   ],
+   "winRate": 31.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 43.1,
+    "dist": 0.043749999999999956
+   }
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "chipmunk-stockpiler",
+   "name": "Chipmunk Stockpiler",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": null,
+   "cost": 2,
+   "wait": 0,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "stunOnHit",
+    "flying"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 39.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Talon Fledgling",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 22.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 94.4,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 2,
+    "winRate": 38.8,
+    "dist": 0.04750000000000004
+   }
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 0,
+   "health": 20,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 94.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 8,
+   "skills": [],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 24,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 64.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 0,
+   "health": 14,
+   "skills": [
+    "onReadyGold"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 7,
+   "health": 14,
+   "skills": [
+    "crit"
+   ],
+   "winRate": 53.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [],
+   "winRate": 47.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 90,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 1,
+    "winRate": 29.4,
+    "dist": 0.04624999999999996
+   }
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Wing Recruit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 56.3,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 24.4,
+    "dist": 0.09624999999999997
+   }
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 8,
+   "health": 24,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 44.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "cuttlefish-illusionist",
+   "name": "Cuttlefish Illusionist",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 53.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 13,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 0,
+   "health": 20,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 7.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Deep Cave Troll",
+   "rarity": null,
+   "cost": 3,
+   "wait": 2,
+   "attack": 8,
+   "health": 28,
+   "skills": [
+    "rage"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Knight",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [],
+   "winRate": 93.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Dominion Nestguard",
+   "rarity": "starter",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 75,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 2,
+    "winRate": 27.5,
+    "dist": 0.06499999999999995
+   }
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [],
+   "winRate": 18.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 47.5,
+    "dist": 0
+   }
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 94.4,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 2,
+    "winRate": 38.8,
+    "dist": 0.04750000000000004
+   }
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 24.4,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "duckling-squadron",
+   "name": "Duckling Squadron",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "swipe",
+    "flying"
+   ],
+   "winRate": 75.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 2,
+    "winRate": 41.3,
+    "dist": 0.0625
+   }
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 10,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 3,
+    "winRate": 58.1,
+    "dist": 0.10625000000000007
+   }
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 42.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 87.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 6,
+   "health": 9,
+   "skills": [
+    "bounty",
+    "flying",
+    "triggers"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [
+    "regen"
+   ],
+   "winRate": 8.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 3,
+    "winRate": 29.4,
+    "dist": 0.04624999999999996
+   }
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "onReadyDamage",
+    "flying"
+   ],
+   "winRate": 80.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "unique"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": null,
+   "cost": 3,
+   "wait": 1,
+   "attack": 1,
+   "health": 18,
+   "skills": [
+    "regen"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": null,
+   "cost": 3,
+   "wait": 5,
+   "attack": 9,
+   "health": 48,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "rarity": null,
+   "cost": 3,
+   "wait": 4,
+   "attack": 8,
+   "health": 40,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 8,
+   "skills": [
+    "frenzy"
+   ],
+   "winRate": 94.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "ember-wisp",
+   "name": "Ember Wisp",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 4,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 91.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "rarity": null,
+   "cost": 0,
+   "wait": 3,
+   "attack": 4,
+   "health": 20,
+   "skills": [],
+   "winRate": 96.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": null,
+   "cost": 3,
+   "wait": 3,
+   "attack": 9,
+   "health": 28,
+   "skills": [
+    "onReadyDamage",
+    "bounty",
+    "flying"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [],
+   "winRate": 69.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Feral Tomcat",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 95,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 2,
+    "winRate": 50.6,
+    "dist": 0.03125
+   }
+  },
+  {
+   "id": "feral-tuskboar",
+   "name": "Feral Tuskboar",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 75,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 20.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 13,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 41.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "firetail-trickster",
+   "name": "Firetail Trickster",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 9,
+   "skills": [
+    "bounty",
+    "triggers"
+   ],
+   "winRate": 85.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [],
+   "winRate": 13.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 40.6,
+    "dist": 0.06874999999999998
+   }
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [],
+   "winRate": 76.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 20,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 46.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "frost-hare-sprinter",
+   "name": "Frost Hare Sprinter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 91.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 3,
+    "winRate": 56.3,
+    "dist": 0.08750000000000002
+   }
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 48.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 6,
+   "health": 32,
+   "skills": [
+    "onDeathSpawn",
+    "bounty"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "gale-sprite",
+   "name": "Gale Sprite",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 6,
+   "skills": [],
+   "winRate": 50.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "skills": [
+    "poison",
+    "fester"
+   ],
+   "winRate": 53.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 28.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "rarity": null,
+   "cost": 4,
+   "wait": 6,
+   "attack": 13,
+   "health": 62,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "attack": 6,
+   "health": 16,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 54.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "rarity": null,
+   "cost": 3,
+   "wait": 1,
+   "attack": 4,
+   "health": 16,
+   "skills": [
+    "freeze"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "glowworm-cluster",
+   "name": "Glowworm Cluster",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "onReadyGrace"
+   ],
+   "winRate": 13.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 34.4,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": null,
+   "cost": 3,
+   "wait": 4,
+   "attack": 9,
+   "health": 45,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 89.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 22,
+   "skills": [
+    "onReadyDamage",
+    "bounty",
+    "flying"
+   ],
+   "winRate": 49.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 5,
+   "attack": 10,
+   "health": 50,
+   "skills": [
+    "flying",
+    "bounty"
+   ],
+   "winRate": 38.1,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 10,
+    "to": 11,
+    "winRate": 38.1,
+    "dist": 0.45375
+   }
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 30,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 33.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [],
+   "winRate": 8.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 3,
+    "winRate": 33.1,
+    "dist": 0.00874999999999998
+   }
+  },
+  {
+   "id": "hanging-loafer",
+   "name": "Hanging Loafer",
+   "rarity": null,
+   "cost": 1,
+   "wait": 4,
+   "attack": 3,
+   "health": 22,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 20,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [],
+   "winRate": 10.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 26.9,
+    "dist": 0.07124999999999998
+   }
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 6,
+    "winRate": 41.9,
+    "dist": 0.05624999999999997
+   }
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "name": "Hollow Oath-Keeper",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 16,
+   "skills": [],
+   "winRate": 38.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 10,
+   "skills": [
+    "rage"
+   ],
+   "winRate": 85.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 2,
+    "winRate": 57.5,
+    "dist": 0.09999999999999998
+   }
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 22.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [],
+   "winRate": 60,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 3,
+   "attack": 8,
+   "health": 40,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "bleed"
+   ],
+   "winRate": 78.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "unique"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 8,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 3,
+    "winRate": 51.3,
+    "dist": 0.03749999999999998
+   }
+  },
+  {
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 6,
+   "health": 11,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 81.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "king-maker",
+   "name": "King Maker",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 11,
+   "skills": [
+    "kingSlayer"
+   ],
+   "winRate": 63.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": null,
+   "cost": 3,
+   "wait": 4,
+   "attack": 9,
+   "health": 38,
+   "skills": [
+    "poison",
+    "bounty"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 2,
+   "attack": 9,
+   "health": 34,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 39.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 26,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 58.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 11,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 90,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "fireArrow"
+   ],
+   "winRate": 74.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "rarity": null,
+   "cost": 3,
+   "wait": 2,
+   "attack": 6,
+   "health": 26,
+   "skills": [
+    "scar"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "name": "Mangrove Kingfisher",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "evasive",
+    "flying"
+   ],
+   "winRate": 75,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 51.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 15,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "marsh-gas-toad",
+   "name": "Marsh Gas Toad",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 0,
+   "health": 10,
+   "skills": [
+    "explode"
+   ],
+   "winRate": 15,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [],
+   "winRate": 26.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 50,
+    "dist": 0.025000000000000022
+   }
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [],
+   "winRate": 13.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 40.6,
+    "dist": 0.06625000000000003
+   }
+  },
+  {
+   "id": "migration-leader",
+   "name": "Migration Leader",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 58.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "minnow-skitter",
+   "name": "Minnow Skitter",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [],
+   "winRate": 18.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "render",
+    "flying"
+   ],
+   "winRate": 35.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 9,
+   "skills": [
+    "poison",
+    "bounty",
+    "flying"
+   ],
+   "winRate": 80.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "unique"
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 6,
+   "health": 9,
+   "skills": [
+    "stealth"
+   ],
+   "winRate": 10.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing Laborer",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 41.9,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "mountain-goat-climber",
+   "name": "Mountain Goat Climber",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 91.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "skills": [],
+   "winRate": 25.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "narwhal-lancer",
+   "name": "Narwhal Lancer",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "attack": 7,
+   "health": 20,
+   "skills": [
+    "expose"
+   ],
+   "winRate": 51.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "nautilus-drifter",
+   "name": "Nautilus Drifter",
+   "rarity": null,
+   "cost": 1,
+   "wait": 3,
+   "attack": 3,
+   "health": 24,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 69.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "nest",
+   "name": "Nest",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 0,
+   "health": 18,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 20.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": null,
+   "cost": 2,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "sleep",
+    "flying"
+   ],
+   "winRate": 33.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 11,
+   "skills": [
+    "armor",
+    "poison"
+   ],
+   "winRate": 74.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 22,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 46.9,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 8,
+    "winRate": 53.1,
+    "dist": 0.10375000000000001
+   }
+  },
+  {
+   "id": "old-growth-tortoise",
+   "name": "Old-Growth Tortoise",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 2,
+   "health": 20,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 29.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 95,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 48.8,
+    "dist": 0.012500000000000011
+   }
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": null,
+   "cost": 3,
+   "wait": 3,
+   "attack": 9,
+   "health": 36,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "skills": [],
+   "winRate": 88.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [],
+   "winRate": 81.9,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 5,
+    "winRate": 43.8,
+    "dist": 0.09750000000000003
+   }
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [],
+   "winRate": 10.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 26.9,
+    "dist": 0.07124999999999998
+   }
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [],
+   "winRate": 47.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 20,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 48.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "otter-scout",
+   "name": "Otter Scout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 74.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 18,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 59.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "flying",
+    "arrow"
+   ],
+   "winRate": 99.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "stealth",
+    "flying"
+   ],
+   "winRate": 30.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 10,
+    "to": 13,
+    "winRate": 43.8,
+    "dist": 0.03749999999999998
+   }
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "bounty",
+    "flying"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 76.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 41.3,
+    "dist": 0.0625
+   }
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "name": "Pack Wolf Reaver",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 22,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 51.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "reload",
+    "flying"
+   ],
+   "winRate": 20,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "pelican-diver",
+   "name": "Pelican Diver",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 70.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "superrare"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": null,
+   "cost": 3,
+   "wait": 3,
+   "attack": 9,
+   "health": 34,
+   "skills": [
+    "sweep"
+   ],
+   "winRate": 38.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "renewal",
+    "flying"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [],
+   "winRate": 95,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 21.9,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 0,
+   "health": 6,
+   "skills": [
+    "explode"
+   ],
+   "winRate": 31.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 9,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 95,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 41.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "poison-dart-frog",
+   "name": "Poison Dart Frog",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 33.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 86.3,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 41.9,
+    "dist": 0.07875000000000004
+   }
+  },
+  {
+   "id": "pond-paddler",
+   "name": "Pond Paddler",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 86.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [],
+   "winRate": 40.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 10,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 91.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 0,
+    "winRate": 54.4,
+    "dist": 0.06874999999999998
+   }
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [],
+   "winRate": 22.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "pufferfish-bulwark",
+   "name": "Pufferfish Bulwark",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 20,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": null,
+   "cost": 3,
+   "wait": 2,
+   "attack": 7,
+   "health": 16,
+   "skills": [
+    "rend"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 10,
+   "skills": [],
+   "winRate": 66.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 10,
+    "to": 8,
+    "winRate": 50,
+    "dist": 0.025000000000000022
+   }
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 16,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 76.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 14,
+   "skills": [
+    "bounty",
+    "triggers"
+   ],
+   "winRate": 83.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 26,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 41.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 22,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 63.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 2,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 30.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 50.6,
+    "dist": 0.03125
+   }
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 91.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "stealth"
+   ],
+   "winRate": 17.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 8,
+    "winRate": 41.3,
+    "dist": 0.0625
+   }
+  },
+  {
+   "id": "raccoon-warlord",
+   "name": "Raccoon Warlord",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 32,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 44.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 20,
+   "skills": [
+    "poison",
+    "bounty",
+    "flying"
+   ],
+   "winRate": 41.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 10,
+   "skills": [
+    "render",
+    "flying"
+   ],
+   "winRate": 43.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 93.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "name": "Ravenous Wolverine",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 2,
+   "health": 12,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 5,
+   "attack": 10,
+   "health": 44,
+   "skills": [
+    "flying",
+    "bounty",
+    "stunOnHit"
+   ],
+   "winRate": 38.1,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 10,
+    "to": 11,
+    "winRate": 38.1,
+    "dist": 0.45375
+   }
+  },
+  {
+   "id": "reef-manta-glider",
+   "name": "Reef Manta Glider",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 16,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 48.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 8,
+   "health": 22,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 46.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 8,
+   "skills": [
+    "reload"
+   ],
+   "winRate": 20.6,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 8,
+    "winRate": 46.3,
+    "dist": 0.10250000000000004
+   }
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [],
+   "winRate": 80,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 5,
+    "winRate": 43.8,
+    "dist": 0.09750000000000003
+   }
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 5,
+   "health": 15,
+   "skills": [],
+   "winRate": 46.3,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 8,
+    "winRate": 55.6,
+    "dist": 0.07874999999999999
+   }
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": null,
+   "cost": 3,
+   "wait": 3,
+   "attack": 4,
+   "health": 48,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "rockslide-ram",
+   "name": "Rockslide Ram",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 84.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 19,
+   "skills": [
+    "onReadyGold",
+    "bounty"
+   ],
+   "winRate": 58.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 61.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 52.5,
+    "dist": 0.050000000000000044
+   }
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "rarity": null,
+   "cost": 3,
+   "wait": 2,
+   "attack": 3,
+   "health": 20,
+   "skills": [
+    "onDeathSpawn"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 22,
+   "skills": [
+    "poison",
+    "bounty"
+   ],
+   "winRate": 42.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "sandstorm-roc",
+   "name": "Sandstorm Roc",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 18,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 52.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 5,
+   "health": 7,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 88.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "scraper-of-skies",
+   "name": "Scraper of Skies",
+   "rarity": null,
+   "cost": 2,
+   "wait": 4,
+   "attack": 0,
+   "health": 50,
+   "skills": [
+    "bounty",
+    "triggers"
+   ],
+   "winRate": 39.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 2,
+   "health": 30,
+   "skills": [
+    "armor",
+    "revive"
+   ],
+   "winRate": 31.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd's Bark",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 16,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 70.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 16,
+    "to": 12,
+    "winRate": 53.1,
+    "dist": 0.05625000000000002
+   }
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 18,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 44.4,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 8,
+    "winRate": 52.5,
+    "dist": 0.10999999999999999
+   }
+  },
+  {
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "onReadyGrace"
+   ],
+   "winRate": 18.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 12,
+   "skills": [
+    "onReadyGrace"
+   ],
+   "winRate": 20.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "onSpawnGrace"
+   ],
+   "winRate": 40.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [],
+   "winRate": 8.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 3,
+    "winRate": 33.1,
+    "dist": 0.00874999999999998
+   }
+  },
+  {
+   "id": "silverback-brawler",
+   "name": "Silverback Brawler",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 30,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 16,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 67.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "health",
+    "from": 16,
+    "to": 8,
+    "winRate": 56.3,
+    "dist": 0.08750000000000002
+   }
+  },
+  {
+   "id": "snapper-hatchling",
+   "name": "Snapper Hatchling",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 12,
+   "skills": [],
+   "winRate": 40.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "expose",
+    "flying"
+   ],
+   "winRate": 68.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 35,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [],
+   "winRate": 81.9,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 6,
+    "winRate": 55.6,
+    "dist": 0.008750000000000036
+   }
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 22.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "squires-mount",
+   "name": "Squire's Mount",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 14,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 76.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "stable-colt",
+   "name": "Stable Colt",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 9,
+   "skills": [],
+   "winRate": 84.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "stag-knight",
+   "name": "Stag Knight",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 6,
+   "health": 22,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 43.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Golem",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 6,
+   "health": 26,
+   "skills": [
+    "shell"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "stone-turtle-warden",
+   "name": "Stone Turtle Warden",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 30,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 41.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "stoneheart-golem",
+   "name": "Stoneheart Golem",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 34,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 40.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "rarity": null,
+   "cost": 3,
+   "wait": 4,
+   "attack": 9,
+   "health": 26,
+   "skills": [
+    "bounty",
+    "triggers"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "strangler-vine",
+   "name": "Strangler Vine",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 16,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 66.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "flying",
+    "triggers"
+   ],
+   "winRate": 35.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 9,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 93.1,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 56.9,
+    "dist": 0.00374999999999992
+   }
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 6,
+   "health": 11,
+   "skills": [
+    "esprit",
+    "flying"
+   ],
+   "winRate": 58.1,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 63.8,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 29.4,
+    "dist": 0.04624999999999996
+   }
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 7,
+   "health": 18,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 46.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 15,
+   "skills": [
+    "esprit",
+    "flying"
+   ],
+   "winRate": 75.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "heroic"
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 83.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "termite-mound",
+   "name": "Termite Mound",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 0,
+   "health": 22,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 13.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [],
+   "winRate": 60,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 4,
+   "health": 9,
+   "skills": [],
+   "winRate": 97.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "armor"
+   ],
+   "winRate": 33.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Spirit",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 9,
+   "skills": [],
+   "winRate": 61.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "timber-wolf-pack",
+   "name": "Timber Wolf Pack Leader",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 14,
+   "skills": [],
+   "winRate": 40.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "armor",
+    "onSpawnGold"
+   ],
+   "winRate": 36.9,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "secret",
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 5,
+    "winRate": 56.3,
+    "dist": 0.0025000000000000577
+   }
+  },
+  {
+   "id": "toucan-courier",
+   "name": "Toucan Courier",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 33.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "poison"
+   ],
+   "winRate": 98.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "onSpawnGold"
+   ],
+   "winRate": 75.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 38.8,
+    "dist": 0.08749999999999997
+   }
+  },
+  {
+   "id": "trickster-fox",
+   "name": "Trickster Fox",
+   "rarity": null,
+   "cost": 1,
+   "wait": 0,
+   "attack": 1,
+   "health": 7,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 6.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 24,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 45.6,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [],
+   "winRate": 40.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "rarity": null,
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 16,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 56.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "uncommon"
+  },
+  {
+   "id": "turtle-bastion",
+   "name": "Turtle Bastion",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 3,
+   "health": 36,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 33.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "tusked-vanguard",
+   "name": "Tusked Vanguard",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 9,
+   "skills": [],
+   "winRate": 98.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 18,
+   "skills": [
+    "onDeathSpawn",
+    "bounty"
+   ],
+   "winRate": 36.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": null,
+   "cost": 3,
+   "wait": 3,
+   "attack": 8,
+   "health": 34,
+   "skills": [
+    "poison",
+    "bounty"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 68.1,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 34.4,
+    "dist": 0.003750000000000031
+   }
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 4,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 70.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 2,
+    "winRate": 38.8,
+    "dist": 0.04750000000000004
+   }
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "cost": 3,
+   "wait": 0,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "paralyze"
+   ],
+   "winRate": 36.9,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 4,
+    "winRate": 36.9,
+    "dist": 0.26625
+   }
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "rarity": null,
+   "cost": 0,
+   "wait": 1,
+   "attack": 6,
+   "health": 7,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 100,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "war-drum-mandrill",
+   "name": "War-Drum Mandrill",
+   "rarity": null,
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 16,
+   "skills": [],
+   "winRate": 35,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  },
+  {
+   "id": "war-hound",
+   "name": "War Hound",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 71.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "pack",
+   "suggestRarity": "superrare"
+  },
+  {
+   "id": "war-panther",
+   "name": "War Panther",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 7,
+   "health": 20,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 41.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "warhorse-charger",
+   "name": "Warhorse Charger",
+   "rarity": null,
+   "cost": 2,
+   "wait": 2,
+   "attack": 8,
+   "health": 22,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 48.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "rarity": null,
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 4,
+   "skills": [],
+   "winRate": 62.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "rare"
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "rarity": null,
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 26,
+   "skills": [
+    "sweep",
+    "bounty"
+   ],
+   "winRate": 42.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "common"
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 5,
+   "attack": 10,
+   "health": 44,
+   "skills": [
+    "flying",
+    "bounty",
+    "freeze"
+   ],
+   "winRate": 38.1,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 10,
+    "to": 11,
+    "winRate": 38.1,
+    "dist": 0.45375
+   }
+  },
+  {
+   "id": "wolf-pack-runner",
+   "name": "Wolf Pack Runner",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 11,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 69.4,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "veryrare"
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 16,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 81.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "legendary"
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [],
+   "winRate": 10.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 26.9,
+    "dist": 0.07124999999999998
+   }
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": null,
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 13,
+   "skills": [
+    "bleed",
+    "rupture"
+   ],
+   "winRate": 73.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "epic"
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": null,
+   "cost": 3,
+   "wait": 5,
+   "attack": 10,
+   "health": 50,
+   "skills": [
+    "bounty"
+   ],
+   "winRate": 36.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "suggestRarity": "starter"
+  }
+ ]
+}

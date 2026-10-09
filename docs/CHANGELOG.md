@@ -13,6 +13,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Archetype design sheet: 10 archetypes and the Elder / Outer / Forgotten Ones trio. It's in the hub's new 📐 Design tab, with the skills, balance, card-stage and grab-bag audits.
 - No sideways scrollbar flash during page turns.
 - Raid ghost decks stay full even when many cards are one-copy (Unique, Legendary).
+- **The CPU saves Lumber** for costly cards. Before, enemies almost never played them.
+- **Card balance:** every card is measured by simulated matches. See the hub's ⚖️ Balance tab and the report in 📐 Design. Ant Warrior was trimmed to 3/3.
+- **Skirmish editor:** simulate against a new player's likely deck; Auto-tune Armour to the fight's target; a whole-map difficulty strip. Thistle Fields, Pebble Beach and the Grotto were retuned with these tools.
+- The hub opens on a short 🎯 Action items list; the long Master doc is retired.
 
 ## 2026-10-08 (late)
 - Skirmish nodes: green when cleared (no tick), with a sheen.

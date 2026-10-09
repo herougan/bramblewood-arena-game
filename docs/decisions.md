@@ -131,7 +131,7 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** Keep
 
 **B1. Open-mode difficulty tweaks** · Decide · Balance · asked 2026-10-08
-- Re-simulated under Open fights (difficulty-open-mode-2026-10-08.md): Maps 1–4 got easier; Map 3's first two skirmishes (16 HP) are now easier than Map 2's; the Frost Yeti King (130 HP) is a 0% wall. Proposed: Badger Warband and Quill Line to ~22 HP; Yeti King to ~90 HP or make its fight Gravity (collapsing) as a special.
+- Re-simulated under Open fights (difficulty-open-mode-2026-10-08.md): Maps 1–4 got easier; Map 3's first two skirmishes (16 HP) are now easier than Map 2's; the Frost Yeti King (130 HP) is a 0% wall. Proposed: Badger Warband and Quill Line to ~22 HP; Yeti King to ~90 HP or make its fight Gravity (collapsing) as a special. Superseded if B2 retunes all maps.
   - Apply both
   - Only Map 3
   - Only Yeti King
@@ -139,11 +139,11 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** Apply both
 
 **B2. Skirmish balance audit proposals** · Decide · Balance · asked 2026-10-09
-- skirmish-balance-audit-2026-10-08.md proposes HP changes on 72 nodes and 33 deck swaps to smooth the zig-zag difficulty curve (15 walls, 19 trivial fights). Thistle Fields, Pebble Beach and the Grotto were tuned separately on 2026-10-09.
-  - Apply all
-  - Apply walls and trivial fights only
+- skirmish-balance-audit-2026-10-08.md proposed HP changes on 72 nodes and 33 deck swaps. It was measured before today's CPU fix (the enemy now plays its Lumber cards), so its numbers are stale. Better route: retune every map with the skirmish editor's new Auto-tune against a new player's likely deck at each fight, as was done for Thistle Fields, Pebble Beach and the Grotto on 2026-10-09.
+  - Retune all maps with the new tools
+  - Only the walls and trivial fights
   - Leave as is
-- **Default:** Apply walls and trivial fights only
+- **Default:** Retune all maps with the new tools
 
 **B3. Enemy deck level reads 0 on most nodes** · Decide · Balance · asked 2026-10-09
 - The Enemy deck Lv is rarity × (1 + card level) − 1 per card. Enemy cards are all level 0 and mostly Common or unrated, so nearly every node reads 0, and it ignores castle HP. Tried weighing unrated cards by their power (2026-10-09): most nodes still read 0 and the numbers jumped about (Map 2's boss 0, a Map 4 skirmish 4), so it wasn't shipped. Options: give enemy cards levels that rise map by map (also makes later maps harder); fill in rarities on all cards; or base the badge on simulated win rate instead.
@@ -189,6 +189,22 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
   - Start with Evolution
   - Start with the trio
 - **Default:** Follow the suggested order
+
+**B4. Cards that cost 3+ Lumber don't pay off** · Decide · Balance · asked 2026-10-09
+- In simulation, 3+ cost cards (all five Legendary dragons included) score ~38%, below a plain reference deck: matches end in ~17 rounds and a 3–4 cost card with Wait 4–5 arrives too late. Tested start-with-2-Lumber, +1 Lumber every 2 rounds, −1 cost and Wait, and +15% stats per cost: none fixed it. Options: give big cards an immediate effect when played (a roar, a summon, damage), cut their Wait to 1–2, add Lumber-generating cards (Builders, from the Scrapper archetype), or check real players' matches first.
+  - Big cards act when played
+  - Shorter Wait on big cards
+  - Lumber engines
+  - Check real matches first
+- **Default:** Big cards act when played
+
+**B5. Rarity pass and stat fixes from the balance report** · Decide · Balance · asked 2026-10-09
+- card-balance-2026-10-09.md: 199 of 288 cards have no rarity; giving each one the rarity its measured strength suggests would also fix the enemy deck Lv badge (B3). 64 rated cards are outside their rarity's band, each with a one-stat fix (e.g. Chipmunk Cavalry 4→3 Attack, Raccoon Nightcrew 5→8 Attack). Many free cards measure as Legendary-strong: make them rarer, or weaker.
+  - Rarity pass, then stat fixes
+  - Rarity pass only
+  - Stat fixes only
+  - Leave as is
+- **Default:** Rarity pass, then stat fixes
 
 ## Decided
 

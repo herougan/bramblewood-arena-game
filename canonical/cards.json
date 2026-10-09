@@ -249,7 +249,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 3,
-    "health": 6,
+    "health": 3,
     "flavor": "A worker who picked up a twig one day and never put it down.",
     "locked": true,
     "archetypes": [

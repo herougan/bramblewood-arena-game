@@ -79,12 +79,16 @@ def md_html(md):
     body = body.replace('href="decisions.md"', 'href="#decisions" data-tab="decisions"')
     return re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', body)
 rd = lambda *p: open(os.path.join(ROOT, *p), encoding='utf-8').read()
-body = md_html(rd('docs', 'MASTER.md'))
+# 2026-10-09 (user: "Summarise all the most important action items in the master artefact. Remove the
+# master md, don't use it"): the landing tab is the short Action items list; MASTER.md is retired from the hub.
+body = md_html(rd('docs', 'action-items.md')).replace('<span class="doc-ref" title="Project doc: claude/card-balance-2026-10-09.md">report</span>', '<a href="#balance" data-tab="balance">report</a>')
+BAL = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'card-balance.json'), encoding='utf-8'))
+bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'rows': [{k: r.get(k) for k in ('id','name','rarity','cost','wait','attack','health','skills','winRate','band','verdict','source','suggest','suggestRarity')} for r in BAL['rows']]}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 changelog = md_html(rd('docs', 'CHANGELOG.md'))
 
 # 4) Claude's guide: standing instructions, skills, and the docs to read before a task.
 RULES = [
-  'End every update with the Master doc in view (<code>project_write claude/MASTER.md</code>, <code>present_to_user: true</code>).',
+  'End every update with this hub in view: publish it and open it. The 🎯 Action items tab is the summary (MASTER.md is retired, 2026-10-09).',
   'Never buy PixelLab, Supabase or Vercel credits or plans without explicit approval.',
   'T3 (server-checked fights) is applied only when you say "apply it".',
   'Never use the watermarked stock image.',
@@ -129,6 +133,7 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
+  ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
   ('Archetypes: 10 + the Elder / Outer / Forgotten trio', 'archetypes-design-2026-10-09.md'),
   ('Skills and effects audit, 11 new skills', 'skills-audit-2026-10-08.md'),
   ('Skirmish balance audit', 'skirmish-balance-audit-2026-10-08.md'),
@@ -248,11 +253,22 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dec-opts{{margin:6px 0 0; padding-left:20px; font-size:14px;}}
 .dec-def, .dec-out{{margin:6px 0 0; font-size:14px;}} .dec-out{{color:var(--accent);}}
 .dec-date{{font-size:12px; color:var(--ink-muted); margin-top:6px;}}
+.bal{{max-width:1100px; margin:0 auto; padding:20px 16px 80px;}}
+.bal-wrap{{overflow-x:auto; margin-top:12px; border-radius:12px; border:1px solid var(--line, rgba(127,127,127,.25));}}
+.bal-t{{width:100%; border-collapse:collapse; font-size:13.5px;}}
+.bal-t th{{position:sticky; top:0; text-align:left; padding:8px 10px; background:var(--card, #f6f1e4); cursor:pointer; white-space:nowrap; user-select:none;}}
+.bal-t th[aria-sort]::after{{content:' ▾'; opacity:.6;}} .bal-t th[aria-sort=ascending]::after{{content:' ▴';}}
+.bal-t td{{padding:6px 10px; border-top:1px solid var(--line, rgba(127,127,127,.18)); white-space:nowrap;}}
+.bal-t td.wr{{font-variant-numeric:tabular-nums; font-weight:700;}}
+.bal-t tr.v-strong td.wr{{color:#b4235a;}} .bal-t tr.v-weak td.wr{{color:#2563a8;}} .bal-t tr.v-ok td.wr{{color:#2f7d43;}}
+.bal-bar{{display:inline-block; width:80px; height:8px; border-radius:4px; background:rgba(127,127,127,.18); position:relative; vertical-align:middle; margin-left:6px;}}
+.bal-bar i{{position:absolute; top:0; bottom:0; background:rgba(47,125,67,.35); border-radius:4px;}} .bal-bar b{{position:absolute; top:-2px; width:3px; height:12px; background:currentColor; border-radius:2px;}}
 .dec-empty{{color:var(--ink-muted); padding:20px; text-align:center;}}
 </style></head><body>
 <header><h1>🌿 Bramblewood</h1><a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play ↗</a>
 <nav role="tablist" aria-label="Pages">
-<button role="tab" id="t-master" aria-controls="p-master" data-tab="master">📜 Master</button>
+<button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🎯 Action items</button>
+<button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
@@ -272,6 +288,11 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="dec-chips" id="decKinds" role="group" aria-label="Type"></div>
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc">{changelog}</article></section>
+<section class="panel" id="p-balance" role="tabpanel" aria-labelledby="t-balance" hidden><div class="bal">
+<div class="dec-head"><h2>Card balance</h2><p>Each card's win rate in simulated matches (<span id="balN"></span>). About 50% means it adds nothing over the reference deck; the band is what its rarity should deliver. The method and findings are in the 📐 Design tab → Card balance report. Click a column to sort.</p></div>
+<div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
+<input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
+<div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>
@@ -298,6 +319,24 @@ const DEC = {decisions_json};
       ${{i.outcome ? `<p class="dec-out"><b>Outcome:</b> ${{esc(i.outcome)}}</p>` : ''}}
       <div class="dec-date">Asked ${{esc(i.asked||'—')}}${{i.decided ? ' · decided ' + esc(i.decided) : ''}}</div></article>`).join('') : '<p class="dec-empty">Nothing matches.</p>';
   }}
+  render();
+}})();
+(function(){{
+  const B = {bal_json}, rows = B.rows, esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
+  document.getElementById('balN').textContent = `${{rows.length}} cards, ${{B.games}} games each, ${{B.generated}}`;
+  let v = '', q = '', key = 'winRate', dir = -1;
+  const fixTxt = r=> r.suggest ? `${{r.suggest.stat==='attack'?'Atk':'HP'}} ${{r.suggest.from}} → ${{r.suggest.to}} (${{r.suggest.winRate}}%)` : r.suggestRarity ? `rarity: ${{r.suggestRarity}}` : '';
+  const val = (r, k)=> k==='band' ? r.band[0] : k==='fix' ? fixTxt(r) : r[k]==null ? '' : r[k];
+  function render(){{
+    const list = rows.filter(r=> (!v || (v==='norar' ? !r.rarity : v==='fix' ? !!r.suggest : r.verdict===v)) && (!q || (r.name+' '+r.id+' '+(r.skills||[]).join(' ')).toLowerCase().includes(q)))
+      .sort((a,b)=>{{ const x = val(a,key), y = val(b,key); return (typeof x==='number' && typeof y==='number' ? x-y : String(x).localeCompare(String(y))) * dir; }});
+    document.getElementById('balBody').innerHTML = list.map(r=> `<tr class="v-${{r.verdict}}"><td>${{esc(r.name)}}${{(r.skills||[]).length ? ` <small style="opacity:.6">${{esc(r.skills.join(', '))}}</small>` : ''}}</td><td>${{esc(r.rarity||'–')}}</td><td>${{r.cost}}</td><td>${{r.wait}}</td><td>${{r.attack}}</td><td>${{r.health}}</td>
+      <td class="wr">${{r.winRate}}<span class="bal-bar"><i style="left:${{r.band[0]}}%; width:${{r.band[1]-r.band[0]}}%"></i><b style="left:calc(${{Math.min(100,r.winRate)}}% - 1px)"></b></span></td><td>${{Math.round(r.band[0])}}–${{Math.round(r.band[1])}}</td><td>${{esc(fixTxt(r))}}</td></tr>`).join('') || '<tr><td colspan="9" class="dec-empty">Nothing matches.</td></tr>';
+    document.querySelectorAll('.bal-t th').forEach(th=> th.dataset.k===key ? th.setAttribute('aria-sort', dir>0?'ascending':'descending') : th.removeAttribute('aria-sort'));
+  }}
+  document.querySelectorAll('.bal-t th').forEach(th=> th.onclick = ()=>{{ if(key===th.dataset.k) dir = -dir; else {{ key = th.dataset.k; dir = (key==='name'||key==='rarity'||key==='fix') ? 1 : -1; }} render(); }});
+  document.querySelectorAll('#balSeg button').forEach(b=> b.onclick = ()=>{{ v = b.dataset.v; document.querySelectorAll('#balSeg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
+  document.getElementById('balQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
   render();
 }})();
 const tabs = [...document.querySelectorAll('[role=tab]')];

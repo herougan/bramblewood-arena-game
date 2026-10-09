@@ -1902,7 +1902,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // a saved-for card is affordable it usually plays that instead of a random free one.
     const cardValue = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; };
     if(!ai.discardUsedThisTurn && ai.hand.length > 1){
-      const saving = ai.hand.filter(hc=> costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + 3);
+      const saving = ai.hand.filter(hc=> costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + 2); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
       if(saving.length){
         const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0);
         if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
