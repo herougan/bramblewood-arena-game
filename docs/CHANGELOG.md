@@ -12,6 +12,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - A new opening screen: a slim panel on the left, the scene bright on the right with a fan of real cards, a letter-drop title with a gold sheen, and drifting tips.
 - Archetype design sheet: 10 archetypes and the Elder / Outer / Forgotten Ones trio. It's in the hub's new 📐 Design tab, with the skills, balance, card-stage and grab-bag audits.
 - No sideways scrollbar flash during page turns.
+- Raid ghost decks stay full even when many cards are one-copy (Unique, Legendary).
 
 ## 2026-10-08 (late)
 - Skirmish nodes: green when cleared (no tick), with a sheen.

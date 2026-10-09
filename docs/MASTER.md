@@ -2,7 +2,7 @@
 
 **Purpose:** the short list of what matters most in this game, its status, and where each thing is defined.
 
-> ➡️ **Waiting on you: 34 items.** They now live in the hub's **🗳️ Decisions** tab (search, filters, Yet / Done), generated from [`decisions.json`](decisions.json); [`decisions.md`](decisions.md) is the same list as text. The biggest: **S1** "apply it" for the admin player list, **S2** anti-cheat tier 1 ([`security-review-2026-10-08.md`](security-review-2026-10-08.md)), **B1** Open-mode difficulty tweaks ([`difficulty-open-mode-2026-10-08.md`](difficulty-open-mode-2026-10-08.md)), **A1–A3** the AI art pipeline ([`asset-pipeline-action-items.md`](asset-pipeline-action-items.md)), **F3** Enchant/Refine numbers, **G2** siding.
+> ➡️ **Waiting on you: 33 items.** They now live in the hub's **🗳️ Decisions** tab (search, filters, Yet / Done), generated from [`decisions.json`](decisions.json); [`decisions.md`](decisions.md) is the same list as text. The biggest: **S1** "apply it" for the admin player list, **S2** anti-cheat tier 1 ([`security-review-2026-10-08.md`](security-review-2026-10-08.md)), **B1** Open-mode difficulty tweaks ([`difficulty-open-mode-2026-10-08.md`](difficulty-open-mode-2026-10-08.md)), **A1–A3** the AI art pipeline ([`asset-pipeline-action-items.md`](asset-pipeline-action-items.md)), **F3** Enchant/Refine numbers, **G2** siding.
 
 **🧭 Master hub:** [one page with tabs for this doc, the changelog, the Effects Lab, the Visual Library and Claude's guide](https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J). Claude's guide lists the standing instructions, the skills Claude uses, and which doc to read before each kind of task. The Effects Lab tab has a "Coming next" list of effects marked TBC.
 
@@ -17,7 +17,8 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-09 (morning): your overnight queue and the 23:54 list. **Maps:** Thistle Fields 🌼 and Pebble Beach 🏖️ now sit between the Outskirts and Sunken Hollow (13 main maps). Pebble Beach has a sea cave that opens **Smugglers' Grotto**, the first **sub-map**: you zoom into the cave mouth, and inside are the first elites and rarer rewards. **Promotion:** a Worker Ant at Lv 3 becomes an Ant Warrior, Forager Ant or Soldier Ant (Forge). **Hero rarity** climbs from Common to Legendary as it levels. **Eggs:** the first one drops on the 4th map. **Opening screen** redone. **Design:** the archetype sheet (10 + the Elder / Outer / Forgotten trio) and the four audits are in the hub's 📐 Design tab. Earlier updates: [`CHANGELOG.md`](CHANGELOG.md)._
+_Last updated: 2026-10-09 (9 am): **Raid ghost decks** no longer come up short when many cards are one-copy (Unique, Legendary): they widen to nearby cards, and a new test (`tests/ghost-unique.js`) marks every third card Unique to prove it. That unblocks giving more cards Unique rarity (decision T10 done). **Enemy deck level:** a power-based guess for unrated cards was tried and dropped (most fights still read 0, and the numbers jumped about); decision B3 now has three real options. Phone check of the beach cave, the Grotto and Promotion: all fit. Earlier today: Thistle Fields and Pebble Beach maps, the Smugglers' Grotto sub-map, Promotion, Hero rarity, the 4th-map egg, the new opening screen and the 📐 Design tab ([`CHANGELOG.md`](CHANGELOG.md))._
+
 
 
 ## Quick check: what we do NOT have

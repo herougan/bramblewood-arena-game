@@ -9953,6 +9953,13 @@ function generateGhostDeck(defs, stage, seed, maxStage){
     const pool = (Object.keys(deck).filter(id=> !(defs[id].cost>0)).reduce((s,id)=> s+deck[id], 0) < 8 && cheap.length) ? cheap : band;
     add(pool[Math.floor(r()*pool.length)]);
   }
+  // Fallback (2026-10-09): a band full of one-copy cards (Unique, Legendary…) can run dry before 20.
+  // Widen outwards from the band, nearest power first, until the deck is full.
+  if(total < DECK_SIZE){
+    const mid = (lo + hi) / 2;
+    const near = ids.map((id, k)=> [id, Math.abs(k - mid)]).sort((a,b)=> a[1]-b[1]).map(x=> x[0]);
+    for(let pass=0; pass<3 && total<DECK_SIZE; pass++) for(const id of near){ if(total >= DECK_SIZE) break; add(id); }
+  }
   return deck;
 }
 function ghostIdentity(seed){

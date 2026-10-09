@@ -146,11 +146,12 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** Apply walls and trivial fights only
 
 **B3. Enemy deck level reads 0 on most nodes** · Decide · Balance · asked 2026-10-09
-- Most enemy cards have no rarity set (171 of 355 cards), so the skirmish panel's Enemy deck Lv counts them as Base and shows 0. Option: infer a weight from each card's power (attack, health, skills, cost) when it has no rarity.
-  - Infer from power
-  - Set rarities on all cards (a content pass)
+- The Enemy deck Lv is rarity × (1 + card level) − 1 per card. Enemy cards are all level 0 and mostly Common or unrated, so nearly every node reads 0, and it ignores castle HP. Tried weighing unrated cards by their power (2026-10-09): most nodes still read 0 and the numbers jumped about (Map 2's boss 0, a Map 4 skirmish 4), so it wasn't shipped. Options: give enemy cards levels that rise map by map (also makes later maps harder); fill in rarities on all cards; or base the badge on simulated win rate instead.
+  - Enemy card levels rise by map
+  - Rarity pass on all cards
+  - Badge from simulated win rate
   - Leave as is
-- **Default:** Infer from power
+- **Default:** Badge from simulated win rate
 
 **C2. Lock the battle type in the skirmish editor?** · Clarify · Conquest · asked 2026-10-09
 - You said 'You CANNOT change the battle type once it's been set in the skirmish editor'. In a local test the change saved fine. Is that a bug you hit (it reverted?), or a request to lock the field after the first save?
@@ -188,12 +189,6 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
   - Start with Evolution
   - Start with the trio
 - **Default:** Follow the suggested order
-
-**T10. New Unique cards can break the raid ghost generator** · Note · Tech · asked 2026-10-09
-- Making the Wandering Traveller Unique left stage-5 ghost decks under 20 cards, so it was reverted. The generator needs a fallback before more Unique cards are added.
-  - Fix the generator next
-  - Later
-- **Default:** Fix the generator next
 
 ## Decided
 
@@ -289,3 +284,10 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 
 **F2. Shiny in battle** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Shiny is rolled in the one grant function, so any card received can be Shiny. A card you own a Shiny copy of is Shiny in your hand and on the board, and units it spawns are Shiny too.
+
+**T10. New Unique cards can break the raid ghost generator** · Note · Tech · asked 2026-10-09
+- Making the Wandering Traveller Unique left stage-5 ghost decks under 20 cards, so it was reverted. The generator needs a fallback before more Unique cards are added.
+  - Fix the generator next
+  - Later
+- **Default:** Fix the generator next
+- **Outcome:** Fixed 2026-10-09: ghost decks widen to nearby cards when the band runs out of copies; tests/ghost-unique.js marks every third card Unique and checks all stages.
