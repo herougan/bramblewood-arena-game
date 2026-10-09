@@ -71,7 +71,7 @@
   {
    "id": "acacia-giraffe",
    "name": "Acacia Giraffe",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 4,
@@ -86,8 +86,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "starter"
+   "source": "pack"
   },
   {
    "id": "acorn-chipmunk",
@@ -110,7 +109,7 @@
   {
    "id": "adder-ambusher",
    "name": "Adder Ambusher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -120,18 +119,17 @@
    ],
    "winRate": 66.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "alley-cat",
    "name": "Alley Cat",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
@@ -139,18 +137,17 @@
    "skills": [],
    "winRate": 61.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "rare"
+   "source": "pack"
   },
   {
    "id": "alpha-howler",
    "name": "Alpha Howler",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -166,13 +163,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "alpine-avalanche",
    "name": "Alpine Avalanche",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -187,13 +183,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "ancient-sloth-titan",
    "name": "Ancient Sloth Titan",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 6,
    "attack": 6,
@@ -208,13 +203,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "ant-hill",
    "name": "Ant Hill",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 5,
@@ -230,8 +224,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "ant-scout",
@@ -281,7 +274,7 @@
   {
    "id": "antler-skirmisher",
    "name": "Antler Skirmisher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -289,18 +282,17 @@
    "skills": [],
    "winRate": 62.5,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "arctic-fox-raider",
    "name": "Arctic Fox Raider",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -310,18 +302,24 @@
    ],
    "winRate": 78.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "unique"
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 5,
+    "winRate": 74.4,
+    "dist": 0.10875000000000001
+   }
   },
   {
    "id": "armored-mastiff",
    "name": "Armored Mastiff",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 6,
@@ -336,13 +334,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "ash-cloud-condor",
    "name": "Ash Cloud Condor",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -353,18 +350,17 @@
    ],
    "winRate": 63.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "badger-berserker",
    "name": "Badger Berserker",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 6,
@@ -374,18 +370,24 @@
    ],
    "winRate": 81.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 4,
+    "winRate": 63.1,
+    "dist": 0.003750000000000031
+   }
   },
   {
    "id": "badger-sapper",
    "name": "Badger Sapper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 7,
@@ -400,8 +402,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "badger-trench-digger",
@@ -426,7 +427,7 @@
   {
    "id": "barnacle-fortress",
    "name": "Barnacle Fortress",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 0,
@@ -442,12 +443,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 0,
+    "to": 2,
+    "winRate": 46.9,
+    "dist": 0.006249999999999978
+   }
   },
   {
    "id": "barrow-leech-bat",
    "name": "Barrow Leech",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 3,
@@ -458,18 +465,17 @@
    ],
    "winRate": 75,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "epic"
+   "source": "pack"
   },
   {
    "id": "basalt-boar",
    "name": "Basalt Boar",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 4,
@@ -484,13 +490,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "bear-cub",
    "name": "Bear Cub",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -498,18 +503,24 @@
    "skills": [],
    "winRate": 76.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 6,
+    "winRate": 60,
+    "dist": 0.03500000000000003
+   }
   },
   {
    "id": "beaver-builder",
    "name": "Beaver Builder",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -524,13 +535,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "bee-drone",
    "name": "Bee Drone",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -541,13 +551,19 @@
    ],
    "winRate": 76.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": false,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 5,
+    "winRate": 67.5,
+    "dist": 0.040000000000000036
+   }
   },
   {
    "id": "bee-forager",
@@ -572,7 +588,7 @@
   {
    "id": "bee-knight",
    "name": "Bee Knight",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -582,13 +598,12 @@
    ],
    "winRate": 56.3,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": false,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "bee-sentry",
@@ -620,7 +635,7 @@
   {
    "id": "beetle-battering-ram",
    "name": "Beetle Battering-Ram",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 2,
    "attack": 5,
@@ -631,13 +646,19 @@
    ],
    "winRate": 85,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 3,
+    "winRate": 75,
+    "dist": 0.11499999999999999
+   }
   },
   {
    "id": "beetle-grunt",
@@ -646,9 +667,9 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 4,
+   "health": 6,
    "skills": [],
-   "winRate": 19.4,
+   "winRate": 34.4,
    "band": [
     35,
     60
@@ -658,7 +679,7 @@
    "source": "map",
    "suggest": {
     "stat": "health",
-    "from": 4,
+    "from": 6,
     "to": 7,
     "winRate": 49.4,
     "dist": 0.018750000000000044
@@ -667,7 +688,7 @@
   {
    "id": "berserker-boar",
    "name": "Berserker Boar",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 6,
@@ -682,8 +703,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "black-dragon",
@@ -716,7 +736,7 @@
   {
    "id": "blessed-avatar",
    "name": "Blessed Avatar",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 2,
    "attack": 6,
@@ -730,12 +750,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 7,
+    "winRate": 15.6,
+    "dist": 0.31875
+   }
   },
   {
    "id": "blind-cave-fish",
    "name": "Blind Cave Fish",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -750,8 +776,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggestRarity": "common"
+   "source": "map"
   },
   {
    "id": "blue-dragon",
@@ -785,7 +810,7 @@
   {
    "id": "boar-rampager",
    "name": "Boar Rampager",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 2,
    "attack": 6,
@@ -796,18 +821,24 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 3,
+    "winRate": 71.9,
+    "dist": 0.08374999999999999
+   }
   },
   {
    "id": "bog-behemoth",
    "name": "Bog Behemoth",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 4,
    "attack": 7,
@@ -822,13 +853,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "bog-leech",
    "name": "Bog Leech",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -838,18 +868,24 @@
    ],
    "winRate": 79.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "unique"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 4,
+    "winRate": 73.1,
+    "dist": 0.09624999999999995
+   }
   },
   {
    "id": "bone-diviner",
    "name": "Bone Diviner",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -860,18 +896,17 @@
    ],
    "winRate": 52.5,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "boreal-elk",
    "name": "Boreal Elk",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 5,
@@ -886,13 +921,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "bramble-sprout",
    "name": "Bramble Sprout",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -906,12 +940,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 10,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
   },
   {
    "id": "bramblewood-bonebreaker",
    "name": "Bonebreaker",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -926,13 +966,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "bramblewood-lynx",
    "name": "Bramblewood Lynx",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 6,
@@ -942,37 +981,35 @@
    ],
    "winRate": 73.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "superrare"
+   "source": "base"
   },
   {
    "id": "bramblewood-macaque",
    "name": "Bramblewood Macaque",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 10,
    "skills": [],
-   "winRate": 93.8,
+   "winRate": 66.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "legendary"
+   "source": "pack"
   },
   {
    "id": "buck-brawler",
    "name": "Buck Brawler",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -987,8 +1024,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "burrow-rabbit",
@@ -1065,29 +1101,35 @@
   {
    "id": "carrion-fly-swarm",
    "name": "Carrion Fly Swarm",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 3,
-   "health": 7,
+   "health": 5,
    "skills": [
     "poison",
     "flying"
    ],
-   "winRate": 100,
+   "winRate": 98.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 1,
+    "winRate": 65,
+    "dist": 0.015000000000000013
+   }
   },
   {
    "id": "cataphract-destrier",
    "name": "Cataphract Destrier",
-   "rarity": null,
+   "rarity": "common",
    "cost": 4,
    "wait": 4,
    "attack": 11,
@@ -1103,13 +1145,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "caustic-scorpion",
    "name": "Caustic Scorpion",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
    "attack": 5,
@@ -1120,40 +1161,45 @@
    ],
    "winRate": 58.1,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "cave-bat-swarm",
    "name": "Cave Bat Swarm",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 5,
+   "health": 3,
    "skills": [
     "swipe",
     "flying"
    ],
-   "winRate": 100,
+   "winRate": 96.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 61.3,
+    "dist": 0.022499999999999964
+   }
   },
   {
    "id": "cave-flitter",
    "name": "Cave Flitter",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
@@ -1163,18 +1209,24 @@
    ],
    "winRate": 90,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 56.3,
+    "dist": 0.07250000000000001
+   }
   },
   {
    "id": "cave-warlord",
    "name": "Cave Warlord",
-   "rarity": null,
+   "rarity": "common",
    "cost": 4,
    "wait": 5,
    "attack": 12,
@@ -1190,8 +1242,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "chipmunk-cavalry",
@@ -1199,26 +1250,19 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
+   "attack": 3,
    "health": 9,
    "skills": [
     "quick"
    ],
-   "winRate": 86.3,
+   "winRate": 55.6,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 4,
-    "to": 3,
-    "winRate": 55.6,
-    "dist": 0.08125000000000004
-   }
+   "source": "map"
   },
   {
    "id": "chipmunk-forager",
@@ -1275,7 +1319,7 @@
   {
    "id": "chipmunk-skirmisher",
    "name": "Chipmunk Skirmisher",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -1288,13 +1332,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "chipmunk-stockpiler",
    "name": "Chipmunk Stockpiler",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -1309,13 +1352,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "cinder-hornet",
    "name": "Cinder Hornet",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 0,
    "attack": 4,
@@ -1331,13 +1373,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "clownfish-scout",
    "name": "Clownfish Scout",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -1352,8 +1393,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "starter"
+   "source": "pack"
   },
   {
    "id": "cobalt-talon-fledgling",
@@ -1405,7 +1445,7 @@
   {
    "id": "colony",
    "name": "Colony",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 0,
@@ -1415,18 +1455,24 @@
    ],
    "winRate": 94.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 20,
+    "to": 12,
+    "winRate": 85.6,
+    "dist": 0.22124999999999995
+   }
   },
   {
    "id": "compost-grub",
    "name": "Compost Grub",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -1440,12 +1486,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 10,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
   },
   {
    "id": "constrictor-coil",
    "name": "Constrictor Coil",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -1461,13 +1513,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "coral-current-eel",
    "name": "Coral Current Eel",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -1477,18 +1528,17 @@
    ],
    "winRate": 64.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "rare"
+   "source": "pack"
   },
   {
    "id": "coral-polyp-colony",
    "name": "Coral Polyp Colony",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 1,
    "attack": 0,
@@ -1503,13 +1553,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "starter"
+   "source": "pack"
   },
   {
    "id": "coral-reef-shark",
    "name": "Coral Reef Shark",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 2,
    "wait": 1,
    "attack": 7,
@@ -1519,13 +1568,12 @@
    ],
    "winRate": 53.1,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "cottontail",
@@ -1548,7 +1596,7 @@
   {
    "id": "cricket-drummer",
    "name": "Cricket Drummer",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -1561,8 +1609,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "crimson-wing-duelist-cadet",
@@ -1621,7 +1668,7 @@
   {
    "id": "crocodile-ambusher",
    "name": "Crocodile Ambusher",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 8,
@@ -1636,8 +1683,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "cuttlefish-illusionist",
@@ -1662,7 +1708,7 @@
   {
    "id": "cypress-root-lurker",
    "name": "Cypress Root Lurker",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 2,
    "attack": 4,
@@ -1677,13 +1723,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "dam-wall",
    "name": "Dam Wall",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 2,
    "attack": 0,
@@ -1699,12 +1744,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 0,
+    "to": 3,
+    "winRate": 38.8,
+    "dist": 0.08749999999999997
+   }
   },
   {
    "id": "deep-cave-troll",
    "name": "Deep Cave Troll",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 2,
    "attack": 8,
@@ -1719,27 +1770,25 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "dolphin-knight",
    "name": "Dolphin Knight",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 4,
-   "health": 7,
+   "health": 6,
    "skills": [],
-   "winRate": 93.8,
+   "winRate": 74.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "legendary"
+   "source": "pack"
   },
   {
    "id": "dominion-nestguard",
@@ -1774,24 +1823,17 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 18.1,
+   "winRate": 47.5,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 47.5,
-    "dist": 0
-   }
+   "source": "map"
   },
   {
    "id": "duck-paddler",
@@ -1847,12 +1889,12 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 4,
+   "health": 3,
    "skills": [
     "swipe",
     "flying"
    ],
-   "winRate": 75.6,
+   "winRate": 61.3,
    "band": [
     35,
     60
@@ -1862,7 +1904,7 @@
    "source": "map",
    "suggest": {
     "stat": "health",
-    "from": 4,
+    "from": 3,
     "to": 2,
     "winRate": 41.3,
     "dist": 0.0625
@@ -1874,12 +1916,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 5,
+   "attack": 4,
    "health": 10,
    "skills": [
     "quick"
    ],
-   "winRate": 88.1,
+   "winRate": 86.3,
    "band": [
     35,
     60
@@ -1889,7 +1931,7 @@
    "source": "pack",
    "suggest": {
     "stat": "attack",
-    "from": 5,
+    "from": 4,
     "to": 3,
     "winRate": 58.1,
     "dist": 0.10625000000000007
@@ -1898,7 +1940,7 @@
   {
    "id": "dune-jackal-scout",
    "name": "Dune Jackal Scout",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 0,
    "attack": 3,
@@ -1913,13 +1955,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "dust-hyena",
    "name": "Dust Hyena",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -1929,18 +1970,24 @@
    ],
    "winRate": 87.5,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 6,
+    "winRate": 65.6,
+    "dist": 0.02124999999999999
+   }
   },
   {
    "id": "eagle-diver",
    "name": "Eagle Diver",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 6,
@@ -1952,18 +1999,24 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 3,
+    "winRate": 66.9,
+    "dist": 0.03374999999999995
+   }
   },
   {
    "id": "eagle-sharpshooter",
    "name": "Eagle Sharpshooter",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 3,
@@ -1979,8 +2032,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "earthworm",
@@ -2012,7 +2064,7 @@
   {
    "id": "echo-screecher",
    "name": "Echo Screecher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -2023,18 +2075,24 @@
    ],
    "winRate": 80.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "map",
-   "suggestRarity": "unique"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 70,
+    "dist": 0.06499999999999995
+   }
   },
   {
    "id": "elder-tortoise",
    "name": "Elder Tortoise",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 1,
    "attack": 1,
@@ -2049,13 +2107,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "elder-willow",
    "name": "Elder Willow",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 5,
    "attack": 9,
@@ -2071,13 +2128,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "elderhorn-monarch",
    "name": "Elderhorn Monarch",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 4,
    "attack": 8,
@@ -2093,74 +2149,91 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "ember-jackal",
    "name": "Ember Jackal",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 5,
+   "attack": 3,
    "health": 8,
    "skills": [
     "frenzy"
    ],
-   "winRate": 94.4,
+   "winRate": 88.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 8,
+    "to": 4,
+    "winRate": 63.1,
+    "dist": 0.003750000000000031
+   }
   },
   {
    "id": "ember-wisp",
    "name": "Ember Wisp",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
-   "health": 4,
+   "health": 3,
    "skills": [
     "triggers"
    ],
-   "winRate": 91.9,
+   "winRate": 79.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 3,
+    "to": 2,
+    "winRate": 61.9,
+    "dist": 0.016249999999999987
+   }
   },
   {
    "id": "ent",
    "name": "Ent",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 3,
-   "attack": 4,
+   "attack": 3,
    "health": 20,
    "skills": [],
-   "winRate": 96.9,
+   "winRate": 93.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 20,
+    "to": 14,
+    "winRate": 73.8,
+    "dist": 0.10250000000000004
+   }
   },
   {
    "id": "eyrie-warden",
    "name": "Eyrie Warden",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 3,
    "attack": 9,
@@ -2177,13 +2250,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "fawn-scout",
    "name": "Fawn Scout",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -2191,13 +2263,12 @@
    "skills": [],
    "winRate": 69.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "feral-tomcat",
@@ -2206,11 +2277,11 @@
    "cost": 0,
    "wait": 0,
    "attack": 3,
-   "health": 5,
+   "health": 3,
    "skills": [
     "quick"
    ],
-   "winRate": 95,
+   "winRate": 73.1,
    "band": [
     35,
     60
@@ -2220,7 +2291,7 @@
    "source": "map",
    "suggest": {
     "stat": "health",
-    "from": 5,
+    "from": 3,
     "to": 2,
     "winRate": 50.6,
     "dist": 0.03125
@@ -2229,7 +2300,7 @@
   {
    "id": "feral-tuskboar",
    "name": "Feral Tuskboar",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -2239,18 +2310,17 @@
    ],
    "winRate": 75,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "epic"
+   "source": "base"
   },
   {
    "id": "fiddler-crab-swarm",
    "name": "Fiddler Crab Swarm",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -2266,12 +2336,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "map",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 1,
+    "to": 2,
+    "winRate": 54.4,
+    "dist": 0.06874999999999998
+   }
   },
   {
    "id": "field-mouse",
    "name": "Field Mouse",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -2286,13 +2362,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "fire-drake-hatchling",
    "name": "Fire Drake Hatchling",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -2307,13 +2382,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "firetail-trickster",
    "name": "Firetail Trickster",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 5,
@@ -2324,13 +2398,19 @@
    ],
    "winRate": 85.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 9,
+    "to": 5,
+    "winRate": 71.9,
+    "dist": 0.08374999999999999
+   }
   },
   {
    "id": "forager-ant",
@@ -2338,29 +2418,22 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 4,
    "skills": [],
-   "winRate": 13.8,
+   "winRate": 40.6,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": false,
-   "source": "base",
-   "suggest": {
-    "stat": "attack",
-    "from": 1,
-    "to": 2,
-    "winRate": 40.6,
-    "dist": 0.06874999999999998
-   }
+   "source": "base"
   },
   {
    "id": "fox-kit",
    "name": "Fox Kit",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
@@ -2368,18 +2441,24 @@
    "skills": [],
    "winRate": 76.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 4,
+    "winRate": 61.9,
+    "dist": 0.016249999999999987
+   }
   },
   {
    "id": "fox-warchief",
    "name": "Fox Warchief",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -2395,8 +2474,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "frost-hare-sprinter",
@@ -2405,11 +2483,11 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 7,
+   "health": 5,
    "skills": [
     "evasive"
    ],
-   "winRate": 91.9,
+   "winRate": 81.3,
    "band": [
     35,
     60
@@ -2418,17 +2496,17 @@
    "locked": true,
    "source": "base",
    "suggest": {
-    "stat": "health",
-    "from": 7,
-    "to": 3,
-    "winRate": 56.3,
-    "dist": 0.08750000000000002
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 48.1,
+    "dist": 0.006250000000000033
    }
   },
   {
    "id": "frost-thistle-lynx",
    "name": "Frost Thistle Lynx",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 5,
@@ -2443,13 +2521,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "fungal-colossus",
    "name": "Fungal Colossus",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 6,
@@ -2465,13 +2542,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "gale-sprite",
    "name": "Gale Sprite",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -2484,13 +2560,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "gangrenous-leech",
    "name": "Gangrenous Leech",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
    "attack": 2,
@@ -2501,13 +2576,12 @@
    ],
    "winRate": 53.1,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "garden-snail",
@@ -2532,7 +2606,7 @@
   {
    "id": "glacial-ape-king",
    "name": "Glacial Ape-King",
-   "rarity": null,
+   "rarity": "common",
    "cost": 4,
    "wait": 6,
    "attack": 13,
@@ -2547,8 +2621,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "glacier-wolf-pack",
@@ -2573,7 +2646,7 @@
   {
    "id": "glacier-yak",
    "name": "Glacier Yak",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 1,
    "attack": 4,
@@ -2588,21 +2661,20 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "glowworm-cluster",
    "name": "Glowworm Cluster",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 1,
+   "attack": 2,
    "health": 5,
    "skills": [
     "onReadyGrace"
    ],
-   "winRate": 13.8,
+   "winRate": 23.1,
    "band": [
     35,
     60
@@ -2610,7 +2682,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 7,
+    "winRate": 46.9,
+    "dist": 0.006249999999999978
+   }
   },
   {
    "id": "gold-throated-acolyte",
@@ -2635,7 +2713,7 @@
   {
    "id": "golden-eagle-diver",
    "name": "Golden Eagle Diver",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -2646,18 +2724,24 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 73.1,
+    "dist": 0.09624999999999995
+   }
   },
   {
    "id": "gorge-wyrm",
    "name": "Gorge Wyrm",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 4,
    "attack": 9,
@@ -2673,13 +2757,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "grass-viper",
    "name": "Grass Viper",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -2689,18 +2772,24 @@
    ],
    "winRate": 89.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 4,
+    "winRate": 70,
+    "dist": 0.06499999999999995
+   }
   },
   {
    "id": "great-horned-owl",
    "name": "Great Horned Owl",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -2717,8 +2806,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "green-dragon",
@@ -2751,7 +2839,7 @@
   {
    "id": "grizzly-vanguard",
    "name": "Grizzly Vanguard",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -2767,13 +2855,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "gull-thief",
    "name": "Gull Thief",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -2790,7 +2877,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "map",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 3,
+    "to": 4,
+    "winRate": 45,
+    "dist": 0.024999999999999967
+   }
   },
   {
    "id": "guppy",
@@ -2820,7 +2913,7 @@
   {
    "id": "hanging-loafer",
    "name": "Hanging Loafer",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 4,
    "attack": 3,
@@ -2836,7 +2929,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 5,
+    "winRate": 47.5,
+    "dist": 0
+   }
   },
   {
    "id": "harvest-mouse",
@@ -2866,7 +2965,7 @@
   {
    "id": "hawk-arrowkeeper",
    "name": "Hawk Arrowkeeper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 2,
@@ -2882,8 +2981,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "hedgehog-scout",
@@ -2915,7 +3013,7 @@
   {
    "id": "hollow-oath-keeper",
    "name": "Hollow Oath-Keeper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -2928,8 +3026,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "honey-badger-fury",
@@ -2937,12 +3034,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 5,
+   "attack": 3,
    "health": 10,
    "skills": [
     "rage"
    ],
-   "winRate": 85.6,
+   "winRate": 65.6,
    "band": [
     35,
     60
@@ -2952,7 +3049,7 @@
    "source": "pack",
    "suggest": {
     "stat": "attack",
-    "from": 5,
+    "from": 3,
     "to": 2,
     "winRate": 57.5,
     "dist": 0.09999999999999998
@@ -2981,7 +3078,7 @@
   {
    "id": "howler-monkey",
    "name": "Howler Monkey",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -2989,13 +3086,12 @@
    "skills": [],
    "winRate": 60,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "uncommon"
+   "source": "pack"
   },
   {
    "id": "humpback-elder",
@@ -3020,7 +3116,7 @@
   {
    "id": "ice-crevasse-wolf",
    "name": "Ice-Crevasse Wolf",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -3030,13 +3126,19 @@
    ],
    "winRate": 78.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "unique"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 70,
+    "dist": 0.06499999999999995
+   }
   },
   {
    "id": "jackrabbit-sprinter",
@@ -3044,12 +3146,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 5,
+   "attack": 4,
    "health": 8,
    "skills": [
     "quick"
    ],
-   "winRate": 88.1,
+   "winRate": 83.1,
    "band": [
     35,
     60
@@ -3059,7 +3161,7 @@
    "source": "map",
    "suggest": {
     "stat": "attack",
-    "from": 5,
+    "from": 4,
     "to": 3,
     "winRate": 51.3,
     "dist": 0.03749999999999998
@@ -3068,7 +3170,7 @@
   {
    "id": "jaguar-stalker",
    "name": "Jaguar Stalker",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 6,
@@ -3078,18 +3180,24 @@
    ],
    "winRate": 81.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 4,
+    "winRate": 66.3,
+    "dist": 0.02749999999999997
+   }
   },
   {
    "id": "king-maker",
    "name": "King Maker",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -3099,18 +3207,17 @@
    ],
    "winRate": 63.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "komodo-warlord",
    "name": "Komodo Warlord",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 4,
    "attack": 9,
@@ -3126,8 +3233,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "kraken-spawnling",
@@ -3152,7 +3258,7 @@
   {
    "id": "lodge-engineer",
    "name": "Lodge Engineer",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -3163,18 +3269,17 @@
    ],
    "winRate": 58.8,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "lucky-hopper",
    "name": "Lucky Hopper",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -3184,18 +3289,24 @@
    ],
    "winRate": 90,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 2,
+    "winRate": 63.1,
+    "dist": 0.003750000000000031
+   }
   },
   {
    "id": "magma-salamander",
    "name": "Magma Salamander",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -3205,18 +3316,17 @@
    ],
    "winRate": 74.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "epic"
+   "source": "base"
   },
   {
    "id": "magma-titan",
    "name": "Magma Titan",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 2,
    "attack": 6,
@@ -3231,13 +3341,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "mallard-marauder",
    "name": "Mallard Marauder",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -3248,18 +3357,24 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 2,
+    "winRate": 54.4,
+    "dist": 0.09125000000000005
+   }
   },
   {
    "id": "mangrove-kingfisher",
    "name": "Mangrove Kingfisher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 3,
@@ -3270,18 +3385,17 @@
    ],
    "winRate": 75,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "epic"
+   "source": "base"
   },
   {
    "id": "mangrove-monitor",
    "name": "Mangrove Monitor",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -3296,34 +3410,32 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "mangrove-mudskipper",
    "name": "Mangrove Mudskipper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 4,
    "skills": [
     "quick"
    ],
-   "winRate": 15,
+   "winRate": 57.5,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "marsh-gas-toad",
    "name": "Marsh Gas Toad",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 0,
@@ -3339,7 +3451,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 0,
+    "to": 2,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
   },
   {
    "id": "meadow-frog",
@@ -3414,26 +3532,25 @@
   {
    "id": "minnow-skitter",
    "name": "Minnow Skitter",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 18.1,
+   "winRate": 47.5,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "mire-witch-heron",
    "name": "Mire Witch-Heron",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 2,
@@ -3449,13 +3566,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "monarch-wingblade",
    "name": "Monarch Wingblade",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -3467,26 +3583,32 @@
    ],
    "winRate": 80.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "unique"
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 3,
+    "winRate": 69.4,
+    "dist": 0.05874999999999997
+   }
   },
   {
    "id": "moray-ambusher",
    "name": "Moray Ambusher",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 2,
    "attack": 6,
-   "health": 9,
+   "health": 11,
    "skills": [
     "stealth"
    ],
-   "winRate": 10.6,
+   "winRate": 15,
    "band": [
     35,
     60
@@ -3494,7 +3616,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 10,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
   },
   {
    "id": "mosswing-laborer",
@@ -3519,28 +3647,27 @@
   {
    "id": "mountain-goat-climber",
    "name": "Mountain Goat Climber",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 7,
    "skills": [
     "evasive"
    ],
-   "winRate": 91.9,
+   "winRate": 65,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "legendary"
+   "source": "base"
   },
   {
    "id": "mouse-sapper",
    "name": "Mouse Sapper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -3554,7 +3681,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 4,
+    "winRate": 48.8,
+    "dist": 0.012500000000000011
+   }
   },
   {
    "id": "narwhal-lancer",
@@ -3579,7 +3712,7 @@
   {
    "id": "nautilus-drifter",
    "name": "Nautilus Drifter",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 3,
    "attack": 3,
@@ -3590,18 +3723,17 @@
    ],
    "winRate": 69.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "nest",
    "name": "Nest",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 0,
@@ -3617,12 +3749,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 18,
+    "to": 22,
+    "winRate": 31.3,
+    "dist": 0.16249999999999998
+   }
   },
   {
    "id": "nightshade-moth",
    "name": "Nightshade Moth",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 0,
    "attack": 2,
@@ -3639,12 +3777,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 4,
+    "winRate": 40,
+    "dist": 0.07499999999999996
+   }
   },
   {
    "id": "obsidian-scorpion",
    "name": "Obsidian Scorpion",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 4,
@@ -3655,13 +3799,12 @@
    ],
    "winRate": 74.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "epic"
+   "source": "base"
   },
   {
    "id": "octopus-tactician",
@@ -3694,7 +3837,7 @@
   {
    "id": "old-growth-tortoise",
    "name": "Old-Growth Tortoise",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 2,
@@ -3710,7 +3853,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 4,
+    "winRate": 40.6,
+    "dist": 0.06874999999999998
+   }
   },
   {
    "id": "open-ocean-hermit-crab",
@@ -3718,31 +3867,24 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 8,
    "skills": [
     "armor"
    ],
-   "winRate": 95,
+   "winRate": 48.8,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 48.8,
-    "dist": 0.012500000000000011
-   }
+   "source": "pack"
   },
   {
    "id": "orca-vanguard",
    "name": "Orca Vanguard",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 3,
    "attack": 9,
@@ -3758,13 +3900,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "otter-centurion",
    "name": "Otter Centurion",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 3,
@@ -3772,13 +3913,19 @@
    "skills": [],
    "winRate": 88.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": false,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 61.3,
+    "dist": 0.022499999999999964
+   }
   },
   {
    "id": "otter-guard",
@@ -3871,7 +4018,7 @@
   {
    "id": "otter-scout",
    "name": "Otter Scout",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -3881,18 +4028,17 @@
    ],
    "winRate": 74.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "epic"
+   "source": "pack"
   },
   {
    "id": "otter-shieldback",
    "name": "Otter Shieldback",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
    "attack": 4,
@@ -3902,35 +4048,40 @@
    ],
    "winRate": 59.4,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "owl-fletcher",
    "name": "Owl Fletcher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 4,
-   "health": 6,
+   "health": 4,
    "skills": [
     "flying",
     "arrow"
    ],
-   "winRate": 99.4,
+   "winRate": 97.5,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 1,
+    "winRate": 73.1,
+    "dist": 0.09624999999999995
+   }
   },
   {
    "id": "owl-nightwatch",
@@ -3963,7 +4114,7 @@
   {
    "id": "owl-sentinel",
    "name": "Owl Sentinel",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 2,
    "attack": 3,
@@ -3979,8 +4130,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "common"
+   "source": "pack"
   },
   {
    "id": "pack-rat-looter",
@@ -3988,31 +4138,24 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 10,
    "skills": [
     "triggers"
    ],
-   "winRate": 76.3,
+   "winRate": 41.3,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 3,
-    "to": 2,
-    "winRate": 41.3,
-    "dist": 0.0625
-   }
+   "source": "map"
   },
   {
    "id": "pack-wolf-reaver",
    "name": "Pack Wolf Reaver",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -4027,13 +4170,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "peak-condor",
    "name": "Peak Condor",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -4050,12 +4192,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 5,
+    "winRate": 48.1,
+    "dist": 0.006250000000000033
+   }
   },
   {
    "id": "pelican-diver",
    "name": "Pelican Diver",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -4066,18 +4214,17 @@
    ],
    "winRate": 70.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggestRarity": "superrare"
+   "source": "map"
   },
   {
    "id": "permafrost-mammoth",
    "name": "Permafrost Mammoth",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 3,
    "attack": 9,
@@ -4092,13 +4239,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "phoenix-fledgling",
    "name": "Phoenix Fledgling",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 3,
@@ -4114,27 +4260,32 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "pike-lancer",
    "name": "Pike Lancer",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 4,
-   "health": 8,
+   "health": 7,
    "skills": [],
-   "winRate": 95,
+   "winRate": 93.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 6,
+    "winRate": 74.4,
+    "dist": 0.10875000000000001
+   }
   },
   {
    "id": "pill-bug",
@@ -4159,7 +4310,7 @@
   {
    "id": "pinecone-sapper",
    "name": "Pinecone Sapper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 1,
    "attack": 0,
@@ -4175,33 +4326,38 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 0,
+    "to": 1,
+    "winRate": 50,
+    "dist": 0.025000000000000022
+   }
   },
   {
    "id": "plains-zebra",
    "name": "Plains Zebra",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 9,
    "skills": [
     "evasive"
    ],
-   "winRate": 95,
+   "winRate": 70,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "legendary"
+   "source": "pack"
   },
   {
    "id": "poison-dart-croaker",
    "name": "Poison Dart Croaker",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -4216,13 +4372,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "poison-dart-frog",
    "name": "Poison Dart Frog",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 0,
    "attack": 1,
@@ -4238,7 +4393,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 6,
+    "winRate": 38.8,
+    "dist": 0.08749999999999997
+   }
   },
   {
    "id": "pond-duck",
@@ -4270,7 +4431,7 @@
   {
    "id": "pond-paddler",
    "name": "Pond Paddler",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -4280,13 +4441,19 @@
    ],
    "winRate": 86.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 4,
+    "winRate": 68.1,
+    "dist": 0.04625000000000001
+   }
   },
   {
    "id": "pond-trout",
@@ -4336,7 +4503,7 @@
   {
    "id": "puddle-hopper",
    "name": "Puddle Hopper",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -4350,12 +4517,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 10,
+    "winRate": 36.3,
+    "dist": 0.11249999999999999
+   }
   },
   {
    "id": "pufferfish-bulwark",
    "name": "Pufferfish Bulwark",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 2,
    "attack": 3,
@@ -4370,13 +4543,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "pyroclast-wyrm",
    "name": "Pyroclast Wyrm",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 2,
    "attack": 7,
@@ -4391,8 +4563,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "quarry-mole",
@@ -4422,7 +4593,7 @@
   {
    "id": "quill-thorn-boar",
    "name": "Quill-Thorn Boar",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -4432,18 +4603,24 @@
    ],
    "winRate": 76.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 68.8,
+    "dist": 0.05249999999999999
+   }
   },
   {
    "id": "quill-volley",
    "name": "Quill Volley",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -4454,13 +4631,19 @@
    ],
    "winRate": 83.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 69.4,
+    "dist": 0.05874999999999997
+   }
   },
   {
    "id": "quillback-elder",
@@ -4485,7 +4668,7 @@
   {
    "id": "quillguard",
    "name": "Quillguard",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 2,
    "attack": 4,
@@ -4495,13 +4678,12 @@
    ],
    "winRate": 63.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "rabbit-kit",
@@ -4533,23 +4715,29 @@
   {
    "id": "raccoon-bandit",
    "name": "Raccoon Bandit",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 3,
-   "health": 8,
+   "health": 6,
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 91.9,
+   "winRate": 76.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 6,
+    "to": 5,
+    "winRate": 60.6,
+    "dist": 0.028750000000000053
+   }
   },
   {
    "id": "raccoon-nightcrew",
@@ -4557,12 +4745,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
+   "attack": 7,
    "health": 12,
    "skills": [
     "stealth"
    ],
-   "winRate": 17.5,
+   "winRate": 34.4,
    "band": [
     35,
     60
@@ -4571,17 +4759,17 @@
    "locked": true,
    "source": "base",
    "suggest": {
-    "stat": "attack",
-    "from": 5,
-    "to": 8,
-    "winRate": 41.3,
-    "dist": 0.0625
+    "stat": "health",
+    "from": 12,
+    "to": 13,
+    "winRate": 48.1,
+    "dist": 0.006250000000000033
    }
   },
   {
    "id": "raccoon-warlord",
    "name": "Raccoon Warlord",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -4596,13 +4784,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "raven-harbinger",
    "name": "Raven Harbinger",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -4619,13 +4806,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "raven-hexcaller",
    "name": "Raven Hexcaller",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 2,
@@ -4641,35 +4827,40 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "raven-scout",
    "name": "Raven Scout",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 4,
+   "health": 3,
    "skills": [
     "flying",
     "triggers"
    ],
-   "winRate": 93.8,
+   "winRate": 90,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 3,
+    "to": 2,
+    "winRate": 65,
+    "dist": 0.015000000000000013
+   }
   },
   {
    "id": "ravenous-wolverine",
    "name": "Ravenous Wolverine",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 2,
@@ -4679,13 +4870,19 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 12,
+    "to": 8,
+    "winRate": 76.3,
+    "dist": 0.12749999999999995
+   }
   },
   {
    "id": "red-dragon",
@@ -4739,7 +4936,7 @@
   {
    "id": "reef-shark",
    "name": "Reef Shark",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 8,
@@ -4755,8 +4952,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "riptide-eel",
@@ -4764,12 +4960,12 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
+   "attack": 7,
    "health": 8,
    "skills": [
     "reload"
    ],
-   "winRate": 20.6,
+   "winRate": 33.8,
    "band": [
     45,
     68
@@ -4779,7 +4975,7 @@
    "source": "map",
    "suggest": {
     "stat": "attack",
-    "from": 5,
+    "from": 7,
     "to": 8,
     "winRate": 46.3,
     "dist": 0.10250000000000004
@@ -4838,7 +5034,7 @@
   {
    "id": "riverworks-bastion",
    "name": "Riverworks Bastion",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 3,
    "attack": 4,
@@ -4853,13 +5049,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "rockslide-ram",
    "name": "Rockslide Ram",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -4869,18 +5064,24 @@
    ],
    "winRate": 84.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 2,
+    "winRate": 68.1,
+    "dist": 0.04625000000000001
+   }
   },
   {
    "id": "rodent-king",
    "name": "Rodent King",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -4891,13 +5092,12 @@
    ],
    "winRate": 58.1,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "rootworm-colony",
@@ -4929,7 +5129,7 @@
   {
    "id": "rot-swollen-carcass",
    "name": "Rot-Swollen Carcass",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 2,
    "attack": 3,
@@ -4944,13 +5144,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "sand-widow",
    "name": "Sand Widow",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -4966,8 +5165,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "sandstorm-roc",
@@ -4992,7 +5190,7 @@
   {
    "id": "savanna-cheetah",
    "name": "Savanna Cheetah",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 5,
@@ -5002,18 +5200,24 @@
    ],
    "winRate": 88.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 3,
+    "winRate": 80.6,
+    "dist": 0.17125
+   }
   },
   {
    "id": "scraper-of-skies",
    "name": "Scraper of Skies",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 4,
    "attack": 0,
@@ -5029,13 +5233,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "sea-turtle-elder",
    "name": "Sea Turtle Elder",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 2,
@@ -5052,7 +5255,13 @@
    "verdict": "weak",
    "locked": true,
    "source": "map",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 35,
+    "dist": 0.125
+   }
   },
   {
    "id": "shepherds-bark",
@@ -5111,23 +5320,22 @@
   {
    "id": "shrine-acolyte",
    "name": "Shrine Acolyte",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 1,
+   "attack": 2,
    "health": 8,
    "skills": [
     "onReadyGrace"
    ],
-   "winRate": 18.1,
+   "winRate": 49.4,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "shrine-bell-ringer",
@@ -5159,7 +5367,7 @@
   {
    "id": "shrine-high-priest",
    "name": "Shrine High Priest",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -5174,8 +5382,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "silver-minnow",
@@ -5205,7 +5412,7 @@
   {
    "id": "silverback-brawler",
    "name": "Silverback Brawler",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -5221,8 +5428,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "slowpoke-sentinel",
@@ -5254,7 +5460,7 @@
   {
    "id": "snapper-hatchling",
    "name": "Snapper Hatchling",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -5267,13 +5473,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "snow-owl-sentinel",
    "name": "Snow Owl Sentinel",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -5284,18 +5489,17 @@
    ],
    "winRate": 68.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "snowshoe-hare",
    "name": "Snowshoe Hare",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -5310,8 +5514,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "starter"
+   "source": "pack"
   },
   {
    "id": "soldier-ant",
@@ -5361,7 +5564,7 @@
   {
    "id": "squires-mount",
    "name": "Squire's Mount",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -5371,18 +5574,24 @@
    ],
    "winRate": 76.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 4,
+    "winRate": 63.1,
+    "dist": 0.003750000000000031
+   }
   },
   {
    "id": "stable-colt",
    "name": "Stable Colt",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -5390,18 +5599,24 @@
    "skills": [],
    "winRate": 84.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 9,
+    "to": 6,
+    "winRate": 60,
+    "dist": 0.03500000000000003
+   }
   },
   {
    "id": "stag-knight",
    "name": "Stag Knight",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 6,
@@ -5416,13 +5631,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "stalactite-golem",
    "name": "Stalactite Golem",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 6,
@@ -5438,12 +5652,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "map",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 6,
+    "to": 9,
+    "winRate": 31.3,
+    "dist": 0.16249999999999998
+   }
   },
   {
    "id": "stone-turtle-warden",
    "name": "Stone Turtle Warden",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 4,
@@ -5458,13 +5678,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "stoneheart-golem",
    "name": "Stoneheart Golem",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 5,
@@ -5479,13 +5698,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "stormcaller",
    "name": "Stormcaller",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 4,
    "attack": 9,
@@ -5501,13 +5719,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "strangler-vine",
    "name": "Strangler Vine",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 2,
    "attack": 3,
@@ -5517,18 +5734,17 @@
    ],
    "winRate": 66.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "sulfur-cinder-moth",
    "name": "Sulfur Cinder Moth",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 0,
    "attack": 2,
@@ -5544,8 +5760,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggestRarity": "starter"
+   "source": "map"
   },
   {
    "id": "sulfur-vent-crab",
@@ -5553,26 +5768,19 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
+   "attack": 1,
    "health": 9,
    "skills": [
     "thorns"
    ],
-   "winRate": 93.1,
+   "winRate": 56.9,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 56.9,
-    "dist": 0.00374999999999992
-   }
+   "source": "map"
   },
   {
    "id": "sunspire-envoy",
@@ -5625,7 +5833,7 @@
   {
    "id": "swamp-alligator",
    "name": "Swamp Alligator",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 7,
@@ -5640,13 +5848,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "swarm-matriarch",
    "name": "Swarm Matriarch",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 2,
@@ -5657,18 +5864,24 @@
    ],
    "winRate": 75.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "heroic"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 1,
+    "winRate": 73.8,
+    "dist": 0.10250000000000004
+   }
   },
   {
    "id": "taiga-lynx",
    "name": "Taiga Lynx",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 0,
    "attack": 4,
@@ -5678,18 +5891,24 @@
    ],
    "winRate": 83.1,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 3,
+    "winRate": 58.8,
+    "dist": 0.04749999999999999
+   }
   },
   {
    "id": "termite-mound",
    "name": "Termite Mound",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 1,
    "attack": 0,
@@ -5705,12 +5924,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 0,
+    "to": 2,
+    "winRate": 48.1,
+    "dist": 0.006250000000000033
+   }
   },
   {
    "id": "terrier-pup",
    "name": "Terrier Pup",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -5718,37 +5943,42 @@
    "skills": [],
    "winRate": 60,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "uncommon"
+   "source": "pack"
   },
   {
    "id": "thornvine-lasher",
    "name": "Thornvine Lasher",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 4,
+   "attack": 3,
    "health": 9,
    "skills": [],
-   "winRate": 97.5,
+   "winRate": 88.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 2,
+    "winRate": 61.3,
+    "dist": 0.022499999999999964
+   }
   },
   {
    "id": "tide-pool-crab",
    "name": "Tide Pool Crab",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -5764,12 +5994,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 5,
+    "to": 7,
+    "winRate": 44.4,
+    "dist": 0.03125
+   }
   },
   {
    "id": "tide-spirit",
    "name": "Tide Spirit",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 2,
@@ -5777,18 +6013,17 @@
    "skills": [],
    "winRate": 61.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "timber-wolf-pack",
    "name": "Timber Wolf Pack Leader",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 4,
@@ -5801,8 +6036,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "starter"
+   "source": "pack"
   },
   {
    "id": "tiny-cave-dweller",
@@ -5835,7 +6069,7 @@
   {
    "id": "toucan-courier",
    "name": "Toucan Courier",
-   "rarity": null,
+   "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -5851,28 +6085,40 @@
    "verdict": "weak",
    "locked": true,
    "source": "pack",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "health",
+    "from": 4,
+    "to": 5,
+    "winRate": 36.9,
+    "dist": 0.10624999999999996
+   }
   },
   {
    "id": "trapdoor-spider",
    "name": "Trapdoor Spider",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 4,
-   "health": 8,
+   "health": 6,
    "skills": [
     "poison"
    ],
-   "winRate": 98.1,
+   "winRate": 90.6,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 4,
+    "to": 2,
+    "winRate": 63.1,
+    "dist": 0.003750000000000031
+   }
   },
   {
    "id": "trash-panda-trickster",
@@ -5880,39 +6126,32 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 6,
    "skills": [
     "onSpawnGold"
    ],
-   "winRate": 75.6,
+   "winRate": 38.8,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggest": {
-    "stat": "attack",
-    "from": 2,
-    "to": 1,
-    "winRate": 38.8,
-    "dist": 0.08749999999999997
-   }
+   "source": "pack"
   },
   {
    "id": "trickster-fox",
    "name": "Trickster Fox",
-   "rarity": null,
+   "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 7,
    "skills": [
     "triggers"
    ],
-   "winRate": 6.9,
+   "winRate": 18.1,
    "band": [
     35,
     60
@@ -5920,12 +6159,18 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 2,
+    "to": 3,
+    "winRate": 34.4,
+    "dist": 0.13124999999999998
+   }
   },
   {
    "id": "tundra-musk-ox",
    "name": "Tundra Musk Ox",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 5,
@@ -5940,8 +6185,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "tunnel-ant",
@@ -5964,7 +6208,7 @@
   {
    "id": "tunnel-wyrm",
    "name": "Tunnel Wyrm",
-   "rarity": null,
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
    "attack": 4,
@@ -5974,18 +6218,17 @@
    ],
    "winRate": 56.9,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "uncommon"
+   "source": "base"
   },
   {
    "id": "turtle-bastion",
    "name": "Turtle Bastion",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 3,
@@ -6001,31 +6244,43 @@
    "verdict": "weak",
    "locked": true,
    "source": "base",
-   "suggestRarity": "starter"
+   "suggest": {
+    "stat": "attack",
+    "from": 3,
+    "to": 4,
+    "winRate": 36.9,
+    "dist": 0.10624999999999996
+   }
   },
   {
    "id": "tusked-vanguard",
    "name": "Tusked Vanguard",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
-   "health": 9,
+   "health": 7,
    "skills": [],
-   "winRate": 98.1,
+   "winRate": 96.9,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 4,
+    "winRate": 61.9,
+    "dist": 0.016249999999999987
+   }
   },
   {
    "id": "vampire-roost",
    "name": "Vampire Roost",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 5,
@@ -6041,13 +6296,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "map",
-   "suggestRarity": "starter"
+   "source": "map"
   },
   {
    "id": "venomlord-serpent",
    "name": "Venomlord Serpent",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 3,
    "attack": 8,
@@ -6063,8 +6317,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "violet-vane-fletcher",
@@ -6150,7 +6403,7 @@
   {
    "id": "wandering-traveller",
    "name": "Wandering Traveller",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 1,
    "attack": 6,
@@ -6160,18 +6413,24 @@
    ],
    "winRate": 100,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": false,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "health",
+    "from": 7,
+    "to": 3,
+    "winRate": 70.6,
+    "dist": 0.07125000000000004
+   }
   },
   {
    "id": "war-drum-mandrill",
    "name": "War-Drum Mandrill",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 1,
    "attack": 3,
@@ -6184,13 +6443,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   },
   {
    "id": "war-hound",
    "name": "War Hound",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -6200,18 +6458,17 @@
    ],
    "winRate": 71.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "pack",
-   "suggestRarity": "superrare"
+   "source": "pack"
   },
   {
    "id": "war-panther",
    "name": "War Panther",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 7,
@@ -6226,13 +6483,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "warhorse-charger",
    "name": "Warhorse Charger",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 2,
    "attack": 8,
@@ -6247,13 +6503,12 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "warren-scout",
    "name": "Warren Scout",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 0,
    "wait": 0,
    "attack": 3,
@@ -6261,18 +6516,17 @@
    "skills": [],
    "winRate": 62.5,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "rare"
+   "source": "base"
   },
   {
    "id": "webspire-sentinel",
    "name": "Webspire Sentinel",
-   "rarity": null,
+   "rarity": "common",
    "cost": 2,
    "wait": 3,
    "attack": 5,
@@ -6288,8 +6542,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "common"
+   "source": "base"
   },
   {
    "id": "white-dragon",
@@ -6323,7 +6576,7 @@
   {
    "id": "wolf-pack-runner",
    "name": "Wolf Pack Runner",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -6333,18 +6586,17 @@
    ],
    "winRate": 69.4,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "veryrare"
+   "source": "base"
   },
   {
    "id": "woodland-brawler",
    "name": "Woodland Brawler",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 5,
@@ -6354,13 +6606,19 @@
    ],
    "winRate": 81.3,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
    "verdict": "strong",
    "locked": true,
    "source": "base",
-   "suggestRarity": "legendary"
+   "suggest": {
+    "stat": "attack",
+    "from": 5,
+    "to": 4,
+    "winRate": 69.4,
+    "dist": 0.05874999999999997
+   }
   },
   {
    "id": "worker-ant",
@@ -6390,7 +6648,7 @@
   {
    "id": "wound-reaver",
    "name": "Wound Reaver",
-   "rarity": null,
+   "rarity": "rare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -6401,18 +6659,17 @@
    ],
    "winRate": 73.8,
    "band": [
-    35,
-    60
+    52,
+    75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "epic"
+   "source": "base"
   },
   {
    "id": "yeti",
    "name": "Yeti",
-   "rarity": null,
+   "rarity": "common",
    "cost": 3,
    "wait": 5,
    "attack": 10,
@@ -6427,8 +6684,7 @@
    ],
    "verdict": "ok",
    "locked": true,
-   "source": "base",
-   "suggestRarity": "starter"
+   "source": "base"
   }
  ]
 }

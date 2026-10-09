@@ -18,7 +18,7 @@
    | Cost | Cards | Median win % |
    |---|---|---|
    | 0 | 113 | 56.3 |
-   | 1 | 84 | 67.5 |
+   | 1 | 84 | 65.0 |
    | 2 | 61 | 45.6 |
    | 3+ | 30 | 37.5 |
 
@@ -27,7 +27,7 @@
    - I tested five fixes in simulation: start each match with 2 Lumber; +1 Lumber every 2 rounds; −1 cost and −1 Wait for every card costing 2+; +15% stats per Lumber of cost; and a start bonus plus stat buff together.
    - None made 3+ cost cards competitive.
    - This needs a design answer, not a number tweak: see decision B4.
-4. **Rarity doesn't follow strength yet.** 199 of 288 cards have no rarity.
+4. **Rarity doesn't follow strength yet.** 0 of 288 cards have no rarity.
    - Some free cards win 95–100% (Carrion Fly Swarm, Cave Bat Swarm, Owl Fletcher, Trapdoor Spider, Tusked Vanguard).
    - Several Starters win 80–94% (Duck Paddler, Cobalt Talon Skirmisher, Crimson Wing Duelist Cadet, Otter Guard).
    - The tiny 1/2 Starters (Guppy, Earthworm, Silver Minnow, Worker Ant, Otter Kit) sit at 9–11%.
@@ -35,64 +35,63 @@
 
 | Rarity | Cards | Median win % |
 |---|---|---|
-| not set | 199 | 47.5 |
-| common | 38 | 51.9 |
+| common | 152 | 39.7 |
+| rare | 79 | 76.9 |
 | starter | 36 | 41.2 |
-| uncommon | 5 | 58.1 |
+| uncommon | 16 | 57.5 |
 | legendary | 5 | 38.1 |
-| rare | 5 | 46.3 |
 
 ## Strongest cheap cards (cost 0–1)
 
 | Card | Rarity | Cost / Wait | Stats | Skills | Win % | Suggested rarity |
 |---|---|---|---|---|---|---|
-| Carrion Fly Swarm | – | 0 / 1 | 3/7 | poison, flying | 100 | legendary |
-| Cave Bat Swarm | – | 0 / 0 | 2/5 | swipe, flying | 100 | legendary |
-| Wandering Traveller | – | 0 / 1 | 6/7 | triggers | 100 | legendary |
-| Owl Fletcher | – | 0 / 1 | 4/6 | flying, arrow | 99.4 | legendary |
-| Trapdoor Spider | – | 0 / 1 | 4/8 | poison | 98.1 | legendary |
-| Tusked Vanguard | – | 0 / 0 | 3/9 | – | 98.1 | legendary |
-| Thornvine Lasher | – | 0 / 1 | 4/9 | – | 97.5 | legendary |
-| Ent | – | 0 / 3 | 4/20 | – | 96.9 | legendary |
-| Feral Tomcat | common | 0 / 0 | 3/5 | quick | 95 | – |
-| Open-Ocean Hermit Crab | common | 0 / 0 | 2/8 | armor | 95 | – |
-| Pike Lancer | – | 0 / 1 | 4/8 | – | 95 | legendary |
-| Plains Zebra | – | 0 / 0 | 2/9 | evasive | 95 | legendary |
+| Wandering Traveller | rare | 0 / 1 | 6/7 | triggers | 100 | – |
+| Carrion Fly Swarm | rare | 0 / 1 | 3/5 | poison, flying | 98.1 | – |
+| Owl Fletcher | rare | 0 / 1 | 4/4 | flying, arrow | 97.5 | – |
+| Tusked Vanguard | rare | 0 / 0 | 3/7 | – | 96.9 | – |
+| Cave Bat Swarm | rare | 0 / 0 | 2/3 | swipe, flying | 96.3 | – |
 | Cobalt Talon Skirmisher | starter | 0 / 1 | 3/6 | flying | 94.4 | – |
-| Colony | – | 0 / 0 | 0/20 | triggers | 94.4 | legendary |
+| Colony | rare | 0 / 0 | 0/20 | triggers | 94.4 | – |
 | Duck Paddler | starter | 0 / 1 | 3/6 | flying | 94.4 | – |
-| Ember Jackal | – | 1 / 0 | 5/8 | frenzy | 94.4 | legendary |
-| Bramblewood Macaque | – | 0 / 1 | 3/10 | – | 93.8 | legendary |
-| Dolphin Knight | – | 0 / 1 | 4/7 | – | 93.8 | legendary |
-| Raven Scout | – | 0 / 0 | 2/4 | flying, triggers | 93.8 | legendary |
-| Sulfur Vent Crab | uncommon | 0 / 1 | 2/9 | thorns | 93.1 | – |
+| Pike Lancer | rare | 0 / 1 | 4/7 | – | 93.8 | – |
+| Ent | rare | 0 / 3 | 3/20 | – | 93.1 | – |
+| Porcupine Roller | common | 0 / 0 | 1/10 | thorns | 91.3 | – |
+| Trapdoor Spider | rare | 0 / 1 | 4/6 | poison | 90.6 | – |
+| Cave Flitter | rare | 0 / 0 | 3/3 | flying | 90 | – |
+| Crimson Wing Duelist Cadet | starter | 0 / 1 | 3/5 | flying | 90 | – |
+| Lucky Hopper | rare | 1 / 0 | 4/11 | onSpawnGold | 90 | – |
+| Raven Scout | rare | 0 / 0 | 2/3 | flying, triggers | 90 | – |
+| Grass Viper | rare | 0 / 0 | 2/5 | poison | 89.4 | – |
+| Ember Jackal | rare | 1 / 0 | 3/8 | frenzy | 88.8 | – |
+| Otter Centurion | rare | 0 / 1 | 3/9 | – | 88.8 | – |
+| Thornvine Lasher | rare | 0 / 1 | 3/9 | – | 88.8 | – |
 
 ## Weakest cards
 
 | Card | Rarity | Cost / Wait | Stats | Win % |
 |---|---|---|---|---|
-| Trickster Fox | – | 1 / 0 | 1/7 | 6.9 |
-| Dam Wall | – | 1 / 2 | 0/20 | 7.5 |
+| Dam Wall | common | 1 / 2 | 0/20 | 7.5 |
 | Earthworm | starter | 0 / 0 | 1/2 | 8.8 |
 | Guppy | starter | 0 / 0 | 1/2 | 8.8 |
 | Silver Minnow | starter | 0 / 0 | 1/2 | 8.8 |
 | Chipmunk Forager | starter | 0 / 0 | 1/3 | 10.6 |
 | Harvest Mouse | starter | 0 / 0 | 1/3 | 10.6 |
-| Moray Ambusher | – | 1 / 2 | 6/9 | 10.6 |
 | Otter Kit | starter | 0 / 0 | 1/3 | 10.6 |
 | Worker Ant | starter | 0 / 0 | 1/3 | 10.6 |
-| Barnacle Fortress | – | 1 / 1 | 0/20 | 12.5 |
-| Forager Ant | common | 0 / 0 | 1/4 | 13.8 |
-| Glowworm Cluster | – | 0 / 1 | 1/5 | 13.8 |
+| Barnacle Fortress | common | 1 / 1 | 0/20 | 12.5 |
 | Meadow Rabbit | starter | 0 / 0 | 1/4 | 13.8 |
-| Termite Mound | – | 1 / 1 | 0/22 | 13.8 |
-| Mangrove Mudskipper | – | 0 / 0 | 1/4 | 15 |
-| Marsh Gas Toad | – | 1 / 1 | 0/10 | 15 |
-| Blessed Avatar | – | 0 / 2 | 6/20 | 15.6 |
-| Raccoon Nightcrew | common | 1 / 1 | 5/12 | 17.5 |
-| Dormouse | common | 0 / 0 | 1/5 | 18.1 |
+| Termite Mound | common | 1 / 1 | 0/22 | 13.8 |
+| Marsh Gas Toad | common | 1 / 1 | 0/10 | 15 |
+| Moray Ambusher | common | 1 / 2 | 6/11 | 15 |
+| Blessed Avatar | common | 0 / 2 | 6/20 | 15.6 |
+| Trickster Fox | common | 1 / 0 | 2/7 | 18.1 |
+| Hanging Loafer | common | 1 / 4 | 3/22 | 20 |
+| Peak Condor | common | 1 / 1 | 3/8 | 20 |
+| Fiddler Crab Swarm | common | 0 / 0 | 1/3 | 20.6 |
+| Nest | common | 0 / 0 | 0/18 | 20.6 |
+| Shrine Bell-Ringer | common | 1 / 1 | 2/12 | 20.6 |
 
-## Suggested fixes for cards that have a rarity (61)
+## Suggested fixes for cards that have a rarity (126)
 
 Each suggestion is the one stat change (Attack or Health, a few steps at most) that brought the card closest to its rarity's band in re-simulation.
 The bands are a first guess, so read these as "which way and how far", not final numbers.
@@ -100,41 +99,107 @@ Starters in particular may be meant to be weak or strong; that is your call (dec
 
 | Card | Rarity | Now | Win % | Band | Change | Win % after |
 |---|---|---|---|---|---|---|
-| Feral Tomcat | common | 3/5 | 95 | 35–60 | Health 5 → 2 | 50.6 |
-| Open-Ocean Hermit Crab | common | 2/8 | 95 | 35–60 | Attack 2 → 1 | 48.8 |
-| Frost Hare Sprinter | common | 2/7 | 91.9 | 35–60 | Health 7 → 3 | 56.3 |
 | Porcupine Roller | common | 1/10 | 91.3 | 35–60 | Attack 1 → 0 | 54.4 |
-| Dune Jackal | common | 5/10 | 88.1 | 35–60 | Attack 5 → 3 | 58.1 |
-| Jackrabbit Sprinter | common | 5/8 | 88.1 | 35–60 | Attack 5 → 3 | 51.3 |
-| Chipmunk Cavalry | common | 4/9 | 86.3 | 35–60 | Attack 4 → 3 | 55.6 |
-| Honey Badger Fury | common | 5/10 | 85.6 | 35–60 | Attack 5 → 2 | 57.5 |
-| Forager Ant | common | 1/4 | 13.8 | 35–60 | Attack 1 → 2 | 40.6 |
-| Raccoon Nightcrew | common | 5/12 | 17.5 | 35–60 | Attack 5 → 8 | 41.3 |
-| Dormouse | common | 1/5 | 18.1 | 35–60 | Attack 1 → 2 | 47.5 |
-| Pack Rat Looter | common | 3/10 | 76.3 | 35–60 | Attack 3 → 2 | 41.3 |
-| Beetle Grunt | common | 2/4 | 19.4 | 35–60 | Health 4 → 7 | 49.4 |
-| Duckling Squadron | common | 1/4 | 75.6 | 35–60 | Health 4 → 2 | 41.3 |
-| Trash Panda Trickster | common | 2/6 | 75.6 | 35–60 | Attack 2 → 1 | 38.8 |
+| Dam Wall | common | 0/20 | 7.5 | 35–60 | Attack 0 → 3 | 38.8 |
+| Dune Jackal | common | 4/10 | 86.3 | 35–60 | Attack 4 → 3 | 58.1 |
+| Jackrabbit Sprinter | common | 4/8 | 83.1 | 35–60 | Attack 4 → 3 | 51.3 |
+| Barnacle Fortress | common | 0/20 | 12.5 | 35–60 | Attack 0 → 2 | 46.9 |
+| Frost Hare Sprinter | common | 2/5 | 81.3 | 35–60 | Attack 2 → 1 | 48.1 |
+| Termite Mound | common | 0/22 | 13.8 | 35–60 | Attack 0 → 2 | 48.1 |
+| Marsh Gas Toad | common | 0/10 | 15 | 35–60 | Attack 0 → 2 | 36.3 |
+| Moray Ambusher | common | 6/11 | 15 | 35–60 | Attack 6 → 10 | 36.3 |
+| Blessed Avatar | common | 6/20 | 15.6 | 35–60 | Attack 6 → 7 | 15.6 |
+| Trickster Fox | common | 2/7 | 18.1 | 35–60 | Attack 2 → 3 | 34.4 |
+| Hanging Loafer | common | 3/22 | 20 | 35–60 | Attack 3 → 5 | 47.5 |
+| Peak Condor | common | 3/8 | 20 | 35–60 | Attack 3 → 5 | 48.1 |
+| Fiddler Crab Swarm | common | 1/3 | 20.6 | 35–60 | Attack 1 → 2 | 54.4 |
+| Nest | common | 0/18 | 20.6 | 35–60 | Health 18 → 22 | 31.3 |
 | Shrine Bell-Ringer | common | 2/12 | 20.6 | 35–60 | Attack 2 → 3 | 36.3 |
 | Camouflage Frog | common | 2/9 | 21.3 | 35–60 | Attack 2 → 3 | 45 |
+| Feral Tomcat | common | 3/3 | 73.1 | 35–60 | Health 3 → 2 | 50.6 |
+| Bramble Sprout | common | 1/6 | 22.5 | 35–60 | Health 6 → 10 | 36.3 |
+| Puddle Hopper | common | 1/6 | 22.5 | 35–60 | Health 6 → 10 | 36.3 |
+| Glowworm Cluster | common | 2/5 | 23.1 | 35–60 | Health 5 → 7 | 46.9 |
 | Shepherd's Bark | common | 4/16 | 70.6 | 35–60 | Health 16 → 12 | 53.1 |
+| Mouse Sapper | common | 3/9 | 25.6 | 35–60 | Attack 3 → 4 | 48.8 |
 | Meadow Frog | common | 2/3 | 26.9 | 35–60 | Attack 2 → 3 | 50 |
+| Compost Grub | common | 1/8 | 27.5 | 35–60 | Health 8 → 10 | 36.3 |
 | Hedgehog Scout | common | 1/4 | 27.5 | 35–60 | Health 4 → 6 | 41.9 |
 | Slowpoke Sentinel | common | 1/16 | 67.5 | 35–60 | Health 16 → 8 | 56.3 |
+| Stalactite Golem | common | 6/26 | 27.5 | 35–60 | Attack 6 → 9 | 31.3 |
 | Quarry Mole | common | 2/10 | 66.3 | 35–60 | Health 10 → 8 | 50 |
+| Old-Growth Tortoise | common | 2/20 | 29.4 | 35–60 | Attack 2 → 4 | 40.6 |
+| Honey Badger Fury | common | 3/10 | 65.6 | 35–60 | Attack 3 → 2 | 57.5 |
 | Owl Nightwatch | common | 4/10 | 30.6 | 35–60 | Health 10 → 13 | 43.8 |
 | Rabbit Kit | common | 2/2 | 30.6 | 35–60 | Attack 2 → 3 | 50.6 |
+| Pinecone Sapper | common | 0/6 | 31.3 | 35–60 | Attack 0 → 1 | 50 |
 | Chipmunk Hoarder | common | 1/5 | 31.9 | 35–60 | Attack 1 → 2 | 43.1 |
+| Sea Turtle Elder | common | 2/30 | 31.9 | 35–60 | Attack 2 → 3 | 35 |
+| Nightshade Moth | common | 2/7 | 33.1 | 35–60 | Attack 2 → 4 | 40 |
+| Poison Dart Frog | common | 1/5 | 33.1 | 35–60 | Health 5 → 6 | 38.8 |
 | Rootworm Colony | common | 3/14 | 61.9 | 35–60 | Attack 3 → 2 | 52.5 |
+| Tide Pool Crab | common | 1/5 | 33.1 | 35–60 | Health 5 → 7 | 44.4 |
+| Duckling Squadron | common | 1/3 | 61.3 | 35–60 | Health 3 → 2 | 41.3 |
+| Gull Thief | common | 1/3 | 33.8 | 35–60 | Health 3 → 4 | 45 |
+| Toucan Courier | common | 1/4 | 33.8 | 35–60 | Health 4 → 5 | 36.9 |
+| Turtle Bastion | common | 3/36 | 33.8 | 35–60 | Attack 3 → 4 | 36.9 |
+| Beetle Grunt | common | 2/6 | 34.4 | 35–60 | Health 6 → 7 | 49.4 |
+| Raccoon Nightcrew | common | 7/12 | 34.4 | 35–60 | Health 12 → 13 | 48.1 |
 | Black Dragon | legendary | 10/50 | 38.1 | 70–97 | Attack 10 → 11 | 38.1 |
 | Blue Dragon | legendary | 10/44 | 38.1 | 70–97 | Attack 10 → 11 | 38.1 |
 | Green Dragon | legendary | 10/50 | 38.1 | 70–97 | Attack 10 → 11 | 38.1 |
 | Red Dragon | legendary | 10/44 | 38.1 | 70–97 | Attack 10 → 11 | 38.1 |
 | White Dragon | legendary | 10/44 | 38.1 | 70–97 | Attack 10 → 11 | 38.1 |
+| Wandering Traveller | rare | 6/7 | 100 | 52–75 | Health 7 → 3 | 70.6 |
+| Carrion Fly Swarm | rare | 3/5 | 98.1 | 52–75 | Attack 3 → 1 | 65 |
+| Owl Fletcher | rare | 4/4 | 97.5 | 52–75 | Attack 4 → 1 | 73.1 |
+| Tusked Vanguard | rare | 3/7 | 96.9 | 52–75 | Health 7 → 4 | 61.9 |
+| Cave Bat Swarm | rare | 2/3 | 96.3 | 52–75 | Attack 2 → 1 | 61.3 |
+| Colony | rare | 0/20 | 94.4 | 52–75 | Health 20 → 12 | 85.6 |
+| Pike Lancer | rare | 4/7 | 93.8 | 52–75 | Health 7 → 6 | 74.4 |
+| Ent | rare | 3/20 | 93.1 | 52–75 | Health 20 → 14 | 73.8 |
+| Trapdoor Spider | rare | 4/6 | 90.6 | 52–75 | Attack 4 → 2 | 63.1 |
 | Voltaic Eel | rare | 3/10 | 36.9 | 52–75 | Attack 3 → 4 | 36.9 |
+| Cave Flitter | rare | 3/3 | 90 | 52–75 | Attack 3 → 2 | 56.3 |
+| Lucky Hopper | rare | 4/11 | 90 | 52–75 | Attack 4 → 2 | 63.1 |
+| Raven Scout | rare | 2/3 | 90 | 52–75 | Health 3 → 2 | 65 |
+| Grass Viper | rare | 2/5 | 89.4 | 52–75 | Health 5 → 4 | 70 |
+| Ember Jackal | rare | 3/8 | 88.8 | 52–75 | Health 8 → 4 | 63.1 |
+| Otter Centurion | rare | 3/9 | 88.8 | 52–75 | Attack 3 → 2 | 61.3 |
+| Thornvine Lasher | rare | 3/9 | 88.8 | 52–75 | Attack 3 → 2 | 61.3 |
+| Boar Rampager | rare | 6/18 | 88.1 | 52–75 | Attack 6 → 3 | 71.9 |
+| Eagle Diver | rare | 6/9 | 88.1 | 52–75 | Attack 6 → 3 | 66.9 |
+| Golden Eagle Diver | rare | 4/6 | 88.1 | 52–75 | Attack 4 → 3 | 73.1 |
+| Mallard Marauder | rare | 4/10 | 88.1 | 52–75 | Attack 4 → 2 | 54.4 |
+| Ravenous Wolverine | rare | 2/12 | 88.1 | 52–75 | Health 12 → 8 | 76.3 |
+| Savanna Cheetah | rare | 5/7 | 88.1 | 52–75 | Health 7 → 3 | 80.6 |
+| Dust Hyena | rare | 2/8 | 87.5 | 52–75 | Health 8 → 6 | 65.6 |
+| Pond Paddler | rare | 2/5 | 86.3 | 52–75 | Health 5 → 4 | 68.1 |
+| Firetail Trickster | rare | 5/9 | 85.6 | 52–75 | Health 9 → 5 | 71.9 |
+| Beetle Battering-Ram | rare | 5/20 | 85 | 52–75 | Attack 5 → 3 | 75 |
+| Rockslide Ram | rare | 5/12 | 84.4 | 52–75 | Attack 5 → 2 | 68.1 |
+| Stable Colt | rare | 2/9 | 84.4 | 52–75 | Health 9 → 6 | 60 |
+| Quill Volley | rare | 4/14 | 83.8 | 52–75 | Attack 4 → 3 | 69.4 |
+| Taiga Lynx | rare | 4/8 | 83.1 | 52–75 | Attack 4 → 3 | 58.8 |
 | Shimmerwing Stag | rare | 6/18 | 44.4 | 52–75 | Attack 6 → 8 | 52.5 |
+| Badger Berserker | rare | 6/14 | 81.3 | 52–75 | Attack 6 → 4 | 63.1 |
+| Jaguar Stalker | rare | 6/11 | 81.3 | 52–75 | Attack 6 → 4 | 66.3 |
+| Woodland Brawler | rare | 5/16 | 81.3 | 52–75 | Attack 5 → 4 | 69.4 |
 | River Warden | rare | 5/15 | 46.3 | 52–75 | Attack 5 → 8 | 55.6 |
+| Echo Screecher | rare | 4/8 | 80.6 | 52–75 | Attack 4 → 3 | 70 |
+| Monarch Wingblade | rare | 5/9 | 80.6 | 52–75 | Attack 5 → 3 | 69.4 |
 | Octopus Tactician | rare | 6/22 | 46.9 | 52–75 | Attack 6 → 8 | 53.1 |
+| Bog Leech | rare | 1/5 | 79.4 | 52–75 | Health 5 → 4 | 73.1 |
+| Ember Wisp | rare | 3/3 | 79.4 | 52–75 | Health 3 → 2 | 61.9 |
+| Arctic Fox Raider | rare | 4/6 | 78.8 | 52–75 | Health 6 → 5 | 74.4 |
+| Ice-Crevasse Wolf | rare | 4/10 | 78.8 | 52–75 | Attack 4 → 3 | 70 |
+| Bee Drone | rare | 1/6 | 76.9 | 52–75 | Health 6 → 5 | 67.5 |
+| Fox Kit | rare | 3/5 | 76.9 | 52–75 | Health 5 → 4 | 61.9 |
+| Quill-Thorn Boar | rare | 3/16 | 76.9 | 52–75 | Attack 3 → 2 | 68.8 |
+| Raccoon Bandit | rare | 3/6 | 76.9 | 52–75 | Health 6 → 5 | 60.6 |
+| Squire's Mount | rare | 5/14 | 76.9 | 52–75 | Attack 5 → 4 | 63.1 |
+| Bear Cub | rare | 2/8 | 76.3 | 52–75 | Health 8 → 6 | 60 |
+| Swarm Matriarch | rare | 2/15 | 75.6 | 52–75 | Attack 2 → 1 | 73.8 |
 | Cobalt Talon Skirmisher | starter | 3/6 | 94.4 | 20–48 | Health 6 → 2 | 38.8 |
 | Duck Paddler | starter | 3/6 | 94.4 | 20–48 | Health 6 → 2 | 38.8 |
 | Crimson Wing Duelist Cadet | starter | 3/5 | 90 | 20–48 | Attack 3 → 1 | 29.4 |
@@ -157,14 +222,13 @@ Starters in particular may be meant to be weak or strong; that is your call (dec
 | Crimson Wing Recruit | starter | 2/3 | 56.3 | 20–48 | Attack 2 → 1 | 24.4 |
 | Ant Scout | starter | 3/6 | 55.6 | 20–48 | Attack 3 → 2 | 34.4 |
 | Meadow Rabbit | starter | 1/4 | 13.8 | 20–48 | Attack 1 → 2 | 40.6 |
-| Sulfur Vent Crab | uncommon | 2/9 | 93.1 | 45–68 | Attack 2 → 1 | 56.9 |
-| Riptide Eel | uncommon | 5/8 | 20.6 | 45–68 | Attack 5 → 8 | 46.3 |
 | Soldier Ant | uncommon | 3/8 | 81.9 | 45–68 | Health 8 → 6 | 55.6 |
+| Riptide Eel | uncommon | 7/8 | 33.8 | 45–68 | Attack 7 → 8 | 46.3 |
 | Tiny Cave Dweller | uncommon | 1/4 | 36.9 | 45–68 | Health 4 → 5 | 56.3 |
 
 ## Suggested rarities for cards with none
 
-By measured strength, the nearest rarity band: 74 starter, 40 common, 39 legendary, 11 uncommon, 8 rare, 7 epic, 6 veryrare, 6 heroic, 5 unique, 3 superrare.
+By measured strength, the nearest rarity band: .
 The per-card list is in the hub's ⚖️ Balance tab (filter "No rarity").
 Many free cards land on Legendary: either they become rarer, or they get weaker and keep a low rarity.
 
