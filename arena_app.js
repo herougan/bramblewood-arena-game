@@ -8626,6 +8626,13 @@ function activateSpot(spot){
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
 const MAP_ART_IDS = new Set(["mf","mb","mg","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
+// Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
+// cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
+// override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
+function decorPos(mapId, key, fallback){
+  const o = (mapLayoutOverrides[mapId]||{})[key];
+  return (o && isFinite(o.x) && isFinite(o.y)) ? {x:+o.x, y:+o.y} : fallback;
+}
 function mapSpotsHTML(map, positions, progress){
   // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
   // spots sit further above their skirmish, joined to it by a faint dashed line.
@@ -8633,10 +8640,11 @@ function mapSpotsHTML(map, positions, progress){
   const html = FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
     const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const x = Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y = Math.max(8, Math.min(92, base.y + (sp.after ? -27 : 14)));
-    if(sp.after) links.push(`<line x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
+    const def = {x: Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (sp.after ? -27 : 14)))};
+    const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
+    if(sp.after) links.push(`<line data-a="${escapeAttr(sp.after)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
-    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
@@ -8646,7 +8654,8 @@ function mapSpotsHTML(map, positions, progress){
 // visit plays a short scene (with a choice), after that it just ripples.
 function mapWellHTML(){
   const seen = !!loadDialogueFlags()['seen:well_m1'];
-  return `<button type="button" class="map-well ${seen ? '' : 'is-new'}" id="mapWell" style="left:67%; top:79%;" title="An old well" aria-label="An old well">
+  const p = decorPos('m1', '~well', {x:67, y:79});
+  return `<button type="button" class="map-well ${seen ? '' : 'is-new'}" id="mapWell" data-lkey="~well" style="left:${p.x}%; top:${p.y}%;" title="An old well" aria-label="An old well">
     <span class="mw-roof" aria-hidden="true"></span><span class="mw-posts" aria-hidden="true"></span><span class="mw-bucket" aria-hidden="true"></span><span class="mw-ring" aria-hidden="true"></span>
     ${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`;
 }
@@ -8667,7 +8676,8 @@ function subMapEntrancesHTML(map, progress){
     const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
     const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
-    return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : 'disabled'} style="left:${sm.entry.x}%; top:${sm.entry.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+    const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
+    return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span><span class="msc-ico" aria-hidden="true">${open ? sm.icon : '🔒'}</span>${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
   }).join('');
 }
@@ -8718,7 +8728,8 @@ function leaveSubMap(sm, body){
 }
 function mapCaveHTML(){
   const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
-  return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" style="left:22%; top:30%;" title="A small cave" aria-label="A small cave">
+  const p = decorPos('m2', '~cave', {x:22, y:30});
+  return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" data-lkey="~cave" style="left:${p.x}%; top:${p.y}%;" title="A small cave" aria-label="A small cave">
     <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${n ? '' : '<span class="map-spot-new">!</span>'}</button>`;
 }
 function visitSmallCave(el){
@@ -10403,6 +10414,7 @@ function wireMapLayoutEditor(map, body){
         const t = ev.target.closest('[data-lkey]'); if(!t) return;
         ev.stopPropagation(); ev.preventDefault();
         const key = t.getAttribute('data-lkey');
+        if(key.startsWith('~')) return; // map tiles aren't fights; they can't be linked
         if(!conquestLinkFrom || conquestLinkFrom === key){ conquestLinkFrom = conquestLinkFrom === key ? null : key; cv.querySelectorAll('.link-from').forEach(x=> x.classList.remove('link-from')); if(conquestLinkFrom) t.classList.add('link-from'); return; }
         const from = conquestLinkFrom; conquestLinkFrom = null;
         await toggleNodeLink(map, from, key); rerender();
@@ -11052,10 +11064,10 @@ function renderConquestSubTab(body){
   try{ mountMapShader(conquestShaderHost(), map.id); }catch(e){}
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
-  { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); visitOldWell(w); }); }
-  { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); visitSmallCave(c); }); }
-  mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); enterSubMap(b.dataset.submap, b, body); }));
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
+  { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
+  { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
+  mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
   if(conquestSubZoom && mainEl.animate){ const z = conquestSubZoom; conquestSubZoom = null;
     mainEl.animate(z==='in' ? [{transform:'scale(.55)', opacity:0, filter:'brightness(0)'}, {transform:'scale(1.04)', opacity:1, filter:'brightness(.8)', offset:.7}, {transform:'none', opacity:1, filter:'none'}]
                             : [{transform:'scale(1.5)', opacity:0}, {transform:'none', opacity:1}], {duration: z==='in' ? 520 : 300, easing:'cubic-bezier(.2,.8,.3,1)'}); }

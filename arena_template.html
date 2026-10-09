@@ -3916,6 +3916,9 @@
   .conquest-map-canvas.layout-editing .map-node,
   .conquest-map-canvas.layout-editing .map-node-hidden{cursor:grab; touch-action:none; pointer-events:auto; opacity:1;}
   .conquest-map-canvas.layout-editing .map-node:hover{transform:translate(-50%,-50%);}
+  /* 2026-10-09: map tiles (spots, well, caves) can be dragged too, shown with a dashed outline while arranging */
+  .conquest-map-canvas.layout-editing .map-spot, .conquest-map-canvas.layout-editing .map-well, .conquest-map-canvas.layout-editing .map-cave{cursor:grab; touch-action:none; outline:2px dashed rgba(255,240,200,.75); outline-offset:3px; border-radius:12px; opacity:1;}
+  .conquest-map-canvas.layout-editing .map-spot:hover, .conquest-map-canvas.layout-editing .map-cave:hover{transform:translate(-50%,-50%);}
   .conquest-map-canvas.layout-editing .ml-dragging{cursor:grabbing; z-index:20; box-shadow:0 0 0 4px var(--gold), 0 8px 20px rgba(0,0,0,.5);}
   .map-theme-m1{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
   .map-theme-m2{--mt-a:#2f7ca0; --mt-b:#1d5578; --mt-c:#123a54;}
