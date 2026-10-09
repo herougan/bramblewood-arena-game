@@ -1895,8 +1895,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(summonLeader(players, sideOf, aiId, id, rnd() < 0.5 ? 'left' : 'right', stats, events)){ ai.reserveLeaders = ai.reserveLeaders.filter(x=> x!==id); return; }
       }
     }
-    if(affordable.length){
-      const pick = affordable[Math.floor(rnd()*affordable.length)];
+    // Saving up (2026-10-09, balance pass): the CPU used to discard only when it had nothing free to
+    // play, so a hand with any free card never banked Lumber and costly cards (dragons, elites' big
+    // threats) were almost never played. Now, holding a card it can't afford yet, it pitches its
+    // weakest other card to the Graveyard first (+1 Lumber, once a turn, same as a player), and once
+    // a saved-for card is affordable it usually plays that instead of a random free one.
+    const cardValue = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; };
+    if(!ai.discardUsedThisTurn && ai.hand.length > 1){
+      const saving = ai.hand.filter(hc=> costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + 3);
+      if(saving.length){
+        const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0);
+        if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
+          const worst = pitchable.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
+          ai.hand.splice(ai.hand.indexOf(worst), 1);
+          ai.graveyard.push({defId:worst.defId});
+          ai.lumber += 1;
+          ai.discardUsedThisTurn = true;
+          if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:worst.defId});
+        }
+      }
+    }
+    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid));
+    if(playable.length){
+      const costly = playable.filter(hc=> costOfCard(hc.defId) > 0);
+      const pick = costly.length && rnd() < 0.8 ? costly.reduce((a, b)=> costOfCard(b.defId) > costOfCard(a.defId) ? b : a) : playable[Math.floor(rnd()*playable.length)];
       const side = rnd() < 0.5 ? 'left' : 'right';
       placeCard(players, sideOf, aiId, pick.uid, side, stats, events);
     } else if(!ai.discardUsedThisTurn && ai.hand.length){
