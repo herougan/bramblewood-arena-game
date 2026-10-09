@@ -14574,6 +14574,7 @@ function renderMatchUI(){
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow" aria-hidden="true">${Array.from({length: fxAtLeast('high') ? 28 : 14}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
+      ${fieldOverlayHTML(fieldEffectOf(m))}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -18692,6 +18693,16 @@ function fieldEffectOf(m){
     if(kind === 5 && !m.engine.getField()) m.engine.setField('frozen', null, 'map');
   }
   const f = m.engine.getField(); return f ? f.id : null;
+}
+// Field looks (2026-10-09): each field gets its own layer over the board, like Frozen Ground's snow.
+function fieldOverlayHTML(id){
+  if(!id || id==='frozen' || !fxAtLeast('low')) return '';
+  const n = fxAtLeast('high') ? 36 : 18;
+  if(id==='rain') return `<div class="field-fx field-rain" aria-hidden="true">${Array.from({length:n}, (_, k)=> `<i style="left:${(k*29)%100}%; animation-delay:-${((k*0.37)%1.2).toFixed(2)}s; animation-duration:${(0.7 + (k*0.13)%0.5).toFixed(2)}s"></i>`).join('')}</div>`;
+  if(id==='fog') return `<div class="field-fx field-fog" aria-hidden="true"><span></span><span></span><span></span></div>`;
+  if(id==='heatwave') return `<div class="field-fx field-heat" aria-hidden="true">${Array.from({length: Math.round(n/2)}, (_, k)=> `<i style="left:${(k*41)%100}%; animation-delay:-${((k*0.9)%5).toFixed(2)}s"></i>`).join('')}</div>`;
+  if(id==='moon') return `<div class="field-fx field-moon" aria-hidden="true"><span class="fm-moon">🌕</span></div>`;
+  return '';
 }
 function dayNightOn(m){ return !!(m && m.engine && m.engine.getPhase && m.mode!=='tutorial' && m.mode!=='liveRanked'); }
 function fieldEffectCardHTML(m){

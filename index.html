@@ -5154,6 +5154,28 @@
   .ice-pulse::after{content:'❄'; position:absolute; left:50%; top:50%; translate:-50% -50%; font-size:2.4em; color:#fff; text-shadow:0 0 10px #9fd8ff;}
   @keyframes icePulse{0%{transform:scale(1.25); opacity:0;} 18%{opacity:1;} 100%{transform:scale(.55); opacity:0;}}
   :where(html[data-fx="none"]) .field-snow, :where(html[data-fx="none"]) .field-card .fc-ico{display:none;}
+  /* Field looks (2026-10-09) */
+  .field-fx{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:3; border-radius:inherit;}
+  .field-rain i{position:absolute; top:-20px; width:1.5px; height:18px; background:linear-gradient(180deg, transparent, rgba(190,225,255,.85)); border-radius:1px; animation:fieldRain linear infinite; rotate:12deg;}
+  @keyframes fieldRain{to{top:105%; translate:-28px 0;}}
+  .field-rain{background:linear-gradient(180deg, rgba(60,90,130,.18), rgba(60,90,130,.06));}
+  .field-fog span{position:absolute; inset:-20% -40%; background:radial-gradient(ellipse at 30% 50%, rgba(235,240,245,.3), transparent 60%), radial-gradient(ellipse at 75% 40%, rgba(225,232,240,.24), transparent 55%); animation:fieldFog 22s ease-in-out infinite alternate; filter:blur(6px);}
+  .field-fog span:nth-child(2){animation-duration:31s; animation-delay:-9s; opacity:.8; top:10%;}
+  .field-fog span:nth-child(3){animation-duration:40s; animation-delay:-20s; opacity:.6; top:-10%;}
+  @keyframes fieldFog{0%{translate:-12% 0;} 100%{translate:12% 2%;}}
+  .field-heat{background:linear-gradient(0deg, rgba(255,120,30,.22), rgba(255,170,60,.05) 60%, transparent); animation:fieldHeatGlow 3.2s ease-in-out infinite;}
+  .field-heat i{position:absolute; bottom:-30px; width:26px; height:60px; border-radius:50%; background:radial-gradient(ellipse, rgba(255,210,150,.35), transparent 70%); filter:blur(3px); animation:fieldHeat 5s ease-in infinite;}
+  @keyframes fieldHeat{0%{transform:translateY(0) scaleX(1); opacity:0;} 30%{opacity:.9;} 100%{transform:translateY(-260px) scaleX(1.8); opacity:0;}}
+  @keyframes fieldHeatGlow{0%,100%{opacity:.75;} 50%{opacity:1;}}
+  .field-moon{background:radial-gradient(circle at 85% 12%, rgba(200,215,255,.35), rgba(40,60,120,.25) 40%, rgba(10,20,50,.25));}
+  .field-moon .fm-moon{position:absolute; right:6%; top:4%; font-size:40px; filter:drop-shadow(0 0 18px rgba(230,235,255,.9)); animation:fieldMoon 6s ease-in-out infinite;}
+  @keyframes fieldMoon{0%,100%{transform:scale(1);} 50%{transform:scale(1.06);}}
+  .field-card.field-rain{background:linear-gradient(180deg,#9fc4e6,#4f7fa8) !important; color:#fff;}
+  .field-card.field-fog{background:linear-gradient(180deg,#e4e8ee,#9aa6b4) !important; color:#26303a;}
+  .field-card.field-heatwave{background:linear-gradient(180deg,#ffcf73,#e2562b) !important; color:#3a1406;}
+  .field-card.field-moon{background:linear-gradient(180deg,#3b4c8c,#121a3d) !important; color:#e8edff;}
+  :where(html[data-fx="none"]) .field-fx{display:none;}
+  @media (prefers-reduced-motion:reduce){ .field-fx i, .field-fx span, .field-moon .fm-moon, .field-heat{animation:none !important;} .field-rain i{display:none;} }
   @media (prefers-reduced-motion:reduce){ .field-snow{display:none;} .field-card .fc-ico{animation:none;} }
   /* 2026-10-08 (user: "The discard area should be beside the cards instead ... always on the right of the hand"): the graveyard follows the hand */
   .bottom-play-row .graveyard-pile{margin-left:14px !important;}
@@ -11999,7 +12021,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=911a767f2f", "es": "assets/lang/es.js?v=9f46ef58b2", "fr": "assets/lang/fr.js?v=b78117684a", "id": "assets/lang/id.js?v=3fdc1a66b5", "it": "assets/lang/it.js?v=6092f6e276", "ja": "assets/lang/ja.js?v=dc967c82c3", "ko": "assets/lang/ko.js?v=7c50ce6f8a", "pt": "assets/lang/pt.js?v=a3e52e9e63", "ta": "assets/lang/ta.js?v=d0cc315371", "tl": "assets/lang/tl.js?v=d89d0b0116", "zh-Hans": "assets/lang/zh-Hans.js?v=bd6da028b8", "zh-Hant": "assets/lang/zh-Hant.js?v=4c9eefc2d7"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=f4d6a6a144", "es": "assets/lang/es.js?v=ee475a0713", "fr": "assets/lang/fr.js?v=d717b98e15", "id": "assets/lang/id.js?v=880b9a44c1", "it": "assets/lang/it.js?v=4d56e5391a", "ja": "assets/lang/ja.js?v=1a1e803255", "ko": "assets/lang/ko.js?v=398a356de0", "pt": "assets/lang/pt.js?v=392dd365fb", "ta": "assets/lang/ta.js?v=2d1529504e", "tl": "assets/lang/tl.js?v=f59f47bf51", "zh-Hans": "assets/lang/zh-Hans.js?v=31af444bd3", "zh-Hant": "assets/lang/zh-Hant.js?v=8a5113ca3c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -26743,6 +26765,7 @@ function renderMatchUI(){
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow" aria-hidden="true">${Array.from({length: fxAtLeast('high') ? 28 : 14}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
+      ${fieldOverlayHTML(fieldEffectOf(m))}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -30861,6 +30884,16 @@ function fieldEffectOf(m){
     if(kind === 5 && !m.engine.getField()) m.engine.setField('frozen', null, 'map');
   }
   const f = m.engine.getField(); return f ? f.id : null;
+}
+// Field looks (2026-10-09): each field gets its own layer over the board, like Frozen Ground's snow.
+function fieldOverlayHTML(id){
+  if(!id || id==='frozen' || !fxAtLeast('low')) return '';
+  const n = fxAtLeast('high') ? 36 : 18;
+  if(id==='rain') return `<div class="field-fx field-rain" aria-hidden="true">${Array.from({length:n}, (_, k)=> `<i style="left:${(k*29)%100}%; animation-delay:-${((k*0.37)%1.2).toFixed(2)}s; animation-duration:${(0.7 + (k*0.13)%0.5).toFixed(2)}s"></i>`).join('')}</div>`;
+  if(id==='fog') return `<div class="field-fx field-fog" aria-hidden="true"><span></span><span></span><span></span></div>`;
+  if(id==='heatwave') return `<div class="field-fx field-heat" aria-hidden="true">${Array.from({length: Math.round(n/2)}, (_, k)=> `<i style="left:${(k*41)%100}%; animation-delay:-${((k*0.9)%5).toFixed(2)}s"></i>`).join('')}</div>`;
+  if(id==='moon') return `<div class="field-fx field-moon" aria-hidden="true"><span class="fm-moon">🌕</span></div>`;
+  return '';
 }
 function dayNightOn(m){ return !!(m && m.engine && m.engine.getPhase && m.mode!=='tutorial' && m.mode!=='liveRanked'); }
 function fieldEffectCardHTML(m){
