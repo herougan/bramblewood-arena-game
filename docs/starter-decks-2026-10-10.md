@@ -56,3 +56,17 @@ For your reorganisation. **Win %** is each card measured on its own against the 
   - Every rival card still shows "Not owned" in the Codex until it lands, and the reward screen already announces it.
   - Optional: the first Nest egg (map 4) hatches from the rival pool if anything is still missing.
 - **Balance while you reorganise:** whichever Hummingbird cards you keep, B6's numbers apply. Roughly −1 Attack on the five 3-Attack flyers, or Reach on two Otter ground units, gets the mirror near 50%.
+
+## The 50 most basic cards (2026-10-10, for your editing pass)
+What a new player meets first, in order: the two starter sets, the neutral starter critters, the free base cards, then the first-clear rewards of the first two maps (plus Pebble Beach's first skirmish).
+
+| # | Group | Cards |
+|---|---|---|
+| 1–20 | Otter starter (Basic) | Acorn Chipmunk, Ant Scout, Bee Forager, Bee Sentry, Burrow Rabbit, Chipmunk Forager, Cottontail, Duck Paddler, Duckling, Honey Bee, Meadow Rabbit, Otter Guard, Otter Kit, Otter Paddler, Pond Duck, Pond Trout, River Carp, Silver Minnow, Tunnel Ant, Worker Ant |
+| 21–30 | Hummingbird starter (Basic) | Cobalt Talon Fledgling, Cobalt Talon Skirmisher, Crimson Wing Duelist Cadet, Crimson Wing Recruit, Dominion Nestguard, Gold-throated Acolyte, Mosswing Laborer, Sunthroat Courier, Violet Vane Fletcher, Voidfeather Scout |
+| 31–36 | Neutral starter critters (level 0, not in a starter deck yet) | Harvest Mouse 1/3, Garden Snail 1/6 Armour, Pill Bug 1/4 Armour, Sparrow Chick 1/2 Flying, Earthworm 1/2 Regen, Guppy 1/2 |
+| 37–41 | Free base cards (everyone owns them) | Beaver Lumberjack (+2 Lumber), Courier Pigeon (draw 1), Forager Ant (Swarm), Echo Keeper (Echoes), Cinder Imp (Devilry) |
+| 42–45 | Bramblewood Outskirts rewards | Feral Tomcat 3/3 Quick, Chipmunk Cavalry 3/9 Quick, Owl Nightwatch 4/10 Stealth/Flying, Otter Riverguard 5/20 Armour (boss; also Shepherd's Bark) |
+| 46–50 | Thistle Fields rewards | Meadow Frog 3/3, Hedgehog Scout 2/4 Thorns, Dormouse 2/5, Beetle Grunt 2/7, Quarry Mole 2/10 |
+
+Next after these: Pebble Beach (Fiddler Crab Swarm, Gull Thief, Thick Fog, Pelican Diver, Sea Turtle Elder).

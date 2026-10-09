@@ -8978,13 +8978,71 @@ function skirmishCurveHTML(mapId, currentKey){
   return `<div class="se-curve"><span class="se-curve-lbl">This map, new-player win rate:</span>${nodes.map(chip).join('')}<button type="button" class="btn small ghost" id="seCurveRun">Check the whole map</button><small class="se-curve-key">green on target · blue too easy · red too hard</small></div>`;
 }
 let pendingSkirmishReopen = null; // a Test fight returns you to the editor with your unsaved draft (2026-10-07 audit)
+/* Skirmish gallery picker (2026-10-10, user: "Open a similar UI as the deck editor UI. For me to pick cards from a
+   gallery. Clicking on Leader and Clicking on Castle too."). One overlay, three uses:
+   - kind 'deck': tap a card to add a copy, the − chip removes one; Done closes.
+   - kind 'leader': tap a card to put it in the chosen leader slot (closes at once).
+   - kind 'castle': tap a castle (or the plain one) to choose it (closes at once).
+   It sits above the skirmish editor; the editor re-renders when it closes. */
+function openSkirmishGallery(o){
+  const defs = getCardDefs();
+  const el = document.createElement('div');
+  el.className = 'modal-overlay se-gallery-overlay';
+  document.body.appendChild(el);
+  let q = '', only = 'all';
+  const RAR = ['starter','common','uncommon','rare','epic','legendary','unique'];
+  const rarIdx = d=> { const i = RAR.indexOf(d.rarity||'common'); return i < 0 ? 1 : i; };
+  const pool = o.kind === 'castle' ? [] : Object.values(defs).filter(d=> d && !d.test && !d.hallOfFame && !d.baseId && (o.kind !== 'leader' || !d.token))
+    .sort((a,b)=> rarIdx(a) - rarIdx(b) || (a.cost||0) - (b.cost||0) || (a.name||'').localeCompare(b.name||''));
+  const close = ()=>{ el.remove(); document.removeEventListener('keydown', onKey); o.onClose && o.onClose(); };
+  const onKey = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  document.addEventListener('keydown', onKey);
+  const title = o.kind === 'deck' ? `🃏 Deck · ${Object.values(o.counts).reduce((t,n)=> t+n, 0)} cards` : o.kind === 'leader' ? `👑 Choose leader ${o.slot + 1}` : '🏰 Choose a castle';
+  const render = ()=>{
+    const ql = q.trim().toLowerCase();
+    let body = '';
+    if(o.kind === 'castle'){
+      const plain = {id:'', name:'Plain castle', icon:'🏰', rarity:'common', health:(CHARACTER_DEFS.castle||{health:30}).health, effects:{}};
+      const list = [plain, ...Object.values(CHARACTER_DEFS).filter(c=> c.id !== 'castle' || o.current === 'castle')].filter(c=> !ql || (c.name||'').toLowerCase().includes(ql));
+      body = list.map(c=> `<button type="button" class="sg-item${(o.current||'') === c.id ? ' is-picked' : ''}" data-pick="${escapeAttr(c.id)}" title="${escapeAttr(c.name)} (${c.health} HP)">${matchCastleTileHTML(c.id ? c : null, c.health, c.health, 'preview', '')}<span class="sg-name">${escapeHtml(c.name)} · ${c.health} HP</span></button>`).join('');
+    } else {
+      const list = pool.filter(d=> (!ql || (d.name||'').toLowerCase().includes(ql)) && (only !== 'in' || (o.counts && o.counts[d.id])));
+      body = list.map(d=>{
+        const n = o.kind === 'deck' ? (o.counts[d.id]||0) : 0;
+        const picked = o.kind === 'leader' && (o.current||[]).includes(d.id);
+        return `<div class="sg-item${n ? ' is-in' : ''}${picked ? ' is-picked' : ''}" data-pick="${escapeAttr(d.id)}" role="button" tabindex="0" title="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${n ? `<span class="sg-count">×${n}</span><button type="button" class="sg-minus" data-minus="${escapeAttr(d.id)}" aria-label="Remove one ${escapeAttr(d.name)}">−</button>` : ''}${picked ? '<span class="sg-count">👑</span>' : ''}</div>`;
+      }).join('') || '<p class="panel-sub">No cards match.</p>';
+    }
+    el.innerHTML = `<div class="modal se-gallery" role="dialog" aria-label="${escapeAttr(title)}">
+      <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
+      <div class="sg-tools"><input type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}" autocomplete="off">
+        ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
+        ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}</div>
+      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a castle to use it.'}</p>
+      <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}">${body}</div>
+    </div>`;
+    el.querySelectorAll('[data-sg-close]').forEach(b=> b.onclick = close);
+    el.onclick = e=>{ if(e.target === el) close(); };
+    const s = el.querySelector('.sg-search');
+    s.oninput = ()=>{ q = s.value; const pos = s.selectionStart; render(); const s2 = el.querySelector('.sg-search'); s2.focus(); s2.setSelectionRange(pos, pos); };
+    el.querySelectorAll('[data-only]').forEach(b=> b.onclick = ()=>{ only = b.dataset.only; render(); });
+    el.querySelectorAll('[data-minus]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); o.minus(b.dataset.minus); render(); });
+    el.querySelectorAll('[data-pick]').forEach(b=>{
+      const go = ()=>{ o.pick(b.dataset.pick); if(o.kind === 'deck') render(); else close(); };
+      b.addEventListener('click', go);
+      b.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); } });
+    });
+  };
+  render();
+  setTimeout(()=>{ const s = el.querySelector('.sg-search'); if(s && !matchMedia('(pointer:coarse)').matches) s.focus(); }, 30);
+}
 function openSkirmishEditor(mapId, nodeKey, draftOverride){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); const node = map && map.nodes.find(n=> n.key===nodeKey); if(!node) return;
   let overlay = document.getElementById('skirmishEditorOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'skirmishEditorOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   const draft = JSON.parse(JSON.stringify(draftOverride || node));
   draft.deck = draft.deck || {};
-  let q = '', simText = '', dirty = !!draftOverride;
+  let q = '', simText = '', dirty = !!draftOverride, leaderSlots = Math.min(5, (draft.leaders||[]).length);
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
   const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(cur||'')===String(v)?'selected':''}>${escapeHtml(label)}</option>`;
   const render = ()=>{
@@ -9005,8 +9063,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
-        <label>Castle<select id="seChar">${opt('', draft.characterId, `Plain castle (${(CHARACTER_DEFS.castle||{health:30}).health} HP)`)}${Object.keys(CHARACTER_DEFS).map(id=> opt(id, draft.characterId, `${CHARACTER_DEFS[id].name} (${CHARACTER_DEFS[id].health} HP)`)).join('')}</select></label>
-        <div class="se-wide se-leaders"><b>👑 Leaders</b> <small>optional · the CPU may bring each one out once</small><div class="se-leader-chips">${(draft.leaders||[]).map(id=> `<span class="dchip">${escapeHtml((getCardDefs()[id]||{}).icon||'')} ${escapeHtml((getCardDefs()[id]||{}).name||id)} <button type="button" class="se-x" data-leader-rm="${escapeAttr(id)}" aria-label="Remove">✕</button></span>`).join('') || '<small>None</small>'}<select id="seLeaderAdd" aria-label="Add a leader"><option value="">＋ Add a leader…</option>${Object.values(getCardDefs()).filter(d=> d && !d.token && !d.test && !(draft.leaders||[]).includes(d.id)).sort((a,b)=> (a.name||'').localeCompare(b.name||'')).map(d=> `<option value="${escapeAttr(d.id)}">${escapeHtml(d.name||d.id)}</option>`).join('')}</select></div></div>
+        <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>
+        <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once</small></div>
+          <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
         <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
         <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
@@ -9015,10 +9074,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
-      <h3 class="se-h">Enemy deck · ${total} cards</h3>
+      <div class="se-h-row"><h3 class="se-h">Deck · ${total} cards</h3><button type="button" class="btn small" id="seGallery">🃏 Open card gallery</button></div>
       <div class="se-deck">${deckIds.length ? deckIds.map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health+(defs[id].wait?' · W'+defs[id].wait:'') : ''}</span>
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${draft.deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
-      <div class="se-search-row"><input type="text" id="seSearch" placeholder="Search a card to add to the enemy deck…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
+      <div class="se-search-row"><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
@@ -9049,8 +9108,16 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
     overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
-    { const la = document.getElementById('seLeaderAdd'); if(la) la.onchange = ()=>{ read(); if(la.value){ draft.leaders = [...(draft.leaders||[]), la.value]; dirty = true; render(); } }; }
-    overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); draft.leaders = (draft.leaders||[]).filter(x=> x!==b.dataset.leaderRm); if(!draft.leaders.length) delete draft.leaders; dirty = true; render(); });
+    // Leaders, castle and deck open the gallery picker (2026-10-10). Leader slots: 0–5; empty slots are dropped on save.
+    const setLeaders = arr=>{ const a = arr.filter(Boolean); if(a.length) draft.leaders = a; else delete draft.leaders; };
+    { const lc = document.getElementById('seLeaderCount'); if(lc) lc.onchange = ()=>{ read(); leaderSlots = Math.max(0, Math.min(5, +lc.value||0)); setLeaders((draft.leaders||[]).slice(0, leaderSlots)); dirty = true; render(); }; }
+    overlay.querySelectorAll('[data-leader-slot]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.leaderSlot;
+      openSkirmishGallery({kind:'leader', slot:k, current: draft.leaders||[], pick: id=>{ const a = (draft.leaders||[]).slice(); while(a.length < k) a.push(null); const dup = a.indexOf(id); if(dup >= 0 && dup !== k) a[dup] = a[k] || null; a[k] = id; setLeaders(a); dirty = true; }, onClose: render}); });
+    overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); const a = (draft.leaders||[]).slice(); a.splice(+b.dataset.leaderRm, 1); setLeaders(a); dirty = true; render(); });
+    { const cp = document.getElementById('seCastlePick'); if(cp) cp.onclick = ()=>{ read();
+        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
+    { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
+        openSkirmishGallery({kind:'deck', counts: draft.deck, pick: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
     overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
     // 2026-10-08 (user: "in the add cards section, can I also create a new card - it loads the same UI. When I click
