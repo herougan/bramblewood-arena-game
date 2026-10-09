@@ -18,9 +18,10 @@ const i = src.indexOf('const CONQUEST_MAPS = ['); const j = src.indexOf('\n];', 
 const MAPS = eval(src.slice(i + 'const CONQUEST_MAPS = '.length, j + 2));
 const MAP = process.argv[2] || 'm3', N = +process.argv[3] || 80;
 const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.wait||0)*0.5); };
-function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a)); const deck = {}; let n = 0; for(const id of ids){ const k = Math.min(4, 20-n); if(k<=0) break; deck[id] = k; n += k; } return deck; }
+const CAP = {legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4};
+function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a)); const deck = {}; let n = 0; for(const id of ids){ const k = Math.min(4, CAP[defs[id].rarity] || 10, 20-n); if(k<=0) break; deck[id] = k; n += k; } return deck; }
 function play(A, B, charB, hpB, seed){
-  const e = E.makeSimEngine(defs, E.mulberry32(seed), {}); const so = p=> p===1 ? 'A' : 'B';
+  const e = E.makeSimEngine(defs, E.mulberry32(seed), {battleMode:'open'}); const so = p=> p===1 ? 'A' : 'B';
   const P = {1: e.newPlayer(1, A, Object.assign({}, charById.castle, {health:30})), 2: e.newPlayer(2, B, Object.assign({}, charB || charById.castle, {health: hpB}))}; const st = {};
   e.draw(P[1], 3, 'A', st, null); e.draw(P[2], 3, 'B', st, null);
   for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
@@ -31,8 +32,16 @@ function play(A, B, charB, hpB, seed){
 }
 const rate = (deck, nd, ch, hp)=>{ let w = 0; for(let k=0;k<N;k++) if(play(deck, nd, ch, hp, 300 + k*29) === 1) w++; return w/N; };
 // what the player owns arriving at this map: base unlocked cards + tutorial reward + rewards of every earlier map node
-const owned = cards.filter(c=> !c.locked && !c.token && !c.test).map(c=> c.id).concat(['river-warden']);
-for(const m of MAPS){ if(m.id===MAP) break; m.nodes.forEach(n=> cards.filter(c=> c.source && c.source.kind==='map' && c.source.id===m.id && c.source.node===n.key).forEach(c=> owned.push(c.id))); }
+// 2026-10-09: "owned" now matches the game's own expectedPlayerDeck(): Base cards only (starters,
+// basics and unlocked cards with no other source), not every unlocked card; the Traveller is the
+// leader, not a deck card. Then the rewards of every earlier main map (and, for a sub-map, of its
+// parent up to the entrance node).
+const isBase = c=> !c.token && !c.test && !c.hallOfFame && c.id!=='wandering-traveller' && !(c.source && c.source.kind) && (c.rarity==='starter' || c.basic || !c.locked);
+const owned = cards.filter(isBase).map(c=> c.id);
+const rewardsOf = (mid, key)=> cards.filter(c=> c.source && c.source.kind==='map' && c.source.id===mid && c.source.node===key).map(c=> c.id);
+{ const target = MAPS.find(m=> m.id===MAP), stop = target && target.sub ? MAPS.find(m=> m.id===target.parent) : target;
+  for(const m of MAPS){ if(m.sub) continue; if(m===stop) break; m.nodes.forEach(n=> rewardsOf(m.id, n.key).forEach(id=> owned.push(id))); }
+  if(target && target.sub && stop){ const ix = stop.nodes.findIndex(n=> n.key===target.entry.after); stop.nodes.slice(0, ix+1).forEach(n=> rewardsOf(stop.id, n.key).forEach(id=> owned.push(id))); } }
 const map = MAPS.find(m=> m.id===MAP); const nodes = map.nodes.filter(n=> n.deck && n.kind!=='tutorial');
 const skirm = nodes.filter(n=> n.kind==='skirmish');
 nodes.forEach(n=>{
