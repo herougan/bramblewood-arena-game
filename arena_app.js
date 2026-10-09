@@ -191,7 +191,7 @@ const PASSIVE_DEFS = [
   // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
-  {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board.`},
+  {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
   {key:'wash', category:'passive', label:'Wash', kind:'boolean', desc:()=>`On Flow rounds, the enemy card facing this one gets +1 Wait (once per enemy card).`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
@@ -9810,7 +9810,7 @@ const CONQUEST_MAPS = [
       { key:"f-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2}, hqHp:22, flavor:"The drumming stops the moment you step into the grass.", requires:["f-1"] },
       { key:"f-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":4,"quarry-mole":4,"mouse-sapper":2,"badger-berserker":2}, hqHp:14, flavor:"The field looks flat. Underneath it is not.", requires:["f-1"] },
       { key:"f-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":3,"hedgehog-scout":2,"beetle-battering-ram":1}, hqHp:15, flavor:"Someone has been digging trenches under the thistles.", requires:["f-2","f-3"] },
-      { key:"f-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":3,"burrow-rabbit":3,"jackrabbit-sprinter":2,"fox-kit":1,"mouse-sapper":2}, hqHp:30, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["f-4"] },
+      { key:"f-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":4,"burrow-rabbit":2,"fox-kit":1,"mouse-sapper":3,"field-mouse":1}, hqHp:30, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["f-4"] },
     ]},
   { id:"mb", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", unlockAfter:"mf", sequential:true,
     nodes: [
@@ -9888,12 +9888,12 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m8", name:"Sable Swampmire", icon:"🐊", blurb:"A second, blacker wetland — everything here bites first and asks later.", unlockAfter:"m7", sequential:true,
     nodes: [
-      { key:"8-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":3,"gangrenous-leech":4,"marsh-gas-toad":2,"marsh-wisp":1}, hqHp:32, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
+      { key:"8-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":3,"gangrenous-leech":4,"marsh-gas-toad":2,"marsh-wisp":1}, hqHp:45, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", deck:{"swamp-alligator":3,"mire-witch-heron":4,"cypress-root-lurker":3}, hqHp:110, flavor:"The roots move only when you stop watching them.", requires:["8-1"] },
       { key:"8-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"marsh-gas-toad":2,"bog-leech":4,"gangrenous-leech":2,"constrictor-coil":2}, hqHp:51, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["8-2"] },
       { key:"8-4", kind:"skirmish", name:"Root Snare", icon:"🌿", deck:{"cypress-root-lurker":4,"mire-witch-heron":3,"adder-ambusher":3}, hqHp:72, flavor:"The mire does not attack. It waits for you to step wrong.", requires:["8-3"] },
       { key:"8-5", kind:"elite", name:"Venomlord's Coil", icon:"🐍", deck:{"venomlord-serpent":2,"constrictor-coil":3,"adder-ambusher":1,"beaver-builder":3}, hqHp:42, flavor:"It only needs to catch you once.", characterId:"plains-terrace", requires:["8-4"] },
-      { key:"8-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"crocodile-ambusher":4,"swamp-alligator":1,"bog-revenant":2,"echo-keeper":2,"constrictor-coil":3}, hqHp:53, flavor:"The bank looks empty right up until it isn’t.", requires:["8-5"] },
+      { key:"8-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"crocodile-ambusher":4,"swamp-alligator":1,"bog-revenant":2,"echo-keeper":2,"constrictor-coil":3}, hqHp:57, flavor:"The bank looks empty right up until it isn’t.", requires:["8-5"] },
       { key:"8-7", kind:"elite", name:"Adder Gauntlet", icon:"🐍", deck:{"adder-ambusher":1,"venomlord-serpent":3,"constrictor-coil":3,"beaver-builder":3}, hqHp:42, flavor:"Every step through here is a small negotiation with the grass.", requires:["8-6"] },
       { key:"8-8", kind:"boss", name:"The Alligator King", icon:"👑", deck:{"swamp-alligator":1,"crocodile-ambusher":3,"venomlord-serpent":2,"beaver-builder":3}, hqHp:73, flavor:"Every stretch of the Swampmire is somebody else’s territory until his teeth say otherwise.", requires:["8-7"] },
       { key:"m8-raid", kind:"raidboss", name:"Wound Reaver's Domain", icon:"💀", deck:{"wound-reaver":3,"gangrenous-leech":4,"swamp-alligator":3}, hqHp:230, flavor:"The Swampmire does not heal. It just remembers where you bled.", requires:["8-8"] },
@@ -19766,7 +19766,7 @@ function logText(ev){
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
-    case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone.`};
+    case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
     case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
@@ -21266,6 +21266,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='lumber') floatResourceGain(ev, '🪵', 'hudLumberPill', SoundKit.gold);
   // Fields and day/night (2026-10-09)
   if(ev.type==='fieldTick' && ev.field!=='frozen'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.dmg ? `🔥-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){} }
+  if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls — Nocturnal units hit +1.' : '☀️ Day breaks — Diurnal units hit +1.', 'ok'); }catch(e){} }
   if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }

@@ -30,7 +30,9 @@ const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:
   ok(P[1].exile.some(x=> x.defId==='tx-wisp'), 'with 1 Echo it stays in Exile');
   P[1].echoes = 2; const ev = [];
   e.roundStart(P, 3, so, {}, ev);
-  ok(all(P[1]).some(c=> c.defId==='tx-wisp'), 'with 2 Echoes it returns to the board');
+  const w = all(P[1]).find(c=> c.defId==='tx-wisp');
+  ok(!!w, 'with 2 Echoes it returns to the board');
+  ok(w && w.atk === 3 && w.maxHp === 3, `it returns +2/+2 (got ${w && w.atk}/${w && w.maxHp})`);
   ok(!P[1].exile.some(x=> x.defId==='tx-wisp') && P[1].echoes === 0, `Echoes spent, gone from Exile (echoes ${P[1].echoes})`);
   ok(ev.some(x=> x.type==='remember'), 'a remember event is recorded'); }
 console.log(`exile-zone: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

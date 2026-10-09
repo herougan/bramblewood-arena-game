@@ -527,14 +527,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     // The active Exile zone (2026-10-09, D19 next step; archetypes-design-2026-10-09.md, the Forgotten Ones):
     // every card that goes to a player's Exile gives them 1 Echo 🕯️. A card with Remember N waiting in Exile
-    // comes back to the board at the start of a round once its owner has N Echoes (spent). One return per side a round.
+    // comes back to the board at the start of a round once its owner has N Echoes (spent), +1/+1 per Echo spent.
+    // One return per side a round.
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.exile.length) return;
       for(let i=0; i<pl.exile.length; i++){
         const d = CARD_DEFS[pl.exile[i].defId], n = d && d.effects && Number(d.effects.remember);
         if(!(n > 0) || (pl.echoes||0) < n) continue;
-        if(recordEvents && events) events.push({type:'remember', side:sideOf(pid), defId:d.id, spent:n});
-        if(!debugSpawnCard(players, sideOf, pid, d.id, rnd() < .5 ? 'left' : 'right', stats, events)){ if(recordEvents && events) events.pop(); break; }
-        pl.exile.splice(i, 1); pl.echoes -= n; break;
+        if(!debugSpawnCard(players, sideOf, pid, d.id, rnd() < .5 ? 'left' : 'right', stats, events)) break;
+        pl.exile.splice(i, 1); pl.echoes -= n;
+        // Forgotten Ones (2026-10-09): it comes back +1/+1 for every Echo spent.
+        const back = allLive(pl).reduce((a, c)=> (!a || c.uid > a.uid) && c.defId===d.id ? c : a, null);
+        if(back){ back.atk += n; back.baseAtk += n; back.hp += n; back.maxHp += n; }
+        if(recordEvents && events) events.push({type:'remember', side:sideOf(pid), defId:d.id, spent:n, uid: back ? back.uid : null});
+        break;
       }
     });
     if(getTide() === 'flow'){

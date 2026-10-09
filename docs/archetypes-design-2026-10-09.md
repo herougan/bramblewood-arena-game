@@ -185,7 +185,14 @@ A deck can run one, two or all three. Running all three unlocks the **Convergenc
      - Marsh Wisp (Swampmire 8-1, 3/5, Remember 2, exiles itself on death);
      - Bog Revenant (Swampmire 8-6, Rare 5/9, Remember 3, exiles itself on death).
    - **Measured:** Wisps alone 49%, with Keepers 65%. Without Remember, the same Wisp deck wins 18%.
-   - **Not built yet:** Ecclesia fuse-back, Scrap from the graveyard, Breach and Rifts. They can all use Echoes and Remember.
+   - **Forgotten Ones** ✅ built the same night (default on "continue"; revertible):
+     - a Remembered card returns +1/+1 for every Echo spent;
+     - the 🕯️ Forgotten tag is on Echo Keeper, Marsh Wisp, Bog Revenant and the new **The Unremembered** (Swampmire boss reward, Rare 3/6, Remember 3, exiles 1 from your graveyard when played).
+   - **Stats after the +N/+N change:** Wisp 2/4, Revenant 4/7. Alone they win 40–44%; with Echo Keepers, 63–77%. Weaker alone, strong together, on purpose.
+   - **Not built yet:**
+     - Echoes from the enemy's exiles too (the design says "either side");
+     - feeding the Elder Ones;
+     - Ecclesia fuse-back, Scrap, Breach and Rifts.
 2. **Swarm.** ✅ Built. Small: one passive and one death trigger. Ants and bees already exist, and Promotion feeds it.
 3. **Tide.** ✅ Built (taken ahead of the Exile zone as the default on "continue"; revertible).
 4. **Devilry circles.** A board/hand check before summoning.

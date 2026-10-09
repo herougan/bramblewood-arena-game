@@ -8712,7 +8712,8 @@
     "rarity": "common",
     "locked": false,
     "archetypes": [
-      "Swamp"
+      "Swamp",
+      "Forgotten"
     ],
     "effects": {
       "triggers": [
@@ -8733,12 +8734,13 @@
     "icon": "\ud83d\udc7b",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
-    "health": 5,
+    "attack": 2,
+    "health": 4,
     "rarity": "common",
     "locked": true,
     "archetypes": [
-      "Swamp"
+      "Swamp",
+      "Forgotten"
     ],
     "effects": {
       "remember": 2,
@@ -8764,12 +8766,13 @@
     "icon": "\ud83e\udddf",
     "cost": 1,
     "wait": 1,
-    "attack": 5,
-    "health": 9,
+    "attack": 4,
+    "health": 7,
     "rarity": "rare",
     "locked": true,
     "archetypes": [
-      "Swamp"
+      "Swamp",
+      "Forgotten"
     ],
     "effects": {
       "remember": 3,
@@ -8788,5 +8791,42 @@
     "flavor": "The mire keeps what it drowns. Sometimes it gives one back.",
     "numericId": 367,
     "uuid": "e45d4dc9-79ba-4762-baf4-3333efd2ca1b"
+  },
+  {
+    "id": "the-unremembered",
+    "name": "The Unremembered",
+    "icon": "\ud83d\udd6f\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "rare",
+    "locked": true,
+    "archetypes": [
+      "Swamp",
+      "Forgotten"
+    ],
+    "effects": {
+      "remember": 3,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "exileGrave",
+          "count": 1
+        },
+        {
+          "on": "onDeath",
+          "do": "exileSelf"
+        }
+      ]
+    },
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "8-8"
+    },
+    "flavor": "Nobody can say what it was called. Every time it comes back, it is a little more certain of itself.",
+    "numericId": 368,
+    "uuid": "f8a20238-eb0e-498f-9d55-91afa5645e0f"
   }
 ]

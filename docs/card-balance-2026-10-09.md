@@ -1,6 +1,6 @@
 # Card balance report (2026-10-09)
 
-**How it's measured.** Every fieldable card (293) plays 60 matches with the game's own AI (open fights).
+**How it's measured.** Every fieldable card (294) plays 60 matches with the game's own AI (open fights).
 - **Test deck:** the card (8 copies; 6, 4 or 3 if it costs 1, 2 or 3+ Lumber) plus a reference mix.
 - **Opponent:** 20 cards of the same reference mix (warren-scout, fawn-scout, bee-sentry, mouse-sapper, poison-dart-croaker).
 - A card that adds nothing scores about 50%.
@@ -18,7 +18,7 @@
    | Cost | Cards | Median win % |
    |---|---|---|
    | 0 | 117 | 46.7 |
-   | 1 | 85 | 70.8 |
+   | 1 | 86 | 68.8 |
    | 2 | 61 | 48.3 |
    | 3+ | 30 | 37.9 |
 
@@ -27,7 +27,7 @@
    - I tested five fixes in simulation: start each match with 2 Lumber; +1 Lumber every 2 rounds; −1 cost and −1 Wait for every card costing 2+; +15% stats per Lumber of cost; and a start bonus plus stat buff together.
    - None made 3+ cost cards competitive.
    - This needs a design answer, not a number tweak: see decision B4.
-4. **Rarity doesn't follow strength yet.** 0 of 293 cards have no rarity.
+4. **Rarity doesn't follow strength yet.** 0 of 294 cards have no rarity.
    - Some free cards win 95–100% (Carrion Fly Swarm, Cave Bat Swarm, Owl Fletcher, Trapdoor Spider, Tusked Vanguard).
    - Several Starters win 80–94% (Duck Paddler, Cobalt Talon Skirmisher, Crimson Wing Duelist Cadet, Otter Guard).
    - The tiny 1/2 Starters (Guppy, Earthworm, Silver Minnow, Worker Ant, Otter Kit) sit at 9–11%.
@@ -35,8 +35,8 @@
 
 | Rarity | Cards | Median win % |
 |---|---|---|
-| common | 156 | 42.1 |
-| rare | 80 | 76.2 |
+| common | 156 | 41.7 |
+| rare | 81 | 75.8 |
 | starter | 36 | 42.9 |
 | uncommon | 16 | 61.2 |
 | legendary | 5 | 38.3 |

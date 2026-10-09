@@ -5985,13 +5985,13 @@
    "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
-   "health": 5,
+   "attack": 2,
+   "health": 4,
    "skills": [
     "remember",
     "triggers"
    ],
-   "winRate": 45.8,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -6006,18 +6006,39 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
-   "health": 9,
+   "attack": 4,
+   "health": 7,
    "skills": [
     "remember",
     "triggers"
    ],
-   "winRate": 73.3,
+   "winRate": 45,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "remember",
+    "triggers"
+   ],
+   "winRate": 49.2,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
    "locked": true,
    "source": "map"
   }

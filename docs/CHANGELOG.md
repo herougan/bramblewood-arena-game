@@ -7,6 +7,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - Every card sent there gives its owner 1 Echo 🕯️, shown on the deck badge.
   - **Remember N** cards come back from it once you have N Echoes.
   - Three new cards: **Echo Keeper** (Base), **Marsh Wisp** and **Bog Revenant** (Sable Swampmire rewards). Two swamp fights now use them.
+- **Forgotten Ones 🕯️:**
+  - A Remembered card now returns +1/+1 for every Echo it spent.
+  - A new Swampmire boss reward, **The Unremembered** (Remember 3).
+  - Marsh Wisp is now 2/4 and Bog Revenant 4/7: weaker alone, strong with Echo Keepers.
+- **The Thistle Baron** (Thistle Fields boss) is beatable: ~23% → ~32%. Its Jackrabbit Sprinters were swapped for a Field Mouse and a Sapper.
 - **Fights that were far too hard are fixed:**
   - The tuner wanted castle HP below the minimum, so these had been skipped.
   - Map 1's boss went from ~5% to ~43% for a new player's likely deck; the Grotto stash, the Roost and three cave skirmishes, the Condor Sovereign (10-9) and others were also fixed.
