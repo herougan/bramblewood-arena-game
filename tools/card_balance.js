@@ -22,7 +22,7 @@ const MODE = (args.find(a=> a.startsWith('--mode=')) || '--mode=open').slice(7);
 
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
 const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = d; });
-const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId).sort();
+const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId && !defs[id].field) // field cards are situational: measured in themed decks instead (fields-and-day-night-2026-10-09.md).sort();
 
 // The reference: a mid-strength mix (two plain cost-0 units, a flyer, a cost-1 tank and a poisoner)
 // picked from a first pass so an average card lands near 50% and strong cards still have room to
