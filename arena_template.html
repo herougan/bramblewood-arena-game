@@ -2729,9 +2729,9 @@
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .tip-ticker{position:relative; min-height:2.9em; overflow:hidden;} /* room for a tip that wraps to two lines */
   @media (max-width:520px){ .tip-ticker{min-height:4.2em;} }
-  .tip-ticker .tip-line{position:absolute; left:0; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
+  .tip-ticker .tip-line{position:absolute; left:10px; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
   .tip-ticker .tip-line.tip-out{animation:tipOutZoom .42s ease-in forwards;}
-  @keyframes tipDrift{from{translate:0 0;} to{translate:-22px 0;}}
+  @keyframes tipDrift{from{translate:0 0;} to{translate:-8px 0;}} /* 2026-10-10: was -22px, which pushed the first letters out of the clipped box on phones */
   @keyframes tipOutZoom{from{opacity:1;} to{opacity:0; scale:.86;}}
   @media (prefers-reduced-motion: reduce){ .tip-ticker .tip-line{animation:tipIn .3s both;} }
   @keyframes tipIn{from{opacity:0; transform:translateX(18px);} to{opacity:1; transform:none;}}
@@ -4949,6 +4949,55 @@
   .bf-hp.is-faced .bf-hp-track{box-shadow:0 0 0 3px rgba(255,215,122,.8);}
   .facing-svg{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; overflow:visible;}
   .facing-svg line{stroke:#ffd77a; stroke-width:3; stroke-dasharray:6 5; stroke-linecap:round; opacity:.9;}
+
+
+  /* iOS long-press (2026-10-10, screenshots: holding a card selected it with blue handles and a magnifier, and holding
+     card art opened Share / Save to Photos). Game surfaces are not text: no selection, no callout, no image drag. Text
+     fields and the card editor keep normal selection. */
+  .card-tile, .board-card, #battlefieldEl, #handStrip, .hq-tile, .map-node, .conquest-map-canvas, .rw-panel, .winloss-card, .deck-widget, .hand-card, .play-subtabs-row{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none;}
+  .card-tile img, .board-card img, #battlefieldEl img, #handStrip img, .map-node img, .conquest-map-canvas img{-webkit-user-drag:none; -webkit-touch-callout:none; pointer-events:none;}
+  input, textarea, select, [contenteditable="true"]{-webkit-user-select:text; user-select:text; -webkit-touch-callout:default;}
+
+  /* Phone hand (2026-10-10, screenshots: cost/Wait badges of neighbouring hand cards ran into each other) */
+  @media (max-width:600px){
+    .hand-strip{gap:18px 12px !important; padding-top:6px;}
+    #handStrip .pips.can-num i:not(:first-child){display:none;}
+    #handStrip .pips.can-num::after{content:attr(data-n); font-weight:900; margin-left:1px;}
+  }
+
+  /* Tiny board cards (2026-10-10, phone screenshots: with 7-8 units a row, cards shrink to ~45px; Health was drawn over
+     Attack, and a status chip like 🩸8 covered the whole card). Under 66px: Attack moves to the top-left corner, both
+     numbers shrink, and status chips become small tags in the middle. */
+  @container (max-width: 66px){
+    .board-card .card-tile .atk, .board-card .card-tile .hp{font-size:10.5px !important; padding:0 2px !important; line-height:1.15;}
+    .board-card .card-tile .atk{bottom:auto !important; top:2px; left:2px !important;}
+    .board-card .card-tile .hp{right:2px !important; bottom:2px !important;}
+    .board-card .card-tile .badges-bottom{bottom:auto !important; top:42%; gap:1px; max-width:96%;}
+    .board-card .card-tile .badges-bottom .abadge{font-size:9px !important; padding:0 2px; border-radius:5px; filter:none;}
+    .board-card .card-tile .poison-tag, .board-card .card-tile .badges{display:none;}
+    .board-card .card-tile .ritual-chip{font-size:8px; padding:1px 3px; gap:2px;}
+    .board-card .card-tile .waitbadge{transform:scale(.72); transform-origin:top right;}
+  }
+
+  /* Phone toasts (2026-10-10, screenshots: toasts sat on Pass turn and on the Conquest tab bar) go to the top. */
+  @media (max-width:600px){ .toast-host{bottom:auto !important; top:calc(10px + env(safe-area-inset-top, 0px)) !important;} .rr-token{max-width:92vw;} .rr-token-lbl{overflow:hidden; text-overflow:ellipsis;} }
+  /* Mobile Conquest (2026-10-10, user: "sometimes conquest is not scrollable"): on phones the headline and the admin
+     toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
+     covered the fight nodes. The content area now scrolls, with room for the tab bar, and the fight panel scrolls
+     inside itself with its Fight button pinned at the top. */
+  @media (max-width:820px){
+    body.conquest-full{overscroll-behavior:none;}
+    body.conquest-full .conquest-layout{display:flex !important; flex-direction:column !important; flex-wrap:nowrap !important;}
+    body.conquest-full .conquest-layout > .conquest-maps{flex:0 0 auto;}
+    body.conquest-full .conquest-main{flex:1 1 auto; min-height:0; overflow-y:auto !important; overflow-x:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; padding-bottom:calc(110px + env(safe-area-inset-bottom, 0px)) !important;}
+    body.conquest-full .conquest-map-canvas{min-height:max(420px, calc(100dvh - 260px)) !important;}
+    body.conquest-full .conquest-main:has(> .conquest-node-panel){padding-bottom:calc(min(46dvh, 380px) + 120px + env(safe-area-inset-bottom, 0px)) !important;}
+    .conquest-main > .conquest-node-panel{overflow-y:auto !important; overflow-x:hidden !important; max-height:min(46dvh, 380px) !important; padding-top:0 !important; overscroll-behavior:contain;}
+    body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:calc(96px + env(safe-area-inset-bottom, 0px)) !important;}
+    .conquest-node-panel .cnp-fight{position:sticky !important; top:0; left:auto !important; transform:none !important; display:block; width:100%; margin:0 0 10px !important; z-index:5; font-size:17px !important; padding:9px 18px !important;}
+    .conquest-node-panel .cnp-fight:hover{transform:none !important;}
+    .conquest-node-panel:has(> .cnp-fight){padding-top:10px !important;}
+  }
   /* Devilry frames (2026-10-10, user: "Devilry card frames have a bit of evil effects/aura trailing inwards from the frame") */
   .card-tile.is-devilry{box-shadow:inset 0 0 0 2px #7a1426, inset 0 0 18px rgba(150,10,40,.55), 0 0 0 1px rgba(0,0,0,.4) !important;}
   .card-tile.is-devilry::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:2;

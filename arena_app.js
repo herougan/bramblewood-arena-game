@@ -3225,7 +3225,7 @@ function rarityTierClass(key){
 function pipsHTML(glyph, n, kind){
   n = Math.max(0, n|0);
   if(n > 4) return `<span class="pips pips-${kind} is-num"><i>${glyph}</i><b>${n}</b></span>`;
-  return `<span class="pips pips-${kind}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`;
+  return `<span class="pips pips-${kind}${n>=3 ? ' can-num' : ''}" data-n="${n}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`; // can-num (2026-10-10): compact on phones
 }
 function costBadgeParts(d){
   const parts = [];
@@ -11157,6 +11157,10 @@ function renderConquestSubTab(body){
       if(conquestLayoutEdit && adminModeEnabled) return; // layout editing: clicks are drags, never fights
       if(conquestSelectedNodeKey === node.key){ startConquestMatch(map.id, node.key); return; }
       conquestSelectedNodeKey = node.key; prefetchFightTicket('conquest', map.id + ':' + node.key); renderConquestSubTab(body);
+      // Phones (2026-10-10): the fight panel covers the lower part of the screen, so scroll the chosen fight above it.
+      if(innerWidth <= 820) requestAnimationFrame(()=>{ const main = document.querySelector('.conquest-main'), sel = document.querySelector('.map-node.selected'), panel = document.querySelector('.conquest-main > .conquest-node-panel');
+        if(!main || !sel || !panel) return; const nr = sel.getBoundingClientRect(), pr = panel.getBoundingClientRect();
+        if(nr.bottom > pr.top - 12) main.scrollBy({top: nr.bottom - (pr.top - 24), behavior: reducedMotion() ? 'auto' : 'smooth'}); });
     });
   });
   const selectedNode = conquestSelectedNodeKey ? map.nodes.find(n=>n.key===conquestSelectedNodeKey) : null;
@@ -14286,6 +14290,10 @@ function wireLeaderDragDelegation(){
   document.addEventListener('dragend', e=>{
     const el = e.target && e.target.closest && e.target.closest('#leaderWidget');
     if(el) el.classList.remove('dragging');
+    // 2026-10-10 (phone screenshot: a drop highlight stayed on your row after a touch drag that landed nowhere).
+    setTimeout(()=>{ document.querySelectorAll('.row-dragover, .drag-side-left, .drag-side-right, .drag-center').forEach(r=> r.classList.remove('row-dragover','drag-side-left','drag-side-right','drag-center'));
+      document.querySelectorAll('.dropzone.dragover').forEach(z=> z.classList.remove('dragover'));
+      try{ if(typeof clearPlacementPreview==='function' && !(matchState && matchState.resolving)) clearPlacementPreview({instant:true}); }catch(err){} }, 0);
   });
 }
 function wireLeaderWidget(){
@@ -17002,6 +17010,8 @@ function openExileCastPanel(){
     const b = e.target.closest('[data-exile-cast]'); if(b){ const ev = []; if(m.engine.castFromExile(m.players, m.sideOf, pid, Number(b.getAttribute('data-exile-cast')), Math.random() < .5 ? 'left' : 'right', m.stats, ev)){ ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(err){} }); close(); renderMatchUI(); } else showToast('No room to cast it, or it costs more than you have.', 'warn'); } });
 }
 document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-open-exile]'); if(b) openExileCastPanel(); });
+// 2026-10-10 (phone screenshots): long-press on a card opened the browser's image/selection menu. Game surfaces get no context menu.
+document.addEventListener('contextmenu', e=>{ if(e.target.closest && e.target.closest('.card-tile, .board-card, #battlefieldEl, #handStrip, .map-node, .conquest-map-canvas, .hq-tile')) e.preventDefault(); });
 document.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && e.target.closest && e.target.closest('[data-open-exile]')){ e.preventDefault(); openExileCastPanel(); } });
 function unplayableReason(pl, d){
   if((pl.skipTurns||0) > 0) return '🔔 Stunned: you skip this turn';
@@ -19379,7 +19389,10 @@ function playRewardReveal(m){
             const tok = document.createElement('div'); tok.className = 'rr-token';
             tok.innerHTML = `<span class="rr-token-ico">${escapeHtml(u.icon)}</span><span class="rr-token-lbl">${escapeHtml(u.label)}</span>`;
             stage.appendChild(tok);
-            const n = unlocks.length, x = br.left + br.width * ((k + 1) / (n + 1)), y = br.top + br.height * 0.5;
+            // 2026-10-10 (phone screenshot: two "New fight" tokens overlapped): side by side only where they fit, else stacked.
+            const n = unlocks.length, stack = n > 1 && br.width < 640;
+            const x = stack ? br.left + br.width/2 : br.left + br.width * ((k + 1) / (n + 1));
+            const y = stack ? br.top + br.height * ((k + 1) / (n + 1)) : br.top + br.height * 0.5;
             gsap.set(tok, {left:x, top:y, xPercent:-50, yPercent:-50});
             gsap.timeline()
               .fromTo(tok, {y:-(y + 120), rotation:(k%2 ? 10 : -10), scale:1.15}, {y:0, rotation:0, scale:1, duration:.5, ease:'power3.in'})

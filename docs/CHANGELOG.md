@@ -3,6 +3,16 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **Phone fixes (from your screenshots):**
+  - Conquest scrolls on phones, and the fight panel scrolls too, with Fight pinned at the top. The chosen fight scrolls into view above the panel.
+  - The tab bar no longer covers the trail.
+  - Long-pressing a card no longer selects it or opens Save to Photos.
+  - Hand cards' cost and Wait badges no longer collide (one icon plus a number from 3 up).
+  - Crowded boards keep both Attack and Health readable, and status chips (🩸8) no longer cover the card.
+  - "New fight" tokens stack instead of overlapping.
+  - Toasts appear at the top, away from Pass turn.
+  - The Nest's tip text isn't cut off on the left.
+  - A drop highlight no longer gets stuck on your row.
 - **UI:**
   - the victory screen puts Cards won and Rewards in two centred halves;
   - the map's house button is centred;
