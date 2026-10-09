@@ -34,10 +34,11 @@ function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id])
 
 function play(A, B, charB, hpB, mode, seed){
   const e = E.makeSimEngine(defs, E.mulberry32(seed), {battleMode: mode || 'open'}); const so = p=> p===1 ? 'A' : 'B';
+  if(CURRENT_FIELD) e.setField(CURRENT_FIELD, null, 'map'); // the Tundra is fought on Frozen Ground
   const P = {1: e.newPlayer(1, A, Object.assign({}, charById.castle, {health:30})), 2: e.newPlayer(2, B, Object.assign({}, charB || charById.castle, {health: hpB}))}; const st = {};
   P[2].loopCards = []; // as in real Conquest fights (unless the node says never surrender)
   e.draw(P[1], 3, 'A', st, null); e.draw(P[2], 3, 'B', st, null);
-  for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
+  for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; }); if(r > 1) e.roundStart(P, r, so, st, null);
     e.aiTakeTurn(P, so, 1, st, null); e.aiTakeTurn(P, so, 2, st, null);
     if(e.resolveCombat(P, so, st, null, r%2===0 ? 1 : 2)){ const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0; return a&&b ? 0 : a ? 2 : 1; }
     e.draw(P[1], 1, 'A', st, null); e.draw(P[2], 1, 'B', st, null); }
@@ -60,7 +61,9 @@ const mains = MAPS.filter(m=> !m.sub);
 const order = [];
 mains.forEach(m=>{ order.push(m); MAPS.filter(s=> s.sub && s.parent===m.id).forEach(s=> order.push(s)); });
 const ownedAt = {}; // map id -> owned list when entering the map (main maps)
+let CURRENT_FIELD = null;
 for(const map of order){
+  CURRENT_FIELD = map.id==='m6' ? 'frozen' : null;
   let myOwned;
   if(map.sub){ const parent = MAPS.find(m=> m.id===map.parent); const ix = parent.nodes.findIndex(n=> n.key===map.entry.after); myOwned = ownedAt[parent.id].slice(); parent.nodes.slice(0, ix+1).forEach(n=> rewardsOf(parent.id, n.key).forEach(id=> myOwned.push(id))); }
   else { ownedAt[map.id] = owned.slice(); myOwned = owned; }

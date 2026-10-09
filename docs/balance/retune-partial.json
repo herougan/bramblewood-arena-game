@@ -1,92 +1,130 @@
 [
  {
-  "map": "m2",
-  "key": "2-1",
+  "map": "m6",
+  "key": "6-1",
   "kind": "skirmish",
   "target": 85,
-  "before": 98,
-  "after": 97,
+  "before": 85,
+  "after": 85,
   "hp": [
-   26,
-   50
+   35,
+   35
   ],
   "swaps": 0,
   "deck": null
  },
  {
-  "map": "m2",
-  "key": "2-2",
+  "map": "m6",
+  "key": "6-2",
+  "kind": "skirmish",
+  "target": 77,
+  "before": 83,
+  "after": 82,
+  "hp": [
+   108,
+   172
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-3",
+  "kind": "skirmish",
+  "target": 68,
+  "before": 68,
+  "after": 68,
+  "hp": [
+   59,
+   59
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 85,
+  "before": 60,
   "after": 60,
   "hp": [
-   54,
-   82
+   140,
+   140
   ],
   "swaps": 0,
   "deck": null
  },
  {
-  "map": "m2",
-  "key": "2-3",
+  "map": "m6",
+  "key": "6-5",
+  "kind": "elite",
+  "target": 45,
+  "before": 45,
+  "after": 45,
+  "hp": [
+   71,
+   71
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-6",
   "kind": "elite",
   "target": 45,
   "before": 75,
-  "after": 45,
+  "after": 47,
   "hp": [
-   65,
-   85
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m2",
-  "key": "2-4",
-  "kind": "elite",
-  "target": 45,
-  "before": 88,
-  "after": 55,
-  "hp": [
-   38,
-   75
+   105,
+   167
   ],
   "swaps": 2,
   "deck": {
-   "kraken-spawnling": 1,
-   "open-ocean-hermit-crab": 4,
-   "river-carp": 3,
-   "orca-vanguard": 2,
-   "humpback-elder": 1
+   "permafrost-mammoth": 3,
+   "tundra-musk-ox": 3,
+   "porcupine-roller": 2,
+   "golden-eagle-diver": 2
   }
  },
  {
-  "map": "m2",
-  "key": "2-5",
-  "kind": "boss",
-  "target": 35,
-  "before": 72,
-  "after": 45,
+  "map": "m6",
+  "key": "6-7",
+  "kind": "elite",
+  "target": 45,
+  "before": 93,
+  "after": 53,
   "hp": [
-   78,
-   156
+   56,
+   66
   ],
-  "swaps": 0,
-  "deck": null
+  "swaps": 2,
+  "deck": {
+   "alpha-howler": 4,
+   "arctic-fox-raider": 2,
+   "porcupine-roller": 2,
+   "golden-eagle-diver": 2
+  }
  },
  {
-  "map": "m3",
-  "key": "3-2",
-  "kind": "skirmish",
-  "target": 60,
-  "before": 78,
-  "after": 60,
+  "map": "m6",
+  "key": "6-8",
+  "kind": "boss",
+  "target": 35,
+  "before": 100,
+  "after": 80,
   "hp": [
-   32,
-   48
+   119,
+   119
   ],
-  "swaps": 0,
-  "deck": null
+  "swaps": 4,
+  "deck": {
+   "glacial-ape-king": 2,
+   "porcupine-roller": 2,
+   "golden-eagle-diver": 1,
+   "frost-hare-sprinter": 2,
+   "yeti": 1
+  }
  }
 ]

@@ -477,6 +477,68 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.sturdy) f *= 0.5;
     return f;
   }
+  // ---- Fields and the day/night cycle (2026-10-09, user: "I like the idea of day and night and other things
+  // like that - making the game more fluid - not every turn is the same" + "Field effect card(s) like freezing").
+  // One shared field at a time. It comes from the map (Frozen Ground on the Tundra, permanent) or from a field
+  // card (for N rounds; a new field card replaces the old one). Day and night alternate every 3 rounds; Dawn
+  // (the first round of each new day) lets both sides draw a card. Nocturnal cards hit +1 at night, Diurnal by day.
+  const FIELDS = {
+    frozen:   {name:'Frozen Ground', icon:'❄️', text:'At the start of every round, one random card on each side gets +1 Wait.'},
+    heatwave: {name:'Heatwave', icon:'🔥', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
+    rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
+    fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
+    moon:     {name:'Full Moon', icon:'🌕', text:'It stays night while the moon is up: Nocturnal units hit +1.'},
+  };
+  let field = opts.field && FIELDS[opts.field] ? {id: opts.field, rounds: null} : null;
+  const dayNight = opts.dayNight !== false;
+  let phase = 'day';
+  function getField(){ return field ? Object.assign({}, field, FIELDS[field.id]) : null; }
+  let turnNo = 0; // counts rounds that have started, so "one field card per turn" needs no extra resets
+  let baseField = null; // a permanent (map) field waits underneath a played one and returns when it ends
+  function setField(id, rounds, by){
+    if(field && field.rounds == null && rounds) baseField = field;
+    field = FIELDS[id] ? {id, rounds: rounds || null, by: by || null} : null;
+  }
+  function getPhase(){ return (field && field.id==='moon') ? 'night' : phase; }
+  function phaseBonus(card){
+    const e = card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects; if(!e) return 0;
+    // Only once the cycle is running: modes that never call roundStart (the tutorial, live ranked) have no day or night.
+    if(!turnNo && !(field && field.id==='moon')) return 0;
+    const ph = getPhase();
+    return (e.nocturnal && ph==='night') || (e.diurnal && ph==='day') ? 1 : 0;
+  }
+  function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
+  // Runs once at the start of every round after the first: the day/night step, then the field.
+  function roundStart(players, round, sideOf, stats, events){
+    curPlayers = players; turnNo += 1;
+    if(dayNight && round > 1){
+      const before = phase; phase = ((round - 1) % 6) < 3 ? 'day' : 'night';
+      if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
+      if(phase === 'day' && before === 'night'){
+        if(recordEvents && events) events.push({type:'dawn', round});
+        draw(players[1], 1, sideOf(1), stats, events); draw(players[2], 1, sideOf(2), stats, events);
+      }
+    }
+    if(!field) return;
+    const f = field.id;
+    if(f === 'frozen'){
+      [1,2].forEach(pid=>{ const cards = allLive(players[pid]); if(!cards.length) return; const c = cards[Math.floor(rnd()*cards.length)]; c.wait = (c.wait||0) + 1;
+        if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId}); });
+    } else if(f === 'heatwave'){
+      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const d = CARD_DEFS[c.defId]; if((d.resist||[]).includes('heat')) return; damageCardFlat(c, 1, 'heat');
+        if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:1}); }));
+      removeDeadCards(players, sideOf, {}, stats, events);
+    } else if(f === 'rain'){
+      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); if(h > 0){ c.hp += h;
+        if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, heal:h}); } }));
+    }
+    if(field && field.rounds != null){ field.rounds -= 1; if(field.rounds <= 0){ if(recordEvents && events) events.push({type:'fieldEnd', field:f, back: baseField ? baseField.id : null}); field = baseField; baseField = null; } }
+  }
+  function fogMiss(attCard){
+    if(!field || field.id!=='fog' || !attCard) return false;
+    const d = CARD_DEFS[attCard.defId]; if(d && d.effects && d.effects.flying) return false;
+    return rnd() < 1/3;
+  }
   // Swarm (2026-10-09, the first archetype from archetypes-design-2026-10-09.md, decision D19): Swarm N gives
   // +1 damage for every N OTHER Swarm allies on the same board. curPlayers is the live board, set at the
   // start of each combat pass and on every play, so the count is current when a hit is computed.
@@ -520,7 +582,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + phaseBonus(attCard); if(sb) amt += sb; }
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
@@ -832,6 +894,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dd.flying && !ad.flying && rnd() < 0.5){ lastMissReason = 'flying'; return false; }
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
+    if(fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
     return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
@@ -1169,7 +1232,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function canPlay(pl, defId, excludeUid){
     const cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId), exCost = exileCostOfCard(defId);
-    if(pl.playedThisTurn) return false;
+    // Field cards (2026-10-09) are a free extra action: they don't use the turn's play, but only one a turn.
+    const isField = CARD_DEFS[defId] && CARD_DEFS[defId].field;
+    if(isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
     if(cost > pl.lumber) return false; // 2026-09-22: card cost is now paid in Lumber, not Gold
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
@@ -1184,6 +1249,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const hc = pl.hand[idx];
     if(!canPlay(pl, hc.defId, uid)) return false;
     const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
+    const fdef = CARD_DEFS[hc.defId];
+    if(fdef && fdef.field && FIELDS[fdef.field.id]){
+      // A field card never takes a slot: it pays its cost, sets the field and goes to the Graveyard.
+      pl.hand.splice(idx,1);
+      pl.lumber -= costOfCard(hc.defId);
+      pl.fieldTurn = turnNo;
+      pl.graveyard.push({defId: hc.defId});
+      setField(fdef.field.id, fdef.field.rounds || 3, sideOf(playerId));
+      draw(pl, 1, sideOf(playerId), stats, events); // a field card replaces itself, so it never costs you a unit
+      ensureStat(stats, sideOf(playerId), hc.defId).played++;
+      if(recordEvents && events) events.push({type:'fieldSet', side: sideOf(playerId), defId: hc.defId, field: fdef.field.id, rounds: fdef.field.rounds || 3});
+      return true;
+    }
     if(slotMode && targetSlot===null) return false;
     pl.hand.splice(idx,1);
     pl.lumber -= costOfCard(hc.defId);
@@ -1903,6 +1981,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const affordable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid));
     // Skirmish leaders (2026-10-08): a skirmish can give the CPU optional leaders (reserveLeaders). Each can be
     // summoned once; the CPU brings one out now and then, or whenever it has nothing else it can play.
+    const fieldCard = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field && canPlay(ai, hc.defId, hc.uid));
+    if(fieldCard && rnd() < 0.5) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
       if(ready.length && (!affordable.length || rnd() < 0.35)){
@@ -1917,9 +1997,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // a saved-for card is affordable it usually plays that instead of a random free one.
     const cardValue = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; };
     if(!ai.discardUsedThisTurn && ai.hand.length > 1){
-      const saving = ai.hand.filter(hc=> costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + SAVE_REACH); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
+      const saving = ai.hand.filter(hc=> !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field) && costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + SAVE_REACH); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
       if(saving.length){
-        const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0);
+        const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0 && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
         if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
           const worst = pitchable.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
           ai.hand.splice(ai.hand.indexOf(worst), 1);
@@ -2980,15 +3060,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }
-  // Lumber trickle (2026-10-09, experimental rule for decision B4): every `every` rounds both sides get
-  // +1 Lumber on top of what discarding gives. Off unless a caller passes a number (Settings toggle in
-  // the game, opts.lumberTrickle in simulations). Simulated: every 2 rounds makes 3+ cost cards viable.
-  function roundIncome(players, round, every, sideOf, events){
-    if(!(every > 0) || round % every !== 0) return;
-    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
-      if(recordEvents && events) events.push({type:'lumber', side: sideOf(pid), amount:1, trickle:true}); });
-  }
-  return { roundIncome, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { roundStart, getField, setField, getPhase, FIELDS, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -3021,7 +3093,7 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
     players[1].discardUsedThisTurn = false;
     players[2].discardUsedThisTurn = false;
     if(recordEvents) events.push({type:'roundStart', round});
-    if(opts.lumberTrickle) engine.roundIncome(players, round, opts.lumberTrickle, sideOf, events);
+    if(round > 1) engine.roundStart(players, round, sideOf, stats, events);
     engine.aiTakeTurn(players, sideOf, 1, stats, events);
     engine.aiTakeTurn(players, sideOf, 2, stats, events);
     // Alternate which side wins a same-column tie round to round (see resolveCombat's own

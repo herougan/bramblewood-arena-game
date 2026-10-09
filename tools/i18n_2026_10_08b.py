@@ -224,6 +224,8 @@ T = {
 '{rarity} at Level {n}': ['{rarity} au niveau {n}','{rarity} ab Stufe {n}','{rarity} en el nivel {n}','{rarity} al livello {n}','{rarity} no nível {n}','{rarity} sa Level {n}','நிலை {n}-இல் {rarity}','{rarity} di Level {n}','{n} 级成为{rarity}','{n} 級成為{rarity}','レベル{n}で{rarity}','레벨 {n}에 {rarity}'],
 'Top rarity': ['Rareté maximale','Höchste Seltenheit','Rareza máxima','Rarità massima','Raridade máxima','Pinakamataas na rarity','உச்ச அரிதுநிலை','Kelangkaan tertinggi','最高稀有度','最高稀有度','最高レア','최고 희귀도'],
 'Tip': ['Astuce','Tipp','Consejo','Suggerimento','Dica','Tip','குறிப்பு','Tips','提示','提示','ヒント','팁'],
+'Day': ['Jour','Tag','Día','Giorno','Dia','Araw','பகல்','Siang','白天','白天','昼','낮'],
+'Night': ['Nuit','Nacht','Noche','Notte','Noite','Gabi','இரவு','Malam','夜晚','夜晚','夜','밤'],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 for i, code in enumerate(CODES):

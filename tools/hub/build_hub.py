@@ -133,6 +133,7 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
+  ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
   ('How to tune a skirmish', 'skirmish-tuning-guide.md'),
   ('Archetypes: 10 + the Elder / Outer / Forgotten trio', 'archetypes-design-2026-10-09.md'),

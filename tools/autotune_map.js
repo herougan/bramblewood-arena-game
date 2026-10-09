@@ -24,7 +24,7 @@ function play(A, B, charB, hpB, seed){
   const e = E.makeSimEngine(defs, E.mulberry32(seed), {battleMode:'open'}); const so = p=> p===1 ? 'A' : 'B';
   const P = {1: e.newPlayer(1, A, Object.assign({}, charById.castle, {health:30})), 2: e.newPlayer(2, B, Object.assign({}, charB || charById.castle, {health: hpB}))}; const st = {};
   e.draw(P[1], 3, 'A', st, null); e.draw(P[2], 3, 'B', st, null);
-  for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
+  for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; }); if(r > 1) e.roundStart(P, r, so, st, null);
     e.aiTakeTurn(P, so, 1, st, null); e.aiTakeTurn(P, so, 2, st, null);
     if(e.resolveCombat(P, so, st, null, r%2===0 ? 1 : 2)){ const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0; return a&&b ? 0 : a ? 2 : 1; }
     e.draw(P[1], 1, 'A', st, null); e.draw(P[2], 1, 'B', st, null); }

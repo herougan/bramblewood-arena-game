@@ -5416,6 +5416,17 @@
   .se-curve-chip.is-here{border-color:var(--gold, #c9a227);}
   .se-curve-key{font-size:11px; opacity:.6; flex-basis:100%;}
   .se-deck-peek{margin-top:4px; font-size:11.5px; opacity:.7;}
+  /* Day and night, fields (2026-10-09) */
+  .phase-pill{display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:999px; font-size:12px; font-weight:700; color:#fff; box-shadow:0 2px 6px rgba(0,0,0,.3); margin:0 0 6px;}
+  .phase-pill small{opacity:.75; font-weight:600;}
+  .phase-pill.phase-day{background:linear-gradient(135deg, #f2b33d, #e07b2a);}
+  .phase-pill.phase-night{background:linear-gradient(135deg, #2b3a6b, #151d3d);}
+  body[data-phase="night"] .battlefield{transition:filter .8s ease; filter:brightness(.78) saturate(.85) hue-rotate(-8deg);}
+  body[data-phase="night"] .battlefield .card-tile{filter:brightness(1.12);}
+  .field-card .fc-left{position:absolute; top:4px; right:6px; font-size:11px; font-weight:800; background:rgba(0,0,0,.45); color:#fff; border-radius:999px; padding:0 6px;}
+  .card-tile.is-field .stats.field-stats{position:absolute; left:0; right:0; top:auto; bottom:7%; display:flex; justify-content:center; background:none;}
+  .card-tile.is-field .field-stats .fld{background:rgba(10,20,30,.72); color:#fff; border-radius:999px; padding:2px 8px; font-size:calc(var(--card-w, 118px) * .085); font-weight:800; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .card-tile.is-field{--field-glow:rgba(120,200,255,.5); box-shadow:0 0 0 2px var(--field-glow) inset;}
   @keyframes mscGlow{0%,100%{opacity:.75;} 50%{opacity:1;}}
   @media (prefers-reduced-motion: reduce){ .map-subcave .msc-ico{animation:none;} }
   .map-cave:hover .mc-mouth{box-shadow:inset 0 3px 4px rgba(0,0,0,.7), 0 0 10px rgba(255,214,120,.35);}
@@ -6764,10 +6775,6 @@
         <div class="settings-row">
           <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
           <select id="battlefieldBgSelect" aria-label="Battlefield background"></select>
-        </div>
-        <div class="settings-row" title="Experimental rule (decision B4): both sides also gain 1 Lumber every few rounds, so costly cards can come out">
-          <div class="settings-row-label"><span>🪵 Lumber trickle <small>(experimental)</small></span></div>
-          <select id="lumberTrickleSelect" aria-label="Lumber trickle"><option value="0">Off</option><option value="2">+1 every 2 rounds</option><option value="3">+1 every 3 rounds</option></select>
         </div>
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row">

@@ -39,7 +39,9 @@ function apply(engine, players, pid, act, stats, events){
     const h = pl.hand.find(x=> x.uid===act.uid);
     if(!h || pl.playedThisTurn || !engine.canPlay(pl, h.defId, h.uid)) return {pid, type:'refused'};
     engine.placeCard(players, H.sideOf, pid, act.uid, act.side, stats, events);
-    if(act.cheat){ const h2 = pl.hand.find(x=> engine.canPlay(pl, x.defId, x.uid)); if(h2){ const before = H.boardCards(pl).length; engine.placeCard(players, H.sideOf, pid, h2.uid, 'left', stats, events); if(H.boardCards(pl).length>before) failures.push('second play in one turn was accepted'); } }
+    // Field cards (2026-10-09) are a free extra action, so only a second UNIT counts as cheating.
+    const isField = id=> { const d = H.loadCardDefs()[id]; return !!(d && d.field); };
+    if(act.cheat && !isField(h.defId)){ const h2 = pl.hand.find(x=> !isField(x.defId) && engine.canPlay(pl, x.defId, x.uid)); if(h2){ const before = H.boardCards(pl).length; engine.placeCard(players, H.sideOf, pid, h2.uid, 'left', stats, events); if(H.boardCards(pl).length>before) failures.push('second play in one turn was accepted'); } }
     return {pid, type:'play', uid:act.uid, side:act.side};
   }
   if(act.type==='discard'){
