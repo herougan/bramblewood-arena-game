@@ -161,11 +161,12 @@ _Generated from `decisions.json` (2026-10-09). The hub has a searchable, filtera
 - **Default:** Faster hatching
 
 **D19. Archetypes: which to build first** · Decide · Design · asked 2026-10-09
-- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions.
-  - Follow the suggested order
-  - Start with Evolution
-  - Start with the trio
-- **Default:** Follow the suggested order
+- archetypes-design-2026-10-09.md has 10 archetypes plus the Elder / Outer / Forgotten trio. Suggested order: an active Exile zone, Swarm, Tide, Devilry circles, Elder Ones, then Evolution ride. Each archetype lists its open questions. 2026-10-09 (default taken on 'continue'): Swarm built first (Swarm N + Hive Mind on ants and bees). The active Exile zone is next, as groundwork for Ecclesia, the Forgotten Ones and Scrapper.
+  - Exile zone next, then Tide
+  - Tide next (the water maps)
+  - Evolution next
+  - Pause archetypes
+- **Default:** Exile zone next, then Tide
 
 **B4. Cards that cost 3+ Lumber don't pay off** · Decide · Balance · asked 2026-10-09
 - Cards costing 3+ Lumber (all five dragons included) score ~38% in simulation. 2026-10-09, taking the default on 'continue': all 30 got an arrival effect (dragons breathe 4 on every enemy; brutes hit the enemy opposite for 2× their cost; Elder Willow, Elderhorn Monarch and Riverworks Bastion refund 2 Lumber; the slow small ones delay the enemy opposite by 2 Wait). It didn't move them: the real cause is that Lumber only comes from discarding cards, so a 4-cost card costs five cards in all. Tested a passive income with the CPU saving properly: +1 Lumber every 2 rounds gives cost-2 cards 75%, cost-3+ 51%, dragons 60% (free cards fall to ~24%, as cheap cards should); every round is too much (dragons 96%); every 3 rounds is too little (45%).

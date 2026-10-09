@@ -182,6 +182,9 @@ const PASSIVE_DEFS = [
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
   {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Also hits the next ${v} live card${v===1?'':'s'} further down the same flank.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
+  // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
+  {key:'swarm', category:'passive', label:'Swarm', kind:'number', min:0, desc:v=>`+1 damage for every ${v} other Swarm ${v===1?'ally':'allies'} on your side.`},
+  {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
@@ -11892,7 +11895,7 @@ function saveTutorialDone(){ try{ localStorage.setItem('bramblewood_arena_tutori
 function loadFactionChoice(){ try{ return localStorage.getItem('bramblewood_arena_faction') || null; }catch(e){ return null; } }
 function saveFactionChoice(pick){ try{ localStorage.setItem('bramblewood_arena_faction', pick); }catch(e){} }
 const TUTORIAL_STAGE_COUNT = 1; // 2026-10-03: one pre-seeded tutorial fight (was a 6-skirmish series)
-const TUTORIAL_SEED = 20261003; // the tutorial always plays the same, hand-checked run
+const TUTORIAL_SEED = 20261005; // the tutorial always plays the same, hand-checked run (2026-10-09: was 20261003, which lost as Otters once the rival bees gained Swarm; this one wins for every side pick in 6 rounds)
 function loadTutorialStage(){
   try{ const n = parseInt(localStorage.getItem('bramblewood_arena_tutorial_stage')||'1', 10); if(n>=1 && n<=TUTORIAL_STAGE_COUNT) return n; }catch(e){}
   return 1;

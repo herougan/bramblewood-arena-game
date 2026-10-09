@@ -90,12 +90,17 @@ Plus the special trio: **Elder Ones · Outer Ones · Forgotten Ones** (below). P
 - **Fun:** a jigsaw. The opponent picks off Parts before assembly.
 - **Fits:** Elemental Energy (already in the engine, nothing spends it yet), and Scrapper (scrap a broken robot back into Parts).
 
-### 7. Swarm (proposal: ants, bees, hives)
+### 7. Swarm (proposal: ants, bees, hives) — ✅ built 2026-10-09
 - **Hook:** **Swarm N**: +1 attack for every N other Swarm allies on the board.
 - **Hive Mind:** when a Swarm unit dies, the newest Swarm ally gets +1/+1.
 - **Promotion fits here:** a Worker Ant raised to Lv 3 becomes an Ant Warrior, Forager Ant or Soldier Ant (built 2026-10-09).
 - **Fun:** flooding the board; each small body matters.
 - **Weakness:** Sweep and Swipe. That gives those existing skills a real job (see the skills audit).
+- **Built (2026-10-09):**
+  - Swarm 3 on the ants (Worker, Tunnel, Scout, Forager, Soldier, Ant Warrior) and the bees (Honey Bee, Bee Forager, Bee Knight, Bee Drone). Bee Sentry stays plain because it's in the balance tool's reference deck.
+  - Hive Mind on Worker Ant, Honey Bee and Forager Ant.
+  - Balance impact is small: every Swarm card moved under 10 points; Swarm 2 was too strong in testing.
+  - Covered by `tests/swarm.js`.
 
 ### 8. Tide (proposal: the Deep, reefs, the beach)
 - **Hook:** a shared **Ebb / Flow** phase that flips each round. Both players see it on the board edge as a little wave.

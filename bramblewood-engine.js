@@ -477,6 +477,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.sturdy) f *= 0.5;
     return f;
   }
+  // Swarm (2026-10-09, the first archetype from archetypes-design-2026-10-09.md, decision D19): Swarm N gives
+  // +1 damage for every N OTHER Swarm allies on the same board. curPlayers is the live board, set at the
+  // start of each combat pass and on every play, so the count is current when a hit is computed.
+  let curPlayers = null;
+  function swarmBonus(card){
+    const def = card && CARD_DEFS[card.defId]; const n = def && def.effects && Number(def.effects.swarm);
+    if(!(n > 0) || !curPlayers) return 0;
+    for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
+      if(all.includes(card)) return Math.floor(all.filter(c=> c!==card && c.hp>0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.swarm).length / n); }
+    return 0;
+  }
   function isRaging(card){
     const def = CARD_DEFS[card.defId];
     return !!(def.effects && def.effects.rage) && card.maxHp>0 && (card.hp / card.maxHp) < 0.5;
@@ -509,6 +520,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
+    if(attCard){ const sb = swarmBonus(attCard); if(sb) amt += sb; }
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
@@ -2287,6 +2299,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         runCustomTriggers(players, sideOf, pl.id, sc, scDef, 'onAllyDie', stats, events, {diedCard:card});
       });
+      // Hive Mind (2026-10-09, Swarm archetype): when a Hive Mind card dies, the newest Swarm ally on its
+      // board gains +1/+1, so a swarm grows stronger as it is whittled down.
+      if(cdef.effects && cdef.effects.hiveMind){
+        const heirs = survivors.filter(sc=> CARD_DEFS[sc.defId] && CARD_DEFS[sc.defId].effects && CARD_DEFS[sc.defId].effects.swarm);
+        if(heirs.length){ const h = heirs.reduce((a, b)=> b.uid > a.uid ? b : a);
+          h.atk += 1; h.baseAtk += 1; h.hp += 1; h.maxHp += 1;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'berserk', side:sideOf(pl.id), attDefId:h.defId, attUid:h.uid, amount:1, hiveMind:true}); }
+      }
     });
     [p1,p2].forEach(pl=>{
       ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0); });
@@ -2349,6 +2369,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     });
   }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
+    curPlayers = players;
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
     try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
