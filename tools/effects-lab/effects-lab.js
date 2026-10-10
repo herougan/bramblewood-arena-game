@@ -105,7 +105,7 @@
   // ---- battlefield shader lab
   let bf = null;
   const LIGHT = {heat:[1, 0.55, 0.18], cold:[0.45, 0.75, 1], poison:[0.5, 1, 0.35], physical:[1, 0.88, 0.62]};
-  const KIND_MAP = {0:'m1',1:'m2',2:'m3',3:'m4',4:'m5',5:'m6',6:'m7',7:'m8',8:'m9',9:'m10',10:'m11',11:'m2'};
+  const KIND_MAP = {0:'m1',1:'m2',2:'m3',3:'m4',4:'m5',5:'m6',6:'m7',7:'m8',8:'m9',9:'m10',10:'m11',11:'m2',12:'mb'};
   function mountBf(){
     const host = $('#bfLab'); if(bf){ bf.destroy(); bf = null; }
     const felt = +$('#bfFelt').value, mapId = KIND_MAP[+$('#bfKind').value];
@@ -147,7 +147,7 @@
   PEOPLE.forEach(([k, label, line])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.innerHTML = label + '<br><small style="opacity:.7">“' + line + '”</small>'; b.onclick = ()=>{ try{ SoundKit.babble(k, line); }catch(e){} }; bg.appendChild(b); });
 
   // ---- ambience
-  const PLACES = [['home', 'Home'], ['tent', 'Armoury Tent'], ['cart', "Traveller's Cart"], ['nest', 'Old Nest'], ['forge', 'Forge'], [0, 'Outskirts'], [1, 'Sunken Hollow'], [2, 'Ashen Peak'], [3, 'Caves'], [4, 'Savanna'], [5, 'Tundra'], [6, 'Coral Current'], [7, 'Swamp'], [8, 'Foundry'], [9, 'Eyrie'], [10, 'Sundered Peak'], [11, 'Rain']];
+  const PLACES = [['home', 'Home'], ['tent', 'Armoury Tent'], ['cart', "Traveller's Cart"], ['nest', 'Old Nest'], ['forge', 'Forge'], [0, 'Outskirts'], [1, 'Sunken Hollow'], [2, 'Ashen Peak'], [3, 'Caves'], [4, 'Savanna'], [5, 'Tundra'], [6, 'Coral Current'], [7, 'Swamp'], [8, 'Foundry'], [9, 'Eyrie'], [10, 'Sundered Peak'], [11, 'Rain'], [12, 'Pebble Beach']];
   const ag = $('#ambGrid');
   PLACES.forEach(([k, label])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.textContent = '🎵 ' + label; b.onclick = ()=>{ try{ Ambience.setVolume(0.6); Ambience.play(k); $$('#ambGrid .btn').forEach(x=> x.classList.remove('primary')); b.classList.add('primary'); }catch(e){} }; ag.appendChild(b); });
   const stop = document.createElement('button'); stop.type = 'button'; stop.className = 'btn small ghost'; stop.textContent = '⏹ Stop'; stop.onclick = ()=>{ try{ Ambience.stop(); }catch(e){} $$('#ambGrid .btn').forEach(x=> x.classList.remove('primary')); }; ag.appendChild(stop);

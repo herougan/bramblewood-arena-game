@@ -20,8 +20,8 @@
    "expect":[{"event":"hit","where":{"attDefId":"otter-centurion"},"min":1}, {"castle":"B","eq":30}]},
 
   {"name":"Flying dodges some ground attacks (about 1 in 2)", "rounds":20, "hqHp":{"A":300,"B":300},
-   "A":[{"id":"otter-centurion","wait":0,"hp":500}], "B":[{"id":"bee-knight","hp":500}],
-   "expect":[{"event":"evaded","min":3}, {"event":"hit","where":{"attDefId":"otter-centurion"},"min":3}]},
+   "A":[{"id":"pond-trout","wait":0,"hp":500}], "B":[{"id":"bee-knight","hp":500}],
+   "expect":[{"event":"evaded","min":3}, {"event":"hit","where":{"attDefId":"pond-trout"},"min":3}]},
 
   {"name":"Poison ticks every round", "rounds":8, "hqHp":{"A":60,"B":60},
    "A":[{"id":"caustic-scorpion","wait":0,"hp":200}], "B":[{"id":"ent","hp":200,"attack":1}],

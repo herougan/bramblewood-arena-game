@@ -6978,6 +6978,105 @@
   @keyframes wanderFresh{50%{box-shadow:0 0 0 4px rgba(255,213,110,.5), 0 0 24px rgba(255,213,110,.45);}}
   @media (max-width:560px){ .wander-card{flex-wrap:wrap;} .wander-card .btn{width:100%;} }
   @media (prefers-reduced-motion: reduce){ .map-wanderer, .wander-card.is-fresh{animation:none;} }
+  #ffBtn .ff-arrows{letter-spacing:-.28em; margin-right:.28em; font-size:.92em;}
+
+  /* Sub-map exit (2026-10-10): daylight spilling out of the cave mouth, a slow breathing shine. */
+  .map-subexit{width:72px; height:52px;}
+  .map-subexit .mse-mouth{width:30px; height:24px; background:radial-gradient(ellipse at 50% 60%, #fffbe6 0%, #ffe9a8 30%, #e9b44c 62%, rgba(80,50,20,.9) 100%) !important; box-shadow:0 0 14px 4px rgba(255,236,170,.75), inset 0 -3px 6px rgba(120,80,20,.5);}
+  .map-subexit .mse-rays{position:absolute; left:50%; top:55%; width:150px; height:150px; transform:translate(-50%,-50%); pointer-events:none; border-radius:50%;
+    background:conic-gradient(from 200deg, transparent 0 8deg, rgba(255,240,190,.35) 10deg 16deg, transparent 18deg 34deg, rgba(255,240,190,.28) 36deg 40deg, transparent 42deg 60deg, rgba(255,240,190,.32) 62deg 70deg, transparent 72deg 100deg, rgba(255,240,190,.22) 102deg 106deg, transparent 108deg 360deg);
+    -webkit-mask:radial-gradient(circle, #000 12%, transparent 70%); mask:radial-gradient(circle, #000 12%, transparent 70%); animation:mseShine 4s ease-in-out infinite; mix-blend-mode:screen;}
+  .map-subexit .msc-name{position:absolute; left:50%; top:100%; transform:translateX(-50%); margin-top:3px; white-space:nowrap; font:700 11px/1.2 var(--font-ui, system-ui); color:#fff6d8; padding:2px 7px; border-radius:999px; background:rgba(10,20,26,.72); box-shadow:0 2px 6px rgba(0,0,0,.4);}
+  .map-subexit:hover .mse-mouth, .map-subexit:focus-visible .mse-mouth{filter:brightness(1.12);}
+  .map-subexit:hover{transform:translate(-50%,-50%) scale(1.06);}
+  .map-exit-link line{stroke:rgba(255,236,170,.55) !important;}
+  @keyframes mseShine{0%,100%{opacity:.65; transform:translate(-50%,-50%) rotate(-4deg) scale(.95);} 50%{opacity:1; transform:translate(-50%,-50%) rotate(4deg) scale(1.05);}}
+  @media (prefers-reduced-motion: reduce){ .map-subexit .mse-rays{animation:none;} }
+  /* 2026-10-10 (user): the map's prev/next arrows sit in the very bottom corners, clear of the skirmish detail card. */
+  .world-edge{bottom:0 !important; z-index:8 !important; border-radius:0 12px 0 0;} .world-edge-right{border-radius:12px 0 0 0;}
+
+  /* SS / SSS ranks (2026-10-10): sub-bosses and bosses only. SS is a gilded S; SSS adds a burning halo. */
+  .rank-hex.rank-SS, .rank-hex.rank-SSS{filter:drop-shadow(0 0 10px rgba(255,200,80,.8)) drop-shadow(0 0 24px rgba(255,120,60,.55));}
+  .rank-hex.rank-SS i, .rank-hex.rank-SSS i{background:conic-gradient(from var(--fa, 0deg), #ffe27a, #ff9f43, #fff6c8, #ff6b9a, #ffd36e, #ffe27a); animation:rankFoil 3s linear infinite;}
+  .rank-hex.rank-SSS{filter:drop-shadow(0 0 12px rgba(255,90,60,.9)) drop-shadow(0 0 30px rgba(255,200,80,.7)); animation:sssPulse 1.6s ease-in-out infinite;}
+  .rank-hex.rank-SS b, .rank-hex.rank-SSS b{color:#fff; text-shadow:0 2px 0 rgba(120,40,0,.8), 0 0 10px rgba(255,255,255,.6); letter-spacing:-.06em;}
+  .rank-hex.rank-SS b{font-size:28px;} .rank-hex.rank-SSS b{font-size:21px;}
+  @keyframes sssPulse{50%{filter:drop-shadow(0 0 16px rgba(255,90,60,1)) drop-shadow(0 0 40px rgba(255,200,80,.85));}}
+  .conquest-rank-badge.rank-SS{background:linear-gradient(135deg,#ffe27a,#ff9f43); color:#3a1c00;}
+  .conquest-rank-badge.rank-SSS{background:linear-gradient(135deg,#ff6b9a,#ffd36e,#ff9f43); color:#3a1000; box-shadow:0 0 10px rgba(255,150,60,.7);}
+  .rank-bonus-pill{background:linear-gradient(180deg,#4a3018,#2c1c0c) !important; color:#ffd56e !important; border:1.5px solid #e9b44c !important;}
+  :where(html[data-fx="none"], html[data-fx="low"]) .rank-hex.rank-SS i, :where(html[data-fx="none"], html[data-fx="low"]) .rank-hex.rank-SSS i, .rank-hex.rank-SSS{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .rank-hex.rank-SSS{animation:none;} }
+
+  /* Enemy deck level by gap (2026-10-10) */
+  .cnp-lvlbig.lv-green{background:#2e7d32; border-color:#81c784;} .cnp-lvlbig.lv-green b{color:#e8ffe0;}
+  .cnp-lvlbig.lv-ltgreen{background:#9ee59a; border-color:#d6ffd2;} .cnp-lvlbig.lv-ltgreen b, .cnp-lvlbig.lv-ltgreen small{color:#14381a;}
+  .cnp-lvlbig.lv-orange{background:#e8862a; border-color:#ffc58a;} .cnp-lvlbig.lv-orange b, .cnp-lvlbig.lv-orange small{color:#2e1400;}
+  .cnp-lvlbig.lv-red{background:#d63c32; border-color:#ff9a90;} .cnp-lvlbig.lv-red b{color:#fff1ee;}
+  .cnp-lvlbig.lv-darkred{background:#7a1010; border-color:#c0504a;} .cnp-lvlbig.lv-darkred b{color:#ffd9d5;}
+  .cnp-lvlbig.lv-pink{background:#f06aa8; border-color:#ffc0dc;} .cnp-lvlbig.lv-pink b, .cnp-lvlbig.lv-pink small{color:#3a0820;}
+  .cnp-lvlbig.lv-ltpink{background:#ffc4de; border-color:#fff0f6;} .cnp-lvlbig.lv-ltpink b, .cnp-lvlbig.lv-ltpink small{color:#4a1430;}
+  .cnp-lvlbig[class*="lv-"] small{opacity:.9;}
+  .cnp-fight[disabled]{filter:grayscale(.8); opacity:.6; cursor:not-allowed;}
+
+  /* Enemy leader entrance (2026-10-10) */
+  .throne-beam.is-enemy{transform:translate(-50%,0); border-radius:8px 8px 50% 50% / 8px 8px 20% 20%;
+    background:linear-gradient(180deg, rgba(160,20,40,.6), rgba(90,10,40,.3) 55%, rgba(40,0,20,0)); box-shadow:0 0 28px 8px rgba(170,30,60,.35);}
+  .throne-crown.is-enemy{filter:drop-shadow(0 0 8px rgba(200,30,60,.9)) hue-rotate(-30deg) saturate(1.4);}
+  .enemy-leader-banner{position:absolute; left:50%; top:18%; transform:translate(-50%,-50%); z-index:30; pointer-events:none; white-space:nowrap;
+    font:800 20px/1 'Baloo 2',system-ui,sans-serif; color:#ffe1e1; padding:8px 18px; border-radius:12px; background:linear-gradient(180deg,#5a0f1c,#2a0610);
+    border:2px solid #c0404e; box-shadow:0 8px 24px rgba(0,0,0,.5); animation:elBanner 2.2s ease forwards;}
+  @keyframes elBanner{0%{opacity:0; transform:translate(-50%,-80%) scale(.85);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 20%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-40%);}}
+
+  /* Stat changes (2026-10-10): bigger floats, and the stat pill swells (up) or shrinks (down). */
+  .dmg-float.stat-up, .dmg-float.stat-down{font-size:1.45em !important;}
+  .dmg-float.stat-down{--g1:#efe2ff; --g2:#9a6ad8; --edge:#1e0b33;}
+  .card-tile .stats .stat-pump{animation:statPump .9s cubic-bezier(.3,1.6,.5,1);}
+  .card-tile .stats .stat-drain{animation:statDrain .9s ease;}
+  @keyframes statPump{0%{transform:scale(1);} 25%{transform:scale(1.45); box-shadow:0 0 0 3px rgba(140,255,140,.7), 0 0 16px rgba(140,255,140,.8); filter:brightness(1.35);} 100%{transform:scale(1);}}
+  @keyframes statDrain{0%{transform:scale(1);} 25%{transform:scale(.72); box-shadow:0 0 0 3px rgba(200,120,255,.7), 0 0 14px rgba(170,90,255,.7); filter:saturate(.5) brightness(.85);} 100%{transform:scale(1);}}
+  /* Trigger aura (2026-10-10): crackling light behind a card whose effect just fired. */
+  .board-card{isolation:isolate;}
+  .board-card > .trigger-aura{position:absolute; inset:-12px; z-index:-1; pointer-events:none; border-radius:18px;
+    background:conic-gradient(from 0deg, rgba(120,220,255,0), rgba(120,220,255,.85) 8%, rgba(255,255,255,0) 14%, rgba(170,120,255,.8) 30%, rgba(120,220,255,0) 38%, rgba(120,240,255,.85) 55%, rgba(255,255,255,0) 62%, rgba(190,140,255,.75) 78%, rgba(120,220,255,0) 86%);
+    filter:blur(5px); animation:triggerAura .9s ease-out forwards;}
+  @keyframes triggerAura{0%{opacity:0; transform:scale(.9) rotate(0deg);} 15%{opacity:1;} 30%{opacity:.55;} 42%{opacity:1;} 100%{opacity:0; transform:scale(1.06) rotate(70deg);}}
+  @media (prefers-reduced-motion: reduce){ .board-card > .trigger-aura{animation-duration:.4s;} .card-tile .stats .stat-pump, .card-tile .stats .stat-drain{animation:none;} }
+
+  /* Defeat screen (2026-10-10, user: "This lose screen can be inspired by the victory screen"): the Victory card's
+     shape at dusk — slate and moonlight instead of purple and gold, ash drifting down instead of rays, a silver title,
+     and a quote pinned at the bottom. */
+  .pass-card.winloss-card.is-fallen{background:radial-gradient(ellipse 80% 55% at 50% 0%, #4a5670 0%, #2a3142 45%, #141822 100%) !important; color:#e6e9f0;
+    border:2px solid #8a97b0 !important; box-shadow:0 0 0 4px rgba(138,151,176,.18), 0 30px 80px rgba(0,0,0,.55) !important; overflow:hidden;}
+  .winloss-card.is-fallen > *:not(.wl-dusk){position:relative; z-index:1;}
+  .winloss-card.is-fallen .wl-corner{position:absolute; z-index:5 !important;}
+  .winloss-card.is-fallen .wl-dusk{position:absolute; inset:0; pointer-events:none; z-index:0; overflow:hidden;
+    background:radial-gradient(circle at 50% -6%, rgba(220,230,255,.28), rgba(220,230,255,0) 32%);}
+  .winloss-card.is-fallen .wl-dusk i{position:absolute; top:-12px; width:6px; height:6px; border-radius:50%; background:rgba(200,210,230,.55); filter:blur(.5px); animation:ashFall linear infinite;}
+  .winloss-card.is-fallen .wl-dusk i:nth-child(3n){width:9px; height:5px; border-radius:60% 10%; background:rgba(150,120,95,.55);}
+  @keyframes ashFall{0%{transform:translate(0,-10px) rotate(0); opacity:0;} 10%{opacity:1;} 100%{transform:translate(40px, 620px) rotate(260deg); opacity:0;}}
+  .winloss-card.is-fallen .wl-title{font:900 clamp(34px, 5.5vw, 56px)/1 'Baloo 2',system-ui,sans-serif !important; letter-spacing:.02em;
+    background:linear-gradient(180deg, #ffffff 10%, #c9d2e3 55%, #8592ab); -webkit-background-clip:text; background-clip:text; color:transparent !important; filter:drop-shadow(0 3px 0 rgba(0,0,0,.35));}
+  .winloss-card.is-fallen .pass-ico{font-size:44px !important; filter:grayscale(.3) drop-shadow(0 0 14px rgba(200,215,255,.35));}
+  .winloss-card.is-fallen .winloss-reason, .winloss-card.is-fallen .wls-compact{color:rgba(230,233,240,.75) !important;} .winloss-card.is-fallen .wls-compact b{color:#fff;}
+  .winloss-card.is-fallen .wl-corner-btn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff;}
+  .winloss-card.is-fallen .winloss-actions .btn:not(.primary){background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.28);}
+  .winloss-card.is-fallen .loss-tip, .winloss-card.is-fallen [class*="loss-tip"]{background:rgba(255,255,255,.07) !important; border-color:rgba(200,210,230,.28) !important; color:#e6e9f0 !important;}
+  .winloss-card.is-fallen [class*="loss-tip"] b{color:#fff;}
+  .wl-quote{margin:12px auto 16px; max-width:560px; padding:12px 18px 10px; text-align:center; position:relative;
+    background:#efe4c8; color:#3a2a14; border-radius:4px; box-shadow:0 6px 16px rgba(0,0,0,.35); rotate:-.6deg;}
+  .wl-quote::before{content:""; position:absolute; top:-6px; left:50%; width:12px; height:12px; margin-left:-6px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #d9675a, #8a2a20); box-shadow:0 2px 3px rgba(0,0,0,.4);}
+  .wl-quote blockquote{margin:0; font:italic 600 15px/1.45 'Nunito',system-ui,sans-serif;}
+  .wl-quote figcaption{margin-top:4px; font:800 12.5px/1.2 'Baloo 2',system-ui,sans-serif; color:#7a5a2e;}
+  @media (prefers-reduced-motion: reduce){ .winloss-card.is-fallen .wl-dusk i{animation:none; display:none;} }
+
+  /* Skirmish editor (2026-10-10, user: "the footer of the skirmish edit page does not show scrolling elements past it"):
+     the content scrolls in its own box above a fixed footer. */
+  .skirmish-editor{display:flex !important; flex-direction:column; overflow:hidden !important;}
+  .skirmish-editor > .se-body{flex:1 1 auto; min-height:0; overflow:auto; overscroll-behavior:contain; padding-right:4px; margin-right:-4px;}
+  .skirmish-editor > .se-actions{position:static !important; flex:none; margin-top:0 !important; padding-top:12px !important; border-top:1px solid var(--surface-border);}
+  .skirmish-editor .se-battle{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px 14px; padding:8px 12px 12px;}
+  .skirmish-editor .se-battle label{display:flex; flex-direction:column; gap:4px;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -7201,7 +7300,7 @@
          elementalEnergy (Devilry/Ecclesia) stub — see loadEnergy()/tickEnergyHud() in
          arena_app.js. Lives in the topbar (not a per-tab HUD) since it's an account-level
          resource visible everywhere, same as the Home nav button. -->
-    <div class="energy-pill" id="energyPill" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 per minute">
+    <div class="energy-pill" id="energyPill" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
       <span class="energy-ico">⚡</span><span id="energyPillText">—</span>
     </div>
     <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>

@@ -719,6 +719,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         amt += kingSlayerBonus;
       }
     }
+    // Anti-Air N (2026-10-10, user: "an anti-air skill for one of the base units... especially poignant if one of the
+    // otters has it"): never misses a Flying unit (see the dodge check) and hits it for N more.
+    if(attDef && attDef.effects && Number(attDef.effects.antiAir) > 0){ const tdAA = CARD_DEFS[targetCard.defId]; if(tdAA && tdAA.effects && tdAA.effects.flying) amt += Number(attDef.effects.antiAir); }
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
     { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0) amt = Math.max(0, amt - sc); }
@@ -1041,7 +1044,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
     if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
-    if(dd.flying && !ad.flying && !ad.reach && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
     if(fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
@@ -1901,7 +1904,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // picker. Reuses the same fireMissile helper Skyfall (evergreen, see applyOnSpawnEffects
         // below) and the legacy Arrow N preset both call.
         case 'missile': fireMissile(players, sideOf, playerId, boardCard, {amount:t.amount||0, dmgType:'physical'}, stats, events); break;
-        case 'buffAttack': boardCard.atk += (t.amount||0); break;
+        // 2026-10-10 (user: "The improvement of stats should be clear! like esprit"): these two self-buffs now report
+        // themselves (namedBuff, the same event Buff uses), so the board shows the gain.
+        case 'buffAttack': boardCard.atk += (t.amount||0); if(recordEvents && events && t.amount) events.push({type:'namedBuff', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:t.amount||0, amount2:0}); break;
         // Buff (2026-09-30): merges buffAttack/buffHealth/buffAlly into one action with a
         // who/sub target (see the long comment above ACTION_DEFS in arena_app.js). Both amount
         // fields are always available now (Attack via t.amount, Health via t.amount2) — the old
@@ -1953,7 +1958,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(who!=='self' && c.hp>0){ bleedTick(sideOf, who==='ally'?playerId:otherId(playerId), c, stats, events, 'defend'); runCustomTriggers(players, sideOf, who==='ally'?playerId:otherId(playerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
           break;
         }
-        case 'buffHealth': boardCard.hp += (t.amount||0); boardCard.maxHp += (t.amount||0); break;
+        case 'buffHealth': boardCard.hp += (t.amount||0); boardCard.maxHp += (t.amount||0); if(recordEvents && events && t.amount) events.push({type:'namedBuff', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:0, amount2:t.amount||0}); break;
         // heal (2026-09-16): restores CURRENT hp up to the existing max — unlike buffHealth,
         // which permanently raises max HP too. Self-only, same convention as buffAttack/
         // buffHealth defaulting to the caster; fires the new heal trigger trio.

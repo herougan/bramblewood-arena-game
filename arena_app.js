@@ -191,6 +191,7 @@ const PASSIVE_DEFS = [
   // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
+  {key:'antiAir', category:'passive', label:'Anti-Air', kind:'number', desc:n=>`Never misses a Flying unit, and hits Flying units for ${n} more damage.`},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits a random unit among the three facing it (left, centre, right), then the units beside that one too.`},
   {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
@@ -3605,6 +3606,7 @@ function abilityBadges(d){
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
   if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
   if(e.thorns) out.push(`🌵${e.thorns}`);
+  if(e.antiAir) out.push(`🪃${e.antiAir}`); // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
@@ -6569,7 +6571,7 @@ function grantCurrency(kind, amount){
 const ENERGY_KEY = 'bramblewood_arena_energy_v1';
 const ENERGY_MAX = 20; // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
                         // to matter, short enough that a returning player is rarely capped out.
-const ENERGY_REGEN_MS = 60 * 1000; // "You refill 1 per 1 minute" -- verbatim.
+const ENERGY_REGEN_MS = 5 * 60 * 1000; // 2026-10-10 (user: "Change the energy gain rate to 1/5minute"); was 1 per minute
 // Cost scales with a node's kind, same tiering CONQUEST_NODE_REWARDS already uses (a Skirmish is
 // the cheap frequent fight, a Raid Boss is the rare endgame one) -- Online Raid sits between Elite
 // and Boss since it's a real (if quick) PvE test, not a warm-up fight.
@@ -6654,6 +6656,15 @@ function formatEnergyCountdown(ms){
 // drift out of sync. Either pair can be absent (the Play-tab copy only exists while that tab's
 // pre-match subtabs row is actually mounted) — each pair is updated independently and skipped if
 // missing, rather than the whole function bailing out just because one of the two isn't mounted.
+// 2026-10-10 (user: "Play Again always plays the same skirmish again. It is greyed out if you don't have enough Energy.
+// (Fight and Fight again too)"): every fight-starting button carries its cost; refreshEnergyHud re-checks them as Energy refills.
+function playAgainEnergyAttrs(m){
+  if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
+  const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
+  const c = nodeEnergyCost(f.map, f.node) || 1, short = currentEnergy() < c;
+  return `data-energy-cost="${c}" ${short ? 'disabled' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
+}
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ b.disabled = e < (+b.dataset.energyCost||0); }); }
 function refreshEnergyHud(){
   const s = settleEnergy();
   const nextMs = msUntilNextEnergyTick();
@@ -6665,7 +6676,7 @@ function refreshEnergyHud(){
     const textEl = document.getElementById(textId);
     if(textEl) textEl.textContent = text;
     if(pill) pill.classList.toggle('energy-low', low);
-  });
+  });  try{ refreshEnergyButtons(); }catch(e){}
 }
 // Raid Points (2026-09-29, per explicit request: "Playing raids require both Raid points and
 // energy. Add this new resource."): a second gate on Online Raid specifically, layered on TOP of
@@ -7971,7 +7982,7 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             </div>
           </div>
-          <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 per minute">
+          <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
             <span class="energy-ico">⚡</span><span id="energyPillPlayText">—</span>
           </div>
         </div>
@@ -8956,6 +8967,20 @@ function leaveSubMap(sm, body){
   const a = mainEl.animate([{transform:'none', opacity:1}, {transform:'scale(.6)', opacity:0}], {duration:220, easing:'ease-in', fill:'forwards'});
   a.onfinish = go;
 }
+// Sub-map exit (2026-10-10, user: "The Smuggler's grotto should also have a corresponding cave exit symbol in the
+// map to go back out... a shine from its hole... a 'link' that leads to the first skirmish"). Daylight spills out of
+// the mouth; a faint dashed line joins it to the first fight. Click to climb back out to the parent map.
+function subMapExitHTML(map, positions){
+  if(!map.sub) return '';
+  const parent = CONQUEST_MAPS.find(m=> m.id === map.parent); if(!parent) return '';
+  const idx = map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
+  const def = {x: Math.max(6, Math.min(94, base.x - 12)), y: Math.max(10, Math.min(90, base.y + 16))};
+  const p = decorPos(map.id, '~exit', def), key = map.nodes[Math.max(0, idx)] && map.nodes[Math.max(0, idx)].key;
+  const tip = 'Way out — back to ' + parent.name;
+  return `<svg class="map-spot-links map-exit-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line ${key ? `data-a="${escapeAttr(key)}" data-b="~exit"` : ''} x1="${base.x}" y1="${base.y}" x2="${p.x}" y2="${p.y}"/></svg>
+    <button type="button" class="map-cave map-subexit" id="mapSubExit" data-lkey="~exit" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      <span class="mse-rays" aria-hidden="true"></span><span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth mse-mouth" aria-hidden="true"></span><span class="msc-name">↑ Way out</span></button>`;
+}
 function mapCaveHTML(){
   const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
   const p = decorPos('m2', '~cave', {x:22, y:30});
@@ -9270,6 +9295,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const others = map.nodes.filter(n=> n.key!==draft.key);
     overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
       <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
+      <div class="se-body">
       <p class="se-mode ${cloudCardAdmin ? 'is-live' : ''}">${cloudCardAdmin ? '☁️ Save publishes this skirmish live for every player.' : '💾 Edits save in this browser only. Sign in with an admin account to publish them for everyone.'}</p>
       <div class="se-grid">
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
@@ -9280,12 +9306,15 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
+        <fieldset class="se-wide se-battle"><legend>⚔️ This skirmish's battle</legend>
+          <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+          <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
+        </fieldset>
         <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>
         <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once</small></div>
           <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
-        <label>Battle mode<select id="seMode">${opt('', draft.battleMode, 'Default')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
-        <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
-        <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'Always shown')}${opt('win', draft.revealDeck, 'After a win')}${['C','B','A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
+
+        <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'After a Rank B clear (default)')}${['A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
         <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
         <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
@@ -9298,6 +9327,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
+      </div>
       <div class="se-actions">
         <button type="button" class="btn" id="seSim">📊 Simulate 200 vs my deck</button>
         <button type="button" class="btn" id="seSimNew" title="A deck built from the Base cards and every reward a player would have by this fight">📊 vs a new player's deck</button>
@@ -10353,7 +10383,19 @@ function saveConquestProgress(p){ try{ localStorage.setItem(CONQUEST_PROGRESS_KE
 // HP you still had left the moment the enemy's fell — a clean, always-available signal (no new
 // stat tracking needed) that reads naturally as "how clean was that win." S/A/B/C, worst to
 // best C<B<A<S, so a later better clear always overwrites a worse one and never downgrades it.
-const RANK_ORDER = ['C','B','A','S'];
+const RANK_ORDER = ['C','B','A','S','SS','SSS'];
+// SS / SSS (2026-10-10, user: "Sub-boss and bosses can get up to SSS rank. (Which now is about no health damage taken,
+// and winning very fast)"): elite (sub-boss) and boss fights only. SS = your castle took no damage; SSS = no damage
+// and the win came by round SSS_FAST_ROUND.
+const SSS_FAST_ROUND = 8;
+const RANK_BONUS = {S:0.25, SS:0.5, SSS:1}; // extra share of the fight's Maple Leaves and Dust for a top rank
+function conquestRankFor(m, node){
+  const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
+  const base = rankForHqFraction(frac);
+  const bossy = /elite|boss/.test((node && node.kind) || '');
+  if(base !== 'S' || !bossy || hq.hp < hq.maxHp) return base;
+  return (m.round || 99) <= SSS_FAST_ROUND ? 'SSS' : 'SS';
+}
 function rankForHqFraction(frac){
   if(frac>=0.9) return 'S';
   if(frac>=0.65) return 'A';
@@ -10371,11 +10413,31 @@ function rankAtLeast(have, need){
 // example — "hide the deck unless the player wins it"), 'C'/'B'/'A'/'S' reveals once that rank
 // (or better) has been achieved there. Manually revealed nodes (via the panel's own toggle, once
 // unlocked) don't need persistence — once the requirement is met it stays met permanently.
+// 2026-10-10 (user: "The skirmish's deck list is hidden unless you've beaten it with at least a B rank"): B is now the
+// floor for every fight; a node can still ask for more (A or S) in Edit skirmish.
+// Enemy deck level colour (2026-10-10, user): by how their level compares with yours (your own number isn't shown).
+// red >25% above yours, dark red >75%, orange >10%, green otherwise; light green when you're 2x theirs, pink 2.5x,
+// light pink 3x.
+function deckLevelGapClass(enemy, mine){
+  enemy = Math.max(0, +enemy||0); mine = Math.max(0, +mine||0);
+  if(mine > 0 && enemy > 0){
+    if(mine >= enemy*3) return 'lv-ltpink';
+    if(mine >= enemy*2.5) return 'lv-pink';
+    if(mine >= enemy*2) return 'lv-ltgreen';
+  }
+  const base = Math.max(mine, 0.0001);
+  if(enemy > base*1.75) return 'lv-darkred';
+  if(enemy > base*1.25) return 'lv-red';
+  if(enemy > base*1.10) return 'lv-orange';
+  return 'lv-green';
+}
+function deckLevelGapTip(cls){
+  return ({'lv-darkred':'Their deck is far above yours (75%+ higher)', 'lv-red':'Their deck is well above yours (25%+ higher)', 'lv-orange':'Their deck is a little above yours (10%+ higher)',
+    'lv-green':'Their deck is about yours or below', 'lv-ltgreen':'Your deck is twice their level', 'lv-pink':'Your deck is 2.5× their level', 'lv-ltpink':'Your deck is 3× their level'})[cls] || '';
+}
+function conquestDeckNeed(node){ const r = node && node.revealDeck; return (r && r !== 'win' && rankAtLeast(r, 'B')) ? r : 'B'; }
 function conquestDeckRevealed(map, node, progress){
-  if(!node.revealDeck) return true;
-  const nid = conquestNodeId(map.id, node.key);
-  if(node.revealDeck==='win') return progress.completed.includes(nid);
-  return rankAtLeast(progress.ranks[nid], node.revealDeck);
+  return rankAtLeast(progress.ranks[conquestNodeId(map.id, node.key)], conquestDeckNeed(node));
 }
 // Map decoration (2026-09-29, per explicit request: "Draw a pond emoji or something in this
 // outskirts - it's abit empty"): the Conquest trail canvas is laid out on a 100x100 grid but
@@ -10600,6 +10662,21 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   if(!cards && !cur.length && !rankHTML) return '';
   return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}">${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
+}
+const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 4; // index in play order: map 5 (The Ashen Peak) and later
+function rollSRankFind(mapId, rank, rng){
+  if(!rankAtLeast(rank, 'S')) return null;
+  const map = CONQUEST_MAPS.find(x=> x.id === mapId); if(!map) return null;
+  const main = mainConquestMaps(), root = map.sub ? CONQUEST_MAPS.find(x=> x.id === map.parent) : map;
+  if(main.indexOf(root) < S_FIND_FROM_MAP) return null;
+  const flag = 'sfind:' + root.id; if(loadDialogueFlags()[flag]) return null;
+  if((rng || Math.random)() >= S_FIND_CHANCE) return null;
+  const defs = getCardDefs(), owned = id=> myUnlockedCardIds.has(id) || ((myCardCopies[id]||[]).length > 0);
+  const pool = [...new Set([root, ...CONQUEST_MAPS.filter(x=> x.sub && x.parent === root.id)].flatMap(mp=> mp.nodes.flatMap(n=> Object.keys(n.deck||{}))))]
+    .filter(id=> defs[id] && !defs[id].token && !defs[id].test && !owned(id));
+  if(!pool.length) return null;
+  setDialogueFlag(flag, true);
+  return pool[Math.floor((rng || Math.random)()*pool.length)];
 }
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
@@ -11414,7 +11491,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
-      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}${wandererMapHTML(map, positions)}
+      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -11510,6 +11587,7 @@ function renderConquestSubTab(body){
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
   { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
+  { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; leaveSubMap(map, body); }); }
   { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
   if(conquestSubZoom && mainEl.animate){ const z = conquestSubZoom; conquestSubZoom = null;
@@ -11576,26 +11654,21 @@ function renderConquestSubTab(body){
     // Once earned, conquestDeckShowOverride lets the player manually re-hide/reshow it (a real
     // toggle, not just a one-way reveal) — e.g. for a self-imposed "blind" run.
     const earned = conquestDeckRevealed(map, selectedNode, progress);
-    const manuallyHidden = conquestDeckShowOverride[nid]===false;
-    const revealed = earned && !manuallyHidden;
+    const revealed = earned; // 2026-10-10: no Show/Hide toggle any more
     const squadChips = Object.entries(selectedNode.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`<span class="dchip">${d.icon} ${d.name} ×${n}</span>`:''; }).join('');
-    const reqText = selectedNode.revealDeck==='win' ? 'win this fight once to reveal it'
-      : selectedNode.revealDeck ? `earn a Rank ${selectedNode.revealDeck} clear here to reveal it`
-      : '';
+    const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
+    const energyCost = selectedNode.virtual ? 0 : (nodeEnergyCost(map, selectedNode) || 1), canAffordFight = currentEnergy() >= energyCost;
     panelEl.hidden = false;
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
+      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
-        ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId); const cls = mine >= ev ? 'is-even' : mine >= ev*0.8 ? 'is-close' : 'is-hard';
-          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}) + ', ' + _t('yours {n}', {n:mine}))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b><small>${escapeHtml(_t('yours {n}', {n:mine}))}</small></div>`; })()}
+        ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
       </div>
       ${earned ? `
-        <div class="cnp-squad-row">
-          ${revealed ? `<div class="cnp-squad">${squadChips}</div>` : ''}
-          <button type="button" class="btn small ghost cnp-deck-toggle" id="cnpDeckToggle" aria-label="${revealed?'Hide the enemy deck':'Show the enemy deck'}">${revealed?'🙈 Hide':'👁 Show'}</button>
-        </div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
+        <div class="cnp-squad-row"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
@@ -11612,8 +11685,7 @@ function renderConquestSubTab(body){
       conquestBattleModePick[nid] = b.getAttribute('data-battlemode');
       renderConquestSubTab(body);
     }));
-    const toggleBtn = document.getElementById('cnpDeckToggle');
-    if(toggleBtn) toggleBtn.addEventListener('click', ()=>{ conquestDeckShowOverride[nid] = !revealed; renderConquestSubTab(body); });
+
   } else {
     panelEl.hidden = true;
   }
@@ -11688,7 +11760,7 @@ function startOfflineRaidMatch(){
   if(!st || st.defeated) return;
   if(!deckSizeOkOrWarn()) return;
   if(!spendEnergy(ENERGY_COST.onlineRaid)){
-    alert(`Not enough Energy for a Raid attempt — this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
+    alert(`Not enough Energy for a Raid attempt — this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
     return;
   }
   const boss = st.boss;
@@ -12477,7 +12549,7 @@ function tutorialStageOpponentDeck(stage, pick){
   const weak = ids=> ids.slice().sort((a,b)=> ((defs[a].attack||0)-(defs[b].attack||0)) || ((defs[a].health||0)-(defs[b].health||0)) || (a<b?-1:1));
   const flies = id=> !!((defs[id].effects||{}).flying);
   // 2026-10-10: the three weakest of its own basics plus the shared six, leaving out Quick and Swarm (they race a 12 HP castle).
-  const calm = id=> { const fx = defs[id].effects||{}; return !fx.quick && !fx.swarm; };
+  const calm = id=> { const fx = defs[id].effects||{}; return !fx.quick && !fx.swarm && !fx.antiAir; }; // Anti-Air too: it shreds a Hummingbird pick
   if(pick==='otters'){
     // 2026-10-10 (evening): Quick left out here too (Fleetfoot'd 2/4 Quick took Otters down to 62%); the ground
     // cards are the weakest calm ones by total stats, and 3 copies of each so the deck doesn't run dry.
@@ -13051,7 +13123,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(!(opts && opts.skipEnergyCost)){
     const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
-      alert(`Not enough Energy for ${node.name} -- this fight costs ${cost}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
+      alert(`Not enough Energy for ${node.name} -- this fight costs ${cost}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
       return false;
     }
     bumpQuestCounter('energyConquest', cost);
@@ -14392,7 +14464,7 @@ function startRaidMatch(bossId){
   // Energy gate (2026-09-22, "Energy is for doing skirmishes etc" -- the "etc" covers Online Raid
   // attempts too, same as every Conquest fight kind).
   if(!spendEnergy(ENERGY_COST.onlineRaid)){
-    alert(`Not enough Energy for an Online Raid attempt -- this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every minute.`);
+    alert(`Not enough Energy for an Online Raid attempt -- this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
     // Refund the Raid Point already spent above — the attempt never actually started.
     myCurrencies.raidPoints = Math.min(RAID_POINTS_MAX, (myCurrencies.raidPoints||0) + RAID_POINTS_COST);
     saveCurrencies();
@@ -15314,22 +15386,22 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : ''}">
+      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && m.winner===1) ? '<div class="wl-rays" aria-hidden="true"></div>' : ''}
+        ${(!isPc && m.winner===1) ? '<div class="wl-rays" aria-hidden="true"></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
-        ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) : ''}
+        ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
-          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn">${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
+          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn" ${playAgainEnergyAttrs(m)}>${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
           ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
 
         </div>
@@ -16029,7 +16101,8 @@ function updateControlsDisabled(){
   // one-shot skip — it stays clickable regardless of m.resolving.
   const ffEl = document.getElementById('ffBtn'); if(ffEl){ ffEl.innerHTML = ffBtnLabel(m.speedMult); ffEl.title = ffBtnTitle(m.speedMult); }
 }
-function ffBtnLabel(mult){ return `▶▶ ${(!mult || mult<=1) ? 1 : mult}×`; } // UX A12: always shows the current speed
+// UX A12: always shows the current speed. 2026-10-10 (user): one arrow per step — ▶ 1×, ▶▶ 1.5×, ▶▶▶ 2×, ▶▶▶▶ 3×.
+function ffBtnLabel(mult){ const m = (!mult || mult<=1) ? 1 : mult, n = m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
 function ffBtnTitle(mult){ return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (1.5x → 2x → 3x → normal)`; }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
@@ -16219,7 +16292,7 @@ function renderBoard(opts){
     const scatter = scatteringSide==='both' || pl.id===scatteringSide;
     let i = 0;
     const nextDanceStyle = ()=>{
-      if(dance) return ` style="--dance-delay:${(i++ *0.09).toFixed(2)}s"`;
+      if(dance) return ` style="--dance-delay:${(i++ *0.045).toFixed(3)}s"`;
       if(scatter){
         const seed = i++;
         // 2026-10-03 ("Upon victory, the cards fly to the right for no reason"): the old offsets
@@ -18641,19 +18714,31 @@ function waterRippleAt(el){
 }
 // Leader throne (2026-10-06, effects "Coming next"): the summoned leader rises on a pillar of light,
 // a crown drops onto the card and a fanfare plays.
-function leaderThroneVfx(uid){
+// 2026-10-10 (user: "it shouldn't extend to the enemy's side. Only your field. Enemy summoning their leader should mean
+// something as well!"): the beam stops at the middle of the field. Your leader's light rises from your row; the rival's
+// leader gets a dark crimson pillar falling from the top of their half, a low drum and a banner.
+function leaderThroneVfx(uid, opts){
+  opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
-  try{ SoundKit.leaderFanfare(); }catch(e){}
+  const enemy = !!opts.enemy;
+  try{ if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else SoundKit.leaderFanfare(); }catch(e){}
+  if(enemy) try{ const bf = document.querySelector('.battlefield'); if(bf){ const b = document.createElement('div'); b.className = 'enemy-leader-banner'; b.textContent = '👑 Their leader takes the field'; bf.appendChild(b); setTimeout(()=> b.remove(), 2200); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
-  const beam = document.createElement('div'); beam.className = 'throne-beam'; beam.setAttribute('aria-hidden','true');
-  beam.style.cssText = `left:${r.left + r.width/2}px; top:${r.top + r.height}px; width:${r.width*1.3}px;`;
-  const crown = document.createElement('div'); crown.className = 'throne-crown'; crown.textContent = '👑'; crown.setAttribute('aria-hidden','true');
+  // The field's middle line: halfway between the two rows (or the battlefield's own middle).
+  const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
+  const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
+  const beam = document.createElement('div'); beam.className = 'throne-beam' + (enemy ? ' is-enemy' : ''); beam.setAttribute('aria-hidden','true');
+  const reach = enemy ? Math.max(r.height*0.6, midY - Math.max(bfr.top, r.top - r.height*0.6)) : Math.max(r.height*0.6, (r.top + r.height) - midY);
+  beam.style.cssText = enemy ? `left:${r.left + r.width/2}px; top:${Math.max(bfr.top, r.top - r.height*0.6)}px; width:${r.width*1.3}px;`
+                             : `left:${r.left + r.width/2}px; top:${r.top + r.height}px; width:${r.width*1.3}px;`;
+  const crown = document.createElement('div'); crown.className = 'throne-crown' + (enemy ? ' is-enemy' : ''); crown.textContent = '👑'; crown.setAttribute('aria-hidden','true');
   crown.style.cssText = `left:${r.left + r.width/2}px; top:${r.top}px;`;
   document.body.append(beam, crown);
   gsap.timeline({onComplete:()=> beam.remove()})
-    .fromTo(beam, {height:0, opacity:0}, {height:r.height*2.2, opacity:1, duration:.35, ease:'power2.out'})
-    .to(beam, {opacity:0, duration:.6, delay:.35, ease:'power1.in'});
+    .fromTo(beam, {height:0, opacity:0}, {height:reach, opacity:1, duration:.35, ease:'power2.out'})
+    .to(beam, {opacity:0, duration:.6, delay:enemy ? .6 : .35, ease:'power1.in'});
+  if(enemy){ try{ shakeEl(el); }catch(e){} }
   gsap.timeline({onComplete:()=> crown.remove()})
     .fromTo(crown, {y:-70, opacity:0, scale:1.6}, {y:-14, opacity:1, scale:1, duration:.45, delay:.2, ease:'bounce.out'})
     .to(crown, {y:-30, opacity:0, duration:.5, delay:.5, ease:'power1.in'});
@@ -19266,17 +19351,19 @@ async function resolveRound(opts){
       const preId = conquestNodeId(m.conquestNode.mapId, m.conquestNode.nodeId);
       const isFirstClear = !preProgress.completed.includes(preId);
       // Rank (item #4): graded off how much of the player's own castle HP survived the fight.
-      const hpFrac = m.players[1].hq.maxHp>0 ? Math.max(0, m.players[1].hq.hp)/m.players[1].hq.maxHp : 0;
-      const rank = rankForHqFraction(hpFrac);
+      const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       const unlockBefore = snapshotUnlocks();
       completeConquestNode(m.conquestNode, rank);
       m.conquestRankEarned = rank; // read once by the post-match screen (renderMatchUI) below
       const rewardTier = nodeRewardTier((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       if(rewardTier){
-        const payout = isFirstClear ? rewardTier.first : rewardTier.repeat;
+        const base = isFirstClear ? rewardTier.first : rewardTier.repeat;
+        // Top-rank bonus (2026-10-10, user: "S rewards gives additional rewards"): S +25%, SS +50%, SSS +100%.
+        const bm = RANK_BONUS[rank] || 0, bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)};
+        const payout = {gold: (base.gold||0) + bonus.gold, dust: (base.dust||0) + bonus.dust};
         if(payout.gold>0) grantCurrency('gold', payout.gold);
         if(payout.dust>0) grantCurrency('dust', payout.dust);
-        m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear}; // read once by the post-match screen below
+        m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear, rankBonus: (bonus.gold || bonus.dust) ? Object.assign({rank}, bonus) : null}; // read once by the post-match screen below
         // 2026-10-03 ("First time rewards are displayed below the rewards, greyed out. To teach what
         // you have earned from this in the past"): on a repeat clear, remember the one-off bonus.
         if(!isFirstClear) m.conquestFirstClearPast = {gold: rewardTier.first.gold, dust: rewardTier.first.dust, cards: nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId)};
@@ -19291,6 +19378,10 @@ async function resolveRound(opts){
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
         if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', CONQUEST_MAPS[3].id); }
       }
+      // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
+      // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
+      // map's enemy decks that you don't own yet. At most once per map.
+      try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
       { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
@@ -20176,7 +20267,7 @@ async function showEndSign(m){
   const mult = Math.min(2, m.speedMult || 1);
   // 2026-10-08 review: the board re-renders right after this sign, replacing the tossed cards, so let
   // the last winner land first (the toss is the payoff; it is not shortened by fast-forward).
-  await sleep(Math.max(Math.round(1700/mult), tossMs));
+  await sleep(Math.max(Math.round((m.endReason === 'forfeit' ? 1600 : 1700)/mult), tossMs)); // 2026-10-10: a forfeit's sign holds 0.1 s less
   el.classList.add('fight-sign-out');
   await sleep(220); el.remove();
 }
@@ -20332,6 +20423,39 @@ function lossTipHTML(m){
 // Win screen header (2026-10-08, user: "The Hurrah! screen can be improved. +First Clear is blending
 // too much into the background. This is a very glorious screen"): the rank as a big foil hexagon
 // and First Clear as a gold ribbon, right under the title.
+// Defeat quotes (2026-10-10, user: "famous quotes (where the names are puns of famous generals, philosophers or
+// scientists or presidents) - shown on defeat"). All original lines; the names are the joke.
+const DEFEAT_QUOTES = [
+  ['Every battle is won before it is fought. Mostly by whoever packed snacks.', 'Sun Tzoo'],
+  ['Know your enemy, and know their Wait timer.', 'Sun Tzoo'],
+  ['I came, I saw, I was flanked by a hedgehog.', 'Julius Cheetah'],
+  ['Defeat is only the first draft of victory.', 'Napoleon Bonapartridge'],
+  ['Never interrupt your enemy while they are making a mistake. Wait one more turn.', 'Napoleon Bonapartridge'],
+  ['An army at rest stays at rest. Unless it has Quick.', 'Isaac Newt'],
+  ['For every attack there is an equal and opposite Thorns.', 'Isaac Newt'],
+  ['The unexamined deck is not worth playing.', 'Sockrates'],
+  ['I know that I know nothing. Except that Fliers dodge.', 'Sockrates'],
+  ['Lose slowly, learn quickly.', 'Confoxius'],
+  ['The river that carves the canyon never wins in one round.', 'Confoxius'],
+  ['Adapt your deck, or be adapted out of the meadow.', 'Charles Darwren'],
+  ['Imagination is more important than Attack. Health also helps.', 'Albert Pinestein'],
+  ['Insanity is playing the same deck and expecting a different castle.', 'Albert Pinestein'],
+  ['Nothing in battle is to be feared, only understood.', 'Marie Curlew'],
+  ['Four score and seven turns ago, we had a plan.', 'Abraham Lynxcoln'],
+  ['A house divided against itself cannot hold the centre slot.', 'Abraham Lynxcoln'],
+  ['Speak softly and carry a big Otter.', 'Theodore Moosevelt'],
+  ['The only thing we have to fear is a full row of Fliers.', 'Franklin D. Roostervelt'],
+  ['Ask not what your deck can do for you. Ask what you can cut from it.', 'John F. Kenneduck'],
+  ['Retreat? We are simply advancing toward the Armoury.', 'Douglas MacOtter'],
+  ['I cannot tell a lie: that was a bad Wait 3.', 'George Washingtoad'],
+  ['Eureka! I have found another way to lose. Next, the way to win.', 'Archimouse'],
+  ['The best-laid plans of mice and otters often meet a Bee Knight.', 'Robert Burrows'],
+];
+function defeatQuoteHTML(m){
+  const i = Math.abs(((currentMatchSeed||0) ^ ((m && m.round)||0) * 2654435761) >>> 0) % DEFEAT_QUOTES.length;
+  const [q, who] = DEFEAT_QUOTES[i];
+  return `<figure class="wl-quote"><blockquote>“${escapeHtml(q)}”</blockquote><figcaption>— ${escapeHtml(who)}</figcaption></figure>`;
+}
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;
@@ -20363,7 +20487,7 @@ function rewardsPanelHTML(m){
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -20395,7 +20519,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
   if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
-  return `<button class="btn primary big" id="wlNextBattleBtn" title="${escapeAttr(nb.node.name)}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
+  return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'disabled' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
 function rewardsCheer(){
@@ -20454,6 +20578,8 @@ function matchStatsHTML(m){
       ${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" title="First time clearing this node — a bigger one-off bonus">✨ First Clear</span>` : ''}
       ${reward && reward.gold>0 ? `<span class="hud-pill forge-cur-gold" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">${mapleLeafIconHTML()} ${rewardCountSpan(reward.gold)} Maple Leaves</span>` : ''}
       ${reward && reward.dust>0 ? `<span class="hud-pill forge-cur-dust" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">✨ ${rewardCountSpan(reward.dust)} Dust</span>` : ''}
+      ${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" title="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus included</span>` : ''}
+      ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="A rare find for an S-rank win on this map (once per map)">🎁 Rare find!</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
       ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}
     </div>` : '';
@@ -21614,6 +21740,27 @@ function keywordCuesForHit(ev, attEl, targetEl){
 // with the trigger's symbol above it, and a soft two-note chime.
 const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'⏳', onReady:'⚡', onExile:'🌀',
   onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️'};
+// Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
+// also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
+// shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
+function statPillPulse(uid, dir, which){
+  const el = boardCardEl(uid); if(!el) return;
+  const pill = el.querySelector(which === 'hp' ? '.stats .hp' : '.stats .atk'); if(!pill) return;
+  const cls = dir === 'up' ? 'stat-pump' : 'stat-drain';
+  pill.classList.remove('stat-pump', 'stat-drain'); void pill.offsetWidth; pill.classList.add(cls);
+  setTimeout(()=> pill.classList.remove(cls), 900);
+}
+function statChangeVfx(uid, dAtk, dHp){
+  const rc = matchState && matchState.replayCards && matchState.replayCards[uid];
+  if(rc){ if(dAtk) rc.atk = Math.max(0, (rc.atk||0) + dAtk); if(dHp > 0){ rc.hp += dHp; rc.maxHp += dHp; } else if(dHp < 0){ rc.maxHp = Math.max(1, rc.maxHp + dHp); rc.hp = Math.max(1, Math.min(rc.hp, rc.maxHp)); } }
+  try{ updateCardAtkDisplay(uid); }catch(e){} try{ updateCardHpDisplay(uid); }catch(e){}
+  const el = boardCardEl(uid); if(!el) return;
+  const up = (dAtk||0) + (dHp||0) >= 0, fmt = n=> (n > 0 ? '+' : '−') + Math.abs(n);
+  const txt = [dAtk ? fmt(dAtk) + '⚔' : '', dHp ? fmt(dHp) + '❤' : ''].filter(Boolean).join(' ');
+  if(txt) floatText(el, txt, up ? 'gold stat-up' : 'debuff stat-down');
+  if(dAtk) statPillPulse(uid, dAtk > 0 ? 'up' : 'down', 'atk');
+  if(dHp) statPillPulse(uid, dHp > 0 ? 'up' : 'down', 'hp');
+}
 function triggerFiredVfx(ev){
   try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){}
   if(!fxAtLeast('low')) return;
@@ -21625,6 +21772,9 @@ function triggerFiredVfx(ev){
   document.body.appendChild(ring);
   setTimeout(()=> ring.remove(), 900);
   const t = el.querySelector('.card-tile'); if(t){ t.classList.remove('trigger-glow'); void t.offsetWidth; t.classList.add('trigger-glow'); setTimeout(()=> t.classList.remove('trigger-glow'), 700); }
+  // 2026-10-10 (user: "an electric aura shine at the back of the card if an effect triggers"): crackling light
+  // behind the card, under the tile.
+  if(fxAtLeast('med')){ const a = document.createElement('span'); a.className = 'trigger-aura'; a.setAttribute('aria-hidden','true'); el.prepend(a); setTimeout(()=> a.remove(), 900); }
 }
 function renderVfxForEvent(ev){
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
@@ -21632,6 +21782,7 @@ function renderVfxForEvent(ev){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
     if(rc){ rc.atk = (rc.atk||0) + (ev.amount||0); if(ev.kind==='esprit' && ev.hp){ rc.hp += ev.hp; rc.maxHp += ev.hp; } if(ev.hiveMind){ rc.hp += 1; rc.maxHp += 1; } }
     try{ updateCardAtkDisplay(ev.attUid); }catch(e){}
+    statPillPulse(ev.attUid, (ev.amount||0) >= 0 ? 'up' : 'down', 'atk'); if(ev.kind==='esprit' && ev.hp) statPillPulse(ev.attUid, 'up', 'hp');
   }
   // Guard (2026-09-17, fix for "Uncaught Error ... reading 'replayCards'"): this fires from
   // an in-flight setTimeout/await-sleep replay loop that closes over the match object as a
@@ -21890,7 +22041,7 @@ function renderVfxForEvent(ev){
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); }
     else if(ev.kind==='stun'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
-    else if(ev.kind==='debuffAttack'){ SoundKit.curse(); if(el) floatText(el, '-'+ev.amount+'⚔', 'debuff'); }
+    else if(ev.kind==='debuffAttack'){ SoundKit.curse(); statChangeVfx(ev.targetUid, -(ev.amount||0), -(ev.amount2||0)); }
     // addWait (2026-09-26, new basic action — the debuff-side counterpart to Reduce Wait):
     // reuses curse's tone (same "you've been afflicted" register as debuffAttack/stun above)
     // rather than inventing a dedicated sound for a one-off utility action.
@@ -21976,10 +22127,8 @@ function renderVfxForEvent(ev){
     if(el){ shakeEl(el); floatText(el, '💥 Boom!', 'debuff'); }
   }
   if(ev.type==='namedBuff'){
-    const el = boardCardEl(ev.targetUid);
     SoundKit.buffUp();
-    if(el) floatText(el, `+${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}`, 'gold');
-    updateCardHpDisplay(ev.targetUid);
+    statChangeVfx(ev.targetUid, ev.amount||0, ev.amount2||0);
   }
   if(ev.type==='thorns'){
     SoundKit.clang(); flashDmg(ev.targetUid, ev.dmg, false);
@@ -22227,6 +22376,9 @@ function renderVfxForEvent(ev){
   // not just seen. The player's own play/discard already gets its own explicit SoundKit.play()
   // call at the click site, so only fire this for the enemy side to avoid a double-trigger.
   if((ev.type==='play'||ev.type==='discard') && ev.side==='B') SoundKit.play();
+  // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
+  // ominous entrance on their half of the field.
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')) setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true}), 380);
 }
 
 overlayDelegateChanges();
