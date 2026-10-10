@@ -216,6 +216,73 @@ function rally(cards, o){
     const t = tileOf(el); g.fromTo(t, {y:0}, {y:-6, duration:.16, yoyo:true, repeat:1, ease:'power1.out', clearProps:'transform'});
   }, 160 + i*90));
 }
+// ---- 2026-10-10 additions (from the VFX Playground) --------------------------------------------
+// A point on a quadratic curve, so throws can arc without a plugin.
+const qpt = (a, m, b, t)=> ({x:(1-t)*(1-t)*a.x + 2*(1-t)*t*m.x + t*t*b.x, y:(1-t)*(1-t)*a.y + 2*(1-t)*t*m.y + t*t*b.y});
+// Feathers knocked loose from a flier.
+function feathers(x, y, n){
+  const g = G(); if(!g || reduce()) return;
+  for(let i = 0; i < (n||10); i++){ const f = layer('sfx-feather'); const a = (200 + Math.random()*140)*Math.PI/180, v = 40 + Math.random()*70;
+    g.set(f, {x, y, rotation:Math.random()*360, opacity:1});
+    g.to(f, {x:`+=${Math.cos(a)*v}`, y:`+=${Math.sin(a)*v*0.6 + 60}`, rotation:`+=${Math.random()*540-270}`, opacity:0, duration:1.1 + Math.random()*.5, ease:'power1.out', onComplete:()=> f.remove()}); }
+}
+// Anti-Air: a spinning boomerang hooks up into the flier on a low curve, knocks feathers loose and swings
+// back to the thrower on a higher one.
+function boomerang(shooter, target, o){
+  o = o || {}; const g = G(); const a = centre(shooter), b = centre(target);
+  if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
+  const bm = layer('sfx-boomerang', '🪃'); const out = (o.flight || 520)/1000, back = out*1.25;
+  const m1 = {x:(a.x + b.x)/2 + (b.y - a.y)*0.25, y:Math.max(a.y, b.y) + 30}, m2 = {x:(a.x + b.x)/2 - (b.y - a.y)*0.2, y:Math.min(a.y, b.y) - 80};
+  const s = {t:0}; g.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  const tl = g.timeline({onComplete:()=> bm.remove()});
+  tl.to(s, {t:1, duration:out, ease:'power1.in', onUpdate:()=>{ const p = qpt(a, m1, b, s.t); g.set(bm, {x:p.x, y:p.y}); }})
+    .to(bm, {rotation:`+=${360*4}`, duration:out + back, ease:'none'}, 0)
+    .add(()=>{ feathers(b.x, b.y, 12); knock(target, -60, 1); if(o.light) o.light(b.x, b.y, [1, 0.95, 0.8], false); o.onImpact && o.onImpact(); }, out)
+    .add(()=>{ s.t = 0; }, out)
+    .to(s, {t:1, duration:back, ease:'power2.out', onUpdate:()=>{ const p = qpt(b, m2, a, s.t); g.set(bm, {x:p.x, y:p.y}); }}, out)
+    .to(bm, {scale:.5, opacity:0, duration:.12}, out + back - .12);
+}
+// Shield Call: a big round shield drops from above into a slot and lands with a dust ring.
+function shieldDrop(target, o){
+  o = o || {}; const g = G(); const c = centre(target);
+  const sh = layer('sfx-shield-drop', '🛡️');
+  if(!g || reduce()){ later(()=> sh.remove(), 500); return; }
+  g.set(sh, {x:c.x, y:c.r.top - 140, xPercent:-50, yPercent:-50, scale:1.4, rotation:-25, opacity:0});
+  g.timeline({onComplete:()=> sh.remove()})
+    .to(sh, {opacity:1, duration:.08})
+    .to(sh, {y:c.y, rotation:0, scale:1, duration:.32, ease:'power3.in'}, 0)
+    .add(()=>{ ring(c.x, c.r.bottom - 8, 'sfx-ring-dust', c.w*1.6, 520); knock(target, 90, 0.8); if(o.light) o.light(c.x, c.y, [0.8, 0.9, 1], true); }, .32)
+    .to(sh, {scaleY:.82, scaleX:1.12, duration:.07, ease:'power2.out'}, .32).to(sh, {scaleY:1, scaleX:1, duration:.35, ease:'elastic.out(1, .4)'})
+    .to(sh, {opacity:0, y:'-=10', duration:.35, delay:.25});
+}
+// Backstab: a dagger flashes in from the side the attacker came from and leaves a thin red slash.
+function backstab(target, fromLeft, o){
+  o = o || {}; const g = G(); const c = centre(target);
+  const k = layer('sfx-dagger', '🗡️'), sl = layer('sfx-slash');
+  if(!g || reduce()){ later(()=>{ k.remove(); sl.remove(); }, 400); return; }
+  const sx = fromLeft ? -1 : 1;
+  g.set(k, {x:c.x + sx*c.w*0.9, y:c.y - c.h*0.25, xPercent:-50, yPercent:-50, rotation:fromLeft ? 45 : -135, opacity:0});
+  g.set(sl, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w*1.1, rotation:fromLeft ? -28 : 28, scaleX:0, opacity:1});
+  g.timeline({onComplete:()=>{ k.remove(); sl.remove(); }})
+    .to(k, {opacity:1, x:c.x - sx*c.w*0.25, y:c.y + c.h*0.1, duration:.16, ease:'power3.in'})
+    .add(()=>{ knock(target, fromLeft ? 0 : 180, 1.1); if(o.light) o.light(c.x, c.y, [1, 0.6, 0.55], false); }, .16)
+    .to(sl, {scaleX:1, duration:.09, ease:'power2.out'}, .14)
+    .to(k, {opacity:0, duration:.18}, .2).to(sl, {opacity:0, duration:.35}, .35);
+}
+// Element deaths: the card burns away (heat), shatters into ice (cold) or melts (poison), shedding embers / shards / drips.
+function elementDeath(target, kind, o){
+  o = o || {}; const g = G(); const c = centre(target); const t = tileOf(target);
+  if(!g || reduce() || !t){ o.onDone && o.onDone(); return; }
+  const col = kind === 'cold' ? 'sfx-bit-ice' : kind === 'poison' ? 'sfx-bit-drip' : 'sfx-bit-ember';
+  for(let i = 0; i < 18; i++){ const p = layer('sfx-bit ' + col); const x = c.r.left + Math.random()*c.w, y = c.r.top + Math.random()*c.h;
+    g.set(p, {x, y, opacity:1, rotation:Math.random()*360});
+    const up = kind === 'heat' ? -(40 + Math.random()*60) : kind === 'cold' ? (Math.random()*80 - 20) : 30 + Math.random()*40;
+    g.to(p, {x:`+=${(Math.random()-.5)*(kind === 'cold' ? 120 : 40)}`, y:`+=${up}`, opacity:0, rotation:`+=${Math.random()*180}`, duration:.7 + Math.random()*.5, delay:Math.random()*.35, ease:'power1.out', onComplete:()=> p.remove()}); }
+  if(o.particlesOnly){ o.onDone && o.onDone(); return; }
+  const v = kind === 'cold' ? {filter:'brightness(1.6) saturate(.2) hue-rotate(160deg)', duration:.18} : kind === 'poison' ? {filter:'hue-rotate(70deg) saturate(1.6)', duration:.25} : {filter:'brightness(1.4) sepia(1) saturate(4) hue-rotate(-20deg)', duration:.2};
+  g.timeline({onComplete:()=> o.onDone && o.onDone()}).to(t, v)
+    .to(t, kind === 'cold' ? {opacity:0, scale:1.08, duration:.25, ease:'steps(4)'} : kind === 'poison' ? {scaleY:.15, y:c.h*0.4, opacity:0, duration:.55, ease:'power2.in'} : {opacity:0, filter:'brightness(.2) sepia(1)', duration:.55, ease:'power1.in'});
+}
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
-root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring};
+root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, shieldDrop, backstab, elementDeath, feathers};
 })(typeof window !== 'undefined' ? window : globalThis);

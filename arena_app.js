@@ -2249,6 +2249,31 @@ const SoundKit = (()=>{
     // a hollow, wooden resonance (higher pitch than boom()/siegeTone() — this is a small tap, not
     // an impact) so it reads as a distinct, playful little "boop" rather than a combat cue.
     woodKnock(){ noise(0.03,0.09); tone(260,0.05,'sine',0.09); tone(180,0.08,'sine',0.06,0.035); },
+    // ---- 2026-10-10 SFX batch (user: "Continue building our sfx ... library") ----
+    // Shield Call: a heavy shield thuds into the mud, then rings.
+    shieldDrop(){ sweep(160, 60, 0.18, 'sine', 0.12); fnoise(0.14, 0.07, {type:'lowpass', freq:700, freqEnd:200, attack:0.003}); [880, 1320, 1980].forEach((f, i)=> tone(f, 0.5 - i*0.12, 'sine', 0.04 - i*0.01, 0.05)); },
+    // Backstab: a quick sidestep whoosh, then a thin, nasty slice.
+    backstabSlice(){ fnoise(0.16, 0.05, {type:'bandpass', freq:900, freqEnd:3200, q:1.2, attack:0.05}); fnoise(0.07, 0.08, {type:'highpass', freq:6000, freqEnd:2500, q:1.4, attack:0.002, delay:0.15}); tone(2600, 0.05, 'triangle', 0.04, 0.16); },
+    // Anti-Air boomerang: a whirring throw that dopplers away and back.
+    boomerangWhirr(){ for(let i = 0; i < 6; i++) fnoise(0.06, 0.045 - i*0.004, {type:'bandpass', freq:700 + i*260, q:3, attack:0.01, delay:i*0.07}); for(let i = 0; i < 5; i++) fnoise(0.06, 0.025 + i*0.004, {type:'bandpass', freq:1900 - i*240, q:3, attack:0.01, delay:0.5 + i*0.07}); },
+    // Shop shelf: a tap on wood and a soft jar clink.
+    shelfPick(){ noise(0.02, 0.05); tone(320, 0.05, 'sine', 0.06); tone(2100, 0.18, 'sine', 0.025, 0.03); tone(3150, 0.12, 'sine', 0.012, 0.035); },
+    // Paying at the counter: two coins and a small bell.
+    coinRegister(){ tone(2500, 0.08, 'triangle', 0.05); tone(3100, 0.08, 'triangle', 0.045, 0.07); [1568, 2093].forEach((f, i)=> tone(f, 0.6, 'sine', 0.04, 0.16 + i*0.02)); },
+    // Map veil: a scroll of parchment unrolling.
+    mapUnroll(){ fnoise(0.5, 0.04, {type:'bandpass', freq:1400, freqEnd:3400, q:0.7, attack:0.08, crackle:0.04}); fnoise(0.08, 0.03, {type:'lowpass', freq:600, attack:0.004, delay:0.46}); },
+    // Mystery Booster: a playful wobbly boing.
+    mysteryBoing(){ const f = [300, 520, 340, 470, 380]; f.forEach((x, i)=> sweep(x, f[i+1] || 400, 0.07, 'sine', 0.07, i*0.06)); },
+    // Masking tape torn off a roll.
+    tapeRip(){ fnoise(0.22, 0.06, {type:'highpass', freq:2400, freqEnd:4800, q:0.7, crackle:0.25, attack:0.01}); },
+    // Talon Archer: a tight bowstring creak before the loose.
+    bowCreak(){ for(let i = 0; i < 4; i++) fnoise(0.03, 0.03, {type:'bandpass', freq:500 + i*60, q:6, crackle:0.3, attack:0.004, delay:i*0.05}); },
+    // A card dissolving in flame (element deaths).
+    burnAway2(){ fnoise(0.7, 0.06, {type:'lowpass', freq:1800, freqEnd:500, crackle:0.12, attack:0.08}); sweep(300, 120, 0.6, 'sawtooth', 0.025, 0.05); },
+    // Ice cracking and falling apart (frost deaths).
+    iceShatter(){ for(let i = 0; i < 6; i++) tone(2400 + Math.random()*2400, 0.12, 'sine', 0.035, i*0.04); fnoise(0.18, 0.06, {type:'highpass', freq:4000, crackle:0.3, attack:0.003}); },
+    // Night falls: a low swell and a single owl-like hoot.
+    nightSwell(){ sweep(110, 82, 1.2, 'sine', 0.06); tone(392, 0.25, 'sine', 0.03, 0.7); tone(330, 0.4, 'sine', 0.03, 0.98); },
     // 2026-09-21 Skills/VFX/SFX coverage audit — five more cues for mechanics that were landing
     // completely silently (Crit) or with bonus damage folded invisibly into an ordinary hit
     // (Rend, Fester, Rupture), plus Frenzy's bonus-attack requeue, which had no signature at all.
@@ -2489,13 +2514,15 @@ const BattleMusic = (()=>{
     air:   (c, band, deg, t, d)=>{ [0, 2, 4].forEach(k=> osc(c, 'sine', freqOf(band, deg + k, 0), t, d, 0.012, 0.5)); },
     reed:  (c, band, deg, t, d)=>{ [0, 2, 4].forEach(k=>{ const f = freqOf(band, deg + k, 0); osc(c, 'sawtooth', f, t, d, 0.008, 0.25, 1400, -6); osc(c, 'sawtooth', f, t, d, 0.008, 0.25, 1400, 6); }); },
   };
+  let previewLvl = null; // the Effects Lab plays a band at a chosen intensity with no fight on
   function intensity(){
+    if(previewLvl != null) return previewLvl;
     const m = typeof matchState !== 'undefined' ? matchState : null; if(!m) return 0;
     let lo = 1; try{ [1, 2].forEach(p=>{ const h = m.players[p].hq; lo = Math.min(lo, h.hp / h.maxHp); }); }catch(e){}
     if((typeof suddenDeathSky === 'function' && suddenDeathSky(m)) || lo < 0.3) return 2;
     return (m.round >= 5 || lo < 0.6) ? 1 : 0;
   }
-  function stillWanted(){ const m = typeof matchState !== 'undefined' ? matchState : null; return !!(m && !m.over && !m.testKit && currentTab === 'play' && battleMusicOn() && vol() > 0); }
+  function stillWanted(){ if(previewLvl != null) return vol() > 0; const m = typeof matchState !== 'undefined' ? matchState : null; return !!(m && !m.over && !m.testKit && currentTab === 'play' && battleMusicOn() && vol() > 0); }
   function scheduleBar(c, t0){
     const band = st.band, lvl = st.lvl = intensity(), spb = 60 / (band.bpm * (lvl > 1 ? 1.06 : 1)), step = spb / 4;
     const deg = band.prog[st.bar % band.prog.length], barLen = step*16;
@@ -2541,6 +2568,7 @@ const BattleMusic = (()=>{
   }
   return {
     play, stop,
+    preview(people, lvl){ if(people == null){ previewLvl = null; stop(); return; } previewLvl = Math.max(0, Math.min(2, lvl|0)); if(st) stop(); setTimeout(()=> play(people), st ? 400 : 0); },
     playing(){ return st ? Object.keys(BANDS).find(k=> BANDS[k] === st.band) : null; },
     level(){ return st ? st.lvl : null; },
     setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.1); if(v <= 0) stop(); },
@@ -2614,6 +2642,7 @@ const CalmMusic = (()=>{
     if(!calmMusicOn() || vol() <= 0 || document.hidden) return false;
     const m = typeof matchState !== 'undefined' ? matchState : null;
     if(m && !m.over && currentTab === 'play') return false; // a fight is on: battle music's turn
+    try{ if(typeof songbookPlace === 'function' && songbookPlace()) return false; }catch(e){} // a place with its own theme (Songbook)
     return true;
   }
   function tick(){
@@ -2637,6 +2666,157 @@ const CalmMusic = (()=>{
   return {
     stop, playing(){ return !!st; },
     setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
+  };
+})();
+// ---- Songbook (2026-10-10, user: "Continue building our ... music library (royalty free)") ----
+// Fixed, composed themes for the places you walk into, played by small synthesised instruments, so every note is ours
+// (no samples, no licences, nothing to download). Each theme loops its written melody over its chord plan with tiny
+// variations on repeats; changing place crossfades to that place's theme. Home keeps CalmMusic's endless improvising.
+//   bakery   Shop and Flea Market: "Flour and Copper", a 3/4 accordion waltz with oom-pah-pah
+//   armoury  Armoury: "Tent Pegs", a fife-and-drum march
+//   forge    Forge: "Bellows", low brass over a drone, the anvil on beats 1 and 3
+//   nest     Nest: "Down Feather", a music-box lullaby
+//   codex    Codex: "Margins", harp arpeggios under a slow flute
+// Melody tokens are "degree:beats" (degree 0 = the key's root; 7 = an octave up; "-" = rest).
+const SONGBOOK = {
+  bakery: {name:'Flour and Copper', place:'Shop', bpm:132, beats:3, root:293.66, scale:[0,2,4,5,7,9,11], lead:'reed', comp:'oompah',
+    chords:[0,0,3,0, 4,4,0,0, 3,3,0,5, 1,4,0,0],
+    mel:['4:2 2:1','4:1 5:1 4:1','5:2 3:1','2:3', '1:1 2:1 3:1','4:2 3:1','2:1 1:1 0:1','1:3', '3:2 5:1','7:2 5:1','4:2 2:1','5:3', '1:1 3:1 5:1','4:1 6:1 8:1','7:2 4:1','7:3']},
+  armoury: {name:'Tent Pegs', place:'Armoury', bpm:104, beats:4, root:392.00, scale:[0,2,4,5,7,9,10], lead:'fife', comp:'march',
+    chords:[0,0,3,0, 4,3,0,0],
+    mel:['0:1 2:1 4:1 4:1','5:1 4:1 2:2','3:1 5:1 7:1 5:1','4:4', '4:1 6:1 8:1 6:1','5:1 3:1 5:1 3:1','2:1 1:1 0:1 2:1','0:3 -:1']},
+  forge: {name:'Bellows', place:'Forge', bpm:84, beats:4, root:146.83, scale:[0,2,3,5,7,9,10], lead:'brass', comp:'anvil',
+    chords:[0,0,6,0, 0,0,3,4],
+    mel:['0:1.5 0:0.5 2:1 3:1','4:3 -:1','6:1.5 4:0.5 3:1 2:1','0:4', '0:1.5 0:0.5 2:1 3:1','4:2 6:2','5:1 4:1 3:1 2:1','4:4']},
+  nest: {name:'Down Feather', place:'Nest', bpm:66, beats:3, root:349.23, scale:[0,2,4,5,7,9,11], lead:'musicbox', comp:'lullaby',
+    chords:[0,5,3,4, 0,5,1,4],
+    mel:['4:1 2:1 4:1','5:2 4:1','3:1 5:1 3:1','1:3', '4:1 2:1 4:1','7:2 5:1','4:1 3:1 1:1','0:3']},
+  codex: {name:'Margins', place:'Codex', bpm:76, beats:4, root:220.00, scale:[0,2,3,5,7,8,10], lead:'flute', comp:'harp',
+    chords:[0,5,2,6, 3,0,4,0],
+    mel:['4:2 3:1 2:1','2:4','4:1 5:1 6:2','4:4', '3:2 2:1 0:1','2:2 4:2','1:3 -:1','0:4']},
+};
+function songbookPlace(){
+  const tab = typeof currentTab !== 'undefined' ? currentTab : null;
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  if(m && !m.over && tab === 'play') return null;
+  if(tab === 'shop' || tab === 'market') return 'bakery';
+  if(tab === 'nest') return 'nest';
+  if(tab === 'deck') return 'armoury';
+  if(tab === 'codex'){ try{ if(typeof forgeOnScreen === 'function' && forgeOnScreen()) return 'forge'; }catch(e){} return 'codex'; }
+  return null;
+}
+const Songbook = (()=>{
+  const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
+  const LEVEL = 0.5;
+  const vol = ()=> (typeof menuMusicVolume === 'function' ? menuMusicVolume() : 0.6);
+  let st = null, master = null, verb = null, noiseBuf = null, preview = null;
+  function out(c){
+    if(master) return master;
+    master = c.createGain(); master.gain.value = 0; master.connect(c.destination);
+    try{
+      const n = Math.floor(c.sampleRate*2.2), b = c.createBuffer(2, n, c.sampleRate);
+      for(let ch=0; ch<2; ch++){ const d = b.getChannelData(ch); let lp = 0; for(let i=0;i<n;i++){ lp = lp*0.8 + (Math.random()*2-1)*0.2; d[i] = lp*Math.pow(1 - i/n, 3); } }
+      verb = c.createConvolver(); verb.buffer = b; const wet = c.createGain(); wet.gain.value = 0.35; verb.connect(wet); wet.connect(master);
+    }catch(e){ verb = null; }
+    return master;
+  }
+  function noise(c){ if(noiseBuf) return noiseBuf; const n = c.sampleRate, b = c.createBuffer(1, n, c.sampleRate), d = b.getChannelData(0); for(let i=0;i<n;i++) d[i] = Math.random()*2-1; return (noiseBuf = b); }
+  const fq = (th, deg, oct)=>{ const n = th.scale.length, o = Math.floor(deg/n) + (oct||0); return th.root * Math.pow(2, (th.scale[((deg % n)+n)%n] + 12*o)/12); };
+  function send(c, node){ node.connect(st.bus); if(verb) node.connect(verb); }
+  function envGain(c, t, a, peak, hold, rel){ const g = c.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.setValueAtTime(peak, t + a + hold); g.gain.exponentialRampToValueAtTime(0.0001, t + a + hold + rel); return g; }
+  // ---- instruments
+  const INST = {
+    reed(c, f, t, len, v){ const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1700; const g = envGain(c, t, 0.025, 0.05*v, Math.max(0.02, len - 0.1), 0.09);
+      [-6, 6].forEach(cents=>{ const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; o.detune.value = cents; const vib = c.createOscillator(), vg = c.createGain(); vib.frequency.value = 5.5; vg.gain.value = 3; vib.connect(vg); vg.connect(o.detune); o.connect(lp); o.start(t); o.stop(t + len + 0.2); vib.start(t); vib.stop(t + len + 0.2); });
+      lp.connect(g); send(c, g); },
+    fife(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*2; const sq = c.createOscillator(); sq.type = 'square'; sq.frequency.value = f*2; const sg = c.createGain(); sg.gain.value = 0.12;
+      const vib = c.createOscillator(), vg = c.createGain(); vib.frequency.value = 6; vg.gain.value = f*0.012; vib.connect(vg); vg.connect(o.frequency); const g = envGain(c, t, 0.02, 0.06*v, Math.max(0.02, len*0.8 - 0.05), 0.08);
+      o.connect(g); sq.connect(sg); sg.connect(g); [o, sq, vib].forEach(x=>{ x.start(t); x.stop(t + len + 0.2); }); send(c, g); },
+    brass(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'sawtooth'; o.frequency.value = f; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 2;
+      lp.frequency.setValueAtTime(300, t); lp.frequency.exponentialRampToValueAtTime(1400, t + 0.08); lp.frequency.exponentialRampToValueAtTime(700, t + Math.max(0.15, len));
+      const g = envGain(c, t, 0.05, 0.07*v, Math.max(0.02, len - 0.12), 0.15); o.connect(lp); lp.connect(g); o.start(t); o.stop(t + len + 0.3); send(c, g); },
+    musicbox(c, f, t, len, v){ [[1, 0.05], [4.0, 0.012], [6.3, 0.005]].forEach(([k, a])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*2*k; const g = envGain(c, t, 0.004, a*v, 0.01, k > 1 ? 0.35 : 1.6); o.connect(g); o.start(t); o.stop(t + 2); send(c, g); }); },
+    flute(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*2; const vib = c.createOscillator(), vg = c.createGain(); vib.frequency.value = 4.8; vg.gain.value = f*0.01; vib.connect(vg); vg.connect(o.frequency);
+      const n = c.createBufferSource(); n.buffer = noise(c); const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = f*2; bp.Q.value = 8; const ng = c.createGain(); ng.gain.value = 0.25; n.connect(bp); bp.connect(ng);
+      const g = envGain(c, t, 0.08, 0.045*v, Math.max(0.02, len - 0.15), 0.25); o.connect(g); ng.connect(g); [o, vib, n].forEach(x=>{ x.start(t); x.stop(t + len + 0.4); }); send(c, g); },
+    pluck(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(2400, t); lp.frequency.exponentialRampToValueAtTime(500, t + 0.3);
+      const g = envGain(c, t, 0.004, 0.06*v, 0.01, Math.min(0.9, 0.25 + len*0.3)); o.connect(lp); lp.connect(g); o.start(t); o.stop(t + 1.2); send(c, g); },
+    harp(c, f, t, len, v){ [[1, 0.035, 'triangle'], [2, 0.012, 'sine']].forEach(([k, a, ty])=>{ const o = c.createOscillator(); o.type = ty; o.frequency.value = f*k; const g = envGain(c, t, 0.003, a*v, 0.01, 1.4); o.connect(g); o.start(t); o.stop(t + 1.6); send(c, g); }); },
+    bass(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const g = envGain(c, t, 0.01, 0.09*v, Math.max(0.02, len*0.5), 0.2); o.connect(g); o.start(t); o.stop(t + len + 0.4); g.connect(st.bus); },
+    drone(c, f, t, len, v){ [0, 7].forEach(semi=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*Math.pow(2, semi/12); const g = envGain(c, t, 0.6, 0.03*v, Math.max(0.1, len - 1), 0.8); o.connect(g); o.start(t); o.stop(t + len + 1); g.connect(st.bus); }); },
+    anvil(c, t, v, hi){ [[hi ? 2730 : 2260, 0.03], [hi ? 4120 : 3380, 0.016], [hi ? 6050 : 5110, 0.008]].forEach(([f, a])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f; const g = envGain(c, t, 0.002, a*v, 0.005, 0.9); o.connect(g); o.start(t); o.stop(t + 1); send(c, g); });
+      const n = c.createBufferSource(); n.buffer = noise(c); const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 3000; const g = envGain(c, t, 0.001, 0.04*v, 0.005, 0.06); n.connect(hp); hp.connect(g); n.start(t); n.stop(t + 0.1); g.connect(st.bus); },
+    tap(c, t, v, accent){ const n = c.createBufferSource(); n.buffer = noise(c); const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = accent ? 1800 : 2600; bp.Q.value = 1.2; const g = envGain(c, t, 0.002, (accent ? 0.06 : 0.03)*v, 0.005, accent ? 0.12 : 0.06); n.connect(bp); bp.connect(g); n.start(t); n.stop(t + 0.2); g.connect(st.bus); },
+  };
+  const parse = str=> str.trim().split(/\s+/).map(tok=>{ const [d, b] = tok.split(':'); return {deg: d === '-' ? null : Number(d), beats: Number(b)||1}; });
+  function scheduleBar(c, t0){
+    const th = SONGBOOK[st.key], beat = 60/th.bpm, B = th.beats, i = st.bar % th.mel.length, ch = th.chords[i % th.chords.length];
+    const rep = Math.floor(st.bar / th.mel.length);
+    if(i === 0 && st.bar > 0 && !st.rested){ st.rested = true; return t0 + beat*B; } // a breath between loops
+    st.rested = false;
+    // accompaniment
+    if(th.comp === 'oompah'){ INST.bass(c, fq(th, ch, -2), t0, beat, 1); [1, 2].forEach(k=> [0, 2, 4].forEach(d=> INST.pluck(c, fq(th, ch + d, -1), t0 + beat*k, beat*0.6, 0.3))); }
+    else if(th.comp === 'march'){ INST.bass(c, fq(th, ch, -2), t0, beat, 1); INST.bass(c, fq(th, ch + 4, -2), t0 + beat*2, beat, 0.8);
+      for(let k=0; k<B; k++){ INST.tap(c, t0 + beat*k, 1, k % 2 === 1); } if(i % 4 === 3){ for(let k=0; k<4; k++) INST.tap(c, t0 + beat*3 + k*beat/4, 0.7, false); } }
+    else if(th.comp === 'anvil'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*4, 1); INST.anvil(c, t0, 1, false); INST.anvil(c, t0 + beat*2, 0.8, true); INST.bass(c, fq(th, ch, -1), t0, beat*2, 0.7); }
+    else if(th.comp === 'lullaby'){ [0, 4, 2].forEach((d, k)=> INST.musicbox(c, fq(th, ch + d, -1), t0 + beat*k, beat, 0.32)); }
+    else if(th.comp === 'harp'){ const pat = [0, 2, 4, 7, 9, 7, 4, 2]; pat.forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat/2, beat/2, k === 0 ? 0.6 : 0.4)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 0.6); }
+    // melody, with tiny variations on later loops: an octave lift on the last phrase, a grace note now and then
+    let t = t0; const lift = (rep % 2 === 1 && i >= th.mel.length/2) ? 7 : 0;
+    parse(th.mel[i]).forEach((n, k)=>{
+      if(n.deg !== null){
+        if(rep > 0 && k === 0 && Math.random() < 0.25) INST[th.lead](c, fq(th, n.deg + lift + 1, 0), t - beat*0.12, beat*0.12, 0.6);
+        INST[th.lead](c, fq(th, n.deg + lift, 0), t, n.beats*beat, 1.35);
+      }
+      t += n.beats*beat;
+    });
+    st.bar++;
+    return t0 + beat*B;
+  }
+  function wanted(){
+    if(vol() <= 0 || document.hidden) return null;
+    if(preview) return preview;
+    return songbookPlace();
+  }
+  function start(c, key){
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.5); bus.connect(out(c));
+    master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.3);
+    st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false};
+  }
+  function stop(){
+    if(!st) return; const s = st; st = null; const c = C(); if(!c) return;
+    try{ s.bus.gain.cancelScheduledValues(c.currentTime); s.bus.gain.setValueAtTime(Math.max(0.0001, s.bus.gain.value), c.currentTime); s.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 1.5); }catch(e){}
+    setTimeout(()=>{ try{ s.bus.disconnect(); }catch(e){} }, 2000);
+  }
+  function tick(){
+    const c = C(); if(!c || c.state !== 'running') return;
+    const key = wanted();
+    if(!key){ if(st) stop(); return; }
+    if(st && st.key !== key) stop();
+    if(!st) start(c, key);
+    while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
+  }
+  setInterval(()=>{ try{ tick(); }catch(e){} }, 300);
+  return {
+    stop, playing(){ return st ? st.key : null; }, themes: SONGBOOK,
+    // The Effects Lab plays a theme on demand (null goes back to following the place).
+    preview(key){ preview = key && SONGBOOK[key] ? key : null; if(!preview) stop(); else { try{ const c = C(); if(c && c.state === 'suspended') c.resume(); }catch(e){} tick(); } },
+    setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
+    wantsPlace(){ return !!wanted(); },
+    // Offline render of a theme (for previews and exports): resolves to an AudioBuffer of `secs` seconds.
+    render(key, secs){
+      const th = SONGBOOK[key]; if(!th || typeof OfflineAudioContext === 'undefined') return Promise.resolve(null);
+      const oc = new OfflineAudioContext(2, Math.ceil(44100*(secs||30)), 44100);
+      const keep = {st, master, verb, noiseBuf};
+      master = null; verb = null; noiseBuf = null;
+      try{
+        out(oc); master.gain.value = LEVEL;
+        const bus = oc.createGain(); bus.gain.value = 1; bus.connect(master);
+        st = {key, bus, bar:0, next:0.1, rested:false};
+        while(st.next < (secs||30)) st.next = scheduleBar(oc, st.next);
+      } finally { st = keep.st; master = keep.master; verb = keep.verb; noiseBuf = keep.noiseBuf; }
+      return oc.startRendering();
+    },
   };
 })();
 function rivalPeopleForMatch(m){
@@ -19184,6 +19364,8 @@ function deathVfx(uid){
   try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
   if(burnt && style==='fall' && !isToken) skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
+  // 2026-10-10: cold and poison deaths shed ice shards / drips (SkillFX.elementDeath, from the VFX Playground).
+  try{ if((style==='cold' || style==='poison') && window.SkillFX && SkillFX.elementDeath){ SkillFX.elementDeath(el, style, {particlesOnly:true}); if(style==='cold') SoundKit.iceShatter(); } }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
     if(burnt && (style==='fall' || isToken) && style!=='burn'){ /* fallDeathVfx / pixelShatterVfx animate the tile themselves */ }
@@ -22370,7 +22552,11 @@ function renderVfxForEvent(ev){
   // computeHitDamage's kingSlayerBonus return in bramblewood-engine.js. Without this, the bonus
   // damage would just blend into the ordinary hit number with nothing marking it as its own
   // distinct mechanic — same silent-effect gap Rally/Earthquake had before this same pass.
-  if(ev.type==='hit' && ev.backstab){ const el = boardCardEl(ev.targetUid); try{ SoundKit.claw(); }catch(e){} if(el) floatText(el, `🗡️ Backstab +${ev.backstab}`, 'debuff'); }
+  if(ev.type==='hit' && ev.backstab){ const el = boardCardEl(ev.targetUid), at = boardCardEl(ev.attUid); try{ SoundKit.backstabSlice(); }catch(e){} if(el) floatText(el, `🗡️ Backstab +${ev.backstab}`, 'debuff');
+    try{ if(el && window.SkillFX && SkillFX.backstab){ const fromLeft = at ? at.getBoundingClientRect().left < el.getBoundingClientRect().left : true; SkillFX.backstab(el, fromLeft); } }catch(e){} }
+  // Anti-Air (2026-10-10): a hit on a flier from an Anti-Air unit throws a boomerang that knocks feathers loose.
+  if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
+    if(ad && td && ad.effects && Number(ad.effects.antiAir) > 0 && td.effects && td.effects.flying && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); SkillFX.boomerang(a, t, {flight:420}); } } }catch(e){} }
   if(ev.type==='kingSlayer'){
     const el = boardCardEl(ev.targetUid);
     SoundKit.kingSlayerTone();
@@ -22639,7 +22825,7 @@ function renderVfxForEvent(ev){
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
-  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.clang(); }catch(e){} const el = boardCardEl(ev.uids && ev.uids[0]); if(el) try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } else SoundKit.buzz(); }
+  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.shieldDrop(); }catch(e){} setTimeout(()=>{ const el = boardCardEl(ev.uids && ev.uids[0]); if(el){ try{ if(window.SkillFX && SkillFX.shieldDrop) SkillFX.shieldDrop(el); }catch(e){} try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } }, 60); } else SoundKit.buzz(); }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
   // onReadyGold, a custom 'gainGold' trigger, etc.) used to be COMPLETELY SILENT beyond a chime
@@ -22685,7 +22871,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
-    try{ if(ev.phase==='night') SoundKit.wolfHowl(); else SoundKit.roosterCrow(); }catch(e){} }
+    try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }
   // Phase growth (2026-10-10, user: "the weredog gains +5/+6 at night. You see a growth vfx/sfx on the card and green aura &
   // spice leaking out of the card for a while. A real aura moment."): the numbers pop, the card swells, and a green aura
   // with drifting spores clings to it while the bonus lasts (the .phase-aura class from boardCardHTML keeps it on).
@@ -24490,7 +24676,7 @@ function renderShopShelves(grid, signedIn){
     btn.addEventListener('click', ()=>{
       shopSelected = btn.dataset.shelfitem;
       grid.querySelectorAll('[data-shelfitem]').forEach(b=>{ const on = b===btn; b.classList.toggle('is-selected', on); b.setAttribute('aria-pressed', on); });
-      renderCounter(); try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+      renderCounter(); try{ SoundKit.shelfPick(); }catch(e){}
       const c = grid.querySelector('#shopCounter'); if(c){ c.classList.remove('is-new'); void c.offsetWidth; c.classList.add('is-new'); }
     });
   });
@@ -24850,6 +25036,7 @@ function buyPack(packId, btnEl, qty, opts){
   try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
   if(wander && opened.length){ const ws = wandererState(); ws.bought = true; saveWandererState(ws); const wb = document.querySelector('[data-wander-buy]'); if(wb){ wb.outerHTML = '<button type="button" class="btn" disabled>Bought today</button>'; } }
   refreshShopAfford();
+  try{ SoundKit.coinRegister(); if((pack.pool||1)===99) setTimeout(()=>{ try{ SoundKit.mysteryBoing(); }catch(e){} }, 380); }catch(e){}
   openPackAnimation(pack, opened, {bundle: qty > 1 ? qty : 0});
 }
 function openPackAnimation(pack, opened, opts){
@@ -26684,7 +26871,7 @@ function showMapVeil(host, map, layer){
   const n = typeof mapNumberOf==='function' ? mapNumberOf(map.id) : null;
   const v = document.createElement('div'); v.className = 'map-veil'; v.setAttribute('role', 'status');
   v.innerHTML = `<div class="mv-card"><span class="mv-ico" aria-hidden="true">${map.icon||'🗺️'}</span><b class="mv-name">${escapeHtml(map.name)}</b>${n!=null ? `<small class="mv-num">Map ${n}</small>` : ''}<span class="mv-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr-only">Loading the map…</span></div>`;
-  host.appendChild(v);
+  host.appendChild(v); try{ SoundKit.mapUnroll(); }catch(e){}
   const t0 = performance.now();
   let done = false;
   const lift = ()=>{ if(done) return; done = true; const wait = Math.max(0, 350 - (performance.now() - t0));
@@ -26842,7 +27029,7 @@ function wireSettingsButton(idSuffix){
     battleMusic: {el: document.getElementById('battleMusicSlider'+idSuffix), val: document.getElementById('battleMusicVal'+idSuffix), get: ()=> battleMusicVolume(),
       set: v=>{ setMusicLevel(BATTLE_MUSIC_KEY, v); try{ BattleMusic.setVolume(v); if(v > 0 && matchState && !matchState.over) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){} }},
     menuMusic: {el: document.getElementById('menuMusicSlider'+idSuffix), val: document.getElementById('menuMusicVal'+idSuffix), get: ()=> menuMusicVolume(),
-      set: v=>{ setMusicLevel(CALM_MUSIC_KEY, v); try{ CalmMusic.setVolume(v); }catch(e){} }},
+      set: v=>{ setMusicLevel(CALM_MUSIC_KEY, v); try{ CalmMusic.setVolume(v); Songbook.setVolume(v); }catch(e){} }},
   };
   Object.values(sliders).forEach(s=>{
     if(!s.el) return;

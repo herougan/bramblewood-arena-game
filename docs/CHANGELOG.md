@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10 (23:15)
+- **Music library, the Songbook:** five composed place themes, played by synthesised instruments so they're royalty-free by construction:
+  - Shop: *Flour and Copper*, a waltz;
+  - Armoury: *Tent Pegs*, a march;
+  - Forge: *Bellows*;
+  - Nest: *Down Feather*, a lullaby;
+  - Codex: *Margins*.
+
+  Each loops with small variations and crossfades as you move between places. Home keeps the calm piano and battles keep the seven people bands. The Effects Lab has a new **Music** tab to preview everything, battle bands at any intensity included.
+- **12 new sound effects:** Shield Call drop, Backstab, Boomerang whirr, Shelf pick, Pay at the counter, Map unrolls, Mystery boing, Tape rip, Bow creak, Burn away, Ice shatter, Night swell. They're wired into the game and listed in the Lab.
+- **New skill effects in battle (and in the Lab's Skills tab):**
+  - the Anti-Air boomerang with feathers;
+  - Shield Call's falling shield;
+  - Backstab's dagger and slash;
+  - ice shards and green drips on cold and poison deaths.
+- **Effects Lab:** the page now always gets the newest script; the hub had been serving an older copy without the Beach shader option.
+
 ## 2026-10-10 (22:40)
 - **Map loading veil:** entering a map shows a parchment card with the map's icon, name and number. It lifts once the map's effects have drawn their first frame (at least 0.35 s, at most 1.8 s), so nothing half-loads. Re-renders of the same map keep the live effect layer instead of rebuilding it, so it no longer blinks.
 - **Talon Archer** (2/8 Flying, Arrow 2, Diurnal): an eagle that holds the bow in one talon and draws with the other. It isn't in a pack or on a map yet; that's your call.

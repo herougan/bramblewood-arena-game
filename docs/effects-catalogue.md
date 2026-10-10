@@ -273,3 +273,27 @@ That covers about two sessions. A1, G2 and S4 together will change how a fight *
 - **Coin shower:** on the results screen, each currency's glyph rains into its pill one at a time, and the pill pops as each lands (`rewardsCheer`).
 - **Seasonal maps:** a soft seasonal vignette on the Conquest map (autumn warm, winter frost, spring blossom, summer haze), chosen by calendar month. `?season=winter` previews one.
 - **On hold:** card tilt in hand, because the style guide keeps the magnetic tilt out of the hand strip, where it fights drag and selection. The combo counter waits on your decision.
+
+## 2026-10-10 additions: sound, music and skill library
+
+**Music: the Songbook (live).** Composed place themes, played by synthesised instruments (reed, fife, brass, music box, flute, harp, pluck, bass, drone, anvil, snare tap), so the whole library is royalty-free by construction: no samples, no licences. Each theme loops its written melody over a chord plan with small variations on repeats (an octave lift on the last phrase, the odd grace note), takes a breath between loops, and crossfades when you change place. Volume rides the Menu music bar. `Songbook.render(key, secs)` renders any theme offline (the Effects Lab and previews use it).
+
+| Theme | Place | Feel |
+|---|---|---|
+| Flour and Copper | Shop, Flea Market | 3/4 accordion waltz, oom-pah-pah, 132 bpm, D major |
+| Tent Pegs | Armoury | Fife-and-drum march, 104 bpm, G mixolydian |
+| Bellows | Forge | Low brass over a drone; the anvil rings on 1 and 3; 84 bpm, D dorian |
+| Down Feather | Nest | Music-box lullaby, 66 bpm, F major |
+| Margins | Codex | Harp arpeggios under a slow flute, 76 bpm, A minor |
+
+Home keeps CalmMusic's endless improvising piano; battles keep BattleMusic's seven bands (one per people) at three intensities. The Effects Lab's new **Music** tab previews all of it (battle bands at any intensity).
+
+**Sound effects (12 new, all synthesised):** Shield Call drop (thud + ring), Backstab (sidestep whoosh + slice), Boomerang whirr (out and back), Shelf pick (wood tap + jar clink), Pay at the counter (coins + bell), Map unrolls (parchment), Mystery Booster boing, Tape rip, Bow creak, Burn away, Ice shatter, Night swell. Wired: Shield Call, Backstab, Anti-Air hits, shelf clicks, every purchase, the Mystery Booster, the map veil, nightfall and cold deaths.
+
+**Skill effects (SkillFX, live in battle and in the Lab's Skills tab):**
+- **Anti-Air boomerang:** a hit on a flier from an Anti-Air unit throws a spinning boomerang on a low curve; feathers fly; it swings back on a higher one.
+- **Shield Call:** a big shield drops from above into the slot, squashes on landing with a dust ring.
+- **Backstab:** a dagger flashes in from the attacker's side and leaves a thin red slash.
+- **Element deaths:** cold deaths shed ice shards, poison deaths drip green (on top of the existing burn-away for heat).
+
+**Still sketches (VFX Playground):** cream pearl foil shader on cards, living ink rarity frame, DrawSVG claw/bite marks, shield-to-thorns morph, SplitText titles, time-of-day map grading, chaos-returns map sketch.

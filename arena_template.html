@@ -7332,6 +7332,17 @@
 .map-veil.is-lifting{opacity:0; pointer-events:none; filter:blur(4px);} .map-veil.is-lifting .mv-card{transform:translateY(-14px) scale(1.04);}
 @keyframes mvBob{50%{transform:translateY(-5px)}} @keyframes mvDot{0%,100%{opacity:.3; transform:scale(.8)} 50%{opacity:1; transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){ .map-veil .mv-ico, .map-veil .mv-dots i{animation:none;} .map-veil, .map-veil .mv-card{transition:opacity .2s;} .map-veil.is-lifting{filter:none;} .map-veil.is-lifting .mv-card{transform:none;} }
+
+/* SkillFX 2026-10-10: boomerang, shield drop, backstab, element deaths */
+.sfx-boomerang{font-size:30px; line-height:1; filter:drop-shadow(0 3px 2px rgba(0,0,0,.35));}
+.sfx-feather{width:9px; height:17px; border-radius:60% 60% 50% 50%; background:linear-gradient(#fff, #cfd6e4); box-shadow:0 1px 1px rgba(0,0,0,.2);}
+.sfx-shield-drop{font-size:54px; line-height:1; filter:drop-shadow(0 6px 4px rgba(0,0,0,.4));}
+.sfx-ring-dust{border:3px solid rgba(190,160,110,.75); border-radius:50%;}
+.sfx-dagger{font-size:30px; line-height:1; filter:drop-shadow(0 0 6px rgba(255,90,80,.7));}
+.sfx-slash{height:4px; border-radius:4px; transform-origin:50% 50%; background:linear-gradient(90deg, transparent, #ffd0c8 20%, #ff4a3a 50%, #ffd0c8 80%, transparent); box-shadow:0 0 10px rgba(255,70,60,.8);}
+.sfx-bit-ember{width:5px; height:5px; border-radius:50%; background:#ffc35a; box-shadow:0 0 8px 2px rgba(255,140,40,.8);}
+.sfx-bit-ice{width:7px; height:7px; background:#e6f6ff; clip-path:polygon(50% 0, 100% 60%, 40% 100%, 0 40%); box-shadow:0 0 6px #9fd8ff;}
+.sfx-bit-drip{width:6px; height:9px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:#9cff6a; box-shadow:0 0 6px #6cff3a;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

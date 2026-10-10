@@ -124,7 +124,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
 
@@ -138,6 +138,8 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <button class="btn" data-skill="volley">🏹🏹 Volley</button><button class="btn" data-skill="pierce">➶ Pierce</button><button class="btn" data-skill="dart">🧪 Poison dart</button>
   <button class="btn" data-skill="frost">❄️ Frost bolt</button><button class="btn" data-skill="lightning">⚡ Chain lightning</button><button class="btn" data-skill="heal">💚 Heal</button>
   <button class="btn" data-skill="shield">🛡️ Shield up</button><button class="btn" data-skill="rally">🚩 Rally</button>
+  <button class="btn primary" data-skill="boomerang">🪃 Anti-Air boomerang</button><button class="btn primary" data-skill="shieldcall">🛡️ Shield Call</button><button class="btn primary" data-skill="backstab">🗡️ Backstab</button>
+  <button class="btn" data-skill="frostdeath">❄️ Frost death shards</button><button class="btn" data-skill="poisondeath">☠ Poison death drips</button>
   <label class="sk-slow"><input type="checkbox" id="skSlow"> Slow motion (×4)</label>
 </div>
 <div class="tbl" style="margin-top:12px"><table><thead><tr><th>Skill</th><th>Status</th><th>Beats</th></tr></thead><tbody>
@@ -148,6 +150,10 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <tr><td>🧪 Poison dart</td><td><span class="st idea">Prototype</span></td><td>A thin green dart with dripping trail; green splash ring on hit</td></tr>
 <tr><td>❄️ Frost bolt</td><td><span class="st idea">Prototype</span></td><td>A spinning ice shard; shatters into frost and leaves a frosted card for a moment</td></tr>
 <tr><td>⚡ Chain lightning</td><td><span class="st idea">Prototype</span></td><td>A flickering forked bolt jumping card to card</td></tr>
+<tr><td>🪃 Anti-Air boomerang</td><td><span class="st live">Live</span></td><td>A spinning boomerang hooks up into the flier on a low curve, feathers fly, and it swings back on a higher one (whirr out and back)</td></tr>
+<tr><td>🛡️ Shield Call</td><td><span class="st live">Live</span></td><td>A big shield drops from above into the slot, lands with a squash and a dust ring, then a ring of metal</td></tr>
+<tr><td>🗡️ Backstab</td><td><span class="st live">Live</span></td><td>A dagger flashes in from the attacker's side and leaves a thin red slash; the target is shoved away from it</td></tr>
+<tr><td>❄️ / ☠ Element deaths</td><td><span class="st live">Live</span></td><td>Cold deaths shed ice shards with a glassy crack; poison deaths drip green as the card melts</td></tr>
 <tr><td>💚 Heal · 🛡️ Shield up · 🚩 Rally</td><td><span class="st idea">Prototype</span></td><td>Rising pluses and rings; a shield dome; a banner with golden chevrons rising through allies</td></tr>
 </tbody></table></div>
 </section>
@@ -264,6 +270,15 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <div class="snd-grid" id="babbleGrid"></div>
 </section>
 
+<section id="music"><h2>Music <span class="st live" style="vertical-align:middle">Live</span></h2><p class="sec-sub">Every note is composed or generated here and played by small synthesised instruments, so the whole library is ours: no samples, no licences, nothing to download. Use headphones.</p>
+<h3 style="margin:14px 0 6px;font:800 16px 'Baloo 2',system-ui,sans-serif">Songbook: place themes</h3><p class="sec-sub">Written melodies that loop with small variations; each plays in its own place and crossfades when you move.</p>
+<div class="snd-grid" id="songGrid"></div>
+<h3 style="margin:18px 0 6px;font:800 16px 'Baloo 2',system-ui,sans-serif">Battle music: one band per people</h3><p class="sec-sub">Improvised live, at three intensities: calm, drums join (round 5+ or a castle under 60%), full (sudden death or a castle under 30%).</p>
+<div class="btns" id="bandLvl"></div><div class="snd-grid" id="bandGrid"></div>
+<h3 style="margin:18px 0 6px;font:800 16px 'Baloo 2',system-ui,sans-serif">Home</h3><p class="sec-sub">Home keeps the endless calm piano: a new short piece in a new key every minute or so.</p>
+<div class="btns"><button type="button" class="btn small ghost" id="musicStop">⏹ Stop all music</button></div>
+</section>
+
 <section id="ambience"><h2>Ambience</h2><p class="sec-sub">Continuous soundscapes per place. One plays at a time.</p>
 <div class="btns" id="ambGrid"></div></section>
 
@@ -295,3 +310,6 @@ rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_
 for k,v in rep.items(): html=html.replace(k, v)
 open(f'{ROOT}/.fxcat/effects.html','w',encoding='utf-8').write(html)
 print(len(html))
+# 2026-10-10: the page loads effects-lab.js from beside it; copy the source so the hub never serves a stale one.
+import shutil as _sh
+_sh.copy(f'{ROOT}/tools/effects-lab/effects-lab.js', f'{ROOT}/.fxcat/effects-lab.js')

@@ -133,7 +133,7 @@
     ['quick', 'Quick'], ['stealthTone', 'Stealth'], ['reloadTone', 'Reload'], ['shellUp', 'Shell'], ['exposeTone', 'Expose'], ['stunTone', 'Stun'], ['curse', 'Curse'], ['poisonApply', 'Poison applied'], ['bleedApply', 'Bleed applied'], ['bleedTick', 'Bleed tick'], ['bubble', 'Bubble'], ['boom', 'Boom'], ['buffUp', 'Buff'],
     ['healTone', 'Heal'], ['freezeChime', 'Freeze'], ['sleepTone', 'Sleep'], ['paralyzeBuzz', 'Paralyze'], ['cleanseTone', 'Cleanse'], ['waitTickTone', 'Wait tick'], ['readyChime', 'Ready'], ['pageTurn', 'Page turn'], ['pawnStep', 'Pawn step'], ['pixelShatter', 'Token shatter'], ['featherFlutter', 'Feathers'], ['chainBreak', 'Chain break'], ['pierceTone', 'Pierce'], ['gashTone', 'Gash'], ['overwhelmTone', 'Overwhelm'],
     ['berserkTone', 'Berserk'], ['bulwarkTone', 'Bulwark'], ['reflectTone', 'Reflect'], ['momentumTone', 'Momentum'], ['bloomTone', 'Bloom'], ['ambushTone', 'Ambush'], ['siegeTone', 'Siege'], ['rallyTone', 'Rally'], ['earthquakeTone', 'Earthquake'], ['kingSlayerTone', 'King-slayer'], ['blindTone', 'Blind'], ['shockTone', 'Shock'],
-    ['corrodeTone', 'Corrode'], ['staggerTone', 'Stagger'], ['devilryTone', 'Devilry'], ['critTone', 'Crit'], ['rendTone', 'Rend'], ['festerBite', 'Fester'], ['ruptureBite', 'Rupture'], ['frenzyTone', 'Frenzy'], ['swipeTone', 'Swipe'], ['sweepTone', 'Sweep'], ['woodKnock', 'Wood knock'], ['codeCopy', 'Code copied'], ['itemDrop', 'Item drop'], ['shift', 'Shift'], ['sapDrain', 'Sap drain'], ['scarMark', 'Scar'], ['gritUp', 'Grit'], ['espritTone', 'Esprit'],
+    ['corrodeTone', 'Corrode'], ['staggerTone', 'Stagger'], ['devilryTone', 'Devilry'], ['critTone', 'Crit'], ['rendTone', 'Rend'], ['festerBite', 'Fester'], ['ruptureBite', 'Rupture'], ['frenzyTone', 'Frenzy'], ['swipeTone', 'Swipe'], ['sweepTone', 'Sweep'], ['woodKnock', 'Wood knock'], ['shieldDrop', 'Shield Call drop'], ['backstabSlice', 'Backstab'], ['boomerangWhirr', 'Boomerang (Anti-Air)'], ['shelfPick', 'Shelf pick'], ['coinRegister', 'Pay at the counter'], ['mapUnroll', 'Map unrolls'], ['mysteryBoing', 'Mystery Booster'], ['tapeRip', 'Tape rip'], ['bowCreak', 'Bow creak'], ['burnAway2', 'Burn away'], ['iceShatter', 'Ice shatter'], ['nightSwell', 'Night swell'], ['codeCopy', 'Code copied'], ['itemDrop', 'Item drop'], ['shift', 'Shift'], ['sapDrain', 'Sap drain'], ['scarMark', 'Scar'], ['gritUp', 'Grit'], ['espritTone', 'Esprit'],
   ];
   const sg = $('#sndGrid');
   CUES.forEach(([fn, label, args])=>{
@@ -146,6 +146,23 @@
   const bg = $('#babbleGrid');
   PEOPLE.forEach(([k, label, line])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.innerHTML = label + '<br><small style="opacity:.7">“' + line + '”</small>'; b.onclick = ()=>{ try{ SoundKit.babble(k, line); }catch(e){} }; bg.appendChild(b); });
 
+  // ---- music (2026-10-10): Songbook themes and battle bands, previewed on demand
+  (function(){
+    const sg = $('#songGrid'), bg = $('#bandGrid'), lv = $('#bandLvl'); if(!sg) return;
+    const clear = ()=> $$('#songGrid .btn, #bandGrid .btn').forEach(x=> x.classList.remove('primary'));
+    const resume = ()=>{ try{ const c = SoundKit.audioContext(); if(c && c.state === 'suspended') c.resume(); }catch(e){} };
+    const themes = (typeof Songbook !== 'undefined' && Songbook.themes) || {};
+    Object.keys(themes).forEach(k=>{ const t = themes[k]; const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small';
+      b.innerHTML = `🎼 ${t.name}<br><small style="opacity:.7">${t.place} · ${t.beats}/4 · ${t.bpm} bpm</small>`;
+      b.onclick = ()=>{ resume(); try{ BattleMusic.preview(null); }catch(e){} clear(); b.classList.add('primary'); Songbook.preview(k); }; sg.appendChild(b); });
+    let lvl = 0;
+    [['Calm', 0], ['Drums', 1], ['Full', 2]].forEach(([label, n])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small' + (n === 0 ? ' primary' : ''); b.textContent = label;
+      b.onclick = ()=>{ lvl = n; $$('#bandLvl .btn').forEach(x=> x.classList.toggle('primary', x === b)); const on = $('#bandGrid .btn.primary'); if(on) on.click(); }; lv.appendChild(b); });
+    [['legion', '🛡️ Rivergate Legion'], ['tribes', '🪶 Sunfeather Tribes'], ['beast', '🐾 Wild beasts'], ['folk', '🧺 Village folk'], ['road', '🧳 Road-folk'], ['hive', '🐝 The Hive'], ['deep', '🦇 The Deep']].forEach(([k, label])=>{
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.textContent = '🥁 ' + label;
+      b.onclick = ()=>{ resume(); try{ Songbook.preview(null); }catch(e){} clear(); b.classList.add('primary'); try{ BattleMusic.preview(k, lvl); }catch(e){} }; bg.appendChild(b); });
+    const st = $('#musicStop'); if(st) st.onclick = ()=>{ clear(); try{ Songbook.preview(null); BattleMusic.preview(null); }catch(e){} };
+  })();
   // ---- ambience
   const PLACES = [['home', 'Home'], ['tent', 'Armoury Tent'], ['cart', "Traveller's Cart"], ['nest', 'Old Nest'], ['forge', 'Forge'], [0, 'Outskirts'], [1, 'Sunken Hollow'], [2, 'Ashen Peak'], [3, 'Caves'], [4, 'Savanna'], [5, 'Tundra'], [6, 'Coral Current'], [7, 'Swamp'], [8, 'Foundry'], [9, 'Eyrie'], [10, 'Sundered Peak'], [11, 'Rain'], [12, 'Pebble Beach']];
   const ag = $('#ambGrid');
@@ -203,6 +220,11 @@
     heal(){ const t = mine()[0]; S('healTone'); SkillFX.heal(t); dmg(t, '+3', 'heal'); },
     shield(){ const t = mine()[2]; S('shield'); SkillFX.shieldUp(t); },
     rally(){ S('rallyTone'); SkillFX.rally(mine()); },
+    boomerang(){ const t = pick(); S('boomerangWhirr'); SkillFX.boomerang(shooter(), t, {flight:420, onImpact:()=>{ S('hitAt', 3, false); dmg(t, '-3'); }}); },
+    shieldcall(){ const t = mine()[0]; S('shieldDrop'); SkillFX.shieldDrop(t); },
+    backstab(){ const t = pick(); S('backstabSlice'); SkillFX.backstab(t, Math.random() < 0.5); setTimeout(()=> dmg(t, '-6', 'crit'), 170); },
+    frostdeath(){ const t = pick(); S('iceShatter'); SkillFX.elementDeath(t, 'cold', {particlesOnly:true}); },
+    poisondeath(){ const t = pick(); S('bubble'); SkillFX.elementDeath(t, 'poison', {particlesOnly:true}); },
   };
   $$('[data-skill]').forEach(b=> b.addEventListener('click', ()=>{ setSpeed(); run[b.dataset.skill] && run[b.dataset.skill](); }));
   const sl = $('#skSlow'); if(sl) sl.addEventListener('change', setSpeed);
