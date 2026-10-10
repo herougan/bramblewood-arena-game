@@ -7430,6 +7430,49 @@
 @media (prefers-reduced-motion: reduce){ .crystal-sparkle, .pred-eyes, .snail-trail{display:none;} }
 .home-note.note-market{left:-132px; top:272px; rotate:-3deg;}
 @media (max-width:860px){ .home-note.note-market{position:static; rotate:0deg;} }
+
+/* Fight kind stays readable after a clear (2026-10-10) */
+.map-node .map-node-kind{position:absolute; top:-8px; left:-8px; z-index:2; width:20px; height:20px; display:grid; place-items:center; font-size:12px; line-height:1; border-radius:50%; background:#2b2116; box-shadow:0 0 0 2px #f3e3bf; pointer-events:none;}
+.map-node.done.kind-base-elite{box-shadow:0 0 0 3px var(--grace), 0 3px 0 rgba(0,0,0,.25);}
+.map-node.done.kind-base-boss, .map-node.done.kind-finalboss{box-shadow:0 0 0 3px var(--danger), 0 3px 0 rgba(0,0,0,.25);}
+.map-node.done.kind-base-raidboss{box-shadow:0 0 0 3px #d6249f, 0 3px 0 rgba(0,0,0,.25);}
+.map-node.kind-champion{border-color:#c0841a;} .map-node.kind-miniboss{border-color:#e0703a;} .map-node.kind-subboss{border-color:#b9382c; width:56px; height:56px;}
+.map-node.kind-dungeon{border-color:#6b4f9a;} .map-node.kind-worldboss{border-color:#1f8a70; width:62px; height:62px;} .map-node.kind-megaraid{border-color:#d6249f; width:64px; height:64px;}
+
+/* Skirmish panel, simpler (2026-10-10): the showcase card leads, the deck folds away */
+.cnp-showcase{flex:0 0 auto; width:74px; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
+.cnp-showcase .card-tile{width:100% !important;}
+.cnp-deck{margin-top:6px;} .cnp-deck > summary{cursor:pointer; font-weight:800; font-size:13px; opacity:.85; list-style:none;} .cnp-deck > summary::before{content:'▸ ';} .cnp-deck[open] > summary::before{content:'▾ ';}
+.cnp-deck .cnp-squad{margin-top:6px;}
+
+/* Deck building with stacks (2026-10-10) */
+.pool-stack{position:relative; isolation:isolate;}
+.pool-stack.depth-2::before, .pool-stack.depth-3::before, .pool-stack.depth-3::after{content:''; position:absolute; inset:0; z-index:-1; border-radius:10px; background:linear-gradient(160deg, #6b4f2a, #3a2a1a); box-shadow:0 0 0 1px rgba(243,227,191,.35), 0 2px 4px rgba(0,0,0,.35);}
+.pool-stack.depth-2::before, .pool-stack.depth-3::before{transform:translate(4px, -4px) rotate(2deg);}
+.pool-stack.depth-3::after{transform:translate(8px, -8px) rotate(4deg); z-index:-2; opacity:.8;}
+.pool-stack .ps-count{position:absolute; right:-4px; bottom:-6px; z-index:3; padding:1px 7px; border-radius:999px; font:800 11.5px/1.4 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:#3a2a1a; box-shadow:0 0 0 2px #e9c46a; pointer-events:none;}
+.pool-stack.is-spent .card-tile{filter:grayscale(.75) brightness(.8);}
+.pool-stack.is-finish .ps-count{box-shadow:0 0 0 2px #c4b5fd;}
+#myDeckPool{padding-right:10px;}
+#myDeckList.is-stacks{display:flex; flex-wrap:wrap; gap:14px 12px; padding:12px 8px 8px;}
+#myDeckList .deck-stack{display:block; width:66px; padding:0; background:none; border:0; cursor:pointer;}
+#myDeckList .deck-stack .card-tile{width:100% !important; pointer-events:none;}
+#myDeckList .deck-stack:hover .card-tile{transform:translateY(-3px);}
+.deck-stackfx-btn{white-space:nowrap;}
+
+/* Deck builder popup (skirmish decks, 2026-10-10) */
+.deck-popup-overlay{z-index:1300;}
+.deck-popup{width:min(1100px, 96vw); max-height:92vh; display:flex; flex-direction:column; gap:10px;}
+.dbp-deck{flex:0 0 auto; display:flex; flex-wrap:wrap; gap:14px 12px; padding:14px 12px 10px; border-radius:12px; background:rgba(125,82,42,.12); min-height:126px; max-height:34vh; overflow-y:auto;}
+.dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}
+.dbp-pool{display:grid; grid-template-columns:repeat(auto-fill, minmax(84px, 1fr)); gap:14px 10px; padding:14px 10px 10px; overflow-y:auto; flex:1; min-height:200px;}
+.dbp-stack{display:block; padding:0; border:0; background:none; cursor:pointer; color:inherit;}
+.dbp-deck .dbp-stack{width:66px;}
+.dbp-stack .card-tile{width:100% !important; pointer-events:none;}
+.dbp-stack:hover .card-tile, .dbp-stack:focus-visible .card-tile{transform:translateY(-3px);}
+.dbp-stack .ps-count{font-size:10.5px;}
+.se-deck-stacks{display:flex; flex-wrap:wrap; gap:14px 12px; padding:12px 8px;}
+.se-deck-stacks .se-stack{width:58px;} .se-deck-stacks .card-tile{width:100% !important;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

@@ -6901,7 +6901,7 @@ const ENERGY_REGEN_MS = 5 * 60 * 1000; // 2026-10-10 (user: "Change the energy g
 // Cost scales with a node's kind, same tiering CONQUEST_NODE_REWARDS already uses (a Skirmish is
 // the cheap frequent fight, a Raid Boss is the rare endgame one) -- Online Raid sits between Elite
 // and Boss since it's a real (if quick) PvE test, not a warm-up fight.
-const ENERGY_COST = {skirmish:1, elite:2, boss:3, raidboss:4, finalboss:5, onlineRaid:2};
+const ENERGY_COST = {skirmish:1, elite:2, champion:2, miniboss:2, subboss:3, boss:3, dungeon:2, worldboss:4, raidboss:4, megaraid:5, finalboss:5, onlineRaid:2};
 // Energy per Conquest fight (2026-10-08, user): it climbs quickly, then settles. Map 1: the first skirmish costs 1,
 // the rest 2. Map 2: the first 2, the rest 3. Map 3: all 4. Then all 5 for two maps, all 6 for three, all 7 for four,
 // and so on. A map's boss always costs double.
@@ -6919,7 +6919,7 @@ function nodeEnergyCost(mapOrId, node){
   const main = mainConquestMaps(), parent = map && map.sub ? CONQUEST_MAPS.find(m=> m.id===map.parent) : null;
   const idx = Math.max(0, main.indexOf(parent || map));
   const [first, rest] = mapEnergyBase(idx);
-  if(/boss/.test(node.kind||'')) return rest * 2;
+  if(/boss/.test(baseKind(node.kind||''))) return rest * 2;
   const real = map ? map.nodes.filter(n=> n.kind!=='tutorial') : [];
   return real[0] && real[0].key === node.key ? first : rest;
 }
@@ -8437,7 +8437,8 @@ function renderPlayerSubTab(body){
         <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
-        <select id="deckSort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="name">Sort: Name</option></select>
+        <select id="deckSort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select>
+        <button type="button" class="btn small ghost deck-stackfx-btn" id="deckStackFx" aria-pressed="${deckStackTreatments}" title="Stack foil and other finishes together, or show each finish as its own stack">${deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'}</button>
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
     </div>
@@ -8459,6 +8460,7 @@ function renderPlayerSubTab(body){
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
+  { const sb = document.getElementById('deckStackFx'); if(sb) sb.addEventListener('click', ()=>{ deckStackTreatments = !deckStackTreatments; try{ localStorage.setItem('bramblewood_deck_stackfx', deckStackTreatments ? 'stacked' : 'apart'); }catch(e){} sb.textContent = deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'; sb.setAttribute('aria-pressed', deckStackTreatments); renderMyDeckPanels(); }); }
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
   wireLeaderSlot(); wireDeckTop();
   wireDeckListDrop();
@@ -9519,7 +9521,7 @@ function leavesRevealToMap(){
 // and the enemy deck; "Simulate 200 vs my deck" for tuning; "Test fight" (no Energy, no progress);
 // Save publishes live for everyone (card_overrides) when you're a cloud admin. ➕ New skirmish adds
 // a node to the map (place it with 📐 Edit layout). ----
-const SKIRMISH_KINDS = ['skirmish','elite','boss','raidboss','finalboss'];
+const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss'];
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -9535,13 +9537,36 @@ function addSkirmishToMap(mapId){
 // 'Skirmish Armour', which adds a blue health on top of the castle's health ... I get to select the Leader and Castle"):
 // the castle's Health comes from the chosen castle; Skirmish Armour (node.armour) is a blue shield on top. Older nodes
 // that only have hqHp keep the same total: the castle up to its own Health, the rest as Armour.
+// Map castles for enemies (2026-10-10, user: "for each of our maps we need a castle. For the boss ones, we might get a
+// higher level of that castle or a whole new castle"): every fight on Maps 1–10 defends that map's castle (its passive
+// included) unless the skirmish picks its own; bigger fights get a higher level of it. node.castleLevel overrides.
+const MAP_CASTLE = {m1:'outskirts-watchtower', mf:'hedgerow-burrow', mb:'tidewall-fort', m2:'drowned-bellhouse', m3:'ashen-bastion', m4:'lantern-warren', m5:'acacia-kraal', m6:'wolfsbane-lodge', m7:'coral-spire', m8:'bog-stilt-house'};
+const KIND_CASTLE_LEVEL = {skirmish:0, elite:3, boss:8, raidboss:12, finalboss:15};
+const NODE_MAP_HINT = new WeakMap(); // a skirmish editor draft is a copy, so it remembers its map here
+function mapOfNode(node){ const all = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []; const hint = node && NODE_MAP_HINT.get(node); return (hint && all.find(m=> m.id===hint)) || all.find(m=> (m.nodes||[]).includes(node)) || null; }
+function nodeCastleId(node){
+  if(!node) return null; if(node.characterId) return node.characterId;
+  const m = mapOfNode(node); if(!m) return null; const id = MAP_CASTLE[m.sub ? m.parent : m.id];
+  return id && CHARACTER_DEFS[id] ? id : null;
+}
+function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+// The skirmish's showcase card (2026-10-10, user: "show the highlighted unit of the deck - let me edit this in the
+// Skirmish"): node.showcase, or else the deck's strongest card.
+function nodeShowcaseId(node){
+  const defs = getCardDefs(), deck = (node && node.deck) || {};
+  if(node && node.showcase && deck[node.showcase] && defs[node.showcase]) return node.showcase;
+  const ids = Object.keys(deck).filter(id=> defs[id]);
+  ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)));
+  return ids[0] || null;
+}
 function skirmishCastle(node){
-  const base = (node.characterId && CHARACTER_DEFS[node.characterId]) || CHARACTER_DEFS.castle || {health:30};
+  const cid = nodeCastleId(node), lvl = cid ? nodeCastleLevel(node) : 0;
+  const base = (cid && castleLeveled(CHARACTER_DEFS[cid], lvl)) || CHARACTER_DEFS.castle || {health:30};
   const baseHp = Number(base.health) || 30;
   let hp, shield;
   if(node.armour !== null && node.armour !== undefined && Number.isFinite(Number(node.armour))){ hp = baseHp; shield = Math.max(0, Math.round(Number(node.armour))); }
   else { const total = Number(node.hqHp) || baseHp; hp = Math.min(baseHp, total); shield = Math.max(0, total - baseHp); }
-  const character = node.characterId && CHARACTER_DEFS[node.characterId] ? Object.assign({}, CHARACTER_DEFS[node.characterId], {health:hp}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
+  const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
   return {character, hp, shield, total: hp + shield};
 }
 function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
@@ -9575,7 +9600,7 @@ function expectedPlayerDeck(mapId, nodeKey){
 // The win rate a node should give that expected deck: the first skirmish of a map ~85%, falling to
 // ~60% by its last skirmish; elites ~45%, bosses ~35%, raid bosses ~20% (the targets the map tuning used).
 function skirmishTargetWinRate(mapId, node){
-  if(node.kind==='elite') return .45; if(node.kind==='boss' || node.kind==='finalboss') return .35; if(node.kind==='raidboss') return .2;
+  const bk = baseKind(node.kind); if(bk==='elite') return .45; if(bk==='boss' || bk==='finalboss') return .35; if(bk==='raidboss') return .2;
   const map = CONQUEST_MAPS.find(m=> m.id===mapId), sk = map ? map.nodes.filter(n=> n.kind==='skirmish') : [];
   const i = Math.max(0, sk.findIndex(n=> n.key===node.key));
   return .85 - .25 * (i / Math.max(1, sk.length - 1));
@@ -9678,12 +9703,45 @@ function openSkirmishGallery(o){
   render();
   setTimeout(()=>{ const s = el.querySelector('.sg-search'); if(s && !matchMedia('(pointer:coarse)').matches) s.focus(); }, 30);
 }
+// Deck builder popup (2026-10-10, user: "we should use another window pop up to select the deck. The deck will linked to
+// this Skirmish and therefore have this skirmish's name" + "This edit method should be available in the Skirmish editor
+// also"): the deck as card stacks at the top (click one to take a copy out), every card below as stacks to add from,
+// with search and the same sorts as the Armoury. `counts` is edited in place; `unlimited` skips ownership limits.
+function openDeckBuilderPopup(o){
+  const counts = o.counts; let q = '', sort = 'cost', rarityCap = !o.unlimited;
+  const ov = document.createElement('div'); ov.className = 'modal-overlay deck-popup-overlay'; document.body.appendChild(ov);
+  const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q))).sort(deckSortFn(sort)); };
+  const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
+  const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(deckSortFn(sort));
+    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
+  const poolHTML = ()=>{ const defs = getCardDefs(); return all().slice(0, 400).map(id=> `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`).join(''); };
+  ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
+    <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
+    <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
+    <div class="dbp-tools"><input type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
+    <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
+  </div>`;
+  const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
+    if(which !== 'pool') dk.innerHTML = deckHTML(); if(which !== 'deck'){ pl.innerHTML = poolHTML(); pl.scrollTop = st; } ov.querySelector('#dbpTotal').textContent = total(); };
+  const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); o.onClose && o.onClose(); };
+  const onKey = e=>{ if(e.key === 'Escape') close(); }; document.addEventListener('keydown', onKey);
+  ov.addEventListener('click', e=>{
+    if(e.target === ov || e.target.closest('[data-close]')) return close();
+    const a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]');
+    if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } counts[id] = (counts[id]||0) + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} refresh(); }
+    else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
+  });
+  ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
+  ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = e.target.value; refresh(); });
+  setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
+}
 function openSkirmishEditor(mapId, nodeKey, draftOverride){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); const node = map && map.nodes.find(n=> n.key===nodeKey); if(!node) return;
   let overlay = document.getElementById('skirmishEditorOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'skirmishEditorOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   const draft = JSON.parse(JSON.stringify(draftOverride || node));
   draft.deck = draft.deck || {};
+  NODE_MAP_HINT.set(draft, mapId);
   let q = '', simText = '', dirty = !!draftOverride, leaderSlots = Math.min(5, (draft.leaders||[]).length);
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(currentTab==='play' && !matchState) renderPlay(); };
   const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(cur||'')===String(v)?'selected':''}>${escapeHtml(label)}</option>`;
@@ -9693,6 +9751,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const total = deckIds.reduce((t,id)=> t + draft.deck[id], 0);
     const matches = q.trim().length < 2 ? [] : Object.keys(defs).filter(id=> !defs[id].test && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 18);
     const others = map.nodes.filter(n=> n.key!==draft.key);
+    // 2026-10-10 (user: "When I edit the deck in the skirmish, it keeps pushing back to the top"): keep the scroll position.
+    const keepScroll = (overlay.querySelector('.se-body')||{}).scrollTop || 0;
+    requestAnimationFrame(()=>{ const sb = overlay.querySelector('.se-body'); if(sb) sb.scrollTop = keepScroll; });
     overlay.innerHTML = `<div class="modal skirmish-editor" role="dialog" aria-label="Skirmish editor">
       <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Skirmish')} <span class="se-key">${escapeHtml(map.name)} · ${escapeHtml(draft.key)}${isAddedNode(mapId, draft.key)?' · added':''}</span></h2><button class="modal-close-btn" id="seClose" aria-label="Close">✕</button></div>
       <div class="se-body">
@@ -9702,6 +9763,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
         <label title="A blue shield on top of the castle's own Health; it soaks hits first">Skirmish Armour 🔷<input id="seArmour" type="number" min="0" max="9999" value="${skirmishCastle(draft).shield}"></label>
+        <label title="Level of the defending castle: +1 Health per level. Blank = the default for this kind of fight">Castle level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
+        <label title="The card shown big on this skirmish's preview">Showcase card<select id="seShowcase"><option value="">Strongest card</option>${Object.keys(draft.deck||{}).filter(id=> getCardDefs()[id]).map(id=> opt(id, draft.showcase, getCardDefs()[id].name)).join('')}</select></label>
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
@@ -9720,9 +9783,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
-      <div class="se-h-row"><h3 class="se-h">Deck · ${total} cards</h3><button type="button" class="btn small" id="seGallery">🃏 Open card gallery</button></div>
-      <div class="se-deck">${deckIds.length ? deckIds.map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health+(defs[id].wait?' · W'+defs[id].wait:'') : ''}</span>
-        <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${draft.deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
+      <div class="se-h-row"><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
+      <div class="se-deck se-deck-stacks">${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       <div class="se-search-row"><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
@@ -9744,6 +9806,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
+      { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seArmour')){ draft.armour = Math.max(0, Math.min(9999, Math.round(Number(v('seArmour'))||0))); draft.hqHp = skirmishCastle(draft).total; }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
       if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
@@ -9763,6 +9827,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); const a = (draft.leaders||[]).slice(); a.splice(+b.dataset.leaderRm, 1); setLeaders(a); dirty = true; render(); });
     { const cp = document.getElementById('seCastlePick'); if(cp) cp.onclick = ()=>{ read();
         openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
+    { const dp = document.getElementById('seDeckPopup'); if(dp) dp.onclick = ()=>{ read();
+        openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
         openSkirmishGallery({kind:'deck', counts: draft.deck, pick: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
@@ -10888,7 +10954,13 @@ const RAID_PREVIEWS = [
   { id:'preview-nightwing', icon:'🌙', name:'???', blurb:'Something with wings that only hunts after the last torch goes out.' },
   { id:'preview-ironclad', icon:'⚙️', name:'???', blurb:'Fully armored, front to back. Rumor says there is no soft angle to try.' },
 ];
-const KIND_LABEL = {skirmish:'Skirmish', elite:'⭐ Elite', boss:'💀 Boss', raidboss:'👑 Raid Boss', finalboss:'👑 Campaign Boss', tutorial:'🎓 Tutorial'};
+const KIND_LABEL = {skirmish:'Skirmish', elite:'⭐ Elite', champion:'🏅 Champion', miniboss:'💢 Mini-boss', subboss:'☠️ Sub-boss', boss:'💀 Boss', dungeon:'🗝️ Dungeon', worldboss:'🌍 World Boss', raidboss:'👑 Raid', megaraid:'👑 Mega Raid', finalboss:'👑 Campaign Boss', tutorial:'🎓 Tutorial'};
+// Fight kinds (2026-10-10, user: "It still should be clear if it was an ELITE, CHAMPION, MINI-BOSS, SUBBOSS, BOSS, DUNGEON,
+// or WORLD BOSS, or RAID, or MEGA RAID"): each new kind behaves like the older kind in KIND_BASE for energy, payouts, rank
+// caps and tuning; its glyph stays on the map node after you've cleared it.
+const KIND_BASE = {champion:'elite', miniboss:'elite', subboss:'boss', dungeon:'elite', worldboss:'raidboss', megaraid:'raidboss'};
+const KIND_GLYPH = {elite:'⭐', champion:'🏅', miniboss:'💢', subboss:'☠️', boss:'💀', dungeon:'🗝️', worldboss:'🌍', raidboss:'👑', megaraid:'👑', finalboss:'👑'};
+function baseKind(k){ return KIND_BASE[k] || k; }
 function conquestNodeId(mapId, nodeKey){ return `${mapId}:${nodeKey}`; }
 const CONQUEST_PROGRESS_KEY = 'bramblewood_conquest_progress_v1';
 function loadConquestProgress(){
@@ -10910,7 +10982,7 @@ const RANK_BONUS = {S:0.25, SS:0.5, SSS:1}; // extra share of the fight's Maple 
 function conquestRankFor(m, node){
   const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
   const base = rankForHqFraction(frac);
-  const bossy = /elite|boss/.test((node && node.kind) || '');
+  const bossy = /elite|boss/.test(baseKind((node && node.kind) || ''));
   if(base !== 'S' || !bossy || hq.hp < hq.maxHp) return base;
   return (m.round || 99) <= SSS_FAST_ROUND ? 'SSS' : 'SS';
 }
@@ -11195,7 +11267,7 @@ const CONQUEST_NODE_REWARDS = {
 // Per-skirmish reward override (2026-10-07, skirmish editor): node.rewards = {first:{gold,dust},
 // repeat:{gold,dust}} replaces any of the kind's defaults it sets; anything left blank keeps them.
 function nodeRewardTier(node){
-  const base = node && CONQUEST_NODE_REWARDS[node.kind]; if(!base) return null;
+  const base = node && (CONQUEST_NODE_REWARDS[node.kind] || CONQUEST_NODE_REWARDS[baseKind(node.kind)]); if(!base) return null;
   const o = (node && node.rewards) || {};
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
@@ -12140,8 +12212,8 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span><span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+          <span class="map-node-ico">${node.icon}</span>${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
     </div>
@@ -12276,13 +12348,13 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" title="${escapeAttr(defs[sid].name)}">${cardTileHTML(defs[sid], {inPlay:true})}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
       </div>
       ${earned ? `
-        <div class="cnp-squad-row"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-squad-locked">🔒 Deck hidden — ${reqText}.</div>`}
+        <details class="cnp-deck"><summary>${escapeHtml(_t('Their deck'))} · ${Object.values(selectedNode.deck||{}).reduce((a,b)=> a+b, 0)} ${escapeHtml(_t('cards'))}</summary><div class="cnp-squad">${squadChips}</div></details>` : `<div class="cnp-squad-locked">🔒 ${escapeHtml(_t('Deck hidden'))}: ${reqText}.</div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
       ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
@@ -13872,7 +13944,7 @@ function peopleOfDeck(deck){
 }
 function rivalTauntFor(map, node){
   if(node.taunt) return node.taunt;
-  const kind = /boss/.test(node.kind||'') ? (node.kind==='raidboss' ? 'raidboss' : 'boss') : (node.kind==='elite' ? 'elite' : 'skirmish');
+  const bkd = baseKind(node.kind||''); const kind = /boss/.test(bkd) ? (bkd==='raidboss' ? 'raidboss' : 'boss') : (bkd==='elite' ? 'elite' : 'skirmish');
   const people = node.people || peopleOfDeck(node.deck);
   const pb = PEOPLE_TAUNTS[people] || {};
   const bank = (pb[kind==='raidboss' ? 'boss' : kind] && pb[kind==='raidboss' ? 'boss' : kind].length) ? pb[kind==='raidboss' ? 'boss' : kind] : RIVAL_TAUNTS[kind]; let h = 0; const k = (map ? map.id : '') + ':' + node.key;
@@ -13887,7 +13959,7 @@ function bossEntrance(node){
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bf = document.getElementById('battlefieldEl');
   const card = document.createElement('div'); card.className = 'boss-title'; card.setAttribute('role', 'status');
-  card.innerHTML = `<span class="bt-kicker">${node.kind==='finalboss' ? 'Final boss' : node.kind==='raidboss' ? 'Raid boss' : 'Boss'}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
+  card.innerHTML = `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
   (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), 1900);
   if(reduce || !hasGsap() || !fxAtLeast('med')) return;
   if(bf){ gsap.fromTo(bf, {x:0, y:0}, {keyframes:[{x:-7, y:3}, {x:6, y:-2}, {x:-4, y:2}, {x:3, y:-1}, {x:0, y:0}], duration:.55, ease:'none', clearProps:'x,y'}); }
@@ -13905,7 +13977,7 @@ function bossEntrance(node){
 function showVersusOpener(map, node, myChar, enemyChar){
   const host = document.getElementById('view-play'); if(!host || !node) return;
   host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
-  const isBoss = /boss/.test(node.kind||''), isElite = node.kind==='elite';
+  const isBoss = /boss/.test(baseKind(node.kind||'')) || node.kind==='dungeon', isElite = baseKind(node.kind)==='elite';
   const kindLabel = isBoss ? 'Boss' : isElite ? 'Elite' : 'Skirmish';
   const deck = myDecks.find(d=> d.id===activeDeckId);
   const tauntLine = rivalTauntFor(map, node);
@@ -15217,6 +15289,38 @@ function logRaidAttempt(boss, won, rounds, damageDealt){
   }
 }
 
+// Deck building from what you own (2026-10-10, user: "When building a deck, it's not like the codex. You see copies of
+// cards you have, stacked. You can click a button to even stack cards of diff treatments. Even if a card is used in another
+// deck, you can reuse them" + "instead of just pills of the name and quantity, show the card preview as well ... Let people
+// sort the cards in the deck or the selection by cost, attack, health, wait"). Every card you own shows as a stack whose
+// depth is how many copies you have; a deck may use up to that many (and its rarity limit), whatever your other decks use.
+// Base cards are unlimited. The deck itself shows as small card stacks with ×N.
+let deckStackTreatments = (()=>{ try{ return localStorage.getItem('bramblewood_deck_stackfx') !== 'apart'; }catch(e){ return true; } })();
+function ownedCopiesOf(id){
+  const d = getCardDefs()[id]; if(!d) return 0; if(id === HERO_ID) return 1;
+  if(cardSourceOf(d).kind === 'base') return Infinity;
+  const n = (myCardCopies[id]||[]).length; return Math.max(n, (myUnlockedCardIds && myUnlockedCardIds.has(id)) ? 1 : 0);
+}
+function copyGroupsOf(id){
+  const copies = myCardCopies[id] || [], groups = new Map();
+  copies.forEach(c=>{ const k = c && c.foil ? (c.finish || 'auto') : 'plain'; if(!groups.has(k)) groups.set(k, {key:k, copy:c, n:0}); groups.get(k).n++; });
+  if(!groups.size) groups.set('plain', {key:'plain', copy:null, n:0});
+  return [...groups.values()].sort((a,b)=> (a.key==='plain' ? -1 : b.key==='plain' ? 1 : a.key.localeCompare(b.key)));
+}
+function deckSortFn(sortMode){
+  const defs = getCardDefs();
+  return (a,b)=>{ const A = defs[a], B = defs[b]; if(!A || !B) return 0;
+    if(sortMode==='name') return A.name.localeCompare(B.name);
+    if(sortMode==='attack') return (B.attack||0)-(A.attack||0) || A.name.localeCompare(B.name);
+    if(sortMode==='health') return (B.health||0)-(A.health||0) || A.name.localeCompare(B.name);
+    if(sortMode==='wait') return (A.wait||0)-(B.wait||0) || (A.cost||0)-(B.cost||0) || A.name.localeCompare(B.name);
+    if(sortMode==='rarity') return RARITY_TIER_BANDS.indexOf(B.rarity||'common') - RARITY_TIER_BANDS.indexOf(A.rarity||'common') || A.name.localeCompare(B.name);
+    return ((A.cost||0)-(B.cost||0)) || A.name.localeCompare(B.name); };
+}
+function stackHTML(tile, depth, badge, extra){
+  const d = Math.max(1, Math.min(3, depth));
+  return `<div class="pool-stack depth-${d} ${extra||''}">${tile}${badge ? `<b class="ps-count">${badge}</b>` : ''}</div>`;
+}
 function renderMyDeckPanels(){
   const defs = getCardDefs();
   const filterEl = document.getElementById('playArchFilter');
@@ -15243,16 +15347,11 @@ function renderMyDeckPanels(){
   const badgeEl = document.getElementById('myDeckSizeBadge');
   if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
   try{ refreshDeckHeroBanner(); }catch(e){}
-  document.getElementById('myDeckList').innerHTML = Object.entries(myDeckCounts).filter(([id,n])=>n>0 && defs[id]).map(([id,n])=>
-    `<span class="dchip" draggable="true" data-defid="${id}">${defs[id].icon} ${defs[id].name} ×${n}</span>`).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
-  const sortFn = (a,b)=>{
-    const A=defs[a], B=defs[b];
-    if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; }
-    if(sortMode==='name') return A.name.localeCompare(B.name);
-    if(sortMode==='attack') return B.attack-A.attack;
-    if(sortMode==='health') return B.health-A.health;
-    return (A.cost-B.cost) || A.name.localeCompare(B.name);
-  };
+  const listEl = document.getElementById('myDeckList'); listEl.classList.add('is-stacks');
+  listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(deckSortFn(sortMode)).map(id=>{ const n = myDeckCounts[id];
+    return `<span class="dchip deck-stack" draggable="true" data-defid="${id}" title="${escapeAttr(defs[id].name)} ×${n}: click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), n, '×' + n)}</span>`; }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
+  const baseSort = deckSortFn(sortMode);
+  const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
   const allIds = (defs[HERO_ID] ? [HERO_ID] : []).concat(getDraftableIds())
     .filter(id=> !arch || archetypesOf(defs[id]).includes(arch))
     .filter(id=> !kind || defs[id].type===kind)
@@ -15264,7 +15363,12 @@ function renderMyDeckPanels(){
   document.getElementById('myDeckPool').innerHTML =
     // 2026-10-08 (user: "The locked cards shouldn't appear in the deck editor's card selector. The card
     // selector only shows cards the user literally owns"): locked cards are left out (they live in the Codex).
-    (unlockedIds.map(id=>cardTileHTML(defs[id], {magnetic:true})).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
+    (unlockedIds.map(id=>{
+      const owned = ownedCopiesOf(id), used = myDeckCounts[id]||0, left = owned === Infinity ? '∞' : Math.max(0, owned - used);
+      const groups = (!deckStackTreatments && owned !== Infinity) ? copyGroupsOf(id) : null;
+      if(groups && groups.length > 1) return groups.map(g=> stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: copyFinishClass(defs[id], g.copy)}), g.n, `×${g.n}`, 'is-finish')).join('');
+      return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '');
+    }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
@@ -20137,7 +20241,7 @@ async function resolveRound(opts){
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
       // aren't, so only those two kinds pay out. A persistent Forge currency, not an in-match
       // resource — see CURRENCY_META's own comment for the full reasoning.
-      if(m.conquestNode.kind==='boss' || m.conquestNode.kind==='raidboss' || m.conquestNode.kind==='finalboss'){
+      if(['boss','raidboss','finalboss'].includes(baseKind(m.conquestNode.kind))){
         const metalAmt = m.conquestNode.kind==='finalboss' ? 3 : 1;
         grantCurrency('metal', metalAmt);
         m.conquestMetalEarned = metalAmt;
@@ -22216,6 +22320,8 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
   // same function) deliberately allows stacking unlimited copies of anything to test interactions,
   // so it never passes this flag and stays uncapped.
   if(!remove && enforceRarityLimit){
+    const owned = ownedCopiesOf(id);
+    if(owned !== Infinity && (counts[id]||0) >= owned){ const el = poolTileEl || chipEl; denyShake(el); if(el) floatText(el, _t('You own {n}', {n:owned}), 'debuff'); return; }
     const def = getCardDefs()[id];
     if(def && editionCapReached(counts, id, getCardDefs())){
       const el = poolTileEl || chipEl;

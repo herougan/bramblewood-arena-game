@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (00:20)
+- **Fight kinds:** Champion 🏅, Mini-boss 💢, Sub-boss ☠️, Dungeon 🗝️, World Boss 🌍 and Mega Raid 👑 join Elite, Boss and Raid.
+  - Each new kind borrows an older kind's energy cost, payouts and rank caps.
+  - Every special fight keeps a kind badge on its map node, and cleared nodes keep a ring in the kind's colour, so you can still tell an Elite from a Boss after beating it.
+  - The boss title card names the kind.
+- **Enemy castles:** every fight on Maps 1–10 now defends that map's castle, passive included, unless the skirmish picks its own.
+  - Bigger fights bring a higher level of it: Elite 3, Boss 8, Raid 12, Campaign Boss 15.
+  - Edit skirmish has a Castle level field to set it.
+- **Skirmish preview, simpler:** the showcase card leads, and the enemy deck folds into "Their deck · N cards". Edit skirmish has a Showcase card picker; the default is the deck's strongest card.
+- **Deck building from what you own:**
+  - The pool shows a stack for every card you own, as deep as your copies, with "left/owned".
+  - A deck can use as many copies as you own, whatever your other decks use. Base cards are unlimited.
+  - **Finishes stacked / apart** switches between one stack per card and one stack per foil finish.
+  - The deck itself shows as small card stacks with ×N instead of name pills.
+  - Sort by Cost, Attack, Health, Wait, Rarity or Name.
+- **Skirmish decks:** Edit skirmish's **Edit deck** opens a deck-builder window named after the skirmish (stacks, search, sorts). The editor keeps its scroll position.
+
 ## 2026-10-10 (23:50)
 - **Home:**
   - the background is full size straight away when you come back from Conquest (only the menu does the page turn);
