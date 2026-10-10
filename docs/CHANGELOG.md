@@ -3,6 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **Ecclesia (D23), your Prayer model:**
+  - Prayer = Prayer N on your board + the cards in your Removal Zone. Ecclesia cards need Prayer 🙏N to play (never spent).
+  - Once a turn you can offer a hand card for +1 (a picker opens when you're 1 short).
+  - New keywords: Worship, Healing, Lightning, Midas Touch, Divine Retribution, Satiety.
+  - Nine new cards: Chapel Sparrow (Base) and eight Eyrie Heights rewards up to the Legendary Cathedral Eagle.
+  - The old Grace cards now give Prayer. A full Ecclesia deck measures 74%.
 - **Starting deck is editable:**
   - Admin → 🎓 Edit the tutorial → Starting deck has the shared, Otter, Hummingbird and Both lists, plus the tutorial rewards.
   - Default: 12 shared + 5 for your side + the 3 tutorial reward cards, which go straight into the deck = 20. Otters vs Hummingbirds measures 56%.

@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-09",
- "games": 60,
+ "generated": "2026-10-10",
+ "games": 120,
  "mode": "open",
  "filler": [
   "warren-scout",
@@ -69,43 +69,287 @@
  },
  "rows": [
   {
-   "id": "cinder-imp",
-   "name": "Cinder Imp",
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
    "rarity": "common",
    "cost": 0,
-   "wait": 0,
+   "wait": 1,
    "attack": 2,
-   "health": 3,
+   "health": 8,
    "skills": [
-    "sacrifice"
+    "prayer"
    ],
-   "winRate": 58.3,
+   "winRate": 48.8,
    "band": [
     35,
     60
    ],
    "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "prayer"
+   ],
+   "winRate": 43.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 2,
+   "attack": 6,
+   "health": 20,
+   "skills": [],
+   "winRate": 12.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "glowworm-cluster",
+   "name": "Glowworm Cluster",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "nocturnal",
+    "prayer"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack"
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "prayer"
+   ],
+   "winRate": 37.9,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base"
+  },
+  {
+   "id": "chapel-sparrow",
+   "name": "Chapel Sparrow",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "prayer",
+    "flying"
+   ],
+   "winRate": 32.1,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
    "locked": false,
    "source": "base"
   },
   {
-   "id": "ash-imp",
-   "name": "Ash Imp",
+   "id": "candle-moth",
+   "name": "Candle Moth",
    "rarity": "common",
    "cost": 0,
    "wait": 0,
    "attack": 1,
    "health": 3,
    "skills": [
-    "sacrifice",
-    "onSpawnDevilry"
+    "prayer",
+    "flying"
    ],
-   "winRate": 60.8,
+   "winRate": 20,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "hymn-wren",
+   "name": "Hymn Wren",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "worship"
+   ],
+   "winRate": 25.8,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "abbey-goose",
+   "name": "Abbey Goose",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "healing"
+   ],
+   "winRate": 15.4,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "golden-magpie",
+   "name": "Golden Magpie",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "midas",
+    "flying"
+   ],
+   "winRate": 14.6,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 9,
+   "skills": [
+    "satiety"
+   ],
+   "winRate": 12.9,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "storm-heron",
+   "name": "Storm Heron",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "lightning"
+   ],
+   "winRate": 15.4,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "retribution",
+    "nocturnal"
+   ],
+   "winRate": 12.9,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map"
+  },
+  {
+   "id": "cathedral-eagle",
+   "name": "Cathedral Eagle",
+   "rarity": "legendary",
+   "cost": 0,
+   "wait": 2,
+   "attack": 5,
+   "health": 14,
+   "skills": [
+    "worship",
+    "flying",
+    "prayer"
+   ],
+   "winRate": 12.9,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
    "locked": true,
    "source": "map"
   }

@@ -1,6 +1,6 @@
 # Archetypes and keyword families (updated 2026-10-10)
 
-**Status:** Devilry, the Exile zone and the Forgotten Ones are built. Ecclesia is next if you agree (D23). The rest are designed only.
+**Status:** Devilry, Ecclesia, the Exile zone and the Forgotten Ones are built. The rest are designed only.
 
 **Two kinds of thing, kept apart (your 2026-10-10 note: "Tide, Swarm are not archetypes. Their passive effects are not locked to that archetype"):**
 - **Archetypes** are play styles built around a resource or zone (Darkness, Prayer, Stone and Scrap, Echoes). They're still never a lock: decks can mix freely or run none.
@@ -33,13 +33,31 @@
   - All are measured in their rarity band.
 - **Ashfall Line** (9-4) now fields a Blackmass Acolyte.
 
-### Ecclesia (your model, to build next: D23)
-- **Prayer value** = the sum of Prayer N on your board + the number of cards in your Removal Zone.
-- Once a turn, when summoning an Ecclesia card, you can exile a card from your hand for +1 Prayer for that summon.
-- Ecclesia cards need a Prayer value (a threshold, not spent).
-- Prayer is the opposite of Devilry's Darkness.
-- **Effect ideas from you:** Worship, Divine Retribution, Lightning, Midas Touch, Healing, Satiety.
-- The Exile zone and Echoes are already in place for it.
+### Ecclesia ✅ built 2026-10-10 (your model, D23)
+| Rule | As built |
+|---|---|
+| **Prayer 🙏** | Your Prayer value = every **Prayer N** on your board + the cards in your Removal Zone. Shown as a pill in matches when your deck has an Ecclesia card |
+| **Prayer needed** | Ecclesia cards show 🙏N in the cost corner: you need that much Prayer to play them. Never spent |
+| **The offering** | Once a turn, when summoning an Ecclesia card, you may exile a card from your hand. You're only asked when you're 1 short. It goes to the Removal Zone, so it counts +1 now and stays counted. The AI does it too |
+| **Worship** | +1 Attack for every 3 Prayer |
+| **Healing N** | Each round start, heals your most wounded unit for N |
+| **Lightning N** | On arrival, strikes a random enemy unit for N, +1 per 4 Prayer |
+| **Midas Touch N** | A kill by this card pays N Lumber |
+| **Divine Retribution N** | When one of your units perishes, strikes a random enemy unit for N |
+| **Satiety N** | *My reading of the name:* well fed. At round start at full health, gains +N max HP |
+
+- **Cards:**
+  - **Chapel Sparrow** (Base: 2/3 Flying, Prayer 1);
+  - Eyrie Heights first-clear rewards: Candle Moth (10-1), Hymn Wren (10-2), Abbey Goose (10-3), Golden Magpie (10-4), Friar Badger (10-5), Storm Heron (10-6), Vigil Owl (10-7), **Cathedral Eagle** (Legendary, 10-10: 5/14 Flying, Worship, needs 5).
+- **Grace moved to Prayer:**
+  - Shrine Acolyte, Glowworm Cluster and Shrine Bell-Ringer now have Prayer 1, and Shrine High Priest Prayer 2 (they used to make Grace);
+  - Blessed Avatar needs 4 Prayer instead of spending 4 Grace;
+  - Grace stays in the engine only for old custom triggers.
+- **Measured** (themed decks vs the filler deck):
+  - the cheap core alone 39%, a mid deck 56%, a full Ecclesia deck **74%**, Chapel Sparrow ×4 49%;
+  - "weaker alone, strong together", like the Forgotten Ones;
+  - measured singly in the reference deck they look weak (it has no Prayer sources), as the Forgotten Ones did.
+- **Fights:** The Blessed Avatar (11-5) and the Sloth Titan (11-7) are still within 3 points of target.
 
 ### Scrapper (your model)
 - Constructions with very long Wait and high resource costs, plus mining tools and ways to cut Wait.

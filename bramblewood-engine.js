@@ -1059,6 +1059,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(d.effects && d.effects.rally) total += d.effects.rally;
       }));
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ c.rallyBonus = total; }));
+      // Worship (Ecclesia, 2026-10-10): +1 Attack for every 3 Prayer its owner has, recomputed every round.
+      const pr = prayerOf(pl);
+      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; }));
     });
   }
   // Effective Attack: base Attack (already includes any permanent buffs, Render debuffs, etc.)
@@ -1069,7 +1072,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // never baked into .atk permanently, same convention Rally already uses) and decayed by 1
   // stack per round in endOfRoundUpkeep.
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) - (card.corrode||0));
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) - (card.corrode||0));
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -1400,7 +1403,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }
   }
-  function canPlay(pl, defId, excludeUid, discount){
+  /* Ecclesia (2026-10-10, D23, the user's model): Prayer value = the Prayer N of your units on the board + the cards in
+     your Removal Zone. Ecclesia cards need a Prayer value to be played (a threshold, never spent). Once a turn, when you
+     summon an Ecclesia card, you may exile a card from your hand: it goes to the Removal Zone, so it counts +1 Prayer at
+     once (and stays counted). */
+  function prayerOf(pl){
+    if(!pl) return 0;
+    let n = (pl.exile||[]).length;
+    allBoardCards(pl).forEach(c=>{ if(c.hp>0){ const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.prayer) n += Number(d.effects.prayer)||0; } });
+    return n;
+  }
+  function prayerReqOf(defId){ const d = CARD_DEFS[defId]; return (d && Number(d.prayerReq)) || 0; }
+  function isEcclesiaDef(defId){ const d = CARD_DEFS[defId]; return !!(d && (d.prayerReq > 0 || d.mechanicLine==='grace' || (d.archetypes||[]).includes('Ecclesia'))); }
+  function prayerOfferReady(pl){ return !!pl && pl.prayerOfferTurn !== turnNo; }
+  function canOfferPrayer(pl, defId, offerUid){ return isEcclesiaDef(defId) && pl.prayerOfferTurn !== turnNo && pl.hand.some(h=> h.uid===offerUid); }
+  function canPlay(pl, defId, excludeUid, discount, prayerBonus){
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -1412,6 +1429,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
     if(!canAffordExile(pl, exCost, excludeUid)) return false;
+    { const req = prayerReqOf(defId); if(req > 0 && prayerOf(pl) + (prayerBonus||0) < req) return false; }
     return true;
   }
 
@@ -1421,7 +1439,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(idx===-1) return false;
     const hc = pl.hand[idx];
     const discount = (popts && popts.discount) || 0;
-    if(!canPlay(pl, hc.defId, uid, discount)) return false;
+    const offerUid = (popts && popts.prayerOffer != null && popts.prayerOffer !== uid && canOfferPrayer(pl, hc.defId, popts.prayerOffer)) ? popts.prayerOffer : null;
+    if(!canPlay(pl, hc.defId, uid, discount, offerUid != null ? 1 : 0)) return false;
     const targetSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
     const fdef = CARD_DEFS[hc.defId];
     if(fdef && fdef.field && FIELDS[fdef.field.id]){
@@ -1437,7 +1456,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return true;
     }
     if(slotMode && targetSlot===null) return false;
-    pl.hand.splice(idx,1);
+    if(offerUid != null){ // the prayer offering: the chosen hand card goes to the Removal Zone first
+      const oi = pl.hand.findIndex(h=> h.uid===offerUid), off = pl.hand.splice(oi, 1)[0];
+      pl.exile.push({defId: off.defId}); pl.echoes = (pl.echoes||0) + 1; pl.prayerOfferTurn = turnNo;
+      if(recordEvents && events) events.push({type:'exile', side:sideOf(playerId), defId:off.defId, zone:'hand', prayer:true});
+    }
+    pl.hand.splice(pl.hand.findIndex(h=> h.uid===uid), 1);
     { let dC = devilryCostOfCard(hc.defId), lC = costOfCard(hc.defId); if(discount > 0){ const fd = Math.min(dC, discount); dC -= fd; lC = Math.max(0, lC - (discount - fd)); }
       pl.lumber -= lC; pl.devilry -= dC; }
     pl.grace -= graceCostOfCard(hc.defId);
@@ -1588,6 +1612,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!def.effects) return;
     const pl = players[playerId];
     const mySide = sideOf(playerId);
+    // Lightning N (Ecclesia, 2026-10-10): on arrival a bolt strikes a random enemy unit (the castle if there are none)
+    // for N, +1 for every 4 Prayer you have.
+    if(def.effects.lightning){
+      const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
+      const amt = (Number(def.effects.lightning)||0) + Math.floor(prayerOf(pl) / 4);
+      const target = foes.length ? {kind:'card', card: foes[Math.floor(rnd()*foes.length)]} : {kind:'hq'};
+      if(recordEvents && events) events.push({type:'statusFx', kind:'lightning', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, amount:amt});
+      fireDamageAction(players, sideOf, playerId, boardCard.defId, amt, 'physical', target, stats, events, {}, boardCard.uid);
+    }
     if(def.effects.onSpawnGold){
       // 2026-09-22: onSpawnGold now pays Lumber -- see newPlayer()'s comment on the acorns/
       // lumber retirement. Field name in card data (`onSpawnGold`) is unchanged, only the
@@ -2226,6 +2259,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!ai.playedThisTurn){ const ix = ai.exile.findIndex(e=> canCastFromExile(ai, e.defId)); if(ix >= 0 && rnd() < 0.7) castFromExile(players, sideOf, aiId, ix, rnd() < .5 ? 'left' : 'right', stats, events); }
     if(!ai.playedThisTurn && ai.hand.length > 1){ const dv = allLive(ai).find(c=> !c.devoured && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.devour);
       if(dv && rnd() < 0.4){ const food = ai.hand.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a); devour(players, sideOf, aiId, dv.uid, food.uid, stats, events); } }
+    // Ecclesia (2026-10-10): one Prayer short of an Ecclesia card? Offer the weakest other hand card for it.
+    if(!ai.playedThisTurn && ai.hand.length > 1 && ai.prayerOfferTurn !== turnNo){
+      const near = ai.hand.find(hc=> prayerReqOf(hc.defId) > 0 && !canPlay(ai, hc.defId, hc.uid) && canPlay(ai, hc.defId, hc.uid, 0, 1));
+      if(near && rnd() < 0.8){ const others = ai.hand.filter(h=> h !== near); const food = others.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
+        if(placeCard(players, sideOf, aiId, near.uid, rnd() < 0.5 ? 'left' : 'right', stats, events, {prayerOffer: food.uid})) return; }
+    }
     const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon));
     const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
     if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
@@ -2346,6 +2385,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             const bloomHealed = applyHeal(bloomTarget, def.effects.bloom, sideOf(pl.id), events);
             if(bloomHealed>0){ fireHealTriggers(players, sideOf, pl.id, c, bloomTarget, bloomHealed, stats, events); }
           }
+        }
+        // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
+        if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
+          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && (o.hp<o.maxHp || o.bleed>0)).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp));
+          if(hurt.length){ const h = applyHeal(hurt[0], def.effects.healing, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
+        }
+        // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.
+        if(c.hp>0 && def.effects && def.effects.satiety && c.hp >= c.maxHp){
+          const n = Number(def.effects.satiety)||0; c.maxHp += n; c.hp += n;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'satiety', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, amount:n});
         }
         runCustomTriggers(players, sideOf, pl.id, c, def, 'onRoundStart', stats, events);
         // Per Turn (2026-09-16, refined same day per explicit follow-up: "Per Turn should only
@@ -2521,7 +2570,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     })));
     removeDeadCards(players, sideOf, killCredit, stats, events);
   }
+  // Repeats the pass while something is still at 0 HP (Divine Retribution can kill during a pass), at most 6 times.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
+    for(let guard=0; guard<6; guard++){
+      removeDeadCardsPass(players, sideOf, killCredit || {}, stats, events);
+      if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
+    }
+  }
+  function removeDeadCardsPass(players, sideOf, killCredit, stats, events){
     const p1=players[1], p2=players[2];
     const deadEntries = [];
     [p1,p2].forEach(pl=>{
@@ -2530,7 +2586,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
-    const spawns = [], freed = [];
+    const spawns = [], freed = [], retributions = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
@@ -2563,6 +2619,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const parts = key.split('|');
           ensureStat(stats, parts[0], parts[1]).kills += 1;
           sidesCredited.add(parts[0]);
+          // Midas Touch N (Ecclesia, 2026-10-10): a kill by this card pays its owner N Lumber.
+          const kd = CARD_DEFS[parts[1]], midas = kd && kd.effects && Number(kd.effects.midas);
+          if(midas > 0){ const kp = players[parts[0]==='A'?1:2]; kp.lumber += midas; if(recordEvents && events) events.push({type:'lumber', side:parts[0], defId:parts[1], amount:midas, cause:'midas'}); }
         });
         if(bounty>0){
           sidesCredited.forEach(side2=>{
@@ -2610,6 +2669,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'berserk', side:sideOf(pl.id), attDefId:sc.defId, attUid:sc.uid, amount:berserkAmt});
         }
         runCustomTriggers(players, sideOf, pl.id, sc, scDef, 'onAllyDie', stats, events, {diedCard:card});
+        // Divine Retribution N (Ecclesia, 2026-10-10): when an ally perishes, strike a random enemy unit for N.
+        if(scDef.effects && scDef.effects.retribution) retributions.push({pid: pl.id, card: sc, n: Number(scDef.effects.retribution)||0});
       });
       // Hive Mind (2026-10-09, Swarm archetype): when a Hive Mind card dies, the newest Swarm ally on its
       // board gains +1/+1, so a swarm grows stronger as it is whittled down.
@@ -2632,6 +2693,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(slot!=null || !slotMode) debugSpawnCard(players, sideOf, f.owner, f.leaderDefId, slot!=null ? slot : 'right', stats, events);
       owner.leaderFreed = true;
     });
+    if(retributions.length){
+      retributions.forEach(r=>{
+        if(r.card.hp<=0 || r.n<=0) return;
+        const foes = allBoardCards(players[otherId(r.pid)]).filter(c=> c.hp>0 && !c.cageOf); if(!foes.length) return;
+        const t = foes[Math.floor(rnd()*foes.length)], dmg = damageCardFlat(t, r.n, 'physical', r.card.defId);
+        if(recordEvents && events) events.push({type:'hit', side:sideOf(r.pid), attDefId:r.card.defId, attUid:r.card.uid, targetSide:sideOf(otherId(r.pid)), targetDefId:t.defId, targetUid:t.uid, dmg, dmgType:'physical', ranged:true, retribution:true});
+        if(t.hp<=0){ killCredit[t.uid] = killCredit[t.uid] || new Set(); killCredit[t.uid].add(statKey(sideOf(r.pid), r.card.defId)); }
+      });
+    }
     spawns.forEach(s=>{
       // The dying card's own slot was just vacated by the filter pass above, so an
       // onDeathSpawn token naturally refills it (center included, one token exactly). Any
@@ -3353,7 +3423,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     removeDeadCards(players, sideOf, {}, stats, events);
     return true;
   }
-  return { debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

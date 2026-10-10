@@ -8,7 +8,7 @@ _Updated 2026-10-10, 12:30 pm. The short list of what matters now. Everything el
 |---|---|---|
 | **B6** ✅ | Your new basic set fixes it: otter starter vs hummingbird starter is **52.9%**. The per-card spread inside the set is wide (Duck Paddler 79% … Otter Kit 26%): see the [starter-decks note](starter-decks-2026-10-10.md) | Balance within the set (your pass) |
 | **D20** | Devilry is built from your list. Six of the rules were my readings. **Darkness is gained:** +1 each time one of your units perishes, shown only if your deck has a Devilry card | Keep all six |
-| **D23** | Next: Ecclesia with your Prayer value? | Yes |
+| **D23** ✅ | Ecclesia is built (Prayer, the offering, 6 keywords, 9 cards). Satiety's rule was my reading of the name | Check Satiety |
 | **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |
 | **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
 | **S1 👥** | Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function | Say "apply it" |

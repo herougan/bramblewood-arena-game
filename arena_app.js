@@ -195,6 +195,14 @@ const PASSIVE_DEFS = [
   {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits a random unit among the three facing it (left, centre, right), then the units beside that one too.`},
   {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
   {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
+  // Ecclesia (2026-10-10, D23). Prayer value = Prayer N on your board + cards in your Removal Zone.
+  {key:'prayer', category:'passive', label:'Prayer', kind:'number', min:0, desc:v=>`While on your board, adds ${v} to your Prayer value (your Prayer = every Prayer on your board + the cards in your Removal Zone).`},
+  {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
+  {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
+  {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
+  {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
+  {key:'satiety', category:'passive', label:'Satiety', kind:'number', min:0, desc:v=>`Well fed: at the start of each round at full health, gains +${v} max Health.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
@@ -942,6 +950,7 @@ function describeEffects(def, liveCard){
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
+  if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
   if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
@@ -1401,7 +1410,7 @@ function codexViewSectionOf(d, view){
 function cmpOrder(a,b){ for(let i=0;i<4;i++){ if(a[i]<b[i]) return -1; if(a[i]>b[i]) return 1; } return 0; }
 
 // ---- Hall of Fame ----
-const HOF_MECH_FIELDS = ['rarity','cost','wait','attack','health','effects','dmgType','resist','graceCost','devilryCost','stoneCost','exileCost','mechanicLine','archetypes','tags','faction','basic','token','level'];
+const HOF_MECH_FIELDS = ['rarity','cost','wait','attack','health','effects','dmgType','resist','graceCost','prayerReq','devilryCost','stoneCost','exileCost','mechanicLine','archetypes','tags','faction','basic','token','level'];
 function isHofVariant(d){ return !!(d && d.hallOfFame && (d.hallOfFame.variant==='classic' || d.hallOfFame.variant==='antique')); }
 function cardPowerScore(d){
   const e = d.effects || {};
@@ -3262,6 +3271,7 @@ function costBadgeParts(d){
   // one log per Lumber (a number only past 4, where pips stop being readable at a glance).
   if(d.cost>0) parts.push(pipsHTML('🪵', d.cost, 'lumber')); // 2026-09-22: cost is paid in Lumber now, not Gold — see costOfCard's call sites in bramblewood-engine.js
   if(d.graceCost>0) parts.push(`🕊️${d.graceCost}`);
+  if(d.prayerReq>0) parts.push(`🙏${d.prayerReq}`);
   if(d.devilryCost>0) parts.push(`★${d.devilryCost}`);
   return parts;
 }
@@ -4684,7 +4694,7 @@ function renderEditorInner(){
           <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
           <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>Evolution</option>
         </select></div>
-        <div class="field mech-field" data-mech="grace" title="Extra cost paid from the Grace resource pool on top of the lumber cost above."><label>Ecclesia cost — Grace</label><input id="fGraceCost" type="number" min="0" value="${c.graceCost||0}"></div>
+        <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = every Prayer on your board + the cards in your Removal Zone."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
         <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
         <div class="field mech-field" data-mech="exile" title="How many cards must be exiled from that zone to afford this card."><label>Scrapper cost — count</label><input id="fExileCount" type="number" min="0" value="${c.exileCost?c.exileCost.count:0}"></div>
         <div class="field mech-field" data-mech="devilry" title="Extra cost paid from the Devilry resource pool on top of the lumber cost above."><label>Devilry cost</label><input id="fDevilryCost" type="number" min="0" value="${c.devilryCost||0}"></div>
@@ -4936,7 +4946,7 @@ function renderEditorInner(){
 // rather than requiring a data migration.
 function inferMechanicLine(c){
   if(c.mechanicLine) return c.mechanicLine;
-  if(c.graceCost) return 'grace';
+  if(c.graceCost || c.prayerReq) return 'grace';
   if(c.exileCost) return 'exile';
   if(c.devilryCost) return 'devilry';
   return 'none';
@@ -5314,7 +5324,8 @@ function readEditorFormIntoCard(){
   const exCount = Number(document.getElementById('fExileCount').value)||0;
   // Only the selected mechanic line's cost is kept — switching the dropdown away from a line
   // clears that line's cost rather than leaving it silently active in the background.
-  c.graceCost = c.mechanicLine==='grace' ? (Number(document.getElementById('fGraceCost').value)||0) : 0;
+  c.graceCost = 0; // 2026-10-10: Ecclesia needs Prayer (a threshold) instead of spending Grace
+  { const pr = c.mechanicLine==='grace' ? (Number((document.getElementById('fPrayerReq')||{}).value)||0) : 0; if(pr > 0) c.prayerReq = pr; else delete c.prayerReq; }
   c.exileCost = (c.mechanicLine==='exile' && exZone && exCount>0) ? {zone:exZone, count:exCount} : null;
   c.devilryCost = c.mechanicLine==='devilry' ? (Number(document.getElementById('fDevilryCost').value)||0) : 0;
   // Resist lives in its own dedicated "Resistance" pill box now, not a Passive Ability row —
@@ -8931,7 +8942,7 @@ function applySkirmishSetup(players, node){
 // What a player would most likely own arriving at this node: every Base card, plus the reward cards of
 // every node on earlier maps and of the nodes before this one on its own map. The deck is the 20
 // strongest of those (respecting copy limits, at most 4 of a card), the same way tools/autotune_map.js builds it.
-function skirmishCardScore(d){ return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // same model as tools/retune_all.js
+function skirmishCardScore(d){ return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.prayerReq||0)*0.4 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // same model as tools/retune_all.js
 function expectedPlayerDeck(mapId, nodeKey){
   const defs = getCardDefs(), owned = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d.token && !d.test && !d.hero && !d.hallOfFame && id!=='wandering-traveller' && cardSourceOf(d).kind==='base') owned.add(id); }); // the Traveller is everyone's leader, not a deck card
@@ -14938,6 +14949,7 @@ function renderMatchUI(){
       ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}
       ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}
       ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
+      ${deckHasEcclesia(m, me)?`<span class="hud-pill prayer" id="hudPrayerPill" title="${escapeAttr(RESOURCE_TOOLTIP.prayer)}">🙏 ${m.engine.prayerOf ? m.engine.prayerOf(me) : 0}${(m.engine.prayerOfferReady && m.engine.prayerOfferReady(me)) ? '<small class="dark-left"> · offer ready</small>' : ''}</span>`:''}
       ${deckHasDevilry(m, me)?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(me) : 1) - (me.darkUsed||0))}</small></span>`:''}
       ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
   `;
@@ -15264,7 +15276,7 @@ function renderMatchUI(){
 // auto-passes, rather than it vanishing instantly.
 function hasAnyMeaningfulAction(m, me){
   const defs = getCardDefs();
-  const anyPlayable = me.hand.some(hc=> defs[hc.defId] && m.engine.canPlay(me, hc.defId, hc.uid));
+  const anyPlayable = me.hand.some(hc=> defs[hc.defId] && canPlayWithOffer(m, me, hc));
   if(anyPlayable) return true;
   return me.hand.length>0 && !me.discardUsedThisTurn;
 }
@@ -17166,6 +17178,12 @@ function fitBattlefieldZoom(){
 // Devilry (2026-10-10): the card frame with a dark aura, the Dark Summon mark, and a Ritual's progress on the board.
 // Darkness is only shown to a player whose deck has at least one Devilry card (2026-10-10, user: "The attribute is only
 // relevant and visible if your deck contains at least one devilry card").
+function deckHasEcclesia(m, pl){
+  if(!pl) return false; if(pl._hasEcclesia !== undefined) return pl._hasEcclesia;
+  const defs = getCardDefs(), isE = x=>{ const d = defs[x && (x.defId || x)]; return !!(d && (d.prayerReq > 0 || (d.effects && d.effects.prayer) || d.mechanicLine==='grace' || (d.archetypes||[]).includes('Ecclesia'))); };
+  const any = (pl.deck||[]).some(isE) || (pl.hand||[]).some(isE) || (pl.graveyard||[]).some(isE) || (pl.exile||[]).some(isE) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(isE));
+  pl._hasEcclesia = any; return any;
+}
 function deckHasDevilry(m, pl){
   if(!pl) return false; if(pl._hasDevilry !== undefined) return pl._hasDevilry;
   const defs = getCardDefs(), isD = x=>{ const d = defs[x && (x.defId || x)]; return !!(d && (isDevilryDef(d) || d.mechanicLine==='devilry' || d.devilryCost)); };
@@ -17367,11 +17385,13 @@ function unplayableReason(pl, d){
   const need = [];
   if((d.cost||0) > (pl.lumber||0)) need.push(`${d.cost}🪵`);
   if((d.graceCost||0) > (pl.grace||0)) need.push(`${d.graceCost}🕊️`);
+  try{ const pr = matchState.engine.prayerOf(pl); if((d.prayerReq||0) > pr) need.push(`🙏${d.prayerReq}`); }catch(e){}
   if((d.devilryCost||0) > (pl.devilry||0)) need.push(`${d.devilryCost}★`);
   if((d.stoneCost||0) > (pl.stone||0)) need.push(`${d.stoneCost}🪨`);
   const have = [];
   if((d.cost||0) > (pl.lumber||0)) have.push(`${pl.lumber||0}🪵`);
   if((d.graceCost||0) > (pl.grace||0)) have.push(`${pl.grace||0}🕊️`);
+  try{ const pr = matchState.engine.prayerOf(pl); if((d.prayerReq||0) > pr) have.push(`🙏${pr}`); }catch(e){}
   if((d.devilryCost||0) > (pl.devilry||0)) have.push(`${pl.devilry||0}★`);
   if((d.stoneCost||0) > (pl.stone||0)) have.push(`${pl.stone||0}🪨`);
   if(need.length) return `Needs ${need.join(' + ')} — you have ${have.join(' + ')}`;
@@ -17415,7 +17435,7 @@ function renderHand(){
   const prevHandRects = new Map([...strip.querySelectorAll('[data-handuid]')].map(el=> [el.getAttribute('data-handuid'), el.getBoundingClientRect()]));
   strip.innerHTML = me.hand.map(hc=>{
     const d = defs[hc.defId]; if(!d) return '';
-    const can = m.engine.canPlay(me, hc.defId, hc.uid);
+    const can = canPlayWithOffer(m, me, hc);
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard) && !m.resolving;
     const whyNot = can ? '' : unplayableReason(me, d);
@@ -17450,7 +17470,7 @@ function renderHand(){
       const side = e.key==='ArrowUp' ? 'left' : (e.shiftKey && e.key==='ArrowLeft') ? 'left' : (e.shiftKey && e.key==='ArrowRight') ? 'right' : null;
       if(!side) return;
       e.preventDefault();
-      if(!m.engine.canPlay(m.players[viewerHandPid(m)], el.getAttribute('data-defid'), uid) || m.resolving) return;
+      if(!canPlayWithOffer(m, m.players[viewerHandPid(m)], {uid, defId: el.getAttribute('data-defid')}) || m.resolving) return;
       let target = side;
       if(isSlotMatch(m)){ const row = document.getElementById(viewerHandPid(m)===1 ? 'rowMine' : 'rowEnemy'); const r = row && row.getBoundingClientRect(); const t = r && nearestSlotTarget(row, side==='left' ? r.left : r.right); if(t) target = Number(t.getAttribute('data-slot')); }
       playCardByUid(uid, target);
@@ -17483,7 +17503,32 @@ function aiActNow(){
   m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
 }
-async function playCardByUid(uid, side, dropPoint){
+// Ecclesia offering (2026-10-10): playable now, or playable once you exile another hand card for +1 Prayer.
+function needsPrayerOffer(m, pl, hc){
+  const E = m && m.engine; if(!E || !E.prayerOf || !pl || !hc) return false;
+  return !E.canPlay(pl, hc.defId, hc.uid) && E.isEcclesiaDef(hc.defId) && E.prayerOfferReady(pl) && pl.hand.length > 1 && E.canPlay(pl, hc.defId, hc.uid, 0, 1);
+}
+function canPlayWithOffer(m, pl, hc){ return m.engine.canPlay(pl, hc.defId, hc.uid) || needsPrayerOffer(m, pl, hc); }
+function showPrayerOfferPicker(pl, uid, onPick){
+  const defs = getCardDefs(), hc = pl.hand.find(h=> h.uid===uid), d = hc && defs[hc.defId]; if(!d) return;
+  let ov = document.getElementById('prayerOfferOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'prayerOfferOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const others = pl.hand.filter(h=> h.uid!==uid);
+  ov.innerHTML = `<div class="modal prayer-offer" role="dialog" aria-label="Offer a card">
+    <div class="modal-head-row"><h2>🙏 Offer a card</h2><button class="modal-close-btn" data-po-close aria-label="Cancel">✕</button></div>
+    <p class="panel-sub">${escapeHtml(d.name)} needs Prayer ${d.prayerReq}; you have ${matchState.engine.prayerOf(pl)}. Exile one card from your hand to your Removal Zone for +1 Prayer (it stays counted). Once a turn.</p>
+    <div class="pray-grid">${others.map(h=> `<button type="button" class="pray-card" data-po="${h.uid}" title="Exile ${escapeAttr((defs[h.defId]||{}).name||'')}">${cardTileHTML(defs[h.defId], {inPlay:true})}</button>`).join('')}</div>
+  </div>`;
+  ov.hidden = false;
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+  ov.querySelector('[data-po-close]').onclick = close;
+  ov.onclick = e=>{ if(e.target===ov) close(); };
+  ov.querySelectorAll('[data-po]').forEach(b=> b.onclick = ()=>{ const off = Number(b.dataset.po); close(); onPick(off); });
+}
+async function playCardByUid(uid, side, dropPoint, popts){
+  { const m0 = matchState, pl0 = m0 && m0.players[activePlayerId(m0)], hc0 = pl0 && pl0.hand.find(h=> h.uid===uid);
+    if(m0 && !m0.resolving && !m0.awaitingPass && m0.mode!=='liveRanked' && !(popts && popts.prayerOffer!=null) && hc0 && needsPrayerOffer(m0, pl0, hc0)){
+      showPrayerOfferPicker(pl0, uid, off=> playCardByUid(uid, side, dropPoint, {prayerOffer: off})); return; } }
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return; // hand is hidden behind the pass-the-device overlay right now
   recordFightAction(m, {a:'play', uid, side: side||null});
@@ -17537,7 +17582,7 @@ async function playCardByUid(uid, side, dropPoint){
   }
   const activePid = activePlayerId(m);
   const events = [];
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events);
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && popts.prayerOffer!=null) ? {prayerOffer: popts.prayerOffer} : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -17671,6 +17716,7 @@ const RESOURCE_TOOLTIP = {
   stone: 'Stone — dormant for now. Only a card\'s own "Gain stone" ability can produce any.',
   lumber: 'Lumber — earned by discarding a card from your hand. Some abilities (like Refine) consume it too.',
   grace: 'Grace — Ecclesia\'s currency. Earned by On Spawn/On Ready effects, spent on cards with a Grace Cost.',
+  prayer: 'Prayer 🙏 — every Prayer on your board + the cards in your Removal Zone. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1 (it stays counted: it is in your Removal Zone).',
   devilry: 'Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.',
   elementalenergy: 'Elemental Energy — the advanced resource. Only produced by a card\'s Refine ability, which consumes Lumber.',
 };
