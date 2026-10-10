@@ -366,7 +366,7 @@ const ACTIVE_PRESETS = [
   // Renamed 2026-09-21 per explicit request ("Rename Revive (Once) to Revivificated") — the
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
-  {key:'revive', category:'passive', label:'Revivificated', kind:'none', build:()=>({revive:true}), desc:()=>`First death instead revives at 1 HP, cleared statuses, and a Removal Counter (next death is final).`},
+  {key:'revive', category:'passive', label:'Revivificated', kind:'none', build:()=>({revive:true}), desc:()=>`The first time it dies, it comes back with 1 Health and its statuses cleared. This only happens once.`},
 ];
 const TRIGGER_DEFS = [
   {key:'onSpawn', label:'On Spawn', desc:'the moment this card is played'},
@@ -2902,7 +2902,8 @@ function fullCardHTML(defId, liveCard, opts){
   const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
   const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0)) : d.attack;
   const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
-  const atkDisplay = (liveC && atkBonus !== 0) ? `⚔${baseAtk} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${atkBonus > 0 ? '+' : '−'} ${Math.abs(atkBonus)}</span> <span class="atk-total">= ${effAtk}</span>` : `⚔${effAtk}`;
+  // 2026-10-11 (user): "⚔ 5 (2 + 3)" — total and base in red, the bonus in blue.
+  const atkDisplay = (liveC && atkBonus !== 0) ? `⚔ <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>` : `⚔${effAtk}`;
   const hpDisplay = liveCard ? `❤${Math.max(0,liveCard.hp)}/${liveCard.maxHp}` : `❤${d.health}`;
   // Simulated pitch-yield preview (2026-09-18, per explicit request: "a simulated resource
   // increase tooltip when hovering a card over the graveyard — to tell the user hey, it will
@@ -3834,7 +3835,6 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
-      ${poisonTagHTML(d)}
       ${abilityBadges(d, {compact:true})}
       ${live.bottomHTML||''}
     </div>`;
@@ -3856,7 +3856,6 @@ function cardTileHTML(d, opts){
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
-    ${isCastle?'':poisonTagHTML(d)}
     ${abilityBadges(d, {compact: !!(hand || inMatch)})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -3905,6 +3904,9 @@ function abilityBadges(d, bopts){
   // next to the top-left cost badge, and both used the SAME 🪙 coin glyph, so it read as a broken
   // duplicate cost badge rather than two different pieces of info). 🏆 still reads as "a reward,"
   // just not the identical glyph as the cost pill it sits beside.
+  // 2026-10-11 (user: "I wanted ALL symbols (incl like flying and poison) to be on the south border"): poison joins the
+  // skill strip, which now sits on the card's bottom edge.
+  if(e.poison) out.push(`<span class="ab-poison">☠${e.poison}</span>`);
   if(e.bounty) out.push(`<span class="ab-bounty">🏆${e.bounty}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
   if(e.explode) out.push(`💣${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
@@ -3998,7 +4000,7 @@ function abilityBadges(d, bopts){
   // the next two" + "in small card form ... that one symbol phases/cycles between different symbols every 2s"): each
   // skill is one slot. Up to 3 slots on a big card; past that, the last slot cycles through the rest every 2 s (see the
   // badge-cycle ticker). Small cards (board and hand) have room for one slot, which cycles through every skill.
-  const maxSlots = (bopts && bopts.compact) ? 1 : 3; // small cards: the one slot between Attack and Health cycles
+  const maxSlots = (bopts && bopts.compact) ? 3 : 4; // 2026-10-11: the strip sits on the bottom edge now, so it has room for more
   if(out.length > maxSlots){
     const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
     return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
@@ -4741,6 +4743,41 @@ function openNodeRewardsEditor(mapId, nodeKey){
   render();
   setTimeout(()=>{ const s = document.getElementById('nrSearch'); if(s) s.focus(); }, 50);
 }
+// Stats by level (2026-10-11): base stats in the fields above, then one row per level from the card's base level + 1 to
+// its cap. A blank cell follows the default curve (shown greyed); a typed number is that level's exact stat.
+function levelStatsEditorHTML(c){
+  const {from, to} = cardLevelRange(c), ls = c.levelStats || {}, n = Object.keys(ls).length;
+  const rows = [];
+  for(let L = from + 1; L <= to; L++){
+    const cur = curveStatsAtLevel(c, L), ov = ls[L] || ls[String(L)] || {}, step = LEVEL_STEPS[L];
+    rows.push(`<tr data-lv="${L}"><th>Lv ${L}${step ? ` <small class="lvs-step is-${step}">${step === 'major' ? 'major' : 'minor'}</small>` : ''}</th>
+      <td><input type="number" min="0" class="lvs-atk" aria-label="Attack at level ${L}" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"></td>
+      <td><input type="number" min="1" class="lvs-hp" aria-label="Health at level ${L}" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td></tr>`);
+  }
+  return `<details class="lvs-box" ${n ? 'open' : ''}><summary>📈 Stats by level <small>Lv ${from} is the base stats above · up to Lv ${to}${n ? ` · ${n} level${n===1?'':'s'} set by hand` : ''}</small></summary>
+    <p class="lvs-help">Leave a cell blank to follow the default curve (the grey number). Type a number to set that level exactly.${c.id === 'hero' ? ' The hero also has a skill path; that gets its own editor.' : ''}</p>
+    <div class="lvs-tools"><button type="button" class="btn small" id="lvsFill">Fill blanks from the curve</button><button type="button" class="btn small ghost" id="lvsClear">Clear all</button></div>
+    <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Level</th><th>⚔ Attack</th><th>❤ Health</th></tr></thead><tbody>
+      <tr class="is-base"><th>Lv ${from} <small>base</small></th><td>${c.attack}</td><td>${c.health}</td></tr>${rows.join('')}</tbody></table></div></details>`;
+}
+function readLevelStatsEditor(){
+  const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return editingCard && editingCard.levelStats || null;
+  const out = {};
+  box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const a = tr.querySelector('.lvs-atk').value, h = tr.querySelector('.lvs-hp').value; if(a === '' && h === '') return;
+    const o = {}; if(a !== '') o.attack = Math.max(0, Math.round(Number(a)||0)); if(h !== '') o.health = Math.max(1, Math.round(Number(h)||1)); out[tr.dataset.lv] = o; });
+  return out;
+}
+function wireLevelStatsEditor(){
+  const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return;
+  const refresh = ()=>{ const atk = Number((document.getElementById('fAtk')||{}).value)||0, hp = Number((document.getElementById('fHp')||{}).value)||1;
+    const probe = Object.assign({}, editingCard, {attack: atk, health: hp});
+    const base = box.querySelector('tr.is-base'); if(base){ base.children[1].textContent = atk; base.children[2].textContent = hp; }
+    box.querySelectorAll('tr[data-lv]').forEach(tr=>{ const cur = curveStatsAtLevel(probe, +tr.dataset.lv); tr.querySelector('.lvs-atk').placeholder = cur.attack; tr.querySelector('.lvs-hp').placeholder = cur.health; }); };
+  ['fAtk','fHp'].forEach(id=>{ const el = document.getElementById(id); if(el) el.addEventListener('input', refresh); });
+  const fill = document.getElementById('lvsFill'); if(fill) fill.onclick = ()=>{ box.querySelectorAll('tr[data-lv] input').forEach(i=>{ if(i.value === '') i.value = i.placeholder; }); };
+  const clr = document.getElementById('lvsClear'); if(clr) clr.onclick = ()=>{ box.querySelectorAll('tr[data-lv] input').forEach(i=> i.value = ''); };
+  setTimeout(refresh, 0);
+}
 function openCardEditor(defId, versionDef){
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
@@ -4792,11 +4829,13 @@ function renderEditor(){
   const overlay = document.getElementById('editorOverlay');
   const first = !overlay.querySelector('.modal');
   const snap = first ? null : snapshotEditorForm(overlay);
+  if(!first && editingCard){ const ls = readLevelStatsEditor(); if(ls && Object.keys(ls).length) editingCard.levelStats = ls; else delete editingCard.levelStats; }
   const scroll = first ? 0 : ((overlay.querySelector('.modal')||{}).scrollTop || 0);
   renderEditorInner();
   if(snap) restoreEditorForm(overlay, snap);
   const modal = overlay.querySelector('.modal'); if(!modal) return;
   modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); modal.setAttribute('aria-label', 'Card editor');
+  try{ wireLevelStatsEditor(); }catch(e){}
   if(scroll) modal.scrollTop = scroll;
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
   overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
@@ -5009,6 +5048,7 @@ function renderEditorInner(){
         <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option ${((c.dmgType||'physical')===dt)?'selected':''}>${dt}</option>`).join('')}</select>
       </div>
     </div>
+    ${levelStatsEditorHTML(c)}
     <div class="field-row">
       <!-- 2026-09-22 ("don't use gold anymore. the current symbol that represents gold looks
            like stone anyway!"): the base play cost is paid in Lumber, not Gold — the underlying
@@ -5738,6 +5778,7 @@ function readEditorFormIntoCard(){
   c.wait = Number(document.getElementById('fWait').value)||0;
   c.attack = Number(document.getElementById('fAtk').value)||0;
   c.health = Math.max(1, Number(document.getElementById('fHp').value)||1);
+  { const ls = readLevelStatsEditor(); if(ls && Object.keys(ls).length) c.levelStats = ls; else delete c.levelStats; }
   // Element / dmgType (2026-09-18: removed from the editor as "not a thing" back then; RE-ADDED
   // 2026-09-29 now that a card's own dmgType drives the new elemental Poison/Decay conversion in
   // computeHitDamage, not just Resist/Weakness matching — see the #fDmgType field above).
@@ -7138,8 +7179,21 @@ function cardBaseLevel(d){
   if(!d) return 1;
   return (d.basic || d.rarity==='starter' || d.tutorial || d.id==='wandering-traveller') ? 0 : 1;
 }
+// Level range per card (2026-10-11, user: "let me edit the stats PER level ... The start level and end level depend on the
+// rarity of the card. Base cards start at 0 ... Castles end at 20, Heroes end at 100"). Every rarity tops out at 10 for
+// now (that is what the Forge levels to); change a rarity here to give it a longer road.
+const RARITY_MAX_LEVEL = {};
+function cardMaxLevel(d){ if(!d) return 10; if(d.id === 'hero') return 100; if(d.isCastle || (d.archetypes||[]).includes('Castle')) return 20; return RARITY_MAX_LEVEL[d.rarity||'common'] || 10; }
+function cardLevelRange(d){ return {from: cardBaseLevel(d), to: cardMaxLevel(d)}; }
+// The default curve at a level, ignoring any per-level override (what the editor shows as the placeholder).
+function curveStatsAtLevel(d, L){
+  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cardMaxLevel(d), L|0));
+  let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l] !== undefined ? LEVEL_STEPS[l] : (l % 3 === 0 ? 'minor' : null); if(k) g += LEVEL_STEP_GAIN[k]; }
+  const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
+  return {attack: r(d.attack), health: r(d.health)};
+}
 function statsAtLevel(d, L){
-  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(10, L|0));
+  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cardMaxLevel(d), L|0));
   const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
   if(ov) return {attack: ov.attack!=null ? ov.attack : d.attack, health: ov.health!=null ? ov.health : d.health};
   let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l]; if(k) g += LEVEL_STEP_GAIN[k]; }
@@ -11330,6 +11384,18 @@ function wireRewardZoom(root){
     el.addEventListener('focus', ()=> show(el)); el.addEventListener('blur', hide);
   });
 }
+// "New skill" ribbon (2026-10-11, from the mechanics on-ramp doc): the skirmish preview names any skill in the enemy's
+// deck that you haven't met yet (its first-time tip hasn't been seen), so you know what to look for.
+function newSkillRibbonHTML(node){
+  if(!node || !node.deck) return '';
+  const defs = getCardDefs(), seenSet = (typeof coachSeen !== 'undefined') ? coachSeen : new Set(), keys = new Set();
+  let skills = []; try{ skills = Registry.skills(); }catch(e){ return ''; }
+  Object.keys(node.deck).forEach(id=>{ const e = (defs[id] && defs[id].effects) || {}; skills.forEach(sd=>{ try{ if(sd.get(e) !== undefined && !seenSet.has('skill-' + sd.key)) keys.add(sd.key); }catch(err){} }); });
+  if(!keys.size) return '';
+  const list = [...keys].slice(0, 4).map(k=>{ const sd = skills.find(x=> x.key===k); const d = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })();
+    return `<span class="nsr-skill" title="${escapeAttr(d)}">${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${escapeHtml(sd.label)}</span>`; });
+  return `<div class="new-skill-ribbon" aria-label="${escapeAttr(_t('New skills in this fight'))}"><b>✨ ${escapeHtml(_t('New skill'))}${keys.size > 1 ? 's' : ''}</b>${list.join('')}${keys.size > 4 ? `<small>+${keys.size - 4}</small>` : ''}</div>`;
+}
 function cnpRewardStripHTML(mapId, node, done, rank){
   // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
   // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
@@ -12384,6 +12450,7 @@ function renderConquestSubTab(body){
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
       </div>
+      ${newSkillRibbonHTML(selectedNode)}
       ${earned ? `
         <details class="cnp-deck"><summary>${escapeHtml(_t('Their deck'))} · ${Object.values(selectedNode.deck||{}).reduce((a,b)=> a+b, 0)} ${escapeHtml(_t('cards'))}</summary><div class="cnp-squad">${squadChips}</div></details>` : `<div class="cnp-squad-locked">🔒 ${escapeHtml(_t('Deck hidden'))}: ${reqText}.</div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
@@ -18585,7 +18652,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-10 (user: "Attack = Base Attack + Bonuses"): the board shows the total; buffed above the printed value it's
   // tinted blue, and the card details split it into base + bonus.
   const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
-  const atkLabel = effAtk > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${effAtk}</span>` : `⚔${effAtk}`;
+  const atkLabel = atkLabelHTML(effAtk, d.attack);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
   const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
@@ -19487,11 +19554,19 @@ function currentCardByUid(uid){
   }
   return null;
 }
+// Attack amplification (2026-10-11, user: "The enhanced stats shouldn't be blue ... thresholds for how to amplify the
+// attack label ... 1.5x, 2x, 2.5x etc. redder and more glowy"): a buffed attack stays red and heats up in steps.
+function atkAmpTier(eff, base){
+  base = Number(base)||0; eff = Number(eff)||0; if(eff <= base) return 0;
+  const r = base > 0 ? eff / base : 1 + eff / 2;
+  return r >= 3 ? 4 : r >= 2.5 ? 3 : r >= 2 ? 2 : r >= 1.5 ? 1 : 0.5;
+}
+function atkLabelHTML(eff, base){ const t = atkAmpTier(eff, base); return t ? `⚔<span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `⚔${eff}`; }
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
   const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
-  a.innerHTML = tot > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${tot}</span>` : `⚔${tot}`;
+  a.innerHTML = atkLabelHTML(tot, d.attack);
 }
 function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
@@ -24502,6 +24577,7 @@ function renderHome(){
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
+        ${adminEntryVisible() ? `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road (preview)"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>Preview</small></button>` : ''}
         ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -24547,6 +24623,80 @@ function wireHomeScene(root){
 }
 // Who sees the Admin entry in Settings: cloud admins, plus local/dev builds (so you're never locked
 // out while signed out or offline). Ordinary players never see it.
+// ---- Wildpaths (2026-10-11, user: "JUST for PVE - im thinking of a PASSIVE SKILL system also. for now, maybe just keep
+// that idea in mind, create the page for it, create the logo for it, and put it somewhere. It is a scrawling path, like
+// Skyrim"). A design preview: three hand-inked trails through the wood, each a scrawl of passive skills you would walk
+// node by node with Path points earned in Conquest. Nothing here changes a fight yet. Shown to admins and dev builds only.
+function wildpathsLogoSVG(size){
+  size = size || 40;
+  return `<svg class="wp-logo" width="${size}" height="${size}" viewBox="0 0 64 64" role="img" aria-label="Wildpaths">
+    <defs><radialGradient id="wpLg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#3b2f5c"/><stop offset="1" stop-color="#160f24"/></radialGradient></defs>
+    <circle cx="32" cy="32" r="30" fill="url(#wpLg)" stroke="#d9b56a" stroke-width="2.5"/>
+    <circle cx="32" cy="32" r="25.5" fill="none" stroke="#d9b56a" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 3"/>
+    <path d="M14 46 C 22 44, 20 34, 28 32 S 38 26, 36 18 M28 32 C 36 34, 42 40, 50 38" fill="none" stroke="#f3dca0" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 0"/>
+    <path d="M36 18 C 40 15, 44 16, 47 13" fill="none" stroke="#9fd07a" stroke-width="2" stroke-linecap="round"/>
+    <path d="M47 13 c 3 -2, 6 -1, 6 2 c -3 1, -5 0, -6 -2z" fill="#9fd07a"/>
+    <g fill="#fff3c8" stroke="#d9b56a" stroke-width="1"><circle cx="14" cy="46" r="3.2"/><circle cx="28" cy="32" r="3.6"/><circle cx="36" cy="18" r="3"/><circle cx="50" cy="38" r="3"/></g>
+    <circle cx="28" cy="32" r="7" fill="none" stroke="#fff3c8" stroke-opacity=".5" stroke-width="1"/>
+  </svg>`;
+}
+const WILDPATH_TREES = [
+  {id:'root', name:'The Root', icon:'🌳', tint:'#9fd07a', blurb:'Your castle and the long game: Health, Armour, holding the line.', nodes:[
+    {id:'r1', x:150, y:395, icon:'🏰', name:'Deep Foundations', desc:'Your castle starts each Conquest fight with +2 Health per rank.', ranks:3},
+    {id:'r2', x:105, y:320, icon:'🛡', name:'Bark Skin', desc:'Your first unit each fight gets Armor 1.', req:['r1']},
+    {id:'r3', x:190, y:300, icon:'💚', name:'Sap Mending', desc:'Your castle heals 1 at the start of every third round.', req:['r1']},
+    {id:'r4', x:80, y:230, icon:'🧱', name:'Hedge Wall', desc:'Guardian units get +2 Health per rank.', req:['r2'], ranks:2},
+    {id:'r5', x:175, y:205, icon:'🌲', name:'Old Growth', desc:'Units with Wait 2 or more get +1/+2.', req:['r3', 'r2']},
+    {id:'r6', x:140, y:120, icon:'⛰️', name:'Unmoving', desc:'Once per fight, the first hit on your castle deals no damage.', req:['r5']},
+    {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:'Capstone. Your castle gains +1 Health every round it is not hit.', req:['r6', 'r4'], capstone:true},
+  ]},
+  {id:'thorn', name:'The Thorn', icon:'🌹', tint:'#f07a6a', blurb:'Striking first and hard: Attack, Quick, crits and finishing blows.', nodes:[
+    {id:'t1', x:150, y:395, icon:'⚔', name:'Sharpened Briars', desc:'+1 Attack to your units with 3 Attack or less.', ranks:2},
+    {id:'t2', x:200, y:315, icon:'👢', name:'Light Feet', desc:'Your first Quick unit each fight also ignores its Wait.', req:['t1']},
+    {id:'t3', x:95, y:300, icon:'🩸', name:'Thornbite', desc:'Bleed lasts one extra tick.', req:['t1']},
+    {id:'t4', x:215, y:220, icon:'💥', name:'Weak Spots', desc:'Units below half Health take +1 damage from your attacks.', req:['t2'], ranks:2},
+    {id:'t5', x:110, y:205, icon:'🏹', name:'Fletcher’s Eye', desc:'Arrow skills deal +1 damage.', req:['t3']},
+    {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Sweep and Swipe hits deal +1 damage.', req:['t4', 't5']},
+    {id:'t7', x:150, y:40, icon:'🌹', name:'Crown of Thorns', desc:'Capstone. Whenever one of your units gets a kill, it gains +1 Attack.', req:['t6'], capstone:true},
+  ]},
+  {id:'bloom', name:'The Bloom', icon:'🌸', tint:'#e2a6f0', blurb:'Lumber, cards and tricks: drawing, pitching and growing your board.', nodes:[
+    {id:'b1', x:150, y:395, icon:'🪵', name:'Forager', desc:'Start each Conquest fight with +1 Lumber.', ranks:2},
+    {id:'b2', x:90, y:315, icon:'🃏', name:'Keen Eye', desc:'Draw 4 cards to start instead of 3.', req:['b1']},
+    {id:'b3', x:210, y:305, icon:'🍯', name:'Full Larder', desc:'+1 Food token on a first clear.', req:['b1']},
+    {id:'b4', x:70, y:215, icon:'♻', name:'Second Pitch', desc:'Once per fight, you may pitch twice in one turn.', req:['b2']},
+    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Bloom heals 1 more.', req:['b3', 'b2'], ranks:2},
+    {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'Your first token each fight comes with a copy.', req:['b4', 'b5']},
+    {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Capstone. At the start of every fifth round, draw a card and gain 1 Lumber.', req:['b6'], capstone:true},
+  ]},
+];
+let wildpathSel = null;
+function wildpathTreeSVG(tree){
+  const byId = Object.fromEntries(tree.nodes.map(n=> [n.id, n]));
+  // a wobbly, hand-inked line between two nodes (deterministic jitter from the ids)
+  const seed = str=> [...str].reduce((a, ch)=> (a*31 + ch.charCodeAt(0)) % 9973, 7);
+  const ink = (a, b)=>{ const k = seed(a.id + b.id), mx = (a.x + b.x)/2 + ((k % 41) - 20), my = (a.y + b.y)/2 + ((k % 23) - 11);
+    return `M${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`; };
+  const links = tree.nodes.flatMap(n=> (n.req||[]).map(r=> byId[r] ? `<path class="wp-ink" d="${ink(byId[r], n)}" style="--len:${Math.round(Math.hypot(n.x - byId[r].x, n.y - byId[r].y) * 1.15)}"/>` : ''));
+  const nodes = tree.nodes.map((n, i)=> `<g class="wp-node${n.capstone ? ' is-cap' : ''}${i === 0 ? ' is-start' : ''}${wildpathSel === n.id ? ' is-sel' : ''}" data-wp="${n.id}" tabindex="0" role="button" aria-label="${escapeAttr(n.name + ': ' + n.desc)}" transform="translate(${n.x} ${n.y})" style="--i:${i}">
+      <circle class="wp-halo" r="${n.capstone ? 26 : 20}"/><circle class="wp-dot" r="${n.capstone ? 19 : 15}"/><text class="wp-ico" text-anchor="middle" dominant-baseline="central">${n.icon}</text>
+      ${n.ranks ? `<text class="wp-rank" x="${n.capstone ? 18 : 14}" y="${n.capstone ? -16 : -12}" text-anchor="middle">0/${n.ranks}</text>` : ''}</g>`);
+  return `<svg class="wp-tree-svg" viewBox="0 0 300 430" style="--tint:${tree.tint}" aria-label="${escapeAttr(tree.name)} path">${links.join('')}${nodes.join('')}</svg>`;
+}
+function renderWildpaths(){
+  const root = document.getElementById('view-paths'); if(!root) return;
+  const all = WILDPATH_TREES.flatMap(t=> t.nodes.map(n=> Object.assign({tree:t}, n)));
+  const sel = all.find(n=> n.id === wildpathSel);
+  root.innerHTML = `<div class="wp-page">
+    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Win fights to earn Path points, then walk a trail one mark at a time. Only in fights against the wood (PvE), never in the Arena.</p></div>
+      <span class="wp-points" title="Path points to spend">✦ 0 Path points</span></header>
+    <p class="wp-preview">Design preview: the trails and skills below are a first draft and don't change fights yet.</p>
+    <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
+    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
+  </div>`;
+  root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
+    g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
+  if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }
+}
 function adminEntryVisible(){
   return !!(cloudCardAdmin || devModeEnabled || adminModeEnabled || /^(file:|https?:\/\/(localhost|127\.0\.0\.1))/.test(location.href));
 }
@@ -26951,6 +27101,7 @@ function switchTab(tab){
   document.getElementById('view-profile').hidden = tab!=='profile';
   document.getElementById('view-ranking').hidden = tab!=='ranking';
   { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
+  { const vp = document.getElementById('view-paths'); if(vp) vp.hidden = tab!=='paths'; }
   document.getElementById('view-guild').hidden = tab!=='guild';
   { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
   document.getElementById('view-admin').hidden = tab!=='admin';
@@ -26974,6 +27125,7 @@ function switchTab(tab){
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
+  if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);

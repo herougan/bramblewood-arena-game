@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (07:10)
+- **Wandering Traveller:** gives +1 Lumber once, when it first becomes Ready, instead of every round.
+- **Play slots:** they're invisible until you pick up a card (drag it or tap it), then fade in. They fade in once the cards have settled, so a new slot no longer appears in the wrong place and jumps.
+- **Buffed Attack:** no longer blue. It stays red and gets redder and glowier as it climbs: a little at 1.5× the printed value, more at 2×, 2.5× and 3× (the last two pulse).
+  - The card details read "⚔ 5 (2 + 3)": the total and base in red, the bonus in blue.
+- **Skill symbols on the south border:** every symbol, Poison and Flying included, sits in a small seal on the card's bottom edge. It no longer collides with two-digit Attack or Health. Board cards show up to 3 before cycling.
+- **Revivificated:** "The first time it dies, it comes back with 1 Health and its statuses cleared. This only happens once."
+- **Card editor → Stats by level:** set Attack and Health for every level from the card's base level up to its cap. A blank cell follows the default curve (shown in grey). There's a "Fill blanks from the curve" button. Every rarity caps at 10, castles at 20 and the hero at 100. The caps live in one table (`RARITY_MAX_LEVEL`).
+- **Wildpaths (preview):** a page for PvE passive skills, with three hand-inked trails (The Root, The Thorn, The Bloom) of 7 marks each and its own logo. It's pinned on Home for admin and dev builds only, and changes nothing in fights yet.
+- **New skill ribbon:** a skirmish preview lists the enemy skills you haven't met yet.
+- **Doc:** "Introducing stats and mechanics along the road" (`docs/mechanics-onramp-2026-10-11.md`).
+
 ## 2026-10-11 (01:30)
 - **Faction packs:** a Rivergate Pack (Otters) and a Sunfeather Pack (Hummingbirds).
   - Each pack draws from 15 cards: 10 for its side plus 5 Riverbank cards both share. That makes 25 cards: 19 new, plus 6 moved out of Pack 1 or given a home.

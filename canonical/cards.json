@@ -8769,9 +8769,14 @@
           "on": "onSpawn",
           "do": "drawCard",
           "count": 1
+        },
+        {
+          "on": "onReady",
+          "do": "gain",
+          "amount": 1,
+          "resource": "lumber"
         }
       ],
-      "onReadyGold": 1,
       "leader": true
     },
     "flavor": "No banner, no faction \u2014 just a walking stick, a full pack, and a knack for showing up exactly when a new adventure needs a guide.",
