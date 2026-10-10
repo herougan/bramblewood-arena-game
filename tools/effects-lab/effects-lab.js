@@ -113,7 +113,7 @@
     host.style.setProperty('--map-art', felt === 2 ? `url(assets/maps/${mapId}.png)` : 'none');
     host.style.backgroundImage = felt === 2 ? `url(assets/maps/${mapId}.png)` : ''; host.style.backgroundSize = 'cover'; host.style.imageRendering = 'pixelated';
     if(!window.BramblewoodShaders || !BramblewoodShaders.isSupported()) return;
-    bf = BramblewoodShaders.mount(host, {preset:'map', kind: +$('#bfKind').value, felt: +$('#bfFelt').value, prepend:true, intensity:0.55, shadows:'.bf-cards .card-tile'});
+    bf = BramblewoodShaders.mount(host, {preset:'map', kind: +$('#bfKind').value, felt: +$('#bfFelt').value, prepend:true, intensity:1, shadows:'.bf-cards .card-tile'});
   }
   ['#bfKind', '#bfFelt'].forEach(sel=> $(sel).addEventListener('change', mountBf));
   $$('[data-light]').forEach(b=> b.addEventListener('click', ()=>{
@@ -373,7 +373,7 @@
     if(atmo){ try{ atmo.destroy(); }catch(e){} atmo = null; }
     clearInterval(boltTimer); host.querySelectorAll('.field-snow, .bf-lightning').forEach(n=> n.remove());
     host.classList.toggle('sudden-death', !!a.sudden);
-    if(window.BramblewoodShaders && BramblewoodShaders.isSupported()) atmo = BramblewoodShaders.mount(host, {preset:'map', kind:a.kind, felt:1, prepend:true, intensity:0.6, shadows:'#atmoLab .bf-cards .card-tile'});
+    if(window.BramblewoodShaders && BramblewoodShaders.isSupported()) atmo = BramblewoodShaders.mount(host, {preset:'map', kind:a.kind, felt:1, prepend:true, intensity:1, shadows:'#atmoLab .bf-cards .card-tile'});
     if(a.snow){ const sn = document.createElement('div'); sn.className = 'field-snow'; sn.setAttribute('aria-hidden', 'true');
       sn.innerHTML = Array.from({length:28}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('');
       host.appendChild(sn); }

@@ -131,12 +131,12 @@ void main(){
     float cA = caustic(uv*vec2(aspect, 1.0)*0.9 + vec2(t*0.01, 0.0), t*0.45);
     float cB = caustic(uv*vec2(aspect, 1.0)*1.25 + vec2(-t*0.012, t*0.006) + 3.7, t*0.38 + 11.0);
     float c = mix(cA, cB, smoothstep(0.15, 0.85, 0.5 + 0.5*sin(t*0.35)));
-    o = add(o, vec3(0.75, 0.95, 1.0), c*0.3);
+    o = add(o, vec3(0.75, 0.95, 1.0), c*0.14); // 2026-10-10 (user: water still too strong): caustics about half as bright
     o = add(o, vec3(0.0, 0.1, 0.2), smoothstep(0.4, 1.0, uv.y)*0.18);
     if(k == 6){ vec2 bq = q*10.0 + vec2(0.0, t*0.9); vec2 id = floor(bq); vec2 f = fract(bq) - 0.5; float h = hash(id);
       float r = length(f - (vec2(hash(id+2.0), 0.0) - 0.5)*0.5 - vec2(sin(t*2.0 + h*9.0)*0.08, 0.0));
-      o = add(o, vec3(0.85, 1.0, 1.0), step(0.86, h) * smoothstep(0.03, 0.0, abs(r - 0.12)) * 0.8); }
-    else o = add(o, vec3(1.0), sparks(q, 18.0, t, vec2(0.15, 0.0), 0.06, 0.12)*0.7);
+      o = add(o, vec3(0.85, 1.0, 1.0), step(0.86, h) * smoothstep(0.03, 0.0, abs(r - 0.12)) * 0.5); }
+    else o = add(o, vec3(1.0), sparks(q, 18.0, t, vec2(0.15, 0.0), 0.06, 0.12)*0.4);
   } else if(k == 2 || k == 8 || k == 10){ // fire / foundry / storm: lava glow, smoke, rising embers
     float g = fbm(vec2(uv.x*aspect*2.0, uv.y*3.0 - t*0.25));
     float glow = smoothstep(0.45, 1.0, uv.y) * (0.55 + 0.45*sin(t*1.3 + g*6.0));
@@ -144,6 +144,15 @@ void main(){
     o = add(o, vec3(0.08, 0.05, 0.05), smoothstep(0.5, 0.0, uv.y) * fbm(uv*vec2(aspect*2.0, 2.0) + vec2(t*0.03, t*0.06)) * 0.45);
     float e = sparks(q, 11.0, t, vec2(0.12, 0.55), 0.09, 0.28) + sparks(q, 20.0, t, vec2(-0.1, 0.8), 0.07, 0.2);
     o = add(o, vec3(1.0, 0.6, 0.2), e);
+    // Foundry lava dust (2026-10-10, user: "embers like lava dust in Terraria, with bright shaders, not as strong as lens
+    // flares"): tiny bright embers rising and wobbling, each with a soft orange glow around it.
+    if(k == 8){
+      vec2 wq = q + vec2(sin(q.y*9.0 + t*1.7)*0.012, 0.0);
+      float core = sparks(wq, 30.0, t, vec2(0.06, 0.42), 0.07, 0.22) + sparks(wq + 1.7, 44.0, t, vec2(-0.05, 0.6), 0.06, 0.18);
+      float halo = sparks(wq, 30.0, t, vec2(0.06, 0.42), 0.34, 0.22)*0.32 + sparks(wq + 1.7, 44.0, t, vec2(-0.05, 0.6), 0.3, 0.18)*0.26;
+      o = add(o, vec3(1.0, 0.93, 0.6), core*1.1);
+      o = add(o, vec3(1.0, 0.48, 0.12), halo);
+    }
     if(k == 10){ float slot = floor(t*1.5); float fl = step(0.94, hash(vec2(slot, 3.0))) * exp(-fract(t*1.5)*7.0);
       o = add(o, vec3(0.85, 0.9, 1.0), fl*0.45); }
   } else if(k == 3){ // caves: fog, spores, and a lantern that follows the pointer
@@ -220,7 +229,7 @@ void main(){
         float sb = pow(max(dot(normalize(vec3((b1 - b2)*34.0, (b1 - b3)*34.0, 1.0)), H), 0.0), 36.0);
         float mixAB = 0.5 + 0.5*sin(t*0.42);
         float spec = mix(sa, sb, smoothstep(0.15, 0.85, mixAB)) * (0.4 + 0.6*pool);
-        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.14;
+        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.08; // 2026-10-10: softer still
         outc.a += 0.05;                            // a damp darkening
       } else if(k == 2 || k == 8 || k == 10){    // ash: glowing cracks that breathe
         float c = abs(fbm(gq*0.9) - 0.5);

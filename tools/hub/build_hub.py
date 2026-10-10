@@ -127,7 +127,7 @@ docs_html = ''
 for t, f, src in GUIDE:
     txt = doc_src(f, src)
     if txt is None: continue
-    docs_html += f'<details class="card" id="doc-{f[:-3]}"><summary><b>claude/{f}</b><small>Read before: {H.escape(t[0].lower() + t[1:])}</small></summary><div class="doc">{md_html(txt)}</div></details>'
+    docs_html += f'<div class="subpane" data-group="guide" id="doc-{f[:-3]}" hidden><h3>claude/{f} <small class="note">read before: {H.escape(t[0].lower() + t[1:])}</small></h3><div class="doc">{md_html(txt)}</div></div>'
 skills_html = ''.join(skill_card(f) for f in SKILLS)
 # Design tab (2026-10-09, user: "In our master artefact, come up with skills and effects + audit what we
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
@@ -146,11 +146,14 @@ DESIGN = [
   ('Grab-bag randomness', 'grab-bag-randomness-2026-10-08.md'),
   ('Card displays and reuse', 'card-displays.md'),
 ]
-design_html = '<div class="doc guide"><h1>Design</h1><p class="lede">Design sheets and audits. Nothing here is built unless its status says so; reply in chat to adopt or change any of it.</p>'
-for k, (t, f) in enumerate(DESIGN):
+# 2026-10-10 (user: "In subtabs - always hide the irrelevant info instead of going to that bookmark"): a row of
+# subtabs; picking one shows only that sheet.
+_dz = [(t, f) for t, f in DESIGN if os.path.exists(os.path.join(ROOT, 'docs', f))]
+design_html = ('<div class="doc guide"><h1>Design</h1><p class="lede">Design sheets and audits. Nothing here is built unless its status says so; reply in chat to adopt or change any of it.</p>'
+  '<nav class="subtabs" data-group="design" aria-label="Design sheets">' + ''.join('<button type="button" data-show="design-' + f[:-3] + '" aria-pressed="' + ('true' if k == 0 else 'false') + '">' + H.escape(t) + '</button>' for k, (t, f) in enumerate(_dz)) + '</nav>')
+for k, (t, f) in enumerate(_dz):
     pth = os.path.join(ROOT, 'docs', f)
-    if not os.path.exists(pth): continue
-    design_html += f'<details class="card" id="design-{f[:-3]}"{" open" if k == 0 else ""}><summary><b>{H.escape(t)}</b><small>claude/{f}</small></summary><div class="doc">{md_html(open(pth, encoding="utf-8").read())}</div></details>'
+    design_html += f'<div class="subpane" data-group="design" id="design-{f[:-3]}"{"" if k == 0 else " hidden"}><p class="note">claude/{f}</p><div class="doc">{md_html(open(pth, encoding="utf-8").read())}</div></div>'
 design_html += '</div>'
 rules_html = ''.join(f'<li>{r}</li>' for r in RULES)
 guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
@@ -158,7 +161,7 @@ guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
   f'<h2>Standing instructions</h2><ul>{rules_html}</ul>'
   '<h2>Skills</h2><p class="note">Proposed on 6 Oct. Save them from the review card in chat; once saved, they load automatically when a task matches.</p>' + skills_html +
   f'<h2>Read before…</h2><table><thead><tr><th>Task</th><th>Doc</th></tr></thead><tbody>{rows}</tbody></table>'
-  '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth.</p>' + docs_html + '</div>')
+  '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth. Pick one in the table above.</p>' + docs_html + '</div>')
 
 
 # Decisions tab (2026-10-08, user: "the decisions.md should be in the artefact too, with filters and
@@ -215,6 +218,11 @@ iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}
 header .play{{order:1; margin:0 0 8px auto; font:700 13px 'Baloo 2',system-ui,sans-serif; color:var(--accent-ink); background:var(--accent); padding:4px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}}
 nav[role=tablist]{{order:2;}}
 header nav[role=tablist]{{order:4; flex-basis:100%;}}
+.subtabs{{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 14px;}}
+.subtabs button{{font:700 13px 'Baloo 2',system-ui,sans-serif; padding:5px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer;}}
+.subtabs button[aria-pressed=true]{{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}}
+.subpane[hidden]{{display:none !important;}}
+a.jump.is-on{{font-weight:800; text-decoration:underline;}}
 @media (max-width:640px){{ header h1{{font-size:17px;}} }}
 .guide .lede{{color:var(--ink-muted);}} .guide .note{{color:var(--ink-muted); font-size:14px; margin:0 0 10px;}}
 details.card{{background:var(--surface); border:1px solid var(--line); border-radius:12px; margin:8px 0; padding:0 14px;}}
@@ -267,6 +275,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .bal-t td{{padding:6px 10px; border-top:1px solid var(--line, rgba(127,127,127,.18)); white-space:nowrap;}}
 .bal-t td.wr{{font-variant-numeric:tabular-nums; font-weight:700;}}
 .bal-t tr.v-strong td.wr{{color:#b4235a;}} .bal-t tr.v-weak td.wr{{color:#2563a8;}} .bal-t tr.v-ok td.wr{{color:#2f7d43;}}
+@media (prefers-color-scheme: dark){{:root:not([data-theme="light"]) .bal-t tr.v-strong td.wr{{color:#ff7aa8;}} :root:not([data-theme="light"]) .bal-t tr.v-weak td.wr{{color:#7fb6ff;}} :root:not([data-theme="light"]) .bal-t tr.v-ok td.wr{{color:#7fd38f;}}}}
+:root[data-theme="dark"] .bal-t tr.v-strong td.wr{{color:#ff7aa8;}} :root[data-theme="dark"] .bal-t tr.v-weak td.wr{{color:#7fb6ff;}} :root[data-theme="dark"] .bal-t tr.v-ok td.wr{{color:#7fd38f;}}
 .bal-bar{{display:inline-block; width:80px; height:8px; border-radius:4px; background:rgba(127,127,127,.18); position:relative; vertical-align:middle; margin-left:6px;}}
 .bal-bar i{{position:absolute; top:0; bottom:0; background:rgba(47,125,67,.35); border-radius:4px;}} .bal-bar b{{position:absolute; top:-2px; width:3px; height:12px; background:currentColor; border-radius:2px;}}
 .dec-empty{{color:var(--ink-muted); padding:20px; text-align:center;}}
@@ -353,7 +363,12 @@ function show(id){{
   const fr = document.querySelector('#p-'+id+' iframe'); if(fr && !fr.src) fr.src = fr.dataset.src;
   try{{ history.replaceState(null, '', '#'+id); }}catch(e){{}}
 }}
-document.addEventListener('click', e=>{{ const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); const d = document.querySelector(j.getAttribute('href')); if(d){{ d.open = true; d.scrollIntoView({{behavior:'smooth', block:'start'}}); }} return; }} const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
+function showSub(id){{ const pane = document.getElementById(id); if(!pane) return; const g = pane.dataset.group;
+  document.querySelectorAll('.subpane[data-group="'+g+'"]').forEach(p=> p.hidden = p !== pane);
+  document.querySelectorAll('.subtabs[data-group="'+g+'"] button').forEach(b=> b.setAttribute('aria-pressed', String(b.dataset.show === id)));
+  document.querySelectorAll('a.jump').forEach(a=> a.classList.toggle('is-on', a.getAttribute('href') === '#'+id)); }}
+document.addEventListener('click', e=>{{ const sb = e.target.closest('.subtabs button[data-show]'); if(sb){{ showSub(sb.dataset.show); return; }}
+  const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); showSub(j.getAttribute('href').slice(1)); const d = document.querySelector(j.getAttribute('href')); if(d) d.scrollIntoView({{behavior:'smooth', block:'nearest'}}); return; }} const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
 document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
   const i = tabs.findIndex(t=> t.getAttribute('aria-selected')==='true'); let j = i;
   if(e.key==='ArrowRight') j = (i+1)%tabs.length; else if(e.key==='ArrowLeft') j = (i-1+tabs.length)%tabs.length; else return;

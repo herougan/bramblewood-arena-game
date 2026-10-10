@@ -18257,13 +18257,14 @@ function fallDeathVfx(el, ms){
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
   // accelerating until the card lies flat), and everything else (leaves, dust, thump) lands on
   // that impact frame. After impact the card just settles and fades out where it fell.
+  // 2026-10-10 (user: "the animation should be smooth from flat face up, to flat 'down'. Right now it looks like it's
+  // split into two"): one single topple from upright to lying flat (90°), accelerating like a fall, with no bounce
+  // after impact; then it just fades where it lies.
   if(hasGsap()){
-    const fall = ms*0.78/1000;
+    const fall = ms*0.8/1000;
     gsap.timeline()
-      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:86, y:16, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power3.in'})
+      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:90, y:14, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power2.in'})
       .add(()=>{ leafPuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
-      .to(t, {rotationX:80, duration:.07, ease:'power1.out'})
-      .to(t, {rotationX:86, duration:.08, ease:'power1.in'})
       .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
   }
   return true;
@@ -18379,9 +18380,23 @@ function deckShuffleVfx(decks){
   });
 }
 // Chromatic glitch on Shock (2026-10-06, effects "Coming next").
+// 2026-10-10 (user: "I like 'Shock'. But it needs to be less jarring. So maybe instead of masking off parts of it,
+// it's high opacity (10-25%) electric gradients laid atop of the card in several places"): no more clipping. Three to
+// four soft electric glows (cyan, violet, white streaks) flicker on top of the card at random spots for ~half a
+// second, with a 1px jitter.
 function glitchVfx(el){
   const t = el && (el.querySelector('.card-tile') || el); if(!t) return;
-  t.classList.remove('glitch'); void t.offsetWidth; t.classList.add('glitch'); setTimeout(()=> t.classList.remove('glitch'), 420);
+  t.querySelectorAll('.shock-arcs').forEach(n=> n.remove());
+  const box = document.createElement('div'); box.className = 'shock-arcs'; box.setAttribute('aria-hidden', 'true');
+  const n = 3 + Math.floor(Math.random()*2), hues = ['120,220,255', '170,140,255', '235,245,255', '90,200,255'];
+  box.innerHTML = Array.from({length:n}, (_, i)=>{
+    const x = (12 + Math.random()*76).toFixed(0), y = (10 + Math.random()*80).toFixed(0), rot = (Math.random()*180).toFixed(0);
+    const a = (0.14 + Math.random()*0.12).toFixed(2), w = (50 + Math.random()*40).toFixed(0), d = (i*60 + Math.random()*60).toFixed(0);
+    return `<i style="--x:${x}%; --y:${y}%; --r:${rot}deg; --a:${a}; --w:${w}%; --c:${hues[i % hues.length]}; animation-delay:${d}ms"></i>`;
+  }).join('');
+  t.appendChild(box);
+  t.classList.remove('shock-jitter'); void t.offsetWidth; t.classList.add('shock-jitter');
+  setTimeout(()=>{ box.remove(); t.classList.remove('shock-jitter'); }, 640);
 }
 // Feather burst (2026-10-06): a flying unit sheds a few feathers when it's hit.
 function featherBurst(el){

@@ -3,6 +3,17 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **Effects Lab now shares the game's engine:**
+  - every build re-copies the lab's effect code from the game, uses all of the game's stylesheets (it used only the first), and inlines the same GSAP build;
+  - this fixes Draw flip, Victory toss, the crit stamp, flyer feathers and the new damage-number bursts, which needed GSAP and didn't load in the hub.
+- **Deaths:** "Normal" (no more "knocked out") is one smooth topple from upright to flat, with no bounce after.
+- **Shock:** soft electric glows (14–26%) flicker over the card in a few places, with a 1px jitter, instead of a clipped RGB glitch. "Token dies" is renamed **Shatter**.
+- **Cards:** the bottom band is a faint 7–8% white wash ending sharply above the stats (rarity is on the border). The low-HP fade is unchanged.
+- **Water** caustics and glints are about half as bright, in the game and the lab, which now runs the shader at the game's strength.
+- **Foundry:** Terraria-style lava dust, tiny bright embers rising with a soft glow.
+- **Hub:**
+  - Design has subtabs that show one sheet at a time, and Claude's guide shows only the doc you pick;
+  - the lab's faint hint lines and the Balance win-rate colours in dark mode are now readable.
 - **Ecclesia (D23), your Prayer model:**
   - Prayer = Prayer N on your board + the cards in your Removal Zone. Ecclesia cards need Prayer 🙏N to play (never spent).
   - Once a turn you can offer a hand card for +1 (a picker opens when you're 1 short).

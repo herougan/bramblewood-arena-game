@@ -1,11 +1,20 @@
-import json, re, os
+import json, re, os, subprocess, sys
 ROOT='/home/claude/bramblewood-arena-game'
+# 2026-10-10 (user: "Can they maybe share the same engine, so that we remove the need of coding both sides?"): every
+# build first re-copies each effect function the lab uses from the game's own source (sync_fx_src.py), and the lab
+# reuses the game's stylesheet, shaders, skill effects and GSAP build. Nothing in the lab is hand-copied any more.
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sync_fx_src.py')], check=True)
 idx=open(f'{ROOT}/index.html').read()
-a=idx.index('<style>')+7; b=idx.index('</style>',a); gamecss=idx[a:b]
+# every <style> block of the game, not only the first (2026-10-10: later blocks hold the newest look: rarity borders, Shock...)
+gamecss='\n'.join(m.group(1) for m in re.finditer(r'<style[^>]*>(.*?)</style>', idx, re.S))
 cards=json.load(open(f'{ROOT}/.fxcat/cards.json'))
 fx=open(f'{ROOT}/.fxcat/fx-src.js').read()
 shaders=open(f'{ROOT}/bramblewood-shaders.js').read()
 skillfx=open(f'{ROOT}/bramblewood-skillfx.js').read()
+# GSAP inlined, as in the game (2026-10-10): the CDN copy didn't load inside the hub, which broke Draw flip, Victory toss,
+# the crit stamp, feathers and the new damage-number bursts.
+gsap=open(f'{ROOT}/gsap.min.js').read().replace('</script','<\\/script')
+gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
 C=lambda k,v='plain': cards[k][v]
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
@@ -35,7 +44,8 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 .fx{background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:12px; display:flex; flex-direction:column; gap:10px; min-width:0;}
 .fx h3{margin:0; font:800 15px 'Baloo 2',system-ui,sans-serif; display:flex; align-items:center; gap:8px; justify-content:space-between;}
 .fx p{margin:0; font-size:13px; color:var(--ink-muted); line-height:1.4;}
-.fx .where{font-size:11.5px; color:var(--ink-soft);}
+.fx .where{font-size:11.5px; color:var(--ink-muted); font-weight:600;} /* 2026-10-10: was --ink-soft, too faint on both themes */
+.sk-slow{color:var(--ink) !important; font-weight:600;}
 .st{font:800 10.5px 'Baloo 2',system-ui,sans-serif; padding:2px 8px; border-radius:999px; white-space:nowrap;}
 .st.live{background:#2f7d3a; color:#fff;} .st.part{background:#b5651d; color:#fff;} .st.idea{background:var(--surface-3); color:var(--ink);}
 .stage{position:relative; min-height:170px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; background:var(--surface-2); overflow:visible;}
@@ -209,12 +219,12 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
     <p>The struck card squashes and is knocked away, then springs back. Heavy blows freeze all motion for 70 ms.</p><div class="where">Every melee hit</div></div>
   <div class="fx"><h3>Deaths: bleed-out and burn-away <span class="st live">Live</span></h3>
     <div class="stage" id="deathStage">{stage_card('common')}</div>
-    <div class="btns"><button class="btn small primary" data-death="fall">Normal (knocked out)</button><button class="btn small" data-death="bleed">Bleed</button><button class="btn small" data-death="poison">Poison</button><button class="btn small" data-death="cold">Cold</button><button class="btn small" data-death="burn">Burn</button></div>
-    <p><b>Normal:</b> the card topples back, greys out and crumbles into leaves and dust. <b>Bleed / poison / cold:</b> a dark wash runs down and drops fall, red, green or icy by cause. <b>Burn:</b> fire deaths burn away from the bottom with embers.</p><div class="where">Card deaths; burn also on a falling castle</div></div>
+    <div class="btns"><button class="btn small primary" data-death="fall">Normal</button><button class="btn small" data-death="bleed">Bleed</button><button class="btn small" data-death="poison">Poison</button><button class="btn small" data-death="cold">Cold</button><button class="btn small" data-death="burn">Burn</button></div>
+    <p><b>Normal:</b> the card topples back in one smooth fall until it lies flat, greys out and puffs leaves and dust. <b>Bleed / poison / cold:</b> a dark wash runs down and drops fall, red, green or icy by cause. <b>Burn:</b> fire deaths burn away from the bottom with embers.</p><div class="where">Card deaths; burn also on a falling castle</div></div>
   <div class="fx"><h3>Frost, shock, feathers, shatter <span class="st live">Live</span></h3>
     <div class="stage" id="statusStage">{stage_card('bee')}</div>
-    <div class="btns"><button class="btn small" data-st="frost">❄️ Freeze</button><button class="btn small" data-st="shock">🌩 Shock</button><button class="btn small" data-st="feather">🪶 Hit a flyer</button><button class="btn small" data-st="shatter">💥 Token dies</button></div>
-    <p><b>Frost creep:</b> ice crystals grow in from the corners of a frozen unit. <b>Shock:</b> a short RGB-split glitch. <b>Flyers</b> shed feathers when hit. <b>Tokens</b> shatter into squares instead of crumbling.</p><div class="where">Status effects, hits on flyers, token deaths</div></div>
+    <div class="btns"><button class="btn small" data-st="frost">❄️ Freeze</button><button class="btn small" data-st="shock">🌩 Shock</button><button class="btn small" data-st="feather">🪶 Hit a flyer</button><button class="btn small" data-st="shatter">💥 Shatter</button></div>
+    <p><b>Frost creep:</b> ice crystals grow in from the corners of a frozen unit. <b>Shock:</b> soft electric glows flicker over the card in a few places. <b>Flyers</b> shed feathers when hit. <b>Shatter:</b> tokens break into squares instead of crumbling.</p><div class="where">Status effects, hits on flyers, token deaths</div></div>
   <div class="fx"><h3>Victory dance <span class="st idea">Retired</span></h3>
     <div class="stage">{stage_card('bee').replace('class="board-card"', 'class="board-card is-dancing" style="--dance-delay:0s"',1)}{stage_card('rare').replace('class="board-card"', 'class="board-card is-dancing" style="--dance-delay:.09s"',1)}</div>
     <p>Replaced by the victory toss (Card ideas tab): the endless wiggle is gone.</p><div class="where">Match end</div></div>
@@ -259,7 +269,12 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 
 <section id="all"><h2>Full list</h2><p class="sec-sub">Everything in the effects catalogue, with where it lives.</p><div class="tbl"><table id="allTbl"></table></div></section>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+{gsap}
+</script>
+<script>
+{gsapflip}
+</script>
 <script>
 var matchState = null;
 {shaders}

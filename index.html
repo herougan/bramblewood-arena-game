@@ -6851,8 +6851,10 @@
                  color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 70%, #1c1710)
                  color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 62%, #1c1710)
                  color-mix(in srgb, var(--rarity-a, var(--surface-border)) 70%, #1c1710);}
-  .card-tile .rarity-band{background:linear-gradient(180deg, transparent 0%, rgba(12,10,8,.28) 45%, rgba(12,10,8,.55) 100%) !important;
-    background-size:100% 100% !important; animation:none !important; filter:none !important;}
+  /* 2026-10-10 (user: "The bottom can be very slightly lighter also, e.g. a 7% opacity white gradient, sharply ending
+     above the stat numbers"): a faint white wash behind the stat row with a hard top edge, instead of a dark shade. */
+  .card-tile .rarity-band{height:calc(var(--cw, 110px) * .25) !important; background:linear-gradient(0deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.06) 100%) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.10) !important; background-size:100% 100% !important; animation:none !important; filter:none !important;}
   /* Test Kit: manual combat, skill tour, custom triggers (2026-10-10) */
   .testkit-panel .tk-manual-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:6px 0;}
   .testkit-panel .tk-manual-row select{flex:1 1 140px;}
@@ -6877,6 +6879,17 @@
   .prayer-offer .pray-card{padding:0; border:0; background:none; cursor:pointer; border-radius:12px; transition:transform .12s;}
   .prayer-offer .pray-card:hover, .prayer-offer .pray-card:focus-visible{transform:translateY(-4px); outline:2px solid var(--accent); outline-offset:2px;}
   .prayer-offer .pray-card .card-tile{width:100%; pointer-events:none;}
+  /* Shock (2026-10-10): soft electric glows over the card instead of a clipped glitch */
+  .card-tile .shock-arcs{position:absolute; inset:0; z-index:5; pointer-events:none; border-radius:inherit; overflow:hidden;}
+  .card-tile .shock-arcs i{position:absolute; left:var(--x); top:var(--y); width:var(--w); aspect-ratio:3/1; translate:-50% -50%; rotate:var(--r); opacity:0; border-radius:50%;
+    background:radial-gradient(ellipse at center, rgba(var(--c), 1) 0%, rgba(var(--c), .55) 22%, rgba(var(--c), 0) 70%),
+               linear-gradient(90deg, transparent 8%, rgba(255,255,255,1) 46%, rgba(255,255,255,1) 54%, transparent 92%) center / 100% 2px no-repeat;
+    filter:drop-shadow(0 0 4px rgba(var(--c), .9));
+    animation:shockFlicker 460ms steps(1) both;}
+  @keyframes shockFlicker{0%{opacity:0;} 10%{opacity:var(--a);} 25%{opacity:calc(var(--a)*.35);} 40%{opacity:var(--a);} 60%{opacity:calc(var(--a)*.6);} 75%{opacity:calc(var(--a)*.9);} 90%{opacity:calc(var(--a)*.3);} 100%{opacity:0;}}
+  .card-tile.shock-jitter{animation:shockJitter 360ms steps(1) both;}
+  @keyframes shockJitter{0%{translate:1px 0;} 25%{translate:-1px 0;} 50%{translate:0 1px;} 75%{translate:-1px 0;} 100%{translate:0 0;}}
+  @media (prefers-reduced-motion: reduce){ .card-tile .shock-arcs i{animation-duration:1ms;} .card-tile.shock-jitter{animation:none;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -11729,12 +11742,12 @@ void main(){
     float cA = caustic(uv*vec2(aspect, 1.0)*0.9 + vec2(t*0.01, 0.0), t*0.45);
     float cB = caustic(uv*vec2(aspect, 1.0)*1.25 + vec2(-t*0.012, t*0.006) + 3.7, t*0.38 + 11.0);
     float c = mix(cA, cB, smoothstep(0.15, 0.85, 0.5 + 0.5*sin(t*0.35)));
-    o = add(o, vec3(0.75, 0.95, 1.0), c*0.3);
+    o = add(o, vec3(0.75, 0.95, 1.0), c*0.14); // 2026-10-10 (user: water still too strong): caustics about half as bright
     o = add(o, vec3(0.0, 0.1, 0.2), smoothstep(0.4, 1.0, uv.y)*0.18);
     if(k == 6){ vec2 bq = q*10.0 + vec2(0.0, t*0.9); vec2 id = floor(bq); vec2 f = fract(bq) - 0.5; float h = hash(id);
       float r = length(f - (vec2(hash(id+2.0), 0.0) - 0.5)*0.5 - vec2(sin(t*2.0 + h*9.0)*0.08, 0.0));
-      o = add(o, vec3(0.85, 1.0, 1.0), step(0.86, h) * smoothstep(0.03, 0.0, abs(r - 0.12)) * 0.8); }
-    else o = add(o, vec3(1.0), sparks(q, 18.0, t, vec2(0.15, 0.0), 0.06, 0.12)*0.7);
+      o = add(o, vec3(0.85, 1.0, 1.0), step(0.86, h) * smoothstep(0.03, 0.0, abs(r - 0.12)) * 0.5); }
+    else o = add(o, vec3(1.0), sparks(q, 18.0, t, vec2(0.15, 0.0), 0.06, 0.12)*0.4);
   } else if(k == 2 || k == 8 || k == 10){ // fire / foundry / storm: lava glow, smoke, rising embers
     float g = fbm(vec2(uv.x*aspect*2.0, uv.y*3.0 - t*0.25));
     float glow = smoothstep(0.45, 1.0, uv.y) * (0.55 + 0.45*sin(t*1.3 + g*6.0));
@@ -11742,6 +11755,15 @@ void main(){
     o = add(o, vec3(0.08, 0.05, 0.05), smoothstep(0.5, 0.0, uv.y) * fbm(uv*vec2(aspect*2.0, 2.0) + vec2(t*0.03, t*0.06)) * 0.45);
     float e = sparks(q, 11.0, t, vec2(0.12, 0.55), 0.09, 0.28) + sparks(q, 20.0, t, vec2(-0.1, 0.8), 0.07, 0.2);
     o = add(o, vec3(1.0, 0.6, 0.2), e);
+    // Foundry lava dust (2026-10-10, user: "embers like lava dust in Terraria, with bright shaders, not as strong as lens
+    // flares"): tiny bright embers rising and wobbling, each with a soft orange glow around it.
+    if(k == 8){
+      vec2 wq = q + vec2(sin(q.y*9.0 + t*1.7)*0.012, 0.0);
+      float core = sparks(wq, 30.0, t, vec2(0.06, 0.42), 0.07, 0.22) + sparks(wq + 1.7, 44.0, t, vec2(-0.05, 0.6), 0.06, 0.18);
+      float halo = sparks(wq, 30.0, t, vec2(0.06, 0.42), 0.34, 0.22)*0.32 + sparks(wq + 1.7, 44.0, t, vec2(-0.05, 0.6), 0.3, 0.18)*0.26;
+      o = add(o, vec3(1.0, 0.93, 0.6), core*1.1);
+      o = add(o, vec3(1.0, 0.48, 0.12), halo);
+    }
     if(k == 10){ float slot = floor(t*1.5); float fl = step(0.94, hash(vec2(slot, 3.0))) * exp(-fract(t*1.5)*7.0);
       o = add(o, vec3(0.85, 0.9, 1.0), fl*0.45); }
   } else if(k == 3){ // caves: fog, spores, and a lantern that follows the pointer
@@ -11818,7 +11840,7 @@ void main(){
         float sb = pow(max(dot(normalize(vec3((b1 - b2)*34.0, (b1 - b3)*34.0, 1.0)), H), 0.0), 36.0);
         float mixAB = 0.5 + 0.5*sin(t*0.42);
         float spec = mix(sa, sb, smoothstep(0.15, 0.85, mixAB)) * (0.4 + 0.6*pool);
-        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.14;
+        outc.rgb += vec3(0.85, 0.95, 1.0) * spec * 0.08; // 2026-10-10: softer still
         outc.a += 0.05;                            // a damp darkening
       } else if(k == 2 || k == 8 || k == 10){    // ash: glowing cracks that breathe
         float c = abs(fbm(gq*0.9) - 0.5);
@@ -31072,13 +31094,14 @@ function fallDeathVfx(el, ms){
   // animations stitched together"): one continuous topple under gravity (a slow lean that keeps
   // accelerating until the card lies flat), and everything else (leaves, dust, thump) lands on
   // that impact frame. After impact the card just settles and fades out where it fell.
+  // 2026-10-10 (user: "the animation should be smooth from flat face up, to flat 'down'. Right now it looks like it's
+  // split into two"): one single topple from upright to lying flat (90°), accelerating like a fall, with no bounce
+  // after impact; then it just fades where it lies.
   if(hasGsap()){
-    const fall = ms*0.78/1000;
+    const fall = ms*0.8/1000;
     gsap.timeline()
-      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:86, y:16, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power3.in'})
+      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:90, y:14, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power2.in'})
       .add(()=>{ leafPuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
-      .to(t, {rotationX:80, duration:.07, ease:'power1.out'})
-      .to(t, {rotationX:86, duration:.08, ease:'power1.in'})
       .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
   }
   return true;
@@ -31194,9 +31217,23 @@ function deckShuffleVfx(decks){
   });
 }
 // Chromatic glitch on Shock (2026-10-06, effects "Coming next").
+// 2026-10-10 (user: "I like 'Shock'. But it needs to be less jarring. So maybe instead of masking off parts of it,
+// it's high opacity (10-25%) electric gradients laid atop of the card in several places"): no more clipping. Three to
+// four soft electric glows (cyan, violet, white streaks) flicker on top of the card at random spots for ~half a
+// second, with a 1px jitter.
 function glitchVfx(el){
   const t = el && (el.querySelector('.card-tile') || el); if(!t) return;
-  t.classList.remove('glitch'); void t.offsetWidth; t.classList.add('glitch'); setTimeout(()=> t.classList.remove('glitch'), 420);
+  t.querySelectorAll('.shock-arcs').forEach(n=> n.remove());
+  const box = document.createElement('div'); box.className = 'shock-arcs'; box.setAttribute('aria-hidden', 'true');
+  const n = 3 + Math.floor(Math.random()*2), hues = ['120,220,255', '170,140,255', '235,245,255', '90,200,255'];
+  box.innerHTML = Array.from({length:n}, (_, i)=>{
+    const x = (12 + Math.random()*76).toFixed(0), y = (10 + Math.random()*80).toFixed(0), rot = (Math.random()*180).toFixed(0);
+    const a = (0.14 + Math.random()*0.12).toFixed(2), w = (50 + Math.random()*40).toFixed(0), d = (i*60 + Math.random()*60).toFixed(0);
+    return `<i style="--x:${x}%; --y:${y}%; --r:${rot}deg; --a:${a}; --w:${w}%; --c:${hues[i % hues.length]}; animation-delay:${d}ms"></i>`;
+  }).join('');
+  t.appendChild(box);
+  t.classList.remove('shock-jitter'); void t.offsetWidth; t.classList.add('shock-jitter');
+  setTimeout(()=>{ box.remove(); t.classList.remove('shock-jitter'); }, 640);
 }
 // Feather burst (2026-10-06): a flying unit sheds a few feathers when it's hit.
 function featherBurst(el){
