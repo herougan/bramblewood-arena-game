@@ -2,6 +2,52 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10 (night)
+- **Cards:**
+  - **Normal art is the default:** the art sits in a window inside a rarity-tinted walnut frame, with a solid plate under it for the stats. A card can be set to **Extended art** (to the edges) in the card editor.
+  - The card tooltip no longer says "Costs N lumber to play".
+- **Anti-Air N** (new skill, 🪃): never misses a Flying unit, and hits Flying units for N more.
+  - **Otter Centurion** gets Anti-Air 1 and becomes 2/8 (it was 3/9), so Otters vs Hummingbirds stays ~58%.
+  - On Otter Kit it would have broken the tutorial for Hummingbird players.
+- **Wandering Traveller:** 6/11, Wait 3, +1 Lumber when it's ready.
+- **Ranks:**
+  - Sub-bosses and bosses can earn **SS** (no castle damage) and **SSS** (no damage and a win by round 8).
+  - Top ranks pay extra: S +25%, SS +50%, SSS +100%.
+  - From map 5 on, an S-or-better win has a 12% chance to turn up a card from that map you don't own, once per map.
+- **Defeat screen:** the Victory card at dusk (slate and moonlight, drifting ash), plus a quote from Sun Tzoo, Isaac Newt, Abraham Lynxcoln and 21 more.
+- **Leaders:**
+  - your leader's light stops at the middle of the field;
+  - the rival's leader gets a crimson pillar, a banner and a low rumble.
+- **Clearer effects:**
+  - stat gains pop in gold (and the stat swells), stat losses in violet (and it shrinks);
+  - a crackling aura flares behind a card whose effect triggers.
+- **Battle:**
+  - fast-forward shows 1 to 4 arrows;
+  - the victory wave is twice as quick;
+  - a forfeit's sign holds 0.1 s less.
+- **Energy** refills 1 every 5 minutes. Fight, Fight again, Play again and Next are greyed out without enough Energy, and re-enable as it refills.
+- **Skirmish card:**
+  - the enemy deck level is coloured by the gap to yours (your own number is gone);
+  - the deck list shows after a Rank B clear, with no Show/Hide button.
+- **Maps:**
+  - Smugglers' Grotto has a sunlit "Way out" linked to the first fight;
+  - caves are about 50% darker away from your torch;
+  - the previous/next map arrows sit in the bottom corners.
+- **Skirmish editor:** the content scrolls above a fixed footer, and Battle type / out-of-moves sit in their own "This skirmish's battle" box.
+- **Home:**
+  - Deck is now **Armoury**;
+  - once the Arena opens, it takes the Codex's tile and the Codex becomes a pinned note;
+  - Community opens a Community page with Ranking / Friends / Guild tabs.
+- **Arena and Test lab** go full window like Conquest, with the tabs at the bottom centre. A 🏟️ Arena button sits beside 🏠 Home on the map.
+- **Notices (quests):**
+  - three daily notices at midnight and one more at 6 AM, noon and 6 PM, each counting from when it's posted;
+  - ranks D to SSS with the reward on the card; A and up show their letter, and S to SSS are rare and pay a lot;
+  - one free swap a day;
+  - a claimed note keeps its size.
+- **Laurels 🌿:** a new material, earned only in PvP Arena fights (3 a win, 2 a draw, 1 a loss). Arena Leaves are now under 5 and Dust is 0 or 1. The results screen no longer scrolls for nothing.
+- **VS screen** shows both deck levels.
+- **Scrollbars:** a thin walnut thumb.
+
 ## 2026-10-10 (evening)
 - **Victory: cards no longer fly right.** The round's last board update ran a slide animation just before the match ended; it's skipped when the round ends the match.
 - **Bounty bubble:** an enemy bounty card shows a reward-coloured "+1 🪵 Lumber" bubble above it (instead of the 🏆 badge) while you hold a card, and for 3 seconds as your turn starts.

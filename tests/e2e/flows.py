@@ -20,7 +20,8 @@ async def fresh(b, w=1366, h=860):
     pg=await b.new_page(viewport={'width':w,'height':h}); errs=[]
     pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
     await pg.add_init_script(INIT); await pg.goto(URL); await pg.wait_for_timeout(1300)
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); 1")
+    # Energy refills 1 every 5 minutes now (2026-10-10), so each fresh page tops it up instead of relying on regen.
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); saveEnergyState({current:ENERGY_MAX, lastRegenAt:Date.now()}); refreshEnergyHud(); 1")
     return pg, errs
 async def nav_ok(pg, label):
     if await pg.evaluate("currentTab")=='home': 

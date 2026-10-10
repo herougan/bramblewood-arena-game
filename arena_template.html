@@ -7077,6 +7077,69 @@
   .skirmish-editor > .se-actions{position:static !important; flex:none; margin-top:0 !important; padding-top:12px !important; border-top:1px solid var(--surface-border);}
   .skirmish-editor .se-battle{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px 14px; padding:8px 12px 12px;}
   .skirmish-editor .se-battle label{display:flex; flex-direction:column; gap:4px;}
+
+  /* Arena and Test lab full window (2026-10-10): the Conquest frame — no header, tabs pinned bottom-centre, the page
+     scrolls in its own pane over a dark wood backdrop. */
+  body.play-full #playSubBody{position:fixed; inset:0; z-index:50; overflow-y:auto; overscroll-behavior:contain;
+    padding:64px max(16px, calc((100vw - 1100px)/2)) calc(96px + env(safe-area-inset-bottom, 0px));
+    background:radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255,214,140,.10), rgba(0,0,0,0) 60%), linear-gradient(180deg, #3a2716, #1f150b 70%);}
+  body.play-full #view-play .play-subtabs-actions{position:fixed !important; top:12px !important; right:16px !important; z-index:60 !important;}
+  body.play-full #view-play .play-subtabs-actions .home-nav-btn{font-size:0; width:38px; height:38px; padding:0; gap:0; position:relative; display:block; border-radius:50%;}
+  body.play-full #view-play .play-subtabs-actions .home-nav-btn .tab-emoji{font-size:18px; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); line-height:1; margin:0;}
+  /* Home / Arena circles on the map: the glyph sits dead centre (2026-10-10, user: "Align them in their circles"). */
+  #appWrap.cq-hud:not(.in-match) #view-play .play-subtabs-actions .home-nav-btn{position:relative; display:block !important; border-radius:50%;}
+  #appWrap.cq-hud:not(.in-match) #view-play .play-subtabs-actions .home-nav-btn .tab-emoji{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);}
+  body.play-full #view-play .play-subtabs-row{z-index:61 !important;}
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row{max-width:calc(100vw - 16px); overflow-x:auto; scrollbar-width:none;}
+  body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row::-webkit-scrollbar{display:none;}
+
+  /* Codex note on Home once the Arena takes its tile (2026-10-10) */
+  .home-note.note-codex{left:-146px; top:150px; rotate:4deg;}
+  @media (max-width:860px){ .home-note.note-codex{position:static; rotate:0deg; grid-column:1 / -1;} }
+  /* Community page switcher (2026-10-10) */
+  .community-tabs{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; max-width:1100px; margin:8px auto 12px; padding:0 4px;}
+  .community-tabs[hidden]{display:none;}
+  .community-tabs .community-title{margin:0; font-family:'Baloo 2',system-ui,sans-serif;}
+  .community-tabs .community-seg{display:flex; gap:4px; padding:4px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .community-tabs .tk-speed-btn{border-radius:999px; padding:7px 16px;}
+
+  /* VS screen deck levels (2026-10-10) */
+  .vs-lvl{display:inline-flex; flex-direction:column; align-items:center; margin-top:10px; padding:6px 16px; border-radius:12px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); color:#fff; line-height:1;}
+  .vs-lvl small{font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; opacity:.85;} .vs-lvl b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif;}
+  .vs-lvl.lv-green{background:#2e7d32; border-color:#81c784;} .vs-lvl.lv-ltgreen{background:#9ee59a; color:#14381a;} .vs-lvl.lv-orange{background:#e8862a; color:#2e1400;}
+  .vs-lvl.lv-red{background:#d63c32;} .vs-lvl.lv-darkred{background:#7a1010;} .vs-lvl.lv-pink{background:#f06aa8; color:#3a0820;} .vs-lvl.lv-ltpink{background:#ffc4de; color:#4a1430;}
+
+  .winloss-card.is-glory > .wl-rays-clip{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;}
+  .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
+
+  /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
+  .qn-note-rw{display:flex; flex-wrap:wrap; gap:4px; margin-top:auto;}
+  .qn-note-rw .qn-rw{font-size:11.5px; padding:1px 6px; border-radius:999px; background:rgba(90,60,30,.12);}
+  .qn-foot{display:flex; align-items:center; gap:6px; min-height:28px;}
+  .qn-foot .qn-claim{align-self:auto;}
+  .qn-swap{margin-left:auto; font:800 11.5px 'Nunito',system-ui,sans-serif; padding:4px 9px; border-radius:999px; border:1px solid rgba(90,60,30,.35); background:rgba(255,255,255,.35); color:#5a3a1a; cursor:pointer;}
+  .qn-swap:hover{background:rgba(255,255,255,.6);}
+  .qn-weekly .qn-note.is-claimed::after{content:""; display:block; height:28px;}
+  .qn-rank{position:absolute; top:6px; right:8px; min-width:26px; padding:1px 6px; border-radius:6px; text-align:center; font:900 14px/1.2 'Baloo 2',system-ui,sans-serif; color:#fff; box-shadow:0 2px 4px rgba(0,0,0,.25);}
+  .qn-rank-A{background:#d9a62a;} .qn-rank-S{background:linear-gradient(135deg,#ff6fc8,#7a6bff);}
+  .qn-rank-SS{background:linear-gradient(135deg,#ffcf4a,#ff7a3a);} .qn-rank-SSS{background:linear-gradient(135deg,#ff4f7b,#ffd36e,#ff8a3a); box-shadow:0 0 10px rgba(255,140,60,.8);}
+  .qn-note.rank-S, .qn-note.rank-SS, .qn-note.rank-SSS{box-shadow:0 0 0 2px rgba(255,190,80,.7), 0 0 18px rgba(255,170,60,.45), 0 6px 12px rgba(0,0,0,.25) !important;}
+
+  /* Scrollbars (2026-10-10, user: "a bit more thematic... Just something subtle"): a thin walnut thumb on a clear track. */
+  html{scrollbar-color:rgba(138,98,52,.75) transparent;}
+  *{scrollbar-width:thin;}
+  ::-webkit-scrollbar{width:10px; height:10px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(180deg, #b08a56, #7a5631); border-radius:999px; border:2px solid transparent; background-clip:padding-box;}
+  ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, #c99e62, #8d6438); background-clip:padding-box; border:2px solid transparent;}
+  ::-webkit-scrollbar-corner{background:transparent;}
+
+  /* Normal vs extended art (2026-10-10, user: "All cards by default are normal art, meaning, there's a thicker border,
+     especially at the bottom"): normal art sits in a window inside a rarity-tinted walnut frame, with a solid plate
+     at the bottom for the stats; extended art (artExtended on the card) keeps running to the edges. */
+  .card-tile.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 26%, #1c1209) 100%) !important;}
+  .card-tile.art-framed > .ico{inset:5% 6% 22% 6% !important; border-radius:5px !important; box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 1px 0 1px rgba(255,236,190,.12);}
+  .card-tile.art-framed > .rarity-band{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.12)) !important; box-shadow:none !important; height:22% !important;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

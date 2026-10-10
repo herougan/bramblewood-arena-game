@@ -70,7 +70,8 @@ async def main():
         check(any('Workshop' in l for l in links), 'Settings should link to the Workshop')
         await pg.click('#settingsBtn')
         await pg.click('#homeCommunityBtn'); await pg.wait_for_timeout(150)
-        check(await pg.evaluate("!document.getElementById('homeCommunityMenu').hidden"), 'Community menu should open')
+        check(await pg.evaluate("currentTab==='ranking' && !document.getElementById('communityTabs').hidden"), 'Community should open the community page with its switcher')
+        await pg.evaluate("switchTab('home'); 1"); await pg.wait_for_timeout(150)
         # 3: card levels
         await pg.evaluate("myCardLevels['bee-drone']=3; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
         check(await pg.evaluate("[...document.querySelectorAll('#codexGrid .levelbadge')].every(e=> getComputedStyle(e).display==='none')"), 'card levels should be hidden in the Codex')

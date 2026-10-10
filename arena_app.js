@@ -943,7 +943,7 @@ const FIELD_TEXT = {
 function describeEffects(def, liveCard){
   const lines = [];
   const e = def.effects || {};
-  if(def.cost) lines.push(`Costs ${def.cost} lumber to play.`); // 2026-09-22: cards are paid for in Lumber now, not Gold
+  // 2026-10-10 (user): no "Costs N lumber to play" line; the cost badge on the card already says it.
   if(def.field){ // Field cards (2026-10-09)
     const F = FIELD_TEXT;
     const f = F[def.field.id] || {};
@@ -3520,7 +3520,7 @@ function cardTileHTML(d, opts){
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
   const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
   if(live){
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?'':'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}
       ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
       ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -3535,7 +3535,7 @@ function cardTileHTML(d, opts){
       ${live.bottomHTML||''}
     </div>`;
   }
-  return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?'':'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
@@ -4626,6 +4626,7 @@ function renderEditorInner(){
            Rarity is deliberately NOT alphabetized in the dropdown itself (2026-09-17, "make all
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
+      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal (framed)</option><option value="extended" ${c.artExtended?'selected':''}>Extended (to the edges)</option></select></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -5400,6 +5401,7 @@ function readEditorFormIntoCard(){
   const fTestEl = document.getElementById('fTest');
   c.test = fTestEl ? fTestEl.checked : !!c.test;
   c.rarity = document.getElementById('fRarity').value;
+  { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
   // 2026-09-27, item 9: no editor field for this any more (see the removed markup's own
   // comment above) — keep whatever value the card already carries instead of reading a
   // now-nonexistent #fSplashEffect input.
@@ -5799,6 +5801,10 @@ const CURRENCY_META = {
   // kronne"): Estonian for crowns. From the Golden Bramble Case; what it buys is still to be decided. Kept in this
   // browser for now (the cloud currency table has no column for it yet).
   kroon: {glyph:'👑', label:'Krooni'},
+  // Laurels (2026-10-10, user: "Let's invent a new materia gained from arena fights (PVP)"): the victor's wreath,
+  // earned only by fighting other players in the Arena (3 a win, 2 a draw, 1 a loss). Local like Krooni for now;
+  // what they buy is open (a Laurel shelf in Shops, cosmetic frames, Arena-only cards).
+  laurels: {glyph:'🌿', label:'Laurels'},
 };
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
@@ -6187,7 +6193,7 @@ async function cloudPullState(){
         // Online Raid is already a signed-in, cloud-backed feature, so its own gating resource
         // should follow a player across devices the same way gold/gems/dust/metal already do.
         raidPoints: cur.raid_points!=null ? Number(cur.raid_points) : 3, raidPointsUpdatedAt: cur.raid_points_updated_at || null,
-        kroon: Number((myCurrencies && myCurrencies.kroon) || 0)}; // local-only until the cloud table gets a column
+        kroon: Number((myCurrencies && myCurrencies.kroon) || 0), laurels: Number((myCurrencies && myCurrencies.laurels) || 0)}; // local-only until the cloud table gets a column
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -6539,7 +6545,7 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0};
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -7901,7 +7907,7 @@ function deckBreakdownHTML(deckIds, defs){
 }
 function renderPlay(){
   const root = document.getElementById('view-play');
-  document.body.classList.remove('conquest-full');
+  document.body.classList.remove('conquest-full', 'play-full');
   if(!matchState){
     const wrap = document.getElementById('appWrap');
     if(wrap) wrap.classList.remove('in-match'); // task #94: back to the normal-width layout outside a match
@@ -7954,6 +7960,7 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
+          ${tabOpen('arena') && playSubTab !== 'arena' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
             <div class="settings-panel" id="settingsPanelPlaySub" hidden>
@@ -7992,6 +7999,8 @@ function renderPlay(){
     root.querySelectorAll('.play-subtabs .tab-btn').forEach(b=> b.setAttribute('aria-selected', String(b.getAttribute('data-playtab')===playSubTab)));
     const backBtn = document.getElementById('homeNavBtnPlay');
     if(backBtn) backBtn.addEventListener('click', ()=> switchTab('home'));
+    const arenaBtn = document.getElementById('arenaNavBtnPlay');
+    if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     wireSettingsButton('PlaySub');
     refreshEnergyHud(); // paints the new Play-tab Energy pill immediately instead of waiting for its first 1s tick
     // Item #4 (2026-09-18): "The Conquest explanation can be removed. Only when hovering over
@@ -8003,10 +8012,13 @@ function renderPlay(){
     if(conquestTabBtn) attachDelayedTooltip(conquestTabBtn, 'Fight your way across a map of preset AI skirmishes with the deck and Bramble you set up in the Deck menu. Beat a Raid Boss to unlock it permanently in the Raid tab.');
     const body = document.getElementById('playSubBody');
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
-    if(playSubTab==='arena'){ renderArenaSubTab(body); return; }
+    // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
+    // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
+    if(playSubTab==='arena' || playSubTab==='sandbox'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
-    if(playSubTab==='sandbox'){ renderSandboxSubTab(body); return; }
+    if(playSubTab==='sandbox'){ renderSandboxSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='conquest'){ renderConquestSubTab(body); return; }
     renderPlayerSubTab(body);
     return;
@@ -9558,9 +9570,10 @@ function loadQuestState(){
   let q = null; try{ q = JSON.parse(localStorage.getItem(QUESTS_KEY)||'null'); }catch(e){}
   q = q || {};
   const day = localDayKey(), week = weekKey();
-  if(q.day!==day) { q.day = day; q.daily = {}; q.claimedDaily = []; }
+  if(q.day!==day) { q.day = day; q.daily = {}; q.claimedDaily = []; q.dailyList = []; q.swapUsed = false; }
   if(q.week!==week){ q.week = week; q.weekly = {}; q.claimedWeekly = []; }
   q.daily = q.daily||{}; q.weekly = q.weekly||{}; q.claimedDaily = q.claimedDaily||[]; q.claimedWeekly = q.claimedWeekly||[];
+  const before = JSON.stringify(q.dailyList||null); syncDailyNotices(q); if(JSON.stringify(q.dailyList) !== before) saveQuestState(q);
   return q;
 }
 function saveQuestState(q){ try{ localStorage.setItem(QUESTS_KEY, JSON.stringify(q)); }catch(e){} }
@@ -9575,6 +9588,54 @@ function bumpQuestCounter(counter, n){
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
   refreshQuestBadge(); soonCheckMilestones();
 }
+// ---- Daily notices (2026-10-10, user: "You start with 3 quests at midnight, you get 1 top up quest at 6AM, 12[PM], and
+// 6PM" + "Put the rewards on the quest card itself. A harder quest has higher rewards. Tiers = D, C, B, A, S, SS, SSS ...
+// if it's an A - SSS quest, it IS indeed displayed on the quest card. The difference in rewards between D to B is not
+// much ... C/B is the average quest rank. S-SSS has an extremely low chance of appearing but with extremely high
+// rewards" + "the ability to swap a quest for free once (while it's not accomplished yet)"). Each notice counts from the
+// moment it's posted, so a 6 PM notice needs fresh work. One free swap a day.
+const QUEST_RANKS = ['D','C','B','A','S','SS','SSS'];
+const QUEST_RANK_WEIGHT = {D:22, C:30, B:30, A:13.5, S:3.5, SS:0.8, SSS:0.2}; // percent
+const QUEST_RANK_REWARD = {
+  D:{gold:20, dust:2, xp:25}, C:{gold:25, dust:3, xp:30}, B:{gold:30, dust:4, xp:40}, A:{gold:55, dust:7, xp:70},
+  S:{gold:180, dust:25, gems:6, xp:180}, SS:{gold:360, dust:50, gems:15, xp:360}, SSS:{gold:750, dust:100, gems:30, metal:3, xp:750}};
+const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
+const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
+const DAILY_QUEST_KINDS = [
+  {counter:'energyConquest', goals:[10,20,30,50,80,120,160], label:g=> `Use ${g} ⚡ Energy on Conquest fights`},
+  {counter:'unitsDefeated', goals:[6,10,15,25,40,60,90], label:g=> `Defeat ${g} enemy units`},
+  {counter:'wins', goals:[1,2,3,5,8,12,15], label:g=> `Win ${g} match${g===1?'':'es'}`},
+  {counter:'conquestWins', goals:[1,2,3,4,6,9,12], label:g=> `Clear ${g} Conquest fight${g===1?'':'s'}`},
+  {counter:'pvpTickets', goals:[1,2,3,5,7,9,10], label:g=> `Use ${g} 🎟️ PvP ticket${g===1?'':'s'}`, needs:'arena'},
+  {counter:'pvpWins', goals:[1,1,2,3,5,7,9], label:g=> `Win ${g} PvP match${g===1?'':'es'}`, needs:'arena'},
+  {counter:'raidsJoined', goals:[1,1,2,2,3,4,5], label:g=> `Join ${g===1?'a Raid':g+' Raids'}`, needs:'raid'},
+];
+function rollDailyQuest(day, slot, roll){
+  const r = seededRng(hashStr(`dq:${day}:${slot}:${roll}`));
+  let x = r()*100, rank = 'D'; for(const k of QUEST_RANKS){ x -= QUEST_RANK_WEIGHT[k]; if(x < 0){ rank = k; break; } }
+  const kinds = DAILY_QUEST_KINDS.filter(k=> !k.needs || featureUnlocked(k.needs));
+  const k = kinds[Math.floor(r()*kinds.length)], goal = k.goals[QUEST_RANKS.indexOf(rank)];
+  return {id:`dq-${slot}-${roll}`, slot, roll, counter:k.counter, goal, rank, label:k.label(goal)};
+}
+// Fill in every notice whose hour has come; each starts counting from now.
+function syncDailyNotices(q){
+  q.dailyList = Array.isArray(q.dailyList) ? q.dailyList : [];
+  const hour = new Date().getHours();
+  DAILY_QUEST_SLOTS.forEach((h, slot)=>{
+    if(hour < h || q.dailyList.some(x=> x.slot === slot)) return;
+    const qd = rollDailyQuest(q.day, slot, 0); qd.base = (q.daily||{})[qd.counter]||0; q.dailyList.push(qd);
+  });
+  return q;
+}
+function dailyNoticeProgress(q, x){ return Math.max(0, Math.min(x.goal, ((q.daily||{})[x.counter]||0) - (x.base||0))); }
+function nextNoticeMs(){ const n = new Date(), h = n.getHours(); const nh = DAILY_QUEST_SLOTS.find(x=> x > h); if(nh == null) return null; const t = new Date(n.getFullYear(), n.getMonth(), n.getDate(), nh); return t - n; }
+function swapDailyNotice(id){
+  const q = loadQuestState(); if(q.swapUsed) return false;
+  const i = q.dailyList.findIndex(x=> x.id === id); if(i < 0) return false;
+  const old = q.dailyList[i]; if(q.claimedDaily.includes(id) || dailyNoticeProgress(q, old) >= old.goal) return false;
+  const nq = rollDailyQuest(q.day, old.slot, (old.roll||0) + 1); nq.base = q.daily[nq.counter]||0;
+  q.dailyList[i] = nq; q.swapUsed = true; saveQuestState(q); return true;
+}
 // The tiers a player can currently see: every fully-claimed tier plus the first unfinished one.
 function visibleQuestTiers(kind, q){
   const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
@@ -9587,14 +9648,21 @@ function visibleQuestTiers(kind, q){
 }
 function claimableQuestCount(){
   const q = loadQuestState(); let n = 0;
-  ['daily','weekly'].forEach(kind=>{
-    const counts = q[kind], claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
-    visibleQuestTiers(kind, q).forEach(t=> t.quests.forEach(x=>{ if(!claimed.includes(x.id) && (counts[x.counter]||0) >= x.goal) n++; }));
-  });
+  q.dailyList.forEach(x=>{ if(!q.claimedDaily.includes(x.id) && dailyNoticeProgress(q, x) >= x.goal) n++; });
+  visibleQuestTiers('weekly', q).forEach(t=> t.quests.forEach(x=>{ if(!q.claimedWeekly.includes(x.id) && (q.weekly[x.counter]||0) >= x.goal) n++; }));
   return n;
 }
 function claimQuest(kind, id){
   const q = loadQuestState();
+  if(kind==='daily'){
+    const x = q.dailyList.find(n=> n.id === id); if(!x || q.claimedDaily.includes(id) || dailyNoticeProgress(q, x) < x.goal) return;
+    q.claimedDaily.push(id); saveQuestState(q);
+    const rw = QUEST_RANK_REWARD[x.rank] || QUEST_RANK_REWARD.C;
+    Object.entries(rw).forEach(([k,v])=>{ if(k !== 'xp') grantCurrency(k, v); });
+    awardXp(rw.xp || 20, 'quest');
+    showToast(`📜 ${QUEST_SHOWN_RANKS.has(x.rank) ? 'Rank ' + x.rank + ' notice! ' : 'Quest reward: '}${Object.entries(rw).filter(([k])=> k !== 'xp').map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}`, 'ok');
+    refreshQuestBadge(); return;
+  }
   const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
   const tier = visibleQuestTiers(kind, q).find(t=> t.quests.some(x=> x.id===id)); if(!tier) return;
   const quest = tier.quests.find(x=> x.id===id);
@@ -9618,19 +9686,41 @@ function questsModalHTML(){
   const now = new Date(), nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay()+6)%7)));
   const rewardChips = r=> Object.entries(r).map(([k,v])=> `<span class="qn-rw" title="${escapeAttr((CURRENCY_META[k]||{label:k}).label)}">${(CURRENCY_META[k]||{}).glyph||''} ${v}</span>`).join('');
   let noteN = 0;
+  const dailyBoard = ()=>{
+    const nx = nextNoticeMs();
+    const notes = q.dailyList.slice().sort((a,b)=> a.slot - b.slot).map(x=>{
+      const v = dailyNoticeProgress(q, x), done = v >= x.goal, got = q.claimedDaily.includes(x.id), rot = ((noteN++ * 37) % 5) - 2;
+      const rw = QUEST_RANK_REWARD[x.rank] || QUEST_RANK_REWARD.C, shown = QUEST_SHOWN_RANKS.has(x.rank);
+      const canSwap = !q.swapUsed && !done && !got;
+      return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg">
+        <span class="qn-pin" aria-hidden="true"></span>
+        ${shown ? `<span class="qn-rank qn-rank-${x.rank}" title="A rare Rank ${x.rank} notice">${x.rank}</span>` : ''}
+        <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
+        <div class="qn-label">${escapeHtml(x.label)}</div>
+        <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
+        <div class="qn-note-rw">${rewardChips(Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')))}<span class="qn-rw" title="Experience">⭐ ${rw.xp}</span></div>
+        <div class="qn-foot">${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="daily" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+          ${canSwap ? `<button type="button" class="qn-swap" data-swap-id="${x.id}" title="Swap this notice for another, free once a day">🔄 Swap</button>` : ''}</div>
+      </div>`; }).join('');
+    return `<section class="qn-board qn-daily">
+      <div class="qn-sign"><b>Daily</b><span>${nx != null ? `next notice in ${resetIn(nx)}` : `new notices in ${resetIn(msUntilLocalMidnight())}`}${q.swapUsed ? ' · swap used' : ' · 1 free swap'}</span></div>
+      <div class="qn-notes">${notes}</div>
+    </section>`;
+  };
   const section = (kind, title, ms)=>{
     const counts = q[kind], claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
     const tiers = visibleQuestTiers(kind, q);
     const hidden = QUEST_TIERS[kind].length - tiers.length;
     return `<section class="qn-board qn-${kind}">
       <div class="qn-sign"><b>${title}</b><span>resets in ${resetIn(ms)}</span></div>
-      ${tiers.map((t,ti)=> `<div class="qn-tier"><div class="qn-tier-k">Tier ${ti+1}<span class="qn-tier-rw">each ${rewardChips(t.reward)}</span></div>
+      ${tiers.map((t,ti)=> `<div class="qn-tier"><div class="qn-tier-k">Tier ${ti+1}</div>
         <div class="qn-notes">${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id); const rot = ((noteN++ * 37) % 5) - 2;
           return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg">
             <span class="qn-pin" aria-hidden="true"></span>
             <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
             <div class="qn-label">${escapeHtml(x.label)}</div>
             <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
+            <div class="qn-note-rw">${rewardChips(t.reward)}</div>
             ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
           </div>`; }).join('')}</div>
       </div>`).join('')}
@@ -9646,7 +9736,7 @@ function questsModalHTML(){
     <div class="modal-head-row qn-head"><h2 id="qsTitle">📌 Notices</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
     <p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
     <div class="qn-cork">
-      ${section('daily', 'Daily', msUntilLocalMidnight())}
+      ${dailyBoard()}
       ${section('weekly', 'Weekly', nextMon - now)}
     </div>
     <section class="qn-medals-wrap"><div class="qn-sign qn-sign-dark"><b>Medals</b><span>lifetime stats: for bragging, not power</span></div><div class="qn-medals">${medals}</div></section>
@@ -9665,6 +9755,7 @@ function openQuestsModal(){
   document.getElementById('qsClose').onclick = close;
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); }));
+  overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
 }
 function refreshQuestBadge(){
   const n = claimableQuestCount();
@@ -9995,9 +10086,11 @@ function settlePvpAfterMatch(m){
   myRating = newRating; saveRatingLocal(); cloudPushRating();
   m.pvpRatingDelta = delta;
   // Deliberately low raw rewards (MASTER item 10): the big rewards come from quests.
-  const g = won ? 18 : 6, d = won ? 2 : 0;
-  grantCurrency('gold', g); if(d) grantCurrency('dust', d);
-  m.pvpRewardEarned = {gold:g, dust:d};
+  // 2026-10-10 (user: "a new material gained from arena fights (PVP). Dust and leaves gained should be minimal. Dust
+  // should be 0-1, most of the time 0. Leaves should be <5"): Laurels are the Arena's own reward.
+  const g = won ? 4 : m.winner===0 ? 2 : 1, d = (won && Math.random() < 0.25) ? 1 : 0, l = won ? 3 : m.winner===0 ? 2 : 1;
+  grantCurrency('gold', g); if(d) grantCurrency('dust', d); grantCurrency('laurels', l);
+  m.pvpRewardEarned = {gold:g, dust:d, laurels:l};
 }
 // Async Arena (item #62): a match that persists in this browser (localStorage) rather than
 // only in memory, so leaving the tab and coming back — even after a reload — offers a
@@ -11356,6 +11449,13 @@ function startTipTicker(el, tips){
     setTimeout(show, 14000);
   };
   show();
+}
+function placePlayFullHud(){
+  const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'); if(!wrap || !view) return;
+  wrap.classList.add('cq-hud');
+  const tabs = view.querySelector('.play-subtabs-row .play-subtabs');
+  wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
+  view.style.setProperty('--cq-top', '0px');
 }
 function placeConquestHud(){
   const wrap = document.getElementById('appWrap'), view = document.getElementById('view-play'), layout = document.getElementById('conquestLayout');
@@ -15391,7 +15491,7 @@ function renderMatchUI(){
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && m.winner===1) ? '<div class="wl-rays" aria-hidden="true"></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
+        ${(!isPc && m.winner===1) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}
@@ -20080,6 +20180,17 @@ function showVsScreen(left, right){
     el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
     const side = (p, cls)=> `<div class="vs-side ${cls}">${avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>`;
     el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
+    // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
+    // coloured by the same gap scale as the skirmish card.
+    try{
+      const m = matchState, defs = getCardDefs();
+      const mine = left.level != null ? left.level : mainDeckLevel(myDeckCounts, myLeaderId);
+      let theirs = right.level;
+      if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
+      const chip = (n, cls)=> `<div class="vs-lvl ${cls}"><small>Deck</small><b>Lv ${n}</b></div>`;
+      if(mine) el.querySelector('.vs-left').insertAdjacentHTML('beforeend', chip(mine, 'is-mine'));
+      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine)));
+    }catch(e){}
     document.body.appendChild(el);
     let done = false;
     const finish = ()=>{ if(done) return; done = true; el.classList.add('vs-out'); setTimeout(()=>{ el.remove(); resolve(); }, 320); };
@@ -20600,6 +20711,7 @@ function matchStatsHTML(m){
   const pvpHTML = (m.mode==='pvp' && pReward) ? `<div class="winloss-conquest-rewards">
       <span class="hud-pill ${m.pvpRatingDelta>=0?'raid-rating-up':'raid-rating-down'}">${m.pvpRatingDelta>=0?'▲':'▼'} ${Math.abs(m.pvpRatingDelta)} rating</span>
       <span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(pReward.gold)} Maple Leaves</span>
+      ${pReward.laurels ? `<span class="hud-pill cur-laurels" title="Laurels: earned only in Arena fights against other players">🌿 ${rewardCountSpan(pReward.laurels)} Laurels</span>` : ''}
       ${pReward.dust ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(pReward.dust)} Dust</span>` : ''}
       <span class="hud-pill">🎟️ ${pvpTicketsLeft()}/${PVP_TICKETS_PER_DAY} tickets left</span>
     </div>` : '';
@@ -23422,6 +23534,19 @@ function homeTileDetails(){
   try{ const packs = (typeof SHOP_PACKS_DEFAULT!=='undefined' ? SHOP_PACKS_DEFAULT : []).filter(x=> packOnSale(x) && x.cost && x.cost.gold); if(packs.length){ const c = Math.min(...packs.map(x=> x.cost.gold)); out.shop = `Packs from ${c} 🍁`; } }catch(e){}
   return out;
 }
+// Community page (2026-10-10, user: "Clicking community should jump you straight to a community page. Over there, then
+// you can switch between the different options."): Ranking, Friends and Guild share one switcher above whichever is open.
+const COMMUNITY_TABS = [['ranking','🏆 Ranking'], ['friends','👥 Friends'], ['guild','🛡️ Guild']];
+function syncCommunityTabs(tab){
+  let bar = document.getElementById('communityTabs');
+  const on = COMMUNITY_TABS.some(([t])=> t === tab), open = COMMUNITY_TABS.filter(([t])=> tabOpen(t));
+  if(!on || open.length < 2){ if(bar) bar.hidden = true; return; }
+  const view = document.getElementById('view-' + COMMUNITY_TABS[0][0]); if(!view) return;
+  if(!bar){ bar = document.createElement('div'); bar.id = 'communityTabs'; bar.className = 'community-tabs tk-seg mk-tabs'; bar.setAttribute('role', 'tablist'); bar.setAttribute('aria-label', 'Community'); view.parentNode.insertBefore(bar, view); }
+  bar.innerHTML = `<h2 class="community-title">👥 Community</h2><div class="community-seg">${open.map(([t, l])=> `<button type="button" class="tk-speed-btn ${t===tab?'is-on':''}" role="tab" aria-selected="${t===tab}" data-commtab="${t}">${l}</button>`).join('')}</div>`;
+  bar.hidden = false;
+  bar.querySelectorAll('[data-commtab]').forEach(b=> b.onclick = ()=> switchTab(b.dataset.commtab));
+}
 function renderHome(){
   // Home (2026-10-03, D1 — explicit: "Play has to be the biggest button - maybe its own 1x2, the rest
   // can be 2x2" + "I don't want too many menu items"): the global header (energy, profile chip, ⚙)
@@ -23433,6 +23558,9 @@ function renderHome(){
   const sub = homeTileDetails();
   const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span>${sub[tab] ? `<small class="home-sub">${escapeHtml(sub[tab])}</small>` : ''}</button>` : '';
   const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
+  // 2026-10-10 (user: "Add an Arena button to the menu once its unlocked" + "Rename Deck to Armoury... which button can
+  // we replace"): once the Arena is open it takes the Codex's tile; the Codex becomes a note pinned beside Quests.
+  const arenaHome = tabOpen('arena') && featureUnlocked('arena');
   const qn = tabOpen('quests') ? claimableQuestCount() : 0;
   const rsnap = (!matchState && loadTutorialDone()) ? loadResumeSnapshot() : null;
   const rejoin = rsnap ? `${(rsnap.conquestNode && rsnap.conquestNode.name) || RESUME_MODE_LABEL[rsnap.mode] || 'Your fight'} · round ${rsnap.round||1}` : '';
@@ -23445,8 +23573,9 @@ function renderHome(){
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
-        ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}
+        ${big('deck','⛺','Armoury')}${arenaHome ? `<button class="btn primary big home-menu-btn home-tile" id="homeArenaBtn"><span class="tab-emoji">🏟️</span><span>Arena</span><small class="home-sub">${escapeHtml(sub.arena || 'Quick battles, challenges, ranked')}</small></button>` : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
@@ -23456,11 +23585,10 @@ function renderHome(){
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
-  const cb = document.getElementById('homeCommunityBtn'), cm = document.getElementById('homeCommunityMenu');
-  if(cb && cm){
-    cb.addEventListener('click', e=>{ e.stopPropagation(); cm.hidden = !cm.hidden; cb.setAttribute('aria-expanded', String(!cm.hidden)); });
-    document.addEventListener('click', ()=>{ cm.hidden = true; cb.setAttribute('aria-expanded','false'); }, {once:true});
-  }
+  const cb = document.getElementById('homeCommunityBtn');
+  if(cb) cb.addEventListener('click', e=>{ e.stopPropagation(); const t = community[0]; if(t) switchTab(t); });
+  const ab = document.getElementById('homeArenaBtn'); if(ab) ab.addEventListener('click', ()=>{ playSubTab = 'arena'; switchTab('play'); });
+  const cx = document.getElementById('homeCodexBtn'); if(cx) cx.addEventListener('click', ()=> switchTab('codex'));
   setTimeout(()=>{ try{ checkXpMilestones(); }catch(e){} }, 900);
   wireHomeMenuFlourish(root);
   wireHomeScene(root);
@@ -25607,7 +25735,7 @@ function switchTab(tab){
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   // 2026-10-08 (user: "the deck editor should land on the Manage decks page first"): entering Deck
   // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
-  if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); document.body.classList.remove('conquest-full'); }
+  if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); document.body.classList.remove('conquest-full', 'play-full'); }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ try{ deckHeroView = false; }catch(e){} }
   if(tab!=='deck' && currentTabBeforeSwitch==='deck'){ try{ restoreMainDeck(); }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
@@ -25667,6 +25795,7 @@ function switchTab(tab){
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);
   if(tab==='admin') safeRender('Admin', renderAdmin);
+  safeRender('CommunityTabs', ()=> syncCommunityTabs(tab));
   // Task #94 (2026-09-16, "make the battleground significantly bigger, full on full
   // screen"): the wider layout only makes sense while an actual match is on screen, so it's
   // gated on being both on the Play tab AND mid-match, not just the tab alone.
