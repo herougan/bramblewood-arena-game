@@ -5,7 +5,9 @@
     "icon": "🏰",
     "health": 30,
     "rarity": "unique",
-    "archetypes": ["Castle"],
+    "archetypes": [
+      "Castle"
+    ],
     "art": "",
     "effects": {},
     "flavor": "Plain stone and stubbornness. It has never once had an idea, and it has never once fallen for lack of one."
@@ -16,9 +18,13 @@
     "icon": "⛏️",
     "health": 20,
     "rarity": "unique",
-    "archetypes": ["Castle"],
+    "archetypes": [
+      "Castle"
+    ],
     "art": "",
-    "effects": { "startGold": 1 },
+    "effects": {
+      "startGold": 1
+    },
     "flavor": "What's left of the vault is worth exactly one coin — but it's one coin nobody else starts with."
   },
   {
@@ -27,9 +33,174 @@
     "icon": "🌾",
     "health": 20,
     "rarity": "unique",
-    "archetypes": ["Castle"],
+    "archetypes": [
+      "Castle"
+    ],
     "art": "",
-    "effects": { "firstUnitAtkBonus": 1 },
+    "effects": {
+      "firstUnitAtkBonus": 1
+    },
     "flavor": "Open ground favors whoever steps onto it first. +1 Attack to the very first unit you play this match."
+  },
+  {
+    "id": "outskirts-watchtower",
+    "name": "Outskirts Watchtower",
+    "icon": "🗼",
+    "health": 28,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "firstUnitAtkBonus": 1
+    },
+    "flavor": "The first thing anyone sees past the castle walls, and the last thing raiders want to.",
+    "unlockMap": "m1"
+  },
+  {
+    "id": "hedgerow-burrow",
+    "name": "Hedgerow Burrow",
+    "icon": "🕳️",
+    "health": 24,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "unitHpBonus": 1
+    },
+    "flavor": "Dug deep under the thistles. Everyone who comes out of it is a little tougher.",
+    "unlockMap": "mf"
+  },
+  {
+    "id": "tidewall-fort",
+    "name": "Tidewall Fort",
+    "icon": "🏖️",
+    "health": 30,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleRegen": 1
+    },
+    "flavor": "Every tide washes the cracks back full of sand.",
+    "unlockMap": "mb"
+  },
+  {
+    "id": "drowned-bellhouse",
+    "name": "Drowned Bellhouse",
+    "icon": "🔔",
+    "health": 22,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "startGold": 2
+    },
+    "flavor": "Half under water, and still somehow collecting rent.",
+    "unlockMap": "m2"
+  },
+  {
+    "id": "ashen-bastion",
+    "name": "Ashen Bastion",
+    "icon": "🌋",
+    "health": 32,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "firstUnitAtkBonus": 2
+    },
+    "flavor": "Built from cooled lava by someone who never once lost an argument.",
+    "unlockMap": "m3"
+  },
+  {
+    "id": "lantern-warren",
+    "name": "Lantern Warren",
+    "icon": "🏮",
+    "health": 22,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "flyerAtkBonus": 1
+    },
+    "flavor": "A cave full of lanterns, and everything that flies towards them.",
+    "unlockMap": "m4"
+  },
+  {
+    "id": "acacia-kraal",
+    "name": "Acacia Kraal",
+    "icon": "🌳",
+    "health": 28,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "startGold": 1,
+      "firstUnitAtkBonus": 1
+    },
+    "flavor": "Thorn walls, one shade tree, and a view of everything coming.",
+    "unlockMap": "m5"
+  },
+  {
+    "id": "wolfsbane-lodge",
+    "name": "Wolfsbane Lodge",
+    "icon": "❄️",
+    "health": 34,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleRegen": 1
+    },
+    "flavor": "Logs as thick as a bear, and a fire that has never gone out.",
+    "unlockMap": "m6"
+  },
+  {
+    "id": "coral-spire",
+    "name": "Coral Spire",
+    "icon": "🪸",
+    "health": 24,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "unitHpBonus": 2
+    },
+    "flavor": "It grows a little every year. So does everyone who lives in it.",
+    "unlockMap": "m7"
+  },
+  {
+    "id": "bog-stilt-house",
+    "name": "Bog Stilt-House",
+    "icon": "🛖",
+    "health": 26,
+    "rarity": "unique",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleRegen": 2
+    },
+    "flavor": "The swamp keeps trying to swallow it. The swamp keeps losing.",
+    "unlockMap": "m8"
   }
 ]

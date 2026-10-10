@@ -153,8 +153,8 @@
     const resume = ()=>{ try{ const c = SoundKit.audioContext(); if(c && c.state === 'suspended') c.resume(); }catch(e){} };
     const themes = (typeof Songbook !== 'undefined' && Songbook.themes) || {};
     Object.keys(themes).forEach(k=>{ const t = themes[k]; const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small';
-      b.innerHTML = `🎼 ${t.name}<br><small style="opacity:.7">${t.place} · ${t.beats}/4 · ${t.bpm} bpm</small>`;
-      b.onclick = ()=>{ resume(); try{ BattleMusic.preview(null); }catch(e){} clear(); b.classList.add('primary'); Songbook.preview(k); }; sg.appendChild(b); });
+      b.innerHTML = `${t.sting ? '🎺' : '🎼'} ${t.name}<br><small style="opacity:.7">${t.place}${t.sting ? ' · one-shot' : ` · ${t.beats}/4 · ${t.bpm} bpm`}</small>`;
+      b.onclick = ()=>{ resume(); if(t.sting){ Songbook.sting(k); return; } try{ BattleMusic.preview(null); }catch(e){} clear(); b.classList.add('primary'); Songbook.preview(k); }; sg.appendChild(b); });
     let lvl = 0;
     [['Calm', 0], ['Drums', 1], ['Full', 2]].forEach(([label, n])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small' + (n === 0 ? ' primary' : ''); b.textContent = label;
       b.onclick = ()=>{ lvl = n; $$('#bandLvl .btn').forEach(x=> x.classList.toggle('primary', x === b)); const on = $('#bandGrid .btn.primary'); if(on) on.click(); }; lv.appendChild(b); });

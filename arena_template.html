@@ -7343,6 +7343,66 @@
 .sfx-bit-ember{width:5px; height:5px; border-radius:50%; background:#ffc35a; box-shadow:0 0 8px 2px rgba(255,140,40,.8);}
 .sfx-bit-ice{width:7px; height:7px; background:#e6f6ff; clip-path:polygon(50% 0, 100% 60%, 40% 100%, 0 40%); box-shadow:0 0 6px #9fd8ff;}
 .sfx-bit-drip{width:6px; height:9px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:#9cff6a; box-shadow:0 0 6px #6cff3a;}
+
+/* 2026-10-10: the top row's Wait / skill badges sit above the card edge; leave room so the scroll box doesn't clip them */
+.pool-grid{padding-top:14px !important;}
+.deck-back-btn{margin-right:6px;}
+.leader-slot .ls-warn{font:700 11px/1.2 'Nunito',system-ui,sans-serif; color:#c2410c; margin-top:2px;}
+
+/* Castle levels in the picker (2026-10-10) */
+.lp-lv{font:700 11px 'Nunito',system-ui,sans-serif; opacity:.75; margin-left:4px;}
+.lp-temper{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:12px; padding:10px 12px; border-radius:10px; background:rgba(125,82,42,.12); font-weight:700;}
+.lp-temper.is-max{justify-content:center;}
+/* deck-large-preview: cards answer hover with the full card popover */
+.dm-card{cursor:help;}
+/* deck-medium-preview (2026-10-10): castle art on the left, leader art on the right, no card strip */
+.dl-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+.deck-menu-grid.is-medium{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:14px;}
+.dmp-btn{display:block; padding:0; border:0; background:none; text-align:left; cursor:pointer; border-radius:14px; color:inherit; font:inherit;}
+.dmp-btn:focus-visible{outline:3px solid #2f6db3; outline-offset:3px;}
+.deck-medium-preview{position:relative; height:150px; border-radius:14px; overflow:hidden; isolation:isolate; color:#fff8e6; box-shadow:0 0 0 2px rgba(107,74,42,.7), 0 8px 18px rgba(0,0,0,.35); transition:transform .18s ease, box-shadow .18s ease;}
+.dmp-btn:hover .deck-medium-preview{transform:translateY(-2px); box-shadow:0 0 0 2px #d7b46a, 0 12px 22px rgba(0,0,0,.4);}
+.deck-medium-preview.is-main{box-shadow:0 0 0 3px #d7b46a, 0 8px 18px rgba(0,0,0,.35);}
+.dmp-bg{position:absolute; inset:0; display:grid; grid-template-columns:1fr 1fr; z-index:-1;}
+.dmp-castle{display:grid; place-items:center; background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 2px, transparent 2px 22px), repeating-linear-gradient(90deg, rgba(0,0,0,.14) 0 2px, transparent 2px 34px), linear-gradient(160deg, #8a7a66, #5b4b3a);}
+.dmp-castle span{font-size:64px; filter:drop-shadow(0 6px 4px rgba(0,0,0,.4)); opacity:.95;}
+.dmp-leader{display:grid; place-items:center; background:#3a2a1a center/cover no-repeat; image-rendering:pixelated; -webkit-mask:linear-gradient(90deg, transparent, #000 22%); mask:linear-gradient(90deg, transparent, #000 22%); margin-left:-22%;}
+.dmp-leader span{font-size:64px;}
+.deck-medium-preview::after{content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(20,12,4,.55), transparent 35%, transparent 55%, rgba(20,12,4,.8));}
+.dmp-top{display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 12px 0;}
+.dmp-name{font:800 18px/1.1 'Baloo 2',system-ui,sans-serif; text-shadow:0 2px 2px rgba(0,0,0,.5);}
+.dmp-foot{position:absolute; left:0; right:0; bottom:0; display:grid; grid-template-columns:1fr 1fr; gap:2px 8px; padding:0 12px 9px; font-size:12.5px; font-weight:700; text-shadow:0 1px 2px rgba(0,0,0,.7);}
+.dmp-who.is-r{text-align:right;}
+.dmp-meta{grid-column:1 / -1; display:flex; gap:6px; flex-wrap:wrap;}
+.dmp-meta > span{padding:1px 7px; border-radius:999px; background:rgba(0,0,0,.38); font-size:11.5px;}
+.dmp-meta .short{color:#ffb4a0;}
+.lp-item.is-locked{opacity:.45; filter:grayscale(.7); cursor:not-allowed;}
+
+/* Banners that step aside (2026-10-10) */
+.conquest-main > .conquest-headline{pointer-events:none;}
+.conquest-main > .map-layout-bar{pointer-events:none;} .conquest-main > .map-layout-bar :is(button, a, input, select, label){pointer-events:auto;}
+.conquest-main > .conquest-headline, .conquest-main > .map-layout-bar{transition:opacity .2s ease;}
+.conquest-main > .is-ghost{opacity:.1 !important;}
+/* World edges are off while editing the layout (2026-10-10) */
+.world-edge.is-editing{opacity:.35; filter:grayscale(1); cursor:not-allowed;}
+/* Cave darkness over the whole map, with a lantern hole at the pointer (2026-10-10) */
+.cave-dark{position:absolute; inset:0; z-index:7; pointer-events:none; border-radius:inherit;
+  background:radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(4,6,12,0) 0, rgba(4,6,12,0) calc(var(--lr, 150px) * .45), rgba(4,6,12,.55) calc(var(--lr, 150px) * .9), rgba(4,6,12,.9) calc(var(--lr, 150px) * 1.6), rgba(2,3,8,.94) calc(var(--lr, 150px) * 2.6));}
+@media (prefers-reduced-motion: reduce){ .cave-dark{background:radial-gradient(circle at 50% 50%, rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
+/* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
+.map-veil.is-cave{background:#05070c; color:#e8e0cc;}
+.map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
+.map-veil.is-cave .mv-ico{filter:drop-shadow(0 0 18px rgba(255,200,120,.55));}
+.map-veil.is-cave.is-lifting{filter:none; opacity:0; transition:opacity .35s ease;}
+/* World map: the chestnut Home with a compass behind it (2026-10-10) */
+.world-home{position:absolute; transform:translate(-50%, -50%); z-index:3; width:120px; height:120px; border:0; padding:0; background:none; cursor:pointer; display:grid; place-items:center;}
+.world-home .wh-compass{position:absolute; inset:0; width:100%; height:100%; animation:whSpin 60s linear infinite;}
+.world-home .wh-nut{position:relative; font-size:46px; filter:drop-shadow(0 4px 3px rgba(0,0,0,.45)); transition:transform .2s ease;}
+.world-home:hover .wh-nut, .world-home:focus-visible .wh-nut{transform:scale(1.12) rotate(-8deg);}
+.world-home .wh-label{position:absolute; bottom:-14px; padding:2px 10px; border-radius:999px; background:rgba(20,14,8,.72); color:#f3e3bf; font:800 12px 'Baloo 2',system-ui,sans-serif;}
+.world-home:focus-visible{outline:3px solid #e9c46a; outline-offset:4px; border-radius:50%;}
+@keyframes whSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ .world-home .wh-compass{animation:none;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

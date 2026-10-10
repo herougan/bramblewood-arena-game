@@ -159,7 +159,7 @@ void main(){
     float f = fbm(uv*vec2(aspect*1.6, 2.2) + vec2(t*0.035, -t*0.01));
     o = add(o, vec3(0.6, 0.55, 0.75), smoothstep(0.45, 0.85, f)*0.32);
     float lamp = smoothstep(0.38, 0.0, length((uv - m)*vec2(aspect, 1.0)));
-    o = add(o, vec3(0.0, 0.0, 0.02), (1.0 - lamp)*0.62); // 2026-10-10 (user: "darker where your torch isn't, like 50%"): ~50% after the fog layered above
+    o = add(o, vec3(0.0, 0.0, 0.02), (1.0 - lamp)*0.2); // the deep dark now comes from the page's .cave-dark layer, which also covers the skirmishes and trail (2026-10-10)
     o = add(o, vec3(1.0, 0.8, 0.45), lamp*0.18);
     o = add(o, vec3(0.5, 1.0, 0.95), sparks(q, 10.0, t, vec2(0.03, -0.05), 0.1, 0.16));
   } else if(k == 4){ // savanna: heat shimmer, dust, sun shafts

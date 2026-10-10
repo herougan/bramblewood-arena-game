@@ -2,6 +2,34 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10 (23:30)
+- **Map numbers:** the Outskirts is Map 1, so Pebble Beach is Map 3 (3-1, 3-2…) and the tutorial is 1-0. Side maps use a letter: Smugglers' Grotto fights are 3-A-1, 3-A-2… The side skirmishes added earlier are on Maps 11 and 13.
+- **Maps 14–20** are on the world map as Reserved; they don't open yet.
+- **Map intros:** the map card shows the first time you ever open a map, and for the first map you open each session.
+- **Cave maps** (Caves & Alcoves, Smugglers' Grotto):
+  - they open in darkness with the map's name, then a light spreads out from the centre and settles into the lantern at your pointer;
+  - away from the lantern it's much darker, and the darkness now covers the skirmishes and the trail too.
+- **Map page:**
+  - the title banner and the admin layout bar fade away while your pointer is over them, and clicks go through to the map (buttons still work);
+  - the map arrows are greyed out while you edit the layout.
+- **Home from Conquest:** the Home chip in the map list is gone. Use the top-right icon, or the 🌰 chestnut over a compass at the top of the World map.
+- **Map castles and leaders:** each of Maps 1–10 has its own castle and a Heroic leader.
+  - Castles: Outskirts Watchtower, Hedgerow Burrow, Tidewall Fort, Drowned Bellhouse, Ashen Bastion, Lantern Warren, Acacia Kraal, Wolfsbane Lodge, Coral Spire, Bog Stilt-House. Each unlocks when you beat that map's boss.
+  - New castle passives: every unit +N Health, Flying units +N Attack, heal N each round.
+  - Leaders (the boss's first-clear reward): Sergeant Bramblefox, The Thistle Baron, The Old Shell, The Drowned Matriarch, Yeti Chieftain, Echo Matriarch, Pride Queen, Wolfsbane Alpha, Reef Admiral, The Heron Hag. If you've already beaten a boss, you get its leader the next time you open the map.
+- **Leaders must be Heroic or above.** The Wandering Traveller stays a Base card but has the new 👑 **Leader** passive. A saved leader that doesn't qualify stays in the deck, shows a warning and sits out matches.
+- **Special rarities:** Special, Dev-Legendary, Dev-Ancient, Event-Legendary and Event-Rare, listed after every normal rarity together with Quest and Quest-Unique. Each counts as its normal tier for power and copy limits.
+- **Castles level to 20:** temper them in the castle picker for +1 starting Health per level.
+- **Armoury:**
+  - a ‹ Back button in the deck editor;
+  - the top row's Wait badges are no longer clipped;
+  - hovering a card in the deck-large-preview shows its details after 1 s;
+  - a new **Medium** view (deck-medium-preview) shows the castle on the left and the leader's art on the right, without the card list.
+- **Card editor:** the art choices read just "Normal" and "Extended".
+- **Music:**
+  - new loops: *Sand and Banners* (Arena), *The Long Road* (Conquest map), *Drums Under the Hill* (Raids);
+  - new stings: *Laurels* (victory) and *Fallen Leaves* (defeat).
+
 ## 2026-10-10 (23:15)
 - **Music library, the Songbook:** five composed place themes, played by synthesised instruments so they're royalty-free by construction:
   - Shop: *Flour and Copper*, a waltz;

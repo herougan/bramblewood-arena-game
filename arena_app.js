@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -205,6 +205,7 @@ const PASSIVE_DEFS = [
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
+  {key:'leader', category:'passive', label:'Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   {key:'antiAir', category:'passive', label:'Anti-Air', kind:'number', desc:n=>`Never misses a Flying unit, and hits Flying units for ${n} more damage.`},
@@ -855,24 +856,27 @@ function resistOptionLabel(v){
 const RARITY_DEFS = [
   {key:'starter', label:'Starter', color:'#8f897a'},
   {key:'common', label:'Common', color:'#726c60'},
-  // 2026-09-17, per explicit request ("Uncommon background gradients look too similar to
-  // common"): the old #9aa0a6 was a near-desaturated gray sitting right between common's plain
-  // white and rare's blue, so at low mix opacity it read as "common but slightly darker" rather
-  // than its own tier. A real hue (green — the traditional "one step up from plain" rarity
-  // color, and clearly distinct from both common's white and rare's blue on either side of it)
-  // fixes this regardless of how the tier's CSS band renders it.
+  // 2026-09-17: Uncommon is green, clearly apart from Common's grey and Rare's blue.
   {key:'uncommon', label:'Uncommon', color:'#4ade80'},
-  {key:'quest', label:'Quest', gradient:['#9aa0a6','#3b82f6']},
   {key:'rare', label:'Rare', color:'#3b82f6'},
   {key:'veryrare', label:'Very Rare', color:'#22d3ee'},
   {key:'superrare', label:'Super Rare', color:'#6366f1'},
   {key:'epic', label:'Epic', color:'#9333ea'},
   {key:'heroic', label:'Heroic', color:'#f97316'},
   {key:'unique', label:'Unique', color:'#eab308'},
-  {key:'questunique', label:'Quest-Unique', gradient:['#eab308','#3b82f6']},
   {key:'legendary', label:'Legendary', color:'#dc2626'},
   {key:'mythic', label:'Mythic', color:'#d6249f'},
   {key:'ancient', label:'Ancient', color:'#92400e'},
+  // Special rarities (2026-10-10, user: "Add new tiers called Special, Dev-Legendary, Dev-Ancient, Event-Legendary,
+  // Event-Rare. Place all these special rarities below the normal rarities including the other special ones"). They list
+  // after every normal rarity; for power, copy limits and deck level each counts as the normal tier in `as`.
+  {key:'quest', label:'Quest', gradient:['#9aa0a6','#3b82f6'], special:true, as:'uncommon'},
+  {key:'questunique', label:'Quest-Unique', gradient:['#eab308','#3b82f6'], special:true, as:'unique'},
+  {key:'special', label:'Special', gradient:['#a3a3a3','#f472b6'], special:true, as:'rare'},
+  {key:'devlegendary', label:'Dev-Legendary', gradient:['#dc2626','#1f2937'], special:true, as:'legendary'},
+  {key:'devancient', label:'Dev-Ancient', gradient:['#92400e','#1f2937'], special:true, as:'ancient'},
+  {key:'eventlegendary', label:'Event-Legendary', gradient:['#dc2626','#14b8a6'], special:true, as:'legendary'},
+  {key:'eventrare', label:'Event-Rare', gradient:['#3b82f6','#14b8a6'], special:true, as:'rare'},
 ];
 function rarityDef(key){ return RARITY_DEFS.find(r=>r.key===key) || RARITY_DEFS[1]; }
 // Deck-build rarity limits (2026-09-30, carried-forward backlog item: "deck-build max-count-per-
@@ -886,6 +890,7 @@ const RARITY_MAX_COPIES = {
   common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2,
   unique:1, legendary:1, mythic:1, ancient:1,
   starter:10, quest:5, questunique:1,
+  special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4,
 };
 function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] || 10; }
 // Editions share a copy limit (2026-10-02): a card's Classic/Antique editions and the base card
@@ -1381,14 +1386,14 @@ function cardWhereToGetText(d){
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   return 'Not obtainable yet';
 }
-// Map numbers and skirmish codes (2026-10-10, user: "Skirmish ID-names X-Y, with map numbers starting at 0"): the first
-// map is Map 0. Fights are numbered 1, 2, 3… along the map's trail (the tutorial is X-0, a raid boss X-R). A sub-map's
+// Map numbers and skirmish codes (2026-10-10, user: "Skirmish ID-names X-Y"; then "Pebble Beach counts as Map 3"): the
+// first map is Map 1. Fights are numbered 1, 2, 3… along the map's trail (the tutorial is X-0, a raid boss X-R). A sub-map's
 // fights carry its parent's number and the sub-map's first letter, e.g. 2-G1 for Smugglers' Grotto under Map 2.
 // Display only: save data keeps the original node keys.
 function mapNumberOf(mapId){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
   const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
-  return i < 0 ? null : i;
+  return i < 0 ? null : i + 1; // 2026-10-10 (user: "Pebble Beach counts as Map 3, so it should be 3-1, 3-2"): maps count from 1; the tutorial is 1-0
 }
 function skirmishCode(mapId, nodeKey){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return '';
@@ -1398,7 +1403,10 @@ function skirmishCode(mapId, nodeKey){
   if(node.kind==='raidboss') return `${n}-R`;
   const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss');
   const k = fights.indexOf(node) + 1;
-  return m.sub ? `${n}-${(m.name.replace(/^the\s+/i, '').match(/[A-Za-z]/)||['S'])[0].toUpperCase()}${k}` : `${n}-${k}`;
+  // Side maps (2026-10-10, user: "Smugglers Grotto truly represents a side map. Maybe we shall use 3-A-1, 3-A-2"): the
+  // parent's number, then A for its first side map, B for the second, then the fight.
+  if(m.sub){ const sibs = all.filter(x=> x.sub && x.parent === m.parent); return `${n}-${String.fromCharCode(65 + Math.max(0, sibs.indexOf(m)))}-${k}`; }
+  return `${n}-${k}`;
 }
 function conquestNodeLabel(mapId, nodeKey){
   const f = findConquestNode(mapId, nodeKey);
@@ -2691,6 +2699,19 @@ const SONGBOOK = {
   nest: {name:'Down Feather', place:'Nest', bpm:66, beats:3, root:349.23, scale:[0,2,4,5,7,9,11], lead:'musicbox', comp:'lullaby',
     chords:[0,5,3,4, 0,5,1,4],
     mel:['4:1 2:1 4:1','5:2 4:1','3:1 5:1 3:1','1:3', '4:1 2:1 4:1','7:2 5:1','4:1 3:1 1:1','0:3']},
+  arena: {name:'Sand and Banners', place:'Arena', bpm:112, beats:4, root:293.66, scale:[0,2,4,5,7,9,10], lead:'brass', comp:'march',
+    chords:[0,0,6,0, 3,4,0,0],
+    mel:['0:0.5 0:0.5 4:1 4:1 5:1','6:2 4:2','3:1 4:1 6:1 7:1','4:4', '7:0.5 7:0.5 6:1 4:1 6:1','5:1 3:1 4:2','2:1 3:1 4:1 6:1','7:3 -:1']},
+  conquest: {name:'The Long Road', place:'Conquest map', bpm:92, beats:4, root:196.00, scale:[0,2,4,5,7,9,11], lead:'flute', comp:'walk',
+    chords:[0,3,4,0, 5,3,4,0],
+    mel:['4:2 5:1 4:1','2:3 -:1','3:1 4:1 5:1 7:1','4:4', '5:2 4:1 2:1','3:2 2:1 0:1','1:1 2:1 4:1 1:1','0:3 -:1']},
+  raid: {name:'Drums Under the Hill', place:'Raids', bpm:70, beats:4, root:110.00, scale:[0,2,3,5,7,8,10], lead:'brass', comp:'war',
+    chords:[0,0,5,4, 0,0,3,4],
+    mel:['0:3 2:1','3:2 2:2','0:3 -:1','-:4', '4:3 5:1','3:2 2:2','1:2 2:2','0:4']},
+  victory: {name:'Laurels', place:'Victory', sting:true, bpm:120, beats:4, root:261.63, scale:[0,2,4,5,7,9,11], lead:'brass', comp:'fanfare',
+    chords:[0,4,0], mel:['0:0.5 2:0.5 4:0.5 7:2.5','6:0.5 5:0.5 4:0.5 6:2.5','7:4']},
+  defeat: {name:'Fallen Leaves', place:'Defeat', sting:true, bpm:66, beats:4, root:220.00, scale:[0,2,3,5,7,8,10], lead:'flute', comp:'lament',
+    chords:[0,5,0], mel:['4:1 3:1 2:2','1:1.5 3:0.5 2:2','0:4']},
   codex: {name:'Margins', place:'Codex', bpm:76, beats:4, root:220.00, scale:[0,2,3,5,7,8,10], lead:'flute', comp:'harp',
     chords:[0,5,2,6, 3,0,4,0],
     mel:['4:2 3:1 2:1','2:4','4:1 5:1 6:2','4:4', '3:2 2:1 0:1','2:2 4:2','1:3 -:1','0:4']},
@@ -2699,6 +2720,7 @@ function songbookPlace(){
   const tab = typeof currentTab !== 'undefined' ? currentTab : null;
   const m = typeof matchState !== 'undefined' ? matchState : null;
   if(m && !m.over && tab === 'play') return null;
+  if(tab === 'play' && !(m && !m.over)){ const sub = typeof playSubTab !== 'undefined' ? playSubTab : null; if(sub === 'arena') return 'arena'; if(sub === 'raid') return 'raid'; if(sub === 'conquest') return 'conquest'; }
   if(tab === 'shop' || tab === 'market') return 'bakery';
   if(tab === 'nest') return 'nest';
   if(tab === 'deck') return 'armoury';
@@ -2760,6 +2782,10 @@ const Songbook = (()=>{
       for(let k=0; k<B; k++){ INST.tap(c, t0 + beat*k, 1, k % 2 === 1); } if(i % 4 === 3){ for(let k=0; k<4; k++) INST.tap(c, t0 + beat*3 + k*beat/4, 0.7, false); } }
     else if(th.comp === 'anvil'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*4, 1); INST.anvil(c, t0, 1, false); INST.anvil(c, t0 + beat*2, 0.8, true); INST.bass(c, fq(th, ch, -1), t0, beat*2, 0.7); }
     else if(th.comp === 'lullaby'){ [0, 4, 2].forEach((d, k)=> INST.musicbox(c, fq(th, ch + d, -1), t0 + beat*k, beat, 0.32)); }
+    else if(th.comp === 'walk'){ INST.pluck(c, fq(th, ch, -2), t0, beat, 0.8); INST.pluck(c, fq(th, ch + 4, -2), t0 + beat*2, beat, 0.6); INST.tap(c, t0 + beat, 0.5, false); INST.tap(c, t0 + beat*3, 0.5, false); }
+    else if(th.comp === 'war'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -1), t0, beat*B*4, 1); [0, 1.5, 2, 3].forEach((k, j)=> INST.tap(c, t0 + beat*k, j === 0 ? 1.3 : 0.8, true)); INST.bass(c, fq(th, ch, -1), t0, beat*2, 0.8); }
+    else if(th.comp === 'fanfare'){ if(i === 0) for(let k = 0; k < 8; k++) INST.tap(c, t0 + k*beat/8, 0.6 + k*0.05, false); [0, 2, 4].forEach(d=> INST.brass(c, fq(th, ch + d, -1), t0 + beat*(i === 2 ? 0 : 2), beat*(i === 2 ? 4 : 2), 0.45)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 1); }
+    else if(th.comp === 'lament'){ if(i === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*3, 1); [0, 2, 4].forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat*0.6, beat, 0.35)); }
     else if(th.comp === 'harp'){ const pat = [0, 2, 4, 7, 9, 7, 4, 2]; pat.forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat/2, beat/2, k === 0 ? 0.6 : 0.4)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 0.6); }
     // melody, with tiny variations on later loops: an octave lift on the last phrase, a grace note now and then
     let t = t0; const lift = (rep % 2 === 1 && i >= th.mel.length/2) ? 7 : 0;
@@ -2803,6 +2829,16 @@ const Songbook = (()=>{
     preview(key){ preview = key && SONGBOOK[key] ? key : null; if(!preview) stop(); else { try{ const c = C(); if(c && c.state === 'suspended') c.resume(); }catch(e){} tick(); } },
     setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
     wantsPlace(){ return !!wanted(); },
+    // One pass of a sting (Victory, Defeat) over whatever is playing.
+    sting(key){
+      const th = SONGBOOK[key], c = C(); if(!th || !c || vol() <= 0) return;
+      try{ if(c.state === 'suspended') c.resume(); }catch(e){}
+      const keep = st; out(c); master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.1);
+      const bus = c.createGain(); bus.gain.value = 1.15; bus.connect(master);
+      st = {key, bus, bar:0, next: c.currentTime + 0.05, rested:false};
+      try{ let t = st.next; for(let k = 0; k < th.mel.length; k++) t = scheduleBar(c, t); } finally { st = keep; }
+      setTimeout(()=>{ try{ bus.disconnect(); }catch(e){} }, 9000);
+    },
     // Offline render of a theme (for previews and exports): resolves to an AudioBuffer of `secs` seconds.
     render(key, secs){
       const th = SONGBOOK[key]; if(!th || typeof OfflineAudioContext === 'undefined') return Promise.resolve(null);
@@ -3430,9 +3466,8 @@ function renderCodexGrid(){
     else if(codexFilter.sort==='attack') base = B.attack-A.attack;
     else if(codexFilter.sort==='health') base = B.health-A.health;
     else if(codexFilter.sort==='rarity'){
-      const ra = RARITY_DEFS.findIndex(r=>r.key===(A.rarity||'common'));
-      const rb = RARITY_DEFS.findIndex(r=>r.key===(B.rarity||'common'));
-      base = (rb-ra) || A.name.localeCompare(B.name);
+      const ra = RARITY_TIER_BANDS.indexOf(A.rarity||'common'), rb = RARITY_TIER_BANDS.indexOf(B.rarity||'common');
+      base = (rb-ra) || (RARITY_DEFS.findIndex(r=>r.key===(A.rarity||'common')) - RARITY_DEFS.findIndex(r=>r.key===(B.rarity||'common'))) || A.name.localeCompare(B.name);
     }
     else base = (A.cost-B.cost) || A.name.localeCompare(B.name);
     return codexFilter.dir==='asc' ? -base : base;
@@ -3599,7 +3634,11 @@ function cardIcoHTML(d){
 // one of 4 visual "bands" that scale up in richness/drama with power level — see the
 // .rarity-tier-* rules in arena_template.html for what each band actually looks like. Foil
 // (already its own fully custom shimmering treatment via card-tile-foil) is excluded here.
-const RARITY_TIER_BANDS = ['starter','common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic','ancient'];
+const RARITY_TIER_BANDS = Object.assign(['starter','common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic','ancient'], {
+  // 2026-10-10: a special rarity ranks as the normal tier it stands for (RARITY_DEFS `as`), so every power comparison,
+  // sort and band below works for it unchanged.
+  indexOf(k){ const d = RARITY_DEFS.find(r=> r.key===k); return Array.prototype.indexOf.call(this, (d && d.as && !['quest','questunique'].includes(k)) ? d.as : k); },
+});
 // 2026-09-17 follow-up ("Uncommon background gradients look too similar to common"): uncommon
 // used to fall into the same i<=2 "low" bucket as starter/common, so all three ever rendered
 // identically apart from --rarity-a's hue. Splitting it into its own band (see
@@ -4904,7 +4943,7 @@ function renderEditorInner(){
            Rarity is deliberately NOT alphabetized in the dropdown itself (2026-09-17, "make all
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
-      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal (framed)</option><option value="extended" ${c.artExtended?'selected':''}>Extended (to the edges)</option></select></div>
+      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Canid, Primate"><datalist id="speciesList">${Object.keys(SPECIES_PHYLUM).map(k=> `<option value="${k}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
@@ -7400,13 +7439,42 @@ function loadMyLeader(){
   return 'wandering-traveller';
 }
 function saveMyLeader(){ if(deckDraftActive()) return markDeckDirty(); try{ if(myLeaderId) localStorage.setItem('bramblewood_arena_leader', myLeaderId); else localStorage.removeItem('bramblewood_arena_leader'); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
+// Who may lead (2026-10-10, user: "Leaders must be Heroic and above" + the Wandering Traveller "is a Base card, but it has
+// an additional passive effect that lets it be a leader"): Heroic or higher (special rarities count as their normal
+// tier), or any card with the Leader passive. A saved leader that no longer qualifies stays in the deck but sits out.
+function canLeadDef(d){
+  if(!d || d.token || d.test || d.hero) return false;
+  if(d.effects && d.effects.leader) return true;
+  return RARITY_TIER_BANDS.indexOf(d.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('heroic');
+}
+function matchLeaderId(){ const defs = getCardDefs(); return myLeaderId && canLeadDef(defs[myLeaderId]) ? myLeaderId : null; }
+// Castle levels (2026-10-10, user: "Castles have 20 levels instead of 10"): tempered in the castle picker with the same
+// Dust and Maple Leaves as cards. Each level adds 1 starting Health (+20 at level 20). Stored on this device for now.
+const CASTLE_MAX_LEVEL = 20, CASTLE_LEVELS_KEY = 'bramblewood_castle_levels';
+let myCastleLevels = (()=>{ try{ return JSON.parse(localStorage.getItem(CASTLE_LEVELS_KEY)||'{}') || {}; }catch(e){ return {}; } })();
+// Map castles (2026-10-10): a castle with `unlockMap` opens once you beat that map's boss.
+function castleUnlocked(ch){
+  if(!ch || !ch.unlockMap) return true;
+  try{ const m = CONQUEST_MAPS.find(x=> x.id===ch.unlockMap); const b = m && m.nodes.find(n=> n.kind==='boss' || n.kind==='finalboss'); return !!(b && (loadConquestProgress().completed||[]).includes(conquestNodeId(m.id, b.key))); }catch(e){ return false; }
+}
+function castleLevelOf(id){ return Math.max(0, Math.min(CASTLE_MAX_LEVEL, (myCastleLevels && myCastleLevels[id])|0)); }
+function castleLevelUpCost(L){ L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0)); return {dust: 12 + L*8, gold: 10 + L*6}; }
+function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
+function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
+function temperCastle(id){
+  const L = castleLevelOf(id); if(L >= CASTLE_MAX_LEVEL) return false;
+  const c = castleLevelUpCost(L); if((myCurrencies.dust||0) < c.dust || (myCurrencies.gold||0) < c.gold) return false;
+  myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
+  return true;
+}
 function leaderSlotHTML(){
   const defs = getCardDefs();
   const d = myLeaderId && defs[myLeaderId];
   if(d){
     return `<div class="leader-slot filled" id="leaderSlot">
       <div class="ls-ico">${cardIcoHTML(d)}</div>
-      <div class="ls-body"><div class="ls-tag">👑 Leader</div><div class="ls-name">${d.name}</div></div>
+      <div class="ls-body"><div class="ls-tag">👑 Leader</div><div class="ls-name">${d.name}</div>${canLeadDef(d) ? '' : '<div class="ls-warn">Must be Heroic or above to lead</div>'}</div>
       <button class="btn small ghost ls-clear" id="leaderClearBtn" title="Remove leader">×</button>
     </div>`;
   }
@@ -7532,18 +7600,21 @@ function openLoadoutPicker(kind){
   const ov = document.createElement('div'); ov.className = 'modal-overlay loadout-picker-overlay';
   const isCastle = kind === 'castle';
   let q = '';
-  const leaderIds = ()=> getDraftableIds().filter(id=> defs[id] && !defs[id].locked && !defs[id].token && !defs[id].hero)
+  const leaderIds = ()=> getDraftableIds().filter(id=> defs[id] && !defs[id].locked && canLeadDef(defs[id]))
     .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
     .sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || ((defs[b].attack||0)+(defs[b].health||0)) - ((defs[a].attack||0)+(defs[a].health||0)));
   const body = ()=> isCastle
-    ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''}" data-pick="${escapeAttr(ch.id)}">
-        <span class="lp-tile">${matchCastleTileHTML(ch, ch.health, ch.health, 'preview', '')}</span><b>${escapeHtml(ch.name)}</b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>`
+    ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr('Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
+        <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
+      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L), ok = (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold;
+        return L >= CASTLE_MAX_LEVEL ? `<p class="lp-temper is-max">🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} is at level ${CASTLE_MAX_LEVEL}.</p>`
+          : `<div class="lp-temper"><span>🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} · Lv ${L} → ${L+1}: +1 starting Health</span><button type="button" class="btn small primary" data-temper-castle="${escapeAttr(id)}" ${ok?'':'disabled'}>🔨 Temper · ✨${c.dust} 🍁${c.gold}</button></div>`; })()}`
     : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
       <h2>${isCastle ? '🏰 Choose your castle' : '👑 Choose your leader'}</h2>
-      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward deck level.'}</p>
+      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward deck level. Leaders are Heroic or above, or have the Leader passive.'}</p>
       ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
@@ -7553,6 +7624,8 @@ function openLoadoutPicker(kind){
   document.addEventListener('keydown', onKey);
   ov.addEventListener('click', e=>{
     if(e.target===ov || e.target.closest('[data-close]')) return close();
+    const tb = e.target.closest('[data-temper-castle]');
+    if(tb){ if(temperCastle(tb.dataset.temperCastle)){ try{ SoundKit.clang(); SoundKit.unlock && SoundKit.unlock(); }catch(_){} showToast(`🏰 Tempered to Lv ${castleLevelOf(tb.dataset.temperCastle)}.`, 'ok'); ov.querySelector('.lp-body').innerHTML = body(); try{ refreshDeckHeroBanner(); }catch(_){} } return; }
     const b = e.target.closest('[data-pick]'); if(!b) return;
     const id = b.dataset.pick;
     if(isCastle){ myCharacterId = id; saveMyCharacter(); }
@@ -7568,6 +7641,9 @@ function characterDescHTML(ch){
   const bits = [];
   if(e.startGold) bits.push(`Start with +${e.startGold} 🪵`); // 2026-09-22: startGold now seeds starting Lumber, not Gold — see newPlayer() in bramblewood-engine.js
   if(e.firstUnitAtkBonus) bits.push(`1st unit played: +${e.firstUnitAtkBonus} ⚔`);
+  if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`);
+  if(e.flyerAtkBonus) bits.push(`Flying units played: +${e.flyerAtkBonus} ⚔`);
+  if(e.castleRegen) bits.push(`Heals ${e.castleRegen} ❤ each round`);
   return bits.length ? bits.join(' · ') : 'No passive — a plain, sturdy baseline.';
 }
 // 2026-09-20, per explicit request ("The castle ain't cards yet. Make them the same format as
@@ -7962,7 +8038,29 @@ function deckCardsStripHTML(d){
   const defs = getCardDefs(), counts = d.counts || {};
   const ids = Object.keys(counts).filter(id=> defs[id] && counts[id] > 0).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
   if(!ids.length) return '<p class="panel-sub dm-empty">No cards yet. Edit the deck to add some.</p>';
-  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> `<span class="dm-card" title="${escapeAttr(defs[id].name)} ×${counts[id]}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1 ? `<b class="dm-x">×${counts[id]}</b>` : ''}</span>`).join('')}</div>`;
+  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> `<span class="dm-card" data-defid="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name)} ×${counts[id]}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1 ? `<b class="dm-x">×${counts[id]}</b>` : ''}</span>`).join('')}</div>`;
+}
+// deck-medium-preview (2026-10-10, user: "the deck-medium-preview ... does not show the cards and highlights the art of
+// the leader and castle. Castle on the left, leader on the right, as the background of the preview"). The large one is the
+// full deck card with every card (deck-large-preview, hover a card for its details).
+function deckMediumPreviewHTML(d){
+  const defs = getCardDefs();
+  const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
+  const leader = d.leaderId && defs[d.leaderId];
+  const sig = deckSignature(d), total = deckTotal(d.counts||{});
+  const leaderBg = leader && leader.art ? `background-image:url(${leader.art})` : '';
+  return `<div class="deck-medium-preview ${d.id===mainDeckId?'is-main':''}" data-deckid="${d.id}">
+    <div class="dmp-bg" aria-hidden="true">
+      <div class="dmp-castle"><span>${castle ? castle.icon || '🏰' : '🏰'}</span></div>
+      <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
+    </div>
+    <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
+    <div class="dmp-foot">
+      <span class="dmp-who">🏰 ${escapeHtml(castle ? castle.name : 'Castle')} · Lv ${castleLevelOf(castle && castle.id)}</span>
+      <span class="dmp-who is-r">👑 ${leader ? escapeHtml(leader.name) : 'No leader'}</span>
+      <span class="dmp-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span>📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
+    </div>
+  </div>`;
 }
 function deckShowcaseHTML(d, opts){
   opts = opts || {};
@@ -8409,6 +8507,7 @@ function wireLeaderSlot(){
     const defId = e.dataTransfer.getData('text/plain');
     const defs = getCardDefs();
     if(!defId || !defs[defId]) return;
+    if(!canLeadDef(defs[defId])){ showToast('👑 Leaders must be Heroic or above (or have the Leader passive).', 'error'); try{ denyShake(slot); }catch(_){} return; }
     myLeaderId = defId; saveMyLeader();
     wrap.innerHTML = leaderSlotHTML();
     wireLeaderSlot();
@@ -8560,7 +8659,7 @@ function startDungeonFight(){
   }
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const hqHp = DUNGEON_ENEMY_HQ_HP[Math.min(run.stage-1, DUNGEON_ENEMY_HQ_HP.length-1)];
   const enemyCharacter = {id:'dungeon-enemy', name:`Dungeon Foe ${run.stage}`, health:hqHp, effects:{}};
   const players = {
@@ -8577,7 +8676,7 @@ function startDungeonFight(){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'dungeon', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     dungeonStage: run.stage,
-    leaderDefId: myLeaderId, leaderUid: null};
+    leaderDefId: matchLeaderId(), leaderUid: null};
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
   renderPlay();
@@ -8654,7 +8753,7 @@ async function pollLiveQueue(){
   if(!liveQueueing) return;
   try{
     const { data, error } = await sbClient.rpc('find_ranked_match', {
-      p_rating: myRating, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null,
+      p_rating: myRating, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null,
     });
     if(error){ console.warn('find_ranked_match error', error); }
     else if(data){ await enterLiveMatch(data); return; } // matched — stop polling
@@ -9138,7 +9237,7 @@ const FEATURE_SPOTS = [
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
   // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
-  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[30]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
+  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[29]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
 function loadUnlocks(){
   try{ const u = JSON.parse(localStorage.getItem(UNLOCKS_KEY)||'null'); if(u && u.unlocked) return u; }catch(e){}
@@ -9481,7 +9580,7 @@ function skirmishTargetWinRate(mapId, node){
   const i = Math.max(0, sk.findIndex(n=> n.key===node.key));
   return .85 - .25 * (i / Math.max(1, sk.length - 1));
 }
-function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, CHARACTER_DEFS[myCharacterId]); }
+function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
 function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
   const myChar = playerChar || CHARACTER_DEFS.castle;
@@ -10711,6 +10810,16 @@ const CONQUEST_MAPS = [
       { key:"11-7", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":1,"cave-warlord":2,"blessed-avatar":2,"beaver-lumberjack":3}, hqHp:105, flavor:"It has not hurried in centuries. It has never needed to.", requires:["11-6"] },
       { key:"11-8", kind:"finalboss", name:"The Cave Warlord", icon:"👑", deck:{"grizzly-vanguard":1,"silverback-brawler":2,"hanging-loafer":2,"strangler-vine":2,"war-panther":2,"cave-warlord":1,"beaver-lumberjack":2}, hqHp:50, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["11-7"] },
     ]},
+  // Maps 14–20 (2026-10-10, user: "Add maps up till 20, for now name them reserved"): placeholders that never open
+  // until they get real fights. They show on the world map so the campaign's length is visible.
+  { id:"r14", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"m11", sequential:true, reserved:true, nodes: [] },
+  { id:"r15", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r14", sequential:true, reserved:true, nodes: [] },
+  { id:"r16", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r15", sequential:true, reserved:true, nodes: [] },
+  { id:"r17", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r16", sequential:true, reserved:true, nodes: [] },
+  { id:"r18", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r17", sequential:true, reserved:true, nodes: [] },
+  { id:"r19", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r18", sequential:true, reserved:true, nodes: [] },
+  { id:"r20", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", unlockAfter:"r19", sequential:true, reserved:true, nodes: [] },
+
   // Sub-maps (2026-10-09, user: "I want a little Cave map when I click into another cave icon on the
   // map… only accessible from that map. Then it boom, transition-zooms into the cave… a whole map
   // appears with more skirmishes available! Rarer rewards too! They will feature our first elite
@@ -10954,6 +11063,7 @@ function mapDecorHTML(mapId){
   }).join('');
 }
 function isMapUnlocked(map, progress){
+  if(map.reserved) return false;
   if(map.sub){
     const parent = CONQUEST_MAPS.find(m=> m.id===map.parent);
     if(!parent || !isMapUnlocked(parent, progress)) return false;
@@ -11613,17 +11723,19 @@ function renderConquestWorld(mainEl, body, progress){
   const narrow = (mainEl.clientWidth || innerWidth) < 600;
   const lanes = narrow ? [30, 70] : [50, 74, 50, 26];
   const ROW = narrow ? 132 : 168;
-  const pts = maps.map((m,i)=> ({x: lanes[i % lanes.length], y: 80 + i*ROW}));
-  const h = 80 + (maps.length-1)*ROW + 110;
+  const TOP = 200; // room for the chestnut Home at the top (2026-10-10)
+  const pts = maps.map((m,i)=> ({x: lanes[i % lanes.length], y: TOP + i*ROW}));
+  const h = TOP + (maps.length-1)*ROW + 110;
   // the trail between diamonds: a smooth curve through every stop (percent x, pixel y)
   let d = '';
-  pts.forEach((p,i)=>{ if(!i){ d = `M ${p.x} ${p.y}`; return; } const q = pts[i-1], my = (q.y + p.y)/2; d += ` C ${q.x} ${my}, ${p.x} ${my}, ${p.x} ${p.y}`; });
+  pts.forEach((p,i)=>{ if(!i){ d = `M 50 110 C 50 ${(110 + p.y)/2}, ${p.x} ${(110 + p.y)/2}, ${p.x} ${p.y}`; return; } const q = pts[i-1], my = (q.y + p.y)/2; d += ` C ${q.x} ${my}, ${p.x} ${my}, ${p.x} ${p.y}`; });
   const firstLocked = maps.findIndex(m=> !isMapUnlocked(m, progress));
   mainEl.className = 'conquest-main conquest-world';
   mainEl.innerHTML = `<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button>
     <div class="conquest-scrim conquest-headline"><h3>🧭 The World</h3><p class="panel-sub">Every map at once. Pick a diamond to travel there.</p></div>
     <div class="world-atlas" style="height:${h}px">
       <svg class="world-trail" viewBox="0 0 100 ${h}" preserveAspectRatio="none" aria-hidden="true"><path d="${d}" /></svg>
+      <button type="button" class="world-home" id="worldHomeBtn" style="left:50%; top:70px" title="Back to Home" aria-label="Back to Home"><svg class="wh-compass" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="rgba(20,14,8,.35)" stroke="#e9c46a" stroke-width="2"/><polygon points="50,4 57,43 96,50 57,57 50,96 43,57 4,50 43,43" fill="rgba(255,240,200,.25)" stroke="#e9c46a" stroke-width="1.5"/><polygon points="50,20 54,46 80,50 54,54 50,80 46,54 20,50 46,46" fill="rgba(233,196,106,.35)"/><text x="50" y="13" text-anchor="middle" font-size="9" font-weight="800" fill="#f3e3bf">N</text></svg><span class="wh-nut">🌰</span><span class="wh-label">Home</span></button>
       ${maps.map((m,i)=>{
         const open = isMapUnlocked(m, progress);
         const hidden = !open && i > firstLocked; // beyond the next locked map: a silhouette only
@@ -11637,6 +11749,7 @@ function renderConquestWorld(mainEl, body, progress){
       }).join('')}
     </div>`;
   const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body);
+  { const hb = document.getElementById('worldHomeBtn'); if(hb) hb.onclick = ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }; }
   mainEl.querySelectorAll('[data-world-map]').forEach(b=> b.addEventListener('click', ()=>{
     const id = b.dataset.worldMap;
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11768,7 +11881,17 @@ function placeConquestHud(){
   wrap.classList.toggle('cq-no-tabs', !tabs || tabs.hidden);
   requestAnimationFrame(()=>{ const pane = document.getElementById('conquestMain') || layout; const t = pane.getBoundingClientRect().top - view.getBoundingClientRect().top; view.style.setProperty('--cq-top', Math.max(0, Math.round(t)) + 'px'); });
 }
+// Map leaders (2026-10-10): each of Maps 1–10 has a Heroic leader as its boss's first-clear reward. Players who beat
+// that boss before the leader existed get it the first time they open the map.
+function grantClearedBossLeaders(){
+  try{
+    const pr = loadConquestProgress(), defs = getCardDefs();
+    Object.values(defs).forEach(d=>{ const src = d && d.source; if(!src || src.kind !== 'map' || !(d.archetypes||[]).includes('Leader')) return;
+      if((pr.completed||[]).includes(conquestNodeId(src.id, src.node)) && !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length){ unlockCardForPlayer(d.id, 'conquestReward'); try{ showToast(`👑 ${d.name} joins you, for beating that map's boss.`, 'ok'); }catch(e){} } });
+  }catch(e){}
+}
 function renderConquestSubTab(body){
+  grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
   if(!matchState) document.body.classList.add('conquest-full');
@@ -11810,10 +11933,7 @@ function renderConquestSubTab(body){
   }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
-  // 2026-10-08 (user): Home lives in the map too, at the top of the region list.
-  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item home-chip" id="conquestHomeChip" role="button" tabindex="0" title="Back to Home"><div class="cmi-ico">🏠</div><div class="cmi-body"><div class="cmi-name">Home</div><div class="cmi-sub">Leave the map</div></div></div>`);
-  { const hc = document.getElementById('conquestHomeChip'); const go = ()=>{ exitConquestImmersive(); switchTab('home'); };
-    hc.addEventListener('click', go); hc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
+  // 2026-10-10 (user: "Remove the Home Map from the conquest page"): Home is the top-right mini icon, or the chestnut on the World map.
   { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
     wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
   if(conquestWorldView) listEl.querySelectorAll('.conquest-map-item.selected:not(.world-chip)').forEach(el=> el.classList.remove('selected'));
@@ -11953,7 +12073,8 @@ function renderConquestSubTab(body){
     // 2026-10-08 (user: "simplified to just an arrow + emoji"): the edge chips are an arrow and the map's emoji;
     // the name stays in the tooltip and for screen readers.
     const edge = (m, side)=>{ if(!m) return ''; const open = isMapUnlocked(m, progress), lbl = (map.sub ? 'Climb back out to ' : side==='left' ? 'Back to ' : 'On to ') + m.name + (open ? '' : ' (locked)');
-      return `<button type="button" class="world-edge world-edge-${side} ${open?'':'is-locked'}" ${open?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(lbl)}" aria-label="${escapeAttr(lbl)}">${side==='left'?'<b aria-hidden="true">‹</b>':''}<span aria-hidden="true">${open?m.icon:'🔒'}</span>${side==='right'?'<b aria-hidden="true">›</b>':''}</button>`; };
+      const editing = !!(conquestLayoutEdit || conquestLinkEdit);
+      return `<button type="button" class="world-edge world-edge-${side} ${open?'':'is-locked'} ${editing?'is-editing':''}" ${open && !editing?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(lbl)}" aria-label="${escapeAttr(lbl)}">${side==='left'?'<b aria-hidden="true">‹</b>':''}<span aria-hidden="true">${open?m.icon:'🔒'}</span>${side==='right'?'<b aria-hidden="true">›</b>':''}</button>`; };
     if(canvasEl){
       canvasEl.insertAdjacentHTML('beforeend', edge(prev,'left') + edge(next,'right'));
       canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(map.sub) leaveSubMap(map, body); else conquestPanTo(b.dataset.worldGo, body, progress); }));
@@ -11976,9 +12097,18 @@ function renderConquestSubTab(body){
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
+  try{ mountCaveDark(document.getElementById('conquestCanvas'), map); }catch(e){}
   { let layer = null; try{ layer = mountMapShader(conquestShaderHost(), map.id); }catch(e){}
     const vh = conquestShaderHost();
-    if(conquestVeiledMap !== map.id && vh && vh.getClientRects().length){ conquestVeiledMap = map.id; try{ showMapVeil(vh, map, layer); }catch(e){} } }
+    // 2026-10-10 (user: "Only do this if viewing for the FIRST TIME OR, if this is the first map you open when opening the
+    // game in this session"): once per session, and once for every map the first time you open it.
+    if(conquestVeiledMap !== map.id && vh && vh.getClientRects().length){
+      conquestVeiledMap = map.id;
+      let seen = []; try{ seen = JSON.parse(localStorage.getItem('bramblewood_maps_opened')||'[]'); }catch(e){}
+      const firstEver = !seen.includes(map.id), firstThisSession = !mapVeilShownThisSession;
+      if(firstEver){ seen.push(map.id); try{ localStorage.setItem('bramblewood_maps_opened', JSON.stringify(seen)); }catch(e){} }
+      if(firstEver || firstThisSession){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
+    } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
@@ -12164,7 +12294,7 @@ function startOfflineRaidMatch(){
   bumpQuestCounter('raidsJoined', 1);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const castle = st.nextCastleHp;
   const players = {
     1: engine.newPlayer(1, myDeckCounts, myCharacter),
@@ -12176,7 +12306,7 @@ function startOfflineRaidMatch(){
   engine.draw(players[2], 3, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
-    raidBoss: boss, raidCycle: st.cycle, raidCastleStart: castle, opponentName: boss.name, leaderDefId: myLeaderId, leaderUid: null};
+    raidBoss: boss, raidCycle: st.cycle, raidCastleStart: castle, opponentName: boss.name, leaderDefId: matchLeaderId(), leaderUid: null};
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
   showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${st.remaining} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon}).then(()=> renderPlay());
 }
@@ -12331,7 +12461,7 @@ function simulateRaidPart(def, part, strip, n){
   let defs = getCardDefs(), deck = Object.assign({}, (part.fight||{}).deck||{});
   if(strip){ defs = Object.assign({}, defs); const d2 = {}; Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}}); d2[nid] = deck[id]; }); deck = d2; }
   const castle = (part.fight||{}).castleHp || 200;
-  const myChar = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS.castle;
+  const myChar = myCastleDef();
   let total = 0, over = 0;
   for(let i=0;i<n;i++){
     const engine = makeSimEngine(defs, seededRng(7700+i), {recordEvents:false, suddenDeathCastles:false});
@@ -12717,7 +12847,7 @@ function startRaidPartMatch(def, partId){
   }
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -12725,7 +12855,7 @@ function startRaidPartMatch(def, partId){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: myLeaderId, leaderUid: null};
+    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
   showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
@@ -13213,7 +13343,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   forcedNextSeed = (cfg.seed>>>0) || TUTORIAL_SEED;
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'], cfg.myHp ? {health: cfg.myHp} : {});
+  const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   const deckCounts = validDeck(cfg.myDeck) || tutorialStagePlayerDeck(st, pick, arrangedIds);
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
@@ -13538,11 +13668,11 @@ function startConquestMatch(mapId, nodeKey, opts){
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: node.rules || undefined}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myDeckCounts, enemyDeck = node.deck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
-    myGlad = pickGladiatorLeader(myDeckCounts, myLeaderId);
+    myGlad = pickGladiatorLeader(myDeckCounts, matchLeaderId());
     const myGladDef = myGlad && getCardDefs()[myGlad.defId];
     enemyGlad = pickGladiatorLeader(node.deck, null, myGladDef ? gladiatorPower(myGladDef) : null);
     if(myGlad && myGlad.fromDeck) myDeck = minusOne(myDeck, myGlad.defId);
@@ -13570,7 +13700,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
     // matches too — it's part of "your loadout" same as the deck and Bramble. In Gladiator the
     // leader is already on the field from turn one, so there's nothing left to summon.
-    leaderDefId: battleMode==='gladiator' ? null : myLeaderId,
+    leaderDefId: battleMode==='gladiator' ? null : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   renderPlay();
   if(!(opts && opts.noOpener)) try{ showVersusOpener(found.map || CONQUEST_MAPS.find(x=> x.id===mapId), node, myCharacter, enemyCharacter); }catch(e){}
@@ -14949,7 +15079,7 @@ function startRaidMatch(bossId){
   }
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const bossHp = (boss.stats && boss.stats.hqHp) || 200;
   const bossDeck = (boss.stats && boss.stats.deck) || {};
   const bossCharacter = {id:'raid-boss-'+boss.id, name:boss.name, health:bossHp, effects:{}};
@@ -14963,7 +15093,7 @@ function startRaidMatch(bossId){
   engine.draw(players[2], 3, 'B', stats, []);
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOnline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
-    raidBoss: boss, leaderDefId: myLeaderId, leaderUid: null};
+    raidBoss: boss, leaderDefId: matchLeaderId(), leaderUid: null};
   renderPlay();
 }
 // Called once from resolveRound()'s over-branch (see its own 'raidOnline' case). Fire-and-forget
@@ -15173,7 +15303,7 @@ function startMatch(mode, opts){
   const arenaMode = opts.caged ? 'open' : (arenaRuleset.battleMode || 'open'); // Caged Fight needs fixed slots
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
+  const myCharacter = myCastleDef();
   const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
   // 'ai' (Arena's "vs AI" quick match) gets a freshly randomized deck every match — see
   // randomAiDeck above. 'pc' (local pass-and-play) and 'async' keep DEFAULT_DECK as a neutral
@@ -15213,7 +15343,7 @@ function startMatch(mode, opts){
   // board, 4 to their right (slot -4, since the rows face each other).
   let caged = null;
   if(opts.caged){
-    const myLeader = myLeaderId || 'wandering-traveller';
+    const myLeader = matchLeaderId() || 'wandering-traveller';
     const enemyCounts = Object.fromEntries(players[2].deck.concat(players[2].hand.map(h=> h.defId)).reduce((mm, id)=> mm.set(id, (mm.get(id)||0)+1), new Map()));
     const A = mainDeckLevel(myDeckCounts, myLeader), B = deckLevelFrom(enemyCounts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || getCardDefs()[id]), []);
     const level = Math.max(0, Math.min(10, Math.round((A + B) / 100))), hp = engine.cageHpForLevel(level);
@@ -15227,7 +15357,7 @@ function startMatch(mode, opts){
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
     // never retroactively changes an in-progress match. leaderUid is set once the leader is
     // actually summoned onto the board; null before that and if no leader was ever chosen.
-    leaderDefId: myLeaderId, leaderUid: null, asyncGhost, asyncStage, pvpGhost: mode==='pvp' ? asyncGhost : null, pvpStage: mode==='pvp' ? asyncStage : null};
+    leaderDefId: matchLeaderId(), leaderUid: null, asyncGhost, asyncStage, pvpGhost: mode==='pvp' ? asyncGhost : null, pvpStage: mode==='pvp' ? asyncStage : null};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
   if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet' || mode==='pvp'){
@@ -20791,7 +20921,7 @@ async function showEndSign(m){
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
   battlefield.appendChild(el);
-  try{ if(kind==='victory' && SoundKit.win) SoundKit.win(); else if(kind==='defeat' && SoundKit.lose) SoundKit.lose(); }catch(e){}
+  try{ if(kind==='victory') Songbook.sting('victory'); else if(kind==='defeat') Songbook.sting('defeat'); }catch(e){} // 2026-10-10: Songbook stings
   let tossMs = 0;
   if(m.winner===1 || m.winner===2) try{ tossMs = victoryParade(m.winner===1 ? 'rowMine' : 'rowEnemy') || 0; }catch(e){}
   // 2026-10-08 emotes: a couple of the beaten side's survivors sulk.
@@ -24271,6 +24401,7 @@ function renderDeckSection(){
     document.getElementById('deckSaveBar')?.remove();
     document.body.insertAdjacentHTML('beforeend', `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
+        <button type="button" class="btn small deck-back-btn" id="deckBackBtn" title="Back to your decks">‹ Back</button>
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
           ${myDecks.map(d=> `<button type="button" class="deck-chip ${d.id===deckEditingId?'on':''}" data-switchdeck="${d.id}" role="tab" aria-selected="${d.id===deckEditingId}"${d.id===deckEditingId?' title="Click to rename"':''}>${d.id===mainDeckId?'<span class="dc-star" title="Main deck: the one you play with">★</span>':''}${escapeHtml(d.name)}${deckIsLegal(d)?'':'<span class="dc-warn" title="Not ready to play: needs exactly '+DECK_SIZE+' cards">!</span>'}</button>`).join('')}
           <button type="button" class="deck-chip deck-chip-new" id="deckNewChip" title="New deck">➕ New</button>
@@ -24291,6 +24422,7 @@ function renderDeckSection(){
     const mm = document.getElementById('deckMakeMainBtn');
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
+    document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
     document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
 
     document.getElementById('deckHeroBtn').addEventListener('click', ()=>{ deckHeroView = !deckHeroView; renderDeckSection(); });
@@ -24326,18 +24458,28 @@ function renderDeckSection(){
   if(deckSubTab==='sim'){ body.innerHTML = '<div id="view-sim"></div>'; renderSim(); return; }
   renderDeckListTab(body);
 }
+let deckListView = (()=>{ try{ return localStorage.getItem('bramblewood_deck_view') || 'large'; }catch(e){ return 'large'; } })();
 function renderDeckListTab(body){
-  body.innerHTML = `<div class="panel"><h2>🃏 My Decks</h2>
+  body.innerHTML = `<div class="panel"><div class="dl-head"><h2>🃏 My Decks</h2>
+      <div class="tk-seg dl-view" role="group" aria-label="Deck view"><button type="button" class="tk-speed-btn ${deckListView==='large'?'is-on':''}" data-deckview="large" aria-pressed="${deckListView==='large'}">Large</button><button type="button" class="tk-speed-btn ${deckListView==='medium'?'is-on':''}" data-deckview="medium" aria-pressed="${deckListView==='medium'}">Medium</button></div></div>
       <p class="panel-sub">Your ★ main deck is the one you play with. Decks can hold any number of cards while you build; only a ${DECK_SIZE}-card deck can be played.</p>
-      <div class="deck-menu-grid" id="deckMenuGrid"></div>
+      <div class="deck-menu-grid ${deckListView==='medium'?'is-medium':''}" id="deckMenuGrid"></div>
       <div class="deck-menu-bottom-actions">
         <button class="btn primary" id="newDeckBtn">➕ New Deck</button>
         <button class="btn" id="importDeckCodeBtn">📥 Import Deck Code</button>
       </div>
     </div>`;
   const grid = document.getElementById('deckMenuGrid');
+  body.querySelectorAll('[data-deckview]').forEach(b=> b.addEventListener('click', ()=>{ deckListView = b.dataset.deckview; try{ localStorage.setItem('bramblewood_deck_view', deckListView); }catch(e){} renderDeckListTab(body); }));
+  if(deckListView==='medium'){
+    grid.innerHTML = myDecks.map(d=> `<button type="button" class="dmp-btn" data-editdeck="${d.id}" aria-label="Edit ${escapeAttr(d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
+    grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
+    document.getElementById('newDeckBtn').addEventListener('click', ()=>{ deckHeroView = false; const d = createNewDeck(); deckEditingId = d.id; deckShowList = false; renderDeckSection(); });
+    document.getElementById('importDeckCodeBtn').addEventListener('click', ()=> importDeckCodeFlow(document.getElementById('importDeckCodeBtn')));
+    return;
+  }
   grid.innerHTML = myDecks.map(d=> `
-    <div class="deck-menu-card ${d.id===mainDeckId?'active':''} ${deckIsLegal(d)?'':'is-illegal'}" data-deckid="${d.id}">
+    <div class="deck-menu-card deck-large-preview ${d.id===mainDeckId?'active':''} ${deckIsLegal(d)?'':'is-illegal'}" data-deckid="${d.id}">
       <div class="deck-menu-card-head">
         <input class="deck-menu-name-input" aria-label="Deck name" data-deckid="${d.id}" value="${escapeAttr(d.name)}" maxlength="40">
         ${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}
@@ -24912,7 +25054,7 @@ function packCardPool(defs, pool){
 }
 function packsUsingPool(n){ return getShopPacks().filter(p=> (p.pool||1) === n); }
 // Every rarity band has a weight (a missing one used to fall back to 4, i.e. more common than Uncommon).
-const PACK_RARITY_WEIGHT = {starter:6, common:6, uncommon:3, quest:0, rare:1.5, veryrare:1, superrare:0.8, epic:0.6, heroic:0.4, unique:0.3, questunique:0, legendary:0.25, mythic:0.1, ancient:0.05};
+const PACK_RARITY_WEIGHT = {special:0, devlegendary:0, devancient:0, eventlegendary:0, eventrare:0, starter:6, common:6, uncommon:3, quest:0, rare:1.5, veryrare:1, superrare:0.8, epic:0.6, heroic:0.4, unique:0.3, questunique:0, legendary:0.25, mythic:0.1, ancient:0.05};
 function rollPackCards(pack){
   const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
   if(!pool.length) return [];
@@ -24983,7 +25125,7 @@ function packCoverArt(pack){
 // rarity's colour that hints at the best card: whatever colour it glows, the best card is at most two steps below it.
 // Very rarely (0.2%) a pack glows the top colour, spins and blinks black and white: it opens Legendary-and-up only.
 const PACK_JACKPOT_CHANCE = 0.002, PACK_GLOW_CHANCE = 0.55;
-const SPARK_STEP = {starter:0, common:0, uncommon:1, quest:1, rare:2, veryrare:3, superrare:4, epic:5, heroic:6, unique:7, questunique:7, legendary:8, mythic:9, ancient:10};
+const SPARK_STEP = {special:2, devlegendary:8, devancient:10, eventlegendary:8, eventrare:2, starter:0, common:0, uncommon:1, quest:1, rare:2, veryrare:3, superrare:4, epic:5, heroic:6, unique:7, questunique:7, legendary:8, mythic:9, ancient:10};
 function sparkChance(rarity){ return Math.min(1, 0.001 * Math.pow(2, SPARK_STEP[rarity||'common'] || 0)); }
 function rollPackGlow(results, defs){
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
@@ -26023,7 +26165,7 @@ function openInviteModal(friendId){
   document.getElementById('invSend').onclick = async ()=>{
     const btn = document.getElementById('invSend'); btn.disabled = true;
     try{
-      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null});
+      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null});
       if(error) throw error;
       Social.outgoingInvite = data; close();
       showToast(`Invite sent to ${p.display_name||'your friend'}.`, 'ok');
@@ -26084,7 +26226,7 @@ function showInviteBanner(){
     if(deckTotal(myDeckCounts)!==DECK_SIZE){ showToast(`Your deck needs exactly ${DECK_SIZE} cards to play — fix it in Deck, then accept.`, 'error'); return; }
     const b = document.getElementById('ibAccept'); b.disabled = true;
     try{
-      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: myLeaderId || null});
+      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null});
       if(error) throw error;
       Social.incomingInvites = []; hideInviteBanner(); refreshFriendsBadge();
       switchTab('play'); await enterLiveMatch(row);
@@ -26864,18 +27006,61 @@ function mountMapShader(host, mapId){
 // Map loading veil (2026-10-10, user: "Map loading screen so VFX don't half-load"): entering a map shows a painted
 // card with the map's name until its effect layer has drawn its first frame and the fonts are in (at least 0.35 s,
 // at most 1.8 s), then lifts. Re-renders of the same map don't show it again.
-let conquestVeiledMap = null;
+let conquestVeiledMap = null, mapVeilShownThisSession = false;
+// Banners step aside (2026-10-10, user: "The banner on the top left should also disappear when hovering on top of it, so
+// I can click on things behind it. Same for all the banner UI"): the map's title banner and the admin layout bar let the
+// pointer through; while the pointer is over one (and not over one of its buttons) it fades almost away.
+const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .map-layout-bar';
+(function(){
+  let raf = 0, last = null;
+  const run = ()=>{ raf = 0; if(!last) return; const {x, y} = last;
+    document.querySelectorAll(GHOST_BANNERS).forEach(b=>{
+      const r = b.getBoundingClientRect(); const inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
+      b.classList.toggle('is-ghost', inside && !onControl);
+    }); };
+  document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});
+})();
+// Cave darkness (2026-10-10, user: "I want the parts of the map not lit by the mouse to be even darker. This effect even
+// affects the Skirmish icons and the connecting lines"): on cave maps a dark layer sits over the whole map (trail, skirmishes,
+// spots, pawn) with a lantern hole that follows the pointer. caveLamp keeps the light where it was across re-renders.
+const caveLamp = {x:0.5, y:0.5, r:150};
+function isCaveMap(map){ try{ const k = (typeof ShaderM !== 'undefined' && ShaderM && ShaderM.MAP_KIND) ? ShaderM.MAP_KIND[map.id] : null; return k === 3 || map.id === 'm4' || map.id === 'mg'; }catch(e){ return false; } }
+function mountCaveDark(canvas, map){
+  if(!canvas || !map || !isCaveMap(map)) return null;
+  canvas.querySelectorAll(':scope > .cave-dark').forEach(e=> e.remove());
+  const el = document.createElement('div'); el.className = 'cave-dark'; el.setAttribute('aria-hidden', 'true'); canvas.appendChild(el);
+  const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px'); };
+  apply();
+  const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
+  canvas.addEventListener('pointermove', move, {passive:true}); canvas.addEventListener('pointerdown', move, {passive:true});
+  el._apply = apply;
+  return el;
+}
+// The light spreads out from the centre, then settles back into the lantern around the pointer.
+function caveLightSpread(canvas){
+  const el = canvas && canvas.querySelector(':scope > .cave-dark'); if(!el) return;
+  const R = Math.hypot(canvas.clientWidth, canvas.clientHeight), keep = {x:caveLamp.x, y:caveLamp.y};
+  caveLamp.x = 0.5; caveLamp.y = 0.5;
+  const o = {r: 0};
+  if(typeof gsap === 'undefined' || reducedMotion()){ caveLamp.r = 150; caveLamp.x = keep.x; caveLamp.y = keep.y; el._apply && el._apply(); return; }
+  gsap.timeline()
+    .to(o, {r: R, duration: 1.1, ease: 'power2.out', onUpdate: ()=>{ caveLamp.r = o.r; el._apply && el._apply(); }})
+    .to(o, {r: 150, duration: 1.4, ease: 'power2.inOut', delay: 0.5, onUpdate: ()=>{ caveLamp.r = o.r; el._apply && el._apply(); }})
+    .add(()=>{ caveLamp.x = keep.x; caveLamp.y = keep.y; el._apply && el._apply(); });
+}
 function showMapVeil(host, map, layer){
   if(!host || !map) return;
   host.querySelectorAll(':scope > .map-veil').forEach(v=> v.remove());
   const n = typeof mapNumberOf==='function' ? mapNumberOf(map.id) : null;
-  const v = document.createElement('div'); v.className = 'map-veil'; v.setAttribute('role', 'status');
+  const cave = isCaveMap(map);
+  const v = document.createElement('div'); v.className = 'map-veil' + (cave ? ' is-cave' : ''); v.setAttribute('role', 'status');
   v.innerHTML = `<div class="mv-card"><span class="mv-ico" aria-hidden="true">${map.icon||'🗺️'}</span><b class="mv-name">${escapeHtml(map.name)}</b>${n!=null ? `<small class="mv-num">Map ${n}</small>` : ''}<span class="mv-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr-only">Loading the map…</span></div>`;
   host.appendChild(v); try{ SoundKit.mapUnroll(); }catch(e){}
   const t0 = performance.now();
   let done = false;
   const lift = ()=>{ if(done) return; done = true; const wait = Math.max(0, 350 - (performance.now() - t0));
-    setTimeout(()=>{ v.classList.add('is-lifting'); setTimeout(()=> v.remove(), 520); }, wait); };
+    setTimeout(()=>{ v.classList.add('is-lifting'); setTimeout(()=> v.remove(), 520); if(cave) caveLightSpread(document.getElementById('conquestCanvas')); }, wait); };
   const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
   const layerReady = new Promise(res=>{ if(!layer || layer.drawn) res(); else layer.onFirstFrame = res; });
   Promise.all([fontsReady, layerReady]).then(()=> requestAnimationFrame(()=> requestAnimationFrame(lift)));

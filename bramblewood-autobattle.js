@@ -34,7 +34,7 @@ const AB = {
   ],
 };
 const DAY = 24*3600*1000;
-const RARITY_LEVEL_WEIGHT = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10};
+const RARITY_LEVEL_WEIGHT = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10, special:3, devlegendary:8, devancient:10, eventlegendary:8, eventrare:3};
 function rarityWeight(d){ return RARITY_LEVEL_WEIGHT[(d && d.rarity) || 'common'] || 1; }
 // Generic deck level: counts {id:n}, levelOf(id) → level (≥1), leaders [ids] count double.
 function deckLevelOf(defs, counts, levelOf, leaders){

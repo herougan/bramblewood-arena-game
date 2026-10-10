@@ -27,7 +27,7 @@ const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).s
 const BORROW = {}; ((process.argv.find(a=> a.startsWith('--borrow=')) || '').slice(9)).split(',').filter(Boolean).forEach(x=>{ const [m, from] = x.split(':'); BORROW[m] = (from||'').split('+'); });
 
 const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.prayerReq||0)*0.4 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // a Ritual card is slow to wake; // devilryCost (2026-10-10): Darkness is scarce, so dark cards rank lower
-const CAP = {legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
+const CAP = {devlegendary:1, devancient:1, eventlegendary:1, legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
 const isBase = c=> !c.token && !c.test && !c.hallOfFame && c.id!=='wandering-traveller' && !(c.source && c.source.kind) && (c.rarity==='starter' || c.basic || !c.locked);
 const rewardsOf = (mid, key)=> cards.filter(c=> c.source && c.source.kind==='map' && c.source.id===mid && c.source.node===key).map(c=> c.id);
 function buildDeck(owned){ const ids = [...new Set(owned)].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a) || (a<b?-1:1)); const deck = {}; let n = 0; for(const id of ids){ const k = Math.min(4, CAP[defs[id].rarity] || 10, 20-n); if(k<=0) break; deck[id] = k; n += k; } return deck; }

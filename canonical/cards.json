@@ -8767,7 +8767,8 @@
           "count": 1
         }
       ],
-      "onReadyGold": 1
+      "onReadyGold": 1,
+      "leader": true
     },
     "flavor": "No banner, no faction \u2014 just a walking stick, a full pack, and a knack for showing up exactly when a new adventure needs a guide.",
     "locked": false,
@@ -11139,5 +11140,325 @@
     "flavor": "Holds the bow in one foot, draws with the other, and has never once explained how.",
     "numericId": 411,
     "uuid": "7904d37c-15f8-41b4-b670-14beab24e8d1"
+  },
+  {
+    "cost": 2,
+    "wait": 2,
+    "effects": {
+      "rally": 1
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "sergeant-bramblefox",
+    "name": "Sergeant Bramblefox",
+    "icon": "\ud83e\udd8a",
+    "attack": 4,
+    "health": 14,
+    "rarity": "heroic",
+    "species": [
+      "Canid"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "Barks the orders, then runs in first anyway.",
+    "source": {
+      "kind": "map",
+      "id": "m1",
+      "node": "1-4"
+    },
+    "numericId": 412,
+    "uuid": "5bdfb30a-7f27-4f01-92cc-a80d0752b4a5"
+  },
+  {
+    "cost": 2,
+    "wait": 2,
+    "effects": {
+      "thorns": 2
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "thistle-baron",
+    "name": "The Thistle Baron",
+    "icon": "\ud83e\udda1",
+    "attack": 3,
+    "health": 18,
+    "rarity": "heroic",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "He owns every stalk from here to the dunes, and he counts them.",
+    "source": {
+      "kind": "map",
+      "id": "mf",
+      "node": "f-5"
+    },
+    "numericId": 413,
+    "uuid": "305bca77-7812-4bde-a521-8b5d17778efa"
+  },
+  {
+    "cost": 2,
+    "wait": 3,
+    "effects": {
+      "armor": 3,
+      "tide": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "old-shell",
+    "name": "The Old Shell",
+    "icon": "\ud83d\udc22",
+    "attack": 2,
+    "health": 30,
+    "rarity": "heroic",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "It came up the beach before the castle was built.",
+    "source": {
+      "kind": "map",
+      "id": "mb",
+      "node": "b-5"
+    },
+    "numericId": 414,
+    "uuid": "48890792-6f81-4fc3-bee4-ad451f1ffe80"
+  },
+  {
+    "cost": 3,
+    "wait": 2,
+    "effects": {
+      "swipe": true,
+      "tide": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "drowned-matriarch",
+    "name": "The Drowned Matriarch",
+    "icon": "\ud83d\udc19",
+    "attack": 4,
+    "health": 20,
+    "rarity": "heroic",
+    "species": [
+      "Mollusc"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "Every spawnling in the Hollow answers to her.",
+    "source": {
+      "kind": "map",
+      "id": "m2",
+      "node": "2-5"
+    },
+    "numericId": 415,
+    "uuid": "c2b58ab6-1d81-498b-86cd-1505c9dee503"
+  },
+  {
+    "cost": 3,
+    "wait": 3,
+    "effects": {
+      "rage": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "yeti-chieftain",
+    "name": "Yeti Chieftain",
+    "icon": "\ud83e\udd8d",
+    "attack": 6,
+    "health": 24,
+    "rarity": "heroic",
+    "species": [
+      "Primate"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "The summit belongs to whatever survives the cold longest.",
+    "source": {
+      "kind": "map",
+      "id": "m3",
+      "node": "3-6"
+    },
+    "numericId": 416,
+    "uuid": "3e776cb9-4efe-48f0-8ef9-9e4d004c4793"
+  },
+  {
+    "cost": 2,
+    "wait": 2,
+    "effects": {
+      "flying": true,
+      "nocturnal": true,
+      "onReadyDamage": {
+        "amount": 3,
+        "dmgType": "physical"
+      }
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "echo-matriarch",
+    "name": "Echo Matriarch",
+    "icon": "\ud83e\udd87",
+    "attack": 4,
+    "health": 12,
+    "rarity": "heroic",
+    "species": [
+      "Bat"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "Her shriek finds you in the dark before her teeth do.",
+    "source": {
+      "kind": "map",
+      "id": "m4",
+      "node": "4-8"
+    },
+    "numericId": 417,
+    "uuid": "e8fdf148-5d92-4500-a3b5-06c12d97c31d"
+  },
+  {
+    "cost": 3,
+    "wait": 1,
+    "effects": {
+      "quick": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "pride-queen",
+    "name": "Pride Queen",
+    "icon": "\ud83e\udd81",
+    "attack": 5,
+    "health": 16,
+    "rarity": "heroic",
+    "species": [
+      "Felid"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "The grass goes quiet a full second before she arrives.",
+    "source": {
+      "kind": "map",
+      "id": "m5",
+      "node": "5-8"
+    },
+    "numericId": 418,
+    "uuid": "86a1f5c7-e853-47e2-af17-6a7df9101471"
+  },
+  {
+    "cost": 3,
+    "wait": 2,
+    "effects": {
+      "bleed": 2,
+      "nocturnal": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "wolfsbane-alpha",
+    "name": "Wolfsbane Alpha",
+    "icon": "\ud83d\udc3a",
+    "attack": 5,
+    "health": 18,
+    "rarity": "heroic",
+    "species": [
+      "Canid"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "The pack howls. He does not need to.",
+    "source": {
+      "kind": "map",
+      "id": "m6",
+      "node": "6-8"
+    },
+    "numericId": 419,
+    "uuid": "874453d1-fca6-4736-b41e-ebfd5dd82af2"
+  },
+  {
+    "cost": 2,
+    "wait": 2,
+    "effects": {
+      "evasive": true,
+      "tide": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "reef-admiral",
+    "name": "Reef Admiral",
+    "icon": "\ud83d\udc20",
+    "attack": 4,
+    "health": 16,
+    "rarity": "heroic",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "Commands the whole reef with a flick of one fin.",
+    "source": {
+      "kind": "map",
+      "id": "m7",
+      "node": "7-9"
+    },
+    "numericId": 420,
+    "uuid": "b6a858cd-e894-4df7-a105-1bd5ac3411e1"
+  },
+  {
+    "cost": 2,
+    "wait": 2,
+    "effects": {
+      "flying": true,
+      "poison": 2
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "heron-hag",
+    "name": "The Heron Hag",
+    "icon": "\ud83e\udda9",
+    "attack": 3,
+    "health": 14,
+    "rarity": "heroic",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Leader"
+    ],
+    "flavor": "She stands on one leg in the mist and waits for the swamp to bring her something.",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "8-8"
+    },
+    "numericId": 421,
+    "uuid": "3b9aef6c-2407-4d6a-a8b1-d6431d761621"
   }
 ]

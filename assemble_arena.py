@@ -78,7 +78,7 @@ ARCHETYPE_ICON = {
     # 2026-09-14: the four combined "X & Y" categories were split into two independent,
     # multi-membership archetypes each (a card like the Scorpion just belongs to both).
     "River": "🏞️", "Otter": "🦦", "Flora": "🌳", "Ocean": "🌊", "Cetacean": "🐬", "Bee": "🐝",
-    "Desert": "🏜️", "Frost": "❄️", "Insect": "🐜", "Owl": "🦉", "Oddity": "❓", "Village": "🏘️",
+    "Desert": "🏜️", "Frost": "❄️", "Insect": "🐜", "Owl": "🦉", "Oddity": "❓", "Village": "🏘️", "Leader": "👑",
     # Ants (2026-09-16, per explicit request): a sub-type of Insect — every ant card carries
     # BOTH "Insect" and "Ants" (see task90_update_cards.py-style retag pass in canonical/cards.json).
     "Ants": "🐜",

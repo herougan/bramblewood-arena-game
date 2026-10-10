@@ -341,6 +341,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       playedThisTurn:false, discardUsedThisTurn:false,
       character: character || null,
       firstUnitAtkBonus: (chEffects.firstUnitAtkBonus||0), firstUnitBonusUsed:false,
+      // Castle passives added 2026-10-10 (map castles): unitHpBonus (+N Health on every unit you play), flyerAtkBonus
+      // (+N Attack on every Flying unit you play), castleRegen (the castle heals N at each round start).
+      unitHpBonus: (chEffects.unitHpBonus||0), flyerAtkBonus: (chEffects.flyerAtkBonus||0), castleRegen: (chEffects.castleRegen||0),
     };
   }
   // Assigns a player's Castle-type card (Castle/Colony/Nest/...). Not yet a
@@ -548,6 +551,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function roundStart(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
+    if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -1578,6 +1582,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const boardCard = makeBoardCard(hc.defId);
     // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
     // to whichever card is the very first one this player plays in the match.
+    if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
       boardCard.atk += pl.firstUnitAtkBonus;
       boardCard.baseAtk += pl.firstUnitAtkBonus;
@@ -1658,6 +1664,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     payExileCost(players, sideOf, playerId, exileCostOfCard(defId), null, stats, events);
     pl.playedThisTurn = true;
     const boardCard = makeBoardCard(defId);
+    if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
       boardCard.atk += pl.firstUnitAtkBonus;
       boardCard.baseAtk += pl.firstUnitAtkBonus;

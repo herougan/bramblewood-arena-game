@@ -22,7 +22,7 @@ const ASYNC = {MAX_WINS:7, MAX_LOSSES:3, MIN_ACTIVE_PER_STAGE:12, ACTIVE_DAYS:14
 const RAID = {CYCLE_DAYS:7, POOL_MULT:8, MIN_RAIDERS:8, MAX_RAIDERS:16, SEED_SHARE:0.5};
 const DAY = 24*3600*1000;
 // Same per-rarity copy limits as the deck builder (arena_app.js RARITY_MAX_COPIES).
-const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, starter:10, quest:5, questunique:1};
+const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, starter:10, quest:5, questunique:1, special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4};
 const DECK_SIZE = 20;
 const GHOST_NAMES = ['Moss','Bramble','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Burdock','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AVATAR_CHARS = ['otter','hummingbird','mouse'];
@@ -208,7 +208,7 @@ function recordRaidAttempt(attempts, entry, keep){ return (attempts||[]).concat(
 const PVP = {RANK_MEAN:1500, RANK_SD:300, Z_EDGES:[-1.5, -0.75, 0, 0.75, 1.5], MIN_TIER_POOL:6, LEVEL_PULL:0.6, K:24};
 function tierIndexForRating(r){ const z = ((Number(r)||PVP.RANK_MEAN) - PVP.RANK_MEAN) / PVP.RANK_SD; const i = PVP.Z_EDGES.findIndex(e=> z < e); return i===-1 ? PVP.Z_EDGES.length : i; }
 function tierMidRating(t){ const e = PVP.Z_EDGES; const lo = t===0 ? e[0]-0.75 : e[t-1], hi = t===e.length ? e[e.length-1]+0.75 : e[t]; return Math.round(PVP.RANK_MEAN + ((lo+hi)/2)*PVP.RANK_SD); }
-function simpleDeckLevel(defs, deck){ const W = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, questunique:8, legendary:8, mythic:9, ancient:10}; let t = 0; Object.keys(deck||{}).forEach(id=>{ const d = defs[id]; if(d) t += (deck[id]|0) * (W[d.rarity||'common']||1); }); return t; }
+function simpleDeckLevel(defs, deck){ const W = {starter:1, common:1, uncommon:2, quest:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, special:3, devlegendary:8, devancient:10, eventlegendary:8, eventrare:3, questunique:8, legendary:8, mythic:9, ancient:10}; let t = 0; Object.keys(deck||{}).forEach(id=>{ const d = defs[id]; if(d) t += (deck[id]|0) * (W[d.rarity||'common']||1); }); return t; }
 // candidates: [{owner, rating, deckLevel, deck, ...}]. Returns {opponent, pool, tierUsed, widened}.
 function matchPvp(me, candidates, seed, excludeOwners){
   const myTier = tierIndexForRating(me.rating);
