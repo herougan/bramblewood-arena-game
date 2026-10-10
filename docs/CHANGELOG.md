@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (01:30)
+- **Faction packs:** a Rivergate Pack (Otters) and a Sunfeather Pack (Hummingbirds).
+  - Each pack draws from 15 cards: 10 for its side plus 5 Riverbank cards both share. That makes 25 cards: 19 new, plus 6 moved out of Pack 1 or given a home.
+  - 2 cards a pack. Each card comes from your side's 15 (89%), Pack 1 (10%) or the other side's 10 (1%).
+  - If neither card is Uncommon or better, you get a bonus Common or Uncommon.
+  - Elite-and-up fights drop a pack on the first clear, and 5% of the time after that. You get the Otter pack against the Legion, the Hummingbird pack against the Tribes, and otherwise your own side's.
+  - Neither pack is sold for leaves. The Sunfeather Pack can be bought for 5 🍯 **Food tokens**: you get 1 for every first clear and sometimes 1 for a repeat.
+  - Unopened packs wait in the Shop under **Your packs**.
+- **New skill, Lantern 🏮** (Lantern Bearer): at Night, your Diurnal units keep their day bonus.
+- **Otters vs birds:** Riverstone Slinger has Reach (never misses a flyer), and Net Thrower has Anti-Air 2.
+- **Pitching:** once you've pitched this turn, the Lumber tooltip turns red and says so. Dropping another card on the graveyard gets a reminder from your side's captain.
+- **Dragging:**
+  - A card you pick up keeps its full look; it used to lose its sizing and some effects mid-drag.
+  - The Leader drags like a hand card: only the card goes with you, and its slot stays put.
+  - The Leader's ribbon is just 👑, plus the cost if it has one; "Summon" is gone.
+- **Card list v2** (`docs/card-list-2026-10-11.md`): the 21-map road (0–20) with every card placed, the real Base set (51 cards), the faction packs, and open questions.
+
 ## 2026-10-11 (00:40)
 - **Dungeons, rebuilt:** a Dungeon is several castles in a row (2–8, default 3).
   - Castle 1 is a normal fight. When it falls, the next castle pops up in its place.

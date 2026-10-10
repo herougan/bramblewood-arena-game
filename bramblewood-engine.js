@@ -529,10 +529,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function syncPhaseStats(players, sideOf, events){
     const ph = phaseActive() ? getPhase() : null;
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
-      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{
+      const units = [...pl.row.left, ...pl.row.center, ...pl.row.right];
+      // Lantern (2026-10-11, Lantern Bearer): while one is on your board at Night, your Diurnal units keep their day bonus.
+      const lit = ph==='night' && units.some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.lantern);
+      units.forEach(c=>{
         if(!c || c.gap || c.hp <= 0) return;
         const e = (CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects) || {};
-        const [a, h] = ph ? phaseStatsOf(e, ph) : [0, 0], pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        const [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0], pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         if(a === pa && h === ph0) return;
         c.phaseAtk = a;
         if(h !== ph0){ const d = h - ph0; c.maxHp = Math.max(1, c.maxHp + d); c.hp = d > 0 ? c.hp + d : Math.max(1, Math.min(c.hp, c.maxHp)); c.phaseHp = h; }

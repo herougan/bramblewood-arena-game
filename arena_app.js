@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -206,6 +206,7 @@ const PASSIVE_DEFS = [
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
+  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board at Night, your Diurnal units keep their daytime bonus.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   {key:'antiAir', category:'passive', label:'Anti-Air', kind:'number', desc:n=>`Never misses a Flying unit, and hits Flying units for ${n} more damage.`},
@@ -6125,6 +6126,8 @@ const CURRENCY_META = {
   // earned only by fighting other players in the Arena (3 a win, 2 a draw, 1 a loss). Local like Krooni for now;
   // what they buy is open (a Laurel shelf in Shops, cosmetic frames, Arena-only cards).
   laurels: {glyph:'🌿', label:'Laurels'},
+  // Food tokens (2026-10-11): buy Sunfeather (Hummingbird) packs. 1 for each first clear, 10% for 1 on a repeat.
+  food: {glyph:'🍯', label:'Food tokens'},
 };
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
@@ -6865,7 +6868,7 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0};
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -9070,6 +9073,8 @@ const DIALOGUE_SPEAKERS = {
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
 const DIALOGUES = {
+  pitch_spent_o: {lines:[{who:'swiftpaw', text:'You have already pitched for the turn. Wait till next turn.'}]},
+  pitch_spent_h: {lines:[{who:'aurelia', text:'You have already pitched for the turn. Wait till next turn.'}]},
   outskirts_reveal: {lines:[
     {who:'swiftpaw', text:'There — the Outskirts. Scouts and stragglers, mostly.'},
     {who:'shieldback', text:'Mostly. Which means not entirely. We go carefully.'},
@@ -15793,7 +15798,8 @@ function leaderWidgetHTML(m){
   // CSRE (2026-09-20): don't print "Summon · 0🪙" for a free leader — same zero-cost hiding
   // rule as costBadgeParts()/cardTileHTML's own cost badge just above.
   const cost = m.engine.costOfCard(m.leaderDefId);
-  const ribbon = cost>0 ? `Summon · ${cost}🪵` : 'Summon'; // 2026-09-22: leader summon cost is Lumber now too (costOfCard is shared with normal plays)
+  // 2026-10-11 (user: "The leader boundary shouldn't have the word 'Summon' too. It's redundant"): crown, plus the Lumber cost if any.
+  const ribbon = cost>0 ? `${cost}🪵` : '';
   // Item #269 (2026-09-20, "The leader should be drag and droppable as well"): only ever
   // reached in the summonable state now, so always draggable.
   // 2026-09-30, per explicit bug report ("double tooltips. Remove the one in smaller text."):
@@ -15804,7 +15810,7 @@ function leaderWidgetHTML(m){
   // the themed popover alone still names it as the leader via its own tile styling/ribbon.
   return `<div class="leader-widget summonable" id="leaderWidget" data-defid="${m.leaderDefId}" draggable="true">
     ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}
-    <div class="leader-ribbon">👑 ${ribbon}</div>
+    <div class="leader-ribbon">👑${ribbon ? ' ' + ribbon : ''}</div>
   </div>`;
 }
 // Summon-the-leader click handling — mirrors playCardByUid's shape (validate -> engine call ->
@@ -19022,11 +19028,13 @@ function showPitchBadge(defId){
   const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
   let b = z.querySelector('.pitch-badge');
   if(!b){ b = document.createElement('span'); b.className = 'pitch-badge'; b.setAttribute('aria-hidden','true'); z.appendChild(b); }
-  b.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
+  const spent = pitchSpentNow(); b.classList.toggle('is-spent', spent); z.classList.toggle('pitch-spent', spent);
+  b.innerHTML = spent ? `<b>+${amount} ${meta.glyph}</b><small>${_t('Already pitched')}</small>` : `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
 }
+function pitchSpentNow(){ const m = matchState; if(!m || !m.players) return false; const me = m.players[viewerHandPid(m)]; return !!(me && me.discardUsedThisTurn); }
 function hidePitchBadge(){
   const z = document.getElementById('dropDiscard'); if(!z) return;
-  z.classList.remove('pitch-ready'); z.querySelectorAll('.pitch-badge').forEach(b=> b.remove());
+  z.classList.remove('pitch-ready', 'pitch-spent'); z.querySelectorAll('.pitch-badge').forEach(b=> b.remove());
 }
 function pitchYieldPreviewHTML(defId){
   const {resource, amount} = pitchYieldOf(defId);
@@ -19110,7 +19118,10 @@ function showResourceTipAbove(targetEl, defId, cx, cy){
   if(!tip || !defId || (!targetEl && cx==null)) return;
   const {resource, amount} = pitchYieldOf(defId);
   const meta = PITCH_RESOURCE_META[resource] || PITCH_RESOURCE_META.lumber;
-  tip.innerHTML = `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
+  // 2026-10-11 (user: "When hovering a card after one has already been pitched - the Lumber tooltip is red-out"):
+  const spent = pitchSpentNow();
+  tip.classList.toggle('is-spent', spent);
+  tip.innerHTML = spent ? `<b>+${amount} ${meta.glyph}</b><small>${_t('Already pitched this turn')}</small>` : `<b>+${amount} ${meta.glyph}</b><small>${escapeHtml(RESOURCE_LABEL[resource] || 'Lumber')}</small>`;
   tip.hidden = false;
   positionResourceTipAbove(targetEl, cx, cy);
 }
@@ -19164,6 +19175,9 @@ async function discardCardByUid(uid){
     // this attempt would grant nothing; used to just silently do nothing, same "is this broken?"
     // problem as the unfed summon click above.
     denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || document.getElementById('dropDiscard'));
+    // 2026-10-11 (user: "If the player still tries to drag and drop it to the GY, the tutorial character speaks"):
+    // once per turn, your side's guide reminds you.
+    if(activePid === viewerHandPid(m) && m.pitchNagRound !== m.round){ m.pitchNagRound = m.round; try{ playDialogue(loadFactionChoice() === 'hummingbirds' ? 'pitch_spent_h' : 'pitch_spent_o'); }catch(e){} }
     return;
   }
   const [dc] = me.hand.splice(idx,1);
@@ -20362,6 +20376,8 @@ async function resolveRound(opts){
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
         if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', CONQUEST_MAPS[3].id); }
       }
+      // Faction packs and Food tokens (2026-10-11).
+      try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.food) m.conquestFoodEarned = drops.food; }catch(e){}
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
       // map's enemy decks that you don't own yet. At most once per map.
@@ -21482,8 +21498,9 @@ function rewardsPanelHTML(m){
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
+  if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -21577,6 +21594,8 @@ function matchStatsHTML(m){
       ${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" title="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus included</span>` : ''}
       ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="A rare find for an S-rank win on this map (once per map)">🎁 Rare find!</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
+      ${m.conquestFoodEarned ? `<span class="hud-pill" title="Food tokens buy Sunfeather packs in the Shop">🍯 ${m.conquestFoodEarned} Food</span>` : ''}
+      ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}
       ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
@@ -25165,6 +25184,7 @@ function renderShop(){
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
     </div>
+    ${factionPackShelfHTML()}
     <div class="shop-pack-grid" id="shopPackGrid"></div>
     <div class="panel shop-reveal-panel" id="shopRevealPanel" hidden>
       <div class="forge-preview-wrap" id="shopRevealMount"></div>
@@ -25177,6 +25197,7 @@ function renderShop(){
          rather than shown as a greyed-out promise. See receiveLockedCard()'s own comment for the
          "arrives locked" data model this would eventually feed into. -->
     `;
+  wireFactionPackShelf();
   root.querySelectorAll('[data-shoptab]').forEach(b=> b.onclick = ()=>{ shopTab = b.dataset.shoptab; renderShop(); });
   const grid = document.getElementById('shopPackGrid');
   // 2026-09-24: pack purchases are one of the three features this batch gates behind a real
@@ -25438,6 +25459,7 @@ function packSetCost(pack, qty){
   return {gold: Math.round((c.gold||0)*qty*(1-d)), gems: Math.round((c.gems||0)*qty*(1-d)), discount:d};
 }
 function packCoverArt(pack){
+  if(pack && Array.isArray(pack.coverPools)){ const defs = getCardDefs(), ids = pack.coverPools.flatMap(n=> packCardPool(defs, n)).filter(id=> defs[id].art); if(ids.length){ ids.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b)); return defs[ids[0]].art; } if(pack.coverId && defs[pack.coverId] && defs[pack.coverId].art) return defs[pack.coverId].art; }
   // The wrapper's art: the pool's headline card (highest rarity with art), fixed per pack so the
   // wrapper never hints at what's inside this particular pack.
   const defs = getCardDefs();
@@ -25486,6 +25508,94 @@ function purchasePackOnce(pack, prepaid){
   return {results, leveledId, glow, jackpot};
 }
 function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) : {gold:(pack.cost.gold||0), gems:(pack.cost.gems||0)}; return (myCurrencies.gold||0) >= c.gold && (myCurrencies.gems||0) >= c.gems; }
+// Faction packs (2026-10-11, user: "a special Otters and Hummingbird pack. Each contains 10 otter or hummingbird
+// specific cards, and 5 cards shared amongst both of them. When opening the pack, it will contain 2 cards. If there are no
+// uncommon or higher ranks in them, a bonus card will be given (roll between Commons & Uncommons) ... 89/10/1"; "These packs
+// cannot be bought from the shop. But the Hummingbird one can, with food tokens"). Pools are card sources {kind:'pack'}
+// with tier 11 (Otter), 12 (Hummingbird) and 13 (shared by both). Packs you earn wait unopened in the Shop.
+const FACTION_PACKS = {
+  otter:       {id:'otter', name:'Rivergate Pack', icon:'🦦', own:11, other:12, shared:13, faction:'otters', people:'legion', cover:'river-warden', blurb:'Otters of the Rivergate Legion: big bodies, and two tricks for knocking birds out of the sky.'},
+  hummingbird: {id:'hummingbird', name:'Sunfeather Pack', icon:'🌺', own:12, other:11, shared:13, faction:'hummingbirds', people:'tribes', foodCost:5, cover:'sunspire-envoy', blurb:'Hummingbirds of the Sunfeather Tribes: almost everything flies.'},
+};
+const FACTION_PACK_ODDS = {own:0.89, pack1:0.10, other:0.01};
+const FACTION_PACK_CARDS = 2;
+const FACTION_PACKS_KEY = 'bramblewood_faction_packs_v1';
+function loadFactionPacks(){ try{ const o = JSON.parse(localStorage.getItem(FACTION_PACKS_KEY) || '{}'); return {otter: Math.max(0, o.otter|0), hummingbird: Math.max(0, o.hummingbird|0)}; }catch(e){ return {otter:0, hummingbird:0}; } }
+function saveFactionPacks(o){ try{ localStorage.setItem(FACTION_PACKS_KEY, JSON.stringify(o)); }catch(e){} }
+function grantFactionPack(id, n){ if(!FACTION_PACKS[id]) return; const o = loadFactionPacks(); o[id] = (o[id]||0) + (n||1); saveFactionPacks(o); }
+function factionPackPool(fp, which){
+  const defs = getCardDefs();
+  if(which === 'pack1') return packCardPool(defs, 1);
+  if(which === 'other') return packCardPool(defs, fp.other);
+  return packCardPool(defs, fp.own).concat(packCardPool(defs, fp.shared));
+}
+function rollFactionPackCards(fp, rnd){
+  rnd = rnd || Math.random;
+  const defs = getCardDefs(), w = id=> Math.max(0, +(PACK_RARITY_WEIGHT[defs[id].rarity||'common'] ?? 4)||0);
+  const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); if(!list.length || tot <= 0) return list[0] || null; let r = rnd()*tot; for(const id of list){ r -= w(id); if(r <= 0) return id; } return list[list.length-1]; };
+  const which = ()=>{ const r = rnd(); return r < FACTION_PACK_ODDS.own ? 'own' : r < FACTION_PACK_ODDS.own + FACTION_PACK_ODDS.pack1 ? 'pack1' : 'other'; };
+  const out = [];
+  for(let i = 0; i < FACTION_PACK_CARDS; i++){ let from = which(), pool = factionPackPool(fp, from); if(!pool.length){ from = 'own'; pool = factionPackPool(fp, 'own'); } const id = pick(pool); if(id) out.push({id, from}); }
+  const uncommonUp = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('uncommon');
+  let bonus = null;
+  if(out.length && !out.some(r=> uncommonUp(r.id))){
+    const pool = factionPackPool(fp, 'own').filter(id=> ['common','uncommon'].includes(defs[id].rarity||'common'));
+    const id = pick(pool); if(id){ bonus = id; out.push({id, from:'own', bonus:true}); }
+  }
+  return {pulls: out, bonus};
+}
+function openFactionPack(id, opts){
+  const fp = FACTION_PACKS[id]; if(!fp) return false;
+  const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return false;
+  if(!factionPackPool(fp, 'own').length){ showToast('This pack is empty right now.', 'error'); return false; }
+  if(opts && opts.buyWithFood){
+    if((myCurrencies.food||0) < (fp.foodCost||0)) return false;
+    myCurrencies.food -= fp.foodCost; saveCurrencies();
+  } else {
+    const inv = loadFactionPacks(); if(!(inv[id] > 0)) return false;
+    inv[id]--; saveFactionPacks(inv);
+  }
+  const roll = rollFactionPackCards(fp);
+  const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools:[fp.own, fp.shared], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
+  const foils = rollPackFoils(pack, roll.pulls.length);
+  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish, bonus:!!r.bonus}; });
+  const glow = rollPackGlow(results, getCardDefs());
+  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
+  openPackAnimation(pack, [{results, leveledId:null, glow, jackpot:false, bonus:!!roll.bonus}], {});
+  try{ if(currentTab === 'shop') setTimeout(()=>{ const sec = document.getElementById('factionPackShelf'); if(sec) sec.outerHTML = factionPackShelfHTML(); wireFactionPackShelf(); }, 50); }catch(e){}
+  return true;
+}
+// Which faction pack a won fight drops (elite and up: first clear always, repeats 5%). Fighting the Legion gives the
+// Otter pack and fighting the Tribes the Hummingbird pack; anyone else gives your own side's.
+const FACTION_PACK_REPEAT_CHANCE = 0.05, FOOD_REPEAT_CHANCE = 0.10;
+function factionPackForNode(node){
+  if(node && node.packDrop && FACTION_PACKS[node.packDrop]) return node.packDrop;
+  let people = null; try{ people = node.people || peopleOfDeck(node.deck); }catch(e){}
+  if(people === 'legion') return 'otter'; if(people === 'tribes') return 'hummingbird';
+  return (typeof loadFactionChoice === 'function' && loadFactionChoice() === 'hummingbirds') ? 'hummingbird' : 'otter';
+}
+function rollConquestPackDrops(node, isFirstClear){
+  const out = {pack:null, food:0};
+  if(!node || node.kind === 'tutorial') return out;
+  const bigFight = ['elite','boss','raidboss','finalboss'].includes(baseKind(node.kind||'skirmish'));
+  if(bigFight && (isFirstClear || Math.random() < FACTION_PACK_REPEAT_CHANCE)){ out.pack = factionPackForNode(node); grantFactionPack(out.pack, 1); }
+  if(isFirstClear || Math.random() < FOOD_REPEAT_CHANCE){ out.food = 1; grantCurrency('food', 1); }
+  return out;
+}
+function factionPackShelfHTML(){
+  const inv = loadFactionPacks(), food = myCurrencies.food||0;
+  const row = fp=>{ const n = inv[fp.id]||0, canBuy = fp.foodCost && food >= fp.foodCost;
+    return `<div class="fp-row" data-fp="${fp.id}"><span class="fp-pack" style="--tint:${fp.id==='otter' ? '#3f6f8f' : '#b0457a'}" aria-hidden="true"><span class="fp-ico">${fp.icon}</span>${n > 1 ? `<b class="fp-n">×${n}</b>` : ''}</span>
+      <span class="fp-text"><b>${escapeHtml(fp.name)}</b><small>${escapeHtml(fp.blurb)} ${FACTION_PACK_CARDS} cards, a bonus card if neither is Uncommon or better.</small><small class="fp-how">${fp.foodCost ? `Found in Elite fights and above, or ${fp.foodCost} 🍯 here.` : 'Found in Elite fights and above. Not sold here.'}</small></span>
+      <span class="fp-acts">${n > 0 ? `<button type="button" class="btn primary" data-fpopen="${fp.id}">Open${n > 1 ? ` (${n})` : ''}</button>` : `<span class="fp-none">None yet</span>`}${fp.foodCost ? `<button type="button" class="btn" data-fpbuy="${fp.id}" ${canBuy ? '' : 'disabled'}>${canBuy ? `Open for ${fp.foodCost} 🍯` : `Need ${fp.foodCost - food} more 🍯`}</button>` : ''}</span></div>`; };
+  return `<section class="panel fp-shelf" id="factionPackShelf" aria-label="Your packs"><h3>🎁 ${_t('Your packs')} <span class="fp-food" title="Food tokens: 1 for each first clear, sometimes 1 on a repeat">🍯 ${food} ${_t('Food tokens')}</span></h3>${Object.values(FACTION_PACKS).map(row).join('')}</section>`;
+}
+function wireFactionPackShelf(){
+  const sec = document.getElementById('factionPackShelf'); if(!sec) return;
+  sec.querySelectorAll('[data-fpopen]').forEach(b=> b.onclick = ()=>{ if(!openFactionPack(b.dataset.fpopen)) denyShake(b); });
+  sec.querySelectorAll('[data-fpbuy]').forEach(b=> b.onclick = ()=>{ if(!openFactionPack(b.dataset.fpbuy, {buyWithFood:true})) denyShake(b); });
+}
 let packOpenStop = null;
 function buyPack(packId, btnEl, qty, opts){
   qty = Math.max(1, qty|0 || 1);
@@ -25699,6 +25809,7 @@ function openPackAnimation(pack, opened, opts){
   const footBits = o=>{
     const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon) bits.push(`👑 +${pack.kroon} Krooni`);
     if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
+    if(o.bonus) bits.push(`🎁 ${_t('Bonus card: nothing Uncommon or better, so you get one more')}`);
     return bits;
   };
   const footActions = ()=>{
@@ -28215,6 +28326,24 @@ function maybeSpeakHQ(side, bank, opts){
 // over the battlefield; the same dragstart/dragover/drop/dragend events are dispatched to the same
 // drop targets (so every existing drop zone keeps working); a drop no target accepts flies the card
 // straight back into its slot. Touch keeps the touch shim below, which uses the same tilt and fly-home.
+// Drag ghosts (2026-10-11, user: "When I pick up a card - its card display goes wonky. some effects turn off"): a ghost
+// used to be a bare clone on <body>, so every style that depends on where the card sits (.hand-strip .card-tile sizes,
+// the rarity band, inherited font size and CSS variables) fell away mid-drag. The clone now sits inside a chain of
+// display:contents copies of its real ancestors, which keeps every one of those selectors and inherited values.
+function mountDragGhost(ghost, srcEl){
+  const chain = []; let a = srcEl && srcEl.parentElement;
+  while(a && a !== document.body && a !== document.documentElement){ chain.unshift(a); a = a.parentElement; }
+  let top = null, cur = null;
+  chain.forEach(anc=>{ const w = document.createElement(anc.tagName === 'BUTTON' ? 'div' : anc.tagName.toLowerCase() === 'section' ? 'div' : 'div');
+    w.className = anc.className && typeof anc.className === 'string' ? anc.className : '';
+    const st = anc.getAttribute('style'); if(st) w.setAttribute('style', st);
+    w.style.display = 'contents'; w.setAttribute('aria-hidden', 'true'); w.classList.add('drag-ghost-host');
+    if(cur) cur.appendChild(w); else top = w; cur = w; });
+  if(cur){ cur.appendChild(ghost); document.body.appendChild(top); ghost.__host = top; }
+  else document.body.appendChild(ghost);
+  return ghost;
+}
+function removeDragGhost(g){ if(!g) return; const h = g.__host; if(g.isConnected) g.remove(); if(h && h.isConnected) h.remove(); }
 const HandDrag = (function(){
   const MAX_TILT = 30;
   function tiltAt(x){
@@ -28224,7 +28353,7 @@ const HandDrag = (function(){
     return t * MAX_TILT;
   }
   function flyHome(ghost, src, done){
-    const finish = ()=>{ if(ghost && ghost.isConnected) ghost.remove(); if(done) done(); };
+    const finish = ()=>{ if(ghost) removeDragGhost(ghost); if(done) done(); };
     if(!ghost || !src || !src.isConnected || reducedMotion() || !ghost.animate){ finish(); return; }
     const from = ghost.getBoundingClientRect(), to = src.getBoundingClientRect();
     const dx = (to.left + to.width/2) - (from.left + from.width/2), dy = (to.top + to.height/2) - (from.top + from.height/2);
@@ -28239,7 +28368,9 @@ const HandDrag = (function(){
 (function initHandPointerDrag(){
   const THRESHOLD = 6;
   let cand = null, sx = 0, sy = 0, offX = 0, offY = 0, ghost = null, active = false, tilt = 0, last = null, dt = null, pid = null, suppressClick = false;
-  const isHandCard = el=> el && el.closest && el.closest('#handStrip [data-handuid]');
+  // 2026-10-11 (user: "when I drag the leader - the Leader boundary also follows"): the leader drags like a hand card
+  // now, and only its card face goes with the pointer; the slot's frame stays put.
+  const isHandCard = el=> el && el.closest && el.closest('#handStrip [data-handuid], #leaderWidget.summonable');
   // Mouse/pen drags of hand cards never start the browser's own drag.
   document.addEventListener('dragstart', e=>{ if(e.isTrusted && isHandCard(e.target)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   const fakeDT = ()=>{ const store = {}; return {setData:(k, v)=>{ store[k] = String(v); }, getData:k=> store[k] || '', setDragImage(){}, effectAllowed:'move', dropEffect:'move', types:['text/plain']}; };
@@ -28255,11 +28386,14 @@ const HandDrag = (function(){
     active = true; dt = fakeDT(); last = null;
     const r = cand.getBoundingClientRect();
     offX = sx - r.left; offY = sy - r.top;
-    ghost = cand.cloneNode(true);
+    const face = cand.matches('#leaderWidget') ? (cand.querySelector('.leader-card-face') || cand) : cand;
+    const fr = face.getBoundingClientRect();
+    offX = sx - fr.left; offY = sy - fr.top;
+    ghost = face.cloneNode(true);
     ghost.classList.remove('dragging', 'armed'); ghost.classList.add('hand-drag-ghost', 'is-pointer-drag'); ghost.removeAttribute('id'); ghost.removeAttribute('data-handuid'); ghost.setAttribute('aria-hidden', 'true');
-    ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px';
-    ghost.style.setProperty('--gx', (offX / r.width * 100).toFixed(0) + '%'); ghost.style.setProperty('--gy', (offY / r.height * 100).toFixed(0) + '%');
-    document.body.appendChild(ghost);
+    ghost.style.width = fr.width + 'px'; ghost.style.height = fr.height + 'px';
+    ghost.style.setProperty('--gx', (offX / fr.width * 100).toFixed(0) + '%'); ghost.style.setProperty('--gy', (offY / fr.height * 100).toFixed(0) + '%');
+    mountDragGhost(ghost, face);
     tilt = HandDrag.tiltAt(x);
     fire('dragstart', cand, x, y);
     move(x, y);
@@ -28285,7 +28419,7 @@ const HandDrag = (function(){
         finally{ window.__bwDropTilt = null; window.__bwDropW = null; window.__bwDropCenter = null; }
       }
       if(last && last !== t) fire('dragleave', last, x, y);
-      if(accepted){ if(g) g.remove(); fire('dragend', src, x, y); }
+      if(accepted){ if(g) removeDragGhost(g); fire('dragend', src, x, y); }
       else HandDrag.flyHome(g, src, ()=>{ if(src) src.classList.remove('dragging'); fire('dragend', src, x, y); });
       suppressClick = true; setTimeout(()=> suppressClick = false, 0);
     }
@@ -28336,16 +28470,18 @@ const HandDrag = (function(){
     dragEl = candidate;
     dt = makeDataTransfer();
     lastTarget = null;
-    ghost = dragEl.cloneNode(true);
-    ghost.style.cssText = `position:fixed; pointer-events:none; z-index:9999; opacity:.85; transform:translate(-50%,-50%) scale(1.05); left:${touch.clientX}px; top:${touch.clientY}px; width:${dragEl.offsetWidth}px; height:${dragEl.offsetHeight}px;`;
-    document.body.appendChild(ghost);
+    // the leader carries only its card face; every ghost keeps its ancestors' styles (mountDragGhost)
+    const face = dragEl.matches('#leaderWidget') ? (dragEl.querySelector('.leader-card-face') || dragEl) : dragEl;
+    ghost = face.cloneNode(true); ghost.removeAttribute('id'); ghost.classList.remove('dragging');
+    ghost.style.cssText = `position:fixed; pointer-events:none; z-index:9999; opacity:.92; transform:translate(-50%,-50%) scale(1.05); margin:0; left:${touch.clientX}px; top:${touch.clientY}px; width:${face.offsetWidth}px; height:${face.offsetHeight}px;`;
+    mountDragGhost(ghost, face);
     fireDragEvent('dragstart', dragEl, touch);
   }
   function endDrag(touch){
     let keepGhost = false;
     if(dragActive){
       const target = elementUnderGhost(touch.clientX, touch.clientY);
-      const isHand = dragEl && dragEl.closest('#handStrip');
+      const isHand = dragEl && dragEl.closest('#handStrip, #leaderWidget');
       let accepted = false;
       if(target){
         if(isHand && ghost){ window.__bwDropTilt = Math.round(ghost._tilt||0); }
@@ -28356,7 +28492,7 @@ const HandDrag = (function(){
       if(isHand && !accepted && ghost){ keepGhost = true; const g = ghost; g.style.transform = 'none'; g.style.left = (touch.clientX - g.offsetWidth/2) + 'px'; g.style.top = (touch.clientY - g.offsetHeight/2) + 'px'; HandDrag.flyHome(g, dragEl); }
       fireDragEvent('dragend', dragEl, touch);
     }
-    if(ghost && !keepGhost){ ghost.remove(); }
+    if(ghost && !keepGhost){ removeDragGhost(ghost); }
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
   }
@@ -28376,7 +28512,7 @@ const HandDrag = (function(){
       beginDrag(touch);
     }
     e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
-    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1)+'deg'; } }
+    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip, #leaderWidget')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1)+'deg'; } }
     const target = elementUnderGhost(touch.clientX, touch.clientY);
     if(target !== lastTarget){
       if(lastTarget) fireDragEvent('dragleave', lastTarget, touch, {relatedTarget:target});

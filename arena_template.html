@@ -713,7 +713,7 @@
      rests by default and only drifts where few cards are on screen (board, hand, the big card
      views) or on the card under the pointer. */
   .card-tile .rarity-band{animation-play-state:paused !important;}
-  .board-card .card-tile .rarity-band, #handStrip .card-tile .rarity-band, .hero-card-big .card-tile .rarity-band, .card-pop-visual .card-tile .rarity-band,
+  .board-card .card-tile .rarity-band, #handStrip .card-tile .rarity-band, .drag-ghost-host .card-tile .rarity-band, .hero-card-big .card-tile .rarity-band, .card-pop-visual .card-tile .rarity-band,
   .card-tile:hover > .rarity-band{animation-play-state:running !important;}
   .board-card.ghost-preview .card-tile .rarity-band{display:none;}
   /* 2026-09-20 follow-up ("increase the font of the card texts. put them closer to the edge" +
@@ -4961,8 +4961,8 @@
   /* Phone hand (2026-10-10, screenshots: cost/Wait badges of neighbouring hand cards ran into each other) */
   @media (max-width:600px){
     .hand-strip{gap:18px 12px !important; padding-top:6px;}
-    #handStrip .pips.can-num i:not(:first-child){display:none;}
-    #handStrip .pips.can-num::after{content:attr(data-n); font-weight:900; margin-left:1px;}
+    #handStrip .pips.can-num i:not(:first-child), .drag-ghost-host .pips.can-num i:not(:first-child){display:none;}
+    #handStrip .pips.can-num::after, .drag-ghost-host .pips.can-num::after{content:attr(data-n); font-weight:900; margin-left:1px;}
   }
 
   /* Tiny board cards (2026-10-10, phone screenshots: with 7-8 units a row, cards shrink to ~45px; Health was drawn over
@@ -6616,7 +6616,7 @@
 
   /* Perf (2026-10-05): no per-card filter on board and hand name scrolls (a filter on every card
      made each one its own offscreen paint); the live-clock tint blends normally during a fight. */
-  .board-card .card-tile .nm, .hand-strip .card-tile .nm, #handStrip .card-tile .nm{filter:none !important; box-shadow:0 1px 2px rgba(0,0,0,.35);}
+  .board-card .card-tile .nm, .hand-strip .card-tile .nm, #handStrip .card-tile .nm, .drag-ghost-host .card-tile .nm{filter:none !important; box-shadow:0 1px 2px rgba(0,0,0,.35);}
   body.in-fight #atmoTint{mix-blend-mode:normal !important; opacity:.12 !important;}
 
   /* Rain on the battlefield without shaders (fallback; the shader draws its own when it's on) */
@@ -7487,6 +7487,26 @@
   .skirmish-editor .se-dg-wave{padding:3px 8px; border-radius:8px; background:rgba(120,90,160,.14); border:1px solid rgba(120,90,160,.3);}
   .skirmish-editor .se-dg-wave.is-last{background:rgba(160,60,60,.16); border-color:rgba(160,60,60,.4);}
   .skirmish-editor .se-dg-waves i{opacity:.5; font-style:normal;}
+  /* Faction packs (2026-10-11) */
+  .fp-shelf{max-width:980px; margin:14px auto 0;}
+  .fp-shelf h3{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 8px;}
+  .fp-food{margin-left:auto; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(214,160,40,.16); border:1px solid rgba(214,160,40,.4);}
+  .fp-row{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:10px 0; border-top:1px dashed rgba(120,90,50,.3);}
+  .fp-pack{position:relative; width:46px; height:62px; border-radius:6px 6px 8px 8px; background:linear-gradient(160deg, color-mix(in srgb, var(--tint) 75%, #fff) 0%, var(--tint) 55%, color-mix(in srgb, var(--tint) 70%, #000) 100%);
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.25), 0 3px 8px rgba(0,0,0,.25); display:grid; place-items:center;}
+  .fp-ico{font-size:24px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.3));}
+  .fp-n{position:absolute; right:-8px; top:-8px; font-size:11px; padding:1px 6px; border-radius:999px; background:#2b1d10; color:#ffe9b8;}
+  .fp-text{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .fp-text small{opacity:.85; line-height:1.35;}
+  .fp-how{opacity:.7 !important;}
+  .fp-acts{display:flex; flex-wrap:wrap; gap:6px; justify-content:flex-end;}
+  .fp-none{font-size:13px; opacity:.6; align-self:center;}
+  @media (max-width:620px){ .fp-row{grid-template-columns:auto 1fr;} .fp-acts{grid-column:1/-1; justify-content:flex-start;} }
+  /* Pitch already used this turn (2026-10-11): the yield shows red and struck through */
+  #graveyardDragTip.is-spent, .pitch-badge.is-spent{background:linear-gradient(180deg,#7a2020,#4a1010) !important; border-color:#ff8a8a !important; box-shadow:0 0 0 2px rgba(255,90,90,.35), 0 10px 24px rgba(0,0,0,.5) !important;}
+  #graveyardDragTip.is-spent b, .pitch-badge.is-spent b{text-decoration:line-through; text-decoration-thickness:3px; color:#ffd0d0;}
+  #graveyardDragTip.is-spent small, .pitch-badge.is-spent small{color:#ffd0d0;}
+  .discardzone.pitch-spent{filter:saturate(.6); outline:2px dashed rgba(255,110,110,.6); outline-offset:-4px;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

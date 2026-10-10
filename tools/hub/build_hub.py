@@ -139,6 +139,7 @@ DESIGN = [
   ('Card types: species, phyla and hybrids', 'card-types-2026-10-10.md'),
   ('Inspiration: Super Auto Pets and Tooth and Nail units', 'inspo-sap-tooth-and-nail-2026-10-10.md'),
   ('GSAP, textures, shaders and VFX: where to take them', 'vfx-exploration-2026-10-10.md'),
+  ('Card list v2: the 21-map road and faction packs', 'card-list-2026-10-11.md'),
   ('Card list for balancing: Maps 1–5 and Pack 1', 'card-list-2026-10-10.md'),
   ('Inspiration: what to borrow from Hearthstone', 'inspo-hearthstone-2026-10-10.md'),
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
