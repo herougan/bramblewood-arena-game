@@ -10134,7 +10134,9 @@ let questsKeyHandler = null;
 function openQuestsModal(){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
   const prevScroll = overlay.querySelector('.quests-modal') ? overlay.querySelector('.quests-modal').scrollTop : 0;
+  const opening = overlay.hidden || !overlay.querySelector('.quests-modal');
   overlay.innerHTML = questsModalHTML(); overlay.hidden = false;
+  if(opening) questBoardEntrance(overlay.querySelector('.quests-modal'));
   overlay.querySelector('.quests-modal').scrollTop = prevScroll;
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(questsKeyHandler){ document.removeEventListener('keydown', questsKeyHandler); questsKeyHandler = null; } };
   if(questsKeyHandler) document.removeEventListener('keydown', questsKeyHandler);
@@ -10144,6 +10146,24 @@ function openQuestsModal(){
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
+}
+// Quest board entrance (2026-10-10, user: "Clicking into the Quest board should show an animation bringing the board up,
+// with some papers flying around"): the board swings up from below with a bump, and loose notices flutter off it.
+function questBoardEntrance(board){
+  if(!board || reducedMotion() || typeof gsap === 'undefined') return;
+  try{ SoundKit.pageTurn(); setTimeout(()=>{ try{ SoundKit.woodKnock(); }catch(e){} }, 300); }catch(e){}
+  gsap.fromTo(board, {y: innerHeight*0.6, rotation:-4, scale:.92, opacity:0}, {y:0, rotation:0, scale:1, opacity:1, duration:.55, ease:'back.out(1.4)', clearProps:'transform,opacity'});
+  const r = board.getBoundingClientRect();
+  for(let i = 0; i < 12; i++){
+    const p = document.createElement('div'); p.className = 'qb-paper'; p.setAttribute('aria-hidden', 'true'); document.body.appendChild(p);
+    const x0 = r.left + r.width*(0.15 + Math.random()*0.7), y0 = r.top + r.height*(0.25 + Math.random()*0.5);
+    const ang = Math.random()*Math.PI*2, dist = 160 + Math.random()*260;
+    gsap.set(p, {x:x0, y:y0 + 120, rotation:Math.random()*60 - 30, opacity:0, scale:.6 + Math.random()*.5});
+    gsap.timeline({delay:.25 + Math.random()*.25, onComplete:()=> p.remove()})
+      .to(p, {opacity:1, duration:.08})
+      .to(p, {x:x0 + Math.cos(ang)*dist, y:y0 + Math.sin(ang)*dist*0.6 - 80, rotation:`+=${Math.random()*540 - 270}`, duration:1.1 + Math.random()*.5, ease:'power2.out'}, 0)
+      .to(p, {y:`+=${120 + Math.random()*120}`, opacity:0, duration:.7, ease:'power1.in'}, '-=.35');
+  }
 }
 function refreshQuestBadge(){
   const n = claimableQuestCount();
@@ -10606,7 +10626,7 @@ function renderArenaSubTab(body){
           </div>
         </div>
       </div></div>
-      <div class="arena-group"><h3 class="arena-group-h">Online</h3><div class="arena-mode-grid">
+      <div class="arena-group"><h3 class="arena-group-h">Online <button type="button" class="btn small ghost arena-achv-btn" id="arenaAchvBtn" title="Achievements">🏆 Achievements</button></h3><div class="arena-mode-grid">
         ${pvpTileHTML()}
         ${liveQueueing ? `
         <div class="arena-mode-btn live-queue-status" id="liveQueueStatus">
@@ -10620,6 +10640,7 @@ function renderArenaSubTab(body){
       </div></div>
       ${recentOpponentsPlayerHTML()}
     </div>`;
+  { const ab = document.getElementById('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
   document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
   const asyncBtn = document.getElementById('startAsyncBtn'); if(asyncBtn) asyncBtn.addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
@@ -11010,6 +11031,71 @@ function startMapMovers(canvas, map, decor){
     el.style.left = start.x+'%'; el.style.top = start.y+'%';
     canvas.appendChild(el);
     moverLoop(el, spots, mv.kind, token, start, mapMoverPos[map.id], i, !!saved);
+  }
+}
+// Map adornments (2026-10-10, user): on cave maps 1–2 snails creep in straight lines, very slowly, leaving faint blue
+// trails; the crystals in the map art sparkle now and then (found by colour in the art itself); and on dark maps a
+// predator's eyes glint in the darkness from time to time, away from your lantern.
+const snailPos = {};
+const crystalSpots = {};
+function isDarkMap(map){ return isCaveMap(map) || map.id === 'm8'; }
+function mapArtPointToCanvas(layout, canvas, ix, iy, iw, ih){
+  // the art is drawn `center / cover` on the layout; return a % position inside the canvas
+  const L = layout.getBoundingClientRect(), C = canvas.getBoundingClientRect();
+  const s = Math.max(L.width/iw, L.height/ih), dw = iw*s, dh = ih*s, ox = L.left + (L.width - dw)/2, oy = L.top + (L.height - dh)/2;
+  const x = ox + (ix + 0.5)*s, y = oy + (iy + 0.5)*s;
+  return {x: (x - C.left)/C.width*100, y: (y - C.top)/C.height*100};
+}
+function findCrystalPixels(url, cb){
+  if(crystalSpots[url]){ cb(crystalSpots[url]); return; }
+  const img = new Image(); img.onload = ()=>{ try{
+    const w = img.naturalWidth, h = img.naturalHeight, c = document.createElement('canvas'); c.width = w; c.height = h;
+    const g = c.getContext('2d', {willReadFrequently:true}); g.drawImage(img, 0, 0); const d = g.getImageData(0, 0, w, h).data, out = [];
+    for(let y = 0; y < h; y++) for(let x = 0; x < w; x++){ const i = (y*w + x)*4, r = d[i], gg = d[i+1], b = d[i+2];
+      const purple = b > 150 && r > 110 && gg < 150 && b - gg > 60, cyan = b > 170 && gg > 150 && r < 140, pale = r > 200 && gg > 200 && b > 225;
+      if(purple || cyan || pale) out.push([x, y]); }
+    crystalSpots[url] = {w, h, pts: out}; cb(crystalSpots[url]);
+  }catch(e){ cb(null); } }; img.src = url;
+}
+function startMapAdornments(canvas, map){
+  if(!canvas || !map || reducedMotion() || !hasGsap()) return;
+  const token = mapMoverToken, alive = ()=> token === mapMoverToken && canvas.isConnected;
+  const cave = isCaveMap(map), dark = isDarkMap(map);
+  if(cave){
+    // snails
+    const store = snailPos[map.id] = snailPos[map.id] || Array.from({length: 1 + (Math.random() < 0.6 ? 1 : 0)}, ()=> ({x: 15 + Math.random()*70, y: 20 + Math.random()*60, a: Math.random()*Math.PI*2}));
+    store.forEach(sn=>{
+      const el = document.createElement('span'); el.className = 'cave-snail'; el.textContent = '🐌'; el.setAttribute('aria-hidden', 'true'); canvas.appendChild(el);
+      const SPEED = 0.18; // % of the map per second: very slow
+      let last = performance.now(), trailT = 0;
+      const step = now=>{ if(!alive()) return; const dt = Math.min(0.2, (now - last)/1000); last = now;
+        sn.x += Math.cos(sn.a)*SPEED*dt; sn.y += Math.sin(sn.a)*SPEED*dt*1.6;
+        if(sn.x < 4 || sn.x > 96 || sn.y < 6 || sn.y > 94){ sn.a = Math.atan2(50 - sn.y, 50 - sn.x) + (Math.random() - 0.5)*1.2; sn.x = Math.max(4, Math.min(96, sn.x)); sn.y = Math.max(6, Math.min(94, sn.y)); }
+        el.style.left = sn.x + '%'; el.style.top = sn.y + '%'; el.style.transform = `translate(-50%,-50%) scaleX(${Math.cos(sn.a) < 0 ? 1 : -1})`;
+        trailT += dt; if(trailT > 1.4){ trailT = 0; const t = document.createElement('i'); t.className = 'snail-trail'; t.style.left = sn.x + '%'; t.style.top = (sn.y + 0.9) + '%'; canvas.appendChild(t); setTimeout(()=> t.remove(), 26000); }
+        requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    });
+    // crystal sparkles
+    const layout = document.getElementById('conquestLayout'), art = layout ? getComputedStyle(layout).getPropertyValue('--map-art') : '';
+    const m = art && art.match(/url\(["']?([^"')]+)["']?\)/);
+    if(m) findCrystalPixels(m[1], info=>{
+      if(!info || !info.pts.length) return;
+      const tick = ()=>{ if(!alive()) return;
+        const [ix, iy] = info.pts[Math.floor(Math.random()*info.pts.length)], p = mapArtPointToCanvas(layout, canvas, ix, iy, info.w, info.h);
+        if(p.x > 1 && p.x < 99 && p.y > 1 && p.y < 99){ const sp = document.createElement('i'); sp.className = 'crystal-sparkle'; sp.style.left = p.x + '%'; sp.style.top = p.y + '%'; canvas.appendChild(sp); setTimeout(()=> sp.remove(), 1100); }
+        setTimeout(tick, 700 + Math.random()*2200); };
+      setTimeout(tick, 1200);
+    });
+  }
+  if(dark){
+    // a predator's eyes in the dark, away from the lantern
+    const glint = ()=>{ if(!alive()) return;
+      let x, y, tries = 0; do { x = 8 + Math.random()*84; y = 12 + Math.random()*76; tries++; } while(tries < 12 && Math.hypot((x/100 - caveLamp.x)*1.6, y/100 - caveLamp.y) < 0.32);
+      const e = document.createElement('span'); e.className = 'pred-eyes' + (Math.random() < 0.35 ? ' is-red' : ''); e.setAttribute('aria-hidden', 'true'); e.innerHTML = '<i></i><i></i>'; e.style.left = x + '%'; e.style.top = y + '%'; canvas.appendChild(e);
+      setTimeout(()=> e.remove(), 3200);
+      setTimeout(glint, 7000 + Math.random()*9000); };
+    setTimeout(glint, 3500 + Math.random()*4000);
   }
 }
 async function moverLoop(el, spots, kind, token, cur, posStore, idx, resumed){
@@ -12095,6 +12181,7 @@ function renderConquestSubTab(body){
     if(selChip && listEl.scrollWidth > listEl.clientWidth) listEl.scrollTo({left: selChip.offsetLeft - (listEl.clientWidth - selChip.offsetWidth)/2, behavior:'smooth'});
   }
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
+  try{ startMapAdornments(document.getElementById('conquestCanvas'), map); }catch(e){}
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
   try{ mountCaveDark(document.getElementById('conquestCanvas'), map); }catch(e){}
@@ -24158,6 +24245,8 @@ function renderHome(){
         ${big('deck','⛺','Armoury')}${arenaHome ? `<button class="btn primary big home-menu-btn home-tile" id="homeArenaBtn"><span class="tab-emoji">🏟️</span><span>Arena</span><small class="home-sub">${escapeHtml(sub.arena || 'Quick battles, challenges, ranked')}</small></button>` : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
+        ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
+          return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -24188,6 +24277,7 @@ function homeSceneHTML(){
     <div class="hs-layer hs-back" data-depth="0.015"></div>
     ${HOME_OTTER_ART ? `<img class="hs-layer hs-otter" data-depth="0.05" src="${HOME_OTTER_ART}" alt="">` : ''}
     ${HOME_BIRD_ART ? `<img class="hs-layer hs-bird" data-depth="0.08" src="${HOME_BIRD_ART}" alt="">` : ''}
+    <div class="hs-shade"></div><div class="hs-spot"></div>
   </div>`;
 }
 let homeSceneBound = false;
@@ -26497,7 +26587,10 @@ function switchTab(tab){
     // when moving right along the menu, back when moving left). The leaf gust and the Nest's falling down are retired.
     if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
       const ORDER = ['home','play','deck','nest','shop','market','codex','profile','achievements','ranking','admin'];
-      const v = document.getElementById('view-' + tab), dir = ORDER.indexOf(tab) >= ORDER.indexOf(currentTabBeforeSwitch) ? 'fwd' : 'back';
+      // 2026-10-10 (user: "When I click Home from Conquest, the Home background loads up, but at the wrong size, and it has to
+      // resize"): a transform on #view-home turned the fixed, full-screen Home scene into a box the size of the view for the
+      // length of the turn, then it snapped to the screen. Home turns its menu instead, so the scene is full size from the start.
+      const v = tab==='home' ? document.querySelector('#view-home .home-menu') : document.getElementById('view-' + tab), dir = ORDER.indexOf(tab) >= ORDER.indexOf(currentTabBeforeSwitch) ? 'fwd' : 'back';
       if(v){ v.classList.remove('view-turn-fwd','view-turn-back'); void v.offsetWidth; v.classList.add('view-turn-' + dir); setTimeout(()=> v.classList.remove('view-turn-' + dir), 420); }
     }
   }catch(e){}

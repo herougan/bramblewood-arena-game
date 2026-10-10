@@ -4730,7 +4730,7 @@
     color:#3b2712; background:linear-gradient(180deg,#f6e8c6,#e7cf98); box-shadow:0 8px 16px rgba(0,0,0,.35), inset 0 0 0 1px rgba(122,86,48,.35); border-radius:4px; transition:transform .18s;}
   .home-note b{font-family:'Baloo 2'; font-size:16px;} .home-note small{font-size:12px; opacity:.8;}
   .home-note .pin{position:absolute; top:-12px; left:50%; translate:-50% 0; font-style:normal; font-size:18px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
-  .home-note.note-quests{left:-150px; top:22px; rotate:-6deg;}
+  .home-note.note-quests{left:-132px; top:22px; rotate:-6deg;}
   .home-note-wrap{position:absolute; right:-152px; top:150px; z-index:3;} .home-note-wrap .home-note{position:relative; rotate:5deg;}
   .home-note:hover, .home-note:focus-visible{transform:scale(1.06) rotate(1deg);}
   .home-note .home-badge{position:absolute; top:-8px; right:-8px;}
@@ -7094,7 +7094,7 @@
   body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row::-webkit-scrollbar{display:none;}
 
   /* Codex note on Home once the Arena takes its tile (2026-10-10) */
-  .home-note.note-codex{left:-146px; top:150px; rotate:4deg;}
+  .home-note.note-codex{left:-128px; top:150px; rotate:4deg;}
   @media (max-width:860px){ .home-note.note-codex{position:static; rotate:0deg; grid-column:1 / -1;} }
   /* Community page switcher (2026-10-10) */
   .community-tabs{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; max-width:1100px; margin:8px auto 12px; padding:0 4px;}
@@ -7403,6 +7403,33 @@
 .world-home:focus-visible{outline:3px solid #e9c46a; outline-offset:4px; border-radius:50%;}
 @keyframes whSpin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion: reduce){ .world-home .wh-compass{animation:none;} }
+
+/* Home: light from the top, dark at the bottom, and a brown spotlight around the menu (2026-10-10) */
+.home-scene .hs-shade{position:absolute; inset:0; background:linear-gradient(180deg, rgba(255,246,222,.16) 0%, rgba(255,246,222,0) 32%, rgba(0,0,0,0) 62%, rgba(12,7,3,.55) 100%);}
+.home-scene .hs-spot{position:absolute; inset:0; background:radial-gradient(circle at 50% 46%, rgba(58,34,16,0) 0, rgba(58,34,16,0) 26%, rgba(58,34,16,.38) 52%, rgba(44,25,11,.72) 78%, rgba(30,17,7,.85) 100%);}
+/* Achievements note, on the right (2026-10-10) */
+.home-note.note-achv{right:-134px; top:22px; rotate:5deg;}
+.home-note-wrap{right:-134px !important;}
+@media (max-width:860px){ .home-note.note-achv{position:static; rotate:0deg;} }
+.arena-achv-btn{margin-left:8px; vertical-align:middle; font-size:12px;}
+.qb-paper{position:fixed; left:0; top:0; z-index:10050; width:26px; height:32px; pointer-events:none; border-radius:2px; background:linear-gradient(180deg,#f6e8c6,#e2c890); box-shadow:0 3px 6px rgba(0,0,0,.3), inset 0 0 0 1px rgba(122,86,48,.3); background-image:repeating-linear-gradient(180deg, transparent 0 6px, rgba(122,86,48,.25) 6px 7px), linear-gradient(180deg,#f6e8c6,#e2c890);}
+
+/* Map adornments (2026-10-10) */
+.cave-snail{position:absolute; z-index:5; font-size:13px; line-height:1; pointer-events:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5)) saturate(.8);}
+.snail-trail{position:absolute; z-index:4; width:5px; height:3px; border-radius:50%; pointer-events:none; transform:translate(-50%,-50%); background:rgba(120,200,255,.55); box-shadow:0 0 4px rgba(120,200,255,.6); animation:snailTrail 26s linear forwards;}
+@keyframes snailTrail{0%{opacity:.85} 100%{opacity:0}}
+.crystal-sparkle{position:absolute; z-index:8; width:14px; height:14px; pointer-events:none; transform:translate(-50%,-50%); animation:crystalTwinkle 1.05s ease-out forwards;
+  background:radial-gradient(circle, #fff 0 12%, transparent 13%), linear-gradient(0deg, transparent 44%, rgba(220,240,255,.95) 48% 52%, transparent 56%), linear-gradient(90deg, transparent 44%, rgba(220,240,255,.95) 48% 52%, transparent 56%);
+  filter:drop-shadow(0 0 4px rgba(190,170,255,.9));}
+@keyframes crystalTwinkle{0%{opacity:0; transform:translate(-50%,-50%) scale(.2) rotate(0)} 35%{opacity:1; transform:translate(-50%,-50%) scale(1.1) rotate(20deg)} 100%{opacity:0; transform:translate(-50%,-50%) scale(.4) rotate(45deg)}}
+.pred-eyes{position:absolute; z-index:8; display:flex; gap:7px; pointer-events:none; transform:translate(-50%,-50%); animation:predEyes 3.1s ease-in-out forwards;}
+.pred-eyes i{width:5px; height:3px; border-radius:50%; background:#ffe27a; box-shadow:0 0 6px 2px rgba(255,214,90,.75); animation:predBlink 3.1s steps(1) forwards;}
+.pred-eyes.is-red i{background:#ff7a5a; box-shadow:0 0 6px 2px rgba(255,90,60,.7);}
+@keyframes predEyes{0%{opacity:0} 18%{opacity:1} 70%{opacity:1} 100%{opacity:0}}
+@keyframes predBlink{0%,48%{transform:scaleY(1)} 50%,54%{transform:scaleY(.1)} 56%,100%{transform:scaleY(1)}}
+@media (prefers-reduced-motion: reduce){ .crystal-sparkle, .pred-eyes, .snail-trail{display:none;} }
+.home-note.note-market{left:-132px; top:272px; rotate:-3deg;}
+@media (max-width:860px){ .home-note.note-market{position:static; rotate:0deg;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10 (23:50)
+- **Home:**
+  - the background is full size straight away when you come back from Conquest (only the menu does the page turn);
+  - a soft light from the top, a dark band at the bottom, and a brown spotlight that leaves the menu lit;
+  - the Quests and Codex notes sit a little closer to the menu.
+- **Achievements:** a 🏆 note on Home (shows how many are ready to claim) and a 🏆 button on the Arena page.
+- **Quest board:** it swings up from below, and loose notices flutter off it.
+- **Cave maps:**
+  - one or two snails creep across in straight lines, very slowly, leaving faint blue trails;
+  - the crystals in the map art sparkle now and then;
+  - on dark maps (caves, the grotto and the swamp) a predator's eyes glint in the dark, away from your lantern.
+
 ## 2026-10-10 (23:30)
 - **Map numbers:** the Outskirts is Map 1, so Pebble Beach is Map 3 (3-1, 3-2…) and the tutorial is 1-0. Side maps use a letter: Smugglers' Grotto fights are 3-A-1, 3-A-2… The side skirmishes added earlier are on Maps 11 and 13.
 - **Maps 14–20** are on the world map as Reserved; they don't open yet.
