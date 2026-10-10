@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-10, 2:40 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-10, 12:30 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -11,6 +11,7 @@ _Updated 2026-10-10, 2:40 am. The short list of what matters now. Everything els
 | **D23** | Next: Ecclesia with your Prayer value? | Yes |
 | **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |
 | **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
+| **S1 👥** | Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function | Say "apply it" |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".

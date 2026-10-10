@@ -3,6 +3,15 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-10
+- **Starting deck is editable:**
+  - Admin → 🎓 Edit the tutorial → Starting deck has the shared, Otter, Hummingbird and Both lists, plus the tutorial rewards.
+  - Default: 12 shared + 5 for your side + the 3 tutorial reward cards, which go straight into the deck = 20. Otters vs Hummingbirds measures 56%.
+- **Tutorial progress per player:**
+  - Each player's tutorial progress is now recorded: level 0–4 (not started, picked a side, in the fight with the guided step reached, lost a try, complete), their side and number of tries. It syncs to their cloud save.
+  - Admin → 👥 Players lists everyone with level, tutorial progress, cards and wins. It needs the S1 database function ("apply it").
+- **Wandering Traveller** is Wait 2 and a base card.
+- **Hub:** the 🎮 Play button sits at the top right, on the title row.
+- **Test:** the autobattler ghost check runs 144 fights instead of 36 (36 was too noisy).
 - **New basic cards (your list):**
   - shared: Duck Paddler, Pond Trout, Meadow Frog, Forager Ant, Bee Knight and the new **Crossed-Eyes** (2/3 Flying);
   - Otters: Otter Kit, Otter Centurion and the new **Fleetfoot'd** (2/4 Quick);

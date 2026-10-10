@@ -212,9 +212,10 @@ iframe{{border:0; width:100%; height:100%; display:block; background:var(--bg);}
 .doc th,.doc td{{border:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top;}}
 .doc th{{background:var(--surface-2);}}
 .doc li{{margin:2px 0;}}
-header .play{{order:3; margin:0 0 8px auto; font:700 13px 'Baloo 2',system-ui,sans-serif; color:var(--accent-ink); background:var(--accent); padding:4px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}}
+header .play{{order:1; margin:0 0 8px auto; font:700 13px 'Baloo 2',system-ui,sans-serif; color:var(--accent-ink); background:var(--accent); padding:4px 12px; border-radius:999px; text-decoration:none; white-space:nowrap;}}
 nav[role=tablist]{{order:2;}}
-@media (max-width:640px){{ header h1{{font-size:17px;}} nav[role=tablist]{{order:4; flex-basis:100%;}} }}
+header nav[role=tablist]{{order:4; flex-basis:100%;}}
+@media (max-width:640px){{ header h1{{font-size:17px;}} }}
 .guide .lede{{color:var(--ink-muted);}} .guide .note{{color:var(--ink-muted); font-size:14px; margin:0 0 10px;}}
 details.card{{background:var(--surface); border:1px solid var(--line); border-radius:12px; margin:8px 0; padding:0 14px;}}
 details.card > summary{{cursor:pointer; padding:12px 0; list-style:none; display:flex; flex-direction:column; gap:2px;}}

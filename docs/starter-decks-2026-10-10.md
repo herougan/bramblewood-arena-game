@@ -1,6 +1,24 @@
 # Starter decks: the Basic cards (2026-10-10)
 
-## ✅ Your new basic set (built 2026-10-10, 2 am)
+## ✅ The starting deck (updated 2026-10-10, noon)
+**Edit it in Admin → 🎓 Edit the tutorial → Starting deck.** Saving there publishes it for every new player.
+
+| Part | Cards | Count |
+|---|---|---|
+| Shared | Duck Paddler ×2, Pond Trout ×3, Meadow Frog ×2, Forager Ant ×2, Bee Knight ×2, Crossed-Eyes ×1 | 12 |
+| Otters | Otter Kit ×2, Otter Centurion ×2, Fleetfoot'd ×1 | 5 |
+| Hummingbirds | Cobalt Fledgling ×2, Crimson Recruit ×2, Mosswing ×1 | 5 |
+| Picked both | Otter Kit, Otter Centurion, Cobalt Fledgling, Crimson Recruit, Fleetfoot'd (×1 each) | 5 |
+| Tutorial rewards (go into the deck) | River Warden, Sunspire Envoy, Quarry Mole | 3 |
+| **Total** | | **20** |
+
+- **Duck Paddler is ×2, not ×3:** your shared list added up to 13 (3+3+2+2+2+1), which would make a 21-card deck. I cut the strongest basic. Change it in the editor if you'd rather cut something else.
+- **The tutorial rewards are now the same 3 cards for every side.** Before, a single side got 2 (its side card + Quarry Mole).
+- **Wandering Traveller** is now Wait 2 and counts as a base card (level 0).
+- **Measured:** Otter starter vs Hummingbird starter, both 20 cards: Otters win **56.3%** (600 games).
+
+## Earlier today (2 am)
+### Your new basic set (built 2026-10-10, 2 am)
 | Set | Cards |
 |---|---|
 | **Shared** (both sides) | Duck Paddler, Pond Trout, Meadow Frog, Forager Ant, Bee Knight, **Crossed-Eyes** (new: 2/3 Flying, the cross-eyed pigeon) |

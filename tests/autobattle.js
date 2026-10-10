@@ -106,7 +106,7 @@ function autoDraft(run, greedy){
   }
   const lo = A.opponentPool(defs, characters, 0, [], NOW).decks, hi = A.opponentPool(defs, characters, 12, [], NOW).decks;
   let w = 0, n = 0;
-  for(let i=0;i<lo.length;i++) for(let j=0;j<3;j++){ const f = A.simulateFight(H.Engine, defs, characters, hi[(i+j)%hi.length], lo[i], 500+i*3+j); if(f.winner){ n++; if(f.winner===1) w++; } }
+  for(let i=0;i<lo.length;i++) for(let j=0;j<12;j++){ const f = A.simulateFight(H.Engine, defs, characters, hi[(i+j)%hi.length], lo[i], 500+i*31+j); /* 2026-10-10: 144 fights, not 36 (36 swung 56-75% on small card changes) */ if(f.winner){ n++; if(f.winner===1) w++; } }
   check(w/n >= 0.65, `stage-12 ghosts beat stage-0 ghosts only ${(100*w/n).toFixed(0)}%`);
   console.log(`  ghosts: stage-12 beat stage-0 ${(100*w/n).toFixed(0)}% (${n} fights)`);
 }

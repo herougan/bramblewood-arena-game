@@ -8496,7 +8496,9 @@ const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tut
   // 2026-10-03: discoveries (hidden-card sightings), raid part attempts + claims (so a reward can't be claimed twice on two devices), recent opponents
   'bramblewood_arena_discovered','bramblewood_raid_part_attempts_v1','bramblewood_raid_claims_v1','bramblewood_recent_opponents_v1',
   // 2026-10-07: optional personal details (hobby, birthday) — player_progress is readable only by its owner
-  'bramblewood_personal_v1'];
+  'bramblewood_personal_v1',
+  // 2026-10-10: tutorial progress (level, side, guided step, tries), for Admin → Players
+  'bramblewood_tutorial_progress_v1'];
 // Keys merged (union) on pull instead of overwritten, because both devices may have added to them.
 const PROGRESS_MERGE_KEYS = {
   'bramblewood_arena_discovered': (a,b)=> JSON.stringify(Array.from(new Set([...(JSON.parse(a||'[]')||[]), ...(JSON.parse(b||'[]')||[])]))),
@@ -12116,15 +12118,15 @@ function sharedBasicIds(){ const defs = getCardDefs(); return Object.keys(defs).
 // build the player's real, persisted starting deck once the whole tutorial series is complete --
 // see the header comment above for why individual skirmishes never touch this.
 function buildFactionStarterDeck(pick){
-  // 2026-10-10: 20 cards = the six shared basics x2 (12) + the side's three basics (8: x3, x3, and x2 for the
-  // strongest). 'Both' (the timeout default) takes one basic from each side's three instead.
-  const defs = getCardDefs(), power = id=> (defs[id].attack||0) + (defs[id].health||0) + 2*(defs[id].wait||0);
-  const counts = {}; sharedBasicIds().forEach(id=> counts[id] = 2);
-  const side = pick==='otters' || pick==='hummingbirds' ? basicCardIds(pick)
-    : [...basicCardIds('otters').slice(0,2), ...basicCardIds('hummingbirds').slice(0,1)];
-  side.sort((a,b)=> power(a) - power(b)).forEach((id, i, arr)=> counts[id] = (counts[id]||0) + (i === arr.length - 1 ? 2 : 3));
+  // 2026-10-10: shared basics + the side's basics from the tutorial config (17 by default). The tutorial's reward cards
+  // are added by claimTutorialWin, which makes 20.
+  const defs = getCardDefs(), cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT;
+  const side = pick==='otters' ? cfg.starterOtters : pick==='hummingbirds' ? cfg.starterHummingbirds : cfg.starterBoth;
+  const counts = {};
+  [cfg.starterShared || STARTER_CFG_DEFAULT.starterShared, side || {}].forEach(list=> Object.entries(list).forEach(([id, n])=>{ if(defs[id] && n > 0) counts[id] = (counts[id]||0) + n; }));
   return counts;
 }
+function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; return (Array.isArray(cfg.rewards) ? cfg.rewards : STARTER_CFG_DEFAULT.rewards).filter(id=> getCardDefs()[id]); }
 function rivalOf(pick){ return pick==='otters' ? 'hummingbirds' : (pick==='hummingbirds' ? 'otters' : 'both'); }
 // Wait-0 vs Wait-1 Basics, split straight off card data. For a plain single-faction pick this is
 // just basicCardIds filtered by wait; for the 'both' fallback pick it evenly mixes both rosters
@@ -12299,7 +12301,28 @@ function wireFactionShowcase(screen){
     b.addEventListener('blur', ()=> surge(null));
   });
 }
+/* Tutorial progress per player (2026-10-10, user: "For each player, I want to record their progress - which tutorial
+   level are they at?"). One small record, synced to the player's cloud progress like the rest, and listed for admins in
+   Admin → Players. Levels: 0 not started · 1 picked a side · 2 in the tutorial fight (with the guided step reached)
+   · 3 lost a try, retrying · 4 complete. */
+const TUTORIAL_PROGRESS_KEY = 'bramblewood_tutorial_progress_v1';
+const TUTORIAL_LEVELS = ['Not started', 'Picked a side', 'In the tutorial fight', 'Lost a try', 'Complete'];
+function loadTutorialProgress(){ try{ const p = JSON.parse(localStorage.getItem(TUTORIAL_PROGRESS_KEY)||'null'); if(p && typeof p==='object') return p; }catch(e){} return {level: loadTutorialDone() ? 4 : 0}; }
+function noteTutorialProgress(patch){
+  const p = Object.assign(loadTutorialProgress(), patch, {updatedAt: Date.now()});
+  if(loadTutorialDone()) p.level = 4; // never step back once complete
+  p.label = TUTORIAL_LEVELS[p.level] || '';
+  try{ localStorage.setItem(TUTORIAL_PROGRESS_KEY, JSON.stringify(p)); }catch(e){}
+  return p;
+}
+function tutorialProgressText(p){
+  if(!p) return '—';
+  const step = p.level===2 && p.step ? ` · step ${p.stepIndex}/${GUIDED_STEPS.length} (${String(p.step).replace('g-','')})` : '';
+  const tries = p.attempts ? ` · ${p.attempts} tr${p.attempts===1?'y':'ies'}` : '';
+  return `${p.level ?? 0}/4 ${TUTORIAL_LEVELS[p.level] || ''}${p.faction ? ' · ' + p.faction : ''}${step}${tries}`;
+}
 function resolveFactionChoice(pick){
+  noteTutorialProgress({level:1, faction:pick, pickedAt:Date.now()});
   if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
   saveFactionChoice(pick);
   const el = document.getElementById('factionScreen'); if(el) el.hidden = true;
@@ -12334,7 +12357,17 @@ function beginTutorialStage(stage){
 // Everything an admin may want to tune, editable in Admin → 🎓 Tutorial editor. Saved in this
 // browser and, for cloud admins, published as `__cfg:tutorial` so every new player gets it.
 // Decks are {cardId: copies}; null means "automatic" (the faction Basics, as before).
-const TUTORIAL_CFG_DEFAULT = {myHp:12, rivalHp:8, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+// Starting deck (2026-10-10, user: "Can I edit the starting deck?"): shared basics + the picked side's basics = 17
+// cards; the tutorial's 3 reward cards go in on top, making 20. Every list is editable in Admin → Tutorial editor.
+const STARTER_CFG_DEFAULT = {
+  starterShared: {'duck-paddler':2, 'pond-trout':3, // the list as given summed to 13 (21 cards); Duck Paddler, the strongest basic, went 3 -> 2 to make 20
+                  'meadow-frog':2, 'forager-ant':2, 'bee-knight':2, 'crossed-eyes':1},
+  starterOtters: {'otter-kit':2, 'otter-centurion':2, 'fleetfootd':1},
+  starterHummingbirds: {'cobalt-talon-fledgling':2, 'crimson-wing-recruit':2, 'mosswing-laborer':1},
+  starterBoth: {'otter-kit':1, 'otter-centurion':1, 'cobalt-talon-fledgling':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
+  rewards: ['river-warden', 'sunspire-envoy', 'quarry-mole'],
+};
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:12, rivalHp:8, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
 const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v1';
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
@@ -12382,6 +12415,15 @@ function openTutorialEditor(){
       <label>Your deck <small>(one per line: card-id x2 · empty = automatic, ${sum(autoMine)} cards)</small><textarea id="teMyDeck" rows="6" placeholder="${escapeAttr(deckToText(autoMine))}">${escapeHtml(deckToText(c.myDeck))}</textarea></label>
       <label>Rival deck <small>(empty = automatic, ${sum(autoRival)} cards)</small><textarea id="teRivalDeck" rows="6" placeholder="${escapeAttr(deckToText(autoRival))}">${escapeHtml(deckToText(c.rivalDeck))}</textarea></label>
     </div>
+    <h3>Starting deck <small class="panel-sub">(${sum(c.starterShared)} shared + ${sum(c.starterOtters)} / ${sum(c.starterHummingbirds)} / ${sum(c.starterBoth)} for the picked side + ${(c.rewards||[]).length} tutorial rewards = ${sum(c.starterShared) + sum(c.starterOtters) + (c.rewards||[]).length} cards for an Otter pick)</small></h3>
+    <p class="panel-sub">One per line: card-id x2. Given once, when a new player wins the tutorial; the reward cards are added to the deck too.</p>
+    <div class="te-grid te-decks">
+      <label>Shared (every side)<textarea id="teStShared" rows="6">${escapeHtml(deckToText(c.starterShared))}</textarea></label>
+      <label>Otters<textarea id="teStOtters" rows="4">${escapeHtml(deckToText(c.starterOtters))}</textarea></label>
+      <label>Hummingbirds<textarea id="teStHb" rows="4">${escapeHtml(deckToText(c.starterHummingbirds))}</textarea></label>
+      <label>Picked both<textarea id="teStBoth" rows="4">${escapeHtml(deckToText(c.starterBoth))}</textarea></label>
+      <label>Tutorial rewards <small>(card ids, one per line)</small><textarea id="teRewards" rows="4">${escapeHtml((c.rewards||[]).join('\n'))}</textarea></label>
+    </div>
     <h3>Guided steps</h3>
     <div class="te-steps">${GUIDED_STEPS.map(st=> `<label>${escapeHtml(st.id.replace('g-',''))} ${st.block?'<small>(blocks until Next)</small>':st.action?'<small>(waits for the action)</small>':''}<textarea rows="2" data-testep="${st.id}" placeholder="${escapeAttr(st.text)}">${escapeHtml((c.steps||{})[st.id]||'')}</textarea></label>`).join('')}</div>
     <p class="te-msg" id="teMsg" role="status"></p>
@@ -12400,12 +12442,15 @@ function openTutorialEditor(){
   $('teClose').onclick = close;
   const read = ()=>{
     const my = textToDeck($('teMyDeck').value), rv = textToDeck($('teRivalDeck').value);
-    const bad = my.bad.concat(rv.bad);
+    const stS = textToDeck($('teStShared').value), stO = textToDeck($('teStOtters').value), stH = textToDeck($('teStHb').value), stB = textToDeck($('teStBoth').value);
+    const rewards = $('teRewards').value.split(/[\n,]+/).map(x=> x.trim()).filter(Boolean);
+    const bad = my.bad.concat(rv.bad, stS.bad, stO.bad, stH.bad, stB.bad, rewards.filter(id=> !getCardDefs()[id]));
     if(bad.length){ $('teMsg').textContent = '⚠️ Unknown card ids: ' + bad.join(', '); return null; }
     const steps = {}; ov.querySelectorAll('[data-testep]').forEach(t=>{ const v = t.value.trim(); if(v) steps[t.dataset.testep] = v; });
     return {myHp: Math.max(1, +$('teMyHp').value||12), rivalHp: Math.max(1, +$('teRivalHp').value||10), handSize: Math.max(1, Math.min(5, +$('teHand').value||3)), seed: (+$('teSeed').value>>>0) || TUTORIAL_SEED,
       rivalNames: {otters: $('teRival_otters').value.trim(), hummingbirds: $('teRival_hummingbirds').value.trim(), both: $('teRival_both').value.trim()},
-      myDeck: my.deck, rivalDeck: rv.deck, steps};
+      myDeck: my.deck, rivalDeck: rv.deck, steps,
+      starterShared: stS.deck || {}, starterOtters: stO.deck || {}, starterHummingbirds: stH.deck || {}, starterBoth: stB.deck || {}, rewards};
   };
   $('teSave').onclick = async ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); const pub = await publishTutorialCfg(); $('teMsg').textContent = pub ? '✅ Saved and published.' : '✅ Saved in this browser.'; };
   $('teReset').onclick = ()=>{ tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT); saveTutorialCfg(); openTutorialEditor(); };
@@ -12437,6 +12482,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const hand = Math.max(1, Math.min(5, cfg.handSize||3));
   engine.draw(players[1], hand, 'A', stats, []);
   engine.draw(players[2], hand, 'B', stats, []);
+  if(!(opts && opts.adminTest)){ const tp = loadTutorialProgress(); noteTutorialProgress({level:2, faction:pick, attempts:(tp.attempts||0) + 1, startedAt: tp.startedAt || Date.now()}); }
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'tutorial', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // 2026-09-25, explicit request ("Let's make a leader card for the tutorial - call them
@@ -12542,24 +12588,21 @@ function openStarterDeckStep(pick, onDone){
     });
   };
 }
-function grantTutorialSeriesRewardsPreview(pick){
-  const out = [];
-  if(pick==='otters' || pick==='both') out.push('river-warden');
-  if(pick==='hummingbirds' || pick==='both') out.push('sunspire-envoy');
-  out.push('quarry-mole');
-  return out;
-}
+function grantTutorialSeriesRewardsPreview(pick){ return tutorialRewardIds(); } // 2026-10-10: the same 3 for every side (editable)
 function claimTutorialWin(pick){
   if(matchState && matchState.adminTest){ showToast('🎓 Tutorial test finished — nothing was granted.', 'ok'); return false; }
   const firstTime = !loadTutorialDone();
-  if(firstTime){ grantTutorialSeriesRewards(pick); myDeckCounts = buildFactionStarterDeck(pick); saveMyDeck(); saveTutorialDone(); }
+  if(firstTime){
+    const won = grantTutorialSeriesRewards(pick);
+    // 2026-10-10 (user: "Playing the tutorial forces the player to put the 3 cards they won from the tutorial into their deck -> forming 20!")
+    const deck = buildFactionStarterDeck(pick); won.forEach(id=> deck[id] = (deck[id]||0) + 1);
+    myDeckCounts = deck; saveMyDeck(); saveTutorialDone();
+    noteTutorialProgress({level:4, doneAt:Date.now()});
+  }
   return firstTime;
 }
 function grantTutorialSeriesRewards(pick){
-  const rewardIds = [];
-  if(pick==='otters' || pick==='both') rewardIds.push('river-warden');
-  if(pick==='hummingbirds' || pick==='both') rewardIds.push('sunspire-envoy');
-  rewardIds.push('quarry-mole'); // everyone who finishes the series gets the Stone preview card
+  const rewardIds = tutorialRewardIds();
   rewardIds.forEach(id=> unlockCardForPlayer(id, 'tutorialReward'));
   return rewardIds;
 }
@@ -13801,6 +13844,23 @@ async function setCardPackPool(id, pool){
   if(pool) raw.source = {kind:'pack', tier:pool}; else delete raw.source;
   await saveCard(raw);
 }
+// Admin → Players (2026-10-10): reads admin_list_players (S1). Until that database function is applied it says so.
+async function loadAdminPlayers(){
+  const box = document.getElementById('adminPlayers'); if(!box) return;
+  if(!sbClient || !isSignedIn()){ box.innerHTML = '<p class="panel-sub">Sign in with an admin account to see players.</p>'; return; }
+  box.innerHTML = '<p class="panel-sub">Loading…</p>';
+  let rows = null, err = null;
+  try{ const r = await sbClient.rpc('admin_list_players'); rows = r.data; err = r.error; }catch(e){ err = e; }
+  if(err){ const missing = /function|does not exist|not find|PGRST202/i.test(String(err.message||err.code||err));
+    box.innerHTML = `<p class="panel-sub">${missing ? 'The player list needs the admin_list_players database function (S1), which is waiting for your "apply it".' : 'Could not load players: ' + escapeHtml(String(err.message||err))}</p>`; return; }
+  const parse = t=>{ try{ return JSON.parse(t); }catch(e){ return null; } };
+  const ago = t=>{ if(!t) return '—'; const m = Math.round((Date.now() - Date.parse(t))/60000); return m<60 ? m+' min' : m<1440 ? Math.round(m/60)+' h' : Math.round(m/1440)+' d'; };
+  const tut = r=>{ const p = parse(r.tutorial_raw); if(p) return tutorialProgressText(p); if(r.tutorial_done==='1') return '4/4 Complete'; return r.faction_raw ? '1/4 Picked a side · ' + r.faction_raw : '0/4 Not started'; };
+  const lvl = r=>{ const x = parse(r.xp_raw); const xp = typeof x==='number' ? x : (x && (x.xp||x.total)) || 0; try{ return levelFromXp(Number(xp)||0).level; }catch(e){ return xp; } };
+  box.innerHTML = `<p class="panel-sub">${(rows||[]).length} players, most recently seen first.</p><div class="admin-pl-scroll"><table class="admin-pl"><thead><tr><th>Player</th><th>Seen</th><th>Level</th><th>Tutorial</th><th>Cards</th><th>Wins / matches</th></tr></thead><tbody>
+    ${(rows||[]).map(r=> `<tr><td>${escapeHtml(r.display_name || '(no name)')}${r.is_admin ? ' 🛠️' : ''}<small>${escapeHtml(r.friend_code||'')}</small></td><td>${ago(r.last_seen_at || r.created_at)}</td><td>${escapeHtml(String(lvl(r)))}</td><td>${escapeHtml(tut(r))}</td><td>${r.cards_unlocked ?? 0}</td><td>${r.wins ?? 0} / ${r.matches ?? 0}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
 function renderAdmin(){
   const root = document.getElementById('view-admin'); if(!root) return;
   const flat = flattenConquestNodes();
@@ -13829,6 +13889,8 @@ function renderAdmin(){
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
       <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
+    <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
+      <button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
@@ -13917,6 +13979,7 @@ function renderAdmin(){
                     // fresh the next time IT renders.
   });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
+  const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
   wireRollTableAdmin();
@@ -18803,6 +18866,7 @@ async function resolveRound(opts){
     // in (see logMatchHistory's own comment) — unlike the local win/loss ledger, this persists
     // the full event log server-side, so it only makes sense for a durable account.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') logMatchHistory(m);
+    if(m.mode==='tutorial' && m.winner!==1 && !m.adminTest) noteTutorialProgress({level:3, lostAt:Date.now()});
     if(m.mode==='tutorial' && m.winner===1){
       const firstTime = !loadTutorialDone();
       const m1 = CONQUEST_MAPS.find(x=>x.id==='m1');
@@ -19295,7 +19359,8 @@ async function showFightSign(){
    ============================================================ */
 const COACH_SEEN_KEY = 'bramblewood_coach_seen';
 let coachSeen = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(COACH_SEEN_KEY)||'[]')); }catch(e){ return new Set(); } })();
-function markCoachSeen(id){ coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
+function markCoachSeen(id){ { const i = GUIDED_STEPS.findIndex(st=> st.id===id); if(i >= 0 && matchState && matchState.mode==='tutorial' && !matchState.adminTest){ const tp = loadTutorialProgress(); if((tp.stepIndex||0) < i+1) noteTutorialProgress({level:2, step:id, stepIndex:i+1}); } }
+  coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
 function coachHandEl(pred){
   const m = matchState; if(!m) return null;
   const me = m.players[1]; const defs = getCardDefs();

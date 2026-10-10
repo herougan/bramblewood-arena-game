@@ -1,6 +1,7 @@
 -- PROPOSED, NOT APPLIED (2026-10-08). Applying it was blocked pending the owner's OK; say "apply it".
 -- 2026-10-08: admin player portal (user: "an admin portal so I can see which players have joined
 -- and their respective levels — basically their player card + some details").
+-- 2026-10-10: also returns tutorial_raw (the player's tutorial progress record).
 -- Read-only, admin-gated. Returns one row per profile; no emails or auth data.
 create or replace function public.admin_list_players()
 returns table(
@@ -8,7 +9,7 @@ returns table(
   created_at timestamptz, last_seen_at timestamptz,
   gold integer, gems integer, dust integer, metal integer,
   cards_unlocked bigint, matches bigint, wins bigint,
-  xp_raw text, avatar_raw text, faction_raw text, tutorial_done text, conquest_raw text,
+  xp_raw text, avatar_raw text, faction_raw text, tutorial_done text, conquest_raw text, tutorial_raw text,
   progress_updated_at timestamptz, is_admin boolean
 )
 language plpgsql stable security definer set search_path to ''
@@ -25,6 +26,7 @@ begin
          (select count(*) from public.match_history m where m.profile_id = p.id and m.result = 'win'),
          pp.data->>'bramblewood_player_xp_v1', pp.data->>'bramblewood_avatar', pp.data->>'bramblewood_arena_faction',
          pp.data->>'bramblewood_arena_tutorial_done', pp.data->>'bramblewood_conquest_progress_v1',
+         pp.data->>'bramblewood_tutorial_progress_v1', -- 2026-10-10: tutorial level, side, guided step, tries
          pp.updated_at,
          exists(select 1 from public.app_admins a where a.user_id = p.id)
   from public.profiles p
