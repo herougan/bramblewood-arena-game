@@ -7486,6 +7486,20 @@
 .dbp-stack .ps-count{font-size:10.5px;}
 .se-deck-stacks{display:flex; flex-wrap:wrap; gap:14px 12px; padding:12px 8px;}
 .se-deck-stacks .se-stack{width:58px;} .se-deck-stacks .card-tile{width:100% !important;}
+  /* Dungeon waves (2026-10-11) */
+  .dungeon-chip{position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:60; pointer-events:none;
+    padding:5px 14px; border-radius:999px; background:rgba(34,22,44,.86); color:#f3e6ff; border:1px solid rgba(200,160,255,.45);
+    font:700 13px/1.2 var(--font-ui, system-ui); letter-spacing:.01em; box-shadow:0 4px 14px rgba(0,0,0,.35);}
+  .castle-pop{animation:castlePop .9s cubic-bezier(.2,1.4,.4,1) both;}
+  @keyframes castlePop{0%{transform:translateY(40px) scale(.6); opacity:0; filter:brightness(2.2);} 55%{transform:translateY(-6px) scale(1.08); opacity:1;} 100%{transform:none; filter:none;}}
+  @media (prefers-reduced-motion: reduce){ .castle-pop{animation:none;} }
+  .skirmish-editor .se-dungeon{display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:10px 14px; padding:8px 12px 12px;}
+  .skirmish-editor .se-dungeon label{display:flex; flex-direction:column; gap:4px;}
+  .skirmish-editor .se-dg-desc{grid-column:1/-1; margin:0; font-size:13px; line-height:1.45; opacity:.9;}
+  .skirmish-editor .se-dg-waves{grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:12px;}
+  .skirmish-editor .se-dg-wave{padding:3px 8px; border-radius:8px; background:rgba(120,90,160,.14); border:1px solid rgba(120,90,160,.3);}
+  .skirmish-editor .se-dg-wave.is-last{background:rgba(160,60,60,.16); border-color:rgba(160,60,60,.4);}
+  .skirmish-editor .se-dg-waves i{opacity:.5; font-style:normal;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -17665,8 +17679,8 @@ function abilityBadges(d, bopts){
 }
 // Badge cycling ticker: every 2 s each cycling slot shows its next skill.
 setInterval(()=>{ if(document.hidden) return; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll('.bc-item'); if(items.length < 2) return; const k = ((Number(el.dataset.i)||0) + 1) % items.length; el.dataset.i = k; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 2000);
-function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
-function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeAttr(s){ return (s==null || s===false ? '' : String(s)).replace(/"/g,'&quot;'); } // numbers too (2026-10-11)
+function escapeHtml(s){ return (s==null || s===false ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* ---- Reference tab ---- */
 function referenceHTML(){
@@ -23423,6 +23437,22 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         </fieldset>
+        ${draft.kind === 'dungeon' ? (()=>{ const c = dungeonConfig(draft), w = dungeonWaves(draft), raw = draft.dungeon || {};
+          const n = (id, key, min, max, title)=> `<input id="${id}" type="number" min="${min}" max="${max}" placeholder="${DUNGEON_DEFAULTS[key] != null ? DUNGEON_DEFAULTS[key] : c[key]}" value="${raw[key] != null ? escapeAttr(raw[key]) : ''}" title="${escapeAttr(title)}">`;
+          return `<fieldset class="se-wide se-dungeon"><legend>🗝️ Dungeon</legend>
+            <p class="se-dg-desc">${c.rounds} castles in a row. Castle 1 is a normal fight. When a castle falls, or a castle lasts ${c.roundLimit} rounds, the next one pops up: the enemy's field fills as if it had played ${c.setupTurns} turns (pitching up to ${c.pitches} cards for Lumber), it draws ${c.drawAfter}, and survivors are pushed to the sides. A castle that runs out the clock adds its remaining Health to the next. Best rank: <b>${['elite','boss'].includes(c.tier) ? 'SSS' : 'S'}</b>.</p>
+            <label>Castles (rounds)${n('seDgRounds','rounds',2,8,'How many castles, 2 to 8')}</label>
+            <label>Dungeon tier<select id="seDgTier">${opt('normal', c.tier, 'Normal (up to S)')}${opt('elite', c.tier, 'Elite (up to SSS)')}${opt('boss', c.tier, 'Boss (up to SSS)')}</select></label>
+            <label>First castle Health %${n('seDgFrom','hpFrom',5,100,'Health of the first castle, as a % of the full castle')}</label>
+            <label>Second-to-last Health %${n('seDgTo','hpTo',5,100,'Health of the castle before the last; the ones between rise evenly. The last castle always has full Health')}</label>
+            <label>Setup turns${n('seDgTurns','setupTurns',0,6,'How many turns the enemy plays (off-screen) before each new castle')}</label>
+            <label>Pitches per wave${n('seDgPitch','pitches',0,4,'Cards the enemy may pitch for Lumber during those turns')}</label>
+            <label>Cards drawn after${n('seDgDraw','drawAfter',0,8,'Cards the enemy draws when the new castle arrives')}</label>
+            <label>Round limit per castle${n('seDgLimit','roundLimit',2,30,'Rounds before the next castle arrives anyway')}</label>
+            <label>First castle shield 🔷<input id="seDgShieldFirst" type="number" min="0" max="9999" placeholder="${c.shieldFirst}" value="${raw.shieldFirst != null ? escapeAttr(raw.shieldFirst) : ''}" title="Usually small. Blank = a quarter of the Skirmish Armour"></label>
+            <label>Last castle shield 🔷<input id="seDgShieldLast" type="number" min="0" max="9999" placeholder="${c.shieldLast}" value="${raw.shieldLast != null ? escapeAttr(raw.shieldLast) : ''}" title="Usually the same as, or a bit under, a skirmish of this rank. Blank = the Skirmish Armour"></label>
+            <div class="se-dg-waves">${w.map((x, i)=> `<span class="se-dg-wave${i === w.length - 1 ? ' is-last' : ''}"><b>${i + 1}</b> ${x.hp}❤️${x.shield ? ` + ${x.shield}🔷` : ''}</span>`).join('<i>›</i>')}</div>
+          </fieldset>`; })() : ''}
         <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>
         <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once</small></div>
           <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
@@ -23458,6 +23488,13 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
+      if(document.getElementById('seDgRounds')){
+        const dg = {}; const num = (id, key, min, max)=>{ const x = v(id); if(x !== '' && x != null && isFinite(Number(x))) dg[key] = Math.max(min, Math.min(max, Math.round(Number(x)))); };
+        num('seDgRounds','rounds',2,8); num('seDgFrom','hpFrom',5,100); num('seDgTo','hpTo',5,100); num('seDgTurns','setupTurns',0,6); num('seDgPitch','pitches',0,4);
+        num('seDgDraw','drawAfter',0,8); num('seDgLimit','roundLimit',2,30); num('seDgShieldFirst','shieldFirst',0,9999); num('seDgShieldLast','shieldLast',0,9999);
+        const tier = v('seDgTier'); if(tier && tier !== 'normal') dg.tier = tier;
+        if(Object.keys(dg).length) draft.dungeon = dg; else delete draft.dungeon;
+      }
       if(document.getElementById('seArmour')){ draft.armour = Math.max(0, Math.min(9999, Math.round(Number(v('seArmour'))||0))); draft.hqHp = skirmishCastle(draft).total; }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
       if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
@@ -23466,7 +23503,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
       }
     };
-    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); }); });
+    overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id!=='seSearch') el.addEventListener('change', ()=>{ dirty = true; read(); if(el.id === 'seKind' || /^seDg/.test(el.id)){ clearTimeout(overlay._dgT); overlay._dgT = setTimeout(()=>{ if(!overlay.hidden) render(); }, 0); } }); });
     document.getElementById('seClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
     overlay.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.inc]++; dirty = true; render(); });
     // Leaders, castle and deck open the gallery picker (2026-10-10). Leader slots: 0–5; empty slots are dropped on save.
@@ -24632,9 +24669,12 @@ const RANK_BONUS = {S:0.25, SS:0.5, SSS:1}; // extra share of the fight's Maple 
 function conquestRankFor(m, node){
   const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
   const base = rankForHqFraction(frac);
-  const bossy = /elite|boss/.test(baseKind((node && node.kind) || ''));
+  // Dungeons (2026-10-11): a normal Dungeon caps at S; Elite and Boss Dungeons reach SSS, with the fast-clear bar
+  // scaled by how many castles there are.
+  const dg = node && node.kind === 'dungeon' ? (m.dungeon ? m.dungeon.cfg : dungeonConfig(node)) : null;
+  const bossy = dg ? ['elite','boss'].includes(dg.tier) : /elite|boss/.test(baseKind((node && node.kind) || ''));
   if(base !== 'S' || !bossy || hq.hp < hq.maxHp) return base;
-  return (m.round || 99) <= SSS_FAST_ROUND ? 'SSS' : 'SS';
+  return (m.round || 99) <= SSS_FAST_ROUND * (dg ? dg.rounds : 1) ? 'SSS' : 'SS';
 }
 function rankForHqFraction(frac){
   if(frac>=0.9) return 'S';
@@ -27456,6 +27496,101 @@ async function handInFight(m){
     m.fightHandIn = error ? 'error' : data;
   }catch(e){ m.fightHandIn = 'error'; }
 }
+// ---- Dungeons (2026-10-10, user: "Big change to Dungeon") ----
+// A Dungeon fight is several castles in a row. Round 1 is a normal fight. When a castle falls (or a round runs past its
+// limit), the next castle pops up in its place and the enemy's board fills as if it had already played its turns: the
+// planner below plays N turns from the enemy's hand (drawing, pitching up to 2 cards for Lumber, then summoning the best
+// card it can afford), the new units take the middle and push any survivors outwards, and the enemy draws 4. The player
+// only sees the end state: the cards crawl in from the top. Every castle but the last starts at a fraction of the
+// fight's castle Health (¼ rising to ½ by default); the last has it all. When a round runs out of time the old castle's
+// remaining Health is added to the new one. Shields can be set for the first and last castles. Normal Dungeons cap at
+// rank S; Elite and Boss Dungeons go up to SSS.
+const DUNGEON_DEFAULTS = {rounds:3, tier:'normal', hpFrom:25, hpTo:50, setupTurns:3, drawAfter:4, roundLimit:8, pitches:2};
+function dungeonConfig(node){
+  const d = Object.assign({}, DUNGEON_DEFAULTS, (node && node.dungeon) || {});
+  const sc = skirmishCastle(node);
+  if(d.shieldLast == null) d.shieldLast = sc.shield; if(d.shieldFirst == null) d.shieldFirst = Math.round(sc.shield * 0.25);
+  d.rounds = Math.max(2, Math.min(8, d.rounds|0)); d.full = sc.hp;
+  return d;
+}
+function dungeonWaves(node){
+  const d = dungeonConfig(node), R = d.rounds, out = [];
+  for(let i = 0; i < R; i++){
+    const last = i === R - 1, t = R > 2 ? i/(R - 2) : 0;
+    const frac = last ? 1 : (d.hpFrom + (d.hpTo - d.hpFrom)*Math.min(1, t))/100;
+    out.push({hp: Math.max(1, Math.round(d.full*frac)), shield: i === 0 ? (d.shieldFirst||0) : last ? (d.shieldLast||0) : 0});
+  }
+  return out;
+}
+// Plan `turns` enemy turns on the real player: each turn draw 1, maybe pitch the weakest card for 1 Lumber (at most
+// `pitches` in all) when that buys a clearly better card or nothing else is affordable, then summon the best card it can
+// afford. Scoring by value (not cheapness) stops it from just dumping the three cheapest cards. Returns the plays.
+function planWaveSummons(pl, turns, pitches, drawOne, defs){
+  defs = defs || getCardDefs();
+  const val = id=>{ const d = defs[id] || {}; return (d.attack||0) + (d.health||0)*0.5 + Object.keys(d.effects||{}).length*2 + (d.cost||0)*1.5; };
+  const costOf = id=> Math.max(0, Number((defs[id]||{}).cost)||0);
+  const playable = id=>{ const d = defs[id]; return !!d && !d.test && !d.token && !(d.graceCost > 0) && !(d.devilryCost > 0) && !(d.exileCost && d.exileCost.count) && d.attack != null && !/Spell|Field|Castle/.test((d.archetypes||[]).join(' ')) && d.type !== 'spell'; };
+  let pitched = 0; const plays = [], pitchedCards = [];
+  for(let t = 0; t < turns; t++){
+    drawOne();
+    const best = budget=> pl.hand.filter(h=> playable(h.defId) && costOf(h.defId) <= budget).sort((a,b)=> val(b.defId) - val(a.defId))[0] || null;
+    let now = best(pl.lumber);
+    if(pitched < pitches && pl.hand.length >= 2){
+      const withPitch = best(pl.lumber + 1);
+      const worth = withPitch && (!now || val(withPitch.defId) > val(now.defId)*1.25);
+      if(worth || !now){
+        const weakest = pl.hand.filter(h=> h !== withPitch).sort((a,b)=> val(a.defId) - val(b.defId))[0];
+        if(weakest){ pl.hand.splice(pl.hand.indexOf(weakest), 1); pitchedCards.push(weakest); pitched++; pl.lumber += 1; now = best(pl.lumber); }
+      }
+    }
+    if(now){ pl.hand.splice(pl.hand.indexOf(now), 1); pl.lumber -= costOf(now.defId); plays.push({card: now, turn: t}); }
+  }
+  pl.lumber = Math.max(0, pl.lumber);
+  return {plays, pitchedCards};
+}
+function advanceDungeonWave(m, carry){
+  const d = m.dungeon, P2 = m.players[2], E = m.engine; if(!d) return;
+  d.wave++; d.startRound = m.round + 1;
+  const w = d.waves[d.wave];
+  P2.hq.maxHp = w.hp + (carry||0); P2.hq.hp = P2.hq.maxHp; P2.hq.shield = w.shield || 0; P2.hq.maxShield = P2.hq.shield;
+  const plan = planWaveSummons(P2, d.cfg.setupTurns, d.cfg.pitches, ()=> E.draw(P2, 1, 'B', m.stats, []));
+  P2.graveyard = (P2.graveyard||[]).concat(plan.pitchedCards.map(h=> ({defId: h.defId})));
+  const defs = getCardDefs();
+  // the units it summoned have been waiting since their turn, so their Wait has ticked down
+  const fresh = plan.plays.map(p=>{ const c = E.makeBoardCard(p.card.defId);
+    c.wait = Math.max(0, (c.wait||0) - (d.cfg.setupTurns - p.turn));
+    if(P2.unitHpBonus){ c.hp += P2.unitHpBonus; c.maxHp += P2.unitHpBonus; }
+    const fx = (defs[c.defId]||{}).effects || {}; if(P2.flyerAtkBonus && fx.flying){ c.atk += P2.flyerAtkBonus; c.baseAtk += P2.flyerAtkBonus; }
+    return c; });
+  // the new wave takes the middle; survivors are pushed outwards (nobody dies)
+  const oldC = P2.row.center.slice(), oldL = P2.row.left.slice(), oldR = P2.row.right.slice();
+  const newC = fresh.length ? [fresh[0]] : oldC.splice(0, 1), newL = [], newR = [];
+  fresh.slice(1).forEach((c, i)=> (i % 2 === 0 ? newL : newR).push(c));
+  oldC.forEach((c, i)=> (i % 2 === 0 ? newL : newR).push(c));
+  P2.row.center = newC; P2.row.left = newL.concat(oldL); P2.row.right = newR.concat(oldR);
+  P2.row.center.forEach(c=> c.slot = 0); P2.row.left.forEach((c, i)=> c.slot = -(i + 1)); P2.row.right.forEach((c, i)=> c.slot = i + 1);
+  try{ E.syncSlots(P2); }catch(e){}
+  E.draw(P2, d.cfg.drawAfter, 'B', m.stats, []);
+  d.justSpawned = fresh.map(c=> c.uid);
+  d.lastCarry = carry || 0;
+}
+function dungeonChipHTML(m){ const d = m && m.dungeon; if(!d) return ''; return `🗝️ ${_t('Castle')} ${d.wave + 1}/${d.waves.length}${d.wave < d.waves.length - 1 ? ` · ${Math.max(0, d.cfg.roundLimit - (m.round - d.startRound))} ${_t('rounds left')}` : ''}`; }
+function syncDungeonChip(){
+  const m = typeof matchState !== 'undefined' ? matchState : null; let chip = document.getElementById('dungeonChip');
+  if(!m || m.over || !m.dungeon){ if(chip) chip.remove(); return; }
+  if(!chip){ chip = document.createElement('div'); chip.id = 'dungeonChip'; chip.className = 'dungeon-chip'; chip.setAttribute('role', 'status'); document.body.appendChild(chip); }
+  chip.textContent = dungeonChipHTML(m);
+}
+setInterval(()=>{ try{ syncDungeonChip(); }catch(e){} }, 500);
+function dungeonWaveVfx(m){
+  const d = m.dungeon; if(!d) return;
+  try{ showToast(`🗝️ ${_t('A new castle rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok'); }catch(e){}
+  try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
+  const castle = document.querySelector('[data-hq="B"]'); if(castle){ castle.classList.remove('castle-pop'); void castle.offsetWidth; castle.classList.add('castle-pop'); }
+  (d.justSpawned||[]).forEach((uid, i)=>{ const el = boardCardEl(uid); if(!el || typeof gsap === 'undefined' || reducedMotion()) return;
+    gsap.fromTo(el, {y: -260, opacity: 0, rotation: (i % 2 ? 6 : -6)}, {y: 0, opacity: 1, rotation: 0, duration: .9, delay: .15 + i*.18, ease: 'power3.out', clearProps: 'transform,opacity'}); });
+  d.justSpawned = null;
+}
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
@@ -27511,6 +27646,8 @@ function startConquestMatch(mapId, nodeKey, opts){
     // leader is already on the field from turn one, so there's nothing left to summon.
     leaderDefId: battleMode==='gladiator' ? null : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
+  if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
+    players[2].hq.maxHp = waves[0].hp; players[2].hq.hp = waves[0].hp; players[2].hq.shield = waves[0].shield || 0; players[2].hq.maxShield = players[2].hq.shield; }
   renderPlay();
   if(!(opts && opts.noOpener)) try{ showVersusOpener(found.map || CONQUEST_MAPS.find(x=> x.id===mapId), node, myCharacter, enemyCharacter); }catch(e){}
   return true;
@@ -33770,6 +33907,12 @@ async function resolveRound(opts){
   // onDeathSpawn tokens mid-round, which don't carry a uid in their event) — every render from
   // here until the next resolveRound() call reflects the actual resolved state exactly.
   m.replayRows = null;
+  // Dungeons: a fallen castle (or a round past its limit) brings the next castle instead of ending the fight.
+  let dungeonAdvanced = false;
+  if(m.dungeon && m.players[1].hq.hp > 0 && m.dungeon.wave < m.dungeon.waves.length - 1 && m.forcedWinner == null){
+    const killed = m.players[2].hq.hp <= 0, timeUp = (m.round - m.dungeon.startRound + 1) >= m.dungeon.cfg.roundLimit;
+    if(killed || timeUp){ advanceDungeonWave(m, killed ? 0 : Math.max(0, m.players[2].hq.hp)); over = false; dungeonAdvanced = true; }
+  }
   // 2026-10-10 ("during victory, the cards fly to the right"): m.over is only set after the end
   // sign, so this final sync render used to run a full Flip glide on a board whose layout was
   // about to change — the cards swept right and back. When the round ended the match, skip Flip.
@@ -33780,6 +33923,7 @@ async function resolveRound(opts){
   // modeled), and without this pause m.resolving flips false in the very same tick — letting
   // controls re-enable, and any resolving-gated check, before that entrance is even visible.
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
+  if(dungeonAdvanced){ try{ dungeonWaveVfx(m); }catch(e){} await sleep(900); }
   settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
   // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
   // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.

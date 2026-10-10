@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (00:40)
+- **Dungeons, rebuilt:** a Dungeon is several castles in a row (2–8, default 3).
+  - Castle 1 is a normal fight. When it falls, the next castle pops up in its place.
+  - The enemy's field fills as if it had played 3 turns: it pitches up to 2 cards for Lumber and summons the best cards it can afford, not just the cheapest. Then it draws 4. You only see the result: the new cards drop in from the top.
+  - The new wave takes the middle. Survivors aren't killed; they're pushed to the sides.
+  - Every castle but the last starts weaker (¼ of full Health, rising to ½); the last has full Health.
+  - Each castle has a round limit (default 8). When it runs out, the next castle arrives anyway and the old castle's remaining Health is added to it.
+  - A chip at the top shows "Castle 2/3 · N rounds left".
+  - Rank: a normal Dungeon tops out at S; Elite and Boss Dungeons reach SSS, with the fast-clear bar scaled by the number of castles.
+- **Edit skirmish → Dungeon:** for Dungeon nodes you can set the number of castles, the tier, first and second-to-last Health %, setup turns, pitches, cards drawn, round limit, and the first and last castle shields. A plain-language description and a row of castle Health previews update as you type.
+- Text fields in editors no longer break on numbers.
+
 ## 2026-10-11 (00:20)
 - **Fight kinds:** Champion 🏅, Mini-boss 💢, Sub-boss ☠️, Dungeon 🗝️, World Boss 🌍 and Mega Raid 👑 join Elite, Boss and Raid.
   - Each new kind borrows an older kind's energy cost, payouts and rank caps.

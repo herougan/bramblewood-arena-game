@@ -7473,6 +7473,20 @@
 .dbp-stack .ps-count{font-size:10.5px;}
 .se-deck-stacks{display:flex; flex-wrap:wrap; gap:14px 12px; padding:12px 8px;}
 .se-deck-stacks .se-stack{width:58px;} .se-deck-stacks .card-tile{width:100% !important;}
+  /* Dungeon waves (2026-10-11) */
+  .dungeon-chip{position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:60; pointer-events:none;
+    padding:5px 14px; border-radius:999px; background:rgba(34,22,44,.86); color:#f3e6ff; border:1px solid rgba(200,160,255,.45);
+    font:700 13px/1.2 var(--font-ui, system-ui); letter-spacing:.01em; box-shadow:0 4px 14px rgba(0,0,0,.35);}
+  .castle-pop{animation:castlePop .9s cubic-bezier(.2,1.4,.4,1) both;}
+  @keyframes castlePop{0%{transform:translateY(40px) scale(.6); opacity:0; filter:brightness(2.2);} 55%{transform:translateY(-6px) scale(1.08); opacity:1;} 100%{transform:none; filter:none;}}
+  @media (prefers-reduced-motion: reduce){ .castle-pop{animation:none;} }
+  .skirmish-editor .se-dungeon{display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:10px 14px; padding:8px 12px 12px;}
+  .skirmish-editor .se-dungeon label{display:flex; flex-direction:column; gap:4px;}
+  .skirmish-editor .se-dg-desc{grid-column:1/-1; margin:0; font-size:13px; line-height:1.45; opacity:.9;}
+  .skirmish-editor .se-dg-waves{grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:6px; font-size:12px;}
+  .skirmish-editor .se-dg-wave{padding:3px 8px; border-radius:8px; background:rgba(120,90,160,.14); border:1px solid rgba(120,90,160,.3);}
+  .skirmish-editor .se-dg-wave.is-last{background:rgba(160,60,60,.16); border-color:rgba(160,60,60,.4);}
+  .skirmish-editor .se-dg-waves i{opacity:.5; font-style:normal;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

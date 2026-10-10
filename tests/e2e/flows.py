@@ -223,6 +223,24 @@ async def main():
         await qb.click(); await pg.wait_for_timeout(300); await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
         if await pg.evaluate("!!document.querySelector('.modal-overlay:not([hidden]) .quests-modal, #questsModal:not([hidden])')"): bad('Quests modal does not close on Escape')
     await pg.close()
+    # 4. Dungeon (2026-10-11): a fallen castle brings the next one, the enemy field refills, the chip counts castles
+    for bm in ('open', 'gravity'):
+        pg, errs = await fresh(b)
+        await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); n.kind='dungeon'; n.battleMode='%s'; n.dungeon={rounds:3, roundLimit:3}; conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key,{skipEnergyCost:true,noOpener:true}); matchState.players[1].hq.hp = matchState.players[1].hq.maxHp = 999; return 1;})()" % bm)
+        await pg.wait_for_timeout(500)
+        seen = set(); spawned = 0
+        for i in range(40):
+            st = await pg.evaluate("matchState ? [matchState.over, matchState.dungeon.wave, ['left','center','right'].reduce((t,s)=> t + matchState.players[2].row[s].length, 0), !!document.getElementById('dungeonChip')] : null")
+            if not st or st[0]: break
+            if st[1] not in seen and st[1] > 0: spawned = max(spawned, st[2])
+            seen.add(st[1])
+            if i % 4 == 2 and st[1] < 2: await pg.evaluate("matchState.players[2].hq.hp = 0; 1")
+            await pg.evaluate("(async()=>{ const m=matchState; if(!m||m.over||m.resolving) return; const me=m.players[1]; const h=me.hand.find(x=> m.engine.canPlay(me,x.defId,x.uid)); if(h) await playCardByUid(h.uid,'left'); else await skipTurn(); })()")
+            await pg.wait_for_timeout(420)
+        if not {0, 1, 2} <= seen: bad(f'dungeon ({bm}): castles seen {sorted(seen)}, expected 0, 1 and 2')
+        if spawned < 1: bad(f'dungeon ({bm}): no enemy units after a new castle rose')
+        if errs: bad(f'dungeon ({bm}): page errors {errs[:2]}')
+        await pg.close()
     await b.close()
   print('flows:', len(issues), 'issue(s)')
   sys.exit(1 if issues else 0)
