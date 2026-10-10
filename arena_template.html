@@ -7140,6 +7140,45 @@
   .card-tile.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 26%, #1c1209) 100%) !important;}
   .card-tile.art-framed > .ico{inset:5% 6% 22% 6% !important; border-radius:5px !important; box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 1px 0 1px rgba(255,236,190,.12);}
   .card-tile.art-framed > .rarity-band{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.12)) !important; box-shadow:none !important; height:22% !important;}
+
+  /* Phase aura (2026-10-10): a unit buffed by night (or day) glows green and leaks drifting spores while it lasts. */
+  .board-card.phase-aura > .card-tile, .board-card.phase-aura .fly-body > .card-tile{box-shadow:0 0 0 2px rgba(120,230,120,.85), 0 0 18px 4px rgba(90,220,110,.55), 0 0 36px 8px rgba(60,200,90,.25) !important; animation:phaseAuraPulse 2.4s ease-in-out infinite;}
+  @keyframes phaseAuraPulse{50%{box-shadow:0 0 0 2px rgba(150,255,150,.95), 0 0 26px 7px rgba(110,240,130,.7), 0 0 48px 12px rgba(60,200,90,.32);}}
+  .board-card .phase-spores{position:absolute; inset:-6px; z-index:5; pointer-events:none; overflow:visible;}
+  .board-card .phase-spores i{position:absolute; bottom:12%; width:6px; height:6px; border-radius:50%; background:radial-gradient(circle, #e9ffd0 0%, #7fe07a 55%, rgba(80,200,90,0) 72%); opacity:0; animation:sporeRise 2.6s ease-out infinite;}
+  .board-card .phase-spores i:nth-child(1){left:12%; animation-delay:0s;} .board-card .phase-spores i:nth-child(2){left:28%; animation-delay:.4s; width:4px; height:4px;}
+  .board-card .phase-spores i:nth-child(3){left:46%; animation-delay:.9s;} .board-card .phase-spores i:nth-child(4){left:62%; animation-delay:1.3s; width:5px; height:5px;}
+  .board-card .phase-spores i:nth-child(5){left:78%; animation-delay:1.7s;} .board-card .phase-spores i:nth-child(6){left:90%; animation-delay:2.1s; width:4px; height:4px;} .board-card .phase-spores i:nth-child(7){left:36%; animation-delay:2.4s;}
+  @keyframes sporeRise{0%{opacity:0; transform:translate(0,0) scale(.6);} 15%{opacity:.95;} 100%{opacity:0; transform:translate(10px,-120px) scale(1.2);}}
+  .board-card.phase-night .phase-spores i{background:radial-gradient(circle, #f2ffe0 0%, #9be86a 55%, rgba(80,200,90,0) 72%);}
+  .board-card.phase-burst > .card-tile, .board-card.phase-burst .fly-body > .card-tile{animation:phaseBurst 1.2s cubic-bezier(.3,1.5,.5,1) !important;}
+  @keyframes phaseBurst{0%{transform:scale(1); filter:none;} 30%{transform:scale(1.14); filter:brightness(1.35) saturate(1.3);} 100%{transform:scale(1); filter:none;}}
+  :where(html[data-fx="none"], html[data-fx="low"]) .board-card .phase-spores{display:none;}
+  @media (prefers-reduced-motion: reduce){ .board-card .phase-spores{display:none;} .board-card.phase-aura > .card-tile{animation:none;} }
+  .raid-picker{display:flex; gap:4px; padding:4px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); width:fit-content; margin:0 auto 12px;} .raid-picker .tk-speed-btn{border-radius:999px; padding:7px 16px;}
+
+  /* Arena defeat (2026-10-10): the result pills read on the dusk card. */
+  .winloss-card.is-fallen .winloss-conquest-rewards .hud-pill{background:rgba(255,255,255,.1) !important; color:#eef1f7 !important; border:1px solid rgba(220,228,245,.28) !important; box-shadow:none !important;}
+  .winloss-card.is-fallen .winloss-conquest-rewards .hud-pill.raid-rating-down{background:rgba(200,70,80,.22) !important; color:#ffd6d9 !important; border-color:rgba(255,140,150,.45) !important;}
+  .winloss-card.is-fallen .winloss-conquest-rewards .hud-pill.raid-rating-up{background:rgba(70,180,110,.22) !important; color:#d8ffe4 !important;}
+  .winloss-card.is-fallen .winloss-conquest-rewards .hud-pill.cur-laurels{background:rgba(120,200,110,.2) !important; color:#e2ffd8 !important;}
+  .wl-ticket{display:inline-block; margin-left:6px; padding:1px 7px; border-radius:999px; background:rgba(0,0,0,.25); font-weight:800;}
+
+  /* Test Kit in-place updates (2026-10-10): gold flare for an upgrade, a grey wash for a removed skill. */
+  .board-card.tk-upgrade > .card-tile, .board-card.tk-upgrade .fly-body > .card-tile{animation:tkUpgrade 1s cubic-bezier(.3,1.5,.5,1);}
+  @keyframes tkUpgrade{0%{transform:scale(1); box-shadow:none;} 30%{transform:scale(1.1); box-shadow:0 0 0 3px #ffd56e, 0 0 26px 8px rgba(255,210,100,.7); filter:brightness(1.25);} 100%{transform:scale(1);}}
+  .board-card.tk-downgrade > .card-tile, .board-card.tk-downgrade .fly-body > .card-tile{animation:tkDowngrade 1s ease;}
+  @keyframes tkDowngrade{0%{filter:none;} 30%{filter:grayscale(1) brightness(.85); transform:scale(.96);} 100%{filter:none; transform:scale(1);}}
+  .dmg-float.tk-removed{--g1:#f1f1f1; --g2:#9a9a9a; --edge:#2a2a2a; font-size:1.1em !important;}
+
+  /* Test Kit board menu (2026-10-10) */
+  .tk-ctx{position:fixed; z-index:9000; display:flex; align-items:center; gap:6px; padding:6px; border-radius:14px; background:var(--surface); border:1.5px solid var(--surface-border); box-shadow:0 10px 26px rgba(0,0,0,.4);}
+  .tk-ctx-btn{font:800 13px 'Baloo 2',system-ui,sans-serif; border:0; border-radius:10px; padding:7px 12px; cursor:pointer;}
+  .tk-ctx-btn.is-dmg{background:#b33a2e; color:#fff;} .tk-ctx-btn.is-heal{background:#2e7d4a; color:#fff;}
+  .tk-ctx-n{display:flex; align-items:center; gap:2px;} .tk-ctx-n input{width:48px; text-align:center; font:800 15px 'Baloo 2',system-ui,sans-serif; padding:4px 2px;}
+  .tk-ctx-n button{width:24px; height:28px; border:0; border-radius:7px; background:var(--surface-2); cursor:pointer; font-weight:800;}
+  body.tk-picking #rowMine .board-card, body.tk-picking #rowEnemy .board-card{cursor:crosshair; outline:2px dashed rgba(255,214,110,.7); outline-offset:3px;}
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -7314,18 +7353,18 @@
       <div class="settings-panel" id="settingsPanel" hidden>
         <div class="settings-panel-title">Settings</div>
         <div class="settings-row">
-          <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeVal">60%</span></div>
+          <div class="settings-row-label"><span>🌿 Ambience</span><span class="settings-row-val" id="musicVolumeVal">60%</span></div>
           <input type="range" id="musicVolumeSlider" min="0" max="100" step="1" aria-label="Music volume">
-          <div class="settings-row-note">The sound of each place (birds, wind, water, drips) and the battle music.</div>
+          <div class="settings-row-note">The sound of each place: birds, wind, water, drips.</div>
         </div>
         <div class="settings-row">
-          <div class="settings-row-label"><span>🎼 Battle music</span></div>
-          <select id="battleMusicSelect" aria-label="Battle music"></select>
+          <div class="settings-row-label"><span>🎼 Battle music</span><span class="settings-row-val" id="battleMusicVal">60%</span></div>
+          <input type="range" id="battleMusicSlider" min="0" max="100" step="1" aria-label="Battle music volume">
           <div class="settings-row-note">A quiet tune in the rival's style that builds as the fight heats up.</div>
         </div>
         <div class="settings-row">
-          <div class="settings-row-label"><span>🎹 Calm music</span></div>
-          <select id="calmMusicSelect" aria-label="Calm music"></select>
+          <div class="settings-row-label"><span>🎹 Menu music</span><span class="settings-row-val" id="menuMusicVal">60%</span></div>
+          <input type="range" id="menuMusicSlider" min="0" max="100" step="1" aria-label="Menu music volume">
           <div class="settings-row-note">A slow, quiet piano on the map and in menus.</div>
         </div>
         <div class="settings-row">

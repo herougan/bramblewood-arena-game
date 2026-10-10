@@ -2,6 +2,38 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-10 (late)
+- **Arena themed by day:**
+  - every day rolls one day/night effect (the 3-round cycle most days; a 1-round "Restless Sky" about 8%; Dusk Start; Long Night; Midsummer), plus a second field about half the time (Frost, Fog, Spring Rain, Heatwave, Timber Fair);
+  - Open rules most days, Collapse about one day in eight.
+- **Day and night:**
+  - a wolf howls at nightfall and a rooster crows at dawn; the messages just say "Night falls." / "Day breaks.";
+  - **Nocturnal / Diurnal take two numbers**, e.g. "Nocturnal +5/+6: at night gain +5/+6". The stats arrive with a swell, a green aura and drifting spores that stay while it lasts, and leave when the phase turns. The old on/off form reads as +1/+0.
+- **New cards:**
+  - **Weredog** (2/5, Nocturnal +5/+6);
+  - **Ironmaw Warwolf** (9/26 Epic: Swipe, Bleed 2, Armour 2; Kip the monkey rides it);
+  - **MissingNo.**, card #0 (hidden);
+  - village folk: Parish Sergeant, Land Tiller, Village Miller, Night Watchman, Otter Ferryman, Otter Netmender, Nectar Vintner and Dawn Bellringer.
+  - The new cards (all but MissingNo.) are in Pack 1.
+- **Species:** every card has an animal type or Elemental, grouped into phyla (Beast, Bird, Arthropod, Scaled, Aquatic, Crawler, Elemental), and hybrids show both. The card details show it, and the editor has a Species field. See the Card types sheet.
+- **Skills:**
+  - effect lines open with their icon;
+  - Flying and Earthquake text simplified;
+  - **Bleed** hurts only when the unit attacks or uses a skill, and Bleed and Poison lose 1 stack each time they hurt. New **Festering** passive (🦠): while it's on the field, stacks don't wear down.
+  - **Sweep N** reworked into a cleave: the swing spills N damage onto the units either side of the target.
+  - Overwhelm is renamed **Stampede** (🐘): leftover damage from a kill carries into the castle.
+- **CPU:** it still pays costs and saves up by pitching, and now picks the card that fits the board (walls under pressure, damage when your castle is low, Anti-Air and Flying against fliers, cheaper Wait when it's urgent) instead of the most expensive or a random one.
+  - Side effect: Otters vs Hummingbirds starters now measure ~66%.
+  - The tutorial rival brings one flier at most, keeping every side above 70%.
+- **Music:** Battle music and Menu music each have a volume bar (no more on/off); the old Music slider is now Ambience.
+- **Play tabs:**
+  - Test shows only in admin mode;
+  - the Raid tab is named after the first raid until a second opens, then "Raids" with a picker, and it goes full window like the Arena.
+- **Arena defeat:** the result pills read on the dusk card, and Try again shows "−1 🎟️" in PvP.
+- **Test lab:**
+  - changing the Test Card updates it in place (gold flare and swell for an upgrade, a grey wash and a soft tick for a removed skill) instead of resetting the field;
+  - click the empty board for a Damage / amount / Heal menu, then click a card. The log credits "Tester".
+
 ## 2026-10-10 (night)
 - **Cards:**
   - **Normal art is the default:** the art sits in a window inside a rarity-tinted walnut frame, with a solid plate under it for the stats. A card can be set to **Extended art** (to the edges) in the card editor.

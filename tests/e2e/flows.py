@@ -173,7 +173,7 @@ async def main():
     # 2b. win screen buttons: Back to board, Play again, Next battle, Quit
     for btn_id in ['wlBackBtn', 'wlPrimaryBtn', 'wlNextBattleBtn', 'wlQuitBtn']:
         pg, errs = await fresh(b)
-        await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key); matchState.players[2].hq.hp=1; return 1;})()")
+        await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key); matchState.players[2].hq.hp=0; return 1; /* 0 (2026-10-10): the smarter CPU can wall a 1 HP castle for a while */})()")
         await pg.wait_for_timeout(800)
         for _ in range(60):
             if await pg.evaluate("!!document.getElementById('wlQuitBtn')"): break

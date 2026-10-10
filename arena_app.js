@@ -159,8 +159,15 @@
    Trigger+Action vocabulary). These power BOTH the Codex editor's
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
+// Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
+const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
+  tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
+  evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
+function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
-  {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} poison. Poisoned cards take that much damage at the start of each round.`},
+  {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} poison. A poisoned unit takes damage equal to its stacks at the start of each round, then loses 1 stack.`},
   // Decay (passive, 2026-09-29): mirrors Poison's stack-then-tick shape exactly, but each tick
   // also permanently saps the same amount off the card's own Attack (floored at 0), on top of the
   // usual HP damage -- a compounding "weaker every round" debuff rather than just a damage stack.
@@ -180,17 +187,24 @@ const PASSIVE_DEFS = [
   // should be simple like 'Hide' or 'Lunge'"): trimmed the "(legacy)"/"%" suffixes off Sweep,
   // Stun (on hit) %, and Reflect % below — those three were the only labels in this list that
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
-  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Also hits the next ${v} live card${v===1?'':'s'} further down the same flank.`},
+  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Its swing spills onto the units directly either side of its target: ${v} damage to each.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
   {key:'swarm', category:'passive', label:'Swarm', kind:'boolean', desc:()=>`+1 damage for every ally that shares a type with it (e.g. every other Ant beside an Ant).`},
   {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
-  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'boolean', desc:()=>`Hits +1 at night.`},
-  {key:'diurnal', category:'passive', label:'Diurnal', kind:'boolean', desc:()=>`Hits +1 by day.`},
+  // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
+  // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
+  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; },
+    get:e=> (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
+  {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
+    get:e=> (e.diurnal || e.diurnalHp) ? [e.diurnal===true ? 1 : (e.diurnal||0), e.diurnalHp||0] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.diurnal = a; if(h>0) e.diurnalHp = h; } }},
   // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
+  {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'antiAir', category:'passive', label:'Anti-Air', kind:'number', desc:n=>`Never misses a Flying unit, and hits Flying units for ${n} more damage.`},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits a random unit among the three facing it (left, centre, right), then the units beside that one too.`},
@@ -228,7 +242,7 @@ const PASSIVE_DEFS = [
   {key:'crit', category:'passive', label:'Crit', kind:'boolean', desc:()=>`Once per round, 1-in-2 chance to double all damage dealt that round.`},
   {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current poison stacks.`},
   {key:'rupture', category:'passive', label:'Rupture', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current bleed stacks.`},
-  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} bleed. Bled cards take that much damage every attack, defend, or skill they perform.`},
+  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} bleed. A bled unit takes damage equal to its stacks whenever it attacks or uses a skill, then loses 1 stack.`},
   // Rally REMOVED (2026-09-30, per explicit request: "I think we can remove Rally. Since it was
   // supposed to mean +N/+N to something" -- the shipped mechanic had drifted to a flat +N/+0
   // aura to the whole board, not the +N/+N-to-something the name was meant to convey, so rather
@@ -252,7 +266,9 @@ const PASSIVE_DEFS = [
   // are chance+duration pairs and live down in SKILL_DEFS alongside Freeze/Sleep/Paralyze).
   {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every landed melee hit also punches ${v} flat damage straight through to the enemy castle, on top of whatever it did to its actual target.`},
   {key:'gash', category:'evergreen', label:'Gash', kind:'number', min:0, desc:v=>`On Spawn: immediately gashes the opposing creature for ${v} bleed stacks, once.`},
-  {key:'overwhelm', category:'passive', label:'Overwhelm', kind:'boolean', desc:()=>`A killing blow's leftover damage — whatever was left over once the target's HP hit 0 — carries through to the enemy castle.`},
+  // 2026-10-10 (user: "a 'Trample' skill where extra damage hits the Castle. But rename it"): this was it already, as
+  // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
+  {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy castle.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently whenever ANY ally of yours dies.`},
   {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
   {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
@@ -298,7 +314,7 @@ const PASSIVE_DEFS = [
   // (right below) needs to check against — nothing else reads it yet, but it's a natural fit
   // for anything airborne (bees, birds, wyrms) and a sensible future hook for other "grounded
   // AOE can't reach it" skills (Rock Throw, below) without needing its own new mechanic.
-  {key:'flying', category:'passive', label:'Flying', kind:'boolean', desc:()=>`Airborne — dodges combat attacks from non-Flying attackers 1 time in 2, and immune to Earthquake and other ground-only area effects.`},
+  {key:'flying', category:'passive', label:'Flying', kind:'boolean', desc:()=>`Has a 50% chance to dodge combat damage from non-Flying attacks.`},
   // Earthquake (2026-09-21, task #304, per explicit request: "I want a few AOE skills too, like
   // Earthquake. - do damage to all non flying units. I think it makes sense as a Evergreen
   // skill - so it can belong in passive abilities. By default, it just means - on spawn, do an
@@ -306,7 +322,7 @@ const PASSIVE_DEFS = [
   // as Gash (bleed instead of damage, single target instead of AOE) — see fireEarthquake in the
   // engine, hooked into applyOnSpawnEffects so it always fires immediately on spawn, independent
   // of Wait/Ready state entirely (it never goes through gatherAttackers at all).
-  {key:'earthquake', category:'evergreen', label:'Earthquake', kind:'number', min:0, desc:v=>`On Spawn: deals ${v} damage to every non-Flying enemy creature (ignores Wait/Ready — fires immediately, once).`},
+  {key:'earthquake', category:'evergreen', label:'Earthquake', kind:'number', min:0, desc:v=>`On Spawn: deals ${v} damage to every enemy unit. It doesn't hit Flying units.`},
   // Skyfall (2026-09-30, replaces Rally in the evergreen list, per explicit request "Add Skyfall
   // to evergreen abilities"): the single-target ranged sibling of Earthquake's AOE — same
   // "one-shot on-spawn skill" shape as Gash/Earthquake, but reuses the engine's existing
@@ -938,10 +954,24 @@ const FIELD_TEXT = {
   heatwave: {name:'Heatwave', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
   rain:     {name:'Spring Rain', text:'At the start of every round, every unit heals 2.'},
   fog:      {name:'Thick Fog', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
-  moon:     {name:'Full Moon', text:'It stays night while the moon is up: Nocturnal units hit +1.'},
+  moon:     {name:'Full Moon', text:'It stays night while the moon is up.'},
 };
+// Species and phyla (2026-10-10, user: "There can't be units without a animal type ... Can there be hybrids? ... Beasts -
+// this phylum contains canids, bovines, felids, mustelids, etc."). Every card carries `species` (one, or two for a
+// hybrid); the phylum groups them. See docs/card-types-2026-10-10.md for the audit.
+const SPECIES_PHYLUM = {
+  Canid:'Beast', Felid:'Beast', Bovine:'Beast', Mustelid:'Beast', Ursid:'Beast', Rodent:'Beast', Lagomorph:'Beast', Cervid:'Beast', Suid:'Beast',
+  Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
+  Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
+  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Annelid:'Crawler', Elemental:'Elemental'};
+function speciesLine(def){
+  const sp = (def && def.species) || []; if(!sp.length) return '';
+  const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
+  return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}`;
+}
 function describeEffects(def, liveCard){
   const lines = [];
+  { const sl = speciesLine(def); if(sl) lines.push(sl); }
   const e = def.effects || {};
   // 2026-10-10 (user): no "Costs N lumber to play" line; the cost badge on the card already says it.
   if(def.field){ // Field cards (2026-10-09)
@@ -959,13 +989,19 @@ function describeEffects(def, liveCard){
     lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
   if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
-  if(def.wait) lines.push(`Wait ${def.wait} — takes ${def.wait} round${def.wait===1?'':'s'} after entering play before it can fight.`);
-  if(e.bounty) lines.push(`Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
-  if(e.explode) lines.push(`Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
+  if(def.wait) lines.push(`⏳ Wait ${def.wait} — takes ${def.wait} round${def.wait===1?'':'s'} after entering play before it can fight.`);
+  if(e.bounty) lines.push(`🏆 Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
+  if(e.explode) lines.push(`💣 Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
   // the keyword first and reads the rule after.
-  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; } const v = e[p.key]; if(!v) return; const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : p.label; lines.push(`${head} — ${p.desc(v)}`); });
+  // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
+  // card face uses for it (SKILL_ICON).
+  const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
+  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
+    const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
+    const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
+    lines.push(`${ic(p.key)}${head} — ${p.desc(v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -1028,7 +1064,7 @@ function describeEffects(def, liveCard){
   if(resistCombined.length) lines.push(`Resists ${resistCombined.map(resistOptionLabel).join(', ')} (takes half, min 1).`);
   if(e.weakness && e.weakness.length) lines.push(`Weak to ${e.weakness.map(resistOptionLabel).join(', ')} (takes double).`);
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
-  if(def.test) lines.push(`🧪 Test card — dev-only, excluded from the draftable pool and normal Codex browsing. Only reachable via the Sandbox Test Battle's spawn picker.`);
+  if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
   return lines;
 }
 function cardName(id){ const d = getCardDefs()[id]; return d ? `${d.icon} ${d.name}` : id; }
@@ -1849,8 +1885,6 @@ const SoundKit = (()=>{
       musicVolume = Math.max(0, Math.min(1, v));
       try{ localStorage.setItem('bw_musicVolume', String(musicVolume)); }catch(e){}
       try{ if(typeof Ambience!=='undefined') Ambience.setVolume(musicVolume); }catch(e){}
-      try{ if(typeof BattleMusic!=='undefined') BattleMusic.setVolume(musicVolume); }catch(e){}
-      try{ if(typeof CalmMusic!=='undefined') CalmMusic.setVolume(musicVolume); }catch(e){}
     },
     voiceTone,
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
@@ -1925,6 +1959,25 @@ const SoundKit = (()=>{
     // Deck riffle (2026-10-06): the two halves of a deck riffled together — a quick run of papery ticks.
     riffle(){ for(let i = 0; i < 14; i++) fnoise(0.025, 0.04, {type:'bandpass', freq:2600 + Math.random()*900, q:1.2, attack:0.002, delay:i*0.032 + (i>6 ? 0.18 : 0)}); fnoise(0.09, 0.05, {type:'lowpass', freq:900, attack:0.004, delay:0.72}); },
     // Leader fanfare (2026-10-06): a short rising brass-like triad when the leader takes the field.
+    // Day / night calls (2026-10-10, user: "When day turns to night, a wolf sound plays ... When it turns day, a rooster
+    // crows"): synthesised like the rest. A howl is a sine gliding up and falling away with a slow vibrato, two wolves
+    // a beat apart; the rooster is a nasal sawtooth through a bandpass, "cock-a-doodle-doo" in four pitched steps.
+    wolfHowl(){ const c = ac(); if(!c || sfxVolume<=0) return;
+      [[0, 1], [0.55, 0.7]].forEach(([dl, lvl])=>{ const t0 = c.currentTime + dl, o = c.createOscillator(), g = c.createGain(), v = c.createOscillator(), vg = c.createGain(), f = c.createBiquadFilter();
+        o.type = 'sine'; o.frequency.setValueAtTime(330, t0); o.frequency.exponentialRampToValueAtTime(620*lvl + 180, t0 + 0.55); o.frequency.setValueAtTime(620*lvl + 180, t0 + 1.3); o.frequency.exponentialRampToValueAtTime(300, t0 + 2.1);
+        v.frequency.value = 5.5; vg.gain.value = 9; v.connect(vg); vg.connect(o.frequency);
+        f.type = 'lowpass'; f.frequency.value = 1400;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.09*sfxVolume*lvl, t0 + 0.25); g.gain.setValueAtTime(0.09*sfxVolume*lvl, t0 + 1.4); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+        o.connect(f); f.connect(g); g.connect(outNode(c)); o.start(t0); v.start(t0); o.stop(t0 + 2.3); v.stop(t0 + 2.3); }); },
+    roosterCrow(){ const c = ac(); if(!c || sfxVolume<=0) return;
+      [[0, 0.12, 620, 700], [0.14, 0.1, 700, 760], [0.27, 0.16, 880, 940], [0.46, 0.6, 940, 600]].forEach(([dl, dur, f1, f2])=>{
+        const t0 = c.currentTime + dl, o = c.createOscillator(), g = c.createGain(), bp = c.createBiquadFilter();
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(f1, t0); o.frequency.linearRampToValueAtTime(f2, t0 + dur);
+        bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 2.5;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.07*sfxVolume, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur + 0.05);
+        o.connect(bp); bp.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + dur + 0.08); }); },
+    neutralTick(){ tone(440, 0.09, 'sine', 0.05); tone(330, 0.12, 'sine', 0.045, 0.07); },
+    growthSwell(){ [[262,0],[330,0.07],[392,0.14],[523,0.22]].forEach(([f, d])=> tone(f, 0.5, 'triangle', 0.06, d)); tone(131, 0.7, 'sine', 0.07, 0); },
     leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
     // Page turn (2026-10-07): a papery swish as a Codex page turns.
     pageTurn(){ fnoise(0.22, 0.05, {type:'bandpass', freq:1800, freqEnd:3600, q:0.8, attack:0.03}); fnoise(0.06, 0.03, {type:'lowpass', freq:700, attack:0.004, delay:0.2}); },
@@ -2364,11 +2417,16 @@ const Ambience = (()=>{
 // 🎵 slider, has its own Settings switch (🎼 Battle music), ducks with the ambience under big
 // moments, and stops by itself when the fight ends or you leave the battle.
 const BATTLE_MUSIC_KEY = 'bramblewood_battle_music';
-function battleMusicOn(){ try{ return localStorage.getItem(BATTLE_MUSIC_KEY) !== 'off'; }catch(e){ return true; } }
+// 2026-10-10 (user: "Battle Music has a bar, and Menu Music has a bar. Not a toggle"): each has its own volume, 0–100%.
+// 0 is off. An old "off" choice carries over as 0.
+function musicLevel(key, def){ try{ const v = localStorage.getItem(key); if(v === 'off') return 0; if(v === 'on' || v == null) return def; const n = Number(v); return isFinite(n) ? Math.max(0, Math.min(1, n)) : def; }catch(e){ return def; } }
+function setMusicLevel(key, v){ try{ localStorage.setItem(key, String(Math.max(0, Math.min(1, v)))); }catch(e){} }
+function battleMusicVolume(){ return musicLevel(BATTLE_MUSIC_KEY, 0.6); }
+function battleMusicOn(){ return battleMusicVolume() > 0; }
 const BattleMusic = (()=>{
   const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
   const LEVEL = 0.5;
-  const vol = ()=> (typeof SoundKit!=='undefined' && SoundKit.getMusicVolume) ? SoundKit.getMusicVolume() : 0.6;
+  const vol = ()=> battleMusicVolume();
   const BANDS = {
     legion: {bpm:84,  root:146.83, mode:[0,2,3,5,7,9,10], prog:[0,3,4,0], lead:'brass', perc:'drum', pad:'drone'},
     beast:  {bpm:76,  root:110.00, mode:[0,2,3,5,7,8,10], prog:[0,5,3,4], lead:'brass', perc:'drum', pad:'drone'},
@@ -2471,11 +2529,12 @@ const BattleMusic = (()=>{
 // keys. Long rests between phrases on purpose: most bars are a low note, a chord tone or two, and
 // air. Rides the 🎵 slider and has its own Settings switch (🎹 Calm music).
 const CALM_MUSIC_KEY = 'bramblewood_calm_music';
-function calmMusicOn(){ try{ return localStorage.getItem(CALM_MUSIC_KEY) !== 'off'; }catch(e){ return true; } }
+function menuMusicVolume(){ return musicLevel(CALM_MUSIC_KEY, 0.6); }
+function calmMusicOn(){ return menuMusicVolume() > 0; }
 const CalmMusic = (()=>{
   const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
   const LEVEL = 0.55;
-  const vol = ()=> (typeof SoundKit!=='undefined' && SoundKit.getMusicVolume) ? SoundKit.getMusicVolume() : 0.6;
+  const vol = ()=> menuMusicVolume();
   const MAJOR = [0,2,4,5,7,9,11];
   const KEYS = [146.83, 130.81, 164.81, 174.61, 196.00]; // D, C, E, F, G (low register)
   const PROGS = [[0,5,3,4],[0,3,5,4],[5,3,0,4],[0,2,3,3],[3,0,4,5]];
@@ -2599,7 +2658,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
   const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
-  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0)) : d.attack;
+  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0)) : d.attack;
   const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
   const atkDisplay = (liveC && atkBonus !== 0) ? `⚔${baseAtk} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${atkBonus > 0 ? '+' : '−'} ${Math.abs(atkBonus)}</span> <span class="atk-total">= ${effAtk}</span>` : `⚔${effAtk}`;
   const hpDisplay = liveCard ? `❤${Math.max(0,liveCard.hp)}/${liveCard.maxHp}` : `❤${d.health}`;
@@ -2686,7 +2745,7 @@ function cardActionLogHTML(uid){
       lines.push(`<li>Pierce → ${ev.dmg}</li>`);
     } else if(ev.type==='overwhelmHQ'){
       if(ev.attUid!==uid) continue;
-      lines.push(`<li>Overwhelm → ${ev.dmg}</li>`);
+      lines.push(`<li>Stampede → ${ev.dmg}</li>`);
     } else if(ev.type==='thorns'){
       // Thorns is carried by fromUid (the card that reflected it), never attUid — see comment above.
       if(ev.fromUid!==uid) continue;
@@ -3606,7 +3665,8 @@ function abilityBadges(d){
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
   if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
   if(e.thorns) out.push(`🌵${e.thorns}`);
-  if(e.antiAir) out.push(`🪃${e.antiAir}`); // Anti-Air (2026-10-10): a slingshot stone for the birds
+  if(e.antiAir) out.push(`🪃${e.antiAir}`);
+  if(e.overwhelm) out.push(`🐘`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
@@ -4010,14 +4070,14 @@ function ensureCardMeta(c){
   if(c.id){
     const canonical = getCardDefs()[c.id];
     if(canonical){
-      if(!canonical.numericId) canonical.numericId = nextNumericId();
+      if(!canonical.numericId && canonical.numericId !== 0) canonical.numericId = nextNumericId(); // 0 is MissingNo.'s real number (2026-10-10)
       if(!canonical.uuid) canonical.uuid = genUUID();
       c.numericId = canonical.numericId;
       c.uuid = canonical.uuid;
       return;
     }
   }
-  if(!c.numericId) c.numericId = nextNumericId();
+  if(!c.numericId && c.numericId !== 0) c.numericId = nextNumericId();
   if(!c.uuid) c.uuid = genUUID();
 }
 // ---- Card "Learn more" detail view (#364, 2026-09-26) ----------------------------------------
@@ -4608,7 +4668,7 @@ function renderEditorInner(){
   const isNew = !CARD_DEFS_BASELINE[c.id] && !liveCards[c.id];
   overlay.innerHTML = `<div class="modal">
     <div class="modal-head-row">
-      <h2>${c.id? '✏️ Edit '+(c.name||'Card') : '🆕 Create a Card'}<span class="modal-meta">#${c.numericId||'—'} · ${escapeAttr(c.uuid||'')}</span></h2>
+      <h2>${c.id? '✏️ Edit '+(c.name||'Card') : '🆕 Create a Card'}<span class="modal-meta">#${c.numericId!=null ? c.numericId : '—'} · ${escapeAttr(c.uuid||'')}</span></h2>
       <button type="button" class="modal-close-btn" id="editorXBtn" title="Cancel" aria-label="Cancel">✕</button>
     </div>
     <div class="field-row">
@@ -4627,6 +4687,7 @@ function renderEditorInner(){
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal (framed)</option><option value="extended" ${c.artExtended?'selected':''}>Extended (to the edges)</option></select></div>
+      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Canid, Primate"><datalist id="speciesList">${Object.keys(SPECIES_PHYLUM).map(k=> `<option value="${k}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -5402,6 +5463,8 @@ function readEditorFormIntoCard(){
   c.test = fTestEl ? fTestEl.checked : !!c.test;
   c.rarity = document.getElementById('fRarity').value;
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
+  { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
+    if(sp.length) c.species = sp; else { delete c.species; if(!c.test && !c.field) showToast('This card has no species. Every unit needs an animal type or Elemental.', 'warn'); } } }
   // 2026-09-27, item 9: no editor field for this any more (see the removed markup's own
   // comment above) — keep whatever value the card already carries instead of reading a
   // now-nonexistent #fSplashEffect input.
@@ -7942,11 +8005,11 @@ function renderPlay(){
                renderPlayerSubTab itself is untouched and still the fallback below for safety. -->
           ${tabOpen('arena') ? `<button class="tab-btn ${playSubTab==='arena'?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${tabOpen('autobattle') ? `<button class="tab-btn ${playSubTab==='autobattle'?'active':''}" data-playtab="autobattle" role="tab" aria-selected="${playSubTab==='autobattle'}"><span class="tab-emoji">🧩</span> Autobattler</button>` : ''}
-          ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> Raid</button>` : ''}
+          ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
-          ${(devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
+          ${adminModeEnabled ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
         </div>
         <div class="play-subtabs-actions">
           <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
@@ -7966,11 +8029,11 @@ function renderPlay(){
             <div class="settings-panel" id="settingsPanelPlaySub" hidden>
               <div class="settings-panel-title">Settings</div>
               <div class="settings-row">
-                <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
+                <div class="settings-row-label"><span>🌿 Ambience</span><span class="settings-row-val" id="musicVolumeValPlaySub">60%</span></div>
                 <input type="range" id="musicVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Music volume">
               </div>
-              <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectPlaySub" aria-label="Battle music"></select></div>
-      <div class="settings-row"><div class="settings-row-label"><span>🎹 Calm music</span></div><select id="calmMusicSelectPlaySub" aria-label="Calm music"></select></div>
+              <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span><span class="settings-row-val" id="battleMusicValPlaySub">60%</span></div><input type="range" id="battleMusicSliderPlaySub" min="0" max="100" step="1" aria-label="Battle music volume"></div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎹 Menu music</span><span class="settings-row-val" id="menuMusicValPlaySub">60%</span></div><input type="range" id="menuMusicSliderPlaySub" min="0" max="100" step="1" aria-label="Menu music volume"></div>
               <div class="settings-row">
                 <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValPlaySub">100%</span></div>
                 <input type="range" id="sfxVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -8014,9 +8077,9 @@ function renderPlay(){
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
     // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
     // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
-    if(playSubTab==='arena' || playSubTab==='sandbox'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid'){ document.body.classList.add('conquest-full', 'play-full'); }
     if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
-    if(playSubTab==='raid'){ renderRaidSubTab(body); return; }
+    if(playSubTab==='raid'){ renderRaidSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
     if(playSubTab==='sandbox'){ renderSandboxSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='conquest'){ renderConquestSubTab(body); return; }
@@ -10156,7 +10219,7 @@ function tryResumeAbandonedMatch(){
 function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   try{
-    const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity'});
+    const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node.rules) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
@@ -11914,7 +11977,13 @@ const RaidM = (typeof BramblewoodRaid!=='undefined') ? BramblewoodRaid : null;
 let raidDefEdits = {};
 try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {}; }catch(e){ raidDefEdits = {}; }
 function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=> raidDefEdits[d.id] || d); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
-function activeRaidDef(){ return allRaidDefs().find(d=> d.live!==false) || null; }
+// 2026-10-10 (user: "like the shop, its title is the first raid's title until you unlock the 2nd, then it's just called
+// 'Raids' and hosts all the raids you've unlocked"): with two or more live raids a row of raid buttons picks which one
+// the tab shows.
+let selectedRaidId = null;
+function liveRaidDefs(){ return allRaidDefs().filter(d=> d.live!==false); }
+function activeRaidDef(){ const live = liveRaidDefs(); return live.find(d=> d.id === selectedRaidId) || live[0] || null; }
+function raidTabLabel(){ const live = liveRaidDefs(); return live.length >= 2 ? 'Raids' : (live[0] && live[0].name) || 'Raid'; }
 function applyCloudRaidDef(id, r){
   if(r.deleted || !r.data || !r.data.def) delete raidDefEdits[id]; else raidDefEdits[id] = r.data.def;
   try{ localStorage.setItem(RAID_DEFS_KEY, JSON.stringify(raidDefEdits)); }catch(e){}
@@ -12468,7 +12537,9 @@ function renderRaidSubTab(body){
   // Fight), it just no longer duplicates itself as a second list on this tab. Removing it also
   // satisfies the very next ask ("the coming up section should come right after") for free —
   // with this gone, Coming Up is now the section directly after Online Raid's own boss list.
+  const liveRaids = RaidM ? liveRaidDefs() : [];
   body.innerHTML = `
+    ${liveRaids.length >= 2 ? `<div class="raid-picker community-seg" role="tablist" aria-label="Raids">${liveRaids.map(d=> `<button type="button" class="tk-speed-btn ${activeRaidDef() && activeRaidDef().id===d.id ? 'is-on' : ''}" data-raid-pick="${escapeAttr(d.id)}">${escapeHtml((d.icon||'') + ' ' + (d.name||d.id))}</button>`).join('')}</div>` : ''}
     ${(RaidM && activeRaidDef()) ? raidPanelHTML() : offlineRaidPanelHTML()}
     ${ONLINE_RAID_VISIBLE ? `<details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>` : ''}
     <div class="panel raid-preview-panel"><h2>🔮 Coming Up</h2><p class="panel-sub">More Raid Bosses are waiting further out in Conquest. Beat their map to unlock the real fight.</p>
@@ -12489,6 +12560,7 @@ function renderRaidSubTab(body){
   const orBtn = document.getElementById('offlineRaidFightBtn');
   if(orBtn) orBtn.addEventListener('click', startOfflineRaidMatch);
   wireRaidPanel();
+  body.querySelectorAll('[data-raid-pick]').forEach(b=> b.onclick = ()=>{ selectedRaidId = b.dataset.raidPick; renderRaidSubTab(body); });
 }
 /* ============================================================
    Mandatory onboarding: Otters/Hummingbirds faction choice + a 6-skirmish tutorial SERIES
@@ -12663,7 +12735,8 @@ function tutorialStageOpponentDeck(stage, pick){
   const counts = countsFromIds(three, 3); // 9 cards: a smaller deck runs out and the AI then plays free 4/4 Bee Tanks
   // 2026-10-10 (evening): a flier dodges half of all ground hits, which is a lot in a first fight (Crossed-Eyes took the
   // Hummingbird pick to 68%). One copy fewer of each flier; the weakest card takes the slot (76%).
-  three.forEach(id=>{ if(flies(id) && counts[id] > 2 && three[0] !== id){ counts[id]--; counts[three[0]] = (counts[three[0]]||0) + 1; } });
+  // (later 2026-10-10: the CPU now picks cards for the board, so a flier gets just one copy: Hummingbirds 78%.)
+  three.forEach(id=>{ if(flies(id) && three[0] !== id){ const cut = (counts[id]||0) - 1; if(cut > 0){ counts[id] = 1; counts[three[0]] = (counts[three[0]]||0) + cut; } } });
   return counts;
 }
 let factionCountdownTimer = null;
@@ -13659,7 +13732,7 @@ function testKitBuildField(reason, opts){
   testKitBuildDefs();
   const defs = getCardDefs();
   if(!defs[testKit.sel]) testKit.sel = TESTKIT_CARD_ID;
-  m.engine = makeSimEngine(defs, Math.random, {recordEvents:true});
+  m.engine = makeSimEngine(defs, Math.random, {recordEvents:true}); m.tkDefs = defs; // kept so an in-place card update can swap the Test Card's entry
   m.players = {1:m.engine.newPlayer(1,{},TESTKIT_WALL), 2:m.engine.newPlayer(2,{},TESTKIT_WALL)};
   m.stats = {}; m.round = 1; m.over = false; m.ending = false; m.winner = 0; m.replayRows = null; m.replayCards = null; m.displayHqHp = null;
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
@@ -13678,6 +13751,7 @@ function testKitBuildField(reason, opts){
   [0,1,2].forEach(i=> m.engine.debugSpawnCard(m.players, m.sideOf, 2, testKitPickFiller(pool), sides[i%2], m.stats, events));
   // UX: everything starts ready — a Wait-5 card sitting idle for five rounds is noise here.
   [1,2].forEach(pid=> ['left','center','right'].forEach(s=> m.players[pid].row[s].forEach(c=>{ c.wait = 0; })));
+  testKit.lastSkillKeys = testKitSkillKeys();
   testKitLogDivider(`Field #${testKit.fieldNo}${reason && !opts.silent ? ` — reset: ${reason}` : ''}`);
   if(document.getElementById('rowMine')){
     events.forEach(ev=>{ pushLog(ev); try{ renderVfxForEvent(ev); }catch(e){} });
@@ -13883,8 +13957,34 @@ function testKitSkillsChanged(){
   testKitSavePrefs();
   const cnt = document.getElementById('tkSkillCount'); if(cnt) cnt.textContent = `(${Object.keys(testKit.skills).length} on)`;
   clearTimeout(testKitSkillDebounce);
-  // UX: debounce typing so "50" doesn't reset the field twice ("5", then "50").
-  testKitSkillDebounce = setTimeout(()=> testKitRequestReset('Test card changed'), 450);
+  // UX: debounce typing so "50" doesn't update twice ("5", then "50").
+  // 2026-10-10 (user: "when im updating the card, just update the test card, don't reset the field. There should be an
+  // upgrade vfx/sfx when you add skills and a neutral grey and neutral sfx when you remove skills"): the Test Card on
+  // the board takes the new stats and skills where it stands; only a different card choice rebuilds the field.
+  testKitSkillDebounce = setTimeout(()=>{ if(!testKitUpdateInPlace()) testKitRequestReset('Test card changed'); }, 450);
+}
+function testKitSkillKeys(){ const e = {}; testKitSkillDefs().forEach(sd=>{ if(testKit.skills[sd.key]!==undefined){ try{ sd.apply(e, testKit.skills[sd.key]); }catch(err){} } }); return Object.keys(Object.assign(e, testKit.extraEffects||{})).concat((testKit.triggers||[]).map((t, i)=> 'trigger' + i)); }
+function testKitUpdateInPlace(){
+  const m = matchState; if(!m || !m.testKit || !m.tkDefs || testKit.sel !== TESTKIT_CARD_ID) return false;
+  const c = testKitAllCards(m, 1).find(x=> x.uid === testKit.subjectUid); if(!c) return false;
+  const before = testKit.lastSkillKeys || [], oldDef = m.tkDefs[TESTKIT_CARD_ID] || {};
+  testKitBuildDefs();
+  const nd = testKitDefsOverlay[TESTKIT_CARD_ID]; m.tkDefs[TESTKIT_CARD_ID] = nd;
+  const dA = (nd.attack||0) - (oldDef.attack||0), dH = (nd.health||0) - (oldDef.health||0);
+  if(dA){ c.atk = Math.max(0, c.atk + dA); c.baseAtk = Math.max(0, (c.baseAtk||0) + dA); }
+  if(dH){ c.maxHp = Math.max(1, c.maxHp + dH); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + Math.max(0, dH))); }
+  const after = testKitSkillKeys(); testKit.lastSkillKeys = after;
+  const added = after.filter(k=> !before.includes(k)), removed = before.filter(k=> !after.includes(k));
+  lastBoardSig = {1:null, 2:null}; renderBoard(); renderHUD();
+  const el = boardCardEl(c.uid);
+  const label = k=>{ const sd = Registry.skills().find(x=> x.key===k); return (SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '') + (sd ? sd.label : (/^trigger/.test(k) ? 'Trigger' : k)); };
+  if(added.length || dA > 0 || dH > 0){ try{ SoundKit.growthSwell(); }catch(e){} if(el){ el.classList.remove('tk-upgrade','tk-downgrade'); void el.offsetWidth; el.classList.add('tk-upgrade'); setTimeout(()=> el.classList.remove('tk-upgrade'), 1100); }
+    if(added.length && el) floatText(el, '+ ' + added.map(label).join(', '), 'gold stat-up'); }
+  if(removed.length || dA < 0 || dH < 0){ try{ SoundKit.neutralTick(); }catch(e){} if(el){ el.classList.remove('tk-upgrade','tk-downgrade'); void el.offsetWidth; el.classList.add('tk-downgrade'); setTimeout(()=> el.classList.remove('tk-downgrade'), 1100); }
+    if(removed.length && el) floatText(el, '− ' + removed.map(label).join(', '), 'tk-removed'); }
+  if(dA || dH) statPillPulse(c.uid, (dA + dH) >= 0 ? 'up' : 'down', dA ? 'atk' : 'hp');
+  testKitLogDivider('Test Card updated' + (added.length ? ' · +' + added.map(label).join(', ') : '') + (removed.length ? ' · −' + removed.map(label).join(', ') : ''));
+  return true;
 }
 /* ---- Test Kit additions (2026-10-10, user: "improve the test lab UI ... so I can test EACH skill or custom trigger"
    and "let me also control combat with manual attack, do 1 damage etc buttons. Attack button makes the test card
@@ -13942,13 +14042,13 @@ function testKitEnemyFacingUid(m){
   const i = Math.max(0, mine.findIndex(c=> c.uid===testKit.subjectUid));
   return theirs[Math.min(theirs.length-1, Math.round(i * (theirs.length-1) / Math.max(1, mine.length-1)))].uid;
 }
-async function testKitManual(act, n){
+async function testKitManual(act, n, uidOverride){
   const m = matchState; if(!m || !m.testKit || testKit.busy || m.resolving) return;
   if(testKit.running){ testKit.running = false; testKitRefreshTransport(); }
   const subjectAlive = testKitAllCards(m, 1).some(c=> c.uid===testKit.subjectUid);
-  if(!subjectAlive && act!=='enemyAttack'){ testKitBuildField('Test card died'); }
+  if(!subjectAlive && act!=='enemyAttack' && uidOverride == null){ testKitBuildField('Test card died'); }
   const enemyUid = testKitEnemyFacingUid(m);
-  const tgt = (testKit.manualTarget==='enemy') ? enemyUid : testKit.subjectUid;
+  const tgt = uidOverride != null ? uidOverride : (testKit.manualTarget==='enemy') ? enemyUid : testKit.subjectUid;
   const E = m.engine, P = m.players, so = m.sideOf;
   testKit.busy = true;
   try{
@@ -13965,6 +14065,42 @@ async function testKitManual(act, n){
     m.over = false; m.winner = 0; updateHqHpDisplay('A'); updateHqHpDisplay('B');
   } finally { testKit.busy = false; testKitRefreshStatus(); testKitRefreshTransport(); }
 }
+// Board context menu (2026-10-10, user: "I can click on the test game's board and a small context menu appears. I can
+// deal 1 damage or heal 1 health. If I click that, I click a card next, and it happens. The 'source' is 'Tester'. In the
+// centre of the context menu, I can change the number"). Click empty board → menu; pick Damage or Heal → click a card.
+let tkPending = null; // {act, n}
+function closeTkMenu(){ const m = document.getElementById('tkCtxMenu'); if(m) m.remove(); }
+function openTkMenu(x, y){
+  closeTkMenu();
+  const n = Math.max(1, testKit.ctxN || 1);
+  const menu = document.createElement('div'); menu.id = 'tkCtxMenu'; menu.className = 'tk-ctx'; menu.setAttribute('role', 'menu');
+  menu.innerHTML = `<button type="button" class="tk-ctx-btn is-dmg" data-ctx="dmg" role="menuitem" title="Deal damage, then click a card">⚔ Damage</button>
+    <label class="tk-ctx-n"><span class="sr-only">Amount</span><button type="button" data-ctxstep="-1" aria-label="Less">−</button><input type="number" min="1" max="999" value="${n}" id="tkCtxN" aria-label="Amount"><button type="button" data-ctxstep="1" aria-label="More">+</button></label>
+    <button type="button" class="tk-ctx-btn is-heal" data-ctx="heal" role="menuitem" title="Heal, then click a card">💚 Heal</button>`;
+  document.body.appendChild(menu);
+  const r = menu.getBoundingClientRect();
+  menu.style.left = Math.max(8, Math.min(window.innerWidth - r.width - 8, x - r.width/2)) + 'px';
+  menu.style.top = Math.max(8, Math.min(window.innerHeight - r.height - 8, y + 10)) + 'px';
+  const inp = menu.querySelector('#tkCtxN');
+  menu.querySelectorAll('[data-ctxstep]').forEach(b=> b.onclick = e=>{ e.stopPropagation(); inp.value = Math.max(1, (Number(inp.value)||1) + Number(b.dataset.ctxstep)); testKit.ctxN = Number(inp.value); });
+  inp.oninput = ()=>{ testKit.ctxN = Math.max(1, Number(inp.value)||1); };
+  menu.querySelectorAll('[data-ctx]').forEach(b=> b.onclick = e=>{ e.stopPropagation();
+    tkPending = {act: b.dataset.ctx, n: Math.max(1, Number(inp.value)||1)}; closeTkMenu();
+    document.body.classList.add('tk-picking'); showToast(`🧪 Click a card to ${tkPending.act==='dmg' ? 'deal ' + tkPending.n + ' damage' : 'heal ' + tkPending.n}.`); });
+  menu.addEventListener('click', e=> e.stopPropagation());
+}
+document.addEventListener('click', e=>{
+  const m = matchState; if(!m || !m.testKit) return;
+  const card = e.target.closest && e.target.closest('#rowMine .board-card[data-uid], #rowEnemy .board-card[data-uid]');
+  if(tkPending){
+    if(card){ e.stopPropagation(); e.preventDefault(); const p = tkPending; tkPending = null; document.body.classList.remove('tk-picking'); testKitManual(p.act, p.n, Number(card.dataset.uid)); return; }
+    if(!e.target.closest('#tkCtxMenu')){ tkPending = null; document.body.classList.remove('tk-picking'); }
+    return;
+  }
+  if(e.target.closest('#tkCtxMenu')) return;
+  const bf = e.target.closest && e.target.closest('.battlefield');
+  if(bf && !card && !e.target.closest('button, .testkit-panel')) openTkMenu(e.clientX, e.clientY); else closeTkMenu();
+}, true);
 function wireTestKitExtras(){
   const on = (id, f)=>{ const el = document.getElementById(id); if(el) el.onclick = f; };
   on('tkTourPrev', ()=> testKitTourGo(-1)); on('tkTourNext', ()=> testKitTourGo(1));
@@ -14735,17 +14871,47 @@ function deckSizeOkOrWarn(){
 // Engine side: makeSimEngine(..., {rules}) in bramblewood-engine.js. secondDraw: whoever plays second opens with 1 more.
 const ARENA_RULESETS = [
   {id:'standard',  icon:'🌗', name:'Standard',     text:'Day and night alternate every 3 rounds, starting with day. Whoever plays second opens with an extra card.', rules:{phase:'cycle'}, secondDraw:1},
-  {id:'longnight', icon:'🌙', name:'The Long Night', text:'It is night all match: Nocturnal units hit +1, Diurnal never do.', rules:{phase:'night'}, secondDraw:1},
-  {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match: Diurnal units hit +1, Nocturnal never do.', rules:{phase:'day'}, secondDraw:1},
+  {id:'longnight', icon:'🌙', name:'The Long Night', text:'It is night all match.', rules:{phase:'night'}, secondDraw:1},
+  {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match.', rules:{phase:'day'}, secondDraw:1},
   {id:'dusk',      icon:'🌆', name:'Dusk Start',    text:'The match starts at night; day comes after round 3.', rules:{phase:'nightFirst'}, secondDraw:1},
   {id:'timber',    icon:'🪵', name:'Timber Fair',   text:'Both sides gain 1 Lumber every 3 rounds, on top of what cards give.', rules:{phase:'cycle', lumberEvery:3}, secondDraw:1},
   {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frozen Ground all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
   {id:'fogmoor',   icon:'🌫️', name:'Fog on the Moor', text:'Thick Fog all match: attacks miss 1 in 3, except from Flying units.', rules:{phase:'cycle', field:'fog'}, secondDraw:1},
 ];
+// Daily Arena theme (2026-10-10, user: "Arena fights are themed by day. Most of the time it's using normal rules, not
+// collapse. But it WILL have at least 1 (max 2) field effects. Like freezing or day/night or perma-day or perma-night ...
+// Typically [day/night] takes 3 turns. Rarely (<10% of the time), flip every 1 turn"). Every day rolls (seeded by the
+// date, so everyone gets the same day): one day/night effect, about half the time one more field, and Open rules
+// (Gravity on roughly one day in eight).
+const ARENA_PHASES = [
+  {w:46, rules:{phase:'cycle'}, icon:'🌗', name:'Day and Night', text:'Day and night trade places every 3 rounds.'},
+  {w:8,  rules:{phase:'cycle', phaseLen:1}, icon:'🌀', name:'Restless Sky', text:'Day and night flip every round.'},
+  {w:14, rules:{phase:'nightFirst'}, icon:'🌆', name:'Dusk Start', text:'It starts at night; day comes after round 3.'},
+  {w:16, rules:{phase:'night'}, icon:'🌙', name:'The Long Night', text:'It is night all match.'},
+  {w:16, rules:{phase:'day'}, icon:'☀️', name:'Midsummer', text:'It is day all match.'},
+];
+const ARENA_EXTRAS = [
+  {rules:{field:'frozen'}, icon:'❄️', name:'Frost', text:'Frozen Ground: each round one random card on each side gets +1 Wait.'},
+  {rules:{field:'fog'}, icon:'🌫️', name:'Fog', text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
+  {rules:{field:'rain'}, icon:'🌧️', name:'Spring Rain', text:'Spring Rain: every unit heals 2 at the start of each round.'},
+  {rules:{field:'heatwave'}, icon:'🔥', name:'Heatwave', text:'Heatwave: every unit takes 1 damage at the start of each round.'},
+  {rules:{lumberEvery:3}, icon:'🪵', name:'Timber Fair', text:'Both sides gain 1 Lumber every 3 rounds.'},
+];
+function arenaThemeFor(day){
+  const r = seededRng(hashStr('arena-theme:' + day));
+  let x = r() * ARENA_PHASES.reduce((t, p)=> t + p.w, 0), ph = ARENA_PHASES[0];
+  for(const p of ARENA_PHASES){ x -= p.w; if(x < 0){ ph = p; break; } }
+  const extra = r() < 0.5 ? ARENA_EXTRAS[Math.floor(r()*ARENA_EXTRAS.length)] : null;
+  const gravity = r() < 0.12;
+  const parts = [ph].concat(extra ? [extra] : []);
+  return {id:'daily-' + day, icon: parts.map(p=> p.icon).join(''), name: parts.map(p=> p.name).join(' · ') + (gravity ? ' · Collapse' : ''),
+    text: parts.map(p=> p.text).join(' ') + (gravity ? ' Collapse rules: cards slide toward the centre when one falls.' : '') + ' Whoever plays second opens with an extra card.',
+    rules: Object.assign({}, ph.rules, extra ? extra.rules : {}), secondDraw:1, battleMode: gravity ? 'gravity' : 'open'};
+}
 function todaysArenaRuleset(d){
   const day = Math.floor(((d || new Date()).getTime() - new Date().getTimezoneOffset()*60000) / 86400000);
-  try{ const forced = localStorage.getItem('bramblewood_arena_ruleset'); const f = ARENA_RULESETS.find(r=> r.id===forced); if(f) return f; }catch(e){}
-  return ARENA_RULESETS[((day % ARENA_RULESETS.length) + ARENA_RULESETS.length) % ARENA_RULESETS.length];
+  try{ const forced = localStorage.getItem('bramblewood_arena_ruleset'); const f = ARENA_RULESETS.find(r=> r.id===forced); if(f) return Object.assign({battleMode:'open'}, f); }catch(e){}
+  return arenaThemeFor(day);
 }
 function arenaRulesetPillHTML(rs){
   if(!rs) return '';
@@ -14763,7 +14929,8 @@ function startMatch(mode, opts){
     return;
   }
   const arenaRuleset = todaysArenaRuleset();
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: opts.caged ? 'open' : undefined}); // Caged Fight needs fixed slots
+  const arenaMode = opts.caged ? 'open' : (arenaRuleset.battleMode || 'open'); // Caged Fight needs fixed slots
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
   const DEFAULT_DECK = {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
@@ -14813,7 +14980,7 @@ function startMatch(mode, opts){
     if(mode==='pc') engine.placeCage(players, id=> id===1?'A':'B', 1, 2, -4, 'wandering-traveller', hp, []);
     caged = {level, hp, A, B};
   }
-  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, arenaRuleset, caged, battleMode: caged ? 'open' : undefined,
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, arenaRuleset, caged, battleMode: arenaMode,
     mode: mode==='pc' ? 'pc' : (mode==='async' ? 'async' : (mode==='pvp' ? 'pvp' : (mode==='gauntlet' ? 'gauntlet' : 'ai'))), active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     // Epic A (2026-09-18, "Leader slot + in-match summon"): snapshotted once at match start —
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
@@ -15099,11 +15266,11 @@ function hudSettingsWidgetHTML(){
       <div class="settings-panel-title">Settings</div>
       ${(matchState && matchState.drawOffered && !matchState.over) ? `<div class="settings-row"><button type="button" class="btn small primary" id="acceptDrawHudBtn" style="width:100%">🤝 Accept the draw offer</button></div>` : ''}
       <div class="settings-row">
-        <div class="settings-row-label"><span>🎵 Music &amp; ambience</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
+        <div class="settings-row-label"><span>🌿 Ambience</span><span class="settings-row-val" id="musicVolumeValHud">60%</span></div>
         <input type="range" id="musicVolumeSliderHud" min="0" max="100" step="1" aria-label="Music volume">
       </div>
-      <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectHud" aria-label="Battle music"></select></div>
-      <div class="settings-row"><div class="settings-row-label"><span>🎹 Calm music</span></div><select id="calmMusicSelectHud" aria-label="Calm music"></select></div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span><span class="settings-row-val" id="battleMusicValHud">60%</span></div><input type="range" id="battleMusicSliderHud" min="0" max="100" step="1" aria-label="Battle music volume"></div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎹 Menu music</span><span class="settings-row-val" id="menuMusicValHud">60%</span></div><input type="range" id="menuMusicSliderHud" min="0" max="100" step="1" aria-label="Menu music volume"></div>
       <div class="settings-row">
         <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValHud">100%</span></div>
         <input type="range" id="sfxVolumeSliderHud" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -15501,7 +15668,7 @@ function renderMatchUI(){
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
-          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn" ${playAgainEnergyAttrs(m)}>${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again')}</button>
+          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn" ${playAgainEnergyAttrs(m)}>${isTutorial?(m.winner===1?(m.tutorialStage>=TUTORIAL_STAGE_COUNT?'Claim Rewards':'Next Skirmish'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again') + (m.mode==='pvp' ? ' <small class="wl-cost wl-ticket" title="Costs one PvP ticket">−1 🎟️</small>' : '')}</button>
           ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
 
         </div>
@@ -16321,7 +16488,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -17719,13 +17886,14 @@ function boardCardHTML(c, defs, opts){
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
-    (matchState && c.uid===matchState.leaderUid) ? 'is-leader' : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
+    (matchState && c.uid===matchState.leaderUid) ? 'is-leader' : '',
+    (c.phaseAtk || c.phaseHp) ? ('phase-aura ' + ((matchState && matchState.engine && matchState.engine.getPhase && matchState.engine.getPhase()==='night') ? 'phase-night' : 'phase-day')) : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
   ].filter(Boolean).join(' ');
   // Item #14 (Rally): the atk badge shows the LIVE effective attack (base + this round's Rally
   // aura), so the board visibly reflects the buff even though it's never baked into c.atk.
   // 2026-10-10 (user: "Attack = Base Attack + Bonuses"): the board shows the total; buffed above the printed value it's
   // tinted blue, and the card details split it into base + bonus.
-  const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0);
+  const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
   const atkLabel = effAtk > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${effAtk}</span>` : `⚔${effAtk}`;
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
   const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
@@ -17780,7 +17948,7 @@ function boardCardHTML(c, defs, opts){
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}<span class="owner-edge" aria-hidden="true"></span>
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
   </div>`;
 }
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
@@ -18623,7 +18791,7 @@ function currentCardByUid(uid){
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
-  const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0);
+  const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
   a.innerHTML = tot > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${tot}</span>` : `⚔${tot}`;
 }
 function updateCardHpDisplay(uid){
@@ -19129,7 +19297,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
       });
     });
   });
@@ -19254,7 +19422,7 @@ async function resolveRound(opts){
           // in replayRows. Backfill it from the live (already fully-resolved) board card.
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
@@ -19772,8 +19940,9 @@ function tidePillHTML(m){
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField();
   const phase = dayNightOn(m) ? m.engine.getPhase() : null;
-  const roundInPhase = ((Math.max(1, m.round||1) - 1) % 3) + 1;
-  const phaseHTML = phase ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night: Nocturnal units hit +1. Day returns after round ' : 'Day: Diurnal units hit +1. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/3)*3}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of 3"><span aria-hidden="true">${phase==='night' ? '🌙' : '☀️'}</span><b>${phase==='night' ? _t('Night') : _t('Day')}</b><small>${roundInPhase}/3</small></div>` : '';
+  const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
+  const roundInPhase = ((Math.max(1, m.round||1) - 1) % PL) + 1;
+  const phaseHTML = phase ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phase==='night' ? '🌙' : '☀️'}</span><b>${phase==='night' ? _t('Night') : _t('Day')}</b><small>${roundInPhase}/${PL}</small></div>` : '';
   const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
   if(!f) return phaseHTML + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
@@ -20867,7 +21036,7 @@ function logText(ev){
     // card it drew leaked something the player has no legitimate way to see. Only the player's
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
-    case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls. Nocturnal units hit +1.' : '☀️ Day breaks. Diurnal units hit +1.'};
+    case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
@@ -20886,6 +21055,7 @@ function logText(ev){
     case 'fieldTick': return ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +1 Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
+      if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
@@ -20898,7 +21068,7 @@ function logText(ev){
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
     case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${ev.dmg} damage back at ${nm(ev.targetDefId)}. 🪞`};
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Pierce punched through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
-    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Overwhelm spilled ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
+    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
     case 'blindMiss': return {cls:'', text:`${nm(ev.attDefId)} swings blindly and misses entirely! 👁`};
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
@@ -20926,7 +21096,7 @@ function logText(ev){
     // (a Devilry-chained card's chains snapping, already given its own on-card flourish/sound —
     // see playChainBreakFlourish/SoundKit.chainBreak — but never a matching log line) likewise
     // fell through to the raw type-name default.
-    case 'heal': return {cls:'heal', text:`${nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
+    case 'heal': return {cls:'heal', text:`${ev.source ? '🧪 ' + ev.source : nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
     case 'chainBreak': return {cls:'gold', text:`${nm(ev.defId)}'s chains snapped — free to act again! ⛓`};
     case 'bounty': return {cls:'gold', text:`Bounty paid: +${ev.amount} 🪵 for slaying ${nm(ev.fromDefId)}.`}; // 2026-09-22: bounty pays Lumber now, not Gold
     case 'sap': return {cls:'heal', text:`${nm(ev.attDefId)} drained ${ev.amount} HP from the hit. 🩹`};
@@ -22341,8 +22511,8 @@ function renderVfxForEvent(ev){
     poisonBubbleBurstVfx(ev.uid);
     floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
-    updateCardHpDisplay(ev.uid);
+    if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.poison = Math.max(0, (rc.poison||0) - 1); }
+    updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
   }
   // Bleed tick (item #9 gap found in the same pass): previously had NO front-end handler
   // at all — a bled card ticking damage on its own attack/defend/skill use showed nothing.
@@ -22355,8 +22525,8 @@ function renderVfxForEvent(ev){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
     floatText(el, '🩸 -'+ev.dmg, 'bleed-tick');
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
-    updateCardHpDisplay(ev.uid);
+    if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.bleed = Math.max(0, (rc.bleed||0) - 1); }
+    updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
   }
   // Decay tick (2026-09-29): mirrors Poison/Bleed's tick treatment (shake, tint-pulse, emoji-led
   // float), plus its own note on the permanent Attack loss that a plain HP float wouldn't show.
@@ -22429,7 +22599,18 @@ function renderVfxForEvent(ev){
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast('🔓 Your leader is free!', 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
-  if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls — Nocturnal units hit +1.' : '☀️ Day breaks — Diurnal units hit +1.', 'ok'); }catch(e){} }
+  if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
+    try{ if(ev.phase==='night') SoundKit.wolfHowl(); else SoundKit.roosterCrow(); }catch(e){} }
+  // Phase growth (2026-10-10, user: "the weredog gains +5/+6 at night. You see a growth vfx/sfx on the card and green aura &
+  // spice leaking out of the card for a while. A real aura moment."): the numbers pop, the card swells, and a green aura
+  // with drifting spores clings to it while the bonus lasts (the .phase-aura class from boardCardHTML keeps it on).
+  if(ev.type==='statusFx' && (ev.kind==='phaseGrow' || ev.kind==='phaseFade')){
+    const grow = ev.kind==='phaseGrow';
+    statChangeVfx(ev.attUid, ev.amount||0, ev.hp||0);
+    try{ if(grow) SoundKit.growthSwell(); }catch(e){}
+    const el = boardCardEl(ev.attUid);
+    if(el){ el.classList.toggle('phase-aura', grow); el.classList.toggle('phase-night', ev.phase==='night'); if(grow){ el.classList.remove('phase-burst'); void el.offsetWidth; el.classList.add('phase-burst'); setTimeout(()=> el.classList.remove('phase-burst'), 1400); } }
+  }
   if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }
   if(ev.type==='elementalEnergy') floatResourceGain(ev, '✨', 'hudElementalEnergyPill', SoundKit.grace);
   // Item drop (item #3, 2026-09-16): a bounty payout now visibly drops a coin out of the
@@ -26396,6 +26577,10 @@ function wireSettingsButton(idSuffix){
     music: {el: document.getElementById('musicVolumeSlider'+idSuffix), val: document.getElementById('musicVolumeVal'+idSuffix), get: ()=>SoundKit.getMusicVolume(), set: v=>SoundKit.setMusicVolume(v)},
     sfx:   {el: document.getElementById('sfxVolumeSlider'+idSuffix),   val: document.getElementById('sfxVolumeVal'+idSuffix),   get: ()=>SoundKit.getSfxVolume(),   set: v=>SoundKit.setSfxVolume(v)},
     voice: {el: document.getElementById('voiceVolumeSlider'+idSuffix), val: document.getElementById('voiceVolumeVal'+idSuffix), get: ()=>SoundKit.getVoiceVolume(), set: v=>SoundKit.setVoiceVolume(v)},
+    battleMusic: {el: document.getElementById('battleMusicSlider'+idSuffix), val: document.getElementById('battleMusicVal'+idSuffix), get: ()=> battleMusicVolume(),
+      set: v=>{ setMusicLevel(BATTLE_MUSIC_KEY, v); try{ BattleMusic.setVolume(v); if(v > 0 && matchState && !matchState.over) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); }catch(e){} }},
+    menuMusic: {el: document.getElementById('menuMusicSlider'+idSuffix), val: document.getElementById('menuMusicVal'+idSuffix), get: ()=> menuMusicVolume(),
+      set: v=>{ setMusicLevel(CALM_MUSIC_KEY, v); try{ CalmMusic.setVolume(v); }catch(e){} }},
   };
   Object.values(sliders).forEach(s=>{
     if(!s.el) return;
@@ -26438,19 +26623,7 @@ function wireSettingsButton(idSuffix){
     shSel.disabled = !can; shSel.value = shadersEnabled() ? 'on' : 'off';
     shSel.addEventListener('change', ()=> setShadersEnabled(shSel.value === 'on'));
   }
-  const bmSel = document.getElementById('battleMusicSelect'+idSuffix);
-  if(bmSel){
-    bmSel.innerHTML = '<option value="on">On</option><option value="off">Off</option>';
-    bmSel.value = battleMusicOn() ? 'on' : 'off';
-    bmSel.addEventListener('change', ()=>{ try{ localStorage.setItem(BATTLE_MUSIC_KEY, bmSel.value); }catch(e){}
-      if(bmSel.value === 'off') BattleMusic.stop(); else if(matchState && !matchState.over) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); });
-  }
-  const cmSel = document.getElementById('calmMusicSelect'+idSuffix);
-  if(cmSel){
-    cmSel.innerHTML = '<option value="on">On</option><option value="off">Off</option>';
-    cmSel.value = calmMusicOn() ? 'on' : 'off';
-    cmSel.addEventListener('change', ()=>{ try{ localStorage.setItem(CALM_MUSIC_KEY, cmSel.value); }catch(e){} if(cmSel.value === 'off') CalmMusic.stop(); });
-  }
+  // 🎼 / 🎹 music: sliders now (see `sliders` above).
   const fxSel = document.getElementById('fxSelect'+idSuffix);
   if(fxSel){
     fxSel.innerHTML = [['high','High — everything'],['med','Medium'],['low','Low — fastest with effects'],['none','None']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');

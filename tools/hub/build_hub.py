@@ -136,6 +136,7 @@ DESIGN = [
   ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
   ('Starter decks: every Basic card, for reorganising', 'starter-decks-2026-10-10.md'),
   ('Card levels: base level and growth schedule', 'card-levels-2026-10-10.md'),
+  ('Card types: species, phyla and hybrids', 'card-types-2026-10-10.md'),
   ('Inspiration: Super Auto Pets and Tooth and Nail units', 'inspo-sap-tooth-and-nail-2026-10-10.md'),
   ('Inspiration: what to borrow from Hearthstone', 'inspo-hearthstone-2026-10-10.md'),
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),

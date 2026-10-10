@@ -492,7 +492,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     heatwave: {name:'Heatwave', icon:'🔥', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
     rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
     fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
-    moon:     {name:'Full Moon', icon:'🌕', text:'It stays night while the moon is up: Nocturnal units hit +1.'},
+    moon:     {name:'Full Moon', icon:'🌕', text:'It stays night while the moon is up.'},
   };
   let field = opts.field && FIELDS[opts.field] ? {id: opts.field, rounds: null} : null;
   const dayNight = opts.dayNight !== false;
@@ -512,13 +512,32 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     field = FIELDS[id] ? {id, rounds: rounds || null, by: by || null} : null;
   }
   function getPhase(){ return (field && field.id==='moon') ? 'night' : phase; }
-  function phaseBonus(card){
-    const e = card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects; if(!e) return 0;
-    // Only once the cycle is running: modes that never call roundStart (the tutorial, live ranked) have no day or night.
-    if(!turnNo && !(field && field.id==='moon') && !phaseFixed) return 0;
-    const ph = getPhase();
-    return (e.nocturnal && ph==='night') || (e.diurnal && ph==='day') ? 1 : 0;
+  // Nocturnal / Diurnal N (2026-10-10, user: "The effect for units with Nocturnal looks like 'Nocturnal - Gain +2/+2'"
+  // + "the weredog gains +5/+6 at night"): while it's night (day for Diurnal) the unit has +N Attack and +M Health
+  // (effects.nocturnal = N, effects.nocturnalHp = M; the old `true` means +1/+0). syncPhaseStats applies and removes it
+  // as the phase turns, reporting phaseGrow / phaseFade so the board can show it.
+  function phaseActive(){ return !!(turnNo || (field && field.id==='moon') || phaseFixed); }
+  function phaseStatsOf(e, ph){
+    const pick = k=>{ const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; };
+    if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
+    if(ph==='day' && (e.diurnal || e.diurnalHp)) return pick('diurnal');
+    return [0, 0];
   }
+  function syncPhaseStats(players, sideOf, events){
+    const ph = phaseActive() ? getPhase() : null;
+    [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
+      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{
+        if(!c || c.gap || c.hp <= 0) return;
+        const e = (CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects) || {};
+        const [a, h] = ph ? phaseStatsOf(e, ph) : [0, 0], pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        if(a === pa && h === ph0) return;
+        c.phaseAtk = a;
+        if(h !== ph0){ const d = h - ph0; c.maxHp = Math.max(1, c.maxHp + d); c.hp = d > 0 ? c.hp + d : Math.max(1, Math.min(c.hp, c.maxHp)); c.phaseHp = h; }
+        if(recordEvents && events) events.push({type:'statusFx', kind: (a > pa || h > ph0) ? 'phaseGrow' : 'phaseFade', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:a - pa, hp:h - ph0, phase:ph});
+      });
+    });
+  }
+  function phaseBonus(card){ return (card && card.phaseAtk) || 0; }
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1, and Wash units push the enemy card facing them back 1 Wait (once per enemy card); on Ebb, Tide units take
@@ -534,13 +553,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
     }
     if(dayNight && round > 1 && !phaseFixed){
-      const before = phase; const first = ((round - 1) % 6) < 3; phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+      const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3); const first = ((round - 1) % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
       if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
       if(phase === 'day' && before === 'night'){
         if(recordEvents && events) events.push({type:'dawn', round});
         draw(players[1], 1, sideOf(1), stats, events); draw(players[2], 1, sideOf(2), stats, events);
       }
     }
+    syncPhaseStats(players, sideOf, events);
     // The active Exile zone (2026-10-09, D19 next step; archetypes-design-2026-10-09.md, the Forgotten Ones):
     // every card that goes to a player's Exile gives them 1 Echo 🕯️. A card with Remember N waiting in Exile
     // comes back to the board at the start of a round once its owner has N Echoes (spent), +1/+1 per Echo spent.
@@ -1113,9 +1133,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-10 (user: "Cards with wait shouldn't trigger bleed on themselves. (They can't act!)"): a unit still
     // under Wait doesn't bleed from its own skills or attacks; it still bleeds when it's hit ('defend').
     if((cause==='skill' || cause==='attack') && (card.wait||0) > 0) return;
+    // 2026-10-10 (user: "Bled cards take damage on any action or skill they perform. Bleed & Poison decreases by 1
+    // everytime their hurt activates"): no bleed from being hit any more, and each bleed lowers the stack by 1 — unless
+    // a Festering unit is on the field (statusDecayHeld).
+    if(cause==='defend') return;
     const dmg = damageCardFlat(card, card.bleed, 'bleed');
     ensureStat(stats, sideOf(ownerId), card.defId).taken += dmg;
-    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause});
+    const decay = !statusDecayHeld() && card.bleed > 0;
+    if(decay) card.bleed -= 1;
+    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay});
+  }
+  // Festering (2026-10-10, user: "a new global effect skill - this passive makes it such that all units on the field do
+  // not remove their status counters naturally when they trigger - bleed & poison only, for now"): while any live unit
+  // with effects.festering is on either side, Bleed and Poison stacks don't wear down.
+  function statusDecayHeld(){
+    const P = curPlayers; if(!P) return false;
+    return [1,2].some(pid=> P[pid] && P[pid].row && [...P[pid].row.left, ...P[pid].row.center, ...P[pid].row.right].some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.festering));
   }
   // Elemental status effects (2026-09-16) — Frozen (cold), Asleep (poison, "Sleeping" flavor),
   // Paralyzed (acid), and a passive chance-based Stun (heat), one per non-physical DMG_TYPE.
@@ -2277,8 +2310,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
     if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
     if(playable.length && !ai.playedThisTurn){
-      const costly = playable.filter(hc=> costOfCard(hc.defId) > 0);
-      const pick = costly.length && rnd() < 0.8 ? costly.reduce((a, b)=> costOfCard(b.defId) > costOfCard(a.defId) ? b : a) : playable[Math.floor(rnd()*playable.length)];
+      // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
+      // cost card, they pick which is better for the scenario"): every playable card is scored for the board in front of
+      // it, then the best is played (a little noise keeps it from being fully predictable).
+      const foe = players[otherId(aiId)], foes = allLive(foe), mine = allLive(ai);
+      const foeAtk = foes.reduce((t, c)=> t + (c.atk||0), 0), foeFliers = foes.filter(c=> CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.flying).length;
+      const myHq = ai.hq ? ai.hq.hp / Math.max(1, ai.hq.maxHp) : 1, foeHq = foe.hq ? foe.hq.hp / Math.max(1, foe.hq.maxHp) : 1;
+      const situational = id=>{
+        const d = CARD_DEFS[id] || {}, e = d.effects || {}; let v = cardValue(id);
+        if(myHq < 0.4 || foeAtk > (mine.length+1)*4) v += (d.health||0)*0.5 + (e.armor||0)*2 + (e.bulwark||0)*3; // under pressure: walls
+        if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + (e.pierce||0)*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
+        if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + (e.antiAir ? 3 + e.antiAir*foeFliers : 0);
+        if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
+        return v + rnd()*1.5;
+      };
+      const scored = playable.map(hc=> [hc, situational(hc.defId)]);
+      const pick = scored.reduce((a, b)=> b[1] > a[1] ? b : a)[0];
       const side = rnd() < 0.5 ? 'left' : 'right';
       placeCard(players, sideOf, aiId, pick.uid, side, stats, events);
     } else if(!ai.discardUsedThisTurn && ai.hand.length){
@@ -2321,7 +2368,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(card.hp<=0) continue;
       const dmg = damageCardFlat(card, card.poison, 'poison');
       ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg});
+      const decay = !statusDecayHeld() && card.poison > 0; // 2026-10-10: each tick wears the stack down by 1 (see bleedTick)
+      if(decay) card.poison -= 1;
+      if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, decay});
     }
     for(const {pl,card,n} of cursed){
       if(card.hp<=0) continue;
@@ -2768,6 +2817,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     });
   }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){}
     curPlayers = players;
     if(!(pass && pass.onlyUid)) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
     passUpkeepIds = (pass && pass.upkeepIds) || null;
@@ -3237,43 +3287,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // for the SURVIVING defender — same wiring as onAttackedSpawn just above.
           runCustomTriggers(players, sideOf, a.enemyId, defCard, defDef, 'onAttacked', stats, events);
         }
-        // Sweep (legacy: continues down the same flank past the primary target). These EXTRA
-        // hits are skill-like (a bonus swing, not the lane's basic connection), so — unlike the
-        // primary hit above — each one gets its own Evasion roll on the original (pre-redirect) target.
-        if(attDef.effects && attDef.effects.sweep){
-          let lastCol = target.col;
-          for(let s=0; s<attDef.effects.sweep; s++){
-            const extraRaw = findNextLiveCardBeyond(liveEnemyCols, lastCol, liveSelf.dir);
-            if(!extraRaw) break;
-            lastCol = extraRaw.col; // continuation always walks from the ORIGINAL column, not the guardian's — advance even if evaded
-            if(!combatHitLands(a.att, extraRaw.card, false)){ // Sweep extra: multi-target, so no Evade roll — Swift/Flying still apply
-              if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraRaw.card.defId, targetUid:extraRaw.card.uid, sweep:true});
-              continue;
+        // Sweep N (reworked 2026-10-10, user: "I think we need to rework Sweep"): it used to carry the full swing on into
+        // the next N cards down the flank, which overlapped Swipe and hit far too hard. Now it's a cleave: the swing
+        // spills onto the units directly either side of its target, N damage each (armour still counts, no on-hit
+        // effects). Fliers can still dodge it.
+        if(attDef.effects && attDef.effects.sweep > 0 && target && target.kind==='card'){
+          const N = Number(attDef.effects.sweep)||0;
+          [target.col - 1, target.col + 1].forEach(col=>{
+            const entry = liveEnemyCols[col];
+            if(!entry || entry.kind!=='card' || !entry.card || entry.card.hp<=0) return;
+            const side = entry.card;
+            if(!combatHitLands(a.att, side, false)){
+              if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, sweep:true});
+              return;
             }
-            const extraCard = redirectToGuardian(players[a.enemyId], extraRaw.card);
-            const extraGuardianRedirect = extraCard.uid !== extraRaw.card.uid;
-            const r2 = damageCard(extraCard, atkThisRound, dmgType, a.att);
+            const r2 = damageCard(side, N, dmgType, null);
             aStat.dealt += r2.dmg;
-            ensureStat(stats, sideOf(a.enemyId), extraCard.defId).taken += r2.dmg;
-            if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraCard.defId, targetUid:extraCard.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, sweep:true, guardianRedirect:extraGuardianRedirect, crit:critLanded, rend:r2.rendBypass, festerBonus, ruptureBonus, elementalConvert:r2.elementalConvert, elementalAmount:r2.elementalAmount});
-            if(r2.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraCard.defId, targetUid:extraCard.uid, amount:r2.kingSlayerBonus});
-            maybeBreakChain(players, sideOf, a.enemyId, extraCard, stats, events, {kind:'damage', amount:r2.dmg});
-            if(!killCredit[extraCard.uid]) killCredit[extraCard.uid] = new Set();
-            killCredit[extraCard.uid].add(statKey(mySide, a.att.defId));
-            if(attDef.effects.poison && extraCard.hp>0){ extraCard.poison = (extraCard.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
-            if(attDef.effects.decay && extraCard.hp>0){ extraCard.decay = (extraCard.decay||0) + attDef.effects.decay; }
-            if(attDef.effects.bleed && extraCard.hp>0){ extraCard.bleed = (extraCard.bleed||0) + attDef.effects.bleed; }
-            if(attDef.effects.scar && extraCard.hp>0){ extraCard.scar = (extraCard.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:extraCard.defId, targetUid:extraCard.uid, amount:attDef.effects.scar}); }
-            rollStatusOnHit('freeze', attDef.effects.freeze, extraCard, mySide, a.att, sideOf, a.enemyId, events);
-            rollStatusOnHit('sleep', attDef.effects.sleep, extraCard, mySide, a.att, sideOf, a.enemyId, events);
-            rollStatusOnHit('paralyze', attDef.effects.paralyze, extraCard, mySide, a.att, sideOf, a.enemyId, events);
-            rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, extraCard, mySide, a.att, sideOf, a.enemyId, events);
-            if(attDef.effects.sap && r2.dmg>0){ const healed2 = Math.min(a.att.maxHp - a.att.hp, r2.dmg); if(healed2>0){ a.att.hp += healed2; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed2}); } }
-            if(extraCard.hp>0){
-              bleedTick(sideOf, a.enemyId, extraCard, stats, events, 'defend');
-              runCustomTriggers(players, sideOf, a.enemyId, extraCard, CARD_DEFS[extraCard.defId], 'onAttacked', stats, events);
-            }
-          }
+            ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
+            if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, sweep:true});
+            maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
+            if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
+            killCredit[side.uid].add(statKey(mySide, a.att.defId));
+          });
         }
         // Swipe (2026-09-21 REDESIGN, per explicit request: "Swipe doesn't need a integer
         // parameter... Swipe now means: Hit left and right. If there's 3 cards in front of you,
@@ -3413,14 +3448,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function debugDamage(players, sideOf, uid, amount, stats, events){
     const f = findBoardCard(players, uid); if(!f || f.card.hp<=0) return 0;
     const c = f.card, dmg = damageCardFlat(c, Math.max(0, amount|0), 'true', null);
-    if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'true', ranged:true});
+    if(recordEvents && events) events.push({type:'hit', side:sideOf(otherId(f.pid)), attDefId:c.defId, attUid:null, targetSide:sideOf(f.pid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'true', ranged:true, source:'Tester'});
     if(c.hp>0){ bleedTick(sideOf, f.pid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, f.pid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     removeDeadCards(players, sideOf, {}, stats, events);
     return dmg;
   }
   function debugHeal(players, sideOf, uid, amount, stats, events){
     const f = findBoardCard(players, uid); if(!f) return 0;
+    const evStart = events ? events.length : 0;
     const n = applyHeal(f.card, amount, sideOf(f.pid), events);
+    if(events) for(let i = evStart; i < events.length; i++) if(events[i].type==='heal') events[i].source = 'Tester';
     if(n > 0) fireHealTriggers(players, sideOf, f.pid, f.card, f.card, n, stats, events);
     return n;
   }
@@ -3431,7 +3468,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     removeDeadCards(players, sideOf, {}, stats, events);
     return true;
   }
-  return { prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
