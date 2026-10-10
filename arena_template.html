@@ -7221,6 +7221,104 @@
   .po2-crate.is-open .po2-crate-lid{transform:rotate(-38deg) translateY(-30px);}
   .po2-crate.is-open{animation:po2CrateShake .45s ease;}
   @keyframes po2CrateShake{25%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} 75%{transform:rotate(-1deg);}}
+
+/* Skirmish codes X-Y (2026-10-10) */
+.sk-code{display:inline-block; font:800 .78em/1.2 'Baloo 2',system-ui,sans-serif; padding:0 .45em; border-radius:999px; background:rgba(58,43,30,.82); color:#f3e7cc; vertical-align:.12em; margin-right:.25em; letter-spacing:.02em;}
+.map-node .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
+
+/* ---- Shop shelves (2026-10-10): a bakery / apothecary wall of shelves ---- */
+.shelf-shop{display:block !important; max-width:980px; margin:14px auto 0;}
+.shelf-wall{position:relative; max-height:min(64vh, 660px); overflow-y:auto; overscroll-behavior:contain; padding:18px clamp(10px,3vw,34px) 8px; border-radius:16px 16px 6px 6px;
+  background:
+    repeating-linear-gradient(90deg, rgba(120,150,110,.10) 0 22px, rgba(255,250,235,0) 22px 44px),
+    radial-gradient(120% 80% at 50% 0%, #f1e6cc, #dccaa3 70%, #c9b48a);
+  box-shadow:inset 0 0 0 3px #6b4a2a, inset 0 14px 30px rgba(70,45,20,.25), 0 10px 24px rgba(0,0,0,.35);
+  scrollbar-width:thin; scrollbar-color:#8a5a32 rgba(90,60,30,.15);}
+.shelf-wall::-webkit-scrollbar{width:10px;} .shelf-wall::-webkit-scrollbar-thumb{background:#8a5a32; border-radius:6px; border:2px solid #e6d6b2;} .shelf-wall::-webkit-scrollbar-track{background:rgba(90,60,30,.12);}
+.shelf-row{position:relative; margin:0 0 30px;}
+.shelf-row.is-crooked{transform:rotate(-1.3deg); transform-origin:10% 100%;} .shelf-row.is-crooked-r{transform:rotate(.9deg); transform-origin:90% 100%;}
+.shelf-row:not(.is-stepped) > .shelf-items{flex-wrap:nowrap;}
+@media (max-width:620px){ .shelf-wall{padding:14px 8px 4px;} .booster{--bw:50px;} .shelf-items{gap:6px; min-height:110px;} .shelf-tape{font-size:14px; padding:1px 7px;} .shelf-row{margin-bottom:24px;} }
+.shelf-row.is-stepped{display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:end;}
+.shelf-step.is-high{transform:translateY(-34px);}
+.shelf-items{display:flex; flex-wrap:wrap; justify-content:center; align-items:flex-end; gap:clamp(10px,2.4vw,26px); min-height:132px; padding:0 8px 2px;}
+.shelf-plank{position:relative; height:16px; margin:0 -6px; border-radius:3px 3px 4px 4px;
+  background:linear-gradient(180deg, #b07a46 0 3px, #8a5a32 3px 11px, #6a4122 11px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 2px, transparent 2px 37px);
+  box-shadow:0 10px 12px -6px rgba(50,28,10,.55);}
+.shelf-plank::before, .shelf-plank::after{content:''; position:absolute; top:100%; width:16px; height:20px; background:linear-gradient(135deg, #6a4122 50%, transparent 50%); }
+.shelf-plank::before{left:9%;} .shelf-plank::after{right:9%; transform:scaleX(-1);}
+.shelf-prop{font-size:clamp(26px,3.6vw,36px); line-height:1; filter:saturate(.8) drop-shadow(0 4px 2px rgba(60,35,15,.35)); margin-bottom:1px; user-select:none;}
+/* an item on a slot */
+.shelf-item{position:relative; display:flex; flex-direction:column; align-items:center; gap:0; padding:6px 4px 0; border:0; background:none; cursor:pointer; color:inherit; font:inherit; border-radius:10px; transition:transform .18s ease;}
+.shelf-item:hover, .shelf-item:focus-visible{transform:translateY(-4px);}
+.shelf-item:focus-visible{outline:3px solid #2f6db3; outline-offset:2px;}
+.shelf-item.is-selected::after{content:''; position:absolute; left:10%; right:10%; bottom:-4px; height:6px; border-radius:50%; background:radial-gradient(closest-side, rgba(255,214,120,.95), transparent);}
+.shelf-item.is-off .booster, .shelf-item.is-off .shelf-bundle, .shelf-item.is-off .shelf-crate{filter:grayscale(.55) brightness(.92);}
+/* masking tape label */
+.shelf-tape{position:relative; margin-top:-12px; z-index:2; padding:2px 10px 1px; transform:rotate(var(--tilt,0deg)); font:700 clamp(15px,1.8vw,18px)/1.1 'Caveat','Baloo 2',cursive; color:#3a2a1a; white-space:nowrap;
+  background:linear-gradient(180deg, rgba(246,233,188,.94), rgba(236,219,168,.94)); box-shadow:0 1px 2px rgba(60,40,10,.25);
+  -webkit-mask:conic-gradient(from 45deg at left, #0000 25%, #000 0) left/6px 7px repeat-y, conic-gradient(from -135deg at right, #0000 25%, #000 0) right/6px 7px repeat-y, linear-gradient(#000 0 0) center/calc(100% - 10px) 100% no-repeat;
+          mask:conic-gradient(from 45deg at left, #0000 25%, #000 0) left/6px 7px repeat-y, conic-gradient(from -135deg at right, #0000 25%, #000 0) right/6px 7px repeat-y, linear-gradient(#000 0 0) center/calc(100% - 10px) 100% no-repeat;}
+.shelf-tag{margin-top:4px; padding:1px 8px; border-radius:3px 9px 9px 3px; font:800 12px/1.4 'Baloo 2',system-ui,sans-serif; color:#3a2a1a; background:#fffaf0; box-shadow:0 1px 0 #b9a27a, -6px 0 0 -3px #b9a27a; white-space:nowrap;}
+.shelf-item.is-off .shelf-tag{background:#e9dfcd; color:#6a5a44;}
+/* the booster pouch: cream metallic foil with grain */
+.booster{--bw:clamp(60px,8vw,78px); position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; width:var(--bw); aspect-ratio:.64; border-radius:4px 4px 6px 6px; overflow:hidden;
+  background:var(--foil-grain), linear-gradient(118deg, #f7edd6 0%, #e6d2a8 22%, #fff7e4 41%, #d9c193 58%, #f4e7c8 76%, #e2cd9f 100%);
+  background-blend-mode:multiply, normal; box-shadow:inset 0 0 0 1px rgba(120,90,40,.35), 0 6px 10px rgba(60,35,10,.35);}
+:root{--foil-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .62 0 0 0 0 .52 0 0 0 0 .34 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.booster::before{content:''; position:absolute; inset:0; background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,.65) 46%, transparent 58%), repeating-linear-gradient(90deg, rgba(255,255,255,.14) 0 1px, transparent 1px 3px); background-size:250% 100%, auto; background-position:120% 0, 0 0; transition:background-position .6s ease; pointer-events:none;}
+.shelf-item:hover .booster::before, .shelf-item:focus-visible .booster::before{background-position:-40% 0, 0 0;}
+.booster-crimp{position:absolute; left:0; right:0; top:0; height:9%; background:repeating-linear-gradient(90deg, rgba(110,80,35,.28) 0 2px, transparent 2px 5px);}
+.booster-crimp.is-b{top:auto; bottom:0;}
+.booster-ico{position:relative; font-size:calc(var(--bw) * .4); line-height:1; margin-top:-10%; filter:drop-shadow(0 2px 1px rgba(80,50,10,.35));}
+.booster-band{position:relative; margin-top:6%; width:100%; padding:2px 3px; text-align:center; font:800 calc(var(--bw) * .12)/1.1 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:var(--tint); box-shadow:0 1px 0 rgba(255,255,255,.4) inset; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+/* sets: three pouches fanned and tied */
+.shelf-bundle{position:relative; display:block; width:calc(clamp(60px,8vw,78px) * 1.45); height:calc(clamp(60px,8vw,78px) / .64);}
+.shelf-bundle .booster{position:absolute; bottom:0; left:50%; translate:-50% 0;}
+.shelf-bundle .booster.is-l{rotate:-12deg; translate:-88% 4%;} .shelf-bundle .booster.is-r{rotate:12deg; translate:-12% 4%;}
+.bundle-twine{position:absolute; left:8%; right:8%; top:56%; height:4px; border-radius:2px; background:repeating-linear-gradient(90deg, #9a6a3a 0 4px, #c39a68 4px 7px); box-shadow:0 1px 1px rgba(0,0,0,.3);}
+.bundle-twine::after{content:'🎀'; position:absolute; left:50%; top:50%; translate:-50% -55%; font-size:18px; filter:sepia(.7) saturate(.8);}
+/* crates */
+.shelf-crate{position:relative; display:block; width:calc(clamp(60px,8vw,78px) * 1.8); height:calc(clamp(60px,8vw,78px) * 1.2);}
+.shelf-crate .booster{position:absolute; bottom:30%; left:50%; translate:-50% 0; --bw:clamp(46px,6vw,60px);}
+.shelf-crate .booster.is-l{translate:-110% 6%; rotate:-9deg;} .shelf-crate .booster.is-r{translate:10% 4%; rotate:8deg;}
+.crate-front{position:absolute; left:0; right:0; bottom:0; height:58%; display:grid; place-items:center; border-radius:3px;
+  background:repeating-linear-gradient(180deg, #a8743f 0 30%, #7d522a 30% 34%), #a8743f; box-shadow:inset 0 0 0 3px #6a4122, 0 6px 8px rgba(50,28,10,.45);}
+.crate-front b{font:800 clamp(16px,2vw,21px)/1 'Baloo 2',system-ui,sans-serif; color:#f3e3c0; letter-spacing:.04em; text-shadow:0 1px 0 #4a2c14; opacity:.92;}
+/* hover card */
+.shelf-hover{position:absolute; z-index:5; width:min(270px, 80%); padding:10px 12px; border-radius:10px; background:#fffaf0; color:#2e2416; box-shadow:0 0 0 2px #8a5a32, 0 10px 22px rgba(40,22,8,.35); pointer-events:none; display:flex; flex-direction:column; gap:3px; font-size:13.5px; line-height:1.35;}
+.shelf-hover .sd-name, .shop-counter .sd-name{font:800 17px/1.15 'Baloo 2',system-ui,sans-serif;}
+.sd-line{display:block;} .sd-price{font:800 15px 'Baloo 2',system-ui,sans-serif;} .sd-price small{font-weight:600; opacity:.75;} .sd-why{color:#8a4b25; font-weight:700;}
+/* the counter */
+.shop-counter{display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:16px; margin:0 0 6px; padding:14px clamp(12px,3vw,26px); border-radius:6px 6px 16px 16px;
+  background:linear-gradient(180deg, #7d522a 0 6px, #f3e8cf 6px), #f3e8cf; color:#2e2416; box-shadow:inset 0 -4px 0 #d8c39a, 0 10px 24px rgba(0,0,0,.35);}
+.shop-counter .counter-info{display:flex; flex-direction:column; gap:3px; font-size:14px;}
+.shop-counter .counter-goods{display:grid; place-items:end center; min-width:96px;}
+.shop-counter.is-new .counter-goods{animation:counterSlide .35s cubic-bezier(.2,.8,.3,1);}
+@keyframes counterSlide{from{translate:0 -24px; opacity:0} to{translate:0 0; opacity:1}}
+@media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
+@media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
+/* the opened booster gets the same cream foil */
+.po2-body, .po2-strip-face{background:var(--foil-grain), linear-gradient(118deg, #f7edd6 0%, #e6d2a8 22%, #fff7e4 41%, #d9c193 58%, #f4e7c8 76%, #e2cd9f 100%); background-blend-mode:multiply, normal;}
+.po2-foil{mix-blend-mode:soft-light; opacity:.35;}
+.po2-crimp{background:repeating-linear-gradient(90deg, rgba(110,80,35,.28) 0 2px, transparent 2px 6px);}
+
+/* One NEW! tag everywhere (2026-10-10, user: "The NEW title tag is not consistent. When you see it in battle, or when drawing
+   packs. Make it consistent. Make it the best of them"): the pack-opening stamp's look (coral to gold, cream letters with a
+   wine outline, tilted, a warm glow) is now the one style for the pack stamp, the pack-summary pill, a first sighting in
+   battle and the reward reveal. Only size and position differ. */
+.po2-new b, .po2-new-tag, .board-card .seen-new, .rr-new, .rw-new{
+  font:900 var(--nt-size, 13px)/1.1 'Baloo 2',system-ui,sans-serif !important; letter-spacing:.03em; color:#fff6c9 !important; padding:.08em .45em .02em !important; border-radius:.3em !important; border:0 !important;
+  background:linear-gradient(135deg, #ff5d73, #ff9f43 45%, #ffd75e) !important; -webkit-text-stroke:var(--nt-stroke, 1px) #7a1530;
+  text-shadow:0 .12em 0 #7a1530 !important; box-shadow:0 0 0 2px #7a1530, 0 4px 10px rgba(0,0,0,.4), 0 0 16px rgba(255,215,94,.65) !important; white-space:nowrap;}
+.po2-new b{--nt-size:calc(var(--cw) * .17); --nt-stroke:2px; box-shadow:0 0 0 3px #7a1530, 0 8px 22px rgba(0,0,0,.45), 0 0 26px rgba(255,215,94,.9) !important;}
+.rr-new{--nt-size:20px; --nt-stroke:1.5px; rotate:-8deg;}
+.po2-new-tag{--nt-size:13px; --nt-stroke:0px; rotate:-6deg;}
+.rw-new{--nt-size:13px; --nt-stroke:0px;} .rw-card.shown .rw-new{transform:scale(1) rotate(-8deg);}
+.board-card .seen-new{--nt-size:13px; --nt-stroke:0px;}
+@keyframes seenNew{0%{transform:translateX(-50%) rotate(-8deg) scale(2.4); opacity:0;} 100%{transform:translateX(-50%) rotate(-8deg) scale(1); opacity:1;}}
+.board-card .seen-new{transform:translateX(-50%) rotate(-8deg);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -7460,6 +7558,7 @@
   <div id="view-deck" hidden></div>
   <div id="view-shop" hidden></div>
   <div id="view-nest" hidden></div>
+  <div id="view-market" hidden></div>
   <div id="view-friends" hidden></div>
   <div id="view-profile" hidden></div>
   <div id="view-ranking" hidden></div>

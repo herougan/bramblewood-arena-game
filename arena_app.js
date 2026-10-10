@@ -1377,14 +1377,33 @@ function cardWhereToGetText(d){
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
-  if(src.kind==='pack') return `Card packs (Tier ${Math.max(1, Number(src.tier)||1)}) in the Shop`;
+  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster in the Shop' : `Card packs (Tier ${Math.max(1, Number(src.tier)||1)}) in the Shop`;
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   return 'Not obtainable yet';
 }
+// Map numbers and skirmish codes (2026-10-10, user: "Skirmish ID-names X-Y, with map numbers starting at 0"): the first
+// map is Map 0. Fights are numbered 1, 2, 3… along the map's trail (the tutorial is X-0, a raid boss X-R). A sub-map's
+// fights carry its parent's number and the sub-map's first letter, e.g. 2-G1 for Smugglers' Grotto under Map 2.
+// Display only: save data keeps the original node keys.
+function mapNumberOf(mapId){
+  const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
+  const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
+  return i < 0 ? null : i;
+}
+function skirmishCode(mapId, nodeKey){
+  const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return '';
+  const n = mapNumberOf(mapId); if(n===null) return '';
+  const node = m.nodes.find(x=> x.key===nodeKey); if(!node) return '';
+  if(node.kind==='tutorial') return `${n}-0`;
+  if(node.kind==='raidboss') return `${n}-R`;
+  const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss');
+  const k = fights.indexOf(node) + 1;
+  return m.sub ? `${n}-${(m.name.replace(/^the\s+/i, '').match(/[A-Za-z]/)||['S'])[0].toUpperCase()}${k}` : `${n}-${k}`;
+}
 function conquestNodeLabel(mapId, nodeKey){
   const f = findConquestNode(mapId, nodeKey);
-  const mi = mapIndexOf(mapId);
-  return f ? `Map ${mi+1} · ${f.map.name} — ${f.node.name}` : `${mapId} / ${nodeKey}`;
+  const mi = mapNumberOf(mapId);
+  return f ? `${skirmishCode(mapId, nodeKey)} · Map ${mi} · ${f.map.name} — ${f.node.name}` : `${mapId} / ${nodeKey}`;
 }
 // Main maps only (sub-maps are reached through their parent's entrance, 2026-10-09).
 function mainConquestMaps(){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).filter(m=> !m.sub); }
@@ -1432,7 +1451,7 @@ function codexViewSectionOf(d, view){
     const mi = mapIndexOf(src.id);
     const f = src.node ? findConquestNode(src.id, src.node) : null;
     const ni = f ? f.map.nodes.indexOf(f.node) : 999;
-    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: src.node ? conquestNodeLabel(src.id, src.node) : `Map ${mi+1} — no node chosen (not obtainable)`, mapId:src.id, nodeKey:src.node||null};
+    return {key:`sk-${src.id}-${src.node||''}`, order:[mi,ni,0,''], label: src.node ? conquestNodeLabel(src.id, src.node) : `Map ${mapNumberOf(src.id)} — no node chosen (not obtainable)`, mapId:src.id, nodeKey:src.node||null};
   }
   if(view==='pack'){
     if(src.kind!=='pack') return null;
@@ -8796,6 +8815,10 @@ const DIALOGUES = {
     {label:'who', who:'peddler', text:'A mole who walked the wrong way out of a mine and kept going. You\'ll find my stall with the Cart\'s.', goto:'go'},
     {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.'},
   ]},
+  unlock_market: {lines:[
+    {who:'traveller', text:'Every trader who ever crossed these maps ends up here sooner or later. So do their cards.'},
+    {who:'traveller', text:'The Flea Market. Buy from other players, sell what you don\'t need. Haggling is frowned upon. Mostly.'},
+  ]},
   unlock_arena: {lines:[
     {who:'vesper', text:'An otter with a deck. How quaint. Fight me where it counts.'},
     {who:'swiftpaw', text:'The Arena. Strangers, tickets, bad manners.', options:[{label:'I\'m in.', goto:'go'}, {label:'Later.', goto:'later'}], silent:'go'},
@@ -8932,6 +8955,10 @@ const FEATURE_SPOTS = [
   {key:'shop2', icon:'🏮', name:'Ember Peddler', map:'m9', after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'raid', icon:'🐲', name:'Raid Banner', map:'m4', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
+  // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
+  // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
+  // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
+  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[30]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
 function loadUnlocks(){
   try{ const u = JSON.parse(localStorage.getItem(UNLOCKS_KEY)||'null'); if(u && u.unlocked) return u; }catch(e){}
@@ -10467,8 +10494,12 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"cinder-hornet":4,"ember-jackal":2,"beaver-lumberjack":2,"phoenix-fledgling":2}, hqHp:17, flavor:"The smoke arrives well before the swarm does.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Salamander Vents", icon:"🦎", deck:{"magma-salamander":4,"obsidian-scorpion":4,"ash-cloud-condor":2}, hqHp:34, flavor:"Every vent has something living just beneath the heat shimmer.", requires:["9-1"] },
+      // More skirmishes from Map 10 on (2026-10-10, user: "Maps have more skirmishes. Up to 10+ from Map 10"): side fights
+      // that branch off the trail without blocking it, so existing progress is unaffected.
+      { key:"9-9", kind:"skirmish", name:"Slag Runners", icon:"🐺", deck:{"cinder-hornet":3,"ember-jackal":1,"phoenix-fledgling":1,"beaver-lumberjack":4}, hqHp:15, flavor:"They run the cooling slag before it sets. You are standing on it.", requires:["9-2"] },
       { key:"9-3", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"sulfur-vent-crab":1,"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3,"cinder-hornet":2}, hqHp:16, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["9-2"] },
       { key:"9-4", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ash-cloud-condor":4,"ember-jackal":3,"obsidian-scorpion":2,"blackmass-acolyte":1}, hqHp:21, flavor:"The ash never really settles here. Neither does anything else.", requires:["9-3"] },
+      { key:"9-10", kind:"skirmish", name:"Furnace Mouth", icon:"🦎", deck:{"magma-salamander":3,"fire-drake-hatchling":2,"obsidian-scorpion":2,"beaver-lumberjack":3}, hqHp:19, flavor:"The hottest door in the Foundry, and someone keeps it open.", requires:["9-4"] },
       { key:"9-5", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"ember-jackal":1,"beaver-lumberjack":3}, hqHp:29, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"cinder-hornet":2,"phoenix-fledgling":1,"magma-titan":2,"beaver-lumberjack":2}, hqHp:25, flavor:"The heat reaches you a full second before the shadow does.", requires:["9-5"] },
       { key:"9-7", kind:"elite", name:"The Pyroclast Wyrm", icon:"🐉", deck:{"pyroclast-wyrm":1,"magma-titan":2,"obsidian-scorpion":2,"beaver-lumberjack":3}, hqHp:25, flavor:"It surfaces once, does what it came to do, and sinks back into the rock.", requires:["9-6"] },
@@ -10491,6 +10522,8 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"11-1", kind:"skirmish", name:"Silverback Watch", icon:"🦍", deck:{"silverback-brawler":4,"war-panther":4,"bramblewood-lynx":2}, hqHp:42, flavor:"The watch has not missed an approach in living memory.", requires:[] },
       { key:"11-2", kind:"skirmish", name:"Grizzly Frontier", icon:"🐻", deck:{"grizzly-vanguard":4,"woodland-brawler":4,"bear-cub":2}, hqHp:38, flavor:"Even the cubs here have already learned to hold ground.", requires:["11-1"] },
+      { key:"11-9", kind:"skirmish", name:"Panther Ledge", icon:"🐆", deck:{"war-panther":3,"bramblewood-lynx":3,"jaguar-stalker":2,"beaver-lumberjack":2}, hqHp:18, flavor:"Three cats, one ledge, and no agreement about who owns it.", requires:["11-1"] },
+      { key:"11-10", kind:"skirmish", name:"Shrine Steps", icon:"🛕", deck:{"shrine-acolyte":4,"shrine-bell-ringer":3,"hollow-oath-keeper":2,"beaver-lumberjack":1}, hqHp:23, flavor:"Every step is a prayer. Every prayer is answered with a shove.", requires:["11-2"] },
       { key:"11-3", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":2,"grizzly-vanguard":1,"silverback-brawler":2,"beaver-lumberjack":3}, hqHp:30, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["11-2"] },
       { key:"11-4", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", deck:{"constrictor-coil":3,"venomlord-serpent":3,"strangler-vine":1,"beaver-lumberjack":3}, hqHp:34, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["11-3"] },
       { key:"11-5", kind:"elite", name:"The Blessed Avatar", icon:"😇", deck:{"blessed-avatar":4,"shrine-high-priest":3,"hollow-oath-keeper":3}, hqHp:79, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["11-4"] },
@@ -11722,7 +11755,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>
+          <span class="map-node-ico">${node.icon}</span><span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
     </div>
@@ -11784,7 +11817,7 @@ function renderConquestSubTab(body){
     // committed to it. Skipped for the two virtual tutorial markers (kind:'tutorial') -- they're
     // not fightable nodes and cost nothing.
     const energyCost = nodeEnergyCost(map, node);
-    return `<div class="ctt-title">${node.icon} ${node.name}</div>
+    return `<div class="ctt-title"><span class="sk-code">${skirmishCode(map.id, node.key)}</span> ${node.icon} ${node.name}</div>
       <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
@@ -11844,7 +11877,7 @@ function renderConquestSubTab(body){
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
-      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name">${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
+      <div class="cnp-head"><span class="cnp-ico">${selectedNode.icon}</span><div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
@@ -13487,7 +13520,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
       <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Castle')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
     </div>
-    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${kindLabel}</span></div>
+    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
     <div class="vs-side vs-them">
       <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
@@ -23806,6 +23839,7 @@ function renderHome(){
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${big('deck','⛺','Armoury')}${arenaHome ? `<button class="btn primary big home-menu-btn home-tile" id="homeArenaBtn"><span class="tab-emoji">🏟️</span><span>Arena</span><small class="home-sub">${escapeHtml(sub.arena || 'Quick battles, challenges, ranked')}</small></button>` : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -24268,6 +24302,9 @@ const SHOP_PACKS_DEFAULT = [
   //   foilFinishes relative weights of the finish a foil card gets ('auto' = by rarity)
   {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
   {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false},
+  // Mystery Booster (2026-10-10, user: "Mystery booster with strange cards"): its own pool (tier 99) of oddities that
+  // don't come out of any other pack.
+  {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.1, foilGuaranteed:false},
   {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true, comingSoon:true},
 ];
 const FOIL_FINISHES = [
@@ -24352,27 +24389,122 @@ function refreshShopAfford(){
   const row = document.getElementById('shopCurrencyRow');
   if(row) row.innerHTML = shopCurrencyRowInnerHTML();
 }
+// Shop shelves (2026-10-10, user: "Heavily redesign the Market and Packs UI like a bakery or medicine shop: rows of
+// shelves, some non-straight rows, items on slots, a hover card with the details, tape labels like 'Sprout Pouch', y-scroll
+// when it gets large"). Three shelves: single packs (straight), sets of 10/25 tied with string (a crooked shelf) and crates
+// of 50/100 (a stepped shelf). Jars and loaves fill the gaps. Hovering an item shows its details; clicking puts it on the
+// counter below, where the buy button is.
+const PACK_TINT = {bronze:'#5f8f3e', silver:'#8a4b25', gold:'#b8862b', mystery:'#6b3fa0'};
+const SHELF_PROPS = ['🫙','🍯','🕯️','🥐','🧴','🍞','🧪','🪴','🥖','🫖','🧺','🍪'];
+let shopSelected = null; // 'packId:qty'
+function shelfRows(){
+  const packs = getShopPacks(), onSale = packs.filter(packOnSale);
+  // one shelf never holds more than fits on it; extra goods go onto the next shelf down, alternating its lean
+  const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
+  const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
+  return [
+    ...chunk(packs.map(p=> ({pack:p, qty:1})), narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk(onSale.flatMap(p=> [10, 25].map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
+    ...chunk(onSale.flatMap(p=> [50, 100].map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped']),
+  ].filter(r=> r.items.length);
+}
+function boosterHTML(p, cls){
+  return `<span class="booster ${cls||''}" style="--tint:${PACK_TINT[p.id] || '#6b5a3a'}" aria-hidden="true"><span class="booster-crimp"></span><span class="booster-ico">${p.icon}</span><span class="booster-band">${escapeHtml(p.name)}</span><span class="booster-crimp is-b"></span></span>`;
+}
+function shelfGoodsHTML(p, qty){
+  if(qty >= 50) return `<span class="shelf-crate" aria-hidden="true">${boosterHTML(p, 'is-peek is-l')}${boosterHTML(p, 'is-peek')}${boosterHTML(p, 'is-peek is-r')}<span class="crate-front"><b>×${qty}</b></span></span>`;
+  if(qty > 1) return `<span class="shelf-bundle" aria-hidden="true">${boosterHTML(p, 'is-fan is-l')}${boosterHTML(p, 'is-fan is-r')}${boosterHTML(p, 'is-fan')}<span class="bundle-twine"></span></span>`;
+  return boosterHTML(p);
+}
+function shelfStatus(p){
+  if(packOnSale(p)) return null;
+  const sp = packMerchantLocked(p) ? packMerchant(p) : null;
+  if(sp) return {tape:`${sp.icon} ${sp.name}`, why:`Arrives with the ${sp.name}, further along the Conquest map.`};
+  return {tape:'Coming soon', why:'Not on sale yet.'};
+}
+function shelfPrice(p, qty){ return qty > 1 ? packSetCost(p, qty) : {gold:p.cost.gold||0, gems:p.cost.gems||0, discount:0}; }
+function shelfPriceHTML(c){ return [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' '); }
+function shelfDetailHTML(p, qty){
+  const st = shelfStatus(p), c = shelfPrice(p, qty), poolN = packCardPool(null, p.pool||1).length;
+  const what = `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon ? ` · 👑 ${p.kroon} Krooni` : ''}`;
+  const from = (p.pool||1)===99 ? `Strange cards that come out of no other pack (${poolN}).` : `From Pack ${p.pool||1} (${poolN} cards).`;
+  return `<b class="sd-name">${escapeHtml(p.name)}${qty > 1 ? ` ×${qty}` : ''}</b>
+    <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${Math.round(p.foilChance*100)}% foil per card.` : ''}</span>
+    <span class="sd-price">${shelfPriceHTML(c)}${c.discount ? ` <small>(${Math.round(c.discount*1000)/10}% off)</small>` : ''}</span>${st ? `<span class="sd-why">${escapeHtml(st.why)}</span>` : ''}`;
+}
+function renderShopShelves(grid, signedIn){
+  const rows = shelfRows(), all = rows.flatMap(r=> r.items);
+  const keyOf = it=> it.pack.id + ':' + it.qty;
+  if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
+  let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
+  const itemHTML = (it, i)=>{
+    const st = shelfStatus(it.pack), k = keyOf(it), tilt = ((i*37) % 7) - 3;
+    return `<button type="button" class="shelf-item ${it.qty>=50?'is-crate':it.qty>1?'is-bundle':''} ${st?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(it.pack.name + (it.qty>1 ? ' ×' + it.qty : '') + (st ? ' — ' + st.tape : ''))}">
+      ${shelfGoodsHTML(it.pack, it.qty)}
+      <span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(it.qty>1 ? it.pack.name + ' ×' + it.qty : it.pack.name)}</span>
+      <span class="shelf-tag">${st ? escapeHtml(st.tape) : shelfPriceHTML(shelfPrice(it.pack, it.qty))}</span>
+    </button>`;
+  };
+  const rowHTML = (r, ri)=>{
+    if(r.kind==='stepped'){
+      const half = Math.ceil(r.items.length/2), a = r.items.slice(0, half), b = r.items.slice(half);
+      return `<div class="shelf-row is-stepped"><div class="shelf-step"><div class="shelf-items">${a.map((it, i)=> itemHTML(it, i + ri*10)).join('')}${prop()}</div><div class="shelf-plank"></div></div>
+        <div class="shelf-step is-high"><div class="shelf-items">${prop()}${b.map((it, i)=> itemHTML(it, i + half + ri*10)).join('')}</div><div class="shelf-plank"></div></div></div>`;
+    }
+    const items = r.items.map((it, i)=> itemHTML(it, i + ri*10));
+    const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
+    if(!narrow){ if(items.length < 5) items.splice(Math.min(1, items.length), 0, prop()); items.push(prop()); }
+    return `<div class="shelf-row is-${r.kind}"><div class="shelf-items">${items.join('')}</div><div class="shelf-plank"></div></div>`;
+  };
+  grid.className = 'shop-pack-grid shelf-shop';
+  grid.innerHTML = `<div class="shelf-wall" tabindex="-1">${rows.map(rowHTML).join('')}<div class="shelf-hover" role="tooltip" hidden></div></div>
+    <div class="shop-counter" id="shopCounter" aria-live="polite"></div>`;
+  const wall = grid.querySelector('.shelf-wall'), hover = grid.querySelector('.shelf-hover');
+  const find = k=> all.find(it=> keyOf(it)===k);
+  const showHover = btn=>{
+    const it = find(btn.dataset.shelfitem); if(!it) return;
+    hover.innerHTML = shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
+    const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
+    const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
+    hover.style.left = x + 'px'; hover.style.top = (above < wall.scrollTop + 4 ? br.bottom - wr.top + wall.scrollTop + 8 : above) + 'px';
+  };
+  const hideHover = ()=>{ hover.hidden = true; };
+  const renderCounter = ()=>{
+    const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
+    if(!el || !it) return;
+    const st = shelfStatus(it.pack), qty = it.qty, afford = canAffordPacks(it.pack, qty);
+    const short = ()=>{ const c = shelfPrice(it.pack, qty); const g = Math.max(0, c.gold-(myCurrencies.gold||0)), m = Math.max(0, c.gems-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); };
+    const label = qty > 1 ? `Open ${qty} packs` : 'Open';
+    el.innerHTML = `<div class="counter-goods">${shelfGoodsHTML(it.pack, qty)}</div>
+      <div class="counter-info">${shelfDetailHTML(it.pack, qty)}</div>
+      <div class="counter-act">${st ? '' : `<button class="btn primary" data-buypack="${it.pack.id}" ${qty>1?`data-qty="${qty}"`:''} ${(signedIn && !afford)?'disabled':''}>${signedIn ? (afford ? label : short()) : '🔒 Sign in to open'}</button>`}</div>`;
+    el.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn, +(btn.dataset.qty||1)))));
+  };
+  grid.querySelectorAll('[data-shelfitem]').forEach(btn=>{
+    btn.addEventListener('pointerenter', e=>{ if(e.pointerType !== 'touch') showHover(btn); });
+    btn.addEventListener('pointerleave', hideHover);
+    btn.addEventListener('focus', ()=> showHover(btn)); btn.addEventListener('blur', hideHover);
+    btn.addEventListener('click', ()=>{
+      shopSelected = btn.dataset.shelfitem;
+      grid.querySelectorAll('[data-shelfitem]').forEach(b=>{ const on = b===btn; b.classList.toggle('is-selected', on); b.setAttribute('aria-pressed', on); });
+      renderCounter(); try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+      const c = grid.querySelector('#shopCounter'); if(c){ c.classList.remove('is-new'); void c.offsetWidth; c.classList.add('is-new'); }
+    });
+  });
+  wall.addEventListener('scroll', hideHover, {passive:true});
+  renderCounter();
+}
 let shopTab = 'packs';
 function renderShop(){
   const root = document.getElementById('view-shop');
-  const tabsHTML = `<div class="shop-tabs tk-seg mk-tabs" role="tablist" aria-label="Shop sections">
-      <button type="button" class="tk-speed-btn ${shopTab==='packs'?'is-on':''}" role="tab" aria-selected="${shopTab==='packs'}" data-shoptab="packs">📦 Packs</button>
-      <button type="button" class="tk-speed-btn ${shopTab==='market'?'is-on':''}" role="tab" aria-selected="${shopTab==='market'}" data-shoptab="market">🏪 Market</button></div>`;
-  if(shopTab==='market'){
-    root.innerHTML = `<div class="panel mk-panel"><h2>🏪 Market</h2>
-        <p class="panel-sub">Buy and sell cards with other players.</p>
-        <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}</div>
-      <div id="marketMount"></div>`;
-    root.querySelectorAll('[data-shoptab]').forEach(b=> b.onclick = ()=>{ shopTab = b.dataset.shoptab; renderShop(); });
-    const mount = document.getElementById('marketMount');
-    renderMarketInto(mount);
-    marketLoad().then(()=>{ if(currentTab==='shop' && shopTab==='market' && document.getElementById('marketMount')===mount) renderMarketInto(mount); });
-    return;
-  }
+  // The Market moved out to its own page, the Flea Market (2026-10-10); the Shop is packs only.
+  const tabsHTML = '';
+  shopTab = 'packs';
   const signedInShop = isSignedIn();
   const merchants = merchantsUnlocked();
   root.innerHTML = `<div class="panel"><h2>${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
-      <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool().length} cards).</p>
+      <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool(null, 1).length} cards).</p>
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
@@ -24398,17 +24530,9 @@ function renderShop(){
   // disabled button that looks broken.
   const signedIn = isSignedIn();
   const pool = packCardPool();
-  grid.innerHTML = !pool.length ? `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>` : getShopPacks().map(p=> `
-    <div class="shop-pack-card ${packOnSale(p)?'':'is-soon'}">
-      <div class="shop-pack-ico">${p.icon}</div>
-      <div class="shop-pack-name">${escapeHtml(p.name)}</div>
-      <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}${p.metal ? `<br>🔩 ${p.metal} Metal` : ''}${p.kroon ? `<br>👑 ${p.kroon} Krooni` : ''}</div>
-      <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
-      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : packMerchantLocked(p) ? (()=>{ const sp = packMerchant(p), mp = CONQUEST_MAPS.find(x=> x.id === sp.map); return `<button class="btn" disabled>${sp.icon} Sold by the ${escapeHtml(sp.name)}${mp ? ' · ' + escapeHtml(mp.name) : ''}</button>`; })() : `<button class="btn" disabled>Coming soon</button>`}
-      ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs: ${packSetCost(p, q).gold} Maple Leaves${p.cost.gems?` + ${packSetCost(p, q).gems} Gold Leaves`:''} (${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}% off). Sets let you skip or open them all at once.">×${q}<small class="sb-off">−${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}%</small></button>`).join('')}</div>` : ''}
-    </div>`).join('');
+  if(!pool.length){ grid.innerHTML = `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>`; wireWanderingMerchantShop(root); return; }
+  renderShopShelves(grid, signedIn);
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
-  grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn, +(btn.dataset.qty||1)))));
   wireWanderingMerchantShop(root);
 }
 // The Nest (2026-09-27, item 10, per explicit request: "now we need to build the Nest or Repo —
@@ -24940,7 +25064,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW</span>':''}</div>`).join('')}</div>
+      <div class="po2-sum-grid">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireTop(); wireFoot(); wireView(); wireTilt();
@@ -24958,7 +25082,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireFoot(); wireView(); wireTilt();
@@ -25853,6 +25977,16 @@ function marketMineHTML(){
     return `<div class="fr-row"><div class="fr-avatar">${cardIcoHTML(d)}</div><div class="fr-main"><div class="fr-name">${escapeHtml(d.name)}${l.foil?' ✨':''}</div><div class="fr-sub">${label[l.status]||l.status} · ${priceHTML(l.price, l.currency)}${l.status==='sold'?' · '+relTime(l.sold_at):''}</div></div>
       <div class="fr-actions">${l.status==='active'?`<button type="button" class="btn small" data-mk-cancel="${l.id}">Cancel</button>`:''}</div></div>`; }).join('');
 }
+function renderFleaMarket(){
+  const root = document.getElementById('view-market'); if(!root) return;
+  root.innerHTML = `<div class="panel mk-panel"><h2>🧺 Flea Market</h2>
+      <p class="panel-sub">Buy cards from other players and sell the ones you don't need.</p>
+      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div></div>
+    <div id="marketMount"></div>`;
+  const mount = document.getElementById('marketMount');
+  renderMarketInto(mount);
+  marketLoad().then(()=>{ if(currentTab==='market' && document.getElementById('marketMount')===mount) renderMarketInto(mount); });
+}
 function renderMarketInto(body){
   body.innerHTML = `<div class="panel mk-panel">
     <div class="mk-tabs tk-seg" role="tablist">
@@ -25867,9 +26001,9 @@ function renderMarketInto(body){
   body.onclick = async e=>{
     const t = e.target.closest('button'); if(!t) return;
     if(t.dataset.mkTab){ Market.tab = t.dataset.mkTab; renderMarketInto(body); return; }
-    if(t.id==='mkSignIn'){ requireSignIn('to use the Market', ()=>{ renderShop(); }); return; }
+    if(t.id==='mkSignIn'){ requireSignIn('to use the Flea Market', ()=>{ renderFleaMarket(); }); return; }
     if(t.dataset.mkBuy){
-      if(!isSignedIn()){ requireSignIn('to buy from the Market', ()=>{ renderShop(); }); return; }
+      if(!isSignedIn()){ requireSignIn('to buy from the Flea Market', ()=>{ renderFleaMarket(); }); return; }
       const l = (Market.listings||[]).find(x=>x.id===t.dataset.mkBuy); if(!l) return;
       const d = Registry.card(l.card_id);
       if((myCurrencies[l.currency]||0) < l.price){ showToast('Not enough '+((CURRENCY_META[l.currency]||{}).label||l.currency)+'.', 'error'); return; }
@@ -25997,6 +26131,7 @@ function placeOverlay(cls, html, ms){
 const PLACES = {
   deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
   shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
@@ -26030,7 +26165,7 @@ function switchTab(tab){
     // that. Forge's transition is too exaggerated"): every screen change is now the Codex's quick page turn (forward
     // when moving right along the menu, back when moving left). The leaf gust and the Nest's falling down are retired.
     if(currentTabBeforeSwitch && currentTabBeforeSwitch!==tab && !reduced && !matchState && tab!=='play'){
-      const ORDER = ['home','play','deck','nest','shop','codex','profile','achievements','ranking','admin'];
+      const ORDER = ['home','play','deck','nest','shop','market','codex','profile','achievements','ranking','admin'];
       const v = document.getElementById('view-' + tab), dir = ORDER.indexOf(tab) >= ORDER.indexOf(currentTabBeforeSwitch) ? 'fwd' : 'back';
       if(v){ v.classList.remove('view-turn-fwd','view-turn-back'); void v.offsetWidth; v.classList.add('view-turn-' + dir); setTimeout(()=> v.classList.remove('view-turn-' + dir), 420); }
     }
@@ -26041,6 +26176,7 @@ function switchTab(tab){
   document.getElementById('view-deck').hidden = tab!=='deck';
   document.getElementById('view-shop').hidden = tab!=='shop';
   document.getElementById('view-nest').hidden = tab!=='nest';
+  { const vm = document.getElementById('view-market'); if(vm) vm.hidden = tab!=='market'; }
   document.getElementById('view-profile').hidden = tab!=='profile';
   document.getElementById('view-ranking').hidden = tab!=='ranking';
   { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
@@ -26063,6 +26199,7 @@ function switchTab(tab){
   if(tab==='deck') safeRender('DeckSection', renderDeckSection);
   if(tab==='shop') safeRender('Shop', renderShop);
   if(tab==='nest') safeRender('Nest', renderNest);
+  if(tab==='market') safeRender('FleaMarket', renderFleaMarket);
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);

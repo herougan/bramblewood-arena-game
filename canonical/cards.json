@@ -10862,5 +10862,254 @@
     "flavor": "Never where you're looking. Always where you aren't.",
     "numericId": 402,
     "uuid": "86c6fc18-680e-4936-9303-b5a265393e4a"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "two-headed-calf",
+    "name": "Two-Headed Calf",
+    "icon": "\ud83d\udc04",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 9,
+    "rarity": "rare",
+    "species": [
+      "Bovine"
+    ],
+    "effects": {
+      "swipe": true
+    },
+    "flavor": "Both heads want to go in different directions. Both heads win.",
+    "numericId": 403,
+    "uuid": "e778ab59-6289-4f3a-9899-3a896df58d1c"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "upside-down-bat",
+    "name": "Upside-Down Bat",
+    "icon": "\ud83e\udd87",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 4,
+    "rarity": "uncommon",
+    "species": [
+      "Bat"
+    ],
+    "effects": {
+      "flying": true,
+      "diurnal": true
+    },
+    "flavor": "Sleeps all night, hangs the wrong way up, and is very pleased with itself.",
+    "numericId": 404,
+    "uuid": "1378af1d-6ea9-4c9d-afc0-a1a3ff8f97a5"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "teatime-toad",
+    "name": "Teatime Toad",
+    "icon": "\ud83d\udc38",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 10,
+    "rarity": "uncommon",
+    "species": [
+      "Amphibian"
+    ],
+    "effects": {
+      "regen": 2
+    },
+    "flavor": "Never in a hurry. There is always time for one more cup.",
+    "numericId": 405,
+    "uuid": "87b6caf9-2a44-471a-b55c-c5b75a7c5e5e"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "mirror-moth",
+    "name": "Mirror Moth",
+    "icon": "\ud83e\udd8b",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "rare",
+    "species": [
+      "Insect"
+    ],
+    "effects": {
+      "flying": true,
+      "evasive": true,
+      "reflect": 30
+    },
+    "flavor": "You swing at it, and somehow you're the one who gets hit.",
+    "numericId": 406,
+    "uuid": "af97bcfe-8945-4f66-b91d-ee5d3a855434"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "snail-mail",
+    "name": "Snail Mail",
+    "icon": "\ud83d\udc0c",
+    "cost": 0,
+    "wait": 2,
+    "attack": 0,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Mollusc"
+    ],
+    "effects": {
+      "armor": 1,
+      "triggers": [
+        {
+          "on": "onSpawn",
+          "do": "drawCard",
+          "count": 2
+        }
+      ]
+    },
+    "flavor": "Your letters arrive. Eventually. All at once.",
+    "numericId": 407,
+    "uuid": "b0f88b40-bf94-4455-aace-e0ae87f5384c"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "glass-golem",
+    "name": "Glass Golem",
+    "icon": "\ud83e\uded9",
+    "cost": 1,
+    "wait": 1,
+    "attack": 7,
+    "health": 1,
+    "rarity": "rare",
+    "species": [
+      "Elemental"
+    ],
+    "effects": {},
+    "flavor": "Hits like a landslide. Please don't touch it.",
+    "numericId": 408,
+    "uuid": "7a402407-5c97-45de-b2bb-4da462bfb25d"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "wrong-way-salmon",
+    "name": "Wrong-Way Salmon",
+    "icon": "\ud83d\udc1f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 3,
+    "health": 3,
+    "rarity": "uncommon",
+    "species": [
+      "Fish"
+    ],
+    "effects": {
+      "backstab": 2
+    },
+    "flavor": "Swims downstream on purpose. Nobody ever sees it coming.",
+    "numericId": 409,
+    "uuid": "4b21ac1c-fde7-430e-8774-950acf85eb4d"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "source": {
+      "kind": "pack",
+      "tier": 99
+    },
+    "archetypes": [
+      "Oddity"
+    ],
+    "id": "inside-out-hedgehog",
+    "name": "Inside-Out Hedgehog",
+    "icon": "\ud83e\udd94",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 7,
+    "rarity": "uncommon",
+    "species": [
+      "Erinaceid"
+    ],
+    "effects": {
+      "armor": 2,
+      "thorns": 1
+    },
+    "flavor": "Soft on the outside, prickly on the inside, which is somehow worse.",
+    "numericId": 410,
+    "uuid": "e80cae80-bb67-4af5-9de1-2c5c18cd3a4f"
   }
 ]

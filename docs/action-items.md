@@ -14,6 +14,7 @@ _Updated 2026-10-10, 10 pm. The short list of what matters now. Everything else 
 | **S1 👥** | Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function | Say "apply it" |
 | **D26** | Readings I took tonight: Anti-Air went on **Otter Centurion** (2/8), because on Otter Kit it broke the tutorial for Hummingbird players. "SSS fast" means a win by **round 8**. The rare S find starts at **map 5** at **12%**. Laurels (PvP) buy nothing yet | Keep, or say otherwise |
 | **D27** | Readings from the 20:32 list: Sweep is now a cleave (N to each unit beside the target); "Trample" already existed as Overwhelm and is renamed **Stampede**; Bleed no longer hurts when hit; the CPU's new card choice moved Otters vs Hummingbirds starters to ~66% (your balance pass) | Keep, or say otherwise |
+| **D28** | Readings from the 21:29 list: the Flea Market sits on Map 30, which doesn't exist yet, so it's admin-only for now (the Map 20 World Boss sub-map isn't built either); the new side skirmishes branch off the trail instead of being inserted into it, so no one's progress changes; the Mystery Booster is pool 99; sub-map fights are coded like 2-G1; "chaos returns" after Map 40 is sketched in the VFX Playground, not built | Keep; build Maps 13–30 before the Flea Market can open |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".

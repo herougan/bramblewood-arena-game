@@ -85,8 +85,9 @@ async def main():
         await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
         before = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
         # 2026-10-10: the Acorn Chest comes with the Ember Peddler (map 11); the Golden Bramble Case isn't on sale yet.
-        silver_ok = await pg.evaluate("featureUnlocked('shop2')") == (await pg.query_selector('[data-buypack="silver"]') is not None)
-        check(silver_ok and await pg.query_selector('[data-buypack="gold"]') is None, 'the Acorn Chest should be on sale only with the Ember Peddler, the Golden Case not at all')
+        # 2026-10-10: the shop is shelves now; an item on sale has no .is-off, and buy buttons live on the counter.
+        silver_ok = await pg.evaluate("featureUnlocked('shop2')") == (await pg.query_selector('[data-shelfitem="silver:1"]:not(.is-off)') is not None)
+        check(silver_ok and await pg.query_selector('[data-shelfitem="gold:1"].is-off') is not None and await pg.query_selector('[data-buypack="gold"]') is None, 'the Acorn Chest should be on sale only with the Ember Peddler, the Golden Case not at all')
         await pg.click('[data-buypack="bronze"]:not([data-qty])'); await pg.wait_for_timeout(500)
         check(await pg.query_selector('#poSkip') is None, 'a single pack should have no Skip (sets only)')
         bx = await pg.locator('#poStrip').bounding_box(); y = bx['y'] + bx['height']/2
@@ -105,6 +106,7 @@ async def main():
         check(await pg.evaluate("!document.querySelector('.card-inspect') && !document.getElementById('packOpenOverlay').hidden"), 'Escape should close only the card viewer over the pack summary')
         await pg.click('#poDone'); await pg.wait_for_timeout(300)
         # 4a: a set of 10 offers Skip and Open all; Open all shows everything grouped
+        await pg.click('[data-shelfitem="bronze:10"]'); await pg.wait_for_timeout(200)
         await pg.click('[data-buypack="bronze"][data-qty="10"]'); await pg.wait_for_timeout(500)
         # 2026-10-08 Packs v3: 10+ packs lay out on a table to slash at once; Open all is still offered
         check(await pg.query_selector('#poTable') is not None and await pg.query_selector('#poOpenAll') is not None, 'a set of 10 packs should show the table with Open all')
