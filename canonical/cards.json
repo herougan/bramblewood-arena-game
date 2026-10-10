@@ -11111,5 +11111,33 @@
     "flavor": "Soft on the outside, prickly on the inside, which is somehow worse.",
     "numericId": 410,
     "uuid": "e80cae80-bb67-4af5-9de1-2c5c18cd3a4f"
+  },
+  {
+    "cost": 1,
+    "wait": 1,
+    "effects": {
+      "flying": true,
+      "arrow": 2,
+      "diurnal": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "talon-archer",
+    "name": "Talon Archer",
+    "icon": "\ud83e\udd85",
+    "attack": 2,
+    "health": 8,
+    "rarity": "rare",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird"
+    ],
+    "flavor": "Holds the bow in one foot, draws with the other, and has never once explained how.",
+    "numericId": 411,
+    "uuid": "7904d37c-15f8-41b4-b670-14beab24e8d1"
   }
 ]

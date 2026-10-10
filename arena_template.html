@@ -7319,6 +7319,19 @@
 .board-card .seen-new{--nt-size:13px; --nt-stroke:0px;}
 @keyframes seenNew{0%{transform:translateX(-50%) rotate(-8deg) scale(2.4); opacity:0;} 100%{transform:translateX(-50%) rotate(-8deg) scale(1); opacity:1;}}
 .board-card .seen-new{transform:translateX(-50%) rotate(-8deg);}
+
+/* Map loading veil (2026-10-10) */
+.map-veil{position:absolute; inset:0; z-index:40; display:grid; place-items:center; border-radius:inherit; pointer-events:auto;
+  background:radial-gradient(120% 90% at 50% 40%, #f2e6c8, #d9c49a 70%, #bfa577); transition:opacity .45s ease, filter .45s ease;}
+.map-veil .mv-card{display:flex; flex-direction:column; align-items:center; gap:4px; color:#3a2a1a; text-align:center; transition:transform .45s cubic-bezier(.3,.7,.3,1);}
+.map-veil .mv-ico{font-size:clamp(44px,8vw,72px); line-height:1; filter:drop-shadow(0 4px 2px rgba(60,35,10,.3)); animation:mvBob 1.4s ease-in-out infinite;}
+.map-veil .mv-name{font:800 clamp(22px,3.4vw,32px)/1.1 'Baloo 2',system-ui,sans-serif;}
+.map-veil .mv-num{font:700 14px 'Nunito',system-ui,sans-serif; opacity:.7;}
+.map-veil .mv-dots{display:flex; gap:7px; margin-top:8px;} .map-veil .mv-dots i{width:8px; height:8px; border-radius:50%; background:#7d522a; animation:mvDot 1s ease-in-out infinite;}
+.map-veil .mv-dots i:nth-child(2){animation-delay:.15s;} .map-veil .mv-dots i:nth-child(3){animation-delay:.3s;}
+.map-veil.is-lifting{opacity:0; pointer-events:none; filter:blur(4px);} .map-veil.is-lifting .mv-card{transform:translateY(-14px) scale(1.04);}
+@keyframes mvBob{50%{transform:translateY(-5px)}} @keyframes mvDot{0%,100%{opacity:.3; transform:scale(.8)} 50%{opacity:1; transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){ .map-veil .mv-ico, .map-veil .mv-dots i{animation:none;} .map-veil, .map-veil .mv-card{transition:opacity .2s;} .map-veil.is-lifting{filter:none;} .map-veil.is-lifting .mv-card{transform:none;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

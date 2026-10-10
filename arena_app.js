@@ -11796,7 +11796,9 @@ function renderConquestSubTab(body){
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
-  try{ mountMapShader(conquestShaderHost(), map.id); }catch(e){}
+  { let layer = null; try{ layer = mountMapShader(conquestShaderHost(), map.id); }catch(e){}
+    const vh = conquestShaderHost();
+    if(conquestVeiledMap !== map.id && vh && vh.getClientRects().length){ conquestVeiledMap = map.id; try{ showMapVeil(vh, map, layer); }catch(e){} } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
@@ -18007,7 +18009,7 @@ function boardCardHTML(c, defs, opts){
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
   </div>`;
 }
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
@@ -26654,13 +26656,43 @@ function mountSceneShader(host, opts){
 // 2026-10-08 (user: "the clouds don't stretch out to the full map"): the map's weather layer covers
 // the whole map frame (under the region list too), not just the box the trail is drawn in.
 function conquestShaderHost(){ return document.getElementById('conquestLayout') || document.getElementById('conquestCanvas'); }
+// 2026-10-10 (map loading veil): a re-render of the same map keeps its live layer (moved into the new frame) instead of
+// building a new GL context every time, which is what made the effects blink and half-load.
+let conquestMapLayer = null;
 function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;
   const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
+  const rain = (typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') || (worldRaining() && mapIsOutdoors(mapId));
+  const key = mapId + ':' + (rain ? 11 : kind);
+  if(conquestMapLayer && conquestMapLayer.key===key && ShaderM.reattach && ShaderM.reattach(conquestMapLayer.layer, host, true)){
+    host.querySelectorAll(':scope > canvas.bw-shader-map').forEach(c=>{ if(c !== conquestMapLayer.layer.cv) c.remove(); });
+    return conquestMapLayer.layer;
+  }
   // The frame persists between maps, so drop the previous layer (the shader loop frees a detached canvas).
   host.querySelectorAll(':scope > canvas.bw-shader-map').forEach(c=> c.remove());
-  const rain = (typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') || (worldRaining() && mapIsOutdoors(mapId));
-  return ShaderM.mount(host, {preset:'map', kind: rain ? 11 : kind, prepend: true, className: 'bw-shader-map'});
+  const layer = ShaderM.mount(host, {preset:'map', kind: rain ? 11 : kind, prepend: true, className: 'bw-shader-map'});
+  conquestMapLayer = layer ? {key, layer} : null;
+  return layer;
+}
+// Map loading veil (2026-10-10, user: "Map loading screen so VFX don't half-load"): entering a map shows a painted
+// card with the map's name until its effect layer has drawn its first frame and the fonts are in (at least 0.35 s,
+// at most 1.8 s), then lifts. Re-renders of the same map don't show it again.
+let conquestVeiledMap = null;
+function showMapVeil(host, map, layer){
+  if(!host || !map) return;
+  host.querySelectorAll(':scope > .map-veil').forEach(v=> v.remove());
+  const n = typeof mapNumberOf==='function' ? mapNumberOf(map.id) : null;
+  const v = document.createElement('div'); v.className = 'map-veil'; v.setAttribute('role', 'status');
+  v.innerHTML = `<div class="mv-card"><span class="mv-ico" aria-hidden="true">${map.icon||'🗺️'}</span><b class="mv-name">${escapeHtml(map.name)}</b>${n!=null ? `<small class="mv-num">Map ${n}</small>` : ''}<span class="mv-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr-only">Loading the map…</span></div>`;
+  host.appendChild(v);
+  const t0 = performance.now();
+  let done = false;
+  const lift = ()=>{ if(done) return; done = true; const wait = Math.max(0, 350 - (performance.now() - t0));
+    setTimeout(()=>{ v.classList.add('is-lifting'); setTimeout(()=> v.remove(), 520); }, wait); };
+  const fontsReady = (document.fonts && document.fonts.ready) ? document.fonts.ready : Promise.resolve();
+  const layerReady = new Promise(res=>{ if(!layer || layer.drawn) res(); else layer.onFirstFrame = res; });
+  Promise.all([fontsReady, layerReady]).then(()=> requestAnimationFrame(()=> requestAnimationFrame(lift)));
+  setTimeout(lift, 1800);
 }
 // Battlefield weather (2026-10-03, effects experiment #5): the map overlay system, placed under
 // the cards and toned down. Rain on wet maps (and with the 🌧️ Rain atmosphere), the map's own look

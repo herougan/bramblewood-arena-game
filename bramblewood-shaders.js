@@ -450,6 +450,8 @@ function loop(now){
       }
     }
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    // First frame on screen (2026-10-10, map loading veil): lets the page lift its veil only once the effect is live.
+    if(!l.drawn){ l.drawn = true; if(l.onFirstFrame){ const f = l.onFirstFrame; l.onFirstFrame = null; setTimeout(()=>{ try{ f(); }catch(e){} }, 0); } }
   });
   if(layers.size) raf = requestAnimationFrame(loop);
 }
