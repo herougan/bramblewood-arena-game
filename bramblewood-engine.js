@@ -683,11 +683,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(placeCard(players, sideOf, pid, h.uid, side, stats, events)) return true;
     pl.hand.splice(pl.hand.indexOf(h), 1); pl.exile.splice(exileIndex, 0, e); return false; // couldn't place: put it back
   }
+  // Swarm (reworked 2026-10-10, user: "Deal +1 damage extra per ally unit that shares a type with this unit"): +1 for
+  // every other living ally that shares at least one type (archetype) with it. Any ally counts, Swarm or not.
   function swarmBonus(card){
-    const def = card && CARD_DEFS[card.defId]; const n = def && def.effects && Number(def.effects.swarm);
-    if(!(n > 0) || !curPlayers) return 0;
+    const def = card && CARD_DEFS[card.defId];
+    if(!(def && def.effects && def.effects.swarm) || !curPlayers) return 0;
+    const mine = new Set(def.archetypes || []); if(!mine.size) return 0;
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      if(all.includes(card)) return Math.floor(all.filter(c=> c!==card && c.hp>0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.swarm).length / n); }
+      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(a=> mine.has(a))).length; }
     return 0;
   }
   function isRaging(card){
@@ -2871,7 +2874,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
             if(card.shellSkip){ skipTurn('shell', card, ownId); handledUids.add(uid); return; }
-            if(effAtk(card)<=0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; }
+            if(effAtk(card) + swarmBonus(card) <= 0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; } // a 0-Attack Swarm unit still swings with its allies' bonus
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
         });

@@ -6877,6 +6877,107 @@
   .card-tile.shock-jitter{animation:shockJitter 360ms steps(1) both;}
   @keyframes shockJitter{0%{translate:1px 0;} 25%{translate:-1px 0;} 50%{translate:0 1px;} 75%{translate:-1px 0;} 100%{translate:0 0;}}
   @media (prefers-reduced-motion: reduce){ .card-tile .shock-arcs i{animation-duration:1ms;} .card-tile.shock-jitter{animation:none;} }
+  /* Armour shields overlap like a stack (2026-10-10) */
+  .ab-shields{display:inline-flex; align-items:center;} .ab-shields i{font-style:normal; display:inline-block;} .ab-shields i + i{margin-left:-.48em;}
+  .ab-shields i:nth-child(2){filter:brightness(.92);} .ab-shields i:nth-child(3){filter:brightness(.84);} .ab-shields i:nth-child(4){filter:brightness(.78);} .ab-shields i:nth-child(5){filter:brightness(.72);}
+  /* Castle hit tiers (2026-10-10): small (<5), medium (<10), large (<20), very large (20+) */
+  .hq-hit-flash-small{animation:hqHitFlashSmall 420ms ease;}
+  @keyframes hqHitFlashSmall{0%{box-shadow:0 0 0 0 transparent;}25%{box-shadow:0 0 0 4px var(--danger); filter:brightness(1.25) saturate(1.3);}100%{box-shadow:0 0 0 0 transparent; filter:none;}}
+  .hq-hit-burst.hq-burst-t1{font-size:20px;} .hq-hit-burst.hq-burst-t2{font-size:28px;} .hq-hit-burst.hq-burst-t3{font-size:38px;} .hq-hit-burst.hq-burst-t4{font-size:54px; filter:drop-shadow(0 0 10px rgba(255,140,40,.8));}
+  .battlefield.earthquake-big{animation:earthquakeShakeBig 560ms cubic-bezier(.36,.07,.19,.97);}
+  @keyframes earthquakeShakeBig{0%,100%{translate:0 0;} 15%{translate:-9px 3px;} 30%{translate:8px -4px;} 45%{translate:-6px 3px;} 60%{translate:5px -2px;} 75%{translate:-3px 1px;} 90%{translate:2px 0;}}
+  /* ===== Card details popup: a field note in a walnut frame (2026-10-10, user: "I want it to feel very thematic", not
+     glassmorphic). One bold element, the carved frame with a rarity ribbon; the rest is quiet paper and ink. The paper
+     is an in-world object, so it stays parchment in both themes. ===== */
+  #cardPop{--pn-paper:#efe0bd; --pn-paper-deep:#e3cfa2; --pn-ink:#2e2414; --pn-ink-soft:#6a5233; --pn-walnut:#4a2f1a; --pn-walnut-lit:#7a5332;
+    width:272px; padding:14px 14px 12px; border-radius:6px; color:var(--pn-ink);
+    background:
+      radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(120,80,30,.16) 100%),
+      repeating-radial-gradient(circle at 23% 31%, rgba(90,60,20,.035) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(97deg, rgba(110,80,40,.03) 0 2px, transparent 2px 7px),
+      linear-gradient(180deg, var(--pn-paper), var(--pn-paper-deep));
+    border:0;
+    box-shadow:
+      0 0 0 3px var(--pn-walnut), 0 0 0 4px var(--pn-walnut-lit), 0 0 0 6px var(--pn-walnut),
+      inset 0 0 0 1px rgba(255,248,225,.55),
+      6px 8px 0 rgba(20,12,4,.38), 0 18px 34px rgba(0,0,0,.35);}
+  #cardPop h4{font-family:'Baloo 2',system-ui,sans-serif; font-size:17px; font-weight:800; line-height:1.1; margin:2px 0 6px; color:var(--pn-ink);}
+  #cardPop .tagrow{gap:5px; margin-bottom:8px;}
+  #cardPop .tag{font-family:'Nunito',system-ui,sans-serif; font-size:10.5px; font-weight:800; background:transparent; color:var(--pn-ink-soft); border:1.5px solid rgba(74,47,26,.45); border-radius:4px; padding:0 6px;}
+  /* rarity: a cloth ribbon tab in the rarity colour (the first tag) */
+  #cardPop .tagrow .tag:first-child{color:#1d150a !important; border:0; border-radius:3px 3px 3px 3px; padding:1px 10px 1px 8px; clip-path:polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%); box-shadow:inset 0 -2px 0 rgba(0,0,0,.15);}
+  #cardPop .statrow{font-size:14px; gap:12px; margin-bottom:8px; padding:3px 0 5px; border-bottom:1px dashed rgba(74,47,26,.35);}
+  #cardPop .statrow .atk{color:#a3311d !important;} #cardPop .statrow .hp{color:#2f6b2a !important;}
+  #cardPop ul{list-style:none; padding-left:2px; margin:0 0 8px;}
+  #cardPop ul > li{position:relative; padding-left:16px; line-height:1.4; margin-bottom:3px;}
+  #cardPop ul > li::before{content:''; position:absolute; left:2px; top:.42em; width:8px; height:8px; border-radius:0 70% 0 70%; background:linear-gradient(135deg, #6d8d3a, #3f5c22); transform:rotate(-12deg);}
+  #cardPop .flavor{color:var(--pn-ink-soft); border-top:0; padding-top:8px; margin-top:4px; position:relative; font-size:12.5px;}
+  #cardPop .flavor::before{content:''; position:absolute; left:20%; right:20%; top:0; height:1px; background:linear-gradient(90deg, transparent, rgba(74,47,26,.5), transparent);}
+  #cardPop .card-txn-log{border-top:0; margin-top:8px; padding:6px 8px 4px; border-radius:3px; background:repeating-linear-gradient(180deg, transparent 0 17px, rgba(74,47,26,.16) 17px 18px), rgba(255,250,232,.35); box-shadow:inset 0 0 0 1px rgba(74,47,26,.18);}
+  #cardPop .card-txn-log-title{text-transform:none; letter-spacing:0; font-size:12px; color:var(--pn-walnut); margin-bottom:0; line-height:18px;}
+  #cardPop .card-txn-log ul{padding-left:0; margin:0;}
+  #cardPop .card-txn-log li{color:var(--pn-ink); line-height:18px; margin:0; padding-left:0; font-variant-numeric:tabular-nums;}
+  #cardPop .card-txn-log li::before{display:none;}
+  #cardPop .mech-wrap{border-radius:4px;}
+  #cardPop .pitch-yield-preview{border-radius:4px;}
+  /* Rank letter (2026-10-10, user: "The letter graphic in the rank looks wrong. It should be B, A or S"): the white fill with a
+     translucent outline made Baloo's overlapping strokes look doubled and hollow. Now one solid letter, engraved into the
+     medal: dark metal ink with a light bevel underneath. */
+  .rank-hex b{-webkit-text-stroke:0 !important; color:#5a3608; text-shadow:0 1.5px 0 rgba(255,244,200,.75), 0 -1px 0 rgba(60,30,0,.35); font-size:36px; letter-spacing:0;}
+  .rank-hex.rank-B b{color:#2c3646; text-shadow:0 1.5px 0 rgba(255,255,255,.8), 0 -1px 0 rgba(20,30,45,.35);}
+  .rank-hex.rank-C b{color:#4a2410; text-shadow:0 1.5px 0 rgba(255,225,190,.7), 0 -1px 0 rgba(40,15,0,.35);}
+  .rank-hex.rank-S b{color:#fff; text-shadow:0 2px 0 rgba(70,20,90,.75), 0 0 10px rgba(255,255,255,.6);}
+  .reward-count{font-variant-numeric:tabular-nums; display:inline-block; min-width:2ch;}
+  .reward-count.is-counted{animation:countPop .32s cubic-bezier(.3,1.6,.5,1);}
+  @keyframes countPop{0%{transform:scale(1);} 40%{transform:scale(1.25);} 100%{transform:scale(1);}}
+  /* Attack = base + bonus (2026-10-10) */
+  .atk-buffed{color:#8fd0ff; text-shadow:0 0 6px rgba(80,170,255,.6);}
+  .atk-bonus{color:#2f74c8; font-weight:800;} .atk-bonus.is-neg{color:#b5372a;}
+  #cardPop .atk-bonus{color:#1f5fae;} #cardPop .atk-total{color:var(--pn-ink-soft); font-weight:700;}
+
+  /* 2026-10-10 (user: "Effect symbols can be closer. If same type, they should overlap significantly"):
+     the ability row tightens up, repeated shields overlap more, and two-glyph badges tuck the second glyph in. */
+  .card-tile .badges, .card-tile .badges-2row .badges-row{gap:0 !important;}
+  .card-tile .badges .abadge{padding:1px 1px;}
+  .ab-shields i + i{margin-left:-.66em !important;}
+  .ab-pair{display:inline-flex; align-items:center;} .ab-pair i{font-style:normal; margin-left:-.42em; font-size:.82em; position:relative; top:.18em;}
+  /* Bounty bubble: the opponent's bounty card offers you Lumber. Shown while you hold a card, and for 3s as your turn starts. */
+  .board-card:has(.bounty-bubble) .abadge:has(.ab-bounty){display:none;}
+  .bounty-bubble{position:absolute; left:50%; bottom:calc(100% + 12px); z-index:30; pointer-events:none; display:flex; flex-direction:column; align-items:center;
+    padding:3px 11px 4px; border-radius:12px; background:linear-gradient(180deg,#4a3018,#24170a); border:2px solid #e9b44c; color:#ffd56e;
+    box-shadow:0 6px 14px rgba(0,0,0,.4); white-space:nowrap; opacity:0; transform:translate(-50%,8px) scale(.8); transform-origin:50% 100%;
+    transition:opacity .22s ease, transform .3s cubic-bezier(.3,1.5,.5,1);}
+  .bounty-bubble::after{content:""; position:absolute; left:50%; top:100%; width:10px; height:10px; background:#24170a; border-right:2px solid #e9b44c; border-bottom:2px solid #e9b44c; transform:translate(-50%,-55%) rotate(45deg);}
+  .bounty-bubble b{font:800 15px/1.05 'Baloo 2',system-ui,sans-serif; text-shadow:0 1px 0 rgba(0,0,0,.5);}
+  .bounty-bubble small{font:700 9.5px/1.1 'Baloo 2',system-ui,sans-serif; color:#f3e3bf; letter-spacing:.04em;}
+  body.bw-holding .bounty-bubble, body.bounty-peek .bounty-bubble{opacity:1; transform:translate(-50%,0) scale(1); animation:bountyBob 2.4s ease-in-out .3s infinite;}
+  body.bounty-peek:not(.bw-holding) .bounty-bubble{transition:opacity .5s ease, transform .3s cubic-bezier(.3,1.5,.5,1);}
+  .bw-resolving .bounty-bubble{opacity:0 !important;}
+  /* lift the board above the castle HP strip while bubbles show, so a bubble isn't cut by it */
+  body.bw-holding .battlefield-inner:has(.bounty-bubble), body.bounty-peek .battlefield-inner:has(.bounty-bubble){position:relative; z-index:4;}
+  @keyframes bountyBob{50%{transform:translate(-50%,-3px) scale(1);}}
+  @media (prefers-reduced-motion: reduce){ .bounty-bubble{transition:opacity .2s ease;} body.bw-holding .bounty-bubble, body.bounty-peek .bounty-bubble{animation:none;} }
+
+  /* Wandering merchant (2026-10-10): a barrow parked somewhere on one map each day, and its stall in the Shops page. */
+  .map-wanderer{position:absolute; transform:translate(-50%,-50%); z-index:6; width:46px; height:46px; border-radius:50%; border:2px solid #e9b44c; cursor:pointer;
+    background:radial-gradient(circle at 50% 38%, #6b4a26, #3a2512); box-shadow:0 4px 0 rgba(0,0,0,.35), 0 0 0 4px rgba(233,180,76,.18); display:grid; place-items:center; padding:0;
+    animation:wanderBob 3.2s ease-in-out infinite;}
+  .map-wanderer .mwd-ico{font-size:24px; line-height:1;} .map-wanderer .mwd-pack{position:absolute; right:-6px; bottom:-4px; font-size:15px; filter:drop-shadow(0 1px 0 rgba(0,0,0,.5));}
+  .map-wanderer .map-spot-new{position:absolute; top:-8px; right:-6px;}
+  .map-wanderer:hover, .map-wanderer:focus-visible{box-shadow:0 4px 0 rgba(0,0,0,.35), 0 0 0 6px rgba(233,180,76,.35);}
+  .map-wanderer.is-found{border-color:#ffd56e;}
+  @keyframes wanderBob{0%,100%{transform:translate(-50%,-50%) rotate(-3deg);} 50%{transform:translate(-50%,-56%) rotate(3deg);}}
+  .wander-card{display:flex; align-items:center; gap:12px; margin:10px 0 2px; padding:10px 12px; border-radius:14px; border:2px solid #e9b44c;
+    background:linear-gradient(180deg,#4a3018,#2c1c0c); color:#f3e3bf;}
+  .wander-card.is-unknown{border-style:dashed; border-color:rgba(233,180,76,.55); background:linear-gradient(180deg,#3a2614,#24170a);}
+  .wander-card .wc-ico{font-size:30px; flex-shrink:0;}
+  .wander-card .wc-body{display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; font-size:13px;}
+  .wander-card .wc-body > b{color:#ffd56e; font-family:'Baloo 2',system-ui,sans-serif; font-size:16px;}
+  .wander-card .wc-deal{margin-top:2px;} .wander-card .wc-deal s{opacity:.6;} .wander-card .wc-deal > b{color:#ffd56e;} .wander-card .wc-deal em{font-style:normal; opacity:.75; font-size:12px; margin-left:4px;}
+  .wander-card.is-fresh{animation:wanderFresh 1.2s ease 2;}
+  @keyframes wanderFresh{50%{box-shadow:0 0 0 4px rgba(255,213,110,.5), 0 0 24px rgba(255,213,110,.45);}}
+  @media (max-width:560px){ .wander-card{flex-wrap:wrap;} .wander-card .btn{width:100%;} }
+  @media (prefers-reduced-motion: reduce){ .map-wanderer, .wander-card.is-fresh{animation:none;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -7059,6 +7160,11 @@
           <div class="settings-row-label"><span>🎼 Battle music</span></div>
           <select id="battleMusicSelect" aria-label="Battle music"></select>
           <div class="settings-row-note">A quiet tune in the rival's style that builds as the fight heats up.</div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-label"><span>🎹 Calm music</span></div>
+          <select id="calmMusicSelect" aria-label="Calm music"></select>
+          <div class="settings-row-note">A slow, quiet piano on the map and in menus.</div>
         </div>
         <div class="settings-row">
           <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeVal">100%</span></div>

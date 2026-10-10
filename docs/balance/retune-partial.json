@@ -1,28 +1,14 @@
 [
  {
-  "map": "m11",
-  "key": "11-5",
-  "kind": "elite",
-  "target": 45,
-  "before": 42,
-  "after": 45,
+  "map": "m1",
+  "key": "1-2",
+  "kind": "skirmish",
+  "target": 73,
+  "before": 65,
+  "after": 72,
   "hp": [
-   79,
-   72
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m11",
-  "key": "11-7",
-  "kind": "boss",
-  "target": 35,
-  "before": 38,
-  "after": 34,
-  "hp": [
-   105,
-   108
+   40,
+   32
   ],
   "swaps": 0,
   "deck": null

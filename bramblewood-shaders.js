@@ -177,6 +177,14 @@ void main(){
     float f = fbm(uv*vec2(aspect*1.4, 3.0) + vec2(t*0.05, 0.0));
     o = add(o, vec3(0.65, 0.75, 0.6), smoothstep(0.35, 1.0, uv.y) * smoothstep(0.4, 0.8, f) * 0.38);
     o = add(o, vec3(0.6, 1.0, 0.3), sparks(q, 8.0, t, vec2(0.04, -0.04), 0.14, 0.22));
+  } else if(k == 12){ // beach (2026-10-10): warm sun, glints dancing on the shallows, foam lines washing in, drifting spray
+    o = add(o, vec3(1.0, 0.93, 0.72), shafts(uv, t)*0.24);
+    float w = fbm(uv*vec2(aspect*2.0, 3.0) + vec2(t*0.04, -t*0.02));
+    float wash = sin(uv.y*22.0 - t*0.9 + w*5.0 + uv.x*aspect*1.5);
+    o = add(o, vec3(1.0, 1.0, 0.95), smoothstep(0.93, 1.0, wash) * smoothstep(0.35, 0.75, w) * 0.10);
+    o = add(o, vec3(1.0, 0.98, 0.85), sparks(q, 22.0, t, vec2(0.05, 0.0), 0.05, 0.10)*0.55);
+    o = add(o, vec3(1.0), sparks(q + 3.1, 10.0, t, vec2(0.28, 0.04), 0.08, 0.16)*0.35);
+    o = add(o, vec3(1.0, 0.75, 0.45), smoothstep(0.55, 0.0, uv.y)*0.05);
   } else if(k == 11){ // rain on the battlefield: slanted streaks and splash rings on the felt
     vec2 rq = vec2(q.x + q.y*0.18, q.y);
     float col = floor(rq.x*90.0); float h = hash(vec2(col, 7.0));
@@ -217,7 +225,7 @@ void main(){
     // Ground material per map (2026-10-05, effects rec. G3) — only on terrain floors (u_felt 2).
     if(u_felt > 1.5){
       vec2 gq = q * 7.0;
-      if(k == 1 || k == 6 || k == 7){            // wet: slow-moving specular glints toward the lamp
+      if(k == 1 || k == 6 || k == 7 || k == 12){ // wet: slow-moving specular glints toward the lamp
         // 2026-10-08 (user: "weaken the water shine ... make it more dynamic ... overlay two patterns and let them
         // fade into each other"): two glint layers drifting in different directions and scales cross-fade on a
         // slow cycle, softer (lower exponent) and at about 40% of the old strength.
@@ -283,7 +291,7 @@ void main(){
   gl_FragColor = outc;
 }`;
 
-const MAP_KIND = {mf:4, mb:1, mg:3, m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, m12:3, m13:4, m14:10};
+const MAP_KIND = {mf:4, mb:12, mg:3, m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, m12:3, m13:4, m14:10};
 
 const layers = new Set();
 let raf = null, t0 = performance.now();

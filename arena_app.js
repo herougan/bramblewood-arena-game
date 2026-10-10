@@ -183,7 +183,7 @@ const PASSIVE_DEFS = [
   {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Also hits the next ${v} live card${v===1?'':'s'} further down the same flank.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
-  {key:'swarm', category:'passive', label:'Swarm', kind:'number', min:0, desc:v=>`+1 damage for every ${v} other Swarm ${v===1?'ally':'allies'} on your side.`},
+  {key:'swarm', category:'passive', label:'Swarm', kind:'boolean', desc:()=>`+1 damage for every ally that shares a type with it (e.g. every other Ant beside an Ant).`},
   {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'boolean', desc:()=>`Hits +1 at night.`},
@@ -1849,6 +1849,7 @@ const SoundKit = (()=>{
       try{ localStorage.setItem('bw_musicVolume', String(musicVolume)); }catch(e){}
       try{ if(typeof Ambience!=='undefined') Ambience.setVolume(musicVolume); }catch(e){}
       try{ if(typeof BattleMusic!=='undefined') BattleMusic.setVolume(musicVolume); }catch(e){}
+      try{ if(typeof CalmMusic!=='undefined') CalmMusic.setVolume(musicVolume); }catch(e){}
     },
     voiceTone,
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
@@ -2287,6 +2288,8 @@ const Ambience = (()=>{
     9:  {beds:[{type:'bandpass', freq:800, q:1, gain:0.05, sweep:0.05, sweepDepth:300}], events:[[cry, 8, 18], [gust, 6, 12]]},
     10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [autoThunder, 14, 30]]},
     11: {beds:[{type:'highpass', freq:1500, gain:0.05}, {freq:420, gain:0.03, lfo:0.08}], events:[[drip, 2, 5], [autoThunder, 20, 40]]},
+    // Beach (2026-10-10): soft surf washing in and out, a sea breeze, gulls now and then.
+    12: {beds:[{type:'bandpass', freq:700, q:0.5, gain:0.03, lfo:0.09}], events:[[sc=> puff(sc, 2.8, 0.05, 'lowpass', 650, 0.7, 0, 260), 4, 8], [cry, 9, 20]]},
   };
   function build(kind){
     const c = C(), o = out(); if(!c || !o) return null;
@@ -2460,6 +2463,97 @@ const BattleMusic = (()=>{
     duck(keep, holdMs){ const c = C(); if(!master || !c || !st) return; const t = c.currentTime, g = master.gain; try{ g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); }catch(e){} g.setTargetAtTime(vol()*LEVEL*(keep == null ? 0.5 : keep), t, 0.02); g.setTargetAtTime(vol()*LEVEL, t + (holdMs || 300)/1000, 0.25); },
   };
 })();
+// ---- Calm music (2026-10-10, user: "I like the calm serene music. C418, minecraft like") ---------
+// A slow, sparse, generative piano for the map and menus (never during a fight — Battle music owns
+// that). Soft felt-piano voice (sine + a little triangle, quick attack, long fade) through a gentle
+// hall made from decaying noise, wandering over I–vi–IV–V style progressions in a handful of warm
+// keys. Long rests between phrases on purpose: most bars are a low note, a chord tone or two, and
+// air. Rides the 🎵 slider and has its own Settings switch (🎹 Calm music).
+const CALM_MUSIC_KEY = 'bramblewood_calm_music';
+function calmMusicOn(){ try{ return localStorage.getItem(CALM_MUSIC_KEY) !== 'off'; }catch(e){ return true; } }
+const CalmMusic = (()=>{
+  const C = ()=> (typeof SoundKit!=='undefined' && SoundKit.audioContext) ? SoundKit.audioContext() : null;
+  const LEVEL = 0.55;
+  const vol = ()=> (typeof SoundKit!=='undefined' && SoundKit.getMusicVolume) ? SoundKit.getMusicVolume() : 0.6;
+  const MAJOR = [0,2,4,5,7,9,11];
+  const KEYS = [146.83, 130.81, 164.81, 174.61, 196.00]; // D, C, E, F, G (low register)
+  const PROGS = [[0,5,3,4],[0,3,5,4],[5,3,0,4],[0,2,3,3],[3,0,4,5]];
+  let st = null, master = null, verb = null;
+  const r = (a,b)=> a + Math.random()*(b-a), pick = a=> a[Math.floor(Math.random()*a.length)];
+  function out(c){
+    if(master) return master;
+    master = c.createGain(); master.gain.value = 0; master.connect(c.destination);
+    // A soft hall: 3.2s of decaying, darkened noise as the impulse.
+    try{
+      const n = Math.floor(c.sampleRate*3.2), b = c.createBuffer(2, n, c.sampleRate);
+      for(let ch=0; ch<2; ch++){ const d = b.getChannelData(ch); let lp = 0; for(let i=0;i<n;i++){ lp = lp*0.82 + (Math.random()*2-1)*0.18; d[i] = lp*Math.pow(1 - i/n, 2.6); } }
+      verb = c.createConvolver(); verb.buffer = b; const wet = c.createGain(); wet.gain.value = 0.55; verb.connect(wet); wet.connect(master);
+    }catch(e){ verb = null; }
+    return master;
+  }
+  const fq = (root, deg, oct)=>{ const o = Math.floor(deg/7) + (oct||0); return root * Math.pow(2, (MAJOR[((deg%7)+7)%7] + 12*o)/12); };
+  function note(c, f, t, peak, len){
+    const g = c.createGain(), lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = Math.min(3200, f*6); lp.Q.value = 0.3;
+    const a = c.createOscillator(), b = c.createOscillator(), bg = c.createGain();
+    a.type = 'sine'; a.frequency.value = f; b.type = 'triangle'; b.frequency.value = f*2; b.detune.value = 3; bg.gain.value = 0.18;
+    a.connect(g); b.connect(bg); bg.connect(g); g.connect(lp); lp.connect(st.bus); if(verb) lp.connect(verb);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(peak*0.35, t + 0.5); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    lp.frequency.setValueAtTime(Math.min(3200, f*6), t); lp.frequency.exponentialRampToValueAtTime(Math.max(300, f*1.5), t + len);
+    a.start(t); b.start(t); a.stop(t + len + 0.05); b.stop(t + len + 0.05);
+  }
+  function newPiece(){ return {root: pick(KEYS), prog: pick(PROGS), bpm: r(58, 70), bars: 0, len: 8 + 4*Math.floor(r(0, 3)), mel: 7 + pick([0, 2, 4])}; }
+  function scheduleBar(c, t0){
+    const p = st.piece, beat = 60/p.bpm, barLen = beat*4;
+    const deg = p.prog[Math.floor(p.bars/2) % p.prog.length];
+    if(p.bars === p.len){ st.piece = newPiece(); st.rest = 1; }
+    if(st.rest > 0){ st.rest--; p.bars++; return t0 + barLen*1.5; } // breathing room between pieces
+    // Left hand: a low root, sometimes a fifth after it.
+    if(p.bars % 2 === 0 || Math.random() < 0.4) note(c, fq(p.root, deg, -1), t0, 0.08, barLen*1.8);
+    if(Math.random() < 0.55) note(c, fq(p.root, deg + 4, -1), t0 + beat*2, 0.05, barLen*1.2);
+    // A chord tone or two, rolled.
+    const tones = [0, 2, 4].map(k=> deg + k);
+    if(Math.random() < 0.6) tones.forEach((d, i)=> note(c, fq(p.root, d, 0), t0 + beat*(1 + i*0.33), 0.035, barLen*1.3));
+    // Melody: sparse, stepwise, leaning on chord tones.
+    for(let b = 0; b < 4; b++){
+      if(Math.random() < (b === 0 ? 0.3 : 0.38)){
+        p.mel = Math.max(deg + 2, Math.min(deg + 11, p.mel + pick([-2, -1, -1, 1, 1, 2, 0])));
+        const ofs = b*beat + (Math.random() < 0.3 ? beat*0.5 : 0);
+        note(c, fq(p.root, p.mel, 1), t0 + ofs, 0.05, beat*r(2.2, 3.6));
+      }
+    }
+    p.bars++;
+    return t0 + barLen;
+  }
+  function wanted(){
+    if(!calmMusicOn() || vol() <= 0 || document.hidden) return false;
+    const m = typeof matchState !== 'undefined' ? matchState : null;
+    if(m && !m.over && currentTab === 'play') return false; // a fight is on: battle music's turn
+    return true;
+  }
+  function tick(){
+    const c = C(); if(!c || c.state !== 'running') return;
+    if(!wanted()){ if(st) stop(); return; }
+    if(!st) start(c);
+    while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
+  }
+  function start(c){
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 4); bus.connect(out(c));
+    master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.3);
+    st = {bus, piece: newPiece(), rest: 0, next: c.currentTime + 1.2};
+  }
+  function stop(){
+    if(!st) return; const s = st; st = null;
+    const c = C(); if(!c) return;
+    try{ s.bus.gain.cancelScheduledValues(c.currentTime); s.bus.gain.setValueAtTime(Math.max(0.0001, s.bus.gain.value), c.currentTime); s.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 2.5); }catch(e){}
+    setTimeout(()=>{ try{ s.bus.disconnect(); }catch(e){} }, 3000);
+  }
+  setInterval(()=>{ try{ tick(); }catch(e){} }, 400);
+  return {
+    stop, playing(){ return !!st; },
+    setVolume(v){ const c = C(); if(master && c) master.gain.setTargetAtTime(v*LEVEL, c.currentTime, 0.15); if(v <= 0) stop(); },
+  };
+})();
 function rivalPeopleForMatch(m){
   try{
     if(m.conquestNode){ const map = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), node = map && map.nodes.find(n=> n.key === m.conquestNode.nodeId); if(node) return node.people || peopleOfDeck(node.deck); }
@@ -2501,8 +2595,12 @@ function fullCardHTML(defId, liveCard, opts){
         ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span><ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul></div>`
         : `<ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul>`)
     : '';
-  const effAtk = liveCard ? (liveCard.atk + (liveCard.rallyBonus||0)) : d.attack;
-  const atkDisplay = (liveCard && effAtk!==liveCard.atk) ? `⚔${effAtk}<span class="rally-note">(${liveCard.atk}+${effAtk-liveCard.atk})</span>` : `⚔${effAtk}`;
+  // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
+  // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
+  const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
+  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0)) : d.attack;
+  const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
+  const atkDisplay = (liveC && atkBonus !== 0) ? `⚔${baseAtk} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${atkBonus > 0 ? '+' : '−'} ${Math.abs(atkBonus)}</span> <span class="atk-total">= ${effAtk}</span>` : `⚔${effAtk}`;
   const hpDisplay = liveCard ? `❤${Math.max(0,liveCard.hp)}/${liveCard.maxHp}` : `❤${d.health}`;
   // Simulated pitch-yield preview (2026-09-18, per explicit request: "a simulated resource
   // increase tooltip when hovering a card over the graveyard — to tell the user hey, it will
@@ -2609,7 +2707,7 @@ function cardActionLogHTML(uid){
     }
   }
   if(!lines.length) return '';
-  return `<div class="card-txn-log"><div class="card-txn-log-title">Log</div><ul>${lines.join('')}</ul></div>`;
+  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.join('')}</ul></div>`;
 }
 // Finds the LIVE board-card instance a hovered element belongs to, if any — walks up to the
 // nearest [data-uid] ancestor (the .board-card wrapper; hand/Codex/deck tiles never carry one)
@@ -2665,7 +2763,7 @@ function castleHoverHTML(hqSide){
   // grid flashed a popover per card. Now it only opens once the pointer has stayed put on the
   // same card for HOVER_POP_DELAY_MS — a quick pass-through shows nothing, same instant-cancel
   // habit as attachDelayedTooltip above.
-  const HOVER_POP_DELAY_MS = 300; // was 500ms; shortened 2026-09-30 per explicit request
+  const HOVER_POP_DELAY_MS = 1000; // was 500ms, then 300ms (2026-09-30); 1s from 2026-10-10 (user: "change the card details timer to come out from 0.5s to 1s")
   let hoverTimer = null;
   // 2026-10-07 playtest (phones): after a tap re-renders the board, the browser sends a fake
   // mouseover to whatever card now sits under the finger, and nothing on touch ever closes the
@@ -3502,10 +3600,10 @@ function abilityBadges(d){
   // next to the top-left cost badge, and both used the SAME 🪙 coin glyph, so it read as a broken
   // duplicate cost badge rather than two different pieces of info). 🏆 still reads as "a reward,"
   // just not the identical glyph as the cost pill it sits beside.
-  if(e.bounty) out.push(`🏆${e.bounty}`);
+  if(e.bounty) out.push(`<span class="ab-bounty">🏆${e.bounty}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
   if(e.explode) out.push(`💣${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
-  if(e.armor) out.push(e.armor <= 5 ? '🛡'.repeat(e.armor) : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour
+  if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
   if(e.thorns) out.push(`🌵${e.thorns}`);
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
@@ -3573,11 +3671,12 @@ function abilityBadges(d){
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
   if(e.flying) out.push(`<span class="ab-wing">🪽</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  if(e.quick) out.push(`👢`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
-  if(e.earthquake) out.push(`🌎💥${e.earthquake}`);
+  if(e.earthquake) out.push(`<span class="ab-pair">🌎<i>💥</i></span>${e.earthquake}`);
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
-  if(e.kingSlayer) out.push(`👑⚔️${e.kingSlayer}`);
+  if(e.kingSlayer) out.push(`<span class="ab-pair">👑<i>⚔️</i></span>${e.kingSlayer}`);
   if(d.graceCost) out.push(`🕊️cost`);
   if(d.exileCost) out.push(`🌫cost`);
   // 2026-09-29, per explicit request ("I think remove the lightning symbol - no need. Just have
@@ -7853,6 +7952,7 @@ function renderPlay(){
                 <input type="range" id="musicVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Music volume">
               </div>
               <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectPlaySub" aria-label="Battle music"></select></div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎹 Calm music</span></div><select id="calmMusicSelectPlaySub" aria-label="Calm music"></select></div>
               <div class="settings-row">
                 <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValPlaySub">100%</span></div>
                 <input type="range" id="sfxVolumeSliderPlaySub" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -8561,6 +8661,7 @@ const DIALOGUE_SPEAKERS = {
   vesper:     {name:'Warlord Vesper', card:'crimson-wing-duelist-cadet', icon:'🐦'},
   whisper:    {name:'Whisper-of-Ash', card:'voidfeather-scout', icon:'🐦'},
   traveller:  {name:'The Wandering Traveller', card:'wandering-traveller', icon:'🧳'},
+  peddler:    {name:'Old Cinder, the Ember Peddler', card:'quarry-mole', icon:'🏮'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
 const DIALOGUES = {
@@ -8583,6 +8684,12 @@ const DIALOGUES = {
     {who:'traveller', text:'Packs, trinkets, the odd rumour. Interested?', options:[{label:'Let\'s trade.', goto:'go'}, {label:'Rumours?', goto:'rumour'}], silent:'go'},
     {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go'},
     {label:'go', who:'traveller', text:'Leaves on the counter, please.'},
+  ]},
+  unlock_shop2: {lines:[
+    {who:'peddler', text:'Mind the cinders. Everything up here is warm, including the prices.'},
+    {who:'peddler', text:'Acorn Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
+    {label:'who', who:'peddler', text:'A mole who walked the wrong way out of a mine and kept going. You\'ll find my stall with the Cart\'s.', goto:'go'},
+    {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.'},
   ]},
   unlock_arena: {lines:[
     {who:'vesper', text:'An otter with a deck. How quaint. Fight me where it counts.'},
@@ -8713,7 +8820,11 @@ const FEATURE_SPOTS = [
   {key:'quests', icon:'📜', name:'Notices', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // 2026-10-09: with Thistle Fields and Pebble Beach inserted, Arena and Shop move to maps 2 and 3 so they still open at the same point in the journey.
   {key:'arena', icon:'🏟️', name:'The Arena', map:'mf', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
-  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'mb', after:null, dialogue:'unlock_shop', tabs:['shop'], go:()=> switchTab('shop')},
+  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'mb', after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
+  // Shops (2026-10-10, user: "more travelling merchants... Each shop unlocks the next tier of card pack. They appear
+  // every 8 maps. So [3], [11], [19]"): map 3 is Pebble Beach (the Cart), map 11 is Basalt Foundry (the Ember
+  // Peddler, Acorn Chests). Map 19 doesn't exist yet; its merchant will bring the Golden Bramble Case.
+  {key:'shop2', icon:'🏮', name:'Ember Peddler', map:'m9', after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'raid', icon:'🐲', name:'Raid Banner', map:'m4', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
 ];
@@ -8850,6 +8961,84 @@ function mapCaveHTML(){
   const p = decorPos('m2', '~cave', {x:22, y:30});
   return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" data-lkey="~cave" style="left:${p.x}%; top:${p.y}%;" title="A small cave" aria-label="A small cave">
     <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${n ? '' : '<span class="map-spot-new">!</span>'}</button>`;
+}
+// ---- Wandering merchants (2026-10-10, user: "Wandering merchants have to be found manually throughout the map
+// though, until in the future, they reach a certain level that grants them a QoL to see all wandering merchants
+// today in the Shop - and even a timer maybe") --------------------------------------------------------------
+// One wanderer a day (local midnight to midnight), parked somewhere on one of the maps you've opened. Same day,
+// same place, for everyone on this device. Finding them (a click on the map) opens their stall in the Shops page:
+// one pack of the best tier you can buy, a quarter off, once per day. The Shops page only says a wanderer is out
+// there until you find them; listing where they are (and a timer) is the planned QoL level.
+const WANDERERS = [
+  {id:'pip', name:'Pip the Pedlar', icon:'🦔', line:'Fresh off the road! Well — fresh-ish.'},
+  {id:'marrow', name:'Old Marrow', icon:'🐢', line:'Slow road, good prices. Take your time. I always do.'},
+  {id:'juniper', name:'Juniper the Hawker', icon:'🦊', line:'Don’t tell the Cart. Today only, and only for you.'},
+  {id:'bristle', name:'Bristle & Burr', icon:'🦡', line:'Two badgers, one barrow, no refunds.'},
+];
+const WANDERER_KEY = 'bramblewood_wanderer_v1';
+const WANDERER_DISCOUNT = 0.25;
+function localDayKey(d){ d = d || new Date(); return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+function msToLocalMidnight(){ const n = new Date(), m = new Date(n); m.setHours(24, 0, 0, 0); return m - n; }
+function fmtCountdown(ms){ const m = Math.max(0, Math.round(ms/60000)), h = Math.floor(m/60); return h ? `${h}h ${m%60}m` : `${m}m`; }
+function wandererState(){ const day = localDayKey(); try{ const w = JSON.parse(localStorage.getItem(WANDERER_KEY)||'{}'); return w && w.day === day ? w : {day}; }catch(e){ return {day}; } }
+function saveWandererState(w){ try{ localStorage.setItem(WANDERER_KEY, JSON.stringify(w)); }catch(e){} }
+function wanderingMerchantToday(){
+  if(!featureUnlocked('shop')) return null;
+  const pr = loadConquestProgress();
+  const maps = CONQUEST_MAPS.filter(m=> !m.sub && isMapUnlocked(m, pr));
+  if(!maps.length) return null;
+  const r = seededRng(hashStr('wanderer:' + localDayKey()));
+  const map = maps[Math.floor(r()*maps.length)], who = WANDERERS[Math.floor(r()*WANDERERS.length)];
+  return Object.assign({mapId: map.id, mapName: map.name, seed: Math.floor(r()*1e9)}, who);
+}
+function wandererDealPack(){ const on = getShopPacks().filter(packOnSale); return on[on.length - 1] || null; }
+function wandererDealCost(p){ return {gold: Math.round((p.cost.gold||0)*(1 - WANDERER_DISCOUNT)), gems: Math.round((p.cost.gems||0)*(1 - WANDERER_DISCOUNT))}; }
+function wandererMapHTML(map, positions){
+  const w = wanderingMerchantToday(); if(!w || w.mapId !== map.id) return '';
+  // Somewhere open: of a dozen candidate spots (fixed for the day), the one furthest from any fight.
+  const r = seededRng(w.seed); let best = null;
+  for(let i = 0; i < 12; i++){
+    const c = {x: 10 + r()*80, y: 16 + r()*66};
+    const d = Math.min(99, ...positions.map(p=> Math.hypot(p.x - c.x, (p.y - c.y)*0.8)));
+    if(!best || d > best.d) best = Object.assign(c, {d});
+  }
+  const found = !!wandererState().found;
+  return `<button type="button" class="map-wanderer ${found ? 'is-found' : ''}" id="mapWanderer" style="left:${best.x.toFixed(1)}%; top:${best.y.toFixed(1)}%;" title="${escapeAttr(found ? w.name + ' — open their stall' : 'Someone with a barrow…')}" aria-label="${escapeAttr(found ? w.name : 'A wandering merchant')}">
+    <span class="mwd-ico" aria-hidden="true">${w.icon}</span><span class="mwd-pack" aria-hidden="true">🎒</span>${found ? '' : '<span class="map-spot-new">!</span>'}</button>`;
+}
+function visitWanderer(el){
+  const w = wanderingMerchantToday(); if(!w) return;
+  const st = wandererState(), first = !st.found;
+  if(first){ st.found = true; st.where = w.mapName; saveWandererState(st); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }
+  const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
+  if(el) el.classList.add('is-found');
+  showSpeechBubble(el, `${w.icon} ${w.line}`);
+  setTimeout(()=>{ shopTab = 'packs'; switchTab('shop'); setTimeout(()=>{ const c = document.getElementById('wanderCard'); if(c){ c.scrollIntoView({block:'center', behavior:'smooth'}); c.classList.add('is-fresh'); } }, 120); }, first ? 1700 : 600);
+}
+function wanderingMerchantShopHTML(){
+  const w = wanderingMerchantToday(); if(!w) return '';
+  const st = wandererState();
+  if(!st.found) return `<div class="wander-card is-unknown" id="wanderCard"><span class="wc-ico" aria-hidden="true">🧭</span><div class="wc-body"><b>A wandering merchant is out on the map today.</b><span>Find their barrow for a deal they only offer once.</span></div></div>`;
+  const p = wandererDealPack();
+  const left = `<span class="wc-timer" data-wander-timer>leaves in ${fmtCountdown(msToLocalMidnight())}</span>`;
+  if(!p) return `<div class="wander-card" id="wanderCard"><span class="wc-ico" aria-hidden="true">${w.icon}</span><div class="wc-body"><b>${escapeHtml(w.name)}</b><span>At ${escapeHtml(w.mapName)}, ${left}.</span></div></div>`;
+  const c = wandererDealCost(p), price = [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' ');
+  const was = packCostHTML(p);
+  const btn = st.bought ? `<button type="button" class="btn" disabled>Bought today</button>`
+    : `<button type="button" class="btn primary" data-wander-buy="${p.id}" ${isSignedIn() && !canAffordPacks(Object.assign({}, p, {cost:c}), 1) ? 'disabled' : ''}>Buy ${escapeHtml(p.name)}</button>`;
+  return `<div class="wander-card" id="wanderCard"><span class="wc-ico" aria-hidden="true">${w.icon}</span>
+    <div class="wc-body"><b>${escapeHtml(w.name)}</b><span>At ${escapeHtml(w.mapName)}, ${left}.</span>
+      <span class="wc-deal">${p.icon} ${escapeHtml(p.name)} <s>${was}</s> <b>${price}</b> <em>25% off, once today</em></span></div>${btn}</div>`;
+}
+function wireWanderingMerchantShop(root){
+  const b = root.querySelector('[data-wander-buy]');
+  if(b) b.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(b.dataset.wanderBuy, b, 1, {wanderer:true})));
+  clearInterval(wireWanderingMerchantShop._t);
+  wireWanderingMerchantShop._t = setInterval(()=>{
+    const t = document.querySelector('[data-wander-timer]');
+    if(!t || currentTab !== 'shop'){ clearInterval(wireWanderingMerchantShop._t); return; }
+    t.textContent = 'leaves in ' + fmtCountdown(msToLocalMidnight());
+  }, 30000);
 }
 function visitSmallCave(el){
   const flags = loadDialogueFlags(), n = Number(flags['cave_m2_talks']||0);
@@ -9967,7 +10156,7 @@ const CONQUEST_MAPS = [
       // skirmishes can be attempted. The first two should be available as fights."):
       { key:"tutorial", kind:"tutorial", name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics. Clear it to open the Outskirts.", requires:[] },
       { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":4,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial"] },
-      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:40, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial"] },
+      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:32, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial"] },
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:18, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":2}, hqHp:72, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
@@ -10760,10 +10949,35 @@ function currentSeason(){
   const mo = new Date().getMonth(); return mo <= 1 || mo === 11 ? 'winter' : mo <= 4 ? 'spring' : mo <= 7 ? 'summer' : 'autumn';
 }
 let conquestSelectedNodeKey = null;
+// 2026-10-10 (user: "When the skirmish detail is open, clicking anywhere else closes it"): a click outside the panel and
+// the map's fights closes it (a drag to pan the map doesn't count).
+(function closeNodePanelOnOutsideClick(){
+  if(typeof document === 'undefined') return;
+  let down = null;
+  document.addEventListener('pointerdown', e=>{ down = {x:e.clientX, y:e.clientY}; }, true);
+  document.addEventListener('click', e=>{
+    if(!conquestSelectedNodeKey || (typeof matchState !== 'undefined' && matchState)) return;
+    const panel = document.getElementById('conquestNodePanel'); if(!panel || panel.hidden) return;
+    if(down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
+    if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip')) return;
+    conquestSelectedNodeKey = null;
+    try{ renderConquestSubTab(document.getElementById('playSubBody')); }catch(err){}
+  });
+})();
 // Walking map pawn (2026-10-07, effects "Coming next"): your avatar stands on the Conquest map at
 // the skirmish you last picked (or your next one) and hops along to whichever node you select.
 const MAP_PAWN_KEY = 'bramblewood_map_pawn';
 function loadPawnSpots(){ try{ return JSON.parse(localStorage.getItem(MAP_PAWN_KEY) || '{}') || {}; }catch(e){ return {}; } }
+// Re-routing (2026-10-10, user: "if I change destinations while the locator is moving midway ... it either finishes its
+// current leg or turns back, then moving from there"): the walk is kept as timed legs between fights. A new pick
+// mid-leg finishes that leg or turns back to where it started, whichever makes the whole trip shorter, then walks on.
+let mapPawnWalk = null; // {mapId, legs:[{from:{x,y}, to:{x,y}, fromKey, toKey, t0, dur}]}
+function mapPawnNow(mapId){
+  const w = mapPawnWalk; if(!w || w.mapId !== mapId) return null;
+  const now = performance.now();
+  for(const L of w.legs){ const p = (now - L.t0) / (L.dur*1000); if(p < 1){ if(p < 0) return {x:L.from.x, y:L.from.y, leg:L, p:0}; return {x:L.from.x + (L.to.x - L.from.x)*p, y:L.from.y + (L.to.y - L.from.y)*p, leg:L, p}; } }
+  return null;
+}
 function placeMapPawn(canvas, map, positions, progress, visibleFlags){
   if(!canvas || !map || !positions || (conquestLayoutEdit && adminModeEnabled)) return;
   const idxOf = key=> map.nodes.findIndex(n=> n.key===key);
@@ -10774,25 +10988,59 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
     target = map.nodes[next >= 0 ? next : 0] && map.nodes[next >= 0 ? next : 0].key;
   }
   const ti = idxOf(target); if(ti < 0 || !positions[ti]) return;
+  const live = mapPawnNow(map.id);
   const fi = spots[map.id] != null && idxOf(spots[map.id]) >= 0 ? idxOf(spots[map.id]) : ti;
-  const from = positions[fi], to = positions[ti];
+  const to = positions[ti];
   const av = (typeof loadAvatar==='function') ? loadAvatar() : {character:'otter'};
   const ch = AVATAR_CHARACTERS.find(c=> c.id===av.character) || AVATAR_CHARACTERS[0];
   const pawn = document.createElement('div'); pawn.className = 'map-pawn'; pawn.setAttribute('aria-hidden', 'true');
   pawn.innerHTML = `<span class="mp-body">${ch.emoji}</span><span class="mp-shadow"></span>`;
-  pawn.style.left = from.x + '%'; pawn.style.top = from.y + '%';
+  // Where the pawn really is right now: mid-walk, or standing on its last fight.
+  let start = live ? {x:live.x, y:live.y} : positions[fi];
+  pawn.style.left = start.x + '%'; pawn.style.top = start.y + '%';
   canvas.appendChild(pawn);
   spots[map.id] = target; try{ localStorage.setItem(MAP_PAWN_KEY, JSON.stringify(spots)); }catch(e){}
-  if(fi === ti) return;
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!hasGsap() || reduce){ pawn.style.left = to.x + '%'; pawn.style.top = to.y + '%'; return; }
-  const dist = Math.hypot(to.x - from.x, to.y - from.y);
-  const hops = Math.max(2, Math.min(7, Math.round(dist / 6))), dur = Math.min(1.6, 0.22 * hops);
+  // Arriving on a map (no walk under way, a different map than the pawn last stood on): it drops in from above.
+  if(!live && (map.id !== placeMapPawn._lastMap) && hasGsap() && !reduce){ mapPawnDropIn(pawn); }
+  placeMapPawn._lastMap = map.id;
+  if(!live && fi === ti) return;
+  if(!hasGsap() || reduce){ pawn.style.left = to.x + '%'; pawn.style.top = to.y + '%'; mapPawnWalk = null; return; }
+  const d = (a, b)=> Math.hypot(b.x - a.x, b.y - a.y);
+  // Waypoints: mid-leg, finish the leg or turn back, whichever is shorter overall.
+  const pts = [];
+  if(live && live.p > 0 && live.p < 1){
+    const ahead = live.leg.to, back = live.leg.from;
+    const via = (d(start, ahead) + d(ahead, to)) <= (d(start, back) + d(back, to)) ? ahead : back;
+    if(d(via, to) > 0.01 && d(start, via) > 0.01) pts.push(via);
+  }
+  pts.push(to);
+  const legs = []; let t0 = performance.now(), cur = start;
+  pts.forEach(pt=>{ const dist = d(cur, pt); const hops = Math.max(1, Math.min(7, Math.round(dist / 6))), dur = Math.max(0.12, Math.min(1.6, 0.22 * hops)); legs.push({from:cur, to:pt, t0, dur, hops}); t0 += dur*1000; cur = pt; });
+  mapPawnWalk = {mapId: map.id, legs};
   const body = pawn.querySelector('.mp-body');
-  gsap.set(body, {scaleX: to.x < from.x ? -1 : 1});
-  gsap.to(pawn, {left: to.x + '%', top: to.y + '%', duration: dur, ease: 'none'});
-  gsap.fromTo(body, {y: 0}, {y: -9, duration: dur / hops / 2, ease: 'power1.out', yoyo: true, repeat: hops * 2 - 1});
-  try{ for(let i = 0; i < hops; i++) setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (dur / hops) * 1000 * (i + 1) - 40); }catch(e){}
+  const tl = gsap.timeline();
+  legs.forEach(L=>{
+    tl.add(()=> gsap.set(body, {scaleX: L.to.x < L.from.x ? -1 : 1}));
+    tl.to(pawn, {left: L.to.x + '%', top: L.to.y + '%', duration: L.dur, ease: 'none'});
+    tl.fromTo(body, {y:0}, {y:-9, duration: L.dur / L.hops / 2, ease:'power1.out', yoyo:true, repeat: L.hops*2 - 1}, '<');
+    try{ for(let k = 0; k < L.hops; k++) setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (L.t0 - performance.now()) + (L.dur / L.hops) * 1000 * (k + 1) - 40); }catch(e){}
+  });
+  tl.add(()=>{ if(mapPawnWalk && mapPawnWalk.legs === legs) mapPawnWalk = null; });
+}
+// Map change (2026-10-10, user: "When I change map, the icon isn't on the map - so may it lands on top of it, from
+// nowhere, like blowing up from a point, then jumping on top of the skirmish icon"): it grows out of a point above
+// the fight with a pop, then hops down onto it with a little squash.
+function mapPawnDropIn(pawn){
+  const body = pawn.querySelector('.mp-body'), shadow = pawn.querySelector('.mp-shadow');
+  gsap.timeline()
+    .fromTo(body, {scale:0, y:-34, opacity:0}, {scale:1.25, y:-30, opacity:1, duration:.22, ease:'back.out(3)'})
+    .to(body, {scale:1, duration:.08})
+    .to(body, {y:0, duration:.32, ease:'power2.in'})
+    .to(body, {scaleY:.78, scaleX:1.18, duration:.07, ease:'power1.out'})
+    .to(body, {scaleY:1, scaleX:1, duration:.18, ease:'back.out(3)'});
+  if(shadow) gsap.fromTo(shadow, {scale:.2, opacity:0}, {scale:1, opacity:1, duration:.6, ease:'power2.in'});
+  try{ setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, 600); }catch(e){}
 }
 // Item #4's manual re-hide toggle: {[nodeId]: false} means the player chose to hide a deck they
 // already earned the right to see; absent (or true) means shown. Session-only (not persisted) —
@@ -11166,7 +11414,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
-      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}
+      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}${wandererMapHTML(map, positions)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -11262,6 +11510,7 @@ function renderConquestSubTab(body){
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
   { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
+  { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
   if(conquestSubZoom && mainEl.animate){ const z = conquestSubZoom; conquestSubZoom = null;
     mainEl.animate(z==='in' ? [{transform:'scale(.55)', opacity:0, filter:'brightness(0)'}, {transform:'scale(1.04)', opacity:1, filter:'brightness(.8)', offset:.7}, {transform:'none', opacity:1, filter:'none'}]
@@ -12227,14 +12476,23 @@ function tutorialStageOpponentDeck(stage, pick){
   const defs = getCardDefs();
   const weak = ids=> ids.slice().sort((a,b)=> ((defs[a].attack||0)-(defs[b].attack||0)) || ((defs[a].health||0)-(defs[b].health||0)) || (a<b?-1:1));
   const flies = id=> !!((defs[id].effects||{}).flying);
-  if(pick==='otters'){
-    const ids = weak(rWait0.filter(flies)).slice(0,1).concat(weak(ownOnly('otters', 0).filter(id=> !flies(id))).slice(0,2));
-    if(ids.length >= 2) return countsFromIds(ids, 2);
-  }
   // 2026-10-10: the three weakest of its own basics plus the shared six, leaving out Quick and Swarm (they race a 12 HP castle).
   const calm = id=> { const fx = defs[id].effects||{}; return !fx.quick && !fx.swarm; };
+  if(pick==='otters'){
+    // 2026-10-10 (evening): Quick left out here too (Fleetfoot'd 2/4 Quick took Otters down to 62%); the ground
+    // cards are the weakest calm ones by total stats, and 3 copies of each so the deck doesn't run dry.
+    const tot = ids=> ids.slice().sort((a,b)=> ((defs[a].attack||0)+(defs[a].health||0)) - ((defs[b].attack||0)+(defs[b].health||0)) || (a<b?-1:1));
+    const ground = tot([...new Set([...ownOnly('otters', 0), ...sharedBasicIds().filter(id=> (defs[id].wait||0)===0)])].filter(id=> !flies(id) && calm(id)));
+    const ids = weak(rWait0.filter(flies)).slice(0,1).concat(ground.slice(0,2));
+    if(ids.length >= 2) return countsFromIds(ids, 3);
+  }
   const pool = [...new Set([...rWait0, ...sharedBasicIds().filter(id=> (defs[id].wait||0)===0)])].filter(calm);
-  return countsFromIds(weak(pool.length >= 3 ? pool : rWait0).slice(0,3), 3); // 9 cards: a smaller deck runs out and the AI then plays free 4/4 Bee Tanks
+  const three = weak(pool.length >= 3 ? pool : rWait0).slice(0,3);
+  const counts = countsFromIds(three, 3); // 9 cards: a smaller deck runs out and the AI then plays free 4/4 Bee Tanks
+  // 2026-10-10 (evening): a flier dodges half of all ground hits, which is a lot in a first fight (Crossed-Eyes took the
+  // Hummingbird pick to 68%). One copy fewer of each flier; the weakest card takes the slot (76%).
+  three.forEach(id=>{ if(flies(id) && counts[id] > 2 && three[0] !== id){ counts[id]--; counts[three[0]] = (counts[three[0]]||0) + 1; } });
+  return counts;
 }
 let factionCountdownTimer = null;
 function showFactionScreen(){
@@ -13231,7 +13489,7 @@ function testKitBuildField(reason, opts){
   if(!defs[testKit.sel]) testKit.sel = TESTKIT_CARD_ID;
   m.engine = makeSimEngine(defs, Math.random, {recordEvents:true});
   m.players = {1:m.engine.newPlayer(1,{},TESTKIT_WALL), 2:m.engine.newPlayer(2,{},TESTKIT_WALL)};
-  m.stats = {}; m.round = 1; m.over = false; m.winner = 0; m.replayRows = null; m.replayCards = null; m.displayHqHp = null;
+  m.stats = {}; m.round = 1; m.over = false; m.ending = false; m.winner = 0; m.replayRows = null; m.replayCards = null; m.displayHqHp = null;
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   testKit.fieldNo++; testKit.round = 0; testKit.stall = 0;
   if(reason && !opts.silent){ testKit.lastReason = reason; testKit.counts[reason] = (testKit.counts[reason]||0)+1; }
@@ -14673,6 +14931,7 @@ function hudSettingsWidgetHTML(){
         <input type="range" id="musicVolumeSliderHud" min="0" max="100" step="1" aria-label="Music volume">
       </div>
       <div class="settings-row"><div class="settings-row-label"><span>🎼 Battle music</span></div><select id="battleMusicSelectHud" aria-label="Battle music"></select></div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎹 Calm music</span></div><select id="calmMusicSelectHud" aria-label="Calm music"></select></div>
       <div class="settings-row">
         <div class="settings-row-label"><span>🔊 Sound Effects</span><span class="settings-row-val" id="sfxVolumeValHud">100%</span></div>
         <input type="range" id="sfxVolumeSliderHud" min="0" max="100" step="1" aria-label="Sound effects volume">
@@ -14982,7 +15241,7 @@ function renderMatchUI(){
     </div>
     <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
-      <div class="battlefield-inner" id="battlefieldInner">
+      <div class="battlefield-inner" id="battlefieldInner" style="${battlefieldScale < 0.995 ? `transform:translateX(${(battlefieldPanX||0).toFixed(1)}px) translateY(${(battlefieldCenterY||0).toFixed(1)}px) scale(${battlefieldScale.toFixed(3)})` : ''}">
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider"></div>
         <div class="board-row mine" id="rowMine"></div>
@@ -15140,6 +15399,9 @@ function renderMatchUI(){
   });
   const passBtn = document.getElementById('passReadyBtn');
   if(passBtn) passBtn.addEventListener('click', ()=>{ m.awaitingPass = false; renderMatchUI(); });
+  // 2026-10-10 (user: "Back to the results doesn't work"): this button only exists once the results are closed, so it
+  // can't be wired inside the open-results block below.
+  { const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); }); }
   if(showWinModal){
     try{ window.hideCardPop && window.hideCardPop(); }catch(e){}
     // Task #203 (UX consultant pass): the win modal previously had a mount animation but no
@@ -15215,7 +15477,6 @@ function renderMatchUI(){
       endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
-    const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); });
     const wlNext = document.getElementById('wlNextBattleBtn');
     if(wlNext) wlNext.addEventListener('click', ()=>{
       const nb = m.nextBattle; if(!nb) return;
@@ -15330,6 +15591,15 @@ function nearestSlotTarget(rowEl, clientX){
 function highlightSlotTarget(rowEl, el){
   rowEl.querySelectorAll('.slot-target.slot-hover').forEach(x=>{ if(x!==el) x.classList.remove('slot-hover'); });
   if(el) el.classList.add('slot-hover');
+}
+// Collapse (gravity) rules (2026-10-10, user: "When playing the card, it appears in the wrong place"): left or right
+// is decided by the centre card's position, not the middle of the whole row element (which can be wider than the cards
+// or panned off-centre), so a drop just right of the centre card goes right.
+function gravitySideAt(rowEl, x){
+  const m = matchState; const rect = rowEl.getBoundingClientRect(); let mid = rect.left + rect.width/2;
+  try{ const pl = m && m.players[viewerHandPid(m)]; const kids = [...rowEl.querySelectorAll(':scope > .board-card')];
+    const c = pl && kids[pl.row.left.length]; if(c){ const r = c.getBoundingClientRect(); if(r.width) mid = r.left + r.width/2; } }catch(e){}
+  return x < mid ? 'left' : 'right';
 }
 function ownRowCenterEmpty(m){
   if(!m) return false;
@@ -15562,7 +15832,7 @@ function wireDropZones(){
         // would be chosen if the card were dropped right now. Same half-row split used at drop.
         if(isSlotMatch(mForRow)){ highlightSlotTarget(ownRow, nearestSlotTarget(ownRow, e.clientX)); return; } // Open/Gladiator: light the slot it'd land in
         const rect = ownRow.getBoundingClientRect();
-        const side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        const side = gravitySideAt(ownRow, e.clientX);
         const centerEmpty = ownRowCenterEmpty(mForRow);
         ownRow.classList.toggle('drag-center', centerEmpty);
         ownRow.classList.toggle('drag-side-left', !centerEmpty && side==='left');
@@ -15585,7 +15855,7 @@ function wireDropZones(){
         e.preventDefault();
         const payload = e.dataTransfer.getData('text/plain');
         const rect = ownRow.getBoundingClientRect();
-        let side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        let side = gravitySideAt(ownRow, e.clientX);
         if(isSlotMatch(matchState)){ // Open/Gladiator: the nearest legal "+" slot to where it was dropped
           const t = nearestSlotTarget(ownRow, e.clientX);
           highlightSlotTarget(ownRow, null);
@@ -15622,7 +15892,7 @@ function wireDropZones(){
         // ignored, and on a phone a full row left only ~8px of bare row to tap. With a card armed,
         // any tap in your row now plays it on that half (nothing else listens for those taps).
         const rect = ownRow.getBoundingClientRect();
-        let side = (e.clientX - rect.left) < rect.width/2 ? 'left' : 'right';
+        let side = gravitySideAt(ownRow, e.clientX);
         if(isSlotMatch(m)){ const t = nearestSlotTarget(ownRow, e.clientX); if(t) side = Number(t.getAttribute('data-slot')); }
         playCardByUid(m.selectedUid, side);
       });
@@ -15878,7 +16148,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk:d.attack||0, poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -16058,7 +16328,7 @@ function renderBoard(opts){
   // 2026-10-08 (user: "the victory blowing our creatures randomly still happens"): once the match is over the
   // layout changes (hand and controls hide) and the winners celebrate; a Flip glide then would sweep every card
   // across the board from its old spot. After the end, cards simply sit where they are.
-  const gsapFlip = hasGsap() && typeof Flip !== 'undefined' && !m.over && !!document.querySelector(FLIP_SEL);
+  const gsapFlip = hasGsap() && typeof Flip !== 'undefined' && !m.over && !m.ending && !!document.querySelector(FLIP_SEL);
   let flipState = null, prevRects = null, flipTargetCount = 0;
   // Bugfix (2026-09-17, found while wiring up tasks #125/#126): GSAP's Flip.from()/onEnter
   // never actually distinguishes "a brand new uid with no prior recorded state" from an
@@ -16590,7 +16860,7 @@ function renderBoard(opts){
             // so there's nothing left that could read as a gap between release and landing.
             // 2026-10-08 (user: "When I let go, the landing card should have the same orientation"):
             // a dragged card starts its landing at the exact tilt it had in your hand, then settles.
-            fromVars = {opacity:1, scale: origin.w && fr.width ? Math.max(.4, Math.min(1.2, origin.w / fr.width)) : .58, x:dx, y: origin.rotate!=null ? dy : Math.min(dy, -46), rotate: origin.rotate!=null ? origin.rotate : (Math.random()*22-11)};
+            fromVars = {opacity:1, scale: origin.w && fr.width ? Math.max(.4, Math.min(1.2, origin.w / fr.width)) : .58, x:dx, y: (origin.rotate!=null || origin.fromTile) ? dy : Math.min(dy, -46), rotate: origin.rotate!=null ? origin.rotate : (Math.random()*22-11)};
           } else {
             // "Spawned from a point" (born from the drone, an onDeathSpawn token, etc.) — kept
             // as the more dramatic shrink-and-lunge-in look, unchanged from before. Task list
@@ -16766,6 +17036,9 @@ let battlefieldScale = 1;
 let battlefieldCenterY = 0;
 let battlefieldPanRecenterTimer = null;
 let battlefieldCameraFollowedThisRound = false;
+// 2026-10-10 (user: "still during victory, the cards fly to the right"): a full rebuild (the results window opening)
+// used to create this wrapper unscaled and only re-zoom it a frame later, so every card jumped right and grew for a
+// moment. The wrapper is now created with the current zoom already on it (see renderMatchUI's template).
 function applyBattlefieldTransform(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
@@ -17277,8 +17550,10 @@ function boardCardHTML(c, defs, opts){
   ].filter(Boolean).join(' ');
   // Item #14 (Rally): the atk badge shows the LIVE effective attack (base + this round's Rally
   // aura), so the board visibly reflects the buff even though it's never baked into c.atk.
-  const effAtk = c.atk + (c.rallyBonus||0);
-  const atkLabel = effAtk!==c.atk ? `⚔${effAtk}<span class="rally-note">(${c.atk}+${effAtk-c.atk})</span>` : `⚔${effAtk}`;
+  // 2026-10-10 (user: "Attack = Base Attack + Bonuses"): the board shows the total; buffed above the printed value it's
+  // tinted blue, and the card details split it into base + bonus.
+  const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0);
+  const atkLabel = effAtk > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${effAtk}</span>` : `⚔${effAtk}`;
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
   const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
@@ -17332,8 +17607,33 @@ function boardCardHTML(c, defs, opts){
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}<span class="owner-edge" aria-hidden="true"></span>
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}<span class="owner-edge" aria-hidden="true"></span>
   </div>`;
+}
+// Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
+// lumber... coloured so it looks like a reward... visible only when the player is holding a card.
+// It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's
+// cards — the reward is yours to take. Visibility is pure CSS: body.bw-holding / body.bounty-peek.
+function bountyBubbleHTML(c, d, pid){
+  const n = Number((d.effects||{}).bounty)||0;
+  if(!n || !matchState || pid==null || pid===viewerHandPid(matchState)) return '';
+  return `<div class="bounty-bubble" aria-hidden="true"><b>+${n} 🪵</b><small>Lumber</small></div>`;
+}
+function bountyHoldingNow(){
+  const m = matchState; if(!m || m.over || m.resolving) return false;
+  return m.selectedUid!=null || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
+}
+let bountySyncQueued = false;
+function syncBountyHolding(){
+  if(bountySyncQueued) return; bountySyncQueued = true;
+  requestAnimationFrame(()=>{ bountySyncQueued = false; document.body.classList.toggle('bw-holding', bountyHoldingNow()); });
+}
+['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, syncBountyHolding, true));
+let bountyPeekTimer = null;
+function bountyPeek(){
+  clearTimeout(bountyPeekTimer);
+  document.body.classList.add('bounty-peek');
+  bountyPeekTimer = setTimeout(()=> document.body.classList.remove('bounty-peek'), 3000);
 }
 // UX A2 (2026-10-03, "greyed (unaffordable) cards don't say why"): a short reason shown on any
 // card in your hand you can't play right now.
@@ -17578,7 +17878,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
     // the field, please fall from my hand" — dropping directly on the field previously played
     // the exact same "shrink to a point and lunge in" tween as an onAttackedSpawn/onDeathSpawn
     // token, which reads as the card teleporting/conjuring rather than genuinely falling).
-    capturedHandOrigin = {x: hr.left + hr.width/2, y: hr.top + hr.height/2, kind:'hand'};
+    capturedHandOrigin = {x: hr.left + hr.width/2, y: hr.top + hr.height/2, kind:'hand', fromTile:true, w: hr.width}; // 2026-10-10: a tap-to-play card flies up from its place in your hand
   }
   const activePid = activePlayerId(m);
   const events = [];
@@ -18147,6 +18447,12 @@ function currentCardByUid(uid){
   }
   return null;
 }
+function updateCardAtkDisplay(uid){
+  const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
+  const a = el.querySelector('.stats .atk'); if(!a) return;
+  const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0);
+  a.innerHTML = tot > (Number(d.attack)||0) ? `⚔<span class="atk-buffed">${tot}</span>` : `⚔${tot}`;
+}
 function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
@@ -18638,7 +18944,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
       });
     });
   });
@@ -18763,7 +19069,7 @@ async function resolveRound(opts){
           // in replayRows. Backfill it from the live (already fully-resolved) board card.
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
@@ -18875,6 +19181,10 @@ async function resolveRound(opts){
   // onDeathSpawn tokens mid-round, which don't carry a uid in their event) — every render from
   // here until the next resolveRound() call reflects the actual resolved state exactly.
   m.replayRows = null;
+  // 2026-10-10 ("during victory, the cards fly to the right"): m.over is only set after the end
+  // sign, so this final sync render used to run a full Flip glide on a board whose layout was
+  // about to change — the cards swept right and back. When the round ended the match, skip Flip.
+  m.ending = !!over;
   const finalRender = renderBoard({collapseLandingUids:[]});
   // See renderBoard()'s own `hadNewEntrants` comment: this final sync render can itself
   // introduce a new card (e.g. an onDeathSpawn token the progressive replay above never
@@ -19151,6 +19461,8 @@ async function resolveRound(opts){
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; setTimeout(()=> ids.forEach(icePulseVfx), 120); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
+  if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
+  syncBountyHolding();
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
@@ -20241,17 +20553,19 @@ function wireWinLossRewardAnim(){
   if(!pieces.length) return;
   gsap.set(pieces, {opacity:0, scale:.5, y:10});
   gsap.to(pieces, {opacity:1, scale:1, y:0, duration:.5, ease:'back.out(2.6)', stagger:.13, delay:.5});
-  pieces.forEach((el, i)=>{
-    el.querySelectorAll('.reward-count').forEach((countEl, j)=>{
-      const target = parseInt(countEl.getAttribute('data-target'), 10);
-      if(!target) return;
-      const counter = {n:0};
-      gsap.to(counter, {n:target, duration:.6, delay:.5+i*.13+.12+j*.08, ease:'power2.out',
-        onUpdate: ()=>{ countEl.textContent = '+'+Math.round(counter.n); },
-        onComplete: ()=>{ countEl.textContent = '+'+target; }
-      });
-    });
+  // 2026-10-10 (user: "Reward numbers - they slowly count up from 0 to their number"): every "+N" sits at +0 until the
+  // card-reveal stage has cleared (it used to finish counting hidden behind it), then climbs slowly (about 1-2 s, a
+  // little longer for bigger payouts), easing out, with a soft tick as it goes.
+  const counts = [];
+  pieces.forEach((el, i)=> el.querySelectorAll('.reward-count').forEach((countEl, j)=>{ const t = parseInt(countEl.getAttribute('data-target'), 10); if(t){ countEl.textContent = '+0'; counts.push({countEl, target:t, order: counts.length}); } }));
+  const startCounts = ()=> counts.forEach(({countEl, target, order})=>{
+    const counter = {n:0}; let last = 0;
+    gsap.to(counter, {n:target, duration: Math.min(2.2, 1 + Math.log10(target + 1) * 0.45), delay: .35 + order*.18, ease:'power2.out',
+      onUpdate: ()=>{ const v = Math.round(counter.n); if(v !== last){ last = v; countEl.textContent = '+'+v; if(v % Math.max(1, Math.ceil(target/12)) === 0){ try{ SoundKit.waitTickTone && SoundKit.waitTickTone(); }catch(e){} } } },
+      onComplete: ()=>{ countEl.textContent = '+'+target; countEl.classList.remove('is-counting'); countEl.classList.add('is-counted'); }});
+    countEl.classList.add('is-counting');
   });
+  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else startCounts(); }; setTimeout(wait, 500); }
   rewardsCheer();
   try{ rewardCardsReveal(); }catch(e){}
 }
@@ -20611,12 +20925,12 @@ function hitExplosionVfx(uid, dmgType){
 // and its immediate neighbors. This shakes BOTH rows together via the shared .battlefield
 // container so a big card landing on your side still visibly rattles the enemy's row too —
 // it's a "the ground just shook" event, not a per-card one.
-function playEarthquake(){
+function playEarthquake(tier){
   const el = document.querySelector('.battlefield');
   if(!el) return;
-  el.classList.remove('earthquake'); void el.offsetWidth; // restart if one is already mid-shake
-  el.classList.add('earthquake');
-  setTimeout(()=> el.classList.remove('earthquake'), 500);
+  el.classList.remove('earthquake', 'earthquake-big'); void el.offsetWidth; // restart if one is already mid-shake
+  el.classList.add('earthquake'); if(tier >= 4) el.classList.add('earthquake-big');
+  setTimeout(()=> el.classList.remove('earthquake', 'earthquake-big'), 500);
 }
 // Task #126 (2026-09-17, "The spawning from getting hit (Bee Drone) should happen immediately
 // and rebalance the positions. There should be a cute animation of the bee landing then pushing
@@ -20672,29 +20986,34 @@ function flashHqDamage(el){
 // see arena_template.html), an explosion burst reusing hitExplosionVfx's 💥 pattern, and a full
 // battlefield rumble via the existing playEarthquake() — the same "the ground just shook" cue
 // big-creature summons already use — so a castle hit reads as the board-wide event it is.
-function hqHitBigVfx(el){
+// Castle hit size by damage (2026-10-10, user: "<5 uses the small effect, <10 medium, <20 large, 20+ very large"):
+// shake, flash, burst and the battlefield rumble all scale with the tier.
+function hqHitTier(dmg){ const d = Number(dmg)||0; return d < 5 ? 1 : d < 10 ? 2 : d < 20 ? 3 : 4; }
+function hqHitBigVfx(el, dmg){
   if(!el) return;
+  const tier = hqHitTier(dmg), amp = [0, 5, 9, 14, 20][tier], sc = [1, 1.02, 1.035, 1.05, 1.07][tier];
   if(hasGsap()){
     gsap.killTweensOf(el, 'x,scale');
-    const d = animMs().impactPad/1000/4;
+    const d = animMs().impactPad/1000/4 * (tier >= 4 ? 1.25 : 1);
     gsap.timeline()
-      .to(el, {x:-14, scale:1.05, duration:d, ease:'power1.inOut'})
-      .to(el, {x:14, duration:d*1.6, ease:'power1.inOut'})
-      .to(el, {x:-7, duration:d*1.2, ease:'power1.inOut'})
+      .to(el, {x:-amp, scale:sc, duration:d, ease:'power1.inOut'})
+      .to(el, {x:amp, duration:d*1.6, ease:'power1.inOut'})
+      .to(el, {x:-amp/2, duration:d*1.2, ease:'power1.inOut'})
       .to(el, {x:0, scale:1, duration:d, ease:'power1.inOut', clearProps:'x,scale'});
   } else {
     el.classList.add('shake');
     setTimeout(()=> el.classList.remove('shake'), 340);
   }
-  el.classList.remove('hq-hit-flash-big'); void el.offsetWidth;
-  el.classList.add('hq-hit-flash-big');
-  setTimeout(()=> el.classList.remove('hq-hit-flash-big'), 560);
+  const flash = tier >= 3 ? 'hq-hit-flash-big' : 'hq-hit-flash-small';
+  el.classList.remove('hq-hit-flash-big', 'hq-hit-flash-small'); void el.offsetWidth;
+  el.classList.add(flash);
+  setTimeout(()=> el.classList.remove(flash), 560);
   const burst = document.createElement('div');
-  burst.className = 'fx-burst hit-burst hq-hit-burst';
+  burst.className = 'fx-burst hit-burst hq-hit-burst hq-burst-t' + tier;
   burst.textContent = '💥';
   el.appendChild(burst);
   setTimeout(()=> burst.remove(), 560);
-  playEarthquake();
+  if(tier >= 3) playEarthquake(tier);
 }
 // "No" feedback (2026-09-17, per explicit request: "when trying to summon a card without
 // sufficient resources, it shakes red" / "when trying to discard a card that doesn't give
@@ -21308,6 +21627,12 @@ function triggerFiredVfx(ev){
   const t = el.querySelector('.card-tile'); if(t){ t.classList.remove('trigger-glow'); void t.offsetWidth; t.classList.add('trigger-glow'); setTimeout(()=> t.classList.remove('trigger-glow'), 700); }
 }
 function renderVfxForEvent(ev){
+  // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
+  if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
+    if(rc){ rc.atk = (rc.atk||0) + (ev.amount||0); if(ev.kind==='esprit' && ev.hp){ rc.hp += ev.hp; rc.maxHp += ev.hp; } if(ev.hiveMind){ rc.hp += 1; rc.maxHp += 1; } }
+    try{ updateCardAtkDisplay(ev.attUid); }catch(e){}
+  }
   // Guard (2026-09-17, fix for "Uncaught Error ... reading 'replayCards'"): this fires from
   // an in-flight setTimeout/await-sleep replay loop that closes over the match object as a
   // local `m`, but reads the module-level `matchState` singleton directly (see the many
@@ -21457,7 +21782,7 @@ function renderVfxForEvent(ev){
         // is the biggest moment combat has. hqHitBigVfx below layers on a bigger shake
         // amplitude, an explosion burst, and a whole-battlefield rumble so it reads as a
         // heavier, more consequential impact.
-        hqHitBigVfx(targetEl);
+        hqHitBigVfx(targetEl, ev.dmg);
         floatText(targetEl, '-'+ev.dmg, 'hq-big');
         const mm = matchState;
         if(mm && mm.displayHqHp){ mm.displayHqHp[ev.targetSide] = Math.max(0, mm.displayHqHp[ev.targetSide]-ev.dmg); }
@@ -22968,7 +23293,7 @@ function renderHome(){
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
-        ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒','Shop')}${big('nest','🪺','Nest')}
+        ${big('deck','🃏','Deck')}${big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -23431,7 +23756,7 @@ const SHOP_PACKS_DEFAULT = [
   //   foilChance   chance each card comes out foil; foilGuaranteed = at least one foil per pack
   //   foilFinishes relative weights of the finish a foil card gets ('auto' = by rarity)
   {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
-  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false, comingSoon:true},
+  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false},
   {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true, comingSoon:true},
 ];
 const FOIL_FINISHES = [
@@ -23461,8 +23786,15 @@ async function publishShopPacks(packs){
 }
 // D14 (2026-10-03, explicit: "Don't let the latest chests/cases/packs be purchaseable except for
 // Sprout Pouch for now"): these show as "Coming soon" and can't be bought, even under an admin override.
-const SHOP_PACKS_COMING_SOON = new Set(['silver', 'gold']);
-function packOnSale(p){ return p && !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon) && p.available!==false; }
+// 2026-10-10: the Acorn Chest now comes with the Ember Peddler (map 11) instead; the Golden Bramble Case waits for
+// the map-19 merchant.
+const SHOP_PACKS_COMING_SOON = new Set(['gold']);
+function packMerchant(p){ return p ? FEATURE_SPOTS.find(sp=> sp.merchant && sp.pack === p.id) || null : null; }
+function packMerchantLocked(p){ const sp = packMerchant(p); return !!(sp && !featureUnlocked(sp.key)); }
+function packOnSale(p){ return p && !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon) && p.available!==false && !packMerchantLocked(p); }
+function merchantsUnlocked(){ return FEATURE_SPOTS.filter(sp=> sp.merchant && featureUnlocked(sp.key)); }
+// The page is "The Traveller's Cart" until a second merchant joins it, then just "Shops".
+function shopsTitle(){ return merchantsUnlocked().length >= 2 ? 'Shops' : 'The Traveller’s Cart'; }
 const SHOP_PACKS_OVERRIDE_KEY = 'bramblewood_arena_shop_packs_override';
 function getShopPacks(){
   // Published (cloud) table first, then an unpublished edit on this device, then the shipped default.
@@ -23527,8 +23859,10 @@ function renderShop(){
     return;
   }
   const signedInShop = isSignedIn();
-  root.innerHTML = `<div class="panel"><h2>🛒 Shop</h2>
-      <p class="panel-sub">Packs of cards from <b>Pack 1</b> (${packCardPool().length} cards), plus Magic Dust.</p>
+  const merchants = merchantsUnlocked();
+  root.innerHTML = `<div class="panel"><h2>${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
+      <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool().length} cards).</p>
+      ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
     </div>
@@ -23559,11 +23893,12 @@ function renderShop(){
       <div class="shop-pack-name">${escapeHtml(p.name)}</div>
       <div class="shop-pack-contents">🃏 <b>${p.cards||3} cards</b>${p.newGuaranteed ? ' · 1 new guaranteed' : ''}${p.metal ? `<br>🔩 ${p.metal} Metal` : ''}${p.kroon ? `<br>👑 ${p.kroon} Krooni` : ''}</div>
       <div class="shop-pack-price" title="Price">${packCostHTML(p)}</div>
-      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : `<button class="btn" disabled>Coming soon</button>`}
+      ${packOnSale(p) ? `<button class="btn primary" data-buypack="${p.id}" ${(signedIn && !canAffordPack(p))?'disabled':''}>${signedIn ? (canAffordPack(p) ? 'Open' : (()=>{ const c = p.cost||{}; const g = Math.max(0,(c.gold||0)-(myCurrencies.gold||0)), m = Math.max(0,(c.gems||0)-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); })()) : 'Sign in to open'}</button>` : packMerchantLocked(p) ? (()=>{ const sp = packMerchant(p), mp = CONQUEST_MAPS.find(x=> x.id === sp.map); return `<button class="btn" disabled>${sp.icon} Sold by the ${escapeHtml(sp.name)}${mp ? ' · ' + escapeHtml(mp.name) : ''}</button>`; })() : `<button class="btn" disabled>Coming soon</button>`}
       ${packOnSale(p) && signedIn ? `<div class="shop-bundles" role="group" aria-label="Buy a set of packs"><span class="shop-bundles-k">Sets</span>${PACK_BUNDLES.map(q=> `<button type="button" class="btn small shop-bundle" data-buypack="${p.id}" data-qty="${q}" ${canAffordPacks(p, q)?'':'disabled'} title="${q} packs: ${packSetCost(p, q).gold} Maple Leaves${p.cost.gems?` + ${packSetCost(p, q).gems} Gold Leaves`:''} (${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}% off). Sets let you skip or open them all at once.">×${q}<small class="sb-off">−${Math.round(PACK_BUNDLE_DISCOUNT[q]*1000)/10}%</small></button>`).join('')}</div>` : ''}
     </div>`).join('');
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   grid.querySelectorAll('[data-buypack]').forEach(btn=> btn.addEventListener('click', ()=> requireSignIn('to buy packs', ()=> buyPack(btn.getAttribute('data-buypack'), btn, +(btn.dataset.qty||1)))));
+  wireWanderingMerchantShop(root);
 }
 // The Nest (2026-09-27, item 10, per explicit request: "now we need to build the Nest or Repo —
 // containing cards you OWN. Each card is fungible... I think individual for now"). v1 scope: a
@@ -23861,10 +24196,13 @@ function purchasePackOnce(pack, prepaid){
 }
 function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) : {gold:(pack.cost.gold||0), gems:(pack.cost.gems||0)}; return (myCurrencies.gold||0) >= c.gold && (myCurrencies.gems||0) >= c.gems; }
 let packOpenStop = null;
-function buyPack(packId, btnEl, qty){
+function buyPack(packId, btnEl, qty, opts){
   qty = Math.max(1, qty|0 || 1);
   const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return;
-  const pack = getShopPacks().find(p=>p.id===packId);
+  let pack = getShopPacks().find(p=>p.id===packId);
+  // A wandering merchant's deal: the same pack a quarter off, one per day, only once you've found them.
+  const wander = !!(opts && opts.wanderer);
+  if(wander){ const ws = wandererState(); if(!pack || !ws.found || ws.bought){ if(btnEl) denyShake(btnEl); return; } pack = Object.assign({}, pack, {cost: wandererDealCost(pack)}); qty = 1; }
   if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
   if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
   const opened = [];
@@ -23873,6 +24211,7 @@ function buyPack(packId, btnEl, qty){
   saveCurrencies();
   if(opened.some(o=> o.leveledId)) saveCardLevels();
   try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
+  if(wander && opened.length){ const ws = wandererState(); ws.bought = true; saveWandererState(ws); const wb = document.querySelector('[data-wander-buy]'); if(wb){ wb.outerHTML = '<button type="button" class="btn" disabled>Bought today</button>'; } }
   refreshShopAfford();
   openPackAnimation(pack, opened, {bundle: qty > 1 ? qty : 0});
 }
@@ -25103,7 +25442,7 @@ function placeOverlay(cls, html, ms){
 }
 const PLACES = {
   deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
-  shop: {cls:'cart-scene', icon:'🧳', sign:'The Traveller’s Cart', ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
+  shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
@@ -25824,6 +26163,12 @@ function wireSettingsButton(idSuffix){
     bmSel.value = battleMusicOn() ? 'on' : 'off';
     bmSel.addEventListener('change', ()=>{ try{ localStorage.setItem(BATTLE_MUSIC_KEY, bmSel.value); }catch(e){}
       if(bmSel.value === 'off') BattleMusic.stop(); else if(matchState && !matchState.over) BattleMusic.play(matchState._music || (matchState._music = rivalPeopleForMatch(matchState))); });
+  }
+  const cmSel = document.getElementById('calmMusicSelect'+idSuffix);
+  if(cmSel){
+    cmSel.innerHTML = '<option value="on">On</option><option value="off">Off</option>';
+    cmSel.value = calmMusicOn() ? 'on' : 'off';
+    cmSel.addEventListener('change', ()=>{ try{ localStorage.setItem(CALM_MUSIC_KEY, cmSel.value); }catch(e){} if(cmSel.value === 'off') CalmMusic.stop(); });
   }
   const fxSel = document.getElementById('fxSelect'+idSuffix);
   if(fxSel){

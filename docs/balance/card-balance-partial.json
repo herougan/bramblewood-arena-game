@@ -69,289 +69,217 @@
  },
  "rows": [
   {
-   "id": "shrine-acolyte",
-   "name": "Shrine Acolyte",
+   "id": "bee-knight",
+   "name": "Bee Knight",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying",
+    "swarm",
+    "diurnal"
+   ],
+   "winRate": 82.9,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "flying",
+    "swarm",
+    "diurnal",
+    "triggers"
+   ],
+   "winRate": 98.8,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
    "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "swarm",
+    "hiveMind"
+   ],
+   "winRate": 70,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
    "attack": 2,
    "health": 8,
    "skills": [
-    "prayer"
+    "swarm"
    ],
-   "winRate": 48.8,
+   "winRate": 75.4,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
-   "verdict": "ok",
-   "locked": true,
+   "verdict": "strong",
+   "locked": false,
    "source": "base"
   },
   {
-   "id": "shrine-high-priest",
-   "name": "Shrine High Priest",
-   "rarity": "common",
-   "cost": 1,
-   "wait": 1,
-   "attack": 3,
-   "health": 14,
-   "skills": [
-    "prayer"
-   ],
-   "winRate": 43.8,
-   "band": [
-    35,
-    60
-   ],
-   "verdict": "ok",
-   "locked": true,
-   "source": "base"
-  },
-  {
-   "id": "blessed-avatar",
-   "name": "Blessed Avatar",
-   "rarity": "common",
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
    "cost": 0,
-   "wait": 2,
-   "attack": 6,
-   "health": 20,
-   "skills": [],
-   "winRate": 12.9,
-   "band": [
-    35,
-    60
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "base"
-  },
-  {
-   "id": "glowworm-cluster",
-   "name": "Glowworm Cluster",
-   "rarity": "common",
-   "cost": 0,
-   "wait": 1,
-   "attack": 2,
-   "health": 6,
-   "skills": [
-    "nocturnal",
-    "prayer"
-   ],
-   "winRate": 27.5,
-   "band": [
-    35,
-    60
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "pack"
-  },
-  {
-   "id": "shrine-bell-ringer",
-   "name": "Shrine Bell-Ringer",
-   "rarity": "common",
-   "cost": 1,
-   "wait": 1,
+   "wait": 0,
    "attack": 3,
-   "health": 12,
+   "health": 3,
    "skills": [
-    "prayer"
+    "rage",
+    "swarm"
    ],
-   "winRate": 37.9,
+   "winRate": 69.2,
    "band": [
-    35,
-    60
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base"
   },
   {
-   "id": "chapel-sparrow",
-   "name": "Chapel Sparrow",
-   "rarity": "common",
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [
+    "flying",
+    "swarm",
+    "hiveMind",
+    "diurnal"
+   ],
+   "winRate": 59.6,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
    "cost": 0,
    "wait": 0,
    "attack": 1,
    "health": 4,
    "skills": [
-    "prayer",
-    "flying"
+    "flying",
+    "swarm",
+    "diurnal"
    ],
-   "winRate": 32.1,
+   "winRate": 81.7,
    "band": [
-    35,
-    60
+    20,
+    48
    ],
-   "verdict": "weak",
+   "verdict": "strong",
    "locked": false,
    "source": "base"
   },
   {
-   "id": "candle-moth",
-   "name": "Candle Moth",
-   "rarity": "common",
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
    "cost": 0,
    "wait": 0,
    "attack": 1,
    "health": 3,
    "skills": [
-    "prayer",
-    "flying"
+    "swarm",
+    "hiveMind"
    ],
-   "winRate": 20,
+   "winRate": 20.8,
    "band": [
-    35,
-    60
+    20,
+    48
    ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
+   "verdict": "ok",
+   "locked": false,
+   "source": "base"
   },
   {
-   "id": "hymn-wren",
-   "name": "Hymn Wren",
-   "rarity": "common",
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "starter",
    "cost": 0,
    "wait": 0,
    "attack": 2,
    "health": 4,
    "skills": [
-    "worship"
+    "swarm"
    ],
-   "winRate": 25.8,
+   "winRate": 52.9,
    "band": [
-    35,
-    60
+    20,
+    48
    ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
   },
   {
-   "id": "abbey-goose",
-   "name": "Abbey Goose",
-   "rarity": "uncommon",
-   "cost": 0,
-   "wait": 1,
-   "attack": 2,
-   "health": 6,
-   "skills": [
-    "healing"
-   ],
-   "winRate": 15.4,
-   "band": [
-    45,
-    68
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
-  },
-  {
-   "id": "golden-magpie",
-   "name": "Golden Magpie",
-   "rarity": "uncommon",
-   "cost": 0,
-   "wait": 0,
-   "attack": 2,
-   "health": 5,
-   "skills": [
-    "midas",
-    "flying"
-   ],
-   "winRate": 14.6,
-   "band": [
-    45,
-    68
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
-  },
-  {
-   "id": "friar-badger",
-   "name": "Friar Badger",
-   "rarity": "uncommon",
-   "cost": 0,
-   "wait": 1,
-   "attack": 3,
-   "health": 9,
-   "skills": [
-    "satiety"
-   ],
-   "winRate": 12.9,
-   "band": [
-    45,
-    68
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
-  },
-  {
-   "id": "storm-heron",
-   "name": "Storm Heron",
-   "rarity": "rare",
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
    "cost": 0,
    "wait": 1,
    "attack": 3,
    "health": 6,
    "skills": [
-    "lightning"
+    "swarm"
    ],
-   "winRate": 15.4,
+   "winRate": 68.8,
    "band": [
-    52,
-    75
+    20,
+    48
    ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
-  },
-  {
-   "id": "vigil-owl",
-   "name": "Vigil Owl",
-   "rarity": "rare",
-   "cost": 0,
-   "wait": 1,
-   "attack": 3,
-   "health": 8,
-   "skills": [
-    "retribution",
-    "nocturnal"
-   ],
-   "winRate": 12.9,
-   "band": [
-    52,
-    75
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
-  },
-  {
-   "id": "cathedral-eagle",
-   "name": "Cathedral Eagle",
-   "rarity": "legendary",
-   "cost": 0,
-   "wait": 2,
-   "attack": 5,
-   "health": 14,
-   "skills": [
-    "worship",
-    "flying",
-    "prayer"
-   ],
-   "winRate": 12.9,
-   "band": [
-    70,
-    97
-   ],
-   "verdict": "weak",
-   "locked": true,
-   "source": "map"
+   "verdict": "strong",
+   "locked": false,
+   "source": "base"
   }
  ]
 }
