@@ -138,6 +138,8 @@ DESIGN = [
   ('Card levels: base level and growth schedule', 'card-levels-2026-10-10.md'),
   ('Card types: species, phyla and hybrids', 'card-types-2026-10-10.md'),
   ('Inspiration: Super Auto Pets and Tooth and Nail units', 'inspo-sap-tooth-and-nail-2026-10-10.md'),
+  ('GSAP, textures, shaders and VFX: where to take them', 'vfx-exploration-2026-10-10.md'),
+  ('Card list for balancing: Maps 1–5 and Pack 1', 'card-list-2026-10-10.md'),
   ('Inspiration: what to borrow from Hearthstone', 'inspo-hearthstone-2026-10-10.md'),
   ('Card balance report (measured by simulation)', 'card-balance-2026-10-09.md'),
   ('How to tune a skirmish', 'skirmish-tuning-guide.md'),
@@ -291,12 +293,14 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
+<button role="tab" id="t-playground" aria-controls="p-playground" data-tab="playground">🧪 VFX Playground</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
 <button role="tab" id="t-guide" aria-controls="p-guide" data-tab="guide">🧠 Claude's guide</button>
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc">{body}</article></section>
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
+<section class="panel" id="p-playground" role="tabpanel" aria-labelledby="t-playground" hidden><iframe title="VFX Playground" data-src="playground.html"></iframe></section>
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
 <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions" hidden><div class="dec">
 <div class="dec-head"><h2>Decisions</h2><p>What's waiting on you, and what's been decided. Reply in chat with the id and your choice, e.g. "E1 yes".</p></div>

@@ -17,6 +17,8 @@ run node tests/trench.js
 run node tests/ghost-unique.js
 run node tests/swarm.js
 run node tests/anti-air.js
+run node tests/shield-call.js
+run node tests/backstab.js
 run node tests/phase-status.js
 run node tests/tide.js
 run node tests/exile-zone.js

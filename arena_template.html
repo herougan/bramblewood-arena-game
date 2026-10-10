@@ -7179,6 +7179,48 @@
   .tk-ctx-n button{width:24px; height:28px; border:0; border-radius:7px; background:var(--surface-2); cursor:pointer; font-weight:800;}
   body.tk-picking #rowMine .board-card, body.tk-picking #rowEnemy .board-card{cursor:crosshair; outline:2px dashed rgba(255,214,110,.7); outline-offset:3px;}
   .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+  /* Test Kit skill rows (2026-10-10, user: "The card rows are not centered vertically. The numbers input field is not
+     centered within the row"): one row height, everything on its centre line, and the number boxes fit inside it. */
+  .tk-skill{min-height:40px !important; padding:4px 8px !important; align-items:center !important; box-sizing:border-box;}
+  .tk-skill > input[type=checkbox]{margin:0 !important; align-self:center;}
+  .tk-skill .tk-skill-name{line-height:1.2; align-self:center;}
+  .tk-skill .tk-skill-inputs{align-items:center; align-self:center;}
+  .tk-skill .tk-num, .tk-skill .tk-sel{height:30px !important; min-height:0 !important; padding:2px 8px !important; margin:0 !important; box-sizing:border-box !important; line-height:24px !important;}
+
+  /* Skill slots (2026-10-10): one row, a small gap between skills, repeats stacked tight, a cycling last slot. */
+  .card-tile .badges.badge-slots{flex-wrap:nowrap !important; gap:3px !important; max-width:96% !important;}
+  .card-tile .badges .abadge{white-space:nowrap;}
+  .ab-shields i{display:inline-block; width:.44em; overflow:visible; margin:0 !important;}
+  .ab-shields i:last-child{width:auto;}
+  .badge-cycle{display:inline-grid !important; position:relative;}
+  .badge-cycle .bc-item{grid-area:1 / 1; opacity:0; transition:opacity .4s ease, transform .4s ease; transform:translateY(3px);}
+  .badge-cycle .bc-item.is-shown{opacity:1; transform:none;}
+  .badge-cycle::after{content:""; position:absolute; right:-2px; bottom:-1px; width:5px; height:5px; border-radius:50%; background:#ffd56e; box-shadow:0 0 4px rgba(255,213,110,.9); opacity:.85;}
+  @media (prefers-reduced-motion: reduce){ .badge-cycle .bc-item{transition:none;} }
+  .board-card .badge-cycle::after, .hand-strip .badge-cycle::after{display:none;}
+
+  /* First sighting (2026-10-10): NEW! on a card the first time you ever see it. */
+  .board-card .seen-new{position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-4deg); z-index:12; pointer-events:none; padding:2px 9px; border-radius:6px;
+    font:900 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; color:#3a2200; background:linear-gradient(180deg,#fff2a8,#ffc83d); box-shadow:0 2px 0 #a86a00, 0 0 12px rgba(255,210,80,.8);
+    animation:seenNew .5s cubic-bezier(.3,1.7,.5,1), seenNewFade .6s ease 3.9s forwards;}
+  @keyframes seenNew{0%{transform:translateX(-50%) rotate(-4deg) scale(.2); opacity:0;} 100%{transform:translateX(-50%) rotate(-4deg) scale(1); opacity:1;}}
+  @keyframes seenNewFade{to{opacity:0;}}
+
+  .po2-fly{position:fixed; z-index:100001; pointer-events:none; transform-origin:50% 50%; filter:drop-shadow(0 10px 16px rgba(0,0,0,.45));}
+  .po2-fly > .card-tile{width:100% !important; height:100% !important;}
+  .po2-card .po2-stackn{position:absolute; right:-8px; bottom:-8px; z-index:5; padding:2px 9px; border-radius:999px; font:900 15px/1.2 'Baloo 2',system-ui,sans-serif; color:#3a2200; background:#ffd56e; box-shadow:0 2px 0 #a86a00;}
+
+  /* Pack crate for 100+ packs (2026-10-10) */
+  .po2-crate{position:relative; width:min(70vw, 320px); aspect-ratio:1.25; border:0; padding:0; cursor:pointer; background:none; filter:drop-shadow(0 18px 24px rgba(0,0,0,.5));}
+  .po2-crate-body{position:absolute; inset:18% 0 0 0; border-radius:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#3a2410;
+    background:repeating-linear-gradient(0deg, #b98a50 0 22px, #a67942 22px 24px), #b98a50; border:4px solid #6e4a22; box-shadow:inset 0 0 0 6px rgba(80,50,20,.25);}
+  .po2-crate-body b{font:900 54px/1 'Baloo 2',system-ui,sans-serif; color:#fff3d8; text-shadow:0 3px 0 #6e4a22;} .po2-crate-body small{font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff3d8;}
+  .po2-crate-lid{position:absolute; left:-4%; right:-4%; top:4%; height:20%; border-radius:8px; background:linear-gradient(180deg, #c99a5c, #94683a); border:4px solid #6e4a22; transform-origin:8% 100%; transition:transform .6s cubic-bezier(.5,-.3,.4,1.4);}
+  .po2-crate-stamp{position:absolute; right:10%; bottom:10%; font-size:34px; rotate:-12deg; opacity:.85;}
+  .po2-crate.is-open .po2-crate-lid{transform:rotate(-38deg) translateY(-30px);}
+  .po2-crate.is-open{animation:po2CrateShake .45s ease;}
+  @keyframes po2CrateShake{25%{transform:rotate(-2deg);} 50%{transform:rotate(2deg);} 75%{transform:rotate(-1deg);}}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

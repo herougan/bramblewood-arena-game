@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -205,6 +205,8 @@ const PASSIVE_DEFS = [
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
+  {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
+  {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   {key:'antiAir', category:'passive', label:'Anti-Air', kind:'number', desc:n=>`Never misses a Flying unit, and hits Flying units for ${n} more damage.`},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits a random unit among the three facing it (left, centre, right), then the units beside that one too.`},
@@ -1310,8 +1312,12 @@ function noteSighted(defIds){
   if(!defIds) return;
   const defs = getCardDefs();
   let changed = false;
-  { const seen = seenCardIds(); let added = false; for(const id of defIds){ if(id && defs[id] && !seen.has(id)){ seen.add(id); added = true; } }
+  const fresh = [];
+  { const seen = seenCardIds(); let added = false; for(const id of defIds){ if(id && defs[id] && !seen.has(id)){ seen.add(id); added = true; fresh.push(id); } }
     if(added){ try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); }catch(e){} } }
+  // 2026-10-10 (user: "e.g. Octopus Tactician. When fighting him, it should show 'New!' when it comes out and I see it
+  // for the first time"): a card seen for the first time in a match wears a NEW! tag for a few seconds.
+  if(fresh.length && matchState && !matchState.over){ const until = Date.now() + 4500; matchState.newSeenUntil = matchState.newSeenUntil || {}; fresh.forEach(id=>{ matchState.newSeenUntil[id] = until; }); setTimeout(()=>{ document.querySelectorAll('.board-card .seen-new').forEach(e=>{ const id = e.closest('.board-card') && e.closest('.board-card').dataset.defid; if(!matchState || !matchState.newSeenUntil || !(matchState.newSeenUntil[id] > Date.now())) e.remove(); }); }, 4600); }
   for(const id of defIds){
     const d = defs[id];
     if(!d || !d.hidden || myDiscoveredCardIds.has(id)) continue;
@@ -3590,7 +3596,7 @@ function cardTileHTML(d, opts){
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
       ${poisonTagHTML(d)}
-      ${abilityBadges(d)}
+      ${abilityBadges(d, {compact:true})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -3612,7 +3618,7 @@ function cardTileHTML(d, opts){
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
     ${isCastle?'':poisonTagHTML(d)}
-    ${abilityBadges(d)}
+    ${abilityBadges(d, {compact: !!(hand || inMatch)})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
@@ -3652,7 +3658,7 @@ function poisonTagHTML(d){
   const p = (d.effects||{}).poison;
   return p ? `<span class="poison-tag" title="Poisons on hit">☠${p}</span>` : '';
 }
-function abilityBadges(d){
+function abilityBadges(d, bopts){
   const e = d.effects||{};
   const out = [];
   // 2026-09-19, per explicit request ("the items are not aligned" — the actual issue, confirmed by
@@ -3748,6 +3754,17 @@ function abilityBadges(d){
   // so a card like Bee Drone showed both 🐝 AND ⚡×1 for the exact same underlying ability. The
   // specific badges already condense that info; the generic count added nothing but clutter.
   if(!out.length) return '';
+  // Skill slots (2026-10-10, user: "is there space to have 3 icons on one row, separated by a small space. If one of them
+  // has multiple, they stack closely together. Otherwise ... shows the first two, then periodically they phase between
+  // the next two" + "in small card form ... that one symbol phases/cycles between different symbols every 2s"): each
+  // skill is one slot. Up to 3 slots on a big card; past that, the last slot cycles through the rest every 2 s (see the
+  // badge-cycle ticker). Small cards (board and hand) have room for one slot, which cycles through every skill.
+  const maxSlots = (bopts && bopts.compact) ? 1 : 3; // small cards: the one slot between Attack and Health cycles
+  if(out.length > maxSlots){
+    const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
+    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
+  }
+  if(true) return `<div class="badges badge-slots">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`;
   const pills = out.map(b=>`<span class="abadge">${b}</span>`);
   // 2026-09-29, per explicit request ("depending on how many symbols there are, they might have
   // to stack on each other. If > 8 symbols, they start stacking on two rows"): keep a single row
@@ -3758,6 +3775,8 @@ function abilityBadges(d){
   }
   return `<div class="badges">${pills.join('')}</div>`;
 }
+// Badge cycling ticker: every 2 s each cycling slot shows its next skill.
+setInterval(()=>{ if(document.hidden) return; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll('.bc-item'); if(items.length < 2) return; const k = ((Number(el.dataset.i)||0) + 1) % items.length; el.dataset.i = k; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 2000);
 function escapeAttr(s){ return (s||'').replace(/"/g,'&quot;'); }
 function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -13932,16 +13951,23 @@ function testKitArrangeLayout(root, keep){
 function testKitRefreshStatus(){ const el = document.getElementById('tkStatus'); if(el && testKit) el.innerHTML = testKitStatusHTML(); }
 function testKitRefreshTransport(){ const el = document.getElementById('tkTransport'); if(el && testKit){ el.innerHTML = testKitTransportHTML(); wireTestKitTransport(); } }
 function testKitLogDivider(text){ pushLog({type:'tkDivider', text}); }
+// Keep every scrolled box where it was across a re-render (2026-10-10, user: "Clicking on a new skill in the skill list
+// ... shouldn't reset the y-scroll position. This should be a general tautology"): each scrolled element is keyed by
+// its id, or by its class and position, and put back after the swap.
+function scrollKeyOf(el, root){ if(el.id) return '#' + el.id; const cls = (el.className && typeof el.className === 'string') ? el.className.trim().split(/\s+/)[0] : el.tagName; const all = [...root.querySelectorAll(el.id ? '#' + el.id : '.' + cls)]; return '.' + cls + ':' + all.indexOf(el); }
+function captureScrolls(root){ const out = {}; if(!root) return out; [root, ...root.querySelectorAll('*')].forEach(el=>{ if(el.scrollTop > 0 || el.scrollLeft > 0) out[el===root ? ':root' : scrollKeyOf(el, root)] = [el.scrollTop, el.scrollLeft]; }); return out; }
+function restoreScrolls(root, saved){ if(!root || !saved) return; Object.entries(saved).forEach(([k, [t, l]])=>{ let el = null;
+  if(k === ':root') el = root; else if(k[0] === '#') el = root.querySelector(k); else { const [cls, i] = k.slice(1).split(':'); el = root.querySelectorAll('.' + cls)[Number(i)]; }
+  if(el){ el.scrollTop = t; el.scrollLeft = l; } }); }
 function testKitRerenderPanel(focusId){
   const old = document.getElementById('testKitPanel'); if(!old) return;
-  const scrollTop = old.scrollTop, optsScroll = (document.getElementById('tkOptions')||{}).scrollTop||0;
+  const saved = captureScrolls(old);
   const sel = focusId && document.getElementById(focusId); const caret = sel && sel.selectionStart;
   const tmp = document.createElement('div'); tmp.innerHTML = testKitPanelHTML();
   old.replaceWith(tmp.firstElementChild);
   wireTestKitPanel();
-  const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = scrollTop;
-  const opts = document.getElementById('tkOptions'); if(opts) opts.scrollTop = optsScroll;
-  if(focusId){ const f = document.getElementById(focusId); if(f){ f.focus(); try{ if(caret!=null) f.setSelectionRange(caret, caret); }catch(e){} } }
+  const panel = document.getElementById('testKitPanel'); restoreScrolls(panel, saved);
+  if(focusId){ const f = document.getElementById(focusId); if(f){ f.focus({preventScroll:true}); try{ if(caret!=null) f.setSelectionRange(caret, caret); }catch(e){} } }
 }
 function wireTestKitTransport(){
   const m = matchState;
@@ -17948,7 +17974,7 @@ function boardCardHTML(c, defs, opts){
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
   </div>`;
 }
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
@@ -19386,6 +19412,28 @@ async function resolveRound(opts){
       if(idx!==-1) rr[ev.fromSide].splice(idx,1);
       rr.center.push(ev.uid);
       renderBoard({collapseLandingUids:[ev.uid]});
+    } else if(ev.type==='spawn' && ev.cause==='shieldCall'){
+      // Shield Call (2026-10-10): the targeted ally steps aside to the nearest slot and a Guardian shield
+      // drops into the spot it left, so the skill lands on the shield instead.
+      const pid = ev.side==='A'?1:2, rr = m.replayRows[pid], u = ev.uids && ev.uids[0];
+      if(rr && u!=null){
+        let lane = ev.lane, idx = rr[lane] ? rr[lane].indexOf(ev.nearUid) : -1;
+        if(idx===-1){ for(const ln of ['left','center','right']){ const k = rr[ln].indexOf(ev.nearUid); if(k!==-1){ lane = ln; idx = k; break; } } }
+        if(idx!==-1){
+          rr[lane].splice(idx, 1, u);
+          if(ev.toLane===lane) rr[lane].splice(idx + 1, 0, ev.nearUid);
+          else if(ev.toLane==='left' && lane==='center') rr.left.unshift(ev.nearUid);
+          else rr[ev.toLane].push(ev.nearUid);
+          if(m.replayCards[ev.nearUid] && ev.toSlot!=null) m.replayCards[ev.nearUid].slot = ev.toSlot;
+        }
+        if(!m.replayCards[u]){
+          const liveCard = ['left','center','right'].map(ln=> (m.players[pid].row[ln]||[]).find(c=>c.uid===u)).find(Boolean);
+          if(liveCard) m.replayCards[u] = {slot: ev.fromSlot!=null ? ev.fromSlot : liveCard.slot, atk:liveCard.atk, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:0, bleed:0, scar:0, stunned:false, defId:liveCard.defId, wait:0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, shocked:0, corrode:0, staggered:0};
+        }
+        const originEl = ev.dogUid!=null ? boardCardEl(ev.dogUid) : null;
+        if(originEl){ const r = originEl.getBoundingClientRect(); pendingEntranceOrigins.set(String(u), {x:r.left + r.width/2, y:r.top + r.height/2, rotate:0, kind:'spawn'}); }
+        renderBoard({attackSpawnLandingUids:[u]});
+      }
     } else if(ev.type==='spawn' && (ev.cause==='onAttackedSpawn' || ev.cause==='onDeathSpawn' || ev.cause==='triggerSpawn')){
       try{ noteShinySpawn(matchState, ev); }catch(e){}
       // Live-reflow every spawn cause the instant it happens (2026-09-17, fixing "spawning
@@ -21062,7 +21110,7 @@ function logText(ev){
       let elemNote = '';
       if(ev.elementalConvert==='poison') elemNote = ` — converted to ${ev.elementalAmount} Poison ☠ instead of direct damage`;
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
-      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Rend — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
+      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Rend — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
     case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ for ${ev.dmg}${ev.swipe?' (swipe)':''}.`};
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
@@ -21078,7 +21126,7 @@ function logText(ev){
     case 'revive': return {cls:'gold', text:`${nm(ev.defId)} refused to die — revived at 1 HP! ✨`};
     case 'collapseIn': return {cls:'', text:`${nm(ev.defId)} falls into the center from the ${ev.fromSide}. ➡`};
     case 'death': return {cls:'', text:`${nm(ev.defId)} died.`};
-    case 'spawn': return {cls:'', text:`${nm(ev.defId)} ×${ev.count} spawned. 🐝`};
+    case 'spawn': return ev.cause==='shieldCall' ? {cls:'', text:`A ${nm(ev.defId)} drops into place. 🛡️`} : {cls:'', text:`${nm(ev.defId)} ×${ev.count} spawned. 🐝`};
     case 'gold': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪙.`};
     case 'grace': return {cls:'grace', text:`${nm(ev.defId)} generated +${ev.amount} 🕊️.`};
     case 'devilry': return {cls:'devilry', text:`${nm(ev.defId)} generated +${ev.amount} ★.`};
@@ -21112,6 +21160,7 @@ function logText(ev){
         scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡, permanent)`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
         stanch: `stopped ${ev.amount} Bleed with its healing 🩹`,
+        shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
         grit: `toughened up from the fight (+${ev.amount}⚔, permanent) 💪`,
         blind: `blinded ${nm(ev.targetDefId)} 👁 (its next attacks may miss)`,
         shock: `shocked ${nm(ev.targetDefId)} ⚡ (+50% damage taken)`,
@@ -22286,6 +22335,7 @@ function renderVfxForEvent(ev){
   // computeHitDamage's kingSlayerBonus return in bramblewood-engine.js. Without this, the bonus
   // damage would just blend into the ordinary hit number with nothing marking it as its own
   // distinct mechanic — same silent-effect gap Rally/Earthquake had before this same pass.
+  if(ev.type==='hit' && ev.backstab){ const el = boardCardEl(ev.targetUid); try{ SoundKit.claw(); }catch(e){} if(el) floatText(el, `🗡️ Backstab +${ev.backstab}`, 'debuff'); }
   if(ev.type==='kingSlayer'){
     const el = boardCardEl(ev.targetUid);
     SoundKit.kingSlayerTone();
@@ -22554,7 +22604,7 @@ function renderVfxForEvent(ev){
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
   if(ev.type==='collapseIn'){ SoundKit.shift(); }
-  if(ev.type==='spawn'){ SoundKit.buzz(); }
+  if(ev.type==='spawn'){ if(ev.cause==='shieldCall'){ try{ SoundKit.clang(); }catch(e){} const el = boardCardEl(ev.uids && ev.uids[0]); if(el) try{ floatText(el, '🛡️ Shield Call', 'buff'); }catch(e){} } else SoundKit.buzz(); }
   // Floating-number coverage audit (2026-09-18, "every action that changes a number... should
   // get a floating number"): Gold/Grace generation from a card's passive effect (onSpawnGold,
   // onReadyGold, a custom 'gainGold' trigger, etc.) used to be COMPLETELY SILENT beyond a chime
@@ -24684,6 +24734,11 @@ function openPackAnimation(pack, opened, opts){
   const defs = getCardDefs();
   const reduce = reducedMotion();
   const bundle = !!opts.bundle;
+  // NEW! once per card per opening, in the order you'll see them (2026-10-10, user: "it says NEW! multiple times although
+  // i've already gotten the card once IN THE SAME OPENING").
+  const anyNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); }));
+  const markFirstNew = list=>{ const seenNew = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !seenNew.has(r.id); if(r.isNew) seenNew.add(r.id); }); return list; };
+  markFirstNew([].concat(...opened.map(o=> o.results)));
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
   let overlay = document.getElementById('packOpenOverlay');
@@ -24768,7 +24823,7 @@ function openPackAnimation(pack, opened, opts){
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
       <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
-      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
@@ -24821,6 +24876,21 @@ function openPackAnimation(pack, opened, opts){
       const r = deckO.results[+c.dataset.i];
       const [ra] = rarityStops(defs[r.id].rarity||'common');
       const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(defs[r.id], {editable:false}); got.appendChild(mini);
+      // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
+      // from the deck down into its slot in the row, and the slot fills as it lands.
+      if(!reduce && mini.animate){
+        const from = c.getBoundingClientRect(), to = mini.getBoundingClientRect();
+        if(from.width && to.width){
+          const ghost = document.createElement('div'); ghost.className = 'po2-fly';
+          ghost.style.cssText = `left:${from.left}px; top:${from.top}px; width:${from.width}px; height:${from.height}px;`;
+          const face = c.querySelector('.po2-front'); ghost.innerHTML = face ? face.innerHTML : '';
+          document.body.appendChild(ghost); mini.style.opacity = '0';
+          const dx = (to.left + to.width/2) - (from.left + from.width/2), dy = (to.top + to.height/2) - (from.top + from.height/2), sc = to.width / from.width;
+          const a = ghost.animate([{transform:'translate(0,0) scale(1) rotate(0deg)'}, {transform:`translate(${dx*0.55}px, ${dy*0.35 - 40}px) scale(${(1+sc)/2}) rotate(-6deg)`, offset:.45}, {transform:`translate(${dx}px, ${dy}px) scale(${sc}) rotate(0deg)`}], {duration:520, easing:'cubic-bezier(.45,.05,.3,1)', fill:'forwards'});
+          a.onfinish = ()=>{ ghost.remove(); mini.style.opacity = ''; mini.animate && mini.animate([{transform:'scale(1.25)'}, {transform:'scale(1)'}], {duration:220, easing:'ease-out'}); };
+          setTimeout(()=>{ if(ghost.isConnected){ ghost.remove(); mini.style.opacity = ''; } }, 900);
+        }
+      }
       c.classList.add('is-collected'); c.tabIndex = -1;
       cur++;
       if(cur >= cards.length){ later(()=> (deckO.isPile ? showAll() : showSummary()), 380); return; }
@@ -24881,13 +24951,14 @@ function openPackAnimation(pack, opened, opts){
     const rest = opened.slice(packIdx);
     const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
     rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const t = tally.get(r.id) || {n:0, isNew:false}; t.n++; t.isNew = t.isNew || r.isNew; tally.set(r.id, t); }); });
-    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(b) - tierOf(a)) || (defs[a].name||'').localeCompare(defs[b].name||''));
-    const nNew = ids.filter(id=> tally.get(id).isNew).length;
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n++; t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
+    const did = k=> tally.get(k).id;
+    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
+    const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(id=> `<div class="po-card is-flipped po2-sum-card ${tally.get(id).isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: tierOf(id) >= 4 ? holoClass(defs[id]) : ''})}${tally.get(id).isNew?'<span class="po2-new-tag">NEW</span>':''}${tally.get(id).n > 1 ? `<span class="po2-x">×${tally.get(id).n}</span>` : ''}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireFoot(); wireView(); wireTilt();
@@ -24902,41 +24973,63 @@ function openPackAnimation(pack, opened, opts){
   });
   // ---- Open-all table (2026-10-08, user: "When opening 10 packs or more ... all the packs are laid in front of you
   // (max 25), and you slice all at once. Then they get piled into ONE HUGE deck for you to slowly reveal off.")
+  // 2026-10-10 (user: "only the packs that your mouse passes through opens. You have to open every single one to
+  // continue. Show a maximum of 10 packs" + "If 100 packs, then it shows a box instead"): packs come out ten at a time and
+  // each opens when the slash (or a tap) crosses it; the next ten slide in once all are open. 100 or more arrive as one
+  // crate you pry open. Either way the cards then pile into one deck to reveal.
+  const gatherPile = ()=>{
+    const all = []; opened.forEach(o=> o.results.forEach(r=> all.push(r)));
+    const tierOfR = r=> tierOf(r.id);
+    all.sort(()=> Math.random() - .5); all.sort((a, b)=> tierOfR(a) - tierOfR(b)); // the rarest saved for last
+    let pile = all;
+    if(all.length > 100){ const by = new Map(); all.forEach(r=>{ const k = r.id + '|' + (r.foil ? (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const g = by.get(k); if(g){ g.count++; g.isNew = g.isNew || r.isNew; } else by.set(k, Object.assign({}, r, {count:1})); }); pile = [...by.values()]; }
+    showReveal({results: markFirstNew(pile), isPile: true});
+  };
+  let tableFrom = 0;
   const showTable = ()=>{
     phase = 'table';
-    const shown = opened.slice(0, 25);
+    if(opened.length >= 100) return showCrate();
+    const shown = opened.slice(tableFrom, tableFrom + 10);
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-table-stage">
-      <div class="po2-table" id="poTable" style="--n:${shown.length}">${shown.map((o, i)=>{ const g = o.glow ? rarityStops(o.glow.rarity)[0] : ''; return `<div class="po2-tpack ${o.glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" style="--i:${i}; ${g ? `--glow:${g};` : ''}"><span class="po2-tpack-ico">${pack.icon}</span><span class="po2-tpack-cut"></span></div>`; }).join('')}
+      <div class="po2-table" id="poTable" style="--n:${shown.length}">${shown.map((o, i)=>{ const g = o.glow ? rarityStops(o.glow.rarity)[0] : ''; return `<div class="po2-tpack ${o.glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" data-ti="${i}" style="--i:${i}; ${g ? `--glow:${g};` : ''}"><span class="po2-tpack-ico">${pack.icon}</span><span class="po2-tpack-cut"></span></div>`; }).join('')}
         <div class="po2-slash" id="poSlash" aria-hidden="true"></div></div>
-      ${opened.length > 25 ? `<p class="po2-hint">+${opened.length - 25} more packs in the pile</p>` : ''}
+      ${opened.length > 10 ? `<p class="po2-hint">Packs ${tableFrom + 1}–${tableFrom + shown.length} of ${opened.length}</p>` : ''}
     </div>
-    <div class="po2-hint" id="poHint" aria-live="polite">Slash across all the packs to open them at once</div>`;
+    <div class="po2-hint" id="poHint" aria-live="polite">Slash across the packs to open them</div>`;
     wireTop();
     const tbl = overlay.querySelector('#poTable'), slash = overlay.querySelector('#poSlash'), hint = overlay.querySelector('#poHint');
-    let sx = null, minX = 0, maxX = 0, done = false, trail = [];
-    const cut = ()=>{
-      if(done) return; done = true; sfx('swipeTone'); sfx('gold');
-      const packs = [...tbl.querySelectorAll('.po2-tpack')], tr = tbl.getBoundingClientRect();
-      packs.forEach(pk=>{ const x = (pk.getBoundingClientRect().left - tr.left)/Math.max(1, tr.width); later(()=>{ pk.classList.add('is-open'); burst(pk, ['✨','🐾'], 4); }, Math.round(x*420)); });
-      if(opened.some(o=> o.jackpot)) later(()=> sfx('rareRise', true), 500);
-      later(()=>{ tbl.classList.add('is-gathering'); hint.textContent = ''; }, 820);
-      later(()=>{
-        const all = []; opened.forEach(o=> o.results.forEach(r=> all.push(r)));
-        const tierOfR = r=> tierOf(r.id);
-        // the pile: shuffled, with the rarest cards saved for last
-        all.sort(()=> Math.random() - .5); all.sort((a, b)=> tierOfR(a) - tierOfR(b));
-        showReveal({results: all, isPile: true});
-      }, 1500);
-    };
-    tbl.addEventListener('pointerdown', e=>{ sx = e.clientX; minX = maxX = e.clientX; trail = []; try{ tbl.setPointerCapture(e.pointerId); }catch(_){} });
-    tbl.addEventListener('pointermove', e=>{ if(sx === null || done) return; minX = Math.min(minX, e.clientX); maxX = Math.max(maxX, e.clientX);
-      const r = tbl.getBoundingClientRect(); slash.style.left = (minX - r.left) + 'px'; slash.style.width = (maxX - minX) + 'px'; slash.style.top = (e.clientY - r.top) + 'px'; slash.classList.add('is-on');
-      if(maxX - minX > r.width*0.55) cut(); });
-    const up = ()=>{ if(sx === null) return; sx = null; slash.classList.remove('is-on'); if(!done) hint.textContent = 'Slash all the way across'; };
+    const packs = [...tbl.querySelectorAll('.po2-tpack')];
+    let sx = null, minX = 0, maxX = 0, finished = false;
+    const openOne = pk=>{ if(pk.classList.contains('is-open')) return; pk.classList.add('is-open'); burst(pk, ['✨','🐾'], 5); sfx('pageTurn');
+      const left = packs.filter(p=> !p.classList.contains('is-open')).length;
+      hint.textContent = left ? `${left} still sealed` : '';
+      if(!left && !finished){ finished = true; sfx('gold'); if(opened.slice(tableFrom, tableFrom + 10).some(o=> o.jackpot)) sfx('rareRise', true);
+        later(()=>{ tableFrom += 10; if(tableFrom < opened.length) showTable(); else { tbl.classList.add('is-gathering'); later(gatherPile, 700); } }, 750); } };
+    const hitAt = (x, y)=> packs.forEach(pk=>{ const r = pk.getBoundingClientRect(); if(x >= r.left && x <= r.right && y >= r.top - 12 && y <= r.bottom + 12) openOne(pk); });
+    tbl.addEventListener('pointerdown', e=>{ sx = e.clientX; minX = maxX = e.clientX; try{ tbl.setPointerCapture(e.pointerId); }catch(_){} hitAt(e.clientX, e.clientY); });
+    tbl.addEventListener('pointermove', e=>{
+      const r = tbl.getBoundingClientRect();
+      // A sweep with the button up counts too, so a mouse can glide across them.
+      if(sx === null && e.pointerType !== 'mouse') return;
+      minX = sx === null ? e.clientX : Math.min(minX, e.clientX); maxX = sx === null ? e.clientX : Math.max(maxX, e.clientX);
+      if(sx !== null){ slash.style.left = (minX - r.left) + 'px'; slash.style.width = (maxX - minX) + 'px'; slash.style.top = (e.clientY - r.top) + 'px'; slash.classList.add('is-on'); }
+      hitAt(e.clientX, e.clientY);
+    });
+    const up = ()=>{ if(sx === null) return; sx = null; slash.classList.remove('is-on'); };
     tbl.addEventListener('pointerup', up); tbl.addEventListener('pointercancel', up);
-    tbl.tabIndex = 0; tbl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); cut(); } });
-    tbl.addEventListener('click', ()=>{ if(maxX - minX < 8) cut(); });
+    tbl.tabIndex = 0; tbl.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); const next = packs.find(p=> !p.classList.contains('is-open')); if(next) openOne(next); } });
+    packs.forEach(pk=> pk.addEventListener('click', ()=> openOne(pk)));
     tbl.focus({preventScroll:true});
+  };
+  const showCrate = ()=>{
+    phase = 'table';
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-crate-stage">
+      <button type="button" class="po2-crate" id="poCrate" aria-label="Pry open the crate of ${opened.length} packs"><span class="po2-crate-lid"></span><span class="po2-crate-body"><b>${opened.length}</b><small>${escapeHtml(pack.name)}s</small></span><span class="po2-crate-stamp">${pack.icon}</span></button>
+    </div><div class="po2-hint" id="poHint" aria-live="polite">Tap the crate to pry it open</div>`;
+    wireTop();
+    const crate = overlay.querySelector('#poCrate');
+    crate.onclick = ()=>{ if(crate.classList.contains('is-open')) return; crate.classList.add('is-open'); sfx('swipeTone'); sfx('gold'); burst(crate, [pack.icon, '✨', '🐾', '🌟'], 40); if(opened.some(o=> o.jackpot)) later(()=> sfx('rareRise', true), 400); later(gatherPile, 1300); };
+    crate.focus({preventScroll:true});
   };
   onKey = e=>{
     if(overlay.hidden) return;

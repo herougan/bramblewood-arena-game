@@ -10779,5 +10779,88 @@
     "flavor": "A hummingbird with a bell three times its size and no sense of the hour.",
     "numericId": 399,
     "uuid": "b7ec8794-b53e-4ff2-9ccb-f18fbb9fde0d"
+  },
+  {
+    "id": "summoned-shield",
+    "name": "Guardian Shield",
+    "icon": "\ud83d\udee1\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 10,
+    "token": true,
+    "flavor": "Planted in the mud by a dog who decided you were worth protecting.",
+    "locked": true,
+    "species": [
+      "Elemental"
+    ],
+    "effects": {
+      "guardian": true
+    },
+    "numericId": 400,
+    "uuid": "3d517b2c-1d35-4a85-a569-1ebea9b2179e",
+    "archetypes": [
+      "Structure"
+    ],
+    "rarity": "common",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": []
+  },
+  {
+    "id": "shieldbearer-hound",
+    "name": "Shieldbearer Hound",
+    "icon": "\ud83d\udc15",
+    "cost": 2,
+    "wait": 2,
+    "attack": 2,
+    "health": 5,
+    "rarity": "rare",
+    "flavor": "Carries a round shield on its back and drops it in front of whoever it decides is in trouble.",
+    "species": [
+      "Canid"
+    ],
+    "effects": {
+      "shieldCall": true
+    },
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    },
+    "numericId": 401,
+    "uuid": "801d28ab-621d-4ee1-be74-1fc1f41b5741",
+    "archetypes": [
+      "Village"
+    ],
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": false
+  },
+  {
+    "cost": 1,
+    "wait": 1,
+    "effects": {
+      "backstab": 3
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "id": "stoat-cutthroat",
+    "name": "Stoat Cutthroat",
+    "icon": "\ud83d\udde1\ufe0f",
+    "attack": 3,
+    "health": 8,
+    "rarity": "rare",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Village"
+    ],
+    "flavor": "Never where you're looking. Always where you aren't.",
+    "numericId": 402,
+    "uuid": "86c6fc18-680e-4936-9303-b5a265393e4a"
   }
 ]

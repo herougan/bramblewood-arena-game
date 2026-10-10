@@ -896,7 +896,46 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const cards = [];
     ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0) cards.push(c); }));
     const pool = [...cards.map(c=>({kind:'card', card:c})), {kind:'hq'}];
-    return pool[Math.floor(rnd()*pool.length)];
+    const pick = pool[Math.floor(rnd()*pool.length)];
+    if(pick.kind==='card'){ const sh = shieldCall(enemyPl, pick.card); if(sh) return {kind:'card', card:sh}; }
+    return pick;
+  }
+  // Shield Call (2026-10-10, user: "a shield dog with a unique passive effect: When an ally gets targeted from a skill
+  // effect, it summons a shield in that unit's place, while pushing that unit to the most nearby slot. This happens only
+  // once. The shield's stats is 0/10 w/ Guardian (grows by 1 defence every level)"). Called wherever an enemy skill picks
+  // a card to hit; returns the shield that now takes it, or null.
+  const SHIELD_TOKEN = 'summoned-shield';
+  let shieldEvents = null, shieldSideOf = null; // set by the skill resolvers for the event log
+  function shieldCall(ownerPl, card){
+    if(!ownerPl || !card || card.hp<=0 || card.defId===SHIELD_TOKEN || !CARD_DEFS[SHIELD_TOKEN]) return null;
+    const dog = allBoardCards(ownerPl).find(c=> c.hp>0 && !c.shieldCallUsed && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.shieldCall);
+    if(!dog) return null;
+    dog.shieldCallUsed = true;
+    const shield = makeBoardCard(SHIELD_TOKEN);
+    const dd = CARD_DEFS[dog.defId], lvl = Math.max(0, (Number(dd.level)||0) - (Number(dd.baseLevel)||0)); if(lvl){ shield.hp += lvl; shield.maxHp += lvl; }
+    const side = ['left','center','right'].find(sd=> ownerPl.row[sd].includes(card));
+    if(!side) return null;
+    let toLane = side; const fromSlot = card.slot;
+    if(slotMode){
+      const occ = occupiedSlots(ownerPl), from = card.slot;
+      let to = null; for(let d=1; d<12 && to===null; d++){ for(const sg of [1,-1]){ const sl = from + sg*d; if(!occ.has(sl)){ to = sl; break; } } }
+      if(to===null) return null;
+      ownerPl.row[side].splice(ownerPl.row[side].indexOf(card), 1);
+      toLane = to===0 ? 'center' : (to<0 ? 'left' : 'right');
+      card.slot = to; ownerPl.row[toLane].push(card);
+      shield.slot = from; ownerPl.row[side].push(shield);
+      syncSlots(ownerPl);
+    } else {
+      const arr = ownerPl.row[side];
+      if(side==='center'){ arr.splice(arr.indexOf(card), 1); arr.push(shield); ownerPl.row.left.unshift(card); toLane = 'left'; }
+      else arr.splice(arr.indexOf(card), 0, shield);
+    }
+    if(recordEvents && shieldEvents){
+      const sd = shieldSideOf ? shieldSideOf(ownerPl.id) : null;
+      shieldEvents.push({type:'statusFx', kind:'shieldCall', side:sd, attDefId:dog.defId, attUid:dog.uid, targetSide:sd, targetDefId:card.defId, targetUid:card.uid, shieldUid:shield.uid});
+      shieldEvents.push({type:'spawn', side:sd, defId:SHIELD_TOKEN, count:1, cause:'shieldCall', uids:[shield.uid], nearUid:card.uid, lane:side, toLane, fromSlot, toSlot:card.slot, dogUid:dog.uid});
+    }
+    return shield;
   }
   // resolveGeneralTarget (2026-09-30): the shared resolver behind the editor's general
   // who/sub target picker (see the long comment above ACTION_DEFS in arena_app.js) — every
@@ -937,7 +976,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const farSide = mySide==='left' ? 'right' : (mySide==='right' ? 'left' : (rnd()<0.5?'left':'right'));
       const farPool = enemy.row[farSide].filter(c=>c.hp>0);
       const finalPool = farPool.length ? farPool : pool;
-      return {pl:sidePl, card: finalPool[Math.floor(rnd()*finalPool.length)]};
+      const pickF = finalPool[Math.floor(rnd()*finalPool.length)];
+      { const sh = shieldCall(enemy, pickF); if(sh) return {pl:sidePl, card:sh}; }
+      return {pl:sidePl, card: pickF};
     }
     if(sub==='adjacent'){
       if(isAlly){
@@ -948,10 +989,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
       const opp = opposingCardOf(players, playerId, boardCard);
-      return opp ? {pl:enemy, card:opp.card} : null;
+      if(!opp) return null;
+      { const sh = shieldCall(enemy, opp.card); if(sh) return {pl:enemy, card:sh}; }
+      return {pl:enemy, card:opp.card};
     }
     // 'random' (and any unrecognized sub, as a safe default)
-    return {pl:sidePl, card: pool[Math.floor(rnd()*pool.length)]};
+    const pickR = pool[Math.floor(rnd()*pool.length)];
+    if(!isAlly){ const sh = shieldCall(enemy, pickR); if(sh) return {pl:enemy, card:sh}; }
+    return {pl:sidePl, card: pickR};
   }
   // applyTargetedStatus (2026-09-30): the shared implementation behind Poison/Bleed/Expose/Stun/
   // Increase Wait's now-general who/sub targeting — these five were near-identical copies of the
@@ -1331,6 +1376,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(col===null) return null;
     const i = keys.indexOf(col) + 1, n = keys.length;
     return i - n/2;
+  }
+  // The card directly in front of a column: same slot (Open/slot battles), or the whole-slot facing of the rank-interlock
+  // rule (an interlocked half-offset neighbour is not "directly" in front).
+  function directFrontOf(myCols, enemyCols, myCol){
+    if(slotMode){ const e = enemyCols[myCol]; return (e && e.kind==='card' && e.card.hp>0) ? e.card : null; }
+    const myKeys = Object.keys(myCols).map(Number).sort((a,b)=>a-b), enemyKeys = Object.keys(enemyCols).map(Number).sort((a,b)=>a-b);
+    const i = myKeys.indexOf(myCol) + 1, jf = i + (enemyKeys.length - myKeys.length)/2;
+    if(i<=0 || !Number.isInteger(jf) || jf<1 || jf>enemyKeys.length) return null;
+    const e = enemyCols[enemyKeys[jf-1]]; return (e && e.kind==='card' && e.card.hp>0) ? e.card : null;
+  }
+  // Nearest living enemy unit on the shared left-to-right line (ties: random). {entry, direct} or null.
+  function nearestEnemyCard(players, myId, card, myCols, enemyCols, myCol){
+    const front = directFrontOf(myCols, enemyCols, myCol);
+    const colOf = c=>{ for(const k of Object.keys(enemyCols)){ const e = enemyCols[k]; if(e.kind==='card' && e.card===c){ e.col = Number(k); return e; } } return null; };
+    if(front){ const e = colOf(front); if(e) return {entry:e, direct:true}; }
+    const enemyId = otherId(myId), me = liveSharedPos(players[myId], card.uid);
+    if(me===null) return null;
+    let best = [], bestD = Infinity;
+    Object.keys(enemyCols).forEach(k=>{ const e = enemyCols[k]; if(e.kind!=='card' || e.card.hp<=0) return;
+      const p = liveSharedPos(players[enemyId], e.card.uid); if(p===null) return; const d = Math.abs(p - me);
+      if(d < bestD - 1e-9){ bestD = d; best = [k]; } else if(Math.abs(d - bestD) < 1e-9) best.push(k); });
+    if(!best.length) return null;
+    const k = best[Math.floor(rnd()*best.length)], e = enemyCols[k]; e.col = Number(k);
+    return {entry:e, direct:false};
   }
   function findNextLiveCardBeyond(enemyCols, fromCol, dir){
     const cols = Object.keys(enemyCols).map(Number).filter(c => dir===0 ? c!==fromCol : (dir<0 ? c<fromCol : c>fromCol));
@@ -1825,6 +1894,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     if(!def.effects || !Array.isArray(def.effects.triggers)) return;
+    if(events){ shieldEvents = events; shieldSideOf = sideOf; } // Shield Call logs into whichever event list is live
     const pl = players[playerId], enemy = players[otherId(playerId)];
     const mySide = sideOf(playerId);
     def.effects.triggers.filter(t=>t.on===hook).forEach((t, i)=>{
@@ -2819,6 +2889,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
     try{ syncPhaseStats(players, sideOf, events); }catch(e){}
     curPlayers = players;
+    if(events){ shieldEvents = events; shieldSideOf = sideOf; }
     if(!(pass && pass.onlyUid)) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
@@ -3074,6 +3145,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const cand = [-1, 0, 1].map(d=> liveSelf.col + d).filter(col=> { const e = liveEnemyCols[col]; return e && e.kind==='card' && e.card.hp>0; });
         if(cand.length){ const col = cand[Math.floor(rnd()*cand.length)]; const e = liveEnemyCols[col]; e.col = col; target = e; }
       }
+      // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
+      // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
+      // one), never the castle (no enemy units: it holds its swing), and hits for N more when that unit isn't the one
+      // directly in front of it.
+      let backstabBonus = 0;
+      if(attDef.effects && Number(attDef.effects.backstab) > 0 && !attDef.effects.stealth){
+        const near = nearestEnemyCard(players, a.attId, a.att, liveOwnCols, liveEnemyCols, liveSelf.col);
+        target = near ? near.entry : null;
+        if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
+      }
       if(!target){ pending = pickNextAttacker(); continue; }
       const dmgType = attDef.dmgType || 'physical';
       const mySide = sideOf(a.attId);
@@ -3109,10 +3190,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const defCard = redirectToGuardian(players[a.enemyId], target.card);
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
-        const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = damageCard(defCard, atkThisRound, dmgType, a.att);
+        const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded, ambush:ambushForce, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded, ambush:ambushForce, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.

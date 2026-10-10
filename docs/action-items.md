@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-10, 9 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-10, 10 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -9,7 +9,7 @@ _Updated 2026-10-10, 9 pm. The short list of what matters now. Everything else i
 | **B6** ✅ | Your new basic set fixes it: otter starter vs hummingbird starter is **52.9%**. The per-card spread inside the set is wide (Duck Paddler 79% … Otter Kit 26%): see the [starter-decks note](starter-decks-2026-10-10.md) | Balance within the set (your pass) |
 | **D20** | Devilry is built from your list. Six of the rules were my readings. **Darkness is gained:** +1 each time one of your units perishes, shown only if your deck has a Devilry card | Keep all six |
 | **D23** ✅ | Ecclesia is built (Prayer, the offering, 6 keywords, 9 cards). Satiety's rule was my reading of the name | Check Satiety |
-| **D21 / D22** | Backstab's rule (suggestion: +N vs a unit facing someone else); Fast Forward counters, build when? | Suggestion; after Ecclesia |
+| **D21** ✅ / **D22** | Backstab is built as you described (nearest unit, never the castle, +N when it isn't the one in front) on the new Stoat Cutthroat. Two readings: with no enemy units it holds its swing, and a Guardian next to the target still steps in (the bonus still applies). Fast Forward counters: build when? | Check the two readings; D22 after Ecclesia |
 | **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
 | **S1 👥** | Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function | Say "apply it" |
 | **D26** | Readings I took tonight: Anti-Air went on **Otter Centurion** (2/8), because on Otter Kit it broke the tutorial for Hummingbird players. "SSS fast" means a win by **round 8**. The rare S find starts at **map 5** at **12%**. Laurels (PvP) buy nothing yet | Keep, or say otherwise |
@@ -19,6 +19,9 @@ _Updated 2026-10-10, 9 pm. The short list of what matters now. Everything else i
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
 
 ## 2. Where things stand
+
+- **Balancing:** the [card list](card-list-2026-10-10.md) has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood & Village; move 3 overpowered and 18 biome cards out; add 14).
+- **VFX:** [where to take GSAP, textures and shaders](vfx-exploration-2026-10-10.md), with live sketches in the 🧪 VFX Playground tab.
 
 - **New tonight:** Caged Fight (Arena → Challenges), red top edges on opponent cards, the victory-shift fix, and the Codex reveal-as-you-go. Hearthstone ideas are in [their own note](inspo-hearthstone-2026-10-10.md).
 - **Starter decks:** you're reorganising them. Every Basic is in [the list](starter-decks-2026-10-10.md), with suggestions (shared leader, 2 shared cards, rival cards as map 1–2 rewards).
