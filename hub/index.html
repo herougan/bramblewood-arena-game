@@ -110,145 +110,142 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
+<p><em>Updated 2026-10-12, 3 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
 <h2>1. Your calls</h2>
+<p>Every open item, with <strong>(a) my pushback</strong> (what worries me about it) and <strong>(b) my recommendation</strong>. Reply with the ID and a word ("D36 yes", "D24 keep").</p>
 <table>
 <thead>
 <tr>
 <th>ID</th>
 <th>What</th>
-<th>My suggestion</th>
+<th>(a) Pushback</th>
+<th>(b) Recommendation</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>B6</strong> ✅</td>
-<td>Your new basic set fixes it: otter starter vs hummingbird starter is <strong>52.9%</strong>. The per-card spread inside the set is wide (Duck Paddler 79% … Otter Kit 26%): see the <span class="doc-ref" title="Project doc: claude/starter-decks-2026-10-10.md">starter-decks note</span></td>
-<td>Balance within the set (your pass)</td>
+<td><strong>B6</strong></td>
+<td>Card balance inside the basic set (Duck Paddler 79% … Otter Kit 26%)</td>
+<td>You're still playing the cards, so I haven't touched balance. The tutorial now uses the weakest Base cards on purpose, so the spread matters less early on</td>
+<td>Do your pass after a few more evenings of play; I can run the win-rate sheet on demand</td>
 </tr>
 <tr>
 <td><strong>D20</strong></td>
-<td>Devilry is built from your list. Six of the rules were my readings. <strong>Darkness is gained:</strong> +1 each time one of your units perishes, shown only if your deck has a Devilry card</td>
-<td>Keep all six</td>
+<td>Six Devilry rules were my readings (Darkness +1 per unit of yours that perishes, …)</td>
+<td>Darkness from your own losses rewards losing trades; a deck can farm it with cheap chaff</td>
+<td>Keep, but cap Darkness at 10 so it can't snowball</td>
 </tr>
 <tr>
-<td><strong>D23</strong> ✅</td>
-<td>Ecclesia is built (Prayer, the offering, 6 keywords, 9 cards). Satiety's rule was my reading of the name</td>
-<td>Check Satiety</td>
-</tr>
-<tr>
-<td><strong>D21</strong> ✅ / <strong>D22</strong> ✅</td>
-<td>Backstab is built as you described. <strong>Fast Forward is built too (2026-10-12):</strong> <code>fastForward: N</code> gives a unit N extra solo turns before its first combat (Wait −1, or a swing). No card carries it yet</td>
-<td>Put it on a card when you want it</td>
+<td><strong>D23</strong></td>
+<td>Satiety's rule was my reading of the name</td>
+<td>Nobody has played an Ecclesia deck yet, so the rule is untested</td>
+<td>Keep; revisit after the first Ecclesia playtest</td>
 </tr>
 <tr>
 <td><strong>D24</strong></td>
-<td>Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too?</td>
+<td>Arena: the second player gets an extra card. Add that to Conquest?</td>
+<td>Conquest fights are already tuned with the AI going first; adding a card shifts every map's difficulty at once</td>
 <td>Keep Conquest as is</td>
 </tr>
 <tr>
-<td><strong>S1 👥</strong></td>
-<td>Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function</td>
-<td>Say "apply it"</td>
-</tr>
-<tr>
 <td><strong>D26</strong></td>
-<td>Readings I took tonight: Anti-Air went on <strong>Otter Centurion</strong> (2/8), because on Otter Kit it broke the tutorial for Hummingbird players. "SSS fast" means a win by <strong>round 8</strong>. The rare S find starts at <strong>map 5</strong> at <strong>12%</strong>. Laurels (PvP) buy nothing yet</td>
-<td>Keep, or say otherwise</td>
+<td>Anti-Air→Boomerang on Otter Centurion, "SSS fast" = round 8, rare S find from Map 5 at 12%</td>
+<td>Boomerang got stronger tonight (hits there and back), so Otter Centurion is now a better early card</td>
+<td>Keep; watch Centurion's win rate in your play</td>
 </tr>
 <tr>
 <td><strong>D27</strong></td>
-<td>Readings from the 20:32 list: Sweep is now a cleave (N to each unit beside the target); "Trample" already existed as Overwhelm and is renamed <strong>Stampede</strong>; Bleed no longer hurts when hit; the CPU's new card choice moved Otters vs Hummingbirds starters to ~66% (your balance pass)</td>
-<td>Keep, or say otherwise</td>
+<td>Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit</td>
+<td>None</td>
+<td>Keep</td>
 </tr>
 <tr>
 <td><strong>D28</strong></td>
-<td>Readings from the 21:29 list: the Flea Market sits on Map 30, which doesn't exist yet, so it's admin-only for now (the Map 20 World Boss sub-map isn't built either); the new side skirmishes branch off the trail instead of being inserted into it, so no one's progress changes; the Mystery Booster is pool 99; sub-map fights are coded like 2-G1; "chaos returns" after Map 40 is sketched in the VFX Playground, not built</td>
-<td>Keep; build Maps 13–30 before the Flea Market can open</td>
-</tr>
-<tr>
-<td><strong>D29</strong> ✅</td>
-<td>Built with my defaults (2026-10-11 09:50); <strong>reordered 18:10 at your call: the 13 original maps are Maps 1–13 again, the new maps 14–23, counted from 1.</strong> The six questions at the top of <span class="doc-ref" title="Project doc: claude/card-list-2026-10-11.md">card list v2</span>: Thistlewood as Map 1, Map 9 as the Mire, deep sea after 20, a 17-A Canopy sub-map, the 1% roll, 5 🍯 per Sunfeather Pack</td>
-<td>Yes to all six; then I rebuild the road in the 0–20 order</td>
-</tr>
-<tr>
-<td><strong>D30</strong> ▶️</td>
-<td>Art for the 22 new faction-pack cards: <strong>21 of 22 done</strong> on your PixelLab session, 8 wired; the rest and the new title-screen art get wired at the next check-in</td>
-<td>Nothing to do</td>
-</tr>
-<tr>
-<td><strong>D31</strong> ✅</td>
-<td>Level caps: your limit break answers it. Cards break to <strong>Lv 11</strong> after 5 fed duplicates (cost = the road to 10 again). Castles break <strong>20 → 25</strong> with Ember Cores and a Dragon Scale. <strong>Since 22:40:</strong> limit breaks open at Map 50; levels 5–8 at Map 16, 9 at Map 26, 10 at Map 31; level 0 → 1 takes a mote of materia</td>
-<td>Done</td>
+<td>Flea Market sits on Map 30 (admin-only until it exists)</td>
+<td>With Map 0 added, "Map 30" is now the 31st map; I kept the number, not the position</td>
+<td>Keep; build Maps 13–30 before it opens</td>
 </tr>
 <tr>
 <td><strong>D32</strong></td>
-<td>Wildpaths (PvE passives) is a preview with 21 draft skills on three trails. Earning Path points: 1 per map cleared?</td>
-<td>1 per map, +1 per boss S rank</td>
-</tr>
-<tr>
-<td><strong>D33</strong> ✅</td>
-<td>Day and night no longer switch. Every Conquest fight is day, except the night maps (Caves &amp; Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga). Arena rule sets keep their own cycles. Real time (7 PM–7 AM day, with a doubled twilight on the minute) is an option in the skirmish editor, set on no map. The Nocturnal/Diurnal "section of effects" passive waits for your idea</td>
-<td>Pick the night maps you want</td>
+<td>Wildpaths: earning Path points</td>
+<td>Points are counted (1 per map cleared, +1 per boss S rank) but nothing spends them yet</td>
+<td>Yes as counted; I'll wire spending when you pick the three trails</td>
 </tr>
 <tr>
 <td><strong>D34</strong></td>
-<td>Your map table is applied (<span class="doc-ref" title="Project doc: claude/map-schedule-2026-10-12.md">note</span>). My readings: a free pack comes on a map's boss first clear, before that pack is sold (A free on 3, sold from 5); "Wandering Trader A" is a camp spot on Map 13 that opens Mystery Boosters (5 a visit); errands come from post-fight conversations from Map 9. Your dungeon sub-maps 6A, 9A, 12A, 14A–D, 15A and 18A don't exist yet</td>
-<td>Keep; tell me which dungeon to build first</td>
+<td>Map table readings (free packs, Wandering Trader on Map 13, errands from Map 9)</td>
+<td>With the new Map 1, Maps 2 onwards keep their numbers, so the table still holds. Only the Armoury moved: it stays on Map 0 (you need decks early), not Map 1</td>
+<td>Keep; say if the Armoury should move to Clovermead</td>
 </tr>
 <tr>
 <td><strong>D35</strong></td>
-<td>Base cards: a boss's first clear levels up to <strong>2</strong> Base cards in your deck (lowest first); an elite's gives a spare Base copy. Errands pay 4–8% of a Materia Unit</td>
-<td>Keep, or give the numbers</td>
+<td>Base growth from bosses; errands pay 4–8% of a Materia Unit</td>
+<td>Your note tonight: Base cards are weak, strong mid-levels, fade at 10, Lv 11 rebalances. Bosses levelling them early fits that</td>
+<td>Keep</td>
 </tr>
 <tr>
 <td><strong>D36</strong></td>
-<td>Readings from tonight's skills: <strong>Swipe</strong> is now "steal N Lumber on a landed swing" (my proposal); <strong>Pack N</strong> = +N Health on arrival per ally of its type (you left it blank); the onReady skill is named <strong>Converge</strong> (enemy / your / both boards). <strong>Twin Strike</strong> does what Frenzy already did, so I suggest Frenzy becomes "attacks again after a kill"</td>
-<td>Keep the names; say yes to the Frenzy change</td>
+<td>Frenzy becomes "attacks again after a kill" (Twin Strike already does Frenzy's old job)</td>
+<td>Two keywords doing the same thing confuse players</td>
+<td>Say yes and I'll switch it (3 cards change)</td>
 </tr>
 <tr>
 <td><strong>D37</strong></td>
-<td>Readings from the 21:10 list: a returning <strong>Boomerang</strong> hits whatever stands in front of it then (not necessarily what it hit); <strong>all enemy cards</strong> in a boss fight show extended art (not just the boss's card); the unobtainable sweep spares base/starter/tutorial cards, tokens, tests and materia; tutorial part 1 still hands over the starter deck, part 2 gives the Ally Pack</td>
-<td>Keep, or say which to change</td>
+<td>Boomerang return target, boss enemy extended art, unobtainable sweep scope</td>
+<td>Superseded tonight by your Boomerang rule</td>
+<td>Close</td>
 </tr>
 <tr>
 <td><strong>D38</strong></td>
-<td>Your list of obtainable cards: tick <strong>Obtainable</strong> in the card editor (or send me the list and I'll set them)</td>
-<td>Send the list</td>
+<td>Which cards are obtainable</td>
+<td><strong>This is why packs feel samey:</strong> pools have only a handful of obtainable cards, so even with tonight's variety fix a pack can only show what's allowed</td>
+<td>Send the list, or say "make Maps 0–5 rewards and Pack A obtainable" and I'll do that much</td>
 </tr>
 <tr>
 <td><strong>D39</strong></td>
-<td>Readings from the 22:40 list (<span class="doc-ref" title="Project doc: claude/progression-2026-10-12.md">note</span> §5). <strong>Inspiring N</strong> = the allies beside it get +N Attack on their next swing (you left it open). <strong>Loyal / Usurper</strong> are the leader-conditional pair. <strong>Worthy N</strong> gives the other side 1 Lumber on death (not N). <strong>Tailwind</strong> is the existing spell, now also speeding Flyers. <strong>Pitchfork</strong> now picks off the weakest of the three facing units. <strong>Pitching</strong> opens after Map 1's last fight</td>
-<td>Keep, or say which to change</td>
+<td>22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching)</td>
+<td>Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired</td>
+<td>Keep the rest</td>
 </tr>
 <tr>
 <td><strong>D40</strong></td>
-<td>Max energy +1 per 20 different skirmishes cleared (to +10), and a <strong>Town</strong> page (a signpost where the Nest is; freely placed buildings with ambience by ground) — <span class="doc-ref" title="Project doc: claude/progression-2026-10-12.md">proposal</span> §4</td>
-<td>Yes to both; Town starts with the Nest only</td>
+<td>Max energy and the Town</td>
+<td><strong>Built tonight:</strong> +1 max Energy per 20 different skirmishes cleared, up to +10, shown in the Energy pop-up. The Town is a big page; I'd rather you OK it first</td>
+<td>Yes to the Town; start with the signpost and the Nest only</td>
 </tr>
 <tr>
 <td><strong>D41</strong></td>
-<td>Late dungeons: the "appears N days after a clear, or after a quest" switch is built. Suggested schedule: 14A–D two days apart after Map 14's boss, 15A five days after Map 15, 18A after the Map 17 quest. World bosses every 10 maps from Map 40</td>
-<td>Build 14A first</td>
+<td>Late dungeons (14A–D, 15A, 18A)</td>
+<td><strong>14A is built tonight</strong> (The Mycelium Deep, five fights, two days after Map 14's boss). The rest need new decks and art (about 35 more fights)</td>
+<td>Play 14A; if it feels right I'll build 14B–D the same way</td>
 </tr>
 <tr>
 <td><strong>D42</strong></td>
-<td>Readings from the 23:42 list: <strong>Trident</strong> = your old Sweep idea (left, centre, right; an empty side hits the castle); <strong>Pitchfork</strong> = Trident + Pierce; <strong>Sweep</strong> stays the cleave. <strong>Advanced packs</strong> open at the pack's sale map + 25 (Bronze 30, Silver 33, Gold 38). The rain skill is named <strong>Rainrunner</strong>. The world map appears once Map 2's boss is first cleared. The "both tribes" bonus card is a random Common at cost 0</td>
-<td>Keep, or say which to change</td>
+<td>23:42 readings (Trident, Pitchfork, Sweep; advanced packs at sale map + 25; Rainrunner; world map after Map 2)</td>
+<td>None</td>
+<td>Keep</td>
 </tr>
 <tr>
 <td><strong>D43</strong></td>
-<td>"The wait logo or numbers give me img not found": I couldn't reproduce it (no broken images in matches, and the Wait badge is an hourglass emoji). A screenshot with the browser and device would pin it down</td>
-<td>Send a screenshot</td>
+<td>"img not found" on the Wait badge</td>
+<td>Still not reproduced; tonight's clock-icon change touched the same badges</td>
+<td>Send a screenshot if you see it again</td>
+</tr>
+<tr>
+<td><strong>D44</strong></td>
+<td>Tonight's readings: Outskirts = <strong>Map 0</strong>, new <strong>Map 1 Clovermead</strong> (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits <strong>any</strong> unit of yours in its lane without Boomerang. Raids are a full match: <strong>three rows a side</strong>, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only)</td>
+<td>The raid rows are a first version: the boss's column attacks from the trench aren't in the full game yet, and the allies' rows from the trench are gone (one deck, yours)</td>
+<td>Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours</td>
 </tr>
 <tr>
 <td><strong>T3 / S1 / S2</strong></td>
-<td>Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it"</td>
-<td>Apply all three</td>
+<td>One-use fight seeds, admin player list, anti-cheat tier 1</td>
+<td>All three write to the live Supabase, so they wait for you</td>
+<td>Say "apply it" when you're at the desk</td>
 </tr>
 </tbody>
 </table>
-<p>All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".</p>
+<p><strong>Closed tonight:</strong> D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.</p>
 <h2>2. Where things stand</h2>
 <ul>
 <li><strong>Balancing:</strong> the <span class="doc-ref" title="Project doc: claude/card-list-2026-10-10.md">card list</span> has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood &amp; Village; move 3 overpowered and 18 biome cards out; add 14).</li>
@@ -305,14 +302,8 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <ul>
 <li><strong>The claude.ai project</strong> is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).</li>
 <li><strong>Supabase:</strong> turn on leaked-password protection (Auth → Passwords, one click).</li>
-<li><strong>Art:</strong> PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:<ul>
-<li>the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant, The Unremembered and the ten Devilry cards;</li>
-<li>Ant Warrior, the critters and the Grotto rewards.</li>
-</ul>
-</li>
-</ul>
-<h2>⚠️ Earlier today</h2>
-<p>The live game failed to load from 09:10 to 10:12 (a broken line in the main script). It's fixed, and every release now passes a syntax check first.</p></article></section>
+<li><strong>Art (PixelLab in your Chrome):</strong> 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 12 are in the game; the run paused when your computer went to sleep. Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.</li>
+</ul></article></section>
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
 <section class="panel" id="p-playground" role="tabpanel" aria-labelledby="t-playground" hidden><iframe title="VFX Playground" data-src="playground.html"></iframe></section>
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
@@ -325,7 +316,21 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
-<h2>2026-10-12 (11:00)</h2>
+<h2>2026-10-12 (03:30)</h2>
+<ul>
+<li><strong>Raids are a full match with three rows a side.</strong><ul>
+<li>Each side has a front, middle and back row.</li>
+<li>A card can go behind one of your units. Reserves don't fight and can't be hit, and they step up a row at the start of a round when the column in front of them clears. Arriving at the front counts as arriving: On Spawn effects fire then.</li>
+<li>The boss's guards hold its front, with more of its deck in the middle and back.</li>
+<li>The trench minigame is benched; Admin can still open it.</li>
+</ul>
+</li>
+<li><strong>Max Energy grows:</strong> +1 for every 20 different skirmishes cleared, up to +10. The Energy pop-up shows how close you are (D40).</li>
+<li><strong>14A, The Mycelium Deep:</strong> five fights under The Morel Hollow (Map 14). It appears two days after the Morel Monarch is first beaten (D41, built as I recommended).</li>
+<li><strong>Fix:</strong> matches that run Open rules without saying so (the tutorial among them) now also draw Open rules on screen.</li>
+<li><strong>Action items:</strong> every open item now has my pushback and my recommendation.</li>
+</ul>
+<h2>2026-10-12 (01:30)</h2>
 <ul>
 <li><strong>Maps</strong><ul>
 <li><strong>Map 0 and a new Map 1.</strong> The Outskirts are Map 0 now. A new meadow map, <strong>Clovermead</strong> (five easy fights with Base cards, boss The Old Hare), sits between it and Thistlewood, so every later map keeps its number.</li>
