@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (09:20)
+- **Counters in card details:** a skill's line now says what answers it. For example, Flying is "Answered by: Reach, Anti-Air", and Poison is "Answered by: Regeneration, Bloom, Healing". Only answers that really work in the engine are listed.
+- **New achievement on the results screen:** a gold banner names any achievement that became ready to claim, once each.
+
 ## 2026-10-11 (07:10)
 - **Wandering Traveller:** gives +1 Lumber once, when it first becomes Ready, instead of every round.
 - **Play slots:** they're invisible until you pick up a card (drag it or tap it), then fade in. They fade in once the cards have settled, so a new slot no longer appears in the wrong place and jumps.

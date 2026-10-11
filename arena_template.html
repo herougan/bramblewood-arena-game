@@ -7594,6 +7594,11 @@
   @media (max-width:860px){ .home-note.note-paths{position:static; rotate:0deg;} }
   .new-skill-ribbon{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 2px; padding:5px 10px; border-radius:10px; background:linear-gradient(90deg, rgba(255,214,110,.22), rgba(255,214,110,.06)); border:1px dashed rgba(200,150,40,.55); font-size:13px;}
   .new-skill-ribbon b{color:#9a6a12;} .nsr-skill{padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid rgba(200,150,40,.35); cursor:help;}
+  .skill-counter{display:block; margin-top:2px; font-size:.86em; opacity:.75; font-style:italic;}
+  .winloss-achv{display:flex; align-items:center; gap:10px; margin:10px auto 0; padding:8px 14px; max-width:420px; border-radius:12px; background:linear-gradient(90deg, rgba(255,210,90,.28), rgba(255,210,90,.08)); border:1px solid rgba(214,160,40,.6); text-align:left; animation:waPop .6s cubic-bezier(.2,1.5,.4,1) .5s both;}
+  .winloss-achv .wa-ico{font-size:26px;} .winloss-achv small{display:block; opacity:.75;}
+  @keyframes waPop{from{transform:scale(.6); opacity:0;} to{transform:none; opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .winloss-achv{animation:none;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

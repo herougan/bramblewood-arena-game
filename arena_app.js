@@ -977,6 +977,21 @@ function speciesLine(def){
   const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
   return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}`;
 }
+// Counters (2026-10-11, from the mechanics on-ramp doc: "a per-skill counter line in its details"). Only the answers that
+// truly work in the engine are listed.
+const SKILL_COUNTERS = {
+  flying: ['reach', 'antiAir'],
+  armor: ['rend', 'poison', 'pierce'],
+  shell: ['rend'],
+  evasive: ['sweep', 'swipe'],
+  stealth: ['guardian'],
+  swarm: ['sweep', 'swipe'],
+  poison: ['regen', 'bloom', 'healing'],
+  bleed: ['regen', 'bloom', 'healing'],
+  guardian: ['stealth'],
+  revive: ['exileAns'],
+};
+const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 function describeEffects(def, liveCard){
   const lines = [];
   { const sl = speciesLine(def); if(sl) lines.push(sl); }
@@ -1009,7 +1024,8 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
-    lines.push(`${ic(p.key)}${head} — ${p.desc(v)}`); });
+    const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
+    lines.push(`${ic(p.key)}${head} — ${p.desc(v)}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -6203,6 +6219,24 @@ const ACHIEVEMENT_DEFS = [
 // draws. Mirrors renderPlayerStatsSubpage's own clearedNodes/mapsFullyCleared computation
 // exactly (including the tutorial-marker-node exclusion) so the two panels can never disagree
 // about what "5 nodes cleared" means.
+// "New achievement" on the results screen (2026-10-11): achievements that became ready to claim since you last looked.
+// Remembered per browser, so each one is announced once.
+const ACHV_ANNOUNCED_KEY = 'bramblewood_achv_announced_v1';
+function newAchievementsChipHTML(m){
+  try{
+    if(!m || !m.over) return '';
+    if(!m.newAchv){
+      let seen; try{ seen = new Set(JSON.parse(localStorage.getItem(ACHV_ANNOUNCED_KEY) || '[]')); }catch(e){ seen = new Set(); }
+      const ctx = achievementContext();
+      const ready = ACHIEVEMENT_DEFS.filter(d=> achievementStatus(d, ctx).claimable);
+      m.newAchv = ready.filter(d=> !seen.has(d.id));
+      ready.forEach(d=> seen.add(d.id)); try{ localStorage.setItem(ACHV_ANNOUNCED_KEY, JSON.stringify([...seen])); }catch(e){}
+    }
+    if(!m.newAchv.length) return '';
+    const names = m.newAchv.slice(0, 2).map(d=> (d.icon ? d.icon + " " : "") + escapeHtml(d.title || d.id)).join(', ') + (m.newAchv.length > 2 ? ` +${m.newAchv.length - 2}` : '');
+    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}<small>${_t('Claim it on the Achievements board.')}</small></span></div>`;
+  }catch(e){ return ''; }
+}
 function achievementContext(){
   const s = loadMatchStats();
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
@@ -21744,7 +21778,7 @@ function matchStatsHTML(m){
       ${dReward && dReward.metal>0 ? `<span class="hud-pill forge-cur-metal" title="Full clear payout">🔩 ${rewardCountSpan(dReward.metal)} Metal</span>` : ''}
     </div>` : '';
   return `<div class="winloss-stats">
-    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}
+    ${(m.mode==='conquest' || m.mode==='tutorial') ? rewardsPanelHTML(m) : rewardsHTML}${raidHTML}${raidOfflineHTML}${pvpHTML}${asyncHTML}${gauntletHTML}${liveHTML}${dungeonHTML}${newAchievementsChipHTML(m)}
     <div class="wls-compact" aria-label="Fight stats">
       <span title="Damage you dealt (enemy: ${totals.B.dealt})">⚔️ <b>${totals.A.dealt}</b> dealt</span>
       <span title="Damage you took (enemy took ${totals.B.taken})">🛡️ <b>${totals.A.taken}</b> taken</span>
