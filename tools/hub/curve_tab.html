@@ -1,0 +1,110 @@
+<section class="panel" id="p-curve" role="tabpanel" aria-labelledby="t-curve" hidden><div class="crv">
+<div class="dec-head"><h2>Difficulty curve</h2><p id="crvLead">Three reference decks play every fight on the road. Read left to right: it should climb.</p></div>
+<div class="crv-key" id="crvKey"></div>
+<figure class="crv-fig"><div class="crv-scroll"><svg id="crvSvg" role="img" aria-label="Difficulty index of every fight in road order"></svg></div>
+<figcaption id="crvCap"></figcaption></figure>
+<h3 class="crv-h">Win rate of each deck, by map</h3>
+<div class="crv-scroll"><svg id="crvWin" role="img" aria-label="Average win rate per map for the three reference decks"></svg></div>
+<h3 class="crv-h">Out of step</h3>
+<p class="crv-note" id="crvOutNote"></p>
+<div id="crvOut" class="crv-out"></div>
+<h3 class="crv-h">The reference decks</h3>
+<div id="crvDecks" class="crv-decks"></div>
+<h3 class="crv-h">Every fight</h3>
+<div class="dec-bar"><input type="search" id="crvQ" placeholder="Search fights or maps…" aria-label="Search fights"><div class="dec-seg" role="group" aria-label="Kind" id="crvSeg"><button data-k="" aria-pressed="true">All</button><button data-k="skirmish" aria-pressed="false">Skirmish</button><button data-k="elite" aria-pressed="false">Elite</button><button data-k="boss" aria-pressed="false">Boss</button></div></div>
+<div class="bal-wrap"><table class="bal-t crv-t"><thead><tr><th data-k="i">#</th><th data-k="mapNo">Map</th><th data-k="key">Fight</th><th data-k="kind">Kind</th><th data-k="hp">Castle</th><th data-k="s">Starter</th><th data-k="m">Mid-road</th><th data-k="x">Strong</th><th data-k="xr">Rounds</th><th data-k="xl">Health lost</th><th data-k="index">Index</th></tr></thead><tbody id="crvRows"></tbody></table></div>
+</div></section>
+<style>
+.crv{max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:12px;}
+.crv-key{display:flex; flex-wrap:wrap; gap:14px; font-size:14px; color:var(--ink-muted);}
+.crv-key span{display:inline-flex; align-items:center; gap:6px;}
+.crv-key i{display:inline-block; width:12px; height:12px; border-radius:50%;}
+.crv-fig{margin:0; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px;}
+.crv-scroll{overflow-x:auto;}
+.crv-fig figcaption{font-size:13px; color:var(--ink-muted); padding:6px 4px 0;}
+#crvSvg{display:block; min-width:900px; width:100%; height:330px;}
+#crvWin{display:block; min-width:700px; width:100%; height:240px; background:var(--surface); border:1px solid var(--line); border-radius:10px;}
+.crv-h{margin:10px 0 0; font-size:17px;}
+.crv-note{margin:0; color:var(--ink-muted); font-size:14px; max-width:80ch;}
+.crv-out{display:flex; flex-direction:column; gap:6px;}
+.crv-out div{background:var(--surface); border:1px solid var(--line); border-left-width:4px; border-radius:8px; padding:7px 10px; font-size:14px;}
+.crv-out .easy{border-left-color:#3b7fc4;} .crv-out .hard{border-left-color:#c2533a;}
+.crv-decks{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:10px;}
+.crv-decks div{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+.crv-decks b{display:block; font-size:15px; margin-bottom:4px;}
+.crv-t td.num{text-align:right; font-variant-numeric:tabular-nums;}
+.crv-t td.ix{font-weight:700;}
+.crv-t tr.side td:first-child{opacity:.7;}
+svg .ax{stroke:var(--line);} svg .axt{fill:var(--ink-muted); font-size:11px;} svg .mapt{fill:var(--ink-muted); font-size:10.5px;}
+svg .trend{fill:none; stroke:var(--ink); stroke-width:2.2;}
+svg .mapband{fill:var(--surface-2); opacity:.55;}
+</style>
+<script>
+(function(){
+const C = __CURVE__;
+if(!C || !C.fights || !C.fights.length){ document.getElementById('crvLead').textContent = 'No curve has been measured yet.'; return; }
+const F = C.fights.map((f, i)=> Object.assign({i: i+1}, f));
+const KC = {skirmish:'#6c9a5b', elite:'#c98a1b', boss:'#c2533a', finalboss:'#8c2d5a'};
+const DC = {starter:'#3b7fc4', mid:'#c98a1b', strong:'#2f6b3a'};
+const esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+document.getElementById('crvLead').innerHTML = `Three reference decks play every fight on the road (${F.length} fights, ${C.games} games each, measured ${esc(C.generated)}). Each dot is one fight's <b>difficulty index</b>, 0 to 100: the average of how often the Starter, Mid-road and Strong decks lose, plus how much castle Health the Strong deck loses. So a fight every deck beats still scores higher when it costs more. The line is each map's average. Read left to right: it should climb.`;
+document.getElementById('crvKey').innerHTML = Object.entries({Skirmish:KC.skirmish, Elite:KC.elite, Boss:KC.boss, 'Campaign boss':KC.finalboss}).map(([k,c])=> `<span><i style="background:${c}"></i>${k}</span>`).join('') + `<span><i style="background:var(--ink); border-radius:2px; height:3px; width:16px"></i>Map average</span>`;
+// map groups in order
+const maps = []; F.forEach(f=>{ let g = maps[maps.length-1]; if(!g || g.map!==f.map){ g = {map:f.map, no:f.mapNo, name:f.mapName, side:f.side, fights:[]}; maps.push(g); } g.fights.push(f); });
+maps.forEach(g=>{ g.avg = g.fights.reduce((t,f)=> t+f.index, 0)/g.fights.length; ['starter','mid','strong'].forEach(d=> g[d] = g.fights.reduce((t,f)=> t+f.res[d].win, 0)/g.fights.length); });
+// main chart
+const svg = document.getElementById('crvSvg'), W = Math.max(900, F.length*6.2), H = 330, L = 40, R = 12, T = 14, B = 46;
+svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.style.minWidth = W+'px';
+const x = i=> L + (i-0.5)*(W-L-R)/F.length, y = v=> T + (100-v)*(H-T-B)/100;
+let s = '';
+[0,25,50,75,100].forEach(v=>{ s += `<line class="ax" x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text class="axt" x="${L-6}" y="${y(v)+4}" text-anchor="end">${v}</text>`; });
+maps.forEach((g, k)=>{ const a = g.fights[0].i, b = g.fights[g.fights.length-1].i;
+  if(k%2===0) s += `<rect class="mapband" x="${x(a)-3}" y="${T}" width="${x(b)-x(a)+6}" height="${H-T-B}"/>`;
+  s += `<text class="mapt" x="${(x(a)+x(b))/2}" y="${H-B+14}" text-anchor="middle">${esc(g.no)}</text>`; });
+s += `<text class="axt" x="${L}" y="${H-8}">Map →</text>`;
+s += `<path class="trend" d="${maps.map((g,k)=>{ const a = g.fights[0].i, b = g.fights[g.fights.length-1].i; return `${k?'L':'M'}${x(a)} ${y(g.avg)} L${x(b)} ${y(g.avg)}`; }).join(' ')}"/>`;
+F.forEach(f=>{ const r = f.kind==='skirmish' ? 3.2 : f.kind==='elite' ? 4.4 : 5.6;
+  s += `<circle cx="${x(f.i)}" cy="${y(f.index)}" r="${r}" fill="${KC[f.kind]||'#888'}" stroke="var(--surface)" stroke-width="1"><title>${esc(f.mapNo)} · ${esc(f.key)} ${esc(f.name)} (${f.kind}): index ${f.index}. Starter ${f.res.starter.win}%, Mid ${f.res.mid.win}%, Strong ${f.res.strong.win}% (${f.res.strong.hpLost}% Health lost)</title></circle>`; });
+svg.innerHTML = s;
+const first = maps.slice(0,3).reduce((t,g)=> t+g.avg,0)/3, last = maps.slice(-3).reduce((t,g)=> t+g.avg,0)/3;
+document.getElementById('crvCap').textContent = `The first three maps average ${first.toFixed(0)}, the last three ${last.toFixed(0)}. Hover a dot for its numbers.`;
+// win-rate by map chart
+const w2 = document.getElementById('crvWin'), W2 = Math.max(700, maps.length*30), H2 = 240, L2 = 40, B2 = 30, T2 = 34;
+w2.setAttribute('viewBox', `0 0 ${W2} ${H2}`); w2.style.minWidth = W2+'px';
+const x2 = k=> L2 + (k+0.5)*(W2-L2-12)/maps.length, y2 = v=> T2 + (100-v)*(H2-T2-B2)/100;
+let s2 = ''; [0,50,100].forEach(v=>{ s2 += `<line class="ax" x1="${L2}" x2="${W2-12}" y1="${y2(v)}" y2="${y2(v)}"/><text class="axt" x="${L2-6}" y="${y2(v)+4}" text-anchor="end">${v}%</text>`; });
+maps.forEach((g,k)=> s2 += `<text class="mapt" x="${x2(k)}" y="${H2-10}" text-anchor="middle">${esc(g.no)}</text>`);
+['starter','mid','strong'].forEach(d=>{ s2 += `<path fill="none" stroke="${DC[d]}" stroke-width="2.4" d="${maps.map((g,k)=> `${k?'L':'M'}${x2(k)} ${y2(g[d])}`).join(' ')}"/>`;
+  maps.forEach((g,k)=> s2 += `<circle cx="${x2(k)}" cy="${y2(g[d])}" r="3" fill="${DC[d]}"><title>${esc(g.no)} ${esc(g.name)}: ${d} ${g[d].toFixed(0)}%</title></circle>`); });
+const lx = L2+8; s2 += ['starter','mid','strong'].map((d,k)=> `<g transform="translate(${lx + k*120},6)"><rect width="14" height="4" y="4" fill="${DC[d]}"/><text class="axt" x="20" y="10">${d==='mid'?'Mid-road':d[0].toUpperCase()+d.slice(1)}</text></g>`).join('');
+w2.innerHTML = s2;
+// out of step
+const out = [];
+maps.forEach((g, k)=>{ const prev = maps.slice(0, k).filter(p=> !p.side).slice(-1)[0], next = maps.slice(k+1).filter(p=> !p.side)[0];
+  g.fights.forEach(f=>{
+    if(prev && (f.kind==='elite' || f.kind==='boss' || f.kind==='finalboss') && f.index < prev.avg - 8) out.push({f, cls:'easy', why:`${f.kind==='elite'?'an elite':f.kind==='boss'?'a boss':'the campaign boss'} at ${f.index}, easier than the previous map's average (${prev.avg.toFixed(0)})`});
+    else if(next && f.kind==='skirmish' && f.index > next.avg + 15) out.push({f, cls:'hard', why:`a skirmish at ${f.index}, harder than the next map's average (${next.avg.toFixed(0)})`});
+  }); });
+const mains = maps.filter(g=> !g.side), dips = [];
+mains.forEach((g, k)=>{ if(k===0) return; const best = Math.max(...mains.slice(0, k).map(p=> p.avg)); if(g.avg < best - 4) dips.push({g, best, prev: mains.slice(0,k).find(p=> p.avg===best)}); });
+dips.slice().reverse().forEach(d=> out.unshift({f:{mapNo:d.g.no, key:'', name:d.g.name}, cls:'easy', why:`the whole map averages ${d.g.avg.toFixed(0)}, below Map ${d.prev.no} (${d.best.toFixed(0)}) earlier on the road`}));
+document.getElementById('crvOutNote').textContent = out.length ? `${out.length} place${out.length===1?' breaks':'s break'} the climb: a map easier than one before it, an elite or boss easier than the map before it, or a skirmish harder than the map after it.` : 'Nothing breaks the climb.';
+document.getElementById('crvOut').innerHTML = out.map(o=> `<div class="${o.cls}"><b>${o.f.key ? `${esc(o.f.mapNo)} · ${esc(o.f.key)} ${esc(o.f.name)}` : `Map ${esc(o.f.mapNo)}, ${esc(o.f.name)}`}</b>: ${esc(o.why)}.</div>`).join('');
+// decks
+const DN = {starter:'Starter', mid:'Mid-road', strong:'Strong'};
+const DD = {starter:'The deck a new Otter player starts with.', mid:'Built from Base cards and every map reward up to Map 10.', strong:'Built from everything you can own: Base, every map reward and every pack.'};
+document.getElementById('crvDecks').innerHTML = Object.entries(C.decks).map(([k,v])=> `<div><b style="color:${DC[k]}">${DN[k]||k}</b>${esc(DD[k]||'')}<br>${v.cards.map(c=> `${c.n}× ${esc(c.name)}`).join(', ')}</div>`).join('');
+// table
+let kind = '', q = '', sortK = 'i', dir = 1;
+const v = (f,k)=> k==='s'?f.res.starter.win : k==='m'?f.res.mid.win : k==='x'?f.res.strong.win : k==='xr'?(f.res.strong.rounds||0) : k==='xl'?f.res.strong.hpLost : f[k];
+function rows(){
+  const list = F.filter(f=> (!kind || f.kind===kind || (kind==='boss' && f.kind==='finalboss')) && (!q || `${f.mapNo} ${f.mapName} ${f.key} ${f.name}`.toLowerCase().includes(q)))
+    .sort((a,b)=>{ const p = v(a,sortK), r = v(b,sortK); return (p<r?-1:p>r?1:a.i-b.i)*dir; });
+  document.getElementById('crvRows').innerHTML = list.map(f=> `<tr class="${f.side?'side':''}"><td class="num">${f.i}</td><td>${esc(f.mapNo)} <span style="color:var(--ink-muted)">${esc(f.mapName)}</span></td><td>${esc(f.key)} ${esc(f.name)}</td><td>${f.kind==='finalboss'?'campaign boss':f.kind}</td><td class="num">${f.hp}</td><td class="num">${f.res.starter.win}%</td><td class="num">${f.res.mid.win}%</td><td class="num">${f.res.strong.win}%</td><td class="num">${f.res.strong.rounds ?? '–'}</td><td class="num">${f.res.strong.hpLost}%</td><td class="num ix">${f.index}</td></tr>`).join('');
+}
+document.getElementById('crvQ').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); rows(); });
+document.getElementById('crvSeg').addEventListener('click', e=>{ const b = e.target.closest('[data-k]'); if(!b) return; kind = b.dataset.k; document.querySelectorAll('#crvSeg button').forEach(x=> x.setAttribute('aria-pressed', String(x===b))); rows(); });
+document.querySelector('.crv-t thead').addEventListener('click', e=>{ const th = e.target.closest('[data-k]'); if(!th) return; const k = th.dataset.k; if(sortK===k) dir *= -1; else { sortK = k; dir = ['index','xl','xr','hp'].includes(k) ? -1 : 1; } rows(); });
+rows();
+})();
+</script>

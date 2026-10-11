@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (17:10)
+- **Hub → 📈 Difficulty: the difficulty curve.** Three reference decks play all 175 fights on the road (60 games each, side maps included; raid bosses are left to the Raid editor):
+  - **Starter:** the deck a new Otter player actually starts with.
+  - **Mid-road:** built from Base cards and every map reward up to Map 10.
+  - **Strong:** built from everything you can own.
+  - Mid-road and Strong are built by simulation: cards are ranked by their measured win rate, then a hill-climb keeps any swap that wins more across a spread of fights.
+  - **Difficulty index** (0–100) for each fight averages four things: how often each deck loses, and how much castle Health the Strong deck loses. Two fights the Strong deck always wins still differ by what they cost it.
+  - The tab charts every fight in road order with each map's average, shows each deck's win rate by map, and lists what breaks the climb. Below that are the three decklists and a sortable table of every fight.
+  - Re-run with `node tools/difficulty_curve.js`, then rebuild the hub.
+- **What the curve shows today** (map averages):
+  - **Maps 0–5 are flat, around 18–31,** and Maps 4 and 5 (Pebble Beach, Gannet Cliffs) are the easiest on the road. They're easier than Map 0.
+  - **A step at Map 6** (Sunken Hollow, 43), then a climb to about 53 by Map 9.
+  - **A plateau around 49–55 from Map 9 to Map 21.** Map 11 (Eyrie Heights, 56) is the peak, and Map 10 dips to 44.
+  - **Outlier:** 17-A y-3 Sloth Boughs (a skirmish at 64) is harder than the next map.
+  - The Starter deck wins 29–36% of Map 0–3 fights, so the first maps lean on the rewards you pick up.
+- **Card Ledger:** a new artifact, an editable sheet of every card's stats, source and balance-run win rate. Say "apply the card ledger" to put its edits into the game.
+
 ## 2026-10-11 (16:30)
 - **Why the late maps were easy: the computer couldn't afford its own cards.** The Sundered Peak decks held 4-Lumber Cave Warlords and Cataphract Destriers, and the Basalt Foundry 3-Lumber Magma Titans, with nothing in either deck that makes Lumber. Adding a Lumber maker fixed most of them without touching Health:
   - **New card: Cinder Stoker** 🦎 (Common, Volcanic, 0 Lumber, 1/7, +1 Lumber when it arrives). It's in the Basalt Foundry's 9-5, 9-7 and 9-8, and won at 9-9 Slag Runners.

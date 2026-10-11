@@ -85,6 +85,11 @@ body = md_html(rd('docs', 'action-items.md')).replace('<span class="doc-ref" tit
 BAL = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'card-balance.json'), encoding='utf-8'))
 bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'rows': [{k: r.get(k) for k in ('id','name','rarity','cost','wait','attack','health','skills','winRate','band','verdict','source','suggest','suggestRarity')} for r in BAL['rows']]}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 changelog = md_html(rd('docs', 'CHANGELOG.md'))
+# 2026-10-11 (user: "fight against EVERY single Skirmish ... and publish the win rate in our artefact"): the 📈 Difficulty
+# tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
+_curve_path = os.path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json')
+_curve_json = open(_curve_path, encoding='utf-8').read() if os.path.exists(_curve_path) else 'null'
+curve_panel = open(os.path.join(ROOT, 'tools', 'hub', 'curve_tab.html'), encoding='utf-8').read().replace('__CURVE__', json.dumps(json.loads(_curve_json), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))
 
 # 4) Claude's guide: standing instructions, skills, and the docs to read before a task.
 RULES = [
@@ -292,6 +297,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <nav role="tablist" aria-label="Pages">
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🎯 Action items</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
+<button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
@@ -318,6 +324,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
+{curve_panel}
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>
