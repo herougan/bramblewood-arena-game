@@ -2,7 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
-## 2026-10-12 (11:00)
+## 2026-10-12 (03:30)
+- **Raids are a full match with three rows a side.**
+  - Each side has a front, middle and back row.
+  - A card can go behind one of your units. Reserves don't fight and can't be hit, and they step up a row at the start of a round when the column in front of them clears. Arriving at the front counts as arriving: On Spawn effects fire then.
+  - The boss's guards hold its front, with more of its deck in the middle and back.
+  - The trench minigame is benched; Admin can still open it.
+- **Max Energy grows:** +1 for every 20 different skirmishes cleared, up to +10. The Energy pop-up shows how close you are (D40).
+- **14A, The Mycelium Deep:** five fights under The Morel Hollow (Map 14). It appears two days after the Morel Monarch is first beaten (D41, built as I recommended).
+- **Fix:** matches that run Open rules without saying so (the tutorial among them) now also draw Open rules on screen.
+- **Action items:** every open item now has my pushback and my recommendation.
+
+## 2026-10-12 (01:30)
 - **Maps**
   - **Map 0 and a new Map 1.** The Outskirts are Map 0 now. A new meadow map, **Clovermead** (five easy fights with Base cards, boss The Old Hare), sits between it and Thistlewood, so every later map keeps its number.
   - Feature spots like the Armoury show as a dark **?** until the fight that opens them is cleared.

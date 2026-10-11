@@ -3105,6 +3105,13 @@
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 230px;}
   .shop-back{float:left; margin:0 12px 8px 0;}
+  /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
+  .board-row.reserve-row{position:relative; min-height:0 !important; height:72px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
+  .board-row.reserve-row > .board-card{transform:scale(.52); transform-origin:50% 0; margin-bottom:-70px;}
+  .board-row.reserve-row.enemy > .board-card{transform-origin:50% 0;}
+  .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
+  .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
+  .board-row.reserve-row .reserve-target{border-style:dashed;}
   .battle-log{max-height:210px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; font-size:12.5px;}
   /* 2026-09-25: Battle Log now collapses by default (task #351) so the in-match screen doesn't
      have a permanent log panel eating vertical space and making the layout feel like it's

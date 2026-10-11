@@ -7541,7 +7541,11 @@ function grantCurrency(kind, amount){
 // time can be measured on every read — a plain running setInterval would reset to 0 elapsed every
 // reload and never credit the time the app was closed.
 const ENERGY_KEY = 'bramblewood_arena_energy_v1';
-const ENERGY_MAX = 20; // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
+const ENERGY_MAX_BASE = 20;
+// D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
+function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
+function energyMax(){ return ENERGY_MAX_BASE + Math.min(10, Math.floor(energyClears() / 20)); }
+function energyNextStepText(){ const n = energyClears(), bonus = Math.min(10, Math.floor(n/20)); return bonus >= 10 ? 'Max Energy fully grown (+10).' : `${n % 20}/20 different skirmishes to +1 max Energy`; } // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
                         // to matter, short enough that a returning player is rarely capped out.
 const ENERGY_REGEN_MS = 5 * 60 * 1000; // 2026-10-10 (user: "Change the energy gain rate to 1/5minute"); was 1 per minute
 // Cost scales with a node's kind, same tiering CONQUEST_NODE_REWARDS already uses (a Skirmish is
@@ -7578,7 +7582,7 @@ function loadEnergyState(){
       if(typeof p.current==='number' && typeof p.lastRegenAt==='number') return p;
     }
   }catch(e){}
-  return {current: ENERGY_MAX, lastRegenAt: Date.now()}; // first-run seed: start full, not empty.
+  return {current: energyMax(), lastRegenAt: Date.now()}; // first-run seed: start full, not empty.
 }
 function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringify(s)); }catch(e){} }
 // Energy panel (2026-10-11, user: "Clicking on Energy grants me a subwindow ... (16a) Get more energy! (16b) +5 Free energy!
@@ -7591,7 +7595,7 @@ function openEnergyPanel(anchor){
   closeEnergyPanel();
   const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin) || (typeof adminAllowed==='function' && adminAllowed()), claimed = freeEnergyClaimedToday();
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
-  pop.innerHTML = `<b>⚡ ${s.current}/${ENERGY_MAX} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
+  pop.innerHTML = `<b>⚡ ${s.current}/${energyMax()} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small><small class="ep-grow">${escapeHtml(energyNextStepText())}</small>
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5">−5</button><button type="button" class="btn small" data-ep="-1">−1</button><button type="button" class="btn small" data-ep="1">+1</button><button type="button" class="btn small" data-ep="5">+5</button></div>
@@ -7602,7 +7606,7 @@ function openEnergyPanel(anchor){
   pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
-  const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, ENERGY_MAX); saveEnergyState(st); done('⚡ Energy full.'); };
+  const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
   // instant refill tick. They show for an admin account even with Admin mode switched off.
   pop.querySelectorAll('[data-ep]').forEach(b=> b.onclick = ()=>{
@@ -7612,7 +7616,7 @@ function openEnergyPanel(anchor){
     else if(k === 'tick'){ st.current += 1; st.lastRegenAt = Date.now(); }
     else st.current = Math.max(0, st.current + (Number(k)||0));
     saveEnergyState(st); refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){}
-    const head = pop.querySelector('b'); if(head) head.textContent = `⚡ ${st.current}/${ENERGY_MAX} Energy`; const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
+    const head = pop.querySelector('b'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()} Energy`; const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
   });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
 }
@@ -7626,7 +7630,7 @@ document.addEventListener('click', e=>{ const pill = e.target.closest && e.targe
 // keeps the stored timestamp from drifting arbitrarily far into the past).
 function settleEnergy(){
   const s = loadEnergyState();
-  if(s.current >= ENERGY_MAX){
+  if(s.current >= energyMax()){
     // 2026-10-11: free daily Energy can take you over the cap; nothing regenerates while you're at or above it.
     if(s.lastRegenAt!==undefined){ s.lastRegenAt = Date.now(); saveEnergyState(s); }
     return s;
@@ -7634,11 +7638,11 @@ function settleEnergy(){
   const elapsed = Date.now() - s.lastRegenAt;
   const ticks = Math.floor(elapsed / ENERGY_REGEN_MS);
   if(ticks > 0){
-    s.current = Math.min(ENERGY_MAX, s.current + ticks);
+    s.current = Math.min(energyMax(), s.current + ticks);
     // Preserve the remainder toward the NEXT tick rather than snapping lastRegenAt to now --
     // otherwise a player checking in every 10s would silently lose up to 59s of progress per
     // check, and the on-screen countdown would keep resetting instead of counting down smoothly.
-    s.lastRegenAt = s.current>=ENERGY_MAX ? Date.now() : s.lastRegenAt + ticks*ENERGY_REGEN_MS;
+    s.lastRegenAt = s.current>=energyMax() ? Date.now() : s.lastRegenAt + ticks*ENERGY_REGEN_MS;
     saveEnergyState(s);
   }
   return s;
@@ -7646,7 +7650,7 @@ function settleEnergy(){
 function currentEnergy(){ return settleEnergy().current; }
 function msUntilNextEnergyTick(){
   const s = settleEnergy();
-  if(s.current >= ENERGY_MAX) return null;
+  if(s.current >= energyMax()) return null;
   return Math.max(0, ENERGY_REGEN_MS - (Date.now() - s.lastRegenAt));
 }
 function spendEnergy(cost){
@@ -7700,7 +7704,7 @@ function refreshEnergyHud(){
   // 2026-10-12 (user: "the energy bar should say +⚡ in X:XX instead of text. The lightning emoji resource icon should be on
   // the right of the 4/20 as well"): "4/20⚡ · +⚡ in 2:47".
   const ico = '<span class="energy-ico">⚡</span>';
-  const html = s.current > ENERGY_MAX ? `${s.current}/${ENERGY_MAX}${ico}` : s.current >= ENERGY_MAX ? `${escapeHtml(_t('Full'))}${ico}` : nextMs===null ? `${s.current}/${ENERGY_MAX}${ico}` : `${s.current}/${ENERGY_MAX}${ico}<span class="energy-next"> · +⚡ in ${formatEnergyCountdown(nextMs)}</span>`;
+  const html = s.current > energyMax() ? `${s.current}/${energyMax()}${ico}` : s.current >= energyMax() ? `${escapeHtml(_t('Full'))}${ico}` : nextMs===null ? `${s.current}/${energyMax()}${ico}` : `${s.current}/${energyMax()}${ico}<span class="energy-next"> · +⚡ in ${formatEnergyCountdown(nextMs)}</span>`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
@@ -12517,6 +12521,16 @@ const CONQUEST_MAPS = [
       { key:"g-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"otter-riverguard":2}, hqHp:107, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["g-1"] },
       { key:"g-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3,"blind-cave-fish":2}, hqHp:27, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["g-2","g-3"] },
     ]},
+  // 14A, The Mycelium Deep (2026-10-12, D41 — my recommendation, built to try: "14A–D one at a time, two days apart, after
+  // Map 14's boss"): a side dungeon under The Morel Hollow that turns up two days after the Morel Monarch is first beaten.
+  { id:"mz", sub:true, parent:"mu", entry:{x:84, y:70, after:"u-6", afterDays:2, label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
+    nodes: [
+      { key:"z-1", kind:"skirmish", name:"Root Cellar", icon:"🪱", deck:{"compost-grub":3,"worker-ant":2,"tunnel-ant":2,"gorge-wyrm":1,"earthworm":2}, hqHp:90, flavor:"The roots here are hollow. Something has been eating them from the inside.", rewards:{first:{gold:90, dust:10}}, requires:[] },
+      { key:"z-2", kind:"skirmish", name:"Glowcap Grotto", icon:"🍄", deck:{"fungal-colossus":2,"honey-bee":2,"nightshade-moth":2,"compost-grub":2,"trapdoor-spider":2}, hqHp:110, flavor:"The caps give off just enough light to see what's watching.", rewards:{first:{gold:100, dust:12}}, requires:["z-1"] },
+      { key:"z-3", kind:"elite", name:"Silk Gallery", icon:"🕸️", deck:{"trapdoor-spider":3,"webspire-sentinel":2,"carrion-fly-swarm":2,"garden-snail":3}, hqHp:110, flavor:"Every thread is a doorbell.", rewards:{first:{gold:120, dust:15}}, requires:["z-2"] },
+      { key:"z-4", kind:"elite", name:"The Rot Heart", icon:"🦠", deck:{"rot-swollen-carcass":2,"gangrenous-leech":2,"compost-grub":3,"fungal-colossus":2}, hqHp:130, flavor:"It beats once a minute. Everything down here beats with it.", rewards:{first:{gold:120, dust:15}}, requires:["z-3"] },
+      { key:"z-5", kind:"boss", name:"The Mycelium Mind", icon:"👑", deck:{"fungal-colossus":3,"hollow-oath-keeper":2,"trapdoor-spider":2,"gorge-wyrm":2,"strangler-vine":1}, hqHp:160, flavor:"Every mushroom in the Hollow is one of its thoughts.", characterId:"plains-terrace", rewards:{first:{gold:180, dust:25}}, requires:["z-4"] },
+    ]},
   // The Canopy (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"my", sub:true, parent:"m5", entry:{x:12, y:76, after:"5-2", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
     nodes: [
@@ -14719,7 +14733,11 @@ function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId);
   if(!f || f.locked || f.defeated) return;
-  if(def.trench && TrenchM){ openTrenchSetup(def, partId); return; }
+  // 2026-10-12 (user: "I love that you made a whole entire minigame simulator of the full game. Lets bench that ... but for raids,
+  // I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3 rows"): a trench raid is now a real match with
+  // three rows a side. The trench minigame is benched: Admin can still open it (localStorage bramblewood_classic_trench = 1).
+  if(def.trench && TrenchM){ let classic = false; try{ classic = adminModeEnabled && localStorage.getItem('bramblewood_classic_trench') === '1'; }catch(e){}
+    if(classic) openTrenchSetup(def, partId); else startRaidFullBattle(def, partId, f, st); return; }
   if(!deckSizeOkOrWarn()) return;
   const cost = def.cost || {};
   if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ alert(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 and you have ${currentRaidPoints()}🎫. They refill 1 every 6 hours.`); return; }
@@ -14745,6 +14763,44 @@ function startRaidPartMatch(def, partId){
     raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
   showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+}
+function startRaidFullBattle(def, partId, f, st){
+  if(!deckSizeOkOrWarn()) return;
+  const cost = def.cost || {};
+  if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 (you have ${currentRaidPoints()}).`, 'error'); return; }
+  if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
+  if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+  bumpQuestCounter('raidsJoined', 1);
+  const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
+  // the boss's cards, run-only copies when the stage strips abilities or the rule makes them illusory (as in the trench)
+  const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
+  Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return; if(!cfg.strip && !illusory){ bossDeck[id] = cfg.deck[id]; return; }
+    const nid = id + (cfg.strip ? '~exposed' : '~illusory'); defs[nid] = Object.assign({}, defs[id], {id:nid, effects: cfg.strip ? {} : Object.assign({}, defs[id].effects || {}, {illusory})}); bossDeck[nid] = cfg.deck[id]; });
+  const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
+    defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false});
+  const sideOf = id=> id===1?'A':'B';
+  const players = {1: engine.newPlayer(1, myDeckCounts, myCastleDef()), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  players[2].loopCards = [];
+  // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
+  const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
+  entIds.forEach((id, i)=> engine.debugSpawnCard(players, sideOf, 2, id, order[i], stats, []));
+  const pool = Object.keys(bossDeck).flatMap(id=> Array(Math.max(1, bossDeck[id]|0)).fill(id));
+  const take = ()=> pool.length ? pool.splice(Math.floor(Math.random()*pool.length), 1)[0] : null;
+  if(!entIds.length){ [0, -1, 1].forEach(sl=>{ const id = take(); if(id) engine.debugSpawnCard(players, sideOf, 2, id, sl, stats, []); }); }
+  const front = engine.allBoardCards(players[2]).map(c=> c.slot);
+  front.forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 1, sl, id); });
+  front.slice(0, 2).forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 2, sl, id); });
+  if(cfg.shieldWhileEntities && entIds.length) players[2].onHqHit = ()=> engine.allBoardCards(players[2]).some(c=> c.hp > 0 && entIds.includes(c.defId)) ? 0 : undefined;
+  const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
+  engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
+    mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
+    raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
+    raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
+  lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
+  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
@@ -17000,7 +17056,7 @@ function renderAdmin(){
     </div>
     <div class="panel admin-subpanel">
       <h3>Energy</h3>
-      <p class="panel-sub" id="adminEnergyLine">Currently ${currentEnergy()}/${ENERGY_MAX}⚡.</p>
+      <p class="panel-sub" id="adminEnergyLine">Currently ${currentEnergy()}/${energyMax()}⚡.</p>
       <button class="btn small" id="adminRefillEnergyBtn" type="button">⚡ Refill to full</button>
     </div>
     <div class="panel admin-subpanel">
@@ -17083,10 +17139,10 @@ function renderAdmin(){
   });
   const refillBtn = document.getElementById('adminRefillEnergyBtn');
   if(refillBtn) refillBtn.addEventListener('click', ()=>{
-    saveEnergyState({current: ENERGY_MAX, lastRegenAt: Date.now()});
+    saveEnergyState({current: energyMax(), lastRegenAt: Date.now()});
     refreshEnergyHud();
     const line = document.getElementById('adminEnergyLine');
-    if(line) line.textContent = `Currently ${currentEnergy()}/${ENERGY_MAX}⚡.`;
+    if(line) line.textContent = `Currently ${currentEnergy()}/${energyMax()}⚡.`;
   });
   const resetBtn = document.getElementById('adminResetBtn');
   if(resetBtn) resetBtn.addEventListener('click', ()=>{
@@ -18176,9 +18232,11 @@ function renderMatchUI(){
     <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
+        ${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row enemy" id="resEnemy2" data-respid="2" data-resrow="2"></div>' : ''}${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row enemy" id="resEnemy1" data-respid="2" data-resrow="1"></div>' : ''}
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider"></div>
         <div class="board-row mine" id="rowMine"></div>
+        ${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row mine" id="resMine1" data-respid="1" data-resrow="1"></div>' : ''}${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row mine" id="resMine2" data-respid="1" data-resrow="2"></div>' : ''}
       </div>
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
@@ -18533,7 +18591,24 @@ function maybeAutoSkip(){
 // is hovered (placeCard() auto-centers it), so every hover-highlight site below checks this
 // first and lights up the center slot instead of splitting into a left/right guess.
 // Open/Gladiator battle modes (fixed slots): see BATTLE_MODES / makeSimEngine's battleMode.
-function isSlotMatch(m){ return !!(m && (m.battleMode==='open' || m.battleMode==='gladiator')); }
+function reserveRowsOf(m){ try{ return (m && m.engine && m.engine.reserveRows) || 0; }catch(e){ return 0; } }
+// Reserve-row plays: tap a card in hand, then a "+" behind one of your units (or drag it there).
+document.addEventListener('click', e=>{
+  const t = e.target && e.target.closest && e.target.closest('.reserve-target'); const m = matchState;
+  if(!t || !m || m.over || m.resolving || m.selectedUid == null) return;
+  e.preventDefault(); e.stopPropagation();
+  playCardByUid(m.selectedUid, Number(t.dataset.slot), null, {reserve: Number(t.dataset.reserve)});
+}, true);
+document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('.reserve-target'); if(t){ e.preventDefault(); t.classList.add('slot-hover'); } });
+document.addEventListener('dragleave', e=>{ const t = e.target && e.target.closest && e.target.closest('.reserve-target'); if(t) t.classList.remove('slot-hover'); });
+document.addEventListener('drop', e=>{
+  const t = e.target && e.target.closest && e.target.closest('.reserve-target'); const m = matchState; if(!t || !m || m.over || m.resolving) return;
+  e.preventDefault(); e.stopPropagation(); t.classList.remove('slot-hover');
+  const uid = Number(e.dataTransfer.getData('text/plain')); if(!uid) return;
+  playCardByUid(uid, Number(t.dataset.slot), {x:e.clientX, y:e.clientY}, {reserve: Number(t.dataset.reserve)});
+}, true);
+// 2026-10-12: a match that never set m.battleMode goes by its engine's (the tutorial and a few others run 'open' engines).
+function isSlotMatch(m){ const bm = m && (m.battleMode || (m.engine && m.engine.battleMode)); return !!(bm==='open' || bm==='gladiator'); }
 // The legal "+" slot in this row closest to a horizontal screen position (drops/taps anywhere on
 // the row snap to the nearest place a card is actually allowed to go).
 function nearestSlotTarget(rowEl, clientX){
@@ -19170,6 +19245,7 @@ function renderBoard(opts){
     // so the grid shrank and the cards jumped. It now always counts every legal slot, and never shrinks during a match.
     if(m.engine.legalSlots) [1,2].forEach(pid=>{ try{ m.engine.legalSlots(m.players[pid]).forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl))); }catch(e){} });
     legalForViewer.forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl)));
+    [1,2].forEach(pid=>{ const rs = m.players[pid] && m.players[pid].reserve; if(rs) rs.forEach(row=> Object.keys(row).forEach(sl=> slotRange = Math.max(slotRange, Math.abs(+sl)))); });
     slotRange = Math.max(1, slotRange, m._slotRange || 0);
     m._slotRange = slotRange;
   }
@@ -19473,6 +19549,22 @@ function renderBoard(opts){
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
   if(needEnemy && rowEnemy) rowEnemy.innerHTML = rowHTML(m.players[2], p2Rows);
   if(needMine && rowMine) rowMine.innerHTML = rowHTML(m.players[1], p1Rows);
+  // Reserve rows (2026-10-12, raids as a full game): the same columns as the front rows, so a reserve sits right behind its unit.
+  if(reserveRowsOf(m)){
+    const showTargets = !m.over && !m.resolving && !m.awaitingPass;
+    document.querySelectorAll('#battlefieldInner .reserve-row').forEach(el=>{
+      const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
+      const legal = new Set(showTargets && pid === viewerPid && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
+      let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
+      for(let sl = -slotRange; sl <= slotRange; sl++){
+        const c = pl.reserve[r-1][sl];
+        if(c) html += boardCardHTML(c, defs, {pid, extraClass:'is-reserve'});
+        else if(legal.has(sl)) html += `<div class="board-card slot-target reserve-target" data-slot="${sl}" data-reserve="${r}" title="Play here, ${r === 1 ? 'in the middle row' : 'in the back row'}: it steps up when the unit in front falls"><span class="slot-plus" aria-hidden="true">+</span></div>`;
+        else html += '<div class="board-card empty-slot" aria-hidden="true"></div>';
+      }
+      el.innerHTML = html;
+    });
+  }
   const mult = (matchState && matchState.speedMult) || 1;
   const dur = entranceCardTweenDur(mult);
   // "Genuinely new to the player" — see knownBoardUids' own declaration comment (near
@@ -21018,7 +21110,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   }
   const activePid = activePlayerId(m);
   const events = [];
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && popts.prayerOffer!=null) ? {prayerOffer: popts.prayerOffer} : undefined);
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -24312,6 +24404,7 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
+    case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};
     case 'fastForward': return {cls:'', text:`${nm(ev.defId)} fast-forwards ${ev.n} turn${ev.n===1?'':'s'}! ⏩`};
@@ -25462,6 +25555,7 @@ function renderVfxForEvent(ev){
   // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
   // insufficient!"): the tide rolls in across the field on Flow and drains back out on Ebb, then a soft water line stays.
   if(ev.type==='tide' && matchState && matchHasTide(matchState)) tideWaveVfx(ev.tide);
+  if(ev.type==='advance'){ clearTimeout(window.__bwAdvT); window.__bwAdvT = setTimeout(()=>{ try{ renderBoard(); }catch(e){} const el = boardCardEl(ev.uid); if(el) floatText(el, '⬆', 'quick'); }, 60); }
   if(ev.type==='boomerangWhiff'){ const el = boardCardEl(ev.uid); if(el) missCallout(el, 'whiff'); try{ SoundKit.boomerangWhirr && SoundKit.boomerangWhirr(); }catch(e){} }
   if(ev.type==='boomerangCaught'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Caught!', 'quick'); }
   if(ev.type==='kingSlayer'){

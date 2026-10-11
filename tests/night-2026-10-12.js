@@ -60,5 +60,17 @@ function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), 
     const hitIdx = ws.map((c, i)=> b[i] > c.hp ? i : -1).filter(i=> i >= 0);
     if(hitIdx.length === 2 && Math.abs(hitIdx[0] - hitIdx[1]) > 1) far++; }
   ok(far === 0, `a straddling Fork never hits two enemies two slots apart (${far} times)`); }
+// Reserve rows (raids as a full game, 3 rows a side): a card goes behind a front unit, doesn't fight, and steps up when the
+// column in front of it clears
+{ const e = E.makeSimEngine(defs, E.mulberry32(9), {recordEvents:true, battleMode:'open', reserveRows:2}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'n-frail', 'left', {}, []); const F = all(P[1])[0];
+  ok(e.legalReserveSlots(P[1], 1).includes(F.slot) && !e.legalReserveSlots(P[1], 2).length, 'a reserve slot opens behind a front unit only');
+  const h = {uid: 77001, defId:'n-boom'}; P[1].hand.push(h);
+  ok(e.placeCard(P, so, 1, h.uid, F.slot, {}, [], {reserve:1}), 'a card can be placed in the middle row');
+  ok(P[1].reserve[0][F.slot] && !all(P[1]).some(c=> c.defId==='n-boom'), 'it waits in reserve, not on the field');
+  const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(P[2].hq.hp === hq, 'a reserve never attacks');
+  F.hp = 0; e.removeDeadCards(P, so, {}, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
+  ok(all(P[1]).some(c=> c.defId==='n-boom' && c.slot===F.slot) && ev.some(x=> x.type==='advance'), 'with the front unit gone it steps up at the round start');
+  ok(e.fillReserve(P[2], 2, 0, 'n-wall') && !e.fillReserve(P[2], 2, 0, 'n-wall'), 'a boss row can be filled, one card a slot'); }
 if(fail){ console.log(`night-2026-10-12: ${fail} failure(s)`); process.exit(1); }
 console.log('night-2026-10-12: 0 failure(s)');

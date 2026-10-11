@@ -128,24 +128,12 @@ async def main():
         await pg.click('#forgeLevelUpBtn'); await pg.click('#forgeLevelUpBtn', force=True); await pg.wait_for_timeout(3200)
         check(await pg.evaluate(f"getCardLevel('{fid}')") == l0 + 1, 'tempering should raise the level exactly once (double-click guarded)')
         check(await pg.evaluate("myCurrencies.dust < 300"), 'tempering should spend Magic Dust')
-        # 5: raid trench, played
+        # 5: a trench raid opens the full three-row battle (2026-10-12; the trench minigame is benched)
         await pg.evaluate("playSubTab='raid'; switchTab('play'); 1"); await pg.wait_for_timeout(500)
-        n0 = await pg.evaluate("loadRaidPartAttempts().length")
-        await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(300)
-        await pg.click('[data-row="0"]'); await pg.wait_for_timeout(300)
-        played = 0
-        for _ in range(16):
-            if await pg.evaluate("!!document.querySelector('.tr-result')"): break
-            hc = await pg.query_selector('.tm-hand-card.playable')
-            if hc:
-                await hc.click(); await pg.wait_for_timeout(80)
-                slot = await pg.query_selector('.tr-cell.is-legal')
-                if slot: await slot.click(); played += 1
-            await pg.click('#tmEnd'); await pg.wait_for_timeout(1700)
-        check(await pg.evaluate("!!document.querySelector('.tr-result')"), 'the trench fight should reach a result')
-        check(played > 0, 'never played a card in the trench')
-        check(await pg.evaluate("loadRaidPartAttempts().length") == n0 + 1, 'the trench attempt should be recorded exactly once')
-        await pg.click('#trDone')
+        await pg.click('[data-raid-part="left"]'); await pg.wait_for_timeout(2500)
+        check(await pg.evaluate("!!(matchState && matchState.raidFull && matchState.engine.reserveRows===2)"), 'a trench raid should open the full three-row battle')
+        check(await pg.evaluate("!!(matchState && matchState.players[2].reserve && Object.keys(matchState.players[2].reserve[0]).length>0)"), "the boss's middle row should be filled")
+        await pg.evaluate("document.querySelectorAll('.vs-screen,#vsScreen,.vs-overlay').forEach(e=> e.remove()); matchState=null; switchTab('home'); 1"); await pg.wait_for_timeout(400)
         # 6: Conquest world panning
         await pg.evaluate("(()=>{ const pr=loadConquestProgress(); CONQUEST_MAPS.slice(0,2).forEach(m=> m.nodes.forEach(n=>{ const id=conquestNodeId(m.id,n.key); if(!pr.completed.includes(id)) pr.completed.push(id); })); saveConquestProgress(pr); conquestSelectedMap='m1'; playSubTab='conquest'; switchTab('play'); return 1; })()")
         await pg.wait_for_timeout(500)
