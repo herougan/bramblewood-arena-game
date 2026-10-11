@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-11, 9 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 2 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -9,7 +9,7 @@ _Updated 2026-10-11, 9 am. The short list of what matters now. Everything else i
 | **B6** ✅ | Your new basic set fixes it: otter starter vs hummingbird starter is **52.9%**. The per-card spread inside the set is wide (Duck Paddler 79% … Otter Kit 26%): see the [starter-decks note](starter-decks-2026-10-10.md) | Balance within the set (your pass) |
 | **D20** | Devilry is built from your list. Six of the rules were my readings. **Darkness is gained:** +1 each time one of your units perishes, shown only if your deck has a Devilry card | Keep all six |
 | **D23** ✅ | Ecclesia is built (Prayer, the offering, 6 keywords, 9 cards). Satiety's rule was my reading of the name | Check Satiety |
-| **D21** ✅ / **D22** | Backstab is built as you described (nearest unit, never the castle, +N when it isn't the one in front) on the new Stoat Cutthroat. Two readings: with no enemy units it holds its swing, and a Guardian next to the target still steps in (the bonus still applies). Fast Forward counters: build when? | Check the two readings; D22 after Ecclesia |
+| **D21** ✅ / **D22** ✅ | Backstab is built as you described. **Fast Forward is built too (2026-10-12):** `fastForward: N` gives a unit N extra solo turns before its first combat (Wait −1, or a swing). No card carries it yet | Put it on a card when you want it |
 | **D24** | Arena rules rotate daily, and the second player opens with an extra card. Add that card to Conquest too? | Keep Conquest as is |
 | **S1 👥** | Admin → Players (now with each player's tutorial level) is built and waits on the admin_list_players function | Say "apply it" |
 | **D26** | Readings I took tonight: Anti-Air went on **Otter Centurion** (2/8), because on Otter Kit it broke the tutorial for Hummingbird players. "SSS fast" means a win by **round 8**. The rare S find starts at **map 5** at **12%**. Laurels (PvP) buy nothing yet | Keep, or say otherwise |
@@ -17,9 +17,11 @@ _Updated 2026-10-11, 9 am. The short list of what matters now. Everything else i
 | **D28** | Readings from the 21:29 list: the Flea Market sits on Map 30, which doesn't exist yet, so it's admin-only for now (the Map 20 World Boss sub-map isn't built either); the new side skirmishes branch off the trail instead of being inserted into it, so no one's progress changes; the Mystery Booster is pool 99; sub-map fights are coded like 2-G1; "chaos returns" after Map 40 is sketched in the VFX Playground, not built | Keep; build Maps 13–30 before the Flea Market can open |
 | **D29** ✅ | Built with my defaults (2026-10-11 09:50); **reordered 18:10 at your call: the 13 original maps are Maps 1–13 again, the new maps 14–23, counted from 1.** The six questions at the top of [card list v2](card-list-2026-10-11.md): Thistlewood as Map 1, Map 9 as the Mire, deep sea after 20, a 17-A Canopy sub-map, the 1% roll, 5 🍯 per Sunfeather Pack | Yes to all six; then I rebuild the road in the 0–20 order |
 | **D30** | Art for the 19 new faction-pack cards (prompts ready in `art_staging/jobs_2026_10_11.json`). Running them uses your PixelLab session and existing credits | Run them |
-| **D31** | Level caps: every rarity stops at 10 (what the Forge levels to), castles at 20, the hero at 100. Should higher rarities go further? | Keep 10 until the Forge has a reason to go higher |
+| **D31** ✅ | Level caps: your limit break answers it. Cards break to **Lv 11** after 5 fed duplicates (cost = the road to 10 again). Castles break **20 → 25** with Ember Cores and a Dragon Scale | Done |
 | **D32** | Wildpaths (PvE passives) is a preview with 21 draft skills on three trails. Earning Path points: 1 per map cleared? | 1 per map, +1 per boss S rank |
 | **D33** | Day and night are now off unless a fight turns them on. 65 enemy decks carry Nocturnal or Diurnal cards, which now never get their bonus. Turn the cycle on for those fights? | Turn it on for the night-themed maps (Sable Swampmire, The Pinewood Taiga…) and boss fights with those cards; leave the rest off |
+| **D34** | Your map table is applied ([note](map-schedule-2026-10-12.md)). My readings: a free pack comes on a map's boss first clear, before that pack is sold (A free on 3, sold from 5); "Wandering Trader A" is a camp spot on Map 13 that opens Mystery Boosters (5 a visit); errands come from post-fight conversations from Map 9. Your dungeon sub-maps 6A, 9A, 12A, 14A–D, 15A and 18A don't exist yet | Keep; tell me which dungeon to build first |
+| **D35** | Base cards: a boss's first clear levels up to **2** Base cards in your deck (lowest first); an elite's gives a spare Base copy. Errands pay 4–8% of a Materia Unit | Keep, or give the numbers |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
@@ -60,7 +62,7 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 
 ## 3. Things only you can do (outside chat)
 
-- **The claude.ai project is full.** Today's design notes are in this hub but couldn't be saved there. The old game-design v30–v40 addenda are the easiest to remove.
+- **The claude.ai project is full.** The master hub now also lives on the game site as a hidden, unindexed page (`/hub/`), so the project only needs the docs you share. Easiest to remove: the five old code copies (`claude/arena_template.html`, `arena_app.js`, `bramblewood-engine.js`, `assemble_arena.py`, `characters-canonical.json`; say "delete the old code copies") and the game-design v30–v40 addenda.
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
 - **Art:** PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:
   - the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant, The Unremembered and the ten Devilry cards;

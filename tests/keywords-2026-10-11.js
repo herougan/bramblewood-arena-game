@@ -13,6 +13,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'kw-armor': {id:'kw-armor', name:'Ar', attack:0, health:500, wait:0, cost:0, effects:{armor:3}},
   'kw-counter': {id:'kw-counter', name:'Co', attack:4, health:500, wait:0, cost:0, effects:{counterattack:true}},
   'kw-spite': {id:'kw-spite', name:'Sp', attack:0, health:500, wait:0, cost:0, effects:{spiteful:3}},
+  'kw-ff': {id:'kw-ff', name:'FF', attack:2, health:50, wait:1, cost:0, effects:{fastForward:3}},
 });
 function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, a, 'left', {}, []); e.debugSpawnCard(P, so, 2, b, 'left', {}, []); return {e, P, A:e.allBoardCards(P[1])[0], B:e.allBoardCards(P[2])[0]}; }
@@ -40,4 +41,13 @@ function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEv
   e.debugSpawnCard(P, so, 1, 'thornwood-palisade', 'left', {}, []); const u = e.allBoardCards(P[1])[0]; u.wait = 2; P[1].lumber = 3;
   e.draw(P[1], 1, 'A', st, []); const ok1 = e.placeCard(P, so, 1, P[1].hand[0].uid, 'left', st, []);
   ok(ok1 && u.wait === 1 && P[1].playedThisTurn && e.allBoardCards(P[1]).length === 1, 'Tailwind: no unit, -1 Wait, uses the play'); }
+// Fast Forward 3 (2026-10-12, D22): Wait 1 counts down on the first counter, then two extra swings, then its normal turn
+{ const e = E.makeSimEngine(defs, E.mulberry32(6), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}; const st = {};
+  e.debugSpawnCard(P, so, 1, 'kw-ff', 'left', {}, []); const u = e.allBoardCards(P[1])[0]; const hq = P[2].hq.hp; const ev = [];
+  ok(u.ffCounters === 3, 'Fast Forward 3 arrives with 3 counters');
+  e.resolveCombat(P, so, st, ev, 1);
+  ok(u.ffCounters === 0 && u.wait === 0, 'the counters are spent and its Wait ran out');
+  ok(hq - P[2].hq.hp === 6, `two fast-forward swings plus its normal turn hit the castle 3 times (took ${hq - P[2].hq.hp}, want 6)`);
+  ok(ev.some(x=> x.type === 'fastForward'), 'a fastForward event is recorded');
+  const hq2 = P[2].hq.hp; e.resolveCombat(P, so, st, [], 1); ok(hq2 - P[2].hq.hp === 2, 'next round it attacks once, as normal'); }
 console.log(`keywords-2026-10-11: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

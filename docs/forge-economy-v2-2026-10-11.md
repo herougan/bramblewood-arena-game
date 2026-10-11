@@ -127,3 +127,22 @@ Base, Quest and Event cards can't be disenchanted or melted.
 3. **Which cards are "can't get through boosters":** I counted map rewards as well as Base and Quest cards, so they cost half. Blacksmith and secret cards cost full.
 4. **Arena:** the Arena's share of the week comes through its daily notices and weekly tier. A win still pays 0–1 Dust, per your earlier rule.
 5. **Boosters now pay a little Dust again.** This replaces your earlier "nothing was destroyed" rule.
+
+## Limit break and Base growth (2026-10-12)
+
+**Limit break: Lv 11.**
+- Needs a level-10 card that has been fed **5 duplicates** at any time. Melting doesn't take them back.
+- Costs what the card's whole road to 10 cost, again: 1 MU for a Common, 0.5 MU for a Base card. Duplicate credit on the card pays first.
+- Level 11 is a major step: +10% Attack and Health.
+- The Forge shows an 11th pip and a 💥 panel on a level-10 card.
+
+**Castles break 20 → 25.**
+- Each step costs 4× the last normal step, rising a quarter per level.
+- Each step also needs advanced materia:
+  - 🔥 Ember Cores: 1 for each of the first two steps, 2 for the next two, 3 for the last.
+  - A 🐉 Dragon Scale for the last step.
+
+**Base cards grow on the road.**
+- A boss's first clear raises up to 2 Base cards in your deck by a level, lowest first.
+- An elite's first clear gives a spare copy of one, a duplicate to feed.
+- With no Base card left that can grow, you get the same value in Dust.

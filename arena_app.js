@@ -240,6 +240,7 @@ const PASSIVE_DEFS = [
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
+  {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
   {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`Getting hit queues ${v} bonus armor + a skipped attack, active next round.`},
@@ -1337,7 +1338,7 @@ function buildCardDefs(){
   // Levels (2026-10-10): every card carries its base level; stats move only above it, on the LEVEL_STEPS levels.
   Object.keys(out).forEach(id=>{
     const base = out[id]; if(!base || id===HERO_ID) return;
-    const b = cardBaseLevel(base), lvl = Math.max(b, Math.min(10, myCardLevels[id]||0));
+    const b = cardBaseLevel(base), lvl = Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
     if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); return; }
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
@@ -1439,6 +1440,14 @@ let discoverShowing = false;
 // the enemy cards they've met.
 const SEEN_KEY = 'bramblewood_arena_seen';
 let mySeenCardIds = (()=>{ try{ const raw = localStorage.getItem(SEEN_KEY); if(raw) return new Set(JSON.parse(raw)); }catch(e){} return null; })();
+// Has the player met this card? Owned, seen in a fight or a reward, or in a pack whose seller is open (2026-10-12).
+function codexRevealedForPlayer(id, d){
+  if(myUnlockedCardIds && myUnlockedCardIds.has(id)) return true;
+  if((myCardCopies[id]||[]).length) return true;
+  if(seenCardIds().has(id)) return true;
+  try{ const pool = packPoolOf(d); if(pool === 99) return featureUnlocked('wanderer'); if(pool) return featureUnlocked('shop'); }catch(e){}
+  return false;
+}
 function seenCardIds(){
   if(mySeenCardIds) return mySeenCardIds;
   mySeenCardIds = new Set(myDiscoveredCardIds);
@@ -2541,6 +2550,61 @@ const Ambience = (()=>{
     puff(sc, 0.05, 0.05, 'bandpass', 900, 1.2, 0.2);
     puff(sc, rnd(1.1, 1.8), 0.035, 'highpass', 5200, 0.8, 0.26, 2600);
     for(let i=0;i<4;i++) puff(sc, 0.025, 0.03, 'highpass', 3500, 0.7, 0.4 + i*rnd(0.12, 0.3)); };
+  // Map flavours (2026-10-11, user: "I like the beach sound everytime i go into the beach. Do the same for the rest of the
+  // maps ... the beach ambience can include the beach step sound like someone walking for 5 steps (but super softly) here
+  // and there (every 1min or so - random, don't start the timer at 0 everytime)"). Each map lays its own signature on top
+  // of its terrain's bed: an arrival cue the moment you enter, a tidbit or two, and on open ground a stranger's soft
+  // footsteps now and then. Every timer starts at a random point of its interval.
+  const steps = (surface)=> sc=>{ const n = 5, gap = rnd(0.42, 0.55), f = {sand:[900, 0.5, 'bandpass'], grass:[1600, 0.6, 'bandpass'], snow:[2400, 0.9, 'bandpass'], leaf:[2800, 0.8, 'bandpass'], stone:[500, 1.4, 'lowpass']}[surface] || [900, 0.5, 'bandpass'];
+    for(let i=0;i<n;i++){ const g = 0.006 + 0.004*Math.sin(Math.PI*(i+0.5)/n); puff(sc, surface==='snow' ? 0.16 : 0.1, g, f[2], f[0]*rnd(0.85, 1.15), f[1], i*gap + rnd(-0.03, 0.03)); } };
+  const waveCrash = sc=>{ puff(sc, 2.2, 0.07, 'lowpass', 900, 0.7, 0, 220); puff(sc, 1.4, 0.03, 'highpass', 2500, 0.6, 0.15, 1200); };
+  const woodpecker = sc=>{ const n = 8 + Math.floor(Math.random()*6); for(let i=0;i<n;i++) puff(sc, 0.02, 0.025, 'bandpass', 1100, 3, i*0.055); };
+  const buzz = sc=>{ const c = C(), t = c.currentTime, o = c.createOscillator(), g = c.createGain(), f = c.createBiquadFilter(); o.type = 'sawtooth'; o.frequency.setValueAtTime(rnd(170, 230), t); o.frequency.linearRampToValueAtTime(rnd(190, 260), t + 2.4); f.type = 'bandpass'; f.frequency.value = 700; f.Q.value = 2;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.012, t + 1.1); g.gain.exponentialRampToValueAtTime(0.0001, t + 2.5); o.connect(f); f.connect(g); g.connect(sc.bus); o.start(t); o.stop(t + 2.6); };
+  const plop = sc=>{ const f = rnd(500, 800); blip(sc, f*0.6, f*1.6, 0.08, 'sine', 0.035); puff(sc, 0.25, 0.012, 'highpass', 3000, 0.7, 0.05); };
+  const splash = sc=>{ puff(sc, 0.5, 0.05, 'bandpass', 1300, 0.8, 0, 600); puff(sc, 0.9, 0.02, 'lowpass', 400, 0.7, 0.08, 150); };
+  const howlFar = sc=>{ blip(sc, 330, 520, 0.6, 'triangle', 0.008); blip(sc, 520, 500, 1.2, 'triangle', 0.007, 0.55); blip(sc, 500, 300, 0.7, 'triangle', 0.005, 1.7); };
+  const drumFar = sc=>{ const n = 4 + Math.floor(Math.random()*4); for(let i=0;i<n;i++) blip(sc, 110, 55, 0.22, 'sine', i%2 ? 0.02 : 0.03, i*0.38); };
+  const hoot = sc=>{ blip(sc, 420, 380, 0.28, 'sine', 0.02); blip(sc, 400, 360, 0.42, 'sine', 0.018, 0.45); };
+  const chime = sc=>{ [2093, 2637, 3136, 2349].slice(0, 2 + Math.floor(Math.random()*3)).forEach((f, i)=> blip(sc, f, f, 0.6, 'sine', 0.008, i*0.13)); };
+  const clink = sc=>{ blip(sc, 3200, 3150, 0.25, 'triangle', 0.01); blip(sc, 4100, 4050, 0.2, 'sine', 0.006, 0.12); };
+  const flutter = sc=>{ for(let i=0;i<10;i++) puff(sc, 0.03, 0.012, 'bandpass', 1800, 2, i*0.045); };
+  const creak = sc=> blip(sc, rnd(90, 120), rnd(60, 80), 1.4, 'sawtooth', 0.006);
+  const crab = sc=>{ const n = 3 + Math.floor(Math.random()*4); for(let i=0;i<n;i++) puff(sc, 0.015, 0.02, 'highpass', 4200, 1, i*rnd(0.06, 0.14)); };
+  const twig = sc=>{ puff(sc, 0.04, 0.04, 'highpass', 2000, 1, 0); puff(sc, 0.03, 0.02, 'bandpass', 1200, 2, 0.05); };
+  const chirps = sc=>{ const n = 6 + Math.floor(Math.random()*6), f = rnd(4200, 5200); for(let i=0;i<n;i++) blip(sc, f, f*1.02, 0.03, 'square', 0.004, i*0.07); };
+  const growl = sc=> blip(sc, rnd(55, 70), rnd(45, 55), 1.4, 'sawtooth', 0.012);
+  const whirr = sc=>{ for(let i=0;i<14;i++) puff(sc, 0.02, 0.006, 'bandpass', 2600, 4, i*0.03); };
+  const rumble = sc=> puff(sc, 2.4, 0.08, 'lowpass', 160, 0.6, 0, 50);
+  const hiss = sc=> puff(sc, 2.2, 0.03, 'highpass', 4000, 0.6, 0, 1800);
+  const gulls = sc=>{ cry(sc); setTimeout(()=>{ try{ if(sc.alive) cry(sc); }catch(e){} }, 380); };
+  const MAP_FLAVOR = {
+    m1:{arrive:[sc=>{ bird(sc); setTimeout(()=>{ try{ if(sc.alive) bird(sc); }catch(e){} }, 300); }], events:[[woodpecker, 25, 45], [steps('grass'), 55, 90]]},
+    mf:{arrive:[gust], events:[[buzz, 14, 28], [steps('grass'), 60, 95]]},
+    mb:{arrive:[waveCrash], events:[[steps('sand'), 45, 80], [sc=> crab(sc), 18, 35]]},
+    mg:{arrive:[sc=>{ drip(sc); setTimeout(()=>{ try{ if(sc.alive) drip(sc); }catch(e){} }, 500); }], events:[[clink, 30, 60], [steps('stone'), 70, 110]]},
+    m2:{arrive:[frog], events:[[plop, 10, 24]]},
+    m3:{arrive:[rumble], events:[[steps('stone'), 70, 110]]},
+    m4:{arrive:[sc=> { puff(sc, 0.6, 0.04, 'lowpass', 300, 0.8, 0, 120); drip(sc); }], events:[[flutter, 25, 45]]},
+    m5:{arrive:[gust], events:[[drumFar, 25, 50], [steps('grass'), 60, 95]]},
+    my:{arrive:[sc=> blip(sc, 600, 1100, 0.5, 'triangle', 0.015)], events:[[sc=> blip(sc, rnd(500, 700), rnd(1000, 1300), 0.45, 'triangle', 0.012), 12, 25], [chirps, 15, 30]]},
+    m6:{arrive:[sc=> puff(sc, 3, 0.05, 'bandpass', 900, 4, 0, 1600)], events:[[howlFar, 40, 80], [steps('snow'), 55, 90]]},
+    m7:{arrive:[sc=> blip(sc, 160, 90, 2.2, 'sine', 0.02)], events:[[sc=> blip(sc, rnd(140, 200), rnd(80, 110), 1.8, 'sine', 0.01), 30, 60]]},
+    m8:{arrive:[sc=> blip(sc, 300, 180, 0.35, 'sawtooth', 0.012)], events:[[splash, 20, 40]]},
+    m9:{arrive:[clank], events:[]},
+    m10:{arrive:[sc=> blip(sc, 2400, 1500, 0.7, 'sine', 0.03)], events:[[steps('stone'), 70, 110]]},
+    m11:{arrive:[sc=> thunder(sc, 0.2)], events:[]},
+    mu:{arrive:[sc=>{ for(let i=0;i<5;i++) puff(sc, 0.05, 0.02, 'bandpass', 1400 + i*200, 3, i*0.12); }], events:[[chime, 12, 25]]},
+    mp:{arrive:[sc=>{ plop(sc); frog(sc); }], events:[[whirr, 15, 30], [plop, 12, 26]]},
+    mc:{arrive:[sc=>{ waveCrash(sc); gulls(sc); }], events:[[splash, 20, 40], [gulls, 14, 28]]},
+    mw:{arrive:[growl], events:[[growl, 30, 60], [plop, 12, 26]]},
+    mk:{arrive:[sc=> puff(sc, 1.6, 0.03, 'lowpass', 500, 0.7, 0, 200)], events:[[crab, 10, 20]]},
+    mh:{arrive:[sc=>{ for(let i=0;i<6;i++) puff(sc, 0.08, 0.015, 'highpass', 2500, 0.8, i*0.09); }], events:[[twig, 15, 30], [steps('leaf'), 60, 95]]},
+    mr:{arrive:[creak], events:[[hoot, 20, 40], [woodpecker, 30, 55], [steps('leaf'), 60, 95]]},
+    ml:{arrive:[sc=> puff(sc, 2.6, 0.04, 'bandpass', 2200, 0.6, 0, 1400)], events:[[chirps, 8, 18], [steps('grass'), 55, 90]]},
+    mt:{arrive:[sc=> puff(sc, 3, 0.04, 'bandpass', 700, 2, 0, 1100)], events:[[hoot, 25, 45], [sc=> puff(sc, 0.4, 0.04, 'lowpass', 400, 0.7, 0, 120), 25, 45], [steps('snow'), 55, 90]]},
+    md:{arrive:[hiss], events:[[chime, 12, 25], [steps('sand'), 55, 90]]},
+  };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
     // Inside the Armoury Tent: muffled wind on canvas, the odd flap, a distant clank from the forge.
@@ -2566,17 +2630,20 @@ const Ambience = (()=>{
     // Beach (2026-10-10): soft surf washing in and out, a sea breeze, gulls now and then.
     12: {beds:[{type:'bandpass', freq:700, q:0.5, gain:0.03, lfo:0.09}], events:[[sc=> puff(sc, 2.8, 0.05, 'lowpass', 650, 0.7, 0, 260), 4, 8], [cry, 9, 20]]},
   };
-  function build(kind){
+  function build(kind, flavor){
     const c = C(), o = out(); if(!c || !o) return null;
-    const r = RECIPES[kind]; if(!r) return null;
+    const r0 = RECIPES[kind]; if(!r0) return null;
+    const fl = flavor && MAP_FLAVOR[flavor];
+    const r = fl ? Object.assign({}, r0, {events: (r0.events||[]).concat(fl.events||[])}) : r0;
     const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.8); bus.connect(o);
-    const sc = {kind, bus, nodes:[], timers:[], alive:true};
+    const sc = {kind, flavor: flavor || null, bus, nodes:[], timers:[], alive:true};
     r.beds.forEach(b=> bed(sc, b));
     if(r.drone) drone(sc, r.drone[0], r.drone[1]);
     (r.events||[]).forEach(([fn, lo, hi])=>{
       const next = ()=>{ if(!sc.alive) return; if(!document.hidden && vol > 0){ try{ fn(sc); }catch(e){} } sc.timers.push(setTimeout(next, rnd(lo, hi)*1000)); };
-      sc.timers.push(setTimeout(next, rnd(lo, hi)*500));
+      sc.timers.push(setTimeout(next, rnd(0.15, 1) * hi * 1000)); // random phase: a rare tidbit isn't always a full interval away
     });
+    if(fl && fl.arrive) sc.timers.push(setTimeout(()=>{ if(!sc.alive || document.hidden || vol <= 0) return; fl.arrive.forEach(fn=>{ try{ fn(sc); }catch(e){} }); }, 450));
     return sc;
   }
   function retire(sc){
@@ -2585,11 +2652,12 @@ const Ambience = (()=>{
     try{ sc.bus.gain.cancelScheduledValues(c.currentTime); sc.bus.gain.setValueAtTime(Math.max(0.0001, sc.bus.gain.value), c.currentTime); sc.bus.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 1.4); }catch(e){}
     setTimeout(()=>{ sc.nodes.forEach(n=>{ try{ n.stop(); }catch(e){} }); try{ sc.bus.disconnect(); }catch(e){} }, 1600);
   }
+  let wantedFlavor = null;
   function apply(){
     if(!unlocked) return;
-    if(cur && cur.kind === wanted) return;
+    if(cur && cur.kind === wanted && (cur.flavor||null) === (wantedFlavor||null)) return;
     retire(cur); cur = null;
-    if(wanted != null && vol > 0){ cur = build(wanted); addTimeLayer(cur); }
+    if(wanted != null && vol > 0){ cur = build(wanted, wantedFlavor); addTimeLayer(cur); }
   }
   function unlock(){
     if(unlocked) return; const c = C(); if(!c) return;
@@ -2610,8 +2678,8 @@ const Ambience = (()=>{
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
   return {
-    setTimeOfDay(t){ if(t===tod) return; tod = t; if(cur){ const k = cur.kind; retire(cur); cur = null; wanted = k; apply(); } },
-    play(kind){ wanted = kind; apply(); },
+    setTimeOfDay(t){ if(t===tod) return; tod = t; if(cur){ const k = cur.kind, f = cur.flavor; retire(cur); cur = null; wanted = k; wantedFlavor = f; apply(); } },
+    play(kind, flavor){ wanted = kind; wantedFlavor = flavor || null; apply(); },
     thunder(delay){ if(cur && cur.alive && vol > 0 && !document.hidden){ try{ thunder(cur, delay); }catch(e){} } },
     stop(){ wanted = null; retire(cur); cur = null; },
     current(){ return cur ? cur.kind : null; },
@@ -3318,7 +3386,7 @@ function codexShell(){
     <!-- 2026-09-20, per explicit request ("Forge is moved to appear in the Codex page"): the
          Forge no longer has its own top-level nav tab (see the Home landing page rewrite) — it's
          now just another Codex sub-tab, routed below exactly like Brambles/Reference/etc. -->
-    <button class="btn small ${codexSubTab==='forge'?'primary':''}" data-codextab="forge">🔨 Forge</button>
+    ${tabOpen('forge') ? `<button class="btn small ${codexSubTab==='forge'?'primary':''}" data-codextab="forge">🔨 Forge</button>` : ''}
     <button class="btn small ${codexSubTab==='reference'?'primary':''}" data-codextab="reference">📚 Reference</button>
     <button class="btn small ${codexSubTab==='halloffame'?'primary':''}" data-codextab="halloffame">🏛 Hall of Fame</button>
     ${adminModeEnabled ? `<button class="btn small ${codexSubTab==='deleted'?'primary':''}" data-codextab="deleted">🗑 Deleted</button>
@@ -3412,6 +3480,7 @@ function renderCodex(){
   if(toDeckBtn) toDeckBtn.addEventListener('click', ()=> switchTab('deck'));
   const body = document.getElementById('codexBody');
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
+  if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
@@ -3640,7 +3709,11 @@ function renderCodexGrid(){
   }
   // 2026-10-02: Hidden cards the player hasn't discovered don't exist as far as they know (admin
   // still sees them, tagged), and Hall of Fame variants live in their own Codex tab.
-  const codexVisible = id=> adminModeEnabled || (!isCardHiddenForPlayer(defs[id]) && (!defs[id].locked || seenCardIds().has(id))); // players: owned, unlocked or seen only
+  // 2026-10-12 (user: "I view everything as an admin, but for the user, everything is hidden until first seen"; "the
+  // materia aren't cards but items in your inventory! Don't put them in the codex"): a player's Codex shows only cards
+  // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
+  // Materia live in the Inventory, for everyone.
+  const codexVisible = id=> defs[id].cardType !== 'materia' && (adminModeEnabled || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id])));
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
   const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id)).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
@@ -7476,7 +7549,7 @@ function levelStatMultiplier(level){
 // Above the base level, stats grow only on the LEVEL_STEPS levels. A card can override any level with
 // def.levelStats = {"3": {attack, health}, ...} (absolute stats at that level), e.g. a big-number card that gains a little
 // on every level. Higher-level numbers are to be filled in later; the defaults below are placeholders.
-const LEVEL_STEPS = {1:'major', 2:null, 3:'major', 4:null, 5:null, 6:'major', 7:null, 8:null, 9:'major', 10:'minor'};
+const LEVEL_STEPS = {1:'major', 2:null, 3:'major', 4:null, 5:null, 6:'major', 7:null, 8:null, 9:'major', 10:'minor', 11:'major'}; // 11 = limit break (2026-10-12)
 const LEVEL_STEP_GAIN = {major:0.10, minor:0.05};
 function cardBaseLevel(d){
   if(!d) return 1;
@@ -7496,7 +7569,8 @@ function curveStatsAtLevel(d, L){
   return {attack: r(d.attack), health: r(d.health)};
 }
 function statsAtLevel(d, L){
-  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cardMaxLevel(d), L|0));
+  const cap = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d); // a limit-broken card reaches 11
+  const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cap, L|0));
   const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
   if(ov) return {attack: ov.attack!=null ? ov.attack : d.attack, health: ov.health!=null ? ov.health : d.health};
   let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l]; if(k) g += LEVEL_STEP_GAIN[k]; }
@@ -7547,7 +7621,7 @@ function prestigeUpCard(defId){
   myCardPrestige[defId] = getCardPrestige(defId)+1; saveCardPrestige();
   return true;
 }
-function getCardLevel(defId){ const d = (typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || (typeof liveCards!=='undefined' && liveCards[defId]) || null; return Math.max(cardBaseLevel(d), Math.min(10, myCardLevels[defId]||0)); } // never below the card's base level
+function getCardLevel(defId){ const d = (typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || (typeof liveCards!=='undefined' && liveCards[defId]) || null; return Math.max(cardBaseLevel(d), Math.min(LIMIT_BREAK_LEVEL, myCardLevels[defId]||0)); } // never below the card's base level; 11 only after a limit break
 // Card unlocking (2026-09-22, closing the gap batch #19 flagged: "player_card_unlocks sync was
 // scoped down to only level>0 cards, since real card unlocking doesn't exist yet"). A per-player
 // Set of card ids this player has unlocked via Shop packs (see SHOP_PACKS' new unlockChance
@@ -7843,7 +7917,7 @@ function levelUpCostRaw(currentLevel, defId){
   return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k)};
 }
 // What the card has cost so far, and would cost in all (from its starting level).
-function forgeSpentOn(defId, toLevel){ const d = forgeBaseDef(defId), from = cardBaseLevel(d); let dust = 0, gold = 0; for(let L = from; L < Math.min(10, toLevel); L++){ const c = levelUpCostRaw(L, defId); dust += c.dust; gold += c.gold; } return {dust, gold}; }
+function forgeSpentOn(defId, toLevel){ const d = forgeBaseDef(defId), from = cardBaseLevel(d); let dust = 0, gold = 0; for(let L = from; L < Math.min(10, toLevel); L++){ const c = levelUpCostRaw(L, defId); dust += c.dust; gold += c.gold; } if(toLevel > 10){ const lb = forgeSpentOn(defId, 10); dust += lb.dust; gold += lb.gold; } return {dust, gold}; }
 // Duplicates as Forge credit (2026-10-11, user: "You need the equivalent of 15-20 duplicates to take a card from level
 // 1-10 ... Legendary and beyond, the power of duplicates increases"): feeding a spare copy to its own card banks 1/N of
 // that card's whole 1→10 cost as credit on it, spent before your wallet. N: up to Super Rare 18.75, Epic-Unique 17.5,
@@ -7861,7 +7935,36 @@ function feedDuplicate(id){
   const v = duplicateValue(id), c = forgeCreditOf(id);
   myCardCopies[id].splice(i, 1); saveCardCopies();
   myForgeCredit[id] = {dust: c.dust + v.dust, gold: c.gold + v.gold}; saveForgeCredit();
+  noteDuplicateFed(id);
   return v;
+}
+// Limit break (2026-10-12, user: "limit break a card to its last level, 11. It needs to have at least received 5 duplicates
+// as a pre-condition ... it takes the resources gathered from lvl 1 or 0 to 10. Castles can be limit broken much more, but
+// it takes not just much more resources - advanced resources as well"). A level-10 card that has been fed 5 duplicates (ever;
+// melting doesn't take that back) can break to level 11 for what its whole road to 10 cost again. Level 11 is a major step
+// (+10%). Castles break past 20 to 25 (CASTLE_LIMIT_MAX), each step needing an 🔥 Ember Core, the last a 🐉 Dragon Scale too.
+const LIMIT_BREAK_LEVEL = 11, LIMIT_BREAK_FED = 5, DUPS_FED_KEY = 'bramblewood_dups_fed_v1';
+let myDupsFed = (()=>{ try{ return JSON.parse(localStorage.getItem(DUPS_FED_KEY)||'{}') || {}; }catch(e){ return {}; } })();
+function noteDuplicateFed(id){ myDupsFed[id] = (myDupsFed[id]|0) + 1; try{ localStorage.setItem(DUPS_FED_KEY, JSON.stringify(myDupsFed)); }catch(e){} }
+function duplicatesFed(id){ return myDupsFed[id]|0; }
+function canLimitBreakDef(d){ return !!(d && !d.token && !d.hero && !d.test && d.cardType !== 'materia' && cardMaxLevel(d) === 10); }
+function limitBreakCost(defId){ const raw = forgeSpentOn(defId, 10), cr = forgeCreditOf(defId); return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}}; }
+function limitBreakState(defId){
+  const d = forgeBaseDef(defId), L = getCardLevel(defId), fed = duplicatesFed(defId);
+  if(!canLimitBreakDef(d)) return {ok:false, why:'none'};
+  if(L >= LIMIT_BREAK_LEVEL) return {ok:false, why:'done', fed};
+  if(L < 10) return {ok:false, why:'level', fed};
+  if(fed < LIMIT_BREAK_FED) return {ok:false, why:'fed', fed};
+  const c = limitBreakCost(defId);
+  return {ok: (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold, why: 'cost', fed, cost: c};
+}
+function limitBreakCard(defId){
+  const st = limitBreakState(defId); if(!st.ok) return false;
+  const c = st.cost; myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  if(c.credit.dust || c.credit.gold) spendForgeCredit(defId, c.credit);
+  myCardLevels[defId] = LIMIT_BREAK_LEVEL; saveCardLevels();
+  try{ logTxn({action:'limitBreak', cardId:defId, cardName:(getCardDefs()[defId]||{}).name, source:'Forge limit break', before:10, after:LIMIT_BREAK_LEVEL}); }catch(e){}
+  return true;
 }
 // The next level's price after this card's credit.
 function levelUpCost(currentLevel, defId){
@@ -7915,22 +8018,29 @@ function castleUnlocked(ch){
   if(!ch || !ch.unlockMap) return true;
   try{ const m = CONQUEST_MAPS.find(x=> x.id===ch.unlockMap); const b = m && m.nodes.find(n=> n.kind==='boss' || n.kind==='finalboss'); return !!(b && (loadConquestProgress().completed||[]).includes(conquestNodeId(m.id, b.key))); }catch(e){ return false; }
 }
-function castleLevelOf(id){ return Math.max(0, Math.min(CASTLE_MAX_LEVEL, (myCastleLevels && myCastleLevels[id])|0)); }
+const CASTLE_LIMIT_MAX = 25; // castles break past 20 (2026-10-12), with advanced materia
+function castleLevelOf(id){ return Math.max(0, Math.min(CASTLE_LIMIT_MAX, (myCastleLevels && myCastleLevels[id])|0)); }
+// Advanced materia for a castle's limit break: each step past 20 takes an Ember Core; the last (24→25) a Dragon Scale too.
+function castleLevelMats(L){ const out = {}; if(L >= CASTLE_MAX_LEVEL){ out['ember-core'] = 1 + Math.floor((L - CASTLE_MAX_LEVEL) / 2); if(L === CASTLE_LIMIT_MAX - 1) out['dragon-scale'] = 1; } return out; }
 // Castles level to 20 (2026-10-11, forge economy v2: "A castle has lvl 1-20, and roughly, this costs quadruple to what a
 // normal card costs. I would estimate lvl1-10 costs = lvl1-10 for a normal card"). Levels 0-10 cost what a card of the
 // castle's rarity costs to 10; each of levels 10-20 costs three times the matching step, so 4× in all.
 function castleLevelUpCost(L, id){
-  L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0));
+  L = Math.max(0, Math.min(CASTLE_LIMIT_MAX - 1, L|0));
   const ch = id && CHARACTER_DEFS[id], r = (ch && ch.rarity) || 'common', k = LEVEL_COST_MULT[r] || LEVEL_COST_MULT[(RARITY_DEFS.find(x=> x.key===r) || {}).as] || 1;
+  // Limit break 20→25: four times the last normal step, rising a quarter each level, plus castleLevelMats.
+  if(L >= CASTLE_MAX_LEVEL){ const f = 4 * (1 + (L - CASTLE_MAX_LEVEL) * 0.25); return {dust: Math.round((15 + 9*12) * k * f), gold: Math.round((10 + 9*8) * k * f), mats: castleLevelMats(L)}; }
   const step = L < 10 ? L : L - 10, f = L < 10 ? 1 : 3;
   return {dust: Math.round((15 + step*12) * k * f), gold: Math.round((10 + step*8) * k * f)};
 }
 function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
 function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
+function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; const c = castleLevelUpCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
 function temperCastle(id){
-  const L = castleLevelOf(id); if(L >= CASTLE_MAX_LEVEL) return false;
-  const c = castleLevelUpCost(L, id); if((myCurrencies.dust||0) < c.dust || (myCurrencies.gold||0) < c.gold) return false;
+  const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX || !castleCanTemper(id)) return false;
+  const c = castleLevelUpCost(L, id);
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
   return true;
 }
@@ -8071,10 +8181,12 @@ function openLoadoutPicker(kind){
     .sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || ((defs[b].attack||0)+(defs[b].health||0)) - ((defs[a].attack||0)+(defs[a].health||0)));
   const body = ()=> isCastle
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr('Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
-        <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
-      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L, id), ok = (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold;
-        return L >= CASTLE_MAX_LEVEL ? `<p class="lp-temper is-max">🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} is at level ${CASTLE_MAX_LEVEL}.</p>`
-          : `<div class="lp-temper"><span>🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} · Lv ${L} → ${L+1}: +1 starting Health</span><button type="button" class="btn small primary" data-temper-castle="${escapeAttr(id)}" ${ok?'':'disabled'}>🔨 Temper · ✨${c.dust} 🍁${c.gold}</button></div>`; })()}`
+        <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
+      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L, id), ok = castleCanTemper(id), defs = getCardDefs();
+        const mats = Object.entries(c.mats||{}).map(([m, n])=> ` ${(defs[m]||{}).icon||'💠'}${n}${ownedCount(m) < n ? '✗' : ''}`).join('');
+        const lb = L >= CASTLE_MAX_LEVEL;
+        return L >= CASTLE_LIMIT_MAX ? `<p class="lp-temper is-max">🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} is at level ${CASTLE_LIMIT_MAX}: fully limit broken.</p>`
+          : `<div class="lp-temper ${lb?'is-lb':''}"><span>🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} · Lv ${L} → ${L+1}: +1 starting Health${lb ? ' · 💥 limit break (advanced materia)' : ''}</span><button type="button" class="btn small primary" data-temper-castle="${escapeAttr(id)}" ${ok?'':'disabled'}>${lb?'💥 Break':'🔨 Temper'} · ✨${c.dust} 🍁${c.gold}${mats}</button></div>`; })()}`
     : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
@@ -8572,7 +8684,7 @@ function deckPreviewPillsHTML(d){
 // card's level 0); the leader counts double. A full deck of level-10 Ancients with an Ancient leader is ≈2,500.
 const RATING_WEIGHT = {starter:0.5, common:1, uncommon:2, rare:4, veryrare:6, superrare:8, epic:11, heroic:14, unique:17, legendary:21, mythic:25, ancient:30, divine:36};
 function ratingWeightOf(d){ if(!d) return 0; const r = d.rarity || 'common', as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return RATING_WEIGHT[r] || RATING_WEIGHT[as] || 1; }
-function ratingLevelFactor(L){ L = Math.max(0, Math.min(10, Number(L)||0)); return L <= 0 ? 0.7 : 1 + (L - 1) * 0.31; }
+function ratingLevelFactor(L){ L = Math.max(0, Math.min(11, Number(L)||0)); return L <= 0 ? 0.7 : 1 + (L - 1) * 0.31; }
 function deckLevelFrom(counts, levelOf, leaders){
   const defs = getCardDefs();
   const one = id=>{ const k = String(id).split('~')[0], d = defs[k]; if(!d) return 0; return ratingWeightOf(d) * ratingLevelFactor(levelOf(k)); };
@@ -8842,7 +8954,7 @@ function renderPlay(){
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
-          ${adminModeEnabled ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
+          ${(adminModeEnabled || featureUnlocked('testlab')) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
         </div>
         <div class="play-subtabs-actions">
           <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
@@ -8908,6 +9020,7 @@ function renderPlay(){
     if(conquestTabBtn) attachDelayedTooltip(conquestTabBtn, 'Fight your way across a map of preset AI skirmishes with the deck and Bramble you set up in the Deck menu. Beat a Raid Boss to unlock it permanently in the Raid tab.');
     const body = document.getElementById('playSubBody');
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
+    if(playSubTab === 'sandbox' && !adminModeEnabled && !featureUnlocked('testlab')) playSubTab = 'conquest';
     // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
     // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
     if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid'){ document.body.classList.add('conquest-full', 'play-full'); }
@@ -9584,6 +9697,13 @@ const DIALOGUE_SPEAKERS = {
   whisper:    {name:'Whisper-of-Ash', card:'voidfeather-scout', icon:'🐦'},
   traveller:  {name:'The Wandering Traveller', card:'wandering-traveller', icon:'🧳'},
   peddler:    {name:'Old Cinder, the Ember Peddler', card:'quarry-mole', icon:'🏮'},
+  // Errand givers (2026-10-12): folk met on the road who ask for small favours.
+  mole:       {name:'Pip, a lost mole', icon:'🐹'},
+  heron:      {name:'Old Heron Wade', icon:'🪶'},
+  mouse:      {name:'Bramble the courier mouse', icon:'🐭'},
+  beetle:     {name:'Sister Carapace', icon:'🪲'},
+  frog:       {name:'Croaker, a pond warden', icon:'🐸'},
+  hedgehog:   {name:'Thimble the hedgehog', icon:'🦔'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
 const DIALOGUES = {
@@ -9654,6 +9774,41 @@ const DIALOGUES = {
     {who:'shieldback', text:'The notice board. Orders from the lodge — every day, every week.'},
     {who:'swiftpaw', text:'The first few pay well. The rest… pay.', options:[{label:'I\'ll take them.', goto:'go'}], silent:'go'},
     {label:'go', who:'shieldback', text:'Do the work, get the leaves. That\'s the whole system.'},
+  ]},
+  unlock_codex: {lines:[
+    {who:'traveller', text:'A field book. Every card anyone on this road has ever seen, drawn in by somebody.'},
+    {who:'swiftpaw', text:'Half the pages are blank.', options:[{label:'Then we fill them.', goto:'go'}], silent:'go'},
+    {label:'go', who:'traveller', text:'A page fills itself the first time you meet the card. Keep your eyes open.'},
+  ]},
+  unlock_questboard: {lines:[
+    {who:'shieldback', text:'A proper quest board. Real requests from real folk, not lodge orders.'},
+    {who:'swiftpaw', text:'So when somebody on the road says “could you…”, it goes up here?', options:[{label:'Sounds like work.', goto:'go'}], silent:'go'},
+    {label:'go', who:'shieldback', text:'Errands. Small favours, small rewards. They add up.'},
+  ]},
+  unlock_forge: {lines:[
+    {who:'traveller', text:'The Foundry’s smiths will temper anything you bring them, for a price.'},
+    {who:'shieldback', text:'Dust, leaves and spare copies. Bring all three.', options:[{label:'Show me the anvil.', goto:'go'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Feed a card enough of itself and, one day, it breaks its own limit.'},
+  ]},
+  unlock_shop3: {lines:[
+    {who:'traveller', text:'A caravan with gold on the wheels. They only sell the good cases.'},
+    {who:'swiftpaw', text:'Golden Bramble Cases. I’ve heard of those.', options:[{label:'Let’s look.', goto:'go'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Look first. Buy second. Regret never.'},
+  ]},
+  unlock_wanderer: {lines:[
+    {who:'traveller', text:'Someone made camp here. Someone who doesn’t stay anywhere long.'},
+    {who:'swiftpaw', text:'The wandering trader! The one with the mystery boosters.', options:[{label:'Where are they?', goto:'go'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Somewhere on the road, on some days. When you find them, they’ll sell you five. No more.'},
+  ]},
+  unlock_gauntlet: {lines:[
+    {who:'vesper', text:'You win in the Arena. Fine. Can you keep winning?'},
+    {who:'swiftpaw', text:'Ten in a row? That’s the Gauntlet.', options:[{label:'Bring it.', goto:'go'}], silent:'go'},
+    {label:'go', who:'vesper', text:'Lose once and you start again from nothing. That’s the point.'},
+  ]},
+  unlock_testlab: {lines:[
+    {who:'whisper', text:'Psst. A tent full of tables. Nobody fights for real in here.'},
+    {who:'whisper', text:'Put any cards down, see what they do. Nothing you win, nothing you lose.', options:[{label:'Let me try.', goto:'go'}], silent:'go'},
+    {label:'go', who:'whisper', text:'Experiments only. The Marshal calls it “cheating”. I call it homework.'},
   ]},
   boss_banter: {lines:[
     {who:'shieldback', text:'That one doesn\'t surrender. Don\'t wait for it to.'},
@@ -9743,28 +9898,47 @@ function playDialogue(id, opts){
 // earned (migrateFeatureUnlocks). Admin → "Unlock all features" / "Replay onboarding".
 const UNLOCKS_KEY = 'bramblewood_unlocks_v1';
 const FEATURE_SPOTS = [
-  {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck','codex'], go:()=> switchTab('deck')},
-  {key:'nest', icon:'🪺', name:'Nest', map:'m1', after:'1-2', dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
-  {key:'quests', icon:'📜', name:'Notices', map:'m1', after:'1-3', dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
-  // 2026-10-09: with Thistle Fields and Pebble Beach inserted, Arena and Shop move to maps 2 and 3 so they still open at the same point in the journey.
-  {key:'arena', icon:'🏟️', name:'The Arena', map:'mf', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
-  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'mb', after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
-  // Shops (2026-10-10, user: "more travelling merchants... Each shop unlocks the next tier of card pack. They appear
-  // every 8 maps. So [3], [11], [19]"): map 3 is Pebble Beach (the Cart), map 11 is Basalt Foundry (the Ember
-  // Peddler, Acorn Chests). Map 19 doesn't exist yet; its merchant will bring the Golden Bramble Case.
-  {key:'shop2', icon:'🏮', name:'Ember Peddler', map:'m9', after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
+  // Map schedule (2026-10-12, user's per-map table: "Map 1 Armoury, 2 Nest, 3 Dungeon 3A, 4 Notices, 5 Boss (Pack A),
+  // 7 Codex, 8 Arena (Pack B), 9 Quest board, 11 Forge, 13 Raid 1 + Wandering Trader A (Pack C), 16 Arena: Gauntlet,
+  // 21 Test Lab"). Map numbers are play order (mainConquestMaps). Players who already opened a feature keep it.
+  {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
+  {key:'nest', icon:'🪺', name:'Nest', map:'mf', after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
+  {key:'quests', icon:'📜', name:'Notices', map:'m2', after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
+  // Pack A (Sprout Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
+  {key:'shop', icon:'🛒', name:'Traveller’s Cart', map:'m3', after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', map:'m3', after:'3-2', dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
-  // 2026-10-11 (user: "I think the first Raid can appear at Map 12"): the Raid Banner and the first raid domain (Wound
-  // Reaver's) moved to Map 12, Eyrie Heights, after its boss; the Deep Troll King's domain moved to Map 13. Players who
-  // already opened Raids keep them.
-  {key:'raid', icon:'🐲', name:'Raid Banner', map:'m10', after:'10-10', dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
+  {key:'codex', icon:'📖', name:'Codex', map:'m5', after:null, dialogue:'unlock_codex', tabs:['codex'], go:()=> switchTab('codex')},
+  {key:'arena', icon:'🏟️', name:'The Arena', map:'m6', after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  // Pack B (Acorn Chests) from Map 8.
+  {key:'shop2', icon:'🏮', name:'Ember Peddler', map:'m6', after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
+  // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
+  {key:'questboard', icon:'📌', name:'Quest Board', map:'m7', after:null, dialogue:'unlock_questboard', tabs:['errands'], go:()=> openQuestsModal('errands')},
+  {key:'forge', icon:'🔨', name:'The Forge', map:'m9', after:null, dialogue:'unlock_forge', tabs:['forge'], go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }},
+  // Map 13: Raid 1, Pack C (Golden Bramble Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
+  {key:'raid', icon:'🐲', name:'Raid Banner', map:'m11', after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
+  {key:'shop3', icon:'🐫', name:'Gilded Caravan', map:'m11', after:null, dialogue:'unlock_shop3', tabs:[], merchant:true, pack:'gold', go:()=> switchTab('shop')},
+  {key:'wanderer', icon:'🧭', name:'Wanderer’s Camp', map:'m11', after:null, dialogue:'unlock_wanderer', tabs:[], go:()=> switchTab('shop')},
+  {key:'gauntlet', icon:'🏅', name:'Gauntlet Gate', map:'mc', after:null, dialogue:'unlock_gauntlet', tabs:['gauntlet'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'testlab', icon:'🧪', name:'Test Lab', map:'ml', after:null, dialogue:'unlock_testlab', tabs:['sandbox'], go:()=>{ playSubTab = 'sandbox'; switchTab('play'); }},
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
   // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
   {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[29]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
+// Spots added on 2026-10-12 that cover something a player may already have opened under the old schedule (the Codex
+// came with the Armoury, the Forge with the Codex, the Gauntlet with the Arena): an existing save keeps them open.
+function migrateSchedule20261012(u){
+  try{
+    if(u.unlocked.deck){ u.unlocked.codex = true; u.unlocked.forge = true; }
+    if(u.unlocked.arena) u.unlocked.gauntlet = true;
+    const pr = loadConquestProgress();
+    ['questboard','shop3','wanderer','testlab'].forEach(k=>{ const sp = FEATURE_SPOTS.find(x=> x.key===k); if(sp && spotAvailable(sp, pr) && loadTutorialDone()) u.unlocked[k] = true; });
+  }catch(e){}
+  u.sched1012 = Date.now(); saveUnlocks(u);
+  return u;
+}
 function loadUnlocks(){
-  try{ const u = JSON.parse(localStorage.getItem(UNLOCKS_KEY)||'null'); if(u && u.unlocked) return u; }catch(e){}
+  try{ const u = JSON.parse(localStorage.getItem(UNLOCKS_KEY)||'null'); if(u && u.unlocked) return u.sched1012 ? u : migrateSchedule20261012(u); }catch(e){}
   return migrateFeatureUnlocks();
 }
 function saveUnlocks(u){ try{ localStorage.setItem(UNLOCKS_KEY, JSON.stringify(u)); }catch(e){} }
@@ -9775,7 +9949,7 @@ function spotAvailable(spot, progress){
 }
 // First run of this build for an existing player: grant whatever their progress has already reached.
 function migrateFeatureUnlocks(){
-  const u = {unlocked:{}, migrated: Date.now()};
+  const u = {unlocked:{}, migrated: Date.now(), sched1012: Date.now()};
   if(loadTutorialDone()){ const pr = loadConquestProgress(); FEATURE_SPOTS.forEach(sp=>{ if(spotAvailable(sp, pr)) u.unlocked[sp.key] = true; }); }
   saveUnlocks(u);
   return u;
@@ -9977,7 +10151,8 @@ function wanderingMerchantShopHTML(){
     : `<button type="button" class="btn primary" data-wander-buy="${p.id}" ${isSignedIn() && !canAffordPacks(Object.assign({}, p, {cost:c}), 1) ? 'disabled' : ''}>Buy ${escapeHtml(p.name)}</button>`;
   return `<div class="wander-card" id="wanderCard"><span class="wc-ico" aria-hidden="true">${w.icon}</span>
     <div class="wc-body"><b>${escapeHtml(w.name)}</b><span>At ${escapeHtml(w.mapName)}, ${left}.</span>
-      <span class="wc-deal">${p.icon} ${escapeHtml(p.name)} <s>${was}</s> <b>${price}</b> <em>25% off, once today</em></span></div>${btn}</div>`;
+      <span class="wc-deal">${p.icon} ${escapeHtml(p.name)} <s>${was}</s> <b>${price}</b> <em>25% off, once today</em></span>
+      ${(()=>{ const mp = getShopPacks().find(x=> x.id === MYSTERY_PACK_ID); if(!mp || mp.anytime) return ''; const left = mysteryPacksLeft(); if(!left && !(wandererState().mystery||0)) return ''; return `<span class="wc-deal">❓ Mystery Boosters: <b>${left} of ${MYSTERY_PER_VISIT}</b> left this visit</span>`; })()}</div>${btn}</div>`;
 }
 function wireWanderingMerchantShop(root){
   const b = root.querySelector('[data-wander-buy]');
@@ -10660,7 +10835,7 @@ function claimableQuestCount(){
   const q = loadQuestState(); let n = 0;
   q.dailyList.forEach(x=>{ if(!q.claimedDaily.includes(x.id) && dailyNoticeProgress(q, x) >= x.goal) n++; });
   visibleQuestTiers('weekly', q).forEach(t=> t.quests.forEach(x=>{ if(!q.claimedWeekly.includes(x.id) && (q.weekly[x.counter]||0) >= x.goal) n++; }));
-  return n;
+  return n + claimableErrandCount();
 }
 function claimQuest(kind, id){
   const q = loadQuestState();
@@ -10690,6 +10865,93 @@ function medalTier(counter, value){ const m = STAT_MEDALS.find(x=> x.counter===c
 // icon, a twine progress bar and the reward), claimable ones glow with a wax-seal Claim button, and
 // claimed ones get a CLAIMED stamp. Medals hang underneath as real medallions.
 const QUEST_ICON = {energyConquest:'⚡', pvpTickets:'🎟️', unitsDefeated:'⚔️', wins:'🏆', conquestWins:'🗺️', pvpWins:'🥊', raidsJoined:'🐙'};
+// ---- Errands: mini-quests from conversations on the road (2026-10-12, user: "Remember we talked about subquests... it
+// should have a UI. maybe it can be in the notice board" + the map table: "Map 9: Quest board — Random conversations
+// become mini-quests"). Once the Quest Board (Map 9) is open, a Conquest win sometimes ends with someone asking a favour.
+// Say yes and it's pinned under Errands on the Notices; let it pass and it waits there as an offer for the rest of the
+// day. Up to 3 at a time. Progress counts from the moment you take it on (lifetime counters), and an errand pays a small
+// share of a Materia Unit plus Maple Leaves, and sometimes an Iron Shard.
+const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHANCE = 0.3;
+const ERRAND_TEMPLATES = [
+  {id:'mole-ridge', who:'mole', ask:'My cousin is stuck past the next ridge. Could you clear the road for him?', counter:'conquestWins', goal:3, label:'Clear 3 Conquest fights for Pip’s cousin', mu:0.06, thanks:'He made it home! He says thank you. Well, he squeaked.'},
+  {id:'heron-pests', who:'heron', ask:'Pests in my reeds. Many, many small pests. Thin them out for an old bird?', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units for Old Heron Wade', mu:0.05, thanks:'Quiet reeds at last. Here, for your trouble.'},
+  {id:'mouse-letter', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Bramble’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
+  {id:'beetle-packs', who:'beetle', ask:'The Hive trades in sealed packs. Open a couple and tell me what you find?', counter:'packsOpened', goal:2, label:'Open 2 card packs for Sister Carapace', mu:0.04, thanks:'Interesting. Very interesting. The Hive thanks you.'},
+  {id:'frog-march', who:'frog', ask:'The pond needs a strong patrol. Spend some time on the road for us?', counter:'energyConquest', goal:25, label:'Use 25 ⚡ Energy on Conquest fights for Croaker', mu:0.05, thanks:'The pond sleeps easy tonight. Croak.'},
+  {id:'hedgehog-bully', who:'hedgehog', ask:'There’s a big bully on this road. Beat a few of his friends so he backs off?', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights for Thimble', mu:0.04, thanks:'He backed off! I’m not scared of him anymore. Much.', shard:true},
+  {id:'heron-feast', who:'heron', ask:'I’m hosting a feast. I need a hundred-odd things caught. Well, twenty.', counter:'unitsDefeated', goal:20, label:'Defeat 20 enemy units for Old Heron Wade’s feast', mu:0.08, thanks:'A feast to remember. Take a plate. And this.', shard:true},
+];
+function loadErrands(){
+  let e = null; try{ e = JSON.parse(localStorage.getItem(ERRANDS_KEY)||'null'); }catch(_){}
+  e = e && typeof e === 'object' ? e : {};
+  e.active = Array.isArray(e.active) ? e.active : []; e.offers = Array.isArray(e.offers) ? e.offers : []; e.done = e.done|0;
+  const today = (typeof localDayKey === 'function') ? localDayKey() : new Date().toDateString();
+  if(e.offerDay !== today){ e.offers = []; e.offerDay = today; }
+  return e;
+}
+function saveErrands(e){ try{ localStorage.setItem(ERRANDS_KEY, JSON.stringify(e)); }catch(_){} }
+function errandsOpen(){ return featureUnlocked('questboard') || (typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
+function errandReward(t){ return {dust: Math.round(MU(t.mu)), gold: Math.round(MATERIA_UNIT.gold * t.mu)}; }
+function errandProgress(x){ const st = loadLifetimeStats(); return Math.max(0, Math.min(x.goal, (st[x.counter]||0) - (x.base||0))); }
+function pickErrandTemplate(e){ const busy = new Set(e.active.map(x=> x.tid).concat(e.offers.map(x=> x.tid))); const pool = ERRAND_TEMPLATES.filter(t=> !busy.has(t.id)); return pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
+function acceptErrand(tid){
+  const e = loadErrands(), t = ERRAND_TEMPLATES.find(x=> x.id===tid); if(!t || e.active.length >= ERRANDS_MAX || e.active.some(x=> x.tid===tid)) return false;
+  e.offers = e.offers.filter(x=> x.tid !== tid);
+  e.active.push({id:'er-' + Date.now().toString(36), tid, who:t.who, counter:t.counter, goal:t.goal, base:(loadLifetimeStats()[t.counter]||0), label:t.label, at:Date.now()});
+  saveErrands(e); try{ refreshQuestBadge(); }catch(_){} return true;
+}
+function dismissErrandOffer(tid){ const e = loadErrands(); e.offers = e.offers.filter(x=> x.tid !== tid); saveErrands(e); }
+function abandonErrand(id){ const e = loadErrands(); e.active = e.active.filter(x=> x.id !== id); saveErrands(e); }
+function claimErrand(id){
+  const e = loadErrands(), x = e.active.find(a=> a.id===id); if(!x || errandProgress(x) < x.goal) return false;
+  const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05}, rw = errandReward(t);
+  grantCurrency('dust', rw.dust); grantCurrency('gold', rw.gold);
+  if(t.shard){ try{ unlockCardForPlayer('iron-shard', 'errand'); }catch(_){} }
+  e.active = e.active.filter(a=> a.id !== id); e.done++; saveErrands(e);
+  try{ awardXp(20, 'quest'); }catch(_){}
+  const sp = DIALOGUE_SPEAKERS[x.who] || {};
+  showToast(`${sp.icon||'📌'} ${t.thanks || 'Errand done!'} +${rw.dust} Dust, +${rw.gold} Maple Leaves${t.shard ? ', an Iron Shard' : ''}`, 'ok');
+  try{ refreshQuestBadge(); }catch(_){}
+  return true;
+}
+function claimableErrandCount(){ try{ return loadErrands().active.filter(x=> errandProgress(x) >= x.goal).length; }catch(_){ return 0; } }
+// After a Conquest win: sometimes, someone on the road asks a favour (a short conversation with a yes/no).
+function maybeOfferErrand(force){
+  if(!errandsOpen()) return null;
+  const e = loadErrands(); if(!force && (e.active.length >= ERRANDS_MAX || e.offers.length >= 2 || Math.random() >= ERRAND_OFFER_CHANCE)) return null;
+  const t = pickErrandTemplate(e); if(!t) return null;
+  e.offers.push({tid:t.id, at:Date.now()}); saveErrands(e);
+  DIALOGUES['errand:' + t.id] = {lines:[
+    {who:t.who, text:t.ask, options:[{label:'I’ll do it.', goto:'yes'}, {label:'Not now.', goto:'no'}], silent:'no'},
+    {label:'yes', who:t.who, text:'Thank you! I’ll pin it on the Notices so you don’t forget.', goto:'end'},
+    {label:'no', who:t.who, text:'I’ll leave a note on the Quest Board, in case you change your mind.'},
+    {label:'end', who:t.who, text:'…'},
+  ]};
+  const p = playDialogue('errand:' + t.id);
+  p.then(r=>{ try{ if(r && r.replies && r.replies[0] === 'I’ll do it.'){ if(acceptErrand(t.id)) showToast(`📌 Errand taken: ${t.label}`, 'ok'); } }catch(_){} });
+  return t.id;
+}
+function errandsBoardHTML(){
+  if(!errandsOpen()) return '';
+  const e = loadErrands(), defs = getCardDefs();
+  const giver = who=> { const sp = DIALOGUE_SPEAKERS[who] || {}; return `<span class="er-giver" title="${escapeAttr(sp.name||who)}">${sp.icon||'📌'}</span>`; };
+  const rwChips = t=>{ const rw = errandReward(t); return `<span class="qn-rw">✨ ${rw.dust}</span><span class="qn-rw">${(CURRENCY_META.gold||{}).glyph||'🍁'} ${rw.gold}</span>${t.shard ? `<span class="qn-rw" title="Iron Shard">${(defs['iron-shard']||{}).icon||'🔩'}</span>` : ''}`; };
+  const act = e.active.map(x=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05}, v = errandProgress(x), done = v >= x.goal;
+    return `<div class="qn-note er-note ${done?'is-ready':''}" style="--rot:${((x.at|0) % 5 - 2) * 0.6}deg"><span class="qn-pin" aria-hidden="true"></span>${giver(x.who)}
+      <div class="qn-label">${escapeHtml(x.label)}</div>
+      <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
+      <div class="qn-note-rw">${rwChips(t)}</div>
+      <div class="qn-foot">${done ? `<button class="qn-claim" data-errand-claim="${x.id}">🎁 Claim</button>` : `<span class="er-wait">In progress</span><button type="button" class="qn-swap" data-errand-drop="${x.id}" title="Give up this errand">✕ Drop</button>`}</div></div>`; }).join('');
+  const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return ''; const sp = DIALOGUE_SPEAKERS[t.who] || {};
+    return `<div class="qn-note er-note er-offer" style="--rot:1deg"><span class="qn-pin" aria-hidden="true"></span>${giver(t.who)}
+      <div class="qn-label">“${escapeHtml(t.ask)}”<small class="er-from">${escapeHtml(sp.name||'')}</small></div>
+      <div class="qn-note-rw">${rwChips(t)}</div>
+      <div class="qn-foot"><button class="qn-claim" data-errand-take="${t.id}" ${e.active.length >= ERRANDS_MAX ? 'disabled title="You already have 3 errands"' : ''}>📌 Take it</button><button type="button" class="qn-swap" data-errand-skip="${t.id}">Not now</button></div></div>`; }).join('');
+  return `<section class="qn-board qn-errands" id="qnErrands">
+    <div class="qn-sign"><b>Errands</b><span>${e.active.length}/${ERRANDS_MAX} taken · favours asked on the road${e.done ? ` · ${e.done} done` : ''}</span></div>
+    <div class="qn-notes">${act}${offers}${!act && !offers ? '<p class="er-empty">No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and the note goes up here.</p>' : ''}</div>
+  </section>`;
+}
 function questsModalHTML(){
   const q = loadQuestState(), st = loadLifetimeStats();
   const resetIn = (ms)=>{ const h = Math.floor(ms/3600000), d = Math.floor(h/24); return d ? `${d}d ${h%24}h` : `${h}h ${Math.floor((ms%3600000)/60000)}m`; };
@@ -10748,12 +11010,13 @@ function questsModalHTML(){
     <div class="qn-cork">
       ${dailyBoard()}
       ${section('weekly', 'Weekly', nextMon - now)}
+      ${errandsBoardHTML()}
     </div>
     <section class="qn-medals-wrap"><div class="qn-sign qn-sign-dark"><b>Medals</b><span>lifetime stats: for bragging, not power</span></div><div class="qn-medals">${medals}</div></section>
   </div>`;
 }
 let questsKeyHandler = null;
-function openQuestsModal(){
+function openQuestsModal(focus){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
   const prevScroll = overlay.querySelector('.quests-modal') ? overlay.querySelector('.quests-modal').scrollTop : 0;
   const opening = overlay.hidden || !overlay.querySelector('.quests-modal');
@@ -10768,6 +11031,11 @@ function openQuestsModal(){
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
+  overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ if(claimErrand(b.dataset.errandClaim)) openQuestsModal(); else denyShake(b); }));
+  overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
+  overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
+  overlay.querySelectorAll('[data-errand-drop]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.armed){ abandonErrand(b.dataset.errandDrop); openQuestsModal(); } else { b.dataset.armed = '1'; b.textContent = 'Drop it?'; } }));
+  if(focus === 'errands'){ const er = overlay.querySelector('#qnErrands'); if(er) setTimeout(()=>{ try{ er.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} }, opening ? 600 : 0); }
 }
 // Quest board entrance (2026-10-10, user: "Clicking into the Quest board should show an animation bringing the board up,
 // with some papers flying around"): the board swings up from below with a bump, and loose notices flutter off it.
@@ -11228,10 +11496,10 @@ function renderArenaSubTab(body){
         <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span></button>
       </div></div>
       <div class="arena-group"><h3 class="arena-group-h">Challenges</h3><div class="arena-mode-grid">
-        <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
+${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
           <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row</span>
           <span class="gauntlet-streak-line">🔥 ${loadGauntletStreak()} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
-        </button>
+        </button>` : ''}
         <div class="arena-mode-btn caged-panel" id="cagedPanel">
           <span class="amb-ico">⛓️</span><span class="amb-lbl">Caged Fight</span>
           <span class="amb-sub">Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.</span>
@@ -11271,7 +11539,7 @@ function renderArenaSubTab(body){
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
   const asyncBtn = document.getElementById('startAsyncBtn'); if(asyncBtn) asyncBtn.addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
   const pvpBtn = document.getElementById('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp'));
-  document.getElementById('startGauntletBtn').addEventListener('click', ()=> startMatch('gauntlet'));
+  { const gb = document.getElementById('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
   { const a = document.getElementById('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
     const b = document.getElementById('startCagedPcBtn'); if(b) b.addEventListener('click', ()=> startMatch('pc', {caged:true})); }
   document.getElementById('startDungeonBtn').addEventListener('click', startDungeonFight);
@@ -12998,7 +13266,7 @@ function renderConquestSubTab(body){
       // when the player goes into the game, new session, the first time he loads the map, use the loading screen"): once per session only.
       if(firstThisSession){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
     } }
-  try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
+  try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
@@ -14371,6 +14639,8 @@ function claimTutorialWin(pick){
     // 2026-10-10 (user: "Playing the tutorial forces the player to put the 3 cards they won from the tutorial into their deck -> forming 20!")
     const deck = buildFactionStarterDeck(pick); won.forEach(id=> deck[id] = (deck[id]||0) + 1);
     myDeckCounts = deck; saveMyDeck(); saveTutorialDone();
+    // Map 0's reward on the user's map table (2026-10-12): an Ally Pack of your side, waiting unopened in the Shop.
+    try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){}
     noteTutorialProgress({level:4, doneAt:Date.now()});
   }
   return firstTime;
@@ -21315,6 +21585,11 @@ async function resolveRound(opts){
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
       // map's enemy decks that you don't own yet. At most once per map.
       try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
+      // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
+      try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp) m.conquestFreePack = fp; }catch(e){}
+      try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
+      // Errands (2026-10-12): sometimes someone on the road asks a favour once the result screen has settled.
+      setTimeout(()=>{ try{ maybeOfferErrand(); }catch(e){} }, 2600);
       { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
@@ -21816,8 +22091,13 @@ function passiveTipCandidates(){
   out.push({id:'lumber', text:'🪵 This card needs Lumber to play. Drag a card you don’t need onto the Graveyard to discard it for Lumber, then play the big one later.', anchor:()=> coachHandEl(d=> (d.cost||0)>0)});
   out.push({id:'leader', text:'👑 Your Leader: drag it onto the field to summon it, once per match. Summoning uses your play for the turn.', anchor:()=> document.querySelector('#leaderWidget.summonable')});
   out.push({id:'handLimit', text:'✋ You can hold 5 cards. Draw past that and the extra card is discarded for +1 Lumber automatically.', anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
-  // every skill/effect, the first time a card carrying it is on the field
-  Registry.skills().forEach(sd=>{
+  // Triggers (2026-10-12, user: "Tutorials should teach about triggers - when they enable, when they disable, and their
+  // visual indicators"): the ⚡ badges on the card's bottom edge, taught the first time each state shows up on the field.
+  out.push({id:'trig-off', text:'⚡ This badge is a trigger: an effect the card fires by itself. Greyed out means it is off for now: triggers that fire every round or when hit stay off while the card is Waiting (⏳), Stunned, Frozen or Asleep.', anchor:()=> document.querySelector('#battlefieldEl .board-card .ab-trig.is-off')});
+  out.push({id:'trig-on', text:'⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.', anchor:()=> coachSeen.has('trig-off') ? document.querySelector('#battlefieldEl .board-card .ab-trig:not(.is-off)') : null});
+  // every skill/effect, the first time a card carrying it is on the field. Natural Leader gets no tip (2026-10-12, user:
+  // "Natural Leader does not need a tutorial. this just might confuse the player").
+  Registry.skills().filter(sd=> sd.key !== 'leader').forEach(sd=>{
     const desc = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })();
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
@@ -21890,6 +22170,16 @@ function showCoachTip(tip, anchorEl){
     document.body.appendChild(coachShield);
   }
   document.body.appendChild(b);
+  // Spotlight (2026-10-12, user: "During the tutorial, darken the screen, and point using a mouse or red markers to where
+  // they should click"): guided steps dim everything but their target and point at it with a bobbing red marker. Neither
+  // takes clicks; the shield and tutorialLock decide what can be pressed.
+  let spot = null, pointer = null;
+  if(GUIDED_STEPS.includes(tip) || tip.gate){
+    spot = document.createElement('div'); spot.className = 'coach-spotlight'; spot.setAttribute('aria-hidden', 'true');
+    pointer = document.createElement('div'); pointer.className = 'coach-pointer' + (tip.action ? ' is-action' : ''); pointer.setAttribute('aria-hidden', 'true');
+    pointer.innerHTML = '<span class="cp-ring"></span><span class="cp-hand">👆</span>';
+    document.body.appendChild(spot); document.body.appendChild(pointer);
+  }
   const place = ()=>{
     // 2026-10-05 (user: "tutorial messages should be pointing to the card of interest ... they
     // shouldn't disappear and appear again during battle. Just leave it there. If I click OKAY, it
@@ -21919,12 +22209,14 @@ function showCoachTip(tip, anchorEl){
     }
     b.style.left = x+'px'; b.style.top = y+'px';
     b.classList.toggle('below', below);
+    if(spot){ const pad = 8; spot.style.left = (r.left - pad)+'px'; spot.style.top = (r.top - pad)+'px'; spot.style.width = (r.width + pad*2)+'px'; spot.style.height = (r.height + pad*2)+'px'; }
+    if(pointer){ const px = r.left + r.width/2, py = below ? r.top + Math.min(r.height*0.35, 40) : r.top + r.height*0.6; pointer.style.left = px+'px'; pointer.style.top = Math.max(8, Math.min(H - 8, py))+'px'; }
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
   place();
   anchorEl.classList.add('coach-anchor'); if(tip.block) anchorEl.classList.add('coach-locked');
   const tick = setInterval(place, 250);
-  coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick};
+  coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick, spot, pointer};
   // Guided "do this" steps lock everything except what the step asks for (the hand and your
   // board row for "play a card"); a click anywhere else just nudges the tip.
   if(tip.action && (GUIDED_STEPS.includes(tip) || tip.gate)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b, gate: !!tip.gate};
@@ -21948,6 +22240,7 @@ function hideCoachTip(){
   if(coachShield){ coachShield.remove(); coachShield = null; }
   if(!coachOpen) return;
   clearInterval(coachOpen.tick); coachOpen.el.remove();
+  if(coachOpen.spot) coachOpen.spot.remove(); if(coachOpen.pointer) coachOpen.pointer.remove();
   const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
   coachOpen = null;
 }
@@ -22467,7 +22760,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1} (${reward.rankBonus.gold>=0?'+':''}${reward.rankBonus.gold})</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1} (${reward.rankBonus.gold>=0?'+':''}${reward.rankBonus.gold})</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -22873,6 +23166,7 @@ function logText(ev){
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
+    case 'fastForward': return {cls:'', text:`${nm(ev.defId)} fast-forwards ${ev.n} turn${ev.n===1?'':'s'}! ⏩`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
     default: return {cls:'', text: ev.type};
@@ -25081,10 +25375,11 @@ let forgeFilter = 'all', forgeSearch = '', forgeSort = 'name', forgeBusy = false
 let forgeMode = 'upgrade'; // 'upgrade' (level + prestige) | 'refine' (foil finish) | 'enchant' (Materia socket)
 function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
 function forgeStatsAt(id, level){
-  const b = forgeBaseDef(id) || {}; const m = levelStatMultiplier(level);
-  return {attack: b.attack!=null ? Math.max(1, Math.round(b.attack*m)) : null, health: b.health!=null ? Math.max(1, Math.round(b.health*m)) : null};
+  // 2026-10-12: the same per-level stats a match uses (statsAtLevel), so the Forge preview never disagrees with the card.
+  const b = forgeBaseDef(id) || {}; const st = statsAtLevel(b, level);
+  return {attack: b.attack!=null ? st.attack : null, health: b.health!=null ? st.health : null};
 }
-function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
+function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false)); }
 function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   const defs = getCardDefs();
@@ -25214,6 +25509,8 @@ function renderForge(){
   const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ forgeFilter = 'ready'; renderForge(); };
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const lbBtn = document.getElementById('forgeLimitBreakBtn');
+  if(lbBtn) lbBtn.addEventListener('click', ()=> forgeLimitBreak(lbBtn));
   const dupBtn = document.getElementById('forgeFeedDupBtn');
   if(dupBtn) dupBtn.addEventListener('click', ()=>{ const v = feedDuplicate(forgeSelectedId); if(!v){ denyShake(dupBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(`🧩 A duplicate became ✨ ${v.dust} of credit on ${getCardDefs()[forgeSelectedId].name}.`, 'ok'); });
   const meltBtn = document.getElementById('forgeMeltBtn');
@@ -25366,7 +25663,7 @@ function forgeReadyFor(id){
   if(forgeMode==='smith') return false;
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
-  const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false);
+  const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
 }
 function costChipsHTML(cost){
   const chip = (glyph, need, have, label)=> need ? `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>` : '';
@@ -25425,7 +25722,8 @@ function forgeEnchant(btn){
 function forgeAnvilHTML(id, sel, L, maxed){
   const now = forgeStatsAt(id, L), next = forgeStatsAt(id, Math.min(10, L+1));
   const delta = (a, b, cls, glyph)=> a==null ? '' : `<div class="forge-stat ${cls}"><span class="fs-glyph">${glyph}</span><span class="fs-now">${a}</span>${!maxed ? `<span class="fs-arrow">→</span><span class="fs-next ${b>a?'up':''}">${b}${b>a?`<small>+${b-a}</small>`:''}</span>` : ''}</div>`;
-  const pips = Array.from({length:10}, (_,k)=> `<i class="${k<L?'on':''} ${k===L && !maxed?'next':''}"></i>`).join('');
+  const lbOK = canLimitBreakDef(forgeBaseDef(id)), lb = lbOK ? limitBreakState(id) : null;
+  const pips = Array.from({length:10}, (_,k)=> `<i class="${k<L?'on':''} ${k===L && !maxed?'next':''}"></i>`).join('') + (lbOK ? `<i class="lb ${L>=LIMIT_BREAK_LEVEL?'on':''} ${L===10?'next':''}" title="Level 11: limit break"></i>` : '');
   const prestige = getCardPrestige(id), tier = maxed ? nextPrestigeTier(id) : null;
   const cost = !maxed ? levelUpCost(L, id) : (tier ? tier.cost : null);
   const afford = !maxed ? canAffordLevelUp(L, id) : (tier ? canAffordPrestige(id) : false);
@@ -25438,14 +25736,14 @@ function forgeAnvilHTML(id, sel, L, maxed){
       <span class="forge-hammer" aria-hidden="true">🔨</span>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${sel.prestigeLabel?` <span class="forge-prestige-tag">${sel.prestigeIcon} ${escapeHtml(sel.prestigeLabel)}</span>`:''}</h3>
-    <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
+    <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${L>=LIMIT_BREAK_LEVEL?' · Limit broken':maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
     ${!maxed ? `
       <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
       <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>
       ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
-    ` : `
+    ` : `${lb && lb.why !== 'done' ? forgeLimitBreakHTML(id, lb) : ''}
       <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
       ${tier ? `
         <p class="forge-note">${escapeHtml(tier.desc)} Stats stay the same.</p>
@@ -25453,6 +25751,29 @@ function forgeAnvilHTML(id, sel, L, maxed){
         <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
     `}${forgeDupMeltHTML(id, L)}${forgePromotionHTML(id, sel, L)}`;
+}
+// The limit-break panel on a level-10 card (2026-10-12).
+function forgeLimitBreakHTML(id, lb){
+  const d = forgeBaseDef(id), c = lb.cost || limitBreakCost(id), next = forgeStatsAt(id, LIMIT_BREAK_LEVEL), now = forgeStatsAt(id, 10);
+  const fedLine = `🧩 Duplicates fed: <b>${Math.min(lb.fed, LIMIT_BREAK_FED)}/${LIMIT_BREAK_FED}</b>`;
+  const gain = [now.attack!=null && next.attack>now.attack ? `⚔ ${now.attack} → ${next.attack}` : '', now.health!=null && next.health>now.health ? `❤ ${now.health} → ${next.health}` : ''].filter(Boolean).join(' · ');
+  return `<div class="forge-limit ${lb.why==='fed'?'is-locked':''}">
+    <div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>
+    <p class="forge-note">${fedLine}. ${lb.why==='fed' ? `Feed ${LIMIT_BREAK_FED - lb.fed} more duplicate${LIMIT_BREAK_FED - lb.fed===1?'':'s'} of ${escapeHtml(d.name)} to unlock it.` : `It costs what the whole road to level 10 cost.`}${gain ? ` ${gain}.` : ''}</p>
+    ${lb.why==='fed' ? '' : `<div class="forge-cost-row">${forgeCostChipsHTML(c)}</div>
+    <button type="button" class="btn primary forge-act forge-lb-btn" id="forgeLimitBreakBtn" ${lb.ok?'':'aria-disabled="true"'}>💥 Limit break</button>`}
+  </div>`;
+}
+async function forgeLimitBreak(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId; if(!limitBreakState(id).ok){ denyShake(btn); return; }
+  forgeBusy = true; btn.disabled = true;
+  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  limitBreakCard(id);
+  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
+  forgeBusy = false; renderForge();
+  showToast(`💥 ${getCardDefs()[id].name} broke its limit: level ${LIMIT_BREAK_LEVEL}!`, 'ok');
 }
 // Duplicates and melting in the Forge (2026-10-11, forge economy v2).
 let forgeMeltArmed = null;
@@ -25654,7 +25975,7 @@ function renderHome(){
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${tabOpen('deck') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
         ${adminEntryVisible() ? `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road (preview)"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>Preview</small></button>` : ''}
-        ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
+        ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
@@ -26268,7 +26589,13 @@ async function publishShopPacks(packs){
 const SHOP_PACKS_COMING_SOON = new Set(['gold']);
 function packMerchant(p){ return p ? FEATURE_SPOTS.find(sp=> sp.merchant && sp.pack === p.id) || null : null; }
 function packMerchantLocked(p){ const sp = packMerchant(p); return !!(sp && !featureUnlocked(sp.key)); }
-function packOnSale(p){ return p && !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon) && p.available!==false && !packMerchantLocked(p); }
+function packOnSale(p){ if(p && p.id === MYSTERY_PACK_ID && !p.anytime) return mysteryPacksLeft() > 0; return p && !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon) && p.available!==false && !packMerchantLocked(p); }
+// Mystery Boosters (2026-10-11, user: "Mystery packs are limited when the wandering trader DOES appear. E.g. maybe buy max
+// 5" + their map list: "Wandering Trader A unlocks Mystery Pack A"): only the wandering trader sells them, once you've found
+// them that day, at most 5 a visit. (An admin pack edit with `anytime` puts them back on the shelf.)
+const MYSTERY_PACK_ID = 'mystery', MYSTERY_PER_VISIT = 5;
+function mysteryPacksLeft(){ try{ if(!wanderingMerchantToday() || !wandererState().found) return 0; if(FEATURE_SPOTS.some(sp=> sp.key==='wanderer') && !featureUnlocked('wanderer')) return 0; return Math.max(0, MYSTERY_PER_VISIT - (wandererState().mystery||0)); }catch(e){ return 0; } }
+function noteMysteryBought(n){ const ws = wandererState(); ws.mystery = (ws.mystery||0) + n; saveWandererState(ws); }
 function merchantsUnlocked(){ return FEATURE_SPOTS.filter(sp=> sp.merchant && featureUnlocked(sp.key)); }
 // The page is "The Traveller's Cart" until a second merchant joins it, then just "Shops".
 function shopsTitle(){ return merchantsUnlocked().length >= 2 ? 'Shops' : 'The Traveller’s Cart'; }
@@ -26347,6 +26674,7 @@ function shelfGoodsHTML(p, qty){
 }
 function shelfStatus(p){
   if(packOnSale(p)) return null;
+  if(p.id === MYSTERY_PACK_ID && !p.anytime) return {tape:'🧭 Wandering trader', why: (wanderingMerchantToday() && wandererState().found && (wandererState().mystery||0) >= MYSTERY_PER_VISIT) ? `Sold out: ${MYSTERY_PER_VISIT} a visit. The trader comes back another day.` : `Only the wandering trader sells these, ${MYSTERY_PER_VISIT} a visit. Find their barrow on the map.`};
   const sp = packMerchantLocked(p) ? packMerchant(p) : null;
   if(sp) return {tape:`${sp.icon} ${sp.name}`, why:`Arrives with the ${sp.name}, further along the Conquest map.`};
   return {tape:'Coming soon', why:'Not on sale yet.'};
@@ -26907,6 +27235,70 @@ function rollConquestPackDrops(node, isFirstClear){
   }
   return out;
 }
+// Free packs on the road (2026-10-12, the user's map table: "Map 3 Free Pack A, 7 Free Pack B, 10 Free Mystery Pack A,
+// 11 Free Pack C, 13 Free Pack A, 15 Free Mystery Pack A, 16 Free Pack B, 18 Free Pack C, 20 Free Mystery Pack A").
+// Pack A = Sprout Pouch, B = Acorn Chest, C = Golden Bramble Case. Granted on the first clear of that map's boss (or its
+// last fight, on a map without one) and kept unopened under Your packs in the Shop. They open for free whether or not that
+// pack is on sale yet: a free pack is the taste before the merchant shows up.
+const MAP_FREE_PACKS = {3:'bronze', 7:'silver', 10:'mystery', 11:'gold', 13:'bronze', 15:'mystery', 16:'silver', 18:'gold', 20:'mystery'};
+const FREE_PACKS_KEY = 'bramblewood_free_packs_v1';
+function loadFreePacks(){ try{ const o = JSON.parse(localStorage.getItem(FREE_PACKS_KEY)||'{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
+function saveFreePacks(o){ try{ localStorage.setItem(FREE_PACKS_KEY, JSON.stringify(o)); }catch(e){} }
+function grantFreePack(id, n){ const o = loadFreePacks(); o[id] = (o[id]|0) + (n||1); saveFreePacks(o); }
+function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
+function grantMapFreePack(mapId, nodeKey, isFirstClear){
+  if(!isFirstClear) return null;
+  const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
+  const pid = MAP_FREE_PACKS[idx + 1], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
+  grantFreePack(pid, 1);
+  return pid;
+}
+function openFreePack(id){
+  const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return false;
+  const inv = loadFreePacks(); if(!((inv[id]|0) > 0)) return false;
+  const pack = getShopPacks().find(p=> p.id === id); if(!pack || !packCardPool().length) return false;
+  const o = purchasePackOnce(pack, true); if(!o) return false;
+  inv[id] = (inv[id]|0) - 1; saveFreePacks(inv);
+  saveCurrencies(); if(o.leveledId) saveCardLevels();
+  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
+  openPackAnimation(pack, [o], {});
+  return true;
+}
+function freePackRowsHTML(){
+  const inv = loadFreePacks(), packs = getShopPacks();
+  return Object.entries(inv).filter(([, n])=> (n|0) > 0).map(([id, n])=>{ const p = packs.find(x=> x.id === id); if(!p) return '';
+    return `<div class="fp-row fp-free" data-freepack="${escapeAttr(id)}"><span class="fp-pack" style="--tint:#6b8f3a" aria-hidden="true"><span class="fp-ico">${p.icon||'🎁'}</span>${n > 1 ? `<b class="fp-n">×${n}</b>` : ''}</span>
+      <span class="fp-text"><b>Free ${escapeHtml(p.name)}</b><small>${p.cards||3} cards, on the house. Found on the road.</small></span>
+      <span class="fp-acts"><button type="button" class="btn primary" data-freeopen="${escapeAttr(id)}">Open${n > 1 ? ` (${n})` : ''}</button></span></div>`; }).join('');
+}
+// Base cards grow on the road (2026-10-12, user: "Base cards, duplicates are naturally given throughout your journey, and
+// they are upgraded as we destroy bosses. Specifically, selected base cards will be upgraded with exp. If you don't have a
+// viable card anymore, or it's at max, then you get the equivalent materia."). A boss's first clear raises up to two Base
+// cards in your deck by a level (lowest level first); an elite's first clear gives a spare copy of one (a duplicate to feed
+// in the Forge). With no Base card that can still grow, you get the same value as Dust instead.
+const BASE_GROWTH_PER_BOSS = 2;
+function isBaseCardDef(d){ return !!(d && !d.token && !d.hero && cardBaseLevel(d) === 0); }
+function deckBaseCardIds(){ const defs = getCardDefs(); return Object.keys(myDeckCounts||{}).filter(id=> (myDeckCounts[id]|0) > 0 && isBaseCardDef(forgeBaseDef(id) || defs[id])); }
+function baseCardBossGrowth(node, isFirstClear){
+  if(!isFirstClear || !node) return null;
+  const kind = baseKind(node.kind||'skirmish'), out = {levels:[], copies:[], dust:0};
+  if(['boss','finalboss','raidboss'].includes(kind)){
+    const ids = deckBaseCardIds().filter(id=> getCardLevel(id) < 10).sort((a, b)=> getCardLevel(a) - getCardLevel(b));
+    for(let i = 0; i < BASE_GROWTH_PER_BOSS; i++){
+      const id = ids[i];
+      if(id){ const L = getCardLevel(id); myCardLevels[id] = L + 1; out.levels.push({id, to:L + 1}); }
+      else { const c = levelUpCostRaw(5, 'otter-kit'); out.dust += Math.max(1, c.dust); }
+    }
+    if(out.levels.length) saveCardLevels();
+  } else if(kind === 'elite'){
+    const ids = deckBaseCardIds();
+    if(ids.length){ const id = ids[Math.floor(Math.random()*ids.length)]; unlockCardForPlayer(id, 'baseGrowth'); out.copies.push(id); }
+    else out.dust += duplicateValue('otter-kit').dust || 20;
+  } else return null;
+  if(out.dust) grantCurrency('dust', out.dust);
+  return (out.levels.length || out.copies.length || out.dust) ? out : null;
+}
 function factionPackShelfHTML(){
   const inv = loadFactionPacks(), subs = loadSubfactions(), mine = (typeof loadFactionChoice==='function' && loadFactionChoice()==='hummingbirds') ? 'hummingbird' : 'otter';
   const show = Object.values(FACTION_PACKS).filter(fp=> (inv[fp.id]||0) > 0 || fp.id === mine || (fp.kind==='sub' && subs.has(fp.id)));
@@ -26915,11 +27307,12 @@ function factionPackShelfHTML(){
       <span class="fp-text"><b>${escapeHtml(fp.name)}</b><small>${escapeHtml(fp.blurb)} ${FACTION_PACK_OWN} ${fp.kind==='faction' ? 'faction' : 'of their'} cards and ${FACTION_PACK_GENERAL} general card.</small><small class="fp-how">${fp.kind==='faction' ? 'Earned from bosses on the road. Your side’s cards also turn up in every basic pack.' : 'Earned from their elites on the road.'}</small></span>
       <span class="fp-acts">${n > 0 ? `<button type="button" class="btn primary" data-fpopen="${fp.id}">Open${n > 1 ? ` (${n})` : ''}</button>` : `<span class="fp-none">None waiting</span>`}</span></div>`; };
   const subChips = Object.values(FACTION_PACKS).filter(fp=> fp.kind==='sub').map(fp=> `<span class="fp-sub ${subs.has(fp.id)?'got':''}" title="${subs.has(fp.id) ? escapeAttr(fp.name + ': collected') : 'Not met yet'}">${subs.has(fp.id) ? fp.icon : '❔'}</span>`).join('');
-  return `<section class="panel fp-shelf" id="factionPackShelf" aria-label="Your packs"><h3>🎁 ${_t('Your packs')} <span class="fp-subs" title="Subfactions collected on the road">${subChips} <small>${subs.size}/${Object.values(FACTION_PACKS).filter(fp=> fp.kind==='sub').length} ${_t('subfactions')}</small></span></h3>${show.map(row).join('')}</section>`;
+  return `<section class="panel fp-shelf" id="factionPackShelf" aria-label="Your packs"><h3>🎁 ${_t('Your packs')} <span class="fp-subs" title="Subfactions collected on the road">${subChips} <small>${subs.size}/${Object.values(FACTION_PACKS).filter(fp=> fp.kind==='sub').length} ${_t('subfactions')}</small></span></h3>${freePackRowsHTML()}${show.map(row).join('')}</section>`;
 }
 function wireFactionPackShelf(){
   const sec = document.getElementById('factionPackShelf'); if(!sec) return;
   sec.querySelectorAll('[data-fpopen]').forEach(b=> b.onclick = ()=>{ if(!openFactionPack(b.dataset.fpopen)) denyShake(b); });
+  sec.querySelectorAll('[data-freeopen]').forEach(b=> b.onclick = ()=>{ if(!openFreePack(b.dataset.freeopen)) denyShake(b); });
 }
 let packOpenStop = null;
 function buyPack(packId, btnEl, qty, opts){
@@ -26929,7 +27322,8 @@ function buyPack(packId, btnEl, qty, opts){
   // A wandering merchant's deal: the same pack a quarter off, one per day, only once you've found them.
   const wander = !!(opts && opts.wanderer);
   if(wander){ const ws = wandererState(); if(!pack || !ws.found || ws.bought){ if(btnEl) denyShake(btnEl); return; } pack = Object.assign({}, pack, {cost: wandererDealCost(pack)}); qty = 1; }
-  if(!pack || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
+  if(pack && pack.id === MYSTERY_PACK_ID && !pack.anytime) qty = Math.min(qty, mysteryPacksLeft());
+  if(!pack || !qty || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
   if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
   const opened = [];
   if(qty > 1){ const c = packSetCost(pack, qty); myCurrencies.gold -= c.gold; myCurrencies.gems -= c.gems; }
@@ -26937,6 +27331,7 @@ function buyPack(packId, btnEl, qty, opts){
   saveCurrencies();
   if(opened.some(o=> o.leveledId)) saveCardLevels();
   try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
+  if(pack.id === MYSTERY_PACK_ID && !pack.anytime && opened.length) noteMysteryBought(opened.length);
   if(wander && opened.length){ const ws = wandererState(); ws.bought = true; saveWandererState(ws); const wb = document.querySelector('[data-wander-buy]'); if(wb){ wb.outerHTML = '<button type="button" class="btn" disabled>Bought today</button>'; } }
   refreshShopAfford();
   try{ SoundKit.coinRegister(); if((pack.pool||1)===99) setTimeout(()=>{ try{ SoundKit.mysteryBoing(); }catch(e){} }, 380); }catch(e){}

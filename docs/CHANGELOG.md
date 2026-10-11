@@ -2,6 +2,34 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (01:40)
+- **Your map table, applied** ([note](map-schedule-2026-10-12.md)). Features open on the maps you listed:
+  - Armoury 1, Nest 2, Notices 4, Cart 5, Codex 7, Arena and the Ember Peddler 8, Quest Board 9, Forge 11.
+  - Map 13 opens Raid 1, a new Gilded Caravan (Golden Bramble Cases) and the Wanderer's Camp.
+  - Then the Gauntlet on 16 and the Test Lab on 21.
+  - Seven new unlock conversations. Existing saves keep what they had.
+  - Free packs on boss first clears: Maps 3, 7, 10, 11, 13, 15, 16, 18 and 20. The tutorial gives an Ally Pack.
+  - Missing dungeon sub-maps (6A, 9A, 12A, 14A–D, 15A, 18A) are listed in the note.
+- **Errands: mini-quests from conversations.** From Map 9, someone on the road sometimes asks a favour after a Conquest win.
+  - Yes pins it to a new Errands board on the Notices. Not now leaves it there as an offer for the day.
+  - Up to 3 at once, paid in Dust, Maple Leaves and sometimes an Iron Shard.
+- **Limit break.** A level-10 card that has been fed 5 duplicates can break to Lv 11 for its whole road's cost again (+10%).
+  - Castles break 20 → 25 with Ember Cores, and a Dragon Scale for the last step.
+- **Base cards grow from bosses.** A boss's first clear levels up to 2 Base cards in your deck, and an elite's gives a spare copy. When nothing can grow, it comes as Dust.
+- **The Codex shows only what you've met:** cards you own or have seen, plus a pack's cards once its seller is open. Materia are Inventory items, not Codex cards. Admin still sees everything.
+- **Tutorial spotlight.** Guided steps darken the screen around their target and mark it with a pulsing red ring (and a pointing hand when you have to act).
+  - New tips teach triggers: greyed ⚡ = off while Waiting, Stunned, Frozen or Asleep; lit = ready.
+  - Natural Leader no longer gets a tip.
+- **Map ambience.**
+  - Every map plays its own arrival sound.
+  - The beach gets soft footsteps about once a minute.
+  - Ambient extras start at a random point, so you hear them early too.
+- **Mystery Boosters** sell only while the wandering trader is around, up to 5 a visit.
+- **The master hub** is now also a hidden, unindexed page on the game site (`/hub/`).
+- The Forge preview now uses the same per-level stats as matches.
+- **Fast Forward N** (D22, action-items lap): before its first combat, a unit takes N extra turns on its own (Wait −1, or a swing), then joins the normal order. Stun, Freeze or Sleep wipe the counters. It's in the editor's skill list and the battle log; no card carries it yet.
+- Action items: D22 and D31 closed; D34 (map-table readings) and D35 (Base growth numbers) added.
+
 ## 2026-10-12 (00:30)
 - **Battle rating replaces deck level.** Each card counts its rarity weight × its level factor, and the leader counts double. The weights follow the Forge ladder: Common 1, Rare 4, Epic 11, Ancient 30; Base 0.5.
   - A new starter deck rates 24–29. Map 20's par is 400. A full level-10 Ancient deck is about 2,500.

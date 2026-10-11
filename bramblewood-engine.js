@@ -380,6 +380,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
+      ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
       reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, _frenziedThisRound:false,
       critUsed:0, rallyBonus:0,
       // Elemental status effects (2026-09-16), one per non-physical DMG_TYPE — see
@@ -3046,10 +3047,41 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'collapseIn', side:sideOf(pl.id), defId:moved.defId, uid:moved.uid, fromSide});
     });
   }
+  // Fast Forward N (2026-10-12, D22, the user's rule: "with N counters, a unit runs its turn, upkeep included, N extra
+  // times before joining the main action order"). At the start of the next combat after it arrives, each counter is one
+  // extra turn for that unit alone: its Wait counts down by 1 if it's still Waiting (with the usual Ready moment),
+  // otherwise it swings once, with every on-hit effect. Then it takes its normal place in the order. A Stunned, Frozen or
+  // Asleep unit loses its counters. Units with Fast Forward run in board order, the side with initiative first.
+  function fastForwardPass(players, sideOf, stats, events, firstAttackerSide){
+    const first = firstAttackerSide || 2, order = [first, otherId(first)];
+    for(const pid of order){
+      const pl = players[pid]; if(!pl) continue;
+      for(const c of allBoardCards(pl).slice()){
+        if(!c || c.hp <= 0 || !(c.ffCounters > 0)) continue;
+        if(c.stunned || c.frozen > 0 || c.asleep > 0 || c.cageOf){ c.ffCounters = 0; continue; }
+        if(recordEvents && events) events.push({type:'fastForward', side:sideOf(pid), defId:c.defId, uid:c.uid, n:c.ffCounters});
+        while(c.ffCounters > 0 && c.hp > 0){
+          c.ffCounters -= 1;
+          if(c.wait > 0){
+            c.wait -= 1;
+            if(c.wait > 0){ if(recordEvents && events) events.push({type:'waitTick', side:sideOf(pid), defId:c.defId, uid:c.uid, waitRemaining:c.wait, fastForward:true}); }
+            else { if(recordEvents && events) events.push({type:'ready', side:sideOf(pid), defId:c.defId, uid:c.uid, fastForward:true}); try{ runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onReady', stats, events); }catch(e){} }
+          } else {
+            resolveCombat(players, sideOf, stats, events, pid, {upkeepIds:[], onlyUid:c.uid});
+          }
+          if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return true;
+        }
+      }
+    }
+    return false;
+  }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
     try{ syncPhaseStats(players, sideOf, events); }catch(e){}
     curPlayers = players;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; }
+    if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
+      if(anyFF && fastForwardPass(players, sideOf, stats, events, firstAttackerSide)) return true;
+      curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
     if(!(pass && pass.onlyUid)) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.darkUsed = 0; if(pl.skipTurns > 0) pl.skipTurns -= 1; }); // a stun cast during the turn covers that turn
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
