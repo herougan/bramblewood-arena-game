@@ -1,0 +1,278 @@
+<title>Bramblewood Card Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a field ledger — summary chips that double as filters, then one dense, sortable, editable table. */
+:root{
+  --bg:#ECF0E7; --panel:#F8FAF4; --ink:#1B231D; --muted:#59685C; --line:#D2DACD; --head:#E2E8DC;
+  --moss:#3D6B38; --moss-ink:#FFFFFF; --amber:#A8650F; --amber-bg:#FBEBC9;
+  --strong:#B3432C; --strong-bg:#F6DDD5; --weak:#2D67A0; --weak-bg:#DCE8F4; --ok:#3F7F35; --ok-bg:#DDEBD7;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"Public Sans", "Segoe UI", system-ui, sans-serif;
+  --f-data:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#131915; --panel:#1A211C; --ink:#E2E8DF; --muted:#9AA99C; --line:#2D3830; --head:#212A23;
+  --moss:#86B97A; --moss-ink:#102010; --amber:#E7B252; --amber-bg:#3A2C12;
+  --strong:#EE8B74; --strong-bg:#3B201A; --weak:#83B4E6; --weak-bg:#172A3D; --ok:#93C987; --ok-bg:#1C2E1A; color-scheme:dark; } }
+:root[data-theme="dark"]{
+  --bg:#131915; --panel:#1A211C; --ink:#E2E8DF; --muted:#9AA99C; --line:#2D3830; --head:#212A23;
+  --moss:#86B97A; --moss-ink:#102010; --amber:#E7B252; --amber-bg:#3A2C12;
+  --strong:#EE8B74; --strong-bg:#3B201A; --weak:#83B4E6; --weak-bg:#172A3D; --ok:#93C987; --ok-bg:#1C2E1A; color-scheme:dark; }
+html,body{background:var(--bg); color:var(--ink);}
+body{font-family:var(--f-body); font-size:14px; line-height:1.45; padding-inline:16px; padding-block:20px 48px;}
+.wrap{max-width:1500px; margin:0 auto; display:flex; flex-direction:column; gap:14px;}
+header h1{font-family:var(--f-display); font-weight:800; font-size:clamp(24px, 3.4vw, 34px); letter-spacing:-.01em; margin:0; text-wrap:balance;}
+header p{margin:4px 0 0; color:var(--muted); max-width:72ch;}
+.chips{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{font:600 13px var(--f-body); border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:999px; padding:6px 12px; cursor:pointer; display:inline-flex; gap:7px; align-items:baseline;}
+.chip b{font-family:var(--f-data); font-weight:600;}
+.chip[aria-pressed="true"]{background:var(--moss); color:var(--moss-ink); border-color:var(--moss);}
+.chip.k-strong b{color:var(--strong);} .chip.k-weak b{color:var(--weak);} .chip.k-ok b{color:var(--ok);} .chip.k-edit b{color:var(--amber);}
+.chip[aria-pressed="true"] b{color:inherit;}
+.tools{display:flex; flex-wrap:wrap; gap:8px; align-items:center; position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; background:var(--bg); padding-block:8px;}
+.tools input[type=search], .tools select{font:500 14px var(--f-body); color:var(--ink); background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:7px 10px; min-width:0;}
+.tools input[type=search]{flex:1 1 220px;}
+.btn{font:600 13px var(--f-body); border:1px solid var(--moss); color:var(--moss); background:transparent; border-radius:8px; padding:7px 12px; cursor:pointer;}
+.btn:hover{background:var(--moss); color:var(--moss-ink);}
+.count{color:var(--muted); font-size:13px; margin-left:auto;}
+.status{font-size:13px; color:var(--muted);}
+.status.warn{color:var(--amber);}
+.tablebox{overflow-x:auto; border:1px solid var(--line); border-radius:10px; background:var(--panel);}
+table{border-collapse:collapse; width:100%; min-width:1180px; font-size:13px;}
+thead th{position:sticky; top:0; background:var(--head); text-align:left; font:600 12px var(--f-body); letter-spacing:.02em; color:var(--muted); padding:0; border-bottom:1px solid var(--line); white-space:nowrap;}
+thead th button{all:unset; display:block; padding:9px 8px; cursor:pointer; width:100%; box-sizing:border-box;}
+thead th button:focus-visible{outline:2px solid var(--moss); outline-offset:-2px;}
+thead th.num button{text-align:right;}
+thead th[aria-sort="ascending"] button::after{content:" ▲"; font-size:9px;} thead th[aria-sort="descending"] button::after{content:" ▼"; font-size:9px;}
+tbody td{padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:top;}
+tbody tr:hover td{background:color-mix(in oklab, var(--panel) 80%, var(--moss) 6%);}
+td.num{text-align:right; font-family:var(--f-data); font-variant-numeric:tabular-nums;}
+.card{display:flex; gap:8px; align-items:flex-start; min-width:180px;}
+.card .ico{font-size:18px; line-height:1.1; width:22px; text-align:center;}
+.card .nm{font-weight:600;} .card .id{font:400 11px var(--f-data); color:var(--muted);}
+.tag{display:inline-block; font-size:11px; color:var(--muted); border:1px solid var(--line); border-radius:4px; padding:0 5px; margin-left:4px;}
+.rar{display:inline-flex; align-items:center; gap:6px;}
+.rar i{width:9px; height:9px; border-radius:50%; background:var(--rc); display:inline-block; flex:none;}
+td select, td input{font:500 13px var(--f-data); color:var(--ink); background:transparent; border:1px solid transparent; border-radius:6px; padding:3px 4px;}
+td input[type=number]{width:52px; text-align:right;}
+td select{font-family:var(--f-body);}
+td input:hover, td select:hover{border-color:var(--line);}
+td input:focus, td select:focus{outline:none; border-color:var(--moss); background:var(--bg);}
+td input.note{width:100%; min-width:150px; font-family:var(--f-body);}
+.was{display:block; font:400 10.5px var(--f-data); color:var(--amber); text-align:right;}
+td.chg input, td.chg select{background:var(--amber-bg); border-color:var(--amber);}
+.wr{display:flex; flex-direction:column; gap:3px; min-width:120px;}
+.wr .v{font-family:var(--f-data); font-size:12.5px; display:flex; justify-content:space-between; gap:6px;}
+.bar{position:relative; height:6px; border-radius:3px; background:var(--line);}
+.bar .band{position:absolute; top:0; bottom:0; background:color-mix(in oklab, var(--ok) 35%, transparent); border-radius:3px;}
+.bar .pt{position:absolute; top:-3px; width:3px; height:12px; border-radius:2px; background:var(--ink);}
+.vd{font:600 11px var(--f-body); border-radius:4px; padding:0 5px;}
+.vd.strong{color:var(--strong); background:var(--strong-bg);} .vd.weak{color:var(--weak); background:var(--weak-bg);} .vd.ok{color:var(--ok); background:var(--ok-bg);}
+.stale{font-size:10.5px; color:var(--amber);}
+.sk{color:var(--muted); font-size:12px; max-width:280px;}
+.sk span{display:inline-block; margin:0 6px 2px 0;}
+.empty{padding:28px; text-align:center; color:var(--muted);}
+footer{color:var(--muted); font-size:13px; max-width:80ch;}
+@media (max-width:640px){ .count{margin-left:0; width:100%;} }
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Bramblewood Card Ledger</h1>
+    <p>Every card in the game with its stats, where it comes from and how it did in the last balance run. Change Lumber, Wait, Attack, Health or rarity right in the table; edits save as you go and are highlighted until they're applied to the game.</p>
+  </header>
+
+  <div class="chips" id="chips" role="group" aria-label="Quick filters"></div>
+
+  <div class="tools">
+    <input type="search" id="q" placeholder="Search name, type, skill or source" aria-label="Search cards">
+    <select id="fRarity" aria-label="Rarity"></select>
+    <select id="fSource" aria-label="Where it comes from"></select>
+    <button class="btn" id="copyBtn" type="button">Copy edits as text</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="status" id="status">Connecting to saved edits…</div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr id="headRow"></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script id="ledger-data" type="application/json">__DATA__</script>
+<script>
+(function(){
+const DATA = JSON.parse(document.getElementById('ledger-data').textContent);
+const RARITIES = ['starter','common','uncommon','rare','epic','heroic','unique','legendary','mythic','ancient'];
+const RCOL = {starter:'#9AA39A', common:'#8C9A87', uncommon:'#4E9A57', rare:'#3B78C4', epic:'#8A4FC2', heroic:'#C2741F', unique:'#C4A12B', legendary:'#D2851A', mythic:'#C2365B', ancient:'#2E8E8A'};
+const SRC_ORDER = {'Base':0, 'Map':1, 'Pack':2, 'Faction pack':3, 'Other':4, 'Token':5};
+const rows = DATA.rows;
+const byId = Object.fromEntries(rows.map(r=> [r.id, r]));
+let edits = {};           // id -> {c,w,a,h,r,note}
+let db = null, canWrite = false;
+const state = {q:'', rarity:'', source:'', quick:'', sort:'src', dir:1};
+try{ const saved = JSON.parse(localStorage.getItem('ledger-view')||'null'); if(saved) Object.assign(state, saved); }catch(e){}
+const saveView = ()=>{ try{ localStorage.setItem('ledger-view', JSON.stringify(state)); }catch(e){} };
+
+const val = (r, k)=> (edits[r.id] && edits[r.id][k] !== undefined) ? edits[r.id][k] : r[k];
+const score = r=> { const a=+val(r,'a'), h=+val(r,'h'), c=+val(r,'c'), w=+val(r,'w'); return (a*1.6 + h*0.6 + r.sk.length*2) / (1 + c*0.9 + w*0.5); };
+const band = r=> DATA.bands[val(r,'r')] || DATA.bands[r.r] || null;
+function verdict(r){
+  if(r.wr == null) return 'none';
+  const b = r.band ? [r.band[0]/100, r.band[1]/100] : band(r); if(!b) return 'none';
+  const x = r.wr/100; return x > b[1] ? 'strong' : x < b[0] ? 'weak' : 'ok';
+}
+const isEdited = r=> !!(edits[r.id] && Object.keys(edits[r.id]).some(k=> k!=='at'));
+const srcKey = r=> (SRC_ORDER[r.g] ?? 9)*1000 + (r.m!=null ? parseFloat(String(r.m))*10 + (String(r.m).endsWith('-A')?5:0) : 0);
+
+const COLS = [
+  {k:'n', label:'Card'}, {k:'r', label:'Rarity'}, {k:'src', label:'Comes from'},
+  {k:'c', label:'Lumber', num:true}, {k:'w', label:'Wait', num:true}, {k:'a', label:'Attack', num:true}, {k:'h', label:'Health', num:true},
+  {k:'score', label:'Score', num:true}, {k:'wr', label:'Win rate'}, {k:'t', label:'Types'}, {k:'sk', label:'Skills'}, {k:'note', label:'Note'},
+];
+function sortVal(r, k){
+  switch(k){
+    case 'n': return r.n.toLowerCase(); case 'r': return RARITIES.indexOf(val(r,'r')); case 'src': return srcKey(r);
+    case 'score': return score(r); case 'wr': return r.wr==null ? -1 : r.wr; case 't': return r.t; case 'sk': return r.sk.length;
+    case 'note': return (val(r,'note')||'').toLowerCase(); default: return +val(r,k);
+  }
+}
+function headHTML(){
+  document.getElementById('headRow').innerHTML = COLS.map(c=> `<th class="${c.num?'num':''}" aria-sort="${state.sort===c.k ? (state.dir>0?'ascending':'descending') : 'none'}"><button type="button" data-sort="${c.k}">${c.label}</button></th>`).join('');
+}
+function filtered(){
+  const q = state.q.trim().toLowerCase();
+  return rows.filter(r=>{
+    if(state.rarity && val(r,'r') !== state.rarity) return false;
+    if(state.source && r.g !== state.source && r.src !== state.source) return false;
+    if(state.quick==='edited' && !isEdited(r)) return false;
+    if(['strong','weak','ok','none'].includes(state.quick) && verdict(r) !== state.quick) return false;
+    if(q && !(`${r.n} ${r.id} ${r.t} ${r.sk.join(' ')} ${r.src} ${val(r,'note')||''}`.toLowerCase().includes(q))) return false;
+    return true;
+  }).sort((x,y)=>{ const a = sortVal(x, state.sort), b = sortVal(y, state.sort); return (a<b?-1:a>b?1: x.n.localeCompare(y.n)) * state.dir; });
+}
+const esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function numCell(r, k){
+  const v = val(r,k), chg = edits[r.id] && edits[r.id][k] !== undefined && edits[r.id][k] !== r[k];
+  return `<td class="num ${chg?'chg':''}"><input type="number" min="0" step="1" id="f-${k}-${r.id}" data-id="${r.id}" data-k="${k}" value="${v}" aria-label="${esc(COLS.find(c=>c.k===k).label)} of ${esc(r.n)}" ${canWrite?'':'disabled'}>${chg?`<span class="was">was ${r[k]}</span>`:''}</td>`;
+}
+function rowHTML(r){
+  const v = verdict(r), rr = val(r,'r'), rchg = edits[r.id] && edits[r.id].r && edits[r.id].r !== r.r;
+  const b = r.band ? [r.band[0], r.band[1]] : null;
+  const wr = r.wr==null ? `<span class="stale">not measured</span>` :
+    `<div class="wr"><div class="v"><span>${r.wr.toFixed(0)}%</span><span class="vd ${v}">${v==='ok'?'in band':v==='strong'?'too strong':'too weak'}</span></div>
+     <div class="bar" title="Band for ${esc(r.r)}: ${b?b[0]+'–'+b[1]+'%':''}">${b?`<span class="band" style="left:${b[0]}%; width:${b[1]-b[0]}%"></span>`:''}<span class="pt" style="left:calc(${Math.min(100,r.wr)}% - 1px)"></span></div>
+     ${r.stale ? '<span class="stale">stats changed since this run</span>' : ''}</div>`;
+  return `<tr data-row="${r.id}">
+    <td><div class="card"><span class="ico">${esc(r.i)}</span><div><div class="nm">${esc(r.n)}${r.tok?'<span class="tag">token</span>':''}${r.eq?'<span class="tag">equipment</span>':''}</div><div class="id">${esc(r.id)}</div></div></div></td>
+    <td class="${rchg?'chg':''}"><span class="rar" style="--rc:${RCOL[rr]||'#888'}"><i></i><select id="f-r-${r.id}" data-id="${r.id}" data-k="r" aria-label="Rarity of ${esc(r.n)}" ${canWrite?'':'disabled'}>${RARITIES.map(x=>`<option value="${x}" ${x===rr?'selected':''}>${x}</option>`).join('')}</select></span>${rchg?`<span class="was">was ${r.r}</span>`:''}</td>
+    <td>${esc(r.src)}</td>
+    ${numCell(r,'c')}${numCell(r,'w')}${numCell(r,'a')}${numCell(r,'h')}
+    <td class="num">${score(r).toFixed(1)}</td>
+    <td>${wr}</td>
+    <td>${esc(r.t)}</td>
+    <td class="sk">${r.sk.map(s=>`<span>${esc(s)}</span>`).join('')}</td>
+    <td><input class="note" type="text" id="f-note-${r.id}" data-id="${r.id}" data-k="note" value="${esc(val(r,'note')||'')}" placeholder="Note" aria-label="Note for ${esc(r.n)}" ${canWrite?'':'disabled'}></td>
+  </tr>`;
+}
+function chipsHTML(){
+  const counts = {strong:0, weak:0, ok:0, none:0}; rows.forEach(r=> counts[verdict(r)]++);
+  const ed = rows.filter(isEdited).length;
+  const chip = (k, label, n, cls)=> `<button type="button" class="chip ${cls||''}" data-quick="${k}" aria-pressed="${state.quick===k}">${label} <b>${n}</b></button>`;
+  document.getElementById('chips').innerHTML =
+    chip('', 'All cards', rows.length) + chip('strong', 'Too strong', counts.strong, 'k-strong') + chip('weak', 'Too weak', counts.weak, 'k-weak') +
+    chip('ok', 'In band', counts.ok, 'k-ok') + chip('none', 'Not measured', counts.none) + chip('edited', 'Edited', ed, 'k-edit');
+}
+function render(){
+  headHTML(); chipsHTML();
+  const list = filtered();
+  document.getElementById('rows').innerHTML = list.length ? list.map(rowHTML).join('') : `<tr><td colspan="${COLS.length}" class="empty">No cards match. Clear the search or pick another filter.</td></tr>`;
+  document.getElementById('count').textContent = `${list.length} of ${rows.length} cards`;
+  document.getElementById('q').value = state.q;
+  document.getElementById('fRarity').value = state.rarity;
+  document.getElementById('fSource').value = state.source;
+}
+function refreshRow(id){
+  const tr = document.querySelector(`tr[data-row="${CSS.escape(id)}"]`); if(!tr) return;
+  const active = document.activeElement && tr.contains(document.activeElement) ? document.activeElement.id : null;
+  const tmp = document.createElement('tbody'); tmp.innerHTML = rowHTML(byId[id]); tr.replaceWith(tmp.firstElementChild);
+  if(active){ const el = document.getElementById(active); if(el) el.focus(); }
+  chipsHTML();
+}
+
+// Filters
+const rSel = document.getElementById('fRarity');
+rSel.innerHTML = `<option value="">Any rarity</option>` + RARITIES.filter(x=> rows.some(r=> r.r===x)).map(x=>`<option value="${x}">${x[0].toUpperCase()+x.slice(1)}</option>`).join('');
+const sSel = document.getElementById('fSource');
+const srcNames = ['Base','Map','Pack','Faction pack','Other','Token'];
+const detail = [...new Set(rows.filter(r=> r.g!=='Map').map(r=> r.src))].sort();
+sSel.innerHTML = `<option value="">Anywhere</option>` + srcNames.map(x=>`<option value="${x}">${x==='Map'?'Map rewards':x}</option>`).join('') + `<optgroup label="Exactly">` + detail.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('') + `</optgroup>`;
+document.getElementById('q').addEventListener('input', e=>{ state.q = e.target.value; saveView(); render(); e.target.focus(); });
+rSel.addEventListener('change', e=>{ state.rarity = e.target.value; saveView(); render(); });
+sSel.addEventListener('change', e=>{ state.source = e.target.value; saveView(); render(); });
+document.getElementById('chips').addEventListener('click', e=>{ const b = e.target.closest('[data-quick]'); if(!b) return; state.quick = state.quick===b.dataset.quick ? '' : b.dataset.quick; saveView(); render(); });
+document.getElementById('headRow').addEventListener('click', e=>{ const b = e.target.closest('[data-sort]'); if(!b) return; const k = b.dataset.sort; if(state.sort===k) state.dir *= -1; else { state.sort = k; state.dir = ['wr','score','a','h','c','w'].includes(k) ? -1 : 1; } saveView(); render(); });
+
+// Editing: one write per field change, merged into edits/<cardId>
+const pending = {};
+async function saveEdit(id, k, raw){
+  const r = byId[id]; const cur = Object.assign({}, edits[id]||{});
+  let v = k==='note' ? String(raw).trim() : k==='r' ? raw : Math.max(0, Math.round(Number(raw)||0));
+  if(k==='note' ? !v : v === r[k]) delete cur[k]; else cur[k] = v;
+  const body = Object.fromEntries(Object.entries(cur).filter(([kk])=> kk!=='at'));
+  edits[id] = Object.keys(body).length ? Object.assign(body, {at: new Date().toISOString()}) : undefined;
+  if(!edits[id]) delete edits[id];
+  refreshRow(id);
+  if(!db){ setStatus('Edits can’t be saved in this view. They stay on screen until you reload.', true); return; }
+  while(pending[id]) await pending[id];
+  const ref = db.collection('edits').doc(id);
+  pending[id] = (edits[id] ? ref.set(edits[id]) : ref.delete()).then(()=> setStatus(savedMsg()), err=>{
+    if(err && err.code==='invalid_argument'){ canWrite = false; setStatus('You can view this ledger but not edit it. Ask the owner for Contributor access.', true); render(); }
+    else if(err && err.code==='quota_exceeded') setStatus('The ledger is full. Ask Claude to apply and clear the edits.', true);
+    else setStatus('That change didn’t save. Try it again in a moment.', true);
+  }).finally(()=>{ delete pending[id]; });
+}
+document.getElementById('rows').addEventListener('change', e=>{ const el = e.target.closest('[data-id]'); if(!el) return; saveEdit(el.dataset.id, el.dataset.k, el.value); });
+document.getElementById('rows').addEventListener('keydown', e=>{ if(e.key==='Enter' && e.target.matches('input')) e.target.blur(); });
+
+function editsText(){
+  const ed = rows.filter(isEdited);
+  if(!ed.length) return 'No edits yet.';
+  const name = {c:'Lumber', w:'Wait', a:'Attack', h:'Health', r:'Rarity', note:'Note'};
+  return ed.map(r=> `${r.n} (${r.id}): ` + Object.entries(edits[r.id]).filter(([k])=> k!=='at').map(([k,v])=> k==='note' ? `note "${v}"` : `${name[k]} ${r[k]} → ${v}`).join(', ')).join('\n');
+}
+document.getElementById('copyBtn').addEventListener('click', async ()=>{
+  const t = editsText();
+  try{ await navigator.clipboard.writeText(t); setStatus('Edits copied.'); }
+  catch(e){ const ta = document.createElement('textarea'); ta.value = t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); setStatus('Edits copied.'); }catch(e2){ setStatus('Select the text below to copy it.', true); } ta.remove(); }
+});
+function setStatus(msg, warn){ const s = document.getElementById('status'); s.textContent = msg; s.classList.toggle('warn', !!warn); }
+const savedMsg = ()=>{ const n = rows.filter(isEdited).length; return n ? `${n} card${n===1?'':'s'} edited and saved. Tell Claude “apply the card ledger” to put them into the game.` : 'No edits yet. Change a number and it saves here.'; };
+
+document.getElementById('foot').textContent = `Win rates come from the balance run of ${DATA.balanceRun}: each card played in simulated matches, compared with the band for its rarity. Score is a quick paper estimate, (Attack × 1.6 + Health × 0.6 + 2 per skill) ÷ (1 + Lumber × 0.9 + Wait × 0.5), and it updates as you edit. Card data as of ${DATA.generated}.`;
+
+render();
+(async ()=>{
+  try{
+    const user = window.claude && window.claude.use ? await window.claude.use('user') : null;
+    db = window.claude && window.claude.use ? await window.claude.use('db') : null;
+    if(!db){ setStatus('Viewing only. Saved edits aren’t available in this view.', true); render(); return; }
+    const w = user && user.can ? await user.can('data.write') : null;
+    canWrite = w !== false;
+    db.collection('edits').onSnapshot(snap=>{
+      const next = {}; snap.docs.forEach(d=>{ if(d.exists && byId[d.id]) next[d.id] = Object.assign({}, d.data()); });
+      const focusedRow = document.activeElement && document.activeElement.closest && document.activeElement.closest('tr[data-row]');
+      edits = next;
+      if(focusedRow){ chipsHTML(); } else render();
+      setStatus(canWrite ? savedMsg() : 'Viewing only. Ask the owner for Contributor access to edit.', !canWrite);
+    }, err=>{ setStatus('Saved edits stopped updating. Reload the page to reconnect.', true); });
+  }catch(e){ setStatus('Viewing only. Saved edits aren’t available in this view.', true); }
+})();
+})();
+</script>
