@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (16:30)
+- **Why the late maps were easy: the computer couldn't afford its own cards.** The Sundered Peak decks held 4-Lumber Cave Warlords and Cataphract Destriers, and the Basalt Foundry 3-Lumber Magma Titans, with nothing in either deck that makes Lumber. Adding a Lumber maker fixed most of them without touching Health:
+  - **New card: Cinder Stoker** 🦎 (Common, Volcanic, 0 Lumber, 1/7, +1 Lumber when it arrives). It's in the Basalt Foundry's 9-5, 9-7 and 9-8, and won at 9-9 Slag Runners.
+  - **New card: Pack Mule** 🫏 (Common, Horse, 0 Lumber, 1/9, +1 Lumber when it arrives). It's in the Sundered Peak's 11-5, 11-6 and 11-8, and won at 11-9 Panther Ledge.
+  - **Beaver Builders** join the Tundra boss (t-7), as on the other Tundra fights.
+  - **Results:** 11-5 and 11-6 went from 78% and 72% to about 50% (target 45%). The Tundra boss went from 52% to 38% (target 35%). Basalt Foundry 9-5 is 56%, 9-7 44% and 9-8 44%.
+  - Both new cards have art prompts queued with D30 and show their emoji until then.
+- **Eel Nest (7-7)** now holds eels: Riptide Eels, Coral-Current Eels and Moray Ambushers, plus a Coral Polyp Colony for Lumber. It went from 72% to 58% (target 45%).
+- **Map 3, Lilypad Reach, now teaches two skills** (it introduced none):
+  - **Evasive:** Camouflage Frog moves from the Ashen Peak (a frost map) to the Pond's frog fight, p-5, where you meet it and win it.
+  - **Reach:** two Riverstone Slingers join p-6, the answer to the Pond's flying ducks.
+- **Whole road:** 2 of 175 fights are now more than 12 points off target, both easy by 13 points (3-6 and 7-7). Earlier today it was 32. 8-3 was retuned after the Willow-o'-Wisp went in (now 76% vs 68%).
+- tools/retune_all.js gains `--keep=…` (never trade these cards away).
+
 ## 2026-10-11 (15:40)
 - **New card: Willow-o'-Wisp** 🌑 (Uncommon, 1 Lumber, Wait 1, 2/6, Nocturnal). A beetle made of shadow, of the new **Shadow** type (also Insect and Forgotten).
   - When an ally dies, it gains +1/+1 (once Ready).

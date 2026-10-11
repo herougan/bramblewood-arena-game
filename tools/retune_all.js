@@ -35,6 +35,7 @@ const BORROW_NEXT = +((process.argv.find(a=> a.startsWith('--borrow-next=')) || 
 const BORROW_BIOME = process.argv.includes('--borrow-biome'), KEEP_RARE = process.argv.includes('--keep-rare');
 const BIOME_OF = (()=>{ const i = src.indexOf('const MAP_BIOME_OF = '); return i < 0 ? {} : eval('(' + src.slice(i + 'const MAP_BIOME_OF = '.length, src.indexOf('};', i) + 1) + ')'); })();
 const BIOME_AFFINE = {forge:['ash'], ash:['forge'], water:['swamp'], swamp:['water'], reef:['beach'], beach:['reef']};
+const KEEP = new Set(((process.argv.find(a=> a.startsWith('--keep=')) || '').slice(7)).split(',').filter(Boolean)); // --keep=a,b never trades these away (e.g. a deck's Lumber maker)
 const RARE_UP = new Set(['epic','heroic','unique','questunique','legendary','mythic','ancient','devlegendary','devancient','eventlegendary']);
 // --theme: trades only bring in cards that share a type (archetype or species) with the map's three most common types,
 // drawn from any map's decks up to 2 maps ahead, so a volcano keeps its fire creatures. (2026-10-11)
@@ -120,7 +121,7 @@ for(const map of order){
       attempts++;
       const ids = Object.keys(nd).sort((a,b)=> score(b)-score(a));
       const easy = t.r > tgt;
-      const removable = KEEP_RARE ? ids.filter(id=> !RARE_UP.has(defs[id].rarity)) : ids; if(!removable.length) break;
+      const removable = ids.filter(id=> !KEEP.has(id) && !(KEEP_RARE && RARE_UP.has(defs[id].rarity))); if(!removable.length) break;
       const out = easy ? removable[removable.length-1] : removable[0];
       const cand = easy ? pool.find(id=> !tried.has(id) && (score(id) > score(ids[0]) || !nd[id])) : pool.slice().reverse().find(id=> !tried.has(id) && (score(id) < score(ids[ids.length-1]) || !nd[id]));
       if(!cand || cand === out) break;

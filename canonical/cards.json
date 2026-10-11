@@ -6424,8 +6424,8 @@
     "uuid": "c854240d-77f8-4e6f-a073-40362fbad6cb",
     "source": {
       "kind": "map",
-      "id": "m3",
-      "node": "3-2"
+      "id": "mp",
+      "node": "p-5"
     },
     "species": [
       "Amphibian"
@@ -12934,5 +12934,69 @@
       "id": "m8",
       "node": "8-3"
     }
+  },
+  {
+    "id": "cinder-stoker",
+    "name": "Cinder Stoker",
+    "icon": "\ud83e\udd8e",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 7,
+    "effects": {
+      "onSpawnGold": 1
+    },
+    "flavor": "Keeps the forge-pits fed by crawling into them. Charges by the shovel.",
+    "archetypes": [
+      "Volcanic"
+    ],
+    "species": [
+      "Amphibian"
+    ],
+    "source": {
+      "kind": "map",
+      "id": "m9",
+      "node": "9-9"
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "common",
+    "numericId": 456,
+    "uuid": "23e9cf30-a440-47e3-b829-15bb6e54d91a",
+    "art": ""
+  },
+  {
+    "id": "pack-mule",
+    "name": "Pack Mule",
+    "icon": "\ud83e\udecf",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 9,
+    "effects": {
+      "onSpawnGold": 1
+    },
+    "flavor": "Carries the cavalry\u2019s firewood up the mountain, and its opinions down again.",
+    "archetypes": [
+      "Horse"
+    ],
+    "species": [
+      "Equid"
+    ],
+    "source": {
+      "kind": "map",
+      "id": "m11",
+      "node": "11-9"
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "common",
+    "numericId": 457,
+    "uuid": "efeb3f54-68f2-4abc-a74a-26b5afb7e49e",
+    "art": ""
   }
 ]
