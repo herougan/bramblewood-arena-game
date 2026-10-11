@@ -110,7 +110,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-12, 2 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
+<p><em>Updated 2026-10-12, 6 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
 <h2>1. Your calls</h2>
 <table>
 <thead>
@@ -172,13 +172,13 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <td>Yes to all six; then I rebuild the road in the 0–20 order</td>
 </tr>
 <tr>
-<td><strong>D30</strong></td>
-<td>Art for the 19 new faction-pack cards (prompts ready in <code>art_staging/jobs_2026_10_11.json</code>). Running them uses your PixelLab session and existing credits</td>
-<td>Run them</td>
+<td><strong>D30</strong> ▶️</td>
+<td>Art for the 22 new faction-pack cards: <strong>running overnight</strong> on your PixelLab session (your go-ahead, 22:40). The picks get wired in as they finish</td>
+<td>Nothing to do</td>
 </tr>
 <tr>
 <td><strong>D31</strong> ✅</td>
-<td>Level caps: your limit break answers it. Cards break to <strong>Lv 11</strong> after 5 fed duplicates (cost = the road to 10 again). Castles break <strong>20 → 25</strong> with Ember Cores and a Dragon Scale</td>
+<td>Level caps: your limit break answers it. Cards break to <strong>Lv 11</strong> after 5 fed duplicates (cost = the road to 10 again). Castles break <strong>20 → 25</strong> with Ember Cores and a Dragon Scale. <strong>Since 22:40:</strong> limit breaks open at Map 50; levels 5–8 at Map 16, 9 at Map 26, 10 at Map 31; level 0 → 1 takes a mote of materia</td>
 <td>Done</td>
 </tr>
 <tr>
@@ -215,6 +215,21 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <td><strong>D38</strong></td>
 <td>Your list of obtainable cards: tick <strong>Obtainable</strong> in the card editor (or send me the list and I'll set them)</td>
 <td>Send the list</td>
+</tr>
+<tr>
+<td><strong>D39</strong></td>
+<td>Readings from the 22:40 list (<span class="doc-ref" title="Project doc: claude/progression-2026-10-12.md">note</span> §5). <strong>Inspiring N</strong> = the allies beside it get +N Attack on their next swing (you left it open). <strong>Loyal / Usurper</strong> are the leader-conditional pair. <strong>Worthy N</strong> gives the other side 1 Lumber on death (not N). <strong>Tailwind</strong> is the existing spell, now also speeding Flyers. <strong>Pitchfork</strong> now picks off the weakest of the three facing units. <strong>Pitching</strong> opens after Map 1's last fight</td>
+<td>Keep, or say which to change</td>
+</tr>
+<tr>
+<td><strong>D40</strong></td>
+<td>Max energy +1 per 20 different skirmishes cleared (to +10), and a <strong>Town</strong> page (a signpost where the Nest is; freely placed buildings with ambience by ground) — <span class="doc-ref" title="Project doc: claude/progression-2026-10-12.md">proposal</span> §4</td>
+<td>Yes to both; Town starts with the Nest only</td>
+</tr>
+<tr>
+<td><strong>D41</strong></td>
+<td>Late dungeons: the "appears N days after a clear, or after a quest" switch is built. Suggested schedule: 14A–D two days apart after Map 14's boss, 15A five days after Map 15, 18A after the Map 17 quest. World bosses every 10 maps from Map 40</td>
+<td>Build 14A first</td>
 </tr>
 <tr>
 <td><strong>T3 / S1 / S2</strong></td>
@@ -300,6 +315,87 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (07:00)</h2>
+<ul>
+<li><strong>Bugs from the cave screenshot</strong><ul>
+<li><strong>Win while the shield was up:</strong> the castle's bar ignored its armour, so it read 0 while the armour had soaked the hits. The bar now spends the armour first.</li>
+<li><strong>The Fight button flew off</strong> when energy was short: the deny-shake now adds to the button's own position.</li>
+<li><strong>Cave maps:</strong> Home, the energy pill, the tab bar and the map title stay lit. The lantern keeps following the pointer after you click a skirmish, and the skirmish panel is only lightly darkened (it brightens under the pointer).</li>
+<li><strong>Wait-0 enemy cards</strong> no longer hit before they land. Their arrival strike plays after the card is on the board.</li>
+<li><strong>Bites</strong> crunch once, not twice.</li>
+<li><strong>Fork:</strong><ul>
+<li>a miss on one prong no longer cancels the other (Blind rolls per prong, and Tipsy never moves a Fork);</li>
+<li>its label shows 0.1 s before the damage number.</li>
+</ul>
+</li>
+<li><strong>Revive wings:</strong> lower, narrower and silver, with a halo between them. Revive also gets a ↺ mark; Evasive gets 🍃 and Tide 🌊.</li>
+</ul>
+</li>
+<li><strong>New skills:</strong><ul>
+<li>Swimmer (an extra turn on Flow);</li>
+<li>Inspiring N, Friction N, Worthy N;</li>
+<li>Lumberjack, Heavy Metal, Timber, Rock-solid, Iron-will;</li>
+<li>Loyal and Usurper (leader-conditional, with granted skills);</li>
+<li>Metal and Uranium resources;</li>
+<li>Stone, Metal and Uranium costs now charged.</li>
+</ul>
+</li>
+<li><strong>Changed skills:</strong><ul>
+<li><strong>Tailwind</strong> also speeds your Flyers.</li>
+<li><strong>Rage</strong> doubles castle hits too, and shows an ember ½ shield.</li>
+<li><strong>Shell</strong> is reworked: any hit (arrows too) raises +N Armour and N temporary Health until the end of the next round, with no attacking meanwhile. Green shields glow in.</li>
+<li><strong>Pitchfork</strong> picks off the weakest facing unit, and a kill carries on.</li>
+</ul>
+</li>
+<li><strong>Card data:</strong><ul>
+<li>the 17 Lumber-on-arrival cards now use Worthy;</li>
+<li>9 sea swimmers got Swimmer;</li>
+<li>15 new cards: Conch Crawler, Conch Herald, Shoal Shark, Malachite Golem, the three Irradiated cards, Heartwood Treant, Quarry Troll, Iron Warden, Badger Lumberjack, Ore-Smelter Mole, Sworn Shieldbearer, Crown Pretender, Grindstone Boar. All are unobtainable until ticked.</li>
+</ul>
+</li>
+<li><strong>Tide is clearer:</strong> Tide units show 🌊+1 / 🐚−1 and their real Attack on Flow.</li>
+<li><strong>Progression:</strong><ul>
+<li>Forge levels 5–8 open at Map 16, 9 at Map 26, 10 at Map 31; limit breaks at Map 50;</li>
+<li>level 0 → 1 costs a mote of materia;</li>
+<li>quest cards start at level 0;</li>
+<li>a cave map you've cleared gets a 30% wider lantern and 10% less darkness.</li>
+</ul>
+</li>
+<li><strong>Pitching opens after Map 1:</strong><ul>
+<li>before then, the Graveyard does nothing and shows no tip;</li>
+<li>Lumber-cost cards earned meanwhile arrive when it opens;</li>
+<li>after a pitch with nothing castable, the turn passes by itself.</li>
+</ul>
+</li>
+<li><strong>Board:</strong><ul>
+<li>the camera holds still while the cards fit the middle five columns;</li>
+<li>rows of 8+ tighten their spacing, and 21+ overlap by 20%;</li>
+<li>the leader's crown and beam stay on the card;</li>
+<li>on a win, tokens on both sides shatter at random moments;</li>
+<li>tiny cards keep Attack at the bottom and drop the ⚔/❤ glyphs.</li>
+</ul>
+</li>
+<li><strong>Skirmish editor:</strong><ul>
+<li>layered bonus health (L1–L4, blue to pink; each layer above 0 opens the next);</li>
+<li>card levels per card in the deck.</li>
+</ul>
+</li>
+<li><strong>Admin:</strong><ul>
+<li>👑 Auto-win in a match;</li>
+<li>✅ Mark cleared / Clear the whole map on the skirmish panel;</li>
+<li>🎁 Get this card in the Codex.</li>
+</ul>
+</li>
+<li><strong>Map chats:</strong><ul>
+<li>19 new curiosities across Maps 1–11 (two per map at most);</li>
+<li>replies that offer to take you somewhere now do it (the Nest, Notices, Codex, Forge, Shop, Arena, Test Lab);</li>
+<li>no answer ends a chat kindly and it plays again next time.</li>
+</ul>
+</li>
+<li><strong>Late side maps:</strong> a side map can now appear N days after a clear, or after a quest.</li>
+<li><strong>New note:</strong> <span class="doc-ref" title="Project doc: claude/progression-2026-10-12.md">Progression to Map 60</span>. It covers the level gates, the road after Map 20, card counts (235 different cards on Maps 1–20), and a max-energy and Town proposal.</li>
+<li><strong>D30:</strong> the 22 card portraits are generating overnight on your PixelLab plan.</li>
+</ul>
 <h2>2026-10-12 (05:00)</h2>
 <ul>
 <li><strong>All cards are unobtainable for now</strong>, so we can build the list together.<ul>
