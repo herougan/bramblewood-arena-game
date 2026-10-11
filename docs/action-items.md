@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 6 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -16,7 +16,7 @@ _Updated 2026-10-12, 6 am. The short list of what matters now. Everything else i
 | **D27** | Readings from the 20:32 list: Sweep is now a cleave (N to each unit beside the target); "Trample" already existed as Overwhelm and is renamed **Stampede**; Bleed no longer hurts when hit; the CPU's new card choice moved Otters vs Hummingbirds starters to ~66% (your balance pass) | Keep, or say otherwise |
 | **D28** | Readings from the 21:29 list: the Flea Market sits on Map 30, which doesn't exist yet, so it's admin-only for now (the Map 20 World Boss sub-map isn't built either); the new side skirmishes branch off the trail instead of being inserted into it, so no one's progress changes; the Mystery Booster is pool 99; sub-map fights are coded like 2-G1; "chaos returns" after Map 40 is sketched in the VFX Playground, not built | Keep; build Maps 13–30 before the Flea Market can open |
 | **D29** ✅ | Built with my defaults (2026-10-11 09:50); **reordered 18:10 at your call: the 13 original maps are Maps 1–13 again, the new maps 14–23, counted from 1.** The six questions at the top of [card list v2](card-list-2026-10-11.md): Thistlewood as Map 1, Map 9 as the Mire, deep sea after 20, a 17-A Canopy sub-map, the 1% roll, 5 🍯 per Sunfeather Pack | Yes to all six; then I rebuild the road in the 0–20 order |
-| **D30** ▶️ | Art for the 22 new faction-pack cards: **running overnight** on your PixelLab session (your go-ahead, 22:40). The picks get wired in as they finish | Nothing to do |
+| **D30** ▶️ | Art for the 22 new faction-pack cards: **21 of 22 done** on your PixelLab session, 8 wired; the rest and the new title-screen art get wired at the next check-in | Nothing to do |
 | **D31** ✅ | Level caps: your limit break answers it. Cards break to **Lv 11** after 5 fed duplicates (cost = the road to 10 again). Castles break **20 → 25** with Ember Cores and a Dragon Scale. **Since 22:40:** limit breaks open at Map 50; levels 5–8 at Map 16, 9 at Map 26, 10 at Map 31; level 0 → 1 takes a mote of materia | Done |
 | **D32** | Wildpaths (PvE passives) is a preview with 21 draft skills on three trails. Earning Path points: 1 per map cleared? | 1 per map, +1 per boss S rank |
 | **D33** ✅ | Day and night no longer switch. Every Conquest fight is day, except the night maps (Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga). Arena rule sets keep their own cycles. Real time (7 PM–7 AM day, with a doubled twilight on the minute) is an option in the skirmish editor, set on no map. The Nocturnal/Diurnal "section of effects" passive waits for your idea | Pick the night maps you want |
@@ -28,6 +28,8 @@ _Updated 2026-10-12, 6 am. The short list of what matters now. Everything else i
 | **D39** | Readings from the 22:40 list ([note](progression-2026-10-12.md) §5). **Inspiring N** = the allies beside it get +N Attack on their next swing (you left it open). **Loyal / Usurper** are the leader-conditional pair. **Worthy N** gives the other side 1 Lumber on death (not N). **Tailwind** is the existing spell, now also speeding Flyers. **Pitchfork** now picks off the weakest of the three facing units. **Pitching** opens after Map 1's last fight | Keep, or say which to change |
 | **D40** | Max energy +1 per 20 different skirmishes cleared (to +10), and a **Town** page (a signpost where the Nest is; freely placed buildings with ambience by ground) — [proposal](progression-2026-10-12.md) §4 | Yes to both; Town starts with the Nest only |
 | **D41** | Late dungeons: the "appears N days after a clear, or after a quest" switch is built. Suggested schedule: 14A–D two days apart after Map 14's boss, 15A five days after Map 15, 18A after the Map 17 quest. World bosses every 10 maps from Map 40 | Build 14A first |
+| **D42** | Readings from the 23:42 list: **Trident** = your old Sweep idea (left, centre, right; an empty side hits the castle); **Pitchfork** = Trident + Pierce; **Sweep** stays the cleave. **Advanced packs** open at the pack's sale map + 25 (Bronze 30, Silver 33, Gold 38). The rain skill is named **Rainrunner**. The world map appears once Map 2's boss is first cleared. The "both tribes" bonus card is a random Common at cost 0 | Keep, or say which to change |
+| **D43** | "The wait logo or numbers give me img not found": I couldn't reproduce it (no broken images in matches, and the Wait badge is an hourglass emoji). A screenshot with the browser and device would pin it down | Send a screenshot |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
@@ -68,7 +70,7 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
 
 ## 3. Things only you can do (outside chat)
 
-- **The claude.ai project is full.** The master hub now also lives on the game site as a hidden, unindexed page (`/hub/`), so the project only needs the docs you share. Easiest to remove: the five old code copies (`claude/arena_template.html`, `arena_app.js`, `bramblewood-engine.js`, `assemble_arena.py`, `characters-canonical.json`; say "delete the old code copies") and the game-design v30–v40 addenda.
+- **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
 - **Art:** PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:
   - the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant, The Unremembered and the ten Devilry cards;

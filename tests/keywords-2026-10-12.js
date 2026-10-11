@@ -28,6 +28,15 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k2-lead':  {id:'k2-lead', name:'Lead', attack:1, health:10, wait:0, cost:0, effects:{leader:true}},
   'k2-mal':   {id:'k2-mal', name:'Malachite', attack:8, health:30, wait:0, cost:0, stoneCost:1, effects:{}},
   'k2-uran':  {id:'k2-uran', name:'Glow', attack:8, health:30, wait:0, cost:0, uraniumCost:2, effects:{}},
+  'k2-trident': {id:'k2-trident', name:'Trident', attack:3, health:50, wait:0, cost:0, effects:{trident:true}},
+  'k2-pitch': {id:'k2-pitch', name:'Pitch', attack:3, health:50, wait:0, cost:0, effects:{pitchfork:true}},
+  'k2-octo':  {id:'k2-octo', name:'Octo', attack:2, health:50, wait:0, cost:0, effects:{octolash:true}},
+  'k2-armor': {id:'k2-armor', name:'Armor', attack:0, health:500, wait:0, cost:0, effects:{armor:2}},
+  'k2-quick': {id:'k2-quick', name:'Quick', attack:2, health:50, wait:0, cost:0, effects:{quick:true}},
+  'k2-rainmk': {id:'k2-rainmk', name:'RainMk', attack:0, health:10, wait:0, cost:0, effects:{rainmaker:3}},
+  'k2-rainrun': {id:'k2-rainrun', name:'RainRun', attack:2, health:10, wait:0, cost:0, effects:{rainrunner:2}},
+  'k2-moon': {id:'k2-moon', name:'Moon', attack:1, health:10, wait:0, cost:0, effects:{moonborn:4}},
+  'k2-tundra': {id:'k2-tundra', name:'Tundra', attack:0, health:50, wait:5, cost:0, archetypes:['Tundra'], effects:{}},
   'k2-tail':  {id:'k2-tail', name:'Tailwind', attack:0, health:0, wait:0, cost:0, cardType:'spell', spell:{do:'tailwind', amount:1}, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -88,4 +97,35 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 { const {e, P} = mk(); const m = give(P, 1, 'k2-mal'); ok(!e.canPlay(P[1], 'k2-mal', m.uid), 'Malachite needs 1 Stone'); P[1].stone = 1;
   ok(e.placeCard(P, so, 1, m.uid, 'left', {}, []) && P[1].stone === 0, 'with 1 Stone it is played and the Stone spent');
   const u = give(P, 2, 'k2-uran'); P[2].uranium = 1; ok(!e.canPlay(P[2], 'k2-uran', u.uid), '2 Uranium needed'); P[2].uranium = 2; ok(e.canPlay(P[2], 'k2-uran', u.uid), 'with 2 Uranium it can be played'); }
+// Trident: front + both sides; an empty side goes to the castle
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-trident', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-wall', 'left', {}, []);
+  const W = all(P[2])[0], hp = W.hp, hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
+  ok(hp - W.hp === 3 && hq - P[2].hq.hp === 6, `Trident: 3 to the unit in front, both empty sides to the castle (unit ${hp - W.hp}, castle ${hq - P[2].hq.hp})`); }
+// Pitchfork ignores Armour on every prong
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-pitch', 'left', {}, []); ['left','right','left'].forEach(s=> e.debugSpawnCard(P, so, 2, 'k2-armor', s, {}, []));
+  const ws = all(P[2]), b = ws.map(c=> c.hp); e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
+  ok(ws.every((c, i)=> b[i] - c.hp === 3), `Pitchfork pierces Armour 2 on all three (${ws.map((c, i)=> b[i] - c.hp)})`); }
+// Octolash: 8 nearest units, never the castle
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-octo', 'left', {}, []); for(let i=0; i<10; i++) e.debugSpawnCard(P, so, 2, 'k2-wall', i%2 ? 'left' : 'right', {}, []);
+  const ws = all(P[2]), b = ws.map(c=> c.hp), hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
+  const n = ws.filter((c, i)=> c.hp < b[i]).length; ok(n === 8 && P[2].hq.hp === hq, `Octolash hits 8 of 10 units and not the castle (${n})`); }
+// Frost rules: frostResist keeps enemy Tundra units warm; frostWait/frostCount/frostbite
+{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{field:'frozen', frostResist:['Tundra'], frostWait:3, frostCount:2, frostbite:1}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 2, 'k2-tundra', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-wall', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'right', {}, []);
+  const T = all(P[2]).find(c=> c.defId==='k2-tundra'), W = all(P[2]).find(c=> c.defId==='k2-wall'); const tw = T.wait, ww = W.wait, wa = W.atk; e.roundStart(P, 2, so, {}, []);
+  ok(T.wait === tw, 'a Tundra enemy resists the frost'); ok(W.wait === ww + 3 && W.atk === wa + 1, `the frost adds 3 Wait and Frostbite +1 to the other enemy (wait ${W.wait}, atk ${W.atk})`);
+  ok(all(P[1]).every(c=> c.wait >= 3), 'frostCount 2 chills both of yours'); }
+// First blood: the first Quick swing of a round hits +1, the next one doesn't
+{ const e = E.makeSimEngine(defs, E.mulberry32(4), {recordEvents:true, battleMode:'open', rules:{firstBlood:1}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'k2-quick', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-quick', 'right', {}, []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
+  ok(hq - P[2].hq.hp === 5, `two Quick swings: 3 + 2 (castle took ${hq - P[2].hq.hp})`); }
+// Rainmaker brings rain; Rainrunner gets +2/+2 and goes straight for the castle
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'k2-wall', 'left', {}, []); const h = give(P, 1, 'k2-rainmk'); e.placeCard(P, so, 1, h.uid, 'left', {}, []);
+  ok(e.getField() && e.getField().id === 'rain', 'Rainmaker: it rains'); e.debugSpawnCard(P, so, 1, 'k2-rainrun', 'right', {}, []); const R = all(P[1]).find(c=> c.defId==='k2-rainrun');
+  e.syncPhaseStats(P, so, []); const hq = P[2].hq.hp, wall = all(P[2])[0].hp; e.debugAttack(P, so, R.uid, {}, []);
+  ok(R.phaseAtk === 2 && hq - P[2].hq.hp === 4 && all(P[2])[0].hp === wall, `Rainrunner hits the castle for 4 past the wall (${hq - P[2].hq.hp}, bonus ${R.phaseAtk})`); }
+// Moonborn: full moon field = all of it at night
+{ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open', rules:{phase:'night', field:'moon'}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'k2-moon', 'left', {}, []); e.syncPhaseStats(P, so, []); const M = all(P[1])[0];
+  ok(e.moonPhase() === 4 && M.phaseAtk === 4, `Moonborn 4 under a full moon at night (+${M.phaseAtk})`); }
 console.log(`keywords-2026-10-12: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

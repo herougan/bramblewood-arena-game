@@ -13922,5 +13922,160 @@
     ],
     "numericId": 475,
     "uuid": "c701df62-f4cb-40c2-9623-59114d58918c"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "uncommon",
+    "flavor": "It croaks once, and the sky answers.",
+    "effects": {
+      "rainmaker": 3
+    },
+    "wait": 1,
+    "cost": 1,
+    "unattainable": true,
+    "source": {
+      "kind": "design",
+      "id": "2026-10-12"
+    },
+    "id": "rainmaker-frog",
+    "name": "Rainmaker Frog",
+    "icon": "\ud83d\udc38",
+    "attack": 2,
+    "health": 10,
+    "archetypes": [
+      "Frog"
+    ],
+    "species": [
+      "Amphibian"
+    ],
+    "numericId": 476,
+    "uuid": "f150a695-cb0a-45b7-88ad-3d8c846152fc"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "uncommon",
+    "flavor": "Dry ground slows it down. Wet ground does not slow anything down.",
+    "effects": {
+      "rainrunner": 2
+    },
+    "wait": 1,
+    "cost": 0,
+    "unattainable": true,
+    "source": {
+      "kind": "design",
+      "id": "2026-10-12"
+    },
+    "id": "puddle-skimmer",
+    "name": "Puddle Skimmer",
+    "icon": "\ud83e\udd9f",
+    "attack": 2,
+    "health": 6,
+    "archetypes": [
+      "Insect"
+    ],
+    "species": [
+      "Insect"
+    ],
+    "numericId": 477,
+    "uuid": "5c94df13-57ec-46fe-b78b-5c087f266614"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "uncommon",
+    "flavor": "It counts the nights by the shape of the moon.",
+    "effects": {
+      "moonborn": 2
+    },
+    "wait": 1,
+    "cost": 0,
+    "unattainable": true,
+    "source": {
+      "kind": "design",
+      "id": "2026-10-12"
+    },
+    "id": "moonlit-hare",
+    "name": "Moonlit Hare",
+    "icon": "\ud83d\udc07",
+    "attack": 1,
+    "health": 8,
+    "archetypes": [
+      "Rabbit"
+    ],
+    "species": [
+      "Lagomorph"
+    ],
+    "numericId": 478,
+    "uuid": "8f9f9916-74da-47d0-8687-80343836650b"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "rare",
+    "flavor": "At the full moon the whole valley hears it. At the new moon, nobody does.",
+    "effects": {
+      "moonborn": 4
+    },
+    "wait": 2,
+    "cost": 2,
+    "unattainable": true,
+    "source": {
+      "kind": "design",
+      "id": "2026-10-12"
+    },
+    "id": "lunar-howler",
+    "name": "Lunar Howler",
+    "icon": "\ud83d\udc3a",
+    "attack": 3,
+    "health": 14,
+    "archetypes": [
+      "Wolf"
+    ],
+    "species": [
+      "Canid"
+    ],
+    "numericId": 479,
+    "uuid": "be99a50b-0eed-4822-9911-fd3f42369cef"
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "rarity": "uncommon",
+    "flavor": "Every cold night makes it meaner.",
+    "effects": {
+      "frostbite": 1
+    },
+    "wait": 1,
+    "cost": 1,
+    "unattainable": true,
+    "source": {
+      "kind": "design",
+      "id": "2026-10-12"
+    },
+    "id": "frostbitten-wolverine",
+    "name": "Frostbitten Wolverine",
+    "icon": "\ud83e\udda1",
+    "attack": 3,
+    "health": 12,
+    "archetypes": [
+      "Tundra"
+    ],
+    "species": [
+      "Mustelid"
+    ],
+    "numericId": 480,
+    "uuid": "96f8206b-0d8b-4394-b2e0-1f38efdf7c79"
   }
 ]

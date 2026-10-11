@@ -135,7 +135,11 @@
     const st = document.querySelector('#splashScreen .splash-stage');
     if(st && !st.classList.contains('is-still')) requestAnimationFrame(()=> requestAnimationFrame(()=> st.classList.add('is-playing')));
   }
+  // Retired 2026-10-12 (user: "remove the two otter & hummingbirds fighting each other with paint.net weapons"): the
+  // dancing crowd and the standoff are no longer built; the title painting stands on its own.
+  const RETIRED = true;
   function init(){
+    if(RETIRED) return;
     const sp = document.getElementById('splashScreen');
     if(!sp || sp.hidden) return;
     build(sp);

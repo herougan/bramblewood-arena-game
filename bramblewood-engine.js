@@ -595,6 +595,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     });
   }
   function phaseBonus(card){ return (card && card.phaseAtk) || 0; }
+  // The moon (2026-10-12): 8 phases, one step every time night falls. 0 = new, 4 = full. A Full Moon field is always full.
+  let lunar = Math.floor(rnd()*8);
+  function moonPhase(){ return (field && field.id === 'moon') ? 4 : lunar; }
+  function moonFullness(){ const p = moonPhase(); return [0, 0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25][p]; }
+  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && d.effects.moonborn); })); }
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1, and Wash units push the enemy card facing them back 1 Wait (once per enemy card); on Ebb, Tide units take
@@ -613,6 +618,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(dayNight && round > 1 && !phaseFixed && !phaseOff){
       const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3); const first = ((round - 1) % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+      if(phase === 'night' && before !== 'night'){ lunar = (lunar + 1) % 8; if(recordEvents && events && anyMoonborn(players)) events.push({type:'moon', phase: lunar, round}); }
       if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
       if(phase === 'day' && before === 'night'){
         if(recordEvents && events) events.push({type:'dawn', round});
@@ -650,8 +656,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!field) return;
     const f = field.id;
     if(f === 'frozen'){
-      [1,2].forEach(pid=>{ const cards = allLive(players[pid]); if(!cards.length) return; const c = cards[Math.floor(rnd()*cards.length)]; c.wait = (c.wait||0) + 1;
-        if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId}); });
+      // 2026-10-12 (user: the Tundra's frost grows fight by fight): rules.frostWait (Wait added, default 1), rules.frostCount
+      // (units chilled per side, default 1), rules.frostResist (enemy types the frost can't touch), rules.frostbite (an enemy
+      // unit that gets chilled gains +N/+N). Units that resist cold are never chilled; Frostbite N on a card does the same.
+      const fw = Math.max(1, Number(rules.frostWait)||1), fc = Math.max(1, Number(rules.frostCount)||1), immune = new Set(rules.frostResist||[]);
+      [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if((d.resist||[]).includes('cold')) return false; if(pid === 2 && immune.size && (d.archetypes||[]).some(t=> immune.has(t))) return false; return true; });
+        for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.wait = (c.wait||0) + fw;
+          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, wait:fw});
+          const fb = (Number(((CARD_DEFS[c.defId]||{}).effects||{}).frostbite)||0) + (pid === 2 ? (Number(rules.frostbite)||0) : 0);
+          if(fb > 0){ c.atk += fb; c.baseAtk += fb; c.hp += fb; c.maxHp += fb; if(recordEvents && events) events.push({type:'statusFx', kind:'frostbite', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:fb}); } } });
     } else if(f === 'heatwave'){
       [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const d = CARD_DEFS[c.defId]; if((d.resist||[]).includes('heat')) return; damageCardFlat(c, 1, 'heat');
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:1}); }));
@@ -848,7 +861,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + (isTide(att) && getTide()==='flow' ? 1 : 0); if(isRaging(att)) n *= 2; return n; }
+  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + (isTide(att) && getTide()==='flow' ? 1 : 0) + firstBloodBonus(att); if(isRaging(att)) n *= 2; return n; }
+  // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
+  // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
+  // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
+  let firstBloodTaken = false, firstBloodEvents = null;
+  function firstBloodBonus(att){
+    const n = Number(rules.firstBlood)||0; if(!(n > 0) || firstBloodTaken || !att) return 0;
+    const d = CARD_DEFS[att.defId]; if(!(d && d.effects && d.effects.quick)) return 0;
+    firstBloodTaken = true;
+    if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(att); shieldEvents.push({type:'statusFx', kind:'firstBlood', side: shieldSideOf ? shieldSideOf(pid) : (pid===1?'A':'B'), attUid:att.uid, attDefId:att.defId, targetUid:att.uid, targetDefId:att.defId, amount:n}); }
+    return n;
+  }
   // Shell N (reworked 2026-10-12, user: "Shell N: gains N armour and N temporary health. Temp health not lost to damage goes
   // away at the next turn's end step ... triggers on any hit, including arrows. If not hit yet, the unit can still attack"):
   // the first hit of any kind pulls the unit into its shell. From then until the end of the next round it has N more Armour
@@ -872,6 +896,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
+    // Rainrunner N (2026-10-12): +N/+N while it rains (and it slips past blockers, see the targeting).
+    if(e.rainrunner && field && field.id === 'rain'){ const n = Number(e.rainrunner)||1; a += n; h += n; }
+    // Moonborn N (2026-10-12, user: "Add lunar cycles - only matters when there's a card that cares about it"): at night,
+    // +N/+N scaled by how full the moon is (new 0, crescent ¼, quarter ½, gibbous ¾, full all of it).
+    if(e.moonborn && getPhase() === 'night'){ const n = Math.round((Number(e.moonborn)||1) * moonFullness()); a += n; h += n; }
     if(e.rockSolid){ const n = Math.max(0, pl.stone||0) * 2; a += n; h += n; }
     if(e.ironWill){ const n = Math.max(0, pl.metal||0) * 3; a += n; h += n; }
     return [a, h, grant];
@@ -915,7 +944,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + (isTide(attCard) && getTide()==='flow' ? 1 : 0) + firstBloodBonus(attCard); if(sb) amt += sb; }
     if(isTide(targetCard) && getTide()==='ebb' && amt > 1) amt -= 1; // Ebb: Tide units take 1 less per hit (never below 1)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
@@ -943,7 +972,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ignores all of it); Perforate N also counts as Pierce N. Armor a Perforate hit stripped (targetCard.armorLoss) is
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
-    const pierceN = (ae.pierce === true || ae.rend) ? Infinity : (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
+    const pierceN = (ae.pierce === true || ae.rend || ae.pitchfork) ? Infinity : /* Pitchfork = Trident + Pierce (2026-10-12) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
     const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0); // Shell: temporary bonus armor active the round after being hit
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
@@ -1966,6 +1995,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     // Worthy N (2026-10-12, user: "Lumber-on-spawn creatures should give the opponent a lumber when they die. Make it a single
     // passive"): it brings N Lumber when it arrives, and its death gives the other side 1.
+    // Rainmaker N (2026-10-12, user: "add a rainmaker evergreen that causes rain on summon"): Spring Rain for N rounds (3 by default).
+    if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
     if(def.effects.worthy){ const got = addLumber(pl, Number(def.effects.worthy) === 0 ? 0 : (Number(def.effects.worthy)||1));
       ensureStat(stats, mySide, boardCard.defId).lumberGenerated += got;
       if(recordEvents && events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got, cause:'worthy'}); }
@@ -3236,6 +3267,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Swimmer and Tailwind (2026-10-12, user: "Tide should power up swimmers with +1 speed (attack faster, like Fast
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
     // gets one Fast Forward turn before the round's main order.
+    if(!pass) firstBloodTaken = false; // a new round: first blood is up for grabs again
     if(!pass){ const flow = getTide() === 'flow', wind = false; // Tailwind is a spell (castSpell), not a field
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
@@ -3498,18 +3530,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const liveOwnCols = combatColumnsOf(players[a.attId]);
       const liveEnemyCols = combatColumnsOf(players[a.enemyId]);
       // Stealth: ignores normal targeting entirely and always hits the enemy HQ directly.
-      let target = (attDef.effects && attDef.effects.stealth) ? {kind:'hq'} : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col);
-      // Pitchfork (2026-10-10, Devilry): hits a random unit among the three facing it (left, centre, right), then the
-      // units beside that one too (cards only, never the castle).
-      // Reworked 2026-10-12 (user: "Pitchfork deals damage to L, C and R, which is the same as Sweep. Rethink it."): it picks
-      // off the weakest. It strikes whichever of the three units facing it has the least Health; if that blow kills, it
-      // tosses the body aside and the same swing carries on into the next-weakest of the three.
-      let pitchCands = null;
-      if(attDef.effects && attDef.effects.pitchfork && !attDef.effects.stealth){
-        pitchCands = [-1, 0, 1].map(d=> liveSelf.col + d).filter(col=> { const e = liveEnemyCols[col]; return e && e.kind==='card' && e.card.hp>0; })
-          .sort((x, y)=> (liveEnemyCols[x].card.hp - liveEnemyCols[y].card.hp) || (Math.abs(x - liveSelf.col) - Math.abs(y - liveSelf.col)));
-        if(pitchCands.length){ const col = pitchCands[0]; const e = liveEnemyCols[col]; e.col = col; target = e; }
-      }
+      let target = (attDef.effects && (attDef.effects.stealth || (attDef.effects.rainrunner && field && field.id === 'rain'))) ? {kind:'hq'} : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col); // Rainrunner: unblockable in the rain (2026-10-12)
+      // Trident / Pitchfork / Octolash (2026-10-12, user: "Maybe Pitchfork is Trident + Pierce. Trident is Sweep ... When a unit
+      // with these skills attack Left or Right, but it's the castle - it should hit the castle instead ... Add a new skill
+      // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
+      // beside it with its full Attack; an empty side column takes that prong to the castle. Pitchfork is a Trident whose
+      // prongs ignore Armour. Octolash lashes the 8 enemy units nearest it (front first), full Attack each, never the castle.
+      const tridentAtk = !!(attDef.effects && (attDef.effects.trident || attDef.effects.pitchfork) && !attDef.effects.stealth);
+      const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth);
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
       // one), never the castle (no enemy units: it holds its swing), and hits for N more when that unit isn't the one
@@ -3587,7 +3615,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // the full hit with every on-hit effect; an empty column sends that swing to the castle.
       const isFork = !!(attDef.effects && (attDef.effects.fork || attDef.effects.swipe === true));
       const forkOnly = isFork && !(attDef.effects && attDef.effects.stealth);
-      const forkStrike = flankCol=>{
+      const forkStrike = (flankCol, castleOk, prong)=>{ if(castleOk === undefined) castleOk = isFork;
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
@@ -3600,7 +3628,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
@@ -3619,14 +3647,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                 runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
               }
             } else {
-              if(!isFork) return; // Pitchfork: an empty side is just empty
+              if(!castleOk) return; // Octolash: an empty column is just empty
               // Empty (or off-board) flank column: redirect this swipe swing straight to the
               // castle, same damageHQ path (bulwark reduction included) the primary castle hit
               // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
               // landing on the castle, not a swipe redirect.
               const flankDmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound));
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
-              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, festerBonus, ruptureBonus});
+              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
                 const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
                 if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
@@ -3867,7 +3895,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
         // Fork (2026-10-12, user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the rule above, unchanged.
         // `effects.fork`; an old `swipe: true` still means Fork (the new Swipe takes a number).
-        if(pitchCands && pitchCands.length > 1 && target.card && target.card.hp <= 0){ const next = pitchCands.slice(1).find(col=> liveEnemyCols[col] && liveEnemyCols[col].card && liveEnemyCols[col].card.hp > 0); if(next != null){ if(recordEvents && events) events.push({type:'statusFx', kind:'pitchToss', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:liveEnemyCols[next].card.uid, targetDefId:liveEnemyCols[next].card.defId}); forkStrike(next); } }
+        if(octoAtk && !blindNow){ const mainCol = target.col; const cols = Object.keys(liveEnemyCols).map(Number).filter(c=> c !== mainCol && liveEnemyCols[c] && liveEnemyCols[c].kind==='card' && liveEnemyCols[c].card && liveEnemyCols[c].card.hp > 0)
+          .sort((x, y)=> Math.abs(x - liveSelf.col) - Math.abs(y - liveSelf.col) || x - y).slice(0, 7);
+          if(cols.length && recordEvents && events) events.push({type:'statusFx', kind:'octolash', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:a.att.uid, targetDefId:a.att.defId, amount:cols.length + 1});
+          cols.forEach(c=> forkStrike(c, false, 'octolash')); }
       } else {
         // Siege (2026-09-17): bonus flat damage specifically when the attack lands on the
         // castle directly (0 or 1 facing resolving to the HQ) — a reward for punching through,
@@ -3883,6 +3914,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
+      if(tridentAtk && !blindNow){ const ref = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col; [ref - 1, ref + 1].forEach(c=> forkStrike(c, true, 'trident')); }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
       if(isBoomerangDef(attDef) && !a.att._boomerangReturning && a.att.hp > 0 && !blindNow) a.att.boomerangOut = true; // thrown
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
@@ -3977,7 +4009,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

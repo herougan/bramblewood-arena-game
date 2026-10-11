@@ -47,18 +47,12 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
   const w = all(P[2])[0]; let h0 = w.hp; e.resolveCombat(P, so, {}, [], 1); ok(w.hp === h0, 'Ritual unmet: no attack');
   e.draw(P[1], 2, 'A', {}, []); e.debugSpawnCard(P, so, 2, 'td-plain', 'right', {}, []); const v = all(P[2]).find(c=> c.defId==='td-plain'); v.hp = 0; e.removeDeadCards(P, so, {}, {}, []);
   h0 = w.hp; e.resolveCombat(P, so, {}, [], 1); ok(w.hp < h0, `Ritual met: it attacks (wall ${h0}→${w.hp})`); }
-// 5) Pitchfork (reworked 2026-10-12): it strikes the weakest of the three facing units; a kill carries on into the next-weakest
+// 5) Pitchfork (2026-10-12, second rework): a Trident that ignores Armour — the unit in front and both sides
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'td-fork', 'left', {}, []);
   ['left','right','left'].forEach(s=> e.debugSpawnCard(P, so, 2, 'td-wall', s, {}, []));
-  const ws = all(P[2]); ws[1].hp = 7; ws[1].maxHp = 7;
-  const before = ws.map(c=> c.hp); e.resolveCombat(P, so, {}, [], 1); const hitIdx = ws.map((c, i)=> c.hp < before[i] ? i : -1).filter(i=> i>=0);
-  ok(hitIdx.length === 1 && hitIdx[0] === 1, `Pitchfork hits only the weakest facing unit (hit ${hitIdx})`);
-  ok(P[2].hq.hp === P[2].hq.maxHp, 'Pitchfork never hits the castle when units face it'); }
-{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'td-fork', 'left', {}, []);
-  ['left','right','left'].forEach(s=> e.debugSpawnCard(P, so, 2, 'td-wall', s, {}, []));
-  const ws = all(P[2]); ws[0].hp = 1; ws[0].maxHp = 1; const before = ws.map(c=> c.hp);
-  e.resolveCombat(P, so, {}, [], 1);
-  ok(ws[0].hp <= 0 && ws.slice(1).some((c, i)=> c.hp < before[i+1]), 'a Pitchfork kill tosses the body and carries on into the next-weakest'); }
+  const before = all(P[2]).map(c=> c.hp); e.resolveCombat(P, so, {}, [], 1); const hit = all(P[2]).filter((c, i)=> c.hp < before[i]).length;
+  ok(hit === 3, `Pitchfork hits the unit in front and both beside it (hit ${hit})`);
+  ok(P[2].hq.hp === P[2].hq.maxHp, 'Pitchfork never hits the castle when units face it on all three'); }
 // 6) Beware 3: castable from exile only at 3+ Darkness
 { const {e, P} = mk(); P[1].exile.push({defId:'td-dread'}); P[1].devilry = 2;
   ok(!e.canCastFromExile(P[1], 'td-dread'), 'not at 2 Darkness'); P[1].devilry = 3;

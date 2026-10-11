@@ -22,7 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 URL = 'file://' + os.path.join(ROOT, 'index.html')
 EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
-INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_pitch_open_v1','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
+INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_pitch_open_v1','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_world_open_v1','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
         "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek']));"
         "localStorage.setItem('bramblewood_recent_opponents_v1', JSON.stringify([{at:1, name:'Moss B.', mode:'pvp', result:'win', deck:{'yeti':2,'bee-drone':3}}]));")
 TABS = ['home', 'codex', 'deck', 'shop', 'nest', 'profile', 'ranking', 'friends', 'guild', 'admin']
@@ -84,7 +84,7 @@ async def main():
         # 4: pack opening
         # 2026-10-12: every card starts unobtainable (the user is building the list); the test makes them obtainable again.
         await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
-        await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
+        await pg.evaluate("isSignedIn = ()=>true; playerMapReach = ()=>12; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
         before = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
         # 2026-10-10: the Acorn Chest comes with the Ember Peddler (map 11); the Golden Bramble Case isn't on sale yet.
         # 2026-10-10: the shop is shelves now; an item on sale has no .is-off, and buy buttons live on the counter.

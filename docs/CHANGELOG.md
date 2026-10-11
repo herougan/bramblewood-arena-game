@@ -2,6 +2,44 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (08:10)
+- **Skills**
+  - **Trident 🔱** strikes left, centre and right; a side prong with no unit facing it hits the castle.
+  - **Pitchfork** is Trident with Pierce: each prong carries on through the units behind.
+  - **Sweep** stays a cleave: it never touches the castle, and does nothing when no unit stands in front.
+  - **Octolash 🐙** (new): hits the 8 nearest enemy units.
+  - **Rainmaker N** (new): brings N rounds of rain when it arrives. **Rainrunner** (new): +A/+H and unblockable while it rains.
+  - **Moonborn** (new) and lunar phases: the moon changes every nightfall, shown only when a card cares.
+  - **Frostbite** (new): frozen enemies get stronger.
+- **Biomes**
+  - **Wolfsbane Tundra** steps up: fewer frosty enemies at first, then frost-resistant ones the +1 Wait can't pick, then frostbite, then +2 freeze; the boss freezes +3 on three units of each side.
+  - **Savanna:** the first Quick unit to swing each turn gets First Blood +1 (+2 at the boss). Yours can claim it first.
+  - **Day and night** only show when a card cares about them. Night creeps across the field from the right and leaves the other way at dawn.
+- **Battle**
+  - Enemy cards fly in from the top of the board, where their hand is.
+  - The leader always finishes landing at full height.
+  - Your turn no longer ends after a pitch while your leader can still be played.
+  - Castle shields count down hit by hit during combat, and sync at the end.
+  - **Deaths:** the card tips backwards, picks up speed, hits the ground and throws up leaves, snow, sand or sparks by biome.
+  - Hovering the field card explains it.
+  - "Pride Queen joins you" shows once.
+- **Tutorial**
+  - It plays the open (non-collapse) rules and is much easier (your castle 16, the rival's 6).
+  - The map opens zoomed in on the two tutorials, left and right. The rest of Map 1 appears once Tutorial 2 is won; the world map appears once Map 2 is first cleared.
+  - Its tips are no longer lost at a match's end, and the completion screen is blue.
+- **Start**
+  - The title screen has no face warping and no paint duel; the PixelLab key art is generating.
+  - Picking a tribe is lighter. "Both" appears after a minute with a fanfare: half Otter, half Hummingbird, plus a bonus Common card on Tutorial 2 and Brother Ripple, the otternarian, on making peace.
+- **Shop and packs**
+  - Only unlocked items show. At the start: one Acorn pack and a Bread (1 Lumber, does nothing, sells out).
+  - A pack can no longer roll the same card again and again.
+  - Advanced packs open 25 maps after their pack: 5 cards at 12× the price with 10× the foil and extended-art chance, plus 5 bonus cards.
+  - The shop fits one screen, and only the page scrolls. NEW cards in a reveal are never greyed.
+  - Bramble the courier mouse holds an unopened free pack beside the boss on the map.
+- **Music:** nursery-rhyme songs on celesta, kalimba and marimba at home; separate battle, elite and boss themes.
+- **Skirmish details** no longer hide the top panel.
+- **Project:** the old code copies and the archived handoff left the claude.ai project (2.03 MB → 200 KB).
+
 ## 2026-10-12 (07:00)
 - **Bugs from the cave screenshot**
   - **Win while the shield was up:** the castle's bar ignored its armour, so it read 0 while the armour had soaked the hits. The bar now spends the armour first.

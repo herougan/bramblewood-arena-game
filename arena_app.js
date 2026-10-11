@@ -164,7 +164,7 @@ const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spitefu
   kingSlayer:'👑⚔️', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
-  evasive:'🍃', revive:'↺', swimmer:'🏊', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐚', pitchfork:'🔱', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
+  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐚', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
 function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', '); }
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
@@ -239,8 +239,14 @@ const PASSIVE_DEFS = [
   {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Its attack throws a boomerang. At the start of next round's combat, before anyone else acts, the boomerang comes back and hits whatever is in front of it: that is its attack for the round. Then it throws again. Never misses a Flying unit.`,
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
-  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Picks off the weakest: it strikes whichever of the three units facing it has the least Health. If that kills it, the swing carries on into the next-weakest of the three.`},
+  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`A Trident that ignores Armour: the unit in front and both columns beside it, full Attack, Armour ignored. An empty side sends that prong to the castle.`},
+  {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
   // 2026-10-12 skills (the 22:40 list).
+  {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:0, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
+  {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the castle).`},
+  {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
+  {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
   {key:'swimmer', category:'passive', label:'Swimmer', kind:'boolean', desc:()=>`On a Flow round the tide carries it: one extra turn at the start of combat (like Fast Forward).`},
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
@@ -2990,6 +2996,38 @@ const SONGBOOK = {
     chords:[0,4,0], mel:['0:0.5 2:0.5 4:0.5 7:2.5','6:0.5 5:0.5 4:0.5 6:2.5','7:4']},
   defeat: {name:'Fallen Leaves', place:'Defeat', sting:true, bpm:66, beats:4, root:220.00, scale:[0,2,3,5,7,8,10], lead:'flute', comp:'lament',
     chords:[0,5,0], mel:['4:1 3:1 2:2','1:1.5 3:0.5 2:2','0:4']},
+  // Nursery rhymes (2026-10-12, user: "Make songs out of those royalty free nursery rhymes. dont use hard raw synths but
+  // gentle digital instruments. That harken back to a simpler time"): public-domain tunes on celesta, kalimba, marimba and a
+  // soft pad. Home plays them in turn, a new one every few minutes.
+  twinkle: {name:'Twinkle, Twinkle', place:'Home', rhyme:true, bpm:84, beats:4, root:261.63, scale:[0,2,4,5,7,9,11], lead:'celesta', comp:'nursery', gain:0.85,
+    chords:[0,3,0,4, 0,4,0,4, 0,3,0,4],
+    mel:['0:1 0:1 4:1 4:1','5:1 5:1 4:2','3:1 3:1 2:1 2:1','1:1 1:1 0:2','4:1 4:1 3:1 3:1','2:1 2:1 1:2','4:1 4:1 3:1 3:1','2:1 2:1 1:2','0:1 0:1 4:1 4:1','5:1 5:1 4:2','3:1 3:1 2:1 2:1','1:1 1:1 0:2']},
+  lamb: {name:'Mary Had a Little Lamb', place:'Home', rhyme:true, bpm:96, beats:4, root:293.66, scale:[0,2,4,5,7,9,11], lead:'kalimba', comp:'nursery', gain:0.85,
+    chords:[0,0,4,0, 0,0,4,0],
+    mel:['2:1 1:1 0:1 1:1','2:1 2:1 2:2','1:1 1:1 1:2','2:1 4:1 4:2','2:1 1:1 0:1 1:1','2:1 2:1 2:1 2:1','1:1 1:1 2:1 1:1','0:4']},
+  jacques: {name:'Frère Jacques', place:'Home', rhyme:true, bpm:92, beats:4, root:246.94, scale:[0,2,4,5,7,9,11], lead:'marimba', comp:'nursery', gain:0.85,
+    chords:[0,0,0,0, 0,4,0,0],
+    mel:['0:1 1:1 2:1 0:1','0:1 1:1 2:1 0:1','2:1 3:1 4:2','2:1 3:1 4:2','4:0.5 5:0.5 4:0.5 3:0.5 2:1 0:1','4:0.5 5:0.5 4:0.5 3:0.5 2:1 0:1','0:1 -3:1 0:2','0:1 -3:1 0:2']},
+  buns: {name:'Hot Cross Buns', place:'Home', rhyme:true, bpm:88, beats:4, root:329.63, scale:[0,2,4,5,7,9,11], lead:'celesta', comp:'nursery', gain:0.85,
+    chords:[0,4,0,0],
+    mel:['2:1 1:1 0:2','2:1 1:1 0:2','0:0.5 0:0.5 0:0.5 0:0.5 1:0.5 1:0.5 1:0.5 1:0.5','2:1 1:1 0:2']},
+  rowboat: {name:'Row, Row, Row Your Boat', place:'Home', rhyme:true, bpm:72, beats:3, root:261.63, scale:[0,2,4,5,7,9,11], lead:'kalimba', comp:'nursery', gain:0.85,
+    chords:[0,0,0,0, 0,0,4,0],
+    mel:['0:1.5 0:1.5','0:1 1:0.5 2:1.5','2:1 1:0.5 2:1 3:0.5','4:3','7:0.5 7:0.5 7:0.5 4:0.5 4:0.5 4:0.5','2:0.5 2:0.5 2:0.5 0:0.5 0:0.5 0:0.5','4:1 3:0.5 2:1 1:0.5','0:3']},
+  bridge: {name:'London Bridge', place:'Home', rhyme:true, bpm:100, beats:4, root:293.66, scale:[0,2,4,5,7,9,11], lead:'marimba', comp:'nursery', gain:0.85,
+    chords:[0,0,4,0, 0,0,4,0],
+    mel:['4:1.5 5:0.5 4:1 3:1','2:1 3:1 4:2','1:1 2:1 3:2','2:1 3:1 4:2','4:1.5 5:0.5 4:1 3:1','2:1 3:1 4:2','1:2 4:2','2:1 0:3']},
+  // Battle music (2026-10-12, user: "Play boss music during boss battles. Have an elite OST as well - just the battle OST (which
+  // doesnt exist yet) but abit more tougher sounding"). Softer than the menus so the fight's own sounds stay on top.
+  battle: {name:'Briar and Steel', place:'Battles', bpm:116, beats:4, root:146.83, scale:[0,2,3,5,7,9,10], lead:'horn', comp:'skirmish', gain:0.6,
+    chords:[0,0,6,0, 3,3,4,4],
+    mel:['0:1 2:0.5 3:0.5 4:2','3:1 2:1 0:2','6:1 4:1 3:1 4:1','2:3 -:1', '4:1 6:0.5 7:0.5 8:2','7:1 6:1 4:2','3:1 4:1 6:1 4:1','0:3 -:1']},
+  elite: {name:'Hard Ground', place:'Elite battles', bpm:126, beats:4, root:130.81, scale:[0,1,3,5,7,8,10], lead:'horn', comp:'war', gain:0.62,
+    chords:[0,0,5,0, 0,6,5,4],
+    mel:['0:0.5 0:0.5 3:1 4:2','5:1 4:1 3:2','0:0.5 0:0.5 3:1 7:2','6:2 4:2', '7:0.5 7:0.5 6:1 5:2','4:1 3:1 1:2','0:1 1:1 3:1 4:1','0:3 -:1']},
+  boss: {name:'The Old Crown', place:'Boss battles', bpm:92, beats:4, root:110.00, scale:[0,2,3,5,7,8,10], lead:'horn', comp:'bossdrums', gain:0.66,
+    chords:[0,0,5,4, 0,0,3,4],
+    mel:['0:2 3:1 4:1','5:3 4:1','7:2 5:1 4:1','3:4', '0:1 3:1 5:1 7:1','8:2 7:2','5:1 4:1 3:1 1:1','0:4']},
   codex: {name:'Margins', place:'Codex', bpm:76, beats:4, root:220.00, scale:[0,2,3,5,7,8,10], lead:'flute', comp:'harp',
     chords:[0,5,2,6, 3,0,4,0],
     mel:['4:2 3:1 2:1','2:4','4:1 5:1 6:2','4:4', '3:2 2:1 0:1','2:2 4:2','1:3 -:1','0:4']},
@@ -2997,7 +3035,12 @@ const SONGBOOK = {
 function songbookPlace(){
   const tab = typeof currentTab !== 'undefined' ? currentTab : null;
   const m = typeof matchState !== 'undefined' ? matchState : null;
-  if(m && !m.over && tab === 'play') return null;
+  if(m && !m.over && tab === 'play'){ if(m.mode === 'sandbox' || m.testKit) return null; // battle music (2026-10-12)
+    const k = m.conquestNode && typeof baseKind === 'function' ? baseKind(m.conquestNode.kind || '') : '';
+    if(['boss','finalboss','raidboss'].includes(k) || ['raidOnline','raidOffline'].includes(m.mode) || m.raidBoss) return 'boss';
+    if(k === 'elite') return 'elite';
+    return 'battle'; }
+  if(tab === 'home'){ const rhymes = Object.keys(SONGBOOK).filter(k=> SONGBOOK[k].rhyme); return rhymes[Math.floor(Date.now()/240000) % rhymes.length]; } // a new rhyme every four minutes
   if(tab === 'play' && !(m && !m.over)){ const sub = typeof playSubTab !== 'undefined' ? playSubTab : null; if(sub === 'arena') return 'arena'; if(sub === 'raid') return 'raid'; if(sub === 'conquest') return 'conquest'; }
   if(tab === 'shop' || tab === 'market') return 'bakery';
   if(tab === 'nest') return 'nest';
@@ -3042,6 +3085,13 @@ const Songbook = (()=>{
     pluck(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(2400, t); lp.frequency.exponentialRampToValueAtTime(500, t + 0.3);
       const g = envGain(c, t, 0.004, 0.06*v, 0.01, Math.min(0.9, 0.25 + len*0.3)); o.connect(lp); lp.connect(g); o.start(t); o.stop(t + 1.2); send(c, g); },
     harp(c, f, t, len, v){ [[1, 0.035, 'triangle'], [2, 0.012, 'sine']].forEach(([k, a, ty])=>{ const o = c.createOscillator(); o.type = ty; o.frequency.value = f*k; const g = envGain(c, t, 0.003, a*v, 0.01, 1.4); o.connect(g); o.start(t); o.stop(t + 1.6); send(c, g); }); },
+    // Gentle digital instruments for the rhymes (2026-10-12): bell-like and wooden tones, never a raw saw or square.
+    celesta(c, f, t, len, v){ [[2, 0.05, 0.004], [4, 0.012, 0.003], [6.04, 0.005, 0.002]].forEach(([k, a, at])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*k; const g = envGain(c, t, at, a*v, 0.01, Math.min(1.6, 0.5 + len*0.5)); o.connect(g); o.start(t); o.stop(t + 2); send(c, g); }); },
+    kalimba(c, f, t, len, v){ [[2, 0.055], [5.4, 0.01]].forEach(([k, a])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*k; const g = envGain(c, t, 0.003, a*v, 0.005, k > 3 ? 0.12 : Math.min(1.2, 0.4 + len*0.4)); o.connect(g); o.start(t); o.stop(t + 1.6); send(c, g); }); },
+    marimba(c, f, t, len, v){ [[1, 0.07], [4, 0.014], [10, 0.004]].forEach(([k, a])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*k; const g = envGain(c, t, 0.002, a*v, 0.004, k > 1 ? 0.08 : Math.min(0.9, 0.3 + len*0.3)); o.connect(g); o.start(t); o.stop(t + 1.2); send(c, g); }); },
+    softpad(c, f, t, len, v){ const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 900; const g = envGain(c, t, 0.35, 0.018*v, Math.max(0.05, len - 0.6), 0.5); [-5, 5].forEach(cents=>{ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; o.detune.value = cents; o.connect(lp); o.start(t); o.stop(t + len + 0.7); }); lp.connect(g); send(c, g); },
+    horn(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const o2 = c.createOscillator(); o2.type = 'sawtooth'; o2.frequency.value = f; const g2 = c.createGain(); g2.gain.value = 0.25; const lp = c.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(500, t); lp.frequency.exponentialRampToValueAtTime(1100, t + 0.1); lp.frequency.exponentialRampToValueAtTime(650, t + Math.max(0.15, len));
+      const g = envGain(c, t, 0.06, 0.06*v, Math.max(0.02, len - 0.12), 0.2); o.connect(lp); o2.connect(g2); g2.connect(lp); lp.connect(g); [o, o2].forEach(x=>{ x.start(t); x.stop(t + len + 0.35); }); send(c, g); },
     bass(c, f, t, len, v){ const o = c.createOscillator(); o.type = 'triangle'; o.frequency.value = f; const g = envGain(c, t, 0.01, 0.09*v, Math.max(0.02, len*0.5), 0.2); o.connect(g); o.start(t); o.stop(t + len + 0.4); g.connect(st.bus); },
     drone(c, f, t, len, v){ [0, 7].forEach(semi=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f*Math.pow(2, semi/12); const g = envGain(c, t, 0.6, 0.03*v, Math.max(0.1, len - 1), 0.8); o.connect(g); o.start(t); o.stop(t + len + 1); g.connect(st.bus); }); },
     anvil(c, t, v, hi){ [[hi ? 2730 : 2260, 0.03], [hi ? 4120 : 3380, 0.016], [hi ? 6050 : 5110, 0.008]].forEach(([f, a])=>{ const o = c.createOscillator(); o.type = 'sine'; o.frequency.value = f; const g = envGain(c, t, 0.002, a*v, 0.005, 0.9); o.connect(g); o.start(t); o.stop(t + 1); send(c, g); });
@@ -3063,6 +3113,11 @@ const Songbook = (()=>{
     else if(th.comp === 'walk'){ INST.pluck(c, fq(th, ch, -2), t0, beat, 0.8); INST.pluck(c, fq(th, ch + 4, -2), t0 + beat*2, beat, 0.6); INST.tap(c, t0 + beat, 0.5, false); INST.tap(c, t0 + beat*3, 0.5, false); }
     else if(th.comp === 'war'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -1), t0, beat*B*4, 1); [0, 1.5, 2, 3].forEach((k, j)=> INST.tap(c, t0 + beat*k, j === 0 ? 1.3 : 0.8, true)); INST.bass(c, fq(th, ch, -1), t0, beat*2, 0.8); }
     else if(th.comp === 'fanfare'){ if(i === 0) for(let k = 0; k < 8; k++) INST.tap(c, t0 + k*beat/8, 0.6 + k*0.05, false); [0, 2, 4].forEach(d=> INST.brass(c, fq(th, ch + d, -1), t0 + beat*(i === 2 ? 0 : 2), beat*(i === 2 ? 4 : 2), 0.45)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 1); }
+    else if(th.comp === 'nursery'){ INST.softpad(c, fq(th, ch, -1), t0, beat*B, 1); INST.softpad(c, fq(th, ch + 2, -1), t0, beat*B, 0.8); INST.softpad(c, fq(th, ch + 4, -1), t0, beat*B, 0.7);
+      for(let k = 0; k < B; k++) INST.kalimba(c, fq(th, ch + [0, 4, 2, 4][k % 4], -1), t0 + beat*k, beat, 0.28); INST.bass(c, fq(th, ch, -2), t0, beat*B*0.8, 0.45); }
+    else if(th.comp === 'skirmish'){ INST.bass(c, fq(th, ch, -2), t0, beat, 0.9); INST.bass(c, fq(th, ch, -2), t0 + beat*2, beat, 0.75);
+      for(let k = 0; k < B*2; k++) INST.pluck(c, fq(th, ch + [0, 4, 7, 4][k % 4], -1), t0 + k*beat/2, beat/2, 0.22); for(let k = 0; k < B; k++) INST.tap(c, t0 + beat*k, k % 2 ? 0.9 : 0.6, k % 2 === 1); }
+    else if(th.comp === 'bossdrums'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*4, 1.2); [0, 0.75, 1.5, 2, 3, 3.5].forEach((k, j)=> INST.tap(c, t0 + beat*k, j % 3 === 0 ? 1.4 : 0.9, true)); INST.bass(c, fq(th, ch, -2), t0, beat*2, 1); INST.bass(c, fq(th, ch + 4, -2), t0 + beat*2, beat*2, 0.9); }
     else if(th.comp === 'lament'){ if(i === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*3, 1); [0, 2, 4].forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat*0.6, beat, 0.35)); }
     else if(th.comp === 'harp'){ const pat = [0, 2, 4, 7, 9, 7, 4, 2]; pat.forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat/2, beat/2, k === 0 ? 0.6 : 0.4)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 0.6); }
     // melody, with tiny variations on later loops: an octave lift on the last phrase, a grace note now and then
@@ -3084,7 +3139,7 @@ const Songbook = (()=>{
   }
   function start(c, key){
     const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.5); bus.connect(out(c));
-    master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.3);
+    master.gain.setTargetAtTime(vol()*LEVEL*((SONGBOOK[key]||{}).gain || 1), c.currentTime, 0.3);
     st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false};
   }
   function stop(){
@@ -3321,6 +3376,21 @@ function liveCardFromHoverEl(el){
 // characterDescHTML() text the deck-builder/Codex already show (not a second, drift-prone copy of
 // that logic), plus -- new here, since it's only meaningful mid-match -- whether a one-shot
 // passive like Plains Terrace's has already fired this match or is still armed.
+// The field explained on hover (2026-10-12, user: "Hovering over the field effect should explain it!").
+function fieldHoverHTML(){
+  const m = matchState; if(!m || !m.engine || !m.engine.getField) return '';
+  const f = m.engine.getField(); if(!f) return '';
+  const node = m.conquestNode && (()=>{ try{ return findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node; }catch(e){ return null; } })(), r = (node && node.rules) || {};
+  const extra = [];
+  if(f.id === 'frozen'){
+    extra.push(`Each round ${r.frostCount > 1 ? r.frostCount + ' random units' : 'one random unit'} on each side ${r.frostCount > 1 ? 'get' : 'gets'} +${r.frostWait||1} Wait.`);
+    if(r.frostResist && r.frostResist.length) extra.push(`Their ${r.frostResist.join(', ')} units are used to the cold: the frost never touches them.`);
+    if(r.frostbite) extra.push(`Frostbite: an enemy the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
+    extra.push('Units that resist cold are never chilled.');
+  }
+  const left = f.rounds != null ? `${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left, then it clears.` : 'It lasts the whole fight.';
+  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${escapeHtml(f.text)}</p>${extra.map(t=> `<p>${escapeHtml(t)}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
+}
 function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
   const pid = hqSide==='A' ? 1 : 2;
@@ -3363,7 +3433,7 @@ function castleHoverHTML(hqSide){
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
-      const html = hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
+      const html = el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -4275,13 +4345,14 @@ function abilityBadges(d, bopts){
   if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">↺</span>`);
   if(e.tide) out.push(`<span class="ab-tide" title="Tide: +1 Attack on Flow, takes 1 less on Ebb">🌊</span>`);
   if(e.swimmer) out.push(`🏊`);
+  if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${e.rainrunner}`); if(e.moonborn) out.push(`🌕${e.moonborn}`); if(e.frostbite) out.push(`🥶${e.frostbite}`);
   if(e.inspiring) out.push(`📯${e.inspiring}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${e.friction}</span>`);
   if(e.worthy) out.push(`🪵${e.worthy}`);
   if(e.lumberjack) out.push(`🪓`); if(e.heavyMetal) out.push(`🤘`);
   if(e.timber) out.push(`🌲`); if(e.rockSolid) out.push(`🪨`); if(e.ironWill) out.push(`🔩`);
   if(e.loyal || e.loyalGrant) out.push(`🎖️`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">👑<i>🗡️</i></span>`);
-  if(e.shell) out.push(`🐚${e.shell}`); if(e.pitchfork) out.push(`🔱`);
+  if(e.shell) out.push(`🐚${e.shell}`); if(e.pitchfork) out.push(`<span class="ab-pair" title="Pitchfork: Trident + Pierce">🔱<i>🗡</i></span>`); if(e.trident) out.push(`<span title="Trident: front and both sides">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
   if(d.stoneCost) out.push(`🪨${d.stoneCost}cost`); if(d.metalCost) out.push(`🔩${d.metalCost}cost`); if(d.uraniumCost) out.push(`☢️${d.uraniumCost}cost`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
   if(e.demolisher) out.push(`⛏️${e.demolisher}`);
@@ -5117,7 +5188,7 @@ function nodeRewardCardIds(mapId, nodeKey){
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
 // cards, tokens, tests, materia and the hero stay obtainable so a new player can still play. Card editor: "Obtainable".
 // Admin grants (Admin → give a card) still work.
-const UNATTAINABLE_ADMIN_SOURCES = new Set(['admin', 'adminGrant', 'test', 'sandbox', 'devGrant']);
+const UNATTAINABLE_ADMIN_SOURCES = new Set(['admin', 'adminGrant', 'test', 'sandbox', 'devGrant', 'tutorialBonus']);
 function isUnattainable(d){ return !!(d && d.unattainable); }
 function openNodeRewardsEditor(mapId, nodeKey){
   const found = findConquestNode(mapId, nodeKey); if(!found) return;
@@ -9874,6 +9945,7 @@ const DIALOGUE_SPEAKERS = {
   aurelia:    {name:'Matriarch Aurelia', card:'sunthroat-courier', icon:'🐦'},
   vesper:     {name:'Warlord Vesper', card:'crimson-wing-duelist-cadet', icon:'🐦'},
   whisper:    {name:'Whisper-of-Ash', card:'voidfeather-scout', icon:'🐦'},
+  otternarian:{name:'Brother Ripple, the otternarian', icon:'🦦'},
   traveller:  {name:'The Wandering Traveller', card:'wandering-traveller', icon:'🧳'},
   peddler:    {name:'Old Cinder, the Ember Peddler', card:'quarry-mole', icon:'🏮'},
   // Errand givers (2026-10-12): folk met on the road who ask for small favours.
@@ -9988,6 +10060,13 @@ const DIALOGUES = {
     {who:'whisper', text:'Psst. A tent full of tables. Nobody fights for real in here.'},
     {who:'whisper', text:'Put any cards down, see what they do. Nothing you win, nothing you lose.', options:[{label:'Let me try.', goto:'go', act:'sub:sandbox'}], silent:'go'},
     {label:'go', who:'whisper', text:'Experiments only. The Marshal calls it “cheating”. I call it homework.'},
+  ]},
+  both_peace: {lines:[
+    {who:'otternarian', text:'You chose both sides. Brave. Most folk on this river can\'t manage one.'},
+    {who:'otternarian', text:'Making peace is slower than making war, and twice as tiring. Everyone wants it; nobody wants to go first.', options:[{label:'I\'ll go first.', goto:'yes'}, {label:'How can I help?', goto:'help'}]},
+    {label:'help', who:'otternarian', text:'Win where you can, mend where you can\'t. And when you meet someone from the other bank, talk before you swing.', goto:'end'},
+    {label:'yes', who:'otternarian', text:'Then I\'ll need your help. Peace needs friends on both banks, and right now it has one: you.', goto:'end'},
+    {label:'end', who:'otternarian', text:'Here, take this. A gift from each side, so neither feels left out.'},
   ]},
   training_wheels_off: {lines:[
     {who:'traveller', text:'That\'s everything I can teach you on a quiet road.'},
@@ -10299,6 +10378,7 @@ function mapSpotsHTML(map, positions, progress){
   // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
   // spots sit further above their skirmish, joined to it by a faint dashed line.
   const links = [];
+  if(map.id==='m1' && !loadTutorial2Done() && !adminModeEnabled) return ''; // only the two tutorials until part 2 is won (2026-10-12)
   const html = FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
     const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -10438,6 +10518,19 @@ function visitCuriosity(key, el){
   if(bang) bang.remove(); if(el) el.classList.remove('is-new');
   try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
   playDialogue(c.dialogue, {once:true, onAfk: ()=>{ if(el && el.isConnected){ el.classList.add('is-new'); } }});
+}
+// Free pack couriers (2026-10-12, user: "I noticed I unlocked a pack ... these packs have to be represented by an icon on the
+// map. With a character"): while a map's free pack waits unopened, Bramble the courier mouse stands by the boss holding it.
+// Click her and she hands it over (it opens right there).
+function freePackCourierHTML(map, positions){
+  const idx = mainConquestMaps().findIndex(m=> m.id === map.id); if(idx < 0) return '';
+  const pid = MAP_FREE_PACKS[idx + 1]; if(!pid) return '';
+  const key = mapRewardNodeKey(map); if(!key || !(loadFreePacks()[pid] > 0)) return '';
+  if(!loadConquestProgress().completed.includes(conquestNodeId(map.id, key))) return '';
+  const pack = getShopPacks().find(p=> p.id === pid); if(!pack) return '';
+  const ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
+  const p = decorPos(map.id, '~courier', {x: Math.max(6, Math.min(94, base.x + 7)), y: Math.max(10, Math.min(90, base.y + 12))});
+  return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Bramble the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
 }
 function mapCaveHTML(){
   const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
@@ -11987,9 +12080,12 @@ const CONQUEST_MAPS = [
       // 2026-10-03 ("There should only be 1 tutorial at max, with a pre-seeded run… the tutorial
       // should appear as a lone isolated icon on the map. It must be complete before any
       // skirmishes can be attempted. The first two should be available as fights."):
-      { key:"tutorial", kind:"tutorial", name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics. Clear it to open the Outskirts.", requires:[] },
-      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":4,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial"] },
-      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial"] },
+      { key:"tutorial", kind:"tutorial", stage:1, name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics.", requires:[] },
+      // 2026-10-12 (user: "you see the 2 tutorials front and centre of a zoomed in map, one on the left one on the right. After
+      // you defeat the 2nd tutorial, it expands"): part 2 is its own marker, and the Outskirts open after it.
+      { key:"tutorial2", kind:"tutorial", stage:2, name:"Tutorial II", icon:"🎓", hqHp:20, flavor:"Your leader joins you. Clear it to open the Outskirts.", requires:["tutorial"] },
+      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":4,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial2"] },
+      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial2"] },
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:33, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":2}, hqHp:64, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
@@ -12047,25 +12143,25 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m5", unlockAfter:"m4", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", sequential:true,
     nodes: [
-      { key:"5-1", people:"folk", kind:"skirmish", name:"Zebra Stampede", icon:"🦓", deck:{"plains-zebra":4,"dust-hyena":4,"howler-monkey":2}, hqHp:40, flavor:"The herd runs before you even see what spooked it.", requires:[] },
-      { key:"5-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"jaguar-stalker":1,"toucan-courier":3,"acacia-giraffe":2,"savanna-cheetah":2,"war-drum-mandrill":2}, hqHp:29, flavor:"They call to each other long before they close in.", requires:["5-1"] },
-      { key:"5-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"howler-monkey":4,"jaguar-stalker":2,"acacia-giraffe":2,"war-drum-mandrill":2}, hqHp:45, flavor:"The trees carry the warning further than any scout could.", requires:["5-2"] },
-      { key:"5-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"toucan-courier":4,"jaguar-stalker":3,"plains-zebra":1,"war-drum-mandrill":2}, hqHp:14, flavor:"Every flock overhead is reporting straight back to the pride.", requires:["5-3"] },
-      { key:"5-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"savanna-cheetah":4,"plains-zebra":1,"howler-monkey":1,"war-drum-mandrill":2,"acacia-giraffe":2}, hqHp:28, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", requires:["5-4"] },
-      { key:"5-6", kind:"elite", name:"Jaguar Run", icon:"🐆", deck:{"jaguar-stalker":4,"savanna-cheetah":3,"plains-zebra":2,"war-drum-mandrill":1}, hqHp:30, flavor:"The run starts long before the pounce.", requires:["5-5"] },
-      { key:"5-7", kind:"elite", name:"The Cheetah Matriarch", icon:"🐾", deck:{"savanna-cheetah":4,"jaguar-stalker":4,"dust-hyena":2}, hqHp:33, flavor:"Nothing on the Reaches outruns her, so nothing tries twice.", requires:["5-6"] },
-      { key:"5-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"savanna-cheetah":2,"toucan-courier":2,"howler-monkey":2,"dust-hyena":2,"plains-zebra":2}, hqHp:36, flavor:"Every pack on the grassland answers to one crown.", requires:["5-7"] },
+      { key:"5-1", people:"folk", kind:"skirmish", name:"Zebra Stampede", icon:"🦓", deck:{"plains-zebra":4,"dust-hyena":4,"howler-monkey":2}, hqHp:40, flavor:"The herd runs before you even see what spooked it.", rules:{firstBlood:1}, requires:[] },
+      { key:"5-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"jaguar-stalker":1,"toucan-courier":3,"acacia-giraffe":2,"savanna-cheetah":2,"war-drum-mandrill":2}, hqHp:29, flavor:"They call to each other long before they close in.", rules:{firstBlood:1}, requires:["5-1"] },
+      { key:"5-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"howler-monkey":4,"jaguar-stalker":2,"acacia-giraffe":2,"war-drum-mandrill":2}, hqHp:45, flavor:"The trees carry the warning further than any scout could.", rules:{firstBlood:1}, requires:["5-2"] },
+      { key:"5-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"toucan-courier":4,"jaguar-stalker":3,"plains-zebra":1,"war-drum-mandrill":2}, hqHp:14, flavor:"Every flock overhead is reporting straight back to the pride.", rules:{firstBlood:1}, requires:["5-3"] },
+      { key:"5-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"savanna-cheetah":4,"plains-zebra":1,"howler-monkey":1,"war-drum-mandrill":2,"acacia-giraffe":2}, hqHp:28, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", rules:{firstBlood:1}, requires:["5-4"] },
+      { key:"5-6", kind:"elite", name:"Jaguar Run", icon:"🐆", deck:{"jaguar-stalker":4,"savanna-cheetah":3,"plains-zebra":2,"war-drum-mandrill":1}, hqHp:30, flavor:"The run starts long before the pounce.", rules:{firstBlood:1}, requires:["5-5"] },
+      { key:"5-7", kind:"elite", name:"The Cheetah Matriarch", icon:"🐾", deck:{"savanna-cheetah":4,"jaguar-stalker":4,"dust-hyena":2}, hqHp:33, flavor:"Nothing on the Reaches outruns her, so nothing tries twice.", rules:{firstBlood:1}, requires:["5-6"] },
+      { key:"5-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"savanna-cheetah":2,"toucan-courier":2,"howler-monkey":2,"dust-hyena":2,"plains-zebra":2}, hqHp:36, flavor:"Every pack on the grassland answers to one crown.", rules:{firstBlood:2}, requires:["5-7"] },
     ]},
   { id:"m6", unlockAfter:"m5", name:"Wolfsbane Tundra", icon:"🐺", blurb:"Frozen ground north of the grassland — the packs here hunt in formation.", sequential:true,
     nodes: [
       { key:"6-1", kind:"skirmish", name:"Ice Fang Patrol", icon:"🦊", deck:{"ice-crevasse-wolf":4,"arctic-fox-raider":4,"snowshoe-hare":2}, hqHp:106, flavor:"The snow keeps every track fresh, including the ones circling back.", requires:[] },
-      { key:"6-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"boreal-elk":1,"taiga-lynx":3,"golden-eagle-diver":2,"beaver-builder":2,"quill-volley":2}, hqHp:14, flavor:"A pack this far south of the treeline means the treeline moved.", requires:["6-1"] },
-      { key:"6-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"snowshoe-hare":2,"arctic-fox-raider":4,"beaver-builder":2,"quill-volley":2}, hqHp:18, flavor:"They scatter, regroup, and scatter again — always uphill of you.", requires:["6-2"] },
-      { key:"6-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"glacial-ape-king":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":2,"alpha-howler":1}, hqHp:29, flavor:"You never see the lynx. You only see the elk break formation.", requires:["6-3"] },
-      { key:"6-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":1,"taiga-lynx":2,"chipmunk-hoarder":1}, hqHp:35, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", requires:["6-4"] },
-      { key:"6-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"golden-eagle-diver":2,"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":2,"frost-hare-sprinter":1}, hqHp:69, flavor:"The herd does not run from the cold. It carries it.", requires:["6-5"] },
-      { key:"6-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", deck:{"porcupine-roller":2,"beaver-builder":2,"glacial-ape-king":2,"taiga-lynx":2,"chipmunk-hoarder":2}, hqHp:59, flavor:"The howl reaches every den on the tundra at once.", requires:["6-6"] },
-      { key:"6-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", deck:{"glacial-ape-king":2,"permafrost-mammoth":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":1,"ravenous-wolverine":2}, hqHp:59, flavor:"Old enough to remember when the ice was thicker.", requires:["6-7"] },
+      { key:"6-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"boreal-elk":1,"taiga-lynx":3,"golden-eagle-diver":2,"beaver-builder":2,"quill-volley":2}, hqHp:14, flavor:"A pack this far south of the treeline means the treeline moved.", rules:{frostResist:['Tundra','Frost','Taiga']}, requires:["6-1"] },
+      { key:"6-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"snowshoe-hare":2,"arctic-fox-raider":4,"beaver-builder":2,"quill-volley":2}, hqHp:18, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{frostResist:['Tundra','Frost','Taiga']}, requires:["6-2"] },
+      { key:"6-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"glacial-ape-king":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":2,"alpha-howler":1}, hqHp:29, flavor:"You never see the lynx. You only see the elk break formation.", rules:{frostResist:['Tundra','Frost','Taiga']}, requires:["6-3"] },
+      { key:"6-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":1,"taiga-lynx":2,"chipmunk-hoarder":1}, hqHp:35, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", rules:{frostResist:['Tundra','Frost','Taiga'], frostbite:1}, requires:["6-4"] },
+      { key:"6-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"golden-eagle-diver":2,"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":2,"frost-hare-sprinter":1}, hqHp:69, flavor:"The herd does not run from the cold. It carries it.", rules:{frostResist:['Tundra','Frost','Taiga'], frostbite:1}, requires:["6-5"] },
+      { key:"6-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", deck:{"porcupine-roller":2,"beaver-builder":2,"glacial-ape-king":2,"taiga-lynx":2,"chipmunk-hoarder":2}, hqHp:59, flavor:"The howl reaches every den on the tundra at once.", rules:{frostResist:['Tundra','Frost','Taiga'], frostbite:1, frostWait:2}, requires:["6-6"] },
+      { key:"6-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", deck:{"glacial-ape-king":2,"permafrost-mammoth":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":1,"ravenous-wolverine":2}, hqHp:59, flavor:"Old enough to remember when the ice was thicker.", rules:{frostResist:['Tundra','Frost','Taiga'], frostbite:1, frostWait:3, frostCount:3}, requires:["6-7"] },
     ]},
   { id:"m7", unlockAfter:"m6", name:"Coral Current", icon:"🐠", blurb:"Past the last cliffs, the open sea — deep water, fast currents and the teeth that live in them.", sequential:true,
     nodes: [
@@ -12757,6 +12853,13 @@ function findConquestNode(mapId, nodeKey){
 // after that only appears once the one immediately before it (in array order) is cleared. Every
 // pre-existing map is left exactly as it always behaved (every node open at once, the moment the
 // map itself unlocks) so returning players' expectations don't quietly change under them.
+function worldRevealed(){
+  if(adminModeEnabled) return true;
+  try{ if(localStorage.getItem('bramblewood_world_open_v1') === '1') return true; }catch(e){}
+  try{ const p = loadConquestProgress(), mf = CONQUEST_MAPS.find(m=> m.id==='mf'); if(!mf) return true;
+    const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
+    return p.completed.some(id=> !['m1','mf'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it
+}
 function isNodeVisible(map, node, index, progress){
   if(!map.sequential) return true;
   // Branching campaign graph (2026-09-24 redesign): each node lists its own predecessor key(s)
@@ -12776,7 +12879,7 @@ function isNodeVisible(map, node, index, progress){
       // progress.completed would make that fight permanently unreachable for anyone who reaches
       // Conquest by a path that never wrote that id (tests, admin tools, future entry points).
       const reqNode = map.nodes.find(n=>n.key===reqKey);
-      if(reqNode && reqNode.kind==='tutorial') return loadTutorialDone();
+      if(reqNode && reqNode.kind==='tutorial') return reqNode.stage === 2 ? loadTutorial2Done() : loadTutorialDone();
       return progress.completed.includes(conquestNodeId(map.id, reqKey));
     });
   }
@@ -13015,7 +13118,8 @@ function mapNodePositions(map){
   const base = autoMapNodePositions(map);
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return base;
-  return map.nodes.map((n,i)=> (ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]);
+  const opening = map.id === 'm1' && !loadTutorial2Done();
+  return map.nodes.map((n,i)=> (!(opening && n.kind==='tutorial') && ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]);
 }
 function autoMapNodePositions(map){
   const tIdx = map.nodes.findIndex(n=>n.kind==='tutorial');
@@ -13023,7 +13127,8 @@ function autoMapNodePositions(map){
   const others = map.nodes.filter(n=>n.kind!=='tutorial');
   const pos = layoutNodePositions(others, map.id).map(p=> ({x: 24 + (p.x/100)*72, y: p.y}));
   const out = []; let k = 0;
-  map.nodes.forEach((n,i)=>{ out[i] = n.kind==='tutorial' ? {x:8, y:50} : pos[k++]; });
+  const opening = map.id === 'm1' && !loadTutorial2Done();
+  map.nodes.forEach((n,i)=>{ out[i] = n.kind==='tutorial' ? (opening ? {x: n.stage === 2 ? 64 : 36, y:52} : {x:8, y: n.stage === 2 ? 62 : 38}) : pos[k++]; });
   return out;
 }
 function layoutNodePositions(nodes, mapId){
@@ -13457,7 +13562,8 @@ function grantClearedBossLeaders(){
   try{
     const pr = loadConquestProgress(), defs = getCardDefs();
     Object.values(defs).forEach(d=>{ const src = d && d.source; if(!src || src.kind !== 'map' || !(d.archetypes||[]).includes('Leader')) return;
-      if((pr.completed||[]).includes(conquestNodeId(src.id, src.node)) && !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length){ unlockCardForPlayer(d.id, 'conquestReward'); try{ showToast(`👑 ${d.name} joins you, for beating that map's boss.`, 'ok'); }catch(e){} } });
+      if((pr.completed||[]).includes(conquestNodeId(src.id, src.node)) && !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length){ if(loadDialogueFlags()['leaderGrant:' + d.id]) return; setDialogueFlag('leaderGrant:' + d.id, true); // once (2026-10-12: it toasted on every visit when the grant was refused)
+        unlockCardForPlayer(d.id, 'conquestReward'); if(myUnlockedCardIds.has(d.id) || (myCardCopies[d.id]||[]).length) try{ showToast(`👑 ${d.name} joins you, for beating that map's boss.`, 'ok'); }catch(e){} } });
   }catch(e){}
 }
 function renderConquestSubTab(body){
@@ -13480,8 +13586,14 @@ function renderConquestSubTab(body){
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
   // itself (see attachDelayedTooltip's call in renderPlay). Just a bare heading here.
+  // The world is hidden at first (2026-10-12, user: "When you defeat the 2nd map for the first time, you also see the world
+  // expand, then you get to see the world map... (otherwise its hidden till then)"): no map list, no world map button.
+  const worldOpen = worldRevealed();
+  if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast('🧭 The world opens up: every map you can reach is on the left, and the 🧭 shows them all.', 'ok'); SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
+  document.body.classList.toggle('world-hidden', !worldOpen);
+  document.body.classList.toggle('cq-opening', !loadTutorial2Done() && conquestSelectedMap==='m1' && !adminModeEnabled);
   body.innerHTML = `
-    <div class="conquest-layout" id="conquestLayout">
+    <div class="conquest-layout ${worldOpen ? '' : 'world-hidden'} ${(!loadTutorial2Done() && conquestSelectedMap==='m1') ? 'is-opening' : ''}" id="conquestLayout">
       <div class="conquest-maps" id="conquestMapList"></div>
       <div class="conquest-main" id="conquestMain"></div>
     </div>
@@ -13586,7 +13698,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
-      ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${mapCuriositiesHTML(map)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}
+      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${mapCuriositiesHTML(map)}`}${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -13599,12 +13711,14 @@ function renderConquestSubTab(body){
         // stand-ins for the real, separately-mandatory 6-stage tutorial series a player has
         // already had to finish before they could ever see this map at all — not a fightable
         // node, so no deck/hqHp, no click-to-fight, always shown already-cleared.
+        if(node.kind!=='tutorial' && map.id==='m1' && !loadTutorial2Done() && !adminModeEnabled) return ''; // only the two tutorials until part 2 is won
         if(node.kind==='tutorial'){
           // 2026-10-12: part 2 waits here (with a "!") until it's won; after that, both parts live in this one slot.
-          const tDone = loadTutorialDone() && loadTutorial2Done();
-          const tip = !loadTutorialDone() ? 'Tutorial' : !loadTutorial2Done() ? 'Tutorial, part 2: your leader. Click to start' : 'Tutorials: replay both parts';
+          const t2 = node.stage === 2, tDone = t2 ? loadTutorial2Done() : loadTutorialDone();
+          if(t2 && !loadTutorialDone()) return ''; // part 2 appears once part 1 is won
+          const tip = t2 ? (tDone ? 'Tutorial II: replay' : 'Tutorial II. Click to start') : (tDone ? 'Tutorial: replay' : 'Tutorial');
           return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(tip)}">
-            <span class="map-node-ico">${node.icon}</span>${!tDone && loadTutorialDone() ? '<span class="map-spot-new">!</span>' : ''}
+            <span class="map-node-ico">${node.icon}</span><span class="tut-num" aria-hidden="true">${t2 ? 'II' : 'I'}</span>${!tDone && (t2 || !loadTutorialDone()) ? '<span class="map-spot-new">!</span>' : ''}
           </button>`;
         }
         if(false){
@@ -13699,6 +13813,8 @@ function renderConquestSubTab(body){
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
+  mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
+    showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
   mainEl.querySelectorAll('[data-curio]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitCuriosity(b.dataset.curio, b); }));
   { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
   { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; leaveSubMap(map, body); }); }
@@ -14712,11 +14828,11 @@ function showFactionScreen(){
   const el = document.getElementById('factionScreen');
   if(!el){ beginTutorialStage(1); return; } // defensive: DOM node missing -> skip straight to the series rather than getting stuck
   el.hidden = false;
-  let secondsLeft = 15;
+  let secondsLeft = 60; // 2026-10-12 (user: "that option should only appear 1 minute later")
   const countdownEl = document.getElementById('factionCountdown');
   const bothBtn = document.getElementById('factionBothBtn');
-  if(bothBtn){ bothBtn.hidden = true; bothBtn.onclick = ()=> resolveFactionChoice('both'); }
-  const tick = ()=>{ if(countdownEl) countdownEl.textContent = secondsLeft>0 ? `Take your time — can’t decide? In ${secondsLeft}s you can pick both.` : 'Can’t decide? Both sides will lend you their strength.'; };
+  if(bothBtn){ bothBtn.hidden = true; bothBtn.onclick = ()=>{ try{ SoundKit.leaderFanfare ? SoundKit.leaderFanfare() : SoundKit.unlock(); }catch(e){} setTimeout(()=> resolveFactionChoice('both'), 450); }; }
+  const tick = ()=>{ if(countdownEl) countdownEl.textContent = secondsLeft>0 ? 'Take your time.' : 'Can’t decide? Both sides will lend you their strength.'; };
   tick();
   if(factionCountdownTimer) clearInterval(factionCountdownTimer);
   factionCountdownTimer = setInterval(()=>{
@@ -14762,7 +14878,9 @@ function wireFactionShowcase(screen){
     // the other side's panel retreats off its own edge
     layer.querySelectorAll('.fs-panel').forEach(pn=>{ if(pn.dataset.fs!==key){ gsap.killTweensOf(pn); gsap.to(pn, {opacity: 0, x: FACTION_SHOWCASE[pn.dataset.fs].dir*120, duration: .3, ease: 'power2.in'}); } });
     // everything leans toward the hovered side; the backdrop travels furthest (parallax)
-    gsap.to(bg, {x: dir*-70, scale: dir ? 1.07 : 1, duration: .7, ease: 'expo.out'});
+    // 2026-10-12 (user: "The starting menus are laggy, especially the pick-your-tribe moment"): no more scaling the full-screen
+    // painting or shaking the whole screen; just light sideways moves on the GPU.
+    gsap.to(bg, {x: dir*-40, duration: .7, ease: 'expo.out', force3D:true});
     gsap.to(bushes, {x: dir*-110, duration: .8, ease: 'expo.out'});
     gsap.to(inner, {x: dir*24, rotation: dir*0.6, duration: .6, ease: 'expo.out'});
     if(!f) return;
@@ -14771,7 +14889,7 @@ function wireFactionShowcase(screen){
     gsap.fromTo(panel.querySelectorAll('.fs-char'), {scale: .5, y: 40, opacity: 0}, {scale: 1, y: 0, opacity: 1, duration: .6, stagger: .08, ease: 'back.out(1.8)'});
     gsap.fromTo(panel.querySelectorAll('.fs-cards .card-tile'), {y: 60, opacity: 0, rotation: dir*8}, {y: 0, opacity: 1, rotation: 0, duration: .5, stagger: .07, delay: .15, ease: 'power3.out'});
     // the quake: a short, hard rumble that settles
-    gsap.fromTo(screen, {x: 0, y: 0}, {keyframes: [{x: dir*14, y: -4, duration: .06}, {x: dir*-9, y: 5, duration: .06}, {x: dir*7, y: -3, duration: .06}, {x: dir*-4, y: 2, duration: .07}, {x: 0, y: 0, duration: .12}], ease: 'none'});
+    // (the whole-screen quake is gone: it repainted everything for half a second on every hover)
     gsap.fromTo(layer.querySelector('.fs-flash'), {opacity: .55}, {opacity: 0, duration: .5, ease: 'power2.out'});
     try{ if(SoundKit.siegeTone) SoundKit.siegeTone(); }catch(e){}
   };
@@ -14848,7 +14966,7 @@ const STARTER_CFG_DEFAULT = {
   starterBoth: {'otter-kit':1, 'otter-centurion':1, 'cobalt-talon-fledgling':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
   rewards: ['river-warden', 'sunspire-envoy', 'quarry-mole'],
 };
-const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:12, rivalHp:8, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:16, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
 const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v1';
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
@@ -14944,7 +15062,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const st = stage || loadTutorialStage();
   const cfg = tutorialCfg;
   forcedNextSeed = (cfg.seed>>>0) || TUTORIAL_SEED;
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode:'open'}); // 2026-10-12 (user: "Tutorial -> non collapse rules"): it was left on the engine's old default
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
@@ -14957,7 +15075,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   // Castle passives (2026-10-12, user: "Watchtower effects should be included in the tutorial ... the first skirmish might
   // have no effect. Then only the 2nd onwards"): part 1's rival castle is plain; part 2's is the Outskirts Watchtower.
   const watch = st >= 2 && CHARACTER_DEFS['outskirts-watchtower'];
-  const rivalCharacter = Object.assign({}, watch || CHARACTER_DEFS['castle'], {id: watch ? 'outskirts-watchtower' : 'tutorial-rival', name: watch ? watch.name : rivalName}, cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 6 : 0))} : {});
+  const rivalCharacter = Object.assign({}, watch || CHARACTER_DEFS['castle'], {id: watch ? 'outskirts-watchtower' : 'tutorial-rival', name: watch ? watch.name : rivalName}, cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
     2: engine.newPlayer(2, validDeck(cfg.rivalDeck) || tutorialStageOpponentDeck(st, pick), rivalCharacter),
@@ -15378,7 +15496,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
   if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
-  if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(!loadTutorial2Done()) beginTutorialStage(2); else beginTutorialStage(1, {replay:true}); return true; }
+  if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
@@ -17240,6 +17358,9 @@ function endMatch(opts){
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
+  // 2026-10-12 (user: "Tutorial disappears when a mission ends. If I didn't click next, it is silenced once"): a tip you
+  // never acknowledged comes back first thing next match, instead of skipping a match.
+  if(coachOpen && coachOpen.tip && !coachSeen.has(coachOpen.tip.id)) coachPendingId = coachOpen.tip.id;
   hideCoachTip();
   if(!(opts && opts.keepResume)) clearResumeSnapshot();
   if(matchState && matchState.testKit) stopTestKit();
@@ -17435,6 +17556,7 @@ async function attemptSummonLeader(preferredLane){
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
   if(m.leaderUid != null){ const lu = m.leaderUid; setTimeout(()=> leaderThroneVfx(lu), Math.round(animMs().strike || 380)); }
+  setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
 }
 // LEADER_DRAG_PAYLOAD is the sentinel dataTransfer value that marks "this drag is the Leader
@@ -17821,7 +17943,7 @@ function renderMatchUI(){
          margin-left:auto) so they share the castle/deck row's own vertical band instead of
          claiming a whole separate one. -->
     <div class="top-play-row">
-      ${matchCastleTileHTML(castleCharOf(m, 2), p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
+      ${matchCastleTileHTML(castleCharOf(m, 2), (m.resolving && m.displayHqHp && m.displayHqHp.B != null) ? m.displayHqHp.B : p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
       <div class="deck-widget hq-tile" id="deckWidgetTop">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
@@ -17852,7 +17974,7 @@ function renderMatchUI(){
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
-      ${matchCastleTileHTML(castleCharOf(m, 1), p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
+      ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile" id="deckWidgetBottom">
         <div class="castle-label">Deck</div>
         <div class="ico deck-back-mark">🌰</div>
@@ -17913,7 +18035,7 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''}">
+      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
@@ -17942,6 +18064,7 @@ function renderMatchUI(){
   { const aw = document.getElementById('adminWinBtn'); if(aw) aw.addEventListener('click', adminAutoWin); }
   wireLeaderWidget();
   try{ castleShieldSync('A'); castleShieldSync('B'); }catch(e){}
+  try{ syncNightVeil(m); }catch(e){}
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
   // native `title="..."` tooltip on the deck pile with a themed one showing the same X/Y count;
@@ -18054,15 +18177,21 @@ function renderMatchUI(){
         const toMap = (msg)=>{ conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); if(msg) showToast(msg, 'ok'); };
         if(stage === 1){
           // A replay of the combined Tutorials slot goes straight on to part 2, like a dungeon's next stage.
-          if(replay || adminTest){ beginTutorialStage(2, {replay, adminTest}); return; }
+          if(adminTest){ beginTutorialStage(2, {replay, adminTest}); return; }
+          if(replay){ toMap(); return; } // the two parts are separate markers now (2026-10-12)
           // 2026-10-08 (user: "after winning, he is forced to click 'Add to deck' in a tutorial, filling their deck")
-          if(!loadTutorialDone()) openStarterDeckStep(pick, ()=>{ claimTutorialWin(pick); toMap('🎓 Part 1 done! Your first fights are open, and part 2 (your leader) waits on the 🎓 marker.'); });
+          if(!loadTutorialDone()) openStarterDeckStep(pick, ()=>{ claimTutorialWin(pick); toMap('🎓 Part 1 done! Part 2 waits beside it on the map.'); });
           else toMap();
           return;
         }
         // Part 2 won: the tutorials fold into one slot on the map, and the training wheels come off.
         const first = !loadTutorial2Done() && !adminTest;
         if(first){ saveTutorial2Done(); try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){} }
+        // Both tribes (2026-10-12, user): a bonus Common Otter or Hummingbird card (not in your deck), and the otternarian
+        // has a word about how hard peace is.
+        if(first && pick === 'both'){ try{ const defs = getCardDefs(); const pool = Object.values(defs).filter(d=> d && !d.token && !d.test && (d.rarity||'common')==='common' && !(d.cost > 0) && ((d.archetypes||[]).includes('Otter') || (d.archetypes||[]).includes('Hummingbird')) && !myUnlockedCardIds.has(d.id));
+          const b = pool[Math.floor(Math.random()*pool.length)]; if(b){ unlockCardForPlayer(b.id, 'tutorialBonus'); setTimeout(()=> showToast(`🤝 Bonus for choosing both: ${b.name} joined your Nest (not your deck).`, 'ok'), 2600); }
+          setTimeout(()=>{ try{ playDialogue('both_peace'); }catch(e){} }, 4200); }catch(e){} }
         toMap(first ? '🎓 Tutorial complete. The training wheels are off now!' : null);
         if(first) setTimeout(()=>{ try{ playDialogue('training_wheels_off'); }catch(e){} }, 900);
         return;
@@ -18131,7 +18260,7 @@ function renderMatchUI(){
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
   if(!showPassOverlay && !isSandbox) maybeAutoSkip();
-  setTimeout(maybeShowCoachTip, 600); // an open tip stays put across re-renders (2026-10-05)
+  setTimeout(maybeShowCoachTip, 600); setTimeout(maybeShowCoachTip, 2200); setTimeout(maybeShowCoachTip, 4500); // an open tip stays put across re-renders (2026-10-05); the later tries catch anchors that weren't up yet (the versus opener)
 }
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
 // "nothing to play" deliberately means no MEANINGFUL action is available at all, not just "no
@@ -20578,6 +20707,10 @@ function aiActNow(){
   const now = firstPlay < 0 ? events : events.slice(0, firstPlay + 1), later = firstPlay < 0 ? [] : events.slice(firstPlay + 1);
   const ARRIVAL_NOW = new Set(['play', 'lumber', 'pitch', 'draw', 'discard', 'converge']);
   const deferred = later.filter(ev=> !ARRIVAL_NOW.has(ev.type));
+  // 2026-10-12 (user: "When the enemy plays a card, it should look like it came from their hand"): their hand is just above
+  // the top of their row, in the middle, so every enemy play flies in from there (not from wherever a default put it).
+  try{ const re = document.getElementById('rowEnemy'); if(re){ const r = re.getBoundingClientRect();
+    events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   m.aiArrivalEvents = deferred;
 }
@@ -21001,7 +21134,9 @@ async function discardCardByUid(uid){
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
   // still play a card (or manually Skip Turn) afterward. It only ends the turn on its own
   // when there's nothing left in hand to act with.
-  const handEmpty = me.hand.length===0;
+  // 2026-10-12 (user, again: "when i have a leader, dont end my turn if i can play my leader and i just pitched a card"):
+  // an empty hand only ends the turn when there's no leader to summon either.
+  const handEmpty = me.hand.length===0 && !(activePid === viewerHandPid(m) && leaderSummonableNow(m, me));
   if(handEmpty){
     await afterPlayerAction(activePid);
   } else {
@@ -21111,6 +21246,9 @@ function updateHqHpDisplay(side, hpOverride){
   const m = matchState; if(!m) return;
   const pid = side==='A' ? 1 : 2;
   const hq = m.players[pid].hq;
+  // 2026-10-12 (user: "Upon the first hit, the shield drops to what it would have been at the end of combat"): while a round
+  // replays, every redraw reads the replay's running numbers, never the already-final ones.
+  if(hpOverride===undefined && m.resolving && m.displayHqHp && m.displayHqHp[side] != null) hpOverride = m.displayHqHp[side];
   const hp = hpOverride!==undefined ? hpOverride : hq.hp;
   const el = hqTileEl(side); if(!el) return;
   // Bugfix 2026-09-30 (per explicit report: "if health is at 0, there should be no green
@@ -21144,6 +21282,7 @@ function castleShieldSync(side, shOverride){
   const m = matchState; if(!m) return;
   const hq = m.players[side==='A' ? 1 : 2].hq, el = hqTileEl(side); if(!el || !hq) return;
   const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
+  if(shOverride==null && m.resolving && m.displayHqShield && m.displayHqShield[side] != null) shOverride = m.displayHqShield[side];
   const sh = Math.max(0, shOverride!=null ? shOverride : (hq.shield||0)), max = Math.max(1, hq.maxShield||0);
   let badge = tile.querySelector(':scope > .castle-shield'), bar = tile.querySelector('.castle-hp-bar-oncard-shield');
   if(!(hq.maxShield > 0)){ if(badge) badge.remove(); if(bar) bar.remove(); return; }
@@ -21410,12 +21549,15 @@ function fallDeathVfx(el, ms){
   // 2026-10-10 (user: "the animation should be smooth from flat face up, to flat 'down'. Right now it looks like it's
   // split into two"): one single topple from upright to lying flat (90°), accelerating like a fall, with no bounce
   // after impact; then it just fades where it lies.
+  // 2026-10-12 (user: "It looks very jarring. It should look like the card slowly falling backwards, gaining momentum, before
+  // it hits the ground and a bunch of leaves are knocked up ... decided by the map biome"): a longer topple that barely moves
+  // at first and speeds up all the way down (expo-in), then the ground's own stuff (leaves, snow, sand, spray, embers) kicks up.
   if(hasGsap()){
-    const fall = ms*0.8/1000;
+    const fall = ms*1.25/1000;
     gsap.timeline()
-      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:90, y:14, transformPerspective:520, transformOrigin:'50% 100%', filter:'grayscale(.85) brightness(.78)', duration:fall, ease:'power2.in'})
-      .add(()=>{ leafPuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
-      .to(t, {opacity:0, duration:ms*0.2/1000, ease:'power1.in'});
+      .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:88, y:12, transformPerspective:560, transformOrigin:'50% 100%', filter:'grayscale(.8) brightness(.8)', duration:fall, ease:'expo.in'})
+      .add(()=>{ biomePuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
+      .to(t, {opacity:0, duration:ms*0.25/1000, delay:.05, ease:'power1.in'});
   }
   return true;
 }
@@ -21431,7 +21573,7 @@ function flyerFallVfx(el, t, ms){
   gsap.timeline()
     .to(t, {y:12, x:side*(8 + Math.random()*8), rotation:side*(2.5 + Math.random()*2), filter:'grayscale(.6) brightness(.85)', duration:fall, ease:'power2.in'})
     .add(()=>{
-      leafPuff(el); leafPuff(el); impactDust(el);
+      biomePuff(el); biomePuff(el); impactDust(el);
       try{ featherBurst(el); }catch(e){}
       try{ SoundKit.knockOut(); }catch(e){}
     })
@@ -21448,10 +21590,20 @@ function impactDust(el){
   document.body.appendChild(d);
   gsap.fromTo(d, {scaleX:.4, opacity:.75}, {scaleX:1.5, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> d.remove()});
 }
-function leafPuff(el){
+// What the ground kicks up, by the map's biome (shader map kinds): forest leaves, water spray, ash, cave grit, grass, snow,
+// reef bubbles, swamp mud, embers, feathers, rock, beach sand.
+const BIOME_PUFF = {0:['🍂','🍃','🍂','·','·','🍁'], 1:['💧','🍃','💧','·','·','💧'], 2:['·','•','·','🌫️','·','•'], 3:['•','·','🪨','·','•','·'], 4:['🌾','·','🌾','·','🍂','·'],
+  5:['❄','·','❄','❅','·','❄'], 6:['🫧','💧','🫧','·','💧','🫧'], 7:['💧','🌿','·','🟤','·','💧'], 8:['✦','🔥','·','✦','·','✦'], 9:['🪶','·','🪶','·','🍃','·'], 10:['🪨','·','•','·','🪨','·'], 12:['·','🐚','·','•','·','·']};
+function biomePuff(el){
+  let glyphs = null;
+  try{ const m = matchState, mid = m && m.conquestNode && m.conquestNode.mapId; const k = mid && typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mid] : null; if(k != null) glyphs = BIOME_PUFF[k]; }catch(e){}
+  if(!glyphs && matchState && fieldEffectOf(matchState)==='frozen') glyphs = BIOME_PUFF[5];
+  leafPuff(el, glyphs);
+}
+function leafPuff(el, glyphsIn){
   if(!el || !hasGsap()) return;
   const r = el.getBoundingClientRect();
-  const glyphs = ['🍂','🍃','🍂','·','·','🍁'];
+  const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
   for(let i = 0; i < 12; i++){
     const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
     document.body.appendChild(p);
@@ -21783,6 +21935,12 @@ function settleStrayBoardCards(waited){
       if(hasGsap()){ const before = el.getBoundingClientRect(); gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale'}); glideFromRect(el, before); }
       else { el.style.position=''; el.style.left=''; el.style.top=''; el.style.width=''; el.style.height=''; el.style.transform=''; }
     }
+  });
+  // 2026-10-12 (user: "When the leader lands, sometimes, at the end of their animation, they get stuck in short mode"): a
+  // card face left squashed or lifted by an interrupted flourish is put back at rest once nothing is animating it.
+  document.querySelectorAll('#rowMine .board-card .card-tile, #rowEnemy .board-card .card-tile').forEach(t=>{
+    if(hasGsap() && gsap.isTweening(t)) return; const st = t.style;
+    if((st.transform && st.transform !== 'none') || st.scale || st.translate) { if(hasGsap()) gsap.set(t, {clearProps:'transform,scale,translate,x,y,scaleX,scaleY'}); else { st.transform = ''; st.scale = ''; st.translate = ''; } }
   });
   if(deferred) requestAnimationFrame(()=> settleStrayBoardCards((waited||0) + 1));
 }
@@ -22514,6 +22672,37 @@ function matchHasTide(m){
     if((pl.deck||[]).some(isT) || (pl.hand||[]).some(isT) || (pl.graveyard||[]).some(isT) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && isT(c)))) yes = true; }); }catch(e){}
   return (m._hasTide = yes);
 }
+// Day/night and the moon only show when a card cares (2026-10-12, user: "I like how the day/night and ebb/flow cards are only
+// relevant when cards of that type are played ... those effects are not present unless you have a day/night card").
+function matchHasDefWhere(m, key, test){
+  if(m[key] !== undefined) return m[key];
+  if(!m.players || !m.players[1] || !m.players[2]) return false;
+  const DEFS = getCardDefs(); const hit = id=>{ const d = DEFS[id && (id.defId || id)]; return !!(d && d.effects && test(d.effects)); };
+  let yes = false;
+  try{ [1,2].forEach(p=>{ const pl = m.players[p]; if(!pl) return;
+    if((pl.deck||[]).some(hit) || (pl.hand||[]).some(hit) || (pl.graveyard||[]).some(hit) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && hit(c)))) yes = true; }); }catch(e){}
+  if(m.leaderDefId && hit(m.leaderDefId)) yes = true;
+  return (m[key] = yes);
+}
+function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.moonborn || e.lantern); }
+function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn); }
+const MOON_PHASES = [['🌑','New moon'],['🌒','Waxing crescent'],['🌓','First quarter'],['🌔','Waxing gibbous'],['🌕','Full moon'],['🌖','Waning gibbous'],['🌗','Last quarter'],['🌘','Waning crescent']];
+function moonPillHTML(m){
+  if(!m.engine || !m.engine.moonPhase || !matchHasMoonCards(m)) return '';
+  const [ico, name] = MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0], full = Math.round((m.engine.moonFullness() || 0) * 100);
+  return `<div class="phase-pill moon-pill" title="${escapeAttr(name + ': Moonborn units get ' + full + '% of their bonus at night. The moon moves one phase every night.')}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${ico}</span><b>${escapeHtml(name)}</b></div>`;
+}
+// Night creeps in (2026-10-12, user: "When night happens, cause darkness to creep into the field. As fast as night enters,
+// when its day, the night leaves the other direction, mimicking the way the earth travels around the sun"): a dark veil
+// slides over the board from the right at nightfall and carries on out to the left at dawn. Only with phase cards in play.
+function syncNightVeil(m, phase){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  let v = bf.querySelector(':scope > .night-veil');
+  const want = !!(m && !m.over && matchHasPhaseCards(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
+  if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
+  if(want){ v.classList.remove('is-leaving'); v.classList.add('is-on'); return; }
+  if(v.classList.contains('is-on')){ v.classList.add('is-leaving'); setTimeout(()=>{ if(!v.isConnected) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
+}
 function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
@@ -22522,7 +22711,7 @@ function tidePillHTML(m){
 }
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField();
-  const phase = dayNightOn(m) ? m.engine.getPhase() : null;
+  const phase = (dayNightOn(m) && matchHasPhaseCards(m)) ? m.engine.getPhase() : null;
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
   const roundInPhase = ((Math.max(1, m.round||1) - 1) % PL) + 1;
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
@@ -22530,9 +22719,9 @@ function fieldEffectCardHTML(m){
   const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
     : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: the minute on the dot. Nocturnal and Diurnal bonuses both apply, doubled.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
   const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
-  if(!f) return phaseHTML + tidePillHTML(m) + rsHTML;
+  if(!f) return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  return phaseHTML + tidePillHTML(m) + rsHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
+  return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" data-defid="__field" data-fieldhover="1" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
     <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}</div>`;
 }
 function icePulseVfx(uid){
@@ -22811,15 +23000,17 @@ function maybeShowCoachTip(){
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
   // loaded up can free-range tutorial messages come up"): no passive tip while any guided step is left.
   if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id))) return;
-  // 2) passive tips — one at a time, first match wins
-  for(const tip of passiveTipCandidates()){
+  // 2) passive tips — one at a time, first match wins (a tip left unanswered last match goes first)
+  const cands = passiveTipCandidates(); if(coachPendingId){ const i = cands.findIndex(t=> t.id === coachPendingId); if(i > 0) cands.unshift(cands.splice(i, 1)[0]); }
+  for(const tip of cands){
     if(coachSeen.has(tip.id)) continue;
     const el = tip.anchor(); if(!el) continue;
     showCoachTip(tip, el); return;
   }
 }
+let coachPendingId = null;
 function showCoachTip(tip, anchorEl){
-  hideCoachTip();
+  hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
   const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
@@ -23273,7 +23464,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='sweepWhiff') base = 620;
   else if(ev.type==='fastForward') base = 520;
   else if(ev.type==='converge') base = 900;
-  else if(ev.type==='death') base = 550; // was 1100 -- chain 2x faster
+  else if(ev.type==='death') base = 900; // was 550; 2026-10-12: the slower topple needs its time on screen
   else if(ev.type==='render') base = 780;
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
@@ -23724,7 +23915,7 @@ function logText(ev){
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +1 Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +${ev.wait||1} Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -23799,7 +23990,9 @@ function logText(ev){
         swimmer: `rode the Flow for an extra turn 🏊`,
         tailwind: `caught the Tailwind for an extra turn 🍃`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
-        pitchToss: `tossed the body aside and went for ${nm(ev.targetDefId)} 🔱`,
+        frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
+        firstBlood: `drew first blood this round (+${ev.amount}) 🩸`,
+        octolash: `lashed out at ${ev.amount} units 🐙`,
         blind: `blinded ${nm(ev.targetDefId)} 👁 (its attacks miss half the time)`,
         tipsy: `made ${nm(ev.targetDefId)} Tipsy 🍺`,
         confuse: `Confused ${nm(ev.targetDefId)} ❓`,
@@ -24712,8 +24905,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
   if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl){
-    const pf = ev.fork && ((getCardDefs()[ev.attDefId]||{}).effects||{}).pitchfork;
-    const label = ev.sweep ? '↳ Sweep!' : pf ? '🔱 Toss!' : '⇔ Fork!';
+    const label = ev.sweep ? '↳ Sweep!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : '⇔ Fork!';
     // 2026-10-12 (user: "The Fork float label appears too early"): it now shows 0.1 s before the damage number lands.
     const am = animMs(), at = ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
     setTimeout(()=> { (ev.sweep ? SoundKit.sweepTone() : SoundKit.swipeTone()); floatText(targetEl, label, 'quick'); }, Math.max(0, at - 100));
@@ -25080,7 +25272,9 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Swept along by the Flow!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🍃 Tailwind!', 'quick'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
-    else if(ev.kind==='pitchToss'){ if(el) floatText(el, '🔱 Next!', 'quick'); }
+    else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
+    else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
+    else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); }
     else if(ev.kind==='stun'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
     else if(ev.kind==='debuffAttack'){ SoundKit.curse(); statChangeVfx(ev.targetUid, -(ev.amount||0), -(ev.amount2||0)); }
@@ -25369,7 +25563,9 @@ function renderVfxForEvent(ev){
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast('🔓 Your leader is free!', 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
-  if(ev.type==='phase'){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
+  if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
+  if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
+  if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
     try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }
   // Phase growth (2026-10-10, user: "the weredog gains +5/+6 at night. You see a growth vfx/sfx on the card and green aura &
   // spice leaking out of the card for a while. A real aura moment."): the numbers pop, the card swells, and a green aura
@@ -27378,6 +27574,18 @@ function getShopPacks(){
   }catch(e){ /* fall through to the shipped default below */ }
   return SHOP_PACKS_DEFAULT.map(normalizePack);
 }
+// Advanced packs (2026-10-12, user: "On 25 + their original levels, the card packs present an advanced version of that card
+// pack, with 5 cards instead, and costing 12x as much. These 5 cards have 10x higher chance to have foil treatments ... This
+// pack also has 5 bonus cards"). Once you reach the map 25 past where a pack first goes on sale, an Advanced version sits
+// beside it: 5 cards at ten times the foil chance, plus 5 bonus cards at the usual odds, for 12× the price.
+const PACK_SALE_MAP = {bronze:5, silver:8, gold:13};
+function advancedPackOf(p){
+  const n = p.cards||3, foil = Math.min(0.9, (+p.foilChance||0.02) * 10);
+  return Object.assign({}, p, {id: p.id + '-adv', baseId: p.id, advanced:true, name: 'Advanced ' + p.name, cards: 10, mainCards: 5, mainFoilChance: foil,
+    cost: {gold: Math.round((p.cost.gold||0) * 12), gems: Math.round((p.cost.gems||0) * 12)}, newGuaranteed: p.newGuaranteed, comingSoon:false});
+}
+function advancedPacksOpen(){ const reach = playerMapReach(); return getShopPacks().filter(p=> PACK_SALE_MAP[p.id] && (adminModeEnabled || reach >= PACK_SALE_MAP[p.id] + 25)); }
+function shopPacksAll(){ const base = getShopPacks(); return base.concat(advancedPacksOpen().map(advancedPackOf)); }
 function saveShopPacksOverride(packs){
   try{ localStorage.setItem(SHOP_PACKS_OVERRIDE_KEY, JSON.stringify(packs)); }catch(e){}
 }
@@ -27405,7 +27613,7 @@ function shopCurrencyRowInnerHTML(){
 }
 function refreshShopAfford(){
   document.querySelectorAll('#shopPackGrid [data-buypack]').forEach(btn=>{
-    const pack = getShopPacks().find(p=>p.id===btn.getAttribute('data-buypack'));
+    const pack = shopPacksAll().find(p=>p.id===btn.getAttribute('data-buypack'));
     btn.disabled = !canAffordPacks(pack, +(btn.dataset.qty||1));
   });
   const row = document.getElementById('shopCurrencyRow');
@@ -27419,19 +27627,25 @@ function refreshShopAfford(){
 const PACK_TINT = {bronze:'#5f8f3e', silver:'#8a4b25', gold:'#b8862b', mystery:'#6b3fa0'};
 const SHELF_PROPS = ['🫙','🍯','🕯️','🥐','🧴','🍞','🧪','🪴','🥖','🫖','🧺','🍪'];
 let shopSelected = null; // 'packId:qty'
+// 2026-10-12 (user: "Don't show me the items I haven't unlocked yet. At the start, only a simple 1x acorn pack and a bread on
+// the side"): the shelves hold only what you can buy now. Bundles of 10+ come once you reach Map 10. The loaf costs 1 Maple
+// Leaf, does nothing, and is sold out after one.
+const SHOP_BREAD_KEY = 'bramblewood_shop_bread_v1';
+function shopBreadSold(){ try{ return localStorage.getItem(SHOP_BREAD_KEY) === '1'; }catch(e){ return false; } }
+function shopBundlesOpen(){ return adminModeEnabled || playerMapReach() >= 10; }
 function shelfRows(){
-  const packs = getShopPacks(), onSale = packs.filter(packOnSale);
+  const packs = shopPacksAll().filter(p=> adminModeEnabled || (packOnSale(p) && packPoolReady(p))), onSale = packs.filter(p=> packOnSale(p) && shopBundlesOpen());
   // one shelf never holds more than fits on it; extra goods go onto the next shelf down, alternating its lean
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk(packs.map(p=> ({pack:p, qty:1})), narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk([...packs.map(p=> ({pack:p, qty:1})), {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...chunk(onSale.flatMap(p=> [10, 25].map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
     ...chunk(onSale.flatMap(p=> [50, 100].map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped']),
   ].filter(r=> r.items.length);
 }
 function boosterHTML(p, cls){
-  return `<span class="booster ${cls||''}" style="--tint:${PACK_TINT[p.id] || '#6b5a3a'}" aria-hidden="true"><span class="booster-crimp"></span><span class="booster-ico">${p.icon}</span><span class="booster-band">${escapeHtml(p.name)}</span><span class="booster-crimp is-b"></span></span>`;
+  return `<span class="booster ${cls||''} ${p.advanced ? 'is-advanced' : ''}" style="--tint:${PACK_TINT[p.baseId || p.id] || '#6b5a3a'}" aria-hidden="true"><span class="booster-crimp"></span><span class="booster-ico">${p.icon}</span><span class="booster-band">${escapeHtml(p.name)}</span><span class="booster-crimp is-b"></span></span>`;
 }
 function shelfGoodsHTML(p, qty){
   if(qty >= 50) return `<span class="shelf-crate" aria-hidden="true">${boosterHTML(p, 'is-peek is-l')}${boosterHTML(p, 'is-peek')}${boosterHTML(p, 'is-peek is-r')}<span class="crate-front"><b>×${qty}</b></span></span>`;
@@ -27449,7 +27663,7 @@ function shelfPrice(p, qty){ return qty > 1 ? packSetCost(p, qty) : {gold:p.cost
 function shelfPriceHTML(c){ return [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' '); }
 function shelfDetailHTML(p, qty){
   const st = shelfStatus(p), c = shelfPrice(p, qty), poolN = packCardPool(null, p.pool||1).length;
-  const what = `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon ? ` · 👑 ${p.kroon} Krooni` : ''}`;
+  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${p.newGuaranteed ? ', 1 new guaranteed' : ''}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon ? ` · 👑 ${p.kroon} Krooni` : ''}`;
   const from = (p.pool||1)===99 ? `Strange cards that come out of no other pack (${poolN}).` : `From Pack ${p.pool||1} (${poolN} cards).`;
   return `<b class="sd-name">${escapeHtml(p.name)}${qty > 1 ? ` ×${qty}` : ''}</b>
     <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${Math.round(p.foilChance*100)}% foil per card.` : ''}</span>
@@ -27457,10 +27671,12 @@ function shelfDetailHTML(p, qty){
 }
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
-  const keyOf = it=> it.pack.id + ':' + it.qty;
-  if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
+  const keyOf = it=> it.bread ? 'bread:1' : it.pack.id + ':' + it.qty;
+  if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> it.pack && packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
   let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
   const itemHTML = (it, i)=>{
+    if(it.bread){ const sold = shopBreadSold(), k = 'bread:1', tilt = ((i*37) % 7) - 3;
+      return `<button type="button" class="shelf-item is-bread ${sold?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="A loaf of bread"><span class="shelf-loaf" aria-hidden="true">🍞</span><span class="shelf-tape" style="--tilt:${tilt}deg">Bread</span><span class="shelf-tag">${sold ? 'Sold out' : shelfPriceHTML({gold:1, gems:0})}</span></button>`; }
     const st = shelfStatus(it.pack), k = keyOf(it), tilt = ((i*37) % 7) - 3;
     return `<button type="button" class="shelf-item ${it.qty>=50?'is-crate':it.qty>1?'is-bundle':''} ${st?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(it.pack.name + (it.qty>1 ? ' ×' + it.qty : '') + (st ? ' — ' + st.tape : ''))}">
       ${shelfGoodsHTML(it.pack, it.qty)}
@@ -27484,9 +27700,10 @@ function renderShopShelves(grid, signedIn){
     <div class="shop-counter" id="shopCounter" aria-live="polite"></div>`;
   const wall = grid.querySelector('.shelf-wall'), hover = grid.querySelector('.shelf-hover');
   const find = k=> all.find(it=> keyOf(it)===k);
+  const breadHTML = ()=> `<b class="sd-name">Bread</b><span class="sd-line">A warm loaf from the baker next door. It does nothing at all.</span><span class="sd-price">${shelfPriceHTML({gold:1, gems:0})}</span>${shopBreadSold() ? '<span class="sd-why">Sold out. The baker only makes one.</span>' : ''}`;
   const showHover = btn=>{
     const it = find(btn.dataset.shelfitem); if(!it) return;
-    hover.innerHTML = shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    hover.innerHTML = it.bread ? breadHTML() : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
     const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
     const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
     const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
@@ -27496,6 +27713,10 @@ function renderShopShelves(grid, signedIn){
   const renderCounter = ()=>{
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;
+    if(it.bread){ const sold = shopBreadSold(), afford = (myCurrencies.gold||0) >= 1;
+      el.innerHTML = `<div class="counter-goods"><span class="shelf-loaf is-big" aria-hidden="true">🍞</span></div><div class="counter-info">${breadHTML()}</div><div class="counter-act">${sold ? '' : `<button class="btn primary" id="shopBuyBread" ${afford?'':'disabled'}>${afford ? 'Buy' : 'Need 1 🍁'}</button>`}</div>`;
+      const bb = el.querySelector('#shopBuyBread'); if(bb) bb.onclick = ()=>{ if(shopBreadSold() || (myCurrencies.gold||0) < 1){ denyShake(bb); return; } myCurrencies.gold -= 1; saveCurrencies(); try{ localStorage.setItem(SHOP_BREAD_KEY, '1'); }catch(e){} try{ SoundKit.shelfPick(); }catch(e){} showToast('🍞 You bought the bread. It smells wonderful. It does nothing.', 'ok'); renderShop(); };
+      return; }
     const st = shelfStatus(it.pack), qty = it.qty, afford = canAffordPacks(it.pack, qty);
     const short = ()=>{ const c = shelfPrice(it.pack, qty); const g = Math.max(0, c.gold-(myCurrencies.gold||0)), m = Math.max(0, c.gems-(myCurrencies.gems||0)); return 'Need ' + [g?`${g} more 🍁`:'', m?`${m} more 🍂`:''].filter(Boolean).join(' + '); };
     const label = qty > 1 ? `Open ${qty} packs` : 'Open';
@@ -27801,8 +28022,13 @@ const BASIC_PACK_POOLS = [1, 11, 12, 13];
 function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
+// 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
+// so every slot rolled it. A pack now needs at least as many different cards as it holds (Shop says "coming soon"
+// otherwise), and inside one pack no card comes more than twice.
+function packPoolReady(pack){ return adminModeEnabled || packCardPool(null, pack.pool||1).length >= Math.min(pack.cards||3, 5); }
 function packsUsingPool(n){ return getShopPacks().filter(p=> (p.pool||1) === n); }
 // Every rarity band has a weight (a missing one used to fall back to 4, i.e. more common than Uncommon).
 const PACK_RARITY_WEIGHT = {special:0, devlegendary:0, devancient:0, eventlegendary:0, eventrare:0, starter:6, common:6, uncommon:3, quest:0, rare:1.5, veryrare:1, superrare:0.8, epic:0.6, heroic:0.4, unique:0.3, questunique:0, legendary:0.25, mythic:0.1, ancient:0.05};
@@ -27815,7 +28041,10 @@ function rollPackCards(pack){
   const out = [];
   const unowned = pool.filter(id=> !(myCardCopies[id]||[]).length && !myUnlockedCardIds.has(id));
   if(pack.newGuaranteed && unowned.length) out.push(pick(unowned));
-  while(out.length < (pack.cards||3)) out.push(pick(pool));
+  const n = pack.cards||3, cap = Math.max(2, Math.ceil(n / Math.max(1, pool.length)));
+  let guard = 0;
+  while(out.length < n && guard++ < 500){ const id = pick(pool); if(out.filter(x=> x===id).length >= cap) continue; out.push(id); }
+  while(out.length < n) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
 }
 // Which pulls come out foil, and in which finish. null = plain.
@@ -27828,6 +28057,7 @@ function pickFoilFinish(pack){
   return keys[keys.length-1];
 }
 function rollPackFoils(pack, n){
+  if(pack.advanced && pack.mainCards){ const main = Math.min(n, pack.mainCards); return rollPackFoils(Object.assign({}, pack, {advanced:false, foilChance: pack.mainFoilChance}), main).concat(rollPackFoils(Object.assign({}, pack, {advanced:false}), n - main)); }
   const out = Array.from({length:n}, ()=> Math.random() < (+pack.foilChance||0) ? pickFoilFinish(pack) : null);
   if(pack.foilGuaranteed && n && !out.some(Boolean)) out[Math.floor(Math.random()*n)] = pickFoilFinish(pack);
   return out;
@@ -28093,13 +28323,13 @@ let packOpenStop = null;
 function buyPack(packId, btnEl, qty, opts){
   qty = Math.max(1, qty|0 || 1);
   const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return;
-  let pack = getShopPacks().find(p=>p.id===packId);
+  let pack = shopPacksAll().find(p=>p.id===packId);
   // A wandering merchant's deal: the same pack a quarter off, one per day, only once you've found them.
   const wander = !!(opts && opts.wanderer);
   if(wander){ const ws = wandererState(); if(!pack || !ws.found || ws.bought){ if(btnEl) denyShake(btnEl); return; } pack = Object.assign({}, pack, {cost: wandererDealCost(pack)}); qty = 1; }
   if(pack && pack.id === MYSTERY_PACK_ID && !pack.anytime) qty = Math.min(qty, mysteryPacksLeft());
   if(!pack || !qty || !packOnSale(pack) || !isSignedIn() || !canAffordPacks(pack, qty)){ if(btnEl) denyShake(btnEl); return; }
-  if(!packCardPool().length){ showToast('This pack is empty right now — new cards are coming soon.', 'error'); return; }
+  if(!packPoolReady(pack)){ showToast(`This pack has only ${packCardPool(null, pack.pool||1).length} card${packCardPool(null, pack.pool||1).length===1?'':'s'} you can get right now — more are coming soon.`, 'error'); if(btnEl) denyShake(btnEl); return; }
   const opened = [];
   if(qty > 1){ const c = packSetCost(pack, qty); myCurrencies.gold -= c.gold; myCurrencies.gems -= c.gems; }
   for(let i=0; i<qty; i++){ const o = purchasePackOnce(pack, qty > 1); if(!o) break; opened.push(o); }
@@ -28208,7 +28438,7 @@ function openPackAnimation(pack, opened, opts){
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(d, {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      <span class="po2-front">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
@@ -28261,7 +28491,7 @@ function openPackAnimation(pack, opened, opts){
       const got = overlay.querySelector('#poGot');
       const r = deckO.results[+c.dataset.i];
       const [ra] = rarityStops(defs[r.id].rarity||'common');
-      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(defs[r.id], {editable:false}); got.appendChild(mini);
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false}); // never greyed in a reveal (2026-10-12) got.appendChild(mini);
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
       if(!reduce && mini.animate){
@@ -28327,7 +28557,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(defs[r.id], {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireTop(); wireFoot(); wireView(); wireTilt();
@@ -29931,7 +30161,8 @@ function splashArtURL(){
 function mountSceneShader(host, opts){
   if(!host || !shadersEnabled() || host.querySelector(':scope > .bw-shader')) return null;
   const img = splashArtURL(); if(!img || img.indexOf('__SPLASH') >= 0) return null;
-  return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true, depth: SPLASH_DEPTH_ART || null}, opts||{}));
+  // 2026-10-12 (user: "Remove the weird warping of the otter's and hummingbird's faces"): no depth map, so the painting never bends.
+  return ShaderM.mount(host, Object.assign({preset:'scene', image: img, prepend: true, depth: null}, opts||{}));
 }
 // 2026-10-08 (user: "the clouds don't stretch out to the full map"): the map's weather layer covers
 // the whole map frame (under the region list too), not just the box the trail is drawn in.

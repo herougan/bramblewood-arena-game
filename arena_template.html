@@ -4269,8 +4269,9 @@
   .cnp-cleared{align-self:center; font-weight:800; font-size:13px; color:#b8f0a8; background:rgba(120,200,110,.14); border:1px solid rgba(120,200,110,.4); border-radius:999px; padding:3px 10px; white-space:nowrap;}
   .conquest-node-panel.is-cleared{border:1px solid rgba(130,210,120,.38) !important; box-shadow:0 -6px 18px rgba(0,0,0,.25), inset 0 0 0 1px rgba(130,210,120,.12);}
   .conquest-node-panel.is-outlevel{border:1px solid rgba(240,110,95,.5) !important; box-shadow:0 -6px 18px rgba(0,0,0,.25), inset 0 0 0 1px rgba(240,110,95,.16);}
-  body.cq-node-focus #view-play .play-subtabs, body.cq-node-focus #view-play .play-subtabs-row{visibility:hidden; pointer-events:none;}
-  body.conquest-full.cq-node-focus #appWrap.cq-hud .conquest-main > .conquest-node-panel{bottom:16px !important;}
+  /* 2026-10-12 (user: "When a skirmish detail is open, the top panel disappears... it shouldn't"): the tabs and the Home /
+     energy controls stay; the skirmish panel sits just above the tab bar instead of over it. */
+  body.conquest-full.cq-node-focus #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:74px !important;}
   .cnp-lvlbig{display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; padding:6px 14px; border-radius:12px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); min-width:84px;}
   .cnp-lvlbig b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif; letter-spacing:.3px;} .cnp-lvlbig small{font-size:11px; font-weight:700; opacity:.8; white-space:nowrap;}
   .cnp-lvlbig.is-even b{color:#b8f0a8;} .cnp-lvlbig.is-close b{color:#ffe08a;} .cnp-lvlbig.is-hard b{color:#ffab9a;}
@@ -5742,6 +5743,10 @@
   @keyframes eggWobble{0%,80%,100%{transform:rotate(0);} 85%{transform:rotate(-8deg);} 90%{transform:rotate(7deg);} 95%{transform:rotate(-4deg);}}
   /* The small cave in Sunken Hollow (talk to it a few times). */
   /* Map curiosities (2026-10-12): a small round marker with the thing's emoji; a "!" until first visited. */
+  .map-courier{position:absolute; transform:translate(-50%,-50%); z-index:6; width:46px; height:46px; padding:0; border:0; background:none; cursor:pointer; animation:courierBob 2.4s ease-in-out infinite;}
+  .map-courier .mco-who{font-size:30px; line-height:1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));} .map-courier .mco-pack{position:absolute; right:-6px; bottom:-2px; font-size:18px; filter:drop-shadow(0 0 4px rgba(255,230,150,.95));}
+  .map-courier .map-spot-new{position:absolute; top:-8px; left:-4px;}
+  @keyframes courierBob{0%,100%{translate:0 0;} 50%{translate:0 -4px;}} @media (prefers-reduced-motion: reduce){ .map-courier{animation:none;} }
   .map-curio{position:absolute; transform:translate(-50%,-50%); z-index:6; width:38px; height:38px; padding:0; border-radius:50%; border:2px solid rgba(255,240,205,.8); background:radial-gradient(circle at 35% 30%, rgba(255,250,235,.95), rgba(222,206,170,.92)); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s ease;}
   .map-curio:hover{transform:translate(-50%,-50%) scale(1.1);} .map-curio .mcu-ico{font-size:19px; line-height:1;}
   .map-curio .map-spot-new{position:absolute; top:-8px; right:-8px;}
@@ -7552,7 +7557,20 @@
 
 /* ---- Shop shelves (2026-10-10): a bakery / apothecary wall of shelves ---- */
 .shelf-shop{display:block !important; max-width:980px; margin:14px auto 0;}
-.shelf-wall{position:relative; max-height:min(64vh, 660px); overflow-y:auto; overscroll-behavior:contain; padding:18px clamp(10px,3vw,34px) 8px; border-radius:16px 16px 6px 6px;
+.booster.is-advanced{box-shadow:0 0 0 2px #ffe08a, 0 0 14px rgba(255,214,110,.75);} .booster.is-advanced .booster-band{background:linear-gradient(90deg,#b8862b,#ffe9a8,#b8862b); color:#3a2608;}
+.field-hover{padding:12px 14px; max-width:300px;} .field-hover .fh-head{display:flex; align-items:center; gap:8px; font-size:17px; margin-bottom:6px;} .field-hover .fh-ico{font-size:28px;} .field-hover p{margin:4px 0; font-size:13.5px; line-height:1.4;} .field-hover .fh-left{font-weight:700;} .field-hover .fh-note{opacity:.75; font-size:12px;}
+#battlefieldEl > .night-veil{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; clip-path:inset(0 0 0 100%);
+  background:linear-gradient(90deg, rgba(12,16,46,.18) 0%, rgba(12,16,46,.42) 14%, rgba(8,10,34,.5) 100%); transition:clip-path 2.4s cubic-bezier(.45,.05,.4,1);}
+#battlefieldEl > .night-veil.is-on{clip-path:inset(0 0 0 0);} #battlefieldEl > .night-veil.is-leaving{clip-path:inset(0 100% 0 0);} #battlefieldEl > .night-veil.no-anim{transition:none;}
+@media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil{transition:none;} }
+.winloss-card.is-tutorial{background:radial-gradient(ellipse at 50% 0%, #4f86d8 0%, #23468f 45%, #142a5e 100%) !important; border-color:#9cc4ff !important;} /* tutorial results are blue (2026-10-12) */
+.winloss-card.is-tutorial .winloss-reason, .winloss-card.is-tutorial p{color:#e6f0ff;}
+body.world-hidden #conquestMapList, body.world-hidden .conquest-world-btn, body.world-hidden .world-edge{display:none !important;}
+body.cq-opening .map-trail-svg{display:none !important;}
+.conquest-layout.world-hidden{grid-template-columns:1fr !important;}
+.map-node.kind-tutorial .tut-num{position:absolute; bottom:-6px; right:-6px; font:800 11px/1 'Baloo 2', system-ui, sans-serif; background:#2b4f8f; color:#fff; border-radius:999px; padding:2px 5px;}
+.shelf-item.is-bread .shelf-loaf{font-size:42px; line-height:1; filter:drop-shadow(0 4px 4px rgba(0,0,0,.35));} .shelf-loaf.is-big{font-size:64px;}
+.shelf-wall{position:relative; max-height:none; overflow:visible; /* 2026-10-12 (user): one page scroll, no inner scroll areas */ padding:18px clamp(10px,3vw,34px) 8px; border-radius:16px 16px 6px 6px;
   background:
     repeating-linear-gradient(90deg, rgba(120,150,110,.10) 0 22px, rgba(255,250,235,0) 22px 44px),
     radial-gradient(120% 80% at 50% 0%, #f1e6cc, #dccaa3 70%, #c9b48a);
@@ -8143,7 +8161,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
         <span class="faction-sub">A little of each</span>
       </button>
     </div>
-    <p class="splash-sub" id="factionCountdown">Take your time — can’t decide? In 15s you can pick both.</p>
+    <p class="splash-sub" id="factionCountdown">Take your time.</p>
   </div>
 </div>
 <!-- Tutorial series, skirmish 3's "Build Your Bench" deck-arranging step (2026-09-23, batch #31,
