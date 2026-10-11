@@ -6,7 +6,7 @@
 // Three reference decks play every fight on the road (skirmishes, elites, bosses, side maps; raid bosses are left to
 // the Raid editor):
 //   Starter  - the deck a new Otter player actually starts with (shared basics + Otter basics + the tutorial's rewards)
-//   Mid-road - built from Base + every map reward up to Map 10
+//   Mid-road - built from Base + every map reward up to Map 10 (maps count from 1)
 //   Strong   - built from everything obtainable (Base, all map rewards, all packs)
 // Mid-road and Strong are built, not guessed: cards are ranked by their measured win rate from the card-balance run
 // (docs/balance/card-balance.json), three Lumber makers go in if the deck has 2+ Lumber cards, and then a hill-climb
@@ -45,7 +45,8 @@ const strength = id=> BAL[id]!=null ? BAL[id] : 40 + score(id)*2; // measured wi
 const mains = MAPS.filter(m=> !m.sub && !m.reserved);
 const order = []; mains.forEach(m=>{ order.push(m); MAPS.filter(s=> s.sub && s.parent===m.id && !s.reserved).forEach(s=> order.push(s)); });
 const mapIdx = m=> mains.indexOf(m.sub ? MAPS.find(x=> x.id===m.parent) : m);
-const mapLabel = m=> m.sub ? `${mapIdx(m)}-A` : String(mapIdx(m));
+const mapLabel = m=> m.sub ? `${mapIdx(m)+1}-A` : String(mapIdx(m)+1); // Map N as on the world screen (from 1)
+const fightCode = (m, n)=>{ const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss'); const k = fights.indexOf(n) + 1; return m.sub ? `${mapIdx(m)+1}-A-${k}` : `${mapIdx(m)+1}-${k}`; };
 const fights = [];
 order.forEach(m=> m.nodes.forEach(n=>{ if(n.deck && n.kind!=='tutorial' && n.kind!=='raidboss') fights.push({m, n}); }));
 
@@ -75,7 +76,7 @@ function measure(deck, f, games){
 const baseIds = cards.filter(isBase).map(c=> c.id);
 const rewardIds = upTo=> cards.filter(c=> playable(c) && c.source && c.source.kind==='map' && (()=>{ const m = MAPS.find(x=> x.id===c.source.id); return m && !m.reserved && (upTo==null || mapIdx(m) <= upTo); })()).map(c=> c.id);
 const packIds = cards.filter(c=> playable(c) && c.source && c.source.kind==='pack').map(c=> c.id);
-const POOLS = {starter: baseIds, mid: [...baseIds, ...rewardIds(10)], strong: [...baseIds, ...rewardIds(null), ...packIds]};
+const POOLS = {starter: baseIds, mid: [...baseIds, ...rewardIds(9)], strong: [...baseIds, ...rewardIds(null), ...packIds]};
 
 // Build each reference deck
 const sample = fights.filter((f, i)=> i % 6 === 0);
@@ -99,16 +100,20 @@ const decks = {};
 const starterDeck = (()=>{ const m = /const STARTER_CFG_DEFAULT = \{([\s\S]*?)\n\};/.exec(src); const cfg = eval('({' + m[1] + '})');
   const d = Object.assign({}, cfg.starterShared); Object.entries(cfg.starterOtters).forEach(([id,n])=> d[id] = (d[id]||0) + n); cfg.rewards.forEach(id=> d[id] = (d[id]||0) + 1); return d; })();
 decks.starter = {variant: 'Otter starter', deck: starterDeck};
-decks.mid = {variant: 'built', deck: build(POOLS.mid, 11)};
-decks.strong = {variant: 'built', deck: build(POOLS.strong, 23)};
+// --reuse-decks keeps the Mid-road and Strong decks from the last run (tools/curve_tune.js tunes against those).
+const prev = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8')).decks; }catch(e){ return null; } })();
+const reuse = process.argv.includes('--reuse-decks') && prev;
+const fromPrev = k=> Object.fromEntries(prev[k].cards.map(c=> [c.id, c.n]));
+decks.mid = {variant: 'built', deck: reuse ? fromPrev('mid') : build(POOLS.mid, 11)};
+decks.strong = {variant: 'built', deck: reuse ? fromPrev('strong') : build(POOLS.strong, 23)};
 for(const [name, v] of Object.entries(decks)) console.log(`${name.padEnd(7)} ${Object.entries(v.deck).map(([id,n])=> `${n}× ${defs[id].name}`).join(', ')}`);
 
 const out = [];
 for(const f of fights){
   const res = {}; for(const name of Object.keys(decks)) res[name] = measure(decks[name].deck, f, N);
   const index = Math.round(((100-res.starter.win) + (100-res.mid.win) + (100-res.strong.win) + res.strong.hpLost)/4*10)/10;
-  out.push({map: f.m.id, mapNo: mapLabel(f.m), mapName: f.m.name, side: !!f.m.sub, key: f.n.key, kind: f.n.kind, name: f.n.name || f.n.key, hp: f.n.hqHp, res, index});
-  console.log(`${mapLabel(f.m).padEnd(5)} ${f.n.key.padEnd(7)} ${f.n.kind.padEnd(9)} S ${String(res.starter.win).padStart(5)}  M ${String(res.mid.win).padStart(5)}  X ${String(res.strong.win).padStart(5)} (${res.strong.rounds ?? '-'} rds, ${res.strong.hpLost}% lost)  index ${index}`);
+  out.push({map: f.m.id, mapNo: mapLabel(f.m), mapName: f.m.name, side: !!f.m.sub, key: fightCode(f.m, f.n), nodeKey: f.n.key, kind: f.n.kind, name: f.n.name || f.n.key, hp: f.n.hqHp, res, index});
+  console.log(`${mapLabel(f.m).padEnd(5)} ${fightCode(f.m, f.n).padEnd(7)} ${f.n.kind.padEnd(9)} S ${String(res.starter.win).padStart(5)}  M ${String(res.mid.win).padStart(5)}  X ${String(res.strong.win).padStart(5)} (${res.strong.rounds ?? '-'} rds, ${res.strong.hpLost}% lost)  index ${index}`);
 }
 const deckList = Object.fromEntries(Object.entries(decks).map(([k, v])=> [k, {variant: v.variant, cards: Object.entries(v.deck).map(([id, n])=> ({id, name: defs[id].name, n}))}]));
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json'), JSON.stringify({generated: new Date().toISOString().slice(0,10), games: N, myCastleHp: MY_HP, decks: deckList, fights: out}, null, 1) + '\n');

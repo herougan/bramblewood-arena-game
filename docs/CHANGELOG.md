@@ -2,6 +2,27 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (18:10)
+- **The original maps are back as Maps 1–13, in their old order; the new maps follow as 14–23.**
+  - 1 Bramblewood Outskirts · 2 Thistlewood · 3 Pebble Beach (+ 3-A Smugglers' Grotto) · 4 Sunken Hollow · **5 The Ashen Peak** (a main map again) · 6 Caves & Alcoves · 7 Savanna Reaches (+ 7-A The Canopy) · 8 Wolfsbane Tundra · 9 Coral Current · 10 Sable Swampmire · 11 Basalt Foundry · 12 Eyrie Heights · 13 The Sundered Peak · 14 The Morel Hollow · 15 Lilypad Reach · 16 Gannet Cliffs · 17 Gatorback Swamp · 18 The Kelp Mangroves · 19 The Briar Maze · 20 The Redwood Deep · 21 The Long Grass · 22 The Pinewood Taiga · 23 The Glass Dunes.
+  - Maps count from 1 again, as on the world screen. Fight codes read N-k, side maps N-A-k, and the tutorial is 1-0.
+  - The Traveller's Cart is on Map 3, the Ember Peddler on Map 11 (Basalt Foundry), and Whisper's Game on Map 5 after 5-2. The rare S-rank find starts at Map 5. The first egg is a Water egg on Map 4.
+  - A map you've already fought on stays open, so nobody loses progress.
+- **The road now climbs.** Every fight was tuned against a target difficulty index that rises from about 18 at Map 1 to about 62 at Map 23. Elites sit above their map's skirmishes, bosses higher still. The tuner is the new tools/curve_tune.js.
+  - Measured map averages climb from **22 (Map 1) to about 60 (Maps 20–23)**, with small dips at Maps 10–11 and 21–23.
+  - The Starter deck's win rate falls from 43% to 2%, the Mid-road deck's from 94% to 43%, and the Strong deck's from 97% to about 65%. Hub → 📈 Difficulty has the chart.
+- **Menu:**
+  - **Raid** has its own tile beside Arena on Home, and sits beside Arena in the Play tabs.
+  - **The Autobattler** (Whisper's Game) moved into the Arena page.
+  - Once Raids are open, the Nest becomes a pinned note so the grid stays even.
+- **Raids open at Map 12.** The Raid Banner and Wound Reaver's Domain come after Eyrie Heights' boss, and the Deep Troll King's Domain after the Sundered Peak's. Players who already opened Raids keep them.
+- **Faction packs, reworked:**
+  - The Otter, Hummingbird and shared Riverbank cards are now in the three basic packs (Sprout Pouch, Acorn Chest, Golden Bramble Case).
+  - **Your faction's pack** (2 cards of your side, 1 general card) comes from every boss's first clear. It can't be bought, and Food tokens are retired.
+  - **Subfactions:** beating an elite of one of the five peoples (Road-folk, Wild beasts, the Hive, the Deep, Woodland folk) collects that subfaction the first time and gives its bundle (2 of their cards, 1 general). The Shop shows which you've collected.
+  - Repeat elite and boss wins have a 5% chance of the same pack.
+- **Card Ledger and the Difficulty tab** use the game's own fight codes (Map 4 · 4-2, not Map 6 · 2-2).
+
 ## 2026-10-11 (17:10)
 - **Hub → 📈 Difficulty: the difficulty curve.** Three reference decks play all 175 fights on the road (60 games each, side maps included; raid bosses are left to the Raid editor):
   - **Starter:** the deck a new Otter player actually starts with.

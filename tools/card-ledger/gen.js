@@ -4,7 +4,8 @@ const src=fs.readFileSync(R+'arena_app.js','utf8');
 const i0=src.indexOf('const CONQUEST_MAPS = ['), j0=src.indexOf('\n];',i0);
 const MAPS=eval(src.slice(i0+'const CONQUEST_MAPS = '.length, j0+2));
 const mains=MAPS.filter(m=>!m.sub && !m.reserved);
-const mapNo=id=>{ const m=MAPS.find(x=>x.id===id); if(!m) return null; const p=m.sub?MAPS.find(x=>x.id===m.parent):m; const i=mains.indexOf(p); return i<0?null:(m.sub? i+'-A' : String(i)); };
+const mapNo=id=>{ const m=MAPS.find(x=>x.id===id); if(!m) return null; const p=m.sub?MAPS.find(x=>x.id===m.parent):m; const i=mains.indexOf(p); return i<0?null:(m.sub? (i+1)+'-A' : String(i+1)); }; // from 1, as on the world screen
+const fightCode=(id,key)=>{ const m=MAPS.find(x=>x.id===id); if(!m) return key; const n=m.nodes.find(x=>x.key===key); if(!n) return key; if(n.kind==='raidboss') return mapNo(id)+'-R'; const f=m.nodes.filter(x=>x.kind!=='tutorial'&&x.kind!=='raidboss'); return mapNo(id)+'-'+(f.indexOf(n)+1); };
 const labels={}; for(const m of src.matchAll(/\{key:'(\w+)',\s*category:'\w+',\s*label:'([^']+)'/g)) labels[m[1]]=m[2];
 const cards=JSON.parse(fs.readFileSync(R+'canonical/cards.json','utf8'));
 const bal={}; (JSON.parse(fs.readFileSync(R+'docs/balance/card-balance.json','utf8')).rows||[]).forEach(r=>bal[r.id]=r);
@@ -23,7 +24,7 @@ const skills=c=>{ const e=c.effects||{}, out=[];
 const inDecks=new Set(); MAPS.forEach(m=>m.nodes.forEach(n=>Object.keys(n.deck||{}).forEach(id=>inDecks.add(id))));
 const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).startsWith('test-')).map(c=>{
   const s=c.source||{}; let src='Base', grp='Base', mno=null;
-  if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${s.node}`; grp='Map'; }
+  if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${fightCode(s.id, s.node)}`; grp='Map'; }
   else if(s.kind==='pack'){ src=PACK[s.tier]||('Pack '+s.tier); grp=s.tier===11||s.tier===12||s.tier===13?'Faction pack':'Pack'; }
   else if(s.kind==='smith'){ src='Blacksmith'; grp='Other'; }
   else if(s.kind){ src=s.kind[0].toUpperCase()+s.kind.slice(1); grp='Other'; }

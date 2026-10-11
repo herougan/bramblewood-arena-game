@@ -1,0 +1,2850 @@
+[
+ {
+  "map": "m1",
+  "key": "1-1",
+  "kind": "skirmish",
+  "target": 12,
+  "before": 12.2,
+  "after": 12.2,
+  "hp": [
+   57,
+   57
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m1",
+  "key": "1-2",
+  "kind": "skirmish",
+  "target": 16,
+  "before": 20.9,
+  "after": 16,
+  "hp": [
+   39,
+   25
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m1",
+  "key": "1-3",
+  "kind": "skirmish",
+  "target": 20,
+  "before": 28.3,
+  "after": 20,
+  "hp": [
+   68,
+   33
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m1",
+  "key": "1-4",
+  "kind": "boss",
+  "target": 32,
+  "before": 49.3,
+  "after": 29.4,
+  "hp": [
+   32,
+   64
+  ],
+  "swaps": 1,
+  "deck": {
+   "glacier-wolf-pack": 3,
+   "pond-duck": 4,
+   "otter-kit": 2
+  }
+ },
+ {
+  "map": "mf",
+  "key": "f-1",
+  "kind": "skirmish",
+  "target": 14,
+  "before": 14.9,
+  "after": 13.6,
+  "hp": [
+   15,
+   14
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mf",
+  "key": "f-2",
+  "kind": "skirmish",
+  "target": 16.7,
+  "before": 19.4,
+  "after": 18.8,
+  "hp": [
+   16,
+   15
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mf",
+  "key": "f-3",
+  "kind": "skirmish",
+  "target": 19.3,
+  "before": 17.7,
+  "after": 18.8,
+  "hp": [
+   14,
+   15
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mf",
+  "key": "f-4",
+  "kind": "skirmish",
+  "target": 22,
+  "before": 32.8,
+  "after": 22.1,
+  "hp": [
+   19,
+   14
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mf",
+  "key": "f-5",
+  "kind": "boss",
+  "target": 34,
+  "before": 42.2,
+  "after": 35.1,
+  "hp": [
+   96,
+   35
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mb",
+  "key": "b-1",
+  "kind": "skirmish",
+  "target": 16,
+  "before": 7.1,
+  "after": 12.8,
+  "hp": [
+   14,
+   28
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mb",
+  "key": "b-2",
+  "kind": "skirmish",
+  "target": 18.7,
+  "before": 11.2,
+  "after": 17.5,
+  "hp": [
+   14,
+   28
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mb",
+  "key": "b-3",
+  "kind": "skirmish",
+  "target": 21.3,
+  "before": 20.8,
+  "after": 20.9,
+  "hp": [
+   24,
+   31
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mb",
+  "key": "b-4",
+  "kind": "skirmish",
+  "target": 24,
+  "before": 20.6,
+  "after": 23.7,
+  "hp": [
+   19,
+   31
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mb",
+  "key": "b-5",
+  "kind": "boss",
+  "target": 36,
+  "before": 32,
+  "after": 36.4,
+  "hp": [
+   125,
+   154
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mg",
+  "key": "g-1",
+  "kind": "skirmish",
+  "target": 20,
+  "before": 13.3,
+  "after": 20.1,
+  "hp": [
+   53,
+   76
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mg",
+  "key": "g-2",
+  "kind": "elite",
+  "target": 34,
+  "before": 20.7,
+  "after": 33.2,
+  "hp": [
+   30,
+   45
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mg",
+  "key": "g-3",
+  "kind": "elite",
+  "target": 34,
+  "before": 25.3,
+  "after": 34,
+  "hp": [
+   70,
+   107
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mg",
+  "key": "g-4",
+  "kind": "elite",
+  "target": 34,
+  "before": 32.6,
+  "after": 34.9,
+  "hp": [
+   26,
+   27
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-1",
+  "kind": "skirmish",
+  "target": 18,
+  "before": 14.5,
+  "after": 18,
+  "hp": [
+   30,
+   37
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-2",
+  "kind": "skirmish",
+  "target": 26,
+  "before": 18.7,
+  "after": 26.3,
+  "hp": [
+   32,
+   41
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-3",
+  "kind": "elite",
+  "target": 32,
+  "before": 36.4,
+  "after": 31.8,
+  "hp": [
+   39,
+   36
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-4",
+  "kind": "elite",
+  "target": 32,
+  "before": 35.9,
+  "after": 31.1,
+  "hp": [
+   70,
+   66
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m2",
+  "key": "2-5",
+  "kind": "boss",
+  "target": 38,
+  "before": 47.6,
+  "after": 39.1,
+  "hp": [
+   130,
+   106
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-1",
+  "kind": "skirmish",
+  "target": 20,
+  "before": 5.9,
+  "after": 20.1,
+  "hp": [
+   50,
+   90
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-2",
+  "kind": "skirmish",
+  "target": 28,
+  "before": 23.2,
+  "after": 28,
+  "hp": [
+   94,
+   115
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-3",
+  "kind": "elite",
+  "target": 34,
+  "before": 49.7,
+  "after": 34,
+  "hp": [
+   156,
+   88
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-4",
+  "kind": "elite",
+  "target": 34,
+  "before": 28.9,
+  "after": 34,
+  "hp": [
+   79,
+   92
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-5",
+  "kind": "elite",
+  "target": 34,
+  "before": 28.6,
+  "after": 34,
+  "hp": [
+   78,
+   92
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m3",
+  "key": "3-6",
+  "kind": "boss",
+  "target": 40,
+  "before": 48.8,
+  "after": 39.6,
+  "hp": [
+   122,
+   106
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m4",
+  "key": "4-1",
+  "kind": "skirmish",
+  "target": 22,
+  "before": 8,
+  "after": 21.9,
+  "hp": [
+   14,
+   17
+  ],
+  "swaps": 1,
+  "deck": {
+   "cave-flitter": 4,
+   "bat-swarmling": 3,
+   "beetle-grunt": 2,
+   "vampire-roost": 1,
+   "cave-bat-swarm": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-2",
+  "kind": "skirmish",
+  "target": 23.6,
+  "before": 12,
+  "after": 23.7,
+  "hp": [
+   22,
+   24
+  ],
+  "swaps": 1,
+  "deck": {
+   "glowworm-cluster": 2,
+   "blind-cave-fish": 4,
+   "cave-bat-swarm": 2,
+   "cave-flitter": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-3",
+  "kind": "skirmish",
+  "target": 25.2,
+  "before": 7.3,
+  "after": 28.6,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "sulfur-cinder-moth": 4,
+   "cave-bat-swarm": 2,
+   "barrow-leech-bat": 2,
+   "cave-flitter": 2
+  }
+ },
+ {
+  "map": "m4",
+  "key": "4-4",
+  "kind": "skirmish",
+  "target": 26.8,
+  "before": 17.5,
+  "after": 26.8,
+  "hp": [
+   26,
+   45
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m4",
+  "key": "4-5",
+  "kind": "skirmish",
+  "target": 28.4,
+  "before": 21.2,
+  "after": 28.4,
+  "hp": [
+   15,
+   19
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m4",
+  "key": "4-6",
+  "kind": "skirmish",
+  "target": 30,
+  "before": 30,
+  "after": 30,
+  "hp": [
+   21,
+   21
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m4",
+  "key": "4-7",
+  "kind": "elite",
+  "target": 36,
+  "before": 32.2,
+  "after": 34.9,
+  "hp": [
+   26,
+   31
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m4",
+  "key": "4-8",
+  "kind": "boss",
+  "target": 42,
+  "before": 39.3,
+  "after": 41.8,
+  "hp": [
+   68,
+   87
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-1",
+  "kind": "skirmish",
+  "target": 24,
+  "before": 12.6,
+  "after": 23.3,
+  "hp": [
+   26,
+   40
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-2",
+  "kind": "skirmish",
+  "target": 26.7,
+  "before": 13.1,
+  "after": 26.4,
+  "hp": [
+   15,
+   29
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-3",
+  "kind": "skirmish",
+  "target": 29.3,
+  "before": 21.4,
+  "after": 29.2,
+  "hp": [
+   29,
+   45
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-4",
+  "kind": "skirmish",
+  "target": 32,
+  "before": 50.1,
+  "after": 35.5,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "toucan-courier": 4,
+   "jaguar-stalker": 3,
+   "plains-zebra": 1,
+   "war-drum-mandrill": 2
+  }
+ },
+ {
+  "map": "m5",
+  "key": "5-5",
+  "kind": "elite",
+  "target": 38,
+  "before": 57.5,
+  "after": 37.6,
+  "hp": [
+   35,
+   28
+  ],
+  "swaps": 1,
+  "deck": {
+   "savanna-cheetah": 4,
+   "plains-zebra": 1,
+   "howler-monkey": 1,
+   "war-drum-mandrill": 2,
+   "acacia-giraffe": 2
+  }
+ },
+ {
+  "map": "m5",
+  "key": "5-6",
+  "kind": "elite",
+  "target": 38,
+  "before": 36.6,
+  "after": 38.1,
+  "hp": [
+   28,
+   30
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-7",
+  "kind": "elite",
+  "target": 38,
+  "before": 33,
+  "after": 37.9,
+  "hp": [
+   27,
+   33
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m5",
+  "key": "5-8",
+  "kind": "boss",
+  "target": 44,
+  "before": 41.7,
+  "after": 44.4,
+  "hp": [
+   30,
+   36
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "my",
+  "key": "y-1",
+  "kind": "skirmish",
+  "target": 28,
+  "before": 11.2,
+  "after": 28.2,
+  "hp": [
+   15,
+   27
+  ],
+  "swaps": 1,
+  "deck": {
+   "puddle-hopper": 3,
+   "toucan-courier": 2,
+   "howler-monkey": 2,
+   "jaguar-stalker": 1,
+   "slowpoke-sentinel": 2
+  }
+ },
+ {
+  "map": "my",
+  "key": "y-2",
+  "kind": "skirmish",
+  "target": 32,
+  "before": 7.3,
+  "after": 28.7,
+  "hp": [
+   23,
+   46
+  ],
+  "swaps": 1,
+  "deck": {
+   "strangler-vine": 2,
+   "toucan-courier": 2,
+   "slowpoke-sentinel": 2,
+   "ancient-sloth-titan": 1,
+   "howler-monkey": 2
+  }
+ },
+ {
+  "map": "my",
+  "key": "y-3",
+  "kind": "skirmish",
+  "target": 36,
+  "before": 36.7,
+  "after": 35.6,
+  "hp": [
+   48,
+   47
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "my",
+  "key": "y-4",
+  "kind": "elite",
+  "target": 42,
+  "before": 42.8,
+  "after": 41.8,
+  "hp": [
+   85,
+   81
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "my",
+  "key": "y-5",
+  "kind": "boss",
+  "target": 48,
+  "before": 24.4,
+  "after": 48,
+  "hp": [
+   31,
+   57
+  ],
+  "swaps": 1,
+  "deck": {
+   "jaguar-stalker": 2,
+   "ancient-sloth-titan": 3,
+   "strangler-vine": 4,
+   "toucan-courier": 2,
+   "slowpoke-sentinel": 2,
+   "howler-monkey": 2
+  }
+ },
+ {
+  "map": "m6",
+  "key": "6-1",
+  "kind": "skirmish",
+  "target": 26,
+  "before": 21.1,
+  "after": 21.1,
+  "hp": [
+   106,
+   106
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-2",
+  "kind": "skirmish",
+  "target": 28.7,
+  "before": 8.5,
+  "after": 32.3,
+  "hp": [
+   15,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "boreal-elk": 1,
+   "taiga-lynx": 3,
+   "golden-eagle-diver": 2,
+   "beaver-builder": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "m6",
+  "key": "6-3",
+  "kind": "skirmish",
+  "target": 31.3,
+  "before": 15.8,
+  "after": 32.1,
+  "hp": [
+   20,
+   18
+  ],
+  "swaps": 1,
+  "deck": {
+   "snowshoe-hare": 2,
+   "arctic-fox-raider": 4,
+   "beaver-builder": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "m6",
+  "key": "6-4",
+  "kind": "skirmish",
+  "target": 34,
+  "before": 26.7,
+  "after": 32.7,
+  "hp": [
+   22,
+   29
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-5",
+  "kind": "elite",
+  "target": 40,
+  "before": 55.6,
+  "after": 42.3,
+  "hp": [
+   99,
+   35
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-6",
+  "kind": "elite",
+  "target": 40,
+  "before": 49.8,
+  "after": 40,
+  "hp": [
+   196,
+   69
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-7",
+  "kind": "elite",
+  "target": 40,
+  "before": 44.9,
+  "after": 40,
+  "hp": [
+   105,
+   59
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m6",
+  "key": "6-8",
+  "kind": "boss",
+  "target": 46,
+  "before": 58,
+  "after": 45.8,
+  "hp": [
+   157,
+   59
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-1",
+  "kind": "skirmish",
+  "target": 28,
+  "before": 9.2,
+  "after": 28,
+  "hp": [
+   60,
+   91
+  ],
+  "swaps": 1,
+  "deck": {
+   "clownfish-scout": 1,
+   "tide-pool-crab": 2,
+   "gull-thief": 4,
+   "coral-polyp-colony": 3,
+   "riptide-eel": 2
+  }
+ },
+ {
+  "map": "m7",
+  "key": "7-2",
+  "kind": "skirmish",
+  "target": 30,
+  "before": 16,
+  "after": 30.4,
+  "hp": [
+   40,
+   79
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-3",
+  "kind": "skirmish",
+  "target": 32,
+  "before": 13.7,
+  "after": 31.9,
+  "hp": [
+   38,
+   45
+  ],
+  "swaps": 1,
+  "deck": {
+   "gull-thief": 2,
+   "orca-vanguard": 2,
+   "riptide-eel": 2,
+   "coral-polyp-colony": 2,
+   "clownfish-scout": 2
+  }
+ },
+ {
+  "map": "m7",
+  "key": "7-4",
+  "kind": "skirmish",
+  "target": 34,
+  "before": 31.4,
+  "after": 34,
+  "hp": [
+   39,
+   50
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-5",
+  "kind": "skirmish",
+  "target": 36,
+  "before": 28.3,
+  "after": 35.9,
+  "hp": [
+   29,
+   38
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-6",
+  "kind": "elite",
+  "target": 42,
+  "before": 30,
+  "after": 42.3,
+  "hp": [
+   26,
+   40
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-7",
+  "kind": "elite",
+  "target": 42,
+  "before": 48.3,
+  "after": 41.8,
+  "hp": [
+   79,
+   45
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m7",
+  "key": "7-8",
+  "kind": "elite",
+  "target": 42,
+  "before": 50,
+  "after": 42,
+  "hp": [
+   25,
+   29
+  ],
+  "swaps": 1,
+  "deck": {
+   "sea-turtle-elder": 1,
+   "coral-polyp-colony": 3,
+   "coral-reef-shark": 3,
+   "pelican-diver": 2
+  }
+ },
+ {
+  "map": "m7",
+  "key": "7-9",
+  "kind": "boss",
+  "target": 48,
+  "before": 70.9,
+  "after": 50.8,
+  "hp": [
+   30,
+   30
+  ],
+  "swaps": 2,
+  "deck": {
+   "coral-reef-shark": 1,
+   "moray-ambusher": 1,
+   "coral-polyp-colony": 3,
+   "silver-minnow": 2,
+   "pond-trout": 2
+  }
+ },
+ {
+  "map": "m8",
+  "key": "8-1",
+  "kind": "skirmish",
+  "target": 30,
+  "before": 19.7,
+  "after": 27.9,
+  "hp": [
+   50,
+   95
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-2",
+  "kind": "skirmish",
+  "target": 32.7,
+  "before": 18.8,
+  "after": 31.1,
+  "hp": [
+   122,
+   234
+  ],
+  "swaps": 1,
+  "deck": {
+   "swamp-alligator": 3,
+   "cypress-root-lurker": 3,
+   "echo-keeper": 2,
+   "open-ocean-hermit-crab": 2
+  }
+ },
+ {
+  "map": "m8",
+  "key": "8-3",
+  "kind": "skirmish",
+  "target": 35.3,
+  "before": 30,
+  "after": 34.4,
+  "hp": [
+   156,
+   235
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-4",
+  "kind": "skirmish",
+  "target": 38,
+  "before": 46.2,
+  "after": 38.2,
+  "hp": [
+   240,
+   107
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-5",
+  "kind": "elite",
+  "target": 44,
+  "before": 42.8,
+  "after": 44.4,
+  "hp": [
+   81,
+   90
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-6",
+  "kind": "elite",
+  "target": 44,
+  "before": 41.2,
+  "after": 43.8,
+  "hp": [
+   44,
+   46
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-7",
+  "kind": "elite",
+  "target": 44,
+  "before": 60,
+  "after": 43.7,
+  "hp": [
+   118,
+   85
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m8",
+  "key": "8-8",
+  "kind": "boss",
+  "target": 50,
+  "before": 47,
+  "after": 49.4,
+  "hp": [
+   33,
+   34
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-1",
+  "kind": "skirmish",
+  "target": 32,
+  "before": 19.6,
+  "after": 28.7,
+  "hp": [
+   17,
+   32
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-2",
+  "kind": "skirmish",
+  "target": 33.6,
+  "before": 4.7,
+  "after": 34,
+  "hp": [
+   22,
+   39
+  ],
+  "swaps": 1,
+  "deck": {
+   "magma-salamander": 4,
+   "obsidian-scorpion": 4,
+   "echo-keeper": 2
+  }
+ },
+ {
+  "map": "m9",
+  "key": "9-9",
+  "kind": "skirmish",
+  "target": 35.2,
+  "before": 16.9,
+  "after": 32.6,
+  "hp": [
+   15,
+   30
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-3",
+  "kind": "skirmish",
+  "target": 36.8,
+  "before": 14.9,
+  "after": 32.7,
+  "hp": [
+   18,
+   36
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-4",
+  "kind": "skirmish",
+  "target": 38.4,
+  "before": 33.9,
+  "after": 38.1,
+  "hp": [
+   24,
+   28
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-10",
+  "kind": "skirmish",
+  "target": 40,
+  "before": 19.4,
+  "after": 40,
+  "hp": [
+   39,
+   74
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-5",
+  "kind": "elite",
+  "target": 46,
+  "before": 42.4,
+  "after": 46.3,
+  "hp": [
+   87,
+   111
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-6",
+  "kind": "elite",
+  "target": 46,
+  "before": 37.5,
+  "after": 45.9,
+  "hp": [
+   31,
+   35
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m9",
+  "key": "9-7",
+  "kind": "elite",
+  "target": 46,
+  "before": 17.3,
+  "after": 46.5,
+  "hp": [
+   38,
+   60
+  ],
+  "swaps": 1,
+  "deck": {
+   "obsidian-scorpion": 2,
+   "sulfur-vent-crab": 2,
+   "magma-titan": 2,
+   "cinder-stoker": 2,
+   "pyroclast-wyrm": 1,
+   "beetle-battering-ram": 1
+  }
+ },
+ {
+  "map": "m9",
+  "key": "9-8",
+  "kind": "boss",
+  "target": 52,
+  "before": 45.6,
+  "after": 51.6,
+  "hp": [
+   96,
+   123
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-1",
+  "kind": "skirmish",
+  "target": 34,
+  "before": 11.1,
+  "after": 34,
+  "hp": [
+   14,
+   21
+  ],
+  "swaps": 2,
+  "deck": {
+   "mountain-goat-climber": 4,
+   "golden-eagle-diver": 2,
+   "eyrie-warden": 2,
+   "chipmunk-stockpiler": 2
+  }
+ },
+ {
+  "map": "m10",
+  "key": "10-2",
+  "kind": "skirmish",
+  "target": 36.7,
+  "before": 11,
+  "after": 34.1,
+  "hp": [
+   14,
+   28
+  ],
+  "swaps": 1,
+  "deck": {
+   "rockslide-ram": 4,
+   "mountain-goat-climber": 1,
+   "peak-condor": 2,
+   "chipmunk-stockpiler": 2,
+   "golden-eagle-diver": 1
+  }
+ },
+ {
+  "map": "m10",
+  "key": "10-3",
+  "kind": "skirmish",
+  "target": 39.3,
+  "before": 26.4,
+  "after": 38.2,
+  "hp": [
+   14,
+   27
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-4",
+  "kind": "skirmish",
+  "target": 42,
+  "before": 32.6,
+  "after": 42.4,
+  "hp": [
+   23,
+   40
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-5",
+  "kind": "elite",
+  "target": 48,
+  "before": 50.8,
+  "after": 48.3,
+  "hp": [
+   48,
+   44
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-6",
+  "kind": "elite",
+  "target": 48,
+  "before": 38.4,
+  "after": 48.3,
+  "hp": [
+   25,
+   36
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-7",
+  "kind": "elite",
+  "target": 48,
+  "before": 39.7,
+  "after": 46.9,
+  "hp": [
+   48,
+   60
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-8",
+  "kind": "elite",
+  "target": 48,
+  "before": 35.5,
+  "after": 47,
+  "hp": [
+   26,
+   51
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-9",
+  "kind": "elite",
+  "target": 48,
+  "before": 48.2,
+  "after": 48.2,
+  "hp": [
+   45,
+   45
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m10",
+  "key": "10-10",
+  "kind": "boss",
+  "target": 54,
+  "before": 66.7,
+  "after": 54.7,
+  "hp": [
+   114,
+   64
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-1",
+  "kind": "skirmish",
+  "target": 36,
+  "before": 11.6,
+  "after": 35.8,
+  "hp": [
+   70,
+   71
+  ],
+  "swaps": 2,
+  "deck": {
+   "silverback-brawler": 2,
+   "bramblewood-lynx": 2,
+   "grizzly-vanguard": 2,
+   "blessed-avatar": 2,
+   "pack-mule": 2
+  }
+ },
+ {
+  "map": "m11",
+  "key": "11-2",
+  "kind": "skirmish",
+  "target": 38.7,
+  "before": 5.1,
+  "after": 38.1,
+  "hp": [
+   22,
+   44
+  ],
+  "swaps": 1,
+  "deck": {
+   "grizzly-vanguard": 2,
+   "woodland-brawler": 4,
+   "bear-cub": 2,
+   "blessed-avatar": 2
+  }
+ },
+ {
+  "map": "m11",
+  "key": "11-9",
+  "kind": "skirmish",
+  "target": 41.3,
+  "before": 25.4,
+  "after": 40.6,
+  "hp": [
+   22,
+   37
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-10",
+  "kind": "skirmish",
+  "target": 44,
+  "before": 26.8,
+  "after": 42.6,
+  "hp": [
+   92,
+   165
+  ],
+  "swaps": 1,
+  "deck": {
+   "stable-colt": 1,
+   "cave-warlord": 2,
+   "cataphract-destrier": 1,
+   "woodland-brawler": 2,
+   "bear-cub": 2,
+   "pack-mule": 2
+  }
+ },
+ {
+  "map": "m11",
+  "key": "11-3",
+  "kind": "elite",
+  "target": 50,
+  "before": 28.1,
+  "after": 40.3,
+  "hp": [
+   54,
+   106
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-4",
+  "kind": "elite",
+  "target": 50,
+  "before": 34.7,
+  "after": 42.5,
+  "hp": [
+   92,
+   180
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-5",
+  "kind": "elite",
+  "target": 50,
+  "before": 39.4,
+  "after": 49.4,
+  "hp": [
+   84,
+   160
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-6",
+  "kind": "elite",
+  "target": 50,
+  "before": 33.3,
+  "after": 50.1,
+  "hp": [
+   102,
+   183
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-7",
+  "kind": "boss",
+  "target": 56,
+  "before": 64,
+  "after": 55.3,
+  "hp": [
+   160,
+   145
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "m11",
+  "key": "11-8",
+  "kind": "finalboss",
+  "target": 58,
+  "before": 38.4,
+  "after": 55.1,
+  "hp": [
+   54,
+   106
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mu",
+  "key": "u-1",
+  "kind": "skirmish",
+  "target": 38,
+  "before": 4.6,
+  "after": 39.2,
+  "hp": [
+   20,
+   34
+  ],
+  "swaps": 2,
+  "deck": {
+   "compost-grub": 3,
+   "garden-snail": 2,
+   "honey-bee": 2,
+   "trapdoor-spider": 2,
+   "beetle-battering-ram": 2,
+   "raccoon-nightcrew": 1
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-2",
+  "kind": "skirmish",
+  "target": 40.7,
+  "before": 12.4,
+  "after": 36.2,
+  "hp": [
+   39,
+   70
+  ],
+  "swaps": 1,
+  "deck": {
+   "worker-ant": 3,
+   "tunnel-ant": 1,
+   "compost-grub": 2,
+   "tunnel-wyrm": 1,
+   "honey-bee": 2,
+   "trapdoor-spider": 1,
+   "beetle-battering-ram": 2
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-3",
+  "kind": "skirmish",
+  "target": 43.3,
+  "before": 14.5,
+  "after": 42.9,
+  "hp": [
+   64,
+   28
+  ],
+  "swaps": 3,
+  "deck": {
+   "trapdoor-spider": 2,
+   "garden-snail": 3,
+   "cricket-drummer": 1,
+   "honey-bee": 2,
+   "beetle-battering-ram": 1,
+   "raccoon-nightcrew": 2
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-4",
+  "kind": "skirmish",
+  "target": 46,
+  "before": 32.4,
+  "after": 41.1,
+  "hp": [
+   218,
+   230
+  ],
+  "swaps": 1,
+  "deck": {
+   "honey-bee": 3,
+   "bee-forager": 2,
+   "trapdoor-spider": 2,
+   "fungal-colossus": 2,
+   "compost-grub": 2,
+   "beetle-battering-ram": 1
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-5",
+  "kind": "elite",
+  "target": 52,
+  "before": 41.5,
+  "after": 49.5,
+  "hp": [
+   83,
+   158
+  ],
+  "swaps": 1,
+  "deck": {
+   "hollow-oath-keeper": 3,
+   "bramble-sprout": 3,
+   "compost-grub": 2,
+   "trapdoor-spider": 2,
+   "beetle-battering-ram": 2
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-6",
+  "kind": "boss",
+  "target": 58,
+  "before": 44.8,
+  "after": 58,
+  "hp": [
+   183,
+   93
+  ],
+  "swaps": 1,
+  "deck": {
+   "fungal-colossus": 2,
+   "trapdoor-spider": 2,
+   "honey-bee": 1,
+   "bee-forager": 2,
+   "raccoon-nightcrew": 1,
+   "trash-panda-trickster": 2,
+   "beetle-battering-ram": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-1",
+  "kind": "skirmish",
+  "target": 40,
+  "before": 14,
+  "after": 40.6,
+  "hp": [
+   99,
+   38
+  ],
+  "swaps": 1,
+  "deck": {
+   "puddle-hopper": 3,
+   "minnow-skitter": 3,
+   "guppy": 3,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-2",
+  "kind": "skirmish",
+  "target": 42.7,
+  "before": 10.5,
+  "after": 43.8,
+  "hp": [
+   14,
+   14
+  ],
+  "swaps": 1,
+  "deck": {
+   "duckling": 1,
+   "pond-duck": 3,
+   "pond-paddler": 2,
+   "minnow-skitter": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-3",
+  "kind": "skirmish",
+  "target": 45.3,
+  "before": 14.5,
+  "after": 45.7,
+  "hp": [
+   26,
+   40
+  ],
+  "swaps": 1,
+  "deck": {
+   "beaver-builder": 3,
+   "river-carp": 1,
+   "puddle-hopper": 2,
+   "pond-duck": 2,
+   "riverworks-bastion": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-4",
+  "kind": "skirmish",
+  "target": 48,
+  "before": 24.5,
+  "after": 47.9,
+  "hp": [
+   20,
+   22
+  ],
+  "swaps": 1,
+  "deck": {
+   "pike-lancer": 2,
+   "river-carp": 3,
+   "minnow-skitter": 3,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-5",
+  "kind": "elite",
+  "target": 54,
+  "before": 47.3,
+  "after": 49.7,
+  "hp": [
+   107,
+   192
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mp",
+  "key": "p-6",
+  "kind": "elite",
+  "target": 54,
+  "before": 26.3,
+  "after": 53.6,
+  "hp": [
+   27,
+   33
+  ],
+  "swaps": 1,
+  "deck": {
+   "lodge-engineer": 2,
+   "beaver-builder": 3,
+   "river-carp": 3,
+   "pike-lancer": 2,
+   "riverstone-slinger": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mp",
+  "key": "p-7",
+  "kind": "boss",
+  "target": 60,
+  "before": 34.2,
+  "after": 63.5,
+  "hp": [
+   30,
+   30
+  ],
+  "swaps": 1,
+  "deck": {
+   "riverworks-bastion": 1,
+   "lodge-engineer": 2,
+   "mallard-marauder": 2,
+   "pike-lancer": 2,
+   "beaver-builder": 2,
+   "quill-volley": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-1",
+  "kind": "skirmish",
+  "target": 42,
+  "before": 9.7,
+  "after": 41.5,
+  "hp": [
+   32,
+   61
+  ],
+  "swaps": 2,
+  "deck": {
+   "mountain-goat-climber": 3,
+   "sparrow-chick": 1,
+   "crossed-eyes": 2,
+   "duck-paddler": 2,
+   "hawk-arrowkeeper": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-2",
+  "kind": "skirmish",
+  "target": 44.7,
+  "before": 9.2,
+  "after": 43.6,
+  "hp": [
+   20,
+   33
+  ],
+  "swaps": 1,
+  "deck": {
+   "hawk-arrowkeeper": 1,
+   "sparrow-chick": 3,
+   "mountain-goat-climber": 2,
+   "gull-thief": 2,
+   "eagle-diver": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-3",
+  "kind": "skirmish",
+  "target": 47.3,
+  "before": 15.9,
+  "after": 46.8,
+  "hp": [
+   26,
+   19
+  ],
+  "swaps": 1,
+  "deck": {
+   "rockslide-ram": 2,
+   "mountain-goat-climber": 3,
+   "hawk-arrowkeeper": 2,
+   "eagle-diver": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-4",
+  "kind": "skirmish",
+  "target": 50,
+  "before": 19.5,
+  "after": 50,
+  "hp": [
+   85,
+   33
+  ],
+  "swaps": 1,
+  "deck": {
+   "peak-condor": 3,
+   "gull-thief": 3,
+   "pelican-diver": 2,
+   "eagle-diver": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-5",
+  "kind": "elite",
+  "target": 56,
+  "before": 29.2,
+  "after": 55.8,
+  "hp": [
+   101,
+   35
+  ],
+  "swaps": 1,
+  "deck": {
+   "golden-eagle-diver": 2,
+   "peak-condor": 2,
+   "hawk-arrowkeeper": 3,
+   "eagle-diver": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-6",
+  "kind": "elite",
+  "target": 56,
+  "before": 28.4,
+  "after": 56.4,
+  "hp": [
+   53,
+   39
+  ],
+  "swaps": 1,
+  "deck": {
+   "alpine-avalanche": 3,
+   "rockslide-ram": 2,
+   "mountain-goat-climber": 3,
+   "eagle-diver": 2
+  }
+ },
+ {
+  "map": "mc",
+  "key": "c-7",
+  "kind": "boss",
+  "target": 62,
+  "before": 36.5,
+  "after": 62.3,
+  "hp": [
+   33,
+   40
+  ],
+  "swaps": 2,
+  "deck": {
+   "eyrie-warden": 1,
+   "eagle-diver": 2,
+   "golden-eagle-diver": 2,
+   "peak-condor": 2,
+   "gull-thief": 2,
+   "mountain-goat-climber": 2
+  }
+ },
+ {
+  "map": "mw",
+  "key": "w-1",
+  "kind": "skirmish",
+  "target": 44,
+  "before": 26.3,
+  "after": 39.9,
+  "hp": [
+   162,
+   238
+  ],
+  "swaps": 2,
+  "deck": {
+   "bog-leech": 1,
+   "puddle-hopper": 3,
+   "mangrove-mudskipper": 2,
+   "constrictor-coil": 2,
+   "open-ocean-hermit-crab": 2,
+   "echo-keeper": 2
+  }
+ },
+ {
+  "map": "mw",
+  "key": "w-2",
+  "kind": "skirmish",
+  "target": 46.7,
+  "before": 38.7,
+  "after": 46.1,
+  "hp": [
+   143,
+   217
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mw",
+  "key": "w-3",
+  "kind": "skirmish",
+  "target": 49.3,
+  "before": 43.1,
+  "after": 48,
+  "hp": [
+   229,
+   239
+  ],
+  "swaps": 1,
+  "deck": {
+   "grass-viper": 3,
+   "snapper-hatchling": 2,
+   "mangrove-mudskipper": 1,
+   "constrictor-coil": 2,
+   "venomlord-serpent": 2,
+   "echo-keeper": 2
+  }
+ },
+ {
+  "map": "mw",
+  "key": "w-4",
+  "kind": "skirmish",
+  "target": 52,
+  "before": 39.2,
+  "after": 52.1,
+  "hp": [
+   26,
+   49
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mw",
+  "key": "w-5",
+  "kind": "elite",
+  "target": 58,
+  "before": 54.9,
+  "after": 56.5,
+  "hp": [
+   218,
+   230
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mw",
+  "key": "w-6",
+  "kind": "elite",
+  "target": 58,
+  "before": 60,
+  "after": 57.8,
+  "hp": [
+   219,
+   188
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mw",
+  "key": "w-7",
+  "kind": "boss",
+  "target": 64,
+  "before": 61.4,
+  "after": 61.4,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mk",
+  "key": "k-1",
+  "kind": "skirmish",
+  "target": 46,
+  "before": 24.1,
+  "after": 40.7,
+  "hp": [
+   118,
+   187
+  ],
+  "swaps": 3,
+  "deck": {
+   "mangrove-mudskipper": 2,
+   "tide-pool-crab": 3,
+   "gull-thief": 2,
+   "clownfish-scout": 1,
+   "riptide-eel": 2,
+   "narwhal-lancer": 2
+  }
+ },
+ {
+  "map": "mk",
+  "key": "k-2",
+  "kind": "skirmish",
+  "target": 48.7,
+  "before": 37.4,
+  "after": 44.5,
+  "hp": [
+   99,
+   193
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mk",
+  "key": "k-3",
+  "kind": "skirmish",
+  "target": 51.3,
+  "before": 19.9,
+  "after": 40.2,
+  "hp": [
+   18,
+   35
+  ],
+  "swaps": 2,
+  "deck": {
+   "gull-thief": 3,
+   "mangrove-mudskipper": 3,
+   "reef-shark": 2,
+   "coral-current-eel": 2,
+   "pike-lancer": 2
+  }
+ },
+ {
+  "map": "mk",
+  "key": "k-4",
+  "kind": "skirmish",
+  "target": 54,
+  "before": 43.6,
+  "after": 49.8,
+  "hp": [
+   191,
+   219
+  ],
+  "swaps": 1,
+  "deck": {
+   "gull-thief": 2,
+   "tide-pool-crab": 2,
+   "mangrove-mudskipper": 1,
+   "reef-shark": 2,
+   "narwhal-lancer": 2,
+   "coral-current-eel": 2
+  }
+ },
+ {
+  "map": "mk",
+  "key": "k-5",
+  "kind": "elite",
+  "target": 60,
+  "before": 57.7,
+  "after": 60.1,
+  "hp": [
+   181,
+   215
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mk",
+  "key": "k-6",
+  "kind": "elite",
+  "target": 60,
+  "before": 54.8,
+  "after": 56.5,
+  "hp": [
+   205,
+   235
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mk",
+  "key": "k-7",
+  "kind": "boss",
+  "target": 66,
+  "before": 63,
+  "after": 63,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-1",
+  "kind": "skirmish",
+  "target": 48,
+  "before": 25.5,
+  "after": 47.7,
+  "hp": [
+   23,
+   30
+  ],
+  "swaps": 2,
+  "deck": {
+   "field-mouse": 3,
+   "chipmunk-stockpiler": 3,
+   "quill-volley": 2,
+   "quillback-elder": 2,
+   "warren-scout": 2,
+   "porcupine-roller": 1
+  }
+ },
+ {
+  "map": "mh",
+  "key": "h-2",
+  "kind": "skirmish",
+  "target": 50.7,
+  "before": 34.2,
+  "after": 47,
+  "hp": [
+   28,
+   56
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-3",
+  "kind": "skirmish",
+  "target": 53.3,
+  "before": 40.6,
+  "after": 53.3,
+  "hp": [
+   64,
+   108
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-4",
+  "kind": "skirmish",
+  "target": 56,
+  "before": 43.9,
+  "after": 52.6,
+  "hp": [
+   31,
+   61
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-5",
+  "kind": "elite",
+  "target": 62,
+  "before": 60.2,
+  "after": 61.8,
+  "hp": [
+   49,
+   54
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-6",
+  "kind": "elite",
+  "target": 62,
+  "before": 62,
+  "after": 62,
+  "hp": [
+   69,
+   69
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mh",
+  "key": "h-7",
+  "kind": "boss",
+  "target": 68,
+  "before": 65,
+  "after": 68.5,
+  "hp": [
+   165,
+   206
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mr",
+  "key": "r-1",
+  "kind": "skirmish",
+  "target": 50,
+  "before": 26.5,
+  "after": 50.5,
+  "hp": [
+   50,
+   74
+  ],
+  "swaps": 1,
+  "deck": {
+   "bear-cub": 3,
+   "fox-kit": 3,
+   "fawn-scout": 3,
+   "silverback-brawler": 2,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mr",
+  "key": "r-2",
+  "kind": "skirmish",
+  "target": 52.7,
+  "before": 36.7,
+  "after": 53.2,
+  "hp": [
+   91,
+   164
+  ],
+  "swaps": 1,
+  "deck": {
+   "firetail-trickster": 2,
+   "fox-warchief": 1,
+   "fox-kit": 3,
+   "silverback-brawler": 2,
+   "fawn-scout": 2
+  }
+ },
+ {
+  "map": "mr",
+  "key": "r-3",
+  "kind": "skirmish",
+  "target": 55.3,
+  "before": 53,
+  "after": 53.2,
+  "hp": [
+   194,
+   230
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mr",
+  "key": "r-4",
+  "kind": "skirmish",
+  "target": 58,
+  "before": 58.2,
+  "after": 58.2,
+  "hp": [
+   107,
+   107
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mr",
+  "key": "r-5",
+  "kind": "elite",
+  "target": 64,
+  "before": 62.4,
+  "after": 62.4,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mr",
+  "key": "r-6",
+  "kind": "elite",
+  "target": 64,
+  "before": 45.1,
+  "after": 61.6,
+  "hp": [
+   77,
+   146
+  ],
+  "swaps": 1,
+  "deck": {
+   "woodland-brawler": 2,
+   "bear-cub": 1,
+   "firetail-trickster": 2,
+   "tusked-vanguard": 2,
+   "boar-rampager": 2,
+   "silverback-brawler": 2,
+   "fawn-scout": 2
+  }
+ },
+ {
+  "map": "mr",
+  "key": "r-7",
+  "kind": "elite",
+  "target": 64,
+  "before": 63,
+  "after": 64.3,
+  "hp": [
+   203,
+   219
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mr",
+  "key": "r-8",
+  "kind": "boss",
+  "target": 70,
+  "before": 64.4,
+  "after": 69.5,
+  "hp": [
+   121,
+   216
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "ml",
+  "key": "l-1",
+  "kind": "skirmish",
+  "target": 52,
+  "before": 30.2,
+  "after": 50.2,
+  "hp": [
+   31,
+   62
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "ml",
+  "key": "l-2",
+  "kind": "skirmish",
+  "target": 54.7,
+  "before": 34.3,
+  "after": 54.7,
+  "hp": [
+   28,
+   42
+  ],
+  "swaps": 1,
+  "deck": {
+   "squires-mount": 2,
+   "stable-colt": 3,
+   "land-tiller": 3,
+   "warhorse-charger": 2,
+   "raccoon-nightcrew": 2
+  }
+ },
+ {
+  "map": "ml",
+  "key": "l-3",
+  "kind": "skirmish",
+  "target": 57.3,
+  "before": 42.5,
+  "after": 57.3,
+  "hp": [
+   104,
+   46
+  ],
+  "swaps": 1,
+  "deck": {
+   "trash-panda-trickster": 3,
+   "stable-colt": 2,
+   "cataphract-destrier": 2,
+   "squires-mount": 2,
+   "raccoon-nightcrew": 2
+  }
+ },
+ {
+  "map": "ml",
+  "key": "l-4",
+  "kind": "skirmish",
+  "target": 60,
+  "before": 63.6,
+  "after": 60.6,
+  "hp": [
+   101,
+   76
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "ml",
+  "key": "l-5",
+  "kind": "elite",
+  "target": 66,
+  "before": 45.2,
+  "after": 64.8,
+  "hp": [
+   81,
+   35
+  ],
+  "swaps": 1,
+  "deck": {
+   "stable-colt": 3,
+   "trash-panda-trickster": 2,
+   "cataphract-destrier": 2,
+   "squires-mount": 2,
+   "raccoon-bandit": 2,
+   "raccoon-nightcrew": 2
+  }
+ },
+ {
+  "map": "ml",
+  "key": "l-6",
+  "kind": "elite",
+  "target": 66,
+  "before": 70,
+  "after": 65.9,
+  "hp": [
+   240,
+   181
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "ml",
+  "key": "l-7",
+  "kind": "boss",
+  "target": 72,
+  "before": 69.9,
+  "after": 72.5,
+  "hp": [
+   110,
+   117
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mt",
+  "key": "t-1",
+  "kind": "skirmish",
+  "target": 54,
+  "before": 27.2,
+  "after": 54.4,
+  "hp": [
+   36,
+   59
+  ],
+  "swaps": 1,
+  "deck": {
+   "snowshoe-hare": 3,
+   "frost-hare-sprinter": 3,
+   "alpha-howler": 2,
+   "taiga-lynx": 2,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-2",
+  "kind": "skirmish",
+  "target": 56.7,
+  "before": 39.7,
+  "after": 56.8,
+  "hp": [
+   175,
+   235
+  ],
+  "swaps": 2,
+  "deck": {
+   "trickster-fox": 3,
+   "taiga-lynx": 2,
+   "snowshoe-hare": 2,
+   "frost-hare-sprinter": 2,
+   "firetail-trickster": 1,
+   "beaver-builder": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-3",
+  "kind": "skirmish",
+  "target": 59.3,
+  "before": 45.7,
+  "after": 57.3,
+  "hp": [
+   192,
+   230
+  ],
+  "swaps": 1,
+  "deck": {
+   "taiga-lynx": 2,
+   "frost-hare-sprinter": 2,
+   "alpha-howler": 1,
+   "wolf-pack-runner": 2,
+   "ravenous-wolverine": 1,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-4",
+  "kind": "skirmish",
+  "target": 62,
+  "before": 48.9,
+  "after": 56.9,
+  "hp": [
+   178,
+   239
+  ],
+  "swaps": 1,
+  "deck": {
+   "taiga-lynx": 2,
+   "frost-hare-sprinter": 2,
+   "alpha-howler": 2,
+   "wolf-pack-runner": 1,
+   "ravenous-wolverine": 1,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-5",
+  "kind": "elite",
+  "target": 68,
+  "before": 59,
+  "after": 65.5,
+  "hp": [
+   148,
+   229
+  ],
+  "swaps": 1,
+  "deck": {
+   "wolf-pack-runner": 1,
+   "taiga-lynx": 2,
+   "frost-hare-sprinter": 1,
+   "alpha-howler": 2,
+   "tundra-musk-ox": 2,
+   "ravenous-wolverine": 2,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-6",
+  "kind": "elite",
+  "target": 68,
+  "before": 57.2,
+  "after": 67.7,
+  "hp": [
+   175,
+   116
+  ],
+  "swaps": 1,
+  "deck": {
+   "frost-hare-sprinter": 2,
+   "alpha-howler": 1,
+   "taiga-lynx": 2,
+   "ravenous-wolverine": 2,
+   "tundra-musk-ox": 2,
+   "firetail-trickster": 2
+  }
+ },
+ {
+  "map": "mt",
+  "key": "t-7",
+  "kind": "boss",
+  "target": 74,
+  "before": 70.7,
+  "after": 70.7,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "md",
+  "key": "d-1",
+  "kind": "skirmish",
+  "target": 56,
+  "before": 27.7,
+  "after": 51.9,
+  "hp": [
+   89,
+   178
+  ],
+  "swaps": 3,
+  "deck": {
+   "dune-jackal": 1,
+   "dust-hyena": 2,
+   "komodo-warlord": 2,
+   "snapper-hatchling": 2,
+   "toucan-courier": 1,
+   "trapdoor-spider": 2
+  }
+ },
+ {
+  "map": "md",
+  "key": "d-2",
+  "kind": "skirmish",
+  "target": 58.7,
+  "before": 30.3,
+  "after": 54.6,
+  "hp": [
+   140,
+   234
+  ],
+  "swaps": 2,
+  "deck": {
+   "dust-hyena": 2,
+   "komodo-warlord": 4,
+   "toucan-courier": 1,
+   "venomlord-serpent": 2
+  }
+ },
+ {
+  "map": "md",
+  "key": "d-3",
+  "kind": "skirmish",
+  "target": 61.3,
+  "before": 55.3,
+  "after": 56.5,
+  "hp": [
+   187,
+   229
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "md",
+  "key": "d-4",
+  "kind": "skirmish",
+  "target": 64,
+  "before": 51,
+  "after": 51,
+  "hp": [
+   230,
+   230
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "md",
+  "key": "d-5",
+  "kind": "elite",
+  "target": 70,
+  "before": 65.5,
+  "after": 65.5,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "md",
+  "key": "d-6",
+  "kind": "elite",
+  "target": 70,
+  "before": 59,
+  "after": 64.8,
+  "hp": [
+   240,
+   240
+  ],
+  "swaps": 1,
+  "deck": {
+   "komodo-warlord": 3,
+   "dust-hyena": 2,
+   "caustic-scorpion": 2,
+   "obsidian-scorpion": 1,
+   "plains-zebra": 2,
+   "howler-monkey": 2
+  }
+ },
+ {
+  "map": "md",
+  "key": "d-7",
+  "kind": "boss",
+  "target": 76,
+  "before": 55.4,
+  "after": 76.5,
+  "hp": [
+   148,
+   205
+  ],
+  "swaps": 2,
+  "deck": {
+   "obsidian-scorpion": 2,
+   "komodo-warlord": 3,
+   "caustic-scorpion": 2,
+   "dust-hyena": 2,
+   "howler-monkey": 2,
+   "toucan-courier": 2,
+   "plains-zebra": 2,
+   "snapper-hatchling": 1
+  }
+ }
+]

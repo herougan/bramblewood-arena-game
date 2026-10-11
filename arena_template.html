@@ -7532,6 +7532,7 @@
   .fp-shelf{max-width:980px; margin:14px auto 0;}
   .fp-shelf h3{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 8px;}
   .fp-food{margin-left:auto; font-size:13px; font-weight:700; padding:3px 10px; border-radius:999px; background:rgba(214,160,40,.16); border:1px solid rgba(214,160,40,.4);}
+  .fp-subs{margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:15px;} .fp-subs small{font-size:12px; opacity:.75; margin-left:4px;} .fp-sub{opacity:.45;} .fp-sub.got{opacity:1;} /* 2026-10-11: subfactions collected */
   .fp-row{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; padding:10px 0; border-top:1px dashed rgba(120,90,50,.3);}
   .fp-pack{position:relative; width:46px; height:62px; border-radius:6px 6px 8px 8px; background:linear-gradient(160deg, color-mix(in srgb, var(--tint) 75%, #fff) 0%, var(--tint) 55%, color-mix(in srgb, var(--tint) 70%, #000) 100%);
     box-shadow:inset 0 0 0 2px rgba(255,255,255,.25), 0 3px 8px rgba(0,0,0,.25); display:grid; place-items:center;}
@@ -7632,6 +7633,8 @@
   @media (prefers-reduced-motion: reduce){ .wp-draw .wp-ink, .wp-draw .wp-node, .wp-node.is-start .wp-halo{animation:none; stroke-dashoffset:0; opacity:1;} }
   .note-paths b{display:inline-flex; align-items:center; gap:4px;} .note-paths .wp-logo{vertical-align:middle;}
   .home-note.note-paths{right:-136px; top:272px; rotate:-4deg;}
+  .home-note.note-nest{right:-130px; top:394px; rotate:3deg;} /* 2026-10-11: the Nest's note once Raids take its tile */
+  @media (max-width:860px){ .home-note.note-nest{position:static; rotate:0deg;} }
   @media (max-width:860px){ .home-note.note-paths{position:static; rotate:0deg;} }
   .new-skill-ribbon{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 2px; padding:5px 10px; border-radius:10px; background:linear-gradient(90deg, rgba(255,214,110,.22), rgba(255,214,110,.06)); border:1px dashed rgba(200,150,40,.55); font-size:13px;}
   .new-skill-ribbon b{color:#9a6a12;} .nsr-skill{padding:1px 7px; border-radius:999px; background:rgba(255,255,255,.55); border:1px solid rgba(200,150,40,.35); cursor:help;}
