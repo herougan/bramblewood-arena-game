@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (09:40)
+- **Translations:** today's new text (Dungeon castles, faction packs and Food tokens, the pitch reminder, "Answered by", the New skill ribbon, the New achievement banner) is in all 12 languages.
+- **Card list v2:** Beaver Lumberjack and Courier Pigeon are marked as deliberate starters (your B4 call), not accidents.
+- **Action items:** D29–D32 added (the card-list questions, art for the pack cards, level caps, Wildpaths points).
+
 ## 2026-10-11 (09:20)
 - **Counters in card details:** a skill's line now says what answers it. For example, Flying is "Answered by: Reach, Anti-Air", and Poison is "Answered by: Regeneration, Bloom, Healing". Only answers that really work in the engine are listed.
 - **New achievement on the results screen:** a gold banner names any achievement that became ready to claim, once each.

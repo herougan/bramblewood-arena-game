@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-10, 10 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-11, 9 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -15,6 +15,10 @@ _Updated 2026-10-10, 10 pm. The short list of what matters now. Everything else 
 | **D26** | Readings I took tonight: Anti-Air went on **Otter Centurion** (2/8), because on Otter Kit it broke the tutorial for Hummingbird players. "SSS fast" means a win by **round 8**. The rare S find starts at **map 5** at **12%**. Laurels (PvP) buy nothing yet | Keep, or say otherwise |
 | **D27** | Readings from the 20:32 list: Sweep is now a cleave (N to each unit beside the target); "Trample" already existed as Overwhelm and is renamed **Stampede**; Bleed no longer hurts when hit; the CPU's new card choice moved Otters vs Hummingbirds starters to ~66% (your balance pass) | Keep, or say otherwise |
 | **D28** | Readings from the 21:29 list: the Flea Market sits on Map 30, which doesn't exist yet, so it's admin-only for now (the Map 20 World Boss sub-map isn't built either); the new side skirmishes branch off the trail instead of being inserted into it, so no one's progress changes; the Mystery Booster is pool 99; sub-map fights are coded like 2-G1; "chaos returns" after Map 40 is sketched in the VFX Playground, not built | Keep; build Maps 13–30 before the Flea Market can open |
+| **D29** | The six questions at the top of [card list v2](card-list-2026-10-11.md): Thistlewood as Map 1, Map 9 as the Mire, deep sea after 20, a 17-A Canopy sub-map, the 1% roll, 5 🍯 per Sunfeather Pack | Yes to all six; then I rebuild the road in the 0–20 order |
+| **D30** | Art for the 19 new faction-pack cards (prompts ready in `art_staging/jobs_2026_10_11.json`). Running them uses your PixelLab session and existing credits | Run them |
+| **D31** | Level caps: every rarity stops at 10 (what the Forge levels to), castles at 20, the hero at 100. Should higher rarities go further? | Keep 10 until the Forge has a reason to go higher |
+| **D32** | Wildpaths (PvE passives) is a preview with 21 draft skills on three trails. Earning Path points: 1 per map cleared? | 1 per map, +1 per boss S rank |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
