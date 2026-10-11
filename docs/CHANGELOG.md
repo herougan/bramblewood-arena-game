@@ -27,6 +27,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - Admins get −5/−1/+1/+5, Empty, Fill, Set and Next refill now in the Energy panel, even with Admin mode off.
 - **Card slots** fade in the moment you press a card and fade out properly.
 - **Lore:** a sketch of five subfactions and the dragon thread in the [lore bible](lore-bible.md).
+- **Action-items lap:**
+  - Wildpaths now counts Path points (D32, my suggested default): 1 per map cleared, +1 per boss S rank. They show on the Wildpaths page; spending waits until the trails leave preview.
+  - Fast Forward gets a ⏩ blur.
+  - Pack gets its +Health pulse.
+  - D33 is closed. D36 (tonight's skill readings) is added.
 
 ## 2026-10-12 (01:40)
 - **Your map table, applied** ([note](map-schedule-2026-10-12.md)). Features open on the maps you listed:

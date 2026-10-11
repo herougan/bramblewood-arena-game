@@ -187,9 +187,9 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <td>1 per map, +1 per boss S rank</td>
 </tr>
 <tr>
-<td><strong>D33</strong></td>
-<td>Day and night are now off unless a fight turns them on. 65 enemy decks carry Nocturnal or Diurnal cards, which now never get their bonus. Turn the cycle on for those fights?</td>
-<td>Turn it on for the night-themed maps (Sable Swampmire, The Pinewood Taiga…) and boss fights with those cards; leave the rest off</td>
+<td><strong>D33</strong> ✅</td>
+<td>Day and night no longer switch. Every Conquest fight is day, except the night maps (Caves &amp; Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga). Arena rule sets keep their own cycles. Real time (7 PM–7 AM day, with a doubled twilight on the minute) is an option in the skirmish editor, set on no map. The Nocturnal/Diurnal "section of effects" passive waits for your idea</td>
+<td>Pick the night maps you want</td>
 </tr>
 <tr>
 <td><strong>D34</strong></td>
@@ -200,6 +200,11 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <td><strong>D35</strong></td>
 <td>Base cards: a boss's first clear levels up to <strong>2</strong> Base cards in your deck (lowest first); an elite's gives a spare Base copy. Errands pay 4–8% of a Materia Unit</td>
 <td>Keep, or give the numbers</td>
+</tr>
+<tr>
+<td><strong>D36</strong></td>
+<td>Readings from tonight's skills: <strong>Swipe</strong> is now "steal N Lumber on a landed swing" (my proposal); <strong>Pack N</strong> = +N Health on arrival per ally of its type (you left it blank); the onReady skill is named <strong>Converge</strong> (enemy / your / both boards). <strong>Twin Strike</strong> does what Frenzy already did, so I suggest Frenzy becomes "attacks again after a kill"</td>
+<td>Keep the names; say yes to the Frenzy change</td>
 </tr>
 <tr>
 <td><strong>T3 / S1 / S2</strong></td>
@@ -285,6 +290,52 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (03:10)</h2>
+<ul>
+<li><strong>Sweep, reworked to your rule.</strong><ul>
+<li>With a unit in front, it swings left, then centre, then right. An empty side is a miss you can see: the unit lunges at the empty slot and the air gets slashed. It never redirects.</li>
+<li>With nothing in front, it hits the castle.</li>
+<li>Its attack preview shows three lines, the side ones thinner, with a ring on an empty slot.</li>
+</ul>
+</li>
+<li><strong>Swipe is now Fork</strong> (the two-flank strike, unchanged); all 11 cards were migrated.<ul>
+<li><strong>Swipe</strong> is new: a landed swing steals N Lumber from the opponent.</li>
+</ul>
+</li>
+<li><strong>New skills:</strong><ul>
+<li><strong>Twin Strike</strong> attacks twice on its turn.</li>
+<li><strong>Converge</strong> (on ready) pulls the enemy board, your board or both together around the centre, keeping their order.</li>
+<li><strong>Defiance</strong> (types, N) adds +N Attack for every enemy unit of those types.</li>
+<li><strong>Pack N</strong> adds +N Health on arrival for each ally of its type.</li>
+<li><strong>Swarm N</strong> gives N per ally (default 1).</li>
+</ul>
+</li>
+<li><strong>Combat stops the moment a castle falls.</strong> Later attackers used to keep swinging, so a card the enemy had just played could die unseen and vanish during the victory.<ul>
+<li>The enemy's card also finishes landing before combat starts.</li>
+</ul>
+</li>
+<li><strong>Day and night (D33):</strong> no more switching. Conquest fights are day, except on four night maps. Real time with a doubled twilight is a skirmish-editor option.</li>
+<li><strong>Conquest map:</strong><ul>
+<li>A link between two locked fights is dark. A link from an open fight fades out toward the locked one.</li>
+<li>Cave darkness now covers the whole screen; the map list and tabs stay readable, a little dimmed.</li>
+</ul>
+</li>
+<li><strong>Energy:</strong><ul>
+<li>The pill reads "4/20⚡ · +⚡ in 2:47".</li>
+<li>With too little Energy, a fight button plays an error sound and shows "You don't have enough energy" in the middle of the screen for 2 seconds.</li>
+<li>Admins get −5/−1/+1/+5, Empty, Fill, Set and Next refill now in the Energy panel, even with Admin mode off.</li>
+</ul>
+</li>
+<li><strong>Card slots</strong> fade in the moment you press a card and fade out properly.</li>
+<li><strong>Lore:</strong> a sketch of five subfactions and the dragon thread in the <span class="doc-ref" title="Project doc: claude/lore-bible.md">lore bible</span>.</li>
+<li><strong>Action-items lap:</strong><ul>
+<li>Wildpaths now counts Path points (D32, my suggested default): 1 per map cleared, +1 per boss S rank. They show on the Wildpaths page; spending waits until the trails leave preview.</li>
+<li>Fast Forward gets a ⏩ blur.</li>
+<li>Pack gets its +Health pulse.</li>
+<li>D33 is closed. D36 (tonight's skill readings) is added.</li>
+</ul>
+</li>
+</ul>
 <h2>2026-10-12 (01:40)</h2>
 <ul>
 <li><strong>Your map table, applied</strong> (<span class="doc-ref" title="Project doc: claude/map-schedule-2026-10-12.md">note</span>). Features open on the maps you listed:<ul>
@@ -12920,6 +12971,61 @@ tests/run-all.sh --e2e    # + two real browser pages playing a live match (~1 mi
 <li><strong>Most fish</strong> don't speak much and are tamed by the Otters as companions.</li>
 <li><strong>The deep things</strong> (kraken, cuttlefish, whales) are old, strange and independent. Raid bosses live here.</li>
 </ul>
+<h3>Subfactions to grow into (sketch, 2026-10-12)</h3>
+<p>You said we'll build these out as we go. These are starting points to react to; nothing here is decided.</p>
+<table>
+<thead>
+<tr>
+<th>Subfaction</th>
+<th>Who they might be</th>
+<th>Where they live</th>
+<th>Board identity (fits a skill we have)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>The Ashen Choir</strong> (cultists)</td>
+<td>Moths, beetles and a few lost Hummingbirds who worship the dragons' old fire</td>
+<td>The Ashen Peak, the Basalt Foundry</td>
+<td>Devilry and Ritual: they sacrifice their own to call something bigger</td>
+</tr>
+<tr>
+<td><strong>The Greenhood Band</strong> (Robin Hood raiders)</td>
+<td>Foxes, magpies and outcast mice who rob the toll roads and share it out</td>
+<td>The Briar Maze, the Redwood Deep</td>
+<td>Swipe (stealing Lumber), Stealth, Backstab</td>
+</tr>
+<tr>
+<td><strong>The Hollow Kin</strong> (cave dwellers)</td>
+<td>Moles, bats, blind salamanders; the tiny cave voice from Sunken Hollow is one of theirs</td>
+<td>Caves &amp; Alcoves, Smugglers' Grotto</td>
+<td>Converge (pulling a line together in the dark), Blind, Lantern</td>
+</tr>
+<tr>
+<td><strong>The Gnawed</strong> (cannibals)</td>
+<td>Rats and shrews who stopped caring what they eat; the road-folk's dark mirror</td>
+<td>The Sable Swampmire, the Glass Dunes</td>
+<td>Devour, Sap, Pack (they gather and grow)</td>
+</tr>
+<tr>
+<td><strong>The Tidefolk</strong> (mer-people)</td>
+<td>Otters who never came ashore, eels, seals: half-legend even to the Legion</td>
+<td>Coral Current, the Kelp Mangroves</td>
+<td>Tide, Wash, Fork</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The dragons.</strong> The Dragon Scales on the road hint that dragons were here before the border war. That's the thread to pull for:</p>
+<ul>
+<li>the world boss on Map 20;</li>
+<li>what the Ashen Choir prays to;</li>
+<li>why castles can break their limits with Dragon Scales.</li>
+</ul>
+<p>Open questions for you:</p>
+<ul>
+<li>Are the dragons gone, sleeping or hiding?</li>
+<li>Is anyone descended from them?</li>
+</ul>
 <h2>Using this</h2>
 <h3>For art (PixelLab or image prompts)</h3>
 <p>Start every prompt with the people's look line above, then the subject. Examples:</p>
@@ -13234,9 +13340,8 @@ tests/run-all.sh --e2e    # + two real browser pages playing a live match (~1 mi
 </li>
 <li><strong>Default:</strong> Use the suggestion</li>
 </ul>
-<p><strong>D22. Fast Forward counters: build next?</strong> · ✅ Built 2026-10-12 (your default, after Ecclesia) · Design · asked 2026-10-10</p>
+<p><strong>D22. Fast Forward counters: build next?</strong> · Decide · Design · asked 2026-10-10</p>
 <ul>
-<li>Built: <code>fastForward: N</code> on a card. Before its first combat, each counter is an extra turn for that unit alone: Wait −1 while it's Waiting, otherwise one swing. Then it joins the normal order. Stun, Freeze or Sleep wipe the counters. No card carries it yet; it's in the editor's skill list.</li>
 <li>Your rule: with N counters, a unit runs its turn, upkeep included, N extra times before joining the main action order. It needs a pre-combat pass in the engine, about half a day of work with tests.<ul>
 <li>Build it next</li>
 <li>After Ecclesia</li>
