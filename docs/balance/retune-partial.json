@@ -1,16 +1,115 @@
 [
  {
-  "map": "m1",
-  "key": "1-2",
+  "map": "mu",
+  "key": "u-1",
   "kind": "skirmish",
-  "target": 73,
-  "before": 65,
-  "after": 72,
+  "target": 85,
+  "before": 100,
+  "after": 90,
   "hp": [
-   40,
-   32
+   20,
+   34
+  ],
+  "swaps": 3,
+  "deck": {
+   "compost-grub": 3,
+   "pill-bug": 1,
+   "garden-snail": 2,
+   "honey-bee": 2,
+   "trapdoor-spider": 2,
+   "bee-forager": 2
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-2",
+  "kind": "skirmish",
+  "target": 77,
+  "before": 100,
+  "after": 88,
+  "hp": [
+   20,
+   40
+  ],
+  "swaps": 1,
+  "deck": {
+   "earthworm": 1,
+   "worker-ant": 3,
+   "tunnel-ant": 3,
+   "compost-grub": 2,
+   "tunnel-wyrm": 1,
+   "honey-bee": 2
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-3",
+  "kind": "skirmish",
+  "target": 68,
+  "before": 90,
+  "after": 78,
+  "hp": [
+   20,
+   40
   ],
   "swaps": 0,
   "deck": null
+ },
+ {
+  "map": "mu",
+  "key": "u-4",
+  "kind": "skirmish",
+  "target": 60,
+  "before": 90,
+  "after": 93,
+  "hp": [
+   20,
+   27
+  ],
+  "swaps": 4,
+  "deck": {
+   "honey-bee": 3,
+   "bee-forager": 2,
+   "trapdoor-spider": 2,
+   "fungal-colossus": 2,
+   "compost-grub": 2,
+   "worker-ant": 1
+  }
+ },
+ {
+  "map": "mu",
+  "key": "u-5",
+  "kind": "elite",
+  "target": 45,
+  "before": 50,
+  "after": 50,
+  "hp": [
+   30,
+   30
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mu",
+  "key": "u-6",
+  "kind": "boss",
+  "target": 35,
+  "before": 68,
+  "after": 83,
+  "hp": [
+   45,
+   87
+  ],
+  "swaps": 4,
+  "deck": {
+   "fungal-colossus": 2,
+   "trapdoor-spider": 2,
+   "compost-grub": 2,
+   "honey-bee": 1,
+   "bee-forager": 2,
+   "worker-ant": 2,
+   "garden-snail": 1
+  }
  }
 ]

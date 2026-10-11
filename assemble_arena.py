@@ -149,7 +149,7 @@ app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
 # Conquest map backgrounds (2026-10-04): tools/make_map_backgrounds.py -> art/maps/<id>.png, one CSS
 # custom property per map theme, shown pixelated under the map's light/vignette gradients.
 _map_css = []
-for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g"]:   # m1..m29 plus the 2026-10-09 field/beach maps
+for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y"]:   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/m%s.png" % _mid
     if os.path.exists(_fp):
         _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, open(_fp, "rb").read())))

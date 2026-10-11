@@ -331,7 +331,135 @@ def mg(rng):  # Smugglers' Grotto sub-map (2026-10-09): wet dark stone, tide poo
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg'))}
+# ---- The 0–20 road (2026-10-11): new maps ----
+MUSHROOM = ["..aaa..", ".aabaa.", "aaaaaaa", "...c...", "...c..."]
+CACTUS = [".a...", ".a.a.", "aaa..", ".a...", ".a..."]
+BIGPINE = ["....a....", "...aba...", "..abbba..", "...aba...", "..abbba..", ".abbbbba.", "..abbba..", ".abbbbba.", "abbbbbbba", "....c....", "....c...."]
+MANGROVE = ["..aaaa..", ".abbbba.", "abbbbbba", ".c.cc.c.", "c..cc..c"]
+
+
+def mu(rng):  # The Morel Hollow: dark loam, giant mushrooms, glowing spores
+    img = dither_palette(fbm(rng, W, H), ['#2a1d22', '#35252a', '#423035', '#4f3b3d', '#5e4846'])
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, MUSHROOM, {'a': '#c9503f', 'b': '#f3e3c8', 'c': '#d8c8a8'}, 40, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, MUSHROOM, {'a': '#9a6ad0', 'b': '#e8d6ff', 'c': '#cdbfa0'}, 22, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, ROUND, {'a': '#3f5a33', 'b': '#26381f', 'c': '#3a2a20'}, 18, shadow_w=lambda w: w)
+    scatter(img, rng, TUFT, {'a': '#6f7a4a'}, 90, avoid_band=False)
+    sparkle(img, rng, 120, '#c9f0a0'); sparkle(img, rng, 40, '#e8c8ff')
+    return img
+
+
+def mp(rng):  # Lilypad Reach: a big still pond, lily pads, reeds, beaver dams
+    img = dither_palette(fbm(rng, W, H), ['#3f6a2f', '#4b7a38', '#5a8a42', '#6a9a4c', '#7aab58'])
+    ponds(img, rng, 5, '#2a6a80', '#4a95a8', '#4b7a38', 14, 26, avoid_band=False)
+    scatter(img, rng, LILY, {'a': '#6fbf5a', 'b': '#f4a8c8'}, 80, avoid_band=False)
+    scatter(img, rng, REED, {'a': '#a8c86a', 'b': '#6a8a3a'}, 70, avoid_band=False)
+    scatter(img, rng, ROCK, {'a': '#8a6a42', 'b': '#5a4228'}, 16)  # dam logs
+    scatter(img, rng, ROUND, {'a': '#5f9a45', 'b': '#3f7432', 'c': '#5a3a22'}, 14, shadow_w=lambda w: w)
+    sparkle(img, rng, 90, '#d8f4ff')
+    return img
+
+
+def mc(rng):  # Gannet Cliffs: sea along the top, white cliff rock, grassy ledges, nesting birds
+    img = dither_palette(fbm(rng, W, H), ['#7a8a6a', '#8f9f7a', '#a8b48c', '#c3c9a4', '#dcdcc0'])
+    sea = np.tile(np.linspace(1, 0, H)[:, None], (1, W)) + (fbm(rng, W, H, (32, 16), (0.7, 0.3)) - 0.5) * 0.25
+    blend_mask(img, np.clip((sea - 0.78) * 8, 0, 1), '#2f7fa0')
+    blend_mask(img, np.clip((sea - 0.86) * 8, 0, 1), '#1f5f80')
+    scatter(img, rng, BOULDER, {'a': '#eae6dc', 'b': '#a8a294'}, 60, shadow_w=lambda w: w)
+    scatter(img, rng, TUFT, {'a': '#9ab86a'}, 120, avoid_band=False)
+    scatter(img, rng, CLOUD, {'a': '#f4f8fb', 'b': '#c9d6e0'}, 6, avoid_band=False)
+    sparkle(img, rng, 70, '#ffffff')
+    return img
+
+
+def mw(rng):  # Gatorback Swamp: warm green swamp, lots of water, logs, reeds, lily pads
+    img = dither_palette(fbm(rng, W, H), ['#2a3f1f', '#344d26', '#3f5c2c', '#4c6c33', '#5a7c3a'])
+    ponds(img, rng, 8, '#1f3a2a', '#2f5a3a', '#344d26', 9, 22, avoid_band=False)
+    scatter(img, rng, REED, {'a': '#9ab85a', 'b': '#5a7a2a'}, 100, avoid_band=False)
+    scatter(img, rng, LILY, {'a': '#6faa4a', 'b': '#f3e37a'}, 40, avoid_band=False)
+    scatter(img, rng, ROCK, {'a': '#5a4a2a', 'b': '#3a2e1a'}, 22)  # floating logs
+    scatter(img, rng, ROUND, {'a': '#4a6f33', 'b': '#2c4a20', 'c': '#3a2a1a'}, 20, shadow_w=lambda w: w)
+    sparkle(img, rng, 50, '#e6f07a')
+    return img
+
+
+def mk(rng):  # The Kelp Mangroves: teal salt water, mangrove islands, kelp ribbons
+    img = dither_palette(fbm(rng, W, H, (48, 24, 12, 6)), ['#0f3a40', '#144a4c', '#1a5a58', '#22706a', '#2c857a'])
+    land = fbm(rng, W, H, (64, 32), (0.7, 0.3))
+    blend_mask(img, np.clip((land - 0.62) * 6, 0, 1), '#5a5a3a')
+    scatter(img, rng, MANGROVE, {'a': '#4f8a4a', 'b': '#2f5f32', 'c': '#5a4228'}, 30, shadow_w=lambda w: w)
+    scatter(img, rng, REED, {'a': '#3f8a5a', 'b': '#1f5a3a'}, 110, avoid_band=False)  # kelp
+    sparkle(img, rng, 90, '#a8f0e0')
+    return img
+
+
+def mh(rng):  # The Briar Maze: hedge walls in a maze grid, roses, gravel paths
+    img = dither_palette(fbm(rng, W, H), ['#7a6a4a', '#8a7a58', '#9a8a66', '#aa9a74', '#baaa84'])
+    grid = np.zeros((H, W))
+    for x in range(0, W, 24): grid[:, x:x + 6] = 1
+    for y in range(0, H, 24): grid[y:y + 6, :] = 1
+    gaps = fbm(rng, W, H, (16, 8), (0.7, 0.3))
+    blend_mask(img, grid * (gaps > 0.42), '#2f5a2a', dither=False)
+    blend_mask(img, grid * (gaps > 0.62), '#245024', dither=False)
+    scatter(img, rng, BUSH, {'a': '#d9485a', 'b': '#2f5a2a'}, 50, avoid_band=False)
+    sparkle(img, rng, 40, '#ffd0d8')
+    return img
+
+
+def mr(rng):  # The Redwood Deep: red-brown needle floor, giant trees, ferns, light shafts
+    img = dither_palette(fbm(rng, W, H), ['#3a1f16', '#4a281c', '#5a3222', '#6a3c28', '#7a4630'])
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, BIGPINE, {'a': '#3a6a3a', 'b': '#204a28', 'c': '#8a3a22'}, 34, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, TUFT, {'a': '#5f8a3a'}, 140, avoid_band=False)
+    scatter(img, rng, BUSH, {'a': '#4f7a32', 'b': '#2f5a22'}, 30, density=dens)
+    sparkle(img, rng, 60, '#ffd8a0')
+    return img
+
+
+def ml(rng):  # The Long Grass: rolling golden-green plains, a dirt road, fences, a farmhouse tree or two
+    img = dither_palette(fbm(rng, W, H), ['#7a8f3a', '#8a9f42', '#9aaf4c', '#aabf58', '#bacf66'])
+    river(img, rng, '#9a7a4a', '#b08a58', '#c8a878', width=5, y0=0.7, amp=0.06, freq=1.4)  # the road
+    scatter(img, rng, TUFT, {'a': '#d8df7a'}, 280, avoid_band=False)
+    scatter(img, rng, ROUND, {'a': '#6a9a3f', 'b': '#3f7432', 'c': '#5a3a22'}, 10, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#c8b08a', 'b': '#8a7050'}, 20)
+    sparkle(img, rng, 60, '#fff3a0')
+    return img
+
+
+def mt(rng):  # The Pinewood Taiga: dark pines, snow patches, frozen streams
+    img = dither_palette(fbm(rng, W, H), ['#2a3a2f', '#344637', '#3f523f', '#4c6048', '#5a6e52'])
+    snow = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    blend_mask(img, np.clip((snow - 0.6) * 6, 0, 1), '#dfe8ee')
+    river(img, rng, '#8fbcd6', '#b8d8e8', '#e8f2f8', width=4, y0=0.2, amp=0.1, freq=1.8)
+    scatter(img, rng, PINE, {'a': '#2f5a3a', 'b': '#1a3a24', 'c': '#4a3a30'}, 70, shadow_w=lambda w: w)
+    scatter(img, rng, SNOWPINE, {'w': '#f4f8fb', 'b': '#2f5a4a', 'c': '#4a3a30'}, 20, shadow_w=lambda w: w)
+    sparkle(img, rng, 70, '#ffffff')
+    return img
+
+
+def md(rng):  # The Glass Dunes: hot sand, dune ridges, glassy patches, cacti, bleached rocks
+    img = dither_palette(fbm(rng, W, H, (48, 24, 12)), ['#c08a4a', '#cf9a56', '#dcaa62', '#e8ba72', '#f2ca84'])
+    ridge = fbm(rng, W, H, (32, 16), (0.7, 0.3))
+    blend_mask(img, np.clip((ridge - 0.66) * 7, 0, 1), '#a8723a')
+    blend_mask(img, np.clip((0.3 - ridge) * 7, 0, 1), '#9ad8d0')  # sand turned to glass
+    scatter(img, rng, CACTUS, {'a': '#5a8a3a'}, 30, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#f0e2c8', 'b': '#b8a080'}, 40)
+    sparkle(img, rng, 110, '#ffffff')
+    return img
+
+
+def my(rng):  # The Canopy: deep rainforest roof, vines, bright flowers
+    img = dither_palette(fbm(rng, W, H), ['#163a1f', '#1d4a26', '#245a2c', '#2c6a33', '#357a3a'])
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, ROUND, {'a': '#3f8a3f', 'b': '#245a2a', 'c': '#3a2a1a'}, 70, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, BUSH, {'a': '#f05a7a', 'b': '#2f6a2f'}, 30, avoid_band=False)
+    scatter(img, rng, BUSH, {'a': '#ffb34a', 'b': '#2f6a2f'}, 20, avoid_band=False)
+    scatter(img, rng, REED, {'a': '#5fae4a', 'b': '#2f6a2f'}, 60, avoid_band=False)  # vines
+    sparkle(img, rng, 60, '#fff3a0')
+    return img
+
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my'))}
 
 
 def make(map_id):

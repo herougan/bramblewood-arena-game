@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (10:10)
+- **The 0–20 road is built** (D29, with my suggested answers; one revert brings the old order back).
+  - Maps now count from 0: the Outskirts and the tutorial are Map 0 (0-0, 0-1 …).
+  - New order: 0 Outskirts · 1 Thistlewood (Thistle Fields, renamed) · **2 The Morel Hollow** · **3 Lilypad Reach** · 4 Pebble Beach (+4-A Smugglers' Grotto) · **5 Gannet Cliffs** · 6 Sunken Hollow · **7 Gatorback Swamp** · **8 The Kelp Mangroves** · 9 Sable Swampmire (the Mire) · 10 Caves & Alcoves · 11 Eyrie Heights · **12 The Briar Maze** · **13 The Redwood Deep** · **14 The Long Grass** · **15 The Pinewood Taiga** · 16 Wolfsbane Tundra (+16-A The Ashen Peak) · 17 Savanna Reaches (+**17-A The Canopy**) · **18 The Glass Dunes** · 19 Basalt Foundry · 20 The Sundered Peak · 21 Coral Current (the open sea).
+  - **11 new maps, 77 fights,** built from existing cards. Every reward is a card that had no home before (74 cards). Each map has its own pixel background and colours.
+  - A map you've already fought on stays open, side maps included, so nobody loses progress.
+  - The Traveller's Cart moves to Map 3, the Ember Peddler to Map 11 and Whisper's Game to Map 5 (5-2). Anything you've already unlocked stays unlocked. The rare S-rank find starts at Map 5.
+  - Every fight's castle Health was retuned in the new play order (four passes of tools/retune_all.js). Castle Health is capped at 240 (300 for the campaign boss).
+  - **Balance flag:** 22 of 175 fights still come out easier than their target, mostly elites and bosses from Map 9 on. A player's likely deck now holds far more reward cards by then, and castle Health alone can't close the gap. Those enemy decks need stronger cards (your balancing pass).
+
 ## 2026-10-11 (09:40)
 - **Translations:** today's new text (Dungeon castles, faction packs and Food tokens, the pitch reminder, "Answered by", the New skill ribbon, the New achievement banner) is in all 12 languages.
 - **Card list v2:** Beaver Lumberjack and Courier Pigeon are marked as deliberate starters (your B4 call), not accidents.
