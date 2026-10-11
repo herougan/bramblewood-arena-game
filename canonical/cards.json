@@ -6614,7 +6614,6 @@
     "attack": 7,
     "health": 16,
     "effects": {
-      "rend": true,
       "triggers": [
         {
           "on": "onSpawn",
@@ -6624,7 +6623,8 @@
           "who": "enemy",
           "sub": "adjacent"
         }
-      ]
+      ],
+      "pierce": 5
     },
     "dmgType": "heat",
     "archetypes": [
@@ -7120,7 +7120,6 @@
     "health": 20,
     "effects": {
       "armor": 3,
-      "pierce": 2,
       "flying": true,
       "triggers": [
         {
@@ -7130,7 +7129,8 @@
           "who": "enemy",
           "sub": "adjacent"
         }
-      ]
+      ],
+      "puncture": 2
     },
     "flavor": "Carries Armor, Pierce, Flying, and an On Attack poison proc all at once, on purpose \u2014 for testing how several mechanics stack together, not for balance.",
     "locked": true,
@@ -8412,14 +8412,14 @@
   },
   {
     "id": "test-skill-pierce",
-    "name": "Test: Pierce",
+    "name": "Test: Puncture",
     "icon": "\ud83e\uddea",
     "cost": 0,
     "wait": 0,
     "attack": 3,
     "health": 8,
     "effects": {
-      "pierce": 2
+      "puncture": 2
     },
     "flavor": "Carries only Pierce -- punches flat bonus damage through to the enemy castle on every melee hit -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -8694,14 +8694,14 @@
   },
   {
     "id": "test-skill-rend",
-    "name": "Test: Rend",
+    "name": "Test: Pierce",
     "icon": "\ud83e\uddea",
     "cost": 0,
     "wait": 0,
     "attack": 3,
     "health": 8,
     "effects": {
-      "rend": true
+      "pierce": 5
     },
     "flavor": "Carries only Rend -- melee hits completely ignore the target's Armor -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -9147,7 +9147,8 @@
           "on": "onReady",
           "do": "gain",
           "amount": 1,
-          "resource": "lumber"
+          "resource": "lumber",
+          "once": true
         }
       ],
       "leader": true
@@ -12997,6 +12998,99 @@
     "rarity": "common",
     "numericId": 457,
     "uuid": "efeb3f54-68f2-4abc-a74a-26b5afb7e49e",
+    "art": ""
+  },
+  {
+    "id": "tailwind",
+    "name": "Tailwind",
+    "icon": "\ud83c\udf43",
+    "cost": 1,
+    "wait": 0,
+    "attack": 0,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Somewhere upriver a heron sneezed, and the whole line got there early.",
+    "locked": true,
+    "archetypes": [
+      "Spell"
+    ],
+    "rarity": "uncommon",
+    "cardType": "spell",
+    "spell": {
+      "do": "hasten",
+      "amount": 1
+    },
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    },
+    "numericId": 458,
+    "uuid": "5f419950-6fe4-4385-b818-567f86b27192",
+    "art": ""
+  },
+  {
+    "id": "bramble-gauntlet",
+    "name": "Bramble Gauntlet",
+    "icon": "\ud83e\udde4",
+    "cost": 1,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Woven thorn-side out. Shake hands at your own risk.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "uncommon",
+    "cardType": "equipment",
+    "equip": {
+      "grant": {
+        "spiteful": 2
+      }
+    },
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    },
+    "numericId": 459,
+    "uuid": "05733a53-0438-4759-b3bc-5b1adfd6f916",
+    "art": ""
+  },
+  {
+    "id": "thornwood-palisade",
+    "name": "Thornwood Palisade",
+    "icon": "\ud83e\udeb5",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 18,
+    "effects": {
+      "counterattack": true,
+      "spiteful": 1
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Sharpened stakes, lashed tight. It never charges, but it never forgets who swung first.",
+    "locked": true,
+    "archetypes": [
+      "Structure",
+      "Forest"
+    ],
+    "rarity": "rare",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    },
+    "numericId": 460,
+    "uuid": "c8a2b4fa-87f5-46e8-a044-a13cd9376cb8",
     "art": ""
   }
 ]

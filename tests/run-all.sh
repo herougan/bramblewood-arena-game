@@ -23,6 +23,8 @@ run node tests/lantern.js
 run node tests/equipment.js
 run node tests/when-ready.js
 run node tests/keen-eye.js
+run node tests/statuses-2026-10-11.js
+run node tests/keywords-2026-10-11.js
 run node tests/phase-status.js
 run node tests/tide.js
 run node tests/exile-zone.js

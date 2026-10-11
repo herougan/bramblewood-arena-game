@@ -36,5 +36,17 @@ ok(run(0) === 1, 'one bee once the Scraper is Ready');
   e.debugFireTrigger(P, so, w.uid, 'onDeath', {}, []);
   ok(P[1].exile.length === 2 && P[1].graveyard.length === 1, `Willow-o'-Wisp's On Death exiles 2 from the graveyard even while Waiting (exile ${P[1].exile.length})`);
 }
+// 2026-10-11 (16:56 list): reactive triggers are also off while Stunned; Primed keeps them on.
+{
+  const d3 = Object.assign({}, defs, {
+    'tp-plain': {id:'tp-plain', name:'T Plain', attack:1, health:20, wait:0, cost:0, effects:{triggers:[{on:'onAttacked', do:'buff', who:'self', amount:1}]}},
+    'tp-primed': {id:'tp-primed', name:'T Primed', attack:1, health:20, wait:2, cost:0, effects:{primed:true, triggers:[{on:'onAttacked', do:'buff', who:'self', amount:1}]}},
+  });
+  const run = (id, stun)=>{ const e = E.makeSimEngine(d3, E.mulberry32(9), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+    e.debugSpawnCard(P, so, 1, id, 'left', {}, []); const c = e.allBoardCards(P[1])[0]; if(stun) c.stunned = true; e.debugFireTrigger(P, so, c.uid, 'onAttacked', {}, []); return c.atk; };
+  ok(run('tp-plain', true) === 1, 'a reactive trigger is off while Stunned');
+  ok(run('tp-primed', true) === 2, 'Primed: on while Stunned and Waiting');
+  ok(defs['wandering-traveller'].effects.triggers.some(t=> t.on==='onReady' && t.do==='gain' && t.once), 'Wandering Traveller gains Lumber only the first time it readies');
+}
 console.log(fail ? `when-ready: ${fail} failed` : 'when-ready: all passed');
 process.exit(fail ? 1 : 0);

@@ -38,4 +38,13 @@ const so = id=> id===1 ? 'A' : 'B';
   const hiveAlive = [...P[1].row.left, ...P[1].row.center, ...P[1].row.right].some(c=> c.defId==='ts-hive');
   ok(!hiveAlive, 'the Hive Mind card should have died');
   ok(heir.atk === atk0 + 1 && heir.maxHp === max0 + 1, `the Swarm ally should gain +1/+1 (atk ${atk0}→${heir.atk}, max HP ${max0}→${heir.maxHp})`); }
+// 2026-10-11: Swarm by type. swarm:['Bee'] counts only Bee allies; swarm:true counts any shared type.
+{ const d2 = Object.assign({}, defs, {
+    'tq-ant-bee': {id:'tq-ant-bee', name:'T Typed', attack:2, health:50, wait:0, cost:0, archetypes:['Ant'], effects:{swarm:['Bee']}},
+    'tq-bee': {id:'tq-bee', name:'T Bee', attack:1, health:5, wait:0, cost:0, archetypes:['Bee'], effects:{}},
+    'tq-ant': {id:'tq-ant', name:'T Ant2', attack:1, health:5, wait:0, cost:0, archetypes:['Ant'], effects:{}} });
+  const e = E.makeSimEngine(d2, E.mulberry32(5), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'tq-ant-bee', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'tq-bee', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'tq-ant', 'right', {}, []);
+  const t = [...P[1].row.left, ...P[1].row.center, ...P[1].row.right].find(c=> c.defId==='tq-ant-bee');
+  const b = e.swarmBonusOf(P, t); ok(b === 1, 'typed Swarm counts only the Bee (got '+b+')'); }
 console.log(`swarm: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

@@ -55,7 +55,15 @@ td.num{text-align:right; font-family:var(--f-data); font-variant-numeric:tabular
 .rar{display:inline-flex; align-items:center; gap:6px;}
 .rar i{width:9px; height:9px; border-radius:50%; background:var(--rc); display:inline-block; flex:none;}
 td select, td input{font:500 13px var(--f-data); color:var(--ink); background:transparent; border:1px solid transparent; border-radius:6px; padding:3px 4px;}
-td input[type=number]{width:52px; text-align:right;}
+td input[type=number]{width:46px; text-align:right;}
+.gv{display:block; font-weight:600;}
+.to{display:flex; align-items:center; justify-content:flex-end; gap:2px; color:var(--muted); font-size:11px;}
+td input.to-in{border:1px dashed var(--line);}
+td input.to-in::placeholder{color:var(--muted); opacity:.7;}
+.live{display:inline-block; font:600 10.5px var(--f-body); color:var(--weak); background:var(--weak-bg); border-radius:4px; padding:0 5px; margin-left:4px;}
+.btn.commit{background:var(--moss); color:var(--moss-ink);}
+.btn.commit.arm{background:var(--amber); border-color:var(--amber); color:#fff;}
+.btn[disabled]{opacity:.45; cursor:not-allowed;}
 td select{font-family:var(--f-body);}
 td input:hover, td select:hover{border-color:var(--line);}
 td input:focus, td select:focus{outline:none; border-color:var(--moss); background:var(--bg);}
@@ -81,7 +89,7 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
 <div class="wrap">
   <header>
     <h1>Bramblewood Card Ledger</h1>
-    <p>Every card in the game with its stats, where it comes from and how it did in the last balance run. Change Lumber, Wait, Attack, Health or rarity right in the table; edits save as you go and are highlighted until they're applied to the game.</p>
+    <p>Every card in the game with the stats it has in the game right now, where it comes from and how it did in the last balance run. Type a new Lumber, Wait, Attack, Health or rarity in a card's “→” box; changes save here as you go. Commit queues them for the game.</p>
   </header>
 
   <div class="chips" id="chips" role="group" aria-label="Quick filters"></div>
@@ -91,6 +99,7 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
     <select id="fRarity" aria-label="Rarity"></select>
     <select id="fSource" aria-label="Where it comes from"></select>
     <button class="btn" id="copyBtn" type="button">Copy edits as text</button>
+    <button class="btn commit" id="commitBtn" type="button" disabled>Commit to game</button>
     <span class="count" id="count"></span>
   </div>
   <div class="status" id="status">Connecting to saved edits…</div>
@@ -120,9 +129,17 @@ const state = {q:'', rarity:'', source:'', quick:'', sort:'src', dir:1};
 try{ const saved = JSON.parse(localStorage.getItem('ledger-view')||'null'); if(saved) Object.assign(state, saved); }catch(e){}
 const saveView = ()=>{ try{ localStorage.setItem('ledger-view', JSON.stringify(state)); }catch(e){} };
 
-const val = (r, k)=> (edits[r.id] && edits[r.id][k] !== undefined) ? edits[r.id][k] : r[k];
-const score = r=> { const a=+val(r,'a'), h=+val(r,'h'), c=+val(r,'c'), w=+val(r,'w'); return (a*1.6 + h*0.6 + r.sk.length*2) / (1 + c*0.9 + w*0.5); };
-const band = r=> DATA.bands[val(r,'r')] || DATA.bands[r.r] || null;
+// Game values (2026-10-11, user: "stats should be actual game values, not DB values"): the table shows what the game
+// uses now, the built-in card plus any live override read from the game's database, and a pending edit only in
+// its own "→" box. live[id] = {c,w,a,h,r} from card_overrides.
+let live = DATA.live || {};
+const LIVE_KEYS = {c:'cost', w:'wait', a:'attack', h:'health', r:'rarity'};
+const game = (r, k)=> (live[r.id] && live[r.id][k] !== undefined) ? live[r.id][k] : r[k];
+const pend = (r, k)=> (edits[r.id] && edits[r.id][k] !== undefined) ? edits[r.id][k] : undefined;
+const val = (r, k)=> k==='note' ? pend(r,k) : (pend(r,k) !== undefined ? pend(r,k) : game(r,k));
+const scoreOf = (r, f)=> { const a=+f(r,'a'), h=+f(r,'h'), c=+f(r,'c'), w=+f(r,'w'); return (a*1.6 + h*0.6 + r.sk.length*2) / (1 + c*0.9 + w*0.5); };
+const score = r=> scoreOf(r, game);
+const band = r=> DATA.bands[game(r,'r')] || DATA.bands[r.r] || null;
 function verdict(r){
   if(r.wr == null) return 'none';
   const b = r.band ? [r.band[0]/100, r.band[1]/100] : band(r); if(!b) return 'none';
@@ -138,9 +155,9 @@ const COLS = [
 ];
 function sortVal(r, k){
   switch(k){
-    case 'n': return r.n.toLowerCase(); case 'r': return RARITIES.indexOf(val(r,'r')); case 'src': return srcKey(r);
+    case 'n': return r.n.toLowerCase(); case 'r': return RARITIES.indexOf(game(r,'r')); case 'src': return srcKey(r);
     case 'score': return score(r); case 'wr': return r.wr==null ? -1 : r.wr; case 't': return r.t; case 'sk': return r.sk.length;
-    case 'note': return (val(r,'note')||'').toLowerCase(); default: return +val(r,k);
+    case 'note': return (val(r,'note')||'').toLowerCase(); default: return +game(r,k);
   }
 }
 function headHTML(){
@@ -149,7 +166,7 @@ function headHTML(){
 function filtered(){
   const q = state.q.trim().toLowerCase();
   return rows.filter(r=>{
-    if(state.rarity && val(r,'r') !== state.rarity) return false;
+    if(state.rarity && game(r,'r') !== state.rarity) return false;
     if(state.source && r.g !== state.source && r.src !== state.source) return false;
     if(state.quick==='edited' && !isEdited(r)) return false;
     if(['strong','weak','ok','none'].includes(state.quick) && verdict(r) !== state.quick) return false;
@@ -159,22 +176,23 @@ function filtered(){
 }
 const esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function numCell(r, k){
-  const v = val(r,k), chg = edits[r.id] && edits[r.id][k] !== undefined && edits[r.id][k] !== r[k];
-  return `<td class="num ${chg?'chg':''}"><input type="number" min="0" step="1" id="f-${k}-${r.id}" data-id="${r.id}" data-k="${k}" value="${v}" aria-label="${esc(COLS.find(c=>c.k===k).label)} of ${esc(r.n)}" ${canWrite?'':'disabled'}>${chg?`<span class="was">was ${r[k]}</span>`:''}</td>`;
+  const g = game(r,k), p = pend(r,k), chg = p !== undefined && p !== g;
+  return `<td class="num ${chg?'chg':''}"><span class="gv">${g}</span><span class="to">→<input class="to-in" type="number" min="0" step="1" id="f-${k}-${r.id}" data-id="${r.id}" data-k="${k}" value="${p!==undefined?p:''}" placeholder="${g}" aria-label="New ${esc(COLS.find(c=>c.k===k).label)} for ${esc(r.n)} (now ${g})" ${canWrite?'':'disabled'}></span></td>`;
 }
 function rowHTML(r){
-  const v = verdict(r), rr = val(r,'r'), rchg = edits[r.id] && edits[r.id].r && edits[r.id].r !== r.r;
+  const v = verdict(r), gr = game(r,'r'), pr = pend(r,'r'), rchg = pr !== undefined && pr !== gr;
   const b = r.band ? [r.band[0], r.band[1]] : null;
   const wr = r.wr==null ? `<span class="stale">not measured</span>` :
     `<div class="wr"><div class="v"><span>${r.wr.toFixed(0)}%</span><span class="vd ${v}">${v==='ok'?'in band':v==='strong'?'too strong':'too weak'}</span></div>
      <div class="bar" title="Band for ${esc(r.r)}: ${b?b[0]+'–'+b[1]+'%':''}">${b?`<span class="band" style="left:${b[0]}%; width:${b[1]-b[0]}%"></span>`:''}<span class="pt" style="left:calc(${Math.min(100,r.wr)}% - 1px)"></span></div>
-     ${r.stale ? '<span class="stale">stats changed since this run</span>' : ''}</div>`;
+     ${r.stale || live[r.id] ? '<span class="stale">stats changed since this run</span>' : ''}</div>`;
+  const sc = score(r), sc2 = isEdited(r) ? scoreOf(r, val) : sc;
   return `<tr data-row="${r.id}">
-    <td><div class="card"><span class="ico">${esc(r.i)}</span><div><div class="nm">${esc(r.n)}${r.tok?'<span class="tag">token</span>':''}${r.eq?'<span class="tag">equipment</span>':''}</div><div class="id">${esc(r.id)}</div></div></div></td>
-    <td class="${rchg?'chg':''}"><span class="rar" style="--rc:${RCOL[rr]||'#888'}"><i></i><select id="f-r-${r.id}" data-id="${r.id}" data-k="r" aria-label="Rarity of ${esc(r.n)}" ${canWrite?'':'disabled'}>${RARITIES.map(x=>`<option value="${x}" ${x===rr?'selected':''}>${x}</option>`).join('')}</select></span>${rchg?`<span class="was">was ${r.r}</span>`:''}</td>
+    <td><div class="card"><span class="ico">${esc(r.i)}</span><div><div class="nm">${esc(r.n)}${r.tok?'<span class="tag">token</span>':''}${r.eq?'<span class="tag">equipment</span>':''}${committedOf(r.id)?`<span class="live" title="Committed ${esc((committedOf(r.id).at||'').slice(0,10))}, waiting to ship: ${esc(Object.entries(committedOf(r.id).cards[r.id]).map(([k,v])=> k+' '+v[0]+'→'+v[1]).join(', '))}">committed</span>`:''}</div><div class="id">${esc(r.id)}</div></div></div></td>
+    <td class="${rchg?'chg':''}"><span class="rar" style="--rc:${RCOL[gr]||'#888'}"><i></i><span class="gv">${esc(gr)}</span></span><span class="to">→<select id="f-r-${r.id}" data-id="${r.id}" data-k="r" aria-label="New rarity for ${esc(r.n)} (now ${esc(gr)})" ${canWrite?'':'disabled'}><option value="">—</option>${RARITIES.map(x=>`<option value="${x}" ${x===pr?'selected':''}>${x}</option>`).join('')}</select></span></td>
     <td>${esc(r.src)}</td>
     ${numCell(r,'c')}${numCell(r,'w')}${numCell(r,'a')}${numCell(r,'h')}
-    <td class="num">${score(r).toFixed(1)}</td>
+    <td class="num">${sc.toFixed(1)}${Math.abs(sc2-sc) > 0.05 ? `<span class="was">→ ${sc2.toFixed(1)}</span>` : ''}</td>
     <td>${wr}</td>
     <td>${esc(r.t)}</td>
     <td class="sk">${r.sk.map(s=>`<span>${esc(s)}</span>`).join('')}</td>
@@ -223,8 +241,9 @@ document.getElementById('headRow').addEventListener('click', e=>{ const b = e.ta
 const pending = {};
 async function saveEdit(id, k, raw){
   const r = byId[id]; const cur = Object.assign({}, edits[id]||{});
+  const blank = raw == null || String(raw).trim() === '';
   let v = k==='note' ? String(raw).trim() : k==='r' ? raw : Math.max(0, Math.round(Number(raw)||0));
-  if(k==='note' ? !v : v === r[k]) delete cur[k]; else cur[k] = v;
+  if(k==='note' ? !v : (blank || v === game(r, k))) delete cur[k]; else cur[k] = v;
   const body = Object.fromEntries(Object.entries(cur).filter(([kk])=> kk!=='at'));
   edits[id] = Object.keys(body).length ? Object.assign(body, {at: new Date().toISOString()}) : undefined;
   if(!edits[id]) delete edits[id];
@@ -245,7 +264,7 @@ function editsText(){
   const ed = rows.filter(isEdited);
   if(!ed.length) return 'No edits yet.';
   const name = {c:'Lumber', w:'Wait', a:'Attack', h:'Health', r:'Rarity', note:'Note'};
-  return ed.map(r=> `${r.n} (${r.id}): ` + Object.entries(edits[r.id]).filter(([k])=> k!=='at').map(([k,v])=> k==='note' ? `note "${v}"` : `${name[k]} ${r[k]} → ${v}`).join(', ')).join('\n');
+  return ed.map(r=> `${r.n} (${r.id}): ` + Object.entries(edits[r.id]).filter(([k])=> k!=='at').map(([k,v])=> k==='note' ? `note "${v}"` : `${name[k]} ${game(r,k)} → ${v}`).join(', ')).join('\n');
 }
 document.getElementById('copyBtn').addEventListener('click', async ()=>{
   const t = editsText();
@@ -253,14 +272,46 @@ document.getElementById('copyBtn').addEventListener('click', async ()=>{
   catch(e){ const ta = document.createElement('textarea'); ta.value = t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); setStatus('Edits copied.'); }catch(e2){ setStatus('Select the text below to copy it.', true); } ta.remove(); }
 });
 function setStatus(msg, warn){ const s = document.getElementById('status'); s.textContent = msg; s.classList.toggle('warn', !!warn); }
-const savedMsg = ()=>{ const n = rows.filter(isEdited).length; return n ? `${n} card${n===1?'':'s'} edited and saved. Tell Claude “apply the card ledger” to put them into the game.` : 'No edits yet. Change a number and it saves here.'; };
+const statEdited = r=> !!(edits[r.id] && Object.keys(edits[r.id]).some(k=> LIVE_KEYS[k]));
+const savedMsg = ()=>{ const n = rows.filter(isEdited).length; refreshCommit(); return n ? `${n} card${n===1?'':'s'} edited and saved. Commit queues the stat changes for the game.` : 'No edits yet. Type a new number in a “→” box and it saves here.'; };
 
 document.getElementById('foot').textContent = `Win rates come from the balance run of ${DATA.balanceRun}: each card played in simulated matches, compared with the band for its rarity. Score is a quick paper estimate, (Attack × 1.6 + Health × 0.6 + 2 per skill) ÷ (1 + Lumber × 0.9 + Wait × 0.5), and it updates as you edit. Card data as of ${DATA.generated}.`;
+
+// ---- COMMIT (2026-10-11, user: "a COMMIT button that commits edits to the real game and the ledger"). Commit records
+// the stat edits as a commit in this ledger (commits/<time>, status "pending") and clears them from the edit boxes; the
+// rows then show "committed" until the game ships them. Claude applies pending commits to the game's card file, runs the
+// balance tests and deploys, then marks the commit "shipped" and regenerates this page with the new game values.
+// (This page doesn't write to the game's database itself.)
+let userApi = null, armed = false, committing = false, commits = {};
+const committedOf = id=>{ for(const c of Object.values(commits)) if(c && c.status !== 'shipped' && c.cards && c.cards[id]) return c; return null; };
+function refreshCommit(){
+  const b = document.getElementById('commitBtn'); if(!b) return;
+  const n = rows.filter(statEdited).length;
+  b.disabled = committing || !n || !canWrite || !db;
+  b.textContent = committing ? 'Committing…' : armed ? `Confirm: commit ${n} card${n===1?'':'s'}` : (n ? `Commit ${n} to game` : 'Commit to game');
+  b.classList.toggle('arm', armed && !committing);
+  b.title = !db ? 'Saving isn’t available in this view' : !n ? 'No stat edits to commit' : 'Queue these edits for the game; Claude ships them';
+}
+async function commitEdits(){
+  if(!armed){ armed = true; refreshCommit(); setTimeout(()=>{ if(armed && !committing){ armed = false; refreshCommit(); } }, 6000); return; }
+  armed = false; committing = true; refreshCommit();
+  const picked = rows.filter(statEdited), stamp = new Date().toISOString(), cards = {};
+  picked.forEach(r=>{ const ch = {}; Object.keys(LIVE_KEYS).forEach(k=>{ const p = pend(r, k); if(p !== undefined) ch[k] = [game(r, k), p]; }); cards[r.id] = ch; });
+  try{
+    let by = null; try{ by = userApi && userApi.id ? await userApi.id() : null; }catch(e){}
+    await db.collection('commits').doc(stamp.replace(/[:.]/g, '-')).set({at: stamp, by, status: 'pending', cards});
+    for(const r of picked){ const rest = Object.fromEntries(Object.entries(edits[r.id]||{}).filter(([k])=> k==='note')); const ref = db.collection('edits').doc(r.id);
+      if(Object.keys(rest).length){ rest.at = stamp; await ref.set(rest); } else await ref.delete(); }
+    setStatus(`Committed ${picked.length} card${picked.length===1?'':'s'}. Tell Claude “ship the ledger commits” to put them into the game.`);
+  }catch(e){ setStatus(e && e.code==='invalid_argument' ? 'You can view this ledger but not commit. Ask the owner for Contributor access.' : 'The commit didn’t save. Try again in a moment.', true); }
+  committing = false; refreshCommit();
+}
+document.getElementById('commitBtn').addEventListener('click', commitEdits);
 
 render();
 (async ()=>{
   try{
-    const user = window.claude && window.claude.use ? await window.claude.use('user') : null;
+    const user = window.claude && window.claude.use ? await window.claude.use('user') : null; userApi = user;
     db = window.claude && window.claude.use ? await window.claude.use('db') : null;
     if(!db){ setStatus('Viewing only. Saved edits aren’t available in this view.', true); render(); return; }
     const w = user && user.can ? await user.can('data.write') : null;
@@ -272,6 +323,7 @@ render();
       if(focusedRow){ chipsHTML(); } else render();
       setStatus(canWrite ? savedMsg() : 'Viewing only. Ask the owner for Contributor access to edit.', !canWrite);
     }, err=>{ setStatus('Saved edits stopped updating. Reload the page to reconnect.', true); });
+    db.collection('commits').onSnapshot(snap=>{ const next = {}; snap.docs.forEach(d=>{ if(d.exists) next[d.id] = d.data(); }); commits = next; render(); }, ()=>{});
   }catch(e){ setStatus('Viewing only. Saved edits aren’t available in this view.', true); }
 })();
 })();

@@ -160,22 +160,24 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', swipe:'🗡↔', sweep:'🌀', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
-  {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} poison. A poisoned unit takes damage equal to its stacks at the start of each round, then loses 1 stack.`},
+  {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
   // Decay (passive, 2026-09-29): mirrors Poison's stack-then-tick shape exactly, but each tick
   // also permanently saps the same amount off the card's own Attack (floored at 0), on top of the
   // usual HP damage -- a compounding "weaker every round" debuff rather than just a damage stack.
   // Entirely separate from the Decay ELEMENTAL DAMAGE TYPE (see the "Poison/Decay as elemental
   // DAMAGE TYPES" comment above DMG_TYPES/ELEMENTAL_STATUS_MAP) -- a card can have this passive,
   // that dmgType, both, or neither.
-  {key:'decay', category:'passive', label:'Decay', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} decay. Decaying cards take that much damage AND lose that much Attack at the start of each round.`},
+  {key:'decay', category:'passive', label:'Decay', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Decay.`},
   {key:'armor', category:'passive', label:'Armor', kind:'number', min:0, desc:v=>`Takes ${v} less damage from every hit (never below 0).`},
+  {key:'counterattack', category:'passive', label:'Counterattack', kind:'boolean', desc:()=>`Doesn't attack on its own. Each time an enemy unit hits it, it strikes the enemy in front of it.`},
+  {key:'spiteful', category:'passive', label:'Spiteful', kind:'number', min:0, desc:v=>`Whatever enemy unit damages it, by attack, arrow or skill, takes ${v} damage back.`},
   {key:'thorns', category:'passive', label:'Thorns', kind:'number', min:0, desc:v=>`Melee attackers take ${v} damage back, every time.`},
   // 2026-09-21 redesign, per explicit user spec: Swipe is now a flag, not a count. It hits the
   // two enemy columns immediately flanking the primary target's own resolved column -- a live
@@ -190,7 +192,8 @@ const PASSIVE_DEFS = [
   {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Its swing spills onto the units directly either side of its target: ${v} damage to each.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
-  {key:'swarm', category:'passive', label:'Swarm', kind:'boolean', desc:()=>`+1 damage for every ally that shares a type with it (e.g. every other Ant beside an Ant).`},
+  {key:'swarm', category:'passive', label:'Swarm', kind:'types', desc:v=> Array.isArray(v) && v.length ? `+1 Attack for every ally that is ${v.join(' or ')}.` : `+1 Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
+    get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined, apply:(e,v)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; }},
   {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
@@ -205,8 +208,12 @@ const PASSIVE_DEFS = [
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
-  {key:'leader', category:'passive', label:'Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
+  {key:'leader', category:'passive', label:'Natural Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
   {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger. On the enemy's side it looks like an ordinary critter until it strikes or is struck, or a Keen Eye unit spots it.`},
+  {key:'drunk', category:'passive', label:'Drunk', kind:'boolean', desc:()=>`Always Tipsy.`},
+  {key:'purblind', category:'passive', label:'Purblind', kind:'boolean', desc:()=>`Always Blind.`},
+  {key:'scatterbrained', category:'passive', label:'Scatterbrained', kind:'boolean', desc:()=>`Always Confused.`},
+  {key:'primed', category:'passive', label:'Primed', kind:'boolean', desc:()=>`Its triggers stay online while it is Waiting, Stunned, Frozen or Asleep.`},
   {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
   {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board at Night, your Diurnal units keep their daytime bonus.`},
@@ -249,7 +256,7 @@ const PASSIVE_DEFS = [
   {key:'crit', category:'passive', label:'Crit', kind:'boolean', desc:()=>`Once per round, 1-in-2 chance to double all damage dealt that round.`},
   {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current poison stacks.`},
   {key:'rupture', category:'passive', label:'Rupture', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current bleed stacks.`},
-  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} bleed. A bled unit takes damage equal to its stacks whenever it attacks or uses a skill, then loses 1 stack.`},
+  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Bleed.`},
   // Rally REMOVED (2026-09-30, per explicit request: "I think we can remove Rally. Since it was
   // supposed to mean +N/+N to something" -- the shipped mechanic had drifted to a flat +N/+0
   // aura to the whole board, not the +N/+N-to-something the name was meant to convey, so rather
@@ -260,32 +267,32 @@ const PASSIVE_DEFS = [
   // as every other retired mechanic in this file (gainGold, the old Arrow N missile, etc).
   // Esprit (2026-10-08, user: "just gain +X/+Y when an ally enters. Not just same archetype"): any ally you play
   // counts now, and it can grow Health too (effects.espritHp). Two numbers in the editor: Attack, Health.
-  {key:'esprit', category:'evergreen', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} permanently whenever another ally enters play.`; },
+  {key:'esprit', category:'evergreen', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} whenever another ally enters play.`; },
     get:e=> (e.esprit || e.espritHp) ? [e.esprit||0, e.espritHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0) e.esprit = a; if(h>0) e.espritHp = h; }},
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
   {key:'regen', category:'evergreen', label:'Regeneration', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
-  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:0, desc:v=>`Every landed attack has a ${v}% chance to Stun the target for the rest of this round (no Wait tick).`},
+  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:0, desc:v=>`Every landed attack has a ${v}% chance to Stun the target.`},
   // Ten new skills (2026-09-17 batch) — nine plain PASSIVE_DEFS entries (Corrode, the tenth
   // stacking status effect, lives right after these; Blind/Shock, the other two new statuses,
   // are chance+duration pairs and live down in SKILL_DEFS alongside Freeze/Sleep/Paralyze).
-  {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every landed melee hit also punches ${v} flat damage straight through to the enemy castle, on top of whatever it did to its actual target.`},
+  {key:'puncture', category:'passive', label:'Puncture', kind:'number', min:0, desc:v=>`Every landed melee hit also deals ${v} damage to the enemy castle, whatever it did to its target.`},
   {key:'gash', category:'evergreen', label:'Gash', kind:'number', min:0, desc:v=>`On Spawn: immediately gashes the opposing creature for ${v} bleed stacks, once.`},
   // 2026-10-10 (user: "a 'Trample' skill where extra damage hits the Castle. But rename it"): this was it already, as
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy castle.`},
-  {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently whenever ANY ally of yours dies.`},
+  {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
   {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
   {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
-  {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 permanently every time it lands a killing blow.`},
+  {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
   {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
   {key:'ambush', category:'passive', label:'Ambush', kind:'boolean', desc:()=>`This card's first attack after entering play always crits and cannot be evaded/dodged.`},
   {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy castle.`},
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
-  {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack stacks ${v} corrode. Corroded cards deal that much less effective Attack, decaying by 1 stack every round.`},
+  {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Corrode.`},
   // Inherent Darkness N / Core Evil (2026-09-21, per explicit request) — two new named Devilry-
   // flavored passives. Inherent Darkness N is a convenience preset for the exact "Per Turn ->
   // Gain Dark Points N" combo the gainDevilry action's own description already recommends
@@ -316,7 +323,10 @@ const PASSIVE_DEFS = [
   // entirely. Same class of silent gap as a missing SoundKit/renderVfxForEvent branch, just in
   // the editor instead of the combat replay.
   {key:'frenzy', category:'passive', label:'Frenzy', kind:'boolean', desc:()=>`If still alive after its attack, immediately attacks again once more this same round (once per round).`},
-  {key:'rend', category:'passive', label:'Rend', kind:'boolean', desc:()=>`Every melee hit completely ignores the target's Armor, including Shell's temporary bonus armor.`},
+  {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every melee hit ignores ${v} of the target's Armor (Shell's bonus Armor included).`},
+  // Perforate N (2026-10-11, user: "Perforate is to Puncture, to Pierce, and to give Bleed and to lower armour permanently.
+  // Just Perforate 1 is super dangerous"): all four on every landed melee hit.
+  {key:'perforate', category:'passive', label:'Perforate', kind:'number', min:0, desc:v=>`Every landed melee hit ignores ${v} Armor, strips ${v} Armor from the target for good, adds ${v} Bleed and deals ${v} damage to the enemy castle.`},
   // Flying (2026-09-21, task #304): a plain boolean trait, invented as the thing Earthquake
   // (right below) needs to check against — nothing else reads it yet, but it's a natural fit
   // for anything airborne (bees, birds, wyrms) and a sensible future hook for other "grounded
@@ -365,7 +375,7 @@ const ACTIVE_PRESETS = [
   // to an equivalent effects.triggers entry (see canonical/cards.json migration, same date); the
   // engine still honors effects.missile for backward compatibility but nothing in the editor can
   // produce it anymore.
-  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=>`On Spawn: permanently lowers the opposing creature's Attack by ${v}.`},
+  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=>`On Spawn: lowers the opposing creature's Attack by ${v}.`},
   // Renamed 2026-09-21 per explicit request ("Rename Revive (Once) to Revivificated") — the
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
@@ -511,13 +521,13 @@ const ACTION_DEFS = [
   // single-stat buff, same as before. The 3 canonical cards that used the old self-only actions
   // were migrated to who:'self' with the matching amount field; the 0 that used buffAlly needed
   // no migration.
-  {key:'buff', label:'Buff', fields:['who','sub','amount','amount2'], desc:'Permanently give +Attack/+Health to a target: yourself, an ally, or an enemy.'},
+  {key:'buff', label:'Buff', fields:['who','sub','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, or an enemy. Effects last for good unless they say "until end of turn".'},
   // Debuff (2026-09-30, generalizes the old Debuff Attack the same way, now also lowering Health
   // — floored at 1, it weakens rather than kills; pair with Deal damage or Exile for an actual
   // kill) so Buff and Debuff are exact mirrors of each other. Self-targeting a debuff always lands
   // (no dodging your own effect, same as Buff); targeting an ally or enemy is Evasion-gated, same
   // as the old Debuff Attack was.
-  {key:'debuff', label:'Debuff', fields:['who','sub','amount','amount2'], desc:'Permanently take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
+  {key:'debuff', label:'Debuff', fields:['who','sub','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
   {key:'poison', label:'Poison', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
   {key:'bleed', label:'Bleed', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
   {key:'expose', label:'Expose', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Mark a chosen target — self, an ally, or an enemy — for bonus damage on its next hit taken.'},
@@ -586,19 +596,19 @@ const SKILL_DEFS = [
     // the skill, and the full mechanical explanation is still in desc() below; the short label is
     // just the name now.
     key:'freeze', category:'passive', label:'Freeze', kind:'twoNumber',
-    desc:()=>'Every landed attack has a Chance% to Freeze the target for Duration round(s) — frozen cards get no Wait tick and cannot attack.',
+    desc:()=>'Every landed attack has a Chance% to Freeze the target for Duration round(s).',
     get:e=> e.freeze ? [e.freeze.chance, e.freeze.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.freeze = {chance, duration}; },
   },
   {
     key:'sleep', category:'passive', label:'Sleep', kind:'twoNumber',
-    desc:()=>"Every landed attack has a Chance% to put the target to Sleep for Duration round(s) — same lockout as Frozen, but breaks the instant the sleeping card takes damage from ANY source.",
+    desc:()=>"Every landed attack has a Chance% to put the target to Sleep for Duration round(s).",
     get:e=> e.sleep ? [e.sleep.chance, e.sleep.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.sleep = {chance, duration}; },
   },
   {
     key:'paralyze', category:'evergreen', label:'Paralyze', kind:'twoNumber',
-    desc:()=>'Every landed attack has a Chance% to Paralyze the target for Duration round(s) — while active, a FRESH 50/50 coin flip gates the paralyzed card\'s action every single round.',
+    desc:()=>'Every landed attack has a Chance% to Paralyze the target for Duration round(s).',
     get:e=> e.paralyze ? [e.paralyze.chance, e.paralyze.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.paralyze = {chance, duration}; },
   },
@@ -609,13 +619,26 @@ const SKILL_DEFS = [
   // stacking number and lives up in PASSIVE_DEFS alongside Poison/Bleed.)
   {
     key:'blind', category:'passive', label:'Blind', kind:'twoNumber',
-    desc:()=>'Every landed attack has a Chance% to Blind the target for Duration round(s) — a blinded card still attacks (and still ticks Bleed/triggers for attacking), but its attack auto-misses entirely, no damage anywhere.',
+    desc:()=>'Every landed attack has a Chance% to Blind the target for Duration round(s).',
     get:e=> e.blind ? [e.blind.chance, e.blind.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.blind = {chance, duration}; },
   },
+  // Tipsy and Confused (2026-10-11, user's 16:56 list items 21-23), same chance+duration shape as Blind.
+  {
+    key:'tipsy', category:'passive', label:'Make Tipsy', kind:'twoNumber',
+    desc:()=>'Every landed attack has a Chance% to make the target Tipsy for Duration round(s).',
+    get:e=> e.tipsy ? [e.tipsy.chance, e.tipsy.duration] : undefined,
+    apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.tipsy = {chance, duration}; },
+  },
+  {
+    key:'confuse', category:'passive', label:'Confuse', kind:'twoNumber',
+    desc:()=>'Every landed attack has a Chance% to Confuse the target for Duration round(s).',
+    get:e=> e.confuse ? [e.confuse.chance, e.confuse.duration] : undefined,
+    apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.confuse = {chance, duration}; },
+  },
   {
     key:'shock', category:'passive', label:'Shock', kind:'twoNumber',
-    desc:()=>'Every landed attack has a Chance% to Shock the target for Duration round(s) — every hit a Shocked card takes (from any source) lands for 50% more damage.',
+    desc:()=>'Every landed attack has a Chance% to Shock the target for Duration round(s).',
     get:e=> e.shock ? [e.shock.chance, e.shock.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.shock = {chance, duration}; },
   },
@@ -626,7 +649,7 @@ const SKILL_DEFS = [
   // envelope, opposite direction. See effAtk/rollStatusOnHit in bramblewood-engine.js.
   {
     key:'stagger', category:'passive', label:'Stagger', kind:'twoNumber',
-    desc:()=>'Every landed attack has a Chance% to Stagger the target for Duration round(s) — a Staggered card deals 50% less damage with its own attacks (physical\'s signature status, the mirror of Shock).',
+    desc:()=>'Every landed attack has a Chance% to Stagger the target for Duration round(s).',
     get:e=> e.stagger ? [e.stagger.chance, e.stagger.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.stagger = {chance, duration}; },
   },
@@ -980,13 +1003,19 @@ function speciesLine(def){
   const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
   return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}`;
 }
+// Spells (2026-10-11): what a spell does, in a sentence.
+function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
+  if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
+  if(sp.do==='mend') return `Heals each of your units by ${n}.`;
+  if(sp.do==='sap') return `Each enemy unit loses ${n} Attack.`;
+  return 'Changes the field.'; }
 // Counters (2026-10-11, from the mechanics on-ramp doc: "a per-skill counter line in its details"). Only the answers that
 // truly work in the engine are listed.
 const SKILL_COUNTERS = {
   changeling: ['keenEye'],
   flying: ['reach', 'antiAir'],
-  armor: ['rend', 'poison', 'pierce'],
-  shell: ['rend'],
+  armor: ['pierce', 'perforate', 'poison', 'puncture'],
+  shell: ['pierce', 'perforate'],
   evasive: ['sweep', 'swipe'],
   stealth: ['guardian'],
   swarm: ['sweep', 'swipe'],
@@ -996,6 +1025,39 @@ const SKILL_COUNTERS = {
   revive: ['exileAns'],
 };
 const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
+// Status keywords (2026-10-11, user: "In effects that deal bleed, poison or any status effect - don't explain the effect
+// within the skill. But if a card has any other keyword, highlight the text in a different colour. Poison with green for
+// example. THEN after the skills are done, a small separating line, then more explanations for each keyword"). Skill
+// lines name the status in its colour; one short glossary under the skills explains each status that came up.
+const STATUS_KEYWORDS = [
+  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:'takes damage equal to its stacks at the start of each round, then loses 1 stack.'},
+  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, then loses 1 stack.'},
+  {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
+  {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
+  {k:'freeze', re:/\b(freeze|frozen)\b/gi, name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
+  {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:'can’t act until it wakes; any damage wakes it.'},
+  {k:'paralyze', re:/\b(paraly[sz]ed?)\b/gi, name:'Paralyzed', c:'#c9a417', text:'each round, a coin flip decides whether it can act.'},
+  {k:'stun', re:/\b(stun(?:ned|s)?)\b/gi, name:'Stunned', c:'#d08a1c', text:'skips its next attack, and its Wait doesn’t tick that round.'},
+  {k:'blind', re:/\b(blind(?:ed)?)\b/gi, name:'Blind', c:'#7c8794', text:'each of its swings misses half the time.'},
+  {k:'tipsy', re:/\b(tipsy)\b/gi, name:'Tipsy', c:'#d9822b', text:'swings left, ahead or right at random, and misses if nobody is there.'},
+  {k:'confuse', re:/\b(confuse[ds]?)\b/gi, name:'Confused', c:'#9b54c9', text:'half the time, its triggers and on-hit skills fizzle.'},
+  {k:'shock', re:/\b(shock(?:ed|s)?)\b/gi, name:'Shocked', c:'#22a7b8', text:'takes 50% more damage from every hit.'},
+  {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
+];
+function keywordizeLines(lines){
+  const seen = new Set();
+  const out = lines.map(l=> String(l).split(/(<[^>]+>)/).map(seg=>{
+    if(!seg || seg[0] === '<') return seg;
+    STATUS_KEYWORDS.forEach(kw=>{ seg = seg.replace(kw.re, m=>{ seen.add(kw.k); return `\u0001${kw.k}\u0002${m}\u0003`; }); });
+    return seg.replace(/\u0001(\w+)\u0002([^\u0003]*)\u0003/g, (_, k, m)=>{ const kw = STATUS_KEYWORDS.find(x=> x.k===k); return `<b class="kw" style="--kw:${kw.c}">${m}</b>`; });
+  }).join(''));
+  const gloss = STATUS_KEYWORDS.filter(kw=> seen.has(kw.k));
+  return {lines: out, gloss};
+}
+function abilityListHTML(lines){
+  const {lines: ls, gloss} = keywordizeLines(lines);
+  return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div><b class="kw" style="--kw:${kw.c}">${kw.name}</b>: ${kw.text}</div>`).join('')}</div>` : '');
+}
 function describeEffects(def, liveCard){
   const lines = [];
   { const sl = speciesLine(def); if(sl) lines.push(sl); }
@@ -1007,6 +1069,7 @@ function describeEffects(def, liveCard){
     lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''} Replaces any field already in play; a map's own field returns when it ends.`);
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
+  if(def.cardType==='spell') lines.push(`✨ Spell — ${spellText(def)} It never takes a place on the field; casting it uses your play for the turn.`);
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
@@ -1187,6 +1250,52 @@ function currentCardDataHash(){
   return _cardHashMemo.hash;
 }
 const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELINE) : '';
+// Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is
+// outdated, ask to update; if the hash is wrong for that version, the data is corrupted"). The build stamps its id and
+// the hash its card data should have (assemble_arena.py, also written to version.json). Once per session, and again when
+// the tab comes back after an hour away, the page reads version.json from the server:
+//   a different build id      → this copy is out of date: offer Update (reload);
+//   same build, other hash    → the server's card data for this build doesn't match: report corruption;
+//   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
+const BUILD_ID = '__BUILD_ID__', BUILD_CARD_HASH = '__BUILD_CARD_HASH__';
+const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
+function versionBanner(kind, text, btnLabel, onBtn){
+  if(document.getElementById('versionBanner')) return;
+  const b = document.createElement('div'); b.id = 'versionBanner'; b.className = 'version-banner is-' + kind; b.setAttribute('role', 'alert');
+  b.innerHTML = `<span>${escapeHtml(text)}</span>${btnLabel ? `<button type="button" class="btn small primary">${escapeHtml(btnLabel)}</button>` : ''}<button type="button" class="btn small ghost vb-close" aria-label="Dismiss">✕</button>`;
+  const go = b.querySelector('.btn.primary'); if(go) go.onclick = onBtn;
+  b.querySelector('.vb-close').onclick = ()=> b.remove();
+  document.body.appendChild(b);
+}
+function cardDataIntact(){ return !BUILD_CARD_HASH || BUILD_CARD_HASH.startsWith('__') || !BASELINE_CARD_HASH || BASELINE_CARD_HASH === BUILD_CARD_HASH; }
+async function checkGameVersion(force){
+  if(typeof location === 'undefined' || !/^https?:/.test(location.protocol) || BUILD_ID.startsWith('__')) return null;
+  if(!cardDataIntact()){
+    versionBanner('bad', 'This copy of the game’s card data is damaged. Reload to get a clean copy.', 'Reload', ()=> location.reload());
+    return 'corrupt-local';
+  }
+  try{
+    const last = Number(sessionStorage.getItem(VERSION_SEEN_KEY)) || 0;
+    if(!force && last && Date.now() - last < 3600e3) return 'skipped';
+    sessionStorage.setItem(VERSION_SEEN_KEY, String(Date.now()));
+  }catch(e){}
+  let v = null;
+  try{ const r = await fetch('version.json?t=' + Date.now(), {cache:'no-store'}); if(r.ok) v = await r.json(); }catch(e){ return null; }
+  if(!v || !v.build) return null;
+  if(v.build !== BUILD_ID){
+    versionBanner('update', 'A new version of Bramblewood is out.', 'Update', ()=>{ try{ sessionStorage.removeItem(VERSION_SEEN_KEY); }catch(e){} location.reload(); });
+    return 'outdated';
+  }
+  if(v.cardHash && v.cardHash !== BASELINE_CARD_HASH){
+    versionBanner('bad', 'The card data for this version doesn’t check out. Reload, and tell us if this keeps happening.', 'Reload', ()=> location.reload());
+    return 'corrupt';
+  }
+  return 'ok';
+}
+if(typeof window !== 'undefined'){
+  window.addEventListener('load', ()=> setTimeout(()=> checkGameVersion(false), 4000));
+  document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
+}
 // Perf (2026-10-08, user: "clicking ... should instantly transit you"): one Codex render called
 // getCardDefs ~280 times (~125 ms). The result is now reused within the same synchronous task while
 // its inputs look unchanged (a cheap signature over everything it reads), and dropped at the next tick.
@@ -1627,6 +1736,16 @@ async function logTxn(entry){
 // over the baked-in cards.json, so a save from the admin's account goes live for everyone on their
 // next load. If the table is missing/unreachable or you're not an admin, edits fall back to the
 // old this-browser-only overlay below.
+// Ledger commits (2026-10-11, user: "a COMMIT button that commits edits to the real game"): the Card Ledger writes a
+// row whose data is a patch, {__patch:true, cost, wait, attack, health, rarity}, rather than a whole card. It is laid
+// over the built-in card, so art, skills and text stay as they are.
+function cloudCardData(r){
+  const d = r && r.data; if(!d || !d.__patch) return d;
+  const base = CARD_DEFS_BASELINE[r.id]; if(!base) return null;
+  const out = Object.assign({}, base);
+  Object.keys(d).forEach(k=>{ if(k !== '__patch' && k !== '__ledger') out[k] = d[k]; });
+  return out;
+}
 let cloudCardAdmin = false;
 // Live updates (2026-10-08, user: "skirmish layout changes (from a different browser) did not reflect
 // until I refreshed"): while the game is open it asks for anything published since its last look —
@@ -1644,7 +1763,7 @@ async function pollCloudOverrides(){
       if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); cfg = true; return; }
       cloudOverrideIds.add(r.id); cards = true;
       if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
-      else if(r.data){ liveCards[r.id] = r.data; delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
+      else if(r.data && cloudCardData(r)){ liveCards[r.id] = cloudCardData(r); delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
     });
     if(cards) onCardsChanged();
     if(cfg && currentTab==='play' && !matchState && playSubTab==='conquest' && !conquestLayoutEdit && !conquestLinkEdit){
@@ -1666,7 +1785,7 @@ async function loadCloudCardOverrides(){
       if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); return; }
       cloudOverrideIds.add(r.id);
       if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
-      else if(r.data){ liveCards[r.id] = r.data; delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
+      else if(r.data && cloudCardData(r)){ liveCards[r.id] = cloudCardData(r); delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
     });
     if(data.some(r=> !String(r.id).startsWith('__cfg:'))) onCardsChanged();
   }catch(e){ /* offline — baked-in cards still work */ }
@@ -2021,13 +2140,24 @@ const SoundKit = (()=>{
     // Day / night calls (2026-10-10, user: "When day turns to night, a wolf sound plays ... When it turns day, a rooster
     // crows"): synthesised like the rest. A howl is a sine gliding up and falling away with a slow vibrato, two wolves
     // a beat apart; the rooster is a nasal sawtooth through a bandpass, "cock-a-doodle-doo" in four pitched steps.
+    // Howl v2 (2026-10-11, user: "Is it the diurnal sound? It doesn't sound like a wolf howl"): the old pure sine with a
+    // wide vibrato read as a ghost's "woooo". A wolf's howl is a reedy voice: a sawtooth through a vowel-like formant
+    // ("oo" sliding to "ah" and back), a quick scoop up into a long held note that drifts, a slight wobble only, a breathy
+    // onset, and a falling, cracking tail. Two wolves, the second higher and later.
     wolfHowl(){ const c = ac(); if(!c || sfxVolume<=0) return;
-      [[0, 1], [0.55, 0.7]].forEach(([dl, lvl])=>{ const t0 = c.currentTime + dl, o = c.createOscillator(), g = c.createGain(), v = c.createOscillator(), vg = c.createGain(), f = c.createBiquadFilter();
-        o.type = 'sine'; o.frequency.setValueAtTime(330, t0); o.frequency.exponentialRampToValueAtTime(620*lvl + 180, t0 + 0.55); o.frequency.setValueAtTime(620*lvl + 180, t0 + 1.3); o.frequency.exponentialRampToValueAtTime(300, t0 + 2.1);
-        v.frequency.value = 5.5; vg.gain.value = 9; v.connect(vg); vg.connect(o.frequency);
-        f.type = 'lowpass'; f.frequency.value = 1400;
-        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.09*sfxVolume*lvl, t0 + 0.25); g.gain.setValueAtTime(0.09*sfxVolume*lvl, t0 + 1.4); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
-        o.connect(f); f.connect(g); g.connect(outNode(c)); o.start(t0); v.start(t0); o.stop(t0 + 2.3); v.stop(t0 + 2.3); }); },
+      [[0, 1, 1], [0.7, 0.62, 1.19]].forEach(([dl, lvl, pitch])=>{ const t0 = c.currentTime + dl, o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain(), g2 = c.createGain(), v = c.createOscillator(), vg = c.createGain(), fm = c.createBiquadFilter(), lp = c.createBiquadFilter();
+        const P = f=> f*pitch;
+        o.type = 'sawtooth'; o2.type = 'triangle';
+        [o, o2].forEach(osc=>{ const f = osc.frequency; f.setValueAtTime(P(300), t0); f.exponentialRampToValueAtTime(P(520), t0 + 0.32); f.linearRampToValueAtTime(P(560), t0 + 1.1); f.linearRampToValueAtTime(P(540), t0 + 1.55); f.exponentialRampToValueAtTime(P(380), t0 + 2.0); f.exponentialRampToValueAtTime(P(250), t0 + 2.25); });
+        v.frequency.value = 4.2; vg.gain.value = 3.5; v.connect(vg); vg.connect(o.frequency); vg.connect(o2.frequency);
+        fm.type = 'bandpass'; fm.Q.value = 3.2; fm.frequency.setValueAtTime(P(650), t0); fm.frequency.linearRampToValueAtTime(P(1050), t0 + 0.5); fm.frequency.linearRampToValueAtTime(P(900), t0 + 1.5); fm.frequency.linearRampToValueAtTime(P(600), t0 + 2.2);
+        lp.type = 'lowpass'; lp.frequency.value = 2400;
+        const peak = 0.11*sfxVolume*lvl;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + 0.18); g.gain.setValueAtTime(peak, t0 + 1.5); g.gain.exponentialRampToValueAtTime(peak*0.5, t0 + 1.95); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.3);
+        g2.gain.value = 0.5;
+        o.connect(fm); o2.connect(g2); g2.connect(fm); fm.connect(lp); lp.connect(g); g.connect(outNode(c));
+        o.start(t0); o2.start(t0); v.start(t0); o.stop(t0 + 2.35); o2.stop(t0 + 2.35); v.stop(t0 + 2.35); });
+      fnoise(0.35, 0.025, {type:'bandpass', freq:1200, q:1.2, attack:0.06}); },
     roosterCrow(){ const c = ac(); if(!c || sfxVolume<=0) return;
       [[0, 0.12, 620, 700], [0.14, 0.1, 700, 760], [0.27, 0.16, 880, 940], [0.46, 0.6, 940, 600]].forEach(([dl, dur, f1, f2])=>{
         const t0 = c.currentTime + dl, o = c.createOscillator(), g = c.createGain(), bp = c.createBiquadFilter();
@@ -2404,6 +2534,13 @@ const Ambience = (()=>{
   // In a fight, thunder comes from lightningStrike() so it follows a visible flash.
   const autoThunder = sc=>{ if(typeof matchState !== 'undefined' && matchState && !matchState.over) return; thunder(sc); };
   const cry = sc=> blip(sc, rnd(1700, 2100), rnd(1100, 1300), 0.55, 'sine', 0.025);
+  // Lava (2026-10-11, user: "a rare lava sizzle and pop ambience, roughly every 20 seconds"): a thick bubble swells and
+  // bursts with a low gloop, then the spatter hisses as it lands, with a few small ticks of cooling crust.
+  const lavaPop = sc=>{ const f = rnd(70, 110);
+    blip(sc, f, f*1.9, 0.22, 'sine', 0.05); blip(sc, f*2.2, f*0.8, 0.09, 'triangle', 0.035, 0.2);
+    puff(sc, 0.05, 0.05, 'bandpass', 900, 1.2, 0.2);
+    puff(sc, rnd(1.1, 1.8), 0.035, 'highpass', 5200, 0.8, 0.26, 2600);
+    for(let i=0;i<4;i++) puff(sc, 0.025, 0.03, 'highpass', 3500, 0.7, 0.4 + i*rnd(0.12, 0.3)); };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
     // Inside the Armoury Tent: muffled wind on canvas, the odd flap, a distant clank from the forge.
@@ -2416,15 +2553,15 @@ const Ambience = (()=>{
     nest: {beds:[{freq:500, gain:0.022, lfo:0.08}, {type:'bandpass', freq:2200, q:0.8, gain:0.006}], events:[[bird, 3, 8]]},
     0:  {beds:[{freq:420, gain:0.04, lfo:0.07}, {type:'bandpass', freq:1800, q:0.6, gain:0.018}], events:[[bird, 1.5, 5]]},
     1:  {beds:[{type:'bandpass', freq:850, q:0.5, gain:0.04, lfo:0.11}], events:[[frog, 2, 6], [bird, 6, 14]]},
-    2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4]]},
+    2:  {beds:[{freq:120, gain:0.09, lfo:0.05, depth:0.6}], events:[[crackle, 0.4, 1.4], [lavaPop, 15, 26]]},
     3:  {beds:[{freq:200, gain:0.05, lfo:0.04}], drone:[55, 0.012], events:[[drip, 1, 4]]},
     4:  {beds:[{freq:600, gain:0.035, lfo:0.06}, {type:'bandpass', freq:4600, q:8, gain:0.012, am:28}], events:[[cry, 10, 22]]},
     5:  {beds:[{type:'bandpass', freq:550, q:3, gain:0.06, sweep:0.07, sweepDepth:250}], events:[[gust, 5, 11]]},
     6:  {beds:[{freq:300, gain:0.07, lfo:0.05}], events:[[bubble, 1, 3.5]]},
     7:  {beds:[{freq:250, gain:0.05, lfo:0.05}, {type:'bandpass', freq:3600, q:6, gain:0.011, am:22}], events:[[frog, 1.5, 5]]},
-    8:  {beds:[{freq:110, gain:0.09, lfo:0.06, depth:0.6}], events:[[crackle, 0.5, 1.6], [clank, 5, 12]]},
+    8:  {beds:[{freq:110, gain:0.09, lfo:0.06, depth:0.6}], events:[[crackle, 0.5, 1.6], [clank, 5, 12], [lavaPop, 15, 26]]},
     9:  {beds:[{type:'bandpass', freq:800, q:1, gain:0.05, sweep:0.05, sweepDepth:300}], events:[[cry, 8, 18], [gust, 6, 12]]},
-    10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [autoThunder, 14, 30]]},
+    10: {beds:[{freq:120, gain:0.08, lfo:0.05, depth:0.6}], events:[[crackle, 0.6, 2], [autoThunder, 14, 30], [lavaPop, 15, 26]]},
     11: {beds:[{type:'highpass', freq:1500, gain:0.05}, {freq:420, gain:0.03, lfo:0.08}], events:[[drip, 2, 5], [autoThunder, 20, 40]]},
     // Beach (2026-10-10): soft surf washing in and out, a sea breeze, gulls now and then.
     12: {beds:[{type:'bandpass', freq:700, q:0.5, gain:0.03, lfo:0.09}], events:[[sc=> puff(sc, 2.8, 0.05, 'lowpass', 650, 0.7, 0, 260), 4, 8], [cry, 9, 20]]},
@@ -2919,8 +3056,8 @@ function fullCardHTML(defId, liveCard, opts){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span><ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul></div>`
-        : `<ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul>`)
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        : `${abilityListHTML(lines)}`)
     : '';
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
@@ -3115,6 +3252,8 @@ function castleHoverHTML(hqSide){
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
       pop.hidden = false; popSrc = el;
       positionPop(el);
+      TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
+      { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
     }, HOVER_POP_DELAY_MS);
   });
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
@@ -3862,7 +4001,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0}})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -3882,7 +4021,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -3960,12 +4099,12 @@ function triggerActionEmoji(t){
     default: return '❔';
   }
 }
-function triggerIsOff(t, live){ return !!(live && live.wait>0 && !t.whileWaiting && !TRIGGER_ALWAYS_ON.has(t.on)); }
+function triggerIsOff(t, live, d){ return !!(live && (live.wait>0 || live.stunned || live.frozen>0 || live.asleep>0) && !t.whileWaiting && !(d && d.effects && d.effects.primed) && !TRIGGER_ALWAYS_ON.has(t.on)); }
 function triggerBadges(d, live){
   const trs = (d && d.effects && Array.isArray(d.effects.triggers)) ? d.effects.triggers : [];
   return trs.map(t=>{
-    const off = triggerIsOff(t, live);
-    const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off until it’s Ready)' : '');
+    const off = triggerIsOff(t, live, d);
+    const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     return `<span class="ab-trig${off ? ' is-off' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">⚡</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
@@ -3989,6 +4128,9 @@ function abilityBadges(d, bopts){
   if(e.demolisher) out.push(`⛏️${e.demolisher}`);
   if(e.changeling) out.push(`🎭`);
   if(e.keenEye) out.push(`👁️`);
+  if(e.primed) out.push(`🔋`);
+  if(e.drunk) out.push(`🍺`); if(e.purblind) out.push(`🕶️`); if(e.scatterbrained) out.push(`❓`);
+  if(e.tipsy) out.push(`🍺${e.tipsy.chance||''}%`); if(e.confuse) out.push(`❓${e.confuse.chance||''}%`);
   if(e.overwhelm) out.push(`🐘`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
@@ -4005,7 +4147,7 @@ function abilityBadges(d, bopts){
   // but had NO badge at all before this — a card with Pierce looked completely identical to one
   // without it anywhere outside the card editor. 🎯 reads as "punches straight through to the
   // target beyond," and isn't used by any other badge here.
-  if(e.pierce) out.push(`🎯${e.pierce}`);
+  if(e.puncture) out.push(`🎯${e.puncture}`);
   if(e.rage) out.push(`😡`);
   // 🏹 also covers the generic Custom Trigger equivalent (On Spawn/On Ready + Deal damage to a
   // random enemy) that Arrow N/Arrow(=Attack) were migrated to (2026-09-20) -- see ACTIVE_PRESETS.
@@ -4148,7 +4290,7 @@ function referenceHTML(){
        category field instead of re-tagging entries individually. -->
   <div class="panel"><h3 class="ref-heading">Elemental Damage Types</h3><p class="panel-sub">A card's Element (set on the main form) drives its Resist/Weakness math — and each of the five below has its own signature status, one clean skill per element, all still fully independent "+ Add Skill" entries (nothing here is automatic; a Cold card doesn't get Frozen for free, it has to carry the Freeze skill too). Poison and Decay are the two exceptions — see the two cards after this list for what makes them different.</p><div class="ref-grid">${ELEMENTAL_STATUS_MAP.map(e=>`<div class="ref-card"><span class="kind">${e.dmgType}</span><b>${e.icon} ${e.statusLabel}</b><p>${e.desc}</p></div>`).join('')}
     <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the castle instead of a card always deals its normal, unconverted damage.</p></div>
-    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND permanently reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the castle instead of a card deals normal, unconverted damage.</p></div>
+    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the castle instead of a card deals normal, unconverted damage.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen').map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p></div>`).join('')}
   </div></div>
@@ -4509,8 +4651,8 @@ function openCardDetail(defId){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span><ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul></div>`
-        : `<ul>${lines.map(l=>`<li>${l}</li>`).join('')}</ul>`)
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
+        : `${abilityListHTML(lines)}`)
     : '<p class="panel-sub">No special abilities — a plain stat card.</p>';
   // "all the quotes should end with - Jz" — the creator's own signature, not shown at all when
   // there's no note yet (nothing useful to say with no heading to explain what the block is).
@@ -5578,6 +5720,10 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     // opts[0], unaffected by this render-time reorder.
     valueHtml = `<select data-sk="val0" data-i="${i}">${[...opts].sort((a,b)=>a.label.localeCompare(b.label)).map(o=>`<option value="${o.value}" ${vals[0]===o.value?'selected':''}>${o.label}</option>`).join('')}</select>` +
       `<input type="number" min="1" class="w-52" data-sk="val1" data-i="${i}" value="${vals[1]||1}" title="Damage threshold — only used by the 'Takes more than N damage' condition" ${amountRelevant?'':'hidden'}>`;
+  } else if(s.kind==='types'){
+    // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
+    const sel = Array.isArray(row.value) ? row.value : [];
+    valueHtml = `<select multiple size="4" class="skill-types" data-sk="vals" data-i="${i}" aria-label="Counts allies of these types (none picked: any shared type)" title="None picked: any ally that shares a type. Pick types to count only those (Ctrl/Cmd-click for several).">${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel.includes(a)?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
     // a count (val1) — the exact same picker widget actionFieldsHTML already builds for the
@@ -5597,7 +5743,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // Death: Spawn / On Attacked: Spawn) reads a real [defId, count] pair to name the actual card
   // picked, same as twoNumber/selectNumber kinds read their own row.value shape elsewhere —
   // passing 'N' through for those would index into the string and show garbage.
-  const descArg = s.kind==='number' ? (row.value||1) : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
+  const descArg = s.kind==='number' ? (row.value||1) : s.kind==='types' ? row.value : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg))}">
     <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${valueHtml}
@@ -5932,6 +6078,8 @@ function readEditorFormIntoCard(){
       sdef.apply(newEffects, [v0,v1]);
     } else if(sdef.kind==='number' || sdef.kind==='select'){
       sdef.apply(newEffects, row.querySelector('[data-sk="val"]').value);
+    } else if(sdef.kind==='types'){
+      const el = row.querySelector('[data-sk="vals"]'); sdef.apply(newEffects, el ? [...el.selectedOptions].map(o=> o.value) : []);
     } else {
       sdef.apply(newEffects, true);
     }
@@ -7099,6 +7247,30 @@ function loadEnergyState(){
   return {current: ENERGY_MAX, lastRegenAt: Date.now()}; // first-run seed: start full, not empty.
 }
 function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringify(s)); }catch(e){} }
+// Energy panel (2026-10-11, user: "Clicking on Energy grants me a subwindow ... (16a) Get more energy! (16b) +5 Free energy!
+// - once a day for non-admins"): tapping any Energy pill opens it. +5 free Energy once a day for everyone (it can go over
+// the cap); admins also get an unlimited refill.
+const FREE_ENERGY_KEY = 'bramblewood_free_energy_day', FREE_ENERGY_AMOUNT = 5;
+const todayKey = ()=>{ const d = new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; };
+function freeEnergyClaimedToday(){ try{ return localStorage.getItem(FREE_ENERGY_KEY) === todayKey(); }catch(e){ return false; } }
+function openEnergyPanel(anchor){
+  closeEnergyPanel();
+  const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin), claimed = freeEnergyClaimedToday();
+  const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
+  pop.innerHTML = `<b>⚡ ${s.current}/${ENERGY_MAX} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
+    <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
+    ${isAdmin ? `<button type="button" class="btn small" id="epRefill">🚨 Get more Energy (admin)</button>` : ''}`;
+  document.body.appendChild(pop);
+  const r = anchor.getBoundingClientRect(), w = Math.min(260, innerWidth - 24);
+  pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - 160, r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
+  const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
+  const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
+  const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, ENERGY_MAX); saveEnergyState(st); done('⚡ Energy full.'); };
+  setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
+}
+function closeEnergyPanelOutside(e){ const p = document.getElementById('energyPanel'); if(p && !p.contains(e.target)) closeEnergyPanel(); }
+function closeEnergyPanel(){ const p = document.getElementById('energyPanel'); if(p) p.remove(); document.removeEventListener('pointerdown', closeEnergyPanelOutside, true); }
+document.addEventListener('click', e=>{ const pill = e.target.closest && e.target.closest('.energy-pill:not(.raid-points-pill)'); if(pill && !e.target.closest('#energyPanel')) openEnergyPanel(pill); });
 // Applies however many whole-minute ticks have elapsed since the last settle, clamped to the cap
 // -- correct however long the app was closed, since it's driven by Date.now() deltas rather than
 // a running timer. Called before every read AND before every spend so the numbers are always
@@ -7107,7 +7279,8 @@ function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringif
 function settleEnergy(){
   const s = loadEnergyState();
   if(s.current >= ENERGY_MAX){
-    if(s.current>ENERGY_MAX || s.lastRegenAt!==undefined){ s.current = ENERGY_MAX; s.lastRegenAt = Date.now(); saveEnergyState(s); }
+    // 2026-10-11: free daily Energy can take you over the cap; nothing regenerates while you're at or above it.
+    if(s.lastRegenAt!==undefined){ s.lastRegenAt = Date.now(); saveEnergyState(s); }
     return s;
   }
   const elapsed = Date.now() - s.lastRegenAt;
@@ -7160,7 +7333,7 @@ function refreshEnergyHud(){
   const s = settleEnergy();
   const nextMs = msUntilNextEnergyTick();
   // 2026-10-08 (user: "When energy is 20/20, just say full").
-  const text = s.current >= ENERGY_MAX ? _t('Full') : nextMs===null ? `${s.current}/${ENERGY_MAX}` : `${s.current}/${ENERGY_MAX} · +1 in ${formatEnergyCountdown(nextMs)}`;
+  const text = s.current > ENERGY_MAX ? `${s.current}/${ENERGY_MAX}` : s.current >= ENERGY_MAX ? _t('Full') : nextMs===null ? `${s.current}/${ENERGY_MAX}` : `${s.current}/${ENERGY_MAX} · +1 in ${formatEnergyCountdown(nextMs)}`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
@@ -8051,7 +8224,7 @@ const HERO_PEOPLES = {
   legion: {label:'Rivergate Legionary', blurb:'Steady and hard to move. Shields, armour and holding the line.', icon:'🦦', art:'river-warden', archetypes:['Otter','River'], base:{attack:2, health:9},
     skills:['guardian','armor','bulwark','shell','thorns','sturdy','siege','reflect','regen']},
   tribes: {label:'Sunfeather Warrior', blurb:'Fast and bright. Wings, speed and first strikes.', icon:'🐦', art:'crimson-wing-recruit', archetypes:['Hummingbird'], base:{attack:3, health:6},
-    skills:['flying','evasive','swift','quick','crit','frenzy','pierce','ambush','momentum']},
+    skills:['flying','evasive','swift','quick','crit','frenzy','puncture','ambush','momentum']},
   road:   {label:'Road-folk Wanderer', blurb:'Sly and slippery. Poison, bleeding, tricks and a bow.', icon:'🐭', art:'wandering-traveller', archetypes:['Mouse','Traveller'], base:{attack:2, health:7},
     skills:['stealth','poison','bleed','expose','gash','render','arrow','corrode','fester']},
 };
@@ -8413,11 +8586,45 @@ let playSubTab = 'conquest';
 // up front, only on a deliberate long hover" pattern is reusable anywhere else a button could use
 // it later.
 let __delayedTooltipEl = null;
+// Tooltip lifecycle (2026-10-11 card-object audit, user: "tooltip fade hooks, e.g. OnFade → Tooltip.Fade()"). Rather
+// than every card and button carrying its own fade/remove callbacks, each floating tip registers the element it
+// describes here. While any tip is up, one animation-frame loop follows its anchor: the tip takes on the anchor's
+// effective opacity (so it fades with a dying or fading card), and it closes the moment the anchor is removed from
+// the page, hidden (display/visibility/opacity 0, or inside a hidden parent) or shrunk to nothing. Tips that close
+// normally just stop being tracked. See docs/card-object-audit-2026-10-11.md.
+const TipWatch = (()=>{
+  const live = new Map(); let raf = 0;
+  const effOpacity = el=>{ let o = 1; for(let n = el; n && n.nodeType === 1 && o > 0.01; n = n.parentElement) o *= Number(getComputedStyle(n).opacity); return o; };
+  function gone(a){
+    if(!a || !a.isConnected) return true;
+    if(a.checkVisibility && !a.checkVisibility({visibilityProperty:true})) return true;
+    const r = a.getBoundingClientRect(); return !(r.width || r.height);
+  }
+  function tick(){
+    raf = 0;
+    live.forEach((rec, tip)=>{
+      if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
+      if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
+      const o = effOpacity(rec.anchor);
+      if(o < 0.03){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
+      tip.style.opacity = o < 0.98 ? o.toFixed(2) : '';
+    });
+    if(live.size) raf = requestAnimationFrame(tick);
+  }
+  return {
+    track(tip, anchor, hide){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; })}); if(!raf) raf = requestAnimationFrame(tick); },
+    release(tip){ if(tip){ live.delete(tip); tip.style.opacity = ''; } },
+    count(){ return live.size; },
+  };
+})();
+if(typeof window !== 'undefined') window.TipWatch = TipWatch;
 function attachDelayedTooltip(el, text, delayMs){
   if(!el) return;
   delayMs = delayMs==null ? 1000 : delayMs;
   let timer = null;
   const show = ()=>{
+    timer = null;
+    if(!el.isConnected) return; // re-rendered away while the timer ran
     if(!__delayedTooltipEl){
       __delayedTooltipEl = document.createElement('div');
       __delayedTooltipEl.className = 'tab-hover-tip';
@@ -8428,6 +8635,7 @@ function attachDelayedTooltip(el, text, delayMs){
     const r = el.getBoundingClientRect();
     __delayedTooltipEl.style.left = (r.left + r.width/2) + 'px';
     __delayedTooltipEl.style.top = (r.bottom + 8) + 'px';
+    TipWatch.track(__delayedTooltipEl, el, hide);
   };
   const hide = ()=>{ if(timer){ clearTimeout(timer); timer=null; } if(__delayedTooltipEl) __delayedTooltipEl.hidden = true; };
   el.addEventListener('mouseenter', ()=>{ timer = setTimeout(show, delayMs); });
@@ -8464,6 +8672,7 @@ function attachTieredHoverReveal(el, tier1Fn, tier2Fn){
     const r = el.getBoundingClientRect();
     __tieredHoverEl.style.left = (r.left + r.width/2) + 'px';
     __tieredHoverEl.style.top = (r.top - 10) + 'px';
+    TipWatch.track(__tieredHoverEl, el, hide);
   };
   const hide = ()=>{ __tieredHoverActiveRefresh = null; if(__tieredHoverEl) __tieredHoverEl.hidden = true; };
   el.addEventListener('mouseenter', ()=>{ __tieredHoverActiveRefresh = refresh; refresh(); });
@@ -9975,6 +10184,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <fieldset class="se-wide se-battle"><legend>⚔️ This skirmish's battle</legend>
           <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
+          <label title="Day and night are off unless a fight turns them on. Nocturnal and Diurnal cards only get their bonus while the cycle runs">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Off (default)') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night'); })()}</select></label>
+          <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
+          <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         </fieldset>
         ${draft.kind === 'dungeon' ? (()=>{ const c = dungeonConfig(draft), w = dungeonWaves(draft), raw = draft.dungeon || {};
@@ -10026,6 +10238,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.flavor = v('seFlavor')||'';
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      { const ph = v('sePhase'), pl = v('sePhaseLen'); const r = Object.assign({}, draft.rules||{}); delete r.phase; delete r.phaseLen;
+        if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
+        { const ac = v('seActions'); delete r.actions; if(ac !== '' && ac != null && Number(ac) > 1) r.actions = Math.max(1, Math.min(5, Math.round(Number(ac)))); }
+        if(Object.keys(r).length) draft.rules = r; else delete draft.rules; }
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seDgRounds')){
@@ -10106,7 +10322,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','rules'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -11325,12 +11541,34 @@ function saveConquestProgress(p){ try{ localStorage.setItem(CONQUEST_PROGRESS_KE
 // HP you still had left the moment the enemy's fell — a clean, always-available signal (no new
 // stat tracking needed) that reads naturally as "how clean was that win." S/A/B/C, worst to
 // best C<B<A<S, so a later better clear always overwrites a worse one and never downgrades it.
-const RANK_ORDER = ['C','B','A','S','SS','SSS'];
+const RANK_ORDER = ['E','D','C','B','A','S','SS','SSS']; // E and D added 2026-10-11; losses grade F / FF / FFF (lossRankFor), outside this ladder
 // SS / SSS (2026-10-10, user: "Sub-boss and bosses can get up to SSS rank. (Which now is about no health damage taken,
 // and winning very fast)"): elite (sub-boss) and boss fights only. SS = your castle took no damage; SSS = no damage
 // and the win came by round SSS_FAST_ROUND.
 const SSS_FAST_ROUND = 8;
-const RANK_BONUS = {S:0.25, SS:0.5, SSS:1}; // extra share of the fight's Maple Leaves and Dust for a top rank
+// Rank multipliers (2026-10-11, user: "Ranks don't change the first time rewards ... from E -> SSS, the rank that wins
+// with about half health, assuming that is C, grants you 1x. E and D grants you 0.6x, 0.8x ... B, A gives you 1.05x, 1.1x.
+// S, SS, SSS gives you 1.11, 1.12, and 1.13x"): applied to a repeat win's Maple Leaves and Dust only.
+const RANK_MULT = {E:0.6, D:0.8, C:1, B:1.05, A:1.1, S:1.11, SS:1.12, SSS:1.13};
+const RANK_BONUS = {}; Object.keys(RANK_MULT).forEach(k=> RANK_BONUS[k] = RANK_MULT[k] - 1); // kept for older readers
+// One short line on how a rank was earned (the post-match tooltip).
+function rankExplain(rank, m){
+  const hq = m && m.players && m.players[1] && m.players[1].hq, pct = hq && hq.maxHp ? Math.round(Math.max(0, hq.hp)/hq.maxHp*100) : null;
+  const mult = RANK_MULT[rank] != null ? ` Repeat rewards ×${RANK_MULT[rank]}.` : '';
+  if(rank === 'SSS') return `No damage taken, won by round ${SSS_FAST_ROUND}.${mult}`;
+  if(rank === 'SS') return `No damage taken.${mult}`;
+  if(rank === 'FFF') return 'Lost, dealing 1 damage or less.';
+  if(rank === 'FF') return 'Lost; the enemy castle took 2 damage or less.';
+  if(rank === 'F') return 'Lost.';
+  return pct != null ? `Won with ${pct}% of your castle's Health left.${mult}` : `Graded on your castle's Health left.${mult}`;
+}
+function lossRankFor(m){
+  const enemy = m.players[2].hq, castleDmg = Math.max(0, (enemy.maxHp||0) - Math.max(0, enemy.hp));
+  let dealt = 0; Object.values(m.stats||{}).forEach(st=>{ if(st && st.side==='A') dealt += (st.dealt||0) + (st.faceDamage||0); });
+  if(Math.max(dealt, castleDmg) <= 1) return 'FFF';
+  if(castleDmg <= 2) return 'FF';
+  return 'F';
+}
 function conquestRankFor(m, node){
   const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
   const base = rankForHqFraction(frac);
@@ -11341,11 +11579,13 @@ function conquestRankFor(m, node){
   if(base !== 'S' || !bossy || hq.hp < hq.maxHp) return base;
   return (m.round || 99) <= SSS_FAST_ROUND * (dg ? dg.rounds : 1) ? 'SSS' : 'SS';
 }
-function rankForHqFraction(frac){
+function rankForHqFraction(frac){ // C is about half your castle's Health left (2026-10-11)
   if(frac>=0.9) return 'S';
-  if(frac>=0.65) return 'A';
-  if(frac>=0.35) return 'B';
-  return 'C';
+  if(frac>=0.75) return 'A';
+  if(frac>=0.6) return 'B';
+  if(frac>=0.4) return 'C';
+  if(frac>=0.2) return 'D';
+  return 'E';
 }
 function rankAtLeast(have, need){
   if(!need) return true; // no rank requirement at all
@@ -12213,6 +12453,9 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.body.c
 // stop is an empty placeholder until it scrolls into view; only then is its mini-map preview built.
 // Clicking a diamond zooms into that map. Art stays per-map: no 4K world painting needed.
 let conquestWorldView = false;
+// Admin map tools behind a button (2026-10-11, user: "The admin menu should only appear after I click an admin button - that
+// looks like a police or alarm icon. only available to me"): the 🚨 button (Admin Mode only) shows or hides the layout bar.
+let conquestAdminBarOpen = false;
 let conquestZoomIn = false;
 // 2026-10-08 (user: "Going from map to world map should have a zoom-like animation as well"): the
 // map shrinks away and blurs, then the World settles in from slightly too close — the reverse of
@@ -12527,8 +12770,8 @@ function renderConquestSubTab(body){
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
-    ${adminModeEnabled ? mapLayoutToolbarHTML(map) : ''}
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
+    ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
@@ -12590,6 +12833,7 @@ function renderConquestSubTab(body){
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
+  { const ab = document.getElementById('conquestAdminBtn'); if(ab) ab.onclick = ()=>{ conquestAdminBarOpen = !conquestAdminBarOpen; renderConquestSubTab(body); }; }
   placeConquestHud();
   if(conquestZoomIn){ mainEl.classList.add('world-zoom-in'); conquestZoomIn = false; }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.
@@ -12635,7 +12879,9 @@ function renderConquestSubTab(body){
       let seen = []; try{ seen = JSON.parse(localStorage.getItem('bramblewood_maps_opened')||'[]'); }catch(e){}
       const firstEver = !seen.includes(map.id), firstThisSession = !mapVeilShownThisSession;
       if(firstEver){ seen.push(map.id); try{ localStorage.setItem('bramblewood_maps_opened', JSON.stringify(seen)); }catch(e){} }
-      if(firstEver || firstThisSession){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
+      // 2026-10-11 (user: "Remove the loading screen between maps if a player has already seen the transition ONCE. However,
+      // when the player goes into the game, new session, the first time he loads the map, use the loading screen"): once per session only.
+      if(firstThisSession){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
     } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak)); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
@@ -12714,12 +12960,18 @@ function renderConquestSubTab(body){
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = selectedNode.virtual ? 0 : (nodeEnergyCost(map, selectedNode) || 1), canAffordFight = currentEnergy() >= energyCost;
     panelEl.hidden = false;
+    // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
+    // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
+    document.body.classList.add('cq-node-focus');
+    { const ev0 = selectedNode.virtual ? 0 : enemyDeckLevel(selectedNode), gap0 = selectedNode.virtual ? '' : deckLevelGapClass(ev0, mainDeckLevel(myDeckCounts, myLeaderId));
+      panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" title="${escapeAttr(defs[sid].name)}">${cardTileHTML(defs[sid], {inPlay:true})}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
+        ${done ? `<span class="cnp-cleared" title="${escapeAttr(progress.ranks[nid] ? 'Cleared · best rank ' + progress.ranks[nid] : 'Cleared')}">✓ ${escapeHtml(_t('Cleared'))}</span>` : ''}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
@@ -12727,7 +12979,7 @@ function renderConquestSubTab(body){
         <details class="cnp-deck"><summary>${escapeHtml(_t('Their deck'))} · ${Object.values(selectedNode.deck||{}).reduce((a,b)=> a+b, 0)} ${escapeHtml(_t('cards'))}</summary><div class="cnp-squad">${squadChips}</div></details>` : `<div class="cnp-squad-locked">🔒 ${escapeHtml(_t('Deck hidden'))}: ${reqText}.</div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button></div>` : ''}
-      ${done?'<div class="cn-done">✓ Cleared</div>':''}`;
+      `;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
     wireRewardZoom(panelEl);
@@ -12743,7 +12995,7 @@ function renderConquestSubTab(body){
     }));
 
   } else {
-    panelEl.hidden = true;
+    panelEl.hidden = true; document.body.classList.remove('cq-node-focus'); panelEl.classList.remove('is-cleared', 'is-outlevel');
   }
   // Item #3 (2026-09-19, "there should be a fight button in the bottom centre... the
   // explanation box doesn't appear in the full screen... i don't need the explanation box since
@@ -14315,6 +14567,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   }
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
+  if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
@@ -14464,6 +14717,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
+      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy deck level"><small>Enemy deck</small><b>Lv ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
     <div class="vs-skip">Tap to skip</div>`;
@@ -14516,6 +14770,84 @@ function renderSandboxSubTab(body){
   if(btn) btn.addEventListener('click', startSandboxMatch);
   const tk = document.getElementById('testKitStartBtn');
   if(tk) tk.addEventListener('click', startTestKit);
+  const dp = document.createElement('div'); dp.className = 'panel card-decorator'; body.appendChild(dp);
+  renderCardDecorator(dp);
+}
+// 🎨 Card Decorator (2026-10-11, user: "Test centre: card decorator. Pick a card from the collection, change the art frame
+// and foil, and adjust chromatic parameters, e.g. Ice: crystalline line opacity down, rainbow colours more ice-like"). A
+// live preview of one card with every finish, frame and colour knob; the settings come out as a short spec to copy, so
+// a look you like can be baked into the game's finishes.
+const DECO_KEY = 'bramblewood_decorator_v1';
+const DECO_PALETTES = {
+  default:{label:'Finish default'},
+  rainbow:{label:'Rainbow', stops:['hsl(0 95% 62%)','hsl(45 95% 60%)','hsl(120 85% 58%)','hsl(190 95% 60%)','hsl(260 90% 68%)','hsl(320 95% 65%)','hsl(360 95% 62%)']},
+  ice:{label:'Ice', stops:['hsl(195 90% 82%)','hsl(205 85% 70%)','hsl(185 70% 88%)','hsl(220 60% 92%)','hsl(250 55% 84%)','hsl(200 90% 76%)','hsl(195 90% 82%)']},
+  ember:{label:'Ember', stops:['hsl(8 95% 55%)','hsl(28 100% 58%)','hsl(45 100% 62%)','hsl(18 95% 50%)','hsl(350 85% 48%)','hsl(30 100% 60%)','hsl(8 95% 55%)']},
+  verdant:{label:'Verdant', stops:['hsl(95 70% 52%)','hsl(140 65% 48%)','hsl(70 80% 58%)','hsl(165 60% 50%)','hsl(110 55% 62%)','hsl(85 75% 55%)','hsl(95 70% 52%)']},
+  silver:{label:'Silver', stops:['hsl(220 10% 86%)','hsl(220 8% 62%)','hsl(0 0% 96%)','hsl(220 10% 70%)','hsl(220 12% 90%)','hsl(220 6% 58%)','hsl(220 10% 86%)']},
+  dusk:{label:'Dusk', stops:['hsl(265 70% 62%)','hsl(310 70% 64%)','hsl(345 80% 66%)','hsl(25 90% 66%)','hsl(285 60% 58%)','hsl(240 60% 60%)','hsl(265 70% 62%)']},
+};
+const DECO_FINISHES = ['none','rainbow','pearl','cosmos','prism','hex','etched','ice','reverse','gold','lattice','starlight'];
+const DECO_BIOMES = ['','biome-river','biome-forest','biome-steel','biome-frost','biome-volcanic','biome-desert'];
+function decoDefaults(){ return {card:'', finish:'ice', frame:'default', rarity:'', biome:'auto', palette:'default', op:0.45, hue:0, sat:1, lines:0.9, angle:115, glare:1}; }
+function decoLoad(){ try{ return Object.assign(decoDefaults(), JSON.parse(localStorage.getItem(DECO_KEY)||'{}')); }catch(e){ return decoDefaults(); } }
+function decoSave(st){ try{ localStorage.setItem(DECO_KEY, JSON.stringify(st)); }catch(e){} }
+function decoGradient(st){
+  const pal = DECO_PALETTES[st.palette]; if(!pal || !pal.stops) return '';
+  const n = pal.stops.length - 1; return `repeating-linear-gradient(${st.angle}deg, ${pal.stops.map((c, i)=> `${c} ${Math.round(i*36/n)}%`).join(', ')})`;
+}
+function renderCardDecorator(host){
+  const defs = getCardDefs();
+  const owned = Object.keys(myCardCopies||{}).filter(id=> defs[id] && (myCardCopies[id]||[]).length);
+  const pool = (owned.length ? owned : Object.keys(defs)).filter(id=> defs[id] && !defs[id].test && !String(id).startsWith('__')).sort((a, b)=> (defs[a].name||a).localeCompare(defs[b].name||b));
+  const st = decoLoad(); if(!pool.includes(st.card)) st.card = pool[0] || '';
+  const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${String(v)===String(cur)?'selected':''}>${escapeHtml(label)}</option>`;
+  const slider = (k, label, min, max, step, unit)=> `<label class="deco-sl"><span>${label}</span><input type="range" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${st[k]}"><output>${st[k]}${unit||''}</output></label>`;
+  host.innerHTML = `<h2>🎨 Card Decorator</h2>
+    <p class="panel-sub">Pick a card${owned.length ? ' from your collection' : ''}, then try frames, foils and colours on it. Move the pointer over the card to catch the light. Nothing here changes the game; copy the spec to keep a look.</p>
+    <div class="deco-wrap">
+      <div class="deco-stage"><div class="deco-preview" id="decoPreview"></div></div>
+      <div class="deco-controls">
+        <label>Card<select id="decoCard">${pool.map(id=> opt(id, st.card, defs[id].name || id)).join('')}</select></label>
+        <label>Art frame<select data-k="frame">${opt('default', st.frame, 'As the card has it')}${opt('framed', st.frame, 'Framed art')}${opt('extended', st.frame, 'Full art')}</select></label>
+        <label>Rarity frame<select data-k="rarity">${opt('', st.rarity, 'As the card has it')}${RARITY_TIER_BANDS.map(r=> opt(r, st.rarity, r)).join('')}</select></label>
+        <label>Biome trim<select data-k="biome">${opt('auto', st.biome, 'As the card has it')}${DECO_BIOMES.map(b=> opt(b, st.biome, b ? b.replace('biome-','') : 'None')).join('')}</select></label>
+        <label>Foil<select data-k="finish">${DECO_FINISHES.map(f=> opt(f, st.finish, f==='none' ? 'No foil' : f[0].toUpperCase()+f.slice(1))).join('')}</select></label>
+        <label>Colours<select data-k="palette">${Object.entries(DECO_PALETTES).map(([k, p])=> opt(k, st.palette, p.label)).join('')}</select></label>
+        ${slider('op', 'Foil strength', 0, 1, 0.01)}
+        ${slider('lines', 'Ice crystal lines', 0, 1, 0.01)}
+        ${slider('hue', 'Hue shift', -180, 180, 1, '°')}
+        ${slider('sat', 'Saturation', 0, 2, 0.05)}
+        ${slider('angle', 'Band angle', 0, 180, 1, '°')}
+        ${slider('glare', 'Glare', 0, 1.5, 0.05)}
+        <div class="deco-actions"><button type="button" class="btn small" id="decoReset">Reset</button><button type="button" class="btn small primary" id="decoCopy">Copy spec</button></div>
+        <pre class="deco-spec" id="decoSpec"></pre>
+      </div>
+    </div>`;
+  const draw = ()=>{
+    const d0 = defs[st.card]; if(!d0) return;
+    const d = Object.assign({}, d0);
+    if(st.frame==='framed') d.artExtended = false; else if(st.frame==='extended') d.artExtended = true;
+    if(st.rarity) d.rarity = st.rarity;
+    let html = cardTileHTML(d, {editable:false, inPlay:true, extraClass:'dec-tile' + (st.finish!=='none' ? ' is-holo holo-' + st.finish + (st.finish==='cosmos' ? ' holo-starlight' : '') : '') + (st.palette!=='default' ? ' dec-pal' : '')});
+    if(st.biome !== 'auto') html = html.replace(/\bbiome-[a-z]+\b/g, '').replace('dec-tile', 'dec-tile ' + st.biome);
+    const box = host.querySelector('#decoPreview'); box.innerHTML = html;
+    const t = box.querySelector('.card-tile');
+    const grad = decoGradient(st) || (st.finish==='ice' ? decoGradient(Object.assign({}, st, {palette:'rainbow'})) : '');
+    t.style.setProperty('--dec-op', st.op); t.style.setProperty('--dec-hue', st.hue + 'deg'); t.style.setProperty('--dec-sat', st.sat);
+    t.style.setProperty('--dec-lines', st.lines); t.style.setProperty('--dec-glare', st.glare);
+    if(grad) t.style.setProperty('--dec-grad', grad);
+    try{ decorateHolo(box); }catch(e){}
+    const spec = {card: st.card, finish: st.finish, frame: st.frame, rarity: st.rarity || undefined, biome: st.biome==='auto' ? undefined : (st.biome || 'none'), palette: st.palette, foilOpacity: +st.op, lineOpacity: +st.lines, hueShift: +st.hue, saturation: +st.sat, bandAngle: +st.angle, glare: +st.glare};
+    host.querySelector('#decoSpec').textContent = JSON.stringify(spec, null, 1);
+    host.querySelectorAll('.deco-sl').forEach(l=>{ const i = l.querySelector('input'); l.querySelector('output').textContent = i.value + (i.dataset.k==='hue' || i.dataset.k==='angle' ? '°' : ''); });
+    host.querySelectorAll('[data-k="lines"]').forEach(i=> i.closest('label').classList.toggle('is-off', st.finish!=='ice'));
+  };
+  host.querySelector('#decoCard').onchange = e=>{ st.card = e.target.value; decoSave(st); draw(); };
+  host.querySelectorAll('[data-k]').forEach(i=> i.addEventListener('input', ()=>{ const k = i.dataset.k; st[k] = i.type==='range' ? Number(i.value) : i.value; decoSave(st); draw(); }));
+  host.querySelector('#decoReset').onclick = ()=>{ const keep = st.card; Object.assign(st, decoDefaults(), {card: keep}); decoSave(st); renderCardDecorator(host); };
+  host.querySelector('#decoCopy').onclick = ()=>{ const txt = host.querySelector('#decoSpec').textContent; try{ navigator.clipboard.writeText(txt).then(()=> showToast('Spec copied.'), ()=> showToast('Select the spec text to copy it.', 'warn')); }catch(e){ showToast('Select the spec text to copy it.', 'warn'); } };
+  draw();
 }
 function startSandboxMatch(){
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true});
@@ -15995,7 +16327,7 @@ function startMatch(mode, opts){
   engine.draw(players[2], 3, 'B', stats, []);
   // The side that plays second opens with one more card ("draw 2 if you start 2nd"): the PvP stranger always plays
   // first, so you're second there; everywhere else the opponent plays after you.
-  if(arenaRuleset.secondDraw){ const second = mode==='pvp' ? 1 : 2; engine.draw(players[second], arenaRuleset.secondDraw, second===1 ? 'A' : 'B', stats, []); }
+  if(arenaRuleset.secondDraw || (arenaRuleset.rules && arenaRuleset.rules.actions > 1)){ const second = mode==='pvp' ? 1 : 2; engine.applySecondPlayerBonus(players[second], second===1 ? 'A' : 'B', stats, []); } // 1 action: +1 card; N actions: +N cards, +N-1 Health, +N-2 Lumber (2026-10-11)
   // Caged Fight (2026-10-10): your leader starts caged on the enemy board, 4 slots to your right. Cage level =
   // round((your deck level + the enemy's) / 100), 0–10. In Pass & Play it's both ways: player 2's leader is caged on your
   // board, 4 to their right (slot -4, since the rows face each other).
@@ -16062,6 +16394,10 @@ function endMatch(opts){
 // "pass the device" beat so the next player's hand isn't visible until they're ready.
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
+  // Actions per turn (2026-10-11): with plays left this turn, the turn goes on; the round resolves once they're used
+  // (or with End turn / Skip as usual).
+  { const pl = m.players[actingPid || 1]; if(pl && !pl.playedThisTurn && (pl.playsThisTurn||0) > 0 && m.engine.actionsPerTurn && m.engine.actionsPerTurn() > 1 && pl.hand.some(h=> m.engine.canPlay(pl, h.defId, h.uid))){
+    renderBoard(); renderHand(); updateControlsDisabled(); renderHUD(); return; } }
   if(m.mode!=='pc' && m.mode!=='liveRanked'){
     if(m.mode!=='pvp') aiActNow(); // PvP: the stranger already played at the start of the round
     renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
@@ -17518,7 +17854,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -18999,6 +19335,8 @@ function boardCardHTML(c, defs, opts){
     c.asleep>0 ? 'is-asleep' : '',
     c.paralyzed>0 ? 'is-paralyzed' : '',
     c.blind>0 ? 'is-blind' : '',
+    c.tipsy>0 ? 'is-tipsy' : '',
+    c.confused>0 ? 'is-confused' : '',
     c.shocked>0 ? 'is-shocked' : '',
     c.corrode>0 ? 'is-corroded' : '',
     c.staggered>0 ? 'is-staggered' : '',
@@ -19012,7 +19350,7 @@ function boardCardHTML(c, defs, opts){
   // aura), so the board visibly reflects the buff even though it's never baked into c.atk.
   // 2026-10-10 (user: "Attack = Base Attack + Bonuses"): the board shows the total; buffed above the printed value it's
   // tinted blue, and the card details split it into base + bonus.
-  const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
+  const effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   const atkLabel = atkLabelHTML(effAtk, d.attack);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
   const printedAtk = Number(d.attack)||0, atkLow = printedAtk > 1 && (effAtk <= 0 || effAtk < printedAtk*0.25);
@@ -19028,6 +19366,8 @@ function boardCardHTML(c, defs, opts){
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
+  if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`);
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
@@ -19062,9 +19402,15 @@ function boardCardHTML(c, defs, opts){
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
       ${'' /* 2026-10-08 (user): no rain on cards; cards only show effects for real statuses */}${ritualChipHTML(c, opts.pid)}${caged ? `<div class="cage-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><div class="cage-tag">⛓️ Caged</div>` : ''}`;
   const cageCls = caged ? `is-caged ${c.cageOwner === viewerHandPid(matchState) ? 'is-mine-caged' : ''}` : '';
-  return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
-      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+  // Guardian plates and Revivification wings (2026-10-11, user: "Guardianship is a strong effect. There should be a guard
+  // effect around it, maybe metal like barricade/armor/sheets extending from the left and right. Revivification needs to
+  // have angel wings effect on the card (after it enters the battlefield)"). The wings fold away once the revive is spent.
+  const guards = !!((d.effects||{}).guardian), winged = !!((d.effects||{}).revive) && !c.revivedOnce;
+  const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
+  const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
+  return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+    ${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
+      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
@@ -19828,7 +20174,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-frozen', c.frozen>0);
   el.classList.toggle('is-asleep', c.asleep>0);
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
-  el.classList.toggle('is-blind', c.blind>0);
+  el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
   el.classList.toggle('is-corroded', c.corrode>0);
   el.classList.toggle('is-staggered', c.staggered>0);
@@ -19840,6 +20186,8 @@ function updateCardStatusDisplay(uid){
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`);
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
+  if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`);
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
@@ -19934,11 +20282,14 @@ function atkAmpTier(eff, base){
   const r = base > 0 ? eff / base : 1 + eff / 2;
   return r >= 3 ? 4 : r >= 2.5 ? 3 : r >= 2 ? 2 : r >= 1.5 ? 1 : 0.5;
 }
+// Swarm on the attack number (2026-10-11, user: "Swarm changes to +1 Attack ... let their attack value be dynamically
+// modified when I play Ants or when they die"): the board shows each Swarm card's Attack with its current bonus in.
+function liveSwarmBonus(c){ try{ const m = matchState; return (m && m.engine && m.engine.swarmBonusOf) ? m.engine.swarmBonusOf(m.players, c) : 0; }catch(e){ return 0; } }
 function atkLabelHTML(eff, base){ const t = atkAmpTier(eff, base); return t ? `⚔<span class="atk-buffed atk-amp-${String(t).replace('.', '_')}">${eff}</span>` : `⚔${eff}`; }
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
-  const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0);
+  const d = getCardDefs()[c.defId] || {}, tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + liveSwarmBonus(c);
   a.innerHTML = atkLabelHTML(tot, d.attack);
 }
 function updateCardHpDisplay(uid){
@@ -19954,7 +20305,7 @@ function updateCardHpDisplay(uid){
 // little "clunk" of the mechanism, not just a number silently changing underneath it.
 function updateCardWaitDisplay(uid, waitRemaining){
   const el = boardCardEl(uid); if(!el) return;
-  if(waitRemaining<=0) el.querySelectorAll('.ab-trig.is-off').forEach(b=>{ b.classList.remove('is-off'); b.classList.add('is-waking'); b.title = String(b.title||'').replace(' (off until it’s Ready)', ''); }); // its triggers switch on as it becomes Ready
+  if(waitRemaining<=0) el.querySelectorAll('.ab-trig.is-off').forEach(b=>{ b.classList.remove('is-off'); b.classList.add('is-waking'); b.title = String(b.title||'').replace(' (off for now: it is Waiting, Stunned, Frozen or Asleep)', ''); }); // its triggers switch on as it becomes Ready
   const badge = el.querySelector('.waitbadge'); if(!badge) return;
   const total = Math.max(1, Number(badge.getAttribute('data-wait-total'))||waitRemaining||1);
   const frac = Math.max(0, Math.min(1, waitRemaining/total));
@@ -20112,6 +20463,11 @@ function bleedOutVfx(el, ms, tone){
   el.style.setProperty('--bleed-c', DEATH_TONES[tone] || DEATH_TONES.bleed);
   const w = document.createElement('span'); w.className = 'bleed-wash'; w.setAttribute('aria-hidden', 'true');
   for(let i = 0; i < 4; i++){ const dr = document.createElement('i'); dr.style.left = (18 + i*21 + Math.random()*8) + '%'; dr.style.animationDelay = Math.round(ms*(0.25 + i*0.11)) + 'ms'; w.appendChild(dr); }
+  // 2026-10-11 (user: "the gradient overlay should appear with/under the card, not over it"): the colour wash lives
+  // inside the card tile, clipped to its rounded frame and moving with it, instead of a box laid over the whole slot.
+  // Only the falling drops stay on the slot, below the card's bottom edge.
+  const tile = el.querySelector('.card-tile');
+  if(tile){ const tint = document.createElement('span'); tint.className = 'bleed-tint'; tint.setAttribute('aria-hidden', 'true'); tile.appendChild(tint); }
   el.appendChild(w);
   el.classList.add('bleeding', 'bleed-' + (tone || 'bleed'));
   return true;
@@ -20246,7 +20602,8 @@ function pixelShatterVfx(el, ms){
     const dx = (col - (COLS-1)/2) * (18 + Math.random()*26), dy = (row - (ROWS-1)/2) * (10 + Math.random()*16) + 30;
     gsap.to(bit, {x:dx, y:dy, rotation:(Math.random()*2 - 1)*60, scale:.5, opacity:0, duration:(ms/1000)*(0.7 + Math.random()*0.4), delay:Math.random()*0.08, ease:'power2.out', onComplete:()=> bit.remove()});
   }
-  gsap.set(t, {opacity:0});
+  // 2026-10-11 (user: "when a token shatters, its back frame stays visible"): the whole slot goes, not just the tile.
+  gsap.set(el, {opacity:0});
   return true;
 }
 function deathVfx(uid){
@@ -20269,7 +20626,7 @@ function deathVfx(uid){
   const isToken = !!(rcD && (getCardDefs()[rcD.defId]||{}).token);
   const burnt = isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
   try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
-  if(burnt && style==='fall' && !isToken) skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
+  if(burnt && (style==='fall' || isToken) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   // 2026-10-10: cold and poison deaths shed ice shards / drips (SkillFX.elementDeath, from the VFX Playground).
   try{ if((style==='cold' || style==='poison') && window.SkillFX && SkillFX.elementDeath){ SkillFX.elementDeath(el, style, {particlesOnly:true}); if(style==='cold') SoundKit.iceShatter(); } }catch(e){}
@@ -20447,7 +20804,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0};
       });
     });
   });
@@ -20599,7 +20956,7 @@ async function resolveRound(opts){
           // in replayRows. Backfill it from the live (already fully-resolved) board card.
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
@@ -20795,6 +21152,7 @@ async function resolveRound(opts){
       m.nextBattle = nxt ? {mapId:'m1', key:nxt.key, node:nxt} : null;
     }
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
+    if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
     if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
@@ -20810,8 +21168,7 @@ async function resolveRound(opts){
       const rewardTier = nodeRewardTier((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       if(rewardTier){
         const base = isFirstClear ? rewardTier.first : rewardTier.repeat;
-        // Top-rank bonus (2026-10-10, user: "S rewards gives additional rewards"): S +25%, SS +50%, SSS +100%.
-        const bm = RANK_BONUS[rank] || 0, bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)};
+        const bm = isFirstClear ? 0 : ((RANK_MULT[rank] || 1) - 1), bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)}; // first clears are never changed by rank
         const payout = {gold: (base.gold||0) + bonus.gold, dust: (base.dust||0) + bonus.dust};
         if(payout.gold>0) grantCurrency('gold', payout.gold);
         if(payout.dust>0) grantCurrency('dust', payout.dust);
@@ -21111,7 +21468,7 @@ function fieldOverlayHTML(id){
   if(id==='moon') return `<div class="field-fx field-moon" aria-hidden="true"><span class="fm-moon">🌕</span></div>`;
   return '';
 }
-function dayNightOn(m){ return !!(m && m.engine && m.engine.getPhase && m.mode!=='tutorial' && m.mode!=='liveRanked'); }
+function dayNightOn(m){ return !!(m && m.engine && m.engine.getPhase && m.mode!=='tutorial' && m.mode!=='liveRanked' && m.engine.getPhase()); }
 // Tide (2026-10-09): the Flow/Ebb pill only shows in fights where a Tide card is in either deck.
 function matchHasTide(m){
   if(m._hasTide !== undefined) return m._hasTide;
@@ -21328,6 +21685,9 @@ const STATUS_TIPS = [
   {id:'st-asleep', test:c=> c.asleep>0, text:'💤 Asleep: can’t act until it wakes — any damage wakes it.'},
   {id:'st-paralyzed', test:c=> c.paralyzed>0, text:'⚡ Paralyzed: each round there’s a 1-in-2 chance it can’t act.'},
   {id:'st-stunned', test:c=> c.stunned, text:'💫 Stunned: skips its attack this round.'},
+  {id:'st-tipsy', test:c=> c.tipsy>0, text:'🍺 Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.'},
+  {id:'st-confused', test:c=> c.confused>0, text:'❓ Confused: half the time, this card\'s triggers and on-hit skills fizzle.'},
+  {id:'st-blind', test:c=> c.blind>0, text:'👁 Blind: this card\'s swings miss half the time.'},
   {id:'st-chained', test:c=> c.chained, text:'⛓️ Chained: can’t attack until its chain breaks.'},
 ];
 function passiveTipCandidates(){
@@ -21350,6 +21710,32 @@ function passiveTipCandidates(){
     return null; }}));
   return out;
 }
+// 2026-10-11 (user: "The tooltip hover for 1s thing must be a tutorial gate in your 2nd ever match, to
+// investigate a difficult opponent card"): from your second-ever match, once the enemy fields its
+// toughest card, play pauses on a tip pointing at it until you rest the pointer on it and its details
+// open. Shown once. Matches are counted the first time the coach sees them (tutorial included).
+let lastPeekUid = null;
+const MATCH_NO_KEY = 'bramblewood_matches_seen_v1';
+function matchNumberOf(m){
+  if(m._matchNo) return m._matchNo;
+  let n = 0; try{ n = +localStorage.getItem(MATCH_NO_KEY) || 0; }catch(e){}
+  n++; try{ localStorage.setItem(MATCH_NO_KEY, String(n)); }catch(e){}
+  return (m._matchNo = n);
+}
+function toughestEnemyCard(m){
+  const r = m.players[2].row, defs = getCardDefs();
+  const all = [...r.left, ...r.center, ...r.right].filter(c=> c.hp > 0 && !((defs[c.defId]||{}).archetypes||[]).includes('Structure'));
+  const val = c=>{ const d = defs[c.defId] || {}; return (c.atk||0)*1.5 + (c.hp||0) + Object.keys(d.effects||{}).length*2 + (d.cost||0); };
+  return all.sort((a, b)=> val(b) - val(a))[0] || null;
+}
+const PEEK_GATE = {id:'g-peek', action:true, gate:true, allow:['.coach-tip', '#rowEnemy', '#quitMatchBtn'],
+  text:'🔎 That one looks tough. Rest your pointer on it (or press and hold) for a second to read what it does.',
+  anchor:()=>{ const m = matchState; const c = m && toughestEnemyCard(m); return c ? boardCardEl(c.uid) : null; },
+  done:m=>{ if(lastPeekUid == null) return false; const r = m.players[2].row; return [...r.left, ...r.center, ...r.right].some(c=> c.uid === lastPeekUid); }};
+function peekGateTip(m){
+  if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
+  return matchNumberOf(m) >= 2 ? PEEK_GATE : null;
+}
 const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','pvp','dungeon','raidOnline','raidOffline','liveRanked']);
 let coachOpen = null, coachShield = null;
 function maybeShowCoachTip(){
@@ -21358,6 +21744,9 @@ function maybeShowCoachTip(){
   // 1) guided tutorial steps take priority, in order
   const g = guidedStepActive(m);
   if(g){ const el = g.anchor(); if(el){ showCoachTip(g, el); return; } if(g.action) return; }
+  matchNumberOf(m);
+  const pg = peekGateTip(m);
+  if(pg){ lastPeekUid = null; const el = pg.anchor(); if(el){ showCoachTip(pg, el); return; } }
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
   // loaded up can free-range tutorial messages come up"): no passive tip while any guided step is left.
   if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id))) return;
@@ -21421,14 +21810,16 @@ function showCoachTip(tip, anchorEl){
   coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick};
   // Guided "do this" steps lock everything except what the step asks for (the hand and your
   // board row for "play a card"); a click anywhere else just nudges the tip.
-  if(tip.action && GUIDED_STEPS.includes(tip)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b};
+  if(tip.action && (GUIDED_STEPS.includes(tip) || tip.gate)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b, gate: !!tip.gate};
+  // a gate always offers a way out after a while (touch screens without long-press, say)
+  if(tip.gate) setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip && !b.querySelector('.coach-ok')){ const s = document.createElement('button'); s.type = 'button'; s.className = 'btn small coach-ok coach-skip'; s.textContent = 'Skip'; s.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); }; b.appendChild(s); } }, 12000);
   const ok = b.querySelector('.coach-ok');
   if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
 }
 let tutorialLock = null;
 ['pointerdown','mousedown','click','dragstart','touchstart','keydown'].forEach(type=> document.addEventListener(type, e=>{
   if(!tutorialLock) return;
-  if(!matchState || matchState.mode!=='tutorial'){ tutorialLock = null; return; }
+  if(!matchState || (matchState.mode!=='tutorial' && !tutorialLock.gate)){ tutorialLock = null; return; }
   const t = e.target;
   if(type==='keydown' && (e.key==='Tab' || e.key==='Shift')) return;
   if(t && t.closest && tutorialLock.allow.some(sel=> t.closest(sel))) return;
@@ -21931,7 +22322,7 @@ function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;
   return `<div class="wl-glory">
-    <span class="rank-hex wl-rank rank-${m.conquestRankEarned}" title="Graded on how much of your own castle HP you still had left" aria-label="Rank ${m.conquestRankEarned}"><i aria-hidden="true"></i><b>${m.conquestRankEarned}</b></span>
+    <span class="rank-hex wl-rank rank-${m.conquestRankEarned}" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}" aria-label="Rank ${m.conquestRankEarned}"><i aria-hidden="true"></i><b>${m.conquestRankEarned}</b></span>
     ${reward && reward.isFirstClear ? `<span class="wl-firstclear" title="First time clearing this fight — a bigger one-off bonus"><span>✨ First Clear ✨</span></span>` : ''}
   </div>`;
 }
@@ -21939,7 +22330,7 @@ function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
   if(m.conquestRankEarned && m.winner!==1){
-    secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="Graded on how much of your own castle HP you still had left">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
+    secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="${escapeAttr(rankExplain(m.conquestRankEarned, m))}">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
   }
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
@@ -21959,7 +22350,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1} (${reward.rankBonus.gold>=0?'+':''}${reward.rankBonus.gold})</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -22046,11 +22437,11 @@ function matchStatsHTML(m){
   // Arena/Simulator matches.
   const reward = m.conquestRewardEarned;
   const rewardsHTML = m.conquestRankEarned ? `<div class="winloss-conquest-rewards">
-      <span class="conquest-rank-badge rank-${m.conquestRankEarned}" title="Graded on how much of your own castle HP you still had left">Rank ${m.conquestRankEarned}</span>
+      <span class="conquest-rank-badge rank-${m.conquestRankEarned}" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}">Rank ${m.conquestRankEarned}</span>
       ${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" title="First time clearing this node — a bigger one-off bonus">✨ First Clear</span>` : ''}
       ${reward && reward.gold>0 ? `<span class="hud-pill forge-cur-gold" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">${mapleLeafIconHTML()} ${rewardCountSpan(reward.gold)} Maple Leaves</span>` : ''}
       ${reward && reward.dust>0 ? `<span class="hud-pill forge-cur-dust" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">✨ ${rewardCountSpan(reward.dust)} Dust</span>` : ''}
-      ${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" title="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus included</span>` : ''}
+      ${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1}</span>` : ''}
       ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="A rare find for an S-rank win on this map (once per map)">🎁 Rare find!</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="Food tokens buy Sunfeather packs in the Shop">🍯 ${m.conquestFoodEarned} Food</span>` : ''}
@@ -22076,7 +22467,7 @@ function matchStatsHTML(m){
       <span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(pReward.gold)} Maple Leaves</span>
       ${pReward.laurels ? `<span class="hud-pill cur-laurels" title="Laurels: earned only in Arena fights against other players">🌿 ${rewardCountSpan(pReward.laurels)} Laurels</span>` : ''}
       ${pReward.dust ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(pReward.dust)} Dust</span>` : ''}
-      <span class="hud-pill">🎟️ ${pvpTicketsLeft()}/${PVP_TICKETS_PER_DAY} tickets left</span>
+      <span class="hud-pill ticket-pill">🎟️ ${pvpTicketsLeft()}/${PVP_TICKETS_PER_DAY} tickets left</span>
     </div>` : '';
   const aReward = m.asyncRewardEarned;
   const asyncHTML = (m.mode==='async' && m.asyncRunAfter) ? `<div class="winloss-conquest-rewards">
@@ -22245,6 +22636,7 @@ function logText(ev){
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
     case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
     case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
+    case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
     case 'fieldTick': return ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +1 Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
@@ -22257,15 +22649,17 @@ function logText(ev){
       let elemNote = '';
       if(ev.elementalConvert==='poison') elemNote = ` — converted to ${ev.elementalAmount} Poison ☠ instead of direct damage`;
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
-      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Rend — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
+      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
     case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ for ${ev.dmg}${ev.swipe?' (swipe)':''}.`};
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
     case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${ev.dmg} damage back at ${nm(ev.targetDefId)}. 🪞`};
-    case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Pierce punched through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
+    case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
     case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
-    case 'blindMiss': return {cls:'', text:`${nm(ev.attDefId)} swings blindly and misses entirely! 👁`};
+    case 'blindMiss': return {cls:'', text:`${nm(ev.attDefId)} swings blindly and misses! 👁`};
+    case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
+    case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
@@ -22304,12 +22698,17 @@ function logText(ev){
         expose: `exposed ${nm(ev.targetDefId)} 🎯`,
         stun: `stunned ${nm(ev.targetDefId)} 💫`,
         debuffAttack: `lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}`,
-        scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡, permanent)`,
+        scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡)`,
+        armorShred: `stripped ${ev.amount} Armor from ${nm(ev.targetDefId)} for good 🛡`,
+        spite: `lashed back at ${nm(ev.targetDefId)} for ${ev.amount} (Spiteful) 😠`,
+        counter: `counterattacked ${nm(ev.targetDefId)} for ${ev.amount} ↩️`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
         stanch: `stopped ${ev.amount} Bleed with its healing 🩹`,
         shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
-        grit: `toughened up from the fight (+${ev.amount}⚔, permanent) 💪`,
-        blind: `blinded ${nm(ev.targetDefId)} 👁 (its next attacks may miss)`,
+        grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
+        blind: `blinded ${nm(ev.targetDefId)} 👁 (its attacks miss half the time)`,
+        tipsy: `made ${nm(ev.targetDefId)} Tipsy 🍺`,
+        confuse: `Confused ${nm(ev.targetDefId)} ❓`,
         shock: `shocked ${nm(ev.targetDefId)} ⚡ (+50% damage taken)`,
         corrode: `corroded ${nm(ev.targetDefId)}'s Attack by ${ev.amount} 🧪`,
         // freeze/sleep/paralyze/stunOnHit (2026-09-24, found while adding Stagger for task #109):
@@ -22322,14 +22721,14 @@ function logText(ev){
         stunOnHit: `stunned ${nm(ev.targetDefId)} 💫 (skips this round)`,
         // Stagger (2026-09-24, task #109 — the physical elemental status, Shock's mirror).
         stagger: `staggered ${nm(ev.targetDefId)} 💢 (-50% damage dealt)`,
-        berserk: `flew into a berserk rage (+${ev.amount}⚔, permanent) 😡`,
-        momentum: `surged with Momentum after the kill (+${ev.amount}⚔, permanent) 🔥`,
+        berserk: `flew into a berserk rage (+${ev.amount}⚔) 😡`,
+        momentum: `surged with Momentum after the kill (+${ev.amount}⚔) 🔥`,
         // bleed/esprit (2026-09-21 coverage audit): the VFX/SFX side of both was fixed in the
         // batch that found them completely silent — this battle-log map had the exact same gap
         // (both fell through to the raw `|| ev.kind` fallback, printing the bare word "bleed" or
         // "esprit" as the whole sentence) and went unnoticed until this follow-up pass.
         bleed: `bled ${nm(ev.targetDefId)} (+${ev.amount} 🩸)`,
-        esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔${ev.hp ? ' +'+ev.hp+'❤' : ''}, permanent) 🤝`,
+        esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔${ev.hp ? ' +'+ev.hp+'❤' : ''}) 🤝`,
       }[ev.kind] || ev.kind;
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
@@ -23196,7 +23595,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // signal Armor was ever in the picture. ev.rend only comes back true when the target actually
   // carried real armor (see rendBypass in the engine), so a Rend card swinging at an unarmored
   // target stays silent — same "only when it actually mattered" convention as Bulwark just above.
-  if(ev.rend && targetEl){ setTimeout(()=> { SoundKit.rendTone(); floatText(targetEl, '🗡 Rend — Armor bypassed!', 'debuff'); }, 100); }
+  if(ev.rend && targetEl){ setTimeout(()=> { SoundKit.rendTone(); floatText(targetEl, '🗡 Pierced!', 'debuff'); }, 100); }
   // Fester / Rupture (same audit): both fold their bonus damage straight into ev.dmg with zero
   // attribution — a Fester hit for 9 and a plain hit for 9 read as identical. Each gets a small
   // secondary float crediting the bonus, in the same glyph/color as its source stack (☠/poison
@@ -23517,7 +23916,7 @@ function renderVfxForEvent(ev){
     // — silent unless this specific card actually wrote an On Skill line.
     maybeSpeak(ev.attUid, null, 'onSkill');
     // 2026-10-08 emotes: the card on the receiving end of a status reacts; self-buffs pump up.
-    { const ON_TARGET = {poison:'poisoned', freeze:'frozen', bleed:'hurt', expose:'hurt', stun:'dazed', stunOnHit:'dazed', stagger:'dazed', paralyze:'dazed', sleep:'sleepy', blind:'blinded', shock:'shocked', cleanse:'healed', addWait:'sleepy'};
+    { const ON_TARGET = {poison:'poisoned', freeze:'frozen', bleed:'hurt', expose:'hurt', stun:'dazed', stunOnHit:'dazed', stagger:'dazed', paralyze:'dazed', sleep:'sleepy', blind:'blinded', tipsy:'dazed', confuse:'dazed', shock:'shocked', cleanse:'healed', addWait:'sleepy'};
       const ON_SELF = {berserk:'rage', momentum:'pumped', grit:'pumped', esprit:'pumped'};
       if(ev.targetUid!=null && ON_TARGET[ev.kind]) maybeEmote(ev.targetUid, ON_TARGET[ev.kind]);
       else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
@@ -23534,6 +23933,7 @@ function renderVfxForEvent(ev){
     // Task #92 (2026-09-16) additions: Scar (permanent stacking mark), Renewal's cleanse
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
+    else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
     else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; } }
     else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
@@ -23550,6 +23950,8 @@ function renderVfxForEvent(ev){
     // Momentum are self-buffs on the ATTACKER (no targetUid at all — see their engine pushes),
     // so they float on the attacker's own tile, same convention as Grit above.
     else if(ev.kind==='blind'){ SoundKit.blindTone(); if(el) floatText(el, '👁 Blinded', 'debuff'); if(rc) rc.blind = (rc.blind||0) + 1; }
+    else if(ev.kind==='tipsy'){ SoundKit.blindTone(); if(el) floatText(el, '🍺 Tipsy', 'debuff'); if(rc) rc.tipsy = (rc.tipsy||0) + 1; }
+    else if(ev.kind==='confuse'){ SoundKit.blindTone(); if(el) floatText(el, '❓ Confused', 'debuff'); if(rc) rc.confused = (rc.confused||0) + 1; }
     else if(ev.kind==='shock'){ SoundKit.shockTone(); if(el){ shakeEl(el); glitchVfx(el); floatText(el, '🌩 Shocked', 'debuff'); } if(rc) rc.shocked = (rc.shocked||0) + 1; }
     else if(ev.kind==='corrode'){ SoundKit.corrodeTone(); if(el) floatText(el, '-'+ev.amount+'⚔ 🧪', 'debuff'); if(rc) rc.corrode = (rc.corrode||0) + ev.amount; }
     // Stagger (2026-09-24, task #109): physical's elemental status, completing the cold/heat/
@@ -23695,6 +24097,8 @@ function renderVfxForEvent(ev){
   // Blind miss (2026-09-17): the blinded card's swing whiffs entirely before any target/damage
   // resolution — a distinct "swing and a total miss" cue, separate from Evade's dodge-flash
   // (which plays on the TARGET, not the attacker).
+  if(ev.type==='tipsySwing'){ const el = boardCardEl(ev.attUid); if(el){ el.classList.remove('tipsy-lurch'); void el.offsetWidth; el.style.setProperty('--lurch', (ev.drift<0 ? -1 : 1)*14 + 'px'); el.classList.add('tipsy-lurch'); setTimeout(()=> el.classList.remove('tipsy-lurch'), 700); if(ev.miss) setTimeout(()=> floatText(el, '🍺 Miss!', 'debuff'), animMs().windup); } }
+  if(ev.type==='confusedWhiff'){ const el = boardCardEl(ev.uid); if(el){ floatText(el, '❓ Fizzle', 'debuff'); } }
   if(ev.type==='blindMiss'){
     const el = boardCardEl(ev.attUid);
     animateAttacker(ev.attUid, ev.side==='A');
@@ -23813,6 +24217,13 @@ function renderVfxForEvent(ev){
     try{ if(grow) SoundKit.growthSwell(); }catch(e){}
     const el = boardCardEl(ev.attUid);
     if(el){ el.classList.toggle('phase-aura', grow); el.classList.toggle('phase-night', ev.phase==='night'); if(grow){ el.classList.remove('phase-burst'); void el.offsetWidth; el.classList.add('phase-burst'); setTimeout(()=> el.classList.remove('phase-burst'), 1400); } }
+  }
+  if(ev.type==='spell'){
+    try{ SoundKit.trigger(); }catch(e){}
+    try{ showToast(`✨ ${(getCardDefs()[ev.defId]||{}).name || 'Spell'}: ${spellText(getCardDefs()[ev.defId])}`, 'ok'); }catch(e){}
+    const lbl = ev.action==='hasten' ? n=> '−'+n+' ⏳' : ev.action==='mend' ? n=> '+'+n+' ❤' : n=> '−'+n+' ⚔';
+    (ev.targets||[]).forEach((t, i)=> setTimeout(()=>{ const el = boardCardEl(t.uid); if(el){ floatText(el, lbl(t.amount), ev.action==='sap' ? 'debuff' : 'heal'); } }, i*90));
+    setTimeout(()=>{ try{ renderBoard(); }catch(e){} }, 300);
   }
   if(ev.type==='fieldSet'){ try{ const F = matchState && matchState.engine && matchState.engine.FIELDS && matchState.engine.FIELDS[ev.field]; if(F) showToast(`${F.icon} ${F.name}: ${F.text}`, 'ok'); }catch(e){} }
   if(ev.type==='elementalEnergy') floatResourceGain(ev, '✨', 'hudElementalEnergyPill', SoundKit.grace);
@@ -27681,6 +28092,7 @@ function switchTab(tab){
   if(tab!=='home' && tab!=='play' && !tabOpen(tab)){ showToast('🗺️ That opens up later — keep pushing across the Conquest map.'); tab = 'play'; playSubTab = 'conquest'; }
   // 2026-10-08 (user: "the deck editor should land on the Manage decks page first"): entering Deck
   // shows the deck list, unless a button asked to open the builder directly (deckOpenBuilderOnce).
+  if(tab!=='play' || playSubTab!=='conquest') document.body.classList.remove('cq-node-focus');
   if(tab!=='play'){ const aw = document.getElementById('appWrap'); if(aw) aw.classList.remove('cq-hud', 'cq-no-tabs'); document.body.classList.remove('conquest-full', 'play-full'); }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ try{ deckHeroView = false; }catch(e){} }
   if(tab!=='deck' && currentTabBeforeSwitch==='deck'){ try{ restoreMainDeck(); }catch(e){} }
@@ -28230,6 +28642,9 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
     document.querySelectorAll(GHOST_BANNERS).forEach(b=>{
       const r = b.getBoundingClientRect(); const inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
       let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
+      // The map's title banner (2026-10-11, user: "Hovering to the explanation on the top left makes it fade out and
+      // disappear for 10s before it fades back in"): one touch sends it away for 10 seconds.
+      if(b.classList.contains('conquest-headline')){ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
       b.classList.toggle('is-ghost', inside && !onControl);
     }); };
   document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});

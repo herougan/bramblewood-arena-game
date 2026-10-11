@@ -2065,14 +2065,15 @@
   .board-card.bleeding{animation:bleedDrain var(--bleed-ms,700ms) ease-in forwards;}
   @keyframes bleedDrain{0%{filter:none;} 60%{filter:saturate(.35) brightness(.8);} 100%{filter:saturate(.1) brightness(.55);}}
   .bleed-wash{position:absolute; inset:0; z-index:8; pointer-events:none; border-radius:inherit; overflow:visible;}
-  .bleed-wash::before{content:''; position:absolute; inset:0; border-radius:inherit; mix-blend-mode:multiply;
+  .bleed-tint{position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:inherit; mix-blend-mode:multiply;
     background:linear-gradient(180deg, var(--bleed-c) 0%, color-mix(in srgb, var(--bleed-c) 70%, transparent) 70%, transparent 100%) no-repeat;
     background-size:100% 0%; animation:bleedRun var(--bleed-ms,700ms) cubic-bezier(.3,.1,.5,1) forwards;}
   @keyframes bleedRun{to{background-size:100% 140%;}}
   .bleed-wash i{position:absolute; top:96%; width:6px; height:9px; margin-left:-3px; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%;
     background:var(--bleed-c); opacity:0; animation:bleedDrop calc(var(--bleed-ms,700ms) * .6) cubic-bezier(.5,0,.9,.6) forwards;}
   @keyframes bleedDrop{0%{opacity:0; transform:translateY(-6px) scaleY(.6);} 15%{opacity:.95;} 100%{opacity:0; transform:translateY(34px) scaleY(1.3);}}
-  .board-card.bleed-cold .bleed-wash::before{mix-blend-mode:screen;}
+  .board-card.bleed-cold .bleed-tint{mix-blend-mode:screen;}
+  .bleed-wash{z-index:0;}
   /* Castle cracks (2026-10-06) — crackStage()/updateCastleCracks() in arena_app.js. Three hand-drawn
      crack layers that appear at ≤66%, ≤33% and ≤15% HP; a new crack lands with a little jolt. */
   .card-tile .castle-cracks{position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit; opacity:0;
@@ -4071,6 +4072,39 @@
   .map-node-check{position:absolute; right:-4px; bottom:-4px; font-size:12px; background:var(--health-soft, #d6f5df); color:#1a7a3a; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 6px rgba(0,0,0,.4); line-height:1; font-weight:800;}
   /* Item #4 (2026-09-18): the generic ">1s hover" tooltip (attachDelayedTooltip in the JS) —
      used first for the Conquest tab button's explanation, generic enough to reuse elsewhere. */
+  /* Version banner (2026-10-11): out of date / damaged card data. */
+  .version-banner{position:fixed; left:50%; top:calc(10px + env(safe-area-inset-top, 0px)); transform:translateX(-50%); z-index:2000; display:flex; gap:10px; align-items:center;
+    padding:8px 10px 8px 14px; border-radius:12px; background:var(--surface); color:var(--ink, inherit); border:1.5px solid var(--surface-border); box-shadow:0 8px 24px rgba(0,0,0,.35); max-width:calc(100vw - 24px); font-size:14px;}
+  .version-banner.is-bad{border-color:#c0392b;}
+  .version-banner.is-update{border-color:#5aa04a;}
+  /* Guardian plates (2026-10-11): riveted steel sheets braced out from behind both sides of a Guardian. */
+  .board-card .guard-plates{position:absolute; inset:12% -27% 10%; z-index:-1; pointer-events:none;}
+  .board-card .guard-plates i{position:absolute; top:0; bottom:0; width:30%; border-radius:4px;
+    background:radial-gradient(circle at 22% 14%, #e8edf2 0 2px, #5d6672 2.5px, transparent 3.5px), radial-gradient(circle at 22% 86%, #e8edf2 0 2px, #5d6672 2.5px, transparent 3.5px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,.12) 0 2px, transparent 2px 9px),
+      linear-gradient(100deg, #6f7a86 0%, #b9c3cc 28%, #8a95a1 46%, #d6dde3 62%, #7a8591 100%);
+    border:1.5px solid #3e4650; box-shadow:inset 0 0 0 1px rgba(255,255,255,.25), 0 2px 6px rgba(0,0,0,.45);}
+  .board-card .guard-plates .gp-l{left:0; transform:perspective(300px) rotateY(32deg); transform-origin:right center;}
+  .board-card .guard-plates .gp-r{right:0; transform:perspective(300px) rotateY(-32deg); transform-origin:left center;
+    background:radial-gradient(circle at 78% 14%, #e8edf2 0 2px, #5d6672 2.5px, transparent 3.5px), radial-gradient(circle at 78% 86%, #e8edf2 0 2px, #5d6672 2.5px, transparent 3.5px),
+      repeating-linear-gradient(180deg, rgba(255,255,255,.12) 0 2px, transparent 2px 9px), linear-gradient(80deg, #6f7a86 0%, #b9c3cc 28%, #8a95a1 46%, #d6dde3 62%, #7a8591 100%);}
+  .board-card .guard-plates i::after{content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%) no-repeat; background-size:250% 100%; animation:guardSheen 4.5s ease-in-out infinite;}
+  @keyframes guardSheen{0%,60%{background-position:120% 0;} 100%{background-position:-120% 0;}}
+  /* Revivification wings (2026-10-11): a pair of white wings behind the card until its one revive is spent. */
+  .board-card .angel-wings{position:absolute; inset:-26% -15% 50%; z-index:-1; pointer-events:none; filter:drop-shadow(0 0 6px rgba(255,240,190,.75));}
+  .board-card .angel-wings i{position:absolute; top:0; width:50%; height:100%; background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20120'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='1'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'/%3E%3Cstop%20offset='.6'%20stop-color='%23f3efe2'/%3E%3Cstop%20offset='1'%20stop-color='%23d9d0b4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill='url(%23g)'%20stroke='%23c9b98a'%20stroke-width='1.2'%3E%3Cpath%20d='M98%2018%20C70%202%2030%204%206%2022%20C24%2022%2040%2026%2052%2032%20C34%2034%2018%2042%206%2056%20C26%2052%2042%2052%2056%2056%20C40%2062%2028%2074%2020%2090%20C38%2080%2054%2074%2066%2074%20C56%2084%2050%2098%2048%20114%20C62%2098%2076%2086%2092%2078%20Z'/%3E%3C/g%3E%3Cg%20fill='none'%20stroke='%23cdbf95'%20stroke-width='1'%3E%3Cpath%20d='M96%2022%20C70%2022%2046%2028%2030%2036'/%3E%3Cpath%20d='M94%2040%20C72%2044%2052%2052%2036%2064'/%3E%3Cpath%20d='M92%2058%20C74%2066%2062%2078%2054%2094'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; animation:wingFlap 3.2s ease-in-out infinite;}
+  .board-card .angel-wings .aw-l{left:0; transform-origin:100% 90%;}
+  .board-card .angel-wings .aw-r{right:0; transform:scaleX(-1); transform-origin:100% 90%; animation-name:wingFlapR;}
+  @keyframes wingFlap{0%,100%{transform:rotate(18deg);} 50%{transform:rotate(8deg);}}
+  @keyframes wingFlapR{0%,100%{transform:scaleX(-1) rotate(18deg);} 50%{transform:scaleX(-1) rotate(8deg);}}
+  .board-card.has-wings{--wing-in:1;}
+  @media (prefers-reduced-motion: reduce){ .board-card .angel-wings i, .board-card .guard-plates i::after{animation:none;} }
+  /* Tickets left on the result screen (2026-10-11 screenshot: it read as greyed out): dark text on its pill. */
+  .winloss-conquest-rewards .hud-pill.ticket-pill{color:#6b2a1e; background:#f3dfc4; border-color:#d9b48a; opacity:1;}
+  .winloss-card.is-fallen .winloss-conquest-rewards .hud-pill.ticket-pill{color:#ffe1d6 !important;}
+  /* Status keywords (2026-10-11): coloured in skill text, explained once under a hairline. */
+  .kw{color:var(--kw); font-weight:700;}
+  .kw-gloss{margin-top:8px; padding-top:7px; border-top:1px solid color-mix(in srgb, currentColor 22%, transparent); font-size:.86em; line-height:1.4; opacity:.92; display:flex; flex-direction:column; gap:3px;}
   .tab-hover-tip{position:fixed; transform:translate(-50%,0); background:var(--surface); border:1.5px solid var(--surface-border);
     border-radius:10px; padding:8px 11px; max-width:240px; font-size:12px; box-shadow:0 8px 20px rgba(0,0,0,.3); z-index:900; pointer-events:none;}
   /* 2026-09-26 (explicit request: "The +1 X from hovering over the graveyard should be layered
@@ -4132,6 +4166,8 @@
   .rank-hex b{position:relative; font-family:'Baloo 2'; font-weight:800; font-size:34px; line-height:1; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.35), 0 0 10px rgba(255,255,255,.5); -webkit-text-stroke:1.5px rgba(70,30,60,.55);}
   .rank-hex.rank-B i{background:conic-gradient(from var(--fa, 0deg), #e9eef5, #9aa6b6, #ffffff, #b9c3cf, #e9eef5);}
   .rank-hex.rank-C i{background:conic-gradient(from var(--fa, 0deg), #e2a676, #9a5a2c, #f3c69e, #b06b38, #e2a676);}
+  .rank-hex.rank-D i{background:conic-gradient(from var(--fa, 0deg), #b8a996, #6f6352, #d4c8b8, #857766, #b8a996);}
+  .rank-hex.rank-E i{background:conic-gradient(from var(--fa, 0deg), #9a9088, #5a524b, #b9b0a8, #6e665f, #9a9088);}
   .rank-hex.rank-S{filter:drop-shadow(0 0 10px rgba(255,90,210,.75)) drop-shadow(0 0 22px rgba(150,80,255,.55));}
   .rank-hex.rank-S i{background:conic-gradient(from var(--fa, 0deg), #ff5fc8, #b46bff, #7ad7ff, #ff9be3, #8a4dff, #ff5fc8); animation:rankFoil 4s linear infinite;}
   @property --fa{syntax:'<angle>'; inherits:false; initial-value:0deg;}
@@ -4146,6 +4182,17 @@
   .conquest-node-panel .cnp-fight{position:absolute; top:0; left:50%; transform:translate(-50%, -55%); margin:0; z-index:4; font-size:18px; padding:10px 38px; border:2px solid rgba(255,226,160,.85);}
   .conquest-node-panel .cnp-fight:hover{transform:translate(-50%, -58%) scale(1.04);}
   .conquest-node-panel:has(> .cnp-fight){padding-top:26px;}
+  /* Skirmish panel (2026-10-11, user: "the contents should start from the top ... The 'cleared' thing can be on the top
+     row, and also the boundaries of this card can be very faintly green to represent defeated. Red if the fight outlevels
+     me by alot"): content hugs the top under the Fight button, Cleared sits in the head row, and the border tells the state.
+     A focused skirmish also hides the Play tabs ("remove those nav buttons if skirmish is focused on"). */
+  .conquest-node-panel:has(> .cnp-fight){padding-top:20px;}
+  .conquest-node-panel .cnp-head{align-items:flex-start;}
+  .cnp-cleared{align-self:center; font-weight:800; font-size:13px; color:#b8f0a8; background:rgba(120,200,110,.14); border:1px solid rgba(120,200,110,.4); border-radius:999px; padding:3px 10px; white-space:nowrap;}
+  .conquest-node-panel.is-cleared{border:1px solid rgba(130,210,120,.38) !important; box-shadow:0 -6px 18px rgba(0,0,0,.25), inset 0 0 0 1px rgba(130,210,120,.12);}
+  .conquest-node-panel.is-outlevel{border:1px solid rgba(240,110,95,.5) !important; box-shadow:0 -6px 18px rgba(0,0,0,.25), inset 0 0 0 1px rgba(240,110,95,.16);}
+  body.cq-node-focus #view-play .play-subtabs, body.cq-node-focus #view-play .play-subtabs-row{visibility:hidden; pointer-events:none;}
+  body.conquest-full.cq-node-focus #appWrap.cq-hud .conquest-main > .conquest-node-panel{bottom:16px !important;}
   .cnp-lvlbig{display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; padding:6px 14px; border-radius:12px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); min-width:84px;}
   .cnp-lvlbig b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif; letter-spacing:.3px;} .cnp-lvlbig small{font-size:11px; font-weight:700; opacity:.8; white-space:nowrap;}
   .cnp-lvlbig.is-even b{color:#b8f0a8;} .cnp-lvlbig.is-close b{color:#ffe08a;} .cnp-lvlbig.is-hard b{color:#ffab9a;}
@@ -4172,8 +4219,18 @@
      win/loss modal (the rank you just earned). Deliberately plain metal/gem-toned colors rather
      than reusing an existing semantic var (--danger/--health/etc.) since a rank isn't good/bad
      in that sense, just a tier. */
+  /* Energy cost on every fight button (2026-10-11, user: "The energy cost is not clear in the Play button(s) across the
+     post-mission windows or in conquest mode"): any button carrying data-energy-cost shows it as a small pill. */
+  button[data-energy-cost]::after{content:attr(data-energy-cost) "⚡"; display:inline-flex; align-items:center; margin-left:8px; padding:1px 7px 1px 8px; border-radius:999px; font-size:.78em; font-weight:800; line-height:1.4; background:rgba(255,214,90,.22); border:1px solid rgba(255,214,90,.55); color:inherit; vertical-align:middle;}
+  button[data-energy-cost="0"]::after, button[data-energy-cost=""]::after{display:none;}
+  button[data-energy-cost]:disabled::after{background:rgba(220,80,60,.22); border-color:rgba(220,80,60,.6);}
+  .energy-pill:not(.raid-points-pill){cursor:pointer;}
+  .energy-panel{position:fixed; z-index:9000; display:flex; flex-direction:column; gap:8px; padding:12px 14px; border-radius:12px; background:var(--surface, #2a2218); color:var(--ink, #f3ead6); border:1px solid rgba(255,214,90,.45); box-shadow:0 10px 28px rgba(0,0,0,.4); font-size:14px;}
+  .energy-panel small{opacity:.8; font-size:12px;}
   .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); background:var(--gold); margin-left:auto;}
   .conquest-rank-badge.rank-C{background:#c8845a;}
+  .conquest-rank-badge.rank-D{background:#9c8a78;} .conquest-rank-badge.rank-E{background:#857a70;} /* 2026-10-11 */
+  .conquest-rank-badge.rank-F, .conquest-rank-badge.rank-FF, .conquest-rank-badge.rank-FFF{background:#7a3a3a; color:#fbe9e9;}
   .conquest-rank-badge.rank-B{background:#c9d1d9; color:#2a2f36;}
   .conquest-rank-badge.rank-A{background:#ffd75e;}
   .conquest-rank-badge.rank-S{background:linear-gradient(135deg,#ff9de2,#8ec9ff); color:#2a1c3a;}
@@ -4561,6 +4618,14 @@
      overlay-icon-plus-tint treatment as Frozen/Asleep/Paralyzed above; Corrode gets Scar's
      tint-plus-badge-only treatment since it's a passive stat drain, not a turn-gating status. */
   .board-card.is-blind .card-tile{background:color-mix(in srgb, var(--status-blind-tint) 26%, var(--bg)); filter:grayscale(.5) brightness(.88);}
+  /* Tipsy and Confused (2026-10-11) */
+  .board-card.is-tipsy .card-tile{animation:tipsySway 2.6s ease-in-out infinite; transform-origin:50% 90%;}
+  @keyframes tipsySway{0%,100%{rotate:-2deg;} 50%{rotate:2.5deg;}}
+  .board-card.is-confused .card-tile{animation:confusedHue 3.2s ease-in-out infinite;}
+  @keyframes confusedHue{50%{filter:hue-rotate(28deg) saturate(1.15);}}
+  .board-card.tipsy-lurch{animation:tipsyLurch .7s ease-out;}
+  @keyframes tipsyLurch{35%{translate:var(--lurch,12px) 0; rotate:calc(var(--lurch,12px) / 3 * 1deg);} 100%{translate:0 0; rotate:0deg;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.is-tipsy .card-tile, .board-card.is-confused .card-tile, .board-card.tipsy-lurch{animation:none;} }
   .board-card.is-shocked .card-tile{background:color-mix(in srgb, var(--status-shock-tint) 26%, var(--bg));}
   .board-card.is-corroded .card-tile{background:color-mix(in srgb, var(--status-corrode-tint) 20%, var(--bg));}
   .blind-overlay{font-size:22px; animation:blindDim 2.2s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
@@ -5894,7 +5959,8 @@
   .card-tile.holo-hex.holo-active .holo-layer{opacity:.7;}
   .card-tile.holo-etched .holo-layer{-webkit-mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); -webkit-mask-clip:content-box, border-box; -webkit-mask-composite:xor; mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); mask-clip:content-box, border-box; mask-composite:exclude; padding:7% 7% 9%; box-sizing:border-box; background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.7) 0 1px, transparent 1px 3px), linear-gradient(115deg, #6b6f78, #f2f4f8 28%, #9aa0aa 42%, #fff7d6 55%, #8c8f96 70%, #e8ebf0 85%, #6b6f78); background-size:auto, 300% 300%; background-position:center, var(--hbx) var(--hby); mix-blend-mode:overlay; opacity:.95; filter:none;}
   .card-tile.holo-etched{box-shadow:inset 0 0 0 2px rgba(225,230,240,.7), 0 0 0 1px rgba(0,0,0,.25);}
-  .card-tile.holo-ice .holo-layer{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.9' stroke-width='1.1'%3E%3Cpath d='M0 22 L18 30 L31 18 L52 27 L60 8 L77 22 L99 14 L120 26'/%3E%3Cpath d='M31 18 L37 46 L22 61 L0 58'/%3E%3Cpath d='M52 27 L58 49 L37 46'/%3E%3Cpath d='M58 49 L84 54 L77 22'/%3E%3Cpath d='M84 54 L103 44 L120 52'/%3E%3Cpath d='M22 61 L28 86 L8 97 L0 94'/%3E%3Cpath d='M28 86 L53 79 L58 49'/%3E%3Cpath d='M53 79 L71 96 L84 54'/%3E%3Cpath d='M71 96 L96 88 L103 44'/%3E%3Cpath d='M96 88 L120 100'/%3E%3Cpath d='M71 96 L66 120'/%3E%3Cpath d='M28 86 L35 120'/%3E%3C/g%3E%3C/svg%3E"), repeating-linear-gradient(115deg, hsl(0 95% 62%) 0%, hsl(45 95% 60%) 6%, hsl(120 85% 58%) 12%, hsl(190 95% 60%) 18%, hsl(260 90% 68%) 24%, hsl(320 95% 65%) 30%, hsl(360 95% 62%) 36%); background-size:96px 96px, 300% 300%; background-position:calc(var(--hbx) * .3) calc(var(--hby) * .3), var(--hbx) var(--hby); opacity:.45;}
+  .card-tile.holo-ice{--ice-lines:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.9' stroke-width='1.1'%3E%3Cpath d='M0 22 L18 30 L31 18 L52 27 L60 8 L77 22 L99 14 L120 26'/%3E%3Cpath d='M31 18 L37 46 L22 61 L0 58'/%3E%3Cpath d='M52 27 L58 49 L37 46'/%3E%3Cpath d='M58 49 L84 54 L77 22'/%3E%3Cpath d='M84 54 L103 44 L120 52'/%3E%3Cpath d='M22 61 L28 86 L8 97 L0 94'/%3E%3Cpath d='M28 86 L53 79 L58 49'/%3E%3Cpath d='M53 79 L71 96 L84 54'/%3E%3Cpath d='M71 96 L96 88 L103 44'/%3E%3Cpath d='M96 88 L120 100'/%3E%3Cpath d='M71 96 L66 120'/%3E%3Cpath d='M28 86 L35 120'/%3E%3C/g%3E%3C/svg%3E");}
+  .card-tile.holo-ice .holo-layer{background-image:var(--ice-lines), repeating-linear-gradient(115deg, hsl(0 95% 62%) 0%, hsl(45 95% 60%) 6%, hsl(120 85% 58%) 12%, hsl(190 95% 60%) 18%, hsl(260 90% 68%) 24%, hsl(320 95% 65%) 30%, hsl(360 95% 62%) 36%); background-size:96px 96px, 300% 300%; background-position:calc(var(--hbx) * .3) calc(var(--hby) * .3), var(--hbx) var(--hby); opacity:.45;}
   .card-tile.holo-gold .holo-layer{background-image:linear-gradient(115deg, #6d4810 0%, #f6d77a 26%, #fff6cf 36%, #c9952a 50%, #f6d77a 64%, #fff2c0 74%, #6d4810 100%); background-size:300% 300%; background-position:var(--hbx) var(--hby); mix-blend-mode:soft-light; opacity:.9; filter:saturate(1.3);}
   .card-tile.holo-gold{box-shadow:inset 0 0 0 3px #e6c26a, inset 0 0 0 4px rgba(90,55,10,.6), 0 0 14px rgba(240,200,100,.35);}
   .card-tile.holo-reverse .holo-layer{-webkit-mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); -webkit-mask-clip:content-box, border-box; -webkit-mask-composite:xor; mask-image:linear-gradient(#000 0 0), linear-gradient(#000 0 0); mask-clip:content-box, border-box; mask-composite:exclude; padding:7% 7% 9%; box-sizing:border-box; background-image:repeating-linear-gradient(115deg, hsl(0 95% 62%) 0%, hsl(45 95% 60%) 6%, hsl(120 85% 58%) 12%, hsl(190 95% 60%) 18%, hsl(260 90% 68%) 24%, hsl(320 95% 65%) 30%, hsl(360 95% 62%) 36%); background-size:300% 300%; background-position:var(--hbx) var(--hby); opacity:.75;}
@@ -5907,6 +5973,25 @@
     -webkit-mask-image:repeating-linear-gradient(43deg, #000 0 1.2px, transparent 1.2px 7px), repeating-linear-gradient(-43deg, #000 0 1.2px, transparent 1.2px 7px);
             mask-image:repeating-linear-gradient(43deg, #000 0 1.2px, transparent 1.2px 7px), repeating-linear-gradient(-43deg, #000 0 1.2px, transparent 1.2px 7px);}
   .card-tile.holo-lattice.holo-active .holo-layer, .card-tile.holo-lattice.holo-tilt .holo-layer{opacity:.85;}
+  /* 🎨 Card Decorator (2026-10-11, Test centre): knobs on one preview card. */
+  .card-decorator .deco-wrap{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;}
+  .card-decorator .deco-stage{flex:0 0 auto; padding:18px 26px; border-radius:14px; background:radial-gradient(ellipse at 50% 40%, rgba(255,255,255,.08), rgba(0,0,0,.25)); min-width:200px; display:flex; justify-content:center;}
+  .card-decorator .deco-preview .card-tile{width:180px; transform-origin:center;}
+  .card-decorator .deco-controls{flex:1 1 280px; min-width:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px 14px; align-content:start;}
+  .card-decorator .deco-controls > label{display:flex; flex-direction:column; gap:3px; font-size:.85rem;}
+  .card-decorator .deco-sl{display:grid !important; grid-template-columns:1fr auto; grid-template-rows:auto auto; column-gap:8px;}
+  .card-decorator .deco-sl input{grid-column:1 / -1;}
+  .card-decorator .deco-sl output{font-variant-numeric:tabular-nums; opacity:.8;}
+  .card-decorator .deco-sl.is-off{opacity:.45;}
+  .card-decorator .deco-actions{grid-column:1 / -1; display:flex; gap:8px;}
+  .card-decorator .deco-spec{grid-column:1 / -1; margin:0; max-height:160px; overflow:auto; font-size:.75rem; padding:8px 10px; border-radius:8px; background:rgba(0,0,0,.25); user-select:all; white-space:pre-wrap;}
+  .card-tile.dec-tile .holo-layer{opacity:var(--dec-op, .45) !important; filter:hue-rotate(var(--dec-hue, 0deg)) saturate(var(--dec-sat, 1)) !important;}
+  .card-tile.dec-tile .holo-glare{opacity:calc(var(--dec-glare, 1) * .6);}
+  .card-tile.dec-tile.holo-active .holo-glare{opacity:var(--dec-glare, 1);}
+  .card-tile.dec-tile.dec-pal .holo-layer{background-image:var(--dec-grad) !important; background-size:300% 300% !important; background-position:var(--hbx) var(--hby) !important;}
+  .card-tile.dec-tile.holo-ice .holo-layer{background-image:var(--dec-grad) !important; background-size:300% 300% !important; background-position:var(--hbx) var(--hby) !important;}
+  .card-tile.dec-tile.holo-ice .holo-layer::after{content:''; position:absolute; inset:0; border-radius:inherit; background-image:var(--ice-lines); background-size:96px 96px;
+    background-position:calc(var(--hbx) * .3) calc(var(--hby) * .3); opacity:var(--dec-lines, .9); mix-blend-mode:screen;}
   /* Starlight (2026-10-08): the twinkling star sparkles, now their own finish; decorateHolo adds .holo-glitter.
      A starlight-only card keeps a faint sheen so it still reads as foil. */
   .card-tile.holo-starlight:not(.holo-cosmos):not(.holo-rainbow):not(.holo-pearl):not(.holo-hex):not(.holo-etched):not(.holo-ice):not(.holo-gold):not(.holo-reverse):not(.holo-prism):not(.holo-lattice) .holo-layer{opacity:.12;}
@@ -6211,6 +6296,44 @@
   .vs-kind{font-size:12px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; opacity:.8;}
   .vs-skip{position:absolute; bottom:18px; left:0; right:0; text-align:center; font-size:12px; opacity:.55;}
   @media (max-width:560px){ .vs-opener{grid-template-columns:1fr; grid-template-rows:1fr auto 1fr; background:linear-gradient(180deg, rgba(20,40,24,.94) 0 49.6%, rgba(70,20,16,.94) 50.4% 100%); padding:40px 16px;} .vs-opener.is-boss{background:linear-gradient(180deg, rgba(20,40,24,.94) 0 49.6%, rgba(110,14,14,.95) 50.4% 100%);} .vs-me{align-self:end;} .vs-them{align-self:start;} @keyframes vsFromLeft{from{transform:translateY(-50vh);} to{transform:none;}} @keyframes vsFromRight{from{transform:translateY(50vh);} to{transform:none;}} }
+  /* Versus screens, richer (2026-10-11, user: "The blue and red is pretty flat at the moment. Could you make it more
+     interesting looking? The general colour is fine"). Same two colours, now with depth: a glow behind each side, a fine
+     diagonal weave, slow light rays turning from the middle, and a hot seam crackling down the split. */
+  .vs-opener, .vs-screen{isolation:isolate; overflow:hidden;}
+  .vs-opener::before, .vs-screen::before{content:''; position:absolute; inset:-30%; z-index:-1; pointer-events:none;
+    background:repeating-conic-gradient(from 0deg at 50% 50%, rgba(255,236,190,.07) 0deg 6deg, transparent 6deg 18deg);
+    -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 0 18%, transparent 55%); mask-image:radial-gradient(circle at 50% 50%, #000 0 18%, transparent 55%);
+    animation:vsRays 26s linear infinite;}
+  @keyframes vsRays{to{transform:rotate(360deg);}}
+  .vs-opener::after, .vs-screen::after{content:''; position:absolute; top:-10%; bottom:-10%; left:50%; width:6px; margin-left:-3px; z-index:-1; pointer-events:none; transform:skewX(-10deg);
+    background:linear-gradient(180deg, transparent, #fff3c4 20%, #ffd27a 50%, #fff3c4 80%, transparent);
+    box-shadow:0 0 18px 6px rgba(255,200,110,.55), 0 0 60px 18px rgba(255,140,60,.25); animation:vsSeam 1.6s ease-in-out infinite;}
+  @keyframes vsSeam{0%,100%{opacity:.85;} 45%{opacity:1;} 50%{opacity:.55;} 55%{opacity:1;}}
+  .vs-opener{background:
+      radial-gradient(ellipse 38% 55% at 22% 52%, rgba(140,220,120,.28), transparent 70%),
+      radial-gradient(ellipse 38% 55% at 78% 52%, rgba(255,110,70,.30), transparent 70%),
+      repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px),
+      radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.45)),
+      linear-gradient(100deg, rgba(20,40,24,.94) 0 49.6%, rgba(70,20,16,.94) 50.4% 100%);}
+  .vs-opener.is-boss{background:
+      radial-gradient(ellipse 38% 55% at 22% 52%, rgba(140,220,120,.24), transparent 70%),
+      radial-gradient(ellipse 42% 60% at 78% 52%, rgba(255,70,40,.42), transparent 70%),
+      repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px),
+      radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.5)),
+      linear-gradient(100deg, rgba(20,40,24,.95) 0 49.6%, rgba(110,14,14,.96) 50.4% 100%);}
+  .vs-screen{background:
+      radial-gradient(ellipse 38% 55% at 22% 52%, rgba(140,220,120,.24), transparent 70%),
+      radial-gradient(ellipse 38% 55% at 78% 52%, rgba(255,110,70,.26), transparent 70%),
+      repeating-linear-gradient(105deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px),
+      radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.42)),
+      linear-gradient(105deg, #2c3a27 0%, #2c3a27 49.6%, #5a2b22 50.4%, #5a2b22 100%);}
+  .vs-opener .vs-lvl{margin-top:4px;}
+  @media (max-width:560px){ .vs-opener::after{top:50%; bottom:auto; left:-10%; right:-10%; width:auto; height:6px; margin:-3px 0 0; transform:skewY(-4deg);
+      background:linear-gradient(90deg, transparent, #fff3c4 20%, #ffd27a 50%, #fff3c4 80%, transparent);}
+    .vs-opener{background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.26), transparent 70%), radial-gradient(ellipse 70% 30% at 50% 75%, rgba(255,110,70,.28), transparent 70%),
+      repeating-linear-gradient(100deg, rgba(255,255,255,.035) 0 2px, transparent 2px 13px), linear-gradient(180deg, rgba(20,40,24,.94) 0 49.6%, rgba(70,20,16,.94) 50.4% 100%);} }
+  @media (max-width:600px){ .vs-screen::after{top:50%; bottom:auto; left:-10%; right:-10%; width:auto; height:6px; margin:-3px 0 0; transform:none; background:linear-gradient(90deg, transparent, #fff3c4 20%, #ffd27a 50%, #fff3c4 80%, transparent);} }
+  @media (prefers-reduced-motion: reduce){ .vs-opener::before, .vs-screen::before, .vs-opener::after, .vs-screen::after{animation:none;} }
   @media (prefers-reduced-motion: reduce){ .vs-opener, .vs-me, .vs-them, .vs-mark, .vs-taunt{animation-duration:.01s !important; animation-delay:0s !important;} }
   /* Wider results screen (2026-10-04) with bigger reward cards */
   .pass-card.winloss-card{max-width:min(640px, 94vw); width:100%;}
@@ -7424,6 +7547,8 @@
 .conquest-main > .map-layout-bar{pointer-events:none;} .conquest-main > .map-layout-bar :is(button, a, input, select, label){pointer-events:auto;}
 .conquest-main > .conquest-headline, .conquest-main > .map-layout-bar{transition:opacity .2s ease;}
 .conquest-main > .is-ghost{opacity:.1 !important;}
+.conquest-main > .conquest-headline{transition:opacity .45s ease;} .conquest-main > .conquest-headline.is-away{opacity:0 !important; pointer-events:none;}
+.conquest-admin-btn{position:absolute; top:58px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center;} .conquest-admin-btn.is-on{background:rgba(200,40,40,.55); border-color:rgba(255,140,140,.8);}
 /* World edges are off while editing the layout (2026-10-10) */
 .world-edge.is-editing{opacity:.35; filter:grayscale(1); cursor:not-allowed;}
 /* Cave darkness over the whole map, with a lantern hole at the pointer (2026-10-10) */

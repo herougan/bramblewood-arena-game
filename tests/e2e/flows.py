@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 URL = 'file://' + os.path.join(HERE, '..', '..', 'index.html')
 EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
 INIT=("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
-      "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit']));")
+      "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek']));")
 issues=[]
 def bad(m): issues.append(m); print('  ISSUE', m)
 async def fresh(b, w=1366, h=860):

@@ -35,5 +35,10 @@ const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).st
     t:(c.archetypes||[]).join(', '),sk:skills(c),src,g:grp,m:mno,tok:!!c.token,eq:c.cardType==='equipment',
     wr:b? b.winRate : null, band:b? b.band : null, stale: b ? (b.cost!==c.cost||b.wait!==c.wait||b.attack!==c.attack||b.health!==c.health) : null};
 });
-fs.writeFileSync(process.argv[2], JSON.stringify({generated:'2026-10-11', balanceRun:'2026-10-09', bands, rows}));
+// Live values (2026-10-11): pass a JSON array of card_overrides rows ({id, data, deleted}) as the 2nd argument to show
+// any cards changed in the live game on top of the card file.
+const live = {}; const KEYS = {c:'cost', w:'wait', a:'attack', h:'health', r:'rarity'};
+if(process.argv[3]) JSON.parse(fs.readFileSync(process.argv[3],'utf8')).forEach(o=>{ if(!o || o.deleted || !o.data) return; const row = rows.find(r=> r.id===o.id); if(!row) return;
+  const x = {}; Object.entries(KEYS).forEach(([k,f])=>{ if(o.data[f] != null && o.data[f] !== row[k]) x[k] = o.data[f]; }); if(Object.keys(x).length) live[o.id] = x; });
+fs.writeFileSync(process.argv[2], JSON.stringify({generated:new Date().toISOString().slice(0,10), balanceRun:'2026-10-09', bands, rows, live}));
 console.log(rows.length, 'rows', rows.filter(r=>r.wr!=null).length, 'with win rate', rows.filter(r=>r.stale).length, 'stale');

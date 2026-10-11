@@ -2,6 +2,82 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (22:40)
+- **Renamed keywords:**
+  - **Puncture N** (was Pierce): every landed melee hit also deals N damage to the enemy castle.
+  - **Pierce N** (was Rend): every melee hit ignores N of the target's Armor. Pyroclast Wyrm has Pierce 5, which covers every Armor in the game.
+- **Perforate N:** Pierce N + Puncture N + N Bleed, and the hit strips N Armor from the target for good.
+- **Counterattack:** the unit never attacks on its own. Each time an enemy unit hits it, it strikes the enemy in front of it.
+- **Spiteful N:** any enemy unit that damages it (attack, arrow or skill) takes N back.
+- **New cards** (all in Pack 1):
+  - **Tailwind 🍃**, the first **Spell**: 1 Lumber, all your units lose 1 Wait.
+    - A spell never takes a place on the field. Casting it uses your play for the turn.
+    - Spells can also Mend (heal your units) or Sap (enemy units lose Attack).
+  - **Bramble Gauntlet 🧤** (equipment): +1/+2 and Spiteful 2.
+  - **Thornwood Palisade 🪵** (structure): 2/18, Counterattack, Spiteful 1.
+- **Actions per turn** (a new fight modifier in the skirmish editor; Arena rulesets can use it too):
+  - Each side may play N cards a turn. The turn waits until you've used them, or you end it.
+  - The side playing second gets N extra cards, N−1 castle Health and N−2 Lumber.
+- **Natural Leader:** the Wandering Traveller's leader skill has its new name.
+- **Guardians** wear riveted steel plates braced out from both sides. A card with **Revivification** carries a pair of white wings until its revive is spent.
+- **Status keywords in card text:**
+  - Poison, Bleed, Decay, Corrode, Frozen, Asleep, Paralyzed, Stunned, Blind, Tipsy, Confused, Shocked and Staggered are named in their own colour (Poison in green, Bleed in red…). Their rules are no longer repeated inside each skill.
+  - Under the skills, a hairline and a short glossary explain each status that came up.
+- **Fight costs:** the Conquest Fight button shows its Energy as a pill (e.g. "1⚡"). The "tickets left" pill on the result screen was hard to read; it is now dark on light.
+- **Versus screens:**
+  - The pre-fight screen shows the enemy deck's level, coloured by how it compares with yours.
+  - Both versus screens keep their green and red. They now add a glow behind each side, a fine diagonal weave, slow light rays from the centre and a glowing seam down the split.
+
+## 2026-10-11 (21:30)
+- **Day and night are off by default.** A fight turns them on in the skirmish editor (Day & night: cycle day-first or night-first, always day, always night) with **Switch every N rounds**. The daily Arena rulesets keep their own day/night rules. Nocturnal and Diurnal cards only get their bonus while a cycle runs.
+- **The "ghost" sound was the nightfall howl.** It's now a reedy wolf's voice: a sawtooth through a moving "oo–ah" formant, a scoop up into a long held note, a light wobble and a falling tail.
+- **Rare lava ambience:** on The Ashen Peak, Basalt Foundry and The Sundered Peak, a lava bubble pops and its spatter sizzles about every 15–26 seconds.
+- **Deaths:**
+  - The bleed-out colour wash now sits inside the card and moves with it, not as a box over the slot.
+  - A shattering token takes its whole slot with it; no frame is left behind.
+- **Statuses:**
+  - **Tipsy** swings left, ahead or right at random and misses an empty column.
+  - **Confused** fizzles its triggers and on-hit skills half the time.
+  - **Blind** now misses half the time.
+  - The new passives **Drunk 🍺**, **Purblind 🕶️** and **Scatterbrained** keep the card Tipsy, Blind or Confused for good.
+  - On-hit **Make Tipsy** and **Confuse** skills.
+- **Triggers:**
+  - Reactive triggers are offline while a card waits, is Stunned, Frozen or Asleep (greyed ⚡).
+  - The new **Primed 🔋** passive keeps them online.
+  - Wandering Traveller makes Lumber only the first time it readies.
+- **Swarm** is now +1 Attack per matching ally, updated live as allies arrive or fall. In the editor it can count any shared type or only the types you pick.
+- **Skill wording:** effects last for good unless they say "until end of turn". "Permanently" is gone from descriptions and the log.
+- **Your second match teaches the 1-second card hover.** Once the enemy fields its toughest card, a tip points at it and play waits until you rest the pointer on it and its details open. It offers Skip after 12 seconds.
+- **Ranks:**
+  - E ×0.6, D ×0.8, C ×1 (a win with about half your Health), B ×1.05, A ×1.1, S ×1.11, SS ×1.12, SSS ×1.13.
+  - Losses rank F, FF (their castle took 2 or less) or FFF (1 or less, units included).
+  - The multiplier only touches repeat rewards, never first clears.
+  - Each rank's tooltip says how it was earned.
+- **Conquest:**
+  - The top-left map note fades away for 10 seconds when you hover it.
+  - The map editor bar opens from a 🚨 button that only admins see.
+  - The skirmish panel starts at the top with "Cleared" on its top row. It has a faint green border once beaten, and red when the enemy far outlevels you.
+  - The nav buttons hide while a skirmish is focused.
+  - The between-maps loading veil shows only on the first map load of a session.
+- **Energy:**
+  - Play buttons, post-fight windows and Conquest show their Energy cost on the button.
+  - Clicking Energy opens a panel: "+5 Free energy!" once a day, or "Get more energy!" for admins. Energy can sit above the cap (22/20).
+- **Test → 🎨 Card Decorator:**
+  - Pick a card from your collection.
+  - Change its art frame, rarity frame, biome trim and foil.
+  - Tune foil strength, ice crystal lines, hue, saturation, band angle, glare and colour set (Rainbow, Ice, Ember, Verdant, Silver, Dusk).
+  - Copy the spec to keep a look.
+- **Card object audit** (docs/card-object-audit-2026-10-11.md):
+  - Cards are lean (about 20 elements on the board) with no hidden subtrees.
+  - Floating tips (card details, delayed tooltips, the deck tooltip) now follow the card they describe through one watcher (`TipWatch`). They fade with it and close as soon as it's removed, hidden or faded out, without per-card fade hooks.
+- **Version and card-data check:**
+  - Each build stamps its id and its card-data hash, and writes them to version.json.
+  - Once a session the game compares: a newer build offers **Update**; a hash mismatch reports damaged card data and offers **Reload**.
+- **Card Ledger:**
+  - The table shows the stats the game actually uses, with your change in a separate "→" box.
+  - **Commit** queues the stat edits as a commit in the ledger, marked "committed" until Claude ships them into the game's card file.
+  - The game also accepts patch-style card overrides for that path.
+
 ## 2026-10-11 (18:10)
 - **The original maps are back as Maps 1–13, in their old order; the new maps follow as 14–23.**
   - 1 Bramblewood Outskirts · 2 Thistlewood · 3 Pebble Beach (+ 3-A Smugglers' Grotto) · 4 Sunken Hollow · **5 The Ashen Peak** (a main map again) · 6 Caves & Alcoves · 7 Savanna Reaches (+ 7-A The Canopy) · 8 Wolfsbane Tundra · 9 Coral Current · 10 Sable Swampmire · 11 Basalt Foundry · 12 Eyrie Heights · 13 The Sundered Peak · 14 The Morel Hollow · 15 Lilypad Reach · 16 Gannet Cliffs · 17 Gatorback Swamp · 18 The Kelp Mangroves · 19 The Briar Maze · 20 The Redwood Deep · 21 The Long Grass · 22 The Pinewood Taiga · 23 The Glass Dunes.

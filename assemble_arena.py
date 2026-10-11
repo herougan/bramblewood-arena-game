@@ -78,7 +78,7 @@ ARCHETYPE_ICON = {
     # 2026-09-14: the four combined "X & Y" categories were split into two independent,
     # multi-membership archetypes each (a card like the Scorpion just belongs to both).
     "River": "🏞️", "Otter": "🦦", "Flora": "🌳", "Ocean": "🌊", "Cetacean": "🐬", "Bee": "🐝",
-    "Desert": "🏜️", "Frost": "❄️", "Insect": "🐜", "Owl": "🦉", "Oddity": "❓", "Village": "🏘️", "Leader": "👑", "Changeling": "🎭", "Shadow": "🌑", "Materia": "💠", "Equipment": "⚒️",
+    "Desert": "🏜️", "Frost": "❄️", "Insect": "🐜", "Owl": "🦉", "Oddity": "❓", "Village": "🏘️", "Leader": "👑", "Changeling": "🎭", "Shadow": "🌑", "Materia": "💠", "Equipment": "⚒️", "Spell": "✨",
     # Ants (2026-09-16, per explicit request): a sub-type of Insect — every ant card carries
     # BOTH "Insect" and "Ants" (see task90_update_cards.py-style retag pass in canonical/cards.json).
     "Ants": "🐜",
@@ -170,6 +170,20 @@ out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 app_src = sub_once(app_src, "__CARD_DEFS__", card_defs_literal)
 app_src = sub_once(app_src, "__ARCHETYPE_ICON__", archetype_icon_literal)
 app_src = sub_once(app_src, "__CHARACTER_DEFS__", character_defs_literal)
+# Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is
+# outdated, ask to update; if the hash is wrong for that version, the data is corrupted"). The build id and the
+# expected card-data hash are baked into the page and written to version.json, which the page re-reads each session.
+import subprocess as _sp
+_tmp = SCRATCH + ".card_defs_tmp.json"
+with open(_tmp, "w", encoding="utf-8") as _fh: _fh.write(card_defs_literal)
+_res = _sp.run(["node", "-e", "const I=require(process.argv[1]);process.stdout.write(I.cardDataHash(JSON.parse(require('fs').readFileSync(process.argv[2],'utf8'))))", SCRATCH + "bramblewood-integrity.js", _tmp], capture_output=True, text=True)
+os.remove(_tmp)
+card_hash = _res.stdout.strip()
+if not card_hash: raise SystemExit("card hash failed: " + _res.stderr)
+build_id = hashlib.sha256((app_src + engine_src + ghosts_src + card_defs_literal + character_defs_literal).encode("utf-8")).hexdigest()[:12]
+app_src = sub_once(app_src, "__BUILD_ID__", build_id)
+app_src = sub_once(app_src, "__BUILD_CARD_HASH__", card_hash)
+with open(SCRATCH + "version.json", "w", encoding="utf-8") as _fh: json.dump({"build": build_id, "cardHash": card_hash}, _fh)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8")), ensure_ascii=False))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --

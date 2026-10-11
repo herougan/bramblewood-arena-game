@@ -38,7 +38,7 @@ async def main(node, vw, vh, speed, n):
   async with async_playwright() as p:
     b=await p.chromium.launch(executable_path='/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
     pg=await b.new_page(viewport={'width':vw,'height':vh}); errs=[]; pg.on('pageerror',lambda e: errs.append(str(e)))
-    await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','skill-flying']));")
+    await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
     await pg.goto('file://'+__import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__),'..','..','index.html'))+''); await pg.wait_for_timeout(1300)
     mp = 'm'+node.split('-')[0]
     await pg.evaluate(f"(()=>{{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('play'); startConquestMatch('{mp}','{node}'); matchState.speedMult={speed}; return 1}})()")
