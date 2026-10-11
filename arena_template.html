@@ -7611,6 +7611,82 @@
   .winloss-achv .wa-ico{font-size:26px;} .winloss-achv small{display:block; opacity:.75;}
   @keyframes waPop{from{transform:scale(.6); opacity:0;} to{transform:none; opacity:1;}}
   @media (prefers-reduced-motion: reduce){ .winloss-achv{animation:none;} }
+  /* Blacksmith (Forge, 2026-10-11) */
+  .smithy{max-width:1100px; margin:10px auto 0; display:flex; flex-direction:column; gap:12px;}
+  .sm-mats{display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; background:linear-gradient(180deg, rgba(60,36,20,.85), rgba(36,22,12,.9)); color:#f3e3c8; box-shadow:inset 0 0 0 1px rgba(255,170,90,.25);}
+  .sm-mat{display:inline-flex; align-items:baseline; gap:5px; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.07); border:1px solid rgba(255,190,120,.25);}
+  .sm-mat b{font-size:16px; color:#ffd69a;} .sm-mat small{opacity:.75;}
+  .sm-mats-hint{margin-left:auto; opacity:.65; font-size:12px; max-width:44ch;}
+  .sm-layout{display:grid; grid-template-columns:minmax(220px, 320px) 1fr; gap:12px;}
+  @media (max-width:760px){ .sm-layout{grid-template-columns:1fr;} }
+  .sm-list{display:flex; flex-direction:column; gap:6px; padding:10px;}
+  .sm-recipe{display:flex; align-items:center; gap:10px; text-align:left; padding:8px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(0,0,0,.03)); cursor:pointer; position:relative;}
+  .sm-recipe:hover{border-color:#d08a3a;} .sm-recipe.on{border-color:#d08a3a; box-shadow:0 0 0 2px rgba(208,138,58,.25); background:rgba(208,138,58,.08);}
+  .sm-recipe .sm-ico{font-size:26px;} .sm-recipe small{display:block; opacity:.7;}
+  .sm-dot{margin-left:auto; color:#6fbf4a; font-style:normal;}
+  .sm-anvil{display:flex; flex-direction:column; align-items:center; gap:10px; padding:16px; background:radial-gradient(ellipse at 50% 30%, rgba(255,140,60,.18), transparent 60%), var(--surface, #fff);}
+  .sm-stage{position:relative; width:150px;}
+  .sm-card .card-tile{width:150px; height:186px;}
+  .sm-sparks{position:absolute; left:50%; top:60%; width:0; height:0; z-index:5; pointer-events:none;}
+  .sm-sparks i{position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd36b; box-shadow:0 0 6px #ff9a3d, 0 0 12px #ff6a1a; animation:smSpark var(--t) ease-out forwards;}
+  @keyframes smSpark{from{transform:translate(0,0); opacity:1;} to{transform:translate(var(--dx), var(--dy)); opacity:0;}}
+  .sm-needs{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+  .sm-need{padding:3px 10px; border-radius:999px; border:1px solid var(--surface-border); font-size:13px;}
+  .sm-need.ok{border-color:#6fbf4a; background:rgba(111,191,74,.12);} .sm-need.short{border-color:#c75a4a; background:rgba(199,90,74,.1);}
+  .sm-fuse{padding:12px 14px;} .sm-fuse h3{margin:0 0 4px;}
+  .sm-fuse-list{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+  .sm-fuse-btn{padding:5px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(0,0,0,.03)); cursor:pointer;}
+  .sm-fuse-btn:hover{border-color:#e07a3a; box-shadow:0 0 0 2px rgba(224,122,58,.2);} .sm-fuse-btn small{opacity:.7;}
+  .card-tile .eq-stats .atk, .card-tile .eq-stats .hp{opacity:.95;}
+  @media (prefers-reduced-motion: reduce){ .sm-sparks i{animation:none; display:none;} }
+  /* Inventory (2026-10-11) */
+  #view-inventory{max-width:960px; margin:0 auto; width:100%;}
+  .inv-page{display:flex; flex-direction:column; gap:10px;}
+  .inv-head h2{margin:0;}
+  .inv-sec h3{display:flex; align-items:center; gap:10px; margin:0 0 8px;} .inv-sec h3 .btn{margin-left:auto;} .inv-sec h3 small{opacity:.7; font-weight:600;}
+  .inv-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px;}
+  .inv-cell{display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto; column-gap:8px; align-items:center; padding:8px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(0,0,0,.03));}
+  .inv-ico{grid-row:1 / span 2; font-size:26px; display:flex; align-items:center;} .inv-ico svg{width:24px; height:24px;}
+  .inv-n{font-size:18px; line-height:1;} .inv-label{grid-column:2; font-size:12.5px; opacity:.85; text-transform:none !important; letter-spacing:0 !important;} .inv-cell small{grid-column:2; opacity:.6; font-size:11px;}
+  .scale-trail{margin:0; padding:0 0 0 4px; list-style:none; display:flex; flex-direction:column; gap:6px;}
+  .scale-trail li{display:flex; gap:10px; align-items:flex-start; padding:6px 8px; border-radius:8px; background:rgba(0,0,0,.03);} .scale-trail li.got{background:rgba(200,60,40,.08);}
+  .st-ico{font-size:20px;}
+  .home-note.note-inv{left:-128px; top:394px; rotate:3deg;}
+  @media (max-width:860px){ .home-note.note-inv{position:static; rotate:0deg;} }
+  /* Dragon scale glint on the map */
+  .map-node-scale{position:absolute; right:-6px; bottom:-4px; width:12px; height:12px; border-radius:50%; background:radial-gradient(circle, #fff6d0 0%, #ffcf6a 40%, rgba(255,140,40,0) 70%); animation:scaleGlint 2.6s ease-in-out infinite; pointer-events:none;}
+  .map-node-scale.is-found{width:auto; height:auto; background:none; font-size:12px; animation:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));}
+  @keyframes scaleGlint{0%,70%,100%{opacity:.2; transform:scale(.7);} 80%{opacity:1; transform:scale(1.3);}}
+  @media (prefers-reduced-motion: reduce){ .map-node-scale{animation:none; opacity:.8;} }
+  /* Hatchery (Nest, 2026-10-11): hay nests in a hexagon under a windy sky */
+  .hatchery{position:relative; display:grid; grid-template-columns:minmax(260px, 420px) 1fr; gap:16px; align-items:center; margin:10px 0 12px; padding:16px; border-radius:18px; overflow:hidden;
+    background:linear-gradient(180deg, #bfe0f0 0%, #e8f2dc 48%, #d9c78f 100%); color:#3a2a14; box-shadow:inset 0 0 0 1px rgba(120,90,40,.25);}
+  @media (max-width:720px){ .hatchery{grid-template-columns:1fr;} }
+  .hatch-sky{position:absolute; inset:0; pointer-events:none; overflow:hidden;}
+  .hatch-sky .wind{position:absolute; left:-40%; height:2px; width:38%; border-radius:2px; background:linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent); animation:windGust 6s linear infinite;}
+  .hatch-sky .w1{top:14%;} .hatch-sky .w2{top:30%; animation-delay:2.2s; animation-duration:7.5s;} .hatch-sky .w3{top:62%; animation-delay:4.1s; animation-duration:5.5s;}
+  @keyframes windGust{from{transform:translateX(0);} to{transform:translateX(380%);}}
+  .hatch-sky .leaf{position:absolute; left:-6%; top:var(--y); font-style:normal; font-size:16px; opacity:.8; animation:leafDrift var(--d) linear var(--delay) infinite;}
+  @keyframes leafDrift{0%{transform:translate(0,0) rotate(0);} 50%{transform:translate(60vw, 30px) rotate(200deg);} 100%{transform:translate(120vw, -10px) rotate(420deg);}}
+  .hatch-nests{position:relative; aspect-ratio:1/0.9; width:100%;}
+  .hay-nest{position:absolute; left:var(--x); top:var(--y); width:27%; aspect-ratio:1/0.72; transform:translate(-50%,-50%); border:none; padding:0; background:none; cursor:default; display:flex; align-items:center; justify-content:center;}
+  .hay-nest .hay{position:absolute; inset:0; border-radius:50%;
+    background:radial-gradient(ellipse at 50% 40%, #6b4a22 0 30%, transparent 31%), repeating-conic-gradient(from 10deg, #d9b25a 0 6deg, #b8893a 6deg 11deg, #e6c878 11deg 15deg);
+    box-shadow:0 6px 0 -2px #8a6428, 0 10px 14px rgba(60,40,10,.35), inset 0 -6px 10px rgba(80,50,10,.35);}
+  .hay-nest.is-empty .hay{filter:saturate(.75) brightness(.95);}
+  .hay-nest .nest-thing{position:relative; font-size:clamp(22px, 5vw, 34px); margin-top:-12%; animation:eggWobble 3.2s ease-in-out infinite; filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));}
+  .hay-nest.is-baby .nest-thing{animation:babyBob 2.4s ease-in-out infinite;}
+  @keyframes babyBob{50%{transform:translateY(-4px) rotate(-4deg);}}
+  .hay-nest .nest-type{position:absolute; left:4%; top:-6%; font-size:14px; padding:1px 5px; border-radius:999px; background:rgba(255,250,235,.95); box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .hay-nest .nest-time{position:absolute; bottom:-22%; font-weight:800; font-size:11px; padding:1px 7px; border-radius:999px; background:rgba(58,42,20,.85); color:#fff3d6; white-space:nowrap;}
+  .hay-nest .nest-ring{position:absolute; inset:-6%; border-radius:50%; background:conic-gradient(rgba(233,180,76,.9) calc(var(--p) * 1%), transparent 0); -webkit-mask:radial-gradient(circle, transparent 62%, #000 64%); mask:radial-gradient(circle, transparent 62%, #000 64%); opacity:.85; pointer-events:none;}
+  .hay-nest.is-ready{cursor:pointer;} .hay-nest.is-ready .nest-thing{animation:readyHop 1.1s ease-in-out infinite;} .hay-nest.is-ready .nest-time{background:#e9b44c; color:#3a2a14;}
+  @keyframes readyHop{0%,100%{transform:translateY(0);} 40%{transform:translateY(-8px) rotate(6deg);} 60%{transform:translateY(-6px) rotate(-6deg);}}
+  .hay-nest:focus-visible{outline:3px solid #e9b44c; outline-offset:4px; border-radius:50%;}
+  .hatch-side{position:relative; display:flex; flex-direction:column; gap:8px;}
+  .hatch-side .nk-nurse{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .hatch-help, .hatch-wait{margin:0; font-size:13.5px; line-height:1.45;}
+  @media (prefers-reduced-motion: reduce){ .hatch-sky .wind, .hatch-sky .leaf, .hay-nest .nest-thing{animation:none !important;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -7856,6 +7932,7 @@
   <div id="view-ranking" hidden></div>
   <div id="view-achievements" hidden></div>
   <div id="view-paths" hidden></div>
+  <div id="view-inventory" hidden></div>
   <div id="view-guild" hidden></div>
   <div id="view-admin" hidden></div>
   </div>

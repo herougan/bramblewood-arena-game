@@ -139,6 +139,7 @@ DESIGN = [
   ('Card types: species, phyla and hybrids', 'card-types-2026-10-10.md'),
   ('Inspiration: Super Auto Pets and Tooth and Nail units', 'inspo-sap-tooth-and-nail-2026-10-10.md'),
   ('GSAP, textures, shaders and VFX: where to take them', 'vfx-exploration-2026-10-10.md'),
+  ('Forge pacing, Blacksmith, Nest, Changelings, Scale Trail', 'forge-economy-2026-10-11.md'),
   ('Introducing stats and mechanics along the road', 'mechanics-onramp-2026-10-11.md'),
   ('Card list v2: the 21-map road and faction packs', 'card-list-2026-10-11.md'),
   ('Card list for balancing: Maps 1–5 and Pack 1', 'card-list-2026-10-10.md'),

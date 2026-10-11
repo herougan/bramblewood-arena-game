@@ -1469,7 +1469,8 @@
     "effects": {
       "sweep": 1,
       "bounty": 1,
-      "nocturnal": true
+      "nocturnal": true,
+      "demolisher": 3
     },
     "flavor": "A shell like a shield wall, lowered and driven straight through the middle of one.",
     "locked": true,
@@ -1899,7 +1900,8 @@
     "attack": 7,
     "health": 24,
     "effects": {
-      "bounty": 1
+      "bounty": 1,
+      "demolisher": 2
     },
     "flavor": "Tunnels under the wall instead of over it. The wall rarely notices until it's too late to matter.",
     "locked": true,
@@ -2639,6 +2641,9 @@
       "kind": "map",
       "id": "mh",
       "node": "h-6"
+    },
+    "effects": {
+      "demolisher": 1
     }
   },
   {
@@ -12467,6 +12472,385 @@
     "source": {
       "kind": "pack",
       "tier": 13
+    }
+  },
+  {
+    "id": "iron-shard",
+    "name": "Iron Shard",
+    "icon": "\u26d3\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A sliver of old castle iron. The Blacksmith wants all of them.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "common",
+    "numericId": 441,
+    "uuid": "147da8df-ed32-41b7-aa31-6eedca922ba1",
+    "art": "",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
+    }
+  },
+  {
+    "id": "river-pearl",
+    "name": "River Pearl",
+    "icon": "\ud83e\uddaa",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Grown slowly in a river mussel. Otters swear they are lucky.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "uncommon",
+    "numericId": 442,
+    "uuid": "8e5e1507-9793-4ee9-b6e5-2c76bb927cc3",
+    "art": "",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
+    }
+  },
+  {
+    "id": "ember-core",
+    "name": "Ember Core",
+    "icon": "\ud83d\udd25",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Still warm, years after it left the fire.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "rare",
+    "numericId": 443,
+    "uuid": "b717d91b-068a-4880-88f9-b78b7e7798d4",
+    "art": "",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
+    }
+  },
+  {
+    "id": "dragon-scale",
+    "name": "Dragon Scale",
+    "icon": "\ud83d\udc09",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Nobody has seen a dragon in Bramblewood for a hundred years. Nobody can explain this scale either.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "legendary",
+    "numericId": 444,
+    "uuid": "6a4b64aa-778e-4aa3-b52e-579c1d24d811",
+    "art": "",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
+    }
+  },
+  {
+    "id": "bark-buckler",
+    "name": "Bark Buckler",
+    "icon": "\ud83d\udee1\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 5,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Three layers of oak bark and a lot of optimism.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "common",
+    "numericId": 445,
+    "uuid": "ea9b62ce-1f63-409c-ab61-5966fcb85955",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "armor": 1
+      }
+    }
+  },
+  {
+    "id": "netmender-harpoon",
+    "name": "Netmender's Harpoon",
+    "icon": "\ud83d\udd31",
+    "cost": 1,
+    "wait": 0,
+    "attack": 2,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Mends nets by day. Brings down hummingbirds by night.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "uncommon",
+    "numericId": 446,
+    "uuid": "50aa41d1-470b-4f05-b5f6-a6216510bc18",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "reach": true
+      }
+    }
+  },
+  {
+    "id": "quill-spear",
+    "name": "Quill Spear",
+    "icon": "\ud83d\udde1\ufe0f",
+    "cost": 1,
+    "wait": 0,
+    "attack": 3,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A porcupine quill as long as an otter, bound to an ash shaft.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "uncommon",
+    "numericId": 447,
+    "uuid": "c23fb258-3bf9-44c1-b7bd-064d6414136a",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "pierce": 1
+      }
+    }
+  },
+  {
+    "id": "sunfeather-plume",
+    "name": "Sunfeather Plume",
+    "icon": "\ud83e\udeb6",
+    "cost": 1,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Worn in the hair, it lifts more than your spirits.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "rare",
+    "numericId": 448,
+    "uuid": "7011f85b-6987-4145-a460-29637b25f8fc",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "flying": true
+      }
+    }
+  },
+  {
+    "id": "siege-hammer",
+    "name": "Siege Hammer",
+    "icon": "\ud83d\udd28",
+    "cost": 2,
+    "wait": 0,
+    "attack": 2,
+    "health": 0,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Built for walls. Works on everything else too.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "rare",
+    "numericId": 449,
+    "uuid": "ba2c02f1-8943-4cd3-99aa-518a70cbde32",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "demolisher": 3
+      }
+    }
+  },
+  {
+    "id": "dragonscale-mail",
+    "name": "Dragonscale Mail",
+    "icon": "\ud83d\udc09",
+    "cost": 2,
+    "wait": 0,
+    "attack": 0,
+    "health": 12,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Every scale turns a blade. Every one of them came from somewhere.",
+    "locked": true,
+    "archetypes": [
+      "Equipment"
+    ],
+    "rarity": "legendary",
+    "numericId": 450,
+    "uuid": "4f77ba6a-ab5f-4d63-b9da-cd0cecb61d24",
+    "art": "",
+    "cardType": "equipment",
+    "source": {
+      "kind": "smith"
+    },
+    "equip": {
+      "grant": {
+        "armor": 2
+      }
+    }
+  },
+  {
+    "id": "puddle-changeling",
+    "name": "Puddle Changeling",
+    "icon": "\ud83c\udfad",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 5,
+    "effects": {
+      "changeling": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "It looked like a frog yesterday. Today it looks like whatever you were hoping for.",
+    "locked": true,
+    "archetypes": [
+      "Changeling"
+    ],
+    "rarity": "common",
+    "species": [],
+    "numericId": 451,
+    "uuid": "2c695797-0f0f-46c1-85a3-9d0a72a3a4ce",
+    "art": "",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
+  },
+  {
+    "id": "hedge-changeling",
+    "name": "Hedge Changeling",
+    "icon": "\ud83c\udfad",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 7,
+    "effects": {
+      "changeling": true,
+      "swarm": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Every army has one more soldier than it counted. Nobody minds; it brings snacks.",
+    "locked": true,
+    "archetypes": [
+      "Changeling"
+    ],
+    "rarity": "uncommon",
+    "species": [],
+    "numericId": 452,
+    "uuid": "8364bed2-49a2-4cb7-8f77-8c8e904cc0f4",
+    "art": "",
+    "source": {
+      "kind": "pack",
+      "tier": 13
+    }
+  },
+  {
+    "id": "glass-changeling",
+    "name": "Glass Changeling",
+    "icon": "\ud83e\udd8b",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "effects": {
+      "changeling": true,
+      "flying": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "Its wings show you your own face. It is usually smiling.",
+    "locked": true,
+    "archetypes": [
+      "Changeling"
+    ],
+    "rarity": "rare",
+    "species": [],
+    "numericId": 453,
+    "uuid": "2a177eb1-9e50-4f7f-b560-2a5575f1d406",
+    "art": "",
+    "source": {
+      "kind": "pack",
+      "tier": 99
     }
   }
 ]

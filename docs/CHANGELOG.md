@@ -2,6 +2,24 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (11:20)
+- **Forge pacing** (`docs/forge-economy-2026-10-11.md`):
+  - Levelling now costs more for rarer cards. A Common is still 690 Dust to level 10 (about a week of Dust for a regular player); a Rare is ×1.5, an Epic ×2.5, a Legendary ×4.5, a Mythic ×6 and an Ancient ×8.
+  - Castles have rarities now (the plain Castle is Common, the early map castles Rare, the later ones Epic, Coral Spire Legendary) and cost more to level as they get rarer: a Rare castle takes about 2,400 Dust to reach 20.
+  - The free +8 Dust per win is gone from modes that already pay out (Arena, Gauntlet, Ghost runs, Raids, Dungeon runs); quick battles against the computer give +2.
+- **Blacksmith** (Forge):
+  - **Materia** cards: Iron Shard, River Pearl, Ember Core and Dragon Scale. They drop from Elite and Boss first clears, the odd repeat win and high ranks.
+  - Six equipment recipes, plus **Fuse** (3 spare copies → 1 random card a rarity higher).
+  - **Equipment** is dragged onto one of your units in a fight. It gives that unit stats and a skill, never takes a place on the field (so it can't block), and falls with the unit.
+  - New skill **Demolisher N:** +N damage to Structures.
+- **Nest:**
+  - A hatchery of seven hay nests in a hexagon under a windy sky.
+  - Eggs and babies show their type and grow into a random card of it.
+  - Babies are sometimes rescued after fights, and bosses sometimes leave an egg.
+- **Changeling 🎭:** a new type of kind mimics that share a type with every unit. There are three: Puddle (Pack 1), Hedge (the faction packs), Glass (the Mystery Booster).
+- **The Scale Trail:** a hidden substory. Eight harder fights each hide a Dragon Scale for an S rank.
+- **Inventory:** a new page, pinned on Home.
+
 ## 2026-10-11 (10:10)
 - **The 0–20 road is built** (D29, with my suggested answers; one revert brings the old order back).
   - Maps now count from 0: the Outskirts and the tutorial are Map 0 (0-0, 0-1 …).

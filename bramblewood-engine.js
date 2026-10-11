@@ -673,6 +673,29 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'devour', side:sideOf(pid), uid:tgt.uid, defId:tgt.defId, eatenDefId:h.defId, attack:a, health:hp, grant: dv.grant || null});
     return true;
   }
+  // Equipment (2026-10-11, user: "a blacksmith portion for crafting weapons ... These weapons are just cards ... equipment
+  // can't block attacks"). An equipment card never takes a slot on the board: you drag it from your hand onto one of your
+  // units, pay its Lumber, and that unit gains its Attack/Health and any skills it grants (equip.grant). One piece per
+  // unit. Equipping uses your play for the turn. When the unit dies, the equipment goes to the graveyard with it.
+  function canEquip(pl, handUid, targetUid){
+    if(!pl || pl.playedThisTurn || (pl.skipTurns||0) > 0) return false;
+    const h = pl.hand.find(x=> x.uid===handUid); const eq = h && CARD_DEFS[h.defId]; if(!eq || eq.cardType !== 'equipment') return false;
+    const tgt = allLive(pl).find(c=> c.uid===targetUid); if(!tgt || tgt.equipment || tgt.defId==='__cage') return false;
+    return costOfCard(h.defId) <= pl.lumber;
+  }
+  function equip(players, sideOf, pid, targetUid, handUid, stats, events){
+    const pl = players[pid]; if(!canEquip(pl, handUid, targetUid)) return false;
+    const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1); const eq = CARD_DEFS[h.defId];
+    const tgt = allLive(pl).find(c=> c.uid===targetUid);
+    pl.lumber -= costOfCard(h.defId); pl.playedThisTurn = true;
+    const a = eq.attack||0, hp = eq.health||0;
+    tgt.atk += a; tgt.baseAtk += a; tgt.hp += hp; tgt.maxHp += hp; tgt.equipment = h.defId;
+    const grant = eq.equip && eq.equip.grant;
+    if(grant && typeof grant==='object' && Object.keys(grant).length) deriveDef(tgt, grant);
+    ensureStat(stats, sideOf(pid), h.defId).played++;
+    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:tgt.uid, defId:tgt.defId, equipDefId:h.defId, attack:a, health:hp, grant: grant || null});
+    return true;
+  }
   // Sacrifice N sits on the fodder: play a Dark Summon card onto that unit and the unit dies; the new card costs N less
   // (Darkness first, then Lumber) and takes its place.
   function sacrificeSummon(players, sideOf, pid, handUid, fodderUid, stats, events){
@@ -715,9 +738,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonus(card){
     const def = card && CARD_DEFS[card.defId];
     if(!(def && def.effects && def.effects.swarm) || !curPlayers) return 0;
-    const mine = new Set(def.archetypes || []); if(!mine.size) return 0;
+    // Changeling (2026-10-11): a mimic shares a type with everyone, both ways.
+    const mine = new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic) return 0;
+    const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return mimic || !!(d.effects && d.effects.changeling) || (d.archetypes||[]).some(a=> mine.has(a)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(a=> mine.has(a))).length; }
+      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length; }
     return 0;
   }
   function isRaging(card){
@@ -749,6 +774,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Anti-Air N (2026-10-10, user: "an anti-air skill for one of the base units... especially poignant if one of the
     // otters has it"): never misses a Flying unit (see the dodge check) and hits it for N more.
     if(attDef && attDef.effects && Number(attDef.effects.antiAir) > 0){ const tdAA = CARD_DEFS[targetCard.defId]; if(tdAA && tdAA.effects && tdAA.effects.flying) amt += Number(attDef.effects.antiAir); }
+    // Demolisher N (2026-10-11, user: "structures ... can be destroyed faster with units with the skill Demolisher N -
+    // deal N additional damage to structures").
+    if(attDef && attDef.effects && Number(attDef.effects.demolisher) > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && Array.isArray(tdD.archetypes) && tdD.archetypes.includes('Structure')) amt += Number(attDef.effects.demolisher); }
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
     { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0) amt = Math.max(0, amt - sc); }
@@ -1533,6 +1561,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function prayerOfferReady(pl){ return !!pl && pl.prayerOfferTurn !== turnNo; }
   function canOfferPrayer(pl, defId, offerUid){ return isEcclesiaDef(defId) && pl.prayerOfferTurn !== turnNo && pl.hand.some(h=> h.uid===offerUid); }
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
+    { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'equipment' || ct === 'materia') return false; } // 2026-10-11: equipment is equipped onto a unit; materia is a crafting material
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
     if(discount > 0){ const fromDark = Math.min(dCost, discount); dCost -= fromDark; cost = Math.max(0, cost - (discount - fromDark)); } // Sacrifice
     if((pl.skipTurns||0) > 0) return false; // Player Stun: this player skips the turn
@@ -1929,7 +1958,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const subject = extra && (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard);
         const subjDef = subject ? CARD_DEFS[subject.defId] : null;
         const subjArchetypes = (subjDef && subjDef.archetypes) || [];
-        if(!subjArchetypes.includes(t.filterArchetype)) return;
+        if(!subjArchetypes.includes(t.filterArchetype) && !(subjDef && subjDef.effects && subjDef.effects.changeling)) return; // a Changeling passes for any type
       }
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
@@ -2791,6 +2820,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } else {
         pl.graveyard.push({defId:card.defId});
       }
+      if(card.equipment) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11)
       runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events);
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
@@ -3560,7 +3590,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     removeDeadCards(players, sideOf, {}, stats, events);
     return true;
   }
-  return { getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

@@ -4,7 +4,7 @@
     "name": "Castle",
     "icon": "🏰",
     "health": 30,
-    "rarity": "unique",
+    "rarity": "common",
     "archetypes": [
       "Castle"
     ],
@@ -17,7 +17,7 @@
     "name": "Collapsed Mine",
     "icon": "⛏️",
     "health": 20,
-    "rarity": "unique",
+    "rarity": "uncommon",
     "archetypes": [
       "Castle"
     ],
@@ -32,7 +32,7 @@
     "name": "Plains Terrace",
     "icon": "🌾",
     "health": 20,
-    "rarity": "unique",
+    "rarity": "uncommon",
     "archetypes": [
       "Castle"
     ],
@@ -47,7 +47,7 @@
     "name": "Outskirts Watchtower",
     "icon": "🗼",
     "health": 28,
-    "rarity": "unique",
+    "rarity": "rare",
     "archetypes": [
       "Castle"
     ],
@@ -63,7 +63,7 @@
     "name": "Hedgerow Burrow",
     "icon": "🕳️",
     "health": 24,
-    "rarity": "unique",
+    "rarity": "rare",
     "archetypes": [
       "Castle"
     ],
@@ -79,7 +79,7 @@
     "name": "Tidewall Fort",
     "icon": "🏖️",
     "health": 30,
-    "rarity": "unique",
+    "rarity": "rare",
     "archetypes": [
       "Castle"
     ],
@@ -95,7 +95,7 @@
     "name": "Drowned Bellhouse",
     "icon": "🔔",
     "health": 22,
-    "rarity": "unique",
+    "rarity": "rare",
     "archetypes": [
       "Castle"
     ],
@@ -111,7 +111,7 @@
     "name": "Ashen Bastion",
     "icon": "🌋",
     "health": 32,
-    "rarity": "unique",
+    "rarity": "epic",
     "archetypes": [
       "Castle"
     ],
@@ -127,7 +127,7 @@
     "name": "Lantern Warren",
     "icon": "🏮",
     "health": 22,
-    "rarity": "unique",
+    "rarity": "epic",
     "archetypes": [
       "Castle"
     ],
@@ -143,7 +143,7 @@
     "name": "Acacia Kraal",
     "icon": "🌳",
     "health": 28,
-    "rarity": "unique",
+    "rarity": "epic",
     "archetypes": [
       "Castle"
     ],
@@ -160,7 +160,7 @@
     "name": "Wolfsbane Lodge",
     "icon": "❄️",
     "health": 34,
-    "rarity": "unique",
+    "rarity": "epic",
     "archetypes": [
       "Castle"
     ],
@@ -176,7 +176,7 @@
     "name": "Coral Spire",
     "icon": "🪸",
     "health": 24,
-    "rarity": "unique",
+    "rarity": "legendary",
     "archetypes": [
       "Castle"
     ],
@@ -192,7 +192,7 @@
     "name": "Bog Stilt-House",
     "icon": "🛖",
     "health": 26,
-    "rarity": "unique",
+    "rarity": "epic",
     "archetypes": [
       "Castle"
     ],

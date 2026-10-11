@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -206,6 +206,8 @@ const PASSIVE_DEFS = [
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
+  {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger.`},
+  {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
   {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board at Night, your Diurnal units keep their daytime bonus.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
@@ -1003,6 +1005,9 @@ function describeEffects(def, liveCard){
     lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''} Replaces any field already in play; a map's own field returns when it ends.`);
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
+  if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
+  if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', ') : '';
+    lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
@@ -1276,7 +1281,7 @@ function getDraftableIds(){
   // never for a real deck, regardless of whether Developer Mode is currently on or off.
   // 2026-10-02: also never offers a card the player doesn't know exists yet (Hidden, undiscovered)
   // or a Hall of Fame draft / an Antique that fails its balance check.
-  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs));
+  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && defs[id].cardType!=='materia' && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs)); // materia is for crafting, never for a deck (2026-10-11)
 }
 
 /* ============================================================
@@ -1448,6 +1453,8 @@ function codexSectionOf(d){
   const src = cardSourceOf(d);
   const split = baseGameBeaten(); // admins see what players see; the "View by" options organise for editing
   const mapTier = idx=> idx < BASE_GAME_MAPS ? 1 : 2 + Math.floor((idx - BASE_GAME_MAPS)/10);
+  if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:'💠 Materia · crafting materials for the Blacksmith'};
+  if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
   if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:'Your journey: base cards, map rewards and packs', tier:1};
   if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:`${codexTierName(1)} · base cards & maps 1–${BASE_GAME_MAPS}`, tier:1};
   if(src.kind==='map'){
@@ -3871,7 +3878,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch)})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -3929,6 +3936,8 @@ function abilityBadges(d, bopts){
   if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
   if(e.thorns) out.push(`🌵${e.thorns}`);
   if(e.antiAir) out.push(`🪃${e.antiAir}`);
+  if(e.demolisher) out.push(`⛏️${e.demolisher}`);
+  if(e.changeling) out.push(`🎭`);
   if(e.overwhelm) out.push(`🐘`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
@@ -6003,7 +6012,7 @@ function loadMatchStats(){
   return {played:0, wins:0, losses:0, draws:0, curStreak:0, curStreakType:null, bestWinStreak:0};
 }
 function saveMatchStats(s){ try{ localStorage.setItem('bramblewood_arena_stats', JSON.stringify(s)); }catch(e){} }
-function recordMatchResult(winner){
+function recordMatchResult(winner, mode){
   // Only meaningful (and only tracked) for vs-AI matches — a pass-and-play vs-PC match has no
   // single "you" to score a personal win/loss against, since the same person plays both sides.
   const s = loadMatchStats();
@@ -6017,8 +6026,10 @@ function recordMatchResult(winner){
     // modest per-win grant, since there's no shop/quest system yet to earn them any other way.
     // Deliberately small relative to the seeded starting balance (see loadCurrencies) so the
     // Forge stays meaningfully gated by currency rather than trivially mashable.
-    grantCurrency('gold', 15);
-    grantCurrency('dust', 8);
+    // 2026-10-11 (Forge pacing): every mode with its own payout (Arena, Gauntlet, Ghost runs, Raids, Dungeon runs) no
+    // longer stacks this on top; it was a free +8 Dust per win anywhere, the biggest faucet in the game. Quick battles
+    // against the computer keep a small trickle.
+    if(!mode || mode === 'ai'){ grantCurrency('gold', 10); grantCurrency('dust', 2); }
   } else if(winner===2){
     s.losses += 1;
     s.curStreak = s.curStreakType==='loss' ? s.curStreak+1 : 1;
@@ -7498,12 +7509,22 @@ function setAdminMode(on){
 // Level-up cost curve: rises with current level so 9→10 costs meaningfully more than 0→1. Dust
 // is the primary spend ("Magic Dust is specifically for crafting/improving cards", per the
 // roadmap), with a smaller Gold cost layered in so both new currencies actually matter here.
-function levelUpCost(currentLevel){
-  const L = Math.max(0, Math.min(9, currentLevel||0));
-  return {dust: 15 + L*12, gold: 10 + L*8};
+// Rarity-scaled levelling (2026-10-11, user: "in a week's stored of dust - is that enough to level a common card to LVL
+// 10? Probably right? What about a Mythic card? Maybe not. What about a rare Castle?"; docs/forge-economy-2026-10-11.md).
+// A Common costs 690 Dust and 460 Maple Leaves from level 0 to 10, about a week of Dust for a regular player. Rarer cards
+// cost a multiple of that: a Rare about 1.5 weeks, an Epic 2.5, a Legendary 4.5, a Mythic 6, an Ancient 8.
+const LEVEL_COST_MULT = {starter:1, common:1, uncommon:1.2, quest:1.2, rare:1.5, veryrare:1.8, superrare:2.1, epic:2.5, heroic:3, unique:3.5, questunique:3.5, legendary:4.5, mythic:6, ancient:8};
+function levelCostMult(defId){
+  const d = defId && ((typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || getCardDefs()[defId]); if(!d) return 1;
+  const r = d.rarity || 'common', band = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r;
+  return LEVEL_COST_MULT[r] || LEVEL_COST_MULT[band] || 1;
 }
-function canAffordLevelUp(currentLevel){
-  const cost = levelUpCost(currentLevel);
+function levelUpCost(currentLevel, defId){
+  const L = Math.max(0, Math.min(9, currentLevel||0)), k = levelCostMult(defId);
+  return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k)};
+}
+function canAffordLevelUp(currentLevel, defId){
+  const cost = levelUpCost(currentLevel, defId);
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold;
 }
 let myDeckCounts = loadMyDeck();
@@ -7549,12 +7570,14 @@ function castleUnlocked(ch){
   try{ const m = CONQUEST_MAPS.find(x=> x.id===ch.unlockMap); const b = m && m.nodes.find(n=> n.kind==='boss' || n.kind==='finalboss'); return !!(b && (loadConquestProgress().completed||[]).includes(conquestNodeId(m.id, b.key))); }catch(e){ return false; }
 }
 function castleLevelOf(id){ return Math.max(0, Math.min(CASTLE_MAX_LEVEL, (myCastleLevels && myCastleLevels[id])|0)); }
-function castleLevelUpCost(L){ L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0)); return {dust: 12 + L*8, gold: 10 + L*6}; }
+// Castles level to 20 (1,760 Dust for a Common castle); rarer castles cost more, but less steeply than cards (2026-10-11).
+const CASTLE_COST_MULT = {common:1, uncommon:1.15, rare:1.35, epic:1.7, unique:2, legendary:2.5, mythic:3};
+function castleLevelUpCost(L, id){ L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0)); const ch = id && CHARACTER_DEFS[id], k = CASTLE_COST_MULT[(ch && ch.rarity) || 'common'] || 1; return {dust: Math.round((12 + L*8) * k), gold: Math.round((10 + L*6) * k)}; }
 function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
 function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
 function temperCastle(id){
   const L = castleLevelOf(id); if(L >= CASTLE_MAX_LEVEL) return false;
-  const c = castleLevelUpCost(L); if((myCurrencies.dust||0) < c.dust || (myCurrencies.gold||0) < c.gold) return false;
+  const c = castleLevelUpCost(L, id); if((myCurrencies.dust||0) < c.dust || (myCurrencies.gold||0) < c.gold) return false;
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
   return true;
@@ -7697,7 +7720,7 @@ function openLoadoutPicker(kind){
   const body = ()=> isCastle
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr('Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
-      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L), ok = (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold;
+      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L, id), ok = (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold;
         return L >= CASTLE_MAX_LEVEL ? `<p class="lp-temper is-max">🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} is at level ${CASTLE_MAX_LEVEL}.</p>`
           : `<div class="lp-temper"><span>🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} · Lv ${L} → ${L+1}: +1 starting Health</span><button type="button" class="btn small primary" data-temper-castle="${escapeAttr(id)}" ${ok?'':'disabled'}>🔨 Temper · ✨${c.dust} 🍁${c.gold}</button></div>`; })()}`
     : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
@@ -11305,7 +11328,7 @@ const MAP_BIOMES = {
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
 };
-const MAP_BIOME_OF = {mf:'meadow', mb:'beach', mg:'cave', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -12466,7 +12489,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
+          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
     </div>
@@ -18902,6 +18925,16 @@ function devilryDropOnto(targetUid, handUid){
   const td = defs[tgt.defId] || {}, hd = defs[h.defId] || {}, te = td.effects || {};
   const ev = [];
   let done = false;
+  if(hd.cardType==='equipment'){
+    if(m.engine.equip(m.players, m.sideOf, pid, targetUid, handUid, m.stats, ev)){
+      ev.forEach(x=>{ pushLog(x); try{ renderVfxForEvent(x); }catch(e){} });
+      try{ SoundKit.anvil ? SoundKit.anvil() : (SoundKit.coin && SoundKit.coin()); }catch(e){}
+      setTimeout(()=>{ const el = boardCardEl(targetUid); if(el){ floatText(el, `⚒️ ${hd.name}`, 'buff'); try{ if(window.SkillFX && SkillFX.shieldUp) SkillFX.shieldUp(el); }catch(e){} } }, 60);
+      m.selectedUid = null; renderMatchUI(); return true;
+    }
+    showToast(tgt.equipment ? `${td.name} already carries ${(defs[tgt.equipment]||{}).name || 'equipment'}.` : pl.playedThisTurn ? 'Equipping uses your play for the turn, and you have already played.' : `Not enough Lumber to equip ${hd.name}.`, 'warn');
+    return true;
+  }
   if(hd.darkSummon && te.sacrifice) done = m.engine.sacrificeSummon(m.players, m.sideOf, pid, handUid, targetUid, m.stats, ev);
   else if(te.devour && !tgt.devoured) done = m.engine.devour(m.players, m.sideOf, pid, targetUid, handUid, m.stats, ev);
   if(!done){
@@ -18934,6 +18967,8 @@ document.addEventListener('click', e=>{ const b = e.target.closest && e.target.c
 document.addEventListener('contextmenu', e=>{ if(e.target.closest && e.target.closest('.card-tile, .board-card, #battlefieldEl, #handStrip, .map-node, .conquest-map-canvas, .hq-tile')) e.preventDefault(); });
 document.addEventListener('keydown', e=>{ if((e.key==='Enter' || e.key===' ') && e.target.closest && e.target.closest('[data-open-exile]')){ e.preventDefault(); openExileCastPanel(); } });
 function unplayableReason(pl, d){
+  if(d.cardType==='equipment') return pl.playedThisTurn ? 'Already played this turn' : ((d.cost||0) > (pl.lumber||0) ? `Needs ${d.cost}🪵 · drag onto a unit to equip` : '⚒️ Drag onto one of your units to equip it');
+  if(d.cardType==='materia') return 'Materia: for crafting only';
   if((pl.skipTurns||0) > 0) return '🔔 Stunned: you skip this turn';
   if(d.darkSummon) return (pl.darkUsed||0) >= 1 && (pl.devilry||0) >= (d.devilryCost||0) ? 'Dark Summon already used this turn' : `Needs ${d.devilryCost||0}★ Darkness — you have ${pl.devilry||0}★`;
   if(pl.playedThisTurn) return 'Already played this turn';
@@ -18992,7 +19027,7 @@ function renderHand(){
     const d = defs[hc.defId]; if(!d) return '';
     const can = canPlayWithOffer(m, me, hc);
     const canDiscard = !me.discardUsedThisTurn;
-    const canDrag = (can || canDiscard) && !m.resolving;
+    const canDrag = (can || canDiscard || (d.cardType==='equipment' && !me.playedThisTurn)) && !m.resolving;
     const whyNot = can ? '' : unplayableReason(me, d);
     return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
@@ -20535,7 +20570,7 @@ async function resolveRound(opts){
     // Tutorial (2026-09-23, batch #28) excluded for the same reason Sandbox is: a scripted
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
-    if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner);
+    if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner, m.mode);
     try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest) heroAwardBattle(m); }catch(e){}
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
@@ -20605,9 +20640,14 @@ async function resolveRound(opts){
         if(cardIds.length) m.conquestCardsEarned = cardIds;
         // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
-        if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('woodland', CONQUEST_MAPS[3].id); }
+        if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('bird', CONQUEST_MAPS[3].id); } // Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
+        // A boss's first clear sometimes leaves an egg of its people's type (2026-10-11).
+        try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(bn && baseKind(bn.kind)==='boss' && Math.random() < 0.3){ const defs = getCardDefs(), tally = {}; Object.entries(bn.deck||{}).forEach(([id, k])=>{ const d = defs[id]; if(d) Object.keys(EGG_KINDS).forEach(t=>{ if(t!=='woodland' && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); }); grantEgg(Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland', bn.key); } }catch(e){}
       }
       // Faction packs and Food tokens (2026-10-11).
+      try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
+      try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(`🐉 A Dragon Scale (${sc.index}/${sc.total}). ${sc.line}`, 'ok'); }catch(e){} }, 1600); } }catch(e){}
+      try{ const md = rollMateriaDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear, rank); if(Object.keys(md).length) m.conquestMateriaEarned = md; }catch(e){}
       try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.food) m.conquestFoodEarned = drops.food; }catch(e){}
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
@@ -21731,7 +21771,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="A top rank pays extra: S +25%, SS +50%, SSS +100%">⭐ Rank ${reward.rankBonus.rank} bonus +${reward.rankBonus.gold}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -22007,6 +22047,7 @@ function logText(ev){
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
     case 'cageBroken': return {cls:'gold', text: ev.owner==='A' ? `🔓 The cage breaks: ${nm(ev.leaderDefId)} is free and joins your side!` : `🔓 The enemy breaks their leader's cage: ${nm(ev.leaderDefId)} joins them.`};
+    case 'equip': return {cls:'gold', text:`⚒️ ${nm(ev.defId)} takes up ${nm(ev.equipDefId)}: +${ev.attack}/+${ev.health}.`};
     case 'devour': return {cls:'gold', text:`🫦 ${nm(ev.defId)} devours ${nm(ev.eatenDefId)}: +${ev.attack}/+${ev.health}.`};
     case 'sacrifice': return {cls:'poison', text:`⛧ ${sideLabel(ev.side)} sacrifices ${nm(ev.defId)} to summon ${nm(ev.forDefId)} (${ev.discount} cheaper).`};
     case 'beware': return {cls:'poison', text:`👁️ ${nm(ev.defId)} crawls out of the Removal Zone (${ev.darkness} Darkness).`};
@@ -24327,7 +24368,7 @@ function forgeStatsAt(id, level){
   const b = forgeBaseDef(id) || {}; const m = levelStatMultiplier(level);
   return {attack: b.attack!=null ? Math.max(1, Math.round(b.attack*m)) : null, health: b.health!=null ? Math.max(1, Math.round(b.health*m)) : null};
 }
-function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
+function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
 function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
@@ -24424,7 +24465,8 @@ function renderForge(){
     </div>
     <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
-    <div class="forge-layout">
+    ${forgeMode==='smith' ? blacksmithHTML() : ''}
+    <div class="forge-layout" ${forgeMode==='smith' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
@@ -24463,16 +24505,141 @@ function renderForge(){
   const rfBtn = document.getElementById('forgeRefineBtn');
   if(rfBtn) rfBtn.addEventListener('click', ()=> forgeRefine(rfBtn));
   root.querySelectorAll('[data-enchant]').forEach(b=> b.addEventListener('click', ()=> forgeEnchant(b)));
+  if(forgeMode==='smith') wireBlacksmith(root);
+}
+// ---- The Scale Trail (2026-10-11, user: "There is a hidden substory, of dragon scales. If you challenge the optional
+// harder Elites or get S on certain Skirmishes"). Eight fights hide a Dragon Scale; an S rank or better there finds it,
+// once. Nothing announces the trail until the first scale turns up; after that, the other seven fights glint on the map
+// and the Inventory keeps a journal. Scales are also Materia: the Blacksmith's Dragonscale Mail needs one.
+const DRAGON_SCALE_NODES = [
+  {map:'mg', key:'g-4', line:'A scale, warm as a hearthstone, wedged in the grotto rock behind the Keeper. Something huge squeezed through here once.'},
+  {map:'m8', key:'8-7', line:'Another, half sunk in the Mire. The Heron Hag says the sky went dark the night the Crown vanished.'},
+  {map:'m4', key:'4-7', line:'Under the Roost. The bats will not sleep anywhere near it.'},
+  {map:'mr', key:'r-7', line:'The King-Maker kept one in his hoard. He says a dragon paid him with it, for directions.'},
+  {map:'m3', key:'3-5', line:'High on the Ashen Peak, a scale fused to the stone, pointing north.'},
+  {map:'my', key:'y-4', line:'In the Canopy the mandrills drum around one like a holy thing.'},
+  {map:'m9', key:'9-7', line:'In the Foundry slag: a scale the furnace could not melt.'},
+  {map:'m11', key:'11-6', line:'The last one, on the Sundered Peak, beside claw marks gouged around a crown-shaped hollow. Whoever took the Crown had wings.'},
+];
+function scaleFlagKey(n){ return 'scale:' + n.map + ':' + n.key; }
+function scalesFound(){ const f = loadDialogueFlags(); return DRAGON_SCALE_NODES.filter(n=> f[scaleFlagKey(n)]); }
+function scaleNodeAt(mapId, key){ return DRAGON_SCALE_NODES.find(n=> n.map===mapId && n.key===key) || null; }
+function rollDragonScale(mapId, key, rank){
+  const n = scaleNodeAt(mapId, key); if(!n || !rankAtLeast(rank, 'S')) return null;
+  if(loadDialogueFlags()[scaleFlagKey(n)]) return null;
+  setDialogueFlag(scaleFlagKey(n), true); unlockCardForPlayer('dragon-scale', 'scale');
+  return {index: DRAGON_SCALE_NODES.indexOf(n) + 1, total: DRAGON_SCALE_NODES.length, line: n.line};
+}
+// ---- Blacksmith (2026-10-11, user: "There is also a blacksmith portion for crafting weapons or combining cards. These
+// weapons are just cards. Some cards are just materia ... we need this to look good, nice effects, with a system that sticks
+// and doesn't complete super fast"). Recipes turn Materia cards (Iron Shard, River Pearl, Ember Core, Dragon Scale) plus a
+// card into an equipment card; Fuse melts three spare copies of a card into one random card a rarity higher.
+const SMITH_RECIPES = [
+  {out:'bark-buckler', needs:{'iron-shard':2, 'bramble-sprout':1}, cost:{dust:20, gold:30}},
+  {out:'netmender-harpoon', needs:{'iron-shard':2, 'otter-netmender':1}, cost:{dust:40, gold:60}},
+  {out:'quill-spear', needs:{'iron-shard':2, 'river-pearl':1, 'quillguard':1}, cost:{dust:60, gold:80}},
+  {out:'sunfeather-plume', needs:{'iron-shard':2, 'river-pearl':1, 'petal-fletcher':1}, cost:{dust:80, gold:100}},
+  {out:'siege-hammer', needs:{'iron-shard':3, 'ember-core':1, 'badger-sapper':1}, cost:{dust:120, gold:150}},
+  {out:'dragonscale-mail', needs:{'iron-shard':4, 'ember-core':1, 'dragon-scale':1}, cost:{dust:300, gold:300}},
+];
+const FUSE_COPIES = 3;
+let smithSel = 0;
+function ownedCount(id){ return (myCardCopies[id]||[]).length; }
+// Take n copies, plainest first (never a foil or Shiny one while a plain copy is left).
+function spendCopies(id, n){
+  const arr = (myCardCopies[id]||[]).slice(); if(arr.length < n) return false;
+  const order = arr.map((c, i)=> ({i, w: (c && c.shiny ? 4 : 0) + (c && c.foil ? 2 : 0) + (c && c.level ? 1 : 0)})).sort((a,b)=> a.w - b.w).slice(0, n).map(x=> x.i);
+  myCardCopies[id] = arr.filter((c, i)=> !order.includes(i)); saveCardCopies(); return true;
+}
+function recipeReady(r){ return Object.entries(r.needs).every(([id, n])=> ownedCount(id) >= n) && canAffordCost(r.cost); }
+function fuseCandidates(){
+  const defs = getCardDefs();
+  return Object.keys(myCardCopies).filter(id=> defs[id] && ownedCount(id) > FUSE_COPIES && cardSourceOf(defs[id]).kind !== 'base' && defs[id].cardType !== 'materia' && fuseTargetRarity(defs[id].rarity))
+    .sort((a,b)=> ownedCount(b) - ownedCount(a));
+}
+const FUSE_LADDER = ['common','uncommon','rare','veryrare','superrare','epic'];
+function fuseTargetRarity(r){ const i = FUSE_LADDER.indexOf(r || 'common'); return i >= 0 && i < FUSE_LADDER.length - 1 ? FUSE_LADDER[i + 1] : null; }
+function blacksmithHTML(){
+  const defs = getCardDefs(), r = SMITH_RECIPES[Math.min(smithSel, SMITH_RECIPES.length - 1)], out = defs[r.out];
+  const mat = ['iron-shard','river-pearl','ember-core','dragon-scale'].map(id=> defs[id] ? `<span class="sm-mat" title="${escapeAttr(defs[id].name)}">${defs[id].icon} <b>${ownedCount(id)}</b><small>${escapeHtml(defs[id].name)}</small></span>` : '').join('');
+  const list = SMITH_RECIPES.map((x, i)=>{ const d = defs[x.out]; if(!d) return ''; const ok = recipeReady(x);
+    return `<button type="button" class="sm-recipe ${i===smithSel ? 'on' : ''} ${ok ? 'is-ready' : ''}" data-smith="${i}" aria-pressed="${i===smithSel}"><span class="sm-ico">${d.icon}</span><span><b>${escapeHtml(d.name)}</b><small>${escapeHtml(rarityDef(d.rarity||'common').label)} · ${ownedCount(x.out) ? `you have ${ownedCount(x.out)}` : 'not made yet'}</small></span>${ok ? '<i class="sm-dot" title="You can craft this">●</i>' : ''}</button>`; }).join('');
+  const needs = out ? Object.entries(r.needs).map(([id, n])=>{ const d = defs[id] || {name:id, icon:'❔'}; const have = ownedCount(id);
+    return `<span class="sm-need ${have >= n ? 'ok' : 'short'}" data-defid="${escapeAttr(id)}">${d.icon||''} ${escapeHtml(d.name)} <b>${Math.min(have, n)}/${n}</b></span>`; }).join('') : '';
+  const fz = fuseCandidates();
+  return `<section class="smithy" aria-label="Blacksmith">
+    <div class="sm-mats" aria-label="Your Materia">${mat}<small class="sm-mats-hint">Materia comes from Elite and Boss first clears, the odd repeat win, and high ranks.</small></div>
+    <div class="sm-layout">
+      <div class="panel sm-list" role="listbox" aria-label="Recipes">${list}</div>
+      <div class="panel sm-anvil" id="smithAnvil">
+        <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
+        <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
+        <div class="sm-needs">${needs}</div>
+        <div class="forge-cost-row">${costChipsHTML(r.cost)}</div>
+        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}</button>
+      </div>
+    </div>
+    <div class="panel sm-fuse"><h3>🔥 Fuse</h3><p class="panel-sub">Melt ${FUSE_COPIES} spare copies of a card into one random card a rarity higher (up to Epic). You always keep at least one copy.</p>
+      <div class="sm-fuse-list">${fz.length ? fz.slice(0, 18).map(id=> `<button type="button" class="sm-fuse-btn" data-fuse="${escapeAttr(id)}" title="Fuse ${FUSE_COPIES} into a random ${escapeAttr(rarityDef(fuseTargetRarity(defs[id].rarity)).label)}">${defs[id].icon||''} ${escapeHtml(defs[id].name)} <small>×${ownedCount(id)} → ${escapeHtml(rarityDef(fuseTargetRarity(defs[id].rarity)).label)}</small></button>`).join('') : '<small class="panel-sub">Nothing to fuse yet: you need more than 3 copies of a card from a map or a pack.</small>'}</div></div>
+  </section>`;
+}
+function smithBurst(){
+  const host = document.querySelector('#smithAnvil .sm-sparks'); if(!host || reducedMotion()) return;
+  host.innerHTML = Array.from({length:22}, (_, k)=>{ const a = (k/22)*Math.PI*2 + Math.random()*0.3, d = 60 + Math.random()*90; return `<i style="--dx:${(Math.cos(a)*d).toFixed(0)}px; --dy:${(Math.sin(a)*d - 30).toFixed(0)}px; --t:${(0.5 + Math.random()*0.5).toFixed(2)}s"></i>`; }).join('');
+  setTimeout(()=>{ if(host) host.innerHTML = ''; }, 1200);
+}
+function wireBlacksmith(root){
+  root.querySelectorAll('[data-smith]').forEach(b=> b.onclick = ()=>{ smithSel = +b.dataset.smith; renderForge(); });
+  const craft = document.getElementById('smithCraftBtn');
+  if(craft) craft.onclick = async ()=>{
+    const r = SMITH_RECIPES[smithSel]; if(!r || !recipeReady(r) || forgeBusy){ denyShake(craft); return; }
+    forgeBusy = true;
+    Object.entries(r.needs).forEach(([id, n])=> spendCopies(id, n));
+    myCurrencies.dust -= r.cost.dust||0; myCurrencies.gold -= r.cost.gold||0; myCurrencies.gems -= r.cost.gems||0; saveCurrencies();
+    try{ SoundKit.anvil ? SoundKit.anvil() : (SoundKit.gold && SoundKit.gold()); }catch(e){}
+    const card = document.getElementById('smithCard'); if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } }
+    unlockCardForPlayer(r.out, 'smith');
+    try{ if(window.starFallVfx) starFallVfx.celebrate(card, 4); }catch(e){}
+    showToast(`⚒️ Crafted ${getCardDefs()[r.out].name}! It's in your collection.`, 'ok');
+    forgeBusy = false; renderForge();
+  };
+  root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
+    const id = b.dataset.fuse, defs = getCardDefs(), to = fuseTargetRarity(defs[id] && defs[id].rarity);
+    if(!to || ownedCount(id) <= FUSE_COPIES) return;
+    const pool = Object.keys(defs).filter(x=> defs[x].rarity === to && !defs[x].token && !defs[x].test && defs[x].cardType !== 'materia' && ['pack','map'].includes(cardSourceOf(defs[x]).kind));
+    if(!pool.length){ showToast('Nothing to fuse into yet.', 'warn'); return; }
+    const ok = await bwConfirm({title:'🔥 Fuse', body:`Melt ${FUSE_COPIES} copies of ${defs[id].name} into one random ${rarityDef(to).label} card?`, okLabel:'Fuse'});
+    if(!ok) return;
+    spendCopies(id, FUSE_COPIES);
+    const got = pool[Math.floor(Math.random()*pool.length)];
+    unlockCardForPlayer(got, 'fuse');
+    try{ SoundKit.gold && SoundKit.gold(); }catch(e){}
+    showToast(`🔥 Fused into ${defs[got].icon||''} ${defs[got].name}!`, 'ok');
+    renderForge();
+  });
+}
+// Materia drops (2026-10-11): Elite and Boss first clears always give Iron Shards, Bosses a River Pearl, Raid and
+// Campaign bosses an Ember Core; any repeat win has a 15% chance of a shard, and an SS or SSS rank a 10% chance of a core.
+function rollMateriaDrops(node, isFirstClear, rank){
+  const out = {}; if(!node || node.kind==='tutorial') return out;
+  const k = baseKind(node.kind || 'skirmish'), add = (id, n)=>{ out[id] = (out[id]||0) + n; };
+  if(isFirstClear){ if(k==='elite') add('iron-shard', 1); if(k==='boss'){ add('iron-shard', 2); add('river-pearl', 1); } if(k==='raidboss' || k==='finalboss'){ add('iron-shard', 3); add('ember-core', 1); } }
+  else if(Math.random() < 0.15) add('iron-shard', 1);
+  if(['SS','SSS'].includes(rank) && Math.random() < 0.10) add('ember-core', 1);
+  Object.entries(out).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'materia'); });
+  return out;
 }
 const FORGE_MODES = {
   upgrade: {icon:'🔨', label:'Upgrade', blurb:'Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a mark of mastery; stats stay the same.'},
   refine:  {icon:'✨', label:'Refine', blurb:'Refine your best copy of a card into a finer foil: Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf. Shiny can’t be made here; it only comes out of packs and rewards.'},
+  smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
 };
 function forgeReadyFor(id){
+  if(forgeMode==='smith') return false;
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
-  const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false);
+  const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false);
 }
 function costChipsHTML(cost){
   const chip = (glyph, need, have, label)=> need ? `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>` : '';
@@ -24533,8 +24700,8 @@ function forgeAnvilHTML(id, sel, L, maxed){
   const delta = (a, b, cls, glyph)=> a==null ? '' : `<div class="forge-stat ${cls}"><span class="fs-glyph">${glyph}</span><span class="fs-now">${a}</span>${!maxed ? `<span class="fs-arrow">→</span><span class="fs-next ${b>a?'up':''}">${b}${b>a?`<small>+${b-a}</small>`:''}</span>` : ''}</div>`;
   const pips = Array.from({length:10}, (_,k)=> `<i class="${k<L?'on':''} ${k===L && !maxed?'next':''}"></i>`).join('');
   const prestige = getCardPrestige(id), tier = maxed ? nextPrestigeTier(id) : null;
-  const cost = !maxed ? levelUpCost(L) : (tier ? tier.cost : null);
-  const afford = !maxed ? canAffordLevelUp(L) : (tier ? canAffordPrestige(id) : false);
+  const cost = !maxed ? levelUpCost(L, id) : (tier ? tier.cost : null);
+  const afford = !maxed ? canAffordLevelUp(L, id) : (tier ? canAffordPrestige(id) : false);
   const noGain = !maxed && next.attack===now.attack && next.health===now.health;
   return `
     <div class="anvil-stage" id="anvilStage">
@@ -24646,9 +24813,9 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
 async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, L = getCardLevel(id);
-  if(L>=10 || !canAffordLevelUp(L)){ denyShake(btn); return; }
+  if(L>=10 || !canAffordLevelUp(L, id)){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
-  const c = levelUpCost(L);
+  const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
   myCardLevels[id] = L+1; saveCardLevels();
@@ -24733,6 +24900,7 @@ function renderHome(){
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
+        ${tabOpen('deck') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
         ${adminEntryVisible() ? `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road (preview)"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>Preview</small></button>` : ''}
         ${arenaHome && tabOpen('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
@@ -24779,6 +24947,32 @@ function wireHomeScene(root){
 }
 // Who sees the Admin entry in Settings: cloud admins, plus local/dev builds (so you're never locked
 // out while signed out or offline). Ordinary players never see it.
+// ---- Inventory (2026-10-11, user: "Inventory ... need to have a page for this"): everything you hold that isn't a card in a
+// deck — Materia, the Scale Trail, eggs and babies, unopened packs, Enchant crystals and every currency — on one shelf.
+function renderInventory(){
+  const root = document.getElementById('view-inventory'); if(!root) return;
+  const defs = getCardDefs(), n = nestState(), inv = loadFactionPacks(), st = materiaStore(), found = scalesFound();
+  const cell = (icon, count, label, sub)=> `<div class="inv-cell"><span class="inv-ico">${icon}</span><b class="inv-n">${count}</b><span class="inv-label">${escapeHtml(label)}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
+  const mat = ['iron-shard','river-pearl','ember-core','dragon-scale'].filter(id=> defs[id]).map(id=> cell(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
+  const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
+  const packs = Object.values(FACTION_PACKS).map(fp=> cell(fp.icon, inv[fp.id]||0, fp.name, 'unopened')).join('');
+  const crystals = MATERIA_KINDS.map(k=> cell(k.icon, st[k.id]||0, k.name + ' crystal', 'for Enchanting')).join('');
+  const wallet = Object.keys(CURRENCY_META).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
+  const trail = found.length ? `<section class="panel inv-sec inv-scales"><h3>🐉 The Scale Trail <small>${found.length}/${DRAGON_SCALE_NODES.length}</small></h3>
+      <ol class="scale-trail">${DRAGON_SCALE_NODES.map((sn, i)=>{ const got = found.includes(sn); const map = CONQUEST_MAPS.find(m=> m.id===sn.map);
+        return `<li class="${got ? 'got' : ''}"><span class="st-ico">${got ? '🐉' : '❔'}</span><span>${got ? `<b>${escapeHtml(skirmishCode(sn.map, sn.key))} · ${escapeHtml(map ? map.name : '')}</b> ${escapeHtml(sn.line)}` : '<i>Somewhere on the road, something glints.</i>'}</span></li>`; }).join('')}</ol></section>` : '';
+  root.innerHTML = `<div class="inv-page">
+    <div class="panel inv-head"><h2>🎒 Inventory</h2><p class="panel-sub">Everything you carry that isn't in a deck.</p></div>
+    <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-grid">${mat}</div></section>
+    ${trail}
+    <section class="panel inv-sec"><h3>🪺 In the Nest <button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button></h3><div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
+    <section class="panel inv-sec"><h3>🎁 Unopened packs <button type="button" class="btn small" data-inv-go="shop">Open in the Shop</button></h3><div class="inv-grid">${packs}</div></section>
+    <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-grid">${crystals}</div></section>
+    <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
+  </div>`;
+  root.querySelectorAll('[data-inv-go]').forEach(b=> b.onclick = ()=>{ const g = b.dataset.invGo;
+    if(g==='smith' || g==='enchant'){ forgeMode = g; codexSubTab = 'forge'; switchTab('codex'); } else switchTab(g); });
+}
 // ---- Wildpaths (2026-10-11, user: "JUST for PVE - im thinking of a PASSIVE SKILL system also. for now, maybe just keep
 // that idea in mind, create the page for it, create the logo for it, and put it somewhere. It is a scrawling path, like
 // Skyrim"). A design preview: three hand-inked trails through the wood, each a scrawl of passive skills you would walk
@@ -25538,30 +25732,81 @@ const NEST_KEY = 'bramblewood_nest_v1';
 function nestState(){ try{ const n = JSON.parse(localStorage.getItem(NEST_KEY)||'{}'); return {nurse: n.nurse || null, eggs: Array.isArray(n.eggs) ? n.eggs : []}; }catch(e){ return {nurse:null, eggs:[]}; } }
 function saveNestState(n){ try{ localStorage.setItem(NEST_KEY, JSON.stringify(n)); }catch(e){} }
 function nurseEligible(id){ const d = getCardDefs()[id]; if(!d || d.token || d.test) return false; return id === 'wandering-traveller' || RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= RARITY_TIER_BANDS.indexOf('unique'); }
-const EGG_KINDS = {
-  woodland: {name:'Woodland Egg', icon:'🥚', hatchHours:8, pool: d=> !d.token && !d.test && !d.hero && ['starter','common','uncommon', undefined].includes(d.rarity)},
+// Typed eggs and rescued babies (2026-10-11, user: "nestles of hay, little nests placed in a hexagonal pattern ... where we
+// hatch our little eggs or place babies we rescue. They will grow up to units - it's random what they grow into, but at the
+// very least, we know what type of unit we will get"). Each egg or baby has a known type; it grows into a random card of
+// that type (Common to Rare, never a Base card). Babies are rescued after fights and grow faster than eggs hatch.
+const NEST_TYPES = {
+  woodland: {name:'Woodland', icon:'🍂', test: d=> true},
+  bird:     {name:'Bird', icon:'🪶', test: d=> (d.species||[]).includes('Bird') || (d.archetypes||[]).some(a=> ['Bird','Hummingbird','Owl','Eagle','Duck','Raven'].includes(a))},
+  otter:    {name:'Otter', icon:'🦦', test: d=> (d.species||[]).includes('Mustelid') || (d.archetypes||[]).includes('Otter')},
+  scaly:    {name:'Scaly', icon:'🦎', test: d=> (d.species||[]).some(x=> ['Reptile','Amphibian'].includes(x)) || (d.archetypes||[]).some(a=> ['Reptile','Snake','Frog','Turtle'].includes(a))},
+  bug:      {name:'Bug', icon:'🐞', test: d=> (d.species||[]).some(x=> ['Insect','Arachnid'].includes(x)) || (d.archetypes||[]).some(a=> ['Insect','Arachnid','Bee','Ants'].includes(a))},
+  water:    {name:'Water', icon:'🐟', test: d=> (d.species||[]).some(x=> ['Fish','Cetacean','Mollusc','Crustacean'].includes(x)) || (d.archetypes||[]).some(a=> ['Fish','Cetacean','Cephalopod'].includes(a))},
+  beast:    {name:'Beast', icon:'🐾', test: d=> (d.species||[]).some(x=> ['Canid','Felid','Ursid','Cervid','Suid','Rodent','Lagomorph','Equid','Bovine','Primate'].includes(x))},
 };
+const EGG_KINDS = {
+  woodland: {name:'Woodland Egg', icon:'🥚', hatchHours:8, type:'woodland'},
+  bird: {name:'Speckled Egg', icon:'🥚', hatchHours:8, type:'bird'},
+  otter: {name:'River Bundle', icon:'🧺', hatchHours:8, type:'otter'},
+  scaly: {name:'Leathery Egg', icon:'🥚', hatchHours:10, type:'scaly'},
+  bug: {name:'Cocoon', icon:'🫘', hatchHours:6, type:'bug'},
+  water: {name:'Roe Pearl', icon:'🫧', hatchHours:6, type:'water'},
+  beast: {name:'Den Bundle', icon:'🧺', hatchHours:10, type:'beast'},
+};
+const BABY_GROW_HOURS = 4, NEST_SLOTS = 7;
+function nestPoolFor(type){
+  const t = NEST_TYPES[type] || NEST_TYPES.woodland, defs = getCardDefs();
+  return Object.values(defs).filter(d=> d && !d.token && !d.test && !d.hero && !d.cardType && ['common','uncommon','rare'].includes(d.rarity || 'common') && ['map','pack'].includes(cardSourceOf(d).kind) && t.test(d));
+}
 function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] ? kind : 'woodland'; const now = Date.now();
   n.eggs.push({id:'egg'+now.toString(36)+Math.floor(Math.random()*1e4), kind:k, laidAt:now, hatchAt: now + EGG_KINDS[k].hatchHours*3600e3, from: from||''}); saveNestState(n);
-  try{ showToast(`${EGG_KINDS[k].icon} You found a ${EGG_KINDS[k].name}! It's in your Nest, keeping warm.`, 'ok'); }catch(e){} }
+  try{ showToast(`${EGG_KINDS[k].icon} You found a ${EGG_KINDS[k].name} (${NEST_TYPES[EGG_KINDS[k].type].name})! It's in your Nest, keeping warm.`, 'ok'); }catch(e){} }
+function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
+  n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + BABY_GROW_HOURS*3600e3, from: from||''}); saveNestState(n);
+  try{ showToast(`${NEST_TYPES[t].icon} You rescued a little ${NEST_TYPES[t].name.toLowerCase()} baby. It's safe in your Nest now.`, 'ok'); }catch(e){} }
+function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EGG_KINDS[e.kind]||EGG_KINDS.woodland).type); }
 function hatchEgg(eggId){
   const n = nestState(); const egg = n.eggs.find(e=> e.id===eggId); if(!egg || Date.now() < egg.hatchAt) return null;
-  const defs = getCardDefs(), pool = Object.values(defs).filter(d=> d && (EGG_KINDS[egg.kind]||EGG_KINDS.woodland).pool(d));
+  let pool = nestPoolFor(nestItemType(egg)); if(!pool.length) pool = nestPoolFor('woodland');
   if(!pool.length) return null;
-  const d = pool[Math.floor(Math.random()*pool.length)];
+  const w = d=> ({common:6, uncommon:3, rare:1})[d.rarity || 'common'] || 1, tot = pool.reduce((a, d)=> a + w(d), 0);
+  let r = Math.random()*tot, d = pool[pool.length-1]; for(const x of pool){ r -= w(x); if(r <= 0){ d = x; break; } }
   n.eggs = n.eggs.filter(e=> e.id!==eggId); saveNestState(n);
   unlockCardForPlayer(d.id, 'egg'); return d.id;
+}
+// A rescue after a won Conquest fight: 6% a win, of the enemy deck's most common type.
+function rollBabyRescue(node){
+  if(!node || !node.deck || node.kind==='tutorial' || Math.random() >= 0.06) return null;
+  const defs = getCardDefs(), tally = {};
+  Object.entries(node.deck).forEach(([id, k])=>{ const d = defs[id]; if(!d) return; Object.keys(NEST_TYPES).forEach(t=>{ if(t !== 'woodland' && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); });
+  const type = Object.keys(tally).sort((a,b)=> tally[b] - tally[a])[0] || 'woodland';
+  rescueBaby(type, node.key); return type;
 }
 function nestKeeperHTML(){
   const n = nestState(), defs = getCardDefs();
   const nurse = n.nurse && defs[n.nurse];
-  const fmt = ms=>{ const h = Math.floor(ms/3600e3), m = Math.ceil((ms%3600e3)/60e3); return h ? `${h}h ${m}m` : `${m}m`; };
-  const eggs = n.eggs.map(e=>{ const k = EGG_KINDS[e.kind]||EGG_KINDS.woodland, left = e.hatchAt - Date.now();
-    return `<button type="button" class="nest-egg ${left<=0?'is-ready':''}" data-egg="${escapeAttr(e.id)}" ${left>0?'disabled':''} title="${escapeAttr(k.name)}"><span class="ne-ico">${k.icon}</span><small>${left>0 ? escapeHtml(fmt(left)) : 'Hatch!'}</small></button>`; }).join('');
-  return `<div class="nest-keeper">
-    <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend your Nest.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
-    <div class="nk-eggs"><b>🥚 Eggs</b>${eggs || '<small>No eggs yet. Rumour says the fourth map hides one.</small>'}</div>
-  </div>`;
+  const fmt = ms=>{ const t = Math.max(1, Math.ceil(ms/60e3)), h = Math.floor(t/60), m = t%60; return h ? `${h}h ${m}m` : `${m}m`; };
+  // seven hay nests in a hexagon (one in the middle, six around it); eggs and babies take them in order, extras wait in the basket
+  const HEX = [[50,50],[50,16],[80,33],[80,67],[50,84],[20,67],[20,33]];
+  const items = n.eggs.slice(0, NEST_SLOTS), waiting = n.eggs.slice(NEST_SLOTS);
+  const nests = HEX.map(([x, y], i)=>{ const e = items[i];
+    if(!e) return `<div class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" aria-label="An empty nest"><span class="hay"></span></div>`;
+    const t = NEST_TYPES[nestItemType(e)] || NEST_TYPES.woodland, left = e.hatchAt - Date.now(), baby = e.kind==='baby', k = EGG_KINDS[e.kind];
+    const pct = Math.max(0, Math.min(100, Math.round((Date.now() - e.laidAt) / Math.max(1, e.hatchAt - e.laidAt) * 100)));
+    return `<button type="button" class="hay-nest ${left<=0 ? 'is-ready' : ''} ${baby ? 'is-baby' : 'is-egg'}" style="--x:${x}%; --y:${y}%; --p:${pct}" data-egg="${escapeAttr(e.id)}" ${left>0 ? 'aria-disabled="true"' : ''} aria-label="${escapeAttr((baby ? 'A rescued ' + t.name.toLowerCase() + ' baby' : (k ? k.name : 'An egg')) + ' — ' + t.name + ' type, ' + (left>0 ? 'ready in ' + fmt(left) : 'ready now'))}">
+      <span class="hay"></span><span class="nest-thing">${baby ? '🐣' : (k ? k.icon : '🥚')}</span><span class="nest-type" title="${escapeAttr(t.name)} type">${t.icon}</span>
+      <small class="nest-time">${left>0 ? escapeHtml(fmt(left)) : (baby ? 'Grown!' : 'Hatch!')}</small><span class="nest-ring" aria-hidden="true"></span></button>`; }).join('');
+  return `<section class="hatchery" aria-label="Hatchery">
+      <div class="hatch-sky" aria-hidden="true"><i class="wind w1"></i><i class="wind w2"></i><i class="wind w3"></i>${Array.from({length:7}, (_, k)=> `<i class="leaf" style="--d:${(7 + k*1.3).toFixed(1)}s; --delay:${(k*1.1).toFixed(1)}s; --y:${10 + (k*13)%70}%">${['🍂','🍃','🌾'][k%3]}</i>`).join('')}</div>
+      <div class="hatch-nests">${nests}</div>
+      <div class="hatch-side">
+        <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
+        <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
+        ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
+        ${n.eggs.length ? '' : '<p class="hatch-wait">The nests are empty. Rumour says the third map hides an egg, and every fight might turn up a lost baby.</p>'}
+      </div>
+    </section>`;
 }
 function openNursePicker(){
   const defs = getCardDefs(), n = nestState();
@@ -25575,7 +25820,7 @@ function openNursePicker(){
 function renderNest(){
   const root = document.getElementById('view-nest');
   const defs = getCardDefs();
-  const ownedIds = Object.keys(defs).filter(id=> myCardCopies[id] && myCardCopies[id].length>0).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
+  const ownedIds = Object.keys(defs).filter(id=> myCardCopies[id] && myCardCopies[id].length>0 && defs[id].cardType!=='materia').sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
   const totalCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].length, 0);
   const foilCopies = ownedIds.reduce((sum,id)=> sum + myCardCopies[id].filter(c=>c.foil).length, 0);
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
@@ -25591,7 +25836,7 @@ function renderNest(){
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
-  root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ const id = hatchEgg(b.dataset.egg); if(id){ const d = getCardDefs()[id]; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(`🐣 It hatched: ${d.icon||''} ${d.name}!`, 'ok'); renderNest(); } });
+  root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; } const id = hatchEgg(b.dataset.egg); if(id){ const d = getCardDefs()[id]; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(`🐣 It hatched: ${d.icon||''} ${d.name}!`, 'ok'); renderNest(); } });
   // 2026-09-28, per explicit request ("don't have the checkbox w the 1x... show a card that looks
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
@@ -27258,6 +27503,7 @@ function switchTab(tab){
   document.getElementById('view-ranking').hidden = tab!=='ranking';
   { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
   { const vp = document.getElementById('view-paths'); if(vp) vp.hidden = tab!=='paths'; }
+  { const vi = document.getElementById('view-inventory'); if(vi) vi.hidden = tab!=='inventory'; }
   document.getElementById('view-guild').hidden = tab!=='guild';
   { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
   document.getElementById('view-admin').hidden = tab!=='admin';
@@ -27281,6 +27527,7 @@ function switchTab(tab){
   if(tab==='profile') safeRender('Profile', renderProfile);
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
+  if(tab==='inventory') safeRender('Inventory', renderInventory);
   if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);
