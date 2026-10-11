@@ -3653,6 +3653,8 @@ function cardIcoHTML(d){
     // lazy-loadable, which the same deferred-paint symptom could also come from.
     return `<img class="card-art-img" src="${d.art}" alt="${escapeAttr(d.name||'')}" draggable="false" decoding="sync" loading="eager" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${icon}</span>`;
   }
+  // Shadow cards (2026-10-11, Willow-o'-Wisp) without art: the emoji becomes a dark silhouette with a cold glow.
+  if(d && Array.isArray(d.archetypes) && d.archetypes.includes('Shadow')) return `<span class="ico-shadow">${d.icon || '❔'}</span>`;
   return (d && d.icon) || '❔';
 }
 // Item 8 (2026-09-17, "Background gradients ... should depend on rarity. Make design for each
@@ -3860,7 +3862,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp">❤${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -3881,7 +3883,7 @@ function cardTileHTML(d, opts){
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':'<span class="atk">⚔'+d.attack+'</span>'}<span class="hp">❤${hpBadgeText}</span></div>`}
-    ${abilityBadges(d, {compact: !!(hand || inMatch)})}
+    ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
@@ -3920,6 +3922,52 @@ function pitchYieldBadgeHTML(d){
 function poisonTagHTML(d){
   const p = (d.effects||{}).poison;
   return p ? `<span class="poison-tag" title="Poisons on hit">☠${p}</span>` : '';
+}
+// Trigger badges (2026-10-11, user: "use the lightning symbol to represent it has SOME trigger. It could even be shown
+// like Lightning -> Action's Emoji. If grave = a skill related to GY. When the creature isn't ready, the lightning is
+// greyed out"): one ⚡→X chip per custom trigger, X being what it does (🪦 for anything that works the graveyard). On the
+// board, a reactive trigger is off while its card is still Waiting (the engine's rule), and its ⚡ greys out.
+const TRIGGER_ALWAYS_ON = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard']);
+function triggerActionEmoji(t){
+  const defs = getCardDefs();
+  switch(t.do){
+    case 'spawnCard': return (defs[t.defId] && defs[t.defId].icon) || '🐣';
+    case 'damage': return (t.who==='enemy' && t.sub==='random') ? '🏹' : '💥';
+    case 'missile': return '🏹';
+    case 'gain': return ({lumber:'🪵', grace:'🕊️', stone:'🪨', devilry:'★'})[t.resource||'lumber'] || '🪵';
+    case 'gainGold': case 'gainLumber': return '🪵';
+    case 'gainGrace': return '🕊️';
+    case 'gainDevilry': return '★';
+    case 'gainStone': return '🪨';
+    case 'exileGrave': return '🪦';
+    case 'exileSelf': return '🪦';
+    case 'exile': return t.who==='self' ? '🪦' : '🌫';
+    case 'drawCard': return '🂠';
+    case 'buff': case 'buffAttack': case 'buffHealth': case 'buffAlly': return '💪';
+    case 'debuff': case 'debuffAttack': return '🔻';
+    case 'poison': return '☠';
+    case 'bleed': return '🩸';
+    case 'expose': return '🎯';
+    case 'stun': return '💫';
+    case 'stunPlayer': return '🚫';
+    case 'heal': return '💚';
+    case 'cleanse': return '🫧';
+    case 'addWait': return '⏳';
+    case 'reduceWaitOfSpawned': return '⏩';
+    case 'swapPositions': return '🔄';
+    case 'mindControl': return '🪢';
+    case 'refine': return '✨';
+    default: return '❔';
+  }
+}
+function triggerIsOff(t, live){ return !!(live && live.wait>0 && !t.whileWaiting && !TRIGGER_ALWAYS_ON.has(t.on)); }
+function triggerBadges(d, live){
+  const trs = (d && d.effects && Array.isArray(d.effects.triggers)) ? d.effects.triggers : [];
+  return trs.map(t=>{
+    const off = triggerIsOff(t, live);
+    const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off until it’s Ready)' : '');
+    return `<span class="ab-trig${off ? ' is-off' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">⚡</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+  });
 }
 function abilityBadges(d, bopts){
   const e = d.effects||{};
@@ -3967,15 +4015,13 @@ function abilityBadges(d, bopts){
   // damage trigger lost its 🏹 badge. Also now covers the new dedicated Missile action, which
   // fires the same "arrow toward a random enemy" read.
   if(e.missile
-     || (Array.isArray(e.triggers) && e.triggers.some(t=>t.do==='missile'))
-     || (Array.isArray(e.triggers) && e.triggers.some(t=>t.do==='damage' && t.who==='enemy' && t.sub==='random' && (t.on==='onSpawn'||t.on==='onReady')))
-  ) out.push(`🏹`);
+  ) out.push(`🏹`); // custom triggers show as ⚡→🏹 now (triggerBadges, 2026-10-11)
   if(e.render) out.push(`📉`);
   // 🐝 also covers the generic Custom Trigger equivalent (any On X + "Spawn card(s)" action) that
   // On Attacked: Spawn was migrated to (2026-09-21) -- see SKILL_DEFS' own comment on the removal.
-  if(e.onDeathSpawn||e.onAttackedSpawn||(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='spawnCard'))) out.push(`🐝`);
-  if(e.onSpawnGold||e.onReadyGold||(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='gain'&&(t.resource||'lumber')==='lumber'))) out.push(`🪵`); // 2026-09-22: these grant Lumber now, not Gold
-  if(e.onSpawnGrace||e.onReadyGrace||(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='gain'&&t.resource==='grace'))) out.push(`🕊️`);
+  if(e.onDeathSpawn||e.onAttackedSpawn) out.push(`🐝`);
+  if(e.onSpawnGold||e.onReadyGold) out.push(`🪵`); // 2026-09-22: these grant Lumber now, not Gold
+  if(e.onSpawnGrace||e.onReadyGrace) out.push(`🕊️`);
   // New unified Buff/Debuff/Exile badges (2026-09-30, per explicit request: "The emoji symbol on
   // the card should use an arm or flag to represent this skill" — the Custom Triggers redesign
   // unified 4 old buff-family actions into one 'buff' action, and that one action had never
@@ -3985,9 +4031,6 @@ function abilityBadges(d, bopts){
   // already Render's icon, so Debuff gets its own distinct 🔻 (down triangle) instead. Exile
   // reuses 🌫, the same "removal zone" glyph its cost-badge sibling (e.exileCost, line ~2231)
   // already uses for the same concept.
-  if(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='buff')) out.push(`💪`);
-  if(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='debuff')) out.push(`🔻`);
-  if(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='exile'&&t.who&&t.who!=='self')) out.push(`🌫`);
   // Dark Points resource symbol (2026-09-20, per explicit request: "the dark point it gives...
   // should be a clear resource symbol on the card") -- ★ (a plain monochrome black-star glyph,
   // not a colored emoji) inherits whatever text color it's placed in rather than always looking
@@ -4003,7 +4046,7 @@ function abilityBadges(d, bopts){
   // author this). 2026-09-21: also covers the two new named passives, Inherent Darkness N
   // (onReadyDevilry's own convenience preset) and Core Evil (a pitch-time Dark Point bonus) --
   // both generate Dark Points just like the fields/triggers above, so both should earn the badge.
-  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil||(Array.isArray(e.triggers)&&e.triggers.some(t=>t.do==='gainDevilry'))) out.push(`★`);
+  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil) out.push(`★`);
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
@@ -4022,6 +4065,7 @@ function abilityBadges(d, bopts){
   // above for that same trigger data (🐝 for a spawn trigger, 🏹 for a damage trigger, etc) --
   // so a card like Bee Drone showed both 🐝 AND ⚡×1 for the exact same underlying ability. The
   // specific badges already condense that info; the generic count added nothing but clutter.
+  out.push(...triggerBadges(d, bopts && bopts.live));
   if(!out.length) return '';
   // Skill slots (2026-10-10, user: "is there space to have 3 icons on one row, separated by a small space. If one of them
   // has multiple, they stack closely together. Otherwise ... shows the first two, then periodically they phase between
@@ -5586,7 +5630,7 @@ function triggerRowHTML(t,i){
   <div class="trigger-row">
     <span>On</span>${onFamilyHtml}${onSubHtml}${turnOfHtml}
     ${filterHtml}
-    ${(t.on!=='onReady' && t.on!=='onSpawn') ? `<label class="trig-ready" title="Stays silent while this card is still Waiting; works once it's Ready"><input type="checkbox" data-t="whenReady" data-i="${i}" ${t.whenReady?'checked':''}> once Ready</label>` : ''}
+    ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Triggers like this are off while the card is still Waiting. Tick to let this one fire while it Waits too."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
     <button class="btn small danger rm" data-rm="${i}">✕</button>
@@ -5630,8 +5674,8 @@ function readTriggerRow(row){
   if(filterArchEl && filterArchEl.value) t.filterArchetype = filterArchEl.value;
   const turnOfEl = row.querySelector('[data-t="turnOf"]');
   if(on==='perTurn' && turnOfEl && turnOfEl.value!=='both') t.turnOf = turnOfEl.value;
-  const whenReadyEl = row.querySelector('[data-t="whenReady"]');
-  if(whenReadyEl && whenReadyEl.checked) t.whenReady = true;
+  const whileWaitingEl = row.querySelector('[data-t="whileWaiting"]');
+  if(whileWaitingEl && whileWaitingEl.checked) t.whileWaiting = true;
   const countEl = row.querySelector('[data-t="count"]');
   if(countEl && countEl.value!=='') t.count = Number(countEl.value)||1;
   const dmgEl = row.querySelector('[data-t="dmgType"]');
@@ -5656,7 +5700,7 @@ function triggerPreviewText(t){
   const FILL = '<<>>';
   const trig = TRIGGER_DEFS.find(x=>x.key===t.on);
   const trigLabel0 = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
-  const trigLabel = trigLabel0===FILL ? FILL : (t.whenReady ? trigLabel0+' (once Ready)' : trigLabel0);
+  const trigLabel = trigLabel0===FILL || TRIGGER_ALWAYS_ON.has(t.on) ? trigLabel0 : (t.whileWaiting ? trigLabel0+' (even while Waiting)' : trigLabel0+' (once Ready)');
   const aDef = ACTION_DEFS.find(x=>x.key===t.do);
   if(!aDef) return `${trigLabel}, ${FILL}.`;
   const amt = t.amount==='attack' ? 'its own Attack' : t.amount==='health' ? 'its own Health' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
@@ -11027,7 +11071,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"8-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":3,"gangrenous-leech":4,"marsh-wisp":1,"echo-keeper":2}, hqHp:129, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", deck:{"swamp-alligator":3,"mire-witch-heron":2,"cypress-root-lurker":3,"echo-keeper":2}, hqHp:240, flavor:"The roots move only when you stop watching them.", requires:["8-1"] },
-      { key:"8-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"bog-leech":4,"constrictor-coil":2,"echo-keeper":2,"beaver-builder":2}, hqHp:110, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["8-2"] },
+      { key:"8-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"bog-leech":2,"willow-o-wisp":2,"constrictor-coil":2,"echo-keeper":2,"beaver-builder":2}, hqHp:110, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["8-2"] },
       { key:"8-4", kind:"skirmish", name:"Root Snare", icon:"🌿", deck:{"adder-ambusher":3,"echo-keeper":2,"beaver-builder":1,"venomlord-serpent":2,"constrictor-coil":2}, hqHp:240, flavor:"The mire does not attack. It waits for you to step wrong.", requires:["8-3"] },
       { key:"8-5", kind:"elite", name:"Venomlord's Coil", icon:"🐍", deck:{"venomlord-serpent":2,"constrictor-coil":1,"beaver-builder":3,"echo-keeper":1,"bog-leech":2}, hqHp:219, flavor:"It only needs to catch you once.", characterId:"plains-terrace", requires:["8-4"] },
       { key:"8-6", kind:"elite", name:"Crocodile Run", icon:"🐊", deck:{"crocodile-ambusher":2,"echo-keeper":2,"constrictor-coil":3,"beaver-builder":2,"venomlord-serpent":1,"mallard-marauder":2}, hqHp:111, flavor:"The bank looks empty right up until it isn’t.", requires:["8-5"] },
@@ -15060,7 +15104,7 @@ function wireTestKitExtras(){
     const i = Number(wrap.dataset.tki), row = wrap.querySelector('.trigger-row'); if(!row) return;
     let t; try{ t = readTriggerRow(row); }catch(err){ return; }
     const fam = TRIGGER_FAMILIES.find(f=> f.familyKey===t.on); if(fam) t.on = fam.subs[0].key; // picked a family: start on its first option
-    if(e.target.matches('[data-t="do"]')){ const keep = {on:t.on, do:t.do}; if(t.filterArchetype) keep.filterArchetype = t.filterArchetype; if(t.turnOf) keep.turnOf = t.turnOf; if(t.whenReady) keep.whenReady = true; t = keep; } // new action: drop the old action's fields
+    if(e.target.matches('[data-t="do"]')){ const keep = {on:t.on, do:t.do}; if(t.filterArchetype) keep.filterArchetype = t.filterArchetype; if(t.turnOf) keep.turnOf = t.turnOf; if(t.whileWaiting) keep.whileWaiting = true; t = keep; } // new action: drop the old action's fields
     testKit.triggers[i] = t; testKitRerenderPanel(); testKitSkillsChanged();
   });
   box.addEventListener('click', e=>{ const rm = e.target.closest('[data-rm]'); if(!rm) return; e.preventDefault(); const wrap = rm.closest('.tk-trig'); if(!wrap) return; testKit.triggers.splice(Number(wrap.dataset.tki), 1); testKitRerenderPanel(); testKitSkillsChanged(); });
@@ -18996,7 +19040,7 @@ function boardCardHTML(c, defs, opts){
   // comment in arena_template.html. updateCardStatusDisplay's live DOM patch was updated to
   // match (targets .badges-bottom now, leaves .badges — the ability row — alone, since that one
   // never changes after the card is first rendered).
-  const abilityBadgeHTML = abilityBadges(d);
+  const abilityBadgeHTML = abilityBadges(d, {live: c}); // (unused by the tile itself: cardTileHTML builds the strip from live.wait)
   // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
   const flies = !!((d.effects||{}).flying);
   const overlaysHTML = `      ${c.stunned?`<div class="status-overlay stun-overlay">💫</div>`:''}
@@ -19012,7 +19056,7 @@ function boardCardHTML(c, defs, opts){
   const cageCls = caged ? `is-caged ${c.cageOwner === viewerHandPid(matchState) ? 'is-mine-caged' : ''}` : '';
   return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(d.id ? d : Object.assign({id:c.defId}, d), {inPlay:true, extraClass: shinyU ? 'is-shiny' : '', live:{
-      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
@@ -19902,6 +19946,7 @@ function updateCardHpDisplay(uid){
 // little "clunk" of the mechanism, not just a number silently changing underneath it.
 function updateCardWaitDisplay(uid, waitRemaining){
   const el = boardCardEl(uid); if(!el) return;
+  if(waitRemaining<=0) el.querySelectorAll('.ab-trig.is-off').forEach(b=>{ b.classList.remove('is-off'); b.classList.add('is-waking'); b.title = String(b.title||'').replace(' (off until it’s Ready)', ''); }); // its triggers switch on as it becomes Ready
   const badge = el.querySelector('.waitbadge'); if(!badge) return;
   const total = Math.max(1, Number(badge.getAttribute('data-wait-total'))||waitRemaining||1);
   const frac = Math.max(0, Math.min(1, waitRemaining/total));

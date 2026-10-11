@@ -881,6 +881,18 @@
      Sized up from 11.5px to keep these legible now that they read as bare glyphs, not chips in a
      box (a box gave the eye something to land on even at small size; without one, it needs more
      glyph to grab onto). */
+  .ico-shadow{display:inline-block; filter:brightness(.18) saturate(0) drop-shadow(0 0 5px rgba(170,215,255,.85)) drop-shadow(0 0 12px rgba(120,170,255,.45)); animation:wispGlow 3.2s ease-in-out infinite;}
+  @keyframes wispGlow{50%{filter:brightness(.24) saturate(0) drop-shadow(0 0 8px rgba(190,230,255,.95)) drop-shadow(0 0 18px rgba(120,170,255,.6));}}
+  @media (prefers-reduced-motion: reduce){ .ico-shadow{animation:none;} }
+  /* Trigger badges (2026-10-11): ⚡→action. Greyed while the trigger is off (its card is still Waiting); a short spark as it switches on. */
+  .ab-trig{display:inline-flex; align-items:center; gap:0; white-space:nowrap;}
+  .ab-trig .ab-bolt{font-style:normal; color:#ffd23f; text-shadow:0 0 4px rgba(255,200,60,.65);}
+  .ab-trig .ab-arrow{font-style:normal; font-size:.62em; opacity:.75; margin:0 1px; font-weight:900;}
+  .ab-trig.is-off .ab-bolt{color:#9a958c; text-shadow:none; filter:grayscale(1); opacity:.55;}
+  .ab-trig.is-off{opacity:.8;}
+  .ab-trig.is-waking .ab-bolt{animation:boltWake .7s ease-out;}
+  @keyframes boltWake{0%{transform:scale(1.7); filter:brightness(2.2);} 100%{transform:none; filter:none;}}
+  @media (prefers-reduced-motion: reduce){ .ab-trig.is-waking .ab-bolt{animation:none;} }
   .abadge{font-size:15px; font-weight:800; background:none; border:none; border-radius:8px; padding:1px 3px; filter:drop-shadow(1.5px 2.5px 0 rgba(0,0,0,.55)) drop-shadow(0 1px 3px rgba(0,0,0,.4));}
   /* Discard/pitch resource badge (2026-09-20, per explicit request: "Resources on discard
      (additional beyond 1 lumber) are placed at the bottom of the card, right on the boundary" —

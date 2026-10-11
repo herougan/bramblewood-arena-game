@@ -179,6 +179,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // 2026-09-27 batch: On Ally/Enemy Played (the "played from hand" half of the played/spawned
   // split — see fireSpawnFamilyTriggers in this file), On Ally/Enemy Ready, and On Move.
   'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
+const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard']); // fire even while Waiting
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -1946,9 +1947,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Turn Start (perTurn) whose-turn parameter (2026-10-10): 'self' fires only on rounds this card's owner
       // strikes first, 'enemy' only on the opponent's; unset/'both' = every round (the original Per Turn).
       if(hook==='perTurn' && t.turnOf && t.turnOf!=='both' && ((t.turnOf==='self') !== (curInitiative===playerId))) return;
-      // "Only once Ready" (2026-10-11): a trigger flagged whenReady stays silent while its card is
-      // still Waiting (Scraper of Skies can't release bees until the hive-tower is built).
-      if(t.whenReady && boardCard.wait>0) return;
+      // Triggers are off while Waiting (2026-10-11, user: "We have to be clear that when the triggers are off ... When
+      // the creature isn't ready, the lightning is greyed out"): a reactive trigger (On Attacked, On Ally Die, Per Turn,
+      // On Ally Spawn ...) stays silent while its card is still Waiting. On Spawn, On Ready, On Death, On Exile, On
+      // Attack, On Kill and On Discard always fire. A trigger can opt out with whileWaiting:true; whenReady (the
+      // earlier per-trigger flag) is now simply the default.
+      if(boardCard && boardCard.wait>0 && !t.whileWaiting && !ALWAYS_ON_HOOKS.has(hook)) return;
       if(t.once){
         const key = 'once:'+hook+':'+i;
         if(boardCard.firedOnce[key]) return;
@@ -3658,5 +3662,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, SUDDEN_DEATH_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, boardSignature, noActionsLeft };
+  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, boardSignature, noActionsLeft };
 }

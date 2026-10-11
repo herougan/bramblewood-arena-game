@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (15:40)
+- **New card: Willow-o'-Wisp** 🌑 (Uncommon, 1 Lumber, Wait 1, 2/6, Nocturnal). A beetle made of shadow, of the new **Shadow** type (also Insect and Forgotten).
+  - When an ally dies, it gains +1/+1 (once Ready).
+  - When it dies, it exiles 2 cards from your graveyard (+2 Echoes for Remember cards).
+  - You meet it in 8-3 Toad Chorus in the Sable Swampmire (Map 9, the Exile and Remember map), and win it there.
+  - Without art yet, it shows as a dark silhouette with a cold glow. Its art prompt is queued with the faction-pack prompts (D30).
+- **Triggers show when they're off:**
+  - Every custom trigger now shows as **⚡→ what it does** on the card's bottom strip: ⚡→🐝 spawns, ⚡→💪 buffs, ⚡→🪦 anything to do with the graveyard, ⚡→🏹 arrows, ⚡→🪵 Lumber, and so on. These replace the separate per-action icons. Hover one to read the trigger.
+  - **The rule:** reactive triggers (On Attacked, On Ally Die, Per Turn, On Ally Spawn and the like) are off while a card is still Waiting. Their ⚡ is grey, and it sparks on when the card becomes Ready. On Spawn, On Ready, On Death, On Exile, On Attack and On Kill always fire, and their ⚡ stays lit.
+  - Card text says "(once Ready)" on reactive triggers. In the card editor, "also while Waiting" lets a trigger opt out (this replaces the earlier "once Ready" tick box).
+  - Only one existing card plays differently: Feral Tuskboar's "+1 Attack when attacked" now starts once it's Ready.
+
 ## 2026-10-11 (14:50)
 - **Late-map balance pass.** Thirty-two fights came out more than 12 points too easy in the simulator (the new-player deck model). Nine still do, and none are too hard.
   - The fights that hit the castle Health cap (240, the campaign boss 300) now trade cards instead.

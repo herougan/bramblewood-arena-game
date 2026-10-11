@@ -12886,5 +12886,53 @@
     "source": {
       "kind": "materia"
     }
+  },
+  {
+    "id": "willow-o-wisp",
+    "name": "Willow-o'-Wisp",
+    "icon": "\ud83e\udeb2",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "effects": {
+      "nocturnal": 1,
+      "triggers": [
+        {
+          "on": "onAllyDie",
+          "do": "buff",
+          "who": "self",
+          "amount": 1,
+          "amount2": 1
+        },
+        {
+          "on": "onDeath",
+          "do": "exileGrave",
+          "count": 2
+        }
+      ]
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A beetle made of shadow, with one cold light in its tail. Where it hovers over the willows, the fallen don't stay in the ground.",
+    "locked": true,
+    "archetypes": [
+      "Shadow",
+      "Insect",
+      "Forgotten"
+    ],
+    "species": [
+      "Insect"
+    ],
+    "rarity": "uncommon",
+    "numericId": 455,
+    "uuid": "14207257-3724-4f6b-91c7-080ff9a60522",
+    "art": "",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "8-3"
+    }
   }
 ]
