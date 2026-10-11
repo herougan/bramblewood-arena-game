@@ -325,6 +325,55 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (11:00)</h2>
+<ul>
+<li><strong>Maps</strong><ul>
+<li><strong>Map 0 and a new Map 1.</strong> The Outskirts are Map 0 now. A new meadow map, <strong>Clovermead</strong> (five easy fights with Base cards, boss The Old Hare), sits between it and Thistlewood, so every later map keeps its number.</li>
+<li>Feature spots like the Armoury show as a dark <strong>?</strong> until the fight that opens them is cleared.</li>
+<li>Curiosities, the well and the chat cave appear only after a fight is cleared (the map's first fight by default). In 🔗 Edit links, click a fight and then the tile to change which fight reveals it. No line is drawn to them.</li>
+<li>Map tiles can't be spam-clicked, and their speech bubbles sit centred and follow the map when it moves.</li>
+<li>A conversation already playing or waiting can't be queued again (the endless "Hear that hum?").</li>
+<li>The <strong>!</strong> on a map feature fades once you've clicked it.</li>
+<li>NPCs no longer end on a "…" line.</li>
+<li>The map introduction shows the first time you ever open a map, not just the first map of a session.</li>
+</ul>
+</li>
+<li><strong>Tutorial</strong><ul>
+<li><strong>Fixed decks.</strong> Part 1: 3 Ducklings, 3 Honey Bees, 3 Silver Minnows, a Pond Duck and a Pond Trout. Part 2 adds a Duck Paddler, a Cottontail, an Acorn Chipmunk and a Chipmunk Forager.</li>
+<li><strong>No leader in part 1.</strong> In part 2 your leader introduces itself (only Okay closes it), its slot fades in with a fanfare, and a tip explains it.</li>
+<li>An older saved tutorial setting can no longer bring back the harder castle Health.</li>
+</ul>
+</li>
+<li><strong>Battle</strong><ul>
+<li><strong>Boomerang</strong> flies home on its own:<ul>
+<li>out on the enemy side it hits whatever is in its lane now;</li>
+<li>if the throw went into a unit that has since died, it's a <strong>Whiff~</strong>;</li>
+<li>a throw into the castle hits the castle there and back;</li>
+<li>if the thrower has died, an ally in its lane without Boomerang takes the hit, or your castle does if the lane is empty.</li>
+<li>Its description is now one line.</li>
+</ul>
+</li>
+<li><strong>0 Attack is checked at every step</strong>, not only at the start of combat. A Coral Polyp swings for 1 on Flow, and a mid-combat buff lets a unit attack.</li>
+<li><strong>Fork, Trident and Octolash</strong> aim from where the attacker stands. A Fork standing between two enemies hits those two, never one 1.5 slots away.</li>
+<li><strong>Swimmer</strong> can list what Flow gives it ("fastForward 1, armor 2"); without a list it keeps the extra turn.</li>
+<li><strong>Ranks:</strong> B from half your castle Health, C below half (S 90%, A 70%, B 50%, C 30%, D 15%).</li>
+<li><strong>Fight buttons</strong> read "Fight ⚔️ 6⚡" once, with no pill.</li>
+<li><strong>Clock icons:</strong> triggers that fire every turn show 🕐 instead of the bolt. Fields that act every round (Frost, Heatwave, Rain) wear a 🕐 on their bottom edge.</li>
+<li><strong>Frost and tide:</strong> a cold wave brushes the field before the frost bites, and the frost is thicker on +2 and +3 maps. Flow rolls a wave in across the field and Ebb drains it out.</li>
+<li><strong>Spent triggers:</strong> a trigger that can never fire again shines, greys and fades away. One that's only paused just greys.</li>
+<li><strong>Sweep</strong> has its own mark, 🧹.</li>
+<li><strong>Worthy:</strong> a Worthy unit's Lumber floats on the receiver's Lumber pill, not over the falling card.</li>
+<li><strong>Battle log:</strong> it reads top to bottom, follows the newest line and stays open across rounds.</li>
+</ul>
+</li>
+<li><strong>Codex:</strong> everything shows together by default. From Map 10 a "🗂️ Separated" toggle splits it into Base &amp; Map 0, Maps 1–20, Maps 21–40, then every ten maps. Search is debounced and off-screen cards skip rendering.</li>
+<li><strong>Skirmish panel:</strong> narrower, showing just the name with castle Health and Armour. The first-clear rewards are larger and labelled. A hidden deck is a dark slab with a lock and the rank needed, with no words and no show/hide.</li>
+<li><strong>Ranks after a fight:</strong> the "Rank E ×0.6" pill is gone. The first F, E, A, S, SS and SSS each explain themselves once, and A, S, SS and SSS each get a cheer the first time.</li>
+<li><strong>One warning voice:</strong> boss warnings are a single line, from Shieldback (Otters), Aurelia (Hummingbirds) or either (both).</li>
+<li><strong>Packs:</strong> each pack wears a face from its own pool, and every booster in a bundle wears a different one. Packs no longer repeat a card while the pool has others, and recently pulled cards are much less likely.</li>
+<li><strong>Shop:</strong> a "← Back to the map" button when you came from the map.</li>
+<li><strong>Art:</strong> your PixelLab title screen is the new splash. 14 more D30 cards and the first 12 Base cards have art; more are generating in your Chrome.</li>
+</ul>
 <h2>2026-10-12 (08:10)</h2>
 <ul>
 <li><strong>Skills</strong><ul>
