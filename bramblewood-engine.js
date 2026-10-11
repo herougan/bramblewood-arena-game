@@ -859,7 +859,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     // Anti-Air N (2026-10-10, user: "an anti-air skill for one of the base units... especially poignant if one of the
     // otters has it"): never misses a Flying unit (see the dodge check) and hits it for N more.
-    if(attDef && attDef.effects && Number(attDef.effects.antiAir) > 0){ const tdAA = CARD_DEFS[targetCard.defId]; if(tdAA && tdAA.effects && tdAA.effects.flying) amt += Number(attDef.effects.antiAir); }
+    // Anti-Air N retired 2026-10-12: it became Boomerang (no number, no bonus damage; it still never misses a flier).
     // Demolisher N (2026-10-11, user: "structures ... can be destroyed faster with units with the skill Demolisher N -
     // deal N additional damage to structures").
     // Keen Eye (2026-10-11): sees through Changelings and hits them 2 harder.
@@ -1238,7 +1238,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
     if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
-    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
     if(fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
@@ -2597,7 +2597,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const d = CARD_DEFS[id] || {}, e = d.effects || {}; let v = cardValue(id);
         if(myHq < 0.4 || foeAtk > (mine.length+1)*4) v += (d.health||0)*0.5 + (e.armor||0)*2 + (e.bulwark||0)*3; // under pressure: walls
         if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + ((e.puncture||0) + (e.perforate||0))*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
-        if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + (e.antiAir ? 3 + e.antiAir*foeFliers : 0);
+        if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + ((e.antiAir || e.boomerang) ? 3 + 2*foeFliers : 0);
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
@@ -3137,10 +3137,40 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     return false;
   }
+  // Boomerang (2026-10-12, user: "Rename it to boomerang! Remove the N parameter. It first throws the boomerang when it
+  // attacks. On the next turn, when combat begins, the boomerang returns dealing damage again. The otter will not attack this
+  // turn. So basically it gets a prioritised 2nd attack. It also never misses air units."): after a Boomerang unit swings,
+  // its boomerang is out. At the start of the next combat (before anyone else acts) it comes back as a full swing at
+  // whatever stands in front of it then, and that is the unit's attack for the round. Then it throws again next round.
+  // The old effects.antiAir counts as Boomerang.
+  let combatNo = 0;
+  function isBoomerangDef(d){ return !!(d && d.effects && (d.effects.boomerang || Number(d.effects.antiAir) > 0)); }
+  function boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide){
+    const first = firstAttackerSide || 2;
+    for(const pid of [first, otherId(first)]){
+      const pl = players[pid]; if(!pl) continue;
+      for(const c of allBoardCards(pl).slice()){
+        if(!c || c.hp <= 0 || !c.boomerangOut) continue;
+        c.boomerangOut = false;
+        if(c.stunned || c.frozen > 0 || c.asleep > 0) continue; // a boomerang nobody catches is just lost
+        c._boomerangReturning = true; c._boomerangCombat = combatNo;
+        if(recordEvents && events) events.push({type:'boomerangReturn', side:sideOf(pid), defId:c.defId, uid:c.uid});
+        const w = c.wait; c.wait = 0;
+        resolveCombat(players, sideOf, stats, events, pid, {upkeepIds:[], onlyUid:c.uid});
+        if(c.hp > 0 && w > 0) c.wait = w;
+        c._boomerangReturning = false; c.boomerangOut = false; // the catch: the next normal swing throws again
+        if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return true;
+      }
+    }
+    return false;
+  }
   function resolveCombat(players, sideOf, stats, events, firstAttackerSide, pass){
     try{ syncPhaseStats(players, sideOf, events); }catch(e){}
     curPlayers = players;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; }
+    if(!pass){ combatNo++;
+      if([1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=> c && c.boomerangOut && c.hp > 0)) && boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide)) return true;
+      curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
       if(anyFF && fastForwardPass(players, sideOf, stats, events, firstAttackerSide)) return true;
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
@@ -3248,6 +3278,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             // Counterattack (2026-10-11, user: "Attacks the front unit when it gets hit by an opponent. It doesn't attack
             // normally"): such a unit never takes a turn of its own; see counterStrike below.
             { const cd = CARD_DEFS[card.defId]; if(cd && cd.effects && cd.effects.counterattack){ handledUids.add(uid); return; } }
+            if(card._boomerangCombat === combatNo && !passOnlyUid){ handledUids.add(uid); return; } // its boomerang came back: that was its attack
             if(card.reloadRemaining>0){ skipTurn('reload', card, ownId); handledUids.add(uid); return; }
             if(card.stunned){ skipTurn('stunned', card, ownId); handledUids.add(uid); return; }
             if(card.frozen>0){ skipTurn('frozen', card, ownId); handledUids.add(uid); return; }
@@ -3466,8 +3497,63 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
         killCredit[side.uid].add(statKey(mySide, a.att.defId));
       };
+      // Fork (2026-10-12, user: "Swipers do not attack straight anymore. Just left and right cols"): a Fork unit swings only
+      // at the two columns either side of the one in front of it (its own column when nothing faces it). A unit there takes
+      // the full hit with every on-hit effect; an empty column sends that swing to the castle.
+      const isFork = !!(attDef.effects && (attDef.effects.fork || attDef.effects.swipe === true));
+      const forkOnly = isFork && !(attDef.effects && attDef.effects.stealth);
+      const forkStrike = flankCol=>{
+            const flankEntry = liveEnemyCols[flankCol];
+            if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
+              const c2raw = flankEntry.card;
+              if(!combatHitLands(a.att, c2raw, false)){ // Swipe flank: multi-target, so no Evade roll — Swift/Flying still apply
+                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true});
+                return;
+              }
+              const c2 = redirectToGuardian(players[a.enemyId], c2raw);
+              const c2GuardianRedirect = c2.uid !== c2raw.uid;
+              const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
+              aStat.dealt += r3.dmg;
+              ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
+              maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
+              applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
+              if(attDef.effects.poison && c2.hp>0){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
+              if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
+              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
+              if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
+              rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
+              rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
+              rollStatusOnHit('paralyze', attDef.effects.paralyze, c2, mySide, a.att, sideOf, a.enemyId, events);
+              rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, c2, mySide, a.att, sideOf, a.enemyId, events);
+              if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, r3.dmg); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
+              if(c2.hp<=0){ if(!killCredit[c2.uid]) killCredit[c2.uid] = new Set(); killCredit[c2.uid].add(statKey(mySide, a.att.defId)); }
+              else {
+                bleedTick(sideOf, a.enemyId, c2, stats, events, 'defend');
+                runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
+              }
+            } else {
+              if(!isFork) return; // Pitchfork: an empty side is just empty
+              // Empty (or off-board) flank column: redirect this swipe swing straight to the
+              // castle, same damageHQ path (bulwark reduction included) the primary castle hit
+              // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
+              // landing on the castle, not a swipe redirect.
+              const flankDmg = damageHQ(players[a.enemyId], atkThisRound);
+              aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
+              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, festerBonus, ruptureBonus});
+              if(attDef.effects.sap && flankDmg>0){
+                const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
+                if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
+              }
+            }
+      };
       const blindNow = a.att.blind>0 && rnd() < 0.5;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
+      if(forkOnly){
+        if(blindNow){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork'}); }
+        else { const refCol = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col; [refCol - 1, refCol + 1].forEach(forkStrike); swingLanded = true; }
+      } else
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind});
       } else
@@ -3693,55 +3779,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
         // Fork (2026-10-12, user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the rule above, unchanged.
         // `effects.fork`; an old `swipe: true` still means Fork (the new Swipe takes a number).
-        const isFork = !!(attDef.effects && (attDef.effects.fork || attDef.effects.swipe === true));
-        if(attDef.effects && (isFork || attDef.effects.pitchfork)){
-          [target.col - 1, target.col + 1].forEach(flankCol=>{
-            const flankEntry = liveEnemyCols[flankCol];
-            if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
-              const c2raw = flankEntry.card;
-              if(!combatHitLands(a.att, c2raw, false)){ // Swipe flank: multi-target, so no Evade roll — Swift/Flying still apply
-                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true});
-                return;
-              }
-              const c2 = redirectToGuardian(players[a.enemyId], c2raw);
-              const c2GuardianRedirect = c2.uid !== c2raw.uid;
-              const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
-              aStat.dealt += r3.dmg;
-              ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
-              if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
-              maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
-              applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
-              if(attDef.effects.poison && c2.hp>0){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
-              if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
-              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
-              if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
-              rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
-              rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
-              rollStatusOnHit('paralyze', attDef.effects.paralyze, c2, mySide, a.att, sideOf, a.enemyId, events);
-              rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, c2, mySide, a.att, sideOf, a.enemyId, events);
-              if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, r3.dmg); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
-              if(c2.hp<=0){ if(!killCredit[c2.uid]) killCredit[c2.uid] = new Set(); killCredit[c2.uid].add(statKey(mySide, a.att.defId)); }
-              else {
-                bleedTick(sideOf, a.enemyId, c2, stats, events, 'defend');
-                runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
-              }
-            } else {
-              if(!isFork) return; // Pitchfork: an empty side is just empty
-              // Empty (or off-board) flank column: redirect this swipe swing straight to the
-              // castle, same damageHQ path (bulwark reduction included) the primary castle hit
-              // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
-              // landing on the castle, not a swipe redirect.
-              const flankDmg = damageHQ(players[a.enemyId], atkThisRound);
-              aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
-              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, festerBonus, ruptureBonus});
-              if(attDef.effects.sap && flankDmg>0){
-                const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
-                if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
-              }
-            }
-          });
-        }
+        if(attDef.effects && attDef.effects.pitchfork && !forkOnly) [target.col - 1, target.col + 1].forEach(forkStrike);
       } else {
         // Siege (2026-09-17): bonus flat damage specifically when the attack lands on the
         // castle directly (0 or 1 facing resolving to the HQ) — a reward for punching through,
@@ -3758,6 +3796,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
+      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && a.att.hp > 0 && !blindNow) a.att.boomerangOut = true; // thrown
       // Swipe N (new, 2026-10-12, user: "What would Swipe do then?"; proposal): a landed swing swipes N Lumber from the
       // opponent: they lose it and this side gains it (only what they have). For raiders and thieves.
       { const sw = attDef.effects && attDef.effects.swipe; const swN = (sw === true) ? 0 : Number(sw) || 0;

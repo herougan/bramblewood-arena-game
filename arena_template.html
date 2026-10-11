@@ -777,6 +777,18 @@
      (see the --wait/--wait-soft definitions in :root). */
   .card-tile .costbadge{position:absolute; z-index:3; top:-7px; left:-7px; min-width:26px; height:20px; padding:0 5px; border-radius:10px; background:var(--gold); color:var(--gold-ink); font-family:'Baloo 2'; font-weight:800; font-size:10.5px; display:flex; align-items:center; justify-content:center; gap:2px; border:2px solid var(--surface); white-space:nowrap;}
   .card-tile .waitbadge{position:absolute; z-index:3; top:-7px; right:-7px; min-width:26px; height:20px; padding:0 5px; border-radius:10px; background:var(--wait-soft); color:var(--wait); font-family:'Baloo 2'; font-weight:800; font-size:10.5px; display:flex; align-items:center; justify-content:center; gap:2px; border:2px solid var(--surface); overflow:visible; white-space:nowrap;}
+  /* Type mark (2026-10-12): top-right corner, or beside the Wait badge while it shows. */
+  /* Elite polish (2026-10-12): a very subtle lacquer — a soft specular highlight and a slow glint, not matte. */
+  .card-tile.elite-polish{isolation:isolate;}
+  .card-tile.elite-polish::after{background:linear-gradient(125deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 28%, rgba(255,255,255,0) 62%, rgba(255,255,255,.10) 78%, rgba(255,255,255,0) 100%),
+      linear-gradient(105deg, transparent 38%, rgba(255,255,255,.22) 48%, transparent 58%) !important; background-size:100% 100%, 260% 100% !important; mix-blend-mode:soft-light; animation:elitePolish 6.5s ease-in-out infinite;}
+  @keyframes elitePolish{0%{background-position:0 0, 130% 0;} 55%, 100%{background-position:0 0, -60% 0;}}
+  @media (prefers-reduced-motion: reduce){ .card-tile.elite-polish::after{animation:none;} }
+  .card-tile .archmark{position:absolute; z-index:3; top:-7px; right:-7px; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; line-height:1;
+    background:var(--surface-2, #3a3226); border:2px solid var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.35);}
+  .card-tile .archmark.with-wait{right:calc(-7px + var(--ww, 26px) + 2px);}
+  .board-card .card-tile .archmark{transform:scale(.8); transform-origin:top right;}
+  .card-tile.is-castle .archmark, .card-tile.locked .archmark{display:none;}
   /* Chronos wait-countdown ring (2026-09-17, per explicit request: "The time counting down
      should have a 'chronos-like' effect, signifying its count down"). A live board card's
      Wait badge (see waitBadgeHTML in arena_app.js — the plain hand/Codex preview tile still
@@ -2908,6 +2920,7 @@
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
   .coach-tip .coach-ok{align-self:flex-end;}
+  .coach-tip .kw-jargon{color:#b4590c; background:rgba(255,190,90,.28); padding:0 4px; border-radius:4px; font-weight:800; letter-spacing:.01em;} /* 2026-10-12: game words in tips */
   .coach-shield{position:fixed; inset:0; z-index:1140; background:rgba(10,8,4,.28); cursor:not-allowed;}
   /* Tutorial spotlight (2026-10-12): everything but the target dims; a red marker bobs on the spot to press. */
   .coach-spotlight{position:fixed; z-index:1145; pointer-events:none; border-radius:14px; box-shadow:0 0 0 200vmax rgba(8,6,3,.58), 0 0 0 3px rgba(255,90,70,.9), 0 0 22px 6px rgba(255,90,70,.45); transition:left .2s ease, top .2s ease, width .2s ease, height .2s ease;}
@@ -3497,6 +3510,15 @@
     .entrance-fan{display:block; position:absolute; right:clamp(60px, 10vw, 200px); top:52%; width:440px; height:340px; transform:translateY(-50%); z-index:1; perspective:900px; pointer-events:none;}
     .entrance-fan .ef-card{position:absolute; left:50%; top:50%; width:168px; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(var(--y)); transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .5s ease; animation:efFloat 5.5s ease-in-out infinite; animation-delay:var(--d);}
     .entrance-fan .ef-card .card-tile{width:168px; box-shadow:0 18px 40px rgba(0,0,0,.45);}
+    /* 2026-10-12: the pair sits closer to the middle; cards have a flip with an acorn back. */
+    .entrance .splash-inner{margin-left:max(24px, calc((100vw - 1000px) / 2)) !important;}
+    .entrance-fan{right:max(40px, calc((100vw - 1000px) / 2 + 20px)) !important;}
+    .entrance-fan .ef-flip{position:relative; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+    .entrance-fan .ef-front, .entrance-fan .ef-back{backface-visibility:hidden; -webkit-backface-visibility:hidden;}
+    .entrance-fan .ef-back{position:absolute; inset:0; transform:rotateY(180deg); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:46px; box-shadow:0 18px 40px rgba(0,0,0,.45);
+      background:repeating-linear-gradient(45deg, rgba(60,36,14,.18) 0 6px, transparent 6px 13px), radial-gradient(circle at 50% 40%, rgba(255,214,120,.45), transparent 65%), linear-gradient(160deg, #6b4a26, #3a2410); border:3px solid #d9b56a;}
+    .entrance-fan .ef-card.is-down .ef-flip{transform:rotateY(180deg);}
+    .entrance-fan .ef-card.is-swapping{opacity:0 !important; transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .65s ease;}
     .entrance-fan .ef-card:nth-child(2) .card-tile{width:184px; margin-left:-8px;}
     .entrance-fan .ef-card.is-swapping{opacity:0; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(calc(var(--y) + 40px)) scale(.9);}
     @keyframes efFloat{0%,100%{margin-top:0;} 50%{margin-top:-12px;}}
@@ -4576,6 +4598,7 @@
   .leader-widget .card-tile{width:var(--match-card-w); height:var(--match-card-h); box-sizing:border-box; padding:9px 7px 7px; font-size:13.5px; display:flex; flex-direction:column; justify-content:flex-start; cursor:inherit; margin:0;}
   .leader-widget.summonable{cursor:grab;}
   .leader-widget.summonable:hover{box-shadow:0 0 0 2px var(--gold) inset;}
+  .leader-widget.is-unaffordable .card-tile{filter:grayscale(.85) brightness(.72);} .leader-widget.is-unaffordable .leader-ribbon{opacity:.6;} /* 2026-10-12: greyed until you can afford it */
   /* Item #269 (2026-09-20, "The leader should be drag and droppable as well"): mirrors the exact
      dim-while-dragging treatment .hand-strip .card-tile.dragging already uses, so the widget you
      just picked up visibly reads as "in your hand right now, not still sitting in its slot." */
@@ -5098,6 +5121,18 @@
   /* Sweep/Fork sub-lines (2026-10-12): thinner, to each slot beside the target; an empty slot gets a small ring. */
   .facing-svg line.facing-sub{stroke-width:1.6; stroke-dasharray:4 4; opacity:.75;}
   .facing-svg line.facing-sub.is-empty{opacity:.5;}
+  .facing-svg line.facing-fork{stroke:#ff9a8a; stroke-width:2.6;} .facing-svg line.facing-fork.is-empty{opacity:.7;}
+  /* Initiative coin (2026-10-12) */
+  #battlefieldEl{position:relative;}
+  .init-coin{position:absolute; left:-11px; width:22px; height:22px; border-radius:50%; z-index:6; pointer-events:auto; transform:translateY(-50%);
+    background:radial-gradient(circle at 35% 30%, #fff3b8 0, #f2c94c 35%, #c8901d 75%, #8a5a10 100%); box-shadow:0 0 0 1.5px #7a4e0c, 0 2px 6px rgba(0,0,0,.45), inset 0 0 0 3px rgba(255,236,160,.35);
+    transition:top .45s cubic-bezier(.4,1.4,.5,1);}
+  .init-coin::after{content:'★'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; color:#8a5a10; text-shadow:0 1px 0 rgba(255,240,180,.7);}
+  .init-coin[data-side="mine"]{top:75%;} .init-coin[data-side="theirs"]{top:25%;}
+  .init-coin.is-flip{animation:initFlip .5s ease-in-out;}
+  @keyframes initFlip{0%{transform:translateY(-50%) rotateY(0);} 50%{transform:translateY(-50%) rotateY(90deg);} 100%{transform:translateY(-50%) rotateY(0);}}
+  @media (prefers-reduced-motion: reduce){ .init-coin{transition:none;} .init-coin.is-flip{animation:none;} }
+  .ab-fork{color:#ff9a8a; font-weight:900; font-size:1.15em; line-height:1; text-shadow:0 0 2px rgba(0,0,0,.6);}
   .facing-svg circle.facing-sub-dot{fill:none; stroke:#ffd77a; stroke-width:1.6; stroke-dasharray:3 3; opacity:.6;}
   /* Sweep at an empty slot (2026-10-12): a crescent slash cutting the air where a unit would stand. */
   .sweep-whiff{position:fixed; z-index:1200; width:var(--sw,90px); height:var(--sh,90px); transform:translate(-50%,-50%) rotate(-25deg) scale(.6); pointer-events:none; border-radius:50%;
@@ -5645,6 +5680,23 @@
   .po2-tpack{position:relative; aspect-ratio:.64; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:26px;
     background:linear-gradient(160deg, #c98a3a, #7a4a18); border:2px solid #f3d38c; box-shadow:0 6px 12px rgba(0,0,0,.4); animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1) both; animation-delay:calc(var(--i) * 30ms);}
   .po2-tpack.has-glow{box-shadow:0 0 0 2px var(--glow), 0 0 18px 4px color-mix(in srgb, var(--glow) 70%, transparent), 0 6px 12px rgba(0,0,0,.4);}
+  /* Booster wrappers on the table (2026-10-12): crimped foil packs with the cover art, in balanced centred rows. */
+  .po2-table{display:flex !important; flex-wrap:wrap; justify-content:center; gap:14px; width:min(92vw, calc(var(--per, 5) * 86px + (var(--per, 5) - 1) * 14px + 44px)) !important;}
+  .po2-tpack{flex:0 0 86px; width:86px; aspect-ratio:.62; border:none; border-radius:3px; overflow:hidden; padding:0;
+    background:linear-gradient(115deg, var(--pk2, #7a4a18) 0%, var(--pk1, #c98a3a) 28%, var(--pk3, #ffd7a0) 46%, var(--pk1, #c98a3a) 62%, var(--pk2, #7a4a18) 100%);
+    -webkit-mask:conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/8px 5px repeat-x, linear-gradient(#000 0 0) center/100% calc(100% - 10px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/8px 5px repeat-x;
+    mask:conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top/8px 5px repeat-x, linear-gradient(#000 0 0) center/100% calc(100% - 10px) no-repeat, conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/8px 5px repeat-x;
+    filter:drop-shadow(0 6px 8px rgba(0,0,0,.45));}
+  .po2-tpack::before, .po2-tpack::after{content:''; position:absolute; left:0; right:0; height:9%; background:repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 5px); z-index:2;}
+  .po2-tpack::before{top:0;} .po2-tpack::after{bottom:0;}
+  .po2-tpack-art{position:absolute; left:10%; right:10%; top:14%; height:50%; border-radius:6px; background:#2b1d3a center/cover no-repeat; image-rendering:pixelated; box-shadow:inset 0 0 0 2px rgba(255,255,255,.75), 0 2px 6px rgba(0,0,0,.35); z-index:1;}
+  .po2-tpack-label{position:absolute; left:8%; right:8%; bottom:12%; height:22%; border-radius:6px; background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.55)); box-shadow:0 0 0 1.5px var(--pk3, #ffd98a); display:flex; align-items:center; justify-content:center; z-index:1;}
+  .po2-tpack-label .po2-tpack-ico{font-size:20px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));}
+  .po2-tpack-sheen{position:absolute; inset:0; z-index:3; pointer-events:none; background:linear-gradient(105deg, transparent 30%, rgba(255,255,255,.55) 45%, transparent 60%); background-size:250% 100%; animation:po2Sheen 3.2s ease-in-out infinite; animation-delay:calc(var(--i) * 140ms); mix-blend-mode:overlay;}
+  @keyframes po2Sheen{0%{background-position:120% 0;} 60%, 100%{background-position:-60% 0;}}
+  .po2-tpack-cut{z-index:4;}
+  .po2-tpack.has-glow{filter:drop-shadow(0 0 8px var(--glow)) drop-shadow(0 6px 8px rgba(0,0,0,.45));}
+  @media (prefers-reduced-motion: reduce){ .po2-tpack-sheen{animation:none;} }
   .po2-tpack.is-jackpot{animation:po2Jackpot .9s linear infinite;}
   .po2-tpack-cut{position:absolute; left:-4%; right:-4%; top:16%; height:3px; background:#fff; box-shadow:0 0 10px #fff; transform:scaleX(0); transform-origin:0 50%;}
   .po2-tpack.is-open{animation:po2TOpen .5s ease-out forwards;} .po2-tpack.is-open .po2-tpack-cut{transition:transform .14s; transform:scaleX(1);}
@@ -5940,6 +5992,9 @@
   .po2-summary{gap:18px;}
   .po2-sum-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:min(980px, 100%);}
   .po2-sum-card{width:clamp(120px, 22vw, 190px) !important; animation:po2Pop .4s cubic-bezier(.2,1.3,.4,1) both !important; cursor:zoom-in !important;}
+  /* Balanced rows (2026-10-12, user: "Arrange them nicely also, in a symmetric manner"): 5 cards stay in one row, 6 go 3+3, 7 go 4+3 centred. */
+  .po2-sum-grid.is-balanced{max-width:min(100%, calc(var(--per, 5) * clamp(120px, 22vw, 190px) + (var(--per, 5) - 1) * 14px + 2px));}
+  .po2-sum-grid.is-balanced .po2-sum-card{width:min(clamp(120px, 22vw, 190px), calc((min(96vw, 980px) - (var(--per, 5) - 1) * 14px) / var(--per, 5))) !important;}
   .po2-sum-grid.is-dense{gap:10px;} .po2-sum-grid.is-dense .po2-sum-card{width:clamp(78px, 14vw, 116px) !important;}
   .po2-sum-card .card-tile{width:100%;}
   .po2-sum-card.is-new .card-tile{box-shadow:0 0 0 3px #ffd75e, 0 0 24px 4px rgba(255,215,94,.6);}

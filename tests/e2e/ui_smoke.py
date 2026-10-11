@@ -82,12 +82,16 @@ async def main():
             await pg.select_option('#deckLevelFilter', '3'); await pg.wait_for_timeout(200)
             check(await pg.evaluate("document.getElementById('myDeckPool').classList.contains('show-levels')"), 'deck pool should show levels when the level filter is on')
         # 4: pack opening
+        # 2026-10-12: every card starts unobtainable (the user is building the list); the test makes them obtainable again.
+        await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
         await pg.evaluate("isSignedIn = ()=>true; myCurrencies.gold=1000; myCurrencies.gems=100; switchTab('shop'); 1"); await pg.wait_for_timeout(300)
         before = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
         # 2026-10-10: the Acorn Chest comes with the Ember Peddler (map 11); the Golden Bramble Case isn't on sale yet.
         # 2026-10-10: the shop is shelves now; an item on sale has no .is-off, and buy buttons live on the counter.
         silver_ok = await pg.evaluate("featureUnlocked('shop2')") == (await pg.query_selector('[data-shelfitem="silver:1"]:not(.is-off)') is not None)
-        check(silver_ok and await pg.query_selector('[data-shelfitem="gold:1"].is-off') is not None and await pg.query_selector('[data-buypack="gold"]') is None, 'the Acorn Chest should be on sale only with the Ember Peddler, the Golden Case not at all')
+        # 2026-10-12: the Golden Bramble Case comes with the Gilded Caravan (map 13).
+        gold_ok = await pg.evaluate("featureUnlocked('shop3')") == (await pg.query_selector('[data-shelfitem="gold:1"]:not(.is-off)') is not None)
+        check(silver_ok and gold_ok, 'the Acorn Chest should be on sale only with the Ember Peddler, the Golden Case only with the Gilded Caravan')
         await pg.click('[data-buypack="bronze"]:not([data-qty])'); await pg.wait_for_timeout(500)
         check(await pg.query_selector('#poSkip') is None, 'a single pack should have no Skip (sets only)')
         bx = await pg.locator('#poStrip').bounding_box(); y = bx['y'] + bx['height']/2

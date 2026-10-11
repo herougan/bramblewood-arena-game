@@ -20,6 +20,8 @@ async def fresh(b, w=1366, h=860):
     pg=await b.new_page(viewport={'width':w,'height':h}); errs=[]
     pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
     await pg.add_init_script(INIT); await pg.goto(URL); await pg.wait_for_timeout(1300)
+    # 2026-10-12: every card starts unobtainable (the user is building the list); the flows make them obtainable again.
+    await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
     # Energy refills 1 every 5 minutes now (2026-10-10), so each fresh page tops it up instead of relying on regen.
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); saveEnergyState({current:ENERGY_MAX, lastRegenAt:Date.now()}); refreshEnergyHud(); 1")
     return pg, errs

@@ -2,6 +2,53 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (05:00)
+- **All cards are unobtainable for now**, so we can build the list together.
+  - 343 cards carry `unattainable` and can't come out of packs, rewards, finds, crafts or promotions.
+  - Base, starter and tutorial cards, tokens, tests, materia and the hero stay obtainable, so a new player can still play.
+  - Untick per card with the editor's new **Obtainable** box. Admin's Codex tags the rest "⛔ Not obtainable".
+- **Codex: View by Advancement** (now the default): Base, Map 1, Map 2…, Pack A, B…, the faction pools, Mystery Pack A, Events, then "Not obtainable yet". It's also a sort option.
+- **Fork never strikes straight.** It hits only the columns left and right of the one in front, and an empty one sends that swing to the castle.
+  - Its mark is one light-red ⇔. Its attack preview shows just the two side lines.
+- **Boomerang replaces Anti-Air** (no number). The throw is its attack; next round the boomerang comes back first, before anyone else, as that round's attack. It never misses a flier.
+  - Otter Centurion and Net Thrower have it.
+- **Initiative coin:** a small gold coin on the battlefield's left edge, on the half of whoever strikes first on an even face-off this round.
+- **PvP:**
+  - It always plays normal rules, never collapse.
+  - PvP tickets come back one an hour, up to 10.
+- **In a match:**
+  - Pitching your last card no longer ends your turn while your leader can still be summoned.
+  - The leader is greyed out until you can afford it.
+  - A card can lead or sit in your deck, not both.
+  - Cards that arrived in the final round stay visible through the victory.
+  - Combat already stops at the castle's fall.
+- **Type mark:** each card shows its first type's icon in the top-right corner, sliding beside the Wait badge while there is one.
+- **Deck editor** shows only cards you own.
+- **Boosters:**
+  - Packs on the opening table are crimped foil wrappers with the cover art, a sheen and the pack's own metal, in balanced rows (5+5, 3+3…).
+  - The card summary is balanced the same way.
+- **Card preview:** the hover preview is never greyed out, and the stray "Caustic Scorpion" browser tooltip on the skirmish panel is gone.
+- **Player levels are about twice as slow:** 200 + 50 per level, plus a gentle 1.12^L part that only takes over past level 40. Level 10 takes ~3,700 XP (was ~1,900).
+- **Entrance screen:**
+  - The panel and the cards sit closer to the middle.
+  - The three cards deal face down and flip one by one with a sound.
+  - A swapped card spins to its acorn back as it fades, then returns with a card sound.
+  - "Enter the Grove" goes straight in, with no Start step.
+- **Tutorial, in two parts.**
+  - **Part 1** (the basics):
+    - It plays normal rules, with no leader and a plain enemy castle.
+    - You can't pitch during "play a card", and that tip closes the moment you play.
+    - The "your castle" step is gone, and a new step teaches the initiative coin.
+    - The Wait tip points at the Wait number, with "Wait" marked as a game word.
+    - The enemy never gets Bee Tanks.
+    - A loss says so plainly, and the account's achievement news is hidden on tutorial results.
+  - **Part 2** waits on the map's 🎓 marker, to start yourself.
+    - You play your starter deck with your leader against the Outskirts Watchtower, whose passive gets its own tip.
+    - A friend remarks on flying (Hummingbirds) or boomerangs (Otters).
+    - Winning gives the Ally Pack and the "training wheels are off" talk. Both parts then share one 🎓 slot that replays part 1 straight into part 2.
+- **The Golden Bramble Case is on sale** once the Gilded Caravan is found; a merchant's pack is never stuck at "Coming soon". A dungeon's next castle no longer surrenders the moment it rises.
+- **Bosses and elites:** in a boss fight every enemy card shows its extended art; in an elite fight they carry a new subtle lacquer finish. The same goes for the skirmish panel's card.
+
 ## 2026-10-12 (03:10)
 - **Sweep, reworked to your rule.**
   - With a unit in front, it swings left, then centre, then right. An empty side is a miss you can see: the unit lunges at the empty slot and the air gets slashed. It never redirects.
