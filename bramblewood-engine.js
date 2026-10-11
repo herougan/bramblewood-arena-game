@@ -363,7 +363,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // itself is kept as a field (always 0) purely so any stray external read of pl.acorns finds
       // a safe number instead of undefined; nothing writes to it anymore. A character's
       // `startGold` effect now seeds starting Lumber instead of starting Gold, same amount.
-      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, grace:0, devilry:0, stone:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
+      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, grace:0, devilry:0, stone:0, metal:0, uranium:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
       deck:buildDeckIdsFrom(cardCounts, rnd), hand:[], row:{left:[], center:[], right:[]},
       graveyard:[], exile:[], echoes:0, castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
       playedThisTurn:false, discardUsedThisTurn:false,
@@ -408,7 +408,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const def = CARD_DEFS[defId];
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
       ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
-      reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, _frenziedThisRound:false,
+      reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, _frenziedThisRound:false,
       critUsed:0, rallyBonus:0,
       // Elemental status effects (2026-09-16), one per non-physical DMG_TYPE — see
       // rollStatusOnHit/gatherAttackers/endOfRoundUpkeep for the full lifecycle of each:
@@ -582,8 +582,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const lit = ph==='night' && units.some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.lantern);
       units.forEach(c=>{
         if(!c || c.gap || c.hp <= 0) return;
-        const e = (CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects) || {};
-        const [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0], pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
+        let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
+          const key = grant ? JSON.stringify(grant) : '';
+          if((c._condKey||'') !== key){ if(c._condBase){ c.defId = c._condBase; c._condBase = null; } if(key){ c._condBase = c.defId; deriveDef(c, grant); } c._condKey = key; } }
         if(a === pa && h === ph0) return;
         c.phaseAtk = a;
         if(h !== ph0){ const d = h - ph0; c.maxHp = Math.max(1, c.maxHp + d); c.hp = d > 0 ? c.hp + d : Math.max(1, Math.min(c.hp, c.maxHp)); c.phaseHp = h; }
@@ -835,6 +838,44 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const def = CARD_DEFS[card.defId];
     return !!(def.effects && def.effects.rage) && card.maxHp>0 && (card.hp / card.maxHp) < 0.5;
   }
+  // ---- 2026-10-12 skills (the 22:40 list) ----------------------------------------------------------------------
+  // Lumberjack: whenever you gain Lumber, +1 more per Lumberjack on your board. Heavy Metal: the same for Stone and Metal.
+  function countEff(pl, key){ return pl ? allBoardCards(pl).filter(c=> c && c.hp>0 && !c.cageOf && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects[key]).length : 0; }
+  function addLumber(pl, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'lumberjack'); pl.lumber = (pl.lumber||0) + got; return got; }
+  function addOre(pl, kind, n){ n = Number(n)||0; if(!pl || n <= 0) return n; const got = n + countEff(pl, 'heavyMetal'); pl[kind] = (pl[kind]||0) + got; return got; }
+  function ownerPidOfCard(card){ if(!curPlayers) return 1; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).includes(card)) return pid; } return 1; }
+  // A leader is on the battlefield: a summoned leader, a gladiator leader, or a unit with the Leader skill.
+  function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
+  // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
+  // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
+  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + (isTide(att) && getTide()==='flow' ? 1 : 0); if(isRaging(att)) n *= 2; return n; }
+  // Shell N (reworked 2026-10-12, user: "Shell N: gains N armour and N temporary health. Temp health not lost to damage goes
+  // away at the next turn's end step ... triggers on any hit, including arrows. If not hit yet, the unit can still attack"):
+  // the first hit of any kind pulls the unit into its shell. From then until the end of the next round it has N more Armour
+  // and N temporary Health (spent before real Health), and it doesn't attack.
+  function shellUp(card){
+    const d = CARD_DEFS[card.defId]; const n = Number(d && d.effects && d.effects.shell) || 0;
+    if(!(n > 0) || !(card.hp > 0) || card.shellUntil != null) return false;
+    card.shellArmor = n; card.tempHp = n; card.shellUntil = combatNo + (combatDepth > 0 ? 1 : 2); // until the end of the next round
+    if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n}); }
+    return true;
+  }
+  function spendTempHp(card, dmg){ if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; return dmg - s2; } return dmg; }
+  // Loyal / Usurper (user: "Conditional skills like Nocturnal: one activates when an ally leader is on the battlefield,
+  // granting the effects in { }. The antagonist version activates when the opposing leader is present"): +A/+H while the
+  // condition holds, plus any skills in loyalGrant / usurperGrant. Timber, Rock-solid and Iron-will: +1/+1 per Lumber,
+  // +2/+2 per Stone, +3/+3 per Metal you hold. All of these ride on the same situational bonus as day and night.
+  function pairOf(v){ if(Array.isArray(v)) return [Number(v[0])||0, Number(v[1])||0]; if(v && typeof v === 'object') return [Number(v.attack)||0, Number(v.health)||0]; const n = v === true ? 1 : (Number(v)||0); return [n, n]; }
+  function condStatsOf(c, e, pid, players){
+    const pl = players[pid], foe = players[otherId(pid)]; let a = 0, h = 0, grant = null;
+    const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
+    if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
+    if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
+    if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
+    if(e.rockSolid){ const n = Math.max(0, pl.stone||0) * 2; a += n; h += n; }
+    if(e.ironWill){ const n = Math.max(0, pl.metal||0) * 3; a += n; h += n; }
+    return [a, h, grant];
+  }
   // Full melee-style damage pipeline: attacker rage bonus -> target resist
   // -> target rage reduction -> target armor (flat, floors at 0, last so
   // Armor is genuinely the last line of defense). Returns {dmg, armorBlocked}.
@@ -874,7 +915,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
     if(isTide(targetCard) && getTide()==='ebb' && amt > 1) amt -= 1; // Ebb: Tide units take 1 less per hit (never below 1)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
@@ -953,11 +994,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return {dmg: amt, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount};
   }
   function damageCard(card, amount, dmgType, attCard){
-    const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = computeHitDamage(attCard, amount, dmgType, card);
+    const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = r0;
+    const dmg = spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
-    return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount};
+    shellUp(card);
+    return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
@@ -981,9 +1024,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const factor = resistFactor(card.defId, dmgType, attDef) * weaknessFactor(card.defId, dmgType, attDef) * defenderDamageFactor(card.defId);
     let dmg = factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount;
     if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
+    dmg = spendTempHp(card, dmg);
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep breaks on any flat/ranged damage too
+    shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
     return dmg;
   }
   // Bulwark (2026-09-17): sums every live Bulwark stack on the DEFENDING side's own board —
@@ -1685,11 +1730,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // good, floored at 0).
   function castSpell(players, sideOf, pid, def, stats, events){
     const sp = def.spell || {}, n = Math.max(0, Number(sp.amount)||0), mine = allLive(players[pid]), foes = allLive(players[otherId(pid)]), hit = [];
-    if(sp.do === 'hasten') mine.forEach(c=>{ if(c.wait > 0){ const w = c.wait; c.wait = Math.max(0, c.wait - n); hit.push({uid:c.uid, amount:w - c.wait}); } });
+    if(sp.do === 'hasten' || sp.do === 'tailwind') mine.forEach(c=>{ if(c.wait > 0){ const w = c.wait; c.wait = Math.max(0, c.wait - n); hit.push({uid:c.uid, amount:w - c.wait}); } });
+    // Tailwind (2026-10-12, user: "Tailwind should do the same for Flyers"): Hasten, and every Flyer of yours also gets one
+    // Fast Forward turn at the start of the next combat.
+    if(sp.do === 'tailwind') mine.forEach(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; if(e.flying){ c.ffCounters = (c.ffCounters||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'tailwind', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } });
     else if(sp.do === 'mend') mine.forEach(c=>{ const h = Math.min(n, c.maxHp - c.hp); if(h > 0){ c.hp += h; hit.push({uid:c.uid, amount:h}); } });
     else if(sp.do === 'sap') foes.forEach(c=>{ const a = Math.min(n, c.atk); if(a > 0){ c.atk -= a; c.baseAtk = Math.max(0, (c.baseAtk||0) - a); hit.push({uid:c.uid, amount:a}); } });
     if(recordEvents && events) events.push({type:'spell', side:sideOf(pid), defId:def.id, action:sp.do, amount:n, targets:hit});
   }
+  function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); }
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
     { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'equipment' || ct === 'materia') return false; } // 2026-10-11: equipment is equipped onto a unit; materia is a crafting material
     let cost = costOfCard(defId), pCost = graceCostOfCard(defId), dCost = devilryCostOfCard(defId); const exCost = exileCostOfCard(defId);
@@ -1700,6 +1749,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const isDark = CARD_DEFS[defId] && CARD_DEFS[defId].darkSummon;
     if(isDark ? (pl.darkUsed||0) >= darkPerTurn(pl) : isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
     if(cost > pl.lumber) return false; // 2026-09-22: card cost is now paid in Lumber, not Gold
+    { const od = CARD_DEFS[defId] || {}; if((od.stoneCost||0) > (pl.stone||0) || (od.metalCost||0) > (pl.metal||0) || (od.uraniumCost||0) > (pl.uranium||0)) return false; } // Stone, Metal, Uranium (2026-10-12)
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
     if(!canAffordExile(pl, exCost, excludeUid)) return false;
@@ -1749,6 +1799,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     { let dC = devilryCostOfCard(hc.defId), lC = costOfCard(hc.defId); if(discount > 0){ const fd = Math.min(dC, discount); dC -= fd; lC = Math.max(0, lC - (discount - fd)); }
       pl.lumber -= lC; pl.devilry -= dC; }
     pl.grace -= graceCostOfCard(hc.defId);
+    payOreCosts(pl, hc.defId);
     payExileCost(players, sideOf, playerId, exileCostOfCard(hc.defId), uid, stats, events);
     if(fdef && fdef.darkSummon) pl.darkUsed = (pl.darkUsed||0) + 1; else markPlayed(pl);
     const boardCard = makeBoardCard(hc.defId);
@@ -1783,6 +1834,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ['left','center','right'].forEach(s=> opponent.row[s].forEach(c=>{
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
 
@@ -1812,6 +1864,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ['left','center','right'].forEach(s=> opponent.row[s].forEach(c=>{
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
 
@@ -1831,11 +1884,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const leaderSlot = slotMode ? resolvePlacementSlot(pl, side) : null;
     if(slotMode && leaderSlot===null) return false;
     pl.lumber -= costOfCard(defId);
-    pl.grace -= graceCostOfCard(defId);
+    pl.grace -= graceCostOfCard(defId); payOreCosts(pl, defId);
     pl.devilry -= devilryCostOfCard(defId);
     payExileCost(players, sideOf, playerId, exileCostOfCard(defId), null, stats, events);
     markPlayed(pl);
-    const boardCard = makeBoardCard(defId);
+    const boardCard = makeBoardCard(defId); boardCard.isLeader = true;
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
@@ -1854,6 +1907,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ['left','center','right'].forEach(s=> opp.row[s].forEach(c=>{
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
 
@@ -1910,11 +1964,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'statusFx', kind:'lightning', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, amount:amt});
       fireDamageAction(players, sideOf, playerId, boardCard.defId, amt, 'physical', target, stats, events, {}, boardCard.uid);
     }
+    // Worthy N (2026-10-12, user: "Lumber-on-spawn creatures should give the opponent a lumber when they die. Make it a single
+    // passive"): it brings N Lumber when it arrives, and its death gives the other side 1.
+    if(def.effects.worthy){ const got = addLumber(pl, Number(def.effects.worthy) === 0 ? 0 : (Number(def.effects.worthy)||1));
+      ensureStat(stats, mySide, boardCard.defId).lumberGenerated += got;
+      if(recordEvents && events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got, cause:'worthy'}); }
     if(def.effects.onSpawnGold){
       // 2026-09-22: onSpawnGold now pays Lumber -- see newPlayer()'s comment on the acorns/
       // lumber retirement. Field name in card data (`onSpawnGold`) is unchanged, only the
       // resource it pays out.
-      pl.lumber += def.effects.onSpawnGold;
+      addLumber(pl, def.effects.onSpawnGold);
       ensureStat(stats, mySide, boardCard.defId).lumberGenerated += def.effects.onSpawnGold;
       if(recordEvents && events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.onSpawnGold});
     }
@@ -2122,7 +2181,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
       if(recordEvents && events) events.push({type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do});
       switch(t.do){
-        case 'gainGold': pl.lumber += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
+        case 'gainGold': addLumber(pl, t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
         case 'gainGrace': pl.grace += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).graceGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
         case 'gainDevilry': pl.devilry += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).devilryGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
         // Gain (2026-09-30): unifies gainGrace/gainStone/gainLumber/gainDevilry into one action
@@ -2132,9 +2191,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         case 'gain': {
           const amt = t.amount||0;
           if(t.resource==='grace'){ pl.grace += amt; ensureStat(stats,mySide,boardCard.defId).graceGenerated += amt; if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
-          else if(t.resource==='stone'){ pl.stone = (pl.stone||0)+amt; if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
+          else if(t.resource==='metal' || t.resource==='uranium'){ const got = t.resource==='metal' ? addOre(pl, 'metal', amt) : (pl.uranium = (pl.uranium||0) + amt, amt); if(recordEvents&&events) events.push({type:t.resource, side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got}); }
+          else if(t.resource==='stone'){ addOre(pl, 'stone', amt); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else if(t.resource==='devilry'){ pl.devilry += amt; ensureStat(stats,mySide,boardCard.defId).devilryGenerated += amt; if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
-          else { pl.lumber = (pl.lumber||0)+amt; if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // default: lumber
+          else { addLumber(pl, amt); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // default: lumber
           break;
         }
         // gainStone/gainLumber/refine (2026-09-18): same shape as gainGold/gainGrace/gainDevilry
@@ -2142,8 +2202,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // tracked in the Simulator's results-table columns yet (those are a fixed column set),
         // so there's nothing meaningful to add them to there today; the resource still lands on
         // the player and floats/pings its HUD pill correctly either way (see arena_app.js).
-        case 'gainStone': pl.stone = (pl.stone||0) + (t.amount||0); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
-        case 'gainLumber': pl.lumber = (pl.lumber||0) + (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
+        case 'gainStone': addOre(pl, 'stone', t.amount||0); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
+        case 'gainLumber': addLumber(pl, t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
         // 2026-09-19 ("units that required the old resource, stone, or lumber, now change to
         // requiring lumber"): refine used to consume 1 Stone; now that discarding a unit only
         // ever grants Lumber (see pitchYieldOf in arena_app.js), refine consumes 1 Lumber
@@ -2601,7 +2661,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
-          const gain = sp.do==='hasten' ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3
+          const gain = (sp.do==='hasten' || sp.do==='tailwind') ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3 + (sp.do==='tailwind' ? mine.filter(c=> ((CARD_DEFS[c.defId]||{}).effects||{}).flying).length * 4 : 0)
             : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
@@ -2775,8 +2835,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gatherAttackers), then promote any newly-queued shell (from getting hit this round) so it's
     // active starting NEXT round.
     [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
-      if(c.shellSkip || c.shellArmor){ c.shellSkip = false; c.shellArmor = 0; }
-      if(c.shellNext){ c.shellArmor = c.shellNext; c.shellSkip = true; c.shellNext = 0; }
+      if(c.shellSkip){ c.shellSkip = false; } c.shellNext = 0; // (the old queued shell; retired 2026-10-12)
+      if(c.shellUntil != null && combatNo >= c.shellUntil){ c.shellArmor = 0; c.tempHp = 0; c.shellUntil = null; if(recordEvents && events) events.push({type:'statusFx', kind:'shellDown', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId}); }
     })));
     // Crit (2026-09-14): a capped "once per round" proc — reset the round's usage counter
     // here so next round's attacks get a fresh proc attempt. (Evade's own counter was
@@ -2891,7 +2951,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const def = CARD_DEFS[c.defId];
         if(def.effects && def.effects.onReadyGold){
           // 2026-09-22: onReadyGold now pays Lumber -- see newPlayer()'s comment.
-          pl.lumber += def.effects.onReadyGold;
+          addLumber(pl, def.effects.onReadyGold);
           ensureStat(stats, sideOf(pl.id), c.defId).lumberGenerated += def.effects.onReadyGold;
           if(recordEvents && events) events.push({type:'lumber', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.onReadyGold});
         }
@@ -2952,7 +3012,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         card.hp = 1;
         card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
         card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
-        card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0;
+        card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null;
         if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid});
         return;
       }
@@ -2975,7 +3035,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(bounty>0){
           sidesCredited.forEach(side2=>{
             const pid = side2==='A'?1:2;
-            players[pid].lumber += bounty; // 2026-09-22: bounty now pays Lumber, not Gold
+            addLumber(players[pid], bounty); // 2026-09-22: bounty now pays Lumber, not Gold
             // uid (2026-09-16, item #3): the dying card's own uid, purely so the UI can drop
             // the gold-icon "item drop" VFX from wherever that card's tile still is on screen
             // (it hasn't been wiped from the DOM yet — only the round's full event log has
@@ -2984,6 +3044,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           });
         }
       }
+      if(cdef.effects && cdef.effects.worthy){ const foe = players[otherId(pl.id)]; const got = addLumber(foe, 1);
+        if(recordEvents && events) events.push({type:'lumber', side:sideOf(foe.id), defId:card.defId, uid:card.uid, amount:got, cause:'worthyDeath'}); }
       if(cdef.effects && cdef.effects.onDeathSpawn){
         spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
@@ -3143,7 +3205,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // its boomerang is out. At the start of the next combat (before anyone else acts) it comes back as a full swing at
   // whatever stands in front of it then, and that is the unit's attack for the round. Then it throws again next round.
   // The old effects.antiAir counts as Boomerang.
-  let combatNo = 0;
+  let combatNo = 0, combatDepth = 0;
   function isBoomerangDef(d){ return !!(d && d.effects && (d.effects.boomerang || Number(d.effects.antiAir) > 0)); }
   function boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide){
     const first = firstAttackerSide || 2;
@@ -3171,6 +3233,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pass){ combatNo++;
       if([1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=> c && c.boomerangOut && c.hp > 0)) && boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide)) return true;
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
+    // Swimmer and Tailwind (2026-10-12, user: "Tide should power up swimmers with +1 speed (attack faster, like Fast
+    // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
+    // gets one Fast Forward turn before the round's main order.
+    if(!pass){ const flow = getTide() === 'flow', wind = false; // Tailwind is a spell (castSpell), not a field
+      if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
+        for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
+          const why = (flow && e.swimmer) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
+          c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
+          if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
       if(anyFF && fastForwardPass(players, sideOf, stats, events, firstAttackerSide)) return true;
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
@@ -3178,8 +3249,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     passUpkeepIds = (pass && pass.upkeepIds) || null;
     passAttackerIds = (pass && pass.attackerIds) || null;
     passOnlyUid = (pass && pass.onlyUid) || null;
+    combatDepth++;
     try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
-    finally { passUpkeepIds = null; passAttackerIds = null; passOnlyUid = null; currentAttacker = null; }
+    finally { combatDepth--; passUpkeepIds = null; passAttackerIds = null; passOnlyUid = null; currentAttacker = null; }
   }
   function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
     curInitiative = firstAttackerSide || 2; // On Turn Start's 'yours'/'opponent's' = who strikes first this round
@@ -3287,7 +3359,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
-            if(card.shellSkip){ skipTurn('shell', card, ownId); handledUids.add(uid); return; }
+            if(card.shellSkip || card.shellUntil != null){ skipTurn('shell', card, ownId); handledUids.add(uid); return; } // in its shell: no attack
             if(effAtk(card) + swarmBonus(card) + defianceBonus(card) <= 0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; } // a 0-Attack Swarm unit still swings with its allies' bonus
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
@@ -3429,9 +3501,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let target = (attDef.effects && attDef.effects.stealth) ? {kind:'hq'} : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col);
       // Pitchfork (2026-10-10, Devilry): hits a random unit among the three facing it (left, centre, right), then the
       // units beside that one too (cards only, never the castle).
+      // Reworked 2026-10-12 (user: "Pitchfork deals damage to L, C and R, which is the same as Sweep. Rethink it."): it picks
+      // off the weakest. It strikes whichever of the three units facing it has the least Health; if that blow kills, it
+      // tosses the body aside and the same swing carries on into the next-weakest of the three.
+      let pitchCands = null;
       if(attDef.effects && attDef.effects.pitchfork && !attDef.effects.stealth){
-        const cand = [-1, 0, 1].map(d=> liveSelf.col + d).filter(col=> { const e = liveEnemyCols[col]; return e && e.kind==='card' && e.card.hp>0; });
-        if(cand.length){ const col = cand[Math.floor(rnd()*cand.length)]; const e = liveEnemyCols[col]; e.col = col; target = e; }
+        pitchCands = [-1, 0, 1].map(d=> liveSelf.col + d).filter(col=> { const e = liveEnemyCols[col]; return e && e.kind==='card' && e.card.hp>0; })
+          .sort((x, y)=> (liveEnemyCols[x].card.hp - liveEnemyCols[y].card.hp) || (Math.abs(x - liveSelf.col) - Math.abs(y - liveSelf.col)));
+        if(pitchCands.length){ const col = pitchCands[0]; const e = liveEnemyCols[col]; e.col = col; target = e; }
       }
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
@@ -3446,7 +3523,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
-      if(target && a.att.tipsy>0 && !(attDef.effects && attDef.effects.stealth)){
+      if(target && a.att.tipsy>0 && !(attDef.effects && (attDef.effects.stealth || attDef.effects.fork || attDef.effects.swipe === true))){ // a Fork's two prongs don't stumble (2026-10-12)
         const d = [-1, 0, 1][Math.floor(rnd()*3)];
         if(d){ const baseCol = (target.kind==='card' && target.col!=null) ? target.col : liveSelf.col, col = baseCol + d, e = liveEnemyCols[col];
           if(e && e.kind==='card' && e.card.hp>0){ e.col = col; target = e; } else tipsyMiss = true;
@@ -3461,6 +3538,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // than the target it's about to swing at, it permanently toughens up. Compared AFTER
       // atkThisRound is captured (same convention as the onAttack trigger above), so the
       // bonus applies starting next round, not retroactively to this swing.
+      // Inspiring N (2026-10-12, a new passive): as it attacks, the allies either side of it get +N Attack for their next
+      // swing. Friction N (2026-10-12, user: "a negative passive that deals N damage to your adjacent allies when this
+      // unit attacks").
+      { const ie = attDef.effects || {}, insp = Number(ie.inspiring)||0, fric = Number(ie.friction)||0;
+        if(insp > 0 || fric > 0) [liveSelf.col - 1, liveSelf.col + 1].forEach(col=>{ const en = liveOwnCols[col]; if(!en || en.kind!=='card' || !en.card || !(en.card.hp > 0)) return; const ally = en.card;
+          if(insp > 0){ ally.inspired = (ally.inspired||0) + insp; if(recordEvents && events) events.push({type:'statusFx', kind:'inspired', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:ally.uid, targetDefId:ally.defId, amount:insp}); }
+          if(fric > 0){ const fd = damageCardFlat(ally, fric, 'physical', a.att.defId); if(recordEvents && events) events.push({type:'friction', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:mySide, targetUid:ally.uid, targetDefId:ally.defId, dmg:fd}); }
+        }); }
       if(attDef.effects && attDef.effects.grit && target.kind==='card' && effAtk(target.card) > effAtk(a.att)){
         const gritAmt = attDef.effects.grit;
         a.att.atk += gritAmt; a.att.baseAtk += gritAmt;
@@ -3539,7 +3624,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               // castle, same damageHQ path (bulwark reduction included) the primary castle hit
               // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
               // landing on the castle, not a swipe redirect.
-              const flankDmg = damageHQ(players[a.enemyId], atkThisRound);
+              const flankDmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound));
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
               if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
@@ -3551,8 +3636,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const blindNow = a.att.blind>0 && rnd() < 0.5;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
-        if(blindNow){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork'}); }
-        else { const refCol = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col; [refCol - 1, refCol + 1].forEach(forkStrike); swingLanded = true; }
+        // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
+        // never cancels the other. Blind rolls once per prong, so a blind Fork can still land one side.
+        const refCol = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col;
+        [refCol - 1, refCol + 1].forEach(col=>{
+          if(a.att.blind>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', forkCol:col - refCol}); return; }
+          forkStrike(col); swingLanded = true;
+        });
       } else
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind});
@@ -3685,9 +3775,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Shell: getting hit queues bonus armor + a skip-next-attack debuff, activated at the
         // FOLLOWING round's upkeep (not this one) — see endOfRoundUpkeep for the activate/clear pass.
-        if(defDefEarly.effects && defDefEarly.effects.shell && defCard.hp>0){
-          defCard.shellNext = defDefEarly.effects.shell;
-        }
+        // (Shell now goes up inside damageCard itself, on any hit; 2026-10-12.)
         if(defCard.hp<=0){
           if(!killCredit[defCard.uid]) killCredit[defCard.uid] = new Set();
           killCredit[defCard.uid].add(statKey(mySide, a.att.defId));
@@ -3779,14 +3867,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
         // Fork (2026-10-12, user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the rule above, unchanged.
         // `effects.fork`; an old `swipe: true` still means Fork (the new Swipe takes a number).
-        if(attDef.effects && attDef.effects.pitchfork && !forkOnly) [target.col - 1, target.col + 1].forEach(forkStrike);
+        if(pitchCands && pitchCands.length > 1 && target.card && target.card.hp <= 0){ const next = pitchCands.slice(1).find(col=> liveEnemyCols[col] && liveEnemyCols[col].card && liveEnemyCols[col].card.hp > 0); if(next != null){ if(recordEvents && events) events.push({type:'statusFx', kind:'pitchToss', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:liveEnemyCols[next].card.uid, targetDefId:liveEnemyCols[next].card.defId}); forkStrike(next); } }
       } else {
         // Siege (2026-09-17): bonus flat damage specifically when the attack lands on the
         // castle directly (0 or 1 facing resolving to the HQ) — a reward for punching through,
         // on top of whatever Bulwark the defender has standing in the way.
         const siegeBonus = (attDef.effects && attDef.effects.siege) || 0;
         const bulwarkBlocked = bulwarkReductionFor(players[a.enemyId]);
-        const dmg = damageHQ(players[a.enemyId], atkThisRound + siegeBonus);
+        const dmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound) + siegeBonus);
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, ambush:ambushForce, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
@@ -3797,6 +3885,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
       if(isBoomerangDef(attDef) && !a.att._boomerangReturning && a.att.hp > 0 && !blindNow) a.att.boomerangOut = true; // thrown
+      a.att.inspired = 0; // Inspiring's bonus is spent on this swing
       // Swipe N (new, 2026-10-12, user: "What would Swipe do then?"; proposal): a landed swing swipes N Lumber from the
       // opponent: they lose it and this side gains it (only what they have). For raiders and thieves.
       { const sw = attDef.effects && attDef.effects.swipe; const swN = (sw === true) ? 0 : Number(sw) || 0;
@@ -3888,7 +3977,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

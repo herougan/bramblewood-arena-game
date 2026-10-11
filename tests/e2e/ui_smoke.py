@@ -22,7 +22,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..'))
 URL = 'file://' + os.path.join(ROOT, 'index.html')
 EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
-INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
+INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_pitch_open_v1','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
         "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek']));"
         "localStorage.setItem('bramblewood_recent_opponents_v1', JSON.stringify([{at:1, name:'Moss B.', mode:'pvp', result:'win', deck:{'yeti':2,'bee-drone':3}}]));")
 TABS = ['home', 'codex', 'deck', 'shop', 'nest', 'profile', 'ranking', 'friends', 'guild', 'admin']

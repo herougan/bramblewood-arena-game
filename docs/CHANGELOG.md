@@ -2,6 +2,64 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (07:00)
+- **Bugs from the cave screenshot**
+  - **Win while the shield was up:** the castle's bar ignored its armour, so it read 0 while the armour had soaked the hits. The bar now spends the armour first.
+  - **The Fight button flew off** when energy was short: the deny-shake now adds to the button's own position.
+  - **Cave maps:** Home, the energy pill, the tab bar and the map title stay lit. The lantern keeps following the pointer after you click a skirmish, and the skirmish panel is only lightly darkened (it brightens under the pointer).
+  - **Wait-0 enemy cards** no longer hit before they land. Their arrival strike plays after the card is on the board.
+  - **Bites** crunch once, not twice.
+  - **Fork:**
+    - a miss on one prong no longer cancels the other (Blind rolls per prong, and Tipsy never moves a Fork);
+    - its label shows 0.1 s before the damage number.
+  - **Revive wings:** lower, narrower and silver, with a halo between them. Revive also gets a ↺ mark; Evasive gets 🍃 and Tide 🌊.
+- **New skills:**
+  - Swimmer (an extra turn on Flow);
+  - Inspiring N, Friction N, Worthy N;
+  - Lumberjack, Heavy Metal, Timber, Rock-solid, Iron-will;
+  - Loyal and Usurper (leader-conditional, with granted skills);
+  - Metal and Uranium resources;
+  - Stone, Metal and Uranium costs now charged.
+- **Changed skills:**
+  - **Tailwind** also speeds your Flyers.
+  - **Rage** doubles castle hits too, and shows an ember ½ shield.
+  - **Shell** is reworked: any hit (arrows too) raises +N Armour and N temporary Health until the end of the next round, with no attacking meanwhile. Green shields glow in.
+  - **Pitchfork** picks off the weakest facing unit, and a kill carries on.
+- **Card data:**
+  - the 17 Lumber-on-arrival cards now use Worthy;
+  - 9 sea swimmers got Swimmer;
+  - 15 new cards: Conch Crawler, Conch Herald, Shoal Shark, Malachite Golem, the three Irradiated cards, Heartwood Treant, Quarry Troll, Iron Warden, Badger Lumberjack, Ore-Smelter Mole, Sworn Shieldbearer, Crown Pretender, Grindstone Boar. All are unobtainable until ticked.
+- **Tide is clearer:** Tide units show 🌊+1 / 🐚−1 and their real Attack on Flow.
+- **Progression:**
+  - Forge levels 5–8 open at Map 16, 9 at Map 26, 10 at Map 31; limit breaks at Map 50;
+  - level 0 → 1 costs a mote of materia;
+  - quest cards start at level 0;
+  - a cave map you've cleared gets a 30% wider lantern and 10% less darkness.
+- **Pitching opens after Map 1:**
+  - before then, the Graveyard does nothing and shows no tip;
+  - Lumber-cost cards earned meanwhile arrive when it opens;
+  - after a pitch with nothing castable, the turn passes by itself.
+- **Board:**
+  - the camera holds still while the cards fit the middle five columns;
+  - rows of 8+ tighten their spacing, and 21+ overlap by 20%;
+  - the leader's crown and beam stay on the card;
+  - on a win, tokens on both sides shatter at random moments;
+  - tiny cards keep Attack at the bottom and drop the ⚔/❤ glyphs.
+- **Skirmish editor:**
+  - layered bonus health (L1–L4, blue to pink; each layer above 0 opens the next);
+  - card levels per card in the deck.
+- **Admin:**
+  - 👑 Auto-win in a match;
+  - ✅ Mark cleared / Clear the whole map on the skirmish panel;
+  - 🎁 Get this card in the Codex.
+- **Map chats:**
+  - 19 new curiosities across Maps 1–11 (two per map at most);
+  - replies that offer to take you somewhere now do it (the Nest, Notices, Codex, Forge, Shop, Arena, Test Lab);
+  - no answer ends a chat kindly and it plays again next time.
+- **Late side maps:** a side map can now appear N days after a clear, or after a quest.
+- **New note:** [Progression to Map 60](progression-2026-10-12.md). It covers the level gates, the road after Map 20, card counts (235 different cards on Maps 1–20), and a max-energy and Town proposal.
+- **D30:** the 22 card portraits are generating overnight on your PixelLab plan.
+
 ## 2026-10-12 (05:00)
 - **All cards are unobtainable for now**, so we can build the list together.
   - 343 cards carry `unattainable` and can't come out of packs, rewards, finds, crafts or promotions.

@@ -749,6 +749,8 @@
      corners in every context (grid, pool, hand, board, leader widget) with one rule, matching the
      existing corner-badge treatment (costbadge/waitbadge/editbadge/levelbadge all do the same). */
   .card-tile .stats{display:contents;}
+  .card-tile .stats .sg{font-style:normal;}
+  body.pitch-locked .pitch-yield-preview, body.pitch-locked .pitchbadge{display:none !important;} /* pitching not open yet (2026-10-12) */
   .card-tile .atk, .card-tile .hp{position:absolute; z-index:3; bottom:3px; font-size:1.95em; font-weight:800; font-family:'Baloo 2'; text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000, 0 1px 3px rgba(0,0,0,.6);}
   .card-tile .atk{left:7px; color:var(--card-atk-color);}
   .card-tile .hp{right:7px; color:var(--card-hp-color);}
@@ -2013,15 +2015,17 @@
      already means "you got hit in combat") — this one means "that action was rejected", so it
      needs its own read at a glance. Applied via denyShake() in arena_app.js. */
   .deny-shake{animation:denyShakeAnim 420ms ease;}
+  /* 2026-10-12 (user: the Fight button "flies off funnily" without energy): the shake used `transform`, which wiped out
+     buttons that are centred or lifted with their own transform. It now uses the separate `translate` property, which adds to it. */
   @keyframes denyShakeAnim{
-    0%{transform:translateX(0); box-shadow:0 0 0 0 rgba(220,38,38,0);}
+    0%{translate:0 0; box-shadow:0 0 0 0 rgba(220,38,38,0);}
     8%{box-shadow:0 0 0 3px rgba(220,38,38,.9);}
-    18%{transform:translateX(-6px);}
-    34%{transform:translateX(6px);}
-    50%{transform:translateX(-5px);}
-    66%{transform:translateX(5px);}
-    82%{transform:translateX(-2px); box-shadow:0 0 0 3px rgba(220,38,38,.35);}
-    100%{transform:translateX(0); box-shadow:0 0 0 0 rgba(220,38,38,0);}
+    18%{translate:-6px 0;}
+    34%{translate:6px 0;}
+    50%{translate:-5px 0;}
+    66%{translate:5px 0;}
+    82%{translate:-2px 0; box-shadow:0 0 0 3px rgba(220,38,38,.35);}
+    100%{translate:0 0; box-shadow:0 0 0 0 rgba(220,38,38,0);}
   }
   /* 2026-09-26 (explicit request: "taking poison damage should be more obvious... make they shake
      green, and bubbles come out... Emoji text jumps out where the emoji is relevant to the damage
@@ -4143,9 +4147,25 @@
       repeating-linear-gradient(180deg, rgba(255,255,255,.12) 0 2px, transparent 2px 9px), linear-gradient(80deg, #6f7a86 0%, #b9c3cc 28%, #8a95a1 46%, #d6dde3 62%, #7a8591 100%);}
   .board-card .guard-plates i::after{content:''; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(105deg, transparent 35%, rgba(255,255,255,.55) 50%, transparent 65%) no-repeat; background-size:250% 100%; animation:guardSheen 4.5s ease-in-out infinite;}
   @keyframes guardSheen{0%,60%{background-position:120% 0;} 100%{background-position:-120% 0;}}
+  /* Shell up, Rage's half-damage shield, the tide chip (2026-10-12): the shell's armour shows as green shields that glow in
+     quickly, with its temporary Health beside them; a raging unit shows an ember shield (½); Tide units show Flow +1 / Ebb −1. */
+  .board-card .shell-up{position:absolute; left:4px; top:30%; z-index:6; display:flex; align-items:center; gap:2px; pointer-events:none; animation:shellGlowIn .28s ease-out both;}
+  .board-card .shell-up .su-shields{display:flex;} .board-card .shell-up .su-shields i{font-style:normal; font-size:15px; margin-left:-6px; color:#5fe08a; filter:hue-rotate(70deg) saturate(1.6) drop-shadow(0 0 4px rgba(90,230,120,.95));}
+  .board-card .shell-up .su-shields i:first-child{margin-left:0;}
+  .board-card .shell-up .su-temp{font:800 11px/1 'Baloo 2', system-ui, sans-serif; color:#eafff0; background:rgba(36,140,70,.92); border-radius:999px; padding:2px 5px; box-shadow:0 0 6px rgba(90,230,120,.8);}
+  .board-card.shell-flash .card-tile{box-shadow:0 0 0 2px rgba(90,230,120,.9), 0 0 18px rgba(90,230,120,.75); transition:box-shadow .25s ease-out;}
+  @keyframes shellGlowIn{0%{opacity:0; transform:scale(.6); filter:drop-shadow(0 0 0 rgba(90,230,120,0));} 60%{opacity:1; transform:scale(1.12); filter:drop-shadow(0 0 10px rgba(90,230,120,.95));} 100%{opacity:1; transform:scale(1); filter:drop-shadow(0 0 3px rgba(90,230,120,.6));}}
+  .board-card .rage-shield{position:absolute; right:4px; top:30%; z-index:6; pointer-events:none; font-size:13px; filter:sepia(1) saturate(4) hue-rotate(-25deg) drop-shadow(0 0 4px rgba(255,90,40,.9));}
+  .board-card .rage-shield small{font:800 10px/1 'Baloo 2', system-ui, sans-serif; color:#fff; margin-left:-3px;}
+  .board-card .tide-chip{position:absolute; left:50%; top:-11px; translate:-50% 0; z-index:9; opacity:1; filter:none; border:1px solid rgba(255,255,255,.6); pointer-events:none; font:800 10px/1 'Baloo 2', system-ui, sans-serif; padding:2px 6px; border-radius:999px; color:#fff; white-space:nowrap;}
+  .board-card .tide-chip.tide-flow{background:#1673ab; box-shadow:0 0 6px rgba(80,180,255,.8);} .board-card .tide-chip.tide-ebb{background:#7a5a2e; box-shadow:0 0 6px rgba(240,200,140,.6);}
+  @media (prefers-reduced-motion: reduce){ .board-card .shell-up{animation:none;} }
   /* Revivification wings (2026-10-11): a pair of white wings behind the card until its one revive is spent. */
-  .board-card .angel-wings{position:absolute; inset:-26% -15% 50%; z-index:-1; pointer-events:none; filter:drop-shadow(0 0 6px rgba(255,240,190,.75));}
-  .board-card .angel-wings i{position:absolute; top:0; width:50%; height:100%; background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20120'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='1'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'/%3E%3Cstop%20offset='.6'%20stop-color='%23f3efe2'/%3E%3Cstop%20offset='1'%20stop-color='%23d9d0b4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill='url(%23g)'%20stroke='%23c9b98a'%20stroke-width='1.2'%3E%3Cpath%20d='M98%2018%20C70%202%2030%204%206%2022%20C24%2022%2040%2026%2052%2032%20C34%2034%2018%2042%206%2056%20C26%2052%2042%2052%2056%2056%20C40%2062%2028%2074%2020%2090%20C38%2080%2054%2074%2066%2074%20C56%2084%2050%2098%2048%20114%20C62%2098%2076%2086%2092%2078%20Z'/%3E%3C/g%3E%3Cg%20fill='none'%20stroke='%23cdbf95'%20stroke-width='1'%3E%3Cpath%20d='M96%2022%20C70%2022%2046%2028%2030%2036'/%3E%3Cpath%20d='M94%2040%20C72%2044%2052%2052%2036%2064'/%3E%3Cpath%20d='M92%2058%20C74%2066%2062%2078%2054%2094'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; animation:wingFlap 3.2s ease-in-out infinite;}
+  /* 2026-10-12 (user: the turtle's wings were misplaced and unclear): lower, narrower and silver, with a halo between them
+     ("comes back once"); the same ↺ shows in the skill strip. */
+  .board-card .angel-wings{position:absolute; inset:-12% -8% 54%; z-index:-1; pointer-events:none; filter:drop-shadow(0 0 5px rgba(214,226,240,.8));}
+  .board-card .angel-wings i{position:absolute; top:0; width:50%; height:100%; background:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20120'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='1'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%23ffffff'/%3E%3Cstop%20offset='.6'%20stop-color='%23dfe4ea'/%3E%3Cstop%20offset='1'%20stop-color='%23a9b2bd'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg%20fill='url(%23g)'%20stroke='%23838d99'%20stroke-width='1.2'%3E%3Cpath%20d='M98%2018%20C70%202%2030%204%206%2022%20C24%2022%2040%2026%2052%2032%20C34%2034%2018%2042%206%2056%20C26%2052%2042%2052%2056%2056%20C40%2062%2028%2074%2020%2090%20C38%2080%2054%2074%2066%2074%20C56%2084%2050%2098%2048%20114%20C62%2098%2076%2086%2092%2078%20Z'/%3E%3C/g%3E%3Cg%20fill='none'%20stroke='%23959fab'%20stroke-width='1'%3E%3Cpath%20d='M96%2022%20C70%2022%2046%2028%2030%2036'/%3E%3Cpath%20d='M94%2040%20C72%2044%2052%2052%2036%2064'/%3E%3Cpath%20d='M92%2058%20C74%2066%2062%2078%2054%2094'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; animation:wingFlap 3.2s ease-in-out infinite;}
+  .board-card .angel-wings::after{content:''; position:absolute; left:50%; top:-4%; width:38%; height:16%; translate:-50% 0; border-radius:50%; border:2px solid rgba(232,238,245,.95); box-shadow:0 0 6px rgba(214,226,240,.9), inset 0 0 3px rgba(214,226,240,.8);}
   .board-card .angel-wings .aw-l{left:0; transform-origin:100% 90%;}
   .board-card .angel-wings .aw-r{right:0; transform:scaleX(-1); transform-origin:100% 90%; animation-name:wingFlapR;}
   @keyframes wingFlap{0%,100%{transform:rotate(18deg);} 50%{transform:rotate(8deg);}}
@@ -5169,7 +5189,8 @@
      numbers shrink, and status chips become small tags in the middle. */
   @container (max-width: 66px){
     .board-card .card-tile .atk, .board-card .card-tile .hp{font-size:10.5px !important; padding:0 2px !important; line-height:1.15;}
-    .board-card .card-tile .atk{bottom:auto !important; top:2px; left:2px !important;}
+    .board-card .card-tile .atk{left:2px !important; bottom:2px !important;} /* 2026-10-12 (user): Attack stays on the bottom edge */
+    .board-card .card-tile .atk .sg, .board-card .card-tile .hp .sg{display:none;} /* and the ⚔/❤ glyphs drop, numbers only */
     .board-card .card-tile .hp{right:2px !important; bottom:2px !important;}
     .board-card .card-tile .badges-bottom{bottom:auto !important; top:42%; gap:1px; max-width:96%;}
     .board-card .card-tile .badges-bottom .abadge{font-size:9px !important; padding:0 2px; border-radius:5px; filter:none;}
@@ -5506,7 +5527,7 @@
   .ufx-teeth{fill:#fffdf6; stroke:#5a0d0d; stroke-width:1.2; opacity:0;}
   .ufx-top{animation:ufxCrunchTop .38s cubic-bezier(.3,.6,.4,1) forwards;}
   .ufx-bot{animation:ufxCrunchBot .38s cubic-bezier(.3,.6,.4,1) forwards;}
-  .ufx-back{fill:#e8dcc4; stroke:#3a0808; animation-delay:.1s !important;}
+  .ufx-back{fill:#e8dcc4; stroke:#3a0808; animation-delay:.03s !important;} /* 2026-10-12 (user: "The biting effect does 2 bites"): the back row lagged 0.1 s and read as a second bite; now one crunch */
   .ufx-crunch{fill:rgba(255,250,235,.9); opacity:0; transform-box:fill-box; transform-origin:center; animation:ufxCrunchFlash .26s ease-out .09s forwards;}
   @keyframes ufxCrunchTop{0%{transform:translateY(-30px); opacity:0;} 28%{transform:translateY(5px); opacity:1;} 42%{transform:translateY(0); opacity:1;} 72%{transform:translateY(-13px); opacity:1;} 100%{transform:translateY(-15px); opacity:0;}}
   @keyframes ufxCrunchBot{0%{transform:translateY(30px); opacity:0;} 28%{transform:translateY(-5px); opacity:1;} 42%{transform:translateY(0); opacity:1;} 72%{transform:translateY(13px); opacity:1;} 100%{transform:translateY(15px); opacity:0;}}
@@ -5720,6 +5741,12 @@
   .nest-egg .ne-ico{font-size:22px; animation:eggWobble 3.2s ease-in-out infinite;} .nest-egg.is-ready{border-color:#e9b44c; box-shadow:0 0 0 2px rgba(233,180,76,.4);} .nest-egg.is-ready .ne-ico{animation-duration:.8s;}
   @keyframes eggWobble{0%,80%,100%{transform:rotate(0);} 85%{transform:rotate(-8deg);} 90%{transform:rotate(7deg);} 95%{transform:rotate(-4deg);}}
   /* The small cave in Sunken Hollow (talk to it a few times). */
+  /* Map curiosities (2026-10-12): a small round marker with the thing's emoji; a "!" until first visited. */
+  .map-curio{position:absolute; transform:translate(-50%,-50%); z-index:6; width:38px; height:38px; padding:0; border-radius:50%; border:2px solid rgba(255,240,205,.8); background:radial-gradient(circle at 35% 30%, rgba(255,250,235,.95), rgba(222,206,170,.92)); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s ease;}
+  .map-curio:hover{transform:translate(-50%,-50%) scale(1.1);} .map-curio .mcu-ico{font-size:19px; line-height:1;}
+  .map-curio .map-spot-new{position:absolute; top:-8px; right:-8px;}
+  .map-curio:not(.is-new){opacity:.85;}
+  .conquest-map-canvas.layout-editing .map-curio{cursor:grab; touch-action:none; outline:2px dashed rgba(255,240,200,.75); outline-offset:3px;}
   .map-cave{position:absolute; transform:translate(-50%,-50%); z-index:6; width:58px; height:42px; padding:0; border:0; background:none; cursor:pointer;}
   .map-cave .mc-rock{position:absolute; inset:0; border-radius:50% 50% 14px 14px / 70% 70% 20% 20%; background:radial-gradient(circle at 35% 28%, #9a9486, #6a645a 55%, #3f3a33); box-shadow:0 5px 10px rgba(0,0,0,.4), inset 0 3px 0 rgba(255,255,255,.18);}
   .map-cave .mc-mouth{position:absolute; left:50%; bottom:0; width:24px; height:20px; transform:translateX(-50%); border-radius:12px 12px 2px 2px; background:radial-gradient(ellipse at 50% 85%, #000, #1c1813 70%); box-shadow:inset 0 3px 4px rgba(0,0,0,.7);}
@@ -5788,6 +5815,10 @@
   .card-tile .castle-shield{position:absolute; z-index:4; left:clamp(3px, 6cqw, 10px); bottom:clamp(3px, 4cqw, 8px); font:800 clamp(10px, 13cqw, 17px)/1.1 'Baloo 2',system-ui,sans-serif; color:#cfe8ff; padding:.02em .3em 0; border-radius:.38em;
     background:linear-gradient(180deg, rgba(14,34,66,.9), rgba(6,16,34,.92)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,180,255,.55);}
   .card-tile .castle-shield.is-broken{opacity:.45; filter:grayscale(.6);}
+  .card-tile .castle-shield{color:var(--sh-a, #cfe8ff); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px var(--sh-b, rgba(120,180,255,.55));} /* layer colour, blue → violet → magenta → pink (2026-10-12) */
+  .se-armour{display:flex; flex-wrap:wrap; gap:8px; align-items:flex-end;} .se-armour-layer{display:flex; flex-direction:column; gap:2px; font-weight:700; padding:4px 6px; border-radius:8px; background:linear-gradient(180deg, color-mix(in srgb, var(--sh-a) 35%, transparent), color-mix(in srgb, var(--sh-b) 25%, transparent)); border:1px solid var(--sh-b);}
+  .se-armour-layer input{width:84px;}
+  .se-levels{margin:8px 0;} .se-levels summary{cursor:pointer; font-weight:700;} .se-levels-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr)); gap:6px; margin-top:6px;} .se-lv{display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:13px;} .se-lv input{width:60px;}
   /* Skirmish nodes: no ✓ badge; cleared = green. A soft top-left sheen and a faint woven texture so they read as
      objects, not flat discs. */
   .map-node{background-image:radial-gradient(circle at 32% 26%, rgba(255,255,255,.55) 0, rgba(255,255,255,.12) 34%, transparent 60%), repeating-linear-gradient(45deg, rgba(0,0,0,.035) 0 2px, transparent 2px 5px);}
@@ -5872,6 +5903,11 @@
   .board-row:has(> :nth-child(11)):not(:has(> :nth-child(12))){--row-n:11;}
   .board-row:has(> :nth-child(12)):not(:has(> :nth-child(13))){--row-n:12;}
   .board-row:has(> :nth-child(13)){--row-n:13;}
+  /* 2026-10-12 (user: "Past 7 columns, shrink the card spacing. Past 20 columns, cards overlap by 20%"). */
+  .board-row:has(> :nth-child(8)){gap:4px; --gapx:4px;}
+  .board-row:has(> :nth-child(14)){--row-n:14;}
+  .board-row:has(> :nth-child(21)){gap:0; --gapx:calc(var(--match-card-w) * -0.2); --row-n:21;}
+  .board-row:has(> :nth-child(21)) > * + *{margin-left:calc(var(--match-card-w) * -0.2);}
   .board-row > .board-card{width:min(var(--match-card-w), calc((100% - (var(--row-n) - 1) * var(--gapx)) / var(--row-n))); height:auto; aspect-ratio:4 / 5; flex-shrink:1; min-width:0;}
   #forfeitMatchBtn{margin-left:10px;} /* playtest: a little space between Forfeit and its neighbours */
   /* Forge hearth flare-ups (2026-10-08) */
@@ -7684,6 +7720,17 @@
 .cave-screen-dark{position:fixed; inset:0; z-index:0; pointer-events:none;
   background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,0) calc(var(--lr, 150px) * .45), rgba(4,6,12,.55) calc(var(--lr, 150px) * .9), rgba(4,6,12,.9) calc(var(--lr, 150px) * 1.6), rgba(2,3,8,.94) calc(var(--lr, 150px) * 2.6));}
 body.cave-screen #conquestMapList, body.cave-screen #view-play .play-subtabs-row{filter:brightness(.78);}
+/* 2026-10-12 (user: "The home buttons, energy bar, etc. are invisible in cave maps"): the controls that aren't the map stay
+   lit: the tab bar with Home and the energy pill, the map's headline, the atlas and full-screen buttons. */
+body.cave-screen #conquestMapList{filter:brightness(.85);}
+body.cave-screen #view-play .play-subtabs-row{filter:none !important; z-index:60;} body.cave-screen:not(.conquest-full) #view-play .play-subtabs-row{position:relative;}
+body.cave-screen .conquest-main > .conquest-headline{z-index:8;} body.cave-screen .conquest-main > .conquest-headline:not([style*=absolute]){position:relative;}
+body.conquest-full.cave-screen .conquest-main > .conquest-headline{position:absolute;}
+/* The skirmish panel stays readable in a cave: only slightly darkened, and the lantern (the pointer on it) lifts that. */
+body.cave-screen .conquest-node-panel{filter:brightness(.8); transition:filter .25s ease;}
+@media (min-width:821px){ body.cave-screen .conquest-main > .conquest-node-panel{z-index:9;} }
+body.cave-screen .conquest-node-panel:hover, body.cave-screen .conquest-node-panel:focus-within{filter:none;}
+body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .panel-sub{color:#efe6cf; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 @media (prefers-reduced-motion: reduce){ .cave-screen-dark{background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}

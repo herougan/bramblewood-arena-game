@@ -123,6 +123,8 @@ ARCHETYPE_ICON = {
     # identity (like the lore doc's own draft example cards with real abilities) is bigger future
     # content, not this batch's "basic tier" scope.
     "Hummingbird": "🐦",
+    # Irradiated (2026-10-12, user: "Uranium resource, only for irradiated glow wyrms, axolotls and couatls").
+    "Irradiated": "☢️",
 }
 archetype_icon_literal = json.dumps(ARCHETYPE_ICON, ensure_ascii=False)
 

@@ -96,7 +96,8 @@
     path(svg, teeth(94, -1, 18, 6, 11, 15), 'ufx-teeth ufx-bot');
     const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 14); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
     const tile = target && (target.querySelector('.card-tile') || target);
-    if(tile && tile.animate) try{ tile.animate([{scale:'1 1'}, {scale:'1.04 .94', offset:.3}, {scale:'.99 1.02', offset:.6}, {scale:'1 1'}], {duration:260, delay:90, composite:'add'}); }catch(e){}
+    // (2026-10-12: no squash of its own any more; the hit's impactSquash already gives the one crunch, two read as a double bite)
+    void tile;
   }
   function sting(target){
     const svg = overlay(target, 'ufx-sting', 620); if(!svg) return;
