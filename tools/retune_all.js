@@ -24,6 +24,22 @@ const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.
 // --only=m2,3-2 limits the run to those maps / fight keys; --borrow=m2:m7+mb lets a map's swaps also draw
 // themed cards from other maps' fights (e.g. Sunken Hollow borrowing reef and beach cards).
 const ONLY = ((process.argv.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
+// --swaps=N (default 4) allows more card trades; --cap applies the road's castle-Health caps (240, the campaign boss 300)
+// inside the search, so a fight that can't get hard enough on Health trades cards instead; --borrow-next=K lets elites and
+// bosses (and stuck skirmishes) also draw from the next K main maps (a preview of what's coming, per the mechanics on-ramp note). (2026-10-11)
+const SWAPS = +((process.argv.find(a=> a.startsWith('--swaps=')) || '--swaps=4').slice(8)), CAPHP = process.argv.includes('--cap');
+const BORROW_NEXT = +((process.argv.find(a=> a.startsWith('--borrow-next=')) || '--borrow-next=0').slice(14));
+// --borrow-biome lets a fight also draw from maps of the same biome (or a neighbouring one) up to 2 maps ahead, instead of
+// simply the next maps, so a Tundra fight never picks up savanna animals. --keep-rare never trades away an Epic-or-rarer
+// card (usually the fight's namesake).
+const BORROW_BIOME = process.argv.includes('--borrow-biome'), KEEP_RARE = process.argv.includes('--keep-rare');
+const BIOME_OF = (()=>{ const i = src.indexOf('const MAP_BIOME_OF = '); return i < 0 ? {} : eval('(' + src.slice(i + 'const MAP_BIOME_OF = '.length, src.indexOf('};', i) + 1) + ')'); })();
+const BIOME_AFFINE = {forge:['ash'], ash:['forge'], water:['swamp'], swamp:['water'], reef:['beach'], beach:['reef']};
+const RARE_UP = new Set(['epic','heroic','unique','questunique','legendary','mythic','ancient','devlegendary','devancient','eventlegendary']);
+// --theme: trades only bring in cards that share a type (archetype or species) with the map's three most common types,
+// drawn from any map's decks up to 2 maps ahead, so a volcano keeps its fire creatures. (2026-10-11)
+const THEME = process.argv.includes('--theme');
+const typesOf = id=> [...((defs[id]||{}).archetypes||[]), ...((defs[id]||{}).species||[])];
 const BORROW = {}; ((process.argv.find(a=> a.startsWith('--borrow=')) || '').slice(9)).split(',').filter(Boolean).forEach(x=>{ const [m, from] = x.split(':'); BORROW[m] = (from||'').split('+'); });
 
 const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.prayerReq||0)*0.4 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // a Ritual card is slow to wake; // devilryCost (2026-10-10): Darkness is scarce, so dark cards rank lower
@@ -54,6 +70,7 @@ function target(map, n){
 const HP_FLOOR = {skirmish:14, elite:25, boss:30, finalboss:30};
 function tuneHp(deck, nd, ch, hp0, mode, tgt, kind){
   let lo = Math.max(HP_FLOOR[kind] || 8, Math.round(hp0*0.35)), hi = Math.round(hp0*2), best = hp0, bestR = rate(deck, nd, ch, hp0, mode);
+  if(CAPHP){ const cap = kind==='finalboss' ? 300 : 240; hi = Math.min(hi, Math.max(cap, 0)); if(hp0 > cap){ best = cap; bestR = rate(deck, nd, ch, cap, mode); } lo = Math.min(lo, hi); }
   while(lo <= hi){ const mid = Math.floor((lo+hi)/2), r = rate(deck, nd, ch, mid, mode); if(Math.abs(r-tgt) < Math.abs(bestR-tgt) - 1e-9 || (Math.abs(r-tgt) === Math.abs(bestR-tgt) && Math.abs(mid-hp0) < Math.abs(best-hp0))){ best = mid; bestR = r; } if(r > tgt) lo = mid+1; else hi = mid-1; }
   return {hp: best, r: bestR};
 }
@@ -81,18 +98,38 @@ for(const map of order){
     // Too far off with HP alone: trade two copies at a time with cards from this map's other fights
     // (so the theme holds): out goes the enemy's strongest (too hard) or weakest (too easy) card, in
     // comes the weakest / strongest card of the map pool.
-    const poolMaps = [map].concat((BORROW[map.id]||[]).map(id=> MAPS.find(m=> m.id===id)).filter(Boolean));
-    const pool = [...new Set(poolMaps.flatMap(mm=> mm.nodes.filter(x=> x.kind!=='raidboss').flatMap(x=> Object.keys(x.deck||{}))))].filter(id=> defs[id]).sort((a,b)=> score(b)-score(a));
-    while(!HP_ONLY && Math.abs(t.r - tgt) > .12 && swaps < 4){
+    const nextMains = (()=>{ if(!BORROW_NEXT) return []; const mainId = map.sub ? map.parent : map.id, i = mains.findIndex(m=> m.id===mainId); return i < 0 ? [] : mains.slice(i+1, i+1+BORROW_NEXT); })();
+    const biomeMaps = (()=>{ if(!BORROW_BIOME) return []; const b = BIOME_OF[map.id]; if(!b) return []; const ok = new Set([b, ...(BIOME_AFFINE[b]||[])]);
+      const mainId = map.sub ? map.parent : map.id, i = mains.findIndex(m=> m.id===mainId);
+      return MAPS.filter(mm=> mm !== map && !mm.reserved && ok.has(BIOME_OF[mm.id]) && (()=>{ const j = mains.findIndex(m=> m.id===(mm.sub ? mm.parent : mm.id)); return j >= 0 && j <= i + 2; })()); })();
+    const poolMaps = [map].concat((BORROW[map.id]||[]).map(id=> MAPS.find(m=> m.id===id)).filter(Boolean), nextMains, biomeMaps);
+    let pool = [...new Set(poolMaps.flatMap(mm=> mm.nodes.filter(x=> x.kind!=='raidboss').flatMap(x=> Object.keys(x.deck||{}))))].filter(id=> defs[id]);
+    if(THEME){
+      const tally = {}; map.nodes.forEach(x=> Object.entries(x.deck||{}).forEach(([id, c])=> typesOf(id).forEach(t=> tally[t] = (tally[t]||0) + c)));
+      const top = new Set(Object.entries(tally).filter(([t])=> !['Structure','Leader','Bird','Beast'].includes(t)).sort((a,b)=> b[1]-a[1]).slice(0, 3).map(([t])=> t));
+      const mainId = map.sub ? map.parent : map.id, i = mains.findIndex(m=> m.id===mainId);
+      const reach = MAPS.filter(mm=> !mm.reserved && (()=>{ const j = mains.findIndex(m=> m.id===(mm.sub ? mm.parent : mm.id)); return j >= 0 && j <= i + 2; })());
+      const themed = [...new Set(reach.flatMap(mm=> mm.nodes.filter(x=> x.kind!=='raidboss').flatMap(x=> Object.keys(x.deck||{}))))].filter(id=> defs[id] && typesOf(id).some(t=> top.has(t)));
+      pool = [...new Set([...pool.filter(id=> typesOf(id).some(t=> top.has(t))), ...themed])];
+    }
+    pool.sort((a,b)=> score(b)-score(a));
+    // 2026-10-11: a trade is kept only if it brings the win rate closer to target (the score heuristic over-rates
+    // expensive cards the CPU can't always afford); a rejected candidate isn't tried again. Up to 3×SWAPS attempts.
+    const tried = new Set(); let attempts = 0;
+    while(!HP_ONLY && Math.abs(t.r - tgt) > .12 && swaps < SWAPS && attempts < SWAPS*3){
+      attempts++;
       const ids = Object.keys(nd).sort((a,b)=> score(b)-score(a));
       const easy = t.r > tgt;
-      const out = easy ? ids[ids.length-1] : ids[0];
-      const cand = easy ? pool.find(id=> score(id) > score(ids[0]) || !nd[id]) : pool.slice().reverse().find(id=> score(id) < score(ids[ids.length-1]) || !nd[id]);
-      const inn = cand && cand !== out ? cand : (easy ? ids[0] : ids[ids.length-1]);
-      if(inn === out) break;
-      const k = Math.min(2, nd[out]); nd[out] -= k; if(!nd[out]) delete nd[out]; nd[inn] = (nd[inn]||0) + k;
-      if(Object.keys(nd).length < 2) break;
-      swaps++; t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind);
+      const removable = KEEP_RARE ? ids.filter(id=> !RARE_UP.has(defs[id].rarity)) : ids; if(!removable.length) break;
+      const out = easy ? removable[removable.length-1] : removable[0];
+      const cand = easy ? pool.find(id=> !tried.has(id) && (score(id) > score(ids[0]) || !nd[id])) : pool.slice().reverse().find(id=> !tried.has(id) && (score(id) < score(ids[ids.length-1]) || !nd[id]));
+      if(!cand || cand === out) break;
+      tried.add(cand);
+      const save = Object.assign({}, nd);
+      const k = Math.min(2, nd[out]); nd[out] -= k; if(!nd[out]) delete nd[out]; nd[cand] = (nd[cand]||0) + k;
+      if(Object.keys(nd).length < 2){ nd = save; break; }
+      const t2 = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind);
+      if(Math.abs(t2.r - tgt) < Math.abs(t.r - tgt) - 0.01){ t = t2; swaps++; } else nd = save;
     }
     out.push({map: map.id, key: n.key, kind: n.kind, target: Math.round(tgt*100), before: Math.round(before*100), after: Math.round(t.r*100), hp: [n.hqHp, t.hp], swaps, deck: swaps ? nd : null});
     console.log(`${map.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(Math.round(tgt*100)).padStart(3)}%  ${String(Math.round(before*100)).padStart(3)}% → ${String(Math.round(t.r*100)).padStart(3)}%  HP ${n.hqHp} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);

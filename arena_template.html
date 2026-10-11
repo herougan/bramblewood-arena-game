@@ -4256,6 +4256,16 @@
      10 times across arena_app.js's referenceHTML() -- a real class instead, same fix as the
      Admin panel above. */
   .ref-heading{margin:0 0 10px;}
+  /* Skills along the road (2026-10-11) */
+  .sbm-row{display:flex; gap:12px; align-items:baseline; padding:7px 0; border-top:1px solid var(--surface-border);}
+  .sbm-row:first-of-type{border-top:0;}
+  .sbm-map{flex:0 0 16em; font-size:13px; color:var(--ink);}
+  .sbm-map b{display:inline-block; min-width:2.2em; color:var(--accent, var(--ink));}
+  .sbm-row.is-locked .sbm-map{opacity:.55;}
+  .sbm-chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .sbm-chip{font-size:12.5px; padding:2px 9px; border-radius:999px; border:1px dashed var(--surface-border); color:var(--ink-soft, var(--ink)); opacity:.7;}
+  .sbm-chip.is-met{border-style:solid; opacity:1; background:var(--surface);}
+  @media (max-width:600px){ .sbm-row{flex-direction:column; gap:4px;} .sbm-map{flex:none;} }
   /* 2026-09-25 (standardisation pass): the Custom Trigger editor's small field inputs and the
      Roll Table editor's number columns were each hand-writing their own `style="width:Npx"` at
      every call site (with inconsistent trailing-semicolon usage too) instead of sharing classes

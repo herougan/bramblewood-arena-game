@@ -172,11 +172,11 @@
   "key": "u-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 78,
-  "after": 72,
+  "before": 70,
+  "after": 70,
   "hp": [
-   96,
-   173
+   218,
+   218
   ],
   "swaps": 0,
   "deck": null
@@ -200,22 +200,14 @@
   "key": "u-6",
   "kind": "boss",
   "target": 35,
-  "before": 76,
-  "after": 76,
+  "before": 40,
+  "after": 40,
   "hp": [
    183,
    183
   ],
-  "swaps": 4,
-  "deck": {
-   "fungal-colossus": 2,
-   "trapdoor-spider": 2,
-   "compost-grub": 2,
-   "honey-bee": 1,
-   "bee-forager": 2,
-   "worker-ant": 2,
-   "garden-snail": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mp",
@@ -250,20 +242,14 @@
   "key": "p-3",
   "kind": "skirmish",
   "target": 68,
-  "before": 94,
-  "after": 94,
+  "before": 68,
+  "after": 68,
   "hp": [
-   37,
-   37
+   35,
+   35
   ],
-  "swaps": 4,
-  "deck": {
-   "beaver-builder": 3,
-   "dam-wall": 2,
-   "river-carp": 3,
-   "puddle-hopper": 2,
-   "silver-minnow": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mp",
@@ -620,11 +606,11 @@
   "key": "w-1",
   "kind": "skirmish",
   "target": 85,
-  "before": 92,
-  "after": 88,
+  "before": 88,
+  "after": 86,
   "hp": [
-   64,
-   102
+   102,
+   162
   ],
   "swaps": 0,
   "deck": null
@@ -634,10 +620,10 @@
   "key": "w-2",
   "kind": "skirmish",
   "target": 77,
-  "before": 82,
+  "before": 76,
   "after": 76,
   "hp": [
-   76,
+   143,
    143
   ],
   "swaps": 0,
@@ -648,10 +634,10 @@
   "key": "w-3",
   "kind": "skirmish",
   "target": 68,
-  "before": 76,
+  "before": 68,
   "after": 68,
   "hp": [
-   123,
+   229,
    229
   ],
   "swaps": 0,
@@ -662,100 +648,66 @@
   "key": "w-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 100,
-  "after": 100,
+  "before": 60,
+  "after": 60,
   "hp": [
-   20,
-   20
+   26,
+   26
   ],
-  "swaps": 4,
-  "deck": {
-   "snapper-hatchling": 3,
-   "grass-viper": 2,
-   "mangrove-mudskipper": 2,
-   "constrictor-coil": 2,
-   "venomlord-serpent": 1,
-   "puddle-hopper": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mw",
   "key": "w-5",
   "kind": "elite",
   "target": 45,
-  "before": 96,
-  "after": 96,
+  "before": 56,
+  "after": 54,
   "hp": [
-   30,
-   30
+   178,
+   283
   ],
-  "swaps": 4,
-  "deck": {
-   "snapper-hatchling": 2,
-   "grass-viper": 2,
-   "mangrove-mudskipper": 2,
-   "bog-behemoth": 1,
-   "constrictor-coil": 2,
-   "venomlord-serpent": 2,
-   "puddle-hopper": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mw",
   "key": "w-6",
   "kind": "elite",
   "target": 45,
-  "before": 88,
-  "after": 80,
+  "before": 56,
+  "after": 56,
   "hp": [
-   96,
-   188
+   219,
+   219
   ],
-  "swaps": 4,
-  "deck": {
-   "bog-behemoth": 1,
-   "snapper-hatchling": 2,
-   "grass-viper": 2,
-   "mangrove-mudskipper": 1,
-   "puddle-hopper": 2,
-   "constrictor-coil": 2,
-   "venomlord-serpent": 2,
-   "bog-leech": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mw",
   "key": "w-7",
   "kind": "boss",
   "target": 35,
-  "before": 76,
-  "after": 74,
+  "before": 38,
+  "after": 38,
   "hp": [
-   191,
-   303
+   240,
+   240
   ],
-  "swaps": 4,
-  "deck": {
-   "bog-behemoth": 1,
-   "snapper-hatchling": 2,
-   "grass-viper": 2,
-   "mangrove-mudskipper": 2,
-   "puddle-hopper": 1,
-   "constrictor-coil": 2,
-   "venomlord-serpent": 2,
-   "crocodile-ambusher": 2,
-   "gangrenous-leech": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mk",
   "key": "k-1",
   "kind": "skirmish",
   "target": 85,
-  "before": 88,
+  "before": 86,
   "after": 86,
   "hp": [
-   74,
+   118,
    118
   ],
   "swaps": 0,
@@ -766,11 +718,11 @@
   "key": "k-2",
   "kind": "skirmish",
   "target": 77,
-  "before": 86,
-  "after": 84,
+  "before": 84,
+  "after": 78,
   "hp": [
-   39,
-   62
+   62,
+   99
   ],
   "swaps": 0,
   "deck": null
@@ -794,31 +746,24 @@
   "key": "k-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 80,
-  "after": 74,
+  "before": 66,
+  "after": 62,
   "hp": [
-   34,
-   68
+   129,
+   205
   ],
-  "swaps": 4,
-  "deck": {
-   "gull-thief": 2,
-   "tide-pool-crab": 2,
-   "mangrove-mudskipper": 1,
-   "reef-shark": 2,
-   "narwhal-lancer": 2,
-   "moray-ambusher": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "mk",
   "key": "k-5",
   "kind": "elite",
   "target": 45,
-  "before": 56,
+  "before": 52,
   "after": 52,
   "hp": [
-   114,
+   181,
    181
   ],
   "swaps": 0,
@@ -843,11 +788,11 @@
   "key": "k-7",
   "kind": "boss",
   "target": 35,
-  "before": 36,
+  "before": 38,
   "after": 36,
   "hp": [
-   262,
-   262
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -874,8 +819,8 @@
   "before": 78,
   "after": 78,
   "hp": [
-   256,
-   256
+   240,
+   240
   ],
   "swaps": 0,
   "deck": null
@@ -899,11 +844,11 @@
   "key": "8-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 68,
+  "before": 70,
   "after": 68,
   "hp": [
-   268,
-   268
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -927,21 +872,14 @@
   "key": "8-6",
   "kind": "elite",
   "target": 45,
-  "before": 58,
-  "after": 58,
+  "before": 44,
+  "after": 44,
   "hp": [
-   196,
-   196
+   111,
+   111
   ],
-  "swaps": 4,
-  "deck": {
-   "crocodile-ambusher": 2,
-   "echo-keeper": 2,
-   "constrictor-coil": 3,
-   "beaver-builder": 2,
-   "venomlord-serpent": 1,
-   "marsh-wisp": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m8",
@@ -962,20 +900,14 @@
   "key": "8-8",
   "kind": "boss",
   "target": 35,
-  "before": 70,
-  "after": 70,
+  "before": 36,
+  "after": 36,
   "hp": [
-   360,
-   360
+   240,
+   240
   ],
-  "swaps": 4,
-  "deck": {
-   "venomlord-serpent": 2,
-   "beaver-builder": 3,
-   "echo-keeper": 1,
-   "constrictor-coil": 2,
-   "crocodile-ambusher": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m4",
@@ -1192,21 +1124,14 @@
   "key": "10-8",
   "kind": "elite",
   "target": 45,
-  "before": 60,
-  "after": 60,
+  "before": 42,
+  "after": 44,
   "hp": [
-   122,
-   122
+   54,
+   42
   ],
-  "swaps": 4,
-  "deck": {
-   "rockslide-ram": 2,
-   "chipmunk-stockpiler": 1,
-   "eyrie-warden": 2,
-   "golden-eagle-diver": 1,
-   "mountain-goat-climber": 2,
-   "alpine-avalanche": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m10",
@@ -1272,8 +1197,8 @@
   "before": 72,
   "after": 68,
   "hp": [
-   46,
-   55
+   55,
+   64
   ],
   "swaps": 0,
   "deck": null
@@ -1339,11 +1264,11 @@
   "key": "r-1",
   "kind": "skirmish",
   "target": 85,
-  "before": 86,
+  "before": 90,
   "after": 86,
   "hp": [
    31,
-   31
+   50
   ],
   "swaps": 0,
   "deck": null
@@ -1367,10 +1292,10 @@
   "key": "r-3",
   "kind": "skirmish",
   "target": 68,
-  "before": 70,
+  "before": 68,
   "after": 68,
   "hp": [
-   121,
+   194,
    194
   ],
   "swaps": 0,
@@ -1398,8 +1323,8 @@
   "before": 56,
   "after": 54,
   "hp": [
-   162,
-   291
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -1521,11 +1446,11 @@
   "key": "l-6",
   "kind": "elite",
   "target": 45,
-  "before": 54,
-  "after": 50,
+  "before": 52,
+  "after": 52,
   "hp": [
-   200,
-   318
+   240,
+   240
   ],
   "swaps": 0,
   "deck": null
@@ -1563,11 +1488,11 @@
   "key": "t-2",
   "kind": "skirmish",
   "target": 77,
-  "before": 86,
-  "after": 80,
+  "before": 80,
+  "after": 78,
   "hp": [
-   69,
-   110
+   110,
+   175
   ],
   "swaps": 0,
   "deck": null
@@ -1577,10 +1502,10 @@
   "key": "t-3",
   "kind": "skirmish",
   "target": 68,
-  "before": 72,
+  "before": 70,
   "after": 70,
   "hp": [
-   121,
+   192,
    192
   ],
   "swaps": 0,
@@ -1591,10 +1516,10 @@
   "key": "t-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 70,
+  "before": 60,
   "after": 60,
   "hp": [
-   118,
+   178,
    178
   ],
   "swaps": 0,
@@ -1605,11 +1530,11 @@
   "key": "t-5",
   "kind": "elite",
   "target": 45,
-  "before": 70,
-  "after": 56,
+  "before": 56,
+  "after": 48,
   "hp": [
-   51,
-   93
+   93,
+   148
   ],
   "swaps": 0,
   "deck": null
@@ -1633,22 +1558,14 @@
   "key": "t-7",
   "kind": "boss",
   "target": 35,
-  "before": 58,
-  "after": 52,
+  "before": 52,
+  "after": 50,
   "hp": [
-   158,
-   300
+   240,
+   381
   ],
-  "swaps": 4,
-  "deck": {
-   "alpha-howler": 4,
-   "wolf-pack-runner": 2,
-   "frost-hare-sprinter": 1,
-   "taiga-lynx": 2,
-   "tundra-musk-ox": 2,
-   "ravenous-wolverine": 2,
-   "snowshoe-hare": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m6",
@@ -1711,81 +1628,56 @@
   "key": "6-5",
   "kind": "elite",
   "target": 45,
-  "before": 72,
-  "after": 72,
+  "before": 44,
+  "after": 44,
   "hp": [
-   133,
-   133
+   52,
+   52
   ],
-  "swaps": 4,
-  "deck": {
-   "beaver-builder": 3,
-   "porcupine-roller": 2,
-   "golden-eagle-diver": 1,
-   "glacial-ape-king": 1,
-   "permafrost-mammoth": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m6",
   "key": "6-6",
   "kind": "elite",
   "target": 45,
-  "before": 68,
-  "after": 68,
+  "before": 48,
+  "after": 48,
   "hp": [
    196,
    196
   ],
-  "swaps": 4,
-  "deck": {
-   "golden-eagle-diver": 2,
-   "beaver-builder": 3,
-   "porcupine-roller": 2,
-   "glacial-ape-king": 2,
-   "permafrost-mammoth": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m6",
   "key": "6-7",
   "kind": "elite",
   "target": 45,
-  "before": 84,
-  "after": 84,
+  "before": 54,
+  "after": 54,
   "hp": [
    105,
    105
   ],
-  "swaps": 4,
-  "deck": {
-   "porcupine-roller": 2,
-   "golden-eagle-diver": 2,
-   "beaver-builder": 2,
-   "glacial-ape-king": 2,
-   "alpha-howler": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m6",
   "key": "6-8",
   "kind": "boss",
   "target": 35,
-  "before": 80,
-  "after": 80,
+  "before": 46,
+  "after": 46,
   "hp": [
    157,
    157
   ],
-  "swaps": 4,
-  "deck": {
-   "glacial-ape-king": 2,
-   "permafrost-mammoth": 2,
-   "beaver-builder": 3,
-   "golden-eagle-diver": 2,
-   "porcupine-roller": 1,
-   "alpha-howler": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m3",
@@ -1806,11 +1698,11 @@
   "key": "3-2",
   "kind": "skirmish",
   "target": 60,
-  "before": 60,
+  "before": 66,
   "after": 60,
   "hp": [
-   93,
-   93
+   184,
+   214
   ],
   "swaps": 0,
   "deck": null
@@ -1820,11 +1712,11 @@
   "key": "3-3",
   "kind": "elite",
   "target": 45,
-  "before": 46,
+  "before": 54,
   "after": 46,
   "hp": [
-   105,
-   105
+   209,
+   288
   ],
   "swaps": 0,
   "deck": null
@@ -1834,8 +1726,8 @@
   "key": "3-4",
   "kind": "elite",
   "target": 45,
-  "before": 46,
-  "after": 46,
+  "before": 44,
+  "after": 44,
   "hp": [
    214,
    214
@@ -1848,11 +1740,11 @@
   "key": "3-5",
   "kind": "elite",
   "target": 45,
-  "before": 46,
-  "after": 46,
+  "before": 44,
+  "after": 44,
   "hp": [
-   230,
-   230
+   210,
+   210
   ],
   "swaps": 0,
   "deck": null
@@ -1862,11 +1754,11 @@
   "key": "3-6",
   "kind": "boss",
   "target": 35,
-  "before": 46,
-  "after": 46,
+  "before": 48,
+  "after": 40,
   "hp": [
-   325,
-   325
+   240,
+   381
   ],
   "swaps": 0,
   "deck": null
@@ -1988,10 +1880,10 @@
   "key": "y-1",
   "kind": "skirmish",
   "target": 85,
-  "before": 88,
+  "before": 86,
   "after": 86,
   "hp": [
-   40,
+   42,
    42
   ],
   "swaps": 0,
@@ -2033,8 +1925,8 @@
   "before": 48,
   "after": 46,
   "hp": [
-   180,
-   286
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -2047,8 +1939,8 @@
   "before": 40,
   "after": 40,
   "hp": [
-   253,
-   253
+   240,
+   240
   ],
   "swaps": 0,
   "deck": null
@@ -2072,10 +1964,10 @@
   "key": "d-2",
   "kind": "skirmish",
   "target": 77,
-  "before": 78,
+  "before": 76,
   "after": 76,
   "hp": [
-   133,
+   140,
    140
   ],
   "swaps": 0,
@@ -2086,30 +1978,25 @@
   "key": "d-3",
   "kind": "skirmish",
   "target": 68,
-  "before": 94,
-  "after": 74,
+  "before": 74,
+  "after": 72,
   "hp": [
-   62,
-   118
+   118,
+   187
   ],
-  "swaps": 1,
-  "deck": {
-   "caustic-scorpion": 2,
-   "dust-hyena": 2,
-   "komodo-warlord": 3,
-   "obsidian-scorpion": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "md",
   "key": "d-4",
   "kind": "skirmish",
   "target": 60,
-  "before": 76,
-  "after": 68,
+  "before": 68,
+  "after": 64,
   "hp": [
-   112,
-   213
+   213,
+   338
   ],
   "swaps": 0,
   "deck": null
@@ -2119,11 +2006,11 @@
   "key": "d-5",
   "kind": "elite",
   "target": 45,
-  "before": 52,
+  "before": 50,
   "after": 46,
   "hp": [
-   209,
-   332
+   240,
+   381
   ],
   "swaps": 0,
   "deck": null
@@ -2133,32 +2020,25 @@
   "key": "d-6",
   "kind": "elite",
   "target": 45,
-  "before": 76,
-  "after": 72,
+  "before": 56,
+  "after": 56,
   "hp": [
-   205,
-   326
+   240,
+   240
   ],
-  "swaps": 4,
-  "deck": {
-   "komodo-warlord": 3,
-   "dust-hyena": 2,
-   "caustic-scorpion": 2,
-   "obsidian-scorpion": 1,
-   "sand-widow": 2,
-   "sandstorm-roc": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "md",
   "key": "d-7",
   "kind": "boss",
   "target": 35,
-  "before": 44,
-  "after": 44,
+  "before": 36,
+  "after": 36,
   "hp": [
-   314,
-   314
+   148,
+   148
   ],
   "swaps": 0,
   "deck": null
@@ -2252,20 +2132,14 @@
   "key": "9-5",
   "kind": "elite",
   "target": 45,
-  "before": 80,
-  "after": 72,
+  "before": 72,
+  "after": 70,
   "hp": [
-   173,
-   342
+   240,
+   282
   ],
-  "swaps": 4,
-  "deck": {
-   "basalt-boar": 2,
-   "magma-titan": 2,
-   "sulfur-vent-crab": 2,
-   "obsidian-scorpion": 1,
-   "ember-jackal": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m9",
@@ -2286,19 +2160,19 @@
   "key": "9-7",
   "kind": "elite",
   "target": 45,
-  "before": 86,
-  "after": 84,
+  "before": 76,
+  "after": 48,
   "hp": [
-   137,
-   161
+   217,
+   255
   ],
-  "swaps": 4,
+  "swaps": 2,
   "deck": {
-   "magma-titan": 2,
    "obsidian-scorpion": 2,
    "sulfur-vent-crab": 2,
-   "basalt-boar": 1,
-   "magma-salamander": 1
+   "echo-keeper": 1,
+   "trapdoor-spider": 1,
+   "ember-jackal": 2
   }
  },
  {
@@ -2306,20 +2180,14 @@
   "key": "9-8",
   "kind": "boss",
   "target": 35,
-  "before": 88,
-  "after": 88,
+  "before": 76,
+  "after": 72,
   "hp": [
    210,
-   210
+   334
   ],
-  "swaps": 4,
-  "deck": {
-   "magma-titan": 3,
-   "obsidian-scorpion": 1,
-   "sulfur-vent-crab": 2,
-   "basalt-boar": 1,
-   "magma-salamander": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m11",
@@ -2368,11 +2236,11 @@
   "key": "11-10",
   "kind": "skirmish",
   "target": 60,
-  "before": 72,
+  "before": 68,
   "after": 66,
   "hp": [
-   137,
-   267
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -2382,20 +2250,14 @@
   "key": "11-3",
   "kind": "elite",
   "target": 45,
-  "before": 68,
-  "after": 66,
+  "before": 54,
+  "after": 54,
   "hp": [
-   170,
-   270
+   240,
+   240
   ],
-  "swaps": 4,
-  "deck": {
-   "cave-warlord": 2,
-   "stable-colt": 2,
-   "cataphract-destrier": 1,
-   "woodland-brawler": 2,
-   "bear-cub": 1
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m11",
@@ -2405,8 +2267,8 @@
   "before": 48,
   "after": 46,
   "hp": [
-   192,
-   305
+   240,
+   282
   ],
   "swaps": 0,
   "deck": null
@@ -2416,20 +2278,20 @@
   "key": "11-5",
   "kind": "elite",
   "target": 45,
-  "before": 82,
-  "after": 82,
+  "before": 78,
+  "after": 66,
   "hp": [
-   289,
-   289
+   240,
+   381
   ],
-  "swaps": 4,
+  "swaps": 2,
   "deck": {
    "stable-colt": 2,
    "cave-warlord": 2,
    "cataphract-destrier": 2,
    "woodland-brawler": 1,
    "bear-cub": 2,
-   "silverback-brawler": 1
+   "beaver-lumberjack": 1
   }
  },
  {
@@ -2438,18 +2300,18 @@
   "kind": "elite",
   "target": 45,
   "before": 72,
-  "after": 72,
+  "after": 66,
   "hp": [
-   357,
-   357
+   240,
+   381
   ],
-  "swaps": 4,
+  "swaps": 2,
   "deck": {
    "cataphract-destrier": 4,
    "stable-colt": 2,
    "cave-warlord": 2,
    "woodland-brawler": 1,
-   "silverback-brawler": 1
+   "beaver-lumberjack": 1
   }
  },
  {
@@ -2471,22 +2333,14 @@
   "key": "11-8",
   "kind": "finalboss",
   "target": 35,
-  "before": 54,
-  "after": 54,
+  "before": 48,
+  "after": 46,
   "hp": [
-   314,
-   314
+   300,
+   352
   ],
-  "swaps": 4,
-  "deck": {
-   "grizzly-vanguard": 1,
-   "cave-warlord": 1,
-   "stable-colt": 2,
-   "cataphract-destrier": 2,
-   "woodland-brawler": 2,
-   "bear-cub": 2,
-   "silverback-brawler": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m7",
@@ -2535,20 +2389,14 @@
   "key": "7-4",
   "kind": "skirmish",
   "target": 66,
-  "before": 92,
-  "after": 92,
+  "before": 74,
+  "after": 74,
   "hp": [
-   62,
-   62
+   99,
+   99
   ],
-  "swaps": 4,
-  "deck": {
-   "riptide-eel": 2,
-   "gull-thief": 2,
-   "clownfish-scout": 2,
-   "tide-pool-crab": 2,
-   "coral-polyp-colony": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m7",
@@ -2583,20 +2431,14 @@
   "key": "7-7",
   "kind": "elite",
   "target": 45,
-  "before": 84,
-  "after": 84,
+  "before": 72,
+  "after": 72,
   "hp": [
-   300,
-   300
+   240,
+   240
   ],
-  "swaps": 4,
-  "deck": {
-   "riptide-eel": 2,
-   "gull-thief": 2,
-   "clownfish-scout": 2,
-   "tide-pool-crab": 2,
-   "coral-polyp-colony": 2
-  }
+  "swaps": 0,
+  "deck": null
  },
  {
   "map": "m7",

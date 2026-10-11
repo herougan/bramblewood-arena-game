@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (14:50)
+- **Late-map balance pass.** Thirty-two fights came out more than 12 points too easy in the simulator (the new-player deck model). Nine still do, and none are too hard.
+  - The fights that hit the castle Health cap (240, the campaign boss 300) now trade cards instead.
+  - Trades stay on theme. A fight borrows only from maps of the same biome up to two maps ahead (the Tundra takes taiga lynxes and wolverines, not savanna zebras). The volcanic maps take only cards that share their main types: Basalt Foundry stays volcanic, arachnid and elemental; the Sundered Peak stays bears and horses; the Ashen Peak stays frost, rodents and apes.
+  - Epic-and-rarer cards are never traded away, and Magma Titan stays in the Basalt Foundry by hand.
+  - A trade is kept only if it moves the fight toward its target.
+  - **Still too easy (your pass):** t-7 Tundra boss (52% vs 35%), 3-6 (48% vs 35%), 9-5, 9-7 and 9-8 at the Basalt Foundry (about 75%, where the themed cards are expensive and the CPU can't always afford them), 11-5, 11-6 and 11-8 at the Sundered Peak, and 7-7 on the Open Sea.
+  - tools/retune_all.js gains `--swaps=N`, `--cap`, `--borrow-next=K`, `--borrow-biome`, `--theme` and `--keep-rare`.
+- **Codex → Reference → Skills along the road:** each skill sits under the first map whose enemies carry it. Skills you've met read in full; the rest show as ?, and maps you haven't reached just say how many there are to find.
+- **Translations** for the new strings: Skills along the road, the Changeling label, Keen Eye, Tempering Stone and the Forge notes.
+
 ## 2026-10-11 (12:45)
 - **Scraper of Skies** only releases bees once it's Ready (built). Custom triggers get a new "once Ready" tick box in the card editor, so any trigger can stay silent while its card is still Waiting.
 - **Board camera:**
