@@ -227,11 +227,12 @@
           "on": "onAttacked",
           "do": "spawnCard",
           "defId": "bee-swarmling",
-          "count": 1
+          "count": 1,
+          "whenReady": true
         }
       ]
     },
-    "flavor": "A hive-tower lashed together from ladders, rope and prayer. Strike it, and it answers with bees.",
+    "flavor": "A hive-tower lashed together from ladders, rope and prayer. Once it's built, strike it and it answers with bees.",
     "locked": true,
     "archetypes": [
       "Bee",
@@ -476,7 +477,8 @@
     "effects": {
       "bounty": 1,
       "flying": true,
-      "nocturnal": true
+      "nocturnal": true,
+      "keenEye": true
     },
     "locked": true,
     "archetypes": [
@@ -2072,7 +2074,10 @@
     "rarity": "rare",
     "species": [
       "Cervid"
-    ]
+    ],
+    "effects": {
+      "keenEye": true
+    }
   },
   {
     "id": "antler-skirmisher",
@@ -2911,7 +2916,10 @@
     "rarity": "rare",
     "species": [
       "Lagomorph"
-    ]
+    ],
+    "effects": {
+      "keenEye": true
+    }
   },
   {
     "id": "lucky-hopper",
@@ -12851,6 +12859,32 @@
     "source": {
       "kind": "pack",
       "tier": 99
+    }
+  },
+  {
+    "id": "tempering-stone",
+    "name": "Tempering Stone",
+    "icon": "\ud83e\udea8",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "A whetstone quenched in river water and ember ash. The last few levels of a great card need one.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "rare",
+    "numericId": 454,
+    "uuid": "a40a17ac-694a-4b83-aa53-6c9b646f6752",
+    "art": "",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
     }
   }
 ]

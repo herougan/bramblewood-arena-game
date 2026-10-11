@@ -64,7 +64,11 @@ Every castle used to be Unique. They now have rarities by how far along the road
 
 ## So it "sticks": ideas for the next step
 
-- **Material gates on the last levels.** Levels 7–10 of Epic-and-up cards also need a Blacksmith material (a Tempering Stone), and Mythic level 10 needs a **Dragon Scale** (the hidden substory). Dust alone never finishes a top card.
+- **Material gates on the last levels (built at 12:45).** Levels 7–10 of Epic-and-up cards each need a 🪨 Tempering Stone, and Mythic or Ancient level 10 also needs a 🐉 **Dragon Scale** (the hidden substory). Dust alone never finishes a top card. A Tempering Stone comes from:
+  - boss first clears (raid and campaign bosses give 2);
+  - 5% of repeat Elite and Boss wins;
+  - the Blacksmith, which smelts one from 3 Iron Shards and a River Pearl.
+  An Epic card needs 4 stones in all, so a Regular player gets one to level 10 in about 2–3 weeks.
 - **A weekly Forge cap is not needed.** Energy already caps Conquest Dust; the notices and weeklies are capped by design.
 - **Watch the heavy end.** A Heavy player finishes a Mythic in about 3 weeks. If that feels fast, the material gate above is the lever, not the Dust price.
 
@@ -111,7 +115,7 @@ Every castle used to be Unique. They now have rarities by how far along the road
   - Puddle Changeling (Pack 1).
   - Hedge Changeling, which also has Swarm (the shared Riverbank pool of both faction packs).
   - Glass Changeling (the Mystery Booster).
-- **Not built yet: disguise and detection.** On the enemy's side a Changeling would look like an ordinary critter until it's hit, and "Keen Eye" units would spot it on sight.
+- **Disguise and detection (built at 12:45).** On the enemy's side a Changeling looks like an ordinary Common critter, with its real numbers, until it strikes or is struck. **Keen Eye** units (Owl Sentinel, Fawn Scout and Warren Scout) see through the disguise while they're on your board, and hit Changelings for 2 more.
 
 ### The Scale Trail (hidden)
 - **Where the scales are:** eight fights hide a Dragon Scale, all of them harder elites, half of them on side maps (4-A-4, 9-7, 10-7, 13-7, 16-A-5, 17-A-4, 19-9, 20-8). An S rank or better there finds it, once.

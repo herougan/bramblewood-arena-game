@@ -776,6 +776,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attDef && attDef.effects && Number(attDef.effects.antiAir) > 0){ const tdAA = CARD_DEFS[targetCard.defId]; if(tdAA && tdAA.effects && tdAA.effects.flying) amt += Number(attDef.effects.antiAir); }
     // Demolisher N (2026-10-11, user: "structures ... can be destroyed faster with units with the skill Demolisher N -
     // deal N additional damage to structures").
+    // Keen Eye (2026-10-11): sees through Changelings and hits them 2 harder.
+    if(attDef && attDef.effects && attDef.effects.keenEye){ const tdK = CARD_DEFS[targetCard.defId]; if(tdK && tdK.effects && tdK.effects.changeling) amt += 2; }
     if(attDef && attDef.effects && Number(attDef.effects.demolisher) > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && Array.isArray(tdD.archetypes) && tdD.archetypes.includes('Structure')) amt += Number(attDef.effects.demolisher); }
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
@@ -1944,6 +1946,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Turn Start (perTurn) whose-turn parameter (2026-10-10): 'self' fires only on rounds this card's owner
       // strikes first, 'enemy' only on the opponent's; unset/'both' = every round (the original Per Turn).
       if(hook==='perTurn' && t.turnOf && t.turnOf!=='both' && ((t.turnOf==='self') !== (curInitiative===playerId))) return;
+      // "Only once Ready" (2026-10-11): a trigger flagged whenReady stays silent while its card is
+      // still Waiting (Scraper of Skies can't release bees until the hive-tower is built).
+      if(t.whenReady && boardCard.wait>0) return;
       if(t.once){
         const key = 'once:'+hook+':'+i;
         if(boardCard.firedOnce[key]) return;

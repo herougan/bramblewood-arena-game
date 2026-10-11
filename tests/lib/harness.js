@@ -22,7 +22,7 @@ function loadCardDefs(){
 // Cards a player could actually field (not tokens/test cards, which only exist via other cards).
 function fieldableIds(defs){
   defs = defs || loadCardDefs();
-  return Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test).sort();
+  return Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && defs[id].cardType!=='materia' && defs[id].cardType!=='equipment').sort(); // materia and equipment can't be played as units
 }
 function seededRng(seed){ return Engine.mulberry32(seed>>>0); }
 // Small stable string hash (FNV-1a) for seeds and signatures.

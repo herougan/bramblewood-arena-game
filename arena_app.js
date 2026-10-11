@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', swipe:'🗡↔', sweep:'🌀', pierce:'🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🌀', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -206,7 +206,8 @@ const PASSIVE_DEFS = [
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
-  {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger.`},
+  {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger. On the enemy's side it looks like an ordinary critter until it strikes or is struck, or a Keen Eye unit spots it.`},
+  {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
   {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board at Night, your Diurnal units keep their daytime bonus.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
@@ -982,6 +983,7 @@ function speciesLine(def){
 // Counters (2026-10-11, from the mechanics on-ramp doc: "a per-skill counter line in its details"). Only the answers that
 // truly work in the engine are listed.
 const SKILL_COUNTERS = {
+  changeling: ['keenEye'],
   flying: ['reach', 'antiAir'],
   armor: ['rend', 'poison', 'pierce'],
   shell: ['rend'],
@@ -3938,6 +3940,7 @@ function abilityBadges(d, bopts){
   if(e.antiAir) out.push(`🪃${e.antiAir}`);
   if(e.demolisher) out.push(`⛏️${e.demolisher}`);
   if(e.changeling) out.push(`🎭`);
+  if(e.keenEye) out.push(`👁️`);
   if(e.overwhelm) out.push(`🐘`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
@@ -5558,6 +5561,7 @@ function triggerRowHTML(t,i){
   <div class="trigger-row">
     <span>On</span>${onFamilyHtml}${onSubHtml}${turnOfHtml}
     ${filterHtml}
+    ${(t.on!=='onReady' && t.on!=='onSpawn') ? `<label class="trig-ready" title="Stays silent while this card is still Waiting; works once it's Ready"><input type="checkbox" data-t="whenReady" data-i="${i}" ${t.whenReady?'checked':''}> once Ready</label>` : ''}
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
     <button class="btn small danger rm" data-rm="${i}">✕</button>
@@ -5601,6 +5605,8 @@ function readTriggerRow(row){
   if(filterArchEl && filterArchEl.value) t.filterArchetype = filterArchEl.value;
   const turnOfEl = row.querySelector('[data-t="turnOf"]');
   if(on==='perTurn' && turnOfEl && turnOfEl.value!=='both') t.turnOf = turnOfEl.value;
+  const whenReadyEl = row.querySelector('[data-t="whenReady"]');
+  if(whenReadyEl && whenReadyEl.checked) t.whenReady = true;
   const countEl = row.querySelector('[data-t="count"]');
   if(countEl && countEl.value!=='') t.count = Number(countEl.value)||1;
   const dmgEl = row.querySelector('[data-t="dmgType"]');
@@ -5624,7 +5630,8 @@ function readTriggerRow(row){
 function triggerPreviewText(t){
   const FILL = '<<>>';
   const trig = TRIGGER_DEFS.find(x=>x.key===t.on);
-  const trigLabel = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
+  const trigLabel0 = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
+  const trigLabel = trigLabel0===FILL ? FILL : (t.whenReady ? trigLabel0+' (once Ready)' : trigLabel0);
   const aDef = ACTION_DEFS.find(x=>x.key===t.do);
   if(!aDef) return `${trigLabel}, ${FILL}.`;
   const amt = t.amount==='attack' ? 'its own Attack' : t.amount==='health' ? 'its own Health' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
@@ -7519,13 +7526,22 @@ function levelCostMult(defId){
   const r = d.rarity || 'common', band = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r;
   return LEVEL_COST_MULT[r] || LEVEL_COST_MULT[band] || 1;
 }
+// Material gates (2026-10-11, forge-economy note "so it sticks"): Dust alone never finishes a top card. Levels 7-10 of
+// Epic-and-up cards each also take a 🪨 Tempering Stone, and a Mythic or Ancient card's level 10 takes a 🐉 Dragon Scale
+// too. Both are Materia cards in the collection.
+function levelUpMats(currentLevel, defId){
+  const k = levelCostMult(defId), to = (currentLevel||0) + 1, out = {};
+  if(k >= LEVEL_COST_MULT.epic && to >= 7) out['tempering-stone'] = 1;
+  if(k >= LEVEL_COST_MULT.mythic && to === 10) out['dragon-scale'] = 1;
+  return out;
+}
 function levelUpCost(currentLevel, defId){
   const L = Math.max(0, Math.min(9, currentLevel||0)), k = levelCostMult(defId);
-  return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k)};
+  return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k), mats: levelUpMats(L, defId)};
 }
 function canAffordLevelUp(currentLevel, defId){
   const cost = levelUpCost(currentLevel, defId);
-  return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold;
+  return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
 }
 let myDeckCounts = loadMyDeck();
 let myCharacterId = loadMyCharacter();
@@ -15019,7 +15035,7 @@ function wireTestKitExtras(){
     const i = Number(wrap.dataset.tki), row = wrap.querySelector('.trigger-row'); if(!row) return;
     let t; try{ t = readTriggerRow(row); }catch(err){ return; }
     const fam = TRIGGER_FAMILIES.find(f=> f.familyKey===t.on); if(fam) t.on = fam.subs[0].key; // picked a family: start on its first option
-    if(e.target.matches('[data-t="do"]')){ const keep = {on:t.on, do:t.do}; if(t.filterArchetype) keep.filterArchetype = t.filterArchetype; if(t.turnOf) keep.turnOf = t.turnOf; t = keep; } // new action: drop the old action's fields
+    if(e.target.matches('[data-t="do"]')){ const keep = {on:t.on, do:t.do}; if(t.filterArchetype) keep.filterArchetype = t.filterArchetype; if(t.turnOf) keep.turnOf = t.turnOf; if(t.whenReady) keep.whenReady = true; t = keep; } // new action: drop the old action's fields
     testKit.triggers[i] = t; testKitRerenderPanel(); testKitSkillsChanged();
   });
   box.addEventListener('click', e=>{ const rm = e.target.closest('[data-rm]'); if(!rm) return; e.preventDefault(); const wrap = rm.closest('.tk-trig'); if(!wrap) return; testKit.triggers.splice(Number(wrap.dataset.tki), 1); testKitRerenderPanel(); testKitSkillsChanged(); });
@@ -16517,7 +16533,7 @@ function renderMatchUI(){
     </div>
     <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
-      <div class="battlefield-inner" id="battlefieldInner" style="${battlefieldScale < 0.995 ? `transform:translateX(${(battlefieldPanX||0).toFixed(1)}px) translateY(${(battlefieldCenterY||0).toFixed(1)}px) scale(${battlefieldScale.toFixed(3)})` : ''}">
+      <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider"></div>
         <div class="board-row mine" id="rowMine"></div>
@@ -17547,7 +17563,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -18313,22 +18329,29 @@ let battlefieldScale = 1;
 let battlefieldCenterY = 0;
 let battlefieldPanRecenterTimer = null;
 let battlefieldCameraFollowedThisRound = false;
+// Camera lean (2026-10-11, user: "If the map is skewed one side, it should move a little, or 'turn' a little to the
+// side"): battlefieldLeanX is the camera's resting offset toward wherever the cards are bunched (pan drags and
+// auto-follow sit on top of it and drift back to it), and battlefieldTilt is a small rotateY "turn" the same way.
+// battlefieldPanLo/Hi bound the total offset so the lean never pushes a card out of the frame.
+let battlefieldLeanX = 0;
+let battlefieldTilt = 0;
+let battlefieldPanLo = 0, battlefieldPanHi = 0;
+function battlefieldTransformCSS(){
+  const lo = Math.min(battlefieldPanLo, -battlefieldPanMaxX), hi = Math.max(battlefieldPanHi, battlefieldPanMaxX);
+  const total = Math.max(lo, Math.min(hi, battlefieldLeanX + battlefieldPanX));
+  battlefieldPanX = total - battlefieldLeanX;
+  if(battlefieldScale>=0.995 && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
+  // translateX/translateY come BEFORE scale so they read in real (unscaled) screen px; the turn sits between them.
+  const turn = Math.abs(battlefieldTilt)>=0.05 ? ` perspective(1800px) rotateY(${battlefieldTilt.toFixed(2)}deg)` : '';
+  return `translateX(${total.toFixed(1)}px) translateY(${battlefieldCenterY.toFixed(1)}px)${turn} scale(${battlefieldScale.toFixed(3)})`;
+}
 // 2026-10-10 (user: "still during victory, the cards fly to the right"): a full rebuild (the results window opening)
 // used to create this wrapper unscaled and only re-zoom it a frame later, so every card jumped right and grew for a
 // moment. The wrapper is now created with the current zoom already on it (see renderMatchUI's template).
 function applyBattlefieldTransform(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
-  const x = Math.max(-battlefieldPanMaxX, Math.min(battlefieldPanMaxX, battlefieldPanX));
-  battlefieldPanX = x;
-  if(battlefieldScale>=0.995){ inner.style.transform = ''; return; }
-  // translateX/translateY are listed BEFORE scale so they read in the OUTER (real, unscaled)
-  // pixel coordinate space rather than the inner (shrunk) one — CSS transform functions compose
-  // right-to-left against the element's own geometry, so scale (rightmost) applies first and
-  // translate (leftmost) shifts the already-scaled result by a fixed, scale-independent amount
-  // of real screen px. Without this ordering, panning/centering by a given px amount would move
-  // the visible board by a different amount depending on how zoomed-out it currently is.
-  inner.style.transform = `translateX(${x.toFixed(1)}px) translateY(${battlefieldCenterY.toFixed(1)}px) scale(${battlefieldScale.toFixed(3)})`;
+  inner.style.transform = battlefieldTransformCSS();
 }
 function cancelBattlefieldRecenter(){
   if(battlefieldPanRecenterTimer){ clearTimeout(battlefieldPanRecenterTimer); battlefieldPanRecenterTimer = null; }
@@ -18373,7 +18396,7 @@ function panCameraToShowUid(uid){
   if(elRect.left < camRect.left+margin) targetPanX = battlefieldPanX + (camRect.left+margin - elRect.left);
   else if(elRect.right > camRect.right-margin) targetPanX = battlefieldPanX - (elRect.right - (camRect.right-margin));
   else return; // already visible
-  targetPanX = Math.max(-battlefieldPanMaxX, Math.min(battlefieldPanMaxX, targetPanX));
+  targetPanX = Math.max(-battlefieldPanMaxX - battlefieldLeanX, Math.min(battlefieldPanMaxX - battlefieldLeanX, targetPanX));
   if(Math.abs(targetPanX-battlefieldPanX)<1) return;
   cancelBattlefieldRecenter();
   const trueBeforeTransform = inner.style.transform;
@@ -18475,7 +18498,57 @@ function wireBattlefieldPan(){
   document.addEventListener('touchend', ()=> finish());
   document.addEventListener('touchcancel', ()=> finish());
 }
+// Camera settles on its own (2026-10-11, user: "The map zooms out before the card is summoned. Make the summon happen
+// first, then the map zooms to accommodate. The map zoom should be untied to animations"): every render only ASKS for a
+// re-fit. The camera waits until no summon or Flip move is still playing (capped at ~2s), then eases to the new framing
+// slowly. A freshly built battlefield (match start, a full repaint) is framed at once with no animation.
+function boardAnimationsBusy(){
+  try{
+    if(inFlightFlipTimelines.some(t=> t && t.isActive && t.isActive())) return true;
+    for(const t of enteringTimelines.values()) if(t && t.isActive && t.isActive()) return true;
+  }catch(e){}
+  return false;
+}
+// Where the cards sit, read with the camera transform cleared (unscaled px from the board's middle): the centre of the
+// cards and their outer edges. Only real cards count; empty slots and "+" targets don't.
+function measureBoardLean(inner, containerWidth){
+  const r = inner.getBoundingClientRect(); const mid = r.left + r.width/2;
+  const cards = [...inner.querySelectorAll('.board-card[data-uid]')].filter(el=> !el.classList.contains('empty-slot') && !el.classList.contains('center-slot-empty') && !el.classList.contains('slot-target'));
+  if(cards.length < 2) return null;
+  let sum = 0, minX = Infinity, maxX = -Infinity;
+  cards.forEach(el=>{ const b = el.getBoundingClientRect(); sum += (b.left + b.width/2) - mid; minX = Math.min(minX, b.left - mid); maxX = Math.max(maxX, b.right - mid); });
+  return {c: sum/cards.length, minX, maxX, W: containerWidth || r.width};
+}
+// Leans the camera about 40% of the way toward the cards' centre and turns it up to 3° the same way, never so far that
+// a card leaves the frame (24px margin). Reduced motion keeps the move but drops the turn.
+function setBoardLean(lean, scale, panMax){
+  if(!lean){ battlefieldLeanX = 0; battlefieldTilt = 0; battlefieldPanLo = -panMax; battlefieldPanHi = panMax; return; }
+  const margin = 24, half = lean.W/2;
+  let lo = -half + margin - lean.minX*scale, hi = half - margin - lean.maxX*scale;
+  if(panMax > 0.5){ lo = -panMax; hi = panMax; }
+  lo = Math.min(lo, 0); hi = Math.max(hi, 0);
+  battlefieldPanLo = lo; battlefieldPanHi = hi;
+  const skew = lean.c*scale; // how far the cards' centre sits from the middle, on screen
+  battlefieldLeanX = Math.abs(skew) < 18 ? 0 : Math.max(lo, Math.min(hi, -0.4*skew));
+  const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof fxAtLeast==='function' && !fxAtLeast('med')); // low effects setting: no turn either
+  battlefieldTilt = (reduce || Math.abs(skew) < 18) ? 0 : Math.max(-3, Math.min(3, (skew/half)*6));
+}
 function fitBattlefieldZoom(){
+  const inner = document.getElementById('battlefieldInner');
+  if(!inner) return;
+  // Only a NEW match frames instantly. A repaint mid-match rebuilds the wrapper with the current framing already on it
+  // (see renderMatchUI's template), so it waits for the summon like any other render.
+  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); return; }
+  clearTimeout(fitBattlefieldZoom._settleT);
+  if(!fitBattlefieldZoom._waitStart) fitBattlefieldZoom._waitStart = performance.now();
+  const tick = ()=>{
+    if(boardAnimationsBusy() && performance.now() - fitBattlefieldZoom._waitStart < 2200){ fitBattlefieldZoom._settleT = setTimeout(tick, 110); return; }
+    fitBattlefieldZoom._waitStart = 0;
+    fitBattlefieldZoomNow(false);
+  };
+  fitBattlefieldZoom._settleT = setTimeout(tick, 140);
+}
+function fitBattlefieldZoomNow(instant){
   const rowEnemy = document.getElementById('rowEnemy'), rowMine = document.getElementById('rowMine');
   if(!rowEnemy || !rowMine) return;
   const battlefield = rowMine.closest('.battlefield');
@@ -18515,7 +18588,7 @@ function fitBattlefieldZoom(){
   // unwanted animation. Skipped entirely while the player is actively dragging the battlefield
   // (`.panning`) — that gesture owns the transform for its own duration and must never be
   // interrupted by a recompute landing mid-drag.
-  const prevScale = battlefieldScale, prevPanX = battlefieldPanX, prevCenterY = battlefieldCenterY;
+  const prevScale = battlefieldScale, prevPanX = battlefieldPanX, prevCenterY = battlefieldCenterY, prevLeanX = battlefieldLeanX, prevTilt = battlefieldTilt;
   // Captured HERE, before measure() (below) gets a chance to clear inner.style.transform as its
   // own measurement side effect — that's the one and only true "what was actually last painted"
   // value; reading inner.style.transform any later in this function can no longer be trusted for
@@ -18523,9 +18596,9 @@ function fitBattlefieldZoom(){
   const trueBeforeTransform = inner.style.transform;
   const isDragging = battlefield.classList.contains('panning');
   function smoothIfChanged(writeFn){
-    if(isDragging){ writeFn(); return; }
+    if(isDragging || instant){ writeFn(); return; }
     writeFn();
-    const changed = Math.abs(battlefieldScale-prevScale)>0.002 || Math.abs(battlefieldPanX-prevPanX)>0.5 || Math.abs(battlefieldCenterY-prevCenterY)>0.5;
+    const changed = Math.abs(battlefieldScale-prevScale)>0.002 || Math.abs(battlefieldPanX-prevPanX)>0.5 || Math.abs(battlefieldCenterY-prevCenterY)>0.5 || Math.abs(battlefieldLeanX-prevLeanX)>0.5 || Math.abs(battlefieldTilt-prevTilt)>0.05;
     if(!changed) return;
     // Confirmed via direct instrumented repro (an rAF sampler tracking real painted frames) that
     // simply setting `transition` AFTER the fact does NOT reliably animate anything in this
@@ -18559,7 +18632,7 @@ function fitBattlefieldZoom(){
       inner.style.transition = 'none';
       inner.style.transform = trueBeforeTransform;
       void inner.offsetWidth; // force-commit the "before" frame before changing anything else
-      inner.style.transition = 'transform .35s ease-out';
+      inner.style.transition = 'transform .75s cubic-bezier(.3,.1,.2,1)'; // a slow drift: the camera follows the board, it doesn't react to each card
       inner.style.transform = afterTransform;
     }
     fitBattlefieldZoom._transitionActive = true;
@@ -18569,7 +18642,7 @@ function fitBattlefieldZoom(){
       if(inner) inner.style.transition = '';
       fitBattlefieldZoom._transitionActive = false;
       panCameraToShowUid._transitionActive = false;
-    }, 380);
+    }, 780);
   }
   // Bugfix (2026-09-17, root-caused via a live playtest that tracked every board card's
   // getBoundingClientRect() every animation frame through real games: cards were visibly
@@ -18594,6 +18667,7 @@ function fitBattlefieldZoom(){
     // Nothing on the board yet to size against — plain reset, nothing to center/pan either.
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;
+      battlefieldLeanX = 0; battlefieldTilt = 0; battlefieldPanLo = 0; battlefieldPanHi = 0;
       inner.style.transform = '';
     });
     battlefield.classList.remove('pannable', 'panning');
@@ -18653,10 +18727,12 @@ function fitBattlefieldZoom(){
   if(appWrap) appWrap.classList.toggle('battlefield-zoomed', needsZoom);
   const m = needsZoom ? measure() : baseline;
 
+  const lean = measureBoardLean(inner, m.containerWidth);
   if(m.scale>=0.995){ // fits already (both dimensions, at whichever width this landed on) — stay at 1:1, no zoom
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;
-      inner.style.transform = '';
+      setBoardLean(lean, 1, 0);
+      applyBattlefieldTransform();
     });
     battlefield.classList.remove('pannable', 'panning');
     return;
@@ -18708,6 +18784,7 @@ function fitBattlefieldZoom(){
     battlefieldPanMaxX = Math.max(0, (neededWidth*clampedScale - m.containerWidth)/2);
     battlefield.classList.toggle('pannable', battlefieldPanMaxX>0.5);
     if(battlefieldPanMaxX<=0.5) battlefieldPanX = 0;
+    setBoardLean(lean, clampedScale, battlefieldPanMaxX);
 
     applyBattlefieldTransform();
   });
@@ -18787,8 +18864,36 @@ function noteShinySpawn(m, ev){
   m.shinyUids = m.shinyUids || new Set();
   (ev.uids || (ev.placements||[]).map(p=> p.uid)).forEach(u=> m.shinyUids.add(u));
 }
+// Changeling disguise (2026-10-11, user: "mimics that slip in anywhere, detection is possible"): to the player across the
+// table, an enemy Changeling shows as an ordinary Common critter (with its real numbers) until it's hit or one of the
+// viewer's Keen Eye units is on the board. The engine is untouched; this is what the viewer sees.
+let changelingDisguisePool = null;
+function changelingDisguiseFor(c, defs, ownerPid){
+  const m = matchState; if(!m || !c || c.cageOf) return null;
+  const d = defs[c.defId]; if(!d || !d.effects || !d.effects.changeling) return null;
+  const viewer = viewerHandPid(m); if(!ownerPid || ownerPid === viewer) return null;
+  if(m.unmasked && m.unmasked.has(String(c.uid))) return null;
+  const mine = m.players && m.players[viewer];
+  if(mine && ['left','center','right'].some(l=> (mine.row[l]||[]).some(x=> x.hp>0 && ((defs[x.defId]||{}).effects||{}).keenEye))) return null;
+  if(!changelingDisguisePool){
+    changelingDisguisePool = Object.values(defs).filter(x=> x && x.rarity==='common' && !x.cardType && !(x.effects && (x.effects.changeling || x.effects.leader)) && !(x.archetypes||[]).some(a=> a==='Structure' || a==='Leader') && x.art && x.id.indexOf('ghost')<0).map(x=> x.id).sort();
+  }
+  const pool = changelingDisguisePool; if(!pool.length) return null;
+  let h = 7; String(c.uid).split('').forEach(ch=> h = (h*31 + ch.charCodeAt(0)) >>> 0);
+  return pool[h % pool.length];
+}
+function unmaskChangeling(m, uid){
+  const c = m && m.engine && m.engine.allBoardCards ? [...m.engine.allBoardCards(m.players[1]), ...m.engine.allBoardCards(m.players[2])].find(x=> String(x.uid)===String(uid)) : null;
+  if(!c) return false;
+  const d = getCardDefs()[c.defId]; if(!d || !d.effects || !d.effects.changeling) return false;
+  if(!m.unmasked) m.unmasked = new Set();
+  if(m.unmasked.has(String(uid))) return false;
+  m.unmasked.add(String(uid));
+  return true;
+}
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
+  { const disg = changelingDisguiseFor(c, defs, opts.pid); if(disg) c = Object.assign({}, c, {defId: disg, disguised: true}); }
   const shinyU = isShinyUnit(matchState, c, opts.pid);
   // Caged Fight (2026-10-10): a cage shows the trapped leader, greyed, behind translucent bars.
   const caged = !!c.cageOf; const cagedDef = caged ? (defs[c.cageOf]||{}) : null;
@@ -20321,6 +20426,11 @@ async function resolveRound(opts){
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
     if(ev.type==='hit' || ev.type==='hitHQ') panCameraToShowUid(ev.attUid);
+    // a hit (or a Changeling acting) unmasks it: the card re-renders as itself with a puff and a "🎭 Changeling!" label
+    if((ev.type==='hit' && ev.targetUid!=null && unmaskChangeling(m, ev.targetUid)) || (ev.type==='hit' && ev.attUid!=null && unmaskChangeling(m, ev.attUid))){
+      const who = ev.type==='hit' && m.unmasked.has(String(ev.targetUid)) ? ev.targetUid : ev.attUid;
+      setTimeout(()=>{ try{ if(matchState===m) renderBoard({}); const el = boardCardEl(who); if(el){ floatText(el, '🎭 Changeling!', 'ft-reveal'); el.classList.add('changeling-unmask'); setTimeout(()=> el.classList.remove('changeling-unmask'), 900); } }catch(e){} }, 380);
+    }
     // remember what last hurt each card, so its death can look like it (burn for heat, bleed otherwise)
     if(!m.lastHurtBy) m.lastHurtBy = {};
     if(ev.type==='hit' && ev.targetUid!=null) m.lastHurtBy[ev.targetUid] = ev.dmgType || ((getCardDefs()[ev.attDefId]||{}).dmgType) || 'physical';
@@ -24371,7 +24481,9 @@ function forgeStatsAt(id, level){
 function forgeReady(id){ const L = getCardLevel(id); if(promotionTargets(id).length && L >= Math.max(1, Number((getCardDefs()[id]||{}).promoteAt)||3) && myCurrencies.gold >= PROMOTE_COST.gold && myCurrencies.dust >= PROMOTE_COST.dust) return true; return L < 10 ? canAffordLevelUp(L, id) : (nextPrestigeTier(id) ? canAffordPrestige(id) : false); }
 function forgeCostChipsHTML(cost){
   const chip = (glyph, need, have, label)=> `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>`;
-  return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
+  const defs = getCardDefs();
+  return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves')
+    + Object.entries(cost.mats||{}).map(([id, n])=> defs[id] ? chip(defs[id].icon, n, ownedCount(id), defs[id].name) : '').join('');
 }
 // The Forge as a place (immersion #4): soot brick, hearth glow from below, sparks rising, its own
 // sound (hearth roar, bellows, the odd hammer ring). Entering it plays the ember burst once.
@@ -24535,6 +24647,7 @@ function rollDragonScale(mapId, key, rank){
 // and doesn't complete super fast"). Recipes turn Materia cards (Iron Shard, River Pearl, Ember Core, Dragon Scale) plus a
 // card into an equipment card; Fuse melts three spare copies of a card into one random card a rarity higher.
 const SMITH_RECIPES = [
+  {out:'tempering-stone', needs:{'iron-shard':3, 'river-pearl':1}, cost:{dust:40, gold:40}}, // smelted, not forged: the material gate's steady source
   {out:'bark-buckler', needs:{'iron-shard':2, 'bramble-sprout':1}, cost:{dust:20, gold:30}},
   {out:'netmender-harpoon', needs:{'iron-shard':2, 'otter-netmender':1}, cost:{dust:40, gold:60}},
   {out:'quill-spear', needs:{'iron-shard':2, 'river-pearl':1, 'quillguard':1}, cost:{dust:60, gold:80}},
@@ -24561,7 +24674,7 @@ const FUSE_LADDER = ['common','uncommon','rare','veryrare','superrare','epic'];
 function fuseTargetRarity(r){ const i = FUSE_LADDER.indexOf(r || 'common'); return i >= 0 && i < FUSE_LADDER.length - 1 ? FUSE_LADDER[i + 1] : null; }
 function blacksmithHTML(){
   const defs = getCardDefs(), r = SMITH_RECIPES[Math.min(smithSel, SMITH_RECIPES.length - 1)], out = defs[r.out];
-  const mat = ['iron-shard','river-pearl','ember-core','dragon-scale'].map(id=> defs[id] ? `<span class="sm-mat" title="${escapeAttr(defs[id].name)}">${defs[id].icon} <b>${ownedCount(id)}</b><small>${escapeHtml(defs[id].name)}</small></span>` : '').join('');
+  const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale'].map(id=> defs[id] ? `<span class="sm-mat" title="${escapeAttr(defs[id].name)}">${defs[id].icon} <b>${ownedCount(id)}</b><small>${escapeHtml(defs[id].name)}</small></span>` : '').join('');
   const list = SMITH_RECIPES.map((x, i)=>{ const d = defs[x.out]; if(!d) return ''; const ok = recipeReady(x);
     return `<button type="button" class="sm-recipe ${i===smithSel ? 'on' : ''} ${ok ? 'is-ready' : ''}" data-smith="${i}" aria-pressed="${i===smithSel}"><span class="sm-ico">${d.icon}</span><span><b>${escapeHtml(d.name)}</b><small>${escapeHtml(rarityDef(d.rarity||'common').label)} · ${ownedCount(x.out) ? `you have ${ownedCount(x.out)}` : 'not made yet'}</small></span>${ok ? '<i class="sm-dot" title="You can craft this">●</i>' : ''}</button>`; }).join('');
   const needs = out ? Object.entries(r.needs).map(([id, n])=>{ const d = defs[id] || {name:id, icon:'❔'}; const have = ownedCount(id);
@@ -24600,7 +24713,7 @@ function wireBlacksmith(root){
     const card = document.getElementById('smithCard'); if(card && card.animate && !reducedMotion()){ for(let k = 0; k < 3; k++){ await new Promise(res=> setTimeout(res, 230)); try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} card.animate([{transform:'translateY(0) scale(1)'}, {transform:'translateY(6px) scale(.97)', filter:'brightness(1.6)'}, {transform:'none'}], {duration:200}); smithBurst(); } }
     unlockCardForPlayer(r.out, 'smith');
     try{ if(window.starFallVfx) starFallVfx.celebrate(card, 4); }catch(e){}
-    showToast(`⚒️ Crafted ${getCardDefs()[r.out].name}! It's in your collection.`, 'ok');
+    showToast(`⚒️ Crafted ${getCardDefs()[r.out].name}! ${getCardDefs()[r.out].cardType==='materia' ? "It's in your Inventory." : "It's in your collection."}`, 'ok');
     forgeBusy = false; renderForge();
   };
   root.querySelectorAll('[data-fuse]').forEach(b=> b.onclick = async ()=>{
@@ -24623,8 +24736,8 @@ function wireBlacksmith(root){
 function rollMateriaDrops(node, isFirstClear, rank){
   const out = {}; if(!node || node.kind==='tutorial') return out;
   const k = baseKind(node.kind || 'skirmish'), add = (id, n)=>{ out[id] = (out[id]||0) + n; };
-  if(isFirstClear){ if(k==='elite') add('iron-shard', 1); if(k==='boss'){ add('iron-shard', 2); add('river-pearl', 1); } if(k==='raidboss' || k==='finalboss'){ add('iron-shard', 3); add('ember-core', 1); } }
-  else if(Math.random() < 0.15) add('iron-shard', 1);
+  if(isFirstClear){ if(k==='elite') add('iron-shard', 1); if(k==='boss'){ add('iron-shard', 2); add('river-pearl', 1); add('tempering-stone', 1); } if(k==='raidboss' || k==='finalboss'){ add('iron-shard', 3); add('ember-core', 1); add('tempering-stone', 2); } }
+  else { if(Math.random() < 0.15) add('iron-shard', 1); if((k==='boss' || k==='elite') && Math.random() < 0.05) add('tempering-stone', 1); }
   if(['SS','SSS'].includes(rank) && Math.random() < 0.10) add('ember-core', 1);
   Object.entries(out).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'materia'); });
   return out;
@@ -24717,7 +24830,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     ${!maxed ? `
       <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
       <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>
-      ${afford ? '' : `<p class="forge-note">Win fights or open packs for more Dust and Maple Leaves.</p>`}
+      ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
     ` : `
       <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
       ${tier ? `
@@ -24818,6 +24931,7 @@ async function forgeTemper(btn){
   const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   myCardLevels[id] = L+1; saveCardLevels();
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, false); }catch(e){}
@@ -24953,7 +25067,7 @@ function renderInventory(){
   const root = document.getElementById('view-inventory'); if(!root) return;
   const defs = getCardDefs(), n = nestState(), inv = loadFactionPacks(), st = materiaStore(), found = scalesFound();
   const cell = (icon, count, label, sub)=> `<div class="inv-cell"><span class="inv-ico">${icon}</span><b class="inv-n">${count}</b><span class="inv-label">${escapeHtml(label)}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
-  const mat = ['iron-shard','river-pearl','ember-core','dragon-scale'].filter(id=> defs[id]).map(id=> cell(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
+  const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale'].filter(id=> defs[id]).map(id=> cell(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
   const packs = Object.values(FACTION_PACKS).map(fp=> cell(fp.icon, inv[fp.id]||0, fp.name, 'unopened')).join('');
   const crystals = MATERIA_KINDS.map(k=> cell(k.icon, st[k.id]||0, k.name + ' crystal', 'for Enchanting')).join('');

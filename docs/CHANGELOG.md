@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (12:45)
+- **Scraper of Skies** only releases bees once it's Ready (built). Custom triggers get a new "once Ready" tick box in the card editor, so any trigger can stay silent while its card is still Waiting.
+- **Board camera:**
+  - A summon now plays first; the camera zooms out to fit afterwards. It waits until no summon or card move is playing (about 2 seconds at most), then drifts to the new framing over about 0.8 seconds. Only a new match frames instantly.
+  - When the cards bunch to one side, the camera leans a little toward them (about 40% of the way, never pushing a card out of frame) and turns up to 3° the same way. Reduced motion and the Low effects setting keep the lean and drop the turn.
+- **Changeling disguise and Keen Eye 👁️:**
+  - An enemy Changeling now looks like an ordinary Common critter, with its real numbers, until it strikes or is struck. Then it's unmasked with a shimmer and a "🎭 Changeling!" label.
+  - New skill **Keen Eye**: while one is on your board, enemy Changelings show as themselves, and it hits them for 2 more. On Owl Sentinel, Fawn Scout and Warren Scout.
+- **Material gates on the last levels:** levels 7–10 of Epic-and-rarer cards each need a 🪨 **Tempering Stone**, and level 10 of a Mythic or Ancient card also needs a 🐉 Dragon Scale. Stones come from boss first clears (raid and campaign bosses give 2), 5% of repeat Elite and Boss wins, and the Blacksmith, which smelts one from 3 Iron Shards and a River Pearl.
+
 ## 2026-10-11 (11:20)
 - **Forge pacing** (`docs/forge-economy-2026-10-11.md`):
   - Levelling now costs more for rarer cards. A Common is still 690 Dust to level 10 (about a week of Dust for a regular player); a Rare is ×1.5, an Epic ×2.5, a Legendary ×4.5, a Mythic ×6 and an Ancient ×8.
