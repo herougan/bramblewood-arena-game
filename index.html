@@ -15454,7 +15454,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9ff35f9b963f', BUILD_CARD_HASH = '47c12eb206c3232280bde708d616fee38738818049cf859f05ef59d94fd52b7a';
+const BUILD_ID = 'a44558fbfafa', BUILD_CARD_HASH = '47c12eb206c3232280bde708d616fee38738818049cf859f05ef59d94fd52b7a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -25438,23 +25438,23 @@ const CONQUEST_MAPS = [
   // Maps 3–4 auto-tuned 2026-10-04 (D18, tools/autotune_map.js) against a deck built from the earlier maps' rewards.
   { id:"m3", unlockAfter:"m2", name:"The Ashen Peak", icon:"🌋", blurb:"Scorched high ground — only the toughest hides make it this far up.", sequential:true,
     nodes: [
-      { key:"3-1", kind:"skirmish", name:"Badger Warband", icon:"🦡", deck:{"badger-trench-digger":4,"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2}, hqHp:90, flavor:"They dug in before you even reached the tree line.", requires:[] },
-      { key:"3-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"chipmunk-stockpiler":3,"scraper-of-skies":1}, hqHp:115, flavor:"Every approach here has already been staked out.", requires:["3-1"] },
-      { key:"3-3", kind:"elite", name:"Porcupine Bastion", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"chipmunk-stockpiler":3,"scraper-of-skies":1}, hqHp:88, flavor:"Every approach to the Bastion is already covered in quills.", characterId:"plains-terrace", requires:["3-2"] },
-      { key:"3-4", kind:"elite", name:"Sky Marks", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"chipmunk-stockpiler":2,"chipmunk-hoarder":2}, hqHp:92, flavor:"You hear the marks called before you ever see the wings.", requires:["3-3"] },
-      { key:"3-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"chipmunk-stockpiler":2,"chipmunk-hoarder":2}, hqHp:92, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["3-4"] },
-      { key:"3-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", deck:{"yeti":4,"porcupine-roller":1,"quill-volley":2,"glacial-ape-king":1,"chipmunk-hoarder":2}, hqHp:106, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["3-5"] },
+      { key:"3-1", kind:"skirmish", name:"Badger Warband", icon:"🦡", deck:{"badger-trench-digger":4,"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2}, hqHp:60, flavor:"They dug in before you even reached the tree line.", requires:[] },
+      { key:"3-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"chipmunk-stockpiler":3,"scraper-of-skies":1}, hqHp:72, flavor:"Every approach here has already been staked out.", requires:["3-1"] },
+      { key:"3-3", kind:"elite", name:"Porcupine Bastion", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"chipmunk-stockpiler":3,"scraper-of-skies":1}, hqHp:79, flavor:"Every approach to the Bastion is already covered in quills.", characterId:"plains-terrace", requires:["3-2"] },
+      { key:"3-4", kind:"elite", name:"Sky Marks", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"chipmunk-stockpiler":2,"chipmunk-hoarder":2}, hqHp:59, flavor:"You hear the marks called before you ever see the wings.", requires:["3-3"] },
+      { key:"3-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"chipmunk-stockpiler":2,"chipmunk-hoarder":2}, hqHp:59, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["3-4"] },
+      { key:"3-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", deck:{"yeti":4,"porcupine-roller":1,"quill-volley":2,"glacial-ape-king":1,"chipmunk-hoarder":2}, hqHp:91, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["3-5"] },
     ]},
   { id:"m4", unlockAfter:"m3", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
       { key:"4-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"cave-flitter":4,"bat-swarmling":3,"beetle-grunt":2,"vampire-roost":1,"cave-bat-swarm":2}, hqHp:17, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
       { key:"4-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"cave-bat-swarm":2,"cave-flitter":2}, hqHp:24, flavor:"Lit just brightly enough to see what finds you.", requires:["4-1"] },
-      { key:"4-3", kind:"skirmish", name:"Cinder Vents", icon:"🔥", deck:{"sulfur-cinder-moth":4,"cave-bat-swarm":2,"barrow-leech-bat":2,"cave-flitter":2}, hqHp:14, flavor:"The heat down here comes from somewhere nobody has mapped.", requires:["4-2"] },
-      { key:"4-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"vampire-roost":2,"stalactite-golem":2,"cave-bat-swarm":2}, hqHp:45, flavor:"Every sound down here comes back changed.", requires:["4-3"] },
-      { key:"4-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"barrow-leech-bat":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:19, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["4-4"] },
-      { key:"4-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"bat-swarmling":2}, hqHp:21, flavor:"The right tunnel glows. That is not a comfort.", requires:["4-4"] },
-      { key:"4-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"echo-screecher":3,"stalactite-golem":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:31, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["4-5", "4-6"] },
-      { key:"4-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"echo-screecher":1,"barrow-leech-bat":2,"bat-swarmling":1,"beetle-grunt":2,"vampire-roost":2}, hqHp:87, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["4-7"] },
+      { key:"4-3", kind:"skirmish", name:"Cinder Vents", icon:"🔥", deck:{"sulfur-cinder-moth":4,"cave-bat-swarm":2,"barrow-leech-bat":2,"cave-flitter":2}, hqHp:15, flavor:"The heat down here comes from somewhere nobody has mapped.", requires:["4-2"] },
+      { key:"4-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"vampire-roost":2,"stalactite-golem":2,"cave-bat-swarm":2}, hqHp:42, flavor:"Every sound down here comes back changed.", requires:["4-3"] },
+      { key:"4-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"barrow-leech-bat":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:23, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["4-4"] },
+      { key:"4-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"bat-swarmling":2}, hqHp:30, flavor:"The right tunnel glows. That is not a comfort.", requires:["4-4"] },
+      { key:"4-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"echo-screecher":3,"stalactite-golem":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:30, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["4-5", "4-6"] },
+      { key:"4-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"echo-screecher":1,"barrow-leech-bat":2,"bat-swarmling":1,"beetle-grunt":2,"vampire-roost":2}, hqHp:80, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["4-7"] },
     ]},
   { id:"m5", unlockAfter:"m4", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", sequential:true,
     nodes: [

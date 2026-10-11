@@ -27,6 +27,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Versus screens:**
   - The pre-fight screen shows the enemy deck's level, coloured by how it compares with yours.
   - Both versus screens keep their green and red. They now add a glow behind each side, a fine diagonal weave, slow light rays from the centre and a glowing seam down the split.
+- **Difficulty curve re-measured with day/night off:**
+  - The climb holds, from about 24 at Map 1 to about 63 at Map 23.
+  - The Ashen Peak (Map 5) had jumped to 44 and was re-tuned to 37. Its castles got lower Health, and Caves & Alcoves (Map 6) got small Health nudges. Hub → 📈 Difficulty is updated.
 
 ## 2026-10-11 (21:30)
 - **Day and night are off by default.** A fight turns them on in the skirmish editor (Day & night: cycle day-first or night-first, always day, always night) with **Switch every N rounds**. The daily Arena rulesets keep their own day/night rules. Nocturnal and Diurnal cards only get their bonus while a cycle runs.
