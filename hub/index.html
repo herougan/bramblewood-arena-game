@@ -110,7 +110,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-12, 6 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
+<p><em>Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
 <h2>1. Your calls</h2>
 <table>
 <thead>
@@ -173,7 +173,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </tr>
 <tr>
 <td><strong>D30</strong> ▶️</td>
-<td>Art for the 22 new faction-pack cards: <strong>running overnight</strong> on your PixelLab session (your go-ahead, 22:40). The picks get wired in as they finish</td>
+<td>Art for the 22 new faction-pack cards: <strong>21 of 22 done</strong> on your PixelLab session, 8 wired; the rest and the new title-screen art get wired at the next check-in</td>
 <td>Nothing to do</td>
 </tr>
 <tr>
@@ -230,6 +230,16 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <td><strong>D41</strong></td>
 <td>Late dungeons: the "appears N days after a clear, or after a quest" switch is built. Suggested schedule: 14A–D two days apart after Map 14's boss, 15A five days after Map 15, 18A after the Map 17 quest. World bosses every 10 maps from Map 40</td>
 <td>Build 14A first</td>
+</tr>
+<tr>
+<td><strong>D42</strong></td>
+<td>Readings from the 23:42 list: <strong>Trident</strong> = your old Sweep idea (left, centre, right; an empty side hits the castle); <strong>Pitchfork</strong> = Trident + Pierce; <strong>Sweep</strong> stays the cleave. <strong>Advanced packs</strong> open at the pack's sale map + 25 (Bronze 30, Silver 33, Gold 38). The rain skill is named <strong>Rainrunner</strong>. The world map appears once Map 2's boss is first cleared. The "both tribes" bonus card is a random Common at cost 0</td>
+<td>Keep, or say which to change</td>
+</tr>
+<tr>
+<td><strong>D43</strong></td>
+<td>"The wait logo or numbers give me img not found": I couldn't reproduce it (no broken images in matches, and the Wait badge is an hourglass emoji). A screenshot with the browser and device would pin it down</td>
+<td>Send a screenshot</td>
 </tr>
 <tr>
 <td><strong>T3 / S1 / S2</strong></td>
@@ -293,7 +303,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </ul>
 <h2>3. Things only you can do (outside chat)</h2>
 <ul>
-<li><strong>The claude.ai project is full.</strong> The master hub now also lives on the game site as a hidden, unindexed page (<code>/hub/</code>), so the project only needs the docs you share. Easiest to remove: the five old code copies (<code>claude/arena_template.html</code>, <code>arena_app.js</code>, <code>bramblewood-engine.js</code>, <code>assemble_arena.py</code>, <code>characters-canonical.json</code>; say "delete the old code copies") and the game-design v30–v40 addenda.</li>
+<li><strong>The claude.ai project</strong> is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).</li>
 <li><strong>Supabase:</strong> turn on leaked-password protection (Auth → Passwords, one click).</li>
 <li><strong>Art:</strong> PixelLab credits or image API keys (A1). These cards use stand-in art or an emoji:<ul>
 <li>the five field cards, Beaver Lumberjack, Courier Pigeon, Echo Keeper, Marsh Wisp, Bog Revenant, The Unremembered and the ten Devilry cards;</li>
@@ -315,6 +325,57 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (08:10)</h2>
+<ul>
+<li><strong>Skills</strong><ul>
+<li><strong>Trident 🔱</strong> strikes left, centre and right; a side prong with no unit facing it hits the castle.</li>
+<li><strong>Pitchfork</strong> is Trident with Pierce: each prong carries on through the units behind.</li>
+<li><strong>Sweep</strong> stays a cleave: it never touches the castle, and does nothing when no unit stands in front.</li>
+<li><strong>Octolash 🐙</strong> (new): hits the 8 nearest enemy units.</li>
+<li><strong>Rainmaker N</strong> (new): brings N rounds of rain when it arrives. <strong>Rainrunner</strong> (new): +A/+H and unblockable while it rains.</li>
+<li><strong>Moonborn</strong> (new) and lunar phases: the moon changes every nightfall, shown only when a card cares.</li>
+<li><strong>Frostbite</strong> (new): frozen enemies get stronger.</li>
+</ul>
+</li>
+<li><strong>Biomes</strong><ul>
+<li><strong>Wolfsbane Tundra</strong> steps up: fewer frosty enemies at first, then frost-resistant ones the +1 Wait can't pick, then frostbite, then +2 freeze; the boss freezes +3 on three units of each side.</li>
+<li><strong>Savanna:</strong> the first Quick unit to swing each turn gets First Blood +1 (+2 at the boss). Yours can claim it first.</li>
+<li><strong>Day and night</strong> only show when a card cares about them. Night creeps across the field from the right and leaves the other way at dawn.</li>
+</ul>
+</li>
+<li><strong>Battle</strong><ul>
+<li>Enemy cards fly in from the top of the board, where their hand is.</li>
+<li>The leader always finishes landing at full height.</li>
+<li>Your turn no longer ends after a pitch while your leader can still be played.</li>
+<li>Castle shields count down hit by hit during combat, and sync at the end.</li>
+<li><strong>Deaths:</strong> the card tips backwards, picks up speed, hits the ground and throws up leaves, snow, sand or sparks by biome.</li>
+<li>Hovering the field card explains it.</li>
+<li>"Pride Queen joins you" shows once.</li>
+</ul>
+</li>
+<li><strong>Tutorial</strong><ul>
+<li>It plays the open (non-collapse) rules and is much easier (your castle 16, the rival's 6).</li>
+<li>The map opens zoomed in on the two tutorials, left and right. The rest of Map 1 appears once Tutorial 2 is won; the world map appears once Map 2 is first cleared.</li>
+<li>Its tips are no longer lost at a match's end, and the completion screen is blue.</li>
+</ul>
+</li>
+<li><strong>Start</strong><ul>
+<li>The title screen has no face warping and no paint duel; the PixelLab key art is generating.</li>
+<li>Picking a tribe is lighter. "Both" appears after a minute with a fanfare: half Otter, half Hummingbird, plus a bonus Common card on Tutorial 2 and Brother Ripple, the otternarian, on making peace.</li>
+</ul>
+</li>
+<li><strong>Shop and packs</strong><ul>
+<li>Only unlocked items show. At the start: one Acorn pack and a Bread (1 Lumber, does nothing, sells out).</li>
+<li>A pack can no longer roll the same card again and again.</li>
+<li>Advanced packs open 25 maps after their pack: 5 cards at 12× the price with 10× the foil and extended-art chance, plus 5 bonus cards.</li>
+<li>The shop fits one screen, and only the page scrolls. NEW cards in a reveal are never greyed.</li>
+<li>Bramble the courier mouse holds an unopened free pack beside the boss on the map.</li>
+</ul>
+</li>
+<li><strong>Music:</strong> nursery-rhyme songs on celesta, kalimba and marimba at home; separate battle, elite and boss themes.</li>
+<li><strong>Skirmish details</strong> no longer hide the top panel.</li>
+<li><strong>Project:</strong> the old code copies and the archived handoff left the claude.ai project (2.03 MB → 200 KB).</li>
+</ul>
 <h2>2026-10-12 (07:00)</h2>
 <ul>
 <li><strong>Bugs from the cave screenshot</strong><ul>
