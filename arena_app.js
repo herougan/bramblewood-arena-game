@@ -6444,19 +6444,19 @@ const CURRENCY_META = {
    comment up above: out of scope to wire into cloudPushCardLevels/cloudPullState this batch,
    additive and low-stakes to add later the same way. ============================================================ */
 const ACHIEVEMENT_DEFS = [
-  {id:'first_win', icon:'🥇', title:'First Victory', desc:'Win your first match.', target:1, progress:ctx=>ctx.wins, reward:{gold:20}},
-  {id:'wins_10', icon:'⚔️', title:'Seasoned Warrior', desc:'Win 10 matches.', target:10, progress:ctx=>ctx.wins, reward:{gold:60, dust:15}},
-  {id:'wins_50', icon:'🏆', title:'Battle-Hardened', desc:'Win 50 matches.', target:50, progress:ctx=>ctx.wins, reward:{gold:200, dust:60, metal:1}},
-  {id:'streak_5', icon:'🔥', title:'Hot Streak', desc:'Reach a 5-win streak.', target:5, progress:ctx=>ctx.bestWinStreak, reward:{gold:40, dust:10}},
-  {id:'streak_10', icon:'☄️', title:'Unstoppable', desc:'Reach a 10-win streak.', target:10, progress:ctx=>ctx.bestWinStreak, reward:{gold:120, dust:30}},
-  {id:'collector_50', icon:'🗂️', title:'Card Collector', desc:'Own 50 cards.', target:50, progress:ctx=>ctx.ownedCards, reward:{dust:30}},
-  {id:'collector_100', icon:'📚', title:'Bramble Archivist', desc:'Own 100 cards.', target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:80}},
-  {id:'collector_200', icon:'🏛️', title:'Complete the Codex', desc:'Own 200 cards.', target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:200, metal:1}},
-  {id:'leveler_1', icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:20}},
-  {id:'leveler_10', icon:'⭐', title:'Forge Regular', desc:'Have 10 different cards at level 1 or higher.', target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:100}},
-  {id:'conquest_5', icon:'🗺️', title:'Into the Wilds', desc:'Clear 5 Conquest nodes.', target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:20}},
-  {id:'conquest_map', icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:50, metal:1}},
-  {id:'raid_unlock_1', icon:'👹', title:'Raid Ready', desc:'Unlock your first Raid Boss.', target:1, progress:ctx=>ctx.raidBossesUnlocked, reward:{gold:30, dust:10}},
+  {id:'first_win', icon:'🥇', title:'First Victory', desc:'Win your first match.', target:1, progress:ctx=>ctx.wins, reward:{gold:20, dust:68}},
+  {id:'wins_10', icon:'⚔️', title:'Seasoned Warrior', desc:'Win 10 matches.', target:10, progress:ctx=>ctx.wins, reward:{gold:60, dust:101}},
+  {id:'wins_50', icon:'🏆', title:'Battle-Hardened', desc:'Win 50 matches.', target:50, progress:ctx=>ctx.wins, reward:{gold:200, dust:270, metal:1}},
+  {id:'streak_5', icon:'🔥', title:'Hot Streak', desc:'Reach a 5-win streak.', target:5, progress:ctx=>ctx.bestWinStreak, reward:{gold:40, dust:101}},
+  {id:'streak_10', icon:'☄️', title:'Unstoppable', desc:'Reach a 10-win streak.', target:10, progress:ctx=>ctx.bestWinStreak, reward:{gold:120, dust:236}},
+  {id:'collector_50', icon:'🗂️', title:'Card Collector', desc:'Own 50 cards.', target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
+  {id:'collector_100', icon:'📚', title:'Bramble Archivist', desc:'Own 100 cards.', target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
+  {id:'collector_200', icon:'🏛️', title:'Complete the Codex', desc:'Own 200 cards.', target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
+  {id:'leveler_1', icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:68}},
+  {id:'leveler_10', icon:'⭐', title:'Forge Regular', desc:'Have 10 different cards at level 1 or higher.', target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
+  {id:'conquest_5', icon:'🗺️', title:'Into the Wilds', desc:'Clear 5 Conquest nodes.', target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
+  {id:'conquest_map', icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:169, metal:1}},
+  {id:'raid_unlock_1', icon:'👹', title:'Raid Ready', desc:'Unlock your first Raid Boss.', target:1, progress:ctx=>ctx.raidBossesUnlocked, reward:{gold:30, dust:135}},
 ];
 // Snapshot every source ONCE per render/claim, not once per def — 13 achievements would
 // otherwise mean 13 redundant localStorage reads + getCardDefs() rebuilds every time this panel
@@ -7520,9 +7520,9 @@ function saveCardLevels(skipCloudPush){ try{ localStorage.setItem('bramblewood_a
 // very first localStorage-only saves were before cloud sync existed). Low-stakes to add later
 // (same additive-overlay pattern as myCardLevels) but out of scope for landing the feature itself.
 const PRESTIGE_TIERS = [
-  {key:'gold', label:'Gold', icon:'🥇', cssClass:'prestige-gold', cost:{dust:150, gold:120}, desc:'A gilded ring around the card — the first mark of true mastery.'},
-  {key:'rainbow', label:'Rainbow', icon:'🌈', cssClass:'prestige-rainbow', cost:{dust:320, gold:260}, desc:'The gold ring shifts through every color, slow and continuous.'},
-  {key:'extended', label:'Extended Art', icon:'🖼️', cssClass:'prestige-extended', cost:{dust:550, gold:450}, desc:'An ornate double frame — the card that says you never stopped.'},
+  {key:'gold', label:'Gold', icon:'🥇', cssClass:'prestige-gold', cost:{dust:750, gold:600}, desc:'A gilded ring around the card — the first mark of true mastery.'},
+  {key:'rainbow', label:'Rainbow', icon:'🌈', cssClass:'prestige-rainbow', cost:{dust:1600, gold:1300}, desc:'The gold ring shifts through every color, slow and continuous.'},
+  {key:'extended', label:'Extended Art', icon:'🖼️', cssClass:'prestige-extended', cost:{dust:2750, gold:2250}, desc:'An ornate double frame — the card that says you never stopped.'},
 ];
 function loadCardPrestige(){
   try{ const raw = localStorage.getItem('bramblewood_arena_prestige'); if(raw) return JSON.parse(raw)||{}; }catch(e){}
@@ -7697,21 +7697,60 @@ function bestCopyClass(id, d){
 // materia ... There is a quick disenchant all extra copies button (leaving at least 1 copy per card).
 // Upgraded or levelled cards/cards with skin are never disenchanted."). Extra plain copies of other
 // cards turn into Magic Dust (what Materia is crafted from), by rarity.
-const DISENCHANT_DUST = {common:5, uncommon:8, rare:15, veryrare:20, superrare:30, epic:40, heroic:50, unique:60, legendary:100, mythic:150, ancient:200};
+// Disenchanting v2 (2026-10-11, user: "Disenchanting a card gives 0.25% materia * its rank number ... C, U, R, VR, SR, E,
+// H, U, L, M, A, A+: 0.25, 0.55, 1.15, 1.75, 2.4, 3.25, 4.1, 5.0, 6.2, 7.3, 8.5, 10+ ... Foil treatments and extended art
+// give >+1 multiplier ... Quest and event cards cannot be disenchanted"). A copy melts for that % of a Materia Unit, times
+// (1 + its treatments): a foil finish +1 to +3 (rainbow +2), extended art +1, an alternate-art skin +1, shiny +1. A spare
+// copy is worth far more fed to its own card as a duplicate (see feedDuplicate).
+const MATERIA_UNIT = {dust:675, gold:450}; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below)
+const MU = f=> Math.round(f * MATERIA_UNIT.dust); // MU fraction → Dust
+const DISENCHANT_PCT = {starter:0.25, common:0.25, uncommon:0.55, rare:1.15, veryrare:1.75, superrare:2.4, epic:3.25, heroic:4.1, unique:5.0, legendary:6.2, mythic:7.3, ancient:8.5, divine:10};
+const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1};
+function copyTreatmentBonus(d, copy){
+  let b = 0; copy = copy || {};
+  if(copy.foil){ const f = copy.finish && copy.finish !== 'auto' ? copy.finish : ((holoClass(d).match(/holo-(\w+)/) || [])[1] || 'rainbow'); b += FINISH_BONUS[f] || 1; }
+  if(copy.shiny) b += 1;
+  if(copy.skin) b += 1;
+  if(d && d.artExtended) b += 1;
+  return b;
+}
+function disenchantValue(d, copy){ const pct = DISENCHANT_PCT[cardRarityTier(d)] || 0.25; return Math.max(1, Math.round(pct / 100 * MATERIA_UNIT.dust * (1 + copyTreatmentBonus(d, copy)))); }
+const DISENCHANT_DUST = Object.fromEntries(Object.keys(DISENCHANT_PCT).map(k=> [k, Math.max(1, Math.round(DISENCHANT_PCT[k] / 100 * MATERIA_UNIT.dust))])); // plain-copy value by rarity (kept for older readers)
+function canDisenchantCard(d){ if(!d || d.token || d.hero || d.cardType === 'materia') return false; const r = d.rarity || 'common'; return !(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique' || isEventCard(d) || (d.source && d.source.kind === 'quest')); }
 function disenchantableCopies(id){
   const d = getCardDefs()[id], copies = myCardCopies[id] || [];
-  if(!d || d.token || copies.length < 2) return [];
-  const r = d.rarity || 'common';
-  if(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique') return [];
-  if(getCardLevel(id) > 0 || myCardPrestige[id]) return [];
+  if(!d || copies.length < 2 || !canDisenchantCard(d)) return [];
+  if(myCardPrestige[id]) return [];
   // keep one copy (the best one: a shiny or foil first), melt the other plain ones
   const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil)));
-  return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil));
+  return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil || copies[i].skin));
 }
 function disenchantSummary(){
   const defs = getCardDefs(); let copies = 0, dust = 0; const per = [];
-  Object.keys(myCardCopies).forEach(id=>{ const idx = disenchantableCopies(id); if(!idx.length) return; const each = DISENCHANT_DUST[(defs[id]||{}).rarity] || 5; copies += idx.length; dust += each*idx.length; per.push({id, n:idx.length, dust:each*idx.length}); });
+  Object.keys(myCardCopies).forEach(id=>{ const idx = disenchantableCopies(id); if(!idx.length) return; const d = defs[id]; const each = idx.reduce((t, i)=> t + disenchantValue(d, myCardCopies[id][i]), 0); copies += idx.length; dust += each; per.push({id, n:idx.length, dust:each}); });
   return {copies, dust, per};
+}
+// Melting a card down (2026-10-11, user: "its level also counts. So every single hard earned point earned within the
+// card, at 3% discount, is given back"): its spare copies melt (treatments counted) and its levels come off, returning
+// 97% of the Dust and Maple Leaves put into them (and any banked duplicate credit). You keep one copy, the best, at its
+// starting level, so ownership (and cloud-synced unlocks) never change.
+function meltCardValue(id){
+  const d = getCardDefs()[id]; if(!d || !canDisenchantCard(d) || myCardPrestige[id]) return null;
+  const copies = myCardCopies[id] || []; if(!copies.length) return null;
+  const base = cardBaseLevel(forgeBaseDef(id)), L = getCardLevel(id);
+  const spent = forgeSpentOn(id, L), cr = forgeCreditOf(id), spare = disenchantableCopies(id);
+  const copiesDust = spare.reduce((t, i)=> t + disenchantValue(d, copies[i]), 0);
+  const v = {dust: copiesDust + Math.round((spent.dust + cr.dust) * 0.97), gold: Math.round((spent.gold + cr.gold) * 0.97), copies: spare.length, level: L, base};
+  return (v.dust || v.gold) ? v : null;
+}
+function meltCard(id){
+  const v = meltCardValue(id); if(!v) return null;
+  const drop = new Set(disenchantableCopies(id));
+  myCardCopies[id] = (myCardCopies[id]||[]).filter((c, i)=> !drop.has(i)); saveCardCopies();
+  myCardLevels[id] = v.base; saveCardLevels();
+  delete myForgeCredit[id]; saveForgeCredit();
+  grantCurrency('dust', v.dust); if(v.gold) grantCurrency('gold', v.gold); saveCurrencies();
+  return v;
 }
 function disenchantAllExtras(){
   const sum = disenchantSummary(); if(!sum.copies) return sum;
@@ -7771,25 +7810,65 @@ function setAdminMode(on){
 // 10? Probably right? What about a Mythic card? Maybe not. What about a rare Castle?"; docs/forge-economy-2026-10-11.md).
 // A Common costs 690 Dust and 460 Maple Leaves from level 0 to 10, about a week of Dust for a regular player. Rarer cards
 // cost a multiple of that: a Rare about 1.5 weeks, an Epic 2.5, a Legendary 4.5, a Mythic 6, an Ancient 8.
-const LEVEL_COST_MULT = {starter:1, common:1, uncommon:1.2, quest:1.2, rare:1.5, veryrare:1.8, superrare:2.1, epic:2.5, heroic:3, unique:3.5, questunique:3.5, legendary:4.5, mythic:6, ancient:8};
+// Forge economy v2 (2026-10-11, user: "Using a normal card's 1-10 progression as 1 unit of materia ..."). One Materia
+// Unit (MU) is what a Common costs from level 1 to 10: 675 Dust and 450 Maple Leaves. Every other price and payout is
+// set in MU (docs/forge-economy-v2-2026-10-11.md):
+//   rarity × (levelling): Common 1, Uncommon 2, Rare 4, Very Rare 6, Super Rare 8, Epic 11, Heroic 14, Unique 17,
+//                         Legendary 21, Mythic 25, Ancient 30 (and 36 for anything beyond Ancient)
+//   Base and Quest cards (not from boosters) ×0.5; Event cards ×1.5; a hero card ×2; castles: levels 1-10 cost what a
+//   card of their rarity costs, 10-20 three times that (4× in all).
+const LEVEL_COST_MULT = {starter:1, common:1, uncommon:2, rare:4, veryrare:6, superrare:8, epic:11, heroic:14, unique:17, legendary:21, mythic:25, ancient:30, divine:36};
+function cardRarityTier(d){ if(!d) return 'common'; const r = d.rarity || 'common'; if(LEVEL_COST_MULT[r] != null && r !== 'starter') return r; const as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return as || (r === 'starter' ? 'common' : 'common'); }
+function forgeBaseDef(defId){ return defId && ((typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || getCardDefs()[defId]); }
+function isEventCard(d){ return !!(d && (/^event/.test(d.rarity||'') || (d.source && d.source.kind==='event'))); }
+function isQuestOrBaseCard(d){ if(!d) return false; const r = d.rarity || ''; return r === 'starter' || r === 'quest' || r === 'questunique' || d.basic || cardSourceOf(d).kind === 'base' || (d.source && (d.source.kind==='quest' || d.source.kind==='map')); }
+function levelCostTierMult(defId){ return LEVEL_COST_MULT[cardRarityTier(forgeBaseDef(defId))] || 1; }
 function levelCostMult(defId){
-  const d = defId && ((typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || getCardDefs()[defId]); if(!d) return 1;
-  const r = d.rarity || 'common', band = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r;
-  return LEVEL_COST_MULT[r] || LEVEL_COST_MULT[band] || 1;
+  const d = forgeBaseDef(defId); if(!d) return 1;
+  let k = levelCostTierMult(defId);
+  if(d.hero) k *= 2; else if(isEventCard(d)) k *= 1.5; else if(isQuestOrBaseCard(d)) k *= 0.5;
+  return k;
 }
 // Material gates (2026-10-11, forge-economy note "so it sticks"): Dust alone never finishes a top card. Levels 7-10 of
 // Epic-and-up cards each also take a 🪨 Tempering Stone, and a Mythic or Ancient card's level 10 takes a 🐉 Dragon Scale
-// too. Both are Materia cards in the collection.
+// too. Both are Materia cards in the collection. (By rarity tier, whatever the card's Base/Event/Hero factor.)
 function levelUpMats(currentLevel, defId){
-  const k = levelCostMult(defId), to = (currentLevel||0) + 1, out = {};
+  const k = levelCostTierMult(defId), to = (currentLevel||0) + 1, out = {};
   if(k >= LEVEL_COST_MULT.epic && to >= 7) out['tempering-stone'] = 1;
   if(k >= LEVEL_COST_MULT.mythic && to === 10) out['dragon-scale'] = 1;
   return out;
 }
-function levelUpCost(currentLevel, defId){
+function levelUpCostRaw(currentLevel, defId){
   const L = Math.max(0, Math.min(9, currentLevel||0)), k = levelCostMult(defId);
-  return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k), mats: levelUpMats(L, defId)};
+  return {dust: Math.round((15 + L*12) * k), gold: Math.round((10 + L*8) * k)};
 }
+// What the card has cost so far, and would cost in all (from its starting level).
+function forgeSpentOn(defId, toLevel){ const d = forgeBaseDef(defId), from = cardBaseLevel(d); let dust = 0, gold = 0; for(let L = from; L < Math.min(10, toLevel); L++){ const c = levelUpCostRaw(L, defId); dust += c.dust; gold += c.gold; } return {dust, gold}; }
+// Duplicates as Forge credit (2026-10-11, user: "You need the equivalent of 15-20 duplicates to take a card from level
+// 1-10 ... Legendary and beyond, the power of duplicates increases"): feeding a spare copy to its own card banks 1/N of
+// that card's whole 1→10 cost as credit on it, spent before your wallet. N: up to Super Rare 18.75, Epic-Unique 17.5,
+// Legendary 15, Mythic 13, Ancient 10, beyond 8.5.
+const DUPLICATE_DIVISOR = {starter:18.75, common:18.75, uncommon:18.75, rare:18.75, veryrare:18.75, superrare:18.75, epic:17.5, heroic:17.5, unique:17.5, legendary:15, mythic:13, ancient:10, divine:8.5};
+const FORGE_CREDIT_KEY = 'bramblewood_forge_credit_v1';
+let myForgeCredit = (()=>{ try{ return JSON.parse(localStorage.getItem(FORGE_CREDIT_KEY)||'{}') || {}; }catch(e){ return {}; } })();
+function saveForgeCredit(){ try{ localStorage.setItem(FORGE_CREDIT_KEY, JSON.stringify(myForgeCredit)); }catch(e){} }
+function forgeCreditOf(id){ const c = myForgeCredit[id] || {}; return {dust: Math.max(0, c.dust||0), gold: Math.max(0, c.gold||0)}; }
+function duplicateValue(defId){ const full = forgeSpentOn(defId, 10), n = DUPLICATE_DIVISOR[cardRarityTier(forgeBaseDef(defId))] || 18.75; return {dust: Math.round(full.dust / n), gold: Math.round(full.gold / n)}; }
+function spareCopyIndex(id){ const copies = myCardCopies[id] || []; if(copies.length < 2) return -1; for(let i = copies.length - 1; i >= 0; i--){ const c = copies[i] || {}; if(!c.foil && !c.shiny && !c.skin) return i; } return -1; }
+function feedDuplicate(id){
+  const d = forgeBaseDef(id); if(!d || d.token) return false;
+  const i = spareCopyIndex(id); if(i < 0) return false;
+  const v = duplicateValue(id), c = forgeCreditOf(id);
+  myCardCopies[id].splice(i, 1); saveCardCopies();
+  myForgeCredit[id] = {dust: c.dust + v.dust, gold: c.gold + v.gold}; saveForgeCredit();
+  return v;
+}
+// The next level's price after this card's credit.
+function levelUpCost(currentLevel, defId){
+  const raw = levelUpCostRaw(currentLevel, defId), cr = forgeCreditOf(defId);
+  return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), mats: levelUpMats(currentLevel, defId), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}};
+}
+function spendForgeCredit(defId, used){ const c = forgeCreditOf(defId); myForgeCredit[defId] = {dust: Math.max(0, c.dust - (used.dust||0)), gold: Math.max(0, c.gold - (used.gold||0))}; if(!myForgeCredit[defId].dust && !myForgeCredit[defId].gold) delete myForgeCredit[defId]; saveForgeCredit(); }
 function canAffordLevelUp(currentLevel, defId){
   const cost = levelUpCost(currentLevel, defId);
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
@@ -7837,9 +7916,15 @@ function castleUnlocked(ch){
   try{ const m = CONQUEST_MAPS.find(x=> x.id===ch.unlockMap); const b = m && m.nodes.find(n=> n.kind==='boss' || n.kind==='finalboss'); return !!(b && (loadConquestProgress().completed||[]).includes(conquestNodeId(m.id, b.key))); }catch(e){ return false; }
 }
 function castleLevelOf(id){ return Math.max(0, Math.min(CASTLE_MAX_LEVEL, (myCastleLevels && myCastleLevels[id])|0)); }
-// Castles level to 20 (1,760 Dust for a Common castle); rarer castles cost more, but less steeply than cards (2026-10-11).
-const CASTLE_COST_MULT = {common:1, uncommon:1.15, rare:1.35, epic:1.7, unique:2, legendary:2.5, mythic:3};
-function castleLevelUpCost(L, id){ L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0)); const ch = id && CHARACTER_DEFS[id], k = CASTLE_COST_MULT[(ch && ch.rarity) || 'common'] || 1; return {dust: Math.round((12 + L*8) * k), gold: Math.round((10 + L*6) * k)}; }
+// Castles level to 20 (2026-10-11, forge economy v2: "A castle has lvl 1-20, and roughly, this costs quadruple to what a
+// normal card costs. I would estimate lvl1-10 costs = lvl1-10 for a normal card"). Levels 0-10 cost what a card of the
+// castle's rarity costs to 10; each of levels 10-20 costs three times the matching step, so 4× in all.
+function castleLevelUpCost(L, id){
+  L = Math.max(0, Math.min(CASTLE_MAX_LEVEL - 1, L|0));
+  const ch = id && CHARACTER_DEFS[id], r = (ch && ch.rarity) || 'common', k = LEVEL_COST_MULT[r] || LEVEL_COST_MULT[(RARITY_DEFS.find(x=> x.key===r) || {}).as] || 1;
+  const step = L < 10 ? L : L - 10, f = L < 10 ? 1 : 3;
+  return {dust: Math.round((15 + step*12) * k * f), gold: Math.round((10 + step*8) * k * f)};
+}
 function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
 function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
 function temperCastle(id){
@@ -7922,7 +8007,7 @@ function deckHeroBannerHTML(){
   // 2026-10-08 (user): smaller cards; the castle and leader art smeared across the background, left
   // to right; Cost/Wait and Attack-by-Wait mini charts; card count, deck level and castle HP moved
   // into a tooltip (a short deck still shows a visible warning).
-  const info = `${total}/${DECK_SIZE} cards · Deck level ${lvl} · ${castle ? escapeAttr(castle.name) : 'Castle'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
+  const info = `${total}/${DECK_SIZE} cards · Battle rating ${lvl} · ${castle ? escapeAttr(castle.name) : 'Castle'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
   return `<div class="deck-top" id="deckHeroBanner">
     <div class="dt-smear" aria-hidden="true"><div class="l">${castleTile}</div>${leader ? `<div class="r">${cardTileHTML(leader, {inPlay:true})}</div>` : ''}</div>
     <div class="dt-pair">
@@ -7995,7 +8080,7 @@ function openLoadoutPicker(kind){
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
       <h2>${isCastle ? '🏰 Choose your castle' : '👑 Choose your leader'}</h2>
-      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward deck level. Leaders are Heroic or above, or have the Leader passive.'}</p>
+      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle ratinl. Leaders are Heroic or above, or have the Leader passive.'}</p>
       ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
@@ -8324,7 +8409,7 @@ function statKeyFor(side, defId){ return side + '|' + defId; }
 // Materia (T4, first version): crafted in the Forge from Magic Dust. Each craft grants Hero XP and
 // a crystal of one of four kinds, kept for socketing later.
 const MATERIA_KINDS = [{id:'ember', icon:'🔥', name:'Ember'}, {id:'tide', icon:'💧', name:'Tide'}, {id:'grove', icon:'🌿', name:'Grove'}, {id:'stone', icon:'🪨', name:'Stone'}];
-const MATERIA_DUST_COST = 25, MATERIA_HERO_XP = 30;
+const MATERIA_DUST_COST = 125, MATERIA_HERO_XP = 30; // ×5 with the forge economy v2 income (2026-10-11)
 // Materia belongs to the player now (2026-10-08), not the Hero: it is what Enchanting spends.
 // A Hero's old crystals move over once. Crafting still gives a Hero XP when you have one.
 var myMateria = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_materia_v1')||'null'); }catch(e){ return null; } })();
@@ -8356,13 +8441,13 @@ function enchantCard(id, kind){
 // ladder. Shiny is never touched here; it only comes from receiving a card (grantCardCopy).
 const REFINE_LADDER = [
   {key:null, label:'Plain'},
-  {key:'auto', label:'Foil', cost:{dust:40, gold:100}},
-  {key:'hex', label:'Hex', cost:{dust:60, gold:150}},
-  {key:'etched', label:'Etched', cost:{dust:80, gold:200}},
-  {key:'ice', label:'Cracked ice', cost:{dust:100, gold:250}},
-  {key:'reverse', label:'Reverse', cost:{dust:120, gold:300}},
-  {key:'prism', label:'Prism', cost:{dust:150, gold:350, gems:5}},
-  {key:'gold', label:'Gold leaf', cost:{dust:200, gold:450, gems:10}},
+  {key:'auto', label:'Foil', cost:{dust:200, gold:500}},
+  {key:'hex', label:'Hex', cost:{dust:300, gold:750}},
+  {key:'etched', label:'Etched', cost:{dust:400, gold:1000}},
+  {key:'ice', label:'Cracked ice', cost:{dust:500, gold:1250}},
+  {key:'reverse', label:'Reverse', cost:{dust:600, gold:1500}},
+  {key:'prism', label:'Prism', cost:{dust:750, gold:1750, gems:5}},
+  {key:'gold', label:'Gold leaf', cost:{dust:1000, gold:2250, gems:10}},
 ];
 function copyRefineRank(c){
   if(!c || !c.foil) return 0;
@@ -8439,7 +8524,7 @@ function deckMediumPreviewHTML(d){
     <div class="dmp-foot">
       <span class="dmp-who">🏰 ${escapeHtml(castle ? castle.name : 'Castle')} · Lv ${castleLevelOf(castle && castle.id)}</span>
       <span class="dmp-who is-r">👑 ${leader ? escapeHtml(leader.name) : 'No leader'}</span>
-      <span class="dmp-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span>📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
+      <span class="dmp-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span title="Battle rating">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
     </div>
   </div>`;
 }
@@ -8464,7 +8549,7 @@ function deckShowcaseHTML(d, opts){
         <span title="Average health"><b>${sig.avgHp}</b><small>❤ avg hp</small></span>
         <span title="Average cost (Lumber)"><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
       </div>
-      <div class="ds-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span>📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span></div>
+      <div class="ds-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span title="Battle rating">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span></div>
     </div>
   </div>`;
 }
@@ -8477,29 +8562,44 @@ function deckPreviewPillsHTML(d){
     <span class="deck-pill deck-pill-castle" title="Castle (Bramble)">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
-    <span class="deck-pill deck-pill-level" title="Deck level — 0 for a deck of unlevelled Base cards; rarer cards and card levels raise it (the leader counts double)">📈 Lv ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
+    <span class="deck-pill deck-pill-level" title="Battle rating: each card's rarity weight × its level factor; the leader counts double. A starting deck is about 10, a full level-10 Ancient deck about 2,500">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
   </div>`;
 }
-// Deck level (2026-10-03): Σ rarity weight × card level (forged level, minimum 1); the leader
-// counts double. Same formula as the Autobattler (bramblewood-autobattle.js deckLevelOf).
-// Enemy deck level (2026-10-08, user: "The Skirmishes should say the difficulty level of the enemy.
-// Maybe deck level is enough"): the same Deck level formula as your own decks, with the enemy's cards
-// at their base level, so the two numbers compare directly.
-// Deck level (2026-10-08, user: "Tutorial and base cards start at lvl 0 ... so the starting enemies have very
-// low level, starting at 0"): how far a deck sits above an all-Base, unlevelled deck. Each card adds
-// rarityWeight × (1 + its level) − 1, so a Base/Common card at level 0 adds nothing, a level gives
-// +rarityWeight, and rarer cards add more; the leader counts double. Starting enemies are Lv 0.
+// Battle rating (2026-10-11, user: "battle rating: Replace deck level ... a beginner level deck has rating 1-25. While
+// the max it can be is about 2,500. A good middle ground is 400+ for Map 20"). Each card adds its rarity's weight (the
+// same ladder as its Forge cost: Common 1, Uncommon 2, Rare 4, Very Rare 6, Super Rare 8, Epic 11, Heroic 14, Unique 17,
+// Legendary 21, Mythic 25, Ancient 30; Base 0.5) × its level factor (1 at level 1, 3.79 at level 10, 0.7 at a Base
+// card's level 0); the leader counts double. A full deck of level-10 Ancients with an Ancient leader is ≈2,500.
+const RATING_WEIGHT = {starter:0.5, common:1, uncommon:2, rare:4, veryrare:6, superrare:8, epic:11, heroic:14, unique:17, legendary:21, mythic:25, ancient:30, divine:36};
+function ratingWeightOf(d){ if(!d) return 0; const r = d.rarity || 'common', as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return RATING_WEIGHT[r] || RATING_WEIGHT[as] || 1; }
+function ratingLevelFactor(L){ L = Math.max(0, Math.min(10, Number(L)||0)); return L <= 0 ? 0.7 : 1 + (L - 1) * 0.31; }
 function deckLevelFrom(counts, levelOf, leaders){
-  const defs = getCardDefs(), W = (typeof BramblewoodAutobattle!=='undefined' && BramblewoodAutobattle.rarityWeight) || (()=> 1);
-  const one = id=>{ const d = defs[String(id).split('~')[0]]; if(!d) return 0; return W(d) * (1 + Math.max(0, levelOf(String(id).split('~')[0]) || 0)) - 1; };
+  const defs = getCardDefs();
+  const one = id=>{ const k = String(id).split('~')[0], d = defs[k]; if(!d) return 0; return ratingWeightOf(d) * ratingLevelFactor(levelOf(k)); };
   let t = 0;
   Object.keys(counts||{}).forEach(id=>{ t += (counts[id]||0) * one(id); });
   (leaders||[]).filter(Boolean).forEach(id=>{ t += 2 * one(id); });
   return Math.max(0, Math.round(t));
 }
+// An enemy's battle rating is the rating a player should bring (enemy decks are small and their strength is in the
+// castle), on one curve for the whole road: about 12 at Map 1, 400 at Map 20, rising about 20% a map. Inside a map the
+// skirmishes run from 85% to 115% of the map's par, an elite is 115%, a boss 130%, the campaign boss 140%, a side map
+// +10%. A fight can set its own (node.rating, in the skirmish editor).
+function mapParRating(mapNo){ return 12 * Math.pow(400/12, (Math.max(1, mapNo) - 1) / 19); }
 function enemyDeckLevel(node){
-  if(!node || !node.deck) return 0;
-  const defs = getCardDefs(); return deckLevelFrom(node.deck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), node.leaderId ? [node.leaderId] : []); // enemy cards at their base level
+  if(!node) return 0;
+  if(node.rating != null && node.rating !== '') return Math.max(0, Math.round(Number(node.rating)||0));
+  let map = null; try{ map = CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)) || CONQUEST_MAPS.find(m=> (m.nodes||[]).some(n=> n.key === node.key)); }catch(e){}
+  if(!map){ if(!node.deck) return 0; const defs = getCardDefs(); return deckLevelFrom(node.deck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), node.leaderId ? [node.leaderId] : []); }
+  const mains = CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved), parent = map.sub ? CONQUEST_MAPS.find(m=> m.id === map.parent) : map;
+  const no = Math.max(1, mains.indexOf(parent) + 1), par = mapParRating(no) * (map.sub ? 1.1 : 1);
+  const k = baseKind(node.kind || 'skirmish');
+  if(k === 'tutorial') return Math.round(par * 0.6);
+  if(k === 'finalboss') return Math.round(par * 1.4);
+  if(k === 'boss' || k === 'raidboss') return Math.round(par * 1.3);
+  if(k === 'elite') return Math.round(par * 1.15);
+  const sk = map.nodes.filter(n=> baseKind(n.kind||'') === 'skirmish'), p = sk.length > 1 ? Math.max(0, sk.indexOf(node)) / (sk.length - 1) : 0.5;
+  return Math.round(par * (0.85 + 0.3 * p));
 }
 function mainDeckLevel(counts, leaderId){
   return deckLevelFrom(counts, id=> getCardLevel(id), leaderId ? [leaderId] : []);
@@ -10186,6 +10286,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
         <label title="A blue shield on top of the castle's own Health; it soaks hits first">Skirmish Armour 🔷<input id="seArmour" type="number" min="0" max="9999" value="${skirmishCastle(draft).shield}"></label>
         <label title="Level of the defending castle: +1 Health per level. Blank = the default for this kind of fight">Castle level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
+        <label title="The battle rating this fight shows (the rating a player should bring). Blank = the road's curve for this map and kind of fight">Battle rating<input id="seRating" type="number" min="0" max="5000" placeholder="${escapeAttr(String(enemyDeckLevel(Object.assign({}, draft, {rating:null}))))}" value="${draft.rating != null ? escapeAttr(draft.rating) : ''}"></label>
         <label title="The card shown big on this skirmish's preview">Showcase card<select id="seShowcase"><option value="">Strongest card</option>${Object.keys(draft.deck||{}).filter(id=> getCardDefs()[id]).map(id=> opt(id, draft.showcase, getCardDefs()[id].name)).join('')}</select></label>
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
@@ -10251,6 +10352,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
         { const ac = v('seActions'); delete r.actions; if(ac !== '' && ac != null && Number(ac) > 1) r.actions = Math.max(1, Math.min(5, Math.round(Number(ac)))); }
         if(Object.keys(r).length) draft.rules = r; else delete draft.rules; }
+      { const rt = v('seRating'); if(rt === '' || rt == null) delete draft.rating; else draft.rating = Math.max(0, Math.min(5000, Math.round(Number(rt)||0))); }
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seDgRounds')){
@@ -10331,7 +10433,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','rules'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','rules','rating'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -10447,15 +10549,15 @@ const QUEST_TIERS = {
       {id:'d3-pvp', counter:'pvpWins', goal:2, label:'Win 2 PvP matches'}]},
   ],
   weekly: [
-    {reward:{gold:300, dust:40, metal:3}, quests:[
+    {reward:{gold:340, dust:520, metal:3}, quests:[
       {id:'w1-energy', counter:'energyConquest', goal:200, label:'Use 200 ⚡ Energy on Conquest fights'},
       {id:'w1-pvp', counter:'pvpTickets', goal:30, label:'Use 30 🎟️ PvP tickets'},
       {id:'w1-units', counter:'unitsDefeated', goal:100, label:'Defeat 100 enemy units'}]},
-    {reward:{gold:150, dust:20, metal:1}, quests:[
+    {reward:{gold:225, dust:345, metal:1}, quests:[
       {id:'w2-raid', counter:'raidsJoined', goal:3, label:'Join 3 Raids'},
       {id:'w2-raiddmg', counter:'raidDamage', goal:20000, label:'Deal 20,000 Raid damage'},
       {id:'w2-wins', counter:'wins', goal:15, label:'Win 15 matches'}]},
-    {reward:{gold:70, dust:10}, quests:[
+    {reward:{gold:110, dust:170}, quests:[
       {id:'w3-conquest', counter:'conquestWins', goal:10, label:'Clear 10 Conquest fights'},
       {id:'w3-pvp', counter:'pvpWins', goal:10, label:'Win 10 PvP matches'}]},
   ],
@@ -10502,9 +10604,11 @@ function bumpQuestCounter(counter, n){
 // moment it's posted, so a 6 PM notice needs fresh work. One free swap a day.
 const QUEST_RANKS = ['D','C','B','A','S','SS','SSS'];
 const QUEST_RANK_WEIGHT = {D:22, C:30, B:30, A:13.5, S:3.5, SS:0.8, SSS:0.2}; // percent
+// Forge economy v2 (2026-10-11): daily notices are the main Dust faucet. Six a day average about 82 Dust each, about 3,450
+// a week (5.1 Materia Units); with the weekly quests (1.5 MU) a week of the minimum play is about 6.6 MU.
 const QUEST_RANK_REWARD = {
-  D:{gold:20, dust:2, xp:25}, C:{gold:25, dust:3, xp:30}, B:{gold:30, dust:4, xp:40}, A:{gold:55, dust:7, xp:70},
-  S:{gold:180, dust:25, gems:6, xp:180}, SS:{gold:360, dust:50, gems:15, xp:360}, SSS:{gold:750, dust:100, gems:30, metal:3, xp:750}};
+  D:{gold:40, dust:50, xp:25}, C:{gold:50, dust:60, xp:30}, B:{gold:60, dust:70, xp:40}, A:{gold:100, dust:110, xp:70},
+  S:{gold:280, dust:300, gems:6, xp:180}, SS:{gold:560, dust:600, gems:15, xp:360}, SSS:{gold:1100, dust:1200, gems:30, metal:3, xp:750}};
 const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
 const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
 const DAILY_QUEST_KINDS = [
@@ -11626,8 +11730,8 @@ function deckLevelGapClass(enemy, mine){
   return 'lv-green';
 }
 function deckLevelGapTip(cls){
-  return ({'lv-darkred':'Their deck is far above yours (75%+ higher)', 'lv-red':'Their deck is well above yours (25%+ higher)', 'lv-orange':'Their deck is a little above yours (10%+ higher)',
-    'lv-green':'Their deck is about yours or below', 'lv-ltgreen':'Your deck is twice their level', 'lv-pink':'Your deck is 2.5× their level', 'lv-ltpink':'Your deck is 3× their level'})[cls] || '';
+  return ({'lv-darkred':'Far above your battle rating (75%+ higher)', 'lv-red':'Well above your battle rating (25%+ higher)', 'lv-orange':'A little above your battle rating (10%+ higher)',
+    'lv-green':'About your battle rating or below', 'lv-ltgreen':'Your battle rating is twice theirs', 'lv-pink':'Your battle rating is 2.5× theirs', 'lv-ltpink':'Your battle rating is 3× theirs'})[cls] || '';
 }
 function conquestDeckNeed(node){ const r = node && node.revealDeck; return (r && r !== 'win' && rankAtLeast(r, 'B')) ? r : 'B'; }
 function conquestDeckRevealed(map, node, progress){
@@ -11857,12 +11961,14 @@ function isMapUnlocked(map, progress){
 // CURRENCY_META's own comment "ready to try the Forge") rather than inventing a third. Elite,
 // Boss, and Raid Boss also pay a little Dust on top of Gold — Skirmish stays Gold-only, since it's
 // meant to be the cheap, frequent, early-game fight.
+// First clears (forge economy v2, 2026-10-11): a skirmish 3% of a Materia Unit, an elite 10%, a boss 25%, a raid boss
+// 40%, the campaign boss a whole unit; a map's first clears come to about half a unit. Repeat clears are the Energy grind.
 const CONQUEST_NODE_REWARDS = {
-  skirmish:  {first:{gold:40, dust:0},  repeat:{gold:8,  dust:0}},
-  elite:     {first:{gold:70, dust:8},  repeat:{gold:14, dust:2}},
-  boss:      {first:{gold:120,dust:20}, repeat:{gold:24, dust:4}},
-  raidboss:  {first:{gold:200,dust:35}, repeat:{gold:35, dust:6}},
-  finalboss: {first:{gold:400,dust:60}, repeat:{gold:60, dust:10}},
+  skirmish:  {first:{gold:40, dust:20},  repeat:{gold:8,  dust:0}},
+  elite:     {first:{gold:70, dust:68},  repeat:{gold:14, dust:5}},
+  boss:      {first:{gold:120,dust:169}, repeat:{gold:24, dust:10}},
+  raidboss:  {first:{gold:200,dust:270}, repeat:{gold:35, dust:15}},
+  finalboss: {first:{gold:400,dust:675}, repeat:{gold:60, dust:25}},
 };
 // Small rewards preview line for the node panel (2026-09-20) — per the same research notes'
 // framing, seeing what a fight actually pays out before committing to it is part of "an actual
@@ -12979,7 +13085,7 @@ function renderConquestSubTab(body){
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" title="${escapeAttr(defs[sid].name)}">${cardTileHTML(defs[sid], {inPlay:true})}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
-          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Enemy deck level {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Enemy deck'))}</small><b>${escapeHtml(_t('Lv {n}', {n:ev}))}</b></div>`; })()}
+          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Battle rating'))}</small><b>⚔ ${ev}</b></div>`; })()}
         ${done ? `<span class="cnp-cleared" title="${escapeAttr(progress.ranks[nid] ? 'Cleared · best rank ' + progress.ranks[nid] : 'Cleared')}">✓ ${escapeHtml(_t('Cleared'))}</span>` : ''}
         ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
       </div>
@@ -13111,7 +13217,7 @@ function settleOfflineRaidAfterMatch(m){
   bumpQuestCounter('raidDamage', dealt);
   m.raidRemainingAfter = after ? after.remaining : 0;
   const strength = m.raidBoss.strength || 1;
-  const g = Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0), d = Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0);
+  const g = Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0), d = 3 * (Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0)); // ×3 with forge economy v2: a raid run is ~5-15% of a Materia Unit
   if(g>0) grantCurrency('gold', g);
   if(d>0) grantCurrency('dust', d);
   m.raidRewardEarned = {gold:g, dust:d};
@@ -13672,7 +13778,7 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed){
   });
   bumpQuestCounter('raidDamage', contribution);
   // raw per-attempt reward stays low; the big payout is the shared kill reward
-  const g = Math.round(contribution/250), d = Math.round(contribution/1000);
+  const g = Math.round(contribution/250), d = 3 * Math.round(contribution/1000); // ×3, forge economy v2
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
   const after = currentRaidStateFor(def);
   return {contribution, gold:g, dust:d, remainingAfter: Math.round((after.byId[partId]||{remaining:0}).remaining)};
@@ -14726,7 +14832,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
-      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy deck level"><small>Enemy deck</small><b>Lv ${ev}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Battle rating</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
     <div class="vs-skip">Tap to skip</div>`;
@@ -21233,7 +21339,7 @@ async function resolveRound(opts){
         // dust across its own repeat/first-clear spread) — strength runs 1-13 so this lands in
         // the same rough range without needing a first-clear/repeat distinction (Online Raid has
         // no "node," just a boss you can fight again any time).
-        const rGold = 30 + strength*13, rDust = 6 + Math.round(strength*2.2);
+        const rGold = 30 + strength*13, rDust = 3 * (6 + Math.round(strength*2.2)); // ×3, forge economy v2
         grantCurrency('gold', rGold); grantCurrency('dust', rDust); grantCurrency('metal', 1);
         m.raidRewardEarned = {gold:rGold, dust:rDust, metal:1};
       }
@@ -21949,7 +22055,7 @@ function showVsScreen(left, right){
       const mine = left.level != null ? left.level : mainDeckLevel(myDeckCounts, myLeaderId);
       let theirs = right.level;
       if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
-      const chip = (n, cls)=> `<div class="vs-lvl ${cls}"><small>Deck</small><b>Lv ${n}</b></div>`;
+      const chip = (n, cls)=> `<div class="vs-lvl ${cls}"><small>Battle rating</small><b>⚔ ${n}</b></div>`;
       if(mine) el.querySelector('.vs-left').insertAdjacentHTML('beforeend', chip(mine, 'is-mine'));
       if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine)));
     }catch(e){}
@@ -25108,6 +25214,14 @@ function renderForge(){
   const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ forgeFilter = 'ready'; renderForge(); };
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const dupBtn = document.getElementById('forgeFeedDupBtn');
+  if(dupBtn) dupBtn.addEventListener('click', ()=>{ const v = feedDuplicate(forgeSelectedId); if(!v){ denyShake(dupBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(`🧩 A duplicate became ✨ ${v.dust} of credit on ${getCardDefs()[forgeSelectedId].name}.`, 'ok'); });
+  const meltBtn = document.getElementById('forgeMeltBtn');
+  if(meltBtn) meltBtn.addEventListener('click', ()=>{
+    const id = forgeSelectedId;
+    if(forgeMeltArmed !== id){ forgeMeltArmed = id; renderForge(); setTimeout(()=>{ if(forgeMeltArmed === id){ forgeMeltArmed = null; try{ renderForge(); }catch(e){} } }, 6000); return; }
+    forgeMeltArmed = null; const v = meltCard(id); if(!v){ denyShake(meltBtn); return; }
+    try{ SoundKit.burnAway && SoundKit.burnAway(); }catch(e){} renderForge(); showToast(`🔥 Melted down: ✨ ${v.dust}${v.gold ? ' and ' + v.gold + ' Maple Leaves' : ''} back.`, 'ok'); });
   const preBtn = document.getElementById('forgePrestigeBtn');
   if(preBtn) preBtn.addEventListener('click', ()=> forgePrestige(preBtn));
   root.querySelectorAll('[data-promote]').forEach(b=> b.addEventListener('click', ()=>{ if(forgeBusy) return; forgePromotePick = b.dataset.promote; renderForge(); }));
@@ -25147,13 +25261,13 @@ function rollDragonScale(mapId, key, rank){
 // and doesn't complete super fast"). Recipes turn Materia cards (Iron Shard, River Pearl, Ember Core, Dragon Scale) plus a
 // card into an equipment card; Fuse melts three spare copies of a card into one random card a rarity higher.
 const SMITH_RECIPES = [
-  {out:'tempering-stone', needs:{'iron-shard':3, 'river-pearl':1}, cost:{dust:40, gold:40}}, // smelted, not forged: the material gate's steady source
-  {out:'bark-buckler', needs:{'iron-shard':2, 'bramble-sprout':1}, cost:{dust:20, gold:30}},
-  {out:'netmender-harpoon', needs:{'iron-shard':2, 'otter-netmender':1}, cost:{dust:40, gold:60}},
-  {out:'quill-spear', needs:{'iron-shard':2, 'river-pearl':1, 'quillguard':1}, cost:{dust:60, gold:80}},
-  {out:'sunfeather-plume', needs:{'iron-shard':2, 'river-pearl':1, 'petal-fletcher':1}, cost:{dust:80, gold:100}},
-  {out:'siege-hammer', needs:{'iron-shard':3, 'ember-core':1, 'badger-sapper':1}, cost:{dust:120, gold:150}},
-  {out:'dragonscale-mail', needs:{'iron-shard':4, 'ember-core':1, 'dragon-scale':1}, cost:{dust:300, gold:300}},
+  {out:'tempering-stone', needs:{'iron-shard':3, 'river-pearl':1}, cost:{dust:200, gold:200}}, // smelted, not forged: the material gate's steady source
+  {out:'bark-buckler', needs:{'iron-shard':2, 'bramble-sprout':1}, cost:{dust:100, gold:150}},
+  {out:'netmender-harpoon', needs:{'iron-shard':2, 'otter-netmender':1}, cost:{dust:200, gold:300}},
+  {out:'quill-spear', needs:{'iron-shard':2, 'river-pearl':1, 'quillguard':1}, cost:{dust:300, gold:400}},
+  {out:'sunfeather-plume', needs:{'iron-shard':2, 'river-pearl':1, 'petal-fletcher':1}, cost:{dust:400, gold:500}},
+  {out:'siege-hammer', needs:{'iron-shard':3, 'ember-core':1, 'badger-sapper':1}, cost:{dust:600, gold:750}},
+  {out:'dragonscale-mail', needs:{'iron-shard':4, 'ember-core':1, 'dragon-scale':1}, cost:{dust:1500, gold:1500}},
 ];
 const FUSE_COPIES = 3;
 let smithSel = 0;
@@ -25338,15 +25452,31 @@ function forgeAnvilHTML(id, sel, L, maxed){
         <div class="forge-cost-row">${forgeCostChipsHTML(tier.cost)}</div>
         <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
-    `}${forgePromotionHTML(id, sel, L)}`;
+    `}${forgeDupMeltHTML(id, L)}${forgePromotionHTML(id, sel, L)}`;
 }
+// Duplicates and melting in the Forge (2026-10-11, forge economy v2).
+let forgeMeltArmed = null;
+function forgeDupMeltHTML(id, L){
+  const d = forgeBaseDef(id); if(!d || d.token || d.hero) return '';
+  const cr = forgeCreditOf(id), spare = spareCopyIndex(id) >= 0, dv = duplicateValue(id), melt = meltCardValue(id);
+  const n = DUPLICATE_DIVISOR[cardRarityTier(d)] || 18.75;
+  return `<div class="forge-dup">
+    ${(cr.dust || cr.gold) ? `<p class="forge-note">🧩 Duplicate credit on this card: ✨ ${cr.dust} · ${mapleLeafIconHTML()} ${cr.gold}. It pays for the next levels first.</p>` : ''}
+    <div class="forge-dup-row">
+      <button type="button" class="btn small" id="forgeFeedDupBtn" ${spare ? '' : 'disabled'} title="${escapeAttr(`About ${Math.round(n)} duplicates take this card from level 1 to 10. Each banks ✨ ${dv.dust} and ${dv.gold} Maple Leaves on it.`)}">🧩 Feed a duplicate <small>+✨${dv.dust}</small></button>
+      ${melt ? `<button type="button" class="btn small ghost ${forgeMeltArmed===id?'is-armed':''}" id="forgeMeltBtn" title="${escapeAttr(`Melts ${melt.copies} spare cop${melt.copies===1?'y':'ies'} and takes it back to level ${melt.base}; 97% of what its levels cost comes back.`)}">${forgeMeltArmed===id ? `Confirm: melt for ✨ ${melt.dust}${melt.gold ? ' · ' + melt.gold + ' Leaves' : ''}` : `🔥 Melt down <small>✨${melt.dust}</small>`}</button>` : ''}
+    </div>
+    ${spare ? '' : `<p class="forge-note">No spare plain copy to feed. Foil, shiny and skinned copies are never used up.</p>`}
+  </div>`;
+}
+
 // Promotion (2026-10-09, user: "some cards can be promoted - this changes the card to another card.
 // For now, we can try basic ant as an example. And it can become Ant Warrior or 2 other Ant cards.
 // (Their rarities usually start as uncommon or below)"). A card lists `promotesTo` (its choices) and
 // `promoteAt` (the level it must reach). Promoting unlocks the chosen card, turns every copy of the
 // old card in your decks into it, and sends the old card back to level 0 — so you can raise it again
 // later and take one of the other paths.
-const PROMOTE_COST = {gold:60, dust:20};
+const PROMOTE_COST = {gold:300, dust:100}; // ×5 with the forge economy v2 income (2026-10-11)
 let forgePromotePick = null;
 function promotionTargets(id){ const d = getCardDefs()[id], defs = getCardDefs(); return d && Array.isArray(d.promotesTo) ? d.promotesTo.filter(t=> defs[t]) : []; }
 function forgePromotionHTML(id, sel, L){
@@ -25431,6 +25561,7 @@ async function forgeTemper(btn){
   const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit);
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   myCardLevels[id] = L+1; saveCardLevels();
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
@@ -25464,7 +25595,7 @@ function homeTileDetails(){
     const p = loadConquestProgress();
     for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
   }catch(e){}
-  try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · Lv ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
+  try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · ⚔ ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
   try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = `${ids.filter(id=> !isCardHiddenForPlayer(defs[id]) && !defs[id].locked).length} / ${ids.length} cards`; }catch(e){}
   try{ const owned = Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length; out.nest = owned ? `${owned} card${owned===1?'':'s'} collected` : 'Win cards to fill it'; }catch(e){}
   try{ const packs = (typeof SHOP_PACKS_DEFAULT!=='undefined' ? SHOP_PACKS_DEFAULT : []).filter(x=> packOnSale(x) && x.cost && x.cost.gold); if(packs.length){ const c = Math.min(...packs.map(x=> x.cost.gold)); out.shop = `Packs from ${c} 🍁`; } }catch(e){}
@@ -26087,6 +26218,7 @@ async function importDeckCodeFlow(btnEl){
 // a localStorage-persisted admin edit (see saveShopPacksOverride/renderRollTableAdmin) on top of
 // this default, falling back cleanly if no override exists or it fails to parse. This default
 // array itself is never mutated at runtime.
+const PACK_MATERIA_PCT = {bronze:1.5, mystery:2, silver:3, gold:4.5}; // % of a Materia Unit per booster (forge economy v2)
 const SHOP_PACKS_DEFAULT = [
   // cards (2026-10-03, D2): packs now hold real cards — Pack 1's 33-card pool (canonical/cards.json
   // source {kind:'pack', tier:1}). `cards` = how many come out; `newGuaranteed` = at least one you
@@ -26477,7 +26609,7 @@ function renderNest(){
   if(dis) dis.onclick = async ()=>{
     const ds = disenchantSummary(); if(!ds.copies) return;
     const defs = getCardDefs();
-    const ok = await bwConfirm({title:'♻️ Disenchant extras', body:`Melt ${ds.copies} extra cop${ds.copies===1?'y':'ies'} into ✨ ${ds.dust} Magic Dust? One copy of every card stays, and Base, Quest, levelled, foil and Shiny cards are never touched.`, list: ds.per.slice(0, 12).map(p=> `${defs[p.id] ? defs[p.id].name : p.id} ×${p.n} → ✨ ${p.dust}`), okLabel:'Disenchant'});
+    const ok = await bwConfirm({title:'♻️ Disenchant extras', body:`Melt ${ds.copies} extra cop${ds.copies===1?'y':'ies'} into ✨ ${ds.dust} Magic Dust? One copy of every card stays, and Base, Quest and Event cards and foil, Shiny and skinned copies are never touched. A spare copy is worth far more fed to its own card in the Forge (🧩).`, list: ds.per.slice(0, 12).map(p=> `${defs[p.id] ? defs[p.id].name : p.id} ×${p.n} → ✨ ${p.dust}`), okLabel:'Disenchant'});
     if(!ok) return;
     const done = disenchantAllExtras();
     showToast(`♻️ Disenchanted ${done.copies} cop${done.copies===1?'y':'ies'} for ✨ ${done.dust} Magic Dust.`, 'ok');
@@ -26670,8 +26802,10 @@ function purchasePackOnce(pack, prepaid){
   { const defs = getCardDefs(), top = packCardPool(defs, pack.pool||1).filter(id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('legendary'));
     if(top.length && Math.random() < PACK_JACKPOT_CHANCE){ jackpot = true; pulls = pulls.map(()=> top[Math.floor(Math.random()*top.length)]); } }
   if(!prepaid){ myCurrencies.gold -= (pack.cost.gold||0); myCurrencies.gems -= (pack.cost.gems||0); }
-  // 2026-10-08 (user: "Why is there +10 dust from buying the pack? ... nothing was destroyed"): Dust only comes from
-  // breaking cards down, never from buying a pack, whatever an older published pack config says.
+  // 2026-10-08 (user: "Why is there +10 dust from buying the pack? ... nothing was destroyed"): an older published pack
+  // config's dust field is ignored. 2026-10-11 (forge economy v2, user: "Boosters flat rate (depending on the booster rank)
+  // give <5% materia"): each booster carries a small flat share of a Materia Unit, by its rank.
+  { const pct = PACK_MATERIA_PCT[pack.id] || 0; if(pct > 0) grantCurrency('dust', MU(pct / 100)); }
   if(pack.metal) grantCurrency('metal', pack.metal);
   if(pack.kroon) grantCurrency('kroon', pack.kroon);
   const foils = rollPackFoils(pack, pulls.length);

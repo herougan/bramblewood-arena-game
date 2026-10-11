@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (00:30)
+- **Battle rating replaces deck level.** Each card counts its rarity weight × its level factor, and the leader counts double. The weights follow the Forge ladder: Common 1, Rare 4, Epic 11, Ancient 30; Base 0.5.
+  - A new starter deck rates 24–29. Map 20's par is 400. A full level-10 Ancient deck is about 2,500.
+  - Enemy fights show the rating you should bring. It's about 12 at Map 1 and climbs ~20% a map; elites are +15%, bosses +30%. The skirmish editor can set a fight's own.
+  - Shown on the skirmish panel, both versus screens, deck lists and the deck builder. Translated into all 12 languages.
+- **Forge economy v2, in Materia Units** ([note](forge-economy-v2-2026-10-11.md)). 1 MU = a Common from level 1 to 10 (675 Dust + 450 Maple Leaves).
+  - **Levelling by rarity:**
+    - ×1 / 2 / 4 / 6 / 8 / 11 / 14 / 17 / 21 / 25 / 30, Common to Ancient.
+    - Base, Quest and map-reward cards ×0.5, Event cards ×1.5, heroes ×2.
+    - Castles cost 4× in all: levels 10–20 at three times the price.
+  - **Duplicates:** Forge → 🧩 Feed a duplicate banks 1/N of the card's 1→10 cost on it. N is 18.75 up to Super Rare, 17.5 to Unique, then 15, 13 and 10 for Legendary, Mythic and Ancient.
+  - **Disenchanting:**
+    - A copy melts for 0.25% (Common) to 10% (beyond Ancient) of an MU.
+    - Foil finishes (+1 to +3), extended art, skins and Shiny multiply it.
+    - **Melt down** takes a card back to its starting level and refunds 97% of its levels. Base, Quest and Event cards can't be melted.
+  - **Income:**
+    - Daily notices and weekly quests give ≈6.6 MU a week (≈28 a month).
+    - Achievements give 10–50% MU.
+    - First clears: 3% (skirmish) to a whole MU (campaign boss).
+    - Boosters give a flat 1.5–4.5%.
+    - Raid Dust is ×3.
+  - Prestige, foil treatments, Blacksmith recipes, Materia crystals and Promotion cost 5× to match.
+- **Card Ledger:**
+  - Lists every rarity, including Very Rare, Super Rare, Quest, Quest-Unique and the special ones. Each has its colour and proper name.
+  - New column: what each card costs to level 10, in MU.
+
 ## 2026-10-11 (23:50)
 - **Plays left:** in a fight with more than one action a turn, a "▶ 1/2 plays" pill sits beside your Lumber. It counts down as you play and resets each round.
 - **Versus screens on phones:** the boss opener's top/bottom split and the Arena versus screen kept the desktop's sideways split on phones. Both now split top and bottom, with the glowing seam across the middle.

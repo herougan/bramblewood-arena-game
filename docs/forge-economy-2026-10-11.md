@@ -1,5 +1,7 @@
 # Forge pacing: how much Dust is a week? (2026-10-11)
 
+> **Superseded 2026-10-11 (evening)** by [forge-economy-v2-2026-10-11.md](forge-economy-v2-2026-10-11.md): prices and payouts are now set in Materia Units. The material gates, Blacksmith, Nest and Scale Trail below still stand.
+
 Your questions were: is a week of Dust enough to take a Common to level 10? (probably yes) A Mythic? (probably not) A rare Castle? This note answers them with the game's real numbers, then says what changed today.
 
 ## Where Dust comes from

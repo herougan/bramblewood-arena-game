@@ -916,5 +916,7 @@
  "{rarity} at Level {n}": "{rarity} di Level {n}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— sakelar lokal biasa, tanpa autentikasi server sungguhan — sampai ada aplikasi admin sisi server yang layak.",
  "“Mine. This ground is mine.”": "“Milikku. Tanah ini milikku.”",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "Peringkat tempur",
+ "Battle rating {n}": "Peringkat tempur {n}"
 }

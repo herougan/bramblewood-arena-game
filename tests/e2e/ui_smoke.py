@@ -248,6 +248,16 @@ async def main():
         await pg.wait_for_timeout(500)
         check(await pg.evaluate("matchState.engine.allBoardCards(matchState.players[1])[0].equipment==='bramble-gauntlet'"), 'Bramble Gauntlet should equip onto the unit')
         check(not errs, f'spell/equipment errors: {errs[:3]}')
+        # 2026-10-11 forge economy v2 + battle rating
+        ec = await pg.evaluate("""(()=>{ const defs=getCardDefs(); const pick=r=> Object.keys(defs).find(k=> defs[k].rarity===r && !defs[k].test && !defs[k].token && cardSourceOf(defs[k]).kind==='pack');
+          const c=pick('common'), e=pick('epic'); let castle=0; for(let L=0;L<20;L++) castle+=castleLevelUpCost(L,'castle').dust;
+          myCardCopies[c]=[{},{},{}]; const before=forgeCreditOf(c).dust, fed=feedDuplicate(c);
+          const mains=CONQUEST_MAPS.filter(m=>!m.sub&&!m.reserved);
+          return {common:forgeSpentOn(c,10).dust, epicMult:levelCostMult(e), castle, fed:fed&&fed.dust, credit:forgeCreditOf(c).dust-before, copies:myCardCopies[c].length,
+            map20:enemyDeckLevel(mains[19].nodes.find(n=>n.kind==='skirmish')), map1:enemyDeckLevel(mains[0].nodes.find(n=>n.kind==='skirmish')), max: Math.round(22*30*ratingLevelFactor(10))}; })()""")
+        check(ec['common'] == 675 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
+        check(ec['fed'] == 36 and ec['credit'] == 36 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
+        check(300 <= ec['map20'] <= 450 and ec['map1'] < 25 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')
     sys.exit(1 if failures else 0)

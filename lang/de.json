@@ -916,5 +916,7 @@
  "{rarity} at Level {n}": "{rarity} ab Stufe {n}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— ein einfacher lokaler Schalter, keine echte Server-Authentifizierung — bis es eine richtige serverseitige Admin-App gibt.",
  "“Mine. This ground is mine.”": "„Meins. Dieser Boden gehört mir.“",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "Kampfwertung",
+ "Battle rating {n}": "Kampfwertung {n}"
 }

@@ -917,5 +917,7 @@
  "{rarity} at Level {n}": "{n} 级成为{rarity}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— 仅是本地开关，没有真正的服务器验证 — 直到正式的服务器端管理应用上线。",
  "“Mine. This ground is mine.”": "“我的。这片土地是我的。”",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "战斗评分",
+ "Battle rating {n}": "战斗评分 {n}"
 }

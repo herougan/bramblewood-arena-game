@@ -917,5 +917,7 @@
  "{rarity} at Level {n}": "레벨 {n}에 {rarity}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— 서버 인증 없는 단순 로컬 토글 — 정식 서버 측 관리자 앱이 생길 때까지.",
  "“Mine. This ground is mine.”": "“내 것이다. 이 땅은 내 것이다.”",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "전투 등급",
+ "Battle rating {n}": "전투 등급 {n}"
 }

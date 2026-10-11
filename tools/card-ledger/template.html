@@ -118,8 +118,11 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
 <script>
 (function(){
 const DATA = JSON.parse(document.getElementById('ledger-data').textContent);
-const RARITIES = ['starter','common','uncommon','rare','epic','heroic','unique','legendary','mythic','ancient'];
-const RCOL = {starter:'#9AA39A', common:'#8C9A87', uncommon:'#4E9A57', rare:'#3B78C4', epic:'#8A4FC2', heroic:'#C2741F', unique:'#C4A12B', legendary:'#D2851A', mythic:'#C2365B', ancient:'#2E8E8A'};
+// Every rarity the game has (2026-10-11, user: "Update the card ledger to contain the missing rarities by the way, like super
+// and very rare"): the normal ladder, then the special ones. Colours follow the game's own (RARITY_DEFS).
+const RARITIES = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','quest','questunique','special','devlegendary','devancient','eventlegendary','eventrare'];
+const RLABEL = {starter:'Starter', common:'Common', uncommon:'Uncommon', rare:'Rare', veryrare:'Very Rare', superrare:'Super Rare', epic:'Epic', heroic:'Heroic', unique:'Unique', legendary:'Legendary', mythic:'Mythic', ancient:'Ancient', quest:'Quest', questunique:'Quest-Unique', special:'Special', devlegendary:'Dev-Legendary', devancient:'Dev-Ancient', eventlegendary:'Event-Legendary', eventrare:'Event-Rare'};
+const RCOL = {starter:'#8f897a', common:'#8C9A87', uncommon:'#3fae64', rare:'#3b82f6', veryrare:'#1fb5cf', superrare:'#6366f1', epic:'#9333ea', heroic:'#f97316', unique:'#c9a00a', legendary:'#dc2626', mythic:'#d6249f', ancient:'#92400e', quest:'#6b8fc4', questunique:'#c9a00a', special:'#d07aa6', devlegendary:'#9b2b2b', devancient:'#6b3a1a', eventlegendary:'#e0562f', eventrare:'#3f8fd0'};
 const SRC_ORDER = {'Base':0, 'Map':1, 'Pack':2, 'Faction pack':3, 'Other':4, 'Token':5};
 const rows = DATA.rows;
 const byId = Object.fromEntries(rows.map(r=> [r.id, r]));
@@ -151,7 +154,7 @@ const srcKey = r=> (SRC_ORDER[r.g] ?? 9)*1000 + (r.m!=null ? parseFloat(String(r
 const COLS = [
   {k:'n', label:'Card'}, {k:'r', label:'Rarity'}, {k:'src', label:'Comes from'},
   {k:'c', label:'Lumber', num:true}, {k:'w', label:'Wait', num:true}, {k:'a', label:'Attack', num:true}, {k:'h', label:'Health', num:true},
-  {k:'score', label:'Score', num:true}, {k:'wr', label:'Win rate'}, {k:'t', label:'Types'}, {k:'sk', label:'Skills'}, {k:'note', label:'Note'},
+  {k:'f', label:'Forge to 10', num:true}, {k:'score', label:'Score', num:true}, {k:'wr', label:'Win rate'}, {k:'t', label:'Types'}, {k:'sk', label:'Skills'}, {k:'note', label:'Note'},
 ];
 function sortVal(r, k){
   switch(k){
@@ -189,9 +192,10 @@ function rowHTML(r){
   const sc = score(r), sc2 = isEdited(r) ? scoreOf(r, val) : sc;
   return `<tr data-row="${r.id}">
     <td><div class="card"><span class="ico">${esc(r.i)}</span><div><div class="nm">${esc(r.n)}${r.tok?'<span class="tag">token</span>':''}${r.eq?'<span class="tag">equipment</span>':''}${committedOf(r.id)?`<span class="live" title="Committed ${esc((committedOf(r.id).at||'').slice(0,10))}, waiting to ship: ${esc(Object.entries(committedOf(r.id).cards[r.id]).map(([k,v])=> k+' '+v[0]+'→'+v[1]).join(', '))}">committed</span>`:''}</div><div class="id">${esc(r.id)}</div></div></div></td>
-    <td class="${rchg?'chg':''}"><span class="rar" style="--rc:${RCOL[gr]||'#888'}"><i></i><span class="gv">${esc(gr)}</span></span><span class="to">→<select id="f-r-${r.id}" data-id="${r.id}" data-k="r" aria-label="New rarity for ${esc(r.n)} (now ${esc(gr)})" ${canWrite?'':'disabled'}><option value="">—</option>${RARITIES.map(x=>`<option value="${x}" ${x===pr?'selected':''}>${x}</option>`).join('')}</select></span></td>
+    <td class="${rchg?'chg':''}"><span class="rar" style="--rc:${RCOL[gr]||'#888'}"><i></i><span class="gv">${esc(RLABEL[gr]||gr)}</span></span><span class="to">→<select id="f-r-${r.id}" data-id="${r.id}" data-k="r" aria-label="New rarity for ${esc(r.n)} (now ${esc(gr)})" ${canWrite?'':'disabled'}><option value="">—</option>${RARITIES.map(x=>`<option value="${x}" ${x===pr?'selected':''}>${RLABEL[x]||x}</option>`).join('')}</select></span></td>
     <td>${esc(r.src)}</td>
     ${numCell(r,'c')}${numCell(r,'w')}${numCell(r,'a')}${numCell(r,'h')}
+    <td class="num" title="Dust and Maple Leaves to level 10, in Materia Units (1 MU = 675 Dust + 450 Leaves)">${r.f} MU</td>
     <td class="num">${sc.toFixed(1)}${Math.abs(sc2-sc) > 0.05 ? `<span class="was">→ ${sc2.toFixed(1)}</span>` : ''}</td>
     <td>${wr}</td>
     <td>${esc(r.t)}</td>
@@ -226,7 +230,7 @@ function refreshRow(id){
 
 // Filters
 const rSel = document.getElementById('fRarity');
-rSel.innerHTML = `<option value="">Any rarity</option>` + RARITIES.filter(x=> rows.some(r=> r.r===x)).map(x=>`<option value="${x}">${x[0].toUpperCase()+x.slice(1)}</option>`).join('');
+rSel.innerHTML = `<option value="">Any rarity</option>` + RARITIES.map(x=>`<option value="${x}">${RLABEL[x]||x}${rows.some(r=> r.r===x) ? '' : ' (none yet)'}</option>`).join('');
 const sSel = document.getElementById('fSource');
 const srcNames = ['Base','Map','Pack','Faction pack','Other','Token'];
 const detail = [...new Set(rows.filter(r=> r.g!=='Map').map(r=> r.src))].sort();

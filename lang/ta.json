@@ -917,5 +917,7 @@
  "{rarity} at Level {n}": "நிலை {n}-இல் {rarity}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— உண்மையான சர்வர் அங்கீகாரம் இல்லாத எளிய உள்ளூர் நிலைமாற்றி — சரியான சர்வர் பக்க நிர்வாகப் பயன்பாடு வரும் வரை.",
  "“Mine. This ground is mine.”": "“என்னுடையது. இந்த நிலம் என்னுடையது.”",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "போர் மதிப்பீடு",
+ "Battle rating {n}": "போர் மதிப்பீடு {n}"
 }

@@ -915,5 +915,7 @@
  "{rarity} at Level {n}": "{rarity} sa Level {n}",
  "— a plain local toggle, no real server auth — until a proper server-side admin app exists.": "— simpleng lokal na toggle lang, walang tunay na server auth — hanggang may maayos nang server-side na admin app.",
  "“Mine. This ground is mine.”": "“Akin. Akin ang lupang ito.”",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "Battle rating": "Rating sa laban",
+ "Battle rating {n}": "Rating sa laban {n}"
 }
