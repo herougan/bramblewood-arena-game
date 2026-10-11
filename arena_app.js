@@ -16920,6 +16920,7 @@ function renderMatchUI(){
            bosses, spent in the Forge screen) with no live pill here to reorder yet — see the
            reply to this batch of feedback for why that one wasn't touched blind. -->
       ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}
+    ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
       ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}
       ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
       ${deckHasEcclesia(m, me)?`<span class="hud-pill prayer" id="hudPrayerPill" title="${escapeAttr(RESOURCE_TOOLTIP.prayer)}">🙏 ${m.engine.prayerOf ? m.engine.prayerOf(me) : 0}${(m.engine.prayerOfferReady && m.engine.prayerOfferReady(me)) ? '<small class="dark-left"> · offer ready</small>' : ''}</span>`:''}
@@ -20073,6 +20074,7 @@ function renderHUD(){
     <!-- 2026-09-30: zero-value pills hidden entirely now, mirrors renderMatchUI's own copy above
          — see that copy's comment for the full why. -->
     ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}
+    ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
     ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}
     ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
     ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (23:50)
+- **Plays left:** in a fight with more than one action a turn, a "▶ 1/2 plays" pill sits beside your Lumber. It counts down as you play and resets each round.
+- **Versus screens on phones:** the boss opener's top/bottom split and the Arena versus screen kept the desktop's sideways split on phones. Both now split top and bottom, with the glowing seam across the middle.
+- **Tests:** the UI smoke test now casts Tailwind from the hand (Wait −1, the turn ends, it's logged) and straps the Bramble Gauntlet onto a unit.
+
 ## 2026-10-11 (23:20)
 - **Card editor: Card kind.** Unit, Spell or Equipment.
   - A spell picks Hasten, Mend or Sap and an amount.

@@ -235,6 +235,19 @@ async def main():
             check(await pg.evaluate("BramblewoodShaders._layers.size === 0 && !document.querySelector('canvas.bw-shader')"), 'turning shaders off should remove every layer')
         else: print('  (no WebGL here; shader check skipped)')
         check(not errs, f'shader errors: {errs[:3]}')
+        # 2026-10-11: a spell from hand resolves and takes the turn; equipment straps onto a unit
+        pg, errs = await new_page(b, 1366, 860)
+        await pg.evaluate("""(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key,{skipEnergyCost:true,noOpener:true});
+          const M=matchState; M.engine.debugSpawnCard(M.players, M.sideOf, 1, 'ent', 'left', {}, []); M.engine.allBoardCards(M.players[1])[0].wait=3;
+          M.players[1].hand.unshift({uid:99901, defId:'tailwind'}); M.players[1].lumber=3; coachSeen.add('g-peek'); renderPlay(); return 1;})()""")
+        await pg.wait_for_timeout(1000)
+        await pg.evaluate("playCardByUid(99901, 'left'); 1"); await pg.wait_for_timeout(6000)
+        st = await pg.evaluate("[matchState.engine.allBoardCards(matchState.players[1])[0].wait, matchState.round, matchState.log.some(e=> e.type==='spell')]")
+        check(st[0] == 1 and st[1] == 2 and st[2], f'Tailwind should cut Wait by 1 and end the turn (wait, round, logged: {st})')
+        await pg.evaluate("(()=>{ const M=matchState; M.players[1].playedThisTurn=false; M.players[1].lumber=3; M.players[1].hand.unshift({uid:99902, defId:'bramble-gauntlet'}); renderPlay(); return devilryDropOnto(M.engine.allBoardCards(M.players[1])[0].uid, 99902); })()")
+        await pg.wait_for_timeout(500)
+        check(await pg.evaluate("matchState.engine.allBoardCards(matchState.players[1])[0].equipment==='bramble-gauntlet'"), 'Bramble Gauntlet should equip onto the unit')
+        check(not errs, f'spell/equipment errors: {errs[:3]}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')
     sys.exit(1 if failures else 0)
