@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', swipe:'🗡↔', sweep:'🌀', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'🔱', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🌀', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', antiAir:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -184,16 +184,31 @@ const PASSIVE_DEFS = [
   // card there takes a full hit, and an empty/off-board flank redirects that swing straight to
   // the castle (no Siege bonus, since Siege rewards the PRIMARY hit landing on the castle, not an
   // incidental flank redirect). So a lone defender with empty flanks eats the castle hit twice.
-  {key:'swipe', category:'passive', label:'Swipe', kind:'boolean', desc:()=>`Also hits the columns immediately left and right of its target — an empty flank sends that swing straight to the castle.`},
+  // 2026-10-12 (user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the old Swipe is Fork now (an old
+  // swipe:true still reads as Fork). Swipe is a new number skill: it steals Lumber.
+  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`Also hits the columns immediately left and right of its target. An empty flank sends that swing straight to the castle.`,
+    get:e=> (e.fork || e.swipe === true) ? true : undefined, apply:(e)=>{ e.fork = true; }},
+  {key:'swipe', category:'passive', label:'Swipe', kind:'number', min:0, desc:v=>`Every swing that lands swipes ${v} Lumber from the opponent: they lose it, you gain it.`,
+    get:e=> (typeof e.swipe === 'number' && e.swipe > 0) ? e.swipe : undefined},
+  {key:'twinStrike', category:'passive', label:'Twin Strike', kind:'boolean', desc:()=>`Attacks twice on its turn.`},
+  {key:'converge', category:'evergreen', label:'Converge', kind:'select', desc:v=>`When it becomes ready, ${v==='ally' ? 'your' : v==='both' ? 'both' : 'the enemy’s'} board${v==='both' ? 's close' : ' closes'} its gaps: units pack together around the centre, in the same order.`,
+    selectOptions:()=> [{value:'enemy', label:'Enemy board'}, {value:'ally', label:'Your board'}, {value:'both', label:'Both boards'}],
+    get:e=> e.converge ? (e.converge === true ? 'enemy' : e.converge) : undefined, apply:(e,v)=>{ e.converge = ['enemy','ally','both'].includes(v) ? v : 'enemy'; }},
+  {key:'defiance', category:'passive', label:'Defiance', kind:'types', numberKey:'defianceN', desc:(v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : '(pick a type)'}.`,
+    get:e=> e.defiance ? (Array.isArray(e.defiance) ? e.defiance.slice() : String(e.defiance).split(',').map(x=> x.trim()).filter(Boolean)) : undefined,
+    apply:(e,v,n)=>{ const t = Array.isArray(v) ? v.filter(Boolean) : []; if(t.length){ e.defiance = t; const k = Number(n)||1; if(k > 1) e.defianceN = k; } }},
+  {key:'pack', category:'passive', label:'Pack', kind:'number', min:0, desc:v=>`On arrival, gains +${v} Health for every ally already on the field that shares a type with it.`},
   // 2026-09-19, per explicit request ("clean up the passive abilities and their names. They
   // should be simple like 'Hide' or 'Lunge'"): trimmed the "(legacy)"/"%" suffixes off Sweep,
   // Stun (on hit) %, and Reflect % below — those three were the only labels in this list that
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
-  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`Its swing spills onto the units directly either side of its target: ${v} damage to each.`},
+  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`With a unit in front, it swings left, centre, then right: ${v} damage to each side unit (an empty side is a miss). With nothing in front, it hits the castle.`},
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: deals double damage, takes half.`},
   // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
-  {key:'swarm', category:'passive', label:'Swarm', kind:'types', desc:v=> Array.isArray(v) && v.length ? `+1 Attack for every ally that is ${v.join(' or ')}.` : `+1 Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
-    get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined, apply:(e,v)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; }},
+  // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
+  {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
+    get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined,
+    apply:(e,v,n)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; const k = Number(n)||1; if(k > 1) e.swarmN = k; }},
   {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
@@ -575,7 +590,7 @@ function CHAIN_BREAK_OPTIONS(){
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, mechLineGate:p.mechLineGate,
-    get: p.get || (e=> e[p.key]), placeholders:p.placeholders,
+    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
@@ -1017,9 +1032,9 @@ const SKILL_COUNTERS = {
   flying: ['reach', 'antiAir'],
   armor: ['pierce', 'perforate', 'poison', 'puncture'],
   shell: ['pierce', 'perforate'],
-  evasive: ['sweep', 'swipe'],
+  evasive: ['sweep', 'fork'],
   stealth: ['guardian'],
-  swarm: ['sweep', 'swipe'],
+  swarm: ['sweep', 'fork', 'defiance'],
   poison: ['regen', 'bloom', 'healing'],
   bleed: ['regen', 'bloom', 'healing'],
   guardian: ['stealth'],
@@ -3202,7 +3217,7 @@ function cardActionLogHTML(uid){
     const ev = m.log[i];
     if(ev.type==='hit' || ev.type==='hitHQ'){
       if(ev.attUid!==uid) continue;
-      const label = ev.sweep ? 'Sweep' : ev.swipe ? 'Swipe' : ev.ranged ? 'Missile' : 'Strike';
+      const label = ev.sweep ? 'Sweep' : (ev.fork || ev.swipe) ? 'Fork' : ev.ranged ? 'Missile' : 'Strike';
       lines.push(`<li>${label}${ev.crit?' 💥':''} → ${ev.dmg}</li>`);
     } else if(ev.type==='sap'){
       if(ev.attUid!==uid) continue;
@@ -4208,7 +4223,13 @@ function abilityBadges(d, bopts){
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
-  if(e.swipe) out.push(`🗡↔`);
+  if(e.fork || e.swipe === true) out.push(`🔱`); // Fork (was Swipe, 2026-10-12)
+  if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${e.swipe}`);
+  if(e.twinStrike) out.push(`⚔⚔`);
+  if(e.converge) out.push(`🧲`);
+  if(e.defiance) out.push(`😤${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
+  if(e.pack) out.push(`🐺${e.pack}`);
+  if(e.fastForward) out.push(`⏩${e.fastForward}`);
   // Sweep recolored from a bare ⚔+N (2026-09-18, per explicit request: "sweep should have a
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
@@ -5737,7 +5758,7 @@ function deriveSkillRows(c){
     const rows = [];
     SKILL_DEFS.forEach(s=>{
       const v = s.get(c.effects||{});
-      if(v!==undefined && v!==false) rows.push({key:s.key, value:v});
+      if(v!==undefined && v!==false) rows.push({key:s.key, value:v, n: s.numberKey ? (Number((c.effects||{})[s.numberKey]) || (s.key==='swarm' && typeof (c.effects||{}).swarm==='number' ? c.effects.swarm : 1)) : undefined});
     });
     c._skillRows = rows;
   }
@@ -5748,7 +5769,7 @@ function defaultSkillValue(key){
   if(!s) return true;
   if(s.kind==='number') return 1;
   if(s.kind==='twoNumber') return [1,1];
-  if(s.kind==='select') return resistOptionsList()[0];
+  if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
   if(s.kind==='selectNumber'){ const opts = s.selectOptions ? s.selectOptions() : []; return [opts[0]?opts[0].value:'', 1]; }
   // cardCount (2026-09-21, On Death: Spawn / On Attacked: Spawn): a fresh row defaults to no
   // card picked yet (forces a deliberate choice, same "— pick a card —" placeholder convention
@@ -5781,6 +5802,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     const vals = Array.isArray(row.value)?row.value:[1,1];
     const ph = s.placeholders || ['Timer','Damage'];
     valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
+  } else if(s.kind==='select' && s.selectOptions){
+    valueHtml = `<select data-sk="val" data-i="${i}">${s.selectOptions().map(o=>`<option value="${o.value}" ${row.value===o.value?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}</select>`;
   } else if(s.kind==='select'){
     const opts = resistOptionsList();
     valueHtml = `<select data-sk="val" data-i="${i}">${opts.map(o=>`<option value="${o}" ${row.value===o?'selected':''}>${resistOptionLabel(o)}</option>`).join('')}</select>`;
@@ -5801,6 +5824,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
     const sel = Array.isArray(row.value) ? row.value : [];
     valueHtml = `<select multiple size="4" class="skill-types" data-sk="vals" data-i="${i}" aria-label="Counts allies of these types (none picked: any shared type)" title="None picked: any ally that shares a type. Pick types to count only those (Ctrl/Cmd-click for several).">${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel.includes(a)?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
+    if(s.numberKey) valueHtml += `<label class="skill-n">× <input type="number" min="1" class="w-52" data-sk="valN" data-i="${i}" value="${row.n||1}" title="How much each one adds (default 1)"></label>`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
     // a count (val1) — the exact same picker widget actionFieldsHTML already builds for the
@@ -5815,13 +5839,13 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // Live "Resist Cold"-style readout next to select-kind rows (2026-09-16, per explicit
   // request — the static label alone used to read as a bare "Resist" with no indication of
   // which target is currently picked until you opened the dropdown or hovered the tooltip).
-  const liveReadout = s.kind==='select' ? `<span class="skill-live-readout">${escapeHtml(s.label)} ${escapeHtml(resistOptionLabel(row.value))}</span>` : '';
+  const liveReadout = s.kind==='select' && !s.selectOptions ? `<span class="skill-live-readout">${escapeHtml(s.label)} ${escapeHtml(resistOptionLabel(row.value))}</span>` : '';
   // Tooltip text: most kinds just want a generic 'N' placeholder, but cardCount's desc() (On
   // Death: Spawn / On Attacked: Spawn) reads a real [defId, count] pair to name the actual card
   // picked, same as twoNumber/selectNumber kinds read their own row.value shape elsewhere —
   // passing 'N' through for those would index into the string and show garbage.
   const descArg = s.kind==='number' ? (row.value||1) : s.kind==='types' ? row.value : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
-  return `<div class="skill-row" title="${escapeAttr(s.desc(descArg))}">
+  return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
     <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${valueHtml}
     ${liveReadout}
@@ -6161,7 +6185,7 @@ function readEditorFormIntoCard(){
     } else if(sdef.kind==='number' || sdef.kind==='select'){
       sdef.apply(newEffects, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
-      const el = row.querySelector('[data-sk="vals"]'); sdef.apply(newEffects, el ? [...el.selectedOptions].map(o=> o.value) : []);
+      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(newEffects, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
     } else {
       sdef.apply(newEffects, true);
     }
@@ -7337,17 +7361,31 @@ const todayKey = ()=>{ const d = new Date(); return `${d.getFullYear()}-${d.getM
 function freeEnergyClaimedToday(){ try{ return localStorage.getItem(FREE_ENERGY_KEY) === todayKey(); }catch(e){ return false; } }
 function openEnergyPanel(anchor){
   closeEnergyPanel();
-  const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin), claimed = freeEnergyClaimedToday();
+  const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin) || (typeof adminAllowed==='function' && adminAllowed()), claimed = freeEnergyClaimedToday();
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
   pop.innerHTML = `<b>⚡ ${s.current}/${ENERGY_MAX} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
-    ${isAdmin ? `<button type="button" class="btn small" id="epRefill">🚨 Get more Energy (admin)</button>` : ''}`;
+    ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5">−5</button><button type="button" class="btn small" data-ep="-1">−1</button><button type="button" class="btn small" data-ep="1">+1</button><button type="button" class="btn small" data-ep="5">+5</button></div>
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="tick">Next refill now</button></div></div>` : ''}`;
   document.body.appendChild(pop);
-  const r = anchor.getBoundingClientRect(), w = Math.min(260, innerWidth - 24);
-  pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - 160, r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
+  const r = anchor.getBoundingClientRect(), w = Math.min(isAdmin ? 290 : 260, innerWidth - 24);
+  pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, ENERGY_MAX); saveEnergyState(st); done('⚡ Energy full.'); };
+  // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
+  // instant refill tick. They show for an admin account even with Admin mode switched off.
+  pop.querySelectorAll('[data-ep]').forEach(b=> b.onclick = ()=>{
+    const st = settleEnergy(), k = b.dataset.ep;
+    if(k === 'empty') st.current = 0;
+    else if(k === 'set'){ const v = Math.max(0, Math.min(999, Math.round(Number((pop.querySelector('#epSet')||{}).value)||0))); st.current = v; }
+    else if(k === 'tick'){ st.current += 1; st.lastRegenAt = Date.now(); }
+    else st.current = Math.max(0, st.current + (Number(k)||0));
+    saveEnergyState(st); refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){}
+    const head = pop.querySelector('b'); if(head) head.textContent = `⚡ ${st.current}/${ENERGY_MAX} Energy`; const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
+  });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
 }
 function closeEnergyPanelOutside(e){ const p = document.getElementById('energyPanel'); if(p && !p.contains(e.target)) closeEnergyPanel(); }
@@ -7408,19 +7446,38 @@ function playAgainEnergyAttrs(m){
   if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = nodeEnergyCost(f.map, f.node) || 1, short = currentEnergy() < c;
-  return `data-energy-cost="${c}" ${short ? 'disabled' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
+  return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
-function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ b.disabled = e < (+b.dataset.energyCost||0); }); }
+// Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
+// have enough energy. It fades off after 2s"). Fight buttons stay pressable, look greyed, and answer with this.
+function energyShortToast(cost){
+  try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
+  let t = document.getElementById('energyShortToast');
+  if(t) t.remove();
+  t = document.createElement('div'); t.id = 'energyShortToast'; t.className = 'energy-short-toast'; t.setAttribute('role', 'status');
+  t.innerHTML = `You don’t have enough energy <small>${cost ? `needs ${cost}⚡, you have ${currentEnergy()}⚡` : `you have ${currentEnergy()}⚡`}</small>`;
+  document.body.appendChild(t);
+  setTimeout(()=>{ t.classList.add('is-out'); setTimeout(()=> t.remove(), 450); }, 2000);
+}
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); }
+document.addEventListener('click', e=>{
+  const b = e.target && e.target.closest ? e.target.closest('button[data-energy-cost]') : null; if(!b) return;
+  const c = +b.dataset.energyCost || 0; if(currentEnergy() >= c) return;
+  e.preventDefault(); e.stopImmediatePropagation(); denyShake(b); energyShortToast(c);
+}, true);
 function refreshEnergyHud(){
   const s = settleEnergy();
   const nextMs = msUntilNextEnergyTick();
   // 2026-10-08 (user: "When energy is 20/20, just say full").
-  const text = s.current > ENERGY_MAX ? `${s.current}/${ENERGY_MAX}` : s.current >= ENERGY_MAX ? _t('Full') : nextMs===null ? `${s.current}/${ENERGY_MAX}` : `${s.current}/${ENERGY_MAX} · +1 in ${formatEnergyCountdown(nextMs)}`;
+  // 2026-10-12 (user: "the energy bar should say +⚡ in X:XX instead of text. The lightning emoji resource icon should be on
+  // the right of the 4/20 as well"): "4/20⚡ · +⚡ in 2:47".
+  const ico = '<span class="energy-ico">⚡</span>';
+  const html = s.current > ENERGY_MAX ? `${s.current}/${ENERGY_MAX}${ico}` : s.current >= ENERGY_MAX ? `${escapeHtml(_t('Full'))}${ico}` : nextMs===null ? `${s.current}/${ENERGY_MAX}${ico}` : `${s.current}/${ENERGY_MAX}${ico}<span class="energy-next"> · +⚡ in ${formatEnergyCountdown(nextMs)}</span>`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
     const textEl = document.getElementById(textId);
-    if(textEl) textEl.textContent = text;
+    if(textEl && textEl.innerHTML !== html) textEl.innerHTML = html;
     if(pill) pill.classList.toggle('energy-low', low);
   });  try{ refreshEnergyButtons(); }catch(e){}
 }
@@ -8998,7 +9055,7 @@ function renderPlay(){
             </div>
           </div>
           <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
-            <span class="energy-ico">⚡</span><span id="energyPillPlayText">—</span>
+            <span id="energyPillPlayText">—</span>
           </div>
         </div>
       </div>
@@ -10302,13 +10359,17 @@ function skirmishTargetWinRate(mapId, node){
   const i = Math.max(0, sk.findIndex(n=> n.key===node.key));
   return .85 - .25 * (i / Math.max(1, sk.length - 1));
 }
+// D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
+const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
+function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
+function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); if(!r.phase) r.phase = NIGHT_MAPS.has(mapId || mapIdOfNode(node)) ? 'night' : 'day'; return r; }
 function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
 function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
   const myChar = playerChar || CHARACTER_DEFS.castle;
   const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
-    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: node.rules || undefined});
+    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, deckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
     P[2].loopCards = []; applySkirmishSetup(P, node);
@@ -10469,7 +10530,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <fieldset class="se-wide se-battle"><legend>⚔️ This skirmish's battle</legend>
           <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
-          <label title="Day and night are off unless a fight turns them on. Nocturnal and Diurnal cards only get their bonus while the cycle runs">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Off (default)') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night'); })()}</select></label>
+          <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
@@ -11454,7 +11515,7 @@ function tryResumeAbandonedMatch(){
 function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   try{
-    const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node.rules) || undefined});
+    const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'gravity', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && fightRules(snap.conquestNode.mapId, (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node)) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
@@ -12655,7 +12716,7 @@ function battleRecommendation(node){
   if(swarmCopies / totalCopies >= 0.5) tips.push('a fast, cheap swarm — a board-wide answer earns its keep more than one big hitter.');
   if(has('evasive')) tips.push('several of these dodge attacks outright — spread damage across the board rather than banking on a single strike landing.');
   if(has('shell') || has('rage')) tips.push('tanky front line — bring sustained or burst damage to actually break through it.');
-  if(has('swipe') || has('sweep')) tips.push('hits more than one target at once — avoid clustering your own weak units together.');
+  if(has('fork') || has('swipe') || has('sweep')) tips.push('hits more than one target at once — avoid clustering your own weak units together.');
   if(has('sap') || has('bounty')) tips.push('punishes a slow fight — look to close it out quickly.');
   const archCounts = {};
   cards.forEach(c=> archetypesOf(c.d).forEach(a=>{ archCounts[a] = (archCounts[a]||0)+c.n; }));
@@ -13122,7 +13183,7 @@ function renderConquestSubTab(body){
   // every node's trail segment(s) point back at its actual predecessor(s), branch or not. Falls
   // back to the old prev-in-array edge for any node that doesn't define `requires`.
   const nodeIndexByKey = {}; map.nodes.forEach((n,i)=>{ nodeIndexByKey[n.key]=i; });
-  const edgeLines = [];
+  const edgeLines = [], trailGrads = [];
   map.nodes.forEach((n,i)=>{
     const reqs = Array.isArray(n.requires) ? n.requires : (i>0 ? [map.nodes[i-1].key] : []);
     reqs.forEach(reqKey=>{
@@ -13134,10 +13195,20 @@ function renderConquestSubTab(body){
       // like a chain through the skirmish in the middle.
       const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
       const blocked = positions.some((P, k)=>{ if(k===i || k===j) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
-      const cls = n.requiresAny && reqs.length > 1 ? 'is-any' : '';
+      let cls = n.requiresAny && reqs.length > 1 ? 'is-any' : '';
+      // Locked links (2026-10-12, user: "When the 'link' between skirmishes has not been unlocked ... the link should be
+      // darkened as well. If 1 node is unlocked but the other isn't, the link fades a bit as it goes towards the locked
+      // node"): both ends locked = dark; one end open = a gradient from lit (open end) to dark (locked end).
+      const va = visibleFlags[j], vb = visibleFlags[i];
+      let st = '';
+      if(!va && !vb) cls += ' is-dark';
+      else if(va !== vb){ const gid = `trl-${map.id}-${j}-${i}`, from = va ? A : B, to = va ? B : A;
+        trailGrads.push(`<linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}"><stop offset="0" class="trl-on"/><stop offset=".35" class="trl-on"/><stop offset="1" class="trl-off"/></linearGradient>`);
+        st = ` style="stroke:url(#${gid})"`; cls += ' is-half'; }
+      cls = cls.trim();
       if(blocked){ const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18), cx = (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy = (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1);
-        edgeLines.push(`<path class="${cls} is-curve" data-a="${map.nodes[j].key}" data-b="${n.key}" d="M ${A.x} ${A.y} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${B.x} ${B.y}" />`); }
-      else edgeLines.push(`<line ${cls ? `class="${cls}" ` : ''}data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" />`);
+        edgeLines.push(`<path class="${cls} is-curve"${st} data-a="${map.nodes[j].key}" data-b="${n.key}" d="M ${A.x} ${A.y} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${B.x} ${B.y}" />`); }
+      else edgeLines.push(`<line ${cls ? `class="${cls}" ` : ''}${st} data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" />`);
     });
   });
   // Item #5 (2026-09-18, "the green background represents the map... make it encompass the
@@ -13156,7 +13227,7 @@ function renderConquestSubTab(body){
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
-      <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${edgeLines.join('')}</svg>
+      <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${mapSpotsHTML(map, positions, progress)}
       ${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}
@@ -13350,7 +13421,7 @@ function renderConquestSubTab(body){
       panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'disabled'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
+      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" title="${escapeAttr(defs[sid].name)}">${cardTileHTML(defs[sid], {inPlay:true})}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Battle rating'))}</small><b>⚔ ${ev}</b></div>`; })()}
@@ -13451,7 +13522,7 @@ function startOfflineRaidMatch(){
   if(!st || st.defeated) return;
   if(!deckSizeOkOrWarn()) return;
   if(!spendEnergy(ENERGY_COST.onlineRaid)){
-    alert(`Not enough Energy for a Raid attempt — this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
+    energyShortToast(ENERGY_COST.onlineRaid);
     return;
   }
   const boss = st.boss;
@@ -13905,7 +13976,7 @@ function openTrenchSetup(def, partId){
   overlay.querySelectorAll('[data-row]').forEach(b=> b.onclick = ()=>{
     if(!deckSizeOkOrWarn()) return;
     if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 (you have ${currentRaidPoints()}).`, 'error'); return; }
-    if(!spendEnergy(cost.energy||0)){ showToast(`Not enough Energy — this costs ${cost.energy}⚡ (you have ${currentEnergy()}).`, 'error'); return; }
+    if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
     if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
     bumpQuestCounter('raidsJoined', 1);
     const myRow = +b.dataset.row;
@@ -14000,7 +14071,7 @@ function startRaidPartMatch(def, partId){
   if(!deckSizeOkOrWarn()) return;
   const cost = def.cost || {};
   if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ alert(`Not enough Raid Points — this costs ${cost.raidPoints}🎫 and you have ${currentRaidPoints()}🎫. They refill 1 every 6 hours.`); return; }
-  if(!spendEnergy(cost.energy||0)){ alert(`Not enough Energy — this costs ${cost.energy}⚡ and you have ${currentEnergy()}⚡.`); return; }
+  if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
   if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
   bumpQuestCounter('raidsJoined', 1);
   // "Exposed" stage: the part's cards fight without their abilities (run-only copies).
@@ -14921,13 +14992,13 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(!(opts && opts.skipEnergyCost)){
     const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
-      alert(`Not enough Energy for ${node.name} -- this fight costs ${cost}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
+      energyShortToast(cost);
       return false;
     }
     bumpQuestCounter('energyConquest', cost);
   }
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: node.rules || undefined}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node)}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const enemyCharacter = skirmishCastle(node).character;
@@ -16414,7 +16485,7 @@ function startRaidMatch(bossId){
   // Energy gate (2026-09-22, "Energy is for doing skirmishes etc" -- the "etc" covers Online Raid
   // attempts too, same as every Conquest fight kind).
   if(!spendEnergy(ENERGY_COST.onlineRaid)){
-    alert(`Not enough Energy for an Online Raid attempt -- this costs ${ENERGY_COST.onlineRaid}⚡ and you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`);
+    energyShortToast(ENERGY_COST.onlineRaid);
     // Refund the Raid Point already spent above — the attempt never actually started.
     myCurrencies.raidPoints = Math.min(RAID_POINTS_MAX, (myCurrencies.raidPoints||0) + RAID_POINTS_COST);
     saveCurrencies();
@@ -16777,6 +16848,16 @@ function endMatch(opts){
 // vs AI: the AI already acted instantly alongside the player (see aiActNow) — resolve at once.
 // vs PC: only resolve once BOTH humans have acted this round; otherwise hand off with a
 // "pass the device" beat so the next player's hand isn't visible until they're ready.
+// Resolves once no card on the board is still dropping in (or after `max` ms).
+async function waitForBoardEntrances(max){
+  const t0 = performance.now();
+  await sleep(60);
+  while(performance.now() - t0 < (max||1400)){
+    const busy = [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)));
+    if(!busy) return;
+    await sleep(50);
+  }
+}
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
   // Actions per turn (2026-10-11): with plays left this turn, the turn goes on; the round resolves once they're used
@@ -16786,6 +16867,8 @@ async function afterPlayerAction(actingPid){
   if(m.mode!=='pc' && m.mode!=='liveRanked'){
     if(m.mode!=='pvp') aiActNow(); // PvP: the stranger already played at the start of the round
     renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+    // 2026-10-12 (user: "It should be a real summon, THEN the combat begins"): let the enemy's card finish landing first.
+    await waitForBoardEntrances(1400);
     // 2026-09-17 follow-up ("there is a small lag between placing the unit and the unit
     // acting"): this pause is dead time between the play landing and combat actually starting —
     // distinct from the deliberate 2026-09-16 "slow down the game effects by 50%" pacing inside
@@ -17131,6 +17214,23 @@ function showFacing(uid){
       const fc = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(u))).find(Boolean);
       const sc = fc && defsNow[fc.defId] && defsNow[fc.defId].effects && defsNow[fc.defId].effects.scare;
       html += sc ? wavy(cx(tr), cy(tr)) : line(cx(tr), cy(tr)); });
+    // Sweep / Fork (2026-10-12, user: "The attack lines preview should show 3-lines. the two other lines are sub-lines and are
+    // a bit thinner"): with one unit in front, two thinner lines go to the slots either side of it (empty or not).
+    { const srcCard = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(uid))).find(Boolean);
+      const se = srcCard && defsNow[srcCard.defId] && defsNow[srcCard.defId].effects || {};
+      if(f.foes.length===1 && (Number(se.sweep) > 0 || se.fork || se.swipe === true)){
+        const t = boardCardEl(f.foes[0]);
+        if(t){ const tr = t.getBoundingClientRect(), gap = Math.max(8, tr.width*0.12), foePid = f.pid===1 ? 2 : 1;
+          const order = boardOrderOf(m, foePid), me0 = order.find(x=> String(x.uid)===String(f.foes[0]));
+          [-1, 1].forEach(dir=>{
+            const nb = me0 && order.find(x=> Math.abs(x.p - (me0.p + dir)) < 0.25), nbEl = nb && boardCardEl(nb.uid);
+            let x2, y2; if(nbEl){ const nr = nbEl.getBoundingClientRect(); x2 = cx(nr); y2 = cy(nr); nbEl.classList.add('is-faced'); }
+            else { x2 = cx(tr) + dir*(tr.width + gap); y2 = cy(tr); }
+            html += `<line class="facing-sub${nbEl ? '' : ' is-empty'}" x1="${cx(sr).toFixed(1)}" y1="${cy(sr).toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+            if(!nbEl) html += `<circle class="facing-sub-dot" cx="${x2.toFixed(1)}" cy="${y2.toFixed(1)}" r="5"/>`;
+          });
+        }
+      } }
   } else {
     const castleSide = f.pid===1 ? 'B' : 'A';
     const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
@@ -19813,8 +19913,12 @@ function bountyBubbleHTML(c, d, pid){
 }
 function bountyHoldingNow(){
   const m = matchState; if(!m || m.over || m.resolving) return false;
-  return m.selectedUid!=null || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
+  return m.selectedUid!=null || !!(bwPressedCard && bwPressedCard.isConnected) || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
 }
+// 2026-10-12: the slots start fading in the moment you press a playable card, before the drag threshold.
+let bwPressedCard = null;
+document.addEventListener('pointerdown', e=>{ bwPressedCard = (e.target && e.target.closest) ? e.target.closest('#handStrip .card-tile.playable, #leaderWidget.summonable') : null; }, true);
+['pointerup','pointercancel'].forEach(t=> document.addEventListener(t, ()=>{ bwPressedCard = null; }, true));
 let bountySyncQueued = false;
 function syncBountyHolding(){
   if(bountySyncQueued) return; bountySyncQueued = true;
@@ -21882,7 +21986,10 @@ function fieldEffectCardHTML(m){
   const phase = dayNightOn(m) ? m.engine.getPhase() : null;
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
   const roundInPhase = ((Math.max(1, m.round||1) - 1) % PL) + 1;
-  const phaseHTML = phase ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phase==='night' ? '🌙' : '☀️'}</span><b>${phase==='night' ? _t('Night') : _t('Day')}</b><small>${roundInPhase}/${PL}</small></div>` : '';
+  const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
+  const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
+  const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
+    : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: the minute on the dot. Nocturnal and Diurnal bonuses both apply, doubled.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
   const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
   if(!f) return phaseHTML + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
@@ -22598,6 +22705,9 @@ function delayForEvent(ev, prevKind){
   if(ev.type==='arrow') base = 40;
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  else if(ev.type==='sweepWhiff') base = 620;
+  else if(ev.type==='fastForward') base = 520;
+  else if(ev.type==='converge') base = 900;
   else if(ev.type==='death') base = 550; // was 1100 -- chain 2x faster
   else if(ev.type==='render') base = 780;
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
@@ -22792,7 +22902,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
   if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
-  return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'disabled' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
+  return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
 function rewardsCheer(){
@@ -23139,6 +23249,7 @@ function logText(ev){
         // "esprit" as the whole sentence) and went unnoticed until this follow-up pass.
         bleed: `bled ${nm(ev.targetDefId)} (+${ev.amount} 🩸)`,
         esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔${ev.hp ? ' +'+ev.hp+'❤' : ''}) 🤝`,
+        pack: `arrives with its pack (+${ev.amount}❤) 🐺`,
       }[ev.kind] || ev.kind;
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
@@ -23146,7 +23257,7 @@ function logText(ev){
     case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💥 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your HQ':'the enemy HQ')}!`};
     case 'namedBuff': return {cls:'gold', text:`${nm(ev.attDefId)} buffed ${nm(ev.targetDefId)} +${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}. 🐝`};
     case 'ready': return {cls:'', text:`${nm(ev.defId)} is ready to fight.`};
-    case 'frenzy': return {cls:'quick', text:`${nm(ev.attDefId)}'s Frenzy triggers — attacking again! 🔥`};
+    case 'frenzy': return {cls:'quick', text:ev.twin ? `${nm(ev.attDefId)} strikes twice! ⚔⚔` : `${nm(ev.attDefId)}'s Frenzy triggers — attacking again! 🔥`};
     // 2026-09-20 (explicit bug report: "the battle log is missing some of the attack
     // transactions"): a card that was gathered as a candidate attacker but sat its turn out —
     // Reload cooldown, Stun, Frozen, Asleep, a failed Paralyze coin flip, still Chained, Shell
@@ -23167,6 +23278,9 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'fastForward': return {cls:'', text:`${nm(ev.defId)} fast-forwards ${ev.n} turn${ev.n===1?'':'s'}! ⏩`};
+    case 'sweepWhiff': return {cls:'', text:`${nm(ev.attDefId)} sweeps at the empty ${ev.dir} side and hits nothing. 🌀`};
+    case 'swipeLumber': return {cls:'', text:`${nm(ev.attDefId)} swipes ${ev.amount} Lumber! 🫳🪵`};
+    case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
     default: return {cls:'', text: ev.type};
@@ -24020,8 +24134,8 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // flash+clang via the main handler above, but until now nothing distinguished "this landed
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
-  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.swipe || ev.sweep) && targetEl){
-    const label = ev.sweep ? '↳ Sweep!' : '↔ Swipe!';
+  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl){
+    const label = ev.sweep ? '↳ Sweep!' : '🔱 Fork!';
     setTimeout(()=> { (ev.sweep ? SoundKit.sweepTone() : SoundKit.swipeTone()); floatText(targetEl, label, 'quick'); }, 130);
   }
 }
@@ -24313,7 +24427,52 @@ function renderVfxForEvent(ev){
   if(ev.type==='frenzy'){
     const el = boardCardEl(ev.attUid);
     SoundKit.frenzyTone();
-    if(el) floatText(el, '🔥 Frenzy!', 'quick');
+    if(el) floatText(el, ev.twin ? '⚔⚔ Twin Strike!' : '🔥 Frenzy!', 'quick');
+  }
+  // Sweep at an empty side (2026-10-12, user: "When the swipe hits an empty slot, it still looks like it hits forward. It
+  // should look like it attacks that empty slot"): the attacker leans toward the empty slot beside its target and a slash
+  // crescent cuts the air there.
+  if(ev.type==='sweepWhiff'){
+    const near = boardCardEl(ev.nearUid), att = boardCardEl(ev.attUid);
+    if(near){
+      const r = near.getBoundingClientRect(), gap = Math.max(8, r.width * 0.12), sign = ev.dir === 'left' ? -1 : 1;
+      const x = r.left + r.width/2 + sign * (r.width + gap), y = r.top + r.height/2;
+      animateAttacker(ev.attUid, ev.side==='A', {leanX: sign * 16, sweep:true});
+      setTimeout(()=>{
+        try{ SoundKit.sweepTone && SoundKit.sweepTone(); }catch(e){}
+        const sl = document.createElement('div'); sl.className = 'sweep-whiff' + (sign < 0 ? ' is-left' : ''); sl.setAttribute('aria-hidden','true');
+        sl.style.cssText = `left:${x}px; top:${y}px; --sw:${Math.round(r.width*0.9)}px; --sh:${Math.round(r.height*0.75)}px;`;
+        document.body.appendChild(sl); setTimeout(()=> sl.remove(), 650);
+        const ft = document.createElement('div'); ft.className = 'sweep-whiff-label'; ft.textContent = 'whoosh'; ft.style.cssText = `left:${x}px; top:${y - r.height*0.2}px;`;
+        document.body.appendChild(ft); setTimeout(()=> ft.remove(), 900);
+      }, animMs().windup);
+    }
+  }
+  // Fast Forward (2026-10-12): a quick ⏩ and a blur of afterimages as the unit runs ahead.
+  if(ev.type==='fastForward'){
+    const el = boardCardEl(ev.uid);
+    if(el){ floatText(el, `⏩ ×${ev.n}`, 'quick'); el.classList.remove('ff-blur'); void el.offsetWidth; el.classList.add('ff-blur'); setTimeout(()=> el.classList.remove('ff-blur'), 800); }
+    try{ SoundKit.swipeTone && SoundKit.swipeTone(); setTimeout(()=>{ try{ SoundKit.swipeTone(); }catch(e){} }, 90); }catch(e){}
+  }
+  // Swipe (2026-10-12): Lumber hops from the opponent's castle to the swiper.
+  if(ev.type==='swipeLumber'){
+    const from = hqTileEl(ev.targetSide), to = boardCardEl(ev.attUid);
+    try{ SoundKit.coin && SoundKit.coin(); }catch(e){}
+    if(from && to){ try{ spawnProjectile(from, to, '🪵'); }catch(e){} }
+    if(to) setTimeout(()=> floatText(to, `🫳 +${ev.amount}🪵`, 'gold'), 380);
+  }
+  // Converge (2026-10-12): the target board's units glide inward to their new slots.
+  if(ev.type==='converge'){
+    const pid = ev.targetSide==='A' ? 1 : 2, m = matchState, rr = m && m.replayRows && m.replayRows[pid];
+    const src = boardCardEl(ev.uid); if(src) floatText(src, '🧲 Converge!', 'quick');
+    try{ SoundKit.shift && SoundKit.shift(); }catch(e){}
+    if(m && m.replayCards) (ev.moves||[]).forEach(mv=>{ if(m.replayCards[mv.uid]) m.replayCards[mv.uid].slot = mv.to; });
+    if(rr){
+      const all = ['left','center','right'].flatMap(ln=> rr[ln]);
+      const slotOf = u=>{ const mv = (ev.moves||[]).find(x=> String(x.uid)===String(u)); if(mv) return mv.to; const rc = m.replayCards && m.replayCards[u]; return rc && rc.slot!=null ? rc.slot : 0; };
+      rr.center = all.filter(u=> slotOf(u)===0); rr.left = all.filter(u=> slotOf(u)<0).sort((a,b)=> Math.abs(slotOf(a))-Math.abs(slotOf(b))); rr.right = all.filter(u=> slotOf(u)>0).sort((a,b)=> slotOf(a)-slotOf(b));
+    }
+    try{ renderBoard({}); }catch(e){}
   }
   // statusFx: poison/expose/stun/debuffAttack applied via the advanced trigger builder
   // (as opposed to their passive-keyword equivalents, which already have their own
@@ -24370,6 +24529,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='stagger'){ SoundKit.staggerTone(); if(el){ shakeEl(el); floatText(el, '💢 Staggered', 'debuff'); } if(rc) rc.staggered = (rc.staggered||0) + 1; }
     else if(ev.kind==='berserk'){ const attEl = boardCardEl(ev.attUid); SoundKit.berserkTone(); if(attEl){ shakeEl(attEl); floatText(attEl, '😡 Berserk! +'+ev.amount+'⚔', 'gold'); } }
     else if(ev.kind==='momentum'){ const attEl = boardCardEl(ev.attUid); SoundKit.momentumTone(); if(attEl) floatText(attEl, '🔥 +'+ev.amount+'⚔', 'gold'); }
+    else if(ev.kind==='pack'){ setTimeout(()=>{ try{ statChangeVfx(ev.attUid, 0, ev.amount); const el = boardCardEl(ev.attUid); if(el) floatText(el, '🐺 Pack!', 'quick'); SoundKit.momentumTone && SoundKit.momentumTone(); }catch(e){} }, 420); }
     // Bleed (via the "Bleed opposite" custom-trigger action) and Esprit (2026-09-21, Skills/
     // VFX/SFX audit — see mechanics-guideline.md's "Process & meta" and style-guideline.md's
     // "distinct per mechanic" rule): both statusFx kinds were already pushed by the engine but
@@ -26080,7 +26240,7 @@ const WILDPATH_TREES = [
     {id:'t3', x:95, y:300, icon:'🩸', name:'Thornbite', desc:'Bleed lasts one extra tick.', req:['t1']},
     {id:'t4', x:215, y:220, icon:'💥', name:'Weak Spots', desc:'Units below half Health take +1 damage from your attacks.', req:['t2'], ranks:2},
     {id:'t5', x:110, y:205, icon:'🏹', name:'Fletcher’s Eye', desc:'Arrow skills deal +1 damage.', req:['t3']},
-    {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Sweep and Swipe hits deal +1 damage.', req:['t4', 't5']},
+    {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Sweep and Fork hits deal +1 damage.', req:['t4', 't5']},
     {id:'t7', x:150, y:40, icon:'🌹', name:'Crown of Thorns', desc:'Capstone. Whenever one of your units gets a kill, it gains +1 Attack.', req:['t6'], capstone:true},
   ]},
   {id:'bloom', name:'The Bloom', icon:'🌸', tint:'#e2a6f0', blurb:'Lumber, cards and tricks: drawing, pitching and growing your board.', nodes:[
@@ -26106,12 +26266,23 @@ function wildpathTreeSVG(tree){
       ${n.ranks ? `<text class="wp-rank" x="${n.capstone ? 18 : 14}" y="${n.capstone ? -16 : -12}" text-anchor="middle">0/${n.ranks}</text>` : ''}</g>`);
   return `<svg class="wp-tree-svg" viewBox="0 0 300 430" style="--tint:${tree.tint}" aria-label="${escapeAttr(tree.name)} path">${links.join('')}${nodes.join('')}</svg>`;
 }
+// Path points (2026-10-12, action-items lap, D32 with my suggested default: "1 per map, +1 per boss S rank"): worked out
+// from Conquest progress, so every save already has its points. Spending them waits until the trails leave preview.
+function wildpathPoints(){
+  const pr = loadConquestProgress(), done = new Set(pr.completed || []), ranks = pr.ranks || {};
+  let maps = 0, sRanks = 0;
+  mainConquestMaps().filter(m=> !m.reserved).forEach(m=>{
+    const key = mapRewardNodeKey(m); if(key && done.has(conquestNodeId(m.id, key))) maps++;
+    (m.nodes||[]).forEach(n=>{ if(['boss','finalboss'].includes(baseKind(n.kind||'')) && rankAtLeast(ranks[conquestNodeId(m.id, n.key)], 'S')) sRanks++; });
+  });
+  return {maps, sRanks, total: maps + sRanks};
+}
 function renderWildpaths(){
   const root = document.getElementById('view-paths'); if(!root) return;
   const all = WILDPATH_TREES.flatMap(t=> t.nodes.map(n=> Object.assign({tree:t}, n)));
   const sel = all.find(n=> n.id === wildpathSel);
   root.innerHTML = `<div class="wp-page">
-    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Win fights to earn Path points, then walk a trail one mark at a time. Only in fights against the wood (PvE), never in the Arena.</p></div>
+    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Win fights to earn Path points, then walk a trail one mark at a time. Only in fights against the wood (PvE), never in the Arena.</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.maps} from maps cleared, ${wp.sRanks} from boss S ranks. 1 per map, +1 per boss S rank.</p>`; })()}</div>
       <span class="wp-points" title="Path points to spend">✦ 0 Path points</span></header>
     <p class="wp-preview">Design preview: the trails and skills below are a first draft and don't change fights yet.</p>
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
@@ -28623,6 +28794,7 @@ const PLACES = {
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 function switchTab(tab){
+  if(tab !== 'play') try{ caveScreenOff(); }catch(e){}
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
@@ -29194,11 +29366,30 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
 // spots, pawn) with a lantern hole that follows the pointer. caveLamp keeps the light where it was across re-renders.
 const caveLamp = {x:0.5, y:0.5, r:150};
 function isCaveMap(map){ try{ const k = (typeof ShaderM !== 'undefined' && ShaderM && ShaderM.MAP_KIND) ? ShaderM.MAP_KIND[map.id] : null; return k === 3 || map.id === 'm4' || map.id === 'mg'; }catch(e){ return false; } }
+// 2026-10-12 (user: "The blackness should apply to the whole screen. The Map controls on the left and tabs on the bottom
+// should be still visible albeit very slightly darker"): the darkness is one screen-wide layer (#caveScreenDark) with the
+// lantern hole at the pointer; the map list and the tab bar sit just above it, slightly dimmed. The in-canvas layer stays
+// as the fallback when the screen layer can't be used.
+function caveScreenOff(){ document.body.classList.remove('cave-screen'); const o = document.getElementById('caveScreenDark'); if(o) o.remove(); }
+function syncCaveScreen(){
+  const canvas = document.getElementById('conquestCanvas');
+  const on = !!(canvas && canvas.isConnected && canvas.querySelector(':scope > .cave-dark') && typeof currentTab !== 'undefined' && currentTab === 'play' && !matchState);
+  if(!on) caveScreenOff();
+  return on;
+}
+setInterval(()=>{ try{ if(document.body.classList.contains('cave-screen')) syncCaveScreen(); }catch(e){} }, 400);
 function mountCaveDark(canvas, map){
-  if(!canvas || !map || !isCaveMap(map)) return null;
+  if(!canvas || !map || !isCaveMap(map)){ caveScreenOff(); return null; }
   canvas.querySelectorAll(':scope > .cave-dark').forEach(e=> e.remove());
   const el = document.createElement('div'); el.className = 'cave-dark'; el.setAttribute('aria-hidden', 'true'); canvas.appendChild(el);
-  const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px'); };
+  let scr = document.getElementById('caveScreenDark');
+  const host = document.getElementById('conquestLayout') || document.body;
+  if(!scr){ scr = document.createElement('div'); scr.id = 'caveScreenDark'; scr.className = 'cave-screen-dark'; scr.setAttribute('aria-hidden', 'true'); }
+  if(scr.parentNode !== host || host.firstChild !== scr) host.insertBefore(scr, host.firstChild); // first in the map's own layer: under the map list and the map, over the backdrop
+  document.body.classList.add('cave-screen');
+  const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px');
+    const r = canvas.getBoundingClientRect(), o = document.getElementById('caveScreenDark');
+    if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px'); } };
   apply();
   const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
   canvas.addEventListener('pointermove', move, {passive:true}); canvas.addEventListener('pointerdown', move, {passive:true});

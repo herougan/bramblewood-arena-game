@@ -102,7 +102,7 @@ failures.forEach(f=> console.log('  FAIL '+f));
 // Effects with no visible change are listed for review, not failed: some only fire in situations a
 // generic context can't build (a Leader on the board, an ally being played, a specific trigger).
 // Give each one a hand-written scenario, then add its key to the strict list below.
-const STRICT = new Set(['poison','thorns','bleed','armor','flying','evasive','sweep','swipe','guardian','rage','freeze','paralyze','sleep','stunOnHit','regen','explode','expose','crit']);
+const STRICT = new Set(['poison','thorns','bleed','armor','flying','evasive','sweep','fork','guardian','rage','freeze','paralyze','sleep','stunOnHit','regen','explode','expose','crit']);
 const strictDead = deadEffects.filter(x=> x.match(/\{([^}]*)\}/)[1].split(', ').every(k=> STRICT.has(k)));
 strictDead.forEach(x=> console.log('  FAIL core effect never fired: '+x));
 process.exit(failures.length || strictDead.length ? 1 : 0);

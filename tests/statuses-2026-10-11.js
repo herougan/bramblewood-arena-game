@@ -27,9 +27,12 @@ trial(7, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'ts-drunk', 'left', {}, []); e.deb
 // Confused: its own triggers fizzle about half the time
 { let fired = 0; for(let k=0;k<200;k++) trial(600+k, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'ts-sb', 'left', {}, []); const c = e.allBoardCards(P[1])[0]; e.debugFireTrigger(P, so, c.uid, 'onAttacked', {}, []); if(c.atk > 1) fired++; });
   ok(fired > 70 && fired < 130, `Confused triggers fire about half the time (${fired}/200)`); }
-// Day/night is off unless a fight asks for it (2026-10-11): no phase by default, a phase with rules.phase.
+// D33 (2026-10-12): day all match by default, no switching; 'off' turns it off; a cycle rule still alternates.
 { const st = {}; const e0 = E.makeSimEngine(defs, E.mulberry32(1), {battleMode:'open'}); const P = {1:e0.newPlayer(1,{}), 2:e0.newPlayer(2,{})};
-  for(let r=2; r<=8; r++) e0.roundStart(P, r, so, st, []); ok(e0.getPhase() === null, 'no day or night by default');
+  for(let r=2; r<=8; r++) e0.roundStart(P, r, so, st, []); ok(e0.getPhase() === 'day', 'day all match by default');
+  const eo = E.makeSimEngine(defs, E.mulberry32(1), {battleMode:'open', rules:{phase:'off'}}); ok(eo.getPhase() === null, "phase:'off' turns day and night off");
+  const tw = E.makeSimEngine(defs, E.mulberry32(1), {battleMode:'open', rules:{phase:'realtime', clock:new Date(2026, 9, 12, 19, 0).getTime()}}); ok(tw.getPhase() === 'twilight', 'real time: 7:00 on the dot is twilight');
+  const rn = E.makeSimEngine(defs, E.mulberry32(1), {battleMode:'open', rules:{phase:'realtime', clock:new Date(2026, 9, 12, 10, 30).getTime()}}); ok(rn.getPhase() === 'night', 'real time: 10:30 AM is night');
   const e1 = E.makeSimEngine(defs, E.mulberry32(1), {battleMode:'open', rules:{phase:'cycle', phaseLen:2}}); const Q = {1:e1.newPlayer(1,{}), 2:e1.newPlayer(2,{})}; const seen = new Set();
   for(let r=2; r<=8; r++){ e1.roundStart(Q, r, so, st, []); seen.add(e1.getPhase()); } ok(seen.has('day') && seen.has('night'), 'a cycle rule turns day and night on'); }
 console.log(`statuses-2026-10-11: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

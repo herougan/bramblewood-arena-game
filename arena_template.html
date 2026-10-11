@@ -445,7 +445,16 @@
      (it's spent every time you start a fight) and gets a warning tint once you're too low to
      afford even the cheapest thing that costs it (a Skirmish). */
   .energy-pill{display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--energy-ink);}
-  .energy-pill .energy-ico{font-size:12px;}
+  .energy-pill .energy-ico{font-size:12px; margin-left:1px;}
+  .energy-pill .energy-next{opacity:.85;}
+  /* Not enough Energy (2026-10-12): a small toast in the middle of the screen, gone after 2 s; short fight buttons look greyed. */
+  .energy-short-toast{position:fixed; left:50%; top:46%; transform:translate(-50%,-50%); z-index:5000; pointer-events:none; padding:10px 18px; border-radius:12px;
+    background:rgba(28,18,10,.92); color:#ffe6c2; font:800 15px 'Baloo 2',system-ui,sans-serif; box-shadow:0 8px 24px rgba(0,0,0,.45), 0 0 0 2px rgba(224,80,60,.7);
+    display:flex; flex-direction:column; align-items:center; gap:2px; animation:energyToastIn .2s ease-out; transition:opacity .4s ease, transform .4s ease;}
+  .energy-short-toast small{font-weight:600; font-size:12px; opacity:.8;}
+  .energy-short-toast.is-out{opacity:0; transform:translate(-50%,-70%);}
+  @keyframes energyToastIn{from{opacity:0; transform:translate(-50%,-40%) scale(.92);} to{opacity:1; transform:translate(-50%,-50%) scale(1);}}
+  button[data-energy-cost].is-energy-short, button[data-energy-cost][aria-disabled="true"]{filter:grayscale(.65) brightness(.85); cursor:not-allowed;}
   .energy-pill.energy-low{color:var(--status-negative-ink); border-color:var(--status-negative-border-soft);}
 
   .btn{font-family:'Baloo 2'; font-weight:700; font-size:14px; border:1px solid var(--surface-border); border-radius:10px; background:var(--surface); color:var(--ink); padding:9px 14px;
@@ -4030,6 +4039,11 @@
   .map-trail-svg path{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
   .conquest-layout.has-map-art .map-trail-svg path{stroke:rgba(255,248,225,.85); stroke-width:.75; filter:drop-shadow(0 0 1.2px rgba(0,0,0,.75));}
   .map-trail-svg .is-any{stroke-dasharray:.6,1.4; opacity:.8;} /* 'any one of these' links are dotted */
+  /* Locked links (2026-10-12): dark when both ends are locked; fading toward the locked end otherwise. */
+  .map-trail-svg .trl-on{stop-color:rgba(255,255,255,.45);} .map-trail-svg .trl-off{stop-color:rgba(20,14,8,.35);}
+  .conquest-layout.has-map-art .map-trail-svg .trl-on{stop-color:rgba(255,248,225,.85);}
+  .map-trail-svg .is-dark{stroke:rgba(20,14,8,.4) !important; filter:none !important; opacity:.75;}
+  .map-trail-svg .is-half{filter:none !important;}
   .conquest-map-canvas.link-editing .map-trail-svg{pointer-events:none;} .conquest-map-canvas.link-editing .map-node-hidden{z-index:4; pointer-events:auto;}
   .conquest-map-canvas.link-editing [data-lkey]{cursor:crosshair; outline:2px dashed rgba(255,230,160,.55); outline-offset:3px;}
   .conquest-map-canvas.link-editing [data-lkey].link-from{outline:3px solid #ffd66e; box-shadow:0 0 18px rgba(255,210,100,.8);}
@@ -4248,6 +4262,10 @@
   button[data-energy-cost]:disabled::after{background:rgba(220,80,60,.22); border-color:rgba(220,80,60,.6);}
   .energy-pill:not(.raid-points-pill){cursor:pointer;}
   .energy-panel{position:fixed; z-index:9000; display:flex; flex-direction:column; gap:8px; padding:12px 14px; border-radius:12px; background:var(--surface, #2a2218); color:var(--ink, #f3ead6); border:1px solid rgba(255,214,90,.45); box-shadow:0 10px 28px rgba(0,0,0,.4); font-size:14px;}
+  .energy-panel .ep-admin{display:flex; flex-direction:column; gap:6px; padding-top:8px; border-top:1px dashed rgba(224,80,60,.5);}
+  .energy-panel .ep-admin-h{font-weight:800; font-size:12px; color:#ff8a70;}
+  .energy-panel .ep-admin-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
+  .energy-panel .ep-admin-row .w-60{width:60px;}
   .energy-panel small{opacity:.8; font-size:12px;}
   .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); background:var(--gold); margin-left:auto;}
   .conquest-rank-badge.rank-C{background:#c8845a;}
@@ -5077,6 +5095,24 @@
   .bf-hp.is-faced .bf-hp-track{box-shadow:0 0 0 3px rgba(255,215,122,.8);}
   .facing-svg{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:30; overflow:visible;}
   .facing-svg line{stroke:#ffd77a; stroke-width:3; stroke-dasharray:6 5; stroke-linecap:round; opacity:.9;}
+  /* Sweep/Fork sub-lines (2026-10-12): thinner, to each slot beside the target; an empty slot gets a small ring. */
+  .facing-svg line.facing-sub{stroke-width:1.6; stroke-dasharray:4 4; opacity:.75;}
+  .facing-svg line.facing-sub.is-empty{opacity:.5;}
+  .facing-svg circle.facing-sub-dot{fill:none; stroke:#ffd77a; stroke-width:1.6; stroke-dasharray:3 3; opacity:.6;}
+  /* Sweep at an empty slot (2026-10-12): a crescent slash cutting the air where a unit would stand. */
+  .sweep-whiff{position:fixed; z-index:1200; width:var(--sw,90px); height:var(--sh,90px); transform:translate(-50%,-50%) rotate(-25deg) scale(.6); pointer-events:none; border-radius:50%;
+    border-top:5px solid rgba(255,244,214,.95); border-right:3px solid rgba(255,244,214,.55); filter:drop-shadow(0 0 6px rgba(255,220,150,.8)); opacity:0; animation:sweepWhiff .55s ease-out forwards;}
+  .sweep-whiff.is-left{transform:translate(-50%,-50%) rotate(205deg) scale(.6); animation-name:sweepWhiffL;}
+  @keyframes sweepWhiff{0%{opacity:0; transform:translate(-50%,-50%) rotate(-60deg) scale(.6);} 30%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-50%) rotate(30deg) scale(1.05);}}
+  @keyframes sweepWhiffL{0%{opacity:0; transform:translate(-50%,-50%) rotate(240deg) scale(.6);} 30%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-50%) rotate(150deg) scale(1.05);}}
+  .sweep-whiff-label{position:fixed; z-index:1201; transform:translate(-50%,-50%); pointer-events:none; font:800 13px 'Baloo 2',system-ui,sans-serif; color:#fff4d6; text-shadow:0 1px 3px rgba(0,0,0,.8); font-style:italic; opacity:0; animation:sweepWhiffLbl .85s ease-out forwards;}
+  @keyframes sweepWhiffLbl{0%{opacity:0; transform:translate(-50%,-30%);} 25%{opacity:.95;} 100%{opacity:0; transform:translate(-50%,-120%);}}
+  @media (prefers-reduced-motion: reduce){ .sweep-whiff, .sweep-whiff-label{animation-duration:.01s;} }
+  .board-card.ff-blur .card-tile{animation:ffBlur .75s ease-out;}
+  @keyframes ffBlur{0%{filter:none;} 20%{filter:blur(1.5px) brightness(1.3); transform:translateX(-6px);} 45%{transform:translateX(6px);} 100%{filter:none; transform:none;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.ff-blur .card-tile{animation:none;} }
+  .wp-points{margin-top:6px; font-size:13px;}
+  .skill-n{display:inline-flex; align-items:center; gap:4px; margin-left:6px; font-weight:700;}
 
 
   /* iOS long-press (2026-10-10, screenshots: holding a card selected it with blue handles and a magnifier, and holding
@@ -5675,6 +5711,7 @@
   .phase-pill small{opacity:.75; font-weight:600;}
   .phase-pill.phase-day{background:linear-gradient(135deg, #f2b33d, #e07b2a);}
   .phase-pill.phase-night{background:linear-gradient(135deg, #2b3a6b, #151d3d);}
+  .phase-pill.phase-twilight{background:linear-gradient(135deg, #e07b2a, #6b3a8b 55%, #151d3d);} /* D33 real-time twilight (2026-10-12) */
   .arena-today{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 10px; margin:4px auto 14px; max-width:640px;}
   .arena-today-k{font:800 11.5px 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-muted);}
   .arena-today-sub{flex-basis:100%; font-size:12px; color:var(--ink-soft);}
@@ -7587,6 +7624,12 @@
 .cave-dark{position:absolute; inset:0; z-index:7; pointer-events:none; border-radius:inherit;
   background:radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(4,6,12,0) 0, rgba(4,6,12,0) calc(var(--lr, 150px) * .45), rgba(4,6,12,.55) calc(var(--lr, 150px) * .9), rgba(4,6,12,.9) calc(var(--lr, 150px) * 1.6), rgba(2,3,8,.94) calc(var(--lr, 150px) * 2.6));}
 @media (prefers-reduced-motion: reduce){ .cave-dark{background:radial-gradient(circle at 50% 50%, rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
+/* Screen-wide cave darkness (2026-10-12): one layer over the whole window; the map list and the tab bar sit just above it,
+   slightly dimmed. */
+.cave-screen-dark{position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,0) calc(var(--lr, 150px) * .45), rgba(4,6,12,.55) calc(var(--lr, 150px) * .9), rgba(4,6,12,.9) calc(var(--lr, 150px) * 1.6), rgba(2,3,8,.94) calc(var(--lr, 150px) * 2.6));}
+body.cave-screen #conquestMapList, body.cave-screen #view-play .play-subtabs-row{filter:brightness(.78);}
+@media (prefers-reduced-motion: reduce){ .cave-screen-dark{background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
@@ -7736,10 +7779,13 @@
 
   /* Play slots only show while you hold a card (user: "The slots only fade in when holding a card"), and fade in after
      the cards have settled, so a slot never appears in the wrong spot and jumps. */
-  .board-card.slot-target{opacity:0; pointer-events:none; transition:opacity .18s ease, background .15s, border-color .15s, transform .15s !important;}
-  body.bw-holding .board-card.slot-target{opacity:1; pointer-events:auto; animation:slotFadeIn .3s ease .22s both;}
-  @keyframes slotFadeIn{from{opacity:0;} to{opacity:1;}}
-  @media (prefers-reduced-motion: reduce){ body.bw-holding .board-card.slot-target{animation:none;} }
+  /* 2026-10-12 (user: "The card slot indicators should have a proper fade-in/out. The moment I pick up a card, start to
+     fade them in immediately"): a plain opacity transition both ways, starting on pickup; slots created while you're
+     already holding fade in from 0 (@starting-style) instead of popping. */
+  .board-card.slot-target{opacity:0; pointer-events:none; transition:opacity .28s ease, background .15s, border-color .15s, transform .15s !important;}
+  body.bw-holding .board-card.slot-target{opacity:1; pointer-events:auto;}
+  @starting-style{ body.bw-holding .board-card.slot-target{opacity:0;} }
+  @media (prefers-reduced-motion: reduce){ .board-card.slot-target{transition:opacity .12s linear !important;} }
   /* Stats by level (card editor) */
   .lvs-box{margin:6px 0 12px; border:1px solid var(--surface-border); border-radius:10px; padding:6px 10px; background:var(--surface-2, rgba(0,0,0,.03));}
   .lvs-box summary{cursor:pointer; font-weight:800;} .lvs-box summary small{font-weight:600; opacity:.7; margin-left:6px;}
@@ -8100,7 +8146,7 @@
          arena_app.js. Lives in the topbar (not a per-tab HUD) since it's an account-level
          resource visible everywhere, same as the Home nav button. -->
     <div class="energy-pill" id="energyPill" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
-      <span class="energy-ico">⚡</span><span id="energyPillText">—</span>
+      <span id="energyPillText">—</span>
     </div>
     <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>
     <div class="user-pill" id="userPill" hidden><span class="user-ico">👤</span><span id="userPillText"></span></div>

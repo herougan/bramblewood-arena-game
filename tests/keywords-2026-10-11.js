@@ -13,6 +13,15 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'kw-armor': {id:'kw-armor', name:'Ar', attack:0, health:500, wait:0, cost:0, effects:{armor:3}},
   'kw-counter': {id:'kw-counter', name:'Co', attack:4, health:500, wait:0, cost:0, effects:{counterattack:true}},
   'kw-spite': {id:'kw-spite', name:'Sp', attack:0, health:500, wait:0, cost:0, effects:{spiteful:3}},
+  'kw-sweep': {id:'kw-sweep', name:'Sw', attack:5, health:50, wait:0, cost:0, effects:{sweep:2}},
+  'kw-fork': {id:'kw-fork', name:'Fk', attack:3, health:50, wait:0, cost:0, effects:{fork:true}},
+  'kw-swipe': {id:'kw-swipe', name:'Sp', attack:1, health:50, wait:0, cost:0, effects:{swipe:2}},
+  'kw-twin': {id:'kw-twin', name:'Tw', attack:2, health:50, wait:0, cost:0, effects:{twinStrike:true}},
+  'kw-conv': {id:'kw-conv', name:'Cv', attack:0, health:50, wait:1, cost:0, effects:{converge:'enemy'}},
+  'kw-dummy': {id:'kw-dummy', name:'Du', attack:0, health:500, wait:0, cost:0, archetypes:['Beast'], effects:{}},
+  'kw-defy': {id:'kw-defy', name:'Df', attack:1, health:50, wait:0, cost:0, effects:{defiance:['Beast'], defianceN:2}},
+  'kw-swarm3': {id:'kw-swarm3', name:'S3', attack:1, health:50, wait:0, cost:0, archetypes:['Beast'], effects:{swarm:3}},
+  'kw-pack': {id:'kw-pack', name:'Pk', attack:1, health:10, wait:0, cost:0, archetypes:['Beast'], effects:{pack:2}},
   'kw-ff': {id:'kw-ff', name:'FF', attack:2, health:50, wait:1, cost:0, effects:{fastForward:3}},
 });
 function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
@@ -50,4 +59,26 @@ function setup(a, b){ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEv
   ok(hq - P[2].hq.hp === 6, `two fast-forward swings plus its normal turn hit the castle 3 times (took ${hq - P[2].hq.hp}, want 6)`);
   ok(ev.some(x=> x.type === 'fastForward'), 'a fastForward event is recorded');
   const hq2 = P[2].hq.hp; e.resolveCombat(P, so, st, [], 1); ok(hq2 - P[2].hq.hp === 2, 'next round it attacks once, as normal'); }
+// 2026-10-12 skills
+function board(a, bs){ const e = E.makeSimEngine(defs, E.mulberry32(11), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, a, 'center', {}, []); bs.forEach(([id, sd])=> e.debugSpawnCard(P, so, 2, id, sd, {}, [])); return {e, P, A:e.allBoardCards(P[1])[0]}; }
+{ const {e, P, A} = board('kw-sweep', [['kw-dummy','center'], ['kw-dummy','left']]); const ev = []; const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, ev);
+  const kinds = ev.filter(x=> x.type==='hit' || x.type==='sweepWhiff').map(x=> x.type==='sweepWhiff' ? 'whiff-'+x.dir : (x.sweep ? 'side-'+x.sweepDir : 'centre'));
+  ok(JSON.stringify(kinds) === JSON.stringify(['side-left','centre','whiff-right']), `Sweep goes left, centre, right; an empty side whiffs (${kinds})`);
+  ok(P[2].hq.hp === hq, 'Sweep never sends an empty side to the castle'); }
+{ const {e, P, A} = board('kw-sweep', []); const hq = P[2].hq.hp; const ev = []; e.debugAttack(P, so, A.uid, {}, ev); ok(P[2].hq.hp === hq - 5 && !ev.some(x=> x.type==='sweepWhiff'), 'Sweep with nothing in front just hits the castle'); }
+{ const {e, P, A} = board('kw-fork', [['kw-dummy','center']]); const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); ok(P[2].hq.hp === hq - 6, `Fork: empty flanks hit the castle (took ${hq - P[2].hq.hp})`); }
+{ const {e, P, A} = board('kw-swipe', []); P[2].lumber = 3; P[1].lumber = 0; e.debugAttack(P, so, A.uid, {}, []); ok(P[2].lumber === 1 && P[1].lumber === 2, 'Swipe 2 steals 2 Lumber on a landed swing'); }
+{ const {e, P, A} = board('kw-twin', []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(hq - P[2].hq.hp === 4, `Twin Strike swings twice (${hq - P[2].hq.hp})`); }
+{ const {e, P, A} = board('kw-defy', [['kw-dummy','center'], ['kw-dummy','left']]); const B = e.allBoardCards(P[2]).find(c=> c.slot===0); const hp = B.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hp - B.hp === 5, `Defiance (Beast) 2: +2 per enemy Beast (took ${hp - B.hp}, want 5)`); }
+{ const e = E.makeSimEngine(defs, E.mulberry32(12), {battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'kw-swarm3', 'center', {}, []); e.debugSpawnCard(P, so, 1, 'kw-dummy', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kw-pack', 'right', {}, []);
+  ok(e.swarmBonusOf(P, e.allBoardCards(P[1]).find(c=> c.defId==='kw-swarm3')) === 6, 'Swarm 3: +3 per ally sharing a type');
+  const pk = e.allBoardCards(P[1]).find(c=> c.defId==='kw-pack'); ok(pk.maxHp === 14, `Pack 2: +2 Health per ally of its type on arrival (${pk.maxHp})`); }
+{ const e = E.makeSimEngine(defs, E.mulberry32(13), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  e.debugSpawnCard(P, so, 1, 'kw-conv', 'center', {}, []);
+  ['center','left','left','left'].forEach(sd=> e.debugSpawnCard(P, so, 2, 'kw-dummy', sd, {}, []));
+  const enemy = e.allBoardCards(P[2]); enemy.find(c=> c.slot===-1).hp = 0; const ev = []; e.resolveCombat(P, so, {}, ev, 1); // the gap at -1 is a dead unit, removed this round; Converge readies at the round's end
+  const slots = e.allBoardCards(P[2]).filter(c=> c.hp>0).map(c=> c.slot).sort((a,b)=> a-b);
+  ok(ev.some(x=> x.type==='converge') && JSON.stringify(slots) === JSON.stringify([-2,-1,0]), `Converge pulls the enemy board together (${slots})`); }
 console.log(`keywords-2026-10-11: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

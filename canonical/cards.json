@@ -3319,7 +3319,7 @@
     "attack": 5,
     "health": 22,
     "effects": {
-      "swipe": true
+      "fork": true
     },
     "flavor": "One howl, three targets down. The pack was never really three wolves \u2014 just one idea, worn three ways.",
     "locked": true,
@@ -4304,7 +4304,7 @@
       "Mountain"
     ],
     "effects": {
-      "swipe": true
+      "fork": true
     },
     "flavor": "Started as a pebble. Nobody agrees on whose fault that was.",
     "locked": true,
@@ -4545,9 +4545,9 @@
       "Cave"
     ],
     "effects": {
-      "swipe": true,
       "flying": true,
-      "nocturnal": true
+      "nocturnal": true,
+      "fork": true
     },
     "flavor": "One bat is a nuisance. This is never just one bat.",
     "locked": true,
@@ -5219,8 +5219,8 @@
       "Mangrove"
     ],
     "effects": {
-      "swipe": true,
-      "tide": true
+      "tide": true,
+      "fork": true
     },
     "flavor": "One waving claw is a threat display. A thousand is a tactic.",
     "locked": true,
@@ -5682,7 +5682,7 @@
       "Desert"
     ],
     "effects": {
-      "swipe": true
+      "fork": true
     },
     "flavor": "Arrives as weather. Leaves as a body count.",
     "dmgType": "physical",
@@ -6052,7 +6052,6 @@
       "Cephalopod"
     ],
     "effects": {
-      "swipe": true,
       "triggers": [
         {
           "on": "onSpawn",
@@ -6062,7 +6061,8 @@
           "who": "enemy",
           "sub": "adjacent"
         }
-      ]
+      ],
+      "fork": true
     },
     "flavor": "Small for its family. The family is not a useful comparison.",
     "dmgType": "physical",
@@ -6152,8 +6152,8 @@
       "Duck"
     ],
     "effects": {
-      "swipe": true,
-      "flying": true
+      "flying": true,
+      "fork": true
     },
     "flavor": "In a row. Always in a row. Somehow that is the scary part.",
     "dmgType": "physical",
@@ -7974,14 +7974,14 @@
   },
   {
     "id": "test-swipe-filler",
-    "name": "Swipe Filler",
+    "name": "Fork Filler",
     "icon": "\ud83e\udeb6",
     "cost": 0,
     "wait": 0,
     "attack": 1,
     "health": 1,
     "effects": {},
-    "flavor": "A disposable 1/1 with no skills of its own -- spawn a few to fill out flanks when testing Swipe, Sweep, or any other multi-target skill.",
+    "flavor": "A disposable 1/1 with no skills of its own -- spawn a few to fill out flanks when testing Fork, Sweep, or any other multi-target skill.",
     "locked": true,
     "test": true,
     "archetypes": [
@@ -8052,16 +8052,16 @@
   },
   {
     "id": "test-skill-swipe",
-    "name": "Test: Swipe",
+    "name": "Test: Fork",
     "icon": "\ud83e\uddea",
     "cost": 0,
     "wait": 0,
     "attack": 3,
     "health": 8,
     "effects": {
-      "swipe": true
+      "fork": true
     },
-    "flavor": "Carries only Swipe -- also hits both flanking columns -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
+    "flavor": "Carries only Fork -- also hits both flanking columns -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
     "test": true,
     "archetypes": [
@@ -10850,9 +10850,9 @@
     "cost": 3,
     "wait": 2,
     "effects": {
-      "swipe": true,
       "bleed": 2,
-      "armor": 2
+      "armor": 2,
+      "fork": true
     },
     "dmgType": "physical",
     "resist": [],
@@ -11276,7 +11276,7 @@
       "Bovine"
     ],
     "effects": {
-      "swipe": true
+      "fork": true
     },
     "flavor": "Both heads want to go in different directions. Both heads win.",
     "numericId": 403,
@@ -11632,8 +11632,8 @@
     "cost": 3,
     "wait": 2,
     "effects": {
-      "swipe": true,
-      "tide": true
+      "tide": true,
+      "fork": true
     },
     "dmgType": "physical",
     "resist": [],

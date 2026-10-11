@@ -236,6 +236,33 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pl.row[side] = keep;
     });
   }
+  // Converge (2026-10-12, user: "evergreen - onReady: Collapses the ally or opposing board - depending on parameter ...
+  // Pulling the enemy units towards the centre ... and making them targetable again"): when this unit becomes ready, the
+  // chosen board ('enemy' | 'ally' | 'both') closes its gaps: its units keep their left-to-right order and pack together
+  // around the centre, moving as little as they can. A pinned unit (a Gladiator leader) holds the board still.
+  function convergeBoard(players, sideOf, srcPid, srcCard, which, events){
+    const pids = which === 'both' ? [srcPid, otherId(srcPid)] : which === 'ally' ? [srcPid] : [otherId(srcPid)];
+    pids.forEach(pid=>{
+      const pl = players[pid]; if(!pl) return;
+      const live = allBoardCards(pl).filter(c=> c.hp>0);
+      if(live.length < 2 && !(live.length === 1 && slotMode && live[0].slot !== 0)) return;
+      if(live.some(c=> c.pinned)) return;
+      if(!slotMode){ return; } // a slotless row is always packed already
+      syncSlots(pl);
+      const order = live.slice().sort((a, b)=> a.slot - b.slot), n = order.length;
+      let best = null, bestCost = Infinity;
+      for(let start = -(n-1); start <= 0; start++){ const cost = order.reduce((t, c, i)=> t + Math.abs(c.slot - (start + i)), 0); if(cost < bestCost){ bestCost = cost; best = start; } }
+      if(!bestCost) return;
+      const moves = order.map((c, i)=> ({uid:c.uid, from:c.slot, to:best + i})).filter(mv=> mv.from !== mv.to);
+      order.forEach((c, i)=>{ c.slot = best + i; });
+      const dead = allBoardCards(pl).filter(c=> c.hp<=0);
+      pl.row.center = order.filter(c=> c.slot===0);
+      pl.row.left = order.filter(c=> c.slot<0).sort((a, b)=> Math.abs(a.slot)-Math.abs(b.slot));
+      pl.row.right = order.filter(c=> c.slot>0).sort((a, b)=> a.slot-b.slot);
+      dead.forEach(c=>{ (c.slot===0 ? pl.row.center : c.slot<0 ? pl.row.left : pl.row.right).push(c); });
+      if(recordEvents && events) events.push({type:'converge', side:sideOf(srcPid), defId:srcCard.defId, uid:srcCard.uid, targetSide:sideOf(pid), moves});
+    });
+  }
   function occupiedSlots(pl){ syncSlots(pl); const set = new Set(); allBoardCards(pl).forEach(c=>{ if(c.hp>0) set.add(c.slot); }); return set; }
   // Legal placement slots in open/gladiator: any empty slot next to one of your live cards, or the
   // centre when you have nothing on the field.
@@ -515,10 +542,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-11 (user: "The diurnal cycle should be off by default. It is only enabled via a Skirmish setting, which can
   // have a configurable switch period (e.g. 3 turns)"): with no phase rule there is no day or night at all — no pill, no
   // Nocturnal / Diurnal bonus. A fight (or an Arena ruleset) turns it on with rules.phase and rules.phaseLen.
-  const phaseMode = rules.phase || 'off';
+  // D33 (2026-10-12, user: "The day/night - disable switching, but treat all as day except certain maps"): with no phase
+  // rule it is day all match (Conquest's night maps pass phase:'night'); 'off' still turns day and night off entirely.
+  // 'realtime' (an option, on no map yet; user: "in this map, 7PM - 7AM realtime is day, 7AM-7PM is night. The minute on
+  // the dot is called twilight, both effects are active and doubled"): the player's clock decides, checked every round.
+  const phaseMode = rules.phase || 'day';
   const phaseOff = phaseMode==='off';
-  const phaseFixed = phaseMode==='day' || phaseMode==='night';
-  let phase = phaseMode==='night' || phaseMode==='nightFirst' ? 'night' : 'day';
+  const phaseFixed = phaseMode==='day' || phaseMode==='night' || phaseMode==='realtime';
+  function realtimePhase(){ const d = rules.clock != null ? new Date(rules.clock) : new Date(), h = d.getHours(), m = d.getMinutes();
+    if((h === 7 || h === 19) && m === 0) return 'twilight';
+    return (h >= 7 && h < 19) ? 'night' : 'day'; }
+  let phase = phaseMode==='realtime' ? realtimePhase() : (phaseMode==='night' || phaseMode==='nightFirst' ? 'night' : 'day');
   if(!field && rules.field && FIELDS[rules.field]) field = {id: rules.field, rounds: null};
   function getField(){ return field ? Object.assign({}, field, FIELDS[field.id]) : null; }
   let turnNo = 0; // counts rounds that have started, so "one field card per turn" needs no extra resets
@@ -535,6 +569,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function phaseActive(){ return !!((turnNo && !phaseOff) || (field && field.id==='moon') || phaseFixed); }
   function phaseStatsOf(e, ph){
     const pick = k=>{ const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; };
+    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0]; return [(n[0] + d[0]) * 2, (n[1] + d[1]) * 2]; }
     if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
     if(ph==='day' && (e.diurnal || e.diurnalHp)) return pick('diurnal');
     return [0, 0];
@@ -567,6 +602,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function roundStart(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
+    if(phaseMode === 'realtime' && rules.clock == null){ const was = phase; phase = realtimePhase(); if(phase !== was && recordEvents && events) events.push({type:'phase', phase, round, realtime:true}); }
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
@@ -773,10 +809,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Swarm by type (2026-10-11, user: "Swarm ability lets me select a parameter ... None, or a specific Type or Type(s)"):
     // swarm:true counts allies sharing any type with this card; swarm:['Ants', ...] counts allies of those types only.
     const picked = Array.isArray(def.effects.swarm) && def.effects.swarm.length ? new Set(def.effects.swarm) : null;
+    // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): +N per ally; a number on its own means
+    // "any shared type, N each"; with a type list, swarmN sets N.
+    const per = typeof def.effects.swarm === 'number' ? Math.max(0, def.effects.swarm) : Math.max(1, Number(def.effects.swarmN) || 1);
     const mine = picked || new Set(def.archetypes || []), mimic = !!def.effects.changeling; if(!mine.size && !mimic) return 0;
     const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && d.effects.changeling) || (d.archetypes||[]).some(a=> mine.has(a)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length; }
+      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length * per; }
+    return 0;
+  }
+  // Defiance (2026-10-12, user: "Antagonist Skill ... Defiance Skill. Parameter: Type(s). Opposite of Swarm. Has additional
+  // Attack for every opposing card that contains that card type"): +N Attack (defianceN, default 1) for every living enemy
+  // unit carrying one of the listed types.
+  function defianceBonus(card){
+    const def = card && CARD_DEFS[card.defId]; const dv = def && def.effects && def.effects.defiance;
+    if(!dv || !curPlayers) return 0;
+    const types = new Set(Array.isArray(dv) ? dv : String(dv).split(',').map(x=> x.trim()).filter(Boolean)); if(!types.size) return 0;
+    const per = Math.max(1, Number(def.effects.defianceN) || 1);
+    for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue;
+      if(allBoardCards(pl).includes(card)){ const foe = curPlayers[otherId(pid)]; if(!foe) return 0;
+        return allBoardCards(foe).filter(c=> c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> types.has(t))).length * per; } }
     return 0;
   }
   function isRaging(card){
@@ -822,7 +874,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + phaseBonus(attCard) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (isTide(attCard) && getTide()==='flow' ? 1 : 0); if(sb) amt += sb; }
     if(isTide(targetCard) && getTide()==='ebb' && amt > 1) amt -= 1; // Ebb: Tide units take 1 less per hit (never below 1)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
@@ -1876,6 +1928,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats, mySide, boardCard.defId).devilryGenerated += def.effects.onSpawnDevilry;
       if(recordEvents && events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.onSpawnDevilry});
     }
+    // Pack N (2026-10-12, proposal for the user's "Pack N (New):"): entering the field, it gains +N Health for every ally
+    // already there that shares a type with it. Swarm's defensive twin: Swarm counts allies for Attack all match long.
+    if(Number(def.effects.pack) > 0){
+      const mine = new Set(def.archetypes || []), n = Number(def.effects.pack);
+      const allies = allBoardCards(pl).filter(c=> c!==boardCard && c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> mine.has(t))).length;
+      if(allies && mine.size){ const g = allies * n; boardCard.hp += g; boardCard.maxHp += g;
+        if(recordEvents && events) events.push({type:'statusFx', kind:'pack', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:g}); }
+    }
+    if(def.effects.converge && !(boardCard.wait > 0)) convergeBoard(players, sideOf, playerId, boardCard, def.effects.converge === true ? 'enemy' : def.effects.converge, events); // a Wait-0 unit is ready on arrival
     if(def.effects.missile && def.effects.missile.trigger==='onSpawn'){
       fireMissile(players, sideOf, playerId, boardCard, def.effects.missile, stats, events);
     }
@@ -2810,6 +2871,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         fireRender(players, sideOf, pl.id, card, def.effects.render, stats, events);
       }
       runCustomTriggers(players, sideOf, pl.id, card, def, 'onReady', stats, events);
+      if(def.effects.converge) convergeBoard(players, sideOf, pl.id, card, def.effects.converge === true ? 'enemy' : def.effects.converge, events);
       // On Ally/Enemy Ready (2026-09-27, per explicit request: "Then On Ally Ready, On Enemy
       // Ready"): cross-side mirrors of On Ready — fires on every OTHER card this player
       // controls (Ally) and on the opponent's cards (Enemy) the moment THIS card's own Wait
@@ -3065,7 +3127,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(c.wait > 0){
             c.wait -= 1;
             if(c.wait > 0){ if(recordEvents && events) events.push({type:'waitTick', side:sideOf(pid), defId:c.defId, uid:c.uid, waitRemaining:c.wait, fastForward:true}); }
-            else { if(recordEvents && events) events.push({type:'ready', side:sideOf(pid), defId:c.defId, uid:c.uid, fastForward:true}); try{ runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onReady', stats, events); }catch(e){} }
+            else { if(recordEvents && events) events.push({type:'ready', side:sideOf(pid), defId:c.defId, uid:c.uid, fastForward:true}); try{ runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onReady', stats, events); const cd = CARD_DEFS[c.defId]; if(cd && cd.effects && cd.effects.converge) convergeBoard(players, sideOf, pid, c, cd.effects.converge === true ? 'enemy' : cd.effects.converge, events); }catch(e){} }
           } else {
             resolveCombat(players, sideOf, stats, events, pid, {upkeepIds:[], onlyUid:c.uid});
           }
@@ -3195,7 +3257,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
             if(card.shellSkip){ skipTurn('shell', card, ownId); handledUids.add(uid); return; }
-            if(effAtk(card) + swarmBonus(card) <= 0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; } // a 0-Attack Swarm unit still swings with its allies' bonus
+            if(effAtk(card) + swarmBonus(card) + defianceBonus(card) <= 0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; } // a 0-Attack Swarm unit still swings with its allies' bonus
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
         });
@@ -3377,7 +3439,36 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // entirely — no damage to a card OR the castle — but it still counts as having
       // attacked (onAttack already fired, bleed already ticked above). Checked before Evade/
       // Ambush since a blind swing has nothing to do with whether the DEFENDER would dodge.
-      if(a.att.blind>0 && rnd() < 0.5){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
+      // Sweep N (reworked 2026-10-12, user: "If there is nothing in front of it, it just hits the opposing Bramble. If there
+      // is, it ... hits the Left, then Centre, then Right opposing units. If the Left or Right contains no units, it does not
+      // mean it immediately attacks the centre!"): with a unit in front, the swing goes left, centre, right in that order.
+      // The sides take N each (armour counts, no on-hit effects); an empty side is a swing at thin air (sweepWhiff), never
+      // redirected. Nothing in front: it just hits the castle.
+      let swingLanded = false;
+      const sweepN = (attDef.effects && Number(attDef.effects.sweep) > 0 && target.kind==='card') ? Number(attDef.effects.sweep) : 0;
+      const sweepNear = sweepN ? target.card : null, sweepCol = sweepN ? target.col : null;
+      const sweepStrike = (col, dir)=>{
+        const entry = liveEnemyCols[col];
+        if(!entry || entry.kind!=='card' || !entry.card || entry.card.hp<=0){
+          if(recordEvents && events) events.push({type:'sweepWhiff', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), nearUid:sweepNear.uid, dir});
+          return;
+        }
+        const side = entry.card;
+        if(!combatHitLands(a.att, side, false)){
+          if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, sweep:true});
+          return;
+        }
+        const r2 = damageCard(side, sweepN, dmgType, null);
+        aStat.dealt += r2.dmg;
+        ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, sweep:true, sweepDir:dir});
+        maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
+        if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
+        killCredit[side.uid].add(statKey(mySide, a.att.defId));
+      };
+      const blindNow = a.att.blind>0 && rnd() < 0.5;
+      if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
+      if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind});
       } else
       // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
@@ -3395,6 +3486,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
+        swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded, ambush:ambushForce, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
@@ -3579,29 +3671,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // for the SURVIVING defender — same wiring as onAttackedSpawn just above.
           runCustomTriggers(players, sideOf, a.enemyId, defCard, defDef, 'onAttacked', stats, events);
         }
-        // Sweep N (reworked 2026-10-10, user: "I think we need to rework Sweep"): it used to carry the full swing on into
-        // the next N cards down the flank, which overlapped Swipe and hit far too hard. Now it's a cleave: the swing
-        // spills onto the units directly either side of its target, N damage each (armour still counts, no on-hit
-        // effects). Fliers can still dodge it.
-        if(attDef.effects && attDef.effects.sweep > 0 && target && target.kind==='card'){
-          const N = Number(attDef.effects.sweep)||0;
-          [target.col - 1, target.col + 1].forEach(col=>{
-            const entry = liveEnemyCols[col];
-            if(!entry || entry.kind!=='card' || !entry.card || entry.card.hp<=0) return;
-            const side = entry.card;
-            if(!combatHitLands(a.att, side, false)){
-              if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, sweep:true});
-              return;
-            }
-            const r2 = damageCard(side, N, dmgType, null);
-            aStat.dealt += r2.dmg;
-            ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
-            if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, sweep:true});
-            maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
-            if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
-            killCredit[side.uid].add(statKey(mySide, a.att.defId));
-          });
-        }
         // Swipe (2026-09-21 REDESIGN, per explicit request: "Swipe doesn't need a integer
         // parameter... Swipe now means: Hit left and right. If there's 3 cards in front of you,
         // hit left, avoid centre, hit right. (This includes the castle) So if theres 1 card in
@@ -3622,13 +3691,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // scoped inside `target.kind==='card'` (same as Sweep and the old Swipe above) — if the
         // primary attack itself resolved straight to the castle (0 facing, or an unlucky 50/50 on
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
-        if(attDef.effects && (attDef.effects.swipe || attDef.effects.pitchfork)){
+        // Fork (2026-10-12, user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the rule above, unchanged.
+        // `effects.fork`; an old `swipe: true` still means Fork (the new Swipe takes a number).
+        const isFork = !!(attDef.effects && (attDef.effects.fork || attDef.effects.swipe === true));
+        if(attDef.effects && (isFork || attDef.effects.pitchfork)){
           [target.col - 1, target.col + 1].forEach(flankCol=>{
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
               if(!combatHitLands(a.att, c2raw, false)){ // Swipe flank: multi-target, so no Evade roll — Swift/Flying still apply
-                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, swipe:true});
+                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true});
                 return;
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
@@ -3636,7 +3708,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, swipe:true, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
@@ -3655,14 +3727,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                 runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
               }
             } else {
-              if(!attDef.effects.swipe) return; // Pitchfork: an empty side is just empty
+              if(!isFork) return; // Pitchfork: an empty side is just empty
               // Empty (or off-board) flank column: redirect this swipe swing straight to the
               // castle, same damageHQ path (bulwark reduction included) the primary castle hit
               // below uses — no Siege bonus here, Siege is specifically about the PRIMARY attack
               // landing on the castle, not a swipe redirect.
               const flankDmg = damageHQ(players[a.enemyId], atkThisRound);
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
-              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, swipe:true, festerBonus, ruptureBonus});
+              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
                 const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
                 if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
@@ -3677,6 +3749,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const siegeBonus = (attDef.effects && attDef.effects.siege) || 0;
         const bulwarkBlocked = bulwarkReductionFor(players[a.enemyId]);
         const dmg = damageHQ(players[a.enemyId], atkThisRound + siegeBonus);
+        swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, ambush:ambushForce, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
         if(attDef.effects && attDef.effects.sap && dmg>0){
@@ -3684,6 +3757,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
+      if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
+      // Swipe N (new, 2026-10-12, user: "What would Swipe do then?"; proposal): a landed swing swipes N Lumber from the
+      // opponent: they lose it and this side gains it (only what they have). For raiders and thieves.
+      { const sw = attDef.effects && attDef.effects.swipe; const swN = (sw === true) ? 0 : Number(sw) || 0;
+        if(swN > 0 && swingLanded){ const foe = players[a.enemyId], me = players[a.attId]; const took = Math.min(swN, Math.max(0, foe.lumber||0));
+          if(took > 0){ foe.lumber -= took; me.lumber = (me.lumber||0) + took;
+            if(recordEvents && events) events.push({type:'swipeLumber', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), amount:took}); } } }
       // Reload: having just attacked, this card sits out N extra rounds before it can attack again.
       // _reloadJustSet guards against this SAME round's upkeep (below) immediately ticking the
       // cooldown back down to 0 before it ever had a round to actually apply.
@@ -3694,7 +3774,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // immediately, before anything else. Guarded by a one-shot per-round flag so it can't
       // chain into itself.
       let frenziedAgain = false;
-      if(attDef.effects && attDef.effects.frenzy && a.att.hp>0 && !a.att._frenziedThisRound){
+      // Twin Strike (2026-10-12, user: "a skill that means double strike without calling it double strike"): attacks twice
+      // on its turn, the second swing straight after the first (the same path as Frenzy's bonus swing).
+      if(attDef.effects && (attDef.effects.frenzy || attDef.effects.twinStrike) && a.att.hp>0 && !a.att._frenziedThisRound){
         a.att._frenziedThisRound = true;
         // VFX/SFX coverage audit (2026-09-21): Frenzy's bonus swing used to be a pure engine-
         // internal decision with no event at all — it replayed as an indistinguishable ordinary
@@ -3702,7 +3784,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Frenzy" as opposed to just being a second attacker further down the queue. A dedicated
         // 'frenzy' event gives the front end something to flourish right before that second swing
         // animates.
-        if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid});
+        if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:!attDef.effects.frenzy});
         frenziedAgain = true;
       }
       // Live reflow, per-attacker (see reflowAfterKills' comment above): whatever this turn's
@@ -3715,7 +3797,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // everything else falls through to the normal live pick, which naturally picks up whatever
       // this turn's own kills/reflow/mid-attack spawns just made newly eligible.
       currentAttacker = null;
-      pending = frenziedAgain ? a : pickNextAttacker();
+      // 2026-10-12 (user: "I win with the first 1-2 attacks. During the victory dance, the enemy's card disappears"): the
+      // moment a castle falls, combat stops. Later attackers used to keep swinging, so a card the loser had just played
+      // could die after the castle fell, unseen (the replay stops at the fall), and vanish when the board re-rendered.
+      pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : (frenziedAgain ? a : pickNextAttacker());
     }
     endOfRoundUpkeep(players, sideOf, stats, events);
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
@@ -3764,7 +3849,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

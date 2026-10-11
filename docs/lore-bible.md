@@ -117,6 +117,26 @@ Only a handful of creatures live in true societies: **ants, bees, termites and o
 - **Most fish** don't speak much and are tamed by the Otters as companions.
 - **The deep things** (kraken, cuttlefish, whales) are old, strange and independent. Raid bosses live here.
 
+### Subfactions to grow into (sketch, 2026-10-12)
+You said we'll build these out as we go. These are starting points to react to; nothing here is decided.
+
+| Subfaction | Who they might be | Where they live | Board identity (fits a skill we have) |
+|---|---|---|---|
+| **The Ashen Choir** (cultists) | Moths, beetles and a few lost Hummingbirds who worship the dragons' old fire | The Ashen Peak, the Basalt Foundry | Devilry and Ritual: they sacrifice their own to call something bigger |
+| **The Greenhood Band** (Robin Hood raiders) | Foxes, magpies and outcast mice who rob the toll roads and share it out | The Briar Maze, the Redwood Deep | Swipe (stealing Lumber), Stealth, Backstab |
+| **The Hollow Kin** (cave dwellers) | Moles, bats, blind salamanders; the tiny cave voice from Sunken Hollow is one of theirs | Caves & Alcoves, Smugglers' Grotto | Converge (pulling a line together in the dark), Blind, Lantern |
+| **The Gnawed** (cannibals) | Rats and shrews who stopped caring what they eat; the road-folk's dark mirror | The Sable Swampmire, the Glass Dunes | Devour, Sap, Pack (they gather and grow) |
+| **The Tidefolk** (mer-people) | Otters who never came ashore, eels, seals: half-legend even to the Legion | Coral Current, the Kelp Mangroves | Tide, Wash, Fork |
+
+**The dragons.** The Dragon Scales on the road hint that dragons were here before the border war. That's the thread to pull for:
+- the world boss on Map 20;
+- what the Ashen Choir prays to;
+- why castles can break their limits with Dragon Scales.
+
+Open questions for you:
+- Are the dragons gone, sleeping or hiding?
+- Is anyone descended from them?
+
 ## Using this
 
 ### For art (PixelLab or image prompts)

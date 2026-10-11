@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (03:10)
+- **Sweep, reworked to your rule.**
+  - With a unit in front, it swings left, then centre, then right. An empty side is a miss you can see: the unit lunges at the empty slot and the air gets slashed. It never redirects.
+  - With nothing in front, it hits the castle.
+  - Its attack preview shows three lines, the side ones thinner, with a ring on an empty slot.
+- **Swipe is now Fork** (the two-flank strike, unchanged); all 11 cards were migrated.
+  - **Swipe** is new: a landed swing steals N Lumber from the opponent.
+- **New skills:**
+  - **Twin Strike** attacks twice on its turn.
+  - **Converge** (on ready) pulls the enemy board, your board or both together around the centre, keeping their order.
+  - **Defiance** (types, N) adds +N Attack for every enemy unit of those types.
+  - **Pack N** adds +N Health on arrival for each ally of its type.
+  - **Swarm N** gives N per ally (default 1).
+- **Combat stops the moment a castle falls.** Later attackers used to keep swinging, so a card the enemy had just played could die unseen and vanish during the victory.
+  - The enemy's card also finishes landing before combat starts.
+- **Day and night (D33):** no more switching. Conquest fights are day, except on four night maps. Real time with a doubled twilight is a skirmish-editor option.
+- **Conquest map:**
+  - A link between two locked fights is dark. A link from an open fight fades out toward the locked one.
+  - Cave darkness now covers the whole screen; the map list and tabs stay readable, a little dimmed.
+- **Energy:**
+  - The pill reads "4/20⚡ · +⚡ in 2:47".
+  - With too little Energy, a fight button plays an error sound and shows "You don't have enough energy" in the middle of the screen for 2 seconds.
+  - Admins get −5/−1/+1/+5, Empty, Fill, Set and Next refill now in the Energy panel, even with Admin mode off.
+- **Card slots** fade in the moment you press a card and fade out properly.
+- **Lore:** a sketch of five subfactions and the dragon thread in the [lore bible](lore-bible.md).
+
 ## 2026-10-12 (01:40)
 - **Your map table, applied** ([note](map-schedule-2026-10-12.md)). Features open on the maps you listed:
   - Armoury 1, Nest 2, Notices 4, Cart 5, Codex 7, Arena and the Ember Peddler 8, Quest Board 9, Forge 11.
