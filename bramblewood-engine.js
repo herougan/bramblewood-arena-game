@@ -896,6 +896,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
+    // Swimmer's Flow list (2026-10-12): the skills it gets while the tide is in Flow.
+    if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && getTide() === 'flow') add(0, e.swimmerGrant);
     // Rainrunner N (2026-10-12): +N/+N while it rains (and it slips past blockers, see the targeting).
     if(e.rainrunner && field && field.id === 'rain'){ const n = Number(e.rainrunner)||1; a += n; h += n; }
     // Moonborn N (2026-10-12, user: "Add lunar cycles - only matters when there's a card that cares about it"): at night,
@@ -1541,6 +1543,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // attacker on the opposing row.
     if(lo || hi) return lo || hi;                      // 1 facing: a single-sided blocker now counts as a real block -- hit it, always
     return {kind:'hq'};                                // 0 facing: nothing at all in front -- straight to the castle
+  }
+  // Prong lanes (2026-10-12, user: "i played my octopus with fork. When an ally killed an enemy unit and their ranks
+  // collapsed, the octopus still hit the enemy it would have hit if the ranks didnt collapse... so it hit an enemy 1.5 units
+  // away!"): side strikes are measured from where the attacker physically stands (the same jf as resolveLiveTarget), not
+  // from the column of whatever it hit. Facing a unit square on, the prongs are the slots either side of it. Standing between
+  // two enemies (ranks interlocked after a collapse), the prongs are those two, never the one beyond. Each lane is an enemy
+  // column value, or null for an empty lane (off the end of the row).
+  function prongLanes(myCols, enemyCols, myCol){
+    if(slotMode) return {integer:true, left:myCol - 1, right:myCol + 1, near:[myCol - 1, myCol + 1], dist:c=> Math.abs(c - myCol)};
+    const myKeys = Object.keys(myCols).map(Number).sort((a,b)=>a-b);
+    const enemyKeys = Object.keys(enemyCols).map(Number).sort((a,b)=>a-b);
+    const i = myKeys.indexOf(myCol) + 1, nS = myKeys.length, nE = enemyKeys.length;
+    const jf = i + (nE - nS) / 2;
+    const colAt = j=> (j >= 1 && j <= nE) ? enemyKeys[j-1] : null;
+    const dist = c=> { const j = enemyKeys.indexOf(c) + 1; return j > 0 ? Math.abs(j - jf) : 99; };
+    if(Number.isInteger(jf)) return {integer:true, left:colAt(jf - 1), right:colAt(jf + 1), near:[colAt(jf - 1), colAt(jf + 1)], dist};
+    return {integer:false, left:colAt(Math.floor(jf)), right:colAt(Math.ceil(jf)), near:[colAt(Math.floor(jf)), colAt(Math.ceil(jf))], dist};
   }
   // Live combat reflow (2026-09-17, per explicit request: "collapse should happen immediately
   // as the fight goes on... will cause attacks to maybe not hit their intended targets"):
@@ -3238,20 +3257,63 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // The old effects.antiAir counts as Boomerang.
   let combatNo = 0, combatDepth = 0;
   function isBoomerangDef(d){ return !!(d && d.effects && (d.effects.boomerang || Number(d.effects.antiAir) > 0)); }
+  // Boomerang flight (2026-10-12 rework, user: "the boomerang hits the enemy than flies out straightwards. On the next turn, it
+  // just returns to sender, hitting the enemy again on the way back. And because the boomerang was hitting the unit in front,
+  // it doesn't hit the castle on the way back - just whiff ... Hit the castle, and it hits on TO and FRO. If the boomerang
+  // thrower dies, the boomerang still comes back and hits the enemy. However on your side of the field, if you have a new
+  // ally there that DOESNT have a boomerang passive, it gets hit. If there is NOONE in that column, your castle gets hit
+  // instead"). A thrown boomerang is its own thing in the air (pl.boomerangs), remembered with its lane, damage and whether
+  // the throw went to the castle. Next combat, before anyone acts, it flies home down that lane:
+  //  - out on the enemy side it hits the unit there now; with no unit, it hits the castle only if the throw did (else "whiff");
+  //  - home on its own side, a living thrower catches it (that is the thrower's attack this round); otherwise a unit standing
+  //    in the lane without Boomerang takes the hit (one with Boomerang catches it), and an empty lane lets it hit your castle.
   function boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide){
     const first = firstAttackerSide || 2;
     for(const pid of [first, otherId(first)]){
-      const pl = players[pid]; if(!pl) continue;
-      for(const c of allBoardCards(pl).slice()){
-        if(!c || c.hp <= 0 || !c.boomerangOut) continue;
-        c.boomerangOut = false;
-        if(c.stunned || c.frozen > 0 || c.asleep > 0) continue; // a boomerang nobody catches is just lost
-        c._boomerangReturning = true; c._boomerangCombat = combatNo;
-        if(recordEvents && events) events.push({type:'boomerangReturn', side:sideOf(pid), defId:c.defId, uid:c.uid});
-        const w = c.wait; c.wait = 0;
-        resolveCombat(players, sideOf, stats, events, pid, {upkeepIds:[], onlyUid:c.uid});
-        if(c.hp > 0 && w > 0) c.wait = w;
-        c._boomerangReturning = false; c.boomerangOut = false; // the catch: the next normal swing throws again
+      const pl = players[pid]; if(!pl || !Array.isArray(pl.boomerangs) || !pl.boomerangs.length) continue;
+      const flying = pl.boomerangs.slice(); pl.boomerangs = [];
+      for(const b of flying){
+        const foeId = otherId(pid), foe = players[foeId]; if(!foe) continue;
+        const thrower = allBoardCards(pl).find(c=> c && c.uid === b.uid && c.hp > 0) || null;
+        const myCols = combatColumnsOf(pl), enemyCols = combatColumnsOf(foe);
+        let lane = b.col;
+        if(thrower){ const lc = liveColOf(pl, thrower.uid); if(lc) lane = lc.col; }
+        const colsForAim = Object.assign({}, myCols); if(!colsForAim[lane]) colsForAim[lane] = {kind:'card', card:{uid:'~boomerang', hp:1}, dir:0};
+        if(recordEvents && events) events.push({type:'boomerangReturn', side:sideOf(pid), defId:b.defId, uid:b.uid, thrownBy: thrower ? thrower.uid : null});
+        if(thrower){
+          // a living thrower: its full swing on the way back (all its on-hit effects), and it catches it — that's its attack
+          thrower._boomerangReturning = true; thrower._boomerangCombat = combatNo; thrower._boomerangNoCastle = !b.hitCastle;
+          const w = thrower.wait; thrower.wait = 0;
+          const st = {stunned:thrower.stunned, frozen:thrower.frozen, asleep:thrower.asleep}; thrower.stunned = false; thrower.frozen = 0; thrower.asleep = 0; // the boomerang flies on its own
+          resolveCombat(players, sideOf, stats, events, pid, {upkeepIds:[], onlyUid:thrower.uid});
+          if(thrower.hp > 0){ thrower.stunned = st.stunned; thrower.frozen = st.frozen; thrower.asleep = st.asleep; if(w > 0) thrower.wait = w; }
+          thrower._boomerangReturning = false; thrower._boomerangNoCastle = false; thrower.boomerangOut = false;
+        } else {
+          // nobody to swing it: it hits what's out there by itself, then comes home to whatever stands in its lane
+          const t = resolveLiveTarget(colsForAim, enemyCols, lane);
+          if(t && t.kind === 'card' && t.card && t.card.hp > 0){
+            const r = damageCard(t.card, b.dmg, b.dmgType || 'physical', null);
+            ensureStat(stats, sideOf(foeId), t.card.defId).taken += r.dmg;
+            if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), targetDefId:t.card.defId, targetUid:t.card.uid, dmg:r.dmg, dmgType:b.dmgType || 'physical', armorBlocked:r.armorBlocked, boomerang:true});
+          } else if(b.hitCastle){
+            const dmg = damageHQ(foe, b.dmg);
+            if(recordEvents && events) events.push({type:'hitHQ', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), dmg, boomerang:true});
+          } else if(recordEvents && events) events.push({type:'boomerangWhiff', side:sideOf(pid), defId:b.defId, uid:b.uid});
+          if(foe.hq.hp <= 0) return true;
+          const home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null;
+          if(home && home.hp > 0){
+            if(isBoomerangDef(CARD_DEFS[home.defId])){ if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:home.uid, defId:home.defId}); }
+            else {
+              const r = damageCard(home, b.dmg, b.dmgType || 'physical', null);
+              ensureStat(stats, sideOf(pid), home.defId).taken += r.dmg;
+              if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), targetDefId:home.defId, targetUid:home.uid, dmg:r.dmg, dmgType:b.dmgType || 'physical', armorBlocked:r.armorBlocked, boomerang:true, friendly:true});
+            }
+          } else {
+            const dmg = damageHQ(pl, b.dmg);
+            if(recordEvents && events) events.push({type:'hitHQ', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), dmg, boomerang:true, friendly:true});
+          }
+          removeDeadCards(players, sideOf, {}, stats, events);
+        }
         if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return true;
       }
     }
@@ -3262,7 +3324,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     curPlayers = players;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; }
     if(!pass){ combatNo++;
-      if([1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=> c && c.boomerangOut && c.hp > 0)) && boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide)) return true;
+      if([1,2].some(pid=> players[pid] && Array.isArray(players[pid].boomerangs) && players[pid].boomerangs.length) && boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide)) return true;
       curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
     // Swimmer and Tailwind (2026-10-12, user: "Tide should power up swimmers with +1 speed (attack faster, like Fast
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
@@ -3271,7 +3333,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pass){ const flow = getTide() === 'flow', wind = false; // Tailwind is a spell (castSpell), not a field
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
-          const why = (flow && e.swimmer) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
+          const why = (flow && e.swimmer && (!e.swimmerGrant || e.swimmerGrant.fastForward)) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -3364,6 +3426,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // its correct place among what's left (it "continues taking turns as per normal") — with no
     // special-casing needed for which of those two cases actually applies.
     const handledUids = new Set(); // acted OR permanently skipped (reload/stun/etc.) this round — never reconsidered
+    const zeroNoted = new Set();   // 0-Attack units already logged this round (they stay eligible for a later look)
+    const swingAtkNow = card=> effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + (isTide(card) && getTide()==='flow' ? 1 : 0);
     const poolMeta = new Map();    // uid -> {att, attId, enemyId} — currently eligible, not yet acted
     function discoverEligibleAttackers(){
       [[p1,1,2],[p2,2,1]].forEach(([pl,ownId,enemyId])=>{
@@ -3392,7 +3456,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
             if(card.shellSkip || card.shellUntil != null){ skipTurn('shell', card, ownId); handledUids.add(uid); return; } // in its shell: no attack
-            if(effAtk(card) + swarmBonus(card) + defianceBonus(card) <= 0){ skipTurn('zeroAttack', card, ownId); handledUids.add(uid); return; } // a 0-Attack Swarm unit still swings with its allies' bonus
+            // 0 Attack (2026-10-12, user: "On tide, the coral polyps should have 1 attack - it can attack as long the attack is
+            // >0. Please check at every battle step not just at the start ... what if an ally buffs it midway combat?"): the
+            // swing's own bonuses count (Swarm, Defiance, day/night, Inspiring, the Flow tide), and a unit at 0 is NOT retired
+            // for the round: every later look at the queue checks it again, so a buff mid-combat lets it swing.
+            if(swingAtkNow(card) <= 0){ if(!zeroNoted.has(uid)){ zeroNoted.add(uid); skipTurn('zeroAttack', card, ownId); } return; }
             poolMeta.set(uid, {att:card, attId:ownId, enemyId});
           });
         });
@@ -3666,9 +3734,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(forkOnly){
         // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
         // never cancels the other. Blind rolls once per prong, so a blind Fork can still land one side.
-        const refCol = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col;
-        [refCol - 1, refCol + 1].forEach(col=>{
-          if(a.att.blind>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', forkCol:col - refCol}); return; }
+        const lanes = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
+        [lanes.left, lanes.right].forEach((col, k)=>{
+          if(a.att.blind>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', forkCol:k ? 1 : -1}); return; }
           forkStrike(col); swingLanded = true;
         });
       } else
@@ -3895,10 +3963,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // an interlocked board), there's no reference column to swipe from, so nothing extra fires.
         // Fork (2026-10-12, user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the rule above, unchanged.
         // `effects.fork`; an old `swipe: true` still means Fork (the new Swipe takes a number).
-        if(octoAtk && !blindNow){ const mainCol = target.col; const cols = Object.keys(liveEnemyCols).map(Number).filter(c=> c !== mainCol && liveEnemyCols[c] && liveEnemyCols[c].kind==='card' && liveEnemyCols[c].card && liveEnemyCols[c].card.hp > 0)
-          .sort((x, y)=> Math.abs(x - liveSelf.col) - Math.abs(y - liveSelf.col) || x - y).slice(0, 7);
+        if(octoAtk && !blindNow){ const mainCol = target.col, lanesO = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col); const cols = Object.keys(liveEnemyCols).map(Number).filter(c=> c !== mainCol && liveEnemyCols[c] && liveEnemyCols[c].kind==='card' && liveEnemyCols[c].card && liveEnemyCols[c].card.hp > 0)
+          .sort((x, y)=> lanesO.dist(x) - lanesO.dist(y) || x - y).slice(0, 7);
           if(cols.length && recordEvents && events) events.push({type:'statusFx', kind:'octolash', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:a.att.uid, targetDefId:a.att.defId, amount:cols.length + 1});
           cols.forEach(c=> forkStrike(c, false, 'octolash')); }
+      } else if(a.att._boomerangReturning && a.att._boomerangNoCastle){
+        // the throw hit a unit; that unit is gone now, so the way home is empty air (2026-10-12): "Whiff"
+        if(recordEvents && events) events.push({type:'boomerangWhiff', side:mySide, defId:a.att.defId, uid:a.att.uid});
       } else {
         // Siege (2026-09-17): bonus flat damage specifically when the attack lands on the
         // castle directly (0 or 1 facing resolving to the HQ) — a reward for punching through,
@@ -3914,9 +3985,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
-      if(tridentAtk && !blindNow){ const ref = (target && target.kind==='card' && target.col!=null) ? target.col : liveSelf.col; [ref - 1, ref + 1].forEach(c=> forkStrike(c, true, 'trident')); }
+      if(tridentAtk && !blindNow){ const lanesT = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
+        // square on: the lanes either side of the unit in front; between two: the other of the two, and the gap goes to the castle
+        const sides = lanesT.integer ? [lanesT.left, lanesT.right] : [lanesT.left, lanesT.right].filter(c=> !(target && target.kind==='card' && target.col === c)).concat([null]).slice(0, 2);
+        sides.forEach(c=> forkStrike(c, true, 'trident')); }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
-      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && a.att.hp > 0 && !blindNow) a.att.boomerangOut = true; // thrown
+      if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // thrown: it flies on even if the thrower falls
+        const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
+        pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq')});
+        a.att.boomerangOut = true;
+      }
       a.att.inspired = 0; // Inspiring's bonus is spent on this swing
       // Swipe N (new, 2026-10-12, user: "What would Swipe do then?"; proposal): a landed swing swipes N Lumber from the
       // opponent: they lose it and this side gains it (only what they have). For raiders and thieves.

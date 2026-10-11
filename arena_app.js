@@ -160,12 +160,26 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🌀', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐚', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
 function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', '); }
+// "fastForward 1, armor 2, evasive" <-> {fastForward:1, armor:2, evasive:true}; skill names or labels both work.
+function parseGrantText(v){
+  if(v && typeof v === 'object') return v;
+  const out = {};
+  String(v||'').split(/[,;]+/).map(x=> x.trim()).filter(Boolean).forEach(part=>{
+    const m = part.match(/^(.*?)(?:\s+(-?\d+(?:\.\d+)?))?$/); if(!m) return;
+    const name = m[1].trim().toLowerCase().replace(/\s+/g, ' ');
+    const pd = (typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).find(p=> p.key.toLowerCase() === name.replace(/ /g, '') || String(p.label||'').toLowerCase() === name);
+    const key = pd ? pd.key : name.replace(/ (\w)/g, (_, c)=> c.toUpperCase());
+    if(key) out[key] = m[2] != null ? Number(m[2]) : true;
+  });
+  return out;
+}
+function grantToText(g){ return Object.entries(g||{}).map(([k, v])=> v === true ? k : `${k} ${v}`).join(', '); }
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
   {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
@@ -236,7 +250,7 @@ const PASSIVE_DEFS = [
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
-  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Its attack throws a boomerang. At the start of next round's combat, before anyone else acts, the boomerang comes back and hits whatever is in front of it: that is its attack for the round. Then it throws again. Never misses a Flying unit.`,
+  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back and hits again.`, // 2026-10-12: "as few words as possible"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
@@ -247,7 +261,12 @@ const PASSIVE_DEFS = [
   {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the castle).`},
   {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
   {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
-  {key:'swimmer', category:'passive', label:'Swimmer', kind:'boolean', desc:()=>`On a Flow round the tide carries it: one extra turn at the start of combat (like Fast Forward).`},
+  {key:'swimmer', category:'passive', label:'Swimmer', kind:'boolean', desc:(v, n, e)=>`On a Flow round the tide carries it: ${e && e.swimmerGrant ? grantText(e.swimmerGrant) : 'one extra turn at the start of combat (like Fast Forward)'}.`},
+  // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
+  // forward but... just { } effects that i can list"): the skills a Swimmer gets on Flow rounds, e.g. "fastForward 1, armor 2".
+  // Without a list it keeps the old Fast Forward.
+  {key:'swimmerGrant', category:'passive', label:'Swimmer: on Flow', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flow round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
+    get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
   {key:'worthy', category:'passive', label:'Worthy', kind:'number', min:0, desc:v=>`Brings ${v} Lumber when it arrives. When it dies, your opponent gains 1 Lumber.`},
@@ -1133,6 +1152,7 @@ function describeEffects(def, liveCard){
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
+    if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     lines.push(`${ic(p.key)}${head} — ${p.desc(v, p.numberKey ? e[p.numberKey] : undefined, e)}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
@@ -1578,7 +1598,9 @@ function cardWhereToGetText(d){
 function mapNumberOf(mapId){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
   const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
-  return i < 0 ? null : i + 1; // maps count from 1, as on the world screen (2026-10-11 16:20, user: "Map N = Map N ... Ashen Peak is Map 5"); the tutorial is 1-0
+  // 2026-10-12 (user: "the first map with the otters ... is map 0, not 1"): maps count from 0. Clovermead was inserted as
+  // Map 1, so every map from Thistlewood on keeps the number it had.
+  return i < 0 ? null : i;
 }
 function skirmishCode(mapId, nodeKey){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return '';
@@ -1609,7 +1631,7 @@ function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUES
 const BASE_GAME_MAPS = 20;
 const CODEX_TIER_THEMES = ['The Wildwood', 'The Far Reaches', 'The Old Powers', 'The Edge of the Map'];
 function baseGameBeaten(){
-  try{ const mains = mainConquestMaps().slice(0, BASE_GAME_MAPS); return mains.length > 0 && mains.every(m=> conquestMapCleared(m.id)); }catch(e){ return false; }
+  try{ const mains = mainConquestMaps().slice(0, BASE_GAME_MAPS + 1); return mains.length > 0 && mains.every(m=> conquestMapCleared(m.id)); }catch(e){ return false; }
 }
 function codexTierName(tier){ return CODEX_TIER_THEMES[tier-1] || `Further lands ${tier}`; }
 function codexSectionOf(d){
@@ -1638,14 +1660,39 @@ function codexSectionOf(d){
 // "View by" grouping (2026-10-02): the same cards split by Skirmish (each node's reward cards),
 // Card pack (each pack tier), Event (theme → event) or Unassigned, so each kind of source can be
 // reviewed and edited on its own. Returns null for cards that don't belong in the chosen view.
+// Player Codex (2026-10-12, user: "There should be a toggle to toggle between separating by map and base and etc. and to just
+// show everything together. By default its show everything together. AND this toggle to separate is not available till Map
+// 10+. Also, Map 1-20 are combined into one slot ... Then Map 21-40 are combined. Map 41-50... etc. Map 0 cards are combined
+// with the base cards").
+let codexSeparate = (()=>{ try{ return localStorage.getItem('bramblewood_codex_separate') === '1'; }catch(e){ return false; } })();
+function codexSeparateAllowed(){ return adminModeEnabled || playerMapReach() >= 10; }
+function mapBandOf(num){
+  if(num <= 0) return {key:'band-0', order:[0,0,0,''], label:'🌱 Base cards & Map 0'};
+  if(num <= 20) return {key:'band-1', order:[1,1,0,''], label:'🗺️ Maps 1–20'};
+  if(num <= 40) return {key:'band-2', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
+  const lo = 41 + Math.floor((num - 41)/10)*10;
+  return {key:'band-' + lo, order:[1,lo,0,''], label:`🗺️ Maps ${lo}–${lo + 9}`};
+}
 function codexViewSectionOf(d, view){
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
+  if(view==='all'){
+    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
+    return {key:'all', order:[0,0,0,''], label:'', bare:true};
+  }
+  if(view==='bands'){
+    if(src.kind==='base') return mapBandOf(0);
+    if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
+    if(src.kind==='pack') return {key:'band-pack', order:[2,0,0,''], label:'🎁 Card packs'};
+    if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
+    if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
+    return {key:'band-more', order:[9,0,0,''], label:'More cards'};
+  }
   if(view==='advance'){
     // Advancement (2026-10-12): one section per step of the journey, in the order a player meets them.
     const k = advancementKey(d);
     if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:'🌱 Base'};
-    if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) || 999; return {key:'adv-map-'+src.id, order:[1,num,m && m.sub ? 1 : 0,''], label:`🗺️ Map ${num}${m ? ' · ' + m.name : ''}`}; }
+    if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) ?? 999; return {key:'adv-map-'+src.id, order:[1,num,m && m.sub ? 1 : 0,''], label:`🗺️ Map ${num}${m ? ' · ' + m.name : ''}`}; }
     if(src.kind==='pack'){ const t = Number(src.tier) || 1; const FP = {11:'Rivergate (Otter) pool', 12:'Sunfeather (Hummingbird) pool', 13:'Riverbank (shared) pool'};
       return t === 99 ? {key:'adv-myst', order:[3,0,0,''], label:'❓ Mystery Pack A'} : {key:'adv-pk-'+t, order:[2,t,0,''], label: FP[t] ? `🎁 ${FP[t]}` : `🎁 Pack ${String.fromCharCode(64 + Math.min(26, t))}`}; }
     if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:`🎉 Event: ${src.name || src.theme || 'unnamed'}`};
@@ -3498,7 +3545,7 @@ let codexFilter = {q:'', archetype:'', mechLine:'', sort:'advance', dir:'desc', 
 function advancementKey(d){
   const src = cardSourceOf(d) || {}, pad = n=> String(Math.max(0, Math.min(9999, n|0))).padStart(4, '0');
   if(src.kind==='base') return '0';
-  if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) || 999; const ni = m ? m.nodes.findIndex(n=> n.key===src.node) : 999;
+  if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) ?? 999; const ni = m ? m.nodes.findIndex(n=> n.key===src.node) : 999;
     return '1' + pad(num) + (m && m.sub ? '1' : '0') + pad(ni < 0 ? 999 : ni); }
   if(src.kind==='pack'){ const t = Number(src.tier) || 1; return (t === 99 ? '3' : '2') + pad(t); }
   if(src.kind==='event') return '4' + String(src.name || src.theme || '').toLowerCase();
@@ -3632,7 +3679,8 @@ function renderCodex(){
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option><option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
-      <select id="cxGroupBy" title="Split the Codex by where cards come from">
+      ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
+      <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
         <option value="advance" ${(codexFilter.groupBy||'advance')==='advance'?'selected':''}>View by: Advancement</option>
         <option value="tiers" ${codexFilter.groupBy==='tiers'?'selected':''}>View by: Tiers</option>
         <option value="skirmish" ${codexFilter.groupBy==='skirmish'?'selected':''}>View by: Skirmishes</option>
@@ -3649,7 +3697,8 @@ function renderCodex(){
     <span id="codexResultCount"></span>
     <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
-  document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; renderCodexGrid(); });
+  { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 160); }); } // debounced (2026-10-12: "The codex is still a bit laggy")
+  { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexSeparate; try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; renderCodexGrid(); }; }
   const cxFT = document.getElementById('cxFiltersToggle');
   if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
@@ -3854,7 +3903,7 @@ function renderCodexGrid(){
   // Codex tiers (2026-10-02): grouped by where a card comes from — Tier 1 (Tutorial, Base & maps
   // 1–10), Pack tier 1, Tier 2 maps, Pack tier 2, …, unsorted, then Events by theme. Inside each
   // group: unlocked first, then locked, each sorted by the chosen sort.
-  const view = codexFilter.groupBy || 'advance';
+  const view = adminModeEnabled ? (codexFilter.groupBy || 'advance') : ((codexSeparate && codexSeparateAllowed()) ? 'bands' : 'all');
   const groups = new Map();
   ids.forEach(id=>{
     const sec = codexViewSectionOf(defs[id], view);
@@ -3885,7 +3934,7 @@ function renderCodexGrid(){
   ordered.forEach(({sec, ids:gIds})=>{
     const un = gIds.filter(id=>!defs[id].locked).sort(cmp), lo = gIds.filter(id=>defs[id].locked).sort(cmp);
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
-    html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-right">${gIds.length ? `<span class="cx-section-count">${un.length}/${gIds.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}</span></div>`;
+    if(!sec.bare) html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-right">${gIds.length ? `<span class="cx-section-count">${un.length}/${gIds.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}</span></div>`;
     html += un.map(tileFor).join('');
     // 2026-09-22: corrected — this used to say "click one to unlock it" with no click handler
     // to back it up (flagged in batch #18's audit). Real card unlocking now exists (a chance
@@ -4316,12 +4365,35 @@ function triggerActionEmoji(t){
   }
 }
 function triggerIsOff(t, live, d){ return !!(live && (live.wait>0 || live.stunned || live.frozen>0 || live.asleep>0) && !t.whileWaiting && !(d && d.effects && d.effects.primed) && !TRIGGER_ALWAYS_ON.has(t.on)); }
+// Spent for good (2026-10-12, user: "if the trigger is not just disabled, it cannot happen ever again - first shine when it
+// activates, then it becomes grey, then fades out - in that order. Normally, it just becomes grey"): On Spawn has fired once
+// the unit is down, On Ready once it has been ready, and a "once" trigger once it has gone off. Such a badge plays shine,
+// grey, fade (1.6 s, timed from the first render that saw it spent) and then leaves the card.
+const SPENT_TRIG_MS = 1600;
+function triggerSpent(t, live, trs){
+  if(!live) return false;
+  if(t.on === 'onSpawn') return true;
+  if(t.on === 'onReady') return (live.wait|0) <= 0;
+  if(t.once){ const i = trs.filter(x=> x.on === t.on).indexOf(t); return !!(live.firedOnce && live.firedOnce['once:' + t.on + ':' + i]); }
+  return false;
+}
 function triggerBadges(d, live){
   const trs = (d && d.effects && Array.isArray(d.effects.triggers)) ? d.effects.triggers : [];
-  return trs.map(t=>{
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  return trs.map((t, k)=>{
+    if(live && m && live.uid != null && triggerSpent(t, live, trs)){
+      const key = live.uid + ':' + k; m._spentTrig = m._spentTrig || {};
+      const at = m._spentTrig[key] || (m._spentTrig[key] = Date.now()), age = Date.now() - at;
+      if(age >= SPENT_TRIG_MS) return '';
+      const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + ' (used up)';
+      return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${(t.on === 'onRoundStart' || t.on === 'perTurn') ? '🕐' : '⚡'}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+    }
     const off = triggerIsOff(t, live, d);
     const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
-    return `<span class="ab-trig${off ? ' is-off' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">⚡</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+    // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
+    // that depend on turns like every turn, should use the clock emoji instead")
+    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : '⚡';
+    return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
 function abilityBadges(d, bopts){
@@ -4376,7 +4448,7 @@ function abilityBadges(d, bopts){
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
-  if(e.sweep) out.push(`🌀+${e.sweep}`);
+  if(e.sweep) out.push(`🧹+${e.sweep}`); // 2026-10-12: its own mark (🌀 is the dodge)
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
@@ -5921,6 +5993,7 @@ function defaultSkillValue(key){
   if(!s) return true;
   if(s.kind==='number') return 1;
   if(s.kind==='twoNumber') return [1,1];
+  if(s.kind==='text') return '';
   if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
   if(s.kind==='selectNumber'){ const opts = s.selectOptions ? s.selectOptions() : []; return [opts[0]?opts[0].value:'', 1]; }
   // cardCount (2026-09-21, On Death: Spawn / On Attacked: Spawn): a fresh row defaults to no
@@ -5950,6 +6023,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     : SKILL_DEFS).filter(gateOk);
   let valueHtml = '';
   if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${row.value||1}">`;
+  else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
   else if(s.kind==='twoNumber'){
     const vals = Array.isArray(row.value)?row.value:[1,1];
     const ph = s.placeholders || ['Timer','Damage'];
@@ -6334,7 +6408,7 @@ function readEditorFormIntoCard(){
     if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount'){
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value;
       sdef.apply(newEffects, [v0,v1]);
-    } else if(sdef.kind==='number' || sdef.kind==='select'){
+    } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text'){
       sdef.apply(newEffects, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
       const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(newEffects, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
@@ -7478,6 +7552,7 @@ const ENERGY_COST = {skirmish:1, elite:2, champion:2, miniboss:2, subboss:3, bos
 // the rest 2. Map 2: the first 2, the rest 3. Map 3: all 4. Then all 5 for two maps, all 6 for three, all 7 for four,
 // and so on. A map's boss always costs double.
 function mapEnergyBase(mapIdx){
+  mapIdx = Math.max(0, mapIdx - 1); // Map 0 and the inserted Map 1 (Clovermead) cost the same (2026-10-12)
   if(mapIdx <= 0) return [1, 2];
   if(mapIdx === 1) return [2, 3];
   if(mapIdx === 2) return [4, 4];
@@ -8954,7 +9029,7 @@ function enemyDeckLevel(node){
   let map = null; try{ map = CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)) || CONQUEST_MAPS.find(m=> (m.nodes||[]).some(n=> n.key === node.key)); }catch(e){}
   if(!map){ if(!node.deck) return 0; const defs = getCardDefs(); return deckLevelFrom(node.deck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), node.leaderId ? [node.leaderId] : []); }
   const mains = CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved), parent = map.sub ? CONQUEST_MAPS.find(m=> m.id === map.parent) : map;
-  const no = Math.max(1, mains.indexOf(parent) + 1), par = mapParRating(no) * (map.sub ? 1.1 : 1);
+  const no = Math.max(1, mains.indexOf(parent)), par = mapParRating(no) * (map.sub ? 1.1 : 1);
   const k = baseKind(node.kind || 'skirmish');
   if(k === 'tutorial') return Math.round(par * 0.6);
   if(k === 'finalboss') return Math.round(par * 1.4);
@@ -9295,7 +9370,9 @@ let playerStatsOpen = false;
 // toggle pattern as playerStatsOpen just above — a module-level flag so it survives the many
 // in-match re-renders a match goes through, defaulting closed so the log doesn't permanently
 // claim screen space (especially on a phone) until a player actually wants to check it.
-let battleLogOpen = false;
+// 2026-10-12 (user: "The battle log is always closed by default. the player has to open it again on a new round"): it
+// stays the way you left it, across rounds and matches.
+let battleLogOpen = (()=>{ try{ return localStorage.getItem('bramblewood_battlelog_open') === '1'; }catch(e){ return false; } })();
 function renderPlayerSubTab(body){
   if(playerStatsOpen){ renderPlayerStatsSubpage(body); return; }
   const defs = getCardDefs();
@@ -10077,12 +10154,12 @@ const DIALOGUES = {
     {who:'aurelia', text:'Wings out! That gives us aerial superiority: ground units miss us half the time.'},
   ]},
   tut_boomerang: {lines:[
-    {who:'swiftpaw', text:'Boomerangs ready. It comes back around next turn and hits first, and fliers can\'t dodge it.'},
+    {who:'swiftpaw', text:'Boomerangs come back. They hit twice.'},
   ]},
   // ---- Map curiosities and road chats (2026-10-12, user: "More NPC chats and curiosities per map (max 2 per map)") ----
   cur_m1_signpost: {lines:[
     {who:'swiftpaw', text:'A signpost, and every arm points somewhere we haven\'t been yet.'},
-    {who:'traveller', text:'Thistlewood is the next one along. Want to see where it sits?', options:[{label:'Show me the road.', goto:'go', act:'map:mf'}, {label:'One map at a time.', goto:'stay'}]},
+    {who:'traveller', text:'Clovermead is the next one along. Want to see where it sits?', options:[{label:'Show me the road.', goto:'go', act:'map:mq'}, {label:'One map at a time.', goto:'stay'}]},
     {label:'stay', who:'traveller', text:'Sensible. The road keeps.', goto:'end'},
     {label:'go', who:'traveller', text:'There. Past the briars.'},
     {label:'end', who:'swiftpaw', text:'Someone carved a little otter on the post. Nice work, too.'},
@@ -10213,11 +10290,20 @@ function performDialogueAct(act){
     else if(k === 'spot'){ const sp = FEATURE_SPOTS.find(x=> x.key === v); if(sp && featureUnlocked(sp.key)) sp.go(); }
   }catch(e){}
 }
+// A script already playing or waiting in the queue isn't queued again (2026-10-12, user: "Hear that Hum notice keeps
+// repeating infinitely" — every tap on the stump queued another copy before the first had even started).
+const dialoguesPending = new Set();
+// One warning, one voice (2026-10-12, user: "Only have 1 message to warn us. Not multiple. If I chose the otter side, always the
+// otter general speaking to me. If hummingbird, the matriarch. If both ... random").
+function factionVoice(){ const f = loadFactionChoice(); return f === 'hummingbirds' ? 'aurelia' : f === 'otters' ? 'shieldback' : (Math.random() < 0.5 ? 'shieldback' : 'aurelia'); }
+function playFactionWarning(text){ const id = 'warn:' + text.slice(0, 24); DIALOGUES[id] = {lines:[{who:factionVoice(), text}]}; return playDialogue(id); }
 function playDialogue(id, opts){
   opts = opts || {};
   const script = DIALOGUES[id]; if(!script) return Promise.resolve(null);
   if(opts.once && loadDialogueFlags()['seen:'+id]) return Promise.resolve(null);
-  const run = async ()=>{
+  if(dialoguesPending.has(id)) return Promise.resolve(null);
+  dialoguesPending.add(id);
+  const run0 = async ()=>{
     if(opts.once) setDialogueFlag('seen:'+id, true);
     const dock = dialogueDock();
     const replies = [];
@@ -10274,6 +10360,7 @@ function playDialogue(id, opts){
         if(line.act) setTimeout(()=> performDialogueAct(line.act), 600);
         await sleep(Math.max(2200, Math.min(6000, DIALOGUE_LINE_MS + line.text.length*25)));
         if(line.goto && byLabel[line.goto]!=null) next = byLabel[line.goto];
+        if(line.goto === '__end') next = script.lines.length;
       }
       i = next;
     }
@@ -10282,6 +10369,7 @@ function playDialogue(id, opts){
     if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
     return {replies};
   };
+  const run = async ()=>{ try{ return await run0(); } finally { dialoguesPending.delete(id); } };
   const p = dialogueQueue.then(run, run);
   dialogueQueue = p.catch(()=>{});
   return p;
@@ -10321,7 +10409,7 @@ const FEATURE_SPOTS = [
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
   // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
-  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[29]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
+  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[30]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
 // Spots added on 2026-10-12 that cover something a player may already have opened under the old schedule (the Codex
 // came with the Armoury, the Forge with the Codex, the Gauntlet with the Arena): an existing save keeps them open.
@@ -10343,8 +10431,10 @@ function saveUnlocks(u){ try{ localStorage.setItem(UNLOCKS_KEY, JSON.stringify(u
 function spotAvailable(spot, progress){
   progress = progress || loadConquestProgress();
   const map = CONQUEST_MAPS.find(m=> m.id===spot.map); if(!map || !isMapUnlocked(map, progress)) return false;
-  return !spot.after || (progress.completed||[]).includes(conquestNodeId(spot.map, spot.after));
+  const after = spotAfter(spot);
+  return !after || (progress.completed||[]).includes(conquestNodeId(spot.map, after));
 }
+function spotAfter(spot){ try{ return decorAfter(spot.map, '~spot:' + spot.key, spot.after); }catch(e){ return spot.after; } }
 // First run of this build for an existing player: grant whatever their progress has already reached.
 function migrateFeatureUnlocks(){
   const u = {unlocked:{}, migrated: Date.now(), sched1012: Date.now()};
@@ -10374,17 +10464,64 @@ function decorPos(mapId, key, fallback){
   const o = (mapLayoutOverrides[mapId]||{})[key];
   return (o && isFinite(o.x) && isFinite(o.y)) ? {x:+o.x, y:+o.y} : fallback;
 }
+// Interactible gates (2026-10-12, user: "The interactibles on each map shouldn't be interactible till ... we complete a
+// certain skirmish. Let me edit it in edit link mode. Unlike traditional skirmishes or map markets ... no line is drawn"):
+// a map tile can name the fight that reveals it (`after`), kept with its position in the layout override, so 🔗 Edit links
+// sets it and publishing the layout carries it. Curiosities, the well and the chat cave default to the map's first fight.
+function decorAfter(mapId, key, fallback){
+  const o = (mapLayoutOverrides[mapId]||{})[key];
+  return (o && Object.prototype.hasOwnProperty.call(o, 'after')) ? (o.after || null) : (fallback || null);
+}
+function firstFightKey(map){ const n = map && map.nodes.find(x=> x.kind!=='tutorial'); return n ? n.key : null; }
+function decorEditing(){ return !!(adminModeEnabled && (conquestLayoutEdit || conquestLinkEdit)); }
+function decorRevealed(mapId, key, fallback, progress){
+  const a = decorAfter(mapId, key, fallback); if(!a) return true;
+  progress = progress || loadConquestProgress();
+  return (progress.completed||[]).includes(conquestNodeId(mapId, a));
+}
+// Shown at all? Editors see every tile (a hidden one dimmed, with its gate in the tooltip).
+function decorShown(mapId, key, fallback){ return decorEditing() || decorRevealed(mapId, key, fallback); }
+function decorGateNote(map, key, fallback){
+  if(!decorEditing()) return '';
+  const a = decorAfter(map.id, key, fallback), n = a && map.nodes.find(x=> x.key === a);
+  return n ? ` · appears after ${skirmishCode(map.id, a) || a} ${n.name}` : ' · always there';
+}
+// One tap at a time (2026-10-12, user: "Dont let me spam click the sign"; "The interactibles shouldn't be spammable"):
+// a map tile ignores taps for a moment after one lands.
+function mapTapGate(el, ms){
+  if(!el) return true; const now = Date.now();
+  if(el._tapUntil && now < el._tapUntil) return false;
+  el._tapUntil = now + (ms || 2600); return true;
+}
+// The "!" on a tile fades once you've looked (2026-10-12, user: "After clicking a conquest map feature like 'Quest Boards',
+// the exclamation mark saying its new should fade").
+function fadeNewBang(el){
+  if(!el) return; el.classList.remove('is-new');
+  el.querySelectorAll('.map-spot-new').forEach(b=>{ b.classList.add('is-fading'); setTimeout(()=> b.remove(), 450); });
+}
 function mapSpotsHTML(map, positions, progress){
   // 2026-10-08 (user: "a little higher; draw less opaque lines towards their unlocking skirmish"):
   // spots sit further above their skirmish, joined to it by a faint dashed line.
   const links = [];
   if(map.id==='m1' && !loadTutorial2Done() && !adminModeEnabled) return ''; // only the two tutorials until part 2 is won (2026-10-12)
-  const html = FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
-    const idx = sp.after ? map.nodes.findIndex(n=> n.key===sp.after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
+  // 2026-10-12 (user: "Secondary points like Armoury point on conquest maps should be darked out with ? tooltip until their
+  // links are established"): a spot on an open map whose fight isn't cleared yet shows as a dark "?" with no line.
+  const mapOpen = isMapUnlocked(map, progress);
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
+    const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = {x: Math.max(4, Math.min(96, base.x + (sp.after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (sp.after ? -27 : 14)))};
+    const def = {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))};
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
-    if(sp.after) links.push(`<line data-a="${escapeAttr(sp.after)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
+    const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
+    return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
+  }).join('') : '';
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
+    const spAfter = spotAfter(sp);
+    const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
+    const base = positions[Math.max(0, idx)] || {x:50, y:50};
+    const def = {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))};
+    const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
+    if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
     return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
@@ -10395,9 +10532,11 @@ function mapSpotsHTML(map, positions, progress){
 // the top left. This only happens once."). A small stone well by the pond on the Outskirts; the first
 // visit plays a short scene (with a choice), after that it just ripples.
 function mapWellHTML(){
+  if(!decorShown('m1', '~well', '1-1')) return '';
   const seen = !!loadDialogueFlags()['seen:well_m1'];
   const p = decorPos('m1', '~well', {x:67, y:79});
-  return `<button type="button" class="map-well ${seen ? '' : 'is-new'}" id="mapWell" data-lkey="~well" style="left:${p.x}%; top:${p.y}%;" title="An old well" aria-label="An old well">
+  const gated = !decorRevealed('m1', '~well', '1-1'), m1 = CONQUEST_MAPS.find(m=> m.id==='m1');
+  return `<button type="button" class="map-well ${seen ? '' : 'is-new'} ${gated ? 'is-gated' : ''}" id="mapWell" data-lkey="~well" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('An old well' + (m1 ? decorGateNote(m1, '~well', '1-1') : ''))}" aria-label="An old well">
     <span class="mw-roof" aria-hidden="true"></span><span class="mw-posts" aria-hidden="true"></span><span class="mw-bucket" aria-hidden="true"></span><span class="mw-ring" aria-hidden="true"></span>
     ${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`;
 }
@@ -10508,14 +10647,16 @@ const MAP_CURIOSITIES = [
 const CURIO_AFTER = ['It\'s just as you left it.', 'Nothing new here. Yet.', 'You give it another look. Still curious.'];
 function mapCuriositiesHTML(map){
   const flags = loadDialogueFlags();
-  return MAP_CURIOSITIES.filter(c=> c.map === map.id).map(c=>{ const seen = !!flags['seen:' + c.dialogue]; const p = decorPos(map.id, '~cur:' + c.key, {x:c.x, y:c.y});
-    return `<button type="button" class="map-curio ${seen ? '' : 'is-new'}" data-curio="${c.key}" data-lkey="~cur:${c.key}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(c.name)}" aria-label="${escapeAttr(c.name)}"><span class="mcu-ico" aria-hidden="true">${c.icon}</span>${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`; }).join('');
+  const gate = c=> c.after !== undefined ? c.after : firstFightKey(map);
+  return MAP_CURIOSITIES.filter(c=> c.map === map.id && decorShown(map.id, '~cur:' + c.key, gate(c))).map(c=>{ const seen = !!flags['seen:' + c.dialogue]; const p = decorPos(map.id, '~cur:' + c.key, {x:c.x, y:c.y});
+    const gated = !decorRevealed(map.id, '~cur:' + c.key, gate(c));
+    return `<button type="button" class="map-curio ${seen ? '' : 'is-new'} ${gated ? 'is-gated' : ''}" data-curio="${c.key}" data-lkey="~cur:${c.key}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(c.name + decorGateNote(map, '~cur:' + c.key, gate(c)))}" aria-label="${escapeAttr(c.name)}"><span class="mcu-ico" aria-hidden="true">${c.icon}</span>${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`; }).join('');
 }
 function visitCuriosity(key, el){
   const c = MAP_CURIOSITIES.find(x=> x.key === key); if(!c) return;
-  const bang = el && el.querySelector('.map-spot-new');
+  if(!mapTapGate(el, 2600)) return;
   if(loadDialogueFlags()['seen:' + c.dialogue]){ showSpeechBubble(el, `${c.icon} ${CURIO_AFTER[Math.floor(Math.random()*CURIO_AFTER.length)]}`); return; }
-  if(bang) bang.remove(); if(el) el.classList.remove('is-new');
+  fadeNewBang(el);
   try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
   playDialogue(c.dialogue, {once:true, onAfk: ()=>{ if(el && el.isConnected){ el.classList.add('is-new'); } }});
 }
@@ -10524,7 +10665,7 @@ function visitCuriosity(key, el){
 // Click her and she hands it over (it opens right there).
 function freePackCourierHTML(map, positions){
   const idx = mainConquestMaps().findIndex(m=> m.id === map.id); if(idx < 0) return '';
-  const pid = MAP_FREE_PACKS[idx + 1]; if(!pid) return '';
+  const pid = MAP_FREE_PACKS[idx]; if(!pid) return ''; // map numbers count from 0 (2026-10-12)
   const key = mapRewardNodeKey(map); if(!key || !(loadFreePacks()[pid] > 0)) return '';
   if(!loadConquestProgress().completed.includes(conquestNodeId(map.id, key))) return '';
   const pack = getShopPacks().find(p=> p.id === pid); if(!pack) return '';
@@ -10533,9 +10674,11 @@ function freePackCourierHTML(map, positions){
   return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Bramble the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
 }
 function mapCaveHTML(){
+  const m2 = CONQUEST_MAPS.find(m=> m.id==='m2'), gate = firstFightKey(m2);
+  if(!decorShown('m2', '~cave', gate)) return '';
   const n = Number(loadDialogueFlags()['cave_m2_talks']||0), done = n >= CAVE_M2_LINES.length;
-  const p = decorPos('m2', '~cave', {x:22, y:30});
-  return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'}" id="mapCave" data-lkey="~cave" style="left:${p.x}%; top:${p.y}%;" title="A small cave" aria-label="A small cave">
+  const p = decorPos('m2', '~cave', {x:22, y:30}), gated = !decorRevealed('m2', '~cave', gate);
+  return `<button type="button" class="map-cave ${done ? 'is-done' : 'is-new'} ${gated ? 'is-gated' : ''}" id="mapCave" data-lkey="~cave" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('A small cave' + (m2 ? decorGateNote(m2, '~cave', gate) : ''))}" aria-label="A small cave">
     <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${n ? '' : '<span class="map-spot-new">!</span>'}</button>`;
 }
 // ---- Wandering merchants (2026-10-10, user: "Wandering merchants have to be found manually throughout the map
@@ -10618,9 +10761,10 @@ function wireWanderingMerchantShop(root){
   }, 30000);
 }
 function visitSmallCave(el){
+  if(!mapTapGate(el, 2600)) return;
   const flags = loadDialogueFlags(), n = Number(flags['cave_m2_talks']||0);
   try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
-  const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
+  fadeNewBang(el);
   if(n >= CAVE_M2_LINES.length){ showSpeechBubble(el, '🐚 The cave dweller waves its little shell at you.'); return; }
   showSpeechBubble(el, CAVE_M2_LINES[n]);
   setDialogueFlag('cave_m2_talks', n + 1);
@@ -10630,13 +10774,14 @@ function visitSmallCave(el){
   }
 }
 function visitOldWell(el){
+  if(!mapTapGate(el, 2600)) return;
   if(loadDialogueFlags()['seen:well_m1']){
     try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
     if(el){ el.classList.remove('is-rippling'); void el.offsetWidth; el.classList.add('is-rippling'); }
     showToast('💧 The water is still. Something down there remembers you.');
     return;
   }
-  el && el.classList.remove('is-new'); const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
+  fadeNewBang(el);
   playDialogue('well_m1', {once:true, onDone: replies=>{
     if(replies.includes('Toss in a leaf.')){
       grantCurrency('gold', 25); saveCurrencies();
@@ -11409,10 +11554,9 @@ function maybeOfferErrand(force){
   e.offers.push({tid:t.id, at:Date.now()}); saveErrands(e);
   DIALOGUES['errand:' + t.id] = {lines:[
     {who:t.who, text:t.ask, options:[{label:'I’ll do it.', goto:'yes'}, {label:'Not now.', goto:'no'}], silent:'no'},
-    {label:'yes', who:t.who, text:'Thank you! I’ll pin it on the Notices so you don’t forget.', goto:'end'},
+    {label:'yes', who:t.who, text:'Thank you! I’ll pin it on the Notices so you don’t forget.', goto:'__end'},
     {label:'no', who:t.who, text:'I’ll leave a note on the Quest Board, in case you change your mind.'},
-    {label:'end', who:t.who, text:'…'},
-  ]};
+  ]}; // 2026-10-12 (user: "NPCs always end with '...'"): no trailing "…" line any more
   const p = playDialogue('errand:' + t.id);
   p.then(r=>{ try{ if(r && r.replies && r.replies[0] === 'I’ll do it.'){ if(acceptErrand(t.id)) showToast(`📌 Errand taken: ${t.label}`, 'ok'); } }catch(_){} });
   return t.id;
@@ -12093,7 +12237,18 @@ const CONQUEST_MAPS = [
   // between the first one and the water one. Maybe one is slightly more 'field'y. I also want a beach
   // level!"). Built from the new critters and the shore cards. Retuned 2026-10-09 against a new player's
   // likely deck at each fight (Base cards + earlier rewards, the same deck the skirmish editor's tools use).
-  { id:"mf", unlockAfter:"m1", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
+  // Map 1, Clovermead (2026-10-12, user: "the first map with the otters ... is map 0, not 1 ... If it doesnt fit with our
+  // previous map plans, than add a new map between this map 1 and the current map 2"): the Outskirts became Map 0 and this
+  // meadow sits between it and Thistlewood, so every later map keeps its number. Easy fights built from Base cards.
+  { id:"mq", unlockAfter:"m1", name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
+    nodes: [
+      { key:"q-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"harvest-mouse":2,"sparrow-chick":2}, hqHp:12, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
+      { key:"q-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":3,"bee-forager":3,"bee-sentry":2,"pill-bug":2}, hqHp:13, flavor:"The bees fly in straight lines. Straight at you.", requires:["q-1"] },
+      { key:"q-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", deck:{"meadow-frog":3,"puddle-hopper":3,"duckling":2,"garden-snail":2}, hqHp:13, flavor:"Last night's rain left a puddle for every frog.", requires:["q-1"] },
+      { key:"q-4", kind:"skirmish", name:"Harvest Mice", icon:"🐭", deck:{"harvest-mouse":3,"field-mouse":2,"chipmunk-forager":3,"acorn-chipmunk":2}, hqHp:15, flavor:"They are bringing in the harvest. Yours, mostly.", requires:["q-2","q-3"] },
+      { key:"q-5", kind:"boss", name:"The Old Hare", icon:"🐇", deck:{"buck-brawler":1,"cottontail":3,"burrow-rabbit":3,"meadow-rabbit":3,"lucky-hopper":1}, hqHp:28, flavor:"The oldest hare in the meadow, and still the fastest.", characterId:"plains-terrace", requires:["q-4"] },
+    ]},
+  { id:"mf", unlockAfter:"mq", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
     nodes: [
       { key:"f-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"rabbit-kit":2,"fox-kit":2,"cricket-drummer":3,"beetle-grunt":3}, hqHp:14, flavor:"Every hedge here has ears in it.", requires:[] },
       { key:"f-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2}, hqHp:15, flavor:"The drumming stops the moment you step into the grass.", requires:["f-1"] },
@@ -12461,12 +12616,12 @@ function conquestRankFor(m, node){
   if(base !== 'S' || !bossy || hq.hp < hq.maxHp) return base;
   return (m.round || 99) <= SSS_FAST_ROUND * (dg ? dg.rounds : 1) ? 'SSS' : 'SS';
 }
-function rankForHqFraction(frac){ // C is about half your castle's Health left (2026-10-11)
+function rankForHqFraction(frac){ // 2026-10-12 (user: "C should be below half health ... Maybe B is half health and above")
   if(frac>=0.9) return 'S';
-  if(frac>=0.75) return 'A';
-  if(frac>=0.6) return 'B';
-  if(frac>=0.4) return 'C';
-  if(frac>=0.2) return 'D';
+  if(frac>=0.7) return 'A';
+  if(frac>=0.5) return 'B';
+  if(frac>=0.3) return 'C';
+  if(frac>=0.15) return 'D';
   return 'E';
 }
 function rankAtLeast(have, need){
@@ -12815,9 +12970,9 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   if(!cards && !cur.length && !rankHTML) return '';
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}">${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">${done ? 'Won' : 'First clear'}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
 }
-const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 4; // index in play order: Map 5 (The Ashen Peak) and later
+const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 5; // index in play order = map number (from 0): Map 5 and later
 function rollSRankFind(mapId, rank, rng){
   if(!rankAtLeast(rank, 'S')) return null;
   const map = CONQUEST_MAPS.find(x=> x.id === mapId); if(!map) return null;
@@ -12858,7 +13013,7 @@ function worldRevealed(){
   try{ if(localStorage.getItem('bramblewood_world_open_v1') === '1') return true; }catch(e){}
   try{ const p = loadConquestProgress(), mf = CONQUEST_MAPS.find(m=> m.id==='mf'); if(!mf) return true;
     const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
-    return p.completed.some(id=> !['m1','mf'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it
+    return p.completed.some(id=> !['m1','mq','mf'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it
 }
 function isNodeVisible(map, node, index, progress){
   if(!map.sequential) return true;
@@ -12939,6 +13094,17 @@ async function toggleNodeLink(map, fromKey, toKey){
   const published = await publishNodeEdits(map.id);
   showToast(`🔗 ${from.icon||''} ${from.name} ${has ? '✂ no longer unlocks' : '→ now unlocks'} ${to.icon||''} ${to.name}${!has || next.length ? '' : ' (it now opens with the map)'}${published ? ' · published' : ''}`, 'ok');
 }
+async function setDecorGate(map, lkey, fromKey){
+  const o = Object.assign({}, (mapLayoutOverrides[map.id]||{})[lkey] || {});
+  const spot = lkey.startsWith('~spot:') ? FEATURE_SPOTS.find(sp=> '~spot:' + sp.key === lkey) : null;
+  const cur = lkey.startsWith('~spot:') ? (spot ? spotAfter(spot) : null) : decorAfter(map.id, lkey, null);
+  o.after = cur === fromKey ? '' : fromKey;
+  if(!mapLayoutOverrides[map.id]) mapLayoutOverrides[map.id] = {};
+  mapLayoutOverrides[map.id][lkey] = o;
+  const published = await publishMapLayout(map.id);
+  const n = map.nodes.find(x=> x.key === fromKey);
+  showToast(o.after ? `🔗 It now appears after ${n ? n.name : fromKey}${published ? ' · published' : ''}` : `🔗 It's always there now${published ? ' · published' : ''}`, 'ok');
+}
 function adminCompleteNodes(mapId, keys){
   if(!adminModeEnabled) return; const p = loadConquestProgress(); let n = 0;
   keys.forEach(k=>{ const id = conquestNodeId(mapId, k); if(!p.completed.includes(id)){ p.completed.push(id); n++; } if(!p.ranks[id]) p.ranks[id] = 'S'; });
@@ -12947,7 +13113,7 @@ function adminCompleteNodes(mapId, keys){
 }
 function mapLayoutToolbarHTML(map){
   const custom = !!mapLayoutOverrides[map.id];
-  if(conquestLinkEdit) return `<div class="map-layout-bar conquest-scrim editing"><span class="ml-note"><b>🔗 Editing links.</b> Click a skirmish, then the one it should unlock. Click a linked pair again to unlink.</span>
+  if(conquestLinkEdit) return `<div class="map-layout-bar conquest-scrim editing"><span class="ml-note"><b>🔗 Editing links.</b> Click a skirmish, then the one it should unlock (or a map tile it should reveal). Click a linked pair again to unlink.</span>
     <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
@@ -13043,7 +13209,11 @@ function wireMapLayoutEditor(map, body){
         const t = ev.target.closest('[data-lkey]'); if(!t) return;
         ev.stopPropagation(); ev.preventDefault();
         const key = t.getAttribute('data-lkey');
-        if(key.startsWith('~')) return; // map tiles aren't fights; they can't be linked
+        if(key.startsWith('~')){ // a map tile: the selected fight becomes the one that reveals it (click again to clear)
+          if(!conquestLinkFrom || conquestLinkFrom.startsWith('~')){ showToast('Click a skirmish first, then the map tile it should reveal.', 'warn'); return; }
+          const from = conquestLinkFrom; conquestLinkFrom = null;
+          await setDecorGate(map, key, from); rerender(); return;
+        }
         if(!conquestLinkFrom || conquestLinkFrom === key){ conquestLinkFrom = conquestLinkFrom === key ? null : key; cv.querySelectorAll('.link-from').forEach(x=> x.classList.remove('link-from')); if(conquestLinkFrom) t.classList.add('link-from'); return; }
         const from = conquestLinkFrom; conquestLinkFrom = null;
         await toggleNodeLink(map, from, key); rerender();
@@ -13080,7 +13250,7 @@ function wireMapLayoutEditor(map, body){
   };
   const place = (el, key, x, y)=>{
     x = clamp(snap(x)); y = clamp(snap(y));
-    ensureLayout()[key] = {x, y};
+    { const L = ensureLayout(); L[key] = Object.assign({}, L[key], {x, y}); } // keeps a tile's `after` gate
     el.style.left = x+'%'; el.style.top = y+'%';
     canvas.querySelectorAll(`line[data-a="${key}"]`).forEach(l=>{ l.setAttribute('x1', x); l.setAttribute('y1', y); });
     canvas.querySelectorAll(`line[data-b="${key}"]`).forEach(l=>{ l.setAttribute('x2', x); l.setAttribute('y2', y); });
@@ -13807,11 +13977,13 @@ function renderConquestSubTab(body){
       if(firstEver){ seen.push(map.id); try{ localStorage.setItem('bramblewood_maps_opened', JSON.stringify(seen)); }catch(e){} }
       // 2026-10-11 (user: "Remove the loading screen between maps if a player has already seen the transition ONCE. However,
       // when the player goes into the game, new session, the first time he loads the map, use the loading screen"): once per session only.
-      if(firstThisSession){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
+      // 2026-10-12 (user: "When i see a map for the first time, please show that screen introducing the map"): also the first
+      // time you ever open a map, not just the first map of a session.
+      if(firstThisSession || firstEver){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
     } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp) activateSpot(sp); }));
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ fadeNewBang(b); b.classList.add('is-open'); activateSpot(sp); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
   mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
@@ -13886,6 +14058,8 @@ function renderConquestSubTab(body){
     const earned = conquestDeckRevealed(map, selectedNode, progress);
     const revealed = earned; // 2026-10-10: no Show/Hide toggle any more
     const squadChips = Object.entries(selectedNode.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`<span class="dchip">${d.icon} ${d.name} ×${n}</span>`:''; }).join('');
+    // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
+    // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = selectedNode.virtual ? 0 : (nodeEnergyCost(map, selectedNode) || 1), canAffordFight = currentEnergy() >= energyCost;
     panelEl.hidden = false;
@@ -13896,8 +14070,8 @@ function renderConquestSubTab(body){
       panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">⚔️ ${done ? 'Fight again' : 'Fight'}</button>`}
-      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${KIND_LABEL[selectedNode.kind]} · ${castleLineText(selectedNode)}${nodeEnergyCost(map, selectedNode)?` · ${nodeEnergyCost(map, selectedNode)}⚡`:''}</div></div>
+      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>`}
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineText(selectedNode)}</div></div>
         ${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Battle rating'))}</small><b>⚔ ${ev}</b></div>`; })()}
         ${done ? `<span class="cnp-cleared" title="${escapeAttr(progress.ranks[nid] ? 'Cleared · best rank ' + progress.ranks[nid] : 'Cleared')}">✓ ${escapeHtml(_t('Cleared'))}</span>` : ''}
@@ -13905,7 +14079,7 @@ function renderConquestSubTab(body){
       </div>
       ${newSkillRibbonHTML(selectedNode)}
       ${earned ? `
-        <details class="cnp-deck"><summary>${escapeHtml(_t('Their deck'))} · ${Object.values(selectedNode.deck||{}).reduce((a,b)=> a+b, 0)} ${escapeHtml(_t('cards'))}</summary><div class="cnp-squad">${squadChips}</div></details>` : `<div class="cnp-squad-locked">🔒 ${escapeHtml(_t('Deck hidden'))}: ${reqText}.</div>`}
+        <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span><span class="rank-hex rank-${conquestDeckNeed(selectedNode)}" aria-hidden="true"><i></i><b>${conquestDeckNeed(selectedNode)}</b></span></div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-card-rewards-row"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button><button type="button" class="btn small ghost" id="cnpAdminClearMap" title="Admin: count every fight on this map as cleared">✅ Clear the whole map</button></div>` : ''}
       `;
@@ -14967,7 +15141,7 @@ const STARTER_CFG_DEFAULT = {
   rewards: ['river-warden', 'sunspire-envoy', 'quarry-mole'],
 };
 const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:16, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
-const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v1';
+const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v2'; // v2 (2026-10-12): an older saved config kept the old, harder castle Health
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
 function applyCloudTutorialCfg(r){
@@ -15057,6 +15231,13 @@ function openTutorialEditor(){
     close(); GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
     startTutorialMatch(1, null, {adminTest:true}); };
 }
+// Tutorial decks (2026-10-12, user: "The first tutorial deck should only contain 3 ducklings, 3 honey bees and 3 silver minnows,
+// 1 pond ducks, 1 pond trouts. The 2nd tutorial deck contains 3/3/3/1/1 of the above and 1 duck paddler, 1 cottontail and 1
+// acorn chipmunk and 1 chipmunk forager"): fixed, the same for every tribe.
+const TUTORIAL_FIXED_DECKS = {
+  1: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1},
+  2: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1, 'duck-paddler':1, 'cottontail':1, 'acorn-chipmunk':1, 'chipmunk-forager':1},
+};
 function startTutorialMatch(stage, arrangedIds, opts){
   const pick = loadFactionChoice() || 'both';
   const st = stage || loadTutorialStage();
@@ -15067,7 +15248,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   // Part 2 (2026-10-12) plays your real starter deck (+ the tutorial reward cards), with your leader beside it.
-  const deckCounts = st >= 2 ? (()=>{ const d = buildFactionStarterDeck(pick); tutorialRewardIds().forEach(id=> d[id] = (d[id]||0) + 1); return d; })() : (validDeck(cfg.myDeck) || tutorialStagePlayerDeck(st, pick, arrangedIds));
+  const deckCounts = st >= 2 ? (validDeck(TUTORIAL_FIXED_DECKS[2]) || buildFactionStarterDeck(pick)) : (validDeck(cfg.myDeck) || validDeck(TUTORIAL_FIXED_DECKS[1]) || tutorialStagePlayerDeck(st, pick, arrangedIds));
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
   // whole section's header comment for why skirmish decks stay scratch-only until the series is
   // actually won.
@@ -15096,11 +15277,43 @@ function startTutorialMatch(stage, arrangedIds, opts){
     // here gates it to a single stage — giving new players an early, repeatable look at the
     // Leader-summon mechanic on top of the wait/cost lessons the stages already teach.
     // 2026-10-12 (user: "The leader is only introduced in the 2nd tutorial round").
-    leaderDefId: st >= 2 ? (matchLeaderId() || 'wandering-traveller') : null, leaderUid:null, tutorialFaction:pick, tutorialStage:st, adminTest: !!(opts && opts.adminTest),
+    // 2026-10-12 (user: "The player also doesnt have a leader. The leader joins and helps in for the next fight. Visibly talking
+    // to the player, then the player is forced to click okay ... Then it is added onto their newly fashioned (fade in +
+    // triumphant vfx/sfx) leader slot. Then a simple tutorial explanation of what a leader slot is"): part 2 opens with no
+    // leader; tutorialLeaderJoin brings it in.
+    leaderDefId: null, pendingLeaderId: st >= 2 ? (matchLeaderId() || 'wandering-traveller') : null, leaderUid:null, tutorialFaction:pick, tutorialStage:st, adminTest: !!(opts && opts.adminTest),
     tutorialReplay: !!(opts && opts.replay), tutorialFirstPart2: st >= 2 && !loadTutorial2Done()};
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
   switchTab('play');
+  if(matchState.pendingLeaderId){ const m = matchState; setTimeout(()=> tutorialLeaderJoin(m), 1100); }
+}
+function tutorialLeaderJoin(m){
+  if(!m || matchState !== m || m.over || !m.pendingLeaderId) return;
+  const id = m.pendingLeaderId, d = getCardDefs()[id] || {name:'Your leader', icon:'👑'};
+  let ov = document.getElementById('npcPromptOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'npcPromptOverlay'; ov.className = 'modal-overlay npc-prompt-overlay'; document.body.appendChild(ov); }
+  ov.innerHTML = `<div class="npc-prompt" role="dialog" aria-modal="true" aria-label="${escapeAttr(d.name)}">
+    <div class="npc-face">${d.art ? `<img src="${d.art}" alt="">` : `<span>${d.icon||'👑'}</span>`}</div>
+    <div class="npc-body"><b class="npc-name">${escapeHtml(d.name)}</b>
+      <p>I saw that first fight. You'll do. I'm with you now: call me onto the field when you need me.</p>
+      <button type="button" class="btn primary" id="npcPromptOk">Okay</button></div></div>`;
+  ov.hidden = false;
+  try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
+  const ok = document.getElementById('npcPromptOk'); setTimeout(()=>{ try{ ok.focus(); }catch(e){} }, 30);
+  ov.onkeydown = ev=>{ if(ev.key === 'Escape'){ ev.preventDefault(); ev.stopPropagation(); } }; // only Okay closes it
+  ok.onclick = ()=>{
+    ov.hidden = true; ov.innerHTML = '';
+    if(matchState !== m || m.over) return;
+    m.leaderDefId = id; m.pendingLeaderId = null;
+    const wrap = document.getElementById('leaderWidgetWrap');
+    if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); try{ wireLeaderWidget(); }catch(e){} wrap.classList.remove('is-new-slot'); void wrap.offsetWidth; wrap.classList.add('is-new-slot'); setTimeout(()=> wrap.classList.remove('is-new-slot'), 2400);
+      try{ const r = wrap.getBoundingClientRect(); if(window.confettiBurst) confettiBurst(r.left + r.width/2, r.top + r.height/2); }catch(e){} }
+    try{ SoundKit.leaderFanfare && SoundKit.leaderFanfare(); }catch(e){}
+    setTimeout(()=>{ if(matchState !== m) return; const w = document.getElementById('leaderWidget'); if(!w) return;
+      try{ markCoachSeen('leader'); }catch(e){}
+      showCoachTip({id:'leader-slot', text:'👑 This is your leader slot. Your leader waits here: drag it onto the field once a match, when you need it.'}, w); }, 1500);
+  };
 }
 // Stage 3's "have fun arranging your deck" lesson: a small curated pool (see tutorialCuratedPool)
 // the player toggles cards in/out of, rather than a free-for-all across the whole Codex -- keeps
@@ -15495,7 +15708,7 @@ function levelledEnemyDeck(node, deck){
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
-  if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playDialogue('boss_banter'), 3200); }
+  if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playFactionWarning('That one doesn\'t surrender. Don\'t wait for it to.'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
@@ -17969,7 +18182,7 @@ function renderMatchUI(){
       </div>
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
-      ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow" aria-hidden="true">${Array.from({length: fxAtLeast('high') ? 28 : 14}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
+      ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow frost-lv${frostLevelOf(m)}" aria-hidden="true">${Array.from({length: Math.round((fxAtLeast('high') ? 28 : 14) * [1, 1, 1.6, 2.2][frostLevelOf(m)])}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
       ${fieldOverlayHTML(fieldEffectOf(m))}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
@@ -18043,7 +18256,7 @@ function renderMatchUI(){
         ${(!isPc && m.winner===1) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}
+        ${gloryBadgesHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -18541,6 +18754,8 @@ function wireDropZones(){
   const battleLogToggle = document.getElementById('battleLogToggle');
   if(battleLogToggle) battleLogToggle.addEventListener('click', ()=>{
     battleLogOpen = !battleLogOpen;
+    try{ localStorage.setItem('bramblewood_battlelog_open', battleLogOpen ? '1' : '0'); }catch(e){}
+    if(battleLogOpen){ const lg = document.getElementById('battleLog'); if(lg) lg.scrollTop = lg.scrollHeight; }
     const panel = battleLogToggle.closest('.battle-log-panel');
     if(panel) panel.classList.toggle('collapsed', !battleLogOpen);
     const chevron = battleLogToggle.querySelector('.battle-log-chevron');
@@ -22558,7 +22773,7 @@ async function resolveRound(opts){
   if(m.over && m.winner === (m.mode==='liveRanked' ? m.liveMySeat : 1)){ try{ await playRewardReveal(m); }catch(e){ console.warn('reward reveal', e); } }
   m.resolving = false; document.documentElement.classList.remove('bw-resolving');
   renderMatchUI();
-  if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; setTimeout(()=> ids.forEach(icePulseVfx), 120); }
+  if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
   if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
   if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
@@ -22709,6 +22924,9 @@ function tidePillHTML(m){
   const flow = t==='flow';
   return `<div class="phase-pill tide-${t}" title="${flow ? 'Flow: Tide units hit +1, and Wash units push the card facing them back 1 Wait. Ebb next round.' : 'Ebb: Tide units take 1 less from each hit. Flow next round.'}" aria-label="Tide: ${flow ? 'Flow' : 'Ebb'}"><span aria-hidden="true">${flow ? '🌊' : '🐚'}</span><b>${flow ? _t('Flow') : _t('Ebb')}</b></div>`;
 }
+// Fields that act every round wear the clock on their south border, like a unit's trigger badge (2026-10-12, user: "On the
+// frost effect card, also include that on its south border - let's start doing that to make the game consistent").
+const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField();
   const phase = (dayNightOn(m) && matchHasPhaseCards(m)) ? m.engine.getPhase() : null;
@@ -22722,7 +22940,30 @@ function fieldEffectCardHTML(m){
   if(!f) return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
   return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" data-defid="__field" data-fieldhover="1" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
-    <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}</div>`;
+    <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}${FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : ''}</div>`;
+}
+// Frost strength (2026-10-12, user: "On the +2 and +3 frost effect maps, the frost is a little thicker"): the fight's +Wait.
+function frostLevelOf(m){
+  try{ const node = m && m.conquestNode && findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node; const w = Number(node && node.rules && node.rules.frostWait) || 1; return Math.max(1, Math.min(3, w)); }catch(e){ return 1; }
+}
+// A cold wave brushes the field just before the frost bites (2026-10-12, user: "when the frost effect starts, just before
+// that, a cold wave quickly brushes the field, so it's more obvious what's happening").
+function coldWaveVfx(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf || reducedMotion() || !fxAtLeast('low')) return 0;
+  const w = document.createElement('div'); w.className = 'cold-wave frost-lv' + frostLevelOf(m); w.setAttribute('aria-hidden', 'true');
+  bf.appendChild(w); setTimeout(()=> w.remove(), 900);
+  try{ SoundKit.swipeTone && SoundKit.swipeTone(); }catch(e){}
+  return 480;
+}
+function tideWaveVfx(kind){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
+  let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
+  if(reducedMotion() || !fxAtLeast('low')) return;
+  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind; w.setAttribute('aria-hidden', 'true');
+  w.innerHTML = '<span></span><span></span>';
+  bf.appendChild(w); setTimeout(()=> w.remove(), 1500);
+  try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
 }
 function icePulseVfx(uid){
   const el = boardCardEl(uid); if(!el) return;
@@ -23594,6 +23835,33 @@ function defeatQuoteHTML(m){
   const [q, who] = DEFEAT_QUOTES[i];
   return `<figure class="wl-quote"><blockquote>“${escapeHtml(q)}”</blockquote><figcaption>— ${escapeHtml(who)}</figcaption></figure>`;
 }
+// Rank lessons (2026-10-12, user: "We dont need to tell them what Rank E causes. Just, the first time they get F, E, and A, S, SS,
+// and SSS we provide them a tutorial explanation. If you get S or SS or SSS, you don't have to have explanations for the ranks
+// below till A anymore. But if you get A, then S, then SS, then SSS - there's always a congratulatory message everytime").
+const RANK_LESSONS = {
+  F:{t:'Rank F', d:'A loss. The more of their castle you knock down, the less it stings: F, FF, then FFF for barely a scratch.'},
+  E:{t:'Rank E', d:'A win by a thread. Ranks grade the castle Health you keep: lose less of it for a better rank.'},
+  A:{t:'Rank A!', d:'Well fought. Keep 90% of your castle and it becomes S.', cheer:true},
+  S:{t:'Rank S!', d:'Barely a scratch on your castle. Take no damage at all for SS.', cheer:true},
+  SS:{t:'Rank SS!', d:'Not one point of damage. Do that in an elite or boss fight quickly enough and it becomes SSS.', cheer:true},
+  SSS:{t:'Rank SSS!', d:'Flawless, and fast. That is as good as it gets.', cheer:true},
+};
+function rankLessonHTML(m){
+  if(!m || m.mode !== 'conquest' || !m.conquestRankEarned || m.adminTest) return '';
+  if(m._rankLesson === undefined){
+    m._rankLesson = null;
+    const r = /^F+$/.test(m.conquestRankEarned) ? 'F' : m.conquestRankEarned, L = RANK_LESSONS[r];
+    const flags = loadDialogueFlags();
+    if(L && !flags['rankLesson:' + r]){
+      m._rankLesson = r;
+      const ladder = ['A','S','SS','SSS'], at = ladder.indexOf(r);
+      (at >= 0 ? ladder.slice(0, at + 1) : [r]).forEach(x=> setDialogueFlag('rankLesson:' + x, true));
+    }
+  }
+  const r = m._rankLesson; if(!r) return '';
+  const L = RANK_LESSONS[r];
+  return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><span class="rank-hex rank-${r}" aria-hidden="true"><i></i><b>${r}</b></span><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
+}
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;
@@ -23626,7 +23894,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1} (${reward.rankBonus.gold>=0?'+':''}${reward.rankBonus.gold})</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   const past = m.conquestFirstClearPast;
   if(past && (past.gold>0 || past.dust>0 || (past.cards||[]).length)){
@@ -23658,7 +23926,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
   if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
-  return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">⚔️ Next: ${escapeHtml(nb.node.name)} <small class="wl-cost">${e}⚡</small></button>`;
+  return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">Next: ${escapeHtml(nb.node.name)} ⚔️</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
 function rewardsCheer(){
@@ -23717,7 +23985,6 @@ function matchStatsHTML(m){
       ${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" title="First time clearing this node — a bigger one-off bonus">✨ First Clear</span>` : ''}
       ${reward && reward.gold>0 ? `<span class="hud-pill forge-cur-gold" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">${mapleLeafIconHTML()} ${rewardCountSpan(reward.gold)} Maple Leaves</span>` : ''}
       ${reward && reward.dust>0 ? `<span class="hud-pill forge-cur-dust" title="${reward.isFirstClear?'First-clear bonus':'Repeat-clear payout'}">✨ ${rewardCountSpan(reward.dust)} Dust</span>` : ''}
-      ${reward && reward.rankBonus ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(rankExplain(reward.rankBonus.rank, m))}">⭐ Rank ${reward.rankBonus.rank} ×${RANK_MULT[reward.rankBonus.rank]||1}</span>` : ''}
       ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="A rare find for an S-rank win on this map (once per map)">🎁 Rare find!</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="Food tokens buy Sunfeather packs in the Shop">🍯 ${m.conquestFoodEarned} Food</span>` : ''}
@@ -24045,8 +24312,10 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
+    case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
+    case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};
     case 'fastForward': return {cls:'', text:`${nm(ev.defId)} fast-forwards ${ev.n} turn${ev.n===1?'':'s'}! ⏩`};
-    case 'sweepWhiff': return {cls:'', text:`${nm(ev.attDefId)} sweeps at the empty ${ev.dir} side and hits nothing. 🌀`};
+    case 'sweepWhiff': return {cls:'', text:`${nm(ev.attDefId)} sweeps at the empty ${ev.dir} side and hits nothing. 🧹`};
     case 'swipeLumber': return {cls:'', text:`${nm(ev.attDefId)} swipes ${ev.amount} Lumber! 🫳🪵`};
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
@@ -24065,13 +24334,16 @@ function renderLogLine(ev){
   // get a real log line below) is actually log-worthy. Left unfixed this would have flooded the
   // log with several "waitTick" lines every round in any match with more than one waiting card.
   if(ev.type==='waitTick') return;
-  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = 0; return; }
+  // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
+  // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
+  const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
   const {cls,text} = logText(ev);
   const row = document.createElement('div');
   row.className = 'log-row '+cls;
   row.textContent = text;
   log.appendChild(row);
-  log.scrollTop = 0;
+  if(atEnd || !log.dataset.userScrolled) log.scrollTop = log.scrollHeight;
 }
 /* ---- attack "feel", GSAP-driven since 2026-09-16 ("improve the effects and gsap-like
    animations of the game"): every card that lands (or attempts) a hit reels back into a
@@ -24717,6 +24989,7 @@ const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the ico
   evasive: {text:'Miss', icon:'🌀'},
   flying:  {text:'Miss', icon:'🪽'},
   swift:   {text:'Miss', icon:'💨'},
+  whiff:   {text:'Whiff~', icon:'🪃'}, // a boomerang coming home through empty air (2026-10-12)
 };
 function missCallout(el, reason){
   const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
@@ -24905,7 +25178,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
   if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl){
-    const label = ev.sweep ? '↳ Sweep!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : '⇔ Fork!';
+    const label = ev.sweep ? '🧹 Sweep!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : '⇔ Fork!';
     // 2026-10-12 (user: "The Fork float label appears too early"): it now shows 0.1 s before the damage number lands.
     const am = animMs(), at = ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
     setTimeout(()=> { (ev.sweep ? SoundKit.sweepTone() : SoundKit.swipeTone()); floatText(targetEl, label, 'quick'); }, Math.max(0, at - 100));
@@ -24914,7 +25187,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
 // Triggered abilities (2026-10-08, user: "a trigger vfx and a soft or neutral sfx whenever a
 // triggered ability triggers, like On Death or On Enemy Play"): a gold rune ring opens on the card
 // with the trigger's symbol above it, and a soft two-note chime.
-const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'⏳', onReady:'⚡', onExile:'🌀',
+const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'🕐', perTurn:'🕐', /* 2026-10-12: turn-based triggers wear a clock */ onReady:'⚡', onExile:'🌀',
   onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️'};
 // Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
@@ -25186,6 +25459,11 @@ function renderVfxForEvent(ev){
     if(ad && td && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; SkillFX.boomerang(t, a, {flight:420}); } else SkillFX.boomerang(a, t, {flight:420}); } } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
   if(ev.type==='boomerangReturn'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Boomerang returns!', 'quick'); if(matchState) matchState.boomerangBack = String(ev.uid); }
+  // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
+  // insufficient!"): the tide rolls in across the field on Flow and drains back out on Ebb, then a soft water line stays.
+  if(ev.type==='tide' && matchState && matchHasTide(matchState)) tideWaveVfx(ev.tide);
+  if(ev.type==='boomerangWhiff'){ const el = boardCardEl(ev.uid); if(el) missCallout(el, 'whiff'); try{ SoundKit.boomerangWhirr && SoundKit.boomerangWhirr(); }catch(e){} }
+  if(ev.type==='boomerangCaught'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Caught!', 'quick'); }
   if(ev.type==='kingSlayer'){
     const el = boardCardEl(ev.targetUid);
     SoundKit.kingSlayerTone();
@@ -25533,7 +25811,8 @@ function renderVfxForEvent(ev){
   function floatResourceGain(ev, glyph, pillId, sound){
     sound();
     const flavorCls = RESOURCE_FLOAT_CLASS[pillId] || 'lumber';
-    const cardEl = ev.uid!=null ? boardCardEl(ev.uid) : null;
+    // a Worthy unit's death pays the OTHER side: float it on their Lumber pill, not over the falling card and its tooltip (2026-10-12)
+    const cardEl = (ev.uid!=null && ev.cause !== 'worthyDeath') ? boardCardEl(ev.uid) : null;
     if(cardEl) floatText(cardEl, `+${ev.amount}${glyph}`, flavorCls);
     const pillEl = document.getElementById(pillId);
     if(pillEl){
@@ -27740,6 +28019,12 @@ function renderShopShelves(grid, signedIn){
   renderCounter();
 }
 let shopTab = 'packs';
+let shopCameFrom = null;
+function shopBackHTML(){
+  const c = shopCameFrom; if(!c || c.tab === 'shop') return '';
+  const lbl = c.tab === 'play' && c.sub === 'conquest' ? 'Back to the map' : c.tab === 'home' ? 'Back home' : 'Back';
+  return `<button type="button" class="btn small shop-back" id="shopBackBtn">← ${lbl}</button>`;
+}
 function renderShop(){
   const root = document.getElementById('view-shop');
   // The Market moved out to its own page, the Flea Market (2026-10-10); the Shop is packs only.
@@ -27747,7 +28032,7 @@ function renderShop(){
   shopTab = 'packs';
   const signedInShop = isSignedIn();
   const merchants = merchantsUnlocked();
-  root.innerHTML = `<div class="panel"><h2>${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
+  root.innerHTML = `<div class="panel">${shopBackHTML()}<h2>${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool(null, 1).length} cards).</p>
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
@@ -27779,6 +28064,7 @@ function renderShop(){
   if(!pool.length){ grid.innerHTML = `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>`; wireWanderingMerchantShop(root); return; }
   renderShopShelves(grid, signedIn);
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
+  { const bb = document.getElementById('shopBackBtn'); if(bb) bb.onclick = ()=>{ const c = shopCameFrom; shopCameFrom = null; if(c && c.tab === 'play'){ if(c.sub) playSubTab = c.sub; if(c.map) conquestSelectedMap = c.map; } switchTab(c ? c.tab : 'home'); }; }
   wireWanderingMerchantShop(root);
 }
 // The Nest (2026-09-27, item 10, per explicit request: "now we need to build the Nest or Repo —
@@ -28032,19 +28318,27 @@ function packPoolReady(pack){ return adminModeEnabled || packCardPool(null, pack
 function packsUsingPool(n){ return getShopPacks().filter(p=> (p.pool||1) === n); }
 // Every rarity band has a weight (a missing one used to fall back to 4, i.e. more common than Uncommon).
 const PACK_RARITY_WEIGHT = {special:0, devlegendary:0, devancient:0, eventlegendary:0, eventrare:0, starter:6, common:6, uncommon:3, quest:0, rare:1.5, veryrare:1, superrare:0.8, epic:0.6, heroic:0.4, unique:0.3, questunique:0, legendary:0.25, mythic:0.1, ancient:0.05};
+// Pack variety (2026-10-12, user: "Still something wrong with the algorithm. I get 90% alley cats or 100% alley cats"): with only
+// a few obtainable cards in a pool, the one Common outweighed the rest every slot. Now a pack never repeats a card while the pool
+// has enough different ones, and every card pulled recently (this session, fading pack by pack) is much less likely to come
+// again, so a bundle spreads across the whole pool.
+const packRecentPulls = {};
 function rollPackCards(pack){
   const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
   if(!pool.length) return [];
   const weights = Object.assign({}, PACK_RARITY_WEIGHT, pack.rarityWeights||{});
-  const w = id=>{ const v = weights[defs[id].rarity||'common']; return v === undefined ? 4 : Math.max(0, +v||0); };
-  const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); let r = Math.random()*tot; for(const id of list){ r -= w(id); if(r<=0) return id; } return list[list.length-1]; };
+  const recent = packRecentPulls[pack.pool||1] || (packRecentPulls[pack.pool||1] = {});
+  const w = id=>{ const v = weights[defs[id].rarity||'common']; const base = v === undefined ? 4 : Math.max(0, +v||0); return base * Math.pow(0.35, recent[id] || 0); };
+  const pick = list=>{ const tot = list.reduce((t,id)=> t + w(id), 0); if(!(tot > 0)) return list[Math.floor(Math.random()*list.length)]; let r = Math.random()*tot; for(const id of list){ r -= w(id); if(r<=0) return id; } return list[list.length-1]; };
   const out = [];
   const unowned = pool.filter(id=> !(myCardCopies[id]||[]).length && !myUnlockedCardIds.has(id));
   if(pack.newGuaranteed && unowned.length) out.push(pick(unowned));
-  const n = pack.cards||3, cap = Math.max(2, Math.ceil(n / Math.max(1, pool.length)));
+  const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
-  while(out.length < n && guard++ < 500){ const id = pick(pool); if(out.filter(x=> x===id).length >= cap) continue; out.push(id); }
+  while(out.length < n && guard++ < 500){ const left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break; out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
+  Object.keys(recent).forEach(id=>{ recent[id] *= 0.6; if(recent[id] < 0.05) delete recent[id]; });
+  out.forEach(id=> recent[id] = (recent[id] || 0) + 1);
   return out.sort(()=> Math.random()-0.5);
 }
 // Which pulls come out foil, and in which finish. null = plain.
@@ -28101,15 +28395,23 @@ function packTintVars(pack){
   const t = T[id] || (fp ? [fp.tint, '#2a2a3a', '#ffffff'] : T.bronze);
   return `--pk1:${t[0]}; --pk2:${t[1]}; --pk3:${t[2]};`;
 }
-function packCoverArt(pack){
-  if(pack && Array.isArray(pack.coverPools)){ const defs = getCardDefs(), ids = pack.coverPools.flatMap(n=> packCardPool(defs, n)).filter(id=> defs[id].art); if(ids.length){ ids.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b)); return defs[ids[0]].art; } if(pack.coverId && defs[pack.coverId] && defs[pack.coverId].art) return defs[pack.coverId].art; }
-  // The wrapper's art: the pool's headline card (highest rarity with art), fixed per pack so the
-  // wrapper never hints at what's inside this particular pack.
+// Pack faces (2026-10-12, user: "there should be different face cards per booster. And definitely different set of facecards per
+// booster set!"): each pack draws its face from its OWN pool's best-art cards (the old code always read pool 1, so every pack
+// wore the same alley cat), and each booster in a bundle wears a different one of them (k).
+function packCoverCandidates(pack){
   const defs = getCardDefs();
-  const withArt = packCardPool(defs).filter(id=> defs[id].art);
-  if(!withArt.length) return '';
-  withArt.sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b));
-  return defs[withArt[0]].art;
+  let ids = [];
+  if(pack && Array.isArray(pack.coverPools)) ids = pack.coverPools.flatMap(n=> packCardPool(defs, n));
+  else ids = packCardPool(defs, (pack && pack.pool) || 1);
+  ids = [...new Set(ids)].filter(id=> defs[id] && defs[id].art);
+  if(pack && pack.coverId && defs[pack.coverId] && defs[pack.coverId].art) ids.unshift(pack.coverId);
+  ids.sort((a,b)=> (b === (pack && pack.coverId)) - (a === (pack && pack.coverId)) || RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') || a.localeCompare(b));
+  return [...new Set(ids)].slice(0, 8);
+}
+function packCoverArt(pack, k){
+  const ids = packCoverCandidates(pack); if(!ids.length) return '';
+  const defs = getCardDefs();
+  return defs[ids[(Math.abs(k|0)) % ids.length]].art;
 }
 // Pack glow and sparks (2026-10-08, user). Spark odds per card double with each rarity step: Common 0.1%, Uncommon
 // 0.2%, Rare 0.4%, Very Rare 0.8% ...; a super spark is half as likely again. A pack glows 55% of the time, in a
@@ -28254,7 +28556,7 @@ function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const b = ma
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
   if(!isFirstClear) return null;
   const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
-  const pid = MAP_FREE_PACKS[idx + 1], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
+  const pid = MAP_FREE_PACKS[idx], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
   grantFreePack(pid, 1);
   return pid;
 }
@@ -28395,7 +28697,7 @@ function openPackAnimation(pack, opened, opts){
         <span class="po2-shadow" aria-hidden="true"></span><span class="po2-leak" aria-hidden="true"></span>
         <div class="po2-body">
           <div class="po2-liner" aria-hidden="true"></div>
-          <div class="po2-art" style="${art ? `background-image:url('${escapeAttr(art)}')` : ''}"></div>
+          <div class="po2-art" style="${(()=>{ const a2 = packCoverArt(pack, o.faceK != null ? o.faceK : (o.faceK = packIdx + Math.floor(Math.random()*8))) || art; return a2 ? `background-image:url('${escapeAttr(a2)}')` : ''; })()}"></div>
           <span class="po2-foil" aria-hidden="true"></span>
           <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards${bundle ? ` · ${packIdx+1}/${opened.length}` : ''}</small></div>
           <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
@@ -29632,6 +29934,9 @@ function switchTab(tab){
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
+  // Shop's back button (2026-10-12, user: "Shop should have a back button - to go back to the conquest map if that's where you
+  // were before"): remember where the Shop was opened from.
+  if(tab === 'shop' && currentTabBeforeSwitch && currentTabBeforeSwitch !== 'shop') shopCameFrom = {tab:currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null)};
   if(tutorialGateBlocks(tab)){ showToast('🎓 Finish the tutorial first — it only takes a few minutes.'); tab = 'home'; }
   try{ document.body.dataset.tab = tab; }catch(e){}
   if(tab!=='play') exitConquestImmersive();
@@ -30925,21 +31230,28 @@ const SPEECH_COOLDOWN_MS = 2600;
 const lastSpokeAt = new Map(); // uid -> timestamp, module-scoped so it survives across renders
 function showSpeechBubble(el, text, extraClass){
   if(!el) return;
-  const b = document.createElement('div');
+  // One bubble per thing at a time (2026-10-12, user: "the tooltips are slightly off ... shouldn't be spammable").
+  if(el._bubble && el._bubble.isConnected) el._bubble.remove();
+  const b = document.createElement('div'); el._bubble = b;
   b.className = 'speech-bubble' + (extraClass ? ' ' + extraClass : '');
   b.textContent = text;
   // Appended to <body> (not `el`) and positioned with fixed left/top computed from the card's
   // own getBoundingClientRect() — see the CSS comment on .speech-bubble. This is what lets the
   // bubble render above the map/field instead of getting clipped by .board-row's overflow-y.
   document.body.appendChild(b);
-  const bubbleRect = b.getBoundingClientRect(); // real size even at opacity:0 (still laid out)
+  // offsetWidth/Height are the bubble's real size: getBoundingClientRect() includes the entrance scale(.7), which centred
+  // every bubble ~15% of its width too far right (2026-10-12, "the tooltips are slightly off").
+  const bubbleRect = {width: b.offsetWidth, height: b.offsetHeight};
   // 2026-10-02 ("when scrolling up and down, the text gets left behind"): re-anchor to the card
   // every frame while the bubble is alive, so it follows scrolling (and a board re-render, which
   // swaps the card's element — re-found by its data-uid) instead of staying where it first appeared.
-  const uid = el.getAttribute && el.getAttribute('data-uid');
+  const uid = el.getAttribute && el.getAttribute('data-uid'), lkey = el.getAttribute && el.getAttribute('data-lkey');
   let anchor = el;
   const place = ()=>{
     if(!anchor.isConnected && uid){ const fresh = document.querySelector(`.board-card[data-uid="${uid}"]`); if(fresh) anchor = fresh; }
+    // a map tile survives a map re-render (zooming or scrolling the map) by its layout key (2026-10-12, "scrolling over those
+    // speech bubbles hides them")
+    if(!anchor.isConnected && lkey){ const fresh = document.querySelector(`#conquestCanvas [data-lkey="${lkey}"]`); if(fresh){ anchor = fresh; anchor._bubble = b; } }
     if(!anchor.isConnected) return;
     const cardRect = anchor.getBoundingClientRect();
     b.style.left = (cardRect.left + cardRect.width/2 - bubbleRect.width/2) + 'px';

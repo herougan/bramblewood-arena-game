@@ -2,6 +2,46 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (11:00)
+- **Maps**
+  - **Map 0 and a new Map 1.** The Outskirts are Map 0 now. A new meadow map, **Clovermead** (five easy fights with Base cards, boss The Old Hare), sits between it and Thistlewood, so every later map keeps its number.
+  - Feature spots like the Armoury show as a dark **?** until the fight that opens them is cleared.
+  - Curiosities, the well and the chat cave appear only after a fight is cleared (the map's first fight by default). In 🔗 Edit links, click a fight and then the tile to change which fight reveals it. No line is drawn to them.
+  - Map tiles can't be spam-clicked, and their speech bubbles sit centred and follow the map when it moves.
+  - A conversation already playing or waiting can't be queued again (the endless "Hear that hum?").
+  - The **!** on a map feature fades once you've clicked it.
+  - NPCs no longer end on a "…" line.
+  - The map introduction shows the first time you ever open a map, not just the first map of a session.
+- **Tutorial**
+  - **Fixed decks.** Part 1: 3 Ducklings, 3 Honey Bees, 3 Silver Minnows, a Pond Duck and a Pond Trout. Part 2 adds a Duck Paddler, a Cottontail, an Acorn Chipmunk and a Chipmunk Forager.
+  - **No leader in part 1.** In part 2 your leader introduces itself (only Okay closes it), its slot fades in with a fanfare, and a tip explains it.
+  - An older saved tutorial setting can no longer bring back the harder castle Health.
+- **Battle**
+  - **Boomerang** flies home on its own:
+    - out on the enemy side it hits whatever is in its lane now;
+    - if the throw went into a unit that has since died, it's a **Whiff~**;
+    - a throw into the castle hits the castle there and back;
+    - if the thrower has died, an ally in its lane without Boomerang takes the hit, or your castle does if the lane is empty.
+    - Its description is now one line.
+  - **0 Attack is checked at every step**, not only at the start of combat. A Coral Polyp swings for 1 on Flow, and a mid-combat buff lets a unit attack.
+  - **Fork, Trident and Octolash** aim from where the attacker stands. A Fork standing between two enemies hits those two, never one 1.5 slots away.
+  - **Swimmer** can list what Flow gives it ("fastForward 1, armor 2"); without a list it keeps the extra turn.
+  - **Ranks:** B from half your castle Health, C below half (S 90%, A 70%, B 50%, C 30%, D 15%).
+  - **Fight buttons** read "Fight ⚔️ 6⚡" once, with no pill.
+  - **Clock icons:** triggers that fire every turn show 🕐 instead of the bolt. Fields that act every round (Frost, Heatwave, Rain) wear a 🕐 on their bottom edge.
+  - **Frost and tide:** a cold wave brushes the field before the frost bites, and the frost is thicker on +2 and +3 maps. Flow rolls a wave in across the field and Ebb drains it out.
+  - **Spent triggers:** a trigger that can never fire again shines, greys and fades away. One that's only paused just greys.
+  - **Sweep** has its own mark, 🧹.
+  - **Worthy:** a Worthy unit's Lumber floats on the receiver's Lumber pill, not over the falling card.
+  - **Battle log:** it reads top to bottom, follows the newest line and stays open across rounds.
+- **Codex:** everything shows together by default. From Map 10 a "🗂️ Separated" toggle splits it into Base & Map 0, Maps 1–20, Maps 21–40, then every ten maps. Search is debounced and off-screen cards skip rendering.
+- **Skirmish panel:** narrower, showing just the name with castle Health and Armour. The first-clear rewards are larger and labelled. A hidden deck is a dark slab with a lock and the rank needed, with no words and no show/hide.
+- **Ranks after a fight:** the "Rank E ×0.6" pill is gone. The first F, E, A, S, SS and SSS each explain themselves once, and A, S, SS and SSS each get a cheer the first time.
+- **One warning voice:** boss warnings are a single line, from Shieldback (Otters), Aurelia (Hummingbirds) or either (both).
+- **Packs:** each pack wears a face from its own pool, and every booster in a bundle wears a different one. Packs no longer repeat a card while the pool has others, and recently pulled cards are much less likely.
+- **Shop:** a "← Back to the map" button when you came from the map.
+- **Art:** your PixelLab title screen is the new splash. 14 more D30 cards and the first 12 Base cards have art; more are generating in your Chrome.
+
 ## 2026-10-12 (08:10)
 - **Skills**
   - **Trident 🔱** strikes left, centre and right; a side prong with no unit facing it hits the castle.
