@@ -2523,7 +2523,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon));
     const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
     if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
-    if(playable.length && !ai.playedThisTurn){
+    const hadPlay = playable.length && !ai.playedThisTurn;
+    if(hadPlay){
       // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
       // cost card, they pick which is better for the scenario"): every playable card is scored for the board in front of
       // it, then the best is played (a little noise keeps it from being fully predictable).
@@ -2536,12 +2537,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + ((e.puncture||0) + (e.perforate||0))*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
         if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + (e.antiAir ? 3 + e.antiAir*foeFliers : 0);
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
+        // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
+        if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
+          const gain = sp.do==='hasten' ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3
+            : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
+            : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
+          v = gain > 0 ? gain : -99; }
         return v + rnd()*1.5;
       };
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
-      const pick = scored.reduce((a, b)=> b[1] > a[1] ? b : a)[0];
-      const side = rnd() < 0.5 ? 'left' : 'right';
-      placeCard(players, sideOf, aiId, pick.uid, side, stats, events);
+      const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
+      // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
+      if(best[1] > -50){ const side = rnd() < 0.5 ? 'left' : 'right'; placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
+    }
+    // Equipment (2026-10-11): with the turn's play still free, strap a carried item onto its strongest unit.
+    if(!ai.playedThisTurn){ const eq = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].cardType === 'equipment');
+      if(eq){ const tgt = allLive(ai).filter(c=> canEquip(ai, eq.uid, c.uid)).sort((a, b)=> (b.atk + b.hp) - (a.atk + a.hp))[0]; if(tgt) equip(players, sideOf, aiId, tgt.uid, eq.uid, stats, events); } }
+    if(hadPlay){ /* played (or held a useless spell) above */
     } else if(!ai.discardUsedThisTurn && ai.hand.length){
       const idx = Math.floor(rnd()*ai.hand.length);
       const [dc] = ai.hand.splice(idx,1);

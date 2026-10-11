@@ -4618,10 +4618,10 @@
    "attack": 7,
    "health": 16,
    "skills": [
-    "rend",
+    "pierce",
     "triggers"
    ],
-   "winRate": 37.5,
+   "winRate": 49.2,
    "band": [
     35,
     60
@@ -6041,6 +6041,63 @@
    "verdict": "weak",
    "locked": true,
    "source": "map"
+  },
+  {
+   "id": "tailwind",
+   "name": "Tailwind",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "attack": 0,
+   "health": 0,
+   "skills": [],
+   "winRate": 10,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack"
+  },
+  {
+   "id": "bramble-gauntlet",
+   "name": "Bramble Gauntlet",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
+   "skills": [],
+   "winRate": 48.3,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 22,
+   "skills": [
+    "counterattack",
+    "spiteful"
+   ],
+   "winRate": 53.3,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack"
   }
  ]
 }

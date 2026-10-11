@@ -17,7 +17,7 @@
   - **Where:** the file, function or doc that defines it
 - When something ships or changes, edit its item here in place.
 
-_Last updated: 2026-10-09 (9 am): **Raid ghost decks** no longer come up short when many cards are one-copy (Unique, Legendary): they widen to nearby cards, and a new test (`tests/ghost-unique.js`) marks every third card Unique to prove it. That unblocks giving more cards Unique rarity (decision T10 done). **Enemy deck level:** a power-based guess for unrated cards was tried and dropped (most fights still read 0, and the numbers jumped about); decision B3 now has three real options. Phone check of the beach cave, the Grotto and Promotion: all fit. Earlier today: Thistle Fields and Pebble Beach maps, the Smugglers' Grotto sub-map, Promotion, Hero rarity, the 4th-map egg, the new opening screen and the 📐 Design tab ([`CHANGELOG.md`](CHANGELOG.md))._
+_Last updated: 2026-10-11 (evening): day and night are now a per-fight setting (off by default); new keywords Puncture, Pierce N, Perforate, Counterattack and Spiteful; the first spell (Tailwind); an actions-per-turn modifier; a version and card-data check each session; the Card Ledger's Commit queue (`tools/card-ledger/ship.js`). Details in [`CHANGELOG.md`](CHANGELOG.md)._
 
 
 
@@ -35,7 +35,7 @@ _Last updated: 2026-10-09 (9 am): **Raid ghost decks** no longer come up short w
 ### Game core
 
 **1. Cards** ✅
-- 341 cards: units, structures and tokens.
+- 402 cards: units, structures, spells, equipment and tokens.
 - Stats: Attack, Health, Wait, Cost.
 - Effects: passives, skills, and custom triggers.
 - Rarity sets the copy limit per deck: Common 10 · Uncommon 5 · Rare 4 · Very/Super Rare 3 · Epic/Heroic 2 · Unique/Legendary/Mythic/Ancient 1.

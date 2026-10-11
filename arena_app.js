@@ -5222,6 +5222,9 @@ function renderEditorInner(){
            Rarity is deliberately NOT alphabetized in the dropdown itself (2026-09-17, "make all
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
+      <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack']].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
+      <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> p.kind==='boolean' || p.kind==='number').map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Canid, Primate"><datalist id="speciesList">${Object.keys(SPECIES_PHYLUM).map(k=> `<option value="${k}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
@@ -5469,6 +5472,7 @@ function renderEditorInner(){
   </div>`;
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
   document.getElementById('editorXBtn').addEventListener('click', closeCardEditor);
+  { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; }); }
   document.getElementById('fRarity').addEventListener('change', e=>{
     const [a,b] = rarityStops(e.target.value);
     document.getElementById('fRaritySwatch').style.background = `linear-gradient(135deg, ${a}, ${b})`;
@@ -6007,9 +6011,14 @@ function readEditorFormIntoCard(){
   const fTestEl = document.getElementById('fTest');
   c.test = fTestEl ? fTestEl.checked : !!c.test;
   c.rarity = document.getElementById('fRarity').value;
+  { const fk = document.getElementById('fCardKind'); if(fk){ const kind = fk.value; // 2026-10-11: Unit / Spell / Equipment
+      if(kind === 'spell'){ c.cardType = 'spell'; c.spell = {do: document.getElementById('fSpellDo').value, amount: Math.max(0, Number(document.getElementById('fSpellAmt').value)||0)}; delete c.equip; if(!(c.archetypes||[]).includes('Spell')) c.archetypes = ['Spell'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
+      else if(kind === 'equipment'){ c.cardType = 'equipment'; delete c.spell; const gk = document.getElementById('fEquipGrant').value, pd = PASSIVE_DEFS.find(p=> p.key===gk);
+        c.equip = {grant: gk ? {[gk]: pd && pd.kind==='boolean' ? true : Math.max(0, Number(document.getElementById('fEquipVal').value)||1)} : {}}; if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
+      else if(c.cardType === 'spell' || c.cardType === 'equipment'){ delete c.cardType; delete c.spell; delete c.equip; } } }
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
   { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
-    if(sp.length) c.species = sp; else { delete c.species; if(!c.test && !c.field) showToast('This card has no species. Every unit needs an animal type or Elemental.', 'warn'); } } }
+    if(sp.length) c.species = sp; else { delete c.species; if(!c.test && !c.field && !c.cardType) showToast('This card has no species. Every unit needs an animal type or Elemental.', 'warn'); } } }
   // 2026-09-27, item 9: no editor field for this any more (see the removed markup's own
   // comment above) — keep whatever value the card already carries instead of reading a
   // now-nonexistent #fSplashEffect input.

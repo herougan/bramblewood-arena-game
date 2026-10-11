@@ -19,6 +19,7 @@ _Updated 2026-10-11, 9 am. The short list of what matters now. Everything else i
 | **D30** | Art for the 19 new faction-pack cards (prompts ready in `art_staging/jobs_2026_10_11.json`). Running them uses your PixelLab session and existing credits | Run them |
 | **D31** | Level caps: every rarity stops at 10 (what the Forge levels to), castles at 20, the hero at 100. Should higher rarities go further? | Keep 10 until the Forge has a reason to go higher |
 | **D32** | Wildpaths (PvE passives) is a preview with 21 draft skills on three trails. Earning Path points: 1 per map cleared? | 1 per map, +1 per boss S rank |
+| **D33** | Day and night are now off unless a fight turns them on. 65 enemy decks carry Nocturnal or Diurnal cards, which now never get their bonus. Turn the cycle on for those fights? | Turn it on for the night-themed maps (Sable Swampmire, The Pinewood Taiga…) and boss fights with those cards; leave the rest off |
 | **T3 / S1 / S2** | Server: one-use fight seeds, admin player list, anti-cheat tier 1. Each waits for "apply it" | Apply all three |
 
 All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with the ID and your choice, e.g. "D19 Tide".
@@ -41,7 +42,7 @@ All 30 open items, with filters, are in the 🗳️ Decisions tab. Reply with th
   - enemy big cards now get played about half the time they're drawn (before: almost never);
   - players have Beaver Lumberjack (+2 Lumber) and Courier Pigeon (draw 1) from the start.
 - **Day and night and fields** ([design note](fields-and-day-night-2026-10-09.md)):
-  - Day and night alternate every 3 rounds; at dawn both sides draw. Nocturnal cards hit +1 at night, Diurnal by day.
+  - Since 2026-10-11, day and night are off unless a fight turns them on (skirmish editor: cycle, night first, always day or night, switch every N rounds). With the cycle on, they alternate, and at dawn both sides draw. Nocturnal cards get their bonus at night, Diurnal cards by day.
   - Five field cards: Blizzard, Heatwave, Spring Rain, Thick Fog and Full Moon. They're free, take no play and draw a card.
   - Each field now has its own look on the board: rain, drifting fog, heat shimmer, moonlight.
 - **Difficulty:**

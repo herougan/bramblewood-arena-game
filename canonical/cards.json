@@ -13069,11 +13069,11 @@
     "icon": "\ud83e\udeb5",
     "cost": 1,
     "wait": 1,
-    "attack": 2,
-    "health": 18,
+    "attack": 4,
+    "health": 22,
     "effects": {
       "counterattack": true,
-      "spiteful": 1
+      "spiteful": 2
     },
     "dmgType": "physical",
     "resist": [],

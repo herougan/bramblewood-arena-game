@@ -30,7 +30,7 @@ const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).st
   else if(s.kind){ src=s.kind[0].toUpperCase()+s.kind.slice(1); grp='Other'; }
   else if(c.token){ src='Token'; grp='Token'; }
   else if(c.locked && c.rarity!=='starter' && !c.basic){ src= inDecks.has(c.id) ? 'Enemy only' : 'Unused'; grp='Other'; }
-  const b=bal[c.id];
+  const b= c.cardType==='spell' ? null : bal[c.id]; // a deck of 8 spells has too few units for the win-rate test to mean anything
   return {id:c.id,n:c.name,i:c.icon||'',r:c.rarity||'common',c:c.cost||0,w:c.wait||0,a:c.attack||0,h:c.health||0,
     t:(c.archetypes||[]).join(', '),sk:skills(c),src,g:grp,m:mno,tok:!!c.token,eq:c.cardType==='equipment',
     wr:b? b.winRate : null, band:b? b.band : null, stale: b ? (b.cost!==c.cost||b.wait!==c.wait||b.attack!==c.attack||b.health!==c.health) : null};

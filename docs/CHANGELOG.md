@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-11 (23:20)
+- **Card editor: Card kind.** Unit, Spell or Equipment.
+  - A spell picks Hasten, Mend or Sap and an amount.
+  - Equipment picks the skill it grants (and its value).
+  - The Spell / Equipment type tag is added for you.
+- **The CPU uses the new card kinds.**
+  - It casts a spell only when the spell would do something now (units still waiting, units hurt, enemies to sap). Otherwise it holds it.
+  - With its play still free, it straps equipment onto its strongest unit (before, enemy equipment sat in hand forever).
+- **New cards measured:**
+  - **Bramble Gauntlet** wins 48% (in band).
+  - **Thornwood Palisade** measured 38% at 2/18, so it's now **4/22, Counterattack, Spiteful 2** (53%, in band for Rare).
+  - **Pyroclast Wyrm** with Pierce 5 is unchanged at 49%.
+  - Spells aren't measured: a test deck of 8 spells has too few units for the number to mean anything, so the Ledger shows "not measured".
+- **Shipping ledger commits:** `tools/card-ledger/ship.js` applies pending Commit-button commits to the card file, oldest first. It skips any field that changed since the commit was made, so a stale commit never overwrites newer work.
+- **New decision D33:** day and night being off by default means 65 enemy decks' Nocturnal/Diurnal cards never get their bonus. Turn the cycle on for those fights? (Action items.)
+
 ## 2026-10-11 (22:40)
 - **Renamed keywords:**
   - **Puncture N** (was Pierce): every landed melee hit also deals N damage to the enemy castle.
