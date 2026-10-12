@@ -2,6 +2,13 @@
 
 _Updated 2026-10-12, 10:50 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
 
+## Done at 23:55 (your 23:12 list, all ten)
+
+| ID | What I did |
+|---|---|
+| 23-1…10 | Lv 0 row in stats by level · source editable in the card editor, maps in First–Fourth seasons · Nature's Force N · every card hidden by default · Heal + Self/Ally/Opponent/Any, distance and target count on every targeted action · 🐜/🐝 swarm mark · no "1" after icons · extended art crops far less, no hard bottom edge · editing no longer revokes your copy · Esprit/Rally on the strip |
+| ART-T | Optional: Tidewall Fort's castle art has "HOME BASE" lettering in it; regenerate on request (0.75 credits). |
+
 ## Done tonight (21:35–22:50)
 
 | ID | What I did |
