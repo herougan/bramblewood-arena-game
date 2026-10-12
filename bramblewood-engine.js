@@ -145,6 +145,10 @@ const HQ_MAX_HP = 100;
 // From SUDDEN_DEATH_ROUND, any hit that lands kills the unit it hits outright, and any hit on a
 // castle (or a Gladiator leader) ends the game. A match still going at DRAW_ROUND_CAP is a draw.
 const SUDDEN_DEATH_ROUND = 20;
+// Two-stage sudden death (2026-10-12, user: "leave the sudden death [1] at round 20 or something. then [2] at 30. [2] affects
+// the castle for [1] is just the creatures"): from round 20 any hit kills a unit; from round 30 a hit on a castle also ends
+// the game. Every fight, bosses included (raids never reach stage II: suddenDeathCastles:false).
+const SUDDEN_DEATH_CASTLE_ROUND = 30;
 const DRAW_ROUND_CAP = 100;
 const STALL_ROUNDS_FOR_DRAW = 2;
 // A compact fingerprint of everything that can change on the board: castles, and every card's
@@ -208,7 +212,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Raid bosses opt out of the castle half (opts.suddenDeathCastles:false): otherwise simply
   // surviving to round 20 would hand any raider the whole boss castle.
   const suddenDeathCastles = opts.suddenDeathCastles !== false;
-  function setSuddenDeath(on){ suddenDeath = !!on; }
+  let suddenDeathStage = 0;
+  function setSuddenDeath(on, stage){ suddenDeath = !!on; suddenDeathStage = on ? (stage || 1) : 0; }
   // Raid trench hooks (2026-10-03, Raid P2 — see bramblewood-trench.js). All opt-in; a normal match
   // never sets them, so every existing fight resolves exactly as before.
   //  - passUpkeepIds: during a resolveCombat pass, only these player ids get poison/decay/round-start/
@@ -1211,7 +1216,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const reduced = Math.max(0, amount - bulwarkReductionFor(pl));
     if(isGladiator && pl.gladiatorLeaderUid!=null){
       const ld = gladiatorLeaderOf(pl);
-      if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && reduced>0) ? ld.hp : reduced;
+      if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && suddenDeathStage >= 2 && reduced>0) ? ld.hp : reduced;
       syncGladiatorHq(pl);
       tallyCastleDealt(pl, reduced);
       return reduced;
@@ -1220,7 +1225,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let toHp = reduced;
     if(pl.hq.shield > 0 && toHp > 0){ const soak = Math.min(pl.hq.shield, toHp); pl.hq.shield -= soak; toHp -= soak; }
     pl.hq.hp = Math.max(0, pl.hq.hp - toHp);
-    if(suddenDeath && suddenDeathCastles && reduced>0){ pl.hq.hp = 0; pl.hq.shield = 0; } // sudden death: a castle hit ends the game
+    if(suddenDeath && suddenDeathCastles && suddenDeathStage >= 2 && reduced>0){ pl.hq.hp = 0; pl.hq.shield = 0; } // sudden death II: a castle hit ends the game
     tallyCastleDealt(pl, reduced);
     return reduced;
   }
@@ -4318,7 +4323,7 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
   let winner = 0;
   let lastSig = null, stalled = 0, drawn = false;
   while(round <= Math.min(maxRounds, DRAW_ROUND_CAP)){
-    engine.setSuddenDeath(round >= SUDDEN_DEATH_ROUND);
+    engine.setSuddenDeath(round >= SUDDEN_DEATH_ROUND, round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     players[1].playedThisTurn = false;
     players[2].playedThisTurn = false;
     players[1].discardUsedThisTurn = false;
@@ -4354,5 +4359,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, boardSignature, noActionsLeft };
+  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, boardSignature, noActionsLeft };
 }

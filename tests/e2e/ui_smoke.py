@@ -125,7 +125,7 @@ async def main():
         # 4b: Forge — temper a card: the smithing sequence plays, the level goes up once, currency is spent
         await pg.evaluate("myCurrencies.dust=300; myCurrencies.gold=400; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
         # 2026-10-12: Level 0 cards are nurtured in the Nest, not tempered, so pick a card that is already Level 1+
-        fid = await pg.evaluate("(()=>{ const t = [...document.querySelectorAll('#forgePool .card-tile')].find(e=> { const L = getCardLevel(e.dataset.defid); return L >= 1 && L < 3; }); return (t || document.querySelector('#forgePool .card-tile')).dataset.defid; })()")
+        fid = await pg.evaluate("(()=>{ const t = [...document.querySelectorAll('#forgePool .card-tile')].find(e=> { const L = getCardLevel(e.dataset.defid); return L >= 1 && L < 3 && canAffordLevelUp(L, e.dataset.defid); }); return (t || document.querySelector('#forgePool .card-tile')).dataset.defid; })()")
         await pg.click(f'#forgePool .card-tile[data-defid="{fid}"]'); await pg.wait_for_timeout(200)
         l0 = await pg.evaluate(f"getCardLevel('{fid}')")
         await pg.click('#forgeLevelUpBtn'); await pg.click('#forgeLevelUpBtn', force=True); await pg.wait_for_timeout(3200)
@@ -179,7 +179,7 @@ async def main():
               const engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode:'gravity'}); const sideOf = id=> id===1?'A':'B', st = {};
               const P = {1: engine.newPlayer(1, myD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.myHp})), 2: engine.newPlayer(2, rvD, Object.assign({}, CHARACTER_DEFS.castle, {health: TUTORIAL_CFG_DEFAULT.rivalHp}))};
               engine.draw(P[1],3,'A',st,null); engine.draw(P[2],3,'B',st,null); let over = false;
-              for(let r=1; r<=40 && !over; r++){ engine.setSuddenDeath(r>=20); [1,2].forEach(k=>{ P[k].playedThisTurn=false; P[k].discardUsedThisTurn=false; });
+              for(let r=1; r<=40 && !over; r++){ engine.setSuddenDeath(r>=20, r>=30 ? 2 : 1); [1,2].forEach(k=>{ P[k].playedThisTurn=false; P[k].discardUsedThisTurn=false; });
                 engine.aiTakeTurn(P,sideOf,1,st,null); engine.aiTakeTurn(P,sideOf,2,st,null); over = engine.resolveCombat(P,sideOf,st,null, r%2===0?1:2); if(over) break; engine.draw(P[1],1,'A',st,null); engine.draw(P[2],1,'B',st,null); }
               const won = over && P[2].hq.hp<=0 && P[1].hq.hp>0; if(won) w++; if(i===0) fixedWin = won; }
             out[pick] = [Math.round(w/60*100), fixedWin]; }

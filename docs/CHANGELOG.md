@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (21:05)
+- **Two-stage sudden death, bosses included.** From round 20 any hit kills a unit (sudden death I); from round 30 a hit on a castle ends the game (sudden death II). A banner marks each stage. Raids only ever reach stage I.
+- **New card: Triumphvirate** (Unique leader, 6/22, Lumber 3, Wait 1, Felid, Leader and Savanna): a lion wrapped in jewellery on a carpet of gold, beside a lion-mane banner. It has the new **Dictator** skill: it can only be your Leader and never goes in a deck. It has no source yet, so it can't be earned; its portrait is queued in PixelLab.
+- **Art:** Pufferfish Bulwark, Komodo Warlord and Wolf Pack Runner have portraits (264 cards in all). PixelLab then hit the account's monthly generation limit, so the other 88 queued portraits are paused and saved, waiting on you.
+- **Proposal:** [rarity flags, the sinking Goliath raid and co-op dungeons](design-2026-10-12-rarity-raid-coop.md).
+
 ## 2026-10-12 (20:20)
 - **Keywords light up everywhere.** Card text, coach tips, field and castle text now mark game words automatically: statuses and resources in their own colour (Poison green, Lumber brown, fire damage orange…), and terms such as Pitch, Upkeep, Wait, Adjacent and every skill name in bold with a dotted underline. Pitch, Upkeep and Adjacent get a one-line meaning under a card's skills. Flavour text is left alone. Nothing is hand-tagged: it all comes from the game's own lists.
 - **Simpler skill text.** Every skill now reads short and in the same words, e.g. Immolation 2: "Deal 2 fire damage to all adjacent units every upkeep"; Pounce 5: "Deal 5 damage to a random enemy unit, or the castle if there are no targets"; triggers read "On Death: Deal 5 fire damage to an adjacent enemy". Heat damage is now called fire damage.

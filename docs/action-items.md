@@ -86,6 +86,7 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
-- **Art (PixelLab in your Chrome):** the first 153 portraits are all in the game. Batch C (the 90 player cards still without art) started at 7:46 pm and takes about 7½ hours; I'll pull it in two goes. 61 enemy-only cards come after that. Leave the Mac awake with Chrome and the Claude app open.
+- **Art (PixelLab):** the account hit its **monthly generation limit** at 8 pm with 3 of batch C done (264 cards have art). The other 88 portraits, the Triumphvirate lion first, are saved in the PixelLab tab and resume when the limit resets or if you add credits (your call). Your NightCafe credits could cover them in the meantime; say if you want that.
+- **Your own PixelLab creations** (skeleton families for the volcano, sunken, bog and cave biomes, moogles, jade statue warriors, oriental gargoyles, lava slimes, a multiplying gremlin, a banana-throwing monkey, a stone golem, dragon animations): none are cards yet. Say which you want and I'll make cards for them.
 - **NightCafe (your 409 credits):** 9 painted pieces planned (3 splash/promo, 6 story scenes); waiting for the NightCafe tab to be free.
 

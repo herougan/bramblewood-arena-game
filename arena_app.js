@@ -161,7 +161,7 @@
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
@@ -240,6 +240,8 @@ const PASSIVE_DEFS = [
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Natural Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
+  // Dictator (2026-10-12, user: "A new skill: Dictator - this card can only be a leader"): it never goes in a deck.
+  {key:'dictator', category:'passive', label:'Dictator', kind:'boolean', desc:()=>`Can only be a leader: it never goes in a deck.`},
   {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger. On the enemy's side it looks like an ordinary critter until it strikes or is struck, or a Keen Eye unit spots it.`},
   {key:'drunk', category:'passive', label:'Drunk', kind:'boolean', desc:()=>`Always Tipsy.`},
   {key:'purblind', category:'passive', label:'Purblind', kind:'boolean', desc:()=>`Always Blind.`},
@@ -1003,6 +1005,7 @@ function maxCopiesForRarity(rarity){ return RARITY_MAX_COPIES[rarity||'common'] 
 function editionRootId(d){ return (d && d.hallOfFame && d.hallOfFame.baseId) || (d && d.id); }
 function editionCapReached(counts, id, defs){
   const d = defs[id]; if(!d) return false;
+  if(d.effects && d.effects.dictator) return true; // Dictator: leader only, never a deck card (2026-10-12)
   const root = editionRootId(d);
   const base = defs[root] || d;
   let together = 0;
@@ -1205,6 +1208,7 @@ const SKILL_TEXT = {
   reach: ()=> `Flying can't dodge its attacks.`,
   festering: ()=> `While it's on the field, Bleed and Poison don't wear off.`,
   leader: ()=> `Can be your Leader.`,
+  dictator: ()=> `Can only be your Leader. It never goes in your deck.`,
   changeling: ()=> `Shares a type with every unit. The enemy sees it in disguise.`,
   drunk: ()=> `Always Tipsy.`, purblind: ()=> `Always Blind.`, scatterbrained: ()=> `Always Confused.`,
   primed: ()=> `Its triggers work even while Waiting, Stunned, Frozen or Asleep.`,
@@ -8777,7 +8781,7 @@ function saveMyLeader(){ if(deckDraftActive()) return markDeckDirty(); try{ if(m
 // tier), or any card with the Leader passive. A saved leader that no longer qualifies stays in the deck but sits out.
 function canLeadDef(d){
   if(!d || d.token || d.test || d.hero) return false;
-  if(d.effects && d.effects.leader) return true;
+  if(d.effects && (d.effects.leader || d.effects.dictator)) return true;
   return RARITY_TIER_BANDS.indexOf(d.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('heroic');
 }
 function matchLeaderId(){ const defs = getCardDefs(); return myLeaderId && canLeadDef(defs[myLeaderId]) ? myLeaderId : null; }
@@ -11691,7 +11695,7 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
     engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
     let r = 1, over = false, lastSig = null, stalled = 0;
     for(; r<=DRAW_ROUND_CAP && !over; r++){
-      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND);
+      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
       [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
       if(r > 1) engine.roundStart(P, r, sideOf, stats, null); // day/night and the field, as in a real fight
       engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
@@ -15371,7 +15375,7 @@ function simulateRaidPart(def, part, strip, n){
     let lastSig = null, stalled = 0;
     const rounds = RaidM.fightRounds(def, part);
     for(let r=1; r<=rounds; r++){
-      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND);
+      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
       [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
       engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
       if(engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2)) break;
@@ -23744,7 +23748,7 @@ async function resolveRound(opts){
   // then swip-swapping once that starts"): m.round (incremented once per resolved round, see
   // below) picks who wins a same-column tie THIS round — odd rounds keep the original "enemy
   // (side 2) acts first" default, even rounds flip it to the player (side 1) acting first.
-  if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND);
+  if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND, m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
   setupEnemyBehaviour(m);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
@@ -24305,7 +24309,7 @@ async function resolveRound(opts){
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
     if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
     m.round += 1;
-    if(m.round === SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND)) showSuddenDeathBanner(m);
+    if((m.round === SUDDEN_DEATH_ROUND || m.round === SUDDEN_DEATH_CASTLE_ROUND) && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= m.round)) showSuddenDeathBanner(m, m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     const drawEvents = [];
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
@@ -24535,13 +24539,16 @@ function isWetField(m){ try{ return battleWeatherKind(m) === 11; }catch(e){ retu
 function suddenDeathSky(m){
   return !!(m && !m.over && m.round >= SUDDEN_DEATH_ROUND && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND));
 }
-function showSuddenDeathBanner(m){
+function showSuddenDeathBanner(m, stage){
+  stage = stage || 1;
   try{ const bf = document.getElementById('battlefieldEl'); if(bf) bf.classList.add('sudden-death'); }catch(e){}
   const raid = m.mode==='raidOnline' || m.mode==='raidOffline';
   const el = document.createElement('div');
   el.className = 'sudden-death-sign'; el.setAttribute('role','status');
   try{ SoundKit.suddenDeathSting(); Ambience.duck(0.3, 1400); }catch(e){}
-  el.innerHTML = `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">${raid ? 'Any hit now kills a unit outright.' : 'Any hit now kills — a hit on a castle ends the game.'}</div>`;
+  if(raid && stage >= 2) return;
+  el.innerHTML = stage >= 2 ? `<div class="sds-title">☠️ Sudden death II</div><div class="sds-sub">A hit on a castle now ends the game.</div>`
+    : `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">Any hit now kills a unit outright.${raid ? '' : ` From round ${SUDDEN_DEATH_CASTLE_ROUND}, a hit on a castle ends the game.`}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
 }

@@ -64,7 +64,7 @@ function playMatch(deck1, deck2, pol1, pol2, seed, script){
   let round = 1, over = false, step = 0;
   let lastSig = null, stalled = 0, drawn = false;
   for(; round<=H.Engine.DRAW_ROUND_CAP && !over && !drawn; round++){
-    engine.setSuddenDeath(round >= H.Engine.SUDDEN_DEATH_ROUND);
+    engine.setSuddenDeath(round >= H.Engine.SUDDEN_DEATH_ROUND, round >= H.Engine.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     [1,2].forEach(pid=>{ const pl = players[pid]; pl.playedThisTurn = false; pl.discardUsedThisTurn = false; pl.__turn = round; pl.__canPlay = h=> engine.canPlay(pl, h.defId, h.uid); });
     [1,2].forEach(pid=>{
       const act = script ? script[step++] : POLICIES[pid===1?pol1:pol2](players[pid], polRnd[pid]);

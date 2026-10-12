@@ -55,7 +55,7 @@ function runBoard(spec){
   let round = 1, over = false, invariantErrors = [];
   for(; round<=maxRounds; round++){
     events.push({type:'roundStart', round});
-    if(!spec.noSuddenDeath) engine.setSuddenDeath(round >= Engine.SUDDEN_DEATH_ROUND);
+    if(!spec.noSuddenDeath) engine.setSuddenDeath(round >= Engine.SUDDEN_DEATH_ROUND, round >= Engine.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
     over = engine.resolveCombat(players, sideOf, stats, events, round%2===0 ? 1 : 2);
     invariantErrors.push(...checkInvariants(players, `round ${round}`));
     if(over) break;
