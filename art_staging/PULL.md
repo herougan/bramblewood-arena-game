@@ -18,3 +18,7 @@ clear the anvil's grey background with clearbg.py).
 2026-10-12 18:55: the runner finished all 153 jobs; the last 29 were pulled (keys in pull_keys_2026_10_12b.json; land-tiller,
 talon-archer and forge-anvil use Chrome's actual prompt tails, which differ from the local job files). Forge bg is the
 16:9 band (rows 26-98) of variant B; the anvil is variant C with its grey cleared and trimmed. Nothing is queued now.
+
+2026-10-12 19:46 (11:46Z): batch C queued in Chrome as `window.__bwJobs4` (art_staging/jobs_2026_10_12c.json, 90 jobs: every
+player-obtainable card still without a portrait). Keys for the gallery scan: pull_keys_2026_10_12c.json. ~5 min a job, so
+done around 19:15Z. Weather fields, Tailwind, Bramble Gauntlet, Thornwood Palisade and MissingNo use the scene style.

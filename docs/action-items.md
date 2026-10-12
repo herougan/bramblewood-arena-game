@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 12:30 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 7:50 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -40,6 +40,8 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D62** | **Field kit on Map 12.** Maps 12, 14, 15, 17, 18 and 19 have no new feature; I put the kit on Map 12 (Eyrie Heights), right after the Forge | None | Keep, or name another of those maps |
 | **D63** | **"No dragons yet!" in the Volcano Lair.** The world boss there is the Caldera Wyrm (a fire wyrm, 🐉), and its fights use Fire-Drake Hatchlings and Pyroclast Wyrms | I read your note as a reminder, not an instruction, so I changed nothing | Say "no dragons" and I'll swap them for volcanic beasts and give the lair a non-dragon boss |
 | **D64** | **The Old Bramble's lock.** Your list says "locked till Map 18 Submap complete", but Map 18 (Glass Dunes) has no side map; I tied it to the Ice Hollow (Map 17's new side map) | I may have read the number wrong | Keep, or add a Glass Dunes side map and tie it to that |
+| **P1** | **Faction packs (Otter, Hummingbird, shared; 32 cards)** under your four-pack road plan ([pack plan](pack-plan-2026-10-12.md)) | Folding them into Packs 1–4 spreads faction cards thin; keeping them separate adds a fifth pack | Make them faction reward cards (map-exclusive, from faction quests) |
+| **P2** | **The 43 pack-only cards** in today's pool 1 | Turning them into map cards empties the packs of anything you can't get elsewhere | Keep them pack-only (your "Booster cards"), each assigned to one of Packs 1–4 by biome |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed today:** D36 (Frenzy reworked to your rule), D46 (Rabbit Kit replaces the Quarry Mole), D58 (your egg rates), D59 (a free Base copy from each map's boss), D60 (Caldera Heart, ratings 350–500), D61 (enemy levels from Map 5), D52 (your map list is in).
@@ -84,5 +86,6 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
-- **Art (PixelLab in your Chrome):** 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 39 are in the game; the run carries on in your Chrome (about 4 minutes each, so roughly 5–6 more hours). Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.
+- **Art (PixelLab in your Chrome):** the first 153 portraits are all in the game. Batch C (the 90 player cards still without art) started at 7:46 pm and takes about 7½ hours; I'll pull it in two goes. 61 enemy-only cards come after that. Leave the Mac awake with Chrome and the Claude app open.
+- **NightCafe (your 409 credits):** 9 painted pieces planned (3 splash/promo, 6 story scenes); waiting for the NightCafe tab to be free.
 
