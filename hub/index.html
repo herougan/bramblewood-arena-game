@@ -234,7 +234,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <tr>
 <td><strong>D44</strong></td>
 <td>Tonight's readings: Outskirts = <strong>Map 0</strong>, new <strong>Map 1 Clovermead</strong> (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits <strong>any</strong> unit of yours in its lane without Boomerang. Raids are a full match: <strong>three rows a side</strong>, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only)</td>
-<td>The raid rows are a first version: the boss's column attacks from the trench aren't in the full game yet, and the allies' rows from the trench are gone (one deck, yours)</td>
+<td>The raid rows are a first version: the boss's column attacks from the trench aren't in the full game yet, and the allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90</td>
 <td>Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours</td>
 </tr>
 <tr>
@@ -316,6 +316,23 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (07:50)</h2>
+<ul>
+<li><strong>Tutorial rivals are fixed and weak:</strong><ul>
+<li>Otters face 4 Cobalt Talon Fledglings and 5 Otter Kits.</li>
+<li>Hummingbirds face 6 Otter Kits, a Crossed-Eyes and 2 Pond Trout.</li>
+<li>Both tribes face the same deck as Otters.</li>
+<li>With the computer playing your side, part 1 is won ~86% of the time and part 2 ~75% before your leader joins (it was 11–65%, worst for "both").</li>
+</ul>
+</li>
+<li><strong>Raid balance:</strong> alone against a deck built for three, a raid was unwinnable (computer sims dealt ~0 damage). The boss's cards now fight at 35% Attack and 45% Health, and your castle is twice the trench wall (90). The boss's run-only copies also show properly on the board.</li>
+<li><strong>Raid specials in the full game:</strong> the boss's telegraphed attacks are back. The column it will smash next glows red in your rows a round ahead, then every card of yours in that column, reserves too, takes the hit (your castle does if it's empty).</li>
+<li><strong>Art:</strong> Crossed-Eyes, Rabbit Kit, Fox Kit, Cricket Drummer, Beetle Grunt, Meadow Frog, Antler Skirmisher, Mouse Sapper, Quarry Mole, Badger Berserker and Hedgehog Scout. Portraits drawn on a flat grey backdrop now have it cut away, so they sit on the card's own colours.</li>
+</ul>
+<h2>2026-10-12 (07:45)</h2>
+<ul>
+<li><strong>Art:</strong> 12 more Base cards have portraits (the rabbits, chipmunks, Harvest Mouse, Garden Snail, Pill Bug, Sparrow Chick, Earthworm, Guppy, Fleetfoot). Every card in the tutorial decks now has art. More are generating in your Chrome.</li>
+</ul>
 <h2>2026-10-12 (03:30)</h2>
 <ul>
 <li><strong>Raids are a full match with three rows a side.</strong><ul>

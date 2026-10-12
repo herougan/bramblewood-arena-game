@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (08:30)
+- **Art:** Beetle Battering Ram, Field Mouse, Fiddler Crab Swarm and Pelican Diver. 39 of tonight's 120 portraits are in; the rest keep generating in your Chrome.
+- **Raids:** the action items now describe the boss's column attacks (a red glow on the column a round ahead).
+
 ## 2026-10-12 (07:50)
 - **Tutorial rivals are fixed and weak:**
   - Otters face 4 Cobalt Talon Fledglings and 5 Otter Kits.

@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 3 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -26,7 +26,7 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D41** | Late dungeons (14A–D, 15A, 18A) | **14A is built tonight** (The Mycelium Deep, five fights, two days after Map 14's boss). The rest need new decks and art (about 35 more fights) | Play 14A; if it feels right I'll build 14B–D the same way |
 | **D42** | 23:42 readings (Trident, Pitchfork, Sweep; advanced packs at sale map + 25; Rainrunner; world map after Map 2) | None | Keep |
 | **D43** | "img not found" on the Wait badge | Still not reproduced; tonight's clock-icon change touched the same badges | Send a screenshot if you see it again |
-| **D44** | Tonight's readings: Outskirts = **Map 0**, new **Map 1 Clovermead** (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits **any** unit of yours in its lane without Boomerang. Raids are a full match: **three rows a side**, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only) | The raid rows are a first version: the boss's column attacks from the trench aren't in the full game yet, and the allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90 | Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours |
+| **D44** | Tonight's readings: Outskirts = **Map 0**, new **Map 1 Clovermead** (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits **any** unit of yours in its lane without Boomerang. Raids are a full match: **three rows a side**, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only) | The raid rows are a first version. The boss's column attacks are back (the column glows red a round ahead; the hit lands on your front and reserve cards there, or your castle if the column is empty). The allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90 | Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed tonight:** D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.
@@ -69,5 +69,5 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
-- **Art (PixelLab in your Chrome):** 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 12 are in the game; the run paused when your computer went to sleep. Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.
+- **Art (PixelLab in your Chrome):** 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 39 are in the game and the run is at 40 of 120 (about 4 minutes each, so roughly 5–6 more hours). Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.
 
