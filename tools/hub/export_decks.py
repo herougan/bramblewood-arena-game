@@ -20,7 +20,7 @@ JS = r"""(()=>{
   const raids = (typeof getRaidDefs==='function' ? getRaidDefs() : RAID_DEFS_BASE); (Array.isArray(raids) ? raids : Object.values(raids)).forEach(r=>{
     const st = currentRaidStateFor(r);
     out.raids.push({id:r.id, name:r.name, parts: (r.parts||[]).map(p=>{ let f = null; try{ f = RaidM.fightFor(r, st, p.id); }catch(e){} return {name:p.name, castle: f && f.castleHp, rounds: f && f.rounds, deck: deck(f && f.deck)}; }),
-      allies: Object.entries(r.allyDecks||{}).map(([k, d])=> ({name:k, deck: deck(d)}))});
+      allies: Object.entries(r.allyDecks||{}).map(([k, d])=> (d && d.deck ? {name: d.name || k, deck: deck(d.deck)} : {name:k, deck: deck(d)}))});
   });
   out.order.guided = GUIDED_STEPS.map(g=> ({id:g.id, part:g.stage||1, kind: g.block ? 'blocks until Next' : g.action ? 'waits for the action' : 'tip', when: g.when ? String(g.when).replace(/^m=>\s*/, '') : 'at once', text: guidedStepText(g)}));
   out.order.dialogues = ['tutorialLeaderJoin (part 2 start)','tut_traveller_cheer (part 1, enemy castle under 40%)','tut_fly / tut_boomerang (part 2, first flyer or boomerang of yours)','training_wheels_off (part 2 won)','both_peace (part 2 won, picked both)'];
