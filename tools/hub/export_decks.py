@@ -24,7 +24,7 @@ JS = r"""(()=>{
   });
   out.order.guided = GUIDED_STEPS.map(g=> ({id:g.id, part:g.stage||1, kind: g.block ? 'blocks until Next' : g.action ? 'waits for the action' : 'tip', when: g.when ? String(g.when).replace(/^m=>\s*/, '') : 'at once', text: guidedStepText(g)}));
   out.order.dialogues = ['tutorialLeaderJoin (part 2 start)','tut_traveller_cheer (part 1, enemy castle under 40%)','tut_fly / tut_boomerang (part 2, first flyer or boomerang of yours)','training_wheels_off (part 2 won)','both_peace (part 2 won, picked both)'];
-  out.order.after = ['go-tutorial2: a pointer on the map at Tutorial II after part 1', 'leader-slot: the leader slot explained when it fades in (part 2)', 'g-peek: from your 2nd match, rest on the toughest enemy card', 'rank lessons F, E, A, S, SS, SSS: first time each rank is earned', 'unlock_phyla: in the Codex once Map 12 is reached'];
+  out.order.after = ['go-tutorial2: a pointer on the map at Tutorial II after part 1', 'leader-slot: the leader slot explained when it fades in (part 2)', 'g-peek: the first time an Uncommon (or rarer) enemy unit appears, rest on it to read it', 'rank lessons F, E, A, S, SS, SSS: first time each rank is earned', 'unlock_phyla: in the Codex once Map 12 is reached'];
   out.order.passive = (()=>{ const m0 = matchState; try{ matchState = {players:{1:{hand:[], row:{left:[],center:[],right:[]}}, 2:{row:{left:[],center:[],right:[]}}}, mode:'tutorial'}; return passiveTipCandidates().map(t=> ({id:t.id, text:(t.text||'').slice(0, 160)})); }catch(e){ return [{id:'error', text:String(e)}]; } finally{ matchState = m0; } })();
   return out; })()"""
 async def run():

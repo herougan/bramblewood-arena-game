@@ -16,6 +16,9 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'n-polyp': {id:'n-polyp', name:'Polyp', attack:0, health:20, wait:0, cost:0, effects:{tide:true}},
   'n-swimg': {id:'n-swimg', name:'SwimG', attack:2, health:20, wait:0, cost:0, effects:{swimmer:true, swimmerGrant:{armor:3}}},
   'n-fork':  {id:'n-fork', name:'Fork', attack:2, health:50, wait:0, cost:0, effects:{fork:true}},
+  'n-daunt': {id:'n-daunt', name:'Daunter', attack:1, health:100, wait:0, cost:0, effects:{daunt:2}},
+  'n-recoil':{id:'n-recoil', name:'Recoiler', attack:3, health:20, wait:0, cost:0, effects:{recoil:2}},
+  'n-hit5':  {id:'n-hit5', name:'Hit5', attack:5, health:100, wait:0, cost:0, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), {recordEvents:true, battleMode:mode||'open'}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
@@ -41,6 +44,26 @@ function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), 
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-boom', 'left', {}, []); e.resolveCombat(P, so, {}, [], 1);
   all(P[1])[0].hp = 0; e.removeDeadCards(P, so, {}, {}, []); const mine = P[1].hq.hp, theirs = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
   ok(theirs - P[2].hq.hp === 3 && mine - P[1].hq.hp === 3, `castle there and back: theirs -${theirs - P[2].hq.hp}, yours -${mine - P[1].hq.hp}`); }
+// 09:11 rules: the way back looks for the SAME target; a newcomer in the lane is not hit, it's a whiff
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-boom', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'n-frail', 'left', {}, []);
+  e.resolveCombat(P, so, {}, [], 1); e.removeDeadCards(P, so, {}, {}, []);
+  e.debugSpawnCard(P, so, 2, 'n-wallr', 'left', {}, []); const N = all(P[2]).find(c=> c.defId === 'n-wallr'), n0 = N.hp, ev = [];
+  e.resolveCombat(P, so, {}, ev, 1);
+  ok(n0 - N.hp === 0 && ev.some(x=> x.type === 'boomerangWhiff'), `a newcomer in the lane isn't the boomerang's target: whiff (${n0 - N.hp})`); }
+// the thrower is gone and a Boomerang ally stands in its lane: caught, no harm
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-boom', 'left', {}, []); e.resolveCombat(P, so, {}, [], 1);
+  all(P[1])[0].hp = 0; e.removeDeadCards(P, so, {}, {}, []); e.debugSpawnCard(P, so, 1, 'n-boom2', 'left', {}, []); const A = all(P[1])[0], a0 = A.hp, mine = P[1].hq.hp, ev = [];
+  e.resolveCombat(P, so, {}, ev, 2);
+  ok(A.hp === a0 && P[1].hq.hp === mine && ev.some(x=> x.type === 'boomerangCaught' && x.uid === A.uid), 'a Boomerang ally catches an orphan boomerang unharmed'); }
+// Daunt: each hit takes N Attack off the target until the end of the next round; marks stack while both are live
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-daunt', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'n-hit5', 'left', {}, []);
+  const T = all(P[2])[0], D = all(P[1])[0]; let d0 = D.hp; e.resolveCombat(P, so, {}, [], 1); const r1 = d0 - D.hp;
+  d0 = D.hp; e.resolveCombat(P, so, {}, [], 1); const r2 = d0 - D.hp;
+  ok(r1 === 3 && r2 === 1, `5-Attack unit, daunted 2 then 2+2: hits for ${r1} then ${r2} (want 3 then 1)`);
+  ok((T.daunts||[]).length === 1, `the first mark lifts at the end of the round after it landed (${(T.daunts||[]).length} left)`); }
+// Recoil: every swing hurts itself
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-recoil', 'left', {}, []); const R = all(P[1])[0], r0 = R.hp, hq = P[2].hq.hp;
+  e.resolveCombat(P, so, {}, [], 1); ok(r0 - R.hp === 2 && hq - P[2].hq.hp === 3, `Recoil 2: the swing lands for 3 and costs it 2 (${r0 - R.hp})`); }
 // 0 Attack: an Ocean unit swings on Flow (+1), and stays out of it on Ebb
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-polyp', 'left', {}, []); e.roundStart(P, 1, so, {}, []);
   const t = e.getTide(); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);

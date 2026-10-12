@@ -2,6 +2,34 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (10:00)
+- **Boomerang (your rules):**
+  - On the way back it goes for the same unit it hit (or the castle again). If that unit is gone, it whiffs; a newcomer in the lane isn't hit.
+  - Its speed on the way back is its Attack, so it usually beats Haste. Only a faster Fast Forward unit acts first.
+  - At home, the thrower catches it (that's its attack for the round). If the thrower is gone:
+    - a Boomerang ally in the lane catches it unharmed;
+    - any other ally there takes the hit;
+    - with nobody there, it hits your own castle.
+  - The description ends "Don't fail to catch it!"
+- **New passives:**
+  - **Daunt N** (working name for your "____ N"): on hit, the target loses N Attack until the end of the next round. It stacks.
+  - **Recoil N:** every attack also deals N damage to itself.
+- **Sweep** shows 🧹N, not 🧹+N.
+- **Deck shuffle** is a riffle: six full-size card backs split, slide apart and fall back in alternately. Nothing shrinks.
+- **Initiative coin:** 10% smaller, and it rolls along the edge to the other side with an ease-in-out.
+- **Leader slot tip:** "Your leader goes here. You always start with them…"
+- **"That one looks tough"** now waits for the first Uncommon (or rarer) enemy unit you meet, and points at it.
+- **Graveyard:** until pitching opens it's just "Graveyard", with no +1 Lumber. "Discard" only shows while you hold a card, once pitching is open.
+- **Playback speed opens as you go:**
+  - 1.5× after your first skirmish;
+  - 2× after your first elite;
+  - 3× after Map 2;
+  - from Map 5 your chosen speed carries over to the next fight;
+  - 4× after Map 15, 5× after Map 30.
+- **Map backgrounds:** Clovermead and The Mycelium Deep have their own. Every map with art now uses it on its battlefield too.
+- **Card workbench** (Admin → 🧪): any card with any art, rarity colour, foil, Starlight, foil strength, art style (framed, extended, emoji) and size.
+- **Art:** Duck Paddler is being redrawn (queued next in your Chrome).
+
 ## 2026-10-12 (09:40)
 - **Tutorial:**
   - **Decks:** part 1 uses your list exactly (11 cards), and part 2 adds the four cards you named (15).

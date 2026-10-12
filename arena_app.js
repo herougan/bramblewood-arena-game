@@ -250,7 +250,7 @@ const PASSIVE_DEFS = [
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
-  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back and hits again.`, // 2026-10-12: "as few words as possible"
+  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
@@ -351,6 +351,9 @@ const PASSIVE_DEFS = [
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
   {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Corrode.`},
+  // 2026-10-12 (09:11): two new passives. The first had no name ("____ N"): Daunt is a working name.
+  {key:'daunt', category:'passive', label:'Daunt', kind:'number', min:0, desc:v=>`On hit, the target loses ${v} Attack until the end of the next round. It stacks.`},
+  {key:'recoil', category:'passive', label:'Recoil', kind:'number', min:0, desc:v=>`Every attack also deals ${v} damage to itself.`},
   // Inherent Darkness N / Core Evil (2026-09-21, per explicit request) — two new named Devilry-
   // flavored passives. Inherent Darkness N is a convenience preset for the exact "Per Turn ->
   // Gain Dark Points N" combo the gainDevilry action's own description already recommends
@@ -4178,6 +4181,20 @@ const MAP_BATTLEFIELD_CLASS = {
   mf:'map-mf',   // Thistle Fields -- sunny meadow (2026-10-09)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
   mg:'map-m4',   // Smugglers' Grotto (sub-map) -- borrows the cave look
+  // 2026-10-12 (user: "Check that all the maps have backgrounds"): every map with painted art fights on it too.
+  mq:'map-mq',
+  mu:'map-mu',
+  mz:'map-mz',
+  mp:'map-mp',
+  mc:'map-mc',
+  mw:'map-mw',
+  mk:'map-mk',
+  mh:'map-mh',
+  mr:'map-mr',
+  ml:'map-ml',
+  mt:'map-mt',
+  md:'map-md',
+  my:'map-my',
 };
 // Battlefield background picker (2026-09-30, queued backlog item: "player-selectable, independent
 // of which Conquest map you're on, plus a new 'extremely undistracting' calm background option").
@@ -4477,7 +4494,8 @@ function abilityBadges(d, bopts){
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
-  if(e.sweep) out.push(`🧹+${e.sweep}`); // 2026-10-12: its own mark (🌀 is the dodge)
+  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">😨${e.daunt}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">💢${e.recoil}</span>`);
+  if(e.sweep) out.push(`<span title="Sweep ${e.sweep}">🧹${e.sweep}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
@@ -10556,7 +10574,7 @@ function activateSpot(spot){
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
-const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
+const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -15603,7 +15621,7 @@ function tutorialLeaderJoin(m){
     try{ SoundKit.leaderFanfare && SoundKit.leaderFanfare(); }catch(e){}
     setTimeout(()=>{ if(matchState !== m) return; const w = document.getElementById('leaderWidget'); if(!w) return;
       try{ markCoachSeen('leader'); }catch(e){}
-      showCoachTip({id:'leader-slot', text:'👑 This is your leader slot. Your leader waits here: drag it onto the field once a match, when you need it.'}, w); }, 1500);
+      showCoachTip({id:'leader-slot', text:'👑 Your leader goes here. You always start with them: drag them onto the field once a match, when you need them.'}, w); }, 1500);
   };
 }
 // Stage 3's "have fun arranging your deck" lesson: a small curated pool (see tutorialCuratedPool)
@@ -17272,6 +17290,8 @@ function renderAdmin(){
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
       <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
+    <div class="panel admin-subpanel"><h3>🧪 Card workbench</h3><p class="panel-sub">Try any card with any art, rarity colour, foil, foil strength and art style. Nothing is saved.</p>
+      <button type="button" class="btn small" id="adminCardBenchBtn">🧪 Open the workbench</button></div>
     <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
       <button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
@@ -17362,6 +17382,7 @@ function renderAdmin(){
                     // fresh the next time IT renders.
   });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
+  const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
@@ -18494,7 +18515,7 @@ function renderMatchUI(){
       <div class="hand-strip" id="handStrip"></div>
       <!-- 2026-10-06 (user: "the graveyard should become its own field on the right"): a card-sized
            pile at the end of your row, mirroring the Deck on the left. Drop or tap a card here to pitch it. -->
-      <div class="discardzone graveyard-pile hq-tile ${holdingCard?'is-holding':''}" id="dropDiscard" title="${escapeAttr(discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null))}">${holdingCard
+      <div class="discardzone graveyard-pile hq-tile ${holdingCard && pitchAllowedIn(m)?'is-holding':''}" id="dropDiscard" title="${escapeAttr(pitchAllowedIn(m) ? discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null) : 'Your Graveyard: units that fall end up here.')}">${holdingCard && pitchAllowedIn(m) /* 2026-10-12 (user: "During the periods where I cannot Pitch for lumber, do not put the +1 lumber in the Graveyard and just call it graveyard") */
         ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
         : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
     </div>
@@ -18620,13 +18641,20 @@ function renderMatchUI(){
   // multiplier — 1x (normal) -> 1.5x -> 2x -> 3x -> back to 1x — that applies to every
   // round's animation pacing, not just whichever round happened to be resolving when it was
   // clicked. Always clickable (not gated on m.resolving) so the pace can be set ahead of time.
-  if(ffBtn) ffBtn.addEventListener('click', ()=>{
-    const steps = [1, 1.5, 2, 3];
-    const idx = steps.indexOf(m.speedMult);
-    m.speedMult = steps[((idx<0?0:idx)+1) % steps.length];
-    ffBtn.innerHTML = ffBtnLabel(m.speedMult);
-    ffBtn.title = ffBtnTitle(m.speedMult);
-  });
+  if(ffBtn){
+    const steps = speedSteps();
+    if(!m._speedInit){ m._speedInit = true; const keep = keptSpeed(); if(keep && steps.includes(keep) && m.speedMult === 1){ m.speedMult = keep; } }
+    ffBtn.innerHTML = ffBtnLabel(m.speedMult); ffBtn.title = steps.length > 1 ? ffBtnTitle(m.speedMult) : 'Faster playback opens after your first skirmish';
+    if(steps.length < 2) ffBtn.setAttribute('aria-disabled', 'true');
+    ffBtn.addEventListener('click', ()=>{
+      const st = speedSteps(); if(st.length < 2){ try{ denyShake(ffBtn); }catch(e){} return; }
+      const idx = st.indexOf(m.speedMult);
+      m.speedMult = st[((idx<0?0:idx)+1) % st.length];
+      ffBtn.innerHTML = ffBtnLabel(m.speedMult);
+      ffBtn.title = ffBtnTitle(m.speedMult);
+      if(speedKeeps()) try{ localStorage.setItem(SPEED_KEEP_KEY, String(m.speedMult)); }catch(e){}
+    });
+  }
   // Task #94 (2026-09-16, "especially full on full screen"): a literal fullscreen toggle,
   // on top of the always-bigger .in-match battleground sizing below — the Fullscreen API
   // needs a user gesture to invoke, so this can't just be automatic on entering a match.
@@ -19311,8 +19339,29 @@ function updateControlsDisabled(){
   const ffEl = document.getElementById('ffBtn'); if(ffEl){ ffEl.innerHTML = ffBtnLabel(m.speedMult); ffEl.title = ffBtnTitle(m.speedMult); }
 }
 // UX A12: always shows the current speed. 2026-10-10 (user): one arrow per step — ▶ 1×, ▶▶ 1.5×, ▶▶▶ 2×, ▶▶▶▶ 3×.
-function ffBtnLabel(mult){ const m = (!mult || mult<=1) ? 1 : mult, n = m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
-function ffBtnTitle(mult){ return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (1.5x → 2x → 3x → normal)`; }
+// Playback speeds open as you progress (2026-10-12, user: "1.5x after your first Skirmish. 2x after your first elite (end of
+// map1), 3x after map2. After map5, if you set the speed to be at 3x, it stays at 3x. After map15, you unlock speed 4x. After
+// map30, you unlock 5x").
+const SPEED_KEEP_KEY = 'bramblewood_speed_keep_v1';
+function speedSteps(){
+  if(adminModeEnabled) return [1, 1.5, 2, 3, 4, 5];
+  const out = [1];
+  try{
+    const done = (loadConquestProgress().completed || []).filter(id=> !/:tutorial2?$/.test(id));
+    const mains = mainConquestMaps(), cleared = n=> mains[n] && conquestMapCleared(mains[n].id);
+    const kindOf = id=>{ const [mapId, key] = id.split(':'); const f = findConquestNode(mapId, key); return f && f.node && f.node.kind; };
+    if(done.length) out.push(1.5);
+    if(done.some(id=> /elite|boss|champion/.test(kindOf(id) || ''))) out.push(2);
+    if(cleared(2)) out.push(3);
+    if(cleared(15)) out.push(4);
+    if(cleared(30)) out.push(5);
+  }catch(e){}
+  return out;
+}
+function speedKeeps(){ try{ const mains = mainConquestMaps(); return adminModeEnabled || !!(mains[5] && conquestMapCleared(mains[5].id)); }catch(e){ return false; } }
+function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getItem(SPEED_KEEP_KEY) || 0; }catch(e){ return 0; } }
+function ffBtnLabel(mult){ const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
+function ffBtnTitle(mult){ const st = speedSteps(); return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (${st.slice(1).map(x=> x + 'x').join(' → ')} → normal)${speedKeeps() ? '. Your choice carries over to the next fight' : ''}`; }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
 // duration, factored out of renderBoard's own local `dur` so any OTHER code that needs to know
@@ -19358,7 +19407,11 @@ function syncInitiativeCoin(){
   const was = c.dataset.side; c.dataset.side = mine ? 'mine' : 'theirs';
   c.title = mine ? 'Initiative: you strike first when two units face off evenly this round' : 'Initiative: the enemy strikes first when two units face off evenly this round';
   c.setAttribute('aria-label', mine ? 'Initiative: yours' : 'Initiative: the enemy\'s');
-  if(was && was !== c.dataset.side){ c.classList.remove('is-flip'); void c.offsetWidth; c.classList.add('is-flip'); }
+  if(was && was !== c.dataset.side && c.animate && !reducedMotion()){
+    // roll: one turn per circumference travelled, clockwise going down, back the other way going up
+    const dist = bf.getBoundingClientRect().height * 0.5, turns = dist / (Math.PI * (c.offsetWidth || 20)), deg = Math.round(turns * 360) * (mine ? 1 : -1);
+    c.animate([{transform:'translateY(-50%) rotate(0deg)'}, {transform:`translateY(-50%) rotate(${deg}deg)`}], {duration:900, easing:'cubic-bezier(.65,0,.35,1)'});
+  }
 }
 function renderBoard(opts){
   try{ setTimeout(syncInitiativeCoin, 0); }catch(e){}
@@ -19446,7 +19499,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, rallyBonus:0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -20998,6 +21051,7 @@ function boardCardHTML(c, defs, opts){
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`);
+  { const dn = (c.daunts||[]).reduce((t, x)=> t + (x.n||0), 0); if(dn > 0) badges.push(`<span class="abadge daunt" title="Daunted: −${dn} Attack until the end of next round">😨${dn}</span>`); }
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   // Task #202 (2026-09-18, "make sure all the relevant icons - skills, passives, functional
   // numbers like gold given on death and attack/defence are clearly listed on the card"): board
@@ -22249,18 +22303,24 @@ function maybeDeckShuffle(m){
   if(!hasGsap() || reduce) return;
   deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)));
 }
+// Deck shuffle (2026-10-12, user: "Improve the deck shuffling animation, Do not shorten the cards during shuffling"): a riffle.
+// Six full-size card backs split into two piles that slide out to the sides, then fall back in one at a time, alternating
+// left and right, and square up. Nothing is scaled or squashed: every card keeps the deck's own size the whole time.
 function deckShuffleVfx(decks){
   let played = false;
   decks.forEach((deck, n)=>{
-    if(!deck) return;
-    const halves = [-1, 1].map(dir=>{ const h = document.createElement('div'); h.className = 'shuffle-half'; h.setAttribute('aria-hidden','true'); deck.appendChild(h); return [h, dir]; });
-    const tl = gsap.timeline({delay:n*0.12, onComplete:()=> halves.forEach(([h])=> h.remove())});
-    for(let k = 0; k < 2; k++){
-      tl.to(halves.map(([h])=> h), {x:(i)=> halves[i][1]*24, rotation:(i)=> halves[i][1]*9, y:-4, duration:.18, ease:'power2.out'})
-        .to(halves.map(([h])=> h), {x:0, rotation:0, y:0, duration:.22, ease:'power3.in', stagger:.04});
-    }
-    tl.fromTo(deck, {scale:1}, {scale:1.06, duration:.09, yoyo:true, repeat:1, ease:'power1.out', clearProps:'scale'});
-    if(!played){ played = true; try{ SoundKit.riffle(); setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 420); }catch(e){} }
+    if(!deck || !hasGsap()) return;
+    const N = 6, cards = Array.from({length:N}, (_, i)=>{ const h = document.createElement('div'); h.className = 'shuffle-half'; h.setAttribute('aria-hidden','true'); h.style.zIndex = String(2 + i); deck.appendChild(h); return h; });
+    const w = deck.getBoundingClientRect().width || 80, out = Math.min(34, w * 0.42);
+    const side = i=> (i % 2 === 0 ? -1 : 1);
+    const tl = gsap.timeline({delay:n*0.12, onComplete:()=> cards.forEach(h=> h.remove())});
+    // split: the two halves slide apart, fanning a little within each pile
+    tl.to(cards, {x:(i)=> side(i) * (out + Math.floor(i/2) * 2), y:(i)=> -Math.floor(i/2) * 2, rotation:(i)=> side(i) * (4 + Math.floor(i/2)), duration:.26, ease:'power2.out'});
+    // riffle: they drop back in alternately, top cards last
+    tl.to(cards, {x:0, y:0, rotation:0, duration:.16, ease:'power2.in', stagger:{each:.07, from:'end'}}, '+=.05');
+    // square up: a tiny tap, no scaling
+    tl.to(deck, {y:-2, duration:.07, yoyo:true, repeat:1, ease:'power1.out', clearProps:'y'});
+    if(!played){ played = true; try{ SoundKit.riffle(); setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 300); }catch(e){} }
   });
 }
 // Chromatic glitch on Shock (2026-10-06, effects "Coming next").
@@ -23511,6 +23571,7 @@ const STATUS_TIPS = [
   {id:'st-confused', test:c=> c.confused>0, text:'❓ Confused: half the time, this card\'s triggers and on-hit skills fizzle.'},
   {id:'st-blind', test:c=> c.blind>0, text:'👁 Blind: this card\'s swings miss half the time.'},
   {id:'st-chained', test:c=> c.chained, text:'⛓️ Chained: can’t attack until its chain breaks.'},
+  {id:'st-daunted', test:c=> (c.daunts||[]).length > 0, text:'😨 Daunted: this card has less Attack until the end of next round. More hits, more Attack lost.'},
 ];
 function passiveTipCandidates(){
   const m = matchState; if(!m) return [];
@@ -23563,11 +23624,17 @@ function toughestEnemyCard(m){
 }
 const PEEK_GATE = {id:'g-peek', action:true, gate:true, allow:['.coach-tip', '#rowEnemy', '#quitMatchBtn'],
   text:'🔎 That one looks tough. Rest your pointer on it (or press and hold) for a second to read what it does.',
-  anchor:()=>{ const m = matchState; const c = m && toughestEnemyCard(m); return c ? boardCardEl(c.uid) : null; },
+  anchor:()=>{ const m = matchState; const c = m && firstUncommonEnemy(m); return c ? boardCardEl(c.uid) : null; },
   done:m=>{ if(lastPeekUid == null) return false; const r = m.players[2].row; return [...r.left, ...r.center, ...r.right].some(c=> c.uid === lastPeekUid); }};
+// 2026-10-12 (user: "The tutorial 'this card looks a bit tough' should be reserved for your first uncommon creature you see"):
+// it waits for the first enemy unit of Uncommon rarity or better, and points at that one.
+function firstUncommonEnemy(m){
+  const r = m.players[2].row, defs = getCardDefs(), unc = RARITY_TIER_BANDS.indexOf('uncommon');
+  return [...r.left, ...r.center, ...r.right].find(c=> c.hp > 0 && !c.gap && defs[c.defId] && defs[c.defId].cardType !== 'structure' && !((defs[c.defId].archetypes||[]).includes('Structure')) && RARITY_TIER_BANDS.indexOf(defs[c.defId].rarity || 'common') >= unc) || null;
+}
 function peekGateTip(m){
   if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
-  return matchNumberOf(m) >= 2 ? PEEK_GATE : null;
+  return firstUncommonEnemy(m) ? PEEK_GATE : null;
 }
 const COACH_MODES = new Set(['tutorial','conquest','ai','gauntlet','async','pvp','dungeon','raidOnline','raidOffline','liveRanked']);
 let coachOpen = null, coachShield = null;
@@ -24610,6 +24677,8 @@ function logText(ev){
         debuffAttack: `lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}`,
         scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡)`,
         armorShred: `stripped ${ev.amount} Armor from ${nm(ev.targetDefId)} for good 🛡`,
+        daunt: `daunted ${nm(ev.targetDefId)}: −${ev.amount} Attack until the end of next round 😨`,
+        recoil: `took ${ev.amount} recoil from its own swing 💢`,
         spite: `lashed back at ${nm(ev.targetDefId)} for ${ev.amount} (Spiteful) 😠`,
         counter: `counterattacked ${nm(ev.targetDefId)} for ${ev.amount} ↩️`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
@@ -25930,6 +25999,8 @@ function renderVfxForEvent(ev){
     // Task #92 (2026-09-16) additions: Scar (permanent stacking mark), Renewal's cleanse
     // pulse, and Grit's permanent attack gain — same statusFx envelope as the four above,
     // just three new `kind`s.
+    else if(ev.kind==='daunt'){ try{ SoundKit.curse(); }catch(e){} if(el) floatText(el, '😨 −'+ev.amount+'⚔', 'debuff'); if(rc){ (rc.daunts = rc.daunts || []).push({n:ev.amount}); } }
+    else if(ev.kind==='recoil'){ if(el){ floatText(el, '💢 −'+ev.amount, 'debuff'); try{ recoilEl(el, 0.7); }catch(e){} } }
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
     else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; } }
@@ -28609,6 +28680,56 @@ const NEST_TIPS = [
 function holoClass(d){
   const i = RARITY_TIER_BANDS.indexOf((d && d.rarity) || 'common');
   return 'is-holo ' + (i >= 11 ? 'holo-cosmos holo-starlight' : (i >= 4 && i <= 6) ? 'holo-pearl' : 'holo-rainbow');
+}
+// Card workbench (2026-10-12, user: "make sure i can use a dropdown in the effects lab or something when im viewing and
+// experimenting with cards - choose art, properties of the foil, art type etc."): Admin → 🧪 Card workbench. One card, drawn
+// live by the game's own card code, with every look switchable. Nothing is saved.
+const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice']];
+function openCardWorkbench(startId){
+  const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].token && defs[id].cardType !== 'materia').sort((a, b)=> defs[a].name.localeCompare(defs[b].name));
+  const artIds = ids.filter(id=> defs[id].art);
+  const st = {id: startId || artIds[0] || ids[0], art: '', rarity: '', foil: '', star: false, style: 'framed', strength: 38, tilt: true, size: 200};
+  let ov = document.getElementById('cardBenchOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'cardBenchOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const opt = (v, cur, label)=> `<option value="${escapeAttr(v)}" ${v === cur ? 'selected' : ''}>${escapeHtml(label)}</option>`;
+  ov.innerHTML = `<div class="modal card-bench" role="dialog" aria-label="Card workbench">
+    <div class="modal-head-row"><h2>🧪 Card workbench</h2><button class="modal-close-btn" id="cbClose" aria-label="Close">✕</button></div>
+    <div class="cb-layout"><div class="cb-controls">
+      <label>Card<select id="cbCard">${ids.map(id=> opt(id, st.id, defs[id].name + (defs[id].art ? '' : ' (no art)'))).join('')}</select></label>
+      <label>Art<select id="cbArt">${opt('', '', 'Its own art')}${artIds.map(id=> opt(id, '', defs[id].name)).join('')}</select></label>
+      <label>Rarity colour<select id="cbRarity">${opt('', '', 'Its own rarity')}${RARITY_DEFS.map(r=> opt(r.key, '', r.label + (r.color ? ' ' + r.color : r.gradient ? ' ' + r.gradient.join(' → ') : ''))).join('')}</select></label>
+      <label>Foil<select id="cbFoil">${WB_FOILS.map(([v, l])=> opt(v, '', l)).join('')}</select></label>
+      <label class="cb-inline"><input type="checkbox" id="cbStar"> ✨ Starlight sparkle on top</label>
+      <label>Foil strength <output id="cbStrengthOut">${st.strength}%</output><input type="range" id="cbStrength" min="0" max="100" value="${st.strength}"></label>
+      <label>Art style<select id="cbStyle">${opt('framed', 'framed', 'Framed art')}${opt('extended', 'framed', 'Extended (full) art')}${opt('emoji', 'framed', 'Emoji icon (no art)')}</select></label>
+      <label>Size <output id="cbSizeOut">${st.size}px</output><input type="range" id="cbSize" min="90" max="320" value="${st.size}"></label>
+      <label class="cb-inline"><input type="checkbox" id="cbTilt" checked> Auto-tilt the light</label>
+    </div><div class="cb-stage" id="cbStage"></div></div></div>`;
+  ov.hidden = false;
+  const $ = id=> ov.querySelector('#' + id);
+  const paint = ()=>{
+    const base = defs[st.id]; if(!base) return;
+    const d = Object.assign({}, base);
+    if(st.art && defs[st.art]) d.art = defs[st.art].art;
+    if(st.rarity) d.rarity = st.rarity;
+    if(st.style === 'emoji') d.art = null; else d.artExtended = st.style === 'extended';
+    const cls = st.foil || st.star ? ['is-holo', st.foil, st.star ? 'holo-starlight' : ''].filter(Boolean).join(' ') : '';
+    $('cbStage').innerHTML = `<div class="cb-card" style="zoom:${(st.size/120).toFixed(2)}; --wb-foil:${(st.strength/100).toFixed(2)}">${cardTileHTML(d, {inPlay:true, extraClass: cls})}</div>`;
+    try{ decorateHolo($('cbStage')); }catch(e){}
+  };
+  const bind = (id, key, fn)=> $(id).addEventListener(id === 'cbStrength' || id === 'cbSize' ? 'input' : 'change', e=>{ st[key] = e.target.type === 'checkbox' ? e.target.checked : (e.target.type === 'range' ? +e.target.value : e.target.value); if(fn) fn(); paint(); });
+  bind('cbCard', 'id'); bind('cbArt', 'art'); bind('cbRarity', 'rarity'); bind('cbFoil', 'foil'); bind('cbStar', 'star'); bind('cbStyle', 'style'); bind('cbTilt', 'tilt');
+  bind('cbStrength', 'strength', ()=> $('cbStrengthOut').textContent = st.strength + '%'); bind('cbSize', 'size', ()=> $('cbSizeOut').textContent = st.size + 'px');
+  $('cbClose').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+  ov.onclick = e=>{ if(e.target === ov){ ov.hidden = true; ov.innerHTML = ''; } };
+  let t0 = performance.now();
+  const loop = now=>{ if(ov.hidden || !ov.querySelector('#cbStage')) return;
+    const el = ov.querySelector('#cbStage .card-tile.is-holo');
+    if(el && st.tilt && !el.classList.contains('holo-active')){ const a = (now - t0)/1600, px = 0.5 + Math.cos(a)*0.42, py = 0.5 + Math.sin(a*1.3)*0.36;
+      el.style.setProperty('--hx', (px*100).toFixed(1)+'%'); el.style.setProperty('--hy', (py*100).toFixed(1)+'%'); el.style.setProperty('--hbx', (50+(px-0.5)*60).toFixed(1)+'%'); el.style.setProperty('--hby', (50+(py-0.5)*60).toFixed(1)+'%');
+      el.style.setProperty('--hrx', ((0.5-py)*12).toFixed(2)+'deg'); el.style.setProperty('--hry', ((px-0.5)*16).toFixed(2)+'deg'); el.classList.add('holo-tilt'); }
+    requestAnimationFrame(loop); };
+  paint(); requestAnimationFrame(loop);
 }
 function decorateHolo(root){
   (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{

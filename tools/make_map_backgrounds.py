@@ -459,7 +459,29 @@ def my(rng):  # The Canopy: deep rainforest roof, vines, bright flowers
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my'))}
+def mq(rng):  # Clovermead (2026-10-12, Map 1): soft clover meadow, white clover heads, bees' flowers, a brook
+    img = dither_palette(fbm(rng, W, H), ['#4f8a33', '#5c9a3a', '#6aa842', '#7cb84c', '#90c95a'])
+    river(img, rng, '#3a86a8', '#6cc0d0', '#d9f2f0', width=6, y0=0.82, amp=0.06, freq=1.1)
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, TUFT, {'a': '#a6d672'}, 300, avoid_band=False)
+    scatter(img, rng, BUSH, {'a': '#4f9440', 'b': '#33702e'}, 46, density=dens)
+    scatter(img, rng, ROUND, {'a': '#5ea64a', 'b': '#3a7a33', 'c': '#5a3a22'}, 10, density=dens, shadow_w=lambda w: w)
+    sparkle(img, rng, 220, '#ffffff'); sparkle(img, rng, 90, '#f6b6d0'); sparkle(img, rng, 60, '#ffe57a')
+    return img
+
+
+def mz(rng):  # The Mycelium Deep (2026-10-12, dungeon 14A): spore cave under the Morel Hollow, glowing mycelium threads
+    img = dither_palette(fbm(rng, W, H), ['#120e16', '#19131f', '#211a29', '#2a2134', '#342a40'])
+    cracks(img, rng, 26, '#4fd6b0', '#c8ffe8', (18, 50))   # glowing mycelium threads
+    dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
+    scatter(img, rng, MUSHROOM, {'a': '#3fbfa0', 'b': '#c8fff0', 'c': '#8fb8a8'}, 34, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, MUSHROOM, {'a': '#8a5ad0', 'b': '#e8d6ff', 'c': '#a898b8'}, 26, density=dens, shadow_w=lambda w: w)
+    scatter(img, rng, BOULDER, {'a': '#3a3048', 'b': '#1c1626'}, 30, shadow_w=lambda w: w)
+    sparkle(img, rng, 180, '#9ff7d8'); sparkle(img, rng, 80, '#e0c8ff')
+    return img
+
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz'))}
 
 
 def make(map_id):

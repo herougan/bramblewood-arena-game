@@ -2228,7 +2228,8 @@
   .throne-crown{position:fixed; z-index:1101; pointer-events:none; font-size:28px; transform:translate(-50%,-50%); filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));}
   /* Deck shuffle (2026-10-06): see maybeDeckShuffle(). Each half is a copy of the deck's own back. */
   .deck-widget .shuffle-half{position:absolute; inset:-2px; border-radius:inherit; pointer-events:none; z-index:2;
-    background:inherit; border:inherit; box-shadow:0 2px 6px rgba(0,0,0,.3);}
+    background:inherit; border:inherit; box-shadow:0 2px 6px rgba(0,0,0,.3); display:flex; align-items:center; justify-content:center; font-size:22px;}
+  .deck-widget .shuffle-half::after{content:'🌰'; opacity:.85; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
   /* Draw flip (2026-10-06): the card's back while it flies out of the deck. See drawFlipNewHandCards(). */
   .card-tile > .draw-back{position:absolute; inset:-1px; z-index:20; border-radius:inherit; pointer-events:none;
     background:repeating-linear-gradient(45deg, color-mix(in srgb, var(--banner-ink) 12%, transparent) 0 5px, transparent 5px 11px), radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--gold) 30%, transparent), transparent 65%), var(--banner);
@@ -5180,10 +5181,12 @@
   .facing-svg line.facing-fork{stroke:#ff9a8a; stroke-width:2.6;} .facing-svg line.facing-fork.is-empty{opacity:.7;}
   /* Initiative coin (2026-10-12) */
   #battlefieldEl{position:relative;}
-  .init-coin{position:absolute; left:-11px; width:22px; height:22px; border-radius:50%; z-index:6; pointer-events:auto; transform:translateY(-50%);
+  /* 2026-10-12 (user: "can it be 10% smaller? Then, when it changes side, it rolls to the other side. This movement is not flat
+     but eased"): 20px, and it rolls along the edge with an ease-in-out (the spin in syncInitiativeCoin matches the distance). */
+  .init-coin{position:absolute; left:-10px; width:20px; height:20px; border-radius:50%; z-index:6; pointer-events:auto; transform:translateY(-50%);
     background:radial-gradient(circle at 35% 30%, #fff3b8 0, #f2c94c 35%, #c8901d 75%, #8a5a10 100%); box-shadow:0 0 0 1.5px #7a4e0c, 0 2px 6px rgba(0,0,0,.45), inset 0 0 0 3px rgba(255,236,160,.35);
-    transition:top .45s cubic-bezier(.4,1.4,.5,1);}
-  .init-coin::after{content:'★'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:11px; color:#8a5a10; text-shadow:0 1px 0 rgba(255,240,180,.7);}
+    transition:top .9s cubic-bezier(.65,0,.35,1);}
+  .init-coin::after{content:'★'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#8a5a10; text-shadow:0 1px 0 rgba(255,240,180,.7);}
   .init-coin[data-side="mine"]{top:75%;} .init-coin[data-side="theirs"]{top:25%;}
   .init-coin.is-flip{animation:initFlip .5s ease-in-out;}
   @keyframes initFlip{0%{transform:translateY(-50%) rotateY(0);} 50%{transform:translateY(-50%) rotateY(90deg);} 100%{transform:translateY(-50%) rotateY(0);}}
@@ -5712,6 +5715,16 @@
   .forge-upgrade .fu-now small{display:block; opacity:.85; font-size:12px;}
   .forge-upgrade .fu-next{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; font-size:13px;}
   .forge-upgrade .fu-gate{font-weight:700; opacity:.9;}
+  /* Card workbench (2026-10-12) */
+  .card-bench{max-width:900px; width:min(900px, calc(100vw - 32px));}
+  .cb-layout{display:grid; grid-template-columns:minmax(0, 300px) minmax(0, 1fr); gap:20px; align-items:start;}
+  @media (max-width:640px){ .cb-layout{grid-template-columns:minmax(0,1fr);} }
+  .cb-controls{display:flex; flex-direction:column; gap:10px; font-size:13px; font-weight:700;}
+  .cb-controls label{display:flex; flex-direction:column; gap:4px;} .cb-controls label.cb-inline{flex-direction:row; align-items:center; gap:8px;}
+  .cb-controls select{font:inherit; font-weight:400; padding:6px 8px; border-radius:8px;}
+  .cb-stage{display:flex; align-items:center; justify-content:center; min-height:380px; border-radius:14px; background:radial-gradient(circle at 50% 40%, #3a3346, #17131d); padding:20px;}
+  .cb-card .card-tile{width:120px;}
+  .cb-card .holo-layer{opacity:var(--wb-foil, .38) !important;}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
   .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
   .te-deck-list .te-cut{color:#a0523a; opacity:.8;}
