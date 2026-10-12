@@ -13951,7 +13951,6 @@
     ],
     "worldBoss": true,
     "effects": {
-      "immolation": 2,
       "armor": 2,
       "triggers": [
         {

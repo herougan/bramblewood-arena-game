@@ -482,6 +482,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // TAKEN), ticks down every upkeep the same way.
       staggered:0, _staggeredJustSet:false,
       ambushUsed:false};                    // Ambush (2026-09-17): consumed by this card's first attack after entering play
+    if(def.terrainNative && terrain){ const ta = Number(terrain.atk)||0, th = Number(terrain.hp)||0; board.atk += ta; board.baseAtk += ta; board.hp += th; board.maxHp += th; board.terrain = true; }
     // Explode: seed the fuse at creation time (mirrors how `wait` is seeded above), so it
     // starts counting down from the moment the card enters play, independent of readiness.
     if(def.effects && def.effects.explode){ board.explodeRemaining = def.effects.explode.time; board.explodeFired = false; }
@@ -528,6 +529,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (2026-09-16: Resist became its own dedicated "Resistance" box on the card form —
     // effects.resist is a plain array of match-keys, no longer routed through the "+ Add
     // Skill" system at all). Both are honored rather than migrating every existing card's data.
+    // Immune (2026-10-12, user: "Add immune to the game - then it'll be Immune: ____"): same keys as Resist (a damage
+    // type, an attacker's type or an attacker's skill); a match takes no damage at all.
+    const immuneList = (def && def.effects && def.effects.immune) || [];
+    if(immuneList.length && immuneList.some(r=> matchesResistKey(r, dmgType, attDef))) return 0;
     const resistList = [...((def && def.resist) || []), ...((def && def.effects && def.effects.resist) || [])];
     if(!resistList.length) return 1;
     const hit = resistList.some(r=> matchesResistKey(r, dmgType, attDef));
@@ -592,6 +597,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // kind of decks (even maybe all-nights and all-brights)"): opts.rules = {phase:'cycle'|'nightFirst'|'day'|'night',
   // lumberEvery:N (each side +1 Lumber every N rounds), field:<id> (permanent field, same as opts.field)}.
   const rules = opts.rules || {};
+  // Terrain (2026-10-12, user: "Do effects for each biome, highlighting that biome's strength"): rules.terrain =
+  // {types:[...], atk, hp, grant:{skill:value}}. A card whose types include one of the biome's is native: on either side it
+  // arrives with +atk/+hp and gains the granted skills (its own value wins if it already has that skill). Done on this
+  // match's own copy of the card list, so every skill reads the granted value with no other change.
+  const terrain = rules.terrain && Array.isArray(rules.terrain.types) && rules.terrain.types.length ? rules.terrain : null;
+  if(terrain){
+    const types = new Set(terrain.types), out = Object.assign({}, CARD_DEFS);
+    Object.keys(CARD_DEFS).forEach(id=>{ const d = CARD_DEFS[id]; if(!d || !Array.isArray(d.archetypes) || !d.archetypes.some(a=> types.has(a))) return;
+      out[id] = Object.assign({}, d, {terrainNative: true, effects: terrain.grant ? Object.assign({}, terrain.grant, d.effects || {}) : d.effects}); });
+    CARD_DEFS = out;
+  }
   // 2026-10-11 (user: "The diurnal cycle should be off by default. It is only enabled via a Skirmish setting, which can
   // have a configurable switch period (e.g. 3 turns)"): with no phase rule there is no day or night at all — no pill, no
   // Nocturnal / Diurnal bonus. A fight (or an Arena ruleset) turns it on with rules.phase and rules.phaseLen.
@@ -1070,7 +1086,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // self-cancelling edge case, not specially handled, since a card author combining them is on
     // them).
     const factor = resistFactor(targetCard.defId, dmgType, attDef) * weaknessFactor(targetCard.defId, dmgType, attDef) * defenderDamageFactor(targetCard.defId);
-    if(factor!==1) amt = Math.max(1, Math.floor(amt*factor));
+    if(factor===0) amt = 0; else if(factor!==1) amt = Math.max(1, Math.floor(amt*factor)); // Immune takes nothing
     // Shock (status, 2026-09-17): while active, every hit this card takes lands for 50% more —
     // a "vulnerable" debuff, distinct from Rage's self-damage-doubling (that's a stance the card
     // chooses; Shock is inflicted on it). Applied after Resist/Weakness so a resisted hit still
@@ -1165,7 +1181,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const atkFactor = attackerDamageFactor(attDef);
     if(atkFactor!==1) amount = amount * atkFactor;
     const factor = resistFactor(card.defId, dmgType, attDef) * weaknessFactor(card.defId, dmgType, attDef) * defenderDamageFactor(card.defId);
-    let dmg = factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount;
+    let dmg = factor===0 ? 0 : factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount; // Immune takes nothing
     if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
     dmg = spendTempHp(card, dmg);
     card.hp = Math.max(0, card.hp - dmg);

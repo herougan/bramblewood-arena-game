@@ -230,7 +230,7 @@ def users(lst):
 effect_rows = []
 for s in data['skills']:
     n, ex = users(skill_users[s['key']])
-    desc = s['desc'] + (' (shown for N = 1)' if s.get('n1') else '')
+    desc = s.get('short') or (s['desc'] + (' (shown for N = 1)' if s.get('n1') else ''))
     effect_rows.append(['Skill', s['label'], s['key'], {'evergreen': 'Evergreen', 'passive': 'Passive'}.get(s['category'], s['category'].capitalize()), desc, when_skill(s['desc'], s['key']), n, ex])
 for t in data['triggers']:
     n, ex = users(trig_users[t['key']])

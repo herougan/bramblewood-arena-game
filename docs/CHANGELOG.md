@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (20:20)
+- **Keywords light up everywhere.** Card text, coach tips, field and castle text now mark game words automatically: statuses and resources in their own colour (Poison green, Lumber brown, fire damage orange…), and terms such as Pitch, Upkeep, Wait, Adjacent and every skill name in bold with a dotted underline. Pitch, Upkeep and Adjacent get a one-line meaning under a card's skills. Flavour text is left alone. Nothing is hand-tagged: it all comes from the game's own lists.
+- **Simpler skill text.** Every skill now reads short and in the same words, e.g. Immolation 2: "Deal 2 fire damage to all adjacent units every upkeep"; Pounce 5: "Deal 5 damage to a random enemy unit, or the castle if there are no targets"; triggers read "On Death: Deal 5 fire damage to an adjacent enemy". Heat damage is now called fire damage.
+- **Resistance, Weakness and the new Immune** are core lines at the top of a card ("Resistance: Fire"). Immune takes no damage at all from what it names (a damage type, an attacker's type or an attacker's skill); it's in the card editor next to Resistance and Weakness.
+- **Granted skills are light blue**, marked "given by this fight". The Caldera Wyrm's Immolation now comes from the world-boss fight instead of its card.
+- **Compass-point bullets** replace the leaves in card details.
+- **Tips above the dimming:** a spotlighted tutorial tip is no longer hidden under the dark layer.
+- **Enemy resources** moved to the field's top-right.
+- **Terrain.** Every biome now favours its own kind of unit, on both sides: none on a map's first skirmish, tier I (+0/+1) from the second, tier II (+1/+1 and the biome's signature skill) on elites and bosses, tier III (+1/+2) on the bosses of big maps. Signatures: Old Woods Regen, Meadow Bloom, Riverbank Inspiring, Tideline Shell, Coral Shelf Thorns, Mire Poison, Deep Dark Ambush, High Crags Siege, Frozen Waste Frostbite, Hunting Grounds Momentum, Basalt Floor Armor, and the Volcano's eruption. A pill on the field (top-left) says what it does; hover or tap it. A banner explains it when the fight starts, and native cards show a light-blue "Home ground" line.
+- **The eruption is visible:** a lava geyser bursts through the struck card, embers fly, the field flashes red, and volcanic fields glow with lava.
+
 ## 2026-10-12 (19:20)
 - **The last PixelLab batch is in:** portraits for Creeper and the 18 new cards (Pigeon Peon, Marching Elephant, Siege Rhino, Stonedrop Vulture, Newt Doctor, Gatling Hog, Dung Beetle, Ur-Elk, Subterraneaner, Farm Dog, House Cat, Shellwright Apprentice, Otter Royal Guard, Otter Flag Bearer, Otter Lantern Bearer, Riverbed Diver, Hummingbird Needler, Riverwing Envoy). Also new: Boar Rampager, Berserker Boar, Tusked Vanguard, Raccoon Bandit, Land Tiller, Talon Archer, Meerkat Wayfarer and Strange Materia. All 153 queued images are done.
 - **The Forge** now uses the PixelLab hearth for its backdrop and the PixelLab anvil on its stump.

@@ -924,8 +924,12 @@ function resistOptionsList(){
 // camelCase "stunOnHit"). Archetypes are already Title Case from ARCHETYPE_ICON's own keys and
 // pass through unchanged; damage types and ability keys get Title Cased / de-camelCased here so
 // every pill and dropdown option reads as "Cold" / "Stun On Hit" rather than a raw key.
+// Damage type names players see (2026-10-12, user: "Deal 5 fire damage"): Heat reads as Fire everywhere; the data key stays 'heat'.
+const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay'};
+function dmgWord(t){ return t && t !== 'physical' ? (DMG_LABEL[t] || t).toLowerCase() + ' ' : ''; }
 function resistOptionLabel(v){
   if(!v) return '…';
+  if(DMG_LABEL[v]) return DMG_LABEL[v];
   if(ARCHETYPE_ICON[v]) return v; // archetype keys are already display-ready
   const spaced = v.replace(/([a-z])([A-Z])/g, '$1 $2');
   return spaced.charAt(0).toUpperCase() + spaced.slice(1);
@@ -1118,20 +1122,164 @@ const STATUS_KEYWORDS = [
   {k:'shock', re:/\b(shock(?:ed|s)?)\b/gi, name:'Shocked', c:'#22a7b8', text:'takes 50% more damage from every hit.'},
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
 ];
+// Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
+// colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
+// One registry, built from the game's own data: statuses (their colours), resources, damage types, game terms and every
+// skill's name. keywordizeHTML() marks them in any description (card text, coach tips, field and castle text); text inside
+// HTML tags is never touched, and flavour text never goes through it. A few terms carry a one-line meaning, shown in the
+// glossary under a card's skills like the statuses already were.
+const KEYWORD_TERMS = [
+  {name:'Pitch', re:'pitch(?:ed|es|ing)?', text:'give up a card from your hand for Lumber (once a turn).'},
+  {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
+  {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
+  {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
+  {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flow', re:'flow', cs:true}, {name:'Ebb', re:'ebb', cs:true},
+  {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
+];
+const KEYWORD_RESOURCES = [
+  {name:'Lumber', re:'lumber', c:'#a0662f'}, {name:'Stone', re:'stone', c:'#7d8590', cs:true}, {name:'Metal', re:'metal', c:'#6f8fae', cs:true},
+  {name:'Grace', re:'grace', c:'#c39a1e', cs:true}, {name:'Prayer', re:'prayer', c:'#b8892a', cs:true}, {name:'Darkness', re:'darkness|dark points?', c:'#8b3fbf'},
+  {name:'Echoes', re:'echo(?:es)?', c:'#6b7fd1', cs:true}, {name:'Elemental Energy', re:'elemental energy', c:'#0e9fb8'}, {name:'Uranium', re:'uranium', c:'#5fa83a'},
+  {name:'Fire', re:'fire(?= damage)', c:'#e2562b'}, {name:'Cold', re:'cold(?= damage)', c:'#3d9fd8'}, {name:'Acid', re:'acid(?= damage)', c:'#8fb82e'},
+];
+let _kwReg = null;
+function keywordRegistry(){
+  if(_kwReg) return _kwReg;
+  const list = [];
+  STATUS_KEYWORDS.forEach(kw=> list.push({key:'st:' + kw.k, src: kw.re.source.replace(/^\\b\(|\)\\b$/g, ''), c: kw.c, gloss: {name: kw.name, c: kw.c, text: kw.text}}));
+  KEYWORD_RESOURCES.forEach(r=> list.push({key:'res:' + r.name, src: r.re, c: r.c, cs: r.cs}));
+  KEYWORD_TERMS.forEach(t=> list.push({key:'term:' + t.name, src: t.re, cs: t.cs, gloss: t.text ? {name: t.name, text: t.text} : null}));
+  const taken = new Set(list.map(x=> x.key.split(':')[1].toLowerCase()).concat(STATUS_KEYWORDS.map(k=> k.name.toLowerCase())));
+  (typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(p=>{ const l = String(p.label || '').trim(); if(l.length < 4 || taken.has(l.toLowerCase())) return; taken.add(l.toLowerCase());
+    list.push({key:'skill:' + p.key, src: l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s'), cs: true}); });
+  list.sort((x, y)=> y.src.length - x.src.length);
+  const re = new RegExp(list.map((x, i)=> `(?<k${i}>\\b(?:${x.src})\\b)`).join('|'), 'gi');
+  return (_kwReg = {list, re});
+}
+function keywordizeHTML(html, seen){
+  if(html == null) return '';
+  const {list, re} = keywordRegistry();
+  let skip = 0; // inside a word that is already marked (kw / kw-jargon), leave it alone
+  return String(html).split(/(<[^>]+>)/).map(seg=>{
+    if(!seg) return seg;
+    if(seg[0] === '<'){ if(/^<b\b[^>]*class="[^"]*\bkw/.test(seg)) skip++; else if(skip && /^<\/b>/.test(seg)) skip--; return seg; }
+    if(skip) return seg;
+    return seg.replace(re, (...args)=>{
+      const groups = args[args.length - 1], m = args[0];
+      const i = Object.keys(groups).findIndex(k=> groups[k] !== undefined); const kw = list[+Object.keys(groups)[i].slice(1)];
+      if(!kw) return m;
+      if(kw.cs && m[0] !== m[0].toUpperCase()) return m; // "Ready", "Wait", skill names: only when written as the game word
+      if(seen && kw.gloss) seen.set(kw.key, kw.gloss);
+      return kw.c ? `<b class="kw" style="--kw:${kw.c}">${m}</b>` : `<b class="kw kw-term">${m}</b>`;
+    });
+  }).join('');
+}
 function keywordizeLines(lines){
-  const seen = new Set();
-  const out = lines.map(l=> String(l).split(/(<[^>]+>)/).map(seg=>{
-    if(!seg || seg[0] === '<') return seg;
-    STATUS_KEYWORDS.forEach(kw=>{ seg = seg.replace(kw.re, m=>{ seen.add(kw.k); return `\u0001${kw.k}\u0002${m}\u0003`; }); });
-    return seg.replace(/\u0001(\w+)\u0002([^\u0003]*)\u0003/g, (_, k, m)=>{ const kw = STATUS_KEYWORDS.find(x=> x.k===k); return `<b class="kw" style="--kw:${kw.c}">${m}</b>`; });
-  }).join(''));
-  const gloss = STATUS_KEYWORDS.filter(kw=> seen.has(kw.k));
-  return {lines: out, gloss};
+  const seen = new Map();
+  const out = lines.map(l=> keywordizeHTML(l, seen));
+  return {lines: out, gloss: [...seen.values()]};
 }
 function abilityListHTML(lines){
   const {lines: ls, gloss} = keywordizeLines(lines);
-  return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div><b class="kw" style="--kw:${kw.c}">${kw.name}</b>: ${kw.text}</div>`).join('')}</div>` : '');
+  return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div>${kw.c ? `<b class="kw" style="--kw:${kw.c}">${kw.name}</b>` : `<b class="kw kw-term">${kw.name}</b>`}: ${kw.text}</div>`).join('')}</div>` : '');
 }
+// Short skill text (2026-10-12, user: "Simplify skill description ... Immolation should just say 'Deal 2 fire damage to all
+// adjacent units every upkeep' ... Pounce 5 is 'Deal 5 damage to a random enemy unit or the castle if there are no
+// targets'"). What players read on cards; the longer PASSIVE_DEFS desc stays as the editor's authoring help. Shared words:
+// upkeep = the start of each round (resolved in action order), adjacent = the columns left, centre and right of it.
+// A skill with no entry here falls back to its desc.
+const SKILL_TEXT = {
+  poison: v=> `Its hits add ${v} Poison.`, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
+  armor: v=> `Takes ${v} less damage from every hit.`,
+  counterattack: ()=> `Never attacks on its own. Strikes back at whoever hits it.`,
+  spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
+  thorns: v=> `Melee attackers take ${v} damage.`,
+  fork: ()=> `Hits the two columns beside the one in front instead.`,
+  swipe: v=> `Each hit steals ${v} Lumber.`,
+  twinStrike: ()=> `Attacks twice.`,
+  pack: v=> `Arrives with +${v} Health for each ally that shares a type with it.`,
+  sweep: v=> `Also deals ${v} damage to the units beside its target.`,
+  rage: ()=> `Below half Health: double Attack and takes half damage.`,
+  immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
+  hiveMind: ()=> `When it dies, your newest Swarm ally gets +1/+1.`,
+  reach: ()=> `Flying can't dodge its attacks.`,
+  festering: ()=> `While it's on the field, Bleed and Poison don't wear off.`,
+  leader: ()=> `Can be your Leader.`,
+  changeling: ()=> `Shares a type with every unit. The enemy sees it in disguise.`,
+  drunk: ()=> `Always Tipsy.`, purblind: ()=> `Always Blind.`, scatterbrained: ()=> `Always Confused.`,
+  primed: ()=> `Its triggers work even while Waiting, Stunned, Frozen or Asleep.`,
+  keenEye: ()=> `Sees through Changelings and hits them for 2 more.`,
+  demolisher: v=> `Deals ${v} more damage to Structures.`,
+  lantern: ()=> `At night, your Diurnal units keep their day bonus.`,
+  backstab: v=> `Attacks the nearest enemy unit, never the castle. +${v} damage when that unit isn't the one in front.`,
+  shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
+  boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
+  trident: ()=> `Hits the unit in front and both columns beside it with full Attack.`,
+  pitchfork: ()=> `Hits the unit in front and both columns beside it with full Attack, ignoring Armor.`,
+  octolash: ()=> `Hits the 8 nearest enemy units with full Attack.`,
+  rainmaker: v=> `When played, Spring Rain falls for ${v} rounds.`,
+  rainrunner: v=> `In rain: +${v}/+${v}, and it can't be blocked.`,
+  moonborn: v=> `At night: up to +${v}/+${v}, depending on the moon's phase.`,
+  frostbite: v=> `Each time frost chills it, it gains +${v}/+${v} for good.`,
+  inspiring: v=> `When it attacks, adjacent allies get +${v} Attack on their next attack.`,
+  friction: v=> `When it attacks, deal ${v} damage to adjacent allies.`,
+  worthy: v=> `When played, gain ${v} Lumber. When it dies, the opponent gains 1 Lumber.`,
+  lumberjack: ()=> `Whenever you gain Lumber, gain 1 more.`,
+  heavyMetal: ()=> `Whenever you gain Stone or Metal, gain 1 more.`,
+  timber: ()=> `+1/+1 for each Lumber you hold.`, rockSolid: ()=> `+2/+2 for each Stone you hold.`, ironWill: ()=> `+3/+3 for each Metal you hold.`,
+  sacrifice: v=> `A Dark Summon played onto it costs ${v} less, and this unit perishes.`,
+  scare: v=> `Attacks against it deal ${v} less damage.`,
+  prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
+  worship: ()=> `+1 Attack for every 3 Prayer you have.`,
+  healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
+  lightning: v=> `When played, deal ${v} damage to a random enemy unit, +1 for every 4 Prayer.`,
+  midas: v=> `When it kills a unit, gain ${v} Lumber.`,
+  retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
+  satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
+  desecrate: v=> `Its hits curse the ground: whoever stands there takes ${v} damage every upkeep. Stacks.`,
+  tide: ()=> `Flow: +1 Attack. Ebb: +1 Armor.`,
+  remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
+  wash: ()=> `On Flow, the enemy facing it gets +1 Wait (once per enemy).`,
+  expose: v=> `Its hits mark the target: +${v} damage on the next hit it takes.`,
+  guardian: ()=> `Takes the hits aimed at adjacent allies.`,
+  quick: ()=> `Attacks before every unit without Quick.`,
+  fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
+  swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
+  reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
+  shell: v=> `When first hit: +${v} Armor and +${v} Health until the end of next round, but it can't attack that round.`,
+  stealth: ()=> `Always attacks the enemy castle.`,
+  evasive: ()=> `Dodges half of all single-target attacks and skills.`,
+  feeble: ()=> `Deals half damage.`, mighty: ()=> `Deals double damage.`, fragile: ()=> `Takes double damage.`, sturdy: ()=> `Takes half damage.`,
+  crit: ()=> `Each round, a 1-in-2 chance to deal double damage.`,
+  fester: ()=> `Deals extra damage equal to its own Poison.`, rupture: ()=> `Deals extra damage equal to its own Bleed.`,
+  regen: v=> `Heals ${v} every upkeep.`,
+  stunOnHit: v=> `Its hits have a ${v}% chance to Stun.`,
+  puncture: v=> `Each melee hit also deals ${v} damage to the enemy castle.`,
+  gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
+  overwhelm: ()=> `Damage left over from a kill carries on into the enemy castle.`,
+  berserk: v=> `+${v} Attack whenever one of your units dies.`,
+  bulwark: v=> `Your castle takes ${v} less damage from every hit.`,
+  reflect: v=> `${v}% chance to throw a melee hit's full damage back at the attacker.`,
+  momentum: v=> `+${v} Attack every time it kills a unit.`,
+  bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
+  ambush: ()=> `Its first attack always crits and can't be dodged.`,
+  siege: v=> `Deals ${v} more damage to the enemy castle.`,
+  daunt: v=> `Its hits lower the target's Attack by ${v} until the end of next round. Stacks.`,
+  recoil: v=> `Each attack also deals ${v} damage to itself.`,
+  inherentDarkness: v=> `While Ready, gain ${v} Darkness every upkeep.`,
+  coreEvil: ()=> `When pitched, gain 1 Darkness.`,
+  frenzy: ()=> `While it has any status, it attacks twice and each hit adds 1 Bleed.`,
+  pierce: v=> v === true ? `Its melee hits ignore Armor.` : `Its melee hits ignore ${v} Armor.`,
+  perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy castle.`,
+  flying: ()=> `Dodges half of all attacks from units without Flying.`,
+  earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
+  pounce: v=> `Deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
+  skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
+  arrow: v=> `While Ready, shoot the enemy facing it for ${v} damage every upkeep.`,
+  fireArrow: v=> `While Ready, shoot the enemy facing it for ${v} fire damage every upkeep.`,
+  kingSlayer: v=> `Deals ${v} more damage to Kings.`,
+};
+function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
 function describeEffects(def, liveCard){
   const lines = [];
   { const sl = speciesLine(def); if(sl) lines.push(sl); }
@@ -1156,8 +1304,8 @@ function describeEffects(def, liveCard){
     lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
   if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
-  if(def.wait) lines.push(`⏳ Wait ${def.wait} — takes ${def.wait} round${def.wait===1?'':'s'} after entering play before it can fight.`);
-  if(e.bounty) lines.push(`🏆 Bounty ${e.bounty} — whoever lands the killing blow on this card gains ${e.bounty} lumber.`);
+  if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
+  if(e.bounty) lines.push(`🏆 Bounty ${e.bounty} — Whoever kills it gains ${e.bounty} Lumber.`);
   if(e.explode) lines.push(`💣 Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
@@ -1170,7 +1318,8 @@ function describeEffects(def, liveCard){
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
-    lines.push(`${ic(p.key)}${head} — ${p.desc(v, p.numberKey ? e[p.numberKey] : undefined, e)}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
+    const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
+    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -1225,13 +1374,21 @@ function describeEffects(def, liveCard){
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
     lines.push(`${tDef.label}: ${detail}`);
   });
-  if(def.dmgType && def.dmgType!=='physical') lines.push(`Deals ${def.dmgType} damage.`);
+  if(def.dmgType && def.dmgType!=='physical') lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
   // Resist can live in the legacy top-level array or the new effects.resist box (see
   // resistFactor in the engine) — merge both for display. Weakness only ever lives in
   // effects.weakness (it's new as of 2026-09-16, no legacy field to merge in).
+  // 2026-10-12 (user: "Damage resist and vulnerability ... they're core values like attack and defence. Maybe a Weakness: ____
+  // and Resistance: ____ is sufficient. Add immune ... Immune: ____"): plain core lines, listed first (see below).
   const resistCombined = [...new Set([...(def.resist||[]), ...(e.resist||[])])];
-  if(resistCombined.length) lines.push(`Resists ${resistCombined.map(resistOptionLabel).join(', ')} (takes half, min 1).`);
-  if(e.weakness && e.weakness.length) lines.push(`Weak to ${e.weakness.map(resistOptionLabel).join(', ')} (takes double).`);
+  const core = [];
+  if(resistCombined.length) core.push(`<span class="core-line">🛡️ Resistance: ${resistCombined.map(resistOptionLabel).join(', ')}</span>`);
+  if(e.weakness && e.weakness.length) core.push(`<span class="core-line">💢 Weakness: ${e.weakness.map(resistOptionLabel).join(', ')}</span>`);
+  if(e.immune && e.immune.length) core.push(`<span class="core-line">✳️ Immune: ${e.immune.map(resistOptionLabel).join(', ')}</span>`);
+  if(core.length){ const at = lines.length && /^🧬/.test(lines[0]) ? 1 : 0; lines.splice(at, 0, ...core); }
+  { const tr = (typeof matchState !== 'undefined' && matchState) ? terrainOfMatch(matchState) : null, t = tr && tr.t;
+    if(t && Array.isArray(def.archetypes) && def.archetypes.some(a=> t.types.includes(a))){ const g = t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v === true ? '' : ' ' + v}`; }).join(', ') : '';
+      lines.push(`<span class="granted-skill" title="Given by this fight's terrain">${t.icon} Home ground — ${[t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', g].filter(Boolean).join(' and ')} on the ${t.name}.</span>`); } }
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
   return lines;
@@ -3538,7 +3695,7 @@ function fieldHoverHTML(){
     extra.push('Units that resist cold are never chilled.');
   }
   const left = f.rounds != null ? `${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left, then it clears.` : 'It lasts the whole fight.';
-  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${escapeHtml(f.text)}</p>${extra.map(t=> `<p>${escapeHtml(t)}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
+  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${keywordizeHTML(escapeHtml(f.text))}</p>${extra.map(t=> `<p>${keywordizeHTML(escapeHtml(t))}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
 }
 function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
@@ -3547,7 +3704,7 @@ function castleHoverHTML(hqSide){
   const def = pl.character || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
   const visualDef = {...def, icon: def.icon || '🏰', health: pl.hq.maxHp};
   const visualHTML = `<div class="card-pop-visual">${cardTileHTML(visualDef, {isCastle:true, liveHp: pl.hq.hp, extraClass:'card-pop-visual-tile'})}</div>`;
-  let passiveText = characterDescHTML(def);
+  let passiveText = keywordizeHTML(characterDescHTML(def));
   if((def.effects||{}).firstUnitAtkBonus){
     passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
   }
@@ -5869,6 +6026,20 @@ function renderEditorInner(){
           </select>
         </div>
       </div>
+      <div class="field" title="Takes NO damage from anything matching an entry (a damage type, an attacker's type or skill). Same matching rules as Resistance.">
+        <label>Immune</label>
+        <div class="pill-row" id="immunePills">${(c.effects.immune&&c.effects.immune.length?c.effects.immune:[]).map((r,i)=>`<span class="pill">${escapeHtml(resistOptionLabel(r))}<button type="button" class="pill-rm" data-rmimmune="${i}" title="Remove ${escapeAttr(resistOptionLabel(r))}">−</button></span>`).join('') || '<span class="pill-empty">No immunities</span>'}</div>
+        <div class="pill-add-row">
+          <select id="immuneAddSelElement" class="pill-add-plus" title="Add an element or passive">
+            <option value="">+ Elements/Passives</option>
+            ${resistElementOptionsList().filter(o=>!(c.effects.immune||[]).includes(o)).map(o=>`<option value="${o}">${resistOptionLabel(o)}</option>`).join('')}
+          </select>
+          <select id="immuneAddSelType" class="pill-add-plus" title="Add a type">
+            <option value="">+ Types</option>
+            ${resistTypeOptionsList().filter(o=>!(c.effects.immune||[]).includes(o)).map(o=>`<option value="${o}">${resistOptionLabel(o)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
     </div>
 
     <div class="section-divider subsection mech-line-${inferMechanicLine(c)}"><span class="st-label">Archetype</span>
@@ -5979,6 +6150,7 @@ function renderEditorInner(){
   // adds it immediately and the select snaps back to its "+" placeholder (re-rendered).
   if(!Array.isArray(c.effects.resist)) c.effects.resist = [];
   if(!Array.isArray(c.effects.weakness)) c.effects.weakness = [];
+  if(!Array.isArray(c.effects.immune)) c.effects.immune = [];
   const wireAddSelect = (id, arr) => {
     const sel = document.getElementById(id);
     if(!sel) return;
@@ -5990,11 +6162,16 @@ function renderEditorInner(){
   wireAddSelect('resistAddSelType', c.effects.resist);
   wireAddSelect('weaknessAddSelElement', c.effects.weakness);
   wireAddSelect('weaknessAddSelType', c.effects.weakness);
+  wireAddSelect('immuneAddSelElement', c.effects.immune);
+  wireAddSelect('immuneAddSelType', c.effects.immune);
   overlay.querySelectorAll('#resistPills [data-rmresist]').forEach(b=> b.addEventListener('click', ()=>{
     c.effects.resist.splice(Number(b.getAttribute('data-rmresist')), 1); renderEditor();
   }));
   overlay.querySelectorAll('#weaknessPills [data-rmweakness]').forEach(b=> b.addEventListener('click', ()=>{
     c.effects.weakness.splice(Number(b.getAttribute('data-rmweakness')), 1); renderEditor();
+  }));
+  overlay.querySelectorAll('#immunePills [data-rmimmune]').forEach(b=> b.addEventListener('click', ()=>{
+    c.effects.immune.splice(Number(b.getAttribute('data-rmimmune')), 1); renderEditor();
   }));
   const syncMechFields = ()=>{
     const line = document.getElementById('fMechLine').value;
@@ -6349,13 +6526,13 @@ function triggerPreviewText(t){
   // General who/sub target phrase (2026-09-30) — shared by every action that lists a 'who'
   // field now (see the long comment above ACTION_DEFS). 'self' reads as "itself"; ally/enemy
   // read as "an ally"/"an enemy", qualified by the sub-pick.
-  const subPhrase = {adjacent:'(adjacent)', random:'(random)', furthest:'(furthest)', all:'(all)'}[t.sub] || '';
-  const whoTarget = t.who==='self' ? 'itself' : t.who==='ally' ? `an ally ${subPhrase}`.trim() : t.who==='enemy' ? `an enemy ${subPhrase}`.trim() : FILL;
+  // 2026-10-12 (user: "On Death: Deal 5 fire damage to an adjacent enemy"): plain English targets.
+  const whoTarget = t.who==='self' ? 'itself' : (t.who==='ally' || t.who==='enemy') ? ({adjacent:`an adjacent ${t.who}`, random:`a random ${t.who}`, furthest:`the furthest ${t.who}`, all: t.who==='ally' ? 'all allies' : 'all enemies'}[t.sub] || `an ${t.who}`) : FILL;
   const resourceLabel = {lumber:'lumber', grace:'grace', stone:'stone', devilry:'Dark Point'}[t.resource] || 'lumber';
   const dmgType = t.dmgType || FILL;
   let doText;
   switch(t.do){
-    case 'damage': doText = `deal ${amt} ${dmgType} damage to ${whoTarget}`; break;
+    case 'damage': doText = `deal ${amt} ${dmgType===FILL ? FILL + ' ' : dmgWord(dmgType)}damage to ${whoTarget}`; break;
     case 'gain': doText = `gain ${amt} ${resourceLabel}${(t.resource==='devilry'&&amt!==1)?'s':''}`; break;
     // Legacy keys (2026-09-30 migration): every canonical card was migrated off these onto the
     // new unified 'gain'/'buff'/'debuff'/'exile' actions above, so this preview text is only ever
@@ -6592,6 +6769,7 @@ function readEditorFormIntoCard(){
   // since nothing else in this function reads them (they're not a "+ Add Skill" row anymore).
   if(c.effects.resist && c.effects.resist.length) newEffects.resist = c.effects.resist.slice();
   if(c.effects.weakness && c.effects.weakness.length) newEffects.weakness = c.effects.weakness.slice();
+  if(c.effects.immune && c.effects.immune.length) newEffects.immune = c.effects.immune.slice();
   c.effects = newEffects;
   delete c._skillRows; // transient editor-only state — never persisted
   delete c._speechTrigger; delete c._speechSlot; // same — just remembers which dropdown combo was showing
@@ -11358,11 +11536,24 @@ function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${s
 function castleLineHTML(node){ const sc = skirmishCastle(node), L = sc.layers || [], k = L.length - 1;
   const gem = k >= 0 ? `<b class="cl-num">${L[k]}</b><i class="armour-gem" style="--g1:${ARMOUR_LAYER_COLOURS[k][0]}; --g2:${ARMOUR_LAYER_COLOURS[k][1]}" title="${escapeAttr(k > 0 ? `Armour layer ${k+1} (${sc.shield} in all)` : 'Armour')}" aria-label="Armour"></i>` : '';
   return `<span class="castle-line"><b class="cl-num">${sc.hp}</b><span class="cl-heart" title="Castle Health" aria-label="Health">❤️</span>${gem}</span>`; }
+// Granted skills (2026-10-12, user: "skills granted by external parties' keywords will be light blue ... the field effect
+// was to give immolation to the skirmish's leader"): a fight's leaderGrant ({skill: value}) gives its leaders those skills
+// for this match only. Each leader plays as a copy of its card ("<id>~grant") whose `granted` list names the given skills,
+// so the card text can mark them. Must run before the engine is made (it reads the card list once).
+let matchLeaderGrantMap = null;
+function prepareLeaderGrants(node){
+  const g = node && (node.leaderGrant || (node.rules && node.rules.leaderGrant)); if(!g || !Object.keys(g).length) return null;
+  const defs = getCardDefs(), map = {};
+  (node.leaders || []).forEach(id=>{ const d = defs[id]; if(!d) return; const did = id + '~grant';
+    matchDefsOverlay[did] = Object.assign({}, d, {id: did, derivedFrom: id, effects: Object.assign({}, d.effects || {}, g), granted: Object.keys(g), locked: false});
+    map[id] = did; });
+  return map;
+}
 function applySkirmishSetup(players, node){
   const sc = skirmishCastle(node);
   players[2].hq.shield = sc.shield; players[2].hq.maxShield = sc.shield; players[2].hq.shieldLayers = sc.layers;
   const defs = getCardDefs();
-  const leaders = (node.leaders||[]).filter(id=> defs[id]);
+  const leaders = (node.leaders||[]).map(id=> (matchLeaderGrantMap && matchLeaderGrantMap[id]) || id).filter(id=> defs[id]);
   if(leaders.length) players[2].reserveLeaders = leaders.slice();
 }
 // Skirmish tuning helpers (2026-10-09, user: "skirmish editing" is a key thing to start on).
@@ -11406,7 +11597,86 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
     if(r.eruption == null) r.eruption = k === 'worldboss' ? 5 : /boss/.test(k) ? 3 : /elite|champion|dungeon/.test(k) ? 2 : 0;
     if(r.bossSurge == null && /^(finalboss|boss|worldboss)$/.test(k)) r.bossSurge = {atk:2, hp:4};
     if(r.enemyOre == null && k === 'worldboss') r.enemyOre = {stone:1, metal:1, metalEvery:2}; }
+  if(r.terrain == null && node && mid){ const t = terrainFor(mid, node); if(t) r.terrain = t; }
   return r; }
+// Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
+// Do effects for each biome, highlighting that biome's strength. It starts with nothing at first, then from the 2nd skirmish
+// onwards, the first tier. On elites or boss the second tier. If its a particularly big map, do a 3rd tier"). Each biome
+// favours its own kind of unit, on both sides: tier I gives natives +1 Health, tier II +1/+1 and the biome's signature
+// skill, tier III +1/+2 and the signature. The volcano's signature is its eruption (fightRules, rules.eruption).
+const TERRAIN_BIOMES = {
+  forest:  {name:'Old Woods',      icon:'🌲', types:['Forest','Flora','Taiga','Rainforest'], grant:{regen:1},      sig:'Regen 1'},
+  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{bloom:1},      sig:'Bloom 1'},
+  water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
+  beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
+  reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
+  swamp:   {name:'Sucking Mire',   icon:'🪷', types:['Swamp','Mangrove'],                    grant:{poison:1},     sig:'Poison 1'},
+  cave:    {name:'Deep Dark',      icon:'🦇', types:['Cave'],                                grant:{ambush:true},  sig:'Ambush'},
+  alpine:  {name:'High Crags',     icon:'🏔️', types:['Mountain'],                            grant:{siege:1},      sig:'Siege 1'},
+  tundra:  {name:'Frozen Waste',   icon:'❄️', types:['Tundra','Frost'],                      grant:{frostbite:1},  sig:'Frostbite 1'},
+  savanna: {name:'Hunting Grounds',icon:'🌾', types:['Savanna','Desert'],                    grant:{momentum:1},   sig:'Momentum 1'},
+  ash:     {name:'Volcanic Ground',icon:'🌋', types:['Volcanic'],                            grant:null,           sig:'the eruption'},
+  forge:   {name:'Basalt Floor',   icon:'⚒️', types:['Volcanic'],                            grant:{armor:1},      sig:'Armor 1'},
+};
+const TERRAIN_TIER_STATS = {1:{atk:0, hp:1}, 2:{atk:1, hp:1}, 3:{atk:1, hp:2}};
+function terrainTierFor(map, node){
+  if(!map || !node) return 0;
+  const k = baseKind(node.kind || 'skirmish');
+  if(k === 'tutorial') return 0;
+  const fights = map.nodes.filter(n=> !/tutorial|raidboss/.test(n.kind || ''));
+  if(/boss/.test(k)) return fights.length >= 8 ? 3 : 2;
+  if(k === 'elite' || k === 'champion') return 2;
+  const sk = map.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish');
+  return sk[0] === node ? 0 : 1;
+}
+function terrainFor(mapId, node){
+  const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!map || !node) return null;
+  const biome = MAP_BIOME_OF[mapId] || (map.parent && MAP_BIOME_OF[map.parent]); const b = biome && TERRAIN_BIOMES[biome]; if(!b) return null;
+  const tier = terrainTierFor(map, node); if(!tier) return null;
+  const st = TERRAIN_TIER_STATS[tier];
+  return {biome, tier, name: b.name, icon: b.icon, types: b.types.slice(), atk: st.atk, hp: st.hp, grant: tier >= 2 && b.grant ? Object.assign({}, b.grant) : null, sig: tier >= 2 ? b.sig : null};
+}
+// What the terrain does, in words (the field pill, its banner and a native card's light-blue line).
+function terrainSummary(t, rules){
+  if(!t) return '';
+  const bonus = [t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v === true ? '' : ' ' + v}`; }).join(', ') : ''].filter(Boolean).join(' and ');
+  const who = t.types.length > 1 ? t.types.slice(0, -1).join(', ') + ' and ' + t.types[t.types.length - 1] : t.types[0];
+  let txt = `${who} units on both sides are on home ground: ${bonus}.`;
+  const er = rules && Number(rules.eruption) || 0;
+  if(er > 0) txt += ` The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
+  return txt;
+}
+function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : null; return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 ? {t: null, rules: r} : null); }catch(e){ return null; } }
+// The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
+// bursts up through the struck card, embers fly, and the whole field flashes red.
+function eruptionGeyserVfx(el){
+  if(!el || reducedMotion() || !fxAtLeast('low')) return;
+  const r = el.getBoundingClientRect(), g = document.createElement('div');
+  g.className = 'lava-geyser'; g.setAttribute('aria-hidden', 'true');
+  g.style.left = (r.left + r.width / 2) + 'px'; g.style.top = (r.bottom - 6) + 'px'; g.style.setProperty('--h', Math.round(r.height * 1.25) + 'px');
+  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 12}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.2)}px; --y:${-Math.round(r.height * (.6 + Math.random() * .8))}px; --d:${(k * 0.04).toFixed(2)}s"></b>`).join('');
+  document.body.appendChild(g); setTimeout(()=> g.remove(), 1300);
+  const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.remove('erupt-flash'); void bf.offsetWidth; bf.classList.add('erupt-flash'); setTimeout(()=> bf.classList.remove('erupt-flash'), 800); }
+}
+// The terrain's first appearance in a match: a banner across the field saying what it does, then it lives in the pill.
+function maybeTerrainIntro(m){
+  if(!m || m._terrainIntro) return; const tr = terrainOfMatch(m); if(!tr) return; m._terrainIntro = true;
+  setTimeout(()=>{ const bf = document.getElementById('battlefieldEl'); if(!bf || matchState !== m) return;
+    const t = tr.t, er = Number(tr.rules.eruption) || 0;
+    const b = document.createElement('div'); b.className = 'terrain-banner biome-' + (t ? t.biome : 'ash'); b.setAttribute('role', 'status');
+    b.innerHTML = `<b>${escapeHtml(t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions')}</b><span>${keywordizeHTML(escapeHtml(t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep.`))}</span>`;
+    bf.appendChild(b); setTimeout(()=> b.classList.add('is-out'), 5200); setTimeout(()=> b.remove(), 5900); }, 900);
+}
+document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('#terrainPill'); document.querySelectorAll('.terrain-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); } });
+const TIER_NUMERAL = ['', 'I', 'II', 'III'];
+function terrainPillHTML(m){
+  const tr = terrainOfMatch(m); if(!tr) return '';
+  maybeTerrainIntro(m);
+  const t = tr.t, er = Number(tr.rules.eruption) || 0;
+  const title = t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions';
+  const body = t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
+  return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}</span><span class="tp-tip" role="tooltip">${keywordizeHTML(escapeHtml(body))}</span></button>`;
+}
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
 function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
@@ -13176,7 +13446,7 @@ const CONQUEST_MAPS = [
       { key:"x-1", rating:350, kind:"skirmish", name:"Cinder Slopes", icon:"🔥", deck:{"ember-jackal":4,"magma-salamander":3,"cinder-hornet":3,"fire-drake-hatchling":2}, hqHp:200, flavor:"The rocks are warm underfoot, then hot, then glowing.", rewards:{first:{gold:240, dust:36}}, requires:[] },
       { key:"x-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"obsidian-scorpion":3,"basalt-boar":3,"magma-titan":2,"pyroclast-wyrm":2,"cinder-stoker":2}, hqHp:220, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{first:{gold:260, dust:40}}, requires:["x-1"] },
       { key:"x-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"magma-titan":3,"pyroclast-wyrm":3,"fire-drake-hatchling":3,"phoenix-fledgling":2,"ember-revenant":1}, hqHp:240, flavor:"The heat comes in waves now, like breathing.", rewards:{first:{gold:280, dust:44}}, requires:["x-2"] },
-      { key:"x-wb", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":2,"magma-titan":2,"pyroclast-wyrm":2,"magma-salamander":2,"ember-jackal":2,"obsidian-scorpion":2,"cinder-imp":2}, leaders:["caldera-wyrm"], hqHp:240, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{first:{gold:400, dust:60}}, requires:["x-3"] }
+      { key:"x-wb", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":2,"magma-titan":2,"pyroclast-wyrm":2,"magma-salamander":2,"ember-jackal":2,"obsidian-scorpion":2,"cinder-imp":2}, leaders:["caldera-wyrm"], leaderGrant:{immolation:2}, hqHp:240, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{first:{gold:400, dust:60}}, requires:["x-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   { id:"ms", sub:true, parent:"mw", entry:{x:70, y:76, after:"w-7", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
@@ -16802,7 +17072,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     bumpQuestCounter('energyConquest', cost);
   }
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
-  matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck);
+  matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node)}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
@@ -19254,7 +19524,7 @@ function renderMatchUI(){
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
-    <div class="battlefield ${battlefieldMapClass(m)} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+    <div class="battlefield ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         ${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row enemy" id="resEnemy2" data-respid="2" data-resrow="2"></div>' : ''}${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row enemy" id="resEnemy1" data-respid="2" data-resrow="1"></div>' : ''}
@@ -19268,6 +19538,7 @@ function renderMatchUI(){
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow frost-lv${frostLevelOf(m)}" aria-hidden="true">${Array.from({length: Math.round((fxAtLeast('high') ? 28 : 14) * [1, 1, 1.6, 2.2][frostLevelOf(m)])}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
       ${fieldOverlayHTML(fieldEffectOf(m))}
       ${fieldResourcesHTML(m)}
+      ${terrainPillHTML(m)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -22607,9 +22878,8 @@ async function skipTurn(){
   const activePid = activePlayerId(m);
   await afterPlayerAction(activePid);
 }
-// 2026-10-12 (user: "I want to know how much resources the enemy owns as well... display it on the field itself, on the
-// bottom row, left and right"): both sides' resource pills now sit on the battlefield's bottom edge, yours on the left and
-// the enemy's on the right. Your pills keep their ids so the gain floats still fly to them; the enemy's get an "Enemy" suffix.
+// 2026-10-12 (user: "I want to know how much resources the enemy owns as well... display it on the field itself"; then
+// "The enemy's lumber should appear on the top right instead"): yours sit on the field's bottom-left, the enemy's top-right. Your pills keep their ids so the gain floats still fly to them; the enemy's get an "Enemy" suffix.
 function sideResourcePillsHTML(m, p, mine){
   if(!m || !p) return '';
   const sfx = mine ? '' : 'Enemy';
@@ -24476,7 +24746,7 @@ function passiveTipCandidates(){
   // every skill/effect, the first time a card carrying it is on the field. Natural Leader gets no tip (2026-10-12, user:
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   Registry.skills().filter(sd=> sd.key !== 'leader').forEach(sd=>{
-    const desc = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })();
+    const desc = (()=>{ try{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key); return p ? skillText(p, 1, {}) : sd.desc(1); }catch(e){ try{ return sd.desc(1); }catch(_){ return ''; } } })();
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
   // statuses, the first time one shows up on any card
@@ -24598,7 +24868,7 @@ function showCoachTip(tip, anchorEl){
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
   const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
-  b.innerHTML = `<div class="coach-text">${tip.html && !(GUIDED_STEPS.includes(tip) && tutorialCfg.steps && tutorialCfg.steps[tip.id]) ? tip.html : escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text)}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
+  b.innerHTML = `<div class="coach-text">${keywordizeHTML(tip.html && !(GUIDED_STEPS.includes(tip) && tutorialCfg.steps && tutorialCfg.steps[tip.id]) ? tip.html : escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text))}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
     // 2026-10-03 (explicit: "for the tutorial's first few tutorial guides - user cannot take any
@@ -24618,6 +24888,7 @@ function showCoachTip(tip, anchorEl){
     pointer = document.createElement('div'); pointer.className = 'coach-pointer' + (tip.action ? ' is-action' : ''); pointer.setAttribute('aria-hidden', 'true');
     pointer.innerHTML = '<span class="cp-ring"></span><span class="cp-hand">👆</span>';
     document.body.appendChild(spot); document.body.appendChild(pointer);
+    b.classList.add('has-spot');
   }
   const place = ()=>{
     // 2026-10-12 (user: "When I follow your instruction and play that card, your UI doesn't disappear until combat
@@ -27257,7 +27528,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='fieldTick' && ev.field!=='frozen'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.dmg ? `${ev.field==='eruption' ? '🌋' : '🔥'}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){}
     // 2026-10-12 the volcano: an eruption rumbles the board and lights the struck card from below
     if(ev.field==='eruption'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } SoundKit.boom ? SoundKit.boom() : null; }catch(e){}
-      if(el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 900); } }
+      if(el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 900); eruptionGeyserVfx(el); } }
     if(ev.field==='immolation'){ const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('immolate-pulse'); setTimeout(()=> src.classList.remove('immolate-pulse'), 900); } } }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast('🔓 Your leader is free!', 'ok'); }

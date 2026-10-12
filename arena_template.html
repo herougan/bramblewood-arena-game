@@ -1494,17 +1494,39 @@
      .board-row's own overflow-y:clip used to provide (see its comment, and the 2026-09-21 "cards
      are cut out" fix it references) — just scoped to the frame instead of each row individually,
      since the frame is now the only thing that actually clips anything. */
-  /* 2026-10-12: both sides' resources on the field's bottom edge, yours left, the enemy's right. */
+  /* 2026-10-12: yours on the field's bottom-left, the enemy's on its top-right. */
   .field-res{position:absolute; bottom:12px; display:flex; gap:6px; align-items:center; z-index:30; pointer-events:none; max-width:46%; flex-wrap:wrap;}
-  .field-res.mine{left:12px;} .field-res.enemy{right:12px; justify-content:flex-end;}
+  .field-res.mine{left:12px;} .field-res.enemy{right:12px; bottom:auto; top:14px; justify-content:flex-end;} /* 2026-10-12: the enemy's resources sit on their own side, top right */
   .field-res:empty{display:none;}
   .field-res .hud-pill{pointer-events:auto; padding:4px 10px; font-size:12.5px; background:color-mix(in srgb, var(--surface) 82%, transparent); box-shadow:0 2px 6px rgba(0,0,0,.25);}
   .field-res.enemy .hud-pill{border-color:rgba(214,84,84,.55);}
   .field-res-tag{font-family:'Baloo 2'; font-weight:800; font-size:10.5px; letter-spacing:.04em; color:#fff; background:rgba(176,52,52,.85); border-radius:999px; padding:2px 8px;}
-  @media (max-width:699px){ .field-res{bottom:8px; gap:4px;} .field-res.mine{left:6px;} .field-res.enemy{right:6px;} .field-res .hud-pill{padding:2px 7px; font-size:10.5px; gap:3px;} .field-res-tag{font-size:9px; padding:1px 6px;} }
+  @media (max-width:699px){ .field-res{bottom:8px; gap:4px;} .field-res.mine{left:6px;} .field-res.enemy{right:6px; top:10px;} .field-res .hud-pill{padding:2px 7px; font-size:10.5px; gap:3px;} .field-res-tag{font-size:9px; padding:1px 6px;} }
   .card-tile.quake-jolt{animation:quakeJolt .4s cubic-bezier(.3,.7,.4,1);}
   @keyframes quakeJolt{0%{transform:translateY(0);} 20%{transform:translateY(-9px) rotate(-2deg);} 45%{transform:translateY(3px) rotate(1.5deg);} 70%{transform:translateY(-2px);} 100%{transform:none;}}
   @media (prefers-reduced-motion: reduce){ .card-tile.quake-jolt{animation:none;} }
+  /* Terrain (2026-10-12): the field pill (top-left), its tooltip, the intro banner, the volcano's lava glow and geyser */
+  .terrain-pill{position:absolute; top:14px; left:12px; z-index:31; display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:999px; border:1px solid rgba(255,255,255,.35); background:rgba(28,22,14,.72); color:#fff6dc; font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:12.5px; cursor:help; box-shadow:0 2px 8px rgba(0,0,0,.35);}
+  .terrain-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .terrain-pill .tp-tip{position:absolute; top:calc(100% + 8px); left:0; width:min(300px, 80vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s, transform .15s, visibility .15s; pointer-events:none;}
+  .terrain-pill:hover .tp-tip, .terrain-pill:focus-visible .tp-tip, .terrain-pill.open .tp-tip{opacity:1; visibility:visible; transform:none;}
+  .terrain-pill.biome-ash, .terrain-pill.biome-forge{border-color:rgba(255,120,50,.7); box-shadow:0 0 12px rgba(255,90,20,.45);}
+  .terrain-banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:32; width:min(520px, 86%); padding:12px 18px; border-radius:16px; background:rgba(24,18,12,.86); color:#fff6dc; text-align:center; display:flex; flex-direction:column; gap:4px; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:terrainIn .5s cubic-bezier(.2,1.3,.4,1) both; pointer-events:none;}
+  .terrain-banner > b{font-family:'Baloo 2', system-ui, sans-serif; font-size:19px;}
+  .terrain-banner span{font-size:13.5px; line-height:1.45;}
+  .terrain-banner .kw.kw-term{color:#ffd98a;}
+  .terrain-banner.is-out{opacity:0; transform:translate(-50%,-60%); transition:opacity .6s, transform .6s;}
+  @keyframes terrainIn{from{opacity:0; transform:translate(-50%,-40%) scale(.92);} to{opacity:1; transform:translate(-50%,-50%);}}
+  .battlefield.volcanic::after{content:''; position:absolute; inset:auto 0 0 0; height:38%; z-index:1; pointer-events:none; background:radial-gradient(ellipse 70% 100% at 50% 120%, rgba(255,90,20,.32), rgba(255,60,10,.08) 60%, transparent 80%); animation:lavaBreath 4s ease-in-out infinite;}
+  @keyframes lavaBreath{50%{opacity:.55;}}
+  .battlefield.erupt-flash{box-shadow:inset 0 0 0 3px rgba(255,90,20,.75), inset 0 -60px 120px rgba(255,70,10,.55);}
+  .lava-geyser{position:fixed; z-index:60; width:0; height:0; pointer-events:none;}
+  .lava-geyser .lg-col{position:absolute; left:-18px; bottom:0; width:36px; height:var(--h); border-radius:18px 18px 6px 6px; background:linear-gradient(0deg, rgba(255,70,10,.95), rgba(255,170,40,.85) 55%, rgba(255,230,140,0)); filter:blur(1px); transform-origin:bottom; animation:geyser .9s cubic-bezier(.2,.9,.3,1) forwards;}
+  .lava-geyser b{position:absolute; left:-4px; bottom:0; width:8px; height:8px; border-radius:50%; background:#ffb13a; box-shadow:0 0 8px #ff6a14; animation:ember 1.1s ease-out var(--d) forwards; opacity:0;}
+  @keyframes geyser{0%{transform:scaleY(.1); opacity:0;} 25%{transform:scaleY(1.05); opacity:1;} 70%{opacity:.8;} 100%{transform:scaleY(.6); opacity:0;}}
+  @keyframes ember{0%{opacity:1; transform:translate(0,0) scale(1);} 100%{opacity:0; transform:translate(var(--x), var(--y)) scale(.4);}}
+  @media (max-width:699px){ .terrain-pill{top:10px; left:6px; font-size:11px; padding:3px 8px;} .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
+  @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
   .battlefield{background:var(--bg); border:1px solid var(--surface-border); border-radius:16px; padding:16px; margin-bottom:6px; position:relative; z-index:10; overflow:clip; overflow-clip-margin:90px;}
   /* Per-map battlefield gradient (2026-09-25, explicit request: "use a gradient faded background
      for the battlefield, depending on the map"). Deliberately NOT theme-adaptive (light/dark) --
@@ -2995,6 +3017,7 @@
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
   .coach-tip .coach-ok{align-self:flex-end;}
+  .coach-tip .kw.kw-term{color:#b4590c; background:rgba(255,190,90,.28); padding:0 4px; border-radius:4px; text-decoration:none;}
   .coach-tip .kw-jargon{color:#b4590c; background:rgba(255,190,90,.28); padding:0 4px; border-radius:4px; font-weight:800; letter-spacing:.01em;} /* 2026-10-12: game words in tips */
   .coach-shield{position:fixed; inset:0; z-index:1140; background:rgba(10,8,4,.28); cursor:not-allowed;}
   /* Tutorial spotlight (2026-10-12): everything but the target dims; a red marker bobs on the spot to press. */
@@ -4305,6 +4328,7 @@
   #forgeMeltBtn.is-armed{background:#c0392b; color:#fff; border-color:#c0392b;}
   /* Status keywords (2026-10-11): coloured in skill text, explained once under a hairline. */
   .kw{color:var(--kw); font-weight:700;}
+  .kw.kw-term{color:inherit; font-weight:800; text-decoration:underline; text-decoration-style:dotted; text-decoration-thickness:1px; text-underline-offset:2px;} /* 2026-10-12: game words (Pitch, Upkeep, skill names) */
   .kw-gloss{margin-top:8px; padding-top:7px; border-top:1px solid color-mix(in srgb, currentColor 22%, transparent); font-size:.86em; line-height:1.4; opacity:.92; display:flex; flex-direction:column; gap:3px;}
   .tab-hover-tip{position:fixed; transform:translate(-50%,0); background:var(--surface); border:1.5px solid var(--surface-border);
     border-radius:10px; padding:8px 11px; max-width:240px; font-size:12px; box-shadow:0 8px 20px rgba(0,0,0,.3); z-index:900; pointer-events:none;}
@@ -7188,6 +7212,7 @@
   /* Coach tips stay pointed at their card (2026-10-05) */
   .coach-tip.anchor-lost::after, .coach-tip.anchor-lost::before{display:none;}
   .coach-tip:not(.is-blocking){z-index:120;}
+  .coach-tip.has-spot{z-index:1150;} /* 2026-10-12 (user: "the tooltip is also hidden in the darkness"): a spotlighted tip sits above the dim layer */
 
   /* No floating motes over the Armoury's cards (2026-10-05): they keep drifting at the edges,
      outside the tent, but fade out over the panel. */
@@ -7563,7 +7588,12 @@
   #cardPop .statrow .atk{color:#a3311d !important;} #cardPop .statrow .hp{color:#2f6b2a !important;}
   #cardPop ul{list-style:none; padding-left:2px; margin:0 0 8px;}
   #cardPop ul > li{position:relative; padding-left:16px; line-height:1.4; margin-bottom:3px;}
-  #cardPop ul > li::before{content:''; position:absolute; left:2px; top:.42em; width:8px; height:8px; border-radius:0 70% 0 70%; background:linear-gradient(135deg, #6d8d3a, #3f5c22); transform:rotate(-12deg);}
+  /* 2026-10-12 (user: "use actual compass points for the bullet points instead of the leaf"): a four-point compass star */
+  #cardPop ul > li::before{content:''; position:absolute; left:1px; top:.3em; width:11px; height:11px; background:linear-gradient(135deg, #c99a3a, #7a5418); clip-path:polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);}
+  #cardPop ul > li:has(> .core-line)::before, #cardPop ul > li .core-line{font-weight:800;}
+  .core-line{font-weight:800; color:var(--pn-walnut, #4a2f1a);}
+  .granted-skill{color:#2a7fc0;} .granted-skill small{font-weight:600; opacity:.8;}
+  html[data-theme="dark"] .granted-skill, body.theme-dark .granted-skill{color:#7cc4ff;}
   #cardPop .flavor{color:var(--pn-ink-soft); border-top:0; padding-top:8px; margin-top:4px; position:relative; font-size:12.5px;}
   #cardPop .flavor::before{content:''; position:absolute; left:20%; right:20%; top:0; height:1px; background:linear-gradient(90deg, transparent, rgba(74,47,26,.5), transparent);}
   #cardPop .card-txn-log{border-top:0; margin-top:8px; padding:6px 8px 4px; border-radius:3px; background:repeating-linear-gradient(180deg, transparent 0 17px, rgba(74,47,26,.16) 17px 18px), rgba(255,250,232,.35); box-shadow:inset 0 0 0 1px rgba(74,47,26,.18);}
