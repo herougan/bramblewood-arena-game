@@ -3107,8 +3107,8 @@
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 230px;}
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
-  .board-row.reserve-row{position:relative; min-height:0 !important; height:72px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
-  .board-row.reserve-row > .board-card{transform:scale(.52); transform-origin:50% 0; margin-bottom:-70px;}
+  .board-row.reserve-row{position:relative; min-height:0 !important; height:112px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
+  .board-row.reserve-row > .board-card{transform:scale(.7); transform-origin:50% 0; margin-bottom:-44px;}
   .board-row.reserve-row.enemy > .board-card{transform-origin:50% 0;}
   .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
   .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
@@ -5725,6 +5725,62 @@
   .cb-stage{display:flex; align-items:center; justify-content:center; min-height:380px; border-radius:14px; background:radial-gradient(circle at 50% 40%, #3a3346, #17131d); padding:20px;}
   .cb-card .card-tile{width:120px;}
   .cb-card .holo-layer{opacity:var(--wb-foil, .38) !important;}
+  /* Inventory slots (2026-10-12) */
+  .inv-slots{display:flex; flex-wrap:wrap; gap:10px;}
+  .inv-slot{position:relative; width:64px; height:64px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(60,40,20,.12); border:2px solid rgba(120,90,50,.45); box-shadow:inset 0 2px 4px rgba(0,0,0,.18);}
+  .inv-slot:focus-visible{outline:2px solid var(--accent, #c8902a); outline-offset:2px;}
+  .inv-slot-ico{font-size:30px; line-height:1;} .inv-slot.is-empty .inv-slot-ico{opacity:.3; filter:grayscale(1);}
+  .inv-slot-n{position:absolute; right:3px; bottom:1px; font:800 13px/1 'Baloo 2',system-ui,sans-serif; color:#fff8e6; text-shadow:0 1px 0 #000, 0 0 3px #000;}
+  .forge-castles{display:flex; flex-direction:column; gap:10px;}
+  .fc-row{display:flex; gap:14px; align-items:center; padding:8px; border-radius:12px;} .fc-row.is-on{background:rgba(255,200,90,.12);}
+  .fc-tile{zoom:.62; flex-shrink:0;} .inv-grid > p.panel-sub{grid-column:1 / -1;} .fc-body{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; min-width:0;} .fc-lv{font-weight:700; opacity:.8;}
+  /* Hatching (2026-10-12) */
+  .hatch-ov{position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center; background:rgba(10,8,14,.78); transition:opacity .3s; --glow:255,240,210;}
+  .hatch-ov.out{opacity:0;}
+  .hatch-ov.hatch-uncommon{--glow:120,240,150;} .hatch-ov.hatch-rare{--glow:110,170,255;}
+  .hatch-stage{position:relative; display:flex; flex-direction:column; align-items:center; gap:18px; min-height:360px; justify-content:center;}
+  .hatch-rays{position:absolute; left:50%; top:42%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .6s;
+    background:radial-gradient(circle, rgba(var(--glow),.55) 0, rgba(var(--glow),.12) 35%, transparent 62%);}
+  .hatch-rare .hatch-rays{background:repeating-conic-gradient(from 0deg, rgba(var(--glow),.35) 0 6deg, transparent 6deg 18deg), radial-gradient(circle, rgba(var(--glow),.55) 0, transparent 60%); -webkit-mask-image:radial-gradient(circle, #000 25%, transparent 62%); mask-image:radial-gradient(circle, #000 25%, transparent 62%); animation:hatchSpin 9s linear infinite;}
+  @keyframes hatchSpin{to{transform:rotate(360deg);}}
+  .hatch-ov:has(.hatch-egg.crack2) .hatch-rays{opacity:.6;} .hatch-ov.is-open .hatch-rays{opacity:1;}
+  .hatch-egg{position:relative; font-size:110px; line-height:1; filter:drop-shadow(0 0 0 rgba(var(--glow),0)); transition:filter .4s;}
+  .hatch-egg.crack1{filter:drop-shadow(0 0 10px rgba(var(--glow),.5));} .hatch-egg.crack2{filter:drop-shadow(0 0 22px rgba(var(--glow),.75));} .hatch-egg.crack3{filter:drop-shadow(0 0 40px rgba(var(--glow),1));}
+  .hatch-egg.rock{animation:hatchRock .5s ease-in-out;}
+  @keyframes hatchRock{0%,100%{transform:rotate(0);} 25%{transform:rotate(calc(var(--rock,8deg) * -1));} 75%{transform:rotate(var(--rock,8deg));}}
+  .he-crack{position:absolute; height:3px; border-radius:2px; background:rgba(var(--glow),1); box-shadow:0 0 8px rgba(var(--glow),1); opacity:0; transition:opacity .2s;}
+  .he-crack.c1{left:38%; top:42%; width:26%; transform:rotate(-24deg);} .he-crack.c2{left:30%; top:55%; width:34%; transform:rotate(18deg);} .he-crack.c3{left:44%; top:34%; width:22%; transform:rotate(62deg);}
+  .hatch-egg.crack1 .c1, .hatch-egg.crack2 .c1, .hatch-egg.crack2 .c2, .hatch-egg.crack3 .he-crack{opacity:1;}
+  .hatch-uncommon .hatch-egg.crack2::after, .hatch-uncommon .hatch-egg.crack3::after{content:'✦ ✧ ✦'; position:absolute; left:50%; top:-10px; transform:translateX(-50%); font-size:22px; color:rgb(var(--glow)); animation:hatchSpark 1s ease-out infinite;}
+  @keyframes hatchSpark{0%{opacity:0; transform:translate(-50%, 10px);} 40%{opacity:1;} 100%{opacity:0; transform:translate(-50%, -24px);}}
+  .hatch-egg.burst{animation:hatchBurst .45s ease-in forwards;}
+  @keyframes hatchBurst{to{transform:scale(1.8); opacity:0; filter:blur(4px) drop-shadow(0 0 60px rgba(var(--glow),1));}}
+  .hatch-ov.is-open .hatch-egg{position:absolute;}
+  .hatch-card{zoom:1.8;} @media (max-width:480px){ .hatch-card{zoom:1.4;} }
+  .hatch-text{display:flex; flex-direction:column; align-items:center; gap:4px; color:#fff8e6; text-align:center;}
+  .hatch-text b{font:800 26px/1.1 'Baloo 2',system-ui,sans-serif;} .hatch-rar{font-weight:800; letter-spacing:.5px;} .hatch-text small{opacity:.8; margin-bottom:6px;}
+  /* NPC speech editor (2026-10-12) */
+  .dialogue-editor{max-width:980px; width:min(980px, calc(100vw - 32px));}
+  .de-layout{display:grid; grid-template-columns:minmax(0, 240px) minmax(0, 1fr); gap:16px; max-height:70vh;}
+  @media (max-width:640px){ .de-layout{grid-template-columns:minmax(0,1fr); max-height:none;} }
+  .de-list{display:flex; flex-direction:column; gap:4px; overflow:auto; min-width:0;} .de-list input{margin-bottom:6px;}
+  .de-item{text-align:left; padding:5px 8px; border-radius:8px; border:1px solid transparent; background:none; font:inherit; cursor:pointer; overflow-wrap:anywhere;} .de-item.on{background:rgba(200,144,42,.18); border-color:rgba(200,144,42,.5); font-weight:700;}
+  .de-item small{opacity:.6;}
+  .de-body{overflow:auto; min-width:0; display:flex; flex-direction:column; gap:10px;}
+  .de-line{display:grid; grid-template-columns:minmax(0, 180px) minmax(0, 1fr); gap:6px 10px; align-items:start; padding:8px; border-radius:10px; background:rgba(0,0,0,.04);}
+  .de-line.is-edited{box-shadow:inset 3px 0 0 #c8902a;} .de-line textarea{grid-column:1 / -1; font:inherit; width:100%;} .de-label{align-self:center; opacity:.6;}
+  .de-opt{grid-column:1 / -1; display:flex; gap:8px; align-items:center; font-size:13px;} .de-opt input{flex:1; min-width:0;}
+  .de-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  /* Raid results (2026-10-12): every raid ends on the glory card; the damage pill is the headline; a won raid is gold. */
+  .winloss-card.is-raid .raid-results{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .winloss-card.is-raid .raid-results .hud-pill{color:#3a2a10;}
+  .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
+  .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
+  /* Raid rows (2026-10-12, user: "The middle and backrows shouldnt be so small, at most a bit smaller") */
+  .board-card.is-ally-card::after{content:'🤝'; position:absolute; left:-6px; top:-8px; font-size:16px; z-index:8; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+  .hq-tile.raid-castles{transform:scale(1.1); transform-origin:50% 50%;}
+  .vs-allies{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:13px;} .vs-ally{display:flex; gap:8px; align-items:center; justify-content:center; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12);}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
   .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
   .te-deck-list .te-cut{color:#a0523a; opacity:.8;}
@@ -7918,7 +7974,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .pool-stack.depth-2::before, .pool-stack.depth-3::before, .pool-stack.depth-3::after{content:''; position:absolute; inset:0; z-index:-1; border-radius:10px; background:linear-gradient(160deg, #6b4f2a, #3a2a1a); box-shadow:0 0 0 1px rgba(243,227,191,.35), 0 2px 4px rgba(0,0,0,.35);}
 .pool-stack.depth-2::before, .pool-stack.depth-3::before{transform:translate(4px, -4px) rotate(2deg);}
 .pool-stack.depth-3::after{transform:translate(8px, -8px) rotate(4deg); z-index:-2; opacity:.8;}
-.pool-stack .ps-count{position:absolute; right:-4px; bottom:-6px; z-index:3; padding:1px 7px; border-radius:999px; font:800 11.5px/1.4 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:#3a2a1a; box-shadow:0 0 0 2px #e9c46a; pointer-events:none;}
+.pool-stack .ps-count{position:absolute; right:-6px; bottom:-6px; /* 2026-10-12: 2px further right (user: "The 0/2 0/3 need to be 2 pixels to the right") */ z-index:3; padding:1px 7px; border-radius:999px; font:800 11.5px/1.4 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:#3a2a1a; box-shadow:0 0 0 2px #e9c46a; pointer-events:none;}
 .pool-stack.is-spent .card-tile{filter:grayscale(.75) brightness(.8);}
 .pool-stack.is-finish .ps-count{box-shadow:0 0 0 2px #c4b5fd;}
 #myDeckPool{padding-right:10px;}

@@ -3107,8 +3107,8 @@
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 230px;}
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
-  .board-row.reserve-row{position:relative; min-height:0 !important; height:72px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
-  .board-row.reserve-row > .board-card{transform:scale(.52); transform-origin:50% 0; margin-bottom:-70px;}
+  .board-row.reserve-row{position:relative; min-height:0 !important; height:112px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
+  .board-row.reserve-row > .board-card{transform:scale(.7); transform-origin:50% 0; margin-bottom:-44px;}
   .board-row.reserve-row.enemy > .board-card{transform-origin:50% 0;}
   .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
   .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
@@ -5751,6 +5751,62 @@
   .cb-stage{display:flex; align-items:center; justify-content:center; min-height:380px; border-radius:14px; background:radial-gradient(circle at 50% 40%, #3a3346, #17131d); padding:20px;}
   .cb-card .card-tile{width:120px;}
   .cb-card .holo-layer{opacity:var(--wb-foil, .38) !important;}
+  /* Inventory slots (2026-10-12) */
+  .inv-slots{display:flex; flex-wrap:wrap; gap:10px;}
+  .inv-slot{position:relative; width:64px; height:64px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(60,40,20,.12); border:2px solid rgba(120,90,50,.45); box-shadow:inset 0 2px 4px rgba(0,0,0,.18);}
+  .inv-slot:focus-visible{outline:2px solid var(--accent, #c8902a); outline-offset:2px;}
+  .inv-slot-ico{font-size:30px; line-height:1;} .inv-slot.is-empty .inv-slot-ico{opacity:.3; filter:grayscale(1);}
+  .inv-slot-n{position:absolute; right:3px; bottom:1px; font:800 13px/1 'Baloo 2',system-ui,sans-serif; color:#fff8e6; text-shadow:0 1px 0 #000, 0 0 3px #000;}
+  .forge-castles{display:flex; flex-direction:column; gap:10px;}
+  .fc-row{display:flex; gap:14px; align-items:center; padding:8px; border-radius:12px;} .fc-row.is-on{background:rgba(255,200,90,.12);}
+  .fc-tile{zoom:.62; flex-shrink:0;} .inv-grid > p.panel-sub{grid-column:1 / -1;} .fc-body{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; min-width:0;} .fc-lv{font-weight:700; opacity:.8;}
+  /* Hatching (2026-10-12) */
+  .hatch-ov{position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center; background:rgba(10,8,14,.78); transition:opacity .3s; --glow:255,240,210;}
+  .hatch-ov.out{opacity:0;}
+  .hatch-ov.hatch-uncommon{--glow:120,240,150;} .hatch-ov.hatch-rare{--glow:110,170,255;}
+  .hatch-stage{position:relative; display:flex; flex-direction:column; align-items:center; gap:18px; min-height:360px; justify-content:center;}
+  .hatch-rays{position:absolute; left:50%; top:42%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .6s;
+    background:radial-gradient(circle, rgba(var(--glow),.55) 0, rgba(var(--glow),.12) 35%, transparent 62%);}
+  .hatch-rare .hatch-rays{background:repeating-conic-gradient(from 0deg, rgba(var(--glow),.35) 0 6deg, transparent 6deg 18deg), radial-gradient(circle, rgba(var(--glow),.55) 0, transparent 60%); -webkit-mask-image:radial-gradient(circle, #000 25%, transparent 62%); mask-image:radial-gradient(circle, #000 25%, transparent 62%); animation:hatchSpin 9s linear infinite;}
+  @keyframes hatchSpin{to{transform:rotate(360deg);}}
+  .hatch-ov:has(.hatch-egg.crack2) .hatch-rays{opacity:.6;} .hatch-ov.is-open .hatch-rays{opacity:1;}
+  .hatch-egg{position:relative; font-size:110px; line-height:1; filter:drop-shadow(0 0 0 rgba(var(--glow),0)); transition:filter .4s;}
+  .hatch-egg.crack1{filter:drop-shadow(0 0 10px rgba(var(--glow),.5));} .hatch-egg.crack2{filter:drop-shadow(0 0 22px rgba(var(--glow),.75));} .hatch-egg.crack3{filter:drop-shadow(0 0 40px rgba(var(--glow),1));}
+  .hatch-egg.rock{animation:hatchRock .5s ease-in-out;}
+  @keyframes hatchRock{0%,100%{transform:rotate(0);} 25%{transform:rotate(calc(var(--rock,8deg) * -1));} 75%{transform:rotate(var(--rock,8deg));}}
+  .he-crack{position:absolute; height:3px; border-radius:2px; background:rgba(var(--glow),1); box-shadow:0 0 8px rgba(var(--glow),1); opacity:0; transition:opacity .2s;}
+  .he-crack.c1{left:38%; top:42%; width:26%; transform:rotate(-24deg);} .he-crack.c2{left:30%; top:55%; width:34%; transform:rotate(18deg);} .he-crack.c3{left:44%; top:34%; width:22%; transform:rotate(62deg);}
+  .hatch-egg.crack1 .c1, .hatch-egg.crack2 .c1, .hatch-egg.crack2 .c2, .hatch-egg.crack3 .he-crack{opacity:1;}
+  .hatch-uncommon .hatch-egg.crack2::after, .hatch-uncommon .hatch-egg.crack3::after{content:'✦ ✧ ✦'; position:absolute; left:50%; top:-10px; transform:translateX(-50%); font-size:22px; color:rgb(var(--glow)); animation:hatchSpark 1s ease-out infinite;}
+  @keyframes hatchSpark{0%{opacity:0; transform:translate(-50%, 10px);} 40%{opacity:1;} 100%{opacity:0; transform:translate(-50%, -24px);}}
+  .hatch-egg.burst{animation:hatchBurst .45s ease-in forwards;}
+  @keyframes hatchBurst{to{transform:scale(1.8); opacity:0; filter:blur(4px) drop-shadow(0 0 60px rgba(var(--glow),1));}}
+  .hatch-ov.is-open .hatch-egg{position:absolute;}
+  .hatch-card{zoom:1.8;} @media (max-width:480px){ .hatch-card{zoom:1.4;} }
+  .hatch-text{display:flex; flex-direction:column; align-items:center; gap:4px; color:#fff8e6; text-align:center;}
+  .hatch-text b{font:800 26px/1.1 'Baloo 2',system-ui,sans-serif;} .hatch-rar{font-weight:800; letter-spacing:.5px;} .hatch-text small{opacity:.8; margin-bottom:6px;}
+  /* NPC speech editor (2026-10-12) */
+  .dialogue-editor{max-width:980px; width:min(980px, calc(100vw - 32px));}
+  .de-layout{display:grid; grid-template-columns:minmax(0, 240px) minmax(0, 1fr); gap:16px; max-height:70vh;}
+  @media (max-width:640px){ .de-layout{grid-template-columns:minmax(0,1fr); max-height:none;} }
+  .de-list{display:flex; flex-direction:column; gap:4px; overflow:auto; min-width:0;} .de-list input{margin-bottom:6px;}
+  .de-item{text-align:left; padding:5px 8px; border-radius:8px; border:1px solid transparent; background:none; font:inherit; cursor:pointer; overflow-wrap:anywhere;} .de-item.on{background:rgba(200,144,42,.18); border-color:rgba(200,144,42,.5); font-weight:700;}
+  .de-item small{opacity:.6;}
+  .de-body{overflow:auto; min-width:0; display:flex; flex-direction:column; gap:10px;}
+  .de-line{display:grid; grid-template-columns:minmax(0, 180px) minmax(0, 1fr); gap:6px 10px; align-items:start; padding:8px; border-radius:10px; background:rgba(0,0,0,.04);}
+  .de-line.is-edited{box-shadow:inset 3px 0 0 #c8902a;} .de-line textarea{grid-column:1 / -1; font:inherit; width:100%;} .de-label{align-self:center; opacity:.6;}
+  .de-opt{grid-column:1 / -1; display:flex; gap:8px; align-items:center; font-size:13px;} .de-opt input{flex:1; min-width:0;}
+  .de-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
+  /* Raid results (2026-10-12): every raid ends on the glory card; the damage pill is the headline; a won raid is gold. */
+  .winloss-card.is-raid .raid-results{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .winloss-card.is-raid .raid-results .hud-pill{color:#3a2a10;}
+  .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
+  .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
+  .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
+  /* Raid rows (2026-10-12, user: "The middle and backrows shouldnt be so small, at most a bit smaller") */
+  .board-card.is-ally-card::after{content:'🤝'; position:absolute; left:-6px; top:-8px; font-size:16px; z-index:8; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+  .hq-tile.raid-castles{transform:scale(1.1); transform-origin:50% 50%;}
+  .vs-allies{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:13px;} .vs-ally{display:flex; gap:8px; align-items:center; justify-content:center; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12);}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
   .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
   .te-deck-list .te-cut{color:#a0523a; opacity:.8;}
@@ -7944,7 +8000,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .pool-stack.depth-2::before, .pool-stack.depth-3::before, .pool-stack.depth-3::after{content:''; position:absolute; inset:0; z-index:-1; border-radius:10px; background:linear-gradient(160deg, #6b4f2a, #3a2a1a); box-shadow:0 0 0 1px rgba(243,227,191,.35), 0 2px 4px rgba(0,0,0,.35);}
 .pool-stack.depth-2::before, .pool-stack.depth-3::before{transform:translate(4px, -4px) rotate(2deg);}
 .pool-stack.depth-3::after{transform:translate(8px, -8px) rotate(4deg); z-index:-2; opacity:.8;}
-.pool-stack .ps-count{position:absolute; right:-4px; bottom:-6px; z-index:3; padding:1px 7px; border-radius:999px; font:800 11.5px/1.4 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:#3a2a1a; box-shadow:0 0 0 2px #e9c46a; pointer-events:none;}
+.pool-stack .ps-count{position:absolute; right:-6px; bottom:-6px; /* 2026-10-12: 2px further right (user: "The 0/2 0/3 need to be 2 pixels to the right") */ z-index:3; padding:1px 7px; border-radius:999px; font:800 11.5px/1.4 'Baloo 2',system-ui,sans-serif; color:#fff8e6; background:#3a2a1a; box-shadow:0 0 0 2px #e9c46a; pointer-events:none;}
 .pool-stack.is-spent .card-tile{filter:grayscale(.75) brightness(.8);}
 .pool-stack.is-finish .ps-count{box-shadow:0 0 0 2px #c4b5fd;}
 #myDeckPool{padding-right:10px;}
@@ -16281,7 +16337,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd8ae6fda3e32', BUILD_CARD_HASH = '43a462a4df662f41a1772b681ab7963e0cff86d6c37851b750dc0c59b113dd73';
+const BUILD_ID = '165de9583b16', BUILD_CARD_HASH = '43a462a4df662f41a1772b681ab7963e0cff86d6c37851b750dc0c59b113dd73';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -16887,6 +16943,7 @@ function applyCloudCfgRow(r){
   const mr = /^__cfg:raid:(.+)$/.exec(r.id);
   if(mr){ applyCloudRaidDef(mr[1], r); return; }
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
+  if(r.id==='__cfg:dialogues'){ dialogueEdits = (r.deleted || !r.data) ? {} : (r.data.edits || {}); saveDialogueEdits(); return; }
   if(r.id==='__cfg:shop-packs'){ applyCloudShopPacks(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
@@ -18009,6 +18066,32 @@ const SONGBOOK = {
   conquest: {name:'The Long Road', place:'Conquest map', bpm:92, beats:4, root:196.00, scale:[0,2,4,5,7,9,11], lead:'flute', comp:'walk',
     chords:[0,3,4,0, 5,3,4,0],
     mel:['4:2 5:1 4:1','2:3 -:1','3:1 4:1 5:1 7:1','4:4', '5:2 4:1 2:1','3:2 2:1 0:1','1:1 2:1 4:1 1:1','0:3 -:1']},
+  // Map themes (2026-10-12, user: "Different conquest maps should have different music. Maps that share a theme can have one
+  // music. Caves can have dripping sounds, and eerie music"). MAP_MUSIC below says which map plays which.
+  map_water: {name:'Lily and Current', place:'Water maps', bpm:84, beats:3, root:261.63, scale:[0,2,4,5,7,9,11], lead:'kalimba', comp:'lullaby', gain:0.9,
+    chords:[0,5,3,4, 0,5,1,4],
+    mel:['2:1 4:1 7:1','5:3','4:1 2:1 4:1','1:3', '2:1 4:1 7:1','9:2 7:1','5:1 4:1 1:1','0:3']},
+  map_fire: {name:'Cinder Path', place:'Volcano maps', bpm:80, beats:4, root:130.81, scale:[0,1,4,5,7,8,10], lead:'brass', comp:'anvil', gain:0.85,
+    chords:[0,0,1,0, 0,5,1,0],
+    mel:['0:2 1:1 4:1','5:3 -:1','4:1 5:1 7:2','4:4', '7:2 8:1 7:1','5:2 4:2','1:1 4:1 1:1 0:1','0:4']},
+  map_cave: {name:'Echoes Below', place:'Caves', bpm:58, beats:4, root:110.00, scale:[0,1,3,5,7,8,10], lead:'flute', comp:'lament', gain:0.85, drips:true,
+    chords:[0,0,5,0, 0,1,5,0],
+    mel:['4:3 -:1','3:2 1:2','0:4','-:4', '7:3 5:1','4:2 3:2','1:3 -:1','0:4']},
+  map_sand: {name:'Long Shadows', place:'Savanna and desert', bpm:94, beats:4, root:220.00, scale:[0,2,4,7,9], lead:'kalimba', comp:'walk', gain:0.9,
+    chords:[0,0,3,0, 4,3,0,0],
+    mel:['0:1 2:1 3:2','4:3 -:1','3:1 2:1 0:2','1:4', '3:1 4:1 5:2','4:2 3:2','2:1 1:1 0:2','0:4']},
+  map_snow: {name:'First Frost', place:'Snow maps', bpm:70, beats:4, root:293.66, scale:[0,2,4,5,7,9,11], lead:'celesta', comp:'harp', gain:0.85,
+    chords:[0,3,5,4, 0,3,1,4],
+    mel:['4:2 7:2','6:3 -:1','5:1 4:1 2:2','4:4', '7:2 9:2','8:3 -:1','7:1 5:1 4:2','2:4']},
+  map_swamp: {name:'Murk and Moss', place:'Swamps', bpm:66, beats:4, root:146.83, scale:[0,2,3,5,7,8,10], lead:'reed', comp:'lament', gain:0.8,
+    chords:[0,5,0,4, 0,5,3,4],
+    mel:['0:1 2:1 3:2','2:2 0:2','5:1 4:1 3:2','2:4', '3:1 4:1 5:2','7:2 5:2','4:1 3:1 2:2','0:4']},
+  map_sky: {name:'Thermals', place:'Heights and canopy', bpm:88, beats:3, root:349.23, scale:[0,2,4,6,7,9,11], lead:'flute', comp:'harp', gain:0.85,
+    chords:[0,1,0,4, 0,1,5,4],
+    mel:['4:2 6:1','7:3','6:1 4:1 2:1','4:3', '7:2 9:1','11:3','9:1 7:1 6:1','7:3']},
+  map_forest: {name:'Old Roots', place:'Deep forest', bpm:76, beats:4, root:196.00, scale:[0,2,3,5,7,9,10], lead:'marimba', comp:'walk', gain:0.9,
+    chords:[0,6,3,4, 0,6,3,0],
+    mel:['0:1 2:1 4:2','3:2 2:2','4:1 6:1 7:2','6:4', '7:1 6:1 4:2','3:2 4:2','2:1 3:1 1:2','0:4']},
   raid: {name:'Drums Under the Hill', place:'Raids', bpm:70, beats:4, root:110.00, scale:[0,2,3,5,7,8,10], lead:'brass', comp:'war',
     chords:[0,0,5,4, 0,0,3,4],
     mel:['0:3 2:1','3:2 2:2','0:3 -:1','-:4', '4:3 5:1','3:2 2:2','1:2 2:2','0:4']},
@@ -18052,6 +18135,17 @@ const SONGBOOK = {
     chords:[0,5,2,6, 3,0,4,0],
     mel:['4:2 3:1 2:1','2:4','4:1 5:1 6:2','4:4', '3:2 2:1 0:1','2:2 4:2','1:3 -:1','0:4']},
 };
+const MAP_MUSIC = {
+  m1:'conquest', mq:'conquest', mf:'conquest', ml:'conquest', mh:'conquest',
+  m2:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
+  m3:'map_fire', m9:'map_fire', m11:'map_fire',
+  m4:'map_cave', mg:'map_cave', mu:'map_cave', mz:'map_cave',
+  m5:'map_sand', md:'map_sand',
+  m6:'map_snow', mt:'map_snow',
+  m8:'map_swamp', mw:'map_swamp',
+  m10:'map_sky', my:'map_sky',
+  mr:'map_forest',
+};
 function songbookPlace(){
   const tab = typeof currentTab !== 'undefined' ? currentTab : null;
   const m = typeof matchState !== 'undefined' ? matchState : null;
@@ -18061,7 +18155,7 @@ function songbookPlace(){
     if(k === 'elite') return 'elite';
     return 'battle'; }
   if(tab === 'home'){ const rhymes = Object.keys(SONGBOOK).filter(k=> SONGBOOK[k].rhyme); return rhymes[Math.floor(Date.now()/240000) % rhymes.length]; } // a new rhyme every four minutes
-  if(tab === 'play' && !(m && !m.over)){ const sub = typeof playSubTab !== 'undefined' ? playSubTab : null; if(sub === 'arena') return 'arena'; if(sub === 'raid') return 'raid'; if(sub === 'conquest') return 'conquest'; }
+  if(tab === 'play' && !(m && !m.over)){ const sub = typeof playSubTab !== 'undefined' ? playSubTab : null; if(sub === 'arena') return 'arena'; if(sub === 'raid') return 'raid'; if(sub === 'conquest'){ try{ if(typeof conquestWorldView !== 'undefined' && conquestWorldView) return 'conquest'; }catch(e){} return MAP_MUSIC[typeof conquestSelectedMap !== 'undefined' ? conquestSelectedMap : ''] || 'conquest'; } }
   if(tab === 'shop' || tab === 'market') return 'bakery';
   if(tab === 'nest') return 'nest';
   if(tab === 'deck') return 'armoury';
@@ -18118,6 +18212,14 @@ const Songbook = (()=>{
       const n = c.createBufferSource(); n.buffer = noise(c); const hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 3000; const g = envGain(c, t, 0.001, 0.04*v, 0.005, 0.06); n.connect(hp); hp.connect(g); n.start(t); n.stop(t + 0.1); g.connect(st.bus); },
     tap(c, t, v, accent){ const n = c.createBufferSource(); n.buffer = noise(c); const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = accent ? 1800 : 2600; bp.Q.value = 1.2; const g = envGain(c, t, 0.002, (accent ? 0.06 : 0.03)*v, 0.005, accent ? 0.12 : 0.06); n.connect(bp); bp.connect(g); n.start(t); n.stop(t + 0.2); g.connect(st.bus); },
   };
+  function drip(c, t){
+    const f = 900 + Math.random()*900, o = c.createOscillator(); o.type = 'sine';
+    o.frequency.setValueAtTime(f, t); o.frequency.exponentialRampToValueAtTime(f*2.4, t + 0.05); // a drop's quick upward "plip"
+    const g = envGain(c, t, 0.002, 0.028 + Math.random()*0.02, 0.01, 0.16);
+    const pan = c.createStereoPanner ? c.createStereoPanner() : null; if(pan){ pan.pan.value = Math.random()*1.6 - 0.8; o.connect(g); g.connect(pan); send(c, pan); } else { o.connect(g); send(c, g); }
+    o.start(t); o.stop(t + 0.3);
+    if(verb){ const echo = c.createDelay(1); echo.delayTime.value = 0.28 + Math.random()*0.2; const eg = c.createGain(); eg.gain.value = 0.35; g.connect(echo); echo.connect(eg); eg.connect(verb); }
+  }
   const parse = str=> str.trim().split(/\s+/).map(tok=>{ const [d, b] = tok.split(':'); return {deg: d === '-' ? null : Number(d), beats: Number(b)||1}; });
   function scheduleBar(c, t0){
     const th = SONGBOOK[st.key], beat = 60/th.bpm, B = th.beats, i = st.bar % th.mel.length, ch = th.chords[i % th.chords.length];
@@ -18140,6 +18242,8 @@ const Songbook = (()=>{
     else if(th.comp === 'bossdrums'){ if(i % 4 === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*4, 1.2); [0, 0.75, 1.5, 2, 3, 3.5].forEach((k, j)=> INST.tap(c, t0 + beat*k, j % 3 === 0 ? 1.4 : 0.9, true)); INST.bass(c, fq(th, ch, -2), t0, beat*2, 1); INST.bass(c, fq(th, ch + 4, -2), t0 + beat*2, beat*2, 0.9); }
     else if(th.comp === 'lament'){ if(i === 0) INST.drone(c, fq(th, 0, -2), t0, beat*B*3, 1); [0, 2, 4].forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat*0.6, beat, 0.35)); }
     else if(th.comp === 'harp'){ const pat = [0, 2, 4, 7, 9, 7, 4, 2]; pat.forEach((d, k)=> INST.harp(c, fq(th, ch + d, -1), t0 + k*beat/2, beat/2, k === 0 ? 0.6 : 0.4)); INST.bass(c, fq(th, ch, -2), t0, beat*B, 0.6); }
+    // Cave drips (2026-10-12): a few water drops a bar, somewhere in the dark, each with its own pitch and a long echo.
+    if(th.drips){ const nd = Math.random() < 0.5 ? 1 : 2; for(let k = 0; k < nd; k++) drip(c, t0 + Math.random()*beat*B); }
     // melody, with tiny variations on later loops: an octave lift on the last phrase, a grace note now and then
     let t = t0; const lift = (rep % 2 === 1 && i >= th.mel.length/2) ? 7 : 0;
     parse(th.mel[i]).forEach((n, k)=>{
@@ -21818,7 +21922,7 @@ function achievementContext(){
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   const tutorialIds = CONQUEST_MAPS.flatMap(m=> m.nodes.filter(n=>n.kind==='tutorial').map(n=> conquestNodeId(m.id, n.key)));
   const clearedNodes = progress.completed.filter(id=> !tutorialIds.includes(id)).length;
-  const mapsFullyCleared = CONQUEST_MAPS.filter(m=> m.nodes.filter(n=>n.kind!=='tutorial').every(n=> progress.completed.includes(conquestNodeId(m.id, n.key)))).length;
+  const mapsFullyCleared = CONQUEST_MAPS.filter(m=> m.nodes.some(n=> n.kind!=='tutorial') && m.nodes.filter(n=>n.kind!=='tutorial').every(n=> progress.completed.includes(conquestNodeId(m.id, n.key)))).length; // 2026-10-12: a map with no fights isn't "cleared"
   const defs = getCardDefs();
   const ownedCards = Object.values(defs).filter(c=>!c.test && !c.locked).length;
   const leveledCards = Object.keys(myCardLevels).filter(id=> (myCardLevels[id]||0)>0 && defs[id] && !defs[id].test).length;
@@ -23430,11 +23534,47 @@ function castleLevelUpCost(L, id){
 }
 function castleLeveled(base, L){ return base ? Object.assign({}, base, {health: (base.health||30) + L, level: L}) : base; }
 function myCastleDef(){ const base = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']; return castleLeveled(base, castleLevelOf(base && base.id)); }
-function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleLevelUpCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
+// Castle duplicates (2026-10-12, user: "Remove the temper feature within the castle itself. It will be in the Forge. In the
+// forge, allow for us to fuse all extra duplicates. For castles, every extra castle is a duplicate since you can only use
+// 1"): a castle granted again counts as a spare; fusing it banks 1/8 of its road to Lv 20 as credit on that castle.
+const CASTLE_DUPS_KEY = 'bramblewood_castle_dups_v1', CASTLE_CREDIT_KEY = 'bramblewood_castle_credit_v1';
+function loadJSONKey(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}') || {}; }catch(e){ return {}; } }
+function castleDupsOf(id){ return Math.max(0, (loadJSONKey(CASTLE_DUPS_KEY)[id])|0); }
+function addCastleDuplicate(id, n){ const d = loadJSONKey(CASTLE_DUPS_KEY); d[id] = ((d[id])|0) + (n||1); try{ localStorage.setItem(CASTLE_DUPS_KEY, JSON.stringify(d)); }catch(e){} }
+function castleCreditOf(id){ const c = loadJSONKey(CASTLE_CREDIT_KEY)[id] || {}; return {dust: c.dust|0, gold: c.gold|0}; }
+function castleRoadCost(id){ let dust = 0, gold = 0; for(let L = 0; L < CASTLE_MAX_LEVEL; L++){ const c = castleLevelUpCost(L, id); dust += c.dust; gold += c.gold; } return {dust, gold}; }
+function fuseCastleDuplicates(id){
+  const n = castleDupsOf(id); if(!n) return null;
+  const road = castleRoadCost(id), v = {n, dust: Math.round(road.dust/8)*n, gold: Math.round(road.gold/8)*n};
+  const d = loadJSONKey(CASTLE_DUPS_KEY); d[id] = 0; try{ localStorage.setItem(CASTLE_DUPS_KEY, JSON.stringify(d)); }catch(e){}
+  const cr = loadJSONKey(CASTLE_CREDIT_KEY), c = cr[id] || {}; cr[id] = {dust:(c.dust|0) + v.dust, gold:(c.gold|0) + v.gold}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){}
+  return v;
+}
+function castleNetCost(L, id){ const c = castleLevelUpCost(L, id), cr = castleCreditOf(id); return Object.assign({}, c, {dust: Math.max(0, c.dust - cr.dust), gold: Math.max(0, c.gold - cr.gold), credit:{dust: Math.min(cr.dust, c.dust), gold: Math.min(cr.gold, c.gold)}}); }
+function spareDuplicatesTotal(){ let n = 0; Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = maxCopiesForRarity(d.rarity); const plain = (myCardCopies[id]||[]).filter(c=> !(c && (c.foil || c.shiny || c.skin))).length, total = (myCardCopies[id]||[]).length; n += Math.max(0, Math.min(plain, total - Math.max(1, cap))); }); return n; }
+function fuseAllDuplicates(){
+  const out = {count:0, cards:0, dust:0};
+  Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = Math.max(1, maxCopiesForRarity(d.rarity)); let fed = 0;
+    while((myCardCopies[id]||[]).length > cap){ const v = feedDuplicate(id); if(!v) break; fed++; out.dust += v.dust; }
+    if(fed){ out.count += fed; out.cards++; } });
+  return out;
+}
+function forgeCastlesHTML(){
+  const list = Object.values(CHARACTER_DEFS).filter(ch=> castleUnlocked(ch) || adminModeEnabled);
+  return `<div class="panel forge-castles">${list.map(ch=>{ const L = castleLevelOf(ch.id), max = L >= CASTLE_LIMIT_MAX, c = max ? null : castleNetCost(L, ch.id), ok = !max && castleCanTemper(ch.id), dups = castleDupsOf(ch.id), lb = L >= CASTLE_MAX_LEVEL, defs = getCardDefs();
+    const mats = c ? Object.entries(c.mats||{}).map(([m, n])=> ` ${(defs[m]||{}).icon||'💠'}${n}${ownedCount(m) < n ? '✗' : ''}`).join('') : '';
+    const lc = castleLeveled(ch, L);
+    return `<div class="fc-row ${ch.id===myCharacterId ? 'is-on' : ''}"><span class="fc-tile">${matchCastleTileHTML(lc, lc.health, lc.health, 'preview', '')}</span>
+      <div class="fc-body"><b>${escapeHtml(ch.name)}${ch.id===myCharacterId ? ' <small>(yours)</small>' : ''}</b><span class="fc-lv">Lv ${L}/${lb ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span>
+        ${max ? `<p class="forge-note">Fully limit broken.</p>` : `<button type="button" class="btn small primary" data-forge-castle="${escapeAttr(ch.id)}" ${ok ? '' : 'aria-disabled="true"'}>${lb ? '💥 Break' : '🔨 Temper'} to Lv ${L+1} · ✨${c.dust} 🍁${c.gold}${mats}</button>${c.credit && (c.credit.dust || c.credit.gold) ? ` <small>credit −✨${c.credit.dust}</small>` : ''}`}
+        <button type="button" class="btn small" data-fuse-castle="${escapeAttr(ch.id)}" ${dups ? '' : 'disabled'} title="Every extra copy of a castle is a duplicate: you only field one">🧩 Fuse duplicates (${dups})</button></div></div>`; }).join('')}</div>`;
+}
+function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleNetCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
 function temperCastle(id){
   const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX || !castleCanTemper(id)) return false;
-  const c = castleLevelUpCost(L, id);
+  const c = castleNetCost(L, id);
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
+  if(c.credit && (c.credit.dust || c.credit.gold)){ const cr = loadJSONKey(CASTLE_CREDIT_KEY), o = cr[id] || {}; cr[id] = {dust: Math.max(0, (o.dust|0) - c.credit.dust), gold: Math.max(0, (o.gold|0) - c.credit.gold)}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){} }
   Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
   return true;
@@ -23577,11 +23717,7 @@ function openLoadoutPicker(kind){
   const body = ()=> isCastle
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr('Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
-      ${(()=>{ const id = myCharacterId || 'castle', L = castleLevelOf(id), c = castleLevelUpCost(L, id), ok = castleCanTemper(id), defs = getCardDefs();
-        const mats = Object.entries(c.mats||{}).map(([m, n])=> ` ${(defs[m]||{}).icon||'💠'}${n}${ownedCount(m) < n ? '✗' : ''}`).join('');
-        const lb = L >= CASTLE_MAX_LEVEL;
-        return L >= CASTLE_LIMIT_MAX ? `<p class="lp-temper is-max">🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} is at level ${CASTLE_LIMIT_MAX}: fully limit broken.</p>`
-          : `<div class="lp-temper ${lb?'is-lb':''}"><span>🏰 ${escapeHtml((CHARACTER_DEFS[id]||{}).name||'Castle')} · Lv ${L} → ${L+1}: +1 starting Health${lb ? ' · 💥 limit break (advanced materia)' : ''}</span><button type="button" class="btn small primary" data-temper-castle="${escapeAttr(id)}" ${ok?'':'disabled'}>${lb?'💥 Break':'🔨 Temper'} · ✨${c.dust} 🍁${c.gold}${mats}</button></div>`; })()}`
+      <p class="lp-temper">🔨 Temper your castles in the Forge (🏰 Castles).</p>`
     : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
@@ -24567,7 +24703,7 @@ function renderPlayerStatsSubpage(body){
   // this count too, so "cleared / total" only ever counts real fights on both sides of the ratio.
   const tutorialIds = CONQUEST_MAPS.flatMap(m=> m.nodes.filter(n=>n.kind==='tutorial').map(n=> conquestNodeId(m.id, n.key)));
   const clearedNodes = progress.completed.filter(id=> !tutorialIds.includes(id)).length;
-  const mapsFullyCleared = CONQUEST_MAPS.filter(m=> m.nodes.filter(n=>n.kind!=='tutorial').every(n=> progress.completed.includes(conquestNodeId(m.id, n.key)))).length;
+  const mapsFullyCleared = CONQUEST_MAPS.filter(m=> m.nodes.some(n=> n.kind!=='tutorial') && m.nodes.filter(n=>n.kind!=='tutorial').every(n=> progress.completed.includes(conquestNodeId(m.id, n.key)))).length; // 2026-10-12: a map with no fights isn't "cleared"
   const raidBossesTotal = allNodes.filter(n=>n.kind==='raidboss').length;
   const raidBossesUnlocked = progress.raidUnlocked.length;
   const bramble = CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle'];
@@ -25376,9 +25512,57 @@ const dialoguesPending = new Set();
 // otter general speaking to me. If hummingbird, the matriarch. If both ... random").
 function factionVoice(){ const f = loadFactionChoice(); return f === 'hummingbirds' ? 'aurelia' : f === 'otters' ? 'shieldback' : (Math.random() < 0.5 ? 'shieldback' : 'aurelia'); }
 function playFactionWarning(text){ const id = 'warn:' + text.slice(0, 24); DIALOGUES[id] = {lines:[{who:factionVoice(), text}]}; return playDialogue(id); }
+// NPC speech edits (2026-10-12, user: "Add NPC speeches either in admin or our master hub"): Admin → 💬 NPC speeches changes
+// any line's words or speaker; the edits sit on top of DIALOGUES (published for every player by a cloud admin).
+const DIALOGUE_EDITS_KEY = 'bramblewood_dialogue_edits_v1';
+let dialogueEdits = (()=>{ try{ return JSON.parse(localStorage.getItem(DIALOGUE_EDITS_KEY)||'{}') || {}; }catch(e){ return {}; } })();
+function saveDialogueEdits(){ try{ localStorage.setItem(DIALOGUE_EDITS_KEY, JSON.stringify(dialogueEdits)); }catch(e){} }
+function dialogueScript(id){
+  const base = DIALOGUES[id]; if(!base) return null; const ed = dialogueEdits[id]; if(!ed) return base;
+  return Object.assign({}, base, {lines: base.lines.map((l, i)=>{ const e = ed[i]; if(!e) return l; const o = Object.assign({}, l); if(e.text != null) o.text = e.text; if(e.who) o.who = e.who;
+    if(e.options && Array.isArray(o.options)) o.options = o.options.map((op, k)=> e.options[k] != null ? Object.assign({}, op, {label: e.options[k]}) : op); return o; })});
+}
+function openDialogueEditor(){
+  let ov = document.getElementById('dialogueEditorOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'dialogueEditorOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const keys = Object.keys(DIALOGUES).sort(); let cur = keys[0], q = '';
+  const speakers = Object.keys(DIALOGUE_SPEAKERS);
+  const paint = ()=>{
+    const list = keys.filter(k=> !q || k.includes(q) || DIALOGUES[k].lines.some(l=> (l.text||'').toLowerCase().includes(q)));
+    if(!list.includes(cur)) cur = list[0];
+    const sc = cur ? dialogueScript(cur) : null;
+    ov.innerHTML = `<div class="modal dialogue-editor" role="dialog" aria-label="NPC speeches">
+      <div class="modal-head-row"><h2>💬 NPC speeches</h2><button class="modal-close-btn" data-de-close aria-label="Close">✕</button></div>
+      <p class="panel-sub">Every conversation in the game. Change a line's words or who says it; ${cloudCardAdmin ? 'Save publishes it for every player.' : 'Save keeps it in this browser (sign in as a cloud admin to publish).'} Edited lines are marked ✎.</p>
+      <div class="de-layout"><div class="de-list"><input type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
+        ${list.map(k=> `<button type="button" class="de-item ${k===cur?'on':''}" data-de="${escapeAttr(k)}">${dialogueEdits[k] ? '✎ ' : ''}${escapeHtml(k)} <small>${DIALOGUES[k].lines.length}</small></button>`).join('')}</div>
+      <div class="de-body">${sc ? `<h3>${escapeHtml(cur)}</h3>${sc.lines.map((l, i)=> `<div class="de-line ${(dialogueEdits[cur]||{})[i] ? 'is-edited' : ''}">
+          <select data-de-who="${i}">${speakers.map(sp=> `<option value="${sp}" ${sp===l.who?'selected':''}>${escapeHtml(DIALOGUE_SPEAKERS[sp].name)}</option>`).join('')}</select>
+          ${l.label ? `<small class="de-label">#${escapeHtml(l.label)}</small>` : ''}
+          <textarea rows="2" data-de-text="${i}">${escapeHtml(l.text||'')}</textarea>
+          ${(l.options||[]).map((op, k)=> `<label class="de-opt">↳ reply <input type="text" data-de-opt="${i}:${k}" value="${escapeAttr(op.label||'')}"></label>`).join('')}</div>`).join('')}
+        <div class="de-actions"><button type="button" class="btn small" data-de-play>▶ Play it</button><button type="button" class="btn small ghost" data-de-reset>↺ Back to the original</button><span style="flex:1"></span><button type="button" class="btn primary" data-de-save>💾 Save</button></div>` : '<p class="panel-sub">No match.</p>'}</div></div></div>`;
+    ov.hidden = false;
+    const qi = ov.querySelector('#deQ'); qi.oninput = ()=>{ q = qi.value.trim().toLowerCase(); paint(); const n = ov.querySelector('#deQ'); n.focus(); n.setSelectionRange(n.value.length, n.value.length); };
+    ov.querySelectorAll('[data-de]').forEach(b=> b.onclick = ()=>{ cur = b.dataset.de; paint(); });
+    ov.querySelector('[data-de-close]').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+    const save = async ()=>{ const base = DIALOGUES[cur], ed = {};
+      base.lines.forEach((l, i)=>{ const t = ov.querySelector(`[data-de-text="${i}"]`).value, w = ov.querySelector(`[data-de-who="${i}"]`).value; const e = {};
+        if(t !== l.text) e.text = t; if(w !== l.who) e.who = w;
+        (l.options||[]).forEach((op, k)=>{ const v = ov.querySelector(`[data-de-opt="${i}:${k}"]`).value; if(v !== op.label){ e.options = e.options || {}; e.options[k] = v; } });
+        if(Object.keys(e).length) ed[i] = e; });
+      if(Object.keys(ed).length) dialogueEdits[cur] = ed; else delete dialogueEdits[cur]; saveDialogueEdits();
+      let pub = false; if(cloudCardAdmin){ try{ await cloudWriteCardOverride('__cfg:dialogues', {data:{kind:'dialogues', edits: dialogueEdits}, deleted:false, deleted_snapshot:null}); pub = true; }catch(e){} }
+      showToast(pub ? '💬 Saved and published.' : '💬 Saved in this browser.', 'ok'); paint(); };
+    const sb = ov.querySelector('[data-de-save]'); if(sb) sb.onclick = save;
+    const rb = ov.querySelector('[data-de-reset]'); if(rb) rb.onclick = ()=>{ delete dialogueEdits[cur]; saveDialogueEdits(); paint(); };
+    const pb = ov.querySelector('[data-de-play]'); if(pb) pb.onclick = ()=>{ try{ dialoguesPending.delete(cur); }catch(e){} playDialogue(cur); };
+  };
+  paint();
+}
 function playDialogue(id, opts){
   opts = opts || {};
-  const script = DIALOGUES[id]; if(!script) return Promise.resolve(null);
+  const script = dialogueScript(id); if(!script) return Promise.resolve(null);
   if(opts.once && loadDialogueFlags()['seen:'+id]) return Promise.resolve(null);
   if(dialoguesPending.has(id)) return Promise.resolve(null);
   dialoguesPending.add(id);
@@ -29868,7 +30052,7 @@ function startRaidFullBattle(def, partId, f, st){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * 0.35)), health: Math.max(1, Math.round((src.health||1) * 0.45)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
+    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
     defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
@@ -29876,8 +30060,14 @@ function startRaidFullBattle(def, partId, f, st){
   matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
-  const mine = myCastleDef(), myHp = Math.max(mine.health || 30, (cfg.wallHp || 45) * 2);
-  const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, mine, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
+  // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
+  // looking slightly bigger, with ALL our effects"): two allies (real raiders' decks when the cloud has them, the raid's
+  // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
+  const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
+  const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
+  const myHp = Math.max(merged.health || 30, (cfg.wallHp || 45) * 2);
+  const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
@@ -29885,9 +30075,10 @@ function startRaidFullBattle(def, partId, f, st){
   const pool = Object.keys(bossDeck).flatMap(id=> Array(Math.max(1, bossDeck[id]|0)).fill(id));
   const take = ()=> pool.length ? pool.splice(Math.floor(Math.random()*pool.length), 1)[0] : null;
   if(!entIds.length){ [0, -1, 1].forEach(sl=>{ const id = take(); if(id) engine.debugSpawnCard(players, sideOf, 2, id, sl, stats, []); }); }
+  // 2026-10-12 (user: "Why does the raid immediately have cards played? too much, maybe less"): its guards, and one card
+  // waiting in the middle row; the rest it plays turn by turn.
   const front = engine.allBoardCards(players[2]).map(c=> c.slot);
-  front.forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 1, sl, id); });
-  front.slice(0, 2).forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 2, sl, id); });
+  front.slice(0, 1).forEach(sl=>{ const id = take(); if(id) engine.fillReserve(players[2], 1, sl, id); });
   if(cfg.shieldWhileEntities && entIds.length) players[2].onHqHit = ()=> engine.allBoardCards(players[2]).some(c=> c.hp > 0 && entIds.includes(c.defId)) ? 0 : undefined;
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
@@ -29895,11 +30086,44 @@ function startRaidFullBattle(def, partId, f, st){
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
-    raidAttacks: cfg.attacks || [], raidPending: {}};
+    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name))};
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
-  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
+  const m0 = matchState;
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+}
+// Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
+// boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
+const RAID_BOSS_ATK = 0.6, RAID_BOSS_HP = 0.7;
+function raidAllyOf(a, i){
+  const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id));
+  for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; }
+  const castles = Object.values(CHARACTER_DEFS).filter(ch=> ch.id !== 'castle' && ch.health), h = [...String(a.name||'')].reduce((t, ch)=> t + ch.charCodeAt(0), 0);
+  const castle = castles.length ? castles[(h + i*5) % castles.length] : CHARACTER_DEFS.castle;
+  return {name: a.name, level: a.level || 0, real: !!a.real, deck: ids, played: 0, row: i + 1, castle: Object.assign({}, castle)};
+}
+function mergeRaidCastles(list){
+  const out = {id:'raid-castles', name:'Three castles', icon:'🏰', health:0, effects:{}};
+  list.forEach(c=>{ if(!c) return; out.health += (c.health || c.hp || 30);
+    Object.entries(c.effects||{}).forEach(([k, v])=>{ if(typeof v === 'number' && typeof out.effects[k] === 'number') out.effects[k] += v; else if(out.effects[k] === undefined) out.effects[k] = v; }); });
+  return out;
+}
+// The allies play first each turn: ally 1 into your middle row, ally 2 into your back row (behind your front), or straight
+// onto the front when there's nothing to stand behind. One of them plays each turn, in turn.
+function raidAlliesTurn(m, events, first){
+  if(!m || !m.raidFull || m.over || !(m.raidAllies||[]).length) return;
+  const pl = m.players[1], E = m.engine, defs = getCardDefs();
+  const a = m.raidAllies[(m.round - 1) % m.raidAllies.length]; if(!a || a.played >= a.deck.length) return;
+  const id = a.deck[a.played]; if(!defs[id]) { a.played++; return; }
+  let placed = null, where = '';
+  const slots = E.legalReserveSlots(pl, a.row); if(slots.length){ placed = E.fillReserve(pl, a.row, slots[Math.floor(slots.length/2)], id); where = a.row === 1 ? 'middle row' : 'back row'; }
+  if(!placed && a.row === 2){ const s1 = E.legalReserveSlots(pl, 1); if(s1.length){ placed = E.fillReserve(pl, 1, s1[0], id); where = 'middle row'; } }
+  if(!placed){ const ev = []; E.debugSpawnCard(m.players, m.sideOf, 1, id, a.row === 1 ? 'left' : 'right', m.stats, ev); placed = E.allBoardCards(pl).slice(-1)[0]; where = 'front row'; (events || []).push(...ev); }
+  a.played++;
+  if(placed){ placed.allyOf = a.name; m.raidAllyNew = placed.uid; }
+  const ev = {type:'raidAlly', name:a.name, defId:id, where};
+  if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
 }
 // Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A column attack is marked a round
 // ahead (that column glows red in your rows), then hits every card of yours in that column, front and reserves alike, or
@@ -32251,6 +32475,8 @@ function renderAdmin(){
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
       <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
+    <div class="panel admin-subpanel"><h3>💬 NPC speeches</h3><p class="panel-sub">Every conversation: change what a character says, or who says it.</p>
+      <button type="button" class="btn small" id="adminDialogueBtn">💬 Edit NPC speeches</button></div>
     <div class="panel admin-subpanel"><h3>🧪 Card workbench</h3><p class="panel-sub">Try any card with any art, rarity colour, foil, foil strength and art style. Nothing is saved.</p>
       <button type="button" class="btn small" id="adminCardBenchBtn">🧪 Open the workbench</button></div>
     <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
@@ -32343,6 +32569,7 @@ function renderAdmin(){
                     // fresh the next time IT renders.
   });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
+  const deOpen = document.getElementById('adminDialogueBtn'); if(deOpen) deOpen.onclick = ()=> openDialogueEditor();
   const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
@@ -33291,7 +33518,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     isCastle: true,
     liveHp: hp,
     sideLabel: sideLabel,
-    extraClass: 'match-castle-tile',
+    extraClass: 'match-castle-tile' + (def.id === 'raid-castles' ? ' raid-castles' : ''),
     // No native `title` here (2026-09-30) -- castleHoverHTML now gives this tile the same rich
     // popover every other card gets; stacking a plain browser title tooltip on top of it is
     // exactly the double-tooltip bug already fixed once this session for the leader widget.
@@ -33527,17 +33754,17 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && m.winner===1) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && m.winner===1) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
-        <div class="pass-ico">${m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
-        <h2 class="wl-title">${m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
+        ${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
+        <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
+        <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
-        ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap} — the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep. Your damage still counts.`})[m.endReason]||''}</p>` : ''}
+        ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
@@ -35977,6 +36204,7 @@ function boardCardHTML(c, defs, opts){
     c.confused>0 ? 'is-confused' : '',
     c.shocked>0 ? 'is-shocked' : '',
     c.corrode>0 ? 'is-corroded' : '',
+    c.allyOf ? 'is-ally-card' : '',
     c.staggered>0 ? 'is-staggered' : '',
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
@@ -38123,6 +38351,7 @@ async function resolveRound(opts){
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
     if(m.raidFull) try{ raidSpecials(m, drawEvents); }catch(e){}
+  if(m.raidFull) try{ raidAlliesTurn(m, drawEvents); }catch(e){}
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
@@ -38827,7 +39056,7 @@ function showVsScreen(left, right){
   return new Promise(resolve=>{
     const el = document.createElement('div');
     el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
-    const side = (p, cls)=> `<div class="vs-side ${cls}">${avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div></div>`;
+    const side = (p, cls)=> `<div class="vs-side ${cls}">${avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-allies"><small>With your allies</small>${p.allies.map(a=> `<span class="vs-ally">🤝 <b>${escapeHtml(a.name)}</b> · ⚔ ${a.level} · 🏰 ${escapeHtml(a.castle.name)}</span>`).join('')}</div>` : ''}</div>`;
     el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
     // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
     // coloured by the same gap scale as the skirmish card.
@@ -39409,8 +39638,8 @@ function matchStatsHTML(m){
       ${aReward && aReward.metal>0 ? `<span class="hud-pill forge-cur-metal">🔩 ${rewardCountSpan(aReward.metal)} Metal</span>` : ''}
     </div>` : '';
   const orReward = m.raidRewardEarned;
-  const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards">
-      <span class="conquest-rank-badge">${m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ '}${Number(m.raidDamageDealt).toLocaleString()} damage to ${escapeHtml(m.raidBoss.name)}</span>
+  const raidOfflineHTML = (m.mode==='raidOffline' && m.raidDamageDealt!=null) ? `<div class="winloss-conquest-rewards raid-results">
+      <span class="conquest-rank-badge raid-dmg-pill">${m.raidOverwhelmed ? '💥 Overwhelm! ' : '⚔️ '}${Number(m.raidDamageDealt).toLocaleString()} damage dealt to ${escapeHtml(m.raidBoss.name)}</span>
       <span class="hud-pill" title="Shared raid HP left this week">❤️ ${m.raidRemainingAfter} HP left${m.raidRemainingAfter<=0?' — defeated!':''}</span>
       ${orReward && orReward.gold>0 ? `<span class="hud-pill forge-cur-gold">${mapleLeafIconHTML()} ${rewardCountSpan(orReward.gold)} Maple Leaves</span>` : ''}
       ${orReward && orReward.dust>0 ? `<span class="hud-pill forge-cur-dust">✨ ${rewardCountSpan(orReward.dust)} Dust</span>` : ''}
@@ -39705,6 +39934,7 @@ function logText(ev){
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
+    case 'raidAlly': return {cls:'gold', text:`🤝 ${ev.name} plays ${nm(ev.defId)} into your ${ev.where}.`};
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your castle.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
@@ -42106,13 +42336,15 @@ function renderForge(){
     <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
-    <div class="forge-layout" ${forgeMode==='smith' ? 'hidden' : ''}>
+    ${forgeMode==='castles' ? forgeCastlesHTML() : ''}
+    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
+          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>`; })() : ''}
           <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
         </div>
         <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
@@ -42136,6 +42368,10 @@ function renderForge(){
   const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ forgeFilter = 'ready'; renderForge(); };
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const faBtn = document.getElementById('forgeFuseAllBtn');
+  if(faBtn) faBtn.addEventListener('click', ()=>{ const r = fuseAllDuplicates(); if(!r.count){ denyShake(faBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(`🧩 Fused ${r.count} duplicate${r.count===1?'':'s'} into ${r.cards} card${r.cards===1?'':'s'}: ✨ ${r.dust} of credit.`, 'ok'); });
+  root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(`🏰 ${(CHARACTER_DEFS[id]||{}).name||'Castle'} tempered to Lv ${castleLevelOf(id)}.`, 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
+  root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(`🧩 Fused ${v.n} spare castle${v.n===1?'':'s'}: ✨ ${v.dust} of credit.`, 'ok'); }));
   const fuBtn = document.getElementById('forgeUpgradeBtn');
   if(fuBtn) fuBtn.addEventListener('click', ()=>{ const t = upgradeForge(); if(!t){ denyShake(fuBtn); return; } try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderForge(); showToast(`🏭 The Forge is now the ${t.name}: Lv ${t.cap}, rarer cards too.`, 'ok'); });
   const lbBtn = document.getElementById('forgeLimitBreakBtn');
@@ -42286,6 +42522,7 @@ const FORGE_MODES = {
   upgrade: {icon:'🔨', label:'Upgrade', blurb:'Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a mark of mastery; stats stay the same.'},
   refine:  {icon:'✨', label:'Refine', blurb:'Refine your best copy of a card into a finer foil: Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf. Shiny can’t be made here; it only comes out of packs and rewards.'},
   smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
+  castles: {icon:'🏰', label:'Castles', blurb:'Temper your castles here: each level adds 1 starting Health. A castle you get again is a duplicate (you only ever field one), and fusing it banks credit toward its next levels.'},
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
 };
 function forgeReadyFor(id){
@@ -42659,21 +42896,24 @@ function renderInventory(){
   const root = document.getElementById('view-inventory'); if(!root) return;
   const defs = getCardDefs(), n = nestState(), inv = loadFactionPacks(), st = materiaStore(), found = scalesFound();
   const cell = (icon, count, label, sub)=> `<div class="inv-cell"><span class="inv-ico">${icon}</span><b class="inv-n">${count}</b><span class="inv-label">${escapeHtml(label)}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
-  const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale'].filter(id=> defs[id]).map(id=> cell(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
+  // Materia in square slots (2026-10-12, user: "Materia should use square slots. Then its the icon, with a x4 on the btm right.
+  // Hovering over it gives you the name of the item").
+  const slot = (icon, count, name, sub)=> `<div class="inv-slot ${count ? '' : 'is-empty'}" tabindex="0" title="${escapeAttr(name + (sub ? ' · ' + sub : ''))}" aria-label="${escapeAttr(name + ': ' + count)}"><span class="inv-slot-ico">${icon}</span>${count ? `<b class="inv-slot-n">×${count}</b>` : ''}</div>`;
+  const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale'].filter(id=> defs[id]).map(id=> slot(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
-  const packs = Object.values(FACTION_PACKS).map(fp=> cell(fp.icon, inv[fp.id]||0, fp.name, 'unopened')).join('');
-  const crystals = MATERIA_KINDS.map(k=> cell(k.icon, st[k.id]||0, k.name + ' crystal', 'for Enchanting')).join('');
+  const packs = Object.values(FACTION_PACKS).filter(fp=> (inv[fp.id]||0) > 0).map(fp=> cell(fp.icon, inv[fp.id], fp.name, 'unopened')).join(''); // 2026-10-12: none shown at 0
+  const crystals = MATERIA_KINDS.map(k=> slot(k.icon, st[k.id]||0, k.name + ' crystal', 'for Enchanting')).join('');
   const wallet = Object.keys(CURRENCY_META).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
   const trail = found.length ? `<section class="panel inv-sec inv-scales"><h3>🐉 The Scale Trail <small>${found.length}/${DRAGON_SCALE_NODES.length}</small></h3>
       <ol class="scale-trail">${DRAGON_SCALE_NODES.map((sn, i)=>{ const got = found.includes(sn); const map = CONQUEST_MAPS.find(m=> m.id===sn.map);
         return `<li class="${got ? 'got' : ''}"><span class="st-ico">${got ? '🐉' : '❔'}</span><span>${got ? `<b>${escapeHtml(skirmishCode(sn.map, sn.key))} · ${escapeHtml(map ? map.name : '')}</b> ${escapeHtml(sn.line)}` : '<i>Somewhere on the road, something glints.</i>'}</span></li>`; }).join('')}</ol></section>` : '';
   root.innerHTML = `<div class="inv-page">
     <div class="panel inv-head"><h2>🎒 Inventory</h2><p class="panel-sub">Everything you carry that isn't in a deck.</p></div>
-    <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-grid">${mat}</div></section>
+    <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     ${trail}
     <section class="panel inv-sec"><h3>🪺 In the Nest <button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button></h3><div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
-    <section class="panel inv-sec"><h3>🎁 Unopened packs <button type="button" class="btn small" data-inv-go="shop">Open in the Shop</button></h3><div class="inv-grid">${packs}</div></section>
-    <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-grid">${crystals}</div></section>
+    <section class="panel inv-sec"><h3>🎁 Unopened packs <button type="button" class="btn small" data-inv-go="shop">Open in the Shop</button></h3><div class="inv-grid">${packs || '<p class="panel-sub">No unopened packs.</p>'}</div></section>
+    <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
     <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
   </div>`;
   root.querySelectorAll('[data-inv-go]').forEach(b=> b.onclick = ()=>{ const g = b.dataset.invGo;
@@ -43523,6 +43763,30 @@ function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[typ
   n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + BABY_GROW_HOURS*3600e3, from: from||''}); saveNestState(n);
   try{ showToast(`${NEST_TYPES[t].icon} You rescued a little ${NEST_TYPES[t].name.toLowerCase()} baby. It's safe in your Nest now.`, 'ok'); }catch(e){} }
 function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EGG_KINDS[e.kind]||EGG_KINDS.woodland).type); }
+// Hatching (2026-10-12, user: "Hatching should have a small animation, with clues to their rarity, then showing the card in
+// closeup! its an important facet!"): the egg rocks three times, harder each time; the glow leaking through its cracks tells
+// the rarity (warm white for Common, green sparks for Uncommon, blue rays for Rare); it bursts, and the card rises up close.
+function hatchRevealVfx(defId, eggIcon){
+  const d = getCardDefs()[defId]; if(!d) return;
+  const band = RARITY_TIER_BANDS.indexOf(d.rarity || 'common'), tier = band >= RARITY_TIER_BANDS.indexOf('rare') ? 'rare' : band >= RARITY_TIER_BANDS.indexOf('uncommon') ? 'uncommon' : 'common';
+  const rdef = RARITY_DEFS.find(r=> r.key === (d.rarity || 'common')) || {};
+  const ov = document.createElement('div'); ov.className = 'hatch-ov hatch-' + tier; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Hatching');
+  ov.innerHTML = `<div class="hatch-stage"><div class="hatch-rays" aria-hidden="true"></div><div class="hatch-egg" aria-hidden="true"><span class="he-ico">${eggIcon}</span><i class="he-crack c1"></i><i class="he-crack c2"></i><i class="he-crack c3"></i></div>
+    <div class="hatch-card" hidden>${cardTileHTML(d, {inPlay:true, extraClass: tier === 'rare' ? holoClass(d) : ''})}</div>
+    <div class="hatch-text" hidden><b>${escapeHtml(d.name)}</b><span class="hatch-rar" style="color:${escapeAttr(rdef.color || '#fff')}">${escapeHtml(rdef.label || d.rarity || '')}</span><small>It joined your collection.</small><button type="button" class="btn primary" data-hatch-ok>Lovely</button></div></div>`;
+  document.body.appendChild(ov);
+  try{ decorateHolo(ov); }catch(e){}
+  const egg = ov.querySelector('.hatch-egg'), card = ov.querySelector('.hatch-card'), text = ov.querySelector('.hatch-text');
+  const close = ()=>{ ov.classList.add('out'); setTimeout(()=> ov.remove(), 300); };
+  ov.querySelector('[data-hatch-ok]').onclick = close;
+  ov.addEventListener('keydown', e=>{ if(e.key === 'Escape') close(); });
+  const reveal = ()=>{ egg.classList.add('burst'); ov.classList.add('is-open'); card.hidden = false; text.hidden = false; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
+    if(hasGsap() && !reducedMotion()) gsap.fromTo(card, {scale:.2, y:60, opacity:0, rotation:-8}, {scale:1, y:0, opacity:1, rotation:0, duration:.7, ease:'back.out(1.7)'});
+    setTimeout(()=>{ try{ ov.querySelector('[data-hatch-ok]').focus(); }catch(e){} }, 400); };
+  if(reducedMotion()){ reveal(); return; }
+  [0, 700, 1300].forEach((t, i)=> setTimeout(()=>{ egg.classList.remove('rock'); void egg.offsetWidth; egg.classList.add('rock', 'crack' + (i + 1)); egg.style.setProperty('--rock', (6 + i*5) + 'deg'); try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){} }, t));
+  setTimeout(reveal, 2100);
+}
 function hatchEgg(eggId){
   const n = nestState(); const egg = n.eggs.find(e=> e.id===eggId); if(!egg || Date.now() < egg.hatchAt) return null;
   let pool = nestPoolFor(nestItemType(egg)); if(!pool.length) pool = nestPoolFor('woodland');
@@ -43593,7 +43857,9 @@ function renderNest(){
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
-  root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; } const id = hatchEgg(b.dataset.egg); if(id){ const d = getCardDefs()[id]; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(`🐣 It hatched: ${d.icon||''} ${d.name}!`, 'ok'); renderNest(); } });
+  root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; }
+    const egg = nestState().eggs.find(e=> e.id === b.dataset.egg), icon = egg ? (egg.kind === 'baby' ? (NEST_TYPES[nestItemType(egg)]||{}).icon : (EGG_KINDS[egg.kind]||{}).icon) : '🥚';
+    const id = hatchEgg(b.dataset.egg); if(id){ renderNest(); hatchRevealVfx(id, icon || '🥚'); } });
   // 2026-09-28, per explicit request ("don't have the checkbox w the 1x... show a card that looks
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the

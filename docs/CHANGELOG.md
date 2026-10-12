@@ -2,6 +2,36 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (10:40)
+- **Raids:**
+  - **Allies:**
+    - Two allies fight with you: other raiders' decks when the cloud has them, the raid's ally decks otherwise.
+    - The VS screen shows them, with their battle rating and castle.
+    - In the fight one of them plays first each turn: into your middle row, your back row, or the front when there's nothing to stand behind. Their cards wear a 🤝.
+  - **Castle:** your castle is all three castles at once (their Health added up and every passive merged), drawn a little bigger.
+  - **Boss strength:** its cards are back up to 60% Attack and 70% Health (from 35% / 45%), since you have help now.
+  - **Opening board:** the boss starts with its guards and just one card waiting, not a full board.
+  - **Rows:** the middle and back rows are a bit smaller than the front (70%), no longer half size.
+  - **Results:**
+    - Every raid ends on the gold results card: "Raid complete!", or "👑 Absolute Victory!" in gold if you beat it.
+    - The headline pill reads "1,125 damage dealt to The Goliath — Left Tentacle".
+    - "Your damage still counts" is gone.
+- **Castles in the Forge:**
+  - Tempering moved out of the castle picker into Forge → 🏰 Castles.
+  - A castle you get again counts as a duplicate, and fusing it banks credit toward its next levels.
+- **Fuse all extras:** Forge → Upgrade has 🧩 Fuse all extras. It feeds every copy beyond what a deck can hold into its card's credit, and keeps foil, shiny and skinned copies.
+- **Map music:** each kind of map has its own theme: meadows, water, volcano, caves, savanna and desert, snow, swamp, heights, deep forest. Caves are slow and eerie, with water dripping in the dark.
+- **Inventory:**
+  - Materia and enchant crystals sit in square slots: the icon, ×N in the corner, and the name when you rest on it.
+  - Packs you have none of no longer show.
+- **Hatching:**
+  - The egg rocks three times, cracking more each time.
+  - The light leaking out hints at the rarity: warm white for Common, green sparks for Uncommon, spinning blue rays for Rare.
+  - Then it bursts and the card rises up close.
+- **NPC speeches:** Admin → 💬 NPC speeches lists every conversation. You can change any line's words, who says it, or the reply buttons, and play it to hear it. A cloud admin's save publishes for everyone.
+- **Deck builder:** the 0/2 copy counters sit 2px further right.
+- **Fixed:** "Campaign Cleared" (and the maps-cleared count) were awarded for maps that have no fights yet.
+
 ## 2026-10-12 (10:00)
 - **Boomerang (your rules):**
   - On the way back it goes for the same unit it hit (or the castle again). If that unit is gone, it whiffs; a newcomer in the lane isn't hit.
