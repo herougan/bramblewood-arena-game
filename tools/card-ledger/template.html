@@ -108,6 +108,16 @@ td.chg input, td.chg select{background:var(--amber-bg); border-color:var(--amber
 .mixl span{display:inline-flex; align-items:center; gap:3px;} .mixl span::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--rc);}
 .bal{display:flex; gap:6px; font:600 11.5px var(--f-data);}
 .bal .s{color:var(--strong);} .bal .o{color:var(--ok);} .bal .w{color:var(--weak);} .bal .n{color:var(--muted); font-weight:400;}
+.cre .share{white-space:nowrap; min-width:170px;}
+.cbar{display:inline-block; width:110px; height:8px; border-radius:4px; background:var(--line); vertical-align:middle; overflow:hidden; margin-right:8px;}
+.cbar i{display:block; height:100%; background:var(--moss);}
+.cbar.hot i{background:var(--amber);}
+.cpct{font:600 12px var(--f-data); font-variant-numeric:tabular-nums;}
+.cpct.hot{color:var(--amber);}
+.cre .kids{display:flex; flex-wrap:wrap; gap:4px; min-width:260px;}
+.cre .kids span{font-size:12px; padding:1px 7px; border-radius:999px; background:var(--line);}
+.cflag{font:600 11.5px var(--f-data); padding:2px 8px; border-radius:999px; background:var(--amber); color:var(--panel);}
+.cflag.fac{background:var(--moss); color:var(--moss-ink);}
 .sum tfoot td{font-weight:600; border-top:2px solid var(--line); border-bottom:none; padding:6px 8px;}
 .gpill{display:inline-flex; gap:6px; align-items:center; font:600 12.5px var(--f-body); background:var(--moss); color:var(--moss-ink); border-radius:999px; padding:4px 6px 4px 12px;}
 .gpill button{all:unset; cursor:pointer; width:18px; height:18px; text-align:center; border-radius:50%; background:color-mix(in oklab, var(--moss-ink) 25%, transparent);}
@@ -125,8 +135,10 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
   <div class="views" role="tablist" aria-label="View">
     <button type="button" role="tab" id="vCards" data-view="cards" aria-selected="true">Every card</button>
     <button type="button" role="tab" id="vSum" data-view="sum" aria-selected="false">Summary by source</button>
+    <button type="button" role="tab" id="vCre" data-view="cre" aria-selected="false">Creature count</button>
   </div>
   <section class="sum" id="sumView" hidden></section>
+  <section class="sum cre" id="creView" hidden></section>
   <div id="cardsView" class="cardsview">
   <div class="chips" id="chips" role="group" aria-label="Quick filters"></div>
 
@@ -212,7 +224,7 @@ function filtered(){
     if(state.group && r.gk !== state.group) return false;
     if(state.quick==='edited' && !isEdited(r)) return false;
     if(['strong','weak','ok','none'].includes(state.quick) && verdict(r) !== state.quick) return false;
-    if(q && !(`${r.n} ${r.id} ${r.t} ${r.sk.join(' ')} ${r.src} ${val(r,'note')||''}`.toLowerCase().includes(q))) return false;
+    if(q && !(`${r.n} ${r.id} ${r.t} ${r.sp||''} ${r.cr||''} ${r.sk.join(' ')} ${r.src} ${val(r,'note')||''}`.toLowerCase().includes(q))) return false;
     return true;
   }).sort((x,y)=>{ const a = sortVal(x, state.sort), b = sortVal(y, state.sort); return (a<b?-1:a>b?1: x.n.localeCompare(y.n)) * state.dir; });
 }
@@ -393,16 +405,40 @@ function renderSummary(){
     sumTable('Maps', 'The cards each map gives as rewards, in the order you play the maps, with side maps under their parent. Enemy cards counts the different cards its enemy decks and leaders field.', maps, true) +
     sumTable('Everything else', 'Blacksmith and secret cards, design-only cards, cards only enemies use, tokens, and cards nothing uses yet.', other, false);
 }
+// Creature count (2026-10-12, user: "do a count: I don't want too much of any type of creature"). Units only (no spells,
+// equipment, structures or tokens). "Player pool" is every card a player can own: base, map, pack and Forge/secret cards,
+// not enemy-only, unused or design cards. A creature at 6% of the pool or more, or a species at 12% or more, is flagged.
+const FACTION_CREATURES = new Set(['Otter', 'Hummingbird']);
+const isUnitRow = r=> !r.tok && !r.eq && !['spell','structure','materia','equipment'].includes(r.ty);
+const inPool = r=> ['Base','Map','Pack','Faction pack'].includes(r.g) || (r.g==='Other' && !['Enemy only','Unused','Design'].includes(r.src));
+function renderCreatures(){
+  const units = rows.filter(isUnitRow), pool = units.filter(inPool), P = pool.length || 1;
+  const tally = key=>{ const m = {}; units.forEach(r=>{ const k = r[key] || 'Unknown'; const o = m[k] = m[k] || {k, all:0, pool:0, sp:r.sp, kids:{}}; o.all++; if(inPool(r)){ o.pool++; if(key==='sp'){ o.kids[r.cr] = (o.kids[r.cr]||0) + 1; } } }); return Object.values(m).sort((a, b)=> b.pool - a.pool || b.all - a.all); };
+  const bar = (n, cap)=>{ const pct = n / P * 100; const hot = pct >= cap; return `<span class="cbar${hot?' hot':''}"><i style="width:${Math.min(100, pct / (cap * 1.6) * 100)}%"></i></span><span class="cpct${hot?' hot':''}">${pct.toFixed(1)}%</span>`; };
+  const th = (l, n)=> `<th${n?' class="num"':''}><span>${l}</span></th>`;
+  const species = tally('sp'), creatures = tally('cr');
+  const spRows = species.map(o=> `<tr><td><button type="button" class="gname" data-cq="${esc(o.k)}"><span class="gl">${esc(o.k)}</span></button></td><td class="num">${o.all}</td><td class="num">${o.pool}</td><td class="share">${bar(o.pool, 12)}</td><td class="kids">${Object.entries(o.kids).sort((a,b)=> b[1]-a[1]).map(([k,n])=> `<span>${esc(k)} <b>${n}</b></span>`).join('')}</td></tr>`).join('');
+  const crRows = creatures.map(o=>{ const pct = o.pool / P * 100, fac = FACTION_CREATURES.has(o.k);
+    const flag = fac ? '<span class="cflag fac">Faction</span>' : pct >= 6 ? '<span class="cflag">Crowded</span>' : '';
+    return `<tr><td><button type="button" class="gname" data-cq="${esc(o.k)}"><span class="gl">${esc(o.k)}</span></button></td><td>${esc(o.sp||'')}</td><td class="num">${o.all}</td><td class="num">${o.pool}</td><td class="share">${bar(o.pool, fac ? 100 : 6)}</td><td>${flag}</td></tr>`; }).join('');
+  const crowded = creatures.filter(o=> !FACTION_CREATURES.has(o.k) && o.pool / P * 100 >= 6).map(o=> o.k);
+  const crowdedSp = species.filter(o=> o.pool / P * 100 >= 12).map(o=> o.k);
+  document.getElementById('creView').innerHTML = `
+    <div><h2>Creature count</h2><p>${units.length} units in the game, ${pool.length} of them in the player pool (cards a player can own: base, map, pack and Forge cards; not enemy-only, unused or design cards). A creature is a card's most specific animal type (Otter, Bee, Owl), then its broad class (Bird, Insect), then its species. ${crowdedSp.length ? `Crowded species: <b>${esc(crowdedSp.join(', '))}</b>. ` : ''}${crowded.length ? `Crowded creatures: <b>${esc(crowded.join(', '))}</b>. ` : ''}${crowded.length || crowdedSp.length ? '' : 'Nothing is over the line right now. '} Click a name to see its cards.</p></div>
+    <div><h2>By species</h2><p>Flagged at 12% of the player pool or more.</p><div class="tablebox"><table><thead><tr>${th('Species')}${th('In the game',1)}${th('Player pool',1)}${th('Share of pool')}${th('Creatures in the pool')}</tr></thead><tbody>${spRows}</tbody></table></div></div>
+    <div><h2>By creature</h2><p>Flagged at 6% of the player pool or more. Otters and Hummingbirds are the two factions, so they're expected to be the biggest groups.</p><div class="tablebox"><table><thead><tr>${th('Creature')}${th('Species')}${th('In the game',1)}${th('Player pool',1)}${th('Share of pool')}${th('')}</tr></thead><tbody>${crRows}</tbody></table></div></div>`;
+}
 function setView(v){
   state.view = v; saveView();
-  document.getElementById('vCards').setAttribute('aria-selected', v==='cards'); document.getElementById('vSum').setAttribute('aria-selected', v==='sum');
-  document.getElementById('cardsView').hidden = v!=='cards'; document.getElementById('sumView').hidden = v!=='sum';
-  if(v==='sum') renderSummary(); else render();
+  document.getElementById('vCards').setAttribute('aria-selected', v==='cards'); document.getElementById('vSum').setAttribute('aria-selected', v==='sum'); document.getElementById('vCre').setAttribute('aria-selected', v==='cre');
+  document.getElementById('cardsView').hidden = v!=='cards'; document.getElementById('sumView').hidden = v!=='sum'; document.getElementById('creView').hidden = v!=='cre';
+  if(v==='sum') renderSummary(); else if(v==='cre') renderCreatures(); else render();
 }
+document.getElementById('creView').addEventListener('click', e=>{ const b = e.target.closest('[data-cq]'); if(!b) return; state.group = ''; state.source = ''; state.quick = ''; state.q = b.dataset.cq; setView('cards'); window.scrollTo(0, 0); });
 document.querySelector('.views').addEventListener('click', e=>{ const b = e.target.closest('[data-view]'); if(b) setView(b.dataset.view); });
 document.getElementById('sumView').addEventListener('click', e=>{ const b = e.target.closest('[data-group]'); if(!b) return; state.group = b.dataset.group; state.source = ''; state.quick = ''; state.q = ''; setView('cards'); window.scrollTo(0, 0); });
 document.getElementById('gpill').addEventListener('click', e=>{ if(e.target.id==='gClear'){ state.group = ''; saveView(); render(); } });
-setView(state.view==='sum' ? 'sum' : 'cards');
+setView(state.view==='sum' || state.view==='cre' ? state.view : 'cards');
 (async ()=>{
   try{
     const user = window.claude && window.claude.use ? await window.claude.use('user') : null; userApi = user;

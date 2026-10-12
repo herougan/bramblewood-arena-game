@@ -29,6 +29,7 @@ const inDecks=new Set(); MAPS.forEach(m=>m.nodes.forEach(n=>Object.keys(n.deck||
 // cards, 1.5 for Event cards). 1 MU = 675 Dust + 450 Maple Leaves.
 const MULT={starter:1,common:1,uncommon:2,rare:4,veryrare:6,superrare:8,epic:11,heroic:14,unique:17,legendary:21,mythic:25,ancient:30,quest:2,questunique:17,special:4,devlegendary:21,devancient:30,eventlegendary:21,eventrare:4};
 const forgeMU=c=>{ let k=MULT[c.rarity||'common']||1; const s=c.source||{}; if(/^event/.test(c.rarity||'')||s.kind==='event') k*=1.5; else if(c.rarity==='starter'||c.rarity==='quest'||c.rarity==='questunique'||(!s.kind && (c.basic||!c.locked))||s.kind==='map'||s.kind==='quest') k*=0.5; return Math.round(k*10)/10; };
+const {creatureOf, speciesOf} = require('./creatures.js');
 const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).startsWith('test-')).map(c=>{
   const s=c.source||{}; let src='Base', grp='Base', mno=null, gk='base';
   if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${fightCode(s.id, s.node)}`; grp='Map'; gk='map:'+s.id; }
@@ -38,7 +39,7 @@ const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).st
   else if(c.token){ src='Token'; grp='Token'; gk='token'; }
   else if(c.locked && c.rarity!=='starter' && !c.basic){ src= inDecks.has(c.id) ? 'Enemy only' : 'Unused'; grp='Other'; gk='other:'+src; }
   const b= c.cardType==='spell' ? null : bal[c.id]; // a deck of 8 spells has too few units for the win-rate test to mean anything
-  return {id:c.id,n:c.name,i:c.icon||'',r:c.rarity||'common',c:c.cost||0,w:c.wait||0,a:c.attack||0,h:c.health||0,
+  return {id:c.id,n:c.name,i:c.icon||'',r:c.rarity||'common',sp:speciesOf(c),cr:creatureOf(c),ty:c.cardType||'',c:c.cost||0,w:c.wait||0,a:c.attack||0,h:c.health||0,
     t:(c.archetypes||[]).join(', '),sk:skills(c),src,g:grp,gk,m:mno,f:forgeMU(c),tok:!!c.token,eq:c.cardType==='equipment',
     wr:b? b.winRate : null, band:b? b.band : null, stale: b ? (b.cost!==c.cost||b.wait!==c.wait||b.attack!==c.attack||b.health!==c.health) : null};
 });
