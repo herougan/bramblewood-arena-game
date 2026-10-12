@@ -14773,14 +14773,22 @@ function startRaidFullBattle(def, partId, f, st){
   bumpQuestCounter('raidsJoined', 1);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
   // the boss's cards, run-only copies when the stage strips abilities or the rule makes them illusory (as in the trench)
+  // A raid deck was built to face three decks at once (the trench). Alone, your one deck met it at full strength and lost
+  // almost every time (CPU sims: ~0 damage dealt). Here its cards fight at 35% Attack and 45% Health, and your castle is
+  // twice the trench wall (2026-10-12; with allies in your back rows — D44 — they could go back to full strength).
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
-  Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return; if(!cfg.strip && !illusory){ bossDeck[id] = cfg.deck[id]; return; }
-    const nid = id + (cfg.strip ? '~exposed' : '~illusory'); defs[nid] = Object.assign({}, defs[id], {id:nid, effects: cfg.strip ? {} : Object.assign({}, defs[id].effects || {}, {illusory})}); bossDeck[nid] = cfg.deck[id]; });
+  Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
+    const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
+    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * 0.35)), health: Math.max(1, Math.round((src.health||1) * 0.45)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
+    bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
     defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
+  // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
+  matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
-  const players = {1: engine.newPlayer(1, myDeckCounts, myCastleDef()), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  const mine = myCastleDef(), myHp = Math.max(mine.health || 30, (cfg.wallHp || 45) * 2);
+  const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, mine, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
@@ -14797,11 +14805,42 @@ function startRaidFullBattle(def, partId, f, st){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
+    raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidAttacks: cfg.attacks || [], raidPending: {}};
+  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
   showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
+// Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A column attack is marked a round
+// ahead (that column glows red in your rows), then hits every card of yours in that column, front and reserves alike, or
+// your castle if the column is empty. A front-row attack hits every unit in your front row.
+function raidPickColumn(m){
+  const pl = m.players[1], occ = new Set(); m.engine.allBoardCards(pl).forEach(c=>{ if(c.hp > 0) occ.add(c.slot); });
+  (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=> occ.add(+sl)));
+  const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
+}
+function raidSpecials(m, events){
+  const atks = m.raidAttacks || []; if(!atks.length) return;
+  const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
+  atks.forEach((a, i)=>{
+    const every = Math.max(1, a.every||1); if(round % every !== 0) return;
+    if(a.pattern === 'column'){
+      const col = m.raidPending[i] != null ? m.raidPending[i] : raidPickColumn(m); delete m.raidPending[i];
+      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col).concat((pl.reserve||[]).map(row=> row[col]).filter(Boolean));
+      hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - (a.dmg||0));
+      (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
+      events.push({type:'raidSmack', name:a.name || 'Smack', col, dmg:a.dmg||0, hits:hit.length});
+    } else if(a.pattern === 'frontRow'){
+      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true});
+    }
+  });
+  m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
+  atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidPickColumn(m); });
+}
+function raidTelegraphCols(m){ return m && m.raidPending ? Object.values(m.raidPending).filter(v=> v != null) : []; }
 function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
@@ -15294,6 +15333,13 @@ const TUTORIAL_FIXED_DECKS = {
   1: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1},
   2: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1, 'duck-paddler':1, 'cottontail':1, 'acorn-chipmunk':1, 'chipmunk-forager':1},
 };
+// The rival's tutorial decks (2026-10-12, measured with the CPU playing your side over 200 seeds: part 1 ~86%, part 2 ~75%
+// before your leader joins in): the weakest of the other tribe, fixed, so every pick meets an easy first opponent.
+const TUTORIAL_RIVAL_DECKS = {
+  otters: {'cobalt-talon-fledgling':4, 'otter-kit':5},
+  hummingbirds: {'otter-kit':6, 'crossed-eyes':1, 'pond-trout':2},
+  both: {'cobalt-talon-fledgling':4, 'otter-kit':5},
+};
 function startTutorialMatch(stage, arrangedIds, opts){
   const pick = loadFactionChoice() || 'both';
   const st = stage || loadTutorialStage();
@@ -15315,7 +15361,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const rivalCharacter = Object.assign({}, watch || CHARACTER_DEFS['castle'], {id: watch ? 'outskirts-watchtower' : 'tutorial-rival', name: watch ? watch.name : rivalName}, cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
-    2: engine.newPlayer(2, validDeck(cfg.rivalDeck) || tutorialStageOpponentDeck(st, pick), rivalCharacter),
+    2: engine.newPlayer(2, validDeck(cfg.rivalDeck) || validDeck(TUTORIAL_RIVAL_DECKS[pick]) || tutorialStageOpponentDeck(st, pick), rivalCharacter),
   };
   players[2].loopCards = []; // 2026-10-12 (user: "DONT summon bee tanks when the tutorial enemy has nothing to summon")
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
@@ -19565,6 +19611,10 @@ function renderBoard(opts){
       el.innerHTML = html;
     });
   }
+  if(m.raidFull){ const cols = raidTelegraphCols(m);
+    document.querySelectorAll('#rowMine > .board-card, #battlefieldInner .reserve-row.mine > .board-card').forEach(x=> x.classList.remove('raid-tele'));
+    cols.forEach(col=>{ const i = col + slotRange; const f = document.querySelectorAll('#rowMine > .board-card')[i]; if(f) f.classList.add('raid-tele');
+      document.querySelectorAll('#battlefieldInner .reserve-row.mine').forEach(r=>{ const c = r.querySelectorAll(':scope > .board-card')[i]; if(c) c.classList.add('raid-tele'); }); }); }
   const mult = (matchState && matchState.speedMult) || 1;
   const dur = entranceCardTweenDur(mult);
   // "Genuinely new to the player" — see knownBoardUids' own declaration comment (near
@@ -22849,6 +22899,7 @@ async function resolveRound(opts){
     const drawEvents = [];
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
+    if(m.raidFull) try{ raidSpecials(m, drawEvents); }catch(e){}
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
@@ -24404,6 +24455,7 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
+    case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your castle.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};

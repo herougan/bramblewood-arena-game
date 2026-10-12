@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (07:50)
+- **Tutorial rivals are fixed and weak:**
+  - Otters face 4 Cobalt Talon Fledglings and 5 Otter Kits.
+  - Hummingbirds face 6 Otter Kits, a Crossed-Eyes and 2 Pond Trout.
+  - Both tribes face the same deck as Otters.
+  - With the computer playing your side, part 1 is won ~86% of the time and part 2 ~75% before your leader joins (it was 11–65%, worst for "both").
+- **Raid balance:** alone against a deck built for three, a raid was unwinnable (computer sims dealt ~0 damage). The boss's cards now fight at 35% Attack and 45% Health, and your castle is twice the trench wall (90). The boss's run-only copies also show properly on the board.
+- **Raid specials in the full game:** the boss's telegraphed attacks are back. The column it will smash next glows red in your rows a round ahead, then every card of yours in that column, reserves too, takes the hit (your castle does if it's empty).
+- **Art:** Crossed-Eyes, Rabbit Kit, Fox Kit, Cricket Drummer and Beetle Grunt. Portraits drawn on a flat grey backdrop now have it cut away, so they sit on the card's own colours.
+
 ## 2026-10-12 (07:45)
 - **Art:** 12 more Base cards have portraits (the rabbits, chipmunks, Harvest Mouse, Garden Snail, Pill Bug, Sparrow Chick, Earthworm, Guppy, Fleetfoot). Every card in the tutorial decks now has art. More are generating in your Chrome.
 

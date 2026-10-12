@@ -3112,6 +3112,8 @@
   .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
   .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
   .board-row.reserve-row .reserve-target{border-style:dashed;}
+  .board-card.raid-tele{box-shadow:0 0 0 2px rgba(230,60,50,.85), 0 0 18px 4px rgba(230,60,50,.45) !important; border-radius:12px; animation:raidTele 1s ease-in-out infinite;}
+  @keyframes raidTele{50%{box-shadow:0 0 0 2px rgba(230,60,50,.5), 0 0 6px 1px rgba(230,60,50,.25);}}
   .battle-log{max-height:210px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; font-size:12.5px;}
   /* 2026-09-25: Battle Log now collapses by default (task #351) so the in-match screen doesn't
      have a permanent log panel eating vertical space and making the layout feel like it's
