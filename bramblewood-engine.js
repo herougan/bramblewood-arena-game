@@ -644,7 +644,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1, and Wash units push the enemy card facing them back 1 Wait (once per enemy card); on Ebb, Tide units take
   // 1 less damage per hit (never below 1). Round 1 (and modes with no cycle) has no tide.
-  function getTide(){ return turnNo > 0 ? (turnNo % 2 === 1 ? 'flow' : 'ebb') : null; }
+  // 2026-10-12 (09:48, user: "On tide, the card gains 1 Attack. ON ebb, the card gains 1 Armour. On high tide (rare - only in the
+  // boss fight and elite water fights) +2 Attack, +2 Armour. (Ebb -> Tide -> Ebb -> High Tide)"): rules.highTide turns on the
+  // four-round cycle Ebb, Flow, Ebb, High; otherwise Flow and Ebb alternate as before.
+  function getTide(){ if(!(turnNo > 0)) return null; if(rules.highTide){ const k = turnNo % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return turnNo % 2 === 1 ? 'flow' : 'ebb'; }
+  function tideRising(){ const t = getTide(); return t === 'flow' || t === 'high'; }
+  function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
+  function tideArmor(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ const d = card && CARD_DEFS[card.defId]; return !!(d && d.effects && d.effects.tide); }
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
@@ -684,8 +690,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         break;
       }
     });
-    if(getTide() === 'flow'){
-      if(recordEvents && events) events.push({type:'tide', tide:'flow', round});
+    if(tideRising()){
+      if(recordEvents && events) events.push({type:'tide', tide:getTide(), round});
       [1,2].forEach(pid=>{ const me = players[pid], foe = players[pid===1 ? 2 : 1]; if(!me || !foe) return;
         ['left','center','right'].forEach(lane=> (me.row[lane]||[]).forEach((c, i)=>{
           if(!c || c.gap || !(c.hp > 0)) return; const d = CARD_DEFS[c.defId]; if(!(d && d.effects && d.effects.wash)) return;
@@ -902,7 +908,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + (isTide(att) && getTide()==='flow' ? 1 : 0) + firstBloodBonus(att); if(isRaging(att)) n *= 2; return n; }
+  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att); if(isRaging(att)) n *= 2; return n; }
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
@@ -922,6 +928,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const d = CARD_DEFS[card.defId]; const n = Number(d && d.effects && d.effects.shell) || 0;
     if(!(n > 0) || !(card.hp > 0) || card.shellUntil != null) return false;
     card.shellArmor = n; card.tempHp = n; card.shellUntil = combatNo + (combatDepth > 0 ? 1 : 2); // until the end of the next round
+    // 2026-10-12 (09:48, user: "When a card with shell gets hit ... it CANNOT attack for the rest of the turn, till the next
+    // turn"): no attack for the rest of this round (or the coming one, when it's hit between rounds); next round it swings.
+    card.shellQuiet = combatNo + (combatDepth > 0 ? 0 : 1);
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n}); }
     return true;
   }
@@ -938,7 +947,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
     // Swimmer's Flow list (2026-10-12): the skills it gets while the tide is in Flow.
-    if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && getTide() === 'flow') add(0, e.swimmerGrant);
+    // Swimmer (reworked 2026-10-12, 09:48: "Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick Attack} or
+    // {Evade}"): on a rising tide it gets the one thing it was given. Quick Attack is the Fast Forward turn (in resolveCombat).
+    if(e.swimmer && tideRising()){ const sw = e.swimmer === true ? 'extraAttack' : e.swimmer;
+      if(sw === 'extraAttack') a += 1; else if(sw === 'evade') add(0, {evasive:true}); }
+    if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && tideRising()) add(0, e.swimmerGrant);
     // Rainrunner N (2026-10-12): +N/+N while it rains (and it slips past blockers, see the targeting).
     if(e.rainrunner && field && field.id === 'rain'){ const n = Number(e.rainrunner)||1; a += n; h += n; }
     // Moonborn N (2026-10-12, user: "Add lunar cycles - only matters when there's a card that cares about it"): at night,
@@ -987,8 +1000,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + (isTide(attCard) && getTide()==='flow' ? 1 : 0) + firstBloodBonus(attCard); if(sb) amt += sb; }
-    if(isTide(targetCard) && getTide()==='ebb' && amt > 1) amt -= 1; // Ebb: Tide units take 1 less per hit (never below 1)
+    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + tideAtk(attCard) + firstBloodBonus(attCard); if(sb) amt += sb; }
+    // (Ebb's old "1 less per hit" is now +1 Armour, in nominalArmor below; 2026-10-12)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
@@ -1016,7 +1029,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.pitchfork) ? Infinity : /* Pitchfork = Trident + Pierce (2026-10-12) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0); // Shell: temporary bonus armor active the round after being hit
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
     // Rend (VFX/SFX coverage audit, 2026-09-21): rendBypass is a pure display flag for the front
@@ -3123,7 +3136,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         card.hp = 1;
         card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
         card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
-        card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null;
+        card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
         if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid});
         return;
       }
@@ -3404,10 +3417,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
     // gets one Fast Forward turn before the round's main order.
     if(!pass) firstBloodTaken = false; // a new round: first blood is up for grabs again
-    if(!pass){ const flow = getTide() === 'flow', wind = false; // Tailwind is a spell (castSpell), not a field
+    if(!pass){ const flow = tideRising(), wind = false; // Tailwind is a spell (castSpell), not a field
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
-          const why = (flow && e.swimmer && (!e.swimmerGrant || e.swimmerGrant.fastForward)) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
+          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -3502,7 +3515,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // special-casing needed for which of those two cases actually applies.
     const handledUids = new Set(); // acted OR permanently skipped (reload/stun/etc.) this round — never reconsidered
     const zeroNoted = new Set();   // 0-Attack units already logged this round (they stay eligible for a later look)
-    const swingAtkNow = card=> effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + (isTide(card) && getTide()==='flow' ? 1 : 0);
+    const swingAtkNow = card=> effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + tideAtk(card);
     const poolMeta = new Map();    // uid -> {att, attId, enemyId} — currently eligible, not yet acted
     function discoverEligibleAttackers(){
       [[p1,1,2],[p2,2,1]].forEach(([pl,ownId,enemyId])=>{
@@ -3530,7 +3543,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
-            if(card.shellSkip || card.shellUntil != null){ skipTurn('shell', card, ownId); handledUids.add(uid); return; } // in its shell: no attack
+            if(card.shellSkip || (card.shellQuiet != null && combatNo <= card.shellQuiet)){ skipTurn('shell', card, ownId); handledUids.add(uid); return; } // in its shell: no attack this round
             // 0 Attack (2026-10-12, user: "On tide, the coral polyps should have 1 attack - it can attack as long the attack is
             // >0. Please check at every battle step not just at the start ... what if an ally buffs it midway combat?"): the
             // swing's own bonuses count (Swarm, Defiance, day/night, Inspiring, the Flow tide), and a unit at 0 is NOT retired
@@ -3775,7 +3788,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
-              if(attDef.effects.poison && c2.hp>0){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
+              if(attDef.effects.poison && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
               { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
               if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
@@ -3883,7 +3896,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             killCredit[a.att.uid].add(statKey(sideOf(a.enemyId), defCard.defId));
           }
         }
-        if(attDef.effects && attDef.effects.poison && defCard.hp>0){
+        // 2026-10-12 (user: "If a poison-ing unit hits an enemy and deals no combat damage (e.g. too much armour), it does not
+        // deal poison"): only a hit that got through (or converted into poison stacks) leaves poison.
+        if(attDef.effects && attDef.effects.poison && defCard.hp>0 && (dmg > 0 || elementalAmount > 0)){
           defCard.poison = (defCard.poison||0) + attDef.effects.poison;
           aStat.poisonApplied += attDef.effects.poison;
         }

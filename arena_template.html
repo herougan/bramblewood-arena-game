@@ -1958,6 +1958,7 @@
   .dmg-float.poison-tick{color:var(--poison); font-style:italic; font-weight:900; font-size:28px; text-shadow:0 0 6px color-mix(in srgb, var(--poison) 55%, transparent);}
   .dmg-float.bleed-tick{color:var(--bleed); font-weight:900;}
   .dmg-float.heal{color:var(--heal); font-weight:900;}
+  .dmg-float.slow{animation-duration:1900ms !important;} /* 2026-10-12: "Shell!" lingers */
   /* Floating-number coverage audit (2026-09-18): 'gold' was already passed as a floatText cls by
      Revive/namedBuff/the resource-pill pitch animation, but no .dmg-float.gold rule actually
      existed, so those floats silently fell back to the base --attack (red) color instead of
@@ -4184,10 +4185,16 @@
   @keyframes guardSheen{0%,60%{background-position:120% 0;} 100%{background-position:-120% 0;}}
   /* Shell up, Rage's half-damage shield, the tide chip (2026-10-12): the shell's armour shows as green shields that glow in
      quickly, with its temporary Health beside them; a raging unit shows an ember shield (½); Tide units show Flow +1 / Ebb −1. */
-  .board-card .shell-up{position:absolute; left:4px; top:30%; z-index:6; display:flex; align-items:center; gap:2px; pointer-events:none; animation:shellGlowIn .28s ease-out both;}
-  .board-card .shell-up .su-shields{display:flex;} .board-card .shell-up .su-shields i{font-style:normal; font-size:15px; margin-left:-6px; color:#5fe08a; filter:hue-rotate(70deg) saturate(1.6) drop-shadow(0 0 4px rgba(90,230,120,.95));}
-  .board-card .shell-up .su-shields i:first-child{margin-left:0;}
-  .board-card .shell-up .su-temp{font:800 11px/1 'Baloo 2', system-ui, sans-serif; color:#eafff0; background:rgba(36,140,70,.92); border-radius:999px; padding:2px 5px; box-shadow:0 0 6px rgba(90,230,120,.8);}
+  /* Shell (2026-10-12, user: "overall this UI is not working for us. Maybe just 4 stacked shields on the btm, but its like blue-y
+     to represent etherealness"): N small pale-blue shields stacked along the bottom edge. */
+  .board-card .shell-up{position:absolute; left:50%; bottom:22px; transform:translateX(-50%); z-index:6; display:flex; pointer-events:none; animation:shellGlowIn .4s ease-out both;}
+  .board-card .shell-up i{width:16px; height:19px; margin-left:-7px; clip-path:polygon(50% 0, 100% 16%, 92% 62%, 50% 100%, 8% 62%, 0 16%);
+    background:linear-gradient(160deg, rgba(225,245,255,.95), rgba(120,190,255,.75) 55%, rgba(80,140,230,.6)); box-shadow:inset 0 0 4px rgba(255,255,255,.8); filter:drop-shadow(0 0 4px rgba(120,190,255,.9));}
+  .board-card .shell-up i:first-child{margin-left:0;}
+  .board-card.shell-sweep .card-tile::after{content:''; position:absolute; inset:0; z-index:9; border-radius:inherit; pointer-events:none;
+    background:linear-gradient(0deg, rgba(160,215,255,0) 0%, rgba(160,215,255,.55) 45%, rgba(230,248,255,.85) 50%, rgba(160,215,255,.55) 55%, rgba(160,215,255,0) 100%); background-size:100% 260%;
+    animation:shellSweep .5s ease-in-out both;}
+  @keyframes shellSweep{from{background-position:0 0%;} to{background-position:0 100%;}}
   .board-card.shell-flash .card-tile{box-shadow:0 0 0 2px rgba(90,230,120,.9), 0 0 18px rgba(90,230,120,.75); transition:box-shadow .25s ease-out;}
   @keyframes shellGlowIn{0%{opacity:0; transform:scale(.6); filter:drop-shadow(0 0 0 rgba(90,230,120,0));} 60%{opacity:1; transform:scale(1.12); filter:drop-shadow(0 0 10px rgba(90,230,120,.95));} 100%{opacity:1; transform:scale(1); filter:drop-shadow(0 0 3px rgba(90,230,120,.6));}}
   .board-card .rage-shield{position:absolute; right:4px; top:30%; z-index:6; pointer-events:none; font-size:13px; filter:sepia(1) saturate(4) hue-rotate(-25deg) drop-shadow(0 0 4px rgba(255,90,40,.9));}
@@ -4461,7 +4468,8 @@
      result -- just named once instead of repeated ad hoc. */
   .w-52{width:52px;} .w-56{width:56px;} .w-60{width:60px;} .w-64{width:64px;}
   .w-70{width:70px;} .w-110{width:110px;} .w-120{width:120px;}
-  .field-checkbox-row{display:flex; align-items:center; gap:6px; font-weight:400; height:34px;}
+  .field-checkbox-row{display:flex; align-items:flex-start; gap:6px; font-weight:400; min-height:34px; line-height:1.35; padding:4px 0;} .field-checkbox-row input{margin-top:3px; flex-shrink:0;}
+  .cdp-obtain{margin:6px 0; font-weight:600;} .cdp-obtain.is-no{color:#a33;} .cdp-obtain.is-yes{color:#2f7a3a;}
   .hint-text{font-size:12px; color:var(--ink-muted);}
   .admin-jump-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
   .admin-jump-row select{flex:1; min-width:220px; padding:9px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); font-size:13px;}
@@ -5260,6 +5268,7 @@
   #rowEnemy .board-card > .owner-edge{display:block; position:absolute; left:6%; right:6%; top:-1px; height:9px; z-index:5; pointer-events:none; border-radius:8px 8px 0 0;
     background:linear-gradient(180deg, rgba(225,70,70,.75), rgba(225,70,70,0)); filter:blur(.3px);}
   .board-card[style*="--scatter"] > .owner-edge, .board-card.scatter > .owner-edge{display:none !important;}
+  .board-card.dying > .owner-edge, .board-card.fly-falling > .owner-edge, .board-card.burning > .owner-edge{opacity:0; transition:opacity .25s;}
   #rowEnemy .board-card.is-mine-caged > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.8), rgba(110,200,120,0));}
   /* Mobile Conquest (2026-10-10, user: "sometimes conquest is not scrollable"): on phones the headline and the admin
      toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
@@ -5380,6 +5389,8 @@
   .rank-hex.wl-rank{position:relative !important; top:auto !important; right:auto !important; transform:scale(1.35); margin:0 8px;}
   .winloss-card.is-glory .rw-cur{background:rgba(255,255,255,.14) !important; color:#fff !important; border-color:rgba(255,220,150,.35) !important; font-size:18px;}
   .winloss-card.is-glory .rw-cur .cur-label{color:#ffe2a6 !important; opacity:1 !important;}
+  /* 2026-10-12 (10:12 screenshot): Iron Shard / Base-growth pills were cream with pale text on the gold results card */
+  .winloss-card.is-glory .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){background:rgba(255,255,255,.14) !important; color:#fff !important; border:1px solid rgba(255,220,150,.35) !important; box-shadow:none !important;}
   .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(130px, 16vw, 170px) !important; height:auto !important;}
   .winloss-card.is-glory .rw-unlocks .card-tile{aspect-ratio:4/5;}
   .winloss-card .winloss-actions:not(:has(> .btn ~ .btn)){display:flex !important; flex-direction:column; align-items:center;}
@@ -5781,6 +5792,9 @@
   .board-card.is-ally-card::after{content:'🤝'; position:absolute; left:-6px; top:-8px; font-size:16px; z-index:8; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
   .hq-tile.raid-castles{transform:scale(1.1); transform-origin:50% 50%;}
   .vs-allies{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:13px;} .vs-ally{display:flex; gap:8px; align-items:center; justify-content:center; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12);}
+  /* Wandering merchant deal (2026-10-12) */
+  .wander-deal .wd-offer{display:flex; flex-direction:column; gap:3px; margin:8px 0; padding:8px 10px; border-radius:10px; background:rgba(200,144,42,.12);}
+  .wander-deal .wd-price s{opacity:.6;} .wander-deal .wd-actions{display:flex; gap:8px; flex-wrap:wrap;}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
   .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
   .te-deck-list .te-cut{color:#a0523a; opacity:.8;}

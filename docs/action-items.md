@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 9:40 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 10:30 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -32,6 +32,8 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D47** | **Tutorial skills.** Part 1 has no skills; part 2 keeps only Swarm. The Fly and Boomerang remarks in part 2 therefore don't fire | Without Flying, part 2 teaches less about Hummingbirds | Keep; teach Flying on Map 1 instead (Admin → Tutorial editor can add it back: "swarm, hiveMind, flying") |
 | **D48** | **Castle duplicates.** Forge → 🏰 Castles can fuse spare castles, but nothing gives you a castle twice yet | Without a source the button stays at (0) | Say where spares should come from: a boss re-clear at rank S, or castles in packs |
 | **D49** | **Raid with allies.** Two allies (one plays each turn), your castle is three castles in one, and the boss is at 60% Attack / 70% Health | Not simulated yet; the numbers are a first guess | Play a raid or two and tell me if it's too easy or too hard |
+| **D50** | **Water lanes (idea, not built).** Ocean channels and whirlpools for swimmers, jet streams for flyers: a lane-wide current that moves or speeds the units in it | It adds a fourth board rule on top of tide, day/night and fields, so water maps could get busy | Park until the High tide fights have been played; then try one whirlpool lane on a single reef boss |
+| **D51** | **Skull Vulture** (your PixelLab art): 1 Lumber, Wait 1, 3/4, Flying, Daunt 1, Nocturnal, Uncommon, Swamp | My reading of "evil skull bird". It has no source yet, so it shows as not obtainable | Say where it drops (I'd put it on the Map 8 swamp) |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed tonight:** D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.

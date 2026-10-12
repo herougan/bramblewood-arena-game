@@ -13,7 +13,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k2-fork':  {id:'k2-fork', name:'Fork', attack:3, health:50, wait:0, cost:0, effects:{fork:true}},
   'k2-shell': {id:'k2-shell', name:'Shell', attack:4, health:30, wait:0, cost:0, effects:{shell:3}},
   'k2-rage':  {id:'k2-rage', name:'Rage', attack:4, health:20, wait:0, cost:0, effects:{rage:true}},
-  'k2-swim':  {id:'k2-swim', name:'Swim', attack:2, health:50, wait:0, cost:0, effects:{swimmer:true}},
+  'k2-swim':  {id:'k2-swim', name:'Swim', attack:2, health:50, wait:0, cost:0, effects:{swimmer:'quickAttack'}}, // 2026-10-12: Swimmer is a pick now; Quick Attack is the old extra turn
   'k2-fly':   {id:'k2-fly', name:'Fly', attack:2, health:50, wait:0, cost:0, effects:{flying:true}},
   'k2-insp':  {id:'k2-insp', name:'Insp', attack:1, health:50, wait:0, cost:0, effects:{inspiring:2}},
   'k2-fric':  {id:'k2-fric', name:'Fric', attack:1, health:50, wait:0, cost:0, effects:{friction:2}},

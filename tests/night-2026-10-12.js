@@ -14,10 +14,12 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'n-wallr': {id:'n-wallr', name:'WallR', attack:0, health:500, wait:5, cost:0, effects:{}},
   'n-frail': {id:'n-frail', name:'Frail', attack:0, health:2, wait:9, cost:0, effects:{}},
   'n-polyp': {id:'n-polyp', name:'Polyp', attack:0, health:20, wait:0, cost:0, effects:{tide:true}},
-  'n-swimg': {id:'n-swimg', name:'SwimG', attack:2, health:20, wait:0, cost:0, effects:{swimmer:true, swimmerGrant:{armor:3}}},
+  'n-swimg': {id:'n-swimg', name:'SwimG', attack:2, health:20, wait:0, cost:0, effects:{swimmer:'evade', swimmerGrant:{armor:3}}},
   'n-fork':  {id:'n-fork', name:'Fork', attack:2, health:50, wait:0, cost:0, effects:{fork:true}},
   'n-daunt': {id:'n-daunt', name:'Daunter', attack:1, health:100, wait:0, cost:0, effects:{daunt:2}},
   'n-recoil':{id:'n-recoil', name:'Recoiler', attack:3, health:20, wait:0, cost:0, effects:{recoil:2}},
+  'n-pois':  {id:'n-pois', name:'Poisoner', attack:1, health:100, wait:0, cost:0, effects:{poison:2}},
+  'n-plate': {id:'n-plate', name:'Plate', attack:0, health:100, wait:0, cost:0, effects:{armor:5}},
   'n-hit5':  {id:'n-hit5', name:'Hit5', attack:5, health:100, wait:0, cost:0, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -95,5 +97,10 @@ function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), 
   F.hp = 0; e.removeDeadCards(P, so, {}, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
   ok(all(P[1]).some(c=> c.defId==='n-boom' && c.slot===F.slot) && ev.some(x=> x.type==='advance'), 'with the front unit gone it steps up at the round start');
   ok(e.fillReserve(P[2], 2, 0, 'n-wall') && !e.fillReserve(P[2], 2, 0, 'n-wall'), 'a boss row can be filled, one card a slot'); }
+// 09:58: poison needs damage through: a 1-Attack poisoner into 5 Armor poisons nothing; into a bare wall it does
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-pois', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'n-plate', 'left', {}, []);
+  e.resolveCombat(P, so, {}, [], 1); const t = all(P[2])[0]; ok(!(t.poison > 0), `no poison through full armour (poison ${t.poison}, hp ${t.hp})`); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-pois', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'n-wall', 'left', {}, []);
+  e.resolveCombat(P, so, {}, [], 1); const t = all(P[2])[0]; ok(t.poison > 0, `poison lands when damage gets through (poison ${t.poison})`); }
 if(fail){ console.log(`night-2026-10-12: ${fail} failure(s)`); process.exit(1); }
 console.log('night-2026-10-12: 0 failure(s)');

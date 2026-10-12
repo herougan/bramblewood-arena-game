@@ -50,4 +50,10 @@ function dealt(att, def, rounds){
   ok(ev.some(x=> x.type==='wash'), 'a wash event is recorded');
   e.roundStart(P, 3, so, {}, []); e.roundStart(P, 4, so, {}, []);
   ok((foe.wait||0) === w0 + 1, `a card is washed back only once (wait ${foe.wait})`); }
+
+// 2026-10-12: High tide (rules.highTide): Ebb, Flow, Ebb, High; on High a Tide unit gets +2 Attack
+{ const H2 = require('./lib/harness.js'); const e = H2.Engine.makeSimEngine(defs, H2.Engine.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{highTide:true}}); const so = id=> id===1?'A':'B';
+  const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}; const seen = [];
+  for(let r = 2; r <= 5; r++){ e.roundStart(P, r, so, {}, []); seen.push(e.getTide()); }
+  ok(seen.join(',') === 'ebb,flow,ebb,high', `high-tide cycle is ebb,flow,ebb,high (got ${seen.join(',')})`); }
 console.log(`tide: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

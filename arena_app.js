@@ -164,7 +164,7 @@ const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spitefu
   kingSlayer:'👑⚔️', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
-  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐚', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
+  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
 function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', '); }
 // "fastForward 1, armor 2, evasive" <-> {fastForward:1, armor:2, evasive:true}; skill names or labels both work.
 function parseGrantText(v){
@@ -261,7 +261,11 @@ const PASSIVE_DEFS = [
   {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the castle).`},
   {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
   {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
-  {key:'swimmer', category:'passive', label:'Swimmer', kind:'boolean', desc:(v, n, e)=>`On a Flow round the tide carries it: ${e && e.swimmerGrant ? grantText(e.swimmerGrant) : 'one extra turn at the start of combat (like Fast Forward)'}.`},
+  // Swimmer (2026-10-12, 09:48: "Swimmer is too strong. Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick
+  // Attack} or {Evade}"): one pick. A Swimmer saved before this keeps working as Extra Attack.
+  {key:'swimmer', category:'passive', label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Flow: ${({extraAttack:'+1 Attack', quickAttack:'Quick Attack (an extra turn before combat)', evade:'Evade (dodges half of single hits)'})[v === true || !v ? 'extraAttack' : v] || '+1 Attack'}${e && e.swimmerGrant ? ', and ' + grantText(e.swimmerGrant) : ''}.`,
+    selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evade'}],
+    get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
   // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
   // forward but... just { } effects that i can list"): the skills a Swimmer gets on Flow rounds, e.g. "fastForward 1, armor 2".
   // Without a list it keeps the old Fast Forward.
@@ -290,7 +294,7 @@ const PASSIVE_DEFS = [
   {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
   {key:'satiety', category:'passive', label:'Satiety', kind:'number', min:0, desc:v=>`Well fed: at the start of each round at full health, gains +${v} max Health.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
-  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`On Flow rounds hits +1; on Ebb rounds takes 1 less from each hit (never below 1).`},
+  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flow: +1 Attack. Ebb: +1 Armor.`}, // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
   {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
   {key:'wash', category:'passive', label:'Wash', kind:'boolean', desc:()=>`On Flow rounds, the enemy card facing this one gets +1 Wait (once per enemy card).`},
@@ -300,7 +304,7 @@ const PASSIVE_DEFS = [
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
-  {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`The first hit of any kind (arrows too) pulls it into its shell: +${v} Armor and ${v} temporary Health until the end of the next round, and it doesn't attack meanwhile. Unhit, it attacks as normal.`},
+  {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`When first hit: +${v} Armor and +${v} temporary Health until the end of next round. It can't attack for the rest of that round.`},
   {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy HQ directly.`},
   {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Sweep and Swipe extra hits can't be evaded.`},
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): unconditional damage multipliers, a deliberately
@@ -4359,7 +4363,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}">${live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep}})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -4508,7 +4512,7 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">🍃</span>`);
   if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">↺</span>`);
-  if(e.tide) out.push(`<span class="ab-tide" title="Tide: +1 Attack on Flow, takes 1 less on Ebb">🌊</span>`);
+  if(e.tide) out.push(`<span class="ab-tide" title="Tide: Flow +1 Attack, Ebb +1 Armor">🌊</span>`);
   if(e.swimmer) out.push(`🏊`);
   if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${e.rainrunner}`); if(e.moonborn) out.push(`🌕${e.moonborn}`); if(e.frostbite) out.push(`🥶${e.frostbite}`);
   if(e.inspiring) out.push(`📯${e.inspiring}`);
@@ -5299,7 +5303,7 @@ function codexPlacementHTML(d){
       <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
     </div>
     <label class="field-checkbox-row"><input type="checkbox" id="cdpHidden" ${raw.hidden?'checked':''}> Hidden — players don’t know it exists until they first see it</label>
-    <label class="field-checkbox-row"><input type="checkbox" id="cdpObtainable" ${raw.unattainable?'':'checked'}> Obtainable — can come out of packs, rewards and finds (2026-10-12: everything starts unobtainable while we build the list)</label>
+    <p class="cdp-obtain ${isUnattainable(d) ? 'is-no' : 'is-yes'}">${isUnattainable(d) ? '⛔ Not obtainable: no source yet. Pick one above.' : `✅ Obtainable: ${escapeHtml(cardWhereToGetText(d))}`}</p>
     <div class="cdp-actions"><button type="button" class="btn small primary" id="cdpSave">Save placement</button><span class="cdp-msg" id="cdpMsg"></span></div>
   </div>`;
 }
@@ -5335,7 +5339,7 @@ function wireCodexPlacement(defId){
       raw.source = {kind:'event', theme, name};
     }
     raw.hidden = document.getElementById('cdpHidden').checked;
-    { const ob = document.getElementById('cdpObtainable'); if(ob){ if(ob.checked) delete raw.unattainable; else raw.unattainable = true; } }
+    delete raw.unattainable; // obtainability is worked out from the source now (2026-10-12)
     if(!raw.hidden) delete raw.hidden;
     await saveCard(raw);
     document.getElementById('cdpMsg').textContent = 'Saved ✓';
@@ -5356,7 +5360,13 @@ function nodeRewardCardIds(mapId, nodeKey){
 // cards, tokens, tests, materia and the hero stay obtainable so a new player can still play. Card editor: "Obtainable".
 // Admin grants (Admin → give a card) still work.
 const UNATTAINABLE_ADMIN_SOURCES = new Set(['admin', 'adminGrant', 'test', 'sandbox', 'devGrant', 'tutorialBonus']);
-function isUnattainable(d){ return !!(d && d.unattainable); }
+// 2026-10-12 (09:48, user: "The Not obtainable flag seems wrong at the moment. Many of these are used in our maps. These need to
+// be dynamic. Only if they have no source are they flagged as such"): a card is unobtainable only when nothing gives it out:
+// no skirmish reward node, no pack pool, no event, not a Base card. Tokens, tests, materia and the hero don't count.
+function isUnattainable(d){
+  if(!d || d.token || d.test || d.hero || d.cardType === 'materia') return false;
+  try{ const src = cardSourceOf(d); return !(cardObtainableFrom(d) || src.kind === 'event'); }catch(e){ return false; }
+}
 function openNodeRewardsEditor(mapId, nodeKey){
   const found = findConquestNode(mapId, nodeKey); if(!found) return;
   let overlay = document.getElementById('nodeRewardsOverlay');
@@ -10978,7 +10988,34 @@ function visitWanderer(el){
   const bang = el && el.querySelector('.map-spot-new'); if(bang) bang.remove();
   if(el) el.classList.add('is-found');
   showSpeechBubble(el, `${w.icon} ${w.line}`);
-  setTimeout(()=>{ shopTab = 'packs'; switchTab('shop'); setTimeout(()=>{ const c = document.getElementById('wanderCard'); if(c){ c.scrollIntoView({block:'center', behavior:'smooth'}); c.classList.add('is-fresh'); } }, 120); }, first ? 1700 : 600);
+  setTimeout(()=> openWandererDeal(w), first ? 1100 : 300);
+}
+// Buying on the spot (2026-10-12, user: "Those wandering merchants. When they offer a pack, let me buy it right there and then.
+// With a small dialogue option + cost details"): the merchant's offer opens as a little conversation on the map: the pack,
+// its usual price struck out, today's price and what you have, with Buy and Not today.
+function openWandererDeal(w){
+  w = w || wanderingMerchantToday(); if(!w) return;
+  const st = wandererState(), p = wandererDealPack();
+  let ov = document.getElementById('npcPromptOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'npcPromptOverlay'; ov.className = 'modal-overlay npc-prompt-overlay'; document.body.appendChild(ov); }
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+  if(!p){ ov.innerHTML = `<div class="npc-prompt" role="dialog" aria-label="${escapeAttr(w.name)}"><div class="npc-face"><span>${w.icon}</span></div><div class="npc-body"><b class="npc-name">${escapeHtml(w.name)}</b><p>Nothing on the barrow for you today, friend. Come find me tomorrow.</p><button type="button" class="btn primary" data-wd-close>Bye</button></div></div>`; ov.hidden = false; ov.querySelector('[data-wd-close]').onclick = close; return; }
+  const c = wandererDealCost(p), price = [c.gold ? `${mapleLeafIconHTML()} ${c.gold}` : '', c.gems ? `🍂 ${c.gems}` : ''].filter(Boolean).join(' · ');
+  const afford = canAffordPacks(Object.assign({}, p, {cost:c}), 1);
+  const have = `${mapleLeafIconHTML()} ${myCurrencies.gold||0}${(c.gems ? ` · 🍂 ${myCurrencies.gems||0}` : '')}`;
+  ov.innerHTML = `<div class="npc-prompt wander-deal" role="dialog" aria-label="${escapeAttr(w.name)}">
+    <div class="npc-face"><span>${w.icon}</span></div>
+    <div class="npc-body"><b class="npc-name">${escapeHtml(w.name)}</b>
+      ${st.bought ? `<p>Already sold you my best today. Same road tomorrow, maybe.</p><button type="button" class="btn primary" data-wd-close>Bye</button>` : `
+      <p>“${escapeHtml(w.line)} One ${escapeHtml(p.name)}, a quarter off. Just the one, mind.”</p>
+      <div class="wd-offer"><span class="wd-pack">${p.icon} <b>${escapeHtml(p.name)}</b></span><span class="wd-price"><s>${packCostHTML(p)}</s> <b>${price}</b></span><small>You have ${have}${afford ? '' : ' (not enough)'}</small></div>
+      <div class="wd-actions"><button type="button" class="btn primary" data-wd-buy ${afford ? '' : 'aria-disabled="true"'}>Buy it · ${price}</button><button type="button" class="btn ghost" data-wd-close>Not today</button></div>`}
+    </div></div>`;
+  ov.hidden = false;
+  ov.querySelectorAll('[data-wd-close]').forEach(b=> b.onclick = close);
+  const buy = ov.querySelector('[data-wd-buy]');
+  if(buy) buy.onclick = ()=>{ if(buy.getAttribute('aria-disabled') === 'true'){ denyShake(buy); return; } requireSignIn('to buy packs', ()=>{ close(); buyPack(p.id, null, 1, {wanderer:true}); }); };
+  setTimeout(()=>{ try{ (buy || ov.querySelector('[data-wd-close]')).focus(); }catch(e){} }, 40);
 }
 function wanderingMerchantShopHTML(){
   const w = wanderingMerchantToday(); if(!w) return '';
@@ -11167,7 +11204,10 @@ function skirmishTargetWinRate(mapId, node){
 // D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
 const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
-function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); if(!r.phase) r.phase = NIGHT_MAPS.has(mapId || mapIdOfNode(node)) ? 'night' : 'day'; return r; }
+function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
+  // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
+  if(r.highTide == null && node && /boss|elite|champion/.test(node.kind || '') && (typeof MAP_MUSIC !== 'undefined' && MAP_MUSIC[mid] === 'map_water')) r.highTide = true;
+  return r; }
 function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
 function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
@@ -14154,7 +14194,7 @@ function renderConquestSubTab(body){
           if(loadTutorialDone() && loadTutorial2Done()){
             if(t2) return '';
             return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial kind-dungeon tutorial-solo tutorial-dungeon done ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="Tutorials: a two-fight dungeon (replay)">
-            <span class="map-node-ico">🗝️</span><span class="tut-num" aria-hidden="true">I·II</span></button>`;
+            <span class="map-node-ico">🎓</span><span class="tut-num" aria-hidden="true">I·II</span></button>`; // 2026-10-12: still the 🎓, even as a dungeon
           }
           const tip = t2 ? (tDone ? 'Tutorial II: replay' : 'Tutorial II. Click to start') : (tDone ? 'Tutorial: replay' : 'Tutorial');
           return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(tip)}">
@@ -21202,7 +21242,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-12 (user: "Crabs that benefit from the tide must show their modified attack"; Rage doubles): the board's Attack
   // includes Flow's +1, Inspired, and Rage's doubling.
   const tideNow = ((d.effects||{}).tide && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
-  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + (tideNow==='flow' ? 1 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
+  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   if(raging) effAtk *= 2;
   const atkLabel = atkLabelHTML(effAtk, d.attack);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
@@ -21245,7 +21285,7 @@ function boardCardHTML(c, defs, opts){
   const abilityBadgeHTML = abilityBadges(d, {live: c}); // (unused by the tile itself: cardTileHTML builds the strip from live.wait)
   // Flyers (2026-10-08, user): lifted off the ground with a shadow beneath, gently soaring.
   const flies = !!((d.effects||{}).flying);
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="In its shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round; it won't attack"><span class="su-shields">${'<i>🛡</i>'.repeat(Math.max(1, Math.min(5, c.shellArmor||0)))}</span>${c.tempHp>0 ? `<b class="su-temp">+${c.tempHp}</b>` : ''}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: this Tide unit hits +1' : 'Ebb: this Tide unit takes 1 less from each hit'}">${tideNow==='flow' ? '🌊+1' : '🐚−1'}</div>` : ''}
+  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}">${tideNow==='flow' ? '🌊⚔' : tideNow==='high' ? '🌊⚔🛡' : '🐚🛡'}</div>` : ''}
       ${c.stunned?`<div class="status-overlay stun-overlay">💫</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?`<div class="status-overlay freeze-overlay">❄</div>`:''}
@@ -21265,7 +21305,7 @@ function boardCardHTML(c, defs, opts){
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
   return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
@@ -22341,6 +22381,11 @@ function fallDeathVfx(el, ms){
     const fall = ms*1.25/1000;
     gsap.timeline()
       .fromTo(t, {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'}, {rotationX:88, y:12, transformPerspective:560, transformOrigin:'50% 100%', filter:'grayscale(.8) brightness(.8)', duration:fall, ease:'expo.in'})
+      // 2026-10-12 (user: "See those red highlights on those cards. they should fade out when the card falls - currently it hangs
+      // around. Can you make it follow the card downwards?"): the owner edge topples with the card, hinged on the same point
+      // (the card's bottom, so its origin sits a card-height below the strip), fading as it goes.
+      .add(()=>{ const oe = el.querySelector(':scope > .owner-edge'); if(!oe) return; const h = (t.offsetHeight || 150);
+        gsap.fromTo(oe, {rotationX:0, y:0, opacity:1}, {rotationX:88, y:12, opacity:0, transformPerspective:560, transformOrigin:`50% ${h}px`, duration:fall, ease:'expo.in'}); }, 0)
       .add(()=>{ biomePuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} })
       .to(t, {opacity:0, duration:ms*0.25/1000, delay:.05, ease:'power1.in'});
   }
@@ -22746,8 +22791,11 @@ function revealBoardCardsAtEnd(){
   document.querySelectorAll('#rowMine .board-card[data-uid], #rowEnemy .board-card[data-uid]').forEach(el=>{
     if(!alive.has(String(el.dataset.uid))) return;
     const t = el.querySelector('.card-tile');
+    const wasEntering = el.classList.contains('is-entering') || (hasGsap() && gsap.isTweening(el));
     el.classList.remove('is-entering');
     try{ if(hasGsap()){ gsap.killTweensOf(el); if(t) gsap.killTweensOf(t); } }catch(e){}
+    // a card still flying in from the hand when the match ended was frozen mid-air (above the row, shrunk): land it
+    if(wasEntering){ try{ if(hasGsap()){ gsap.set(el, {clearProps:'position,left,top,width,height,transform,x,y,rotation,scale,opacity'}); if(t) gsap.set(t, {clearProps:'transform,opacity,filter'}); } else { el.style.transform = ''; el.style.position = ''; } }catch(e){} }
     if(parseFloat(getComputedStyle(el).opacity) < 0.95 && !el.classList.contains('is-scattering')){ el.style.opacity = '1'; }
     if(t && parseFloat(getComputedStyle(t).opacity) < 0.95){ t.style.opacity = '1'; }
     if(el.style.visibility === 'hidden') el.style.visibility = '';
@@ -22834,9 +22882,10 @@ async function resolveRound(opts){
   // end-of-round cleanup below knows whether panCameraToShowUid ever actually moved the camera
   // this round (most rounds on a board that fits never do, and skip the recenter entirely).
   battlefieldCameraFollowedThisRound = false;
+  m.movedUids = new Set(); // who visibly attacked this round (end-of-match emotes favour the ones that never got to)
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
-    if(ev.type==='hit' || ev.type==='hitHQ') panCameraToShowUid(ev.attUid);
+    if(ev.type==='hit' || ev.type==='hitHQ'){ panCameraToShowUid(ev.attUid); if(ev.attUid!=null) m.movedUids.add(String(ev.attUid)); }
     // a hit (or a Changeling acting) unmasks it: the card re-renders as itself with a puff and a "🎭 Changeling!" label
     if((ev.type==='hit' && ev.targetUid!=null && unmaskChangeling(m, ev.targetUid)) || (ev.type==='hit' && ev.attUid!=null && unmaskChangeling(m, ev.attUid))){
       const who = ev.type==='hit' && m.unmasked.has(String(ev.targetUid)) ? ev.targetUid : ev.attUid;
@@ -22854,7 +22903,15 @@ async function resolveRound(opts){
     // the instant a castle visibly hits 0, stop replaying the rest of the round's animations (they
     // still go in the log) and go straight to the Victory/Defeat beat below.
     if(over && ev.type==='hitHQ' && m.displayHqHp && (m.displayHqHp.A<=0 || m.displayHqHp.B<=0)){
-      mainEvents.slice(evIdx+1).forEach(e=> pushLog(e));
+      const rest = mainEvents.slice(evIdx+1); rest.forEach(e=> pushLog(e));
+      // 2026-10-12 (user: "the enemy just placed a new card, and it disappears after i win"): a card that died in the
+      // skipped tail of the round used to vanish at the final sync render. Those deaths now play together, quickly.
+      const lateDeaths = rest.filter(e=> e.type==='death' && e.uid!=null && boardCardEl(e.uid));
+      if(lateDeaths.length){
+        lateDeaths.forEach(e=>{ try{ renderVfxForEvent(e); }catch(_){} });
+        await sleep(Math.round(650 / Math.max(1, m.speedMult||1)));
+        lateDeaths.forEach(e=> removeUidFromReplayRow(e.side, e.uid));
+      }
       break;
     }
     if(ev.type==='death'){
@@ -23499,8 +23556,9 @@ function syncNightVeil(m, phase){
 function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
-  const flow = t==='flow';
-  return `<div class="phase-pill tide-${t}" title="${flow ? 'Flow: Tide units hit +1, and Wash units push the card facing them back 1 Wait. Ebb next round.' : 'Ebb: Tide units take 1 less from each hit. Flow next round.'}" aria-label="Tide: ${flow ? 'Flow' : 'Ebb'}"><span aria-hidden="true">${flow ? '🌊' : '🐚'}</span><b>${flow ? _t('Flow') : _t('Ebb')}</b></div>`;
+  const high = t==='high', flow = t==='flow' || high;
+  const tip = high ? 'High tide: Tide units get +2 Attack and +2 Armor, and Wash units push the card facing them back 1 Wait.' : flow ? 'Flow: Tide units +1 Attack, and Wash units push the card facing them back 1 Wait.' : 'Ebb: Tide units +1 Armor.';
+  return `<div class="phase-pill tide-${t}" title="${tip}" aria-label="Tide: ${high ? 'High tide' : flow ? 'Flow' : 'Ebb'}"><span aria-hidden="true">${high ? '🌊🌊' : flow ? '🌊' : '🐚'}</span><b>${high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb')}</b></div>`;
 }
 // Fields that act every round wear the clock on their south border, like a unit's trigger badge (2026-10-12, user: "On the
 // frost effect card, also include that on its south border - let's start doing that to make the game consistent").
@@ -23535,6 +23593,7 @@ function coldWaveVfx(m){
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  if(kind === 'high') kind = 'flow'; // the high tide rides the flow's wave, bigger in the log and the pill
   bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
   let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
   if(reducedMotion() || !fxAtLeast('low')) return;
@@ -24228,7 +24287,11 @@ async function showEndSign(m){
       setTimeout(()=>{ if(!el.isConnected) return; if(pixelShatterVfx(el, 700)) try{ SoundKit.pixelShatter ? SoundKit.pixelShatter() : null; }catch(e){} else el.style.opacity = '0'; }, 250 + Math.random()*1300); }); }catch(e){}
   // 2026-10-08 emotes: a couple of the beaten side's survivors sulk.
   if(m.winner===1 || m.winner===2) try{ const lose = document.getElementById(m.winner===1 ? 'rowEnemy' : 'rowMine');
-    [...(lose ? lose.querySelectorAll('.board-card[data-uid]') : [])].slice(0, 3).forEach((c, i)=> setTimeout(()=> maybeEmote(c.getAttribute('data-uid'), 'loss', {el:c}), 600 + i*260)); }catch(e){}
+    // 2026-10-12 (user: "on a win, the loser's units that didn't get to move have a much higher chance"): a unit that never
+    // swung in the final round almost always grumbles; one that did only sometimes.
+    const moved = m.movedUids || new Set(); let n = 0;
+    [...(lose ? lose.querySelectorAll('.board-card[data-uid]') : [])].forEach(c=>{ const u = c.getAttribute('data-uid'); if(n >= 3) return;
+      if(Math.random() < (moved.has(String(u)) ? .2 : .85)){ const i = n++; setTimeout(()=> maybeEmote(u, 'loss', {el:c, force:true}), 600 + i*260); } }); }catch(e){}
   if(kind==='victory' && hasGsap()){
     const r = battlefield.getBoundingClientRect();
     for(let i=0;i<28;i++){
@@ -24461,7 +24524,8 @@ function rankLessonHTML(m){
   }
   const r = m._rankLesson; if(!r) return '';
   const L = RANK_LESSONS[r];
-  return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><span class="rank-hex rank-${r}" aria-hidden="true"><i></i><b>${r}</b></span><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
+  // 2026-10-12 (10:12, user: "The grade medal appears twice! The one beside First Clear is the one that should remain"): no hex here.
+  return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
 }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
@@ -24781,7 +24845,7 @@ function logText(ev){
     case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
-    case 'tide': return {cls:'', text: ev.tide==='flow' ? '🌊 Flow: Tide units hit +1.' : '🐚 Ebb: Tide units take 1 less per hit.'};
+    case 'tide': return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide! Tide units get +2 Attack and +2 Armor.' : ev.tide==='flow' ? '🌊 Flow: Tide units +1 Attack.' : '🐚 Ebb: Tide units +1 Armor.'};
     case 'wash': return {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
@@ -24860,7 +24924,7 @@ function logText(ev){
         grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
         shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
         shellDown: `came out of its shell 🐚`,
-        swimmer: `rode the Flow for an extra turn 🏊`,
+        swimmer: `rode the Flow for a quick attack 🏊`,
         tailwind: `caught the Tailwind for an extra turn 🍃`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
         frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
@@ -26155,9 +26219,11 @@ function renderVfxForEvent(ev){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-12 skills
-    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ floatText(el, `🐚 Shell! +${ev.amount}🛡 +${ev.amount}❤`, 'heal'); el.classList.remove('shell-flash'); void el.offsetWidth; el.classList.add('shell-flash'); setTimeout(()=> el.classList.remove('shell-flash'), 700); } }
-    else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } if(el) floatText(el, '🐚 Out of its shell', ''); }
-    else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Swept along by the Flow!', 'quick'); }
+    // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
+    // animation across the card over 0.5s"): a pale-blue shell sweeps up the card over half a second, then "Shell!".
+    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
+    else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
+    else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🍃 Tailwind!', 'quick'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
@@ -26394,7 +26460,7 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death', {force: Math.random() < EMOTE_CHANCE.death});
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
     { const k = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid));
       // only a hit this same round counts as the kill (a poison tick rounds later isn't the attacker's)
       if(k && k.by!=null && k.round === ((matchState && matchState.round) || 0)) setTimeout(()=> maybeEmote(k.by, 'kill'), 350); } }
@@ -32033,15 +32099,19 @@ const EMOTE_BANKS = {
   win:     ['🥳','🎉','😄','🙌','🤩','💃'],
   loss:    ['😭','😩','😞','🏳️'],
 };
+// 2026-10-12 (user: "unit emoji shout-outs rarer"): mid-fight chances halved (EMOTE_RARITY) and one shout at a time across the
+// whole board (EMOTE_GAP_MS). The end-of-match win/loss emotes keep their own odds.
 const EMOTE_CHANCE = {dazed:.55, sleepy:.6, blinded:.5, shocked:.5, rage:.6, pumped:.4, summon:.35, attack:.22, hurt:.18, hurtBig:.5, lowHp:.45, dodge:.6, blocked:.4, healed:.4, frozen:.5, poisoned:.4, burning:.4, kill:.55, death:.35, idle:.25, win:1, loss:.7};
+const EMOTE_RARITY = 0.45, EMOTE_GAP_MS = 1400; let lastEmoteAt = 0;
 const EMOTE_LAST_HIT = new Map(); // target uid -> last attacker uid, so a kill can be cheered
 function maybeEmote(uid, kind, opts){
   if(uid==null || !fxAtLeast('low')) return false;
   const bank = EMOTE_BANKS[kind]; if(!bank) return false;
   const force = !!(opts && opts.force), now = Date.now(), key = String(uid);
-  if(!force){ if(now - (lastSpokeAt.get(key)||0) < SPEECH_COOLDOWN_MS) return false; if(Math.random() > (EMOTE_CHANCE[kind] || .3)) return false; }
+  if(!force){ if(now - (lastSpokeAt.get(key)||0) < SPEECH_COOLDOWN_MS || now - lastEmoteAt < EMOTE_GAP_MS) return false;
+    const odds = (EMOTE_CHANCE[kind] || .3) * (kind==='win' || kind==='loss' ? 1 : EMOTE_RARITY); if(Math.random() > odds) return false; }
   const el = (opts && opts.el) || boardCardEl(uid); if(!el || !el.isConnected) return false;
-  lastSpokeAt.set(key, now);
+  lastSpokeAt.set(key, now); lastEmoteAt = now;
   showSpeechBubble(el, bank[Math.floor(Math.random()*bank.length)], 'is-emote');
   return true;
 }

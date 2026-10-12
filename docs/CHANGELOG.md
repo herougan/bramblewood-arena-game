@@ -2,6 +2,28 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (11:00)
+- **Winning keeps the board:**
+  - A card that died in the part of the round skipped by the win now falls with the others instead of vanishing.
+  - A card still flying in from the enemy's hand when you win lands in its slot.
+- **Shout-outs:** unit emoji are about half as frequent, and only one shows at a time. When you win, the loser's units that never got to swing that round usually grumble; the ones that did only sometimes.
+- **Tide:** the chips on Tide cards are just symbols now: 🌊⚔ on Flow, 🐚🛡 on Ebb, 🌊⚔🛡 on High tide. Flow gives +1 Attack and Ebb +1 Armor. High tide (+2/+2) comes as Ebb, Flow, Ebb, High, in boss and elite fights on water maps.
+- **Shell:**
+  - The badge is a 🐢, so it no longer reads as wings.
+  - When it triggers, a pale-blue shell sweeps up the card over half a second, then "Shell!".
+  - The unit can't attack for the rest of that round. Four small shields at the bottom of the card show it is up.
+- **Swimmer:** it's now "If Tide →" one of Extra Attack, Quick Attack or Evade, chosen per card.
+- **Poison** only lands when the hit gets damage through. A poisoner stopped by Armor poisons nothing.
+- **Used-up triggers:**
+  - An On Spawn or once-only trigger that has fired shines, turns grey, then fades off the card.
+  - A trigger that is only off for now (Waiting, Stunned, Frozen, Asleep) stays grey.
+- **Wandering merchants:** visiting one opens a short dialogue with the pack, its price and Buy / Not today.
+- **Not obtainable** is worked out from the card's source; the Admin panel shows it as a status line.
+- **Falling cards:** the red top edge falls with the card.
+- **New card: Skull Vulture** (your PixelLab art). 1 Lumber, Wait 1, 3/4, Flying, Daunt 1, Nocturnal. It has no source yet (D51).
+- **Art:** 9 more portraits. New: Eyrie Warden, Rockslide Ram, Peak Condor, Alpine Avalanche, Grizzly Vanguard, Blessed Avatar and Skull Vulture. Redone: Marsh Wisp (no longer a bear) and Soldier Ant. 183 cards have art.
+- **Tutorial:** the combined slot uses 🎓 again.
+
 ## 2026-10-12 (10:40)
 - **Raids:**
   - **Allies:**
