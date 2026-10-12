@@ -2,6 +2,57 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (09:40)
+- **Tutorial:**
+  - **Decks:** part 1 uses your list exactly (11 cards), and part 2 adds the four cards you named (15).
+  - **Skills:**
+    - In part 1 no card has a skill, yours or the rival's (no Flying). Part 2 keeps only Swarm.
+    - Both are set per part in Admin → Tutorial editor.
+  - **Rival decks:** re-tuned for the plainer cards. With the computer playing your side, it wins about 92% as Otters or Both and about 83% / 78% as Hummingbirds.
+  - **Tips are spread out:**
+    - Part 1 order: your hand, playing a card, then the enemy castle, combat a round later, and your deck after that.
+    - Initiative moved to part 2.
+    - At most one other tip a round.
+  - **Highlights:** your strongest card glows in your hand in part 1, and the leader slot glows in part 2.
+  - **Traveller:** he calls "You almost got them!" near the end of part 1. In part 2 he says why he's helping ("You look like you need help…").
+  - **After part 1:**
+    - The 3 reward cards sit in the "Your first deck" grid and fly into the deck with the rest.
+    - No toast; a pointer on the map shows Tutorial II.
+  - **Both parts won:** they become one 🗝️ dungeon slot on the map, and a replay plays part 1 straight into part 2.
+  - **Rushing in:** clicking quickly through the entry no longer leaves the side picker on top of the tutorial fight.
+  - **Editing:**
+    - The tutorial editor shows both parts' decks in full, with what every card does.
+    - The map editor's Tutorial nodes show their real decks (they said "0 cards") and have a button into the editor.
+- **Results screen:**
+  - Won cards stay on one row, and the cards' half sits further left.
+  - Their details open to the left, so they no longer cover what was unlocked.
+  - With more new cards the reveals run faster (two: 15%, three or more: 30%).
+  - A leftover tutorial tip no longer sits over the results.
+- **Levels:** a new player is level 0 until the tutorial, then level 1. They were level 7 because maps with no fights yet counted as cleared; that XP is taken back from existing saves.
+- **Before sign-in:** the front screen fans out 5 cards (3 on a phone).
+- **Enemies:**
+  - Only bosses, elites and champions keep summoning imps once they run dry. Everyone else surrenders or offers a draw.
+  - With nothing playable, the computer now discards its weakest card for Lumber and keeps the card it's saving for. Before, it discarded at random.
+  - It already couldn't play a card it can't pay for.
+  - Resting on the opponent's deck shows their hand size and Lumber (and Stone or Energy when they have any).
+- **Cards:**
+  - The top-right corner mark is now the card's archetype only (🙏 Ecclesia, ⛧ Devilry, 🌫️ Scrapper, 🧬 Evolution, 🐝 Swarm, 🌊 Tide). Animal types no longer show there.
+  - Stone costs read "🪨1" instead of "🪨1cost".
+- **Codex:** phylum sort and filter open on Map 12 (5 maps after the Codex), and the Traveller explains phyla the first time.
+- **Forge upgrades:** the Forge has 5 tiers.
+
+  | Tier | Map | Temper limit | Rarest card |
+  |---|---|---|---|
+  | Village Forge | start | Lv 3 | Quest |
+  | Iron Forge | 13 | Lv 4 | Super Rare |
+  | Ember Forge | 16 | Lv 8 | Unique |
+  | Dragonfire Forge | 26 | Lv 9 | Legendary |
+  | Heartfire Forge | 31 | Lv 10 | Ancient |
+
+  Each upgrade costs Maple Leaves and Dust. Limit breaks still wait for Map 50.
+- **Battle rating:** the badge keeps a plain background; only its text takes the colour.
+- **Hub:** a new 🃏 Decks tab lists the tutorial order and every tutorial, skirmish and raid deck.
+
 ## 2026-10-12 (08:30)
 - **Art:** Beetle Battering Ram, Field Mouse, Fiddler Crab Swarm and Pelican Diver. 39 of tonight's 120 portraits are in; the rest keep generating in your Chrome.
 - **Raids:** the action items now describe the boss's column attacks (a red glow on the column a round ahead).

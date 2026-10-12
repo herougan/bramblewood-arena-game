@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 9:40 am. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -27,6 +27,9 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D42** | 23:42 readings (Trident, Pitchfork, Sweep; advanced packs at sale map + 25; Rainrunner; world map after Map 2) | None | Keep |
 | **D43** | "img not found" on the Wait badge | Still not reproduced; tonight's clock-icon change touched the same badges | Send a screenshot if you see it again |
 | **D44** | Tonight's readings: Outskirts = **Map 0**, new **Map 1 Clovermead** (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits **any** unit of yours in its lane without Boomerang. Raids are a full match: **three rows a side**, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only) | The raid rows are a first version. The boss's column attacks are back (the column glows red a round ahead; the hit lands on your front and reserve cards there, or your castle if the column is empty). The allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90 | Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours |
+| **D45** | **Forge tiers.** The Forge starts at Lv 3 and Commons to Quest cards. Upgrades: Iron at Map 13 (Lv 4, up to Super Rare, 600🍁 + 300✨); Ember at Map 16 (Lv 8, up to Unique, 1500 + 800); Dragonfire at Map 26 (Lv 9, up to Legendary, 3000 + 1500); Heartfire at Map 31 (Lv 10, everything, 5000 + 2500) | The prices are my guess. A save that had already tempered past Lv 3 starts at the tier that covers it, so nobody loses levels | Keep the map gates (they're the old level gates); say if the prices feel off |
+| **D46** | **Quarry Mole (tutorial reward) costs 1 Stone.** Only cards with a "gain Stone" trigger make Stone, and nothing in the starter deck does | Right now it's a dead card in every new player's deck | Make it free (0 Stone) until a Stone card joins the early maps, or swap it for another reward |
+| **D47** | **Tutorial skills.** Part 1 has no skills; part 2 keeps only Swarm. The Fly and Boomerang remarks in part 2 therefore don't fire | Without Flying, part 2 teaches less about Hummingbirds | Keep; teach Flying on Map 1 instead (Admin → Tutorial editor can add it back: "swarm, hiveMind, flying") |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed tonight:** D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.
@@ -69,5 +72,5 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
-- **Art (PixelLab in your Chrome):** 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 39 are in the game and the run is at 40 of 120 (about 4 minutes each, so roughly 5–6 more hours). Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.
+- **Art (PixelLab in your Chrome):** 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 39 are in the game; the run carries on in your Chrome (about 4 minutes each, so roughly 5–6 more hours). Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.
 

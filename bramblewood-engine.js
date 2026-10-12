@@ -2776,7 +2776,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(eq){ const tgt = allLive(ai).filter(c=> canEquip(ai, eq.uid, c.uid)).sort((a, b)=> (b.atk + b.hp) - (a.atk + a.hp))[0]; if(tgt) equip(players, sideOf, aiId, tgt.uid, eq.uid, stats, events); } }
     if(hadPlay){ /* played (or held a useless spell) above */
     } else if(!ai.discardUsedThisTurn && ai.hand.length){
-      const idx = Math.floor(rnd()*ai.hand.length);
+      // Nothing it can play (2026-10-12, user: "sometimes, the CPU doesn't play anything - I assume its because their hand is
+      // overcosted. Are they able to pitch for resources?"): it pitches for Lumber, but no longer a random card. It keeps the
+      // card nearest to affordable (the one the Lumber is for) and pitches the weakest of the rest.
+      const need = hc=> costOfCard(hc.defId) - (ai.lumber||0);
+      const target = ai.hand.length > 1 ? ai.hand.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
+      const pool = ai.hand.filter(hc=> hc !== target);
+      const worst = pool.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
+      const idx = ai.hand.indexOf(worst);
       const [dc] = ai.hand.splice(idx,1);
       ai.graveyard.push({defId:dc.defId});
       ai.lumber += 1; // 2026-09-22: this simple sim-AI discard income now matches the real Lumber-discard economy (was a stale hardcoded Gold grant)

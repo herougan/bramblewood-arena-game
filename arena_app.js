@@ -1520,6 +1520,7 @@ function seenCardIds(){
 function noteSighted(defIds){
   if(!defIds) return;
   const defs = getCardDefs();
+  defIds = defIds.map(id=> (defs[id] && defs[id].derivedFrom) || id); // a tutorial/levelled copy counts as its card
   let changed = false;
   const fresh = [];
   { const seen = seenCardIds(); let added = false; for(const id of defIds){ if(id && defs[id] && !seen.has(id)){ seen.add(id); added = true; fresh.push(id); } }
@@ -1665,6 +1666,14 @@ function codexSectionOf(d){
 // 10+. Also, Map 1-20 are combined into one slot ... Then Map 21-40 are combined. Map 41-50... etc. Map 0 cards are combined
 // with the base cards").
 let codexSeparate = (()=>{ try{ return localStorage.getItem('bramblewood_codex_separate') === '1'; }catch(e){ return false; } })();
+// Phyla in the Codex (2026-10-12, user: "Phyla are not indicated, but we need to teach players Phyla. Maybe we, along the way
+// unlock Phyla sorting and filtering in the Codex, 5 maps after Codex"): the Codex opens on Map 7, so phylum sort and filter
+// open on Map 12.
+function phylumOf(d){ const sp = (d && d.species) || []; const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))]; return ph.join(' & ') || ''; }
+function phylaUnlocked(){
+  if(adminModeEnabled) return true;
+  try{ const sp = FEATURE_SPOTS.find(x=> x.key==='codex'), n = sp ? mapNumberOf(sp.map) : null; return n != null && playerMapReach() >= n + 5; }catch(e){ return false; }
+}
 function codexSeparateAllowed(){ return adminModeEnabled || playerMapReach() >= 10; }
 function mapBandOf(num){
   if(num <= 0) return {key:'band-0', order:[0,0,0,''], label:'🌱 Base cards & Map 0'};
@@ -3514,6 +3523,9 @@ function castleHoverHTML(hqSide){
     const pw = 230;
     let left = r.right + 10;
     if(left + pw > window.innerWidth - 8) left = r.left - pw - 10;
+    // 2026-10-12 (user: "The top right quarter is blocked"): on the results screen a won card's details open to its left,
+    // over the dimmed board, so they don't cover what was unlocked on the right.
+    if(el.closest('.rw-half-cards')){ const pr = (el.closest('.rw-panel')||el).getBoundingClientRect(); left = Math.max(8, Math.min(r.left, pr.left) - (pop.offsetWidth || pw) - 10); }
     if(left < 8) left = 8;
     let top = r.top;
     const ph = pop.offsetHeight || 220;
@@ -3637,6 +3649,7 @@ function pixelReveal(ms){
   requestAnimationFrame(step);
 }
 function renderCodex(){
+  try{ if(phylaUnlocked() && !adminModeEnabled) setTimeout(()=>{ try{ playDialogue('unlock_phyla', {once:true}); }catch(e){} }, 600); }catch(e){}
   // 2026-09-25 (task #352): Recently Deleted and the transaction Log are admin/debug-only views --
   // a regular player can never populate either one (card delete/edit is already gated behind
   // Admin Mode, see the adminModeEnabled comment below), so they were just always-visible clutter
@@ -3676,8 +3689,9 @@ function renderCodex(){
       <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
+      ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>🧬 ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
-      <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option><option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
+      <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
       ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
       <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
@@ -3704,6 +3718,7 @@ function renderCodex(){
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
+  { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
   document.getElementById('cxSort').addEventListener('change', e=>{ codexFilter.sort = e.target.value; renderCodexGrid(); });
   document.getElementById('cxSortDir').addEventListener('click', (e)=>{
     codexFilter.dir = codexFilter.dir==='desc'?'asc':'desc';
@@ -3871,6 +3886,7 @@ function renderCodexGrid(){
   if(codexFilter.q) ids = ids.filter(id=> defs[id].name.toLowerCase().includes(codexFilter.q.toLowerCase()));
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
+  if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -3879,6 +3895,7 @@ function renderCodexGrid(){
     const A=defs[a], B=defs[b];
     let base;
     if(codexFilter.sort==='name') base = A.name.localeCompare(B.name);
+    else if(codexFilter.sort==='phylum') base = (phylumOf(A)||'~').localeCompare(phylumOf(B)||'~') || ((A.species||[])[0]||'').localeCompare((B.species||[])[0]||'') || A.name.localeCompare(B.name);
     else if(codexFilter.sort==='advance') base = advancementKey(B).localeCompare(advancementKey(A)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
     else if(codexFilter.sort==='attack') base = B.attack-A.attack;
     else if(codexFilter.sort==='health') base = B.health-A.health;
@@ -4199,11 +4216,22 @@ function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch
 // Type mark (2026-10-12, user: "The archetype symbol stacks with the wait symbols ... it still needs an icon. Maybe beside
 // the wait, and once the wait is gone, it takes its place on the top-right corner"): the card's first type icon sits in the
 // top-right corner, or just left of the Wait badge while there is one.
+// 2026-10-12 (user: "Remove the animal type marker on the top right hand corner of the card. When I said archetype marker
+// previously - i meant ecclesia etc. Types are like volcano, river (geographic) and otter, insect (family), ant (tribe)"): the
+// corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution, Swarm, Tide), never its type.
+const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrapper','🌫️'], evolution:['Evolution','🧬'], swarm:['Swarm','🐝'], tide:['Tide','🌊']};
+function cardArchetypeKey(d){
+  const line = inferMechanicLine(d||{}); if(line && line !== 'none' && line !== 'None' && CARD_ARCHETYPE_MARK[line]) return line;
+  if((d.archetypes||[]).includes('Ecclesia') || d.prayerReq > 0) return 'grace';
+  const e = d.effects || {}; if(e.swarm) return 'swarm'; if(e.tide) return 'tide';
+  return null;
+}
 function archMarkHTML(d, waitShown, live){
   if(!d || d.isCastle || d.field || d.cardType==='materia') return '';
-  const t = archetypesOf(d).find(a=> ARCHETYPE_ICON[a]); if(!t) return '';
+  const key = cardArchetypeKey(d); if(!key) return '';
+  const [t, icon] = CARD_ARCHETYPE_MARK[key];
   const ww = !waitShown ? 0 : live ? 24 : (Math.min(3, Math.max(1, d.wait|0)) * 11 + 14);
-  return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t)}" aria-hidden="true">${ARCHETYPE_ICON[t]}</div>`;
+  return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t + ' archetype')}" aria-hidden="true">${icon}</div>`;
 }
 function cardTileHTML(d, opts){
   opts = opts||{};
@@ -4425,7 +4453,8 @@ function abilityBadges(d, bopts){
   if(e.timber) out.push(`🌲`); if(e.rockSolid) out.push(`🪨`); if(e.ironWill) out.push(`🔩`);
   if(e.loyal || e.loyalGrant) out.push(`🎖️`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">👑<i>🗡️</i></span>`);
   if(e.shell) out.push(`🐚${e.shell}`); if(e.pitchfork) out.push(`<span class="ab-pair" title="Pitchfork: Trident + Pierce">🔱<i>🗡</i></span>`); if(e.trident) out.push(`<span title="Trident: front and both sides">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
-  if(d.stoneCost) out.push(`🪨${d.stoneCost}cost`); if(d.metalCost) out.push(`🔩${d.metalCost}cost`); if(d.uraniumCost) out.push(`☢️${d.uraniumCost}cost`);
+  // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
+  if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
   if(e.demolisher) out.push(`⛏️${e.demolisher}`);
   if(e.changeling) out.push(`🎭`);
@@ -8300,8 +8329,66 @@ function levelUpCost(currentLevel, defId){
   return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), mats: levelUpMats(currentLevel, defId), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}};
 }
 function spendForgeCredit(defId, used){ const c = forgeCreditOf(defId); myForgeCredit[defId] = {dust: Math.max(0, c.dust - (used.dust||0)), gold: Math.max(0, c.gold - (used.gold||0))}; if(!myForgeCredit[defId].dust && !myForgeCredit[defId].gold) delete myForgeCredit[defId]; saveForgeCredit(); }
+// Forge upgrades (2026-10-12, user: "Forge needs to be upgraded to level cards further. At the start, it only supports leveling
+// them to 3. Then follow the progression we discussed. Also ranks, it doesn't allow us to upgrade high rarities until we
+// upgrade that feature"): the Forge has five tiers. Each raises the highest level it tempers to and the rarest card it will
+// work, and each upgrade waits for the map the old level gates used (Lv 5–8 at Map 16, 9 at Map 26, 10 at Map 31).
+// Limit breaks still wait for Map 50.
+const FORGE_TIERS = [
+  {tier:1, name:'Village Forge', cap:3, upTo:'quest'},
+  {tier:2, name:'Iron Forge', cap:4, upTo:'superrare', map:13, cost:{gold:600, dust:300}},
+  {tier:3, name:'Ember Forge', cap:8, upTo:'unique', map:16, cost:{gold:1500, dust:800}},
+  {tier:4, name:'Dragonfire Forge', cap:9, upTo:'legendary', map:26, cost:{gold:3000, dust:1500}},
+  {tier:5, name:'Heartfire Forge', cap:10, upTo:'ancient', map:31, cost:{gold:5000, dust:2500}},
+];
+const FORGE_TIER_KEY = 'bramblewood_forge_tier_v1';
+function forgeTier(){
+  let t = 0; try{ t = +localStorage.getItem(FORGE_TIER_KEY) || 0; }catch(e){}
+  if(!t){ // first look: a save that already tempered past Lv 3 keeps the tier that covers it
+    let hi = 0; try{ Object.keys(myCardCopies||{}).forEach(id=>{ const L = getCardLevel(id)||0; if(L > hi) hi = L; }); }catch(e){}
+    t = (FORGE_TIERS.find(x=> x.cap >= Math.min(10, hi)) || FORGE_TIERS[FORGE_TIERS.length-1]).tier;
+    try{ localStorage.setItem(FORGE_TIER_KEY, String(t)); }catch(e){}
+  }
+  return Math.max(1, Math.min(FORGE_TIERS.length, t));
+}
+function forgeTierInfo(t){ return FORGE_TIERS[(t || forgeTier()) - 1]; }
+function forgeRarityOK(defId){
+  if(adminModeEnabled) return true;
+  const d = getCardDefs()[defId] || {}, band = RARITY_TIER_BANDS.indexOf(d.rarity || 'common');
+  return band <= RARITY_TIER_BANDS.indexOf(forgeTierInfo().upTo);
+}
+function forgeTierFor(defId, toLevel){ // the tier needed to temper this card to toLevel (0 = fine now)
+  if(adminModeEnabled) return 0;
+  const d = getCardDefs()[defId] || {}, band = RARITY_TIER_BANDS.indexOf(d.rarity || 'common');
+  const need = FORGE_TIERS.find(x=> x.cap >= Math.min(10, toLevel) && RARITY_TIER_BANDS.indexOf(x.upTo) >= band);
+  return need && need.tier > forgeTier() ? need.tier : 0;
+}
+function canUpgradeForge(){
+  const next = FORGE_TIERS[forgeTier()]; if(!next) return {ok:false, why:'max'};
+  if(!adminModeEnabled && playerMapReach() < next.map) return {ok:false, why:'map', next};
+  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust) return {ok:false, why:'cost', next};
+  return {ok:true, next};
+}
+function upgradeForge(){
+  const c = canUpgradeForge(); if(!c.ok) return false;
+  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; try{ saveCurrencies(); }catch(e){}
+  try{ localStorage.setItem(FORGE_TIER_KEY, String(c.next.tier)); }catch(e){}
+  try{ logTxn({action:'forgeUpgrade', source:'Forge', before: c.next.tier - 1, after: c.next.tier}); }catch(e){}
+  return c.next;
+}
+function forgeUpgradeHTML(){
+  const cur = forgeTierInfo(), next = FORGE_TIERS[cur.tier], c = canUpgradeForge();
+  const rarName = k=> ((RARITY_DEFS.find(r=> r.key===k)||{}).label || k);
+  return `<div class="forge-upgrade" role="group" aria-label="Forge upgrade">
+    <div class="fu-now"><b>🏭 ${escapeHtml(cur.name)}</b> <small>Tier ${cur.tier}/${FORGE_TIERS.length}: tempers to Lv ${cur.cap}, cards up to ${escapeHtml(rarName(cur.upTo))}</small></div>
+    ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
+      ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : `<span class="forge-cost-row">${forgeCostChipsHTML(next.cost)}</span>`}
+      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+  </div>`;
+}
 function canAffordLevelUp(currentLevel, defId){
   if(levelGateNeed((currentLevel||0) + 1)) return false;
+  if(forgeTierFor(defId, (currentLevel||0) + 1)) return false;
   const cost = levelUpCost(currentLevel, defId);
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
 }
@@ -10154,6 +10241,15 @@ const DIALOGUES = {
     {who:'shieldback', text:'The training wheels are off now. From here on, nobody stops a fight to explain it.', options:[{label:'I\'m ready.', goto:'go'}], silent:'go'},
     {label:'go', who:'traveller', text:'Read every card you meet. The road will do the rest.'},
   ]},
+  // 2026-10-12 (user: "The wandering traveller should have an NPC dialogue during tutorial 1. Somewhere at the end when you're
+  // winning. Like 'You almost got them!'"): he's watching from the roadside before he ever joins you.
+  unlock_phyla: {lines:[
+    {who:'traveller', text:'Notice how the cards fall into families? Otters, badgers and moles are all Beasts. Bees and scorpions are Arthropods.'},
+    {who:'traveller', text:'Those families are phyla. The Codex can sort and filter by them now.'},
+  ]},
+  tut_traveller_cheer: {lines:[
+    {who:'traveller', text:'You almost got them! One more push.'},
+  ]},
   tut_fly: {lines:[
     {who:'aurelia', text:'Wings out! That gives us aerial superiority: ground units miss us half the time.'},
   ]},
@@ -11125,10 +11221,11 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
-      <div class="se-h-row"><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
-      <div class="se-deck se-deck-stacks">${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
+      ${draft.kind === 'tutorial' ? tutorialNodeDecksHTML(draft) : ''}
+      <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
+      <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       ${deckIds.length ? `<details class="se-levels" ${draft.cardLevels && Object.keys(draft.cardLevels).length ? 'open' : ''}><summary>Card levels <small>every copy of a card shares its level; blank = its usual level</small></summary><div class="se-levels-grid">${deckIds.filter(id=> defs[id]).map(id=> `<label class="se-lv"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><input type="number" min="0" max="11" data-cardlv="${escapeAttr(id)}" placeholder="${cardBaseLevel(defs[id])}" value="${draft.cardLevels && draft.cardLevels[id] != null ? escapeAttr(draft.cardLevels[id]) : ''}"></label>`).join('')}</div></details>` : ''}
-      <div class="se-search-row"><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
+      <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
@@ -11188,6 +11285,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
     overlay.querySelectorAll('.se-armour-in').forEach(inp=> inp.oninput = ()=>{ dirty = true; // a layer above 0 opens the next one; a 0 closes everything above it
       const ins = [...overlay.querySelectorAll('.se-armour-in')]; let open = true; ins.forEach((el, k)=>{ const lab = el.closest('.se-armour-layer'); if(k > 0) open = open && (Number(ins[k-1].value)||0) > 0; if(lab) lab.hidden = !open; }); });
+    { const te = document.getElementById('seTutEdit'); if(te) te.onclick = ()=> openTutorialEditor(); }
     { const dp = document.getElementById('seDeckPopup'); if(dp) dp.onclick = ()=>{ read();
         openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
@@ -11286,7 +11384,9 @@ function xpToNext(level){ const L = Math.max(1, level|0); return Math.round(200 
 function loadXp(){ try{ const x = JSON.parse(localStorage.getItem(XP_KEY)||'null'); if(x && typeof x.xp==='number') return Object.assign({milestones:[]}, x); }catch(e){} return {xp:0, milestones:[]}; }
 function saveXp(x){ try{ localStorage.setItem(XP_KEY, JSON.stringify(x)); }catch(e){} }
 function levelFromXp(xp){ let level = 1, rest = xp; while(rest >= xpToNext(level)){ rest -= xpToNext(level); level++; } return {level, into: rest, need: xpToNext(level)}; }
-function playerLevelInfo(){ return levelFromXp(loadXp().xp); }
+// 2026-10-12 (user: "Why does a new player start at level 7 - it should be level 0! After the tutorial, they become level 1"):
+// level 0 until the tutorial is done. (The 7 came from empty, unbuilt maps counting as cleared: see conquestMapCleared.)
+function playerLevelInfo(){ if(!loadTutorialDone()) return {level:0, into:0, need:xpToNext(1)}; return levelFromXp(loadXp().xp); }
 function awardXp(n, reason){
   if(!(n>0)) return;
   const x = loadXp(), before = levelFromXp(x.xp).level;
@@ -11300,7 +11400,7 @@ function xpMilestones(){
   const prog = loadConquestProgress();
   (prog.completed||[]).filter(id=> !/tutorial/.test(id)).forEach(id=> out.push({id:'cq:'+id, xp:25, label:'First clear'}));
   (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).forEach(m=>{ if(conquestMapCleared(m.id)) out.push({id:'map:'+m.id, xp:300, label:`Cleared ${m.name}`}); });
-  if(loadTutorialDone()) out.push({id:'tutorial', xp:200, label:'Finished the tutorial'});
+  if(loadTutorialDone()) out.push({id:'tutorial', xp:100, label:'Finished the tutorial'});
   const owned = Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length;
   [[10,150],[25,300],[50,600],[100,1000],[200,2000]].forEach(([n,xp])=>{ if(owned>=n) out.push({id:'col:'+n, xp, label:`Collected ${n} cards`}); });
   [[1550,300],[1650,600],[1800,1000],[2000,2000],[2200,3000]].forEach(([r,xp])=>{ if(myRating>=r) out.push({id:'rank:'+r, xp, label:`Reached rating ${r}`}); });
@@ -11321,13 +11421,16 @@ function soonCheckMilestones(){
 }
 function checkXpMilestones(){
   const x = loadXp(); const have = new Set(x.milestones);
+  // Take back the XP a map with no fights gave out (2026-10-12).
+  { const bogus = [...have].filter(id=> /^map:/.test(id) && !conquestMapCleared(id.slice(4)));
+    if(bogus.length){ bogus.forEach(id=> have.delete(id)); x.xp = Math.max(0, x.xp - 300*bogus.length); x.milestones = Array.from(have); saveXp(x); refreshLevelBadge(); } }
   const fresh = xpMilestones().filter(m=> !have.has(m.id));
   if(!fresh.length) return;
   fresh.forEach(m=> have.add(m.id));
   x.milestones = Array.from(have); saveXp(x);
   const total = fresh.reduce((t,m)=> t+m.xp, 0);
   awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
-  showToast(`✨ +${total} XP — ${fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}`, 'ok');
+  if(!(fresh.length === 1 && fresh[0].id === 'tutorial')) showToast(`✨ +${total} XP — ${fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}`, 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
 }
 function levelBadgeHTML(){
   const L = playerLevelInfo();
@@ -13900,6 +14003,13 @@ function renderConquestSubTab(body){
           // 2026-10-12: part 2 waits here (with a "!") until it's won; after that, both parts live in this one slot.
           const t2 = node.stage === 2, tDone = t2 ? loadTutorial2Done() : loadTutorialDone();
           if(t2 && !loadTutorialDone()) return ''; // part 2 appears once part 1 is won
+          // 2026-10-12 (user: "when i finish everything, combine them into a single Dungeon"): once both parts are won they're one
+          // dungeon slot; a replay plays part 1 and goes straight on to part 2.
+          if(loadTutorialDone() && loadTutorial2Done()){
+            if(t2) return '';
+            return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial kind-dungeon tutorial-solo tutorial-dungeon done ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="Tutorials: a two-fight dungeon (replay)">
+            <span class="map-node-ico">🗝️</span><span class="tut-num" aria-hidden="true">I·II</span></button>`;
+          }
           const tip = t2 ? (tDone ? 'Tutorial II: replay' : 'Tutorial II. Click to start') : (tDone ? 'Tutorial: replay' : 'Tutorial');
           return `<button type="button" data-lkey="${node.key}" class="map-node kind-tutorial tutorial-solo ${tDone?'done':'is-next'} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}" title="${escapeAttr(tip)}">
             <span class="map-node-ico">${node.icon}</span><span class="tut-num" aria-hidden="true">${t2 ? 'II' : 'I'}</span>${!tDone && (t2 || !loadTutorialDone()) ? '<span class="map-spot-new">!</span>' : ''}
@@ -15094,6 +15204,7 @@ function tutorialStageOpponentDeck(stage, pick){
 }
 let factionCountdownTimer = null;
 function showFactionScreen(){
+  if(loadFactionChoice() && matchState && matchState.mode === 'tutorial') return; // already picked and fighting
   const el = document.getElementById('factionScreen');
   if(!el){ beginTutorialStage(1); return; } // defensive: DOM node missing -> skip straight to the series rather than getting stuck
   el.hidden = false;
@@ -15191,6 +15302,7 @@ function tutorialProgressText(p){
   return `${p.level ?? 0}/4 ${TUTORIAL_LEVELS[p.level] || ''}${p.faction ? ' · ' + p.faction : ''}${step}${tries}`;
 }
 function resolveFactionChoice(pick){
+  { const el0 = document.getElementById('factionScreen'); if(el0 && el0.hidden && matchState && matchState.mode === 'tutorial') return; } // a second tap
   noteTutorialProgress({level:1, faction:pick, pickedAt:Date.now()});
   if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
   saveFactionChoice(pick);
@@ -15267,6 +15379,7 @@ function openTutorialEditor(){
   const pick = loadFactionChoice() || 'both';
   const autoMine = tutorialStagePlayerDeck(1, pick), autoRival = tutorialStageOpponentDeck(1, pick);
   const sum = d=> Object.values(d||{}).reduce((a,b)=> a+b, 0);
+  const T1 = tutorialDecksFor(1, pick), T2 = tutorialDecksFor(2, pick);
   ov.innerHTML = `<div class="modal tutorial-editor" role="dialog" aria-label="Tutorial editor">
     <div class="modal-head-row"><h2>🎓 Tutorial editor</h2><button class="modal-close-btn" id="teClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
@@ -15279,10 +15392,17 @@ function openTutorialEditor(){
     <div class="te-grid">
       ${['otters','hummingbirds','both'].map(f=> `<label>Rival name (${f==='both'?'picked both':'picked '+f})<input type="text" id="teRival_${f}" maxlength="40" value="${escapeAttr((c.rivalNames||{})[f]||'')}"></label>`).join('')}
     </div>
-    <div class="te-grid te-decks">
-      <label>Your deck <small>(one per line: card-id x2 · empty = automatic, ${sum(autoMine)} cards)</small><textarea id="teMyDeck" rows="6" placeholder="${escapeAttr(deckToText(autoMine))}">${escapeHtml(deckToText(c.myDeck))}</textarea></label>
-      <label>Rival deck <small>(empty = automatic, ${sum(autoRival)} cards)</small><textarea id="teRivalDeck" rows="6" placeholder="${escapeAttr(deckToText(autoRival))}">${escapeHtml(deckToText(c.rivalDeck))}</textarea></label>
-    </div>
+    <p class="panel-sub">Each deck is shown in full (one card per line: <code>card-id x2</code>). Skills not listed under “Skills kept” are taken off every card in that part, yours and the rival's, so a part only teaches what you allow. Below each box: what the cards actually do in that part.</p>
+    ${[1,2].map(n=>{ const D = n===1 ? T1 : T2, keep = tutorialKeepSkills(n), hl = tutorialHighlightId(n, pick);
+      return `<h3>Part ${n} <small class="panel-sub">(${sum(D.mine)} cards vs ${sum(D.rival)}; your pick: ${escapeHtml(pick)})</small></h3>
+      <div class="te-grid te-decks">
+        <label>Your deck<textarea id="teMyDeck${n}" rows="6">${escapeHtml(deckToText(D.mine))}</textarea>${tutorialDeckPreviewHTML(D.mine, n)}</label>
+        <label>Rival deck <small>(${escapeHtml(pick)} pick)</small><textarea id="teRivalDeck${n}" rows="6">${escapeHtml(deckToText(D.rival))}</textarea>${tutorialDeckPreviewHTML(D.rival, n)}</label>
+      </div>
+      <div class="te-grid">
+        <label>Skills kept <small>(comma-separated, e.g. swarm, flying; empty = none)</small><input type="text" id="teKeep${n}" value="${escapeAttr(keep.join(', '))}"></label>
+        <label>Highlighted card <small>(glows in your hand; empty = none)</small><input type="text" id="teHl${n}" value="${escapeAttr(hl||'')}"></label>
+      </div>`; }).join('')}
     <h3>Starting deck <small class="panel-sub">(${sum(c.starterShared)} shared + ${sum(c.starterOtters)} / ${sum(c.starterHummingbirds)} / ${sum(c.starterBoth)} for the picked side + ${(c.rewards||[]).length} tutorial rewards = ${sum(c.starterShared) + sum(c.starterOtters) + (c.rewards||[]).length} cards for an Otter pick)</small></h3>
     <p class="panel-sub">One per line: card-id x2. Given once, when a new player wins the tutorial; the reward cards are added to the deck too.</p>
     <div class="te-grid te-decks">
@@ -15309,15 +15429,17 @@ function openTutorialEditor(){
   document.addEventListener('keydown', onKey);
   $('teClose').onclick = close;
   const read = ()=>{
-    const my = textToDeck($('teMyDeck').value), rv = textToDeck($('teRivalDeck').value);
+    const my = textToDeck($('teMyDeck1').value), rv = textToDeck($('teRivalDeck1').value), my2 = textToDeck($('teMyDeck2').value), rv2 = textToDeck($('teRivalDeck2').value);
+    const keepOf = id=> $(id).value.split(/[\s,]+/).map(x=> x.trim()).filter(Boolean);
     const stS = textToDeck($('teStShared').value), stO = textToDeck($('teStOtters').value), stH = textToDeck($('teStHb').value), stB = textToDeck($('teStBoth').value);
     const rewards = $('teRewards').value.split(/[\n,]+/).map(x=> x.trim()).filter(Boolean);
-    const bad = my.bad.concat(rv.bad, stS.bad, stO.bad, stH.bad, stB.bad, rewards.filter(id=> !getCardDefs()[id]));
+    const bad = my.bad.concat(rv.bad, my2.bad, rv2.bad, [$('teHl1').value.trim(), $('teHl2').value.trim()].filter(id=> id && !getCardDefs()[id]), stS.bad, stO.bad, stH.bad, stB.bad, rewards.filter(id=> !getCardDefs()[id]));
     if(bad.length){ $('teMsg').textContent = '⚠️ Unknown card ids: ' + bad.join(', '); return null; }
     const steps = {}; ov.querySelectorAll('[data-testep]').forEach(t=>{ const v = t.value.trim(); if(v) steps[t.dataset.testep] = v; });
     return {myHp: Math.max(1, +$('teMyHp').value||12), rivalHp: Math.max(1, +$('teRivalHp').value||10), handSize: Math.max(1, Math.min(5, +$('teHand').value||3)), seed: (+$('teSeed').value>>>0) || TUTORIAL_SEED,
       rivalNames: {otters: $('teRival_otters').value.trim(), hummingbirds: $('teRival_hummingbirds').value.trim(), both: $('teRival_both').value.trim()},
-      myDeck: my.deck, rivalDeck: rv.deck, steps,
+      myDeck: my.deck, rivalDeck: rv.deck, myDeck2: my2.deck, rivalDeck2: rv2.deck, steps,
+      keepSkills1: keepOf('teKeep1'), keepSkills2: keepOf('teKeep2'), highlight1: $('teHl1').value.trim(), highlight2: $('teHl2').value.trim(),
       starterShared: stS.deck || {}, starterOtters: stO.deck || {}, starterHummingbirds: stH.deck || {}, starterBoth: stB.deck || {}, rewards};
   };
   $('teSave').onclick = async ()=>{ const next = read(); if(!next) return; tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); const pub = await publishTutorialCfg(); $('teMsg').textContent = pub ? '✅ Saved and published.' : '✅ Saved in this browser.'; };
@@ -15333,24 +15455,82 @@ const TUTORIAL_FIXED_DECKS = {
   1: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1},
   2: {'duckling':3, 'honey-bee':3, 'silver-minnow':3, 'pond-duck':1, 'pond-trout':1, 'duck-paddler':1, 'cottontail':1, 'acorn-chipmunk':1, 'chipmunk-forager':1},
 };
-// The rival's tutorial decks (2026-10-12, measured with the CPU playing your side over 200 seeds: part 1 ~86%, part 2 ~75%
-// before your leader joins in): the weakest of the other tribe, fixed, so every pick meets an easy first opponent.
+// The rival's tutorial decks (2026-10-12, re-measured once the tutorial's cards lost their skills, CPU playing your side, 200
+// seeds, before your leader joins in: Otter/Both picks ~92% in both parts, Hummingbird pick ~83% / ~78%): the weakest of the
+// other tribe, fixed, so every pick meets an easy first opponent.
 const TUTORIAL_RIVAL_DECKS = {
-  otters: {'cobalt-talon-fledgling':4, 'otter-kit':5},
-  hummingbirds: {'otter-kit':6, 'crossed-eyes':1, 'pond-trout':2},
-  both: {'cobalt-talon-fledgling':4, 'otter-kit':5},
+  otters: {'cobalt-talon-fledgling':6, 'crossed-eyes':2},
+  hummingbirds: {'otter-kit':7, 'crossed-eyes':2},
+  both: {'cobalt-talon-fledgling':6, 'crossed-eyes':2},
 };
+// Which deck each side brings to each part (2026-10-12): the editor's decks when set, else the fixed ones above.
+function tutorialDecksFor(st, pick){
+  const cfg = tutorialCfg || {}, defs = getCardDefs();
+  const valid = d=> d && Object.keys(d).some(id=> defs[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> defs[id] && n>0)) : null;
+  if(st >= 2) return {mine: valid(cfg.myDeck2) || valid(TUTORIAL_FIXED_DECKS[2]) || buildFactionStarterDeck(pick), rival: valid(cfg.rivalDeck2) || valid(cfg.rivalDeck) || valid(TUTORIAL_RIVAL_DECKS[pick]) || tutorialStageOpponentDeck(st, pick)};
+  return {mine: valid(cfg.myDeck) || valid(TUTORIAL_FIXED_DECKS[1]) || tutorialStagePlayerDeck(st, pick), rival: valid(cfg.rivalDeck) || valid(TUTORIAL_RIVAL_DECKS[pick]) || tutorialStageOpponentDeck(st, pick)};
+}
+// Skills in the tutorial (2026-10-12, user: "the cards me and the enemy draws shouldnt have flying. So its simpler" + "Let me
+// edit the tutorial's deck so I can remove any cards with skills. Only maybe in Tutorial 2 we can introduce Swarm"): part 1's
+// cards fight with no skills at all; part 2 keeps Swarm. Your leader keeps its own.
+function tutorialKeepSkills(st){
+  const cfg = tutorialCfg || {}, k = st >= 2 ? cfg.keepSkills2 : cfg.keepSkills1;
+  return Array.isArray(k) ? k : (st >= 2 ? ['swarm', 'hiveMind'] : []);
+}
+function tutorialPlainDeck(deck, st){
+  const keep = new Set(tutorialKeepSkills(st)), defs = getCardDefs(), out = {};
+  Object.entries(deck||{}).forEach(([id, n])=>{
+    const d = defs[id];
+    const eff = d && d.effects ? d.effects : {}, drop = Object.keys(eff).filter(k=> !keep.has(k));
+    if(!d || !drop.length){ out[id] = (out[id]||0) + n; return; }
+    const did = id + '~tut' + st, kept = {}; Object.keys(eff).forEach(k=>{ if(keep.has(k)) kept[k] = eff[k]; });
+    matchDefsOverlay[did] = Object.assign({}, d, {id: did, derivedFrom: id, effects: kept, locked: false});
+    out[did] = (out[did]||0) + n;
+  });
+  return out;
+}
+// Highlighted card (2026-10-12, user: "highlight the wandering trader for tutorial 2 and highlight the strongest common card in
+// tutorial 1"): it glows in your hand (part 2: the leader slot).
+function tutorialHighlightId(st, pick){
+  const cfg = tutorialCfg || {}, set = st >= 2 ? cfg.highlight2 : cfg.highlight1;
+  if(set) return set;
+  if(st >= 2) return 'wandering-traveller';
+  const defs = getCardDefs(), mine = Object.keys(tutorialDecksFor(1, pick || 'both').mine).filter(id=> defs[id]);
+  return mine.sort((a, b)=> ((defs[b].attack||0)*1.5 + (defs[b].health||0)) - ((defs[a].attack||0)*1.5 + (defs[a].health||0)))[0] || null;
+}
+// The map editor's tutorial nodes (2026-10-12, user: the Tutorial node showed "Tutorial deck · 0 cards"): both sides' real
+// decks for that part, with a button into the tutorial editor where they're changed.
+function tutorialNodeDecksHTML(node){
+  const st = node.stage === 2 ? 2 : 1, pick = loadFactionChoice() || 'both', D = tutorialDecksFor(st, pick), defs = getCardDefs();
+  const n = d=> Object.values(d||{}).reduce((a, b)=> a + b, 0);
+  const stacks = d=> `<div class="se-deck se-deck-stacks">${Object.keys(d).filter(id=> defs[id]).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), d[id], '×' + d[id])}</span>`).join('')}</div>`;
+  const keep = tutorialKeepSkills(st);
+  return `<div class="se-wide se-tut-decks">
+    <div class="se-h-row"><h3 class="se-h">Part ${st}: your deck · ${n(D.mine)} cards</h3><button type="button" class="btn small primary" id="seTutEdit">🎓 Edit tutorial decks</button></div>
+    ${stacks(D.mine)}
+    <h3 class="se-h">Rival deck (${escapeHtml(pick)} pick) · ${n(D.rival)} cards</h3>
+    ${stacks(D.rival)}
+    <p class="panel-sub">Skills kept in this part: ${keep.length ? escapeHtml(keep.join(', ')) : 'none'} (every other skill is taken off both decks). Highlighted card: ${escapeHtml((defs[tutorialHighlightId(st, pick)]||{}).name || 'none')}.</p></div>`;
+}
+function tutorialDeckPreviewHTML(deck, st){
+  const defs = getCardDefs(), keep = new Set(tutorialKeepSkills(st));
+  return `<ul class="te-deck-list">${Object.entries(deck||{}).filter(([id])=> defs[id]).map(([id, n])=>{ const d = defs[id], eff = Object.keys(d.effects||{});
+    const kept = eff.filter(k=> keep.has(k)), cut = eff.filter(k=> !keep.has(k));
+    return `<li><b>${n}×</b> ${escapeHtml(d.icon||'')} ${escapeHtml(d.name)} <small>${d.attack||0}/${d.health||0}${d.wait?` ⏳${d.wait}`:''}${d.cost?` 🪵${d.cost}`:''}</small>${kept.length ? ` <span class="te-kept">${escapeHtml(kept.join(', '))}</span>` : ''}${cut.length ? ` <s class="te-cut" title="Taken off in this part">${escapeHtml(cut.join(', '))}</s>` : ''}</li>`; }).join('')}</ul>`;
+}
 function startTutorialMatch(stage, arrangedIds, opts){
+  try{ if(coachOpen) hideCoachTip(); }catch(e){}
   const pick = loadFactionChoice() || 'both';
   const st = stage || loadTutorialStage();
   const cfg = tutorialCfg;
   forcedNextSeed = (cfg.seed>>>0) || TUTORIAL_SEED;
+  matchDefsOverlay = {}; const tutDecks = tutorialDecksFor(st, pick);
+  const deckCounts = tutorialPlainDeck(tutDecks.mine, st), rivalCounts = tutorialPlainDeck(tutDecks.rival, st); invalidateCardDefs();
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode:'open'}); // 2026-10-12 (user: "Tutorial -> non collapse rules"): it was left on the engine's old default
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   // Part 2 (2026-10-12) plays your real starter deck (+ the tutorial reward cards), with your leader beside it.
-  const deckCounts = st >= 2 ? (validDeck(TUTORIAL_FIXED_DECKS[2]) || buildFactionStarterDeck(pick)) : (validDeck(cfg.myDeck) || validDeck(TUTORIAL_FIXED_DECKS[1]) || tutorialStagePlayerDeck(st, pick, arrangedIds));
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
   // whole section's header comment for why skirmish decks stay scratch-only until the series is
   // actually won.
@@ -15361,7 +15541,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const rivalCharacter = Object.assign({}, watch || CHARACTER_DEFS['castle'], {id: watch ? 'outskirts-watchtower' : 'tutorial-rival', name: watch ? watch.name : rivalName}, cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
-    2: engine.newPlayer(2, validDeck(cfg.rivalDeck) || validDeck(TUTORIAL_RIVAL_DECKS[pick]) || tutorialStageOpponentDeck(st, pick), rivalCharacter),
+    2: engine.newPlayer(2, rivalCounts, rivalCharacter),
   };
   players[2].loopCards = []; // 2026-10-12 (user: "DONT summon bee tanks when the tutorial enemy has nothing to summon")
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
@@ -15384,11 +15564,20 @@ function startTutorialMatch(stage, arrangedIds, opts){
     // triumphant vfx/sfx) leader slot. Then a simple tutorial explanation of what a leader slot is"): part 2 opens with no
     // leader; tutorialLeaderJoin brings it in.
     leaderDefId: null, pendingLeaderId: st >= 2 ? (matchLeaderId() || 'wandering-traveller') : null, leaderUid:null, tutorialFaction:pick, tutorialStage:st, adminTest: !!(opts && opts.adminTest),
-    tutorialReplay: !!(opts && opts.replay), tutorialFirstPart2: st >= 2 && !loadTutorial2Done()};
+    tutorialReplay: !!(opts && opts.replay), tutorialFirstPart2: st >= 2 && !loadTutorial2Done(), tutorialHighlight: tutorialHighlightId(st, pick)};
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
   switchTab('play');
   if(matchState.pendingLeaderId){ const m = matchState; setTimeout(()=> tutorialLeaderJoin(m), 1100); }
+}
+function guideToTutorial2(){
+  let tries = 0;
+  const go = ()=>{
+    const el = document.querySelector('.map-node[data-nodekey="tutorial2"]');
+    if(!el){ if(++tries < 12) setTimeout(go, 300); return; }
+    try{ showCoachTip({id:'go-tutorial2', action:true, gate:true, text:'🎓 Part 2 is ready. Tap it to carry on: a friend joins you there.', anchor:()=> document.querySelector('.map-node[data-nodekey="tutorial2"]')}, el); }catch(e){}
+  };
+  setTimeout(go, 900);
 }
 function tutorialLeaderJoin(m){
   if(!m || matchState !== m || m.over || !m.pendingLeaderId) return;
@@ -15398,7 +15587,7 @@ function tutorialLeaderJoin(m){
   ov.innerHTML = `<div class="npc-prompt" role="dialog" aria-modal="true" aria-label="${escapeAttr(d.name)}">
     <div class="npc-face">${d.art ? `<img src="${d.art}" alt="">` : `<span>${d.icon||'👑'}</span>`}</div>
     <div class="npc-body"><b class="npc-name">${escapeHtml(d.name)}</b>
-      <p>I saw that first fight. You'll do. I'm with you now: call me onto the field when you need me.</p>
+      <p>You look like you need help. I watched that first fight from the hedge: good instincts, thin ranks, and the next castle is sturdier. A road's safer walked by two, and I owe this valley a favour or two. I'm with you now: call me onto the field when you need me.</p>
       <button type="button" class="btn primary" id="npcPromptOk">Okay</button></div></div>`;
   ov.hidden = false;
   try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
@@ -15481,14 +15670,17 @@ function showTutorialDeckPicker(){
 // into the deck box, and only then does the map open.
 function openStarterDeckStep(pick, onDone){
   const defs = getCardDefs(), counts = buildFactionStarterDeck(pick);
-  const rewards = grantTutorialSeriesRewardsPreview(pick);
-  const ids = Object.keys(counts).filter(id=> defs[id]).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || defs[a].name.localeCompare(defs[b].name));
+  const rewards = grantTutorialSeriesRewardsPreview(pick).filter(id=> defs[id]);
+  // 2026-10-12 (user: "when we get those 3 cards - then im told to put those cards in my deck - put those 3 cards in my deck
+  // too!"): the tutorial's reward cards are in the grid and fly into the deck with the rest (claimTutorialWin adds them).
+  rewards.forEach(id=> counts[id] = (counts[id]||0) + 1);
+  const ids = Object.keys(counts).filter(id=> defs[id]).sort((a,b)=> (rewards.includes(b) - rewards.includes(a)) || (defs[a].cost||0)-(defs[b].cost||0) || defs[a].name.localeCompare(defs[b].name));
   const ov = document.createElement('div'); ov.className = 'modal-overlay starter-step';
   ov.innerHTML = `<div class="modal starter-modal" role="dialog" aria-modal="true" aria-label="Your starter deck">
     <h2>🃏 Your first deck</h2>
     <p class="panel-sub">You've earned these cards. Add them to your deck to take them onto the map.</p>
-    <div class="ss-grid">${ids.map(id=> `<div class="ss-card">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}</div>`).join('')}</div>
-    ${rewards.length ? `<p class="ss-bonus">🎁 Tutorial rewards, also yours: ${rewards.filter(id=> defs[id]).map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}</p>` : ''}
+    <div class="ss-grid">${ids.map(id=> `<div class="ss-card${rewards.includes(id) ? ' is-reward' : ''}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}${rewards.includes(id) ? '<span class="ss-gift" title="Tutorial reward">🎁</span>' : ''}</div>`).join('')}</div>
+    ${rewards.length ? `<p class="ss-bonus">🎁 Your tutorial rewards (${rewards.map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}) go in too.</p>` : ''}
     <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count">0/${deckTotal(counts)}</b></div>
       <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
   </div>`;
@@ -17793,7 +17985,7 @@ function leaderWidgetHTML(m){
   // the themed popover alone still names it as the leader via its own tile styling/ribbon.
   // 2026-10-12 (user: "The leader should be greyed out if I don't have enough to cast it").
   const afford = (()=>{ try{ return m.engine.canPlay(m.players[myPidInMatch(m)], m.leaderDefId, null); }catch(e){ return true; } })();
-  return `<div class="leader-widget summonable ${afford ? '' : 'is-unaffordable'}" id="leaderWidget" data-defid="${m.leaderDefId}" draggable="true">
+  return `<div class="leader-widget summonable ${afford ? '' : 'is-unaffordable'} ${m.tutorialHighlight && m.tutorialHighlight === m.leaderDefId ? 'tut-highlight' : ''}" id="leaderWidget" data-defid="${m.leaderDefId}" draggable="true">
     ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}
     <div class="leader-ribbon">👑${ribbon ? ' ' + ribbon : ''}</div>
   </div>`;
@@ -18201,6 +18393,7 @@ function renderMatchUI(){
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
   const showWinModal = m.over && !m.winModalDismissed;
+  try{ if(showWinModal && (coachOpen || coachShield)) hideCoachTip(); }catch(e){} // 2026-10-12: a tutorial step left open used to sit over the results (its shield ate clicks)
   try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
   const deckTotals = m.deckTotals || {1:p1.deck.length, 2:p2.deck.length};
   const holdingCard = m.selectedUid!=null;
@@ -18409,7 +18602,12 @@ function renderMatchUI(){
     ];
     widgets.forEach(w=>{
       if(!w.el) return;
-      const countLine = ()=> `<div class="ctt-title">${escapeHtml(w.label)} Deck</div><div class="ctt-kind">🃏 ${w.player.deck.length}/${deckTotals[w.pid]} cards left</div>`;
+      // 2026-10-12 (user: "on hover over opponent's deck - you see their resource count"): their hand size and what they have to
+      // spend, alongside the cards left.
+      const res = ()=>{ const pl = w.player, bits = [`✋ ${pl.hand.length} in hand`, `🪵 ${pl.lumber||0} Lumber`];
+        if(pl.stone) bits.push(`🪨 ${pl.stone} Stone`); if(pl.elementalEnergy) bits.push(`🔮 ${pl.elementalEnergy} Energy`); if(pl.darkness) bits.push(`★ ${pl.darkness} Darkness`);
+        return `<div class="ctt-kind">${bits.join(' · ')}</div>`; };
+      const countLine = ()=> `<div class="ctt-title">${escapeHtml(w.label)} Deck</div><div class="ctt-kind">🃏 ${w.player.deck.length}/${deckTotals[w.pid]} cards left</div>` + (w.pid !== mine ? res() : '');
       const isMine = w.pid===mine;
       const tier1 = isMine ? ()=> countLine() + `<div class="dht-hint">Hold Shift for the breakdown</div>` : countLine;
       const tier2 = isMine ? ()=> countLine() + deckBreakdownHTML(w.player.deck, defs) : countLine;
@@ -18497,8 +18695,11 @@ function renderMatchUI(){
           if(adminTest){ beginTutorialStage(2, {replay, adminTest}); return; }
           if(replay){ toMap(); return; } // the two parts are separate markers now (2026-10-12)
           // 2026-10-08 (user: "after winning, he is forced to click 'Add to deck' in a tutorial, filling their deck")
-          if(!loadTutorialDone()) openStarterDeckStep(pick, ()=>{ claimTutorialWin(pick); toMap('🎓 Part 1 done! Part 2 waits beside it on the map.'); });
-          else toMap();
+          // 2026-10-12 (user: "Lessen the amount of toasts ... when I get out of the tutorial. Guide me to click and continue
+          // with Tutorial 2"): no toast; a pointer on the map shows where part 2 is.
+          if(!loadTutorialDone()) openStarterDeckStep(pick, ()=>{ claimTutorialWin(pick); toMap(); guideToTutorial2(); });
+          else if(replay && loadTutorial2Done()) beginTutorialStage(2, {replay}); // the combined Tutorials slot plays both parts
+          else { toMap(); if(!loadTutorial2Done()) guideToTutorial2(); }
           return;
         }
         // Part 2 won: the tutorials fold into one slot on the map, and the training wheels come off.
@@ -18509,7 +18710,7 @@ function renderMatchUI(){
         if(first && pick === 'both'){ try{ const defs = getCardDefs(); const pool = Object.values(defs).filter(d=> d && !d.token && !d.test && (d.rarity||'common')==='common' && !(d.cost > 0) && ((d.archetypes||[]).includes('Otter') || (d.archetypes||[]).includes('Hummingbird')) && !myUnlockedCardIds.has(d.id));
           const b = pool[Math.floor(Math.random()*pool.length)]; if(b){ unlockCardForPlayer(b.id, 'tutorialBonus'); setTimeout(()=> showToast(`🤝 Bonus for choosing both: ${b.name} joined your Nest (not your deck).`, 'ok'), 2600); }
           setTimeout(()=>{ try{ playDialogue('both_peace'); }catch(e){} }, 4200); }catch(e){} }
-        toMap(first ? '🎓 Tutorial complete. The training wheels are off now!' : null);
+        toMap(null); // the training-wheels dialogue says it (2026-10-12: fewer toasts)
         if(first) setTimeout(()=>{ try{ playDialogue('training_wheels_off'); }catch(e){} }, 900);
         return;
       }
@@ -18535,7 +18736,7 @@ function renderMatchUI(){
       const nb = m.nextBattle; if(!nb) return;
       if(m.mode==='tutorial'){
         const firstTime = claimTutorialWin(m.tutorialFaction || loadFactionChoice() || 'both');
-        if(firstTime){ showToast('🎓 Tutorial complete! Rewards added to your collection.', 'ok'); endMatch(); leavesRevealToMap(); return; }
+        if(firstTime){ endMatch(); leavesRevealToMap(); return; }
       }
       endMatch();
       conquestSelectedMap = nb.mapId; playSubTab = 'conquest';
@@ -20995,7 +21196,8 @@ function renderHand(){
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard || (d.cardType==='equipment' && !me.playedThisTurn)) && !m.resolving;
     const whyNot = can ? '' : unplayableReason(me, d);
-    return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''}`,
+    const hl = m.tutorialHighlight && (hc.defId === m.tutorialHighlight || d.derivedFrom === m.tutorialHighlight) ? 'tut-highlight' : '';
+    return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
   drawFlipNewHandCards(m, strip);
@@ -23146,8 +23348,10 @@ function setupEnemyBehaviour(m){
   if(!ENEMY_BEHAVIOUR_MODES.has(m.mode)){ m.enemyBehaviour = null; return; }
   const node = m.conquestNode;
   let b = node && node.enemyBehaviour;
-  if(!b && node && /boss/.test(node.kind||'')) b = 'neverSurrender';
-  if(!b){ const r = seededRng((currentMatchSeed||1) ^ 0xbe7a)(); b = r < 0.7 ? 'surrender' : (r < 0.9 ? 'offerDraw' : 'neverSurrender'); }
+  // 2026-10-12 (user: "do not let skirmishes summon tokens when they cant play anything anymore. Its reserved for strong enemies
+  // only"): only bosses, elites and champions keep throwing imps; everyone else surrenders (75%) or offers a draw.
+  if(!b && node && /boss|elite|champion/.test(node.kind||'')) b = 'neverSurrender';
+  if(!b){ const r = seededRng((currentMatchSeed||1) ^ 0xbe7a)(); b = r < 0.75 ? 'surrender' : 'offerDraw'; }
   m.enemyBehaviour = b;
   m.players[2].loopCards = b==='neverSurrender' ? LOOP_UNITS.slice() : [];
 }
@@ -23268,19 +23472,24 @@ function coachBoardEl(pred, pid){
 // taking actions sometimes, unless you click next" + "add a step about how you draw from the deck").
 // Shown in order during the tutorial match only. `block` steps put a see-through shield over the
 // board so nothing can be clicked until Next; `action` steps wait for the player to do the thing.
+// 2026-10-12 (user: "Spread out the tutorial messages a bit. there's too much info" + "for castle health, I think that tutorial
+// should go after the tutorial for asking you to play a card. Initiative leave for 2nd tutorial"): part 1 teaches your hand,
+// playing a card, then the enemy castle; combat once the first round has been fought; the deck a round after that. Part 2
+// teaches initiative. A step only blocks the steps after it in its own part (`stage`).
 const GUIDED_STEPS = [
-  {id:'g-hand', block:true, text:'👋 These are your cards — your hand. You’ll play them onto the field to fight.', anchor:()=> document.getElementById('handStrip')},
-  {id:'g-deck', block:true, text:'🃏 This is your Deck. At the start of every turn you draw one card from it into your hand.', anchor:()=> document.getElementById('deckWidgetBottom')},
-  {id:'g-castle', block:true, text:'🏰 This is the enemy Castle. Bring its health to 0 to win the fight.', anchor:()=> hqTileEl('B')},
+  {id:'g-hand', stage:1, block:true, text:'👋 These are your cards — your hand. You’ll play them onto the field to fight.', anchor:()=> document.getElementById('handStrip')},
+  {id:'g-play', stage:1, action:true, text:'▶️ Your turn: drag a card from your hand onto the field (or tap it, then tap a side). One card per turn.', anchor:()=> document.querySelector('#handStrip .card-tile.playable'), done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
+  {id:'g-castle', stage:1, block:true, text:'🏰 This is the enemy Castle. Bring its health to 0 to win the fight.', anchor:()=> hqTileEl('B')},
   // g-mycastle removed 2026-10-12 (user: "In the tutorial, you talked about my castle health - skip that one").
-  {id:'g-play', action:true, text:'▶️ Your turn: drag a card from your hand onto the field (or tap it, then tap a side). One card per turn.', anchor:()=> document.querySelector('#handStrip .card-tile.playable'), done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
-  {id:'g-combat', block:true, when:m=> m.round>=2, text:'⚔️ Each round, every card attacks the card across from it. If nothing stands across, it hits the Castle instead.', anchor:()=> document.getElementById('battlefieldEl')},
-  // Initiative (2026-10-12, user: "Talk about initiative").
-  {id:'g-initiative', block:true, when:m=> m.round>=2, text:'🪙 This gold coin is initiative. When two cards face each other evenly, the side holding the coin strikes first. It changes sides every round.', anchor:()=> document.querySelector('#battlefieldEl .init-coin') || document.getElementById('battlefieldEl')},
+  {id:'g-combat', stage:1, block:true, when:m=> m.round>=3, text:'⚔️ Each round, every card attacks the card across from it. If nothing stands across, it hits the Castle instead.', anchor:()=> document.getElementById('battlefieldEl')},
+  {id:'g-deck', stage:1, block:true, when:m=> m.round>=4, text:'🃏 This is your Deck. At the start of every turn you draw one card from it into your hand.', anchor:()=> document.getElementById('deckWidgetBottom')},
+  // Initiative (2026-10-12, user: "Talk about initiative"), in part 2.
+  {id:'g-initiative', stage:2, block:true, when:m=> m.round>=2, text:'🪙 This gold coin is initiative. When two cards face each other evenly, the side holding the coin strikes first. It changes sides every round.', anchor:()=> document.querySelector('#battlefieldEl .init-coin') || document.getElementById('battlefieldEl')},
 ];
+function guidedStepsFor(m){ const st = Math.min(2, (m && m.tutorialStage) || 1); return GUIDED_STEPS.filter(g=> (g.stage||1) === st); }
 function guidedStepActive(m){
   if(!m || m.mode!=='tutorial') return null;
-  for(const st of GUIDED_STEPS){
+  for(const st of guidedStepsFor(m)){
     if(coachSeen.has(st.id)) continue;
     if(st.done && st.done(m)){ markCoachSeen(st.id); continue; }
     if(st.when && !st.when(m)) return null; // wait for this step's moment before moving on
@@ -23366,7 +23575,12 @@ let coachOpen = null, coachShield = null;
 // remarks on the left ... The Otter version of this might be anti-air"): the first time one of yours flies (or carries a
 // boomerang) on the field, a friend says what it's good for.
 function tutorialAllyRemarks(m){
-  if(!m || m.mode!=='tutorial' || (m.tutorialStage||1) < 2) return;
+  if(!m || m.mode!=='tutorial') return;
+  if((m.tutorialStage||1) < 2){
+    const foe = m.players[2].hq, me = m.players[1].hq;
+    if(!m._toldCheer && !m.over && foe.hp > 0 && foe.hp <= Math.max(2, foe.maxHp * 0.4) && me.hp > foe.hp){ m._toldCheer = true; try{ playDialogue('tut_traveller_cheer'); }catch(e){} }
+    return;
+  }
   const defs = getCardDefs(), mine = allCardsOnBoard(m.players[1]).filter(c=> c.hp > 0).map(c=> defs[c.defId] || {});
   if(!m._toldFly && mine.some(d=> d.effects && d.effects.flying)){ m._toldFly = true; try{ playDialogue('tut_fly'); }catch(e){} }
   if(!m._toldBoom && mine.some(d=> d.effects && (d.effects.boomerang || d.effects.antiAir))){ m._toldBoom = true; try{ playDialogue('tut_boomerang'); }catch(e){} }
@@ -23383,17 +23597,20 @@ function maybeShowCoachTip(){
   if(pg){ lastPeekUid = null; const el = pg.anchor(); if(el){ showCoachTip(pg, el); return; } }
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
   // loaded up can free-range tutorial messages come up"): no passive tip while any guided step is left.
-  if(m.mode==='tutorial' && GUIDED_STEPS.some(st=> !coachSeen.has(st.id))) return;
+  if(m.mode==='tutorial' && guidedStepsFor(m).some(st=> !coachSeen.has(st.id))) return;
+  // One passive tip a round in the tutorial (2026-10-12, user: "Spread out the tutorial messages a bit").
+  if(m.mode==='tutorial' && m._tipRound === m.round) return;
   // 2) passive tips — one at a time, first match wins (a tip left unanswered last match goes first)
   const cands = passiveTipCandidates(); if(coachPendingId){ const i = cands.findIndex(t=> t.id === coachPendingId); if(i > 0) cands.unshift(cands.splice(i, 1)[0]); }
   for(const tip of cands){
     if(coachSeen.has(tip.id)) continue;
     const el = tip.anchor(); if(!el) continue;
-    showCoachTip(tip, el); return;
+    m._tipRound = m.round; showCoachTip(tip, el); return;
   }
 }
 let coachPendingId = null;
 function showCoachTip(tip, anchorEl){
+  if(matchState && matchState.over && !matchState.winModalDismissed && tip && !/^(leader|rank)/.test(tip.id||'')) return; // never over the results
   hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
@@ -23517,7 +23734,8 @@ const AVATAR_TITLES = [
 ];
 function conquestMapCleared(mapId){
   try{ const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return false; const p = loadConquestProgress();
-    return map.nodes.filter(n=>n.kind!=='raidboss' && n.kind!=='tutorial').every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; }
+    const fights = map.nodes.filter(n=>n.kind!=='raidboss' && n.kind!=='tutorial');
+    return fights.length > 0 && fights.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } // 2026-10-12: a map with no fights yet is not "cleared" (it gave a new player 2,100 XP)
 }
 Registry.avatarCharacters = ()=> AVATAR_CHARACTERS.map(c=> Object.assign({}, c, {isUnlocked: !c.unlocked || c.unlocked()}));
 Registry.avatarColors = ()=> AVATAR_COLORS.slice();
@@ -24022,7 +24240,7 @@ function rewardsPanelHTML(m){
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">Cards won</div><div class="rw-cards">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span></div>` : '').join('')}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">Cards won</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span></div>` : '').join('')}</div>
       ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="Open your deck to swap ${cards.length===1?'it':'them'} in">🃏 Put ${cards.length===1?'it':'them'} in my deck</button>` : ''}</div>`);
   }
   // 2026-10-08 (user): cards first seen this match follow the unlocks, each with a "NEW!" reveal.
@@ -24261,11 +24479,14 @@ function rewardCardsReveal(){
     const t = sp.querySelector('b'); if(t) gsap.timeline().fromTo(t, {scale:1.8, opacity:0, rotation:-8}, {scale:1, opacity:1, rotation:-4, duration:.35, ease:'back.out(2.2)'}).to(t, {opacity:0, y:-10, duration:.35, delay:.75});
     setTimeout(()=> sp.remove(), 1700);
   };
-  let t0 = 0.55;
+  // 2026-10-12 (user: "the cards on the preview screen update faster with more new cards. Maybe 30% faster"): two cards
+  // run 15% quicker, three or more 30% quicker.
+  const nCards = unlocks.length + seen.length, pace = nCards >= 3 ? 0.7 : nCards === 2 ? 0.85 : 1;
+  let t0 = 0.55 * pace;
   unlocks.forEach((card, i)=>{
-    const lock = card.querySelector('.rw-lock'), at = t0 + i*0.9;
+    const lock = card.querySelector('.rw-lock'), at = t0 + i*0.9*pace;
     gsap.set(card.querySelector('.card-tile'), {filter:'grayscale(.8) brightness(.7)'});
-    const tl = gsap.timeline({delay:at});
+    const tl = gsap.timeline({delay:at}); tl.timeScale(1/pace);
     tl.add(()=>{ splash(card, 'Card unlocked!', 'is-unlock'); try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.quick && SoundKit.quick(); }catch(e){} })
       .to(lock, {rotation:-14, duration:.06, repeat:5, yoyo:true, ease:'sine.inOut'}, .1)
       .add(()=>{ lock.classList.add('broken'); try{ SoundKit.lockBreak && SoundKit.lockBreak(); }catch(e){} lockShards(lock); }, .5)
@@ -24274,10 +24495,10 @@ function rewardCardsReveal(){
       .fromTo(card, {scale:1}, {scale:1.08, duration:.18, yoyo:true, repeat:1, ease:'power2.out', clearProps:'scale'}, .5)
       .add(()=> card.classList.add('unlocked'), .8);
   });
-  t0 += unlocks.length*0.9 + (unlocks.length ? 0.3 : 0);
+  t0 += (unlocks.length*0.9 + (unlocks.length ? 0.3 : 0)) * pace;
   seen.forEach((card, i)=>{
-    const at = t0 + i*0.7;
-    gsap.timeline({delay:at})
+    const at = t0 + i*0.7*pace;
+    gsap.timeline({delay:at}).timeScale(1/pace)
       .add(()=>{ splash(card, '', 'is-seen'); card.classList.add('shining'); try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){} })
       .add(()=>{ card.classList.add('shown'); }, .45)
       .add(()=> card.classList.remove('shining'), 1.1);
@@ -26849,6 +27070,7 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
+    ${forgeMode !== 'smith' ? forgeUpgradeHTML() : ''}
     <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
@@ -26882,6 +27104,8 @@ function renderForge(){
   const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ forgeFilter = 'ready'; renderForge(); };
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const fuBtn = document.getElementById('forgeUpgradeBtn');
+  if(fuBtn) fuBtn.addEventListener('click', ()=>{ const t = upgradeForge(); if(!t){ denyShake(fuBtn); return; } try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderForge(); showToast(`🏭 The Forge is now the ${t.name}: Lv ${t.cap}, rarer cards too.`, 'ok'); });
   const lbBtn = document.getElementById('forgeLimitBreakBtn');
   if(lbBtn) lbBtn.addEventListener('click', ()=> forgeLimitBreak(lbBtn));
   const dupBtn = document.getElementById('forgeFeedDupBtn');
@@ -27115,7 +27339,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     ${!maxed ? `
       <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
       ${cost.raw && cost.raw.mote ? `<p class="forge-note">✦ Level 0 → 1 takes a mote of materia.</p>` : ''}
-      ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.</p>` : ''}
+      ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
       <button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>
       ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
     ` : `${lb && lb.why !== 'done' ? forgeLimitBreakHTML(id, lb) : ''}
@@ -30332,7 +30556,11 @@ function renderEntranceAuth(){
   }
   refreshAccountUI();
 }
+let entranceStarted = false;
 function triggerEntranceAnimation(instant){
+  // 2026-10-12 (user: "If you rush through the UI, the tutorial starts, but im still stuck at the choose your warband menu"): a
+  // second click on the way in queued a second "show the side picker" that opened again on top of the tutorial fight.
+  if(entranceStarted) return; entranceStarted = true;
   const splashEl = document.getElementById('splashScreen');
   if(instant===true && splashEl){ splashEl.hidden = true; }
   const splash = instant===true ? null : splashEl;
@@ -30374,7 +30602,7 @@ function triggerEntranceAnimation(instant){
     // they closed the tab. needsFactionPick / needsTutorialResume below are mutually exclusive.
     const needsFactionPick = !loadTutorialDone() && !loadFactionChoice() && !loadResumeSnapshot();
     const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice() && !loadResumeSnapshot();
-    function enterTutorialFlow(){ try{ if(needsFactionPick) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
+    function enterTutorialFlow(){ try{ if(matchState) return; if(needsFactionPick && !loadFactionChoice()) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
     if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else if(!tryResumeAbandonedMatch()){ switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }
     // Render Home UNDERNEATH the still-visible overlay first, so the peel-off/fade genuinely
     // reveals a real page rather than a blank wrap for however long the animation takes.
@@ -30470,18 +30698,20 @@ function dressEntrance(splash){
   const pool = Object.keys(defs).filter(withArt);
   const rare = pool.filter(id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('rare'));
   const pickFrom = (arr, not)=>{ const a = arr.filter(x=> !not.includes(x)); return a.length ? a[Math.floor(Math.random()*a.length)] : null; };
-  const SLOTS = [{r:'-12deg', x:'-128px', y:'26px', d:'0s'}, {r:'0deg', x:'0px', y:'-14px', d:'-1.8s'}, {r:'11deg', x:'128px', y:'28px', d:'-3.6s'}];
-  const ids = [withArt('otter-centurion') ? 'otter-centurion' : pickFrom(pool, []), null, withArt('dominion-nestguard') ? 'dominion-nestguard' : pickFrom(pool, [])];
-  ids[1] = pickFrom(rare.length ? rare : pool, ids);
+  // 2026-10-12 (user: "Show more cards during the card preview before you login"): five cards (three on a phone).
+  const SLOTS = [{r:'-22deg', x:'-246px', y:'78px', d:'-0.9s', outer:true}, {r:'-12deg', x:'-128px', y:'26px', d:'0s'}, {r:'0deg', x:'0px', y:'-14px', d:'-1.8s'}, {r:'11deg', x:'128px', y:'28px', d:'-3.6s'}, {r:'21deg', x:'244px', y:'80px', d:'-2.7s', outer:true}];
+  const ids = [null, withArt('otter-centurion') ? 'otter-centurion' : pickFrom(pool, []), null, withArt('dominion-nestguard') ? 'dominion-nestguard' : pickFrom(pool, []), null];
+  ids[2] = pickFrom(rare.length ? rare : pool, ids);
+  ids[0] = pickFrom(pool, ids); ids[4] = pickFrom(pool, ids);
   const tile = id=> { const d = defs[id]; return cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''}); };
   // 2026-10-12 (user: "The first time you open the page fresh, the 3 cards there are face down, then they flip w sfx one by
   // one"): each card has a front and an acorn back; they deal in face down and turn over left, centre, right.
   const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back" aria-hidden="true"><span>🌰</span></div></div>`;
   const reduceFan = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(fan && ids.every(Boolean)){
-    fan.innerHTML = ids.map((id, k)=> `<div class="ef-card ${reduceFan ? '' : 'is-down'}" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===1?3:1}">${faces(id)}</div>`).join('');
+    fan.innerHTML = ids.map((id, k)=> `<div class="ef-card ${reduceFan ? '' : 'is-down'} ${SLOTS[k].outer ? 'is-outer' : ''}" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===2?3:SLOTS[k].outer?0:1}">${faces(id)}</div>`).join('');
     try{ decorateHolo(fan); }catch(e){}
-    if(!reduceFan) [0, 1, 2].forEach((k, i)=> setTimeout(()=>{ const el = fan.children[k]; if(!el) return; el.classList.remove('is-down'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 900 + i * 520));
+    if(!reduceFan) [0, 1, 2, 3, 4].forEach((k, i)=> setTimeout(()=>{ const el = fan.children[k]; if(!el) return; el.classList.remove('is-down'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 900 + i * 380));
   }
   const tipEl = document.getElementById('entranceTip');
   const tips = (typeof GAME_TIPS!=='undefined' ? GAME_TIPS.slice() : []).sort(()=> Math.random()-.5);

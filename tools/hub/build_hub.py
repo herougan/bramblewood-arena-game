@@ -196,6 +196,44 @@ def _dec_md(d):
     return '\n'.join(out)
 open(os.path.join(ROOT, 'docs', 'decisions.md'), 'w', encoding='utf-8').write(_dec_md(DECISIONS))
 decisions_json = _json.dumps(DECISIONS, ensure_ascii=False).replace('</', '<\\/')
+
+# Decks tab (2026-10-12, user: "In our artefact list the ALL tuts and skirmish decks / raid decks. Then also list all tutorials
+# we have and in what order"): built from docs/balance/decks.json (tools/hub/export_decks.py).
+def _decks_panel():
+    path = os.path.join(ROOT, 'docs', 'balance', 'decks.json')
+    if not os.path.exists(path): return '<section class="panel" id="p-decks" role="tabpanel" aria-labelledby="t-decks" hidden><p class="dec-empty">Run tools/hub/export_decks.py.</p></section>'
+    D = json.load(open(path, encoding='utf-8')); e = H.escape
+    def deck(cards, keep=None):
+        rows = []
+        for c in sorted(cards, key=lambda c: (c.get('cost') or 0, c['name'])):
+            sk = c.get('skills') or []
+            if keep is not None:
+                sk_html = ', '.join(f'<b>{e(k)}</b>' if k in keep else f'<s title="taken off in the tutorial">{e(k)}</s>' for k in sk)
+            else: sk_html = e(', '.join(sk))
+            rows.append(f"<tr><td>{c['n']}×</td><td>{e(c['name'])}</td><td>{c.get('atk')}/{c.get('hp')}</td><td>{c.get('wait') or ''}</td><td>{c.get('cost') or ''}</td><td>{sk_html}</td></tr>")
+        n = sum(c['n'] for c in cards)
+        return f'<table class="dk-t"><thead><tr><th>#</th><th>Card ({n})</th><th>Atk/HP</th><th>Wait</th><th>Cost</th><th>Skills</th></tr></thead><tbody>{"".join(rows)}</tbody></table>'
+    o = D['order']; parts = []
+    parts.append('<h3>Tutorial order</h3><p>Each part shows its steps in this order; a step waits for the one before it. Passive tips come after the last step of the part, one a round.</p><ol class="dk-order">' + ''.join(f"<li><b>Part {g['part']}: {e(g['id'])}</b> <small>({e(g['kind'])}; {e(g['when'])})</small><br>{e(g['text'])}</li>" for g in o['guided']) + '</ol>')
+    parts.append('<h4>Dialogue in the tutorial</h4><ul>' + ''.join(f'<li>{e(x)}</li>' for x in o['dialogues']) + '</ul>')
+    parts.append('<h4>After the tutorial</h4><ul>' + ''.join(f'<li>{e(x)}</li>' for x in o['after']) + '</ul>')
+    parts.append('<details><summary>Passive tips (first time each thing appears, any match)</summary><ul>' + ''.join(f"<li><b>{e(t['id'])}</b>: {e(t['text'])}</li>" for t in o['passive']) + '</ul></details>')
+    cfg = D.get('tutorialCfg', {})
+    parts.append(f"<h3>Tutorial decks</h3><p>Your castle {cfg.get('myHp')} HP, rival {cfg.get('rivalHp')} HP (+2 in part 2), starting hand {cfg.get('handSize')}. Rewards after part 1: {e(', '.join(cfg.get('rewards', [])))}. Struck-through skills are taken off in that part.</p>")
+    for pick, ps in D['tutorial'].items():
+        for t in ps:
+            parts.append(f"<details {'open' if pick=='otters' else ''}><summary>Part {t['part']} · picked {e(pick)} · highlight: {e(t.get('highlight') or 'none')}</summary><div class='dk-two'><div><h5>Your deck</h5>{deck(t['mine'], t['keep'])}</div><div><h5>Rival</h5>{deck(t['rival'], t['keep'])}</div></div></details>")
+    parts.append('<h3>Skirmish decks</h3>')
+    for m in D['maps']:
+        inner = ''.join(f"<details><summary>{e(n['name'])} <small>{e(n['key'])} · {e(n['kind'])} · 🏰 {n.get('hq')} · ⚔ {n.get('rating')}</small></summary>{deck(n['deck'])}</details>" for n in m['nodes'])
+        parts.append(f"<details class='dk-map'><summary><b>Map {m.get('num') if m.get('num') is not None else '·'}: {e(m['name'])}</b> <small>{len(m['nodes'])} fights</small></summary>{inner}</details>")
+    parts.append('<h3>Raid decks</h3>')
+    for r in D['raids']:
+        inner = ''.join(f"<details><summary>{e(p['name'])} <small>🏰 {p.get('castle')} · {p.get('rounds')} rounds</small></summary>{deck(p['deck'])}</details>" for p in r['parts'])
+        inner += ''.join(f"<details><summary>Allies: {e(a['name'])}</summary>{deck(a['deck'])}</details>" for a in r['allies'])
+        parts.append(f"<details class='dk-map' open><summary><b>{e(r['name'])}</b></summary>{inner}</details>")
+    return '<section class="panel" id="p-decks" role="tabpanel" aria-labelledby="t-decks" hidden><div class="bal"><div class="dec-head"><h2>Decks &amp; tutorials</h2><p>Every deck in the game, exported from the build. Tap a row to open it.</p></div>' + ''.join(parts) + '</div></section>'
+decks_panel = _decks_panel()
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bramblewood Master Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -292,12 +330,16 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .bal-bar{{display:inline-block; width:80px; height:8px; border-radius:4px; background:rgba(127,127,127,.18); position:relative; vertical-align:middle; margin-left:6px;}}
 .bal-bar i{{position:absolute; top:0; bottom:0; background:rgba(47,125,67,.35); border-radius:4px;}} .bal-bar b{{position:absolute; top:-2px; width:3px; height:12px; background:currentColor; border-radius:2px;}}
 .dec-empty{{color:var(--ink-muted); padding:20px; text-align:center;}}
+.dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
+.dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
+.dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
 </style></head><body>
 <header><h1>🌿 Bramblewood</h1><a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play ↗</a>
 <nav role="tablist" aria-label="Pages">
 <button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🎯 Action items</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
+<button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
@@ -325,6 +367,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
 {curve_panel}
+{decks_panel}
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>

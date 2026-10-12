@@ -5692,6 +5692,29 @@
   .rw-panel.has-split .rw-half > .rw-sec{padding:0 !important; border-top:0 !important; text-align:center !important; align-items:center; width:100%;}
   .rw-panel.has-split .rw-half .rw-row, .rw-panel.has-split .rw-half .rw-cards{justify-content:center !important;}
   .rw-panel.has-split .rw-half-side{border-left:1px solid rgba(255,220,150,.18); padding-left:16px;}
+  /* 2026-10-12 (user: "The left needs to be shifted 5% to the left. The top right quarter is blocked"): the won cards sit in
+     one row (they shrink to fit instead of wrapping under each other, which left the right half's top empty), and the
+     cards half sits 5% further left. */
+  .rw-panel.has-split .rw-half-cards{container-type:inline-size; transform:translateX(-5%);}
+  .rw-panel.has-split .rw-half-cards .rw-cards{flex-wrap:nowrap !important; gap:10px !important;}
+  .rw-panel.has-split .rw-half-cards .rw-card, .rw-panel.has-split .rw-half-cards .card-tile{width:min(clamp(84px, 19vh, 160px), calc((88cqw - (var(--n, 1) - 1) * 10px) / var(--n, 1))) !important; flex:0 0 auto;}
+  .rw-panel.has-split .rw-half-cards .card-tile{height:auto !important;}
+  /* Tutorial highlight (2026-10-12): the card the tutorial wants you to notice glows gold in your hand. */
+  #handStrip .card-tile.tut-highlight, .leader-widget.tut-highlight{animation:tutGlow 1.6s ease-in-out infinite; position:relative;}
+  @keyframes tutGlow{0%,100%{box-shadow:0 0 0 2px rgba(255,214,102,.9), 0 0 12px 2px rgba(255,200,80,.55);} 50%{box-shadow:0 0 0 3px rgba(255,236,150,1), 0 0 26px 8px rgba(255,200,80,.8);}}
+  @media (prefers-reduced-motion: reduce){ #handStrip .card-tile.tut-highlight, .leader-widget.tut-highlight{animation:none; box-shadow:0 0 0 3px rgba(255,220,120,1), 0 0 18px 4px rgba(255,200,80,.7);} }
+  @media (max-width:640px){ .entrance-fan .ef-card.is-outer{display:none;} }
+  .ss-card.is-reward{position:relative; filter:drop-shadow(0 0 8px rgba(255,210,110,.75));}
+  .ss-gift{position:absolute; top:-8px; left:-6px; font-size:18px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+  /* Forge upgrade strip (2026-10-12) */
+  .forge-upgrade{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:10px 0; padding:10px 14px; border-radius:12px; background:rgba(40,20,8,.72); border:1px solid rgba(255,190,110,.45); color:#fbe8cf;}
+  .forge-upgrade b{color:#ffd58a;}
+  .forge-upgrade .fu-now small{display:block; opacity:.85; font-size:12px;}
+  .forge-upgrade .fu-next{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; font-size:13px;}
+  .forge-upgrade .fu-gate{font-weight:700; opacity:.9;}
+  .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
+  .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
+  .te-deck-list .te-cut{color:#a0523a; opacity:.8;}
   @media (max-width:560px){ .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{grid-template-columns:auto minmax(0,1fr); gap:8px 12px;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(76px, 24vw, 120px) !important;} .winloss-card.is-glory .wl-glory{gap:8px;} }
   @media (max-height:720px){ .winloss-card.is-glory .pass-ico{display:none;} .winloss-card.is-glory .rank-hex.wl-rank{transform:scale(.8);} .winloss-card.is-glory .wl-glory{margin-top:0;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(80px, 17vh, 120px) !important;} }
   /* After the fight (2026-10-08, user: "Upon winning, even if you view the board, the controls should
@@ -7410,14 +7433,15 @@
   @media (prefers-reduced-motion: reduce){ .rank-hex.rank-SSS{animation:none;} }
 
   /* Enemy deck level by gap (2026-10-10) */
-  .cnp-lvlbig.lv-green{background:#2e7d32; border-color:#81c784;} .cnp-lvlbig.lv-green b{color:#e8ffe0;}
-  .cnp-lvlbig.lv-ltgreen{background:#9ee59a; border-color:#d6ffd2;} .cnp-lvlbig.lv-ltgreen b, .cnp-lvlbig.lv-ltgreen small{color:#14381a;}
-  .cnp-lvlbig.lv-orange{background:#e8862a; border-color:#ffc58a;} .cnp-lvlbig.lv-orange b, .cnp-lvlbig.lv-orange small{color:#2e1400;}
-  .cnp-lvlbig.lv-red{background:#d63c32; border-color:#ff9a90;} .cnp-lvlbig.lv-red b{color:#fff1ee;}
-  .cnp-lvlbig.lv-darkred{background:#7a1010; border-color:#c0504a;} .cnp-lvlbig.lv-darkred b{color:#ffd9d5;}
-  .cnp-lvlbig.lv-pink{background:#f06aa8; border-color:#ffc0dc;} .cnp-lvlbig.lv-pink b, .cnp-lvlbig.lv-pink small{color:#3a0820;}
-  .cnp-lvlbig.lv-ltpink{background:#ffc4de; border-color:#fff0f6;} .cnp-lvlbig.lv-ltpink b, .cnp-lvlbig.lv-ltpink small{color:#4a1430;}
-  .cnp-lvlbig[class*="lv-"] small{opacity:.9;}
+  /* Battle rating sigil (2026-10-12, user: "The background should be normal. Only the label changes colour"). */
+  .cnp-lvlbig.lv-green b, .cnp-lvlbig.lv-green small, .vs-lvl.lv-green b, .vs-lvl.lv-green small{color:#86e27f;}
+  .cnp-lvlbig.lv-ltgreen b, .cnp-lvlbig.lv-ltgreen small, .vs-lvl.lv-ltgreen b, .vs-lvl.lv-ltgreen small{color:#c4f7bf;}
+  .cnp-lvlbig.lv-orange b, .cnp-lvlbig.lv-orange small, .vs-lvl.lv-orange b, .vs-lvl.lv-orange small{color:#ffb35c;}
+  .cnp-lvlbig.lv-red b, .cnp-lvlbig.lv-red small, .vs-lvl.lv-red b, .vs-lvl.lv-red small{color:#ff7f72;}
+  .cnp-lvlbig.lv-darkred b, .cnp-lvlbig.lv-darkred small, .vs-lvl.lv-darkred b, .vs-lvl.lv-darkred small{color:#ff4a42;}
+  .cnp-lvlbig.lv-pink b, .cnp-lvlbig.lv-pink small, .vs-lvl.lv-pink b, .vs-lvl.lv-pink small{color:#ff8cc6;}
+  .cnp-lvlbig.lv-ltpink b, .cnp-lvlbig.lv-ltpink small, .vs-lvl.lv-ltpink b, .vs-lvl.lv-ltpink small{color:#ffc6e0;}
+  .cnp-lvlbig[class*="lv-"] small{opacity:.95;}
   .cnp-fight[disabled]{filter:grayscale(.8); opacity:.6; cursor:not-allowed;}
 
   /* Enemy leader entrance (2026-10-10) */
@@ -7507,8 +7531,6 @@
   /* VS screen deck levels (2026-10-10) */
   .vs-lvl{display:inline-flex; flex-direction:column; align-items:center; margin-top:10px; padding:6px 16px; border-radius:12px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); color:#fff; line-height:1;}
   .vs-lvl small{font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; opacity:.85;} .vs-lvl b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif;}
-  .vs-lvl.lv-green{background:#2e7d32; border-color:#81c784;} .vs-lvl.lv-ltgreen{background:#9ee59a; color:#14381a;} .vs-lvl.lv-orange{background:#e8862a; color:#2e1400;}
-  .vs-lvl.lv-red{background:#d63c32;} .vs-lvl.lv-darkred{background:#7a1010;} .vs-lvl.lv-pink{background:#f06aa8; color:#3a0820;} .vs-lvl.lv-ltpink{background:#ffc4de; color:#4a1430;}
 
   .winloss-card.is-glory > .wl-rays-clip{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;}
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
