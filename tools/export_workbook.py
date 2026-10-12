@@ -25,7 +25,7 @@ RLABEL = {'starter': 'Starter', 'common': 'Common', 'uncommon': 'Uncommon', 'rar
           'devlegendary': 'Dev-Legendary', 'devancient': 'Dev-Ancient', 'eventlegendary': 'Event-Legendary',
           'eventrare': 'Event-Rare', 'divine': 'Divine', 'void': 'Void', 'daemonic': 'Daemonic'}
 KIND = {'unit': 'Unit', 'spell': 'Spell', 'equipment': 'Equipment', 'structure': 'Structure', 'materia': 'Materia', 'field': 'Field'}
-PACK_POOL = {1: 'Basic packs (Sprout Pouch, Acorn Chest, Golden Bramble Case)', 11: 'Basic packs (Factions pool)', 99: 'Mystery Booster'}
+PACK_POOL = {1: 'Basic packs (Hedgerow Pouch, Tidemire Chest, Highcrest Case)', 11: 'Basic packs (Factions pool)', 99: 'Mystery Booster'}
 
 # ---------- maps: numbering, labels, who fights where ----------
 maps = [m for m in data['maps'] if not (m['id'].startswith('r') and not m['nodes'])]
@@ -293,7 +293,7 @@ end = write_table(ws, 4, MAP_HEAD, map_rows, [7, 30, 10, 6, 18, 34, 7, 30, 12, 1
 ws.freeze_panes = 'C5'
 r = end + 3
 ws.cell(row=r, column=1, value='When the card packs appear').font = Font(name=FONT, bold=True, size=13)
-ws.cell(row=r + 1, column=1, value='Every basic pack (Sprout Pouch, Acorn Chest, Golden Bramble Case) draws from the same pools: pool 1 plus the Otter, Hummingbird '
+ws.cell(row=r + 1, column=1, value='Every basic pack (Hedgerow Pouch, Tidemire Chest, Highcrest Case) draws from the same pools: pool 1 plus the Otter, Hummingbird '
         'and shared pools. Lumber-cost cards stay out of packs until pitching opens. See docs/pack-plan-2026-10-12.md for the proposed four-pack road structure.').font = Font(name=FONT, size=10, italic=True, color='555555')
 end = write_table(ws, r + 3, PACK_HEAD, pack_rows, [], wrap_cols=(2, 4, 5))
 for col, w in zip('ABCDE', [7, 30, 10, 6, 18]): pass  # widths stay those of the map table

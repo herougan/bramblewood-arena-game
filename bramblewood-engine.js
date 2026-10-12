@@ -3245,7 +3245,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       ensureStat(stats, mySide, card.defId).deaths += 1;
       // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
-      perishedTotal += 1; pl.devilry = (pl.devilry||0) + 1;
+      // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
+      // make Darkness on purpose still go past it).
+      perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
       const credit = killCredit[card.uid];
       const bounty = (cdef.effects && cdef.effects.bounty) || 0;
       if(recordEvents && events) events.push({type:'death', side:mySide, defId:card.defId, uid:card.uid});

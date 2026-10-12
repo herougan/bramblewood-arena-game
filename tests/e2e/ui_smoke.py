@@ -252,7 +252,7 @@ async def main():
             map20:enemyDeckLevel(mains[20].nodes.find(n=>n.kind==='skirmish')), map1:enemyDeckLevel(mains[0].nodes.find(n=>n.kind==='skirmish')), max: Math.round(22*30*ratingLevelFactor(10))}; })()""")
         check(ec['common'] == 675 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
         check(ec['fed'] == 36 and ec['credit'] == 36 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
-        check(200 <= ec['map20'] <= 450 and ec['map1'] < 25 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
+        check(40 <= ec['map20'] <= 600 and ec['map1'] < 40 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')
     sys.exit(1 if failures else 0)

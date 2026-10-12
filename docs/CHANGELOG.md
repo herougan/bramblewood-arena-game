@@ -2,6 +2,25 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (22:55)
+- **Every card has art now.** PixelLab is at its monthly limit, so 145 new portraits came from your NightCafe credits, shrunk to the game's 128×128 pixel style with their backgrounds kept. That covers every card that had none (enemy-only cards and items included), plus new Owl Sentinel, Ant Hill and Ant Warrior art as real animals, and War Hound and Bramblewood Macaque redone.
+- **Castle art.** All 42 castles have a picture.
+- **22 new castles to find.** Two or so per map from Map 0 to Map 10, e.g. Farmstead (10 Health, +1 Lumber every 2 rounds), Village Green (20, +1 Health on every unit), Lighthouse (a bolt every round), Wrecked Ferry. They're never a set reward: a win on their map can drop one (3% skirmish, 6% elite, 10% boss), and a basic pack has a 3% chance. A castle you already own drops as a spare to fuse in the Forge, and a map boss beaten again at rank S gives a spare of its castle.
+- **The Goliath's brood.** Six raid-only cephalopods (Inkcloud Squid, Abyss Lantern Squid, Glass Octopus, Vampire Squid, Goliath Tentacle, Goliath Broodmother) now fill the Goliath's parts. When the raid falls, everyone who fought it gets one; the top 10% get two.
+- **New side map: The Sunken Ferry,** below Coral Current. It opens after that map's boss. Five fights in an otter ferry wreck: night all through, faster (First Blood +2), with electric eels and the Goliath's brood.
+- **New cards:** Cave Centipede (Quick, Poison) and Millipede Hauler (Armor 1; when it falls, three Worker Ants climb off), both on Caves & Alcoves.
+- **Shock gets the 🔌,** and the Voltaic Eel and Abyss Lantern Squid now Shock.
+- **Battle ratings are real:** worked out from the enemy's actual deck at the levels it fights at. The editor shows it read-only.
+- **Enemy levels flattened:** Lv 2 at Map 5, +1 every 5 maps, Lv 5 at Map 20, boss decks one higher.
+- **Stamina moved to Wildpaths.** Max Energy no longer grows on its own. Every 20 skirmishes earns a Stamina mark; spend it in Wildpaths → Stamina (with Maple Leaves) for +1 max Energy.
+- **Clocks:** the Energy pill reads "4/20⚡ 03:12", and Raid Points and PvP tickets read the same way.
+- **The skirmish panel:** the green tick is gone, the best rank sits on the panel's top-right corner, reward cards are as big as the highlighted card, and the battle rating is a ⚔ chip beside Health and Shield.
+- **The map:** interactables are bare emblems that give a little shake now and then. Only real caves (Smugglers' Grotto) keep the cave mouth, now smaller and empty. Eye of the Volcano shows the volcano, Basalt Foundry a rock, the Canopy an acacia, the Glimmer Depths a gem in a rock. The note in your pack moved to Gatorback Swamp; open it once for 🦴3 Kibble and ✨40 Dust and it's gone.
+- **Edit skirmish:** card details show over the deck editor and the deck preview, and each fight picks what it summons once it's out of cards: nothing (the default), imps, bees, ants, wolves, bats, sprouts, hatchlings or squid.
+- **Pack names follow their maps:** Hedgerow Pouch, Tidemire Chest and Highcrest Case.
+- **Types:** non-place, non-animal types (Forgotten, Oddity, Changeling, Irradiated, Shrine, Traveller…) are gone; rule-only ones (Structure, King, Leader, Devil, Imp) are kept but hidden.
+- **Balance:** Darkness from your own losses stops at 10. Skull Vulture drops on Map 8's Root Snare.
+
 ## 2026-10-12 (21:20)
 - **Daily portents in PvP.** The big PvP button now shows today's portent on its right: one medallion per field effect, with tomorrow's under them and when it changes. Every day rolls 1 to 3 effects (usually 2) from day and night, weather, Lumber, home ground for any biome, First Blood and the eruption; Double Time and Collapse count as 2. About one day in seven is a **Strange day**, which opens with one of those big rule changes (a purple medallion). Holidays are fixed every year (New Leaf, Bloomtide, The Thaw, Midsummer Fair, Harvest Home, Hallow's Eve, Midwinter, Winterfeast). These are the Arena's rules for the day, in every Arena mode.
 - **Edit skirmish shows its field effects.** A new Field effects box lists everything the fight plays under, marked "map default" or "set here": day and night, weather, home ground and its tier, the eruption, boss surge, enemy mining, frost tuning and leader gifts. ✕ switches one off (even a map default, such as the Tundra's frost), ↺ puts the map's default back, and "Add a field effect" adds weather, Lumber, the eruption (2, 3 or 5), High Tide, Double Time, any biome's home ground at tier I–III, or a leader gift (Immolation, Inspiring, Regen or Armor 2).

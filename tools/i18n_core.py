@@ -119,9 +119,9 @@ T = {
 # --- shop ---
 'Packs': ['Paquets','Packs','Sobres','Bustine','Pacotes','Mga pack','பொதிகள்','Paket','卡包','卡包','パック','팩'],
 'Market': ['Marché','Markt','Mercado','Mercato','Mercado','Palengke','சந்தை','Pasar','市场','市集','マーケット','장터'],
-'Sprout Pouch': ['Bourse de pousses','Sprossbeutel','Bolsa de brotes','Sacchetto di germogli','Bolsa de rebentos','Supot ng Usbong','முளை பை','Kantong Tunas','嫩芽袋','嫩芽袋','若芽の袋','새싹 주머니'],
-'Acorn Chest': ['Coffre à glands','Eichelkiste','Cofre de bellotas','Forziere di ghiande','Baú de bolotas','Baul ng Acorn','கருவாலிப் பெட்டி','Peti Biji Ek','橡果宝箱','橡果寶箱','どんぐりの宝箱','도토리 상자'],
-'Golden Bramble Case': ['Écrin de ronce dorée','Goldene Brombeerschatulle','Estuche de zarza dorada','Scrigno di rovo dorato','Estojo de silva dourada','Gintong Kahon ng Bramble','பொன் முட்செடிப் பேழை','Kotak Semak Emas','金荆棘匣','金荊棘匣','黄金のいばら箱','황금 가시덤불 상자'],
+'Hedgerow Pouch': ['Bourse de pousses','Sprossbeutel','Bolsa de brotes','Sacchetto di germogli','Bolsa de rebentos','Supot ng Usbong','முளை பை','Kantong Tunas','嫩芽袋','嫩芽袋','若芽の袋','새싹 주머니'],
+'Tidemire Chest': ['Coffre à glands','Eichelkiste','Cofre de bellotas','Forziere di ghiande','Baú de bolotas','Baul ng Acorn','கருவாலிப் பெட்டி','Peti Biji Ek','橡果宝箱','橡果寶箱','どんぐりの宝箱','도토리 상자'],
+'Highcrest Case': ['Écrin de ronce dorée','Goldene Brombeerschatulle','Estuche de zarza dorada','Scrigno di rovo dorato','Estojo de silva dourada','Gintong Kahon ng Bramble','பொன் முட்செடிப் பேழை','Kotak Semak Emas','金荆棘匣','金荊棘匣','黄金のいばら箱','황금 가시덤불 상자'],
 'Coming soon': ['Bientôt','Demnächst','Próximamente','Prossimamente','Em breve','Malapit na','விரைவில்','Segera hadir','即将推出','即將推出','近日公開','출시 예정'],
 'Sign in to open': ['Connectez-vous pour ouvrir','Zum Öffnen anmelden','Inicia sesión para abrir','Accedi per aprire','Entre para abrir','Mag-sign in para buksan','திறக்க உள்நுழைக','Masuk untuk membuka','登录后开启','登入後開啟','ログインして開封','로그인하고 열기'],
 '1 new guaranteed': ['1 nouvelle garantie','1 neue garantiert','1 nueva garantizada','1 nuova garantita','1 nova garantida','1 bagong sigurado','1 புதியது உறுதி','1 baru dijamin','保底1张新卡','保底1張新卡','新カード1枚確定','새 카드 1장 확정'],

@@ -2868,6 +2868,12 @@
   .is-gated{opacity:.45; outline:2px dashed rgba(255,255,255,.7); outline-offset:3px; border-radius:50%;}
   .map-spot-new{transition:opacity .4s ease, transform .4s ease;}
   .map-spot-new.is-fading{opacity:0 !important; transform:scale(.3) !important;}
+  /* 2026-10-12 (22:25, user: "For interactibles on the conquest map - remove the pill surrounding them. Just the logo is enough, but
+     it shakes here and there"): bare emblem, a little shake every few seconds (staggered by --shk). */
+  .map-spot:not(.is-unknown) .map-spot-ico{background:none !important; box-shadow:none !important; font-size:34px; filter:drop-shadow(0 3px 4px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,240,200,.45)); animation:spotShake 5.5s ease-in-out infinite; animation-delay:var(--shk, 0s);}
+  .map-spot:not(.is-unknown):hover .map-spot-ico{animation-play-state:paused; transform:scale(1.12);}
+  @keyframes spotShake{0%,86%,100%{transform:rotate(0) scale(1);} 88%{transform:rotate(-12deg) scale(1.08);} 90%{transform:rotate(10deg) scale(1.08);} 92%{transform:rotate(-8deg);} 94%{transform:rotate(5deg);} 96%{transform:rotate(0);}}
+  @media (prefers-reduced-motion: reduce){ .map-spot .map-spot-ico{animation:none !important;} }
   .map-spot .map-spot-name{font-size:11px; font-weight:800; color:#fff8e6; text-shadow:0 1px 3px rgba(0,0,0,.8); white-space:nowrap;}
   .map-spot:hover .map-spot-ico, .map-spot:focus-visible .map-spot-ico{transform:scale(1.12);}
   .play-subtabs[hidden]{display:none !important;}
@@ -5932,6 +5938,13 @@
   .hatch-card{zoom:1.8;} @media (max-width:480px){ .hatch-card{zoom:1.4;} }
   .hatch-text{display:flex; flex-direction:column; align-items:center; gap:4px; color:#fff8e6; text-align:center;}
   .hatch-text b{font:800 26px/1.1 'Baloo 2',system-ui,sans-serif;} .hatch-rar{font-weight:800; letter-spacing:.5px;} .hatch-text small{opacity:.8; margin-bottom:6px;}
+  /* Wildpaths Stamina (2026-10-12, 22:04) */
+  .wp-stamina{margin:10px 0 14px; padding:12px 14px; border-radius:14px; background:rgba(255,214,90,.08); border:1px solid rgba(255,214,90,.3);}
+  .wp-stamina h3{margin:0 0 4px;} .wp-stamina h3 small{font-weight:500; opacity:.7; font-size:12px;}
+  .wp-stamina p{margin:0 0 8px; font-size:13px; opacity:.85;}
+  .wp-stam-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px;}
+  .wp-stam-pips{display:inline-flex; gap:4px;} .wp-stam-pips i{width:12px; height:18px; border-radius:4px; background:rgba(255,255,255,.12); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2);}
+  .wp-stam-pips i.on{background:linear-gradient(#ffe27a,#f2a33a);} .wp-stam-pips i.ready{background:rgba(255,214,90,.35); box-shadow:inset 0 0 0 1px #ffd65a; animation:mseBob 1.6s ease-in-out infinite;}
   /* NPC speech editor (2026-10-12) */
   .dialogue-editor{max-width:980px; width:min(980px, calc(100vw - 32px));}
   .de-layout{display:grid; grid-template-columns:minmax(0, 240px) minmax(0, 1fr); gap:16px; max-height:70vh;}
@@ -6131,8 +6144,9 @@
   .map-cave .mc-rock{position:absolute; inset:0; border-radius:50% 50% 14px 14px / 70% 70% 20% 20%; background:radial-gradient(circle at 35% 28%, #9a9486, #6a645a 55%, #3f3a33); box-shadow:0 5px 10px rgba(0,0,0,.4), inset 0 3px 0 rgba(255,255,255,.18);}
   .map-cave .mc-mouth{position:absolute; left:50%; bottom:0; width:24px; height:20px; transform:translateX(-50%); border-radius:12px 12px 2px 2px; background:radial-gradient(ellipse at 50% 85%, #000, #1c1813 70%); box-shadow:inset 0 3px 4px rgba(0,0,0,.7);}
   /* Sub-map entrance (2026-10-09): a bigger cave mouth with the sub-map's icon, its name under it */
-  .map-subcave{width:72px; height:52px;}
-  .map-subcave .mc-mouth{width:32px; height:26px;}
+  .map-subcave{width:50px; height:36px;} /* 2026-10-12: smaller, and nothing drawn inside the mouth */
+  .map-subcave .mc-mouth{width:20px; height:16px;}
+  .map-subcave .mse-lock{position:absolute; right:-4px; bottom:-2px; font-size:13px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));}
   .map-subcave .msc-ico{position:absolute; left:50%; bottom:3px; transform:translateX(-50%); font-size:15px; filter:drop-shadow(0 0 4px rgba(120,220,255,.8)); animation:mscGlow 2.4s ease-in-out infinite;}
   .map-subcave .msc-name{position:absolute; left:50%; top:100%; transform:translateX(-50%); margin-top:3px; white-space:nowrap; font:700 11px/1.2 var(--font-ui, system-ui); color:#fff; padding:2px 7px; border-radius:999px; background:rgba(10,20,26,.72); box-shadow:0 2px 6px rgba(0,0,0,.4);}
   .map-subcave:hover .mc-rock, .map-subcave:focus-visible .mc-rock{filter:brightness(1.15);}
@@ -8261,6 +8275,15 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* Skirmish panel, simpler (2026-10-10): the showcase card leads, the deck folds away */
 .cnp-showcase{flex:0 0 auto; width:74px; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
 .cnp-showcase .card-tile{width:100% !important;}
+/* 2026-10-12 (22:04, user: "put the S emblem on the top right hand corner (sitting absolute, on the top-right boundary of the
+   div)", "make [the reward card] the same size as the card highlight", "battle rating ... <Sword Icon> [value] beside the hp
+   and shield values") */
+.conquest-node-panel{position:relative;}
+.conquest-node-panel > .cnp-rank-corner{position:absolute !important; top:0 !important; right:0 !important; left:auto !important; transform:translate(40%,-40%) !important; z-index:6; margin:0;}
+.cnp-rw .cnp-rw-card, .cnp-rw-card{width:74px;}
+@media (max-width:640px){ .cnp-rw .cnp-rw-card, .cnp-rw-card{width:60px;} }
+.cnp-lvl-inline{display:inline-flex; align-items:center; gap:3px; margin-left:10px; padding:1px 8px; border-radius:999px; font-weight:800; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); white-space:nowrap;}
+.cnp-lvl-inline.lv-red{color:#ffb4a8; border-color:rgba(255,120,100,.5);} .cnp-lvl-inline.lv-darkred{color:#ff8a7a; border-color:rgba(255,80,60,.7);} .cnp-lvl-inline.lv-green{color:#b8f5b0;}
 .cnp-deck{margin-top:6px;} .cnp-deck > summary{cursor:pointer; font-weight:800; font-size:13px; opacity:.85; list-style:none;} .cnp-deck > summary::before{content:'▸ ';} .cnp-deck[open] > summary::before{content:'▾ ';}
 .cnp-deck .cnp-squad{margin-top:6px;}
 
@@ -8281,6 +8304,9 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 
 /* Deck builder popup (skirmish decks, 2026-10-10) */
 .deck-popup-overlay{z-index:1300;}
+/* 2026-10-12 (22:04, user: "in skirmish editor's deck editor, the card details pane is darkened and hidden below. Show it"): card
+   details float above every modal, so the editor's deck popup and deck preview show them too. */
+#cardPop{z-index:2100 !important;}
 .deck-popup{width:min(1100px, 96vw); max-height:92vh; display:flex; flex-direction:column; gap:10px;}
 .dbp-deck{flex:0 0 auto; display:flex; flex-wrap:wrap; gap:14px 12px; padding:14px 12px 10px; border-radius:12px; background:rgba(125,82,42,.12); min-height:126px; max-height:34vh; overflow-y:auto;}
 .dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}

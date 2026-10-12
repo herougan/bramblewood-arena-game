@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -1035,6 +1035,11 @@ function foilClass(d){ return (d && d.splashEffect==='foil') ? 'card-tile-foil' 
 // Scorpion is both Desert AND Arachnid). New cards carry a plural `archetypes` array; cards
 // saved before this change carry only the legacy singular `archetype` string, so every call
 // site reads membership through this helper instead of the raw field, for compatibility.
+// Types shown to players (2026-10-12, 22:04, user: "Remove all types ... that are not geographical or an animal classification.
+// Like 'Forgotten'"): the cosmetic ones are gone from the card data; these few stay on the cards because rules read them
+// (Structure for walls, King for King-Slayer, Leader, Devil and Imp for Devilry, Shadow for its silhouette) but aren't shown.
+const TYPE_HIDDEN = new Set(['Structure', 'King', 'Leader', 'Devil', 'Imp', 'Shadow', 'Misc', 'Materia', 'Equipment']);
+function displayTypesOf(d){ return archetypesOf(d).filter(a=> !TYPE_HIDDEN.has(a)); }
 function archetypesOf(d){
   if(Array.isArray(d.archetypes) && d.archetypes.length) return d.archetypes;
   if(d.archetype) return [d.archetype];
@@ -1077,7 +1082,7 @@ const SPECIES_PHYLUM = {
   Canid:'Beast', Felid:'Beast', Bovine:'Beast', Mustelid:'Beast', Ursid:'Beast', Rodent:'Beast', Lagomorph:'Beast', Cervid:'Beast', Suid:'Beast',
   Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
   Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
-  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Annelid:'Crawler', Elemental:'Elemental'};
+  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
 function speciesLine(def){
   const sp = (def && def.species) || []; if(!sp.length) return '';
   const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
@@ -1757,6 +1762,7 @@ function cardObtainableFrom(d){
   if(src.kind==='pack') return 'pack';
   if(src.kind==='map' && src.node) return 'skirmish';
   if(src.kind==='base') return 'base';
+  if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12): they drop when that raid falls
   return null; // unsorted, or an event (no event system live yet)
 }
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
@@ -1765,8 +1771,9 @@ function cardWhereToGetText(d){
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
-  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Sprout Pouch, Acorn Chest or Golden Bramble Case' : 'A Sprout Pouch, Acorn Chest or Golden Bramble Case');
+  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
+  if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return `Raid only: ${r ? r.name : 'a raid'} drops its cards when it falls (more for the top raiders)`; }
   return 'Not obtainable yet';
 }
 // Map numbers and skirmish codes (2026-10-10, user: "Skirmish ID-names X-Y"; then "Pebble Beach counts as Map 3"): the
@@ -1881,7 +1888,7 @@ function mapBandOf(num){
 // Only 3 packs and 1 advanced pack ... the rivergate and sunfeather pools can be combined into the factions pool"): pool 1 is
 // what the three basic packs share, pool 11 the Factions pool (Otter, Hummingbird and shared cards, in every basic pack too),
 // pool 99 the advanced Mystery Booster.
-const PACK_POOL_LABEL = {1:'🎁 Sprout Pouch · Acorn Chest · Golden Bramble Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
+const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
   return {key: pre + '-pk-' + k, order:[2, k === 99 ? 3 : k === 11 ? 2 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
 function codexViewSectionOf(d, view){
@@ -1896,6 +1903,7 @@ function codexViewSectionOf(d, view){
     if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
     if(src.kind==='pack') return packSectionOf(src, 'band');
     if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
+    if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:'🐙 Raid cards'};
     if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
     return {key:'band-more', order:[9,0,0,''], label:'More cards'};
   }
@@ -1906,6 +1914,7 @@ function codexViewSectionOf(d, view){
     if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label: b.label.replace('🌱 Base cards & ', '🗺️ ')}; }
     if(src.kind==='pack') return packSectionOf(src, 'adv');
     if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:`🎉 Event: ${src.name || src.theme || 'unnamed'}`};
+    if(src.kind==='raid') return {key:'adv-raid-' + (src.id||''), order:[5,0,0,k], label:'🐙 Raid cards'};
     return {key:'adv-un', order:[9,0,0,''], label:'Not obtainable yet'};
   }
   if(view==='skirmish'){
@@ -3327,7 +3336,7 @@ const SONGBOOK = {
 };
 const MAP_MUSIC = {
   m1:'conquest', mq:'conquest', mf:'conquest', ml:'conquest', mh:'conquest', mo:'conquest', ms:'map_swamp', mn:'map_cave', mv:'map_sky', mi:'map_snow',
-  m2:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
+  m2:'map_water', mj:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
   m3:'map_fire', m9:'map_fire', m11:'map_fire', me:'map_fire', mx:'map_fire',
   m4:'map_cave', mg:'map_cave', mu:'map_cave', mz:'map_cave',
   m5:'map_sand', md:'map_sand',
@@ -3582,7 +3591,7 @@ function fullCardHTML(defId, liveCard, opts){
   // (costBadgeParts) instead of only ever showing gold.
   const statCostParts = costBadgeParts(d);
   return `${visualHTML}<h4>${d.icon} ${d.name}</h4>
-    <div class="tagrow"><span class="tag" style="background:linear-gradient(135deg, ${rA}, ${rB}); color:#1a1a1a;">${rarityDef(d.rarity||'common').label}</span>${archetypesOf(d).map(a=>`<span class="tag">${ARCHETYPE_ICON[a]||'🌰'} ${a}</span>`).join('')}${(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    <div class="tagrow"><span class="tag" style="background:linear-gradient(135deg, ${rA}, ${rB}); color:#1a1a1a;">${rarityDef(d.rarity||'common').label}</span>${displayTypesOf(d).map(a=>`<span class="tag">${ARCHETYPE_ICON[a]||'🌰'} ${a}</span>`).join('')}${(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     ${(()=>{
       // 2026-09-21 ("The card also doesn't say it's wait timer when looking at it"): this used to
       // gate purely on the DEFINITION's base d.wait, which never reflects a live board card's
@@ -4451,6 +4460,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m5:'map-m5',   // Savanna Reaches -- warm gold-tan
   m6:'map-m6',   // Wolfsbane Tundra -- icy blue-white
   m7:'map-m7',   // Coral Current -- vivid turquoise
+  mj:'map-m7',   // The Sunken Ferry (Coral Current's side map)
   m8:'map-m8',   // Sable Swampmire -- murky green-brown
   m9:'map-m9',   // Basalt Foundry -- dark basalt/lava
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
@@ -5302,7 +5312,7 @@ function openCardDetail(defId){
   // to get it on the right. Stacks on phones.
   const rar = String(d.rarity||'common').replace(/_/g,' ');
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
-    .concat((d.archetypes||[]).filter(a=> a && a!=='Misc').slice(0,3).map(a=> `<span class="cd-chip">${escapeHtml(a)}</span>`))
+    .concat((d.archetypes||[]).filter(a=> a && !TYPE_HIDDEN.has(a)).slice(0,3).map(a=> `<span class="cd-chip">${escapeHtml(a)}</span>`))
     .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
   const tiles = `<div class="cd-tiles">
       <span class="cdt-atk"><b>${d.attack||0}</b><small>⚔ Attack</small></span>
@@ -7100,7 +7110,7 @@ const CURRENCY_META = {
   dust: {glyph:'✨', label:'Magic Dust'},
   metal: {glyph:'🔩', label:'Metal'},
   // Krooni (2026-10-08, user: "The golden bramble case should give crowns then. Use a rare European language ... like
-  // kronne"): Estonian for crowns. From the Golden Bramble Case; what it buys is still to be decided. Kept in this
+  // kronne"): Estonian for crowns. From the Highcrest Case; what it buys is still to be decided. Kept in this
   // browser for now (the cloud currency table has no column for it yet).
   kroon: {glyph:'👑', label:'Krooni'},
   // Laurels (2026-10-10, user: "Let's invent a new materia gained from arena fights (PVP)"): the victor's wreath,
@@ -7916,8 +7926,24 @@ const ENERGY_KEY = 'bramblewood_arena_energy_v1';
 const ENERGY_MAX_BASE = 20;
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
-function energyMax(){ return ENERGY_MAX_BASE + Math.min(10, Math.floor(energyClears() / 20)); }
-function energyNextStepText(){ const n = energyClears(), bonus = Math.min(10, Math.floor(n/20)); return bonus >= 10 ? 'Max Energy fully grown (+10).' : `${n % 20}/20 different skirmishes to +1 max Energy`; } // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
+// 2026-10-12 (22:04, user: "Improving your energy limits is not automatic. Its done in Wildpaths - not part of the tree, but
+// part of a separate menu"): every 20 different skirmishes cleared earns a Stamina mark; you spend it in Wildpaths → Stamina
+// (with some Maple Leaves) for +1 max Energy, up to +10.
+const ENERGY_UPGRADES_KEY = 'bramblewood_energy_upgrades_v1', ENERGY_UPGRADE_MAX = 10;
+function energyUpgradesBought(){ try{ return Math.max(0, Math.min(ENERGY_UPGRADE_MAX, parseInt(localStorage.getItem(ENERGY_UPGRADES_KEY)||'0', 10) || 0)); }catch(e){ return 0; } }
+function energyMarksEarned(){ return Math.min(ENERGY_UPGRADE_MAX, Math.floor(energyClears() / 20)); }
+function energyUpgradesReady(){ return Math.max(0, energyMarksEarned() - energyUpgradesBought()); }
+function energyUpgradeCost(){ return 150 * (energyUpgradesBought() + 1); } // Maple Leaves: 150, 300 … 1500
+function buyEnergyUpgrade(){
+  if(!energyUpgradesReady()) return 'none';
+  const c = energyUpgradeCost(); if((myCurrencies.gold||0) < c) return 'cost';
+  myCurrencies.gold -= c; saveCurrencies();
+  try{ localStorage.setItem(ENERGY_UPGRADES_KEY, String(energyUpgradesBought() + 1)); }catch(e){}
+  return 'ok';
+}
+function energyMax(){ return ENERGY_MAX_BASE + energyUpgradesBought(); }
+function energyNextStepText(){ const n = energyClears(), ready = energyUpgradesReady(); if(energyUpgradesBought() >= ENERGY_UPGRADE_MAX) return 'Max Energy fully grown (+10).';
+  return ready ? `${ready} Stamina mark${ready === 1 ? '' : 's'} ready: raise max Energy in Wildpaths → Stamina.` : `${n % 20}/20 different skirmishes to the next Stamina mark (spend it in Wildpaths)`; } // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
                         // to matter, short enough that a returning player is rarely capped out.
 const ENERGY_REGEN_MS = 5 * 60 * 1000; // 2026-10-10 (user: "Change the energy gain rate to 1/5minute"); was 1 per minute
 // Cost scales with a node's kind, same tiering CONQUEST_NODE_REWARDS already uses (a Skirmish is
@@ -8069,6 +8095,8 @@ document.addEventListener('click', e=>{
   const c = +b.dataset.energyCost || 0; if(currentEnergy() >= c) return;
   e.preventDefault(); e.stopImmediatePropagation(); denyShake(b); energyShortToast(c);
 }, true);
+// Time-based resources read "X/Y <icon> MM:SS" (2026-10-12, 22:25): the clock is the wait for the next point.
+function clockText(ms){ const sec = Math.max(0, Math.ceil((ms||0)/1000)), h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), s = sec%60; return h ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
 function refreshEnergyHud(){
   const s = settleEnergy();
   const nextMs = msUntilNextEnergyTick();
@@ -8076,7 +8104,9 @@ function refreshEnergyHud(){
   // 2026-10-12 (user: "the energy bar should say +⚡ in X:XX instead of text. The lightning emoji resource icon should be on
   // the right of the 4/20 as well"): "4/20⚡ · +⚡ in 2:47".
   const ico = '<span class="energy-ico">⚡</span>';
-  const html = s.current > energyMax() ? `${s.current}/${energyMax()}${ico}` : s.current >= energyMax() ? `${escapeHtml(_t('Full'))}${ico}` : nextMs===null ? `${s.current}/${energyMax()}${ico}` : `${s.current}/${energyMax()}${ico}<span class="energy-next"> · +⚡ in ${formatEnergyCountdown(nextMs)}</span>`;
+  // 2026-10-12 (22:25, user: "The energy pill can be simplified: Just X/Y <Lighting> MM:SS"): the clock is the time to the next point.
+  const clock = ms=>{ const sec = Math.max(0, Math.ceil(ms/1000)), h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), ss = sec%60; return h ? `${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; };
+  const html = `${s.current}/${energyMax()}${ico}${s.current < energyMax() && nextMs != null ? `<span class="energy-next"> ${clock(nextMs)}</span>` : ''}`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
@@ -8810,7 +8840,30 @@ function matchLeaderId(){ const defs = getCardDefs(); return myLeaderId && canLe
 const CASTLE_MAX_LEVEL = 20, CASTLE_LEVELS_KEY = 'bramblewood_castle_levels';
 let myCastleLevels = (()=>{ try{ return JSON.parse(localStorage.getItem(CASTLE_LEVELS_KEY)||'{}') || {}; }catch(e){ return {}; } })();
 // Map castles (2026-10-10): a castle with `unlockMap` opens once you beat that map's boss.
+// Drop castles (2026-10-12, 22:04, user: "introduce some castles for progression like village - 20 health, farm - 10 health ...
+// maybe 2 castles per map ... How to get them can be through boosters or drops - never the guaranteed rewards"): a castle with
+// `drop:{map}` is yours once it drops: from a win on that map (or its side maps), or now and then from a basic pack.
+// A drop you already own becomes a spare (fuse it in the Forge).
+const CASTLES_OWNED_KEY = 'bramblewood_castles_owned_v1';
+function ownedDropCastles(){ try{ return new Set(JSON.parse(localStorage.getItem(CASTLES_OWNED_KEY)||'[]')); }catch(e){ return new Set(); } }
+function grantDropCastle(id){ const s = ownedDropCastles(); if(s.has(id)){ addCastleDuplicate(id, 1); return 'spare'; } s.add(id); try{ localStorage.setItem(CASTLES_OWNED_KEY, JSON.stringify([...s])); }catch(e){} return 'new'; }
+const CASTLE_DROP_CHANCE = {skirmish:0.03, elite:0.06, boss:0.10, finalboss:0.10};
+function rollCastleDrop(mapId, node){
+  const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!map || !node) return null;
+  const home = map.sub ? map.parent : map.id, k = baseKind(node.kind || 'skirmish');
+  if(Math.random() >= (CASTLE_DROP_CHANCE[k] || 0)) return null;
+  const owned = ownedDropCastles(), pool = Object.values(CHARACTER_DEFS).filter(ch=> ch && ch.drop && ch.drop.map === home); if(!pool.length) return null;
+  const fresh = pool.filter(ch=> !owned.has(ch.id)), pick = (fresh.length ? fresh : pool)[Math.floor(Math.random() * (fresh.length || pool.length))];
+  return {id: pick.id, kind: grantDropCastle(pick.id)};
+}
+function rollPackCastle(){ // 3% a basic pack: a castle from a map you've reached
+  if(Math.random() >= 0.03) return null;
+  const pr = loadConquestProgress(), pool = Object.values(CHARACTER_DEFS).filter(ch=>{ if(!ch || !ch.drop) return false; const m = CONQUEST_MAPS.find(x=> x.id === ch.drop.map); return m && isMapUnlocked(m, pr); });
+  if(!pool.length) return null; const pick = pool[Math.floor(Math.random() * pool.length)];
+  return {id: pick.id, kind: grantDropCastle(pick.id)};
+}
 function castleUnlocked(ch){
+  if(ch && ch.drop) return ownedDropCastles().has(ch.id);
   if(!ch || !ch.unlockMap) return true;
   try{ const m = CONQUEST_MAPS.find(x=> x.id===ch.unlockMap); const b = m && m.nodes.find(n=> n.kind==='boss' || n.kind==='finalboss'); return !!(b && (loadConquestProgress().completed||[]).includes(conquestNodeId(m.id, b.key))); }catch(e){ return false; }
 }
@@ -9015,7 +9068,7 @@ function openLoadoutPicker(kind){
     .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
     .sort((a,b)=> (inDeck(a) - inDeck(b)) || (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || ((defs[b].attack||0)+(defs[b].health||0)) - ((defs[a].attack||0)+(defs[a].health||0)));
   const body = ()=> isCastle
-    ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr('Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
+    ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr(ch.drop ? 'Drops now and then from fights on Map ' + mapNumberOf(ch.drop.map) + ', or from a basic pack' : 'Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
       <p class="lp-temper">🔨 Temper your castles in the Forge (🏰 Castles).</p>`
     : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
@@ -9538,19 +9591,18 @@ function deckLevelFrom(counts, levelOf, leaders){
 // 2026-10-12 (D60 + your map list): rebased so the Sundered Peak's final boss (Map 20, ×1.4) lands on 400; its side maps set their own.
 function mapParRating(mapNo){ return 12 * Math.pow((400/1.4)/12, (Math.max(1, mapNo) - 1) / 19); }
 function enemyDeckLevel(node){
-  if(!node) return 0;
-  if(node.rating != null && node.rating !== '') return Math.max(0, Math.round(Number(node.rating)||0));
-  let map = null; try{ map = CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)) || CONQUEST_MAPS.find(m=> (m.nodes||[]).some(n=> n.key === node.key)); }catch(e){}
-  if(!map){ if(!node.deck) return 0; const defs = getCardDefs(); return deckLevelFrom(node.deck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), node.leaderId ? [node.leaderId] : []); }
-  const mains = CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved), parent = map.sub ? CONQUEST_MAPS.find(m=> m.id === map.parent) : map;
-  const no = Math.max(1, mains.indexOf(parent)), par = mapParRating(no) * (map.sub ? 1.1 : 1);
-  const k = baseKind(node.kind || 'skirmish');
-  if(k === 'tutorial') return Math.round(par * 0.6);
-  if(k === 'finalboss') return Math.round(par * 1.4);
-  if(k === 'boss' || k === 'raidboss') return Math.round(par * 1.3);
-  if(k === 'elite') return Math.round(par * 1.15);
-  const sk = map.nodes.filter(n=> baseKind(n.kind||'') === 'skirmish'), p = sk.length > 1 ? Math.max(0, sk.indexOf(node)) / (sk.length - 1) : 0.5;
-  return Math.round(par * (0.85 + 0.3 * p));
+  // 2026-10-12 (22:25, user: "The battle rating seen in the game should be real values! Not hard coded"): worked out from the
+  // enemy's actual deck, at the levels its cards will really fight at (the road level, or a level set in Edit skirmish), with its
+  // leaders counted like a player's leader. No more curve or typed-in rating.
+  if(!node || !node.deck) return 0;
+  const defs = getCardDefs(); let road = 0;
+  try{ const real = CONQUEST_MAPS.flatMap(m=> m.nodes||[]).find(n=> n === node) || CONQUEST_MAPS.flatMap(m=> m.nodes||[]).find(n=> n.key === node.key); road = roadEnemyLevel(real || node); }catch(e){}
+  const lv = id=>{ const set = node.cardLevels && node.cardLevels[id]; const b = cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]); return set != null && set !== '' ? Number(set) : Math.max(b, road || b); };
+  // Enemy decks are smaller than a player's 20; scale to 20 cards so the two ratings compare like for like.
+  const n = Object.values(node.deck).reduce((a, b)=> a + (b||0), 0) || 1;
+  const leaders = (node.leaders || (node.leaderId ? [node.leaderId] : [])).filter(Boolean);
+  const body = deckLevelFrom(node.deck, lv, []) * (DECK_SIZE / n), lead = deckLevelFrom({}, lv, leaders);
+  return Math.round(body + lead);
 }
 function mainDeckLevel(counts, leaderId){
   return deckLevelFrom(counts, id=> getCardLevel(id), leaderId ? [leaderId] : []);
@@ -10575,7 +10627,7 @@ const DIALOGUES = {
   ]},
   unlock_shop2: {lines:[
     {who:'peddler', text:'Mind the cinders. The Foundry\'s fire is right behind me, and it\'s still warm. So are the prices.'},
-    {who:'peddler', text:'Acorn Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
+    {who:'peddler', text:'Tidemire Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
     {label:'who', who:'peddler', text:'A mole who walked the wrong way out of a mine and kept going. You\'ll find my stall with the Cart\'s.', goto:'go'},
     {label:'go', who:'traveller', text:'Competition! Wonderful. We\'ll share a counter. Shops, plural, now.'},
   ]},
@@ -10646,7 +10698,7 @@ const DIALOGUES = {
   ]},
   unlock_shop3: {lines:[
     {who:'traveller', text:'A caravan with gold on the wheels. They only sell the good cases.'},
-    {who:'swiftpaw', text:'Golden Bramble Cases. I’ve heard of those.', options:[{label:'Let’s look.', goto:'go', act:'tab:shop'}], silent:'go'},
+    {who:'swiftpaw', text:'Highcrest Cases. I’ve heard of those.', options:[{label:'Let’s look.', goto:'go', act:'tab:shop'}], silent:'go'},
     {label:'go', who:'traveller', text:'Look first. Buy second. Regret never.'},
   ]},
   unlock_wanderer: {lines:[
@@ -11006,20 +11058,24 @@ const FEATURE_SPOTS = [
   {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
   // The backpack (2026-10-12, 10:23 list): a note from the Wandering Traveller on Map 1 opens the Inventory and the field kit.
   {key:'fieldkit', icon:'🧰', name:'The traveller\'s kit', mapNumber:12, get map(){ return mapIdAt(12); }, after:null, dialogue:'unlock_fieldkit', tabs:['inventory'], go:()=> switchTab('inventory')},
-  {key:'backpack', icon:'🎒', name:'A note in your pack', mapNumber:1, get map(){ return mapIdAt(1); }, after:null, dialogue:'unlock_backpack', tabs:['inventory'], go:()=> switchTab('inventory')},
+  // 2026-10-12 (22:25, user: "Note in your pack ... after clicking it, you get some stuff in your pack-inventory. Then it disappears
+  // permanently. Move it to Gatorback Swamp"): Map 5 (Gatorback Swamp); one click opens the Inventory with a small gift, then it's gone.
+  {key:'backpack', icon:'🎒', name:'A note in your pack', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_backpack', tabs:['inventory'], vanish:true,
+    gift:()=>{ myCurrencies.kibble = (myCurrencies.kibble||0) + 3; myCurrencies.dust = (myCurrencies.dust||0) + 40; saveCurrencies(); try{ showToast('🎒 In the pack: 🦴 3 Kibble and ✨ 40 Dust.', 'ok'); }catch(e){} },
+    go:()=> switchTab('inventory')},
   {key:'nest', icon:'🪺', name:'Nest', mapNumber:2, get map(){ return mapIdAt(2); }, after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
-  // Pack A (Sprout Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
+  // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'codex', icon:'📖', name:'Codex', mapNumber:7, get map(){ return mapIdAt(7); }, after:null, dialogue:'unlock_codex', tabs:['codex'], go:()=> switchTab('codex')},
   {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
-  // Pack B (Acorn Chests) from Map 8.
+  // Pack B (Tidemire Chests) from Map 8.
   {key:'shop2', icon:'🏮', name:'Ember Peddler', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
   {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], go:()=> openQuestsModal('errands')},
   {key:'forge', icon:'🔨', name:'The Forge', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_forge', tabs:['forge'], go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }},
-  // Map 13: Raid 1, Pack C (Golden Bramble Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
+  // Map 13: Raid 1, Pack C (Highcrest Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
   {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
   {key:'shop3', icon:'🐫', name:'Gilded Caravan', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_shop3', tabs:[], merchant:true, pack:'gold', go:()=> switchTab('shop')},
   {key:'wanderer', icon:'🧭', name:'Wanderer’s Camp', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_wanderer', tabs:[], go:()=> switchTab('shop')},
@@ -11138,7 +11194,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress)).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -11146,7 +11202,7 @@ function mapSpotsHTML(map, positions, progress){
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
-    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
@@ -11174,9 +11230,17 @@ const CAVE_M2_LINES = [
 // Sub-map entrances (2026-10-09). A dark cave mouth on the parent map; locked until its `entry.after`
 // node is cleared (then a "!" until you first go in).
 // Side maps that really are caves keep the cave mouth on the parent map; the rest show an emblem.
-const SUBMAP_CAVES = new Set(['mg', 'mz', 'mn', 'mx']);
+// 2026-10-12 (22:04, user: "Only literally caves can have that cave shape"): Smugglers' Grotto is the one real cave left.
+const SUBMAP_CAVES = new Set(['mg']);
 // Drawn emblems where the emoji is too new to count on (the lotus is Unicode 14).
 const SUBMAP_EMBLEM_SVG = {
+  // The Canopy (user: "some african tree canopy symbol"): a flat-topped acacia.
+  my: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="44" rx="20" ry="3" fill="rgba(0,0,0,.25)"/><path d="M31 44 L33 44 L34 30 L40 22 L38 21 L33 27 L32 20 L30 20 L30 27 L25 21 L23 22 L29 30 Z" fill="#6b4a2b"/>
+    <path d="M4 20 C8 12 20 9 32 10 C44 9 56 12 60 20 C54 23 44 22 38 23 C34 21 30 21 26 23 C20 22 10 23 4 20Z" fill="#4f7d2f"/><path d="M8 17 C14 12 24 11 32 12 C42 11 52 12 57 17 C50 18 42 17 32 17 C22 17 14 18 8 17Z" fill="#6fa03e"/>
+    <path d="M14 14 C20 12 26 12 30 13" stroke="#8cc152" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`,
+  // The Glimmer Depths (user: "like a diamond stuck in a rock"): a grey boulder with a cut gem set in it.
+  mn: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="44" rx="24" ry="3" fill="rgba(0,0,0,.25)"/><path d="M8 42 L12 24 L22 14 L38 12 L52 20 L57 34 L52 42 Z" fill="#7d776c"/><path d="M12 24 L22 14 L38 12 L30 22 Z" fill="#9b958a"/><path d="M52 20 L57 34 L52 42 L44 36 Z" fill="#5f5a52"/>
+    <path d="M24 26 L30 20 L40 20 L44 26 L34 38 Z" fill="#7fe3ff"/><path d="M24 26 L44 26 L34 38 Z" fill="#3fb6e6"/><path d="M30 20 L34 26 L40 20" stroke="#d8f7ff" stroke-width="1.4" fill="none"/><path d="M27 23 L29 21" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>`,
   mp: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="41" rx="27" ry="6" fill="#3f8f4a"/><ellipse cx="32" cy="40" rx="22" ry="4" fill="#5fb35c"/>
     <path d="M32 38 C14 37 6 26 8 20 C18 22 26 30 32 38Z" fill="#f2a6c4"/><path d="M32 38 C50 37 58 26 56 20 C46 22 38 30 32 38Z" fill="#f2a6c4"/>
     <path d="M32 38 C20 32 15 18 19 9 C27 15 31 27 32 38Z" fill="#f7bfd6"/><path d="M32 38 C44 32 49 18 45 9 C37 15 33 27 32 38Z" fill="#f7bfd6"/>
@@ -11199,7 +11263,7 @@ function subMapEntrancesHTML(map, progress){
       <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
     }
     return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span><span class="msc-ico" aria-hidden="true">${open ? sm.icon : '🔒'}</span>${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+      <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
   }).join('');
 }
 // "Boom, transition-zooms into the cave": the parent map zooms into the cave mouth and goes dark, then
@@ -11609,7 +11673,7 @@ function skirmishTargetWinRate(mapId, node){
   return .85 - .25 * (i / Math.max(1, sk.length - 1));
 }
 // D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
-const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
+const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
@@ -11921,7 +11985,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         ${(()=>{ const L = armourLayersOf(draft, skirmishCastle(draft).shield); return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending castle: +1 Health per level. Blank = the default for this kind of fight">Castle level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
-        <label title="The battle rating this fight shows (the rating a player should bring). Blank = the road's curve for this map and kind of fight">Battle rating<input id="seRating" type="number" min="0" max="5000" placeholder="${escapeAttr(String(enemyDeckLevel(Object.assign({}, draft, {rating:null}))))}" value="${draft.rating != null ? escapeAttr(draft.rating) : ''}"></label>
+        <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
         <label title="The card shown big on this skirmish's preview">Showcase card<select id="seShowcase"><option value="">Strongest card</option>${Object.keys(draft.deck||{}).filter(id=> getCardDefs()[id]).map(id=> opt(id, draft.showcase, getCardDefs()[id].name)).join('')}</select></label>
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
@@ -11932,7 +11996,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
-          <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
+          <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
+          <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
           return `<fieldset class="se-wide se-fx"><legend>🌦️ Field effects <small>what this fight plays under. ✕ switches one off, ↺ puts the map's default back</small></legend>
@@ -11996,12 +12061,12 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const v = id=> (document.getElementById(id)||{}).value;
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.flavor = v('seFlavor')||'';
-      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop'][i]); if(val) draft[k] = val; else delete draft[k]; });
       { const ph = v('sePhase'), pl = v('sePhaseLen'); const r = Object.assign({}, draft.rules||{}); delete r.phase; delete r.phaseLen;
         if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
         { const ac = v('seActions'); delete r.actions; if(ac !== '' && ac != null && Number(ac) > 1) r.actions = Math.max(1, Math.min(5, Math.round(Number(ac)))); }
         if(Object.keys(r).length) draft.rules = r; else delete draft.rules; }
-      { const rt = v('seRating'); if(rt === '' || rt == null) delete draft.rating; else draft.rating = Math.max(0, Math.min(5000, Math.round(Number(rt)||0))); }
+      delete draft.rating; // the rating is computed from the deck now (2026-10-12)
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seDgRounds')){
@@ -12097,7 +12162,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -12986,7 +13051,7 @@ function pvpTileHTML(){
     <span class="amb-ico">⚔️</span><span class="amb-lbl">PvP</span>
     <span class="amb-sub">A stranger's deck from your tier</span>
     <span class="async-run-line">🏅 ${escapeHtml(rankForRating(myRating).label)} · rating ${Math.round(myRating)} · your deck Lv ${myPvpDeckLevel()}</span>
-    <span class="async-run-line">🎟️ <b>${left}/${PVP_TICKETS_PER_DAY}</b> tickets${nx==null ? ' · full' : ` · +🎟️ in ${mn}m`}</span>
+    <span class="async-run-line"><b>${left}/${PVP_TICKETS_PER_DAY}</b>🎟️${nx==null ? '' : ` ${clockText(nx)}`}</span>
   </button>`;
 }
 function settlePvpAfterMatch(m){
@@ -13465,7 +13530,7 @@ const CONQUEST_MAPS = [
       { key:"p-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"mallard-marauder":2,"pike-lancer":2,"beaver-builder":2,"silver-minnow":2}, hqHp:30, flavor:"She built half the pond. She would like it back.", requires:["p-5","p-6"] },
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse m9 in").
-  { id:"m9", sub:true, parent:"m3", entry:{x:60, y:16, after:"3-1", label:"The foundry gate"}, name:"Basalt Foundry", icon:"⚒️", blurb:"A furnace of cracked black stone — everything here glows from the inside.", sequential:true,
+  { id:"m9", sub:true, parent:"m3", entry:{x:60, y:16, after:"3-1", label:"The foundry gate"}, name:"Basalt Foundry", icon:"🪨", blurb:"A furnace of cracked black stone — everything here glows from the inside.", sequential:true,
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Cinder Swarm", icon:"🐝", deck:{"cinder-hornet":4,"ember-jackal":2,"beaver-lumberjack":2,"phoenix-fledgling":2}, hqHp:63, flavor:"The smoke arrives well before the swarm does.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Salamander Vents", icon:"🦎", deck:{"magma-salamander":4,"obsidian-scorpion":4,"echo-keeper":2}, hqHp:60, flavor:"Every vent has something living just beneath the heat shimmer.", requires:["9-1"] },
@@ -13487,6 +13552,18 @@ const CONQUEST_MAPS = [
   // this list so the main maps' order (energy curve, the 4th-map egg) is unchanged. It never shows in
   // the region list, the world atlas or the ‹ › edges — the only way in is its entrance on the parent
   // map (`entry`: where the cave mouth sits, and which parent node opens it).
+  // The Sunken Ferry (2026-10-12, 22:04, user: "I feel like im not done with sea. Add one small submap in coral currents. Its
+  // deeper and faster ... Like sunken boat (from the otters, probably). Unlocked after defeating the boss of that map"): an otter
+  // ferry that went down past the reef wall. Darker (night all through) and faster (First Blood: the first Quick unit to swing
+  // each round hits +2). Electric eels and the Goliath's brood live in the wreck.
+  { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"7-9", label:"A mast below the reef"}, name:"The Sunken Ferry", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
+    nodes: [
+      { key:"j-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"inkcloud-squid":3,"riptide-eel":3,"clownfish-scout":2,"coral-current-eel":2}, hqHp:110, rules:{phase:"night", firstBlood:2}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
+      { key:"j-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"moray-ambusher":2,"voltaic-eel":2,"inkcloud-squid":2,"tide-pool-crab":2,"coral-current-eel":2}, hqHp:120, rules:{phase:"night", firstBlood:2}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["j-1"] },
+      { key:"j-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", deck:{"open-ocean-hermit-crab":3,"kraken-spawnling":1,"riptide-eel":3,"inkcloud-squid":2,"barnacle-fortress":1}, hqHp:130, rules:{phase:"night", firstBlood:2}, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["j-2"] },
+      { key:"j-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", deck:{"voltaic-eel":3,"coral-reef-shark":2,"abyss-lantern-squid":2,"riptide-eel":3}, hqHp:150, rules:{phase:"night", firstBlood:2, highTide:true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["j-3"] },
+      { key:"j-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"voltaic-eel":2,"kraken-spawnling":1,"coral-reef-shark":2,"inkcloud-squid":2}, hqHp:170, rules:{phase:"night", firstBlood:2, highTide:true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["j-4"] },
+    ]},
   { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"b-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
       { key:"g-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:48, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
@@ -13518,7 +13595,7 @@ const CONQUEST_MAPS = [
   // on the side, unlocked randomly as you progress, that battle wildlife that has had to survive there. You also get the
   // Contradiction"). Main line: three undead elites into a four-castle Dungeon (each castle with its own deck). Side fights
   // (chance) turn up at random after wins once their path is open.
-  { id:"me", sub:true, parent:"m11", entry:{x:50, y:18, after:"11-8", label:"The crater's edge"}, name:"Eye of the Volcano", icon:"👁️", blurb:"Down inside the crater, where the dead keep the fire company and the living learned not to need much.", sequential:true,
+  { id:"me", sub:true, parent:"m11", entry:{x:50, y:18, after:"11-8", label:"The crater's edge"}, name:"Eye of the Volcano", icon:"🌋", blurb:"Down inside the crater, where the dead keep the fire company and the living learned not to need much.", sequential:true,
     nodes: [
       { key:"e-1", rating:400, kind:"elite", name:"The Ash Ossuary", icon:"🦴", deck:{"ashbone-ghoul":4,"cinder-skeleton":3,"cinder-imp":2,"magma-wraith":1}, hqHp:170, flavor:"Bones stacked like firewood. Some of them are still deciding.", rewards:{first:{gold:200, dust:30}}, requires:[] },
       { key:"e-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"magma-wraith":3,"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1}, hqHp:190, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["e-1"] },
@@ -13758,7 +13835,7 @@ const MAP_BIOMES = {
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
 };
-const MAP_BIOME_OF = {mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -14025,7 +14102,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const pay = tier ? tier.first : {gold:0, dust:0};
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}${done?'<i class="cnp-rw-tick" aria-hidden="true">✓</i>':''}</span>`).join('');
+    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -15067,7 +15144,7 @@ function renderConquestSubTab(body){
     } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ fadeNewBang(b); b.classList.add('is-open'); activateSpot(sp); } }));
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
   mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
@@ -15154,11 +15231,12 @@ function renderConquestSubTab(body){
       panelEl.classList.toggle('is-cleared', !!done); panelEl.classList.toggle('is-outlevel', !done && (gap0==='lv-red' || gap0==='lv-darkred')); }
     if(revealed) noteSighted(Object.keys(selectedNode.deck||{})); // Discovery: a revealed node deck counts as sighted
     panelEl.innerHTML = `
-      ${done ? `<span class="cnp-cleared-tick" title="${escapeAttr(progress.ranks[nid] ? 'Cleared · best rank ' + progress.ranks[nid] : 'Cleared')}" aria-label="Cleared">✓</span>` : ''}
+      ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
+      ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
       ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>`}
-      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}</div>${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
-          return `<div class="cnp-lvlbig ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(deckLevelGapTip(cls))}"><small>${escapeHtml(_t('Battle rating'))}</small><b>⚔ ${ev}</b></div>`; })()}</div>
-        ${cnpRewardStripHTML(map.id, selectedNode, done, progress.ranks[nid])}
+      <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+          return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
+        ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
       ${earned ? `
@@ -15388,10 +15466,23 @@ function raidClaimsFor(def){
   });
   return out;
 }
+// Raid cards (2026-10-12, user: "raids give their own 5-6 cards, many raid-only" + "generate some cephalopods for my raid"):
+// a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
+// top 10%. Commons are likelier than the Broodmother.
+function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
+function grantRaidCards(def, n){
+  const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
+  const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
+  for(let i = 0; i < n; i++){ const tot = ids.reduce((a, id)=> a + w(id), 0); let r = Math.random() * tot, pick = ids[ids.length - 1]; for(const id of ids){ r -= w(id); if(r <= 0){ pick = id; break; } }
+    unlockCardForPlayer(pick, 'raid'); got.push(pick); }
+  if(got.length) setTimeout(()=>{ try{ showToast(`🐙 Raid cards: ${got.map(id=> defs[id].name).join(', ')}`, 'ok'); }catch(e){} }, 1200);
+  return got;
+}
 function claimRaidReward(def, claim){
   const all = Object.assign({}, claim.reward.base);
   Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
+  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0)) : [];
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
   awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
@@ -17117,16 +17208,19 @@ function dungeonWaveVfx(m){
 // level"): node.cardLevels = {cardId: level}. Those cards fight as "<id>@lv<N>" copies at that level's stats, so the
 // player's own levels for the same card are untouched.
 let matchDefsOverlay = {};
-// Road levels (2026-10-12, user D61: "Map 5"): from Map 5 on, enemy cards fight above their printed level: Lv 2 at Map 5,
-// +1 every 3 maps (Lv 3 at Map 8, Lv 7 at Map 20); elites +1, bosses +2, side maps +1, Lv 10 at most. A level set on the
+// Road levels (2026-10-12, user D61: "Map 5"): from Map 5 on, enemy cards fight above their printed level (curve below,
+// flattened in the 21:35 balance pass), Lv 10 at most. A level set on the
 // card in the skirmish editor wins. Stats only move on the major steps (Lv 3, 6, 9), so Maps 8, 17 and the bosses near
 // them are where it shows.
 function roadEnemyLevel(node){
   if(!node) return 0; let map = null; try{ map = CONQUEST_MAPS.find(m=> (m.nodes||[]).includes(node)); }catch(e){} if(!map) return 0;
   const parent = map.sub ? CONQUEST_MAPS.find(m=> m.id === map.parent) : map, no = mapNumberOf(parent && parent.id); if(no == null || no < 5) return 0;
   const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial' || k === 'raidboss') return 0;
-  let L = 2 + Math.floor((no - 5) / 3) + (map.sub ? 1 : 0);
-  if(k === 'elite' || node.kind === 'dungeon') L += 1; else if(k === 'boss' || k === 'finalboss' || node.kind === 'worldboss') L += 2;
+  // 2026-10-12 balance pass (user: "Enemy levels ... level 5 by Map 20, the final boss's units at 6"): a slow, nearly linear
+  // climb, Lv 2 at Map 5, +1 every 5 maps (Lv 3 at Map 10, 4 at Map 15, 5 at Map 20); boss decks one higher. Elites and side
+  // maps no longer add a level (their decks are already stronger).
+  let L = 2 + Math.floor((no - 5) / 5);
+  if(k === 'boss' || k === 'finalboss' || node.kind === 'worldboss') L += 1;
   return Math.min(10, L);
 }
 function levelledEnemyDeck(node, deck){
@@ -18623,12 +18717,12 @@ function renderOnlineRaidPanel(body){
   // tick) never shows — same "always settle right before display" habit refreshEnergyHud follows.
   const rp = currentRaidPoints();
   const rpNextMs = msUntilNextRaidPointTick();
-  const rpLine = rpNextMs===null ? `${rp}/${RAID_POINTS_MAX}` : `${rp}/${RAID_POINTS_MAX} · +1 in ${formatRaidPointCountdown(rpNextMs)}`;
+  const rpLine = rpNextMs===null ? `${rp}/${RAID_POINTS_MAX}` : `${rp}/${RAID_POINTS_MAX} ${clockText(rpNextMs)}`; // X/Y 🎫 MM:SS (2026-10-12)
   body.innerHTML = `
     <div class="panel online-raid-panel">
       <h2>🌐 Online Raid</h2>
       <p class="panel-sub">Fixed-strength Raid Bosses, open to everyone right away — your rank: <b>${myRank.label}</b> (rating ${Math.round(myRating)}). Each attempt costs ${RAID_POINTS_COST}🎫 Raid Point and ${ENERGY_COST.onlineRaid}⚡ Energy.</p>
-      <div class="energy-pill raid-points-pill ${rp<RAID_POINTS_COST?'energy-low':''}" title="Raid Points gate Online Raid attempts specifically, on top of Energy — refills slowly (1 every 6h) since a raid boss is the highest-stakes PvE fight in the game.">🎫 ${rpLine}</div>
+      <div class="energy-pill raid-points-pill ${rp<RAID_POINTS_COST?'energy-low':''}" title="Raid Points gate Online Raid attempts specifically, on top of Energy — refills slowly (1 every 6h) since a raid boss is the highest-stakes PvE fight in the game.">${rpLine.replace(/^(\d+\/\d+)/, '$1🎫')}</div>
       ${cloudRaidBosses===null ? `<div class="empty-hint">Loading raid bosses…</div>`
         : (cloudRaidBosses.length ? `<div class="conquest-nodes" id="onlineRaidNodeList">${cloudRaidBosses.map(onlineRaidBossCardHTML).join('')}</div>`
           : `<div class="empty-hint">${cloudRaidBossesError ? 'Couldn’t reach the raid server right now — try again shortly.' : 'No raid is open right now. The next one is on its way — see “Coming Up” below.'}</div>`)}
@@ -24298,6 +24392,12 @@ async function resolveRound(opts){
             if(unlockCardForPlayer(pickId, 'bossBaseGift')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(pickId); m.conquestBaseGift = pickId; } } } }catch(e){}
       // Egg drops (2026-10-12, user's rates): see rollEggDrop.
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const egg = rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
+      // D48 (2026-10-12): a map boss beaten again at rank S or better gives a spare of that map's castle (fuse it in the Forge).
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, bk = bn && baseKind(bn.kind||'');
+        if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss') && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
+          const cs = Object.values(CHARACTER_DEFS).filter(ch=> ch && ch.unlockMap === m.conquestNode.mapId);
+          cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleSpare = cs.map(ch=> ch.name).join(', '); } }catch(e){}
+      try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New castle: ' : 'Spare: ') + ch.name; } }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
@@ -24717,6 +24817,12 @@ function showSuddenDeathBanner(m, stage){
 // 10%), or set per Conquest node with node.enemyBehaviour. ----
 const ENEMY_BEHAVIOUR_MODES = new Set(['ai','gauntlet','conquest','dungeon','pvp','async']);
 const LOOP_UNITS = ['frog-imp','fly-imp'];
+// What a fight keeps summoning once it has no cards left (2026-10-12, 22:04, user: "For all skirmishes, let me select what counters
+// they create when they have no more cards to play. In general, they should not play anything, so add a '-' option. But some
+// bosses always perma summon wolves or bees"): node.loopUnits picks a preset; blank or '-' = nothing.
+const LOOP_PRESETS = {'-':{label:'— Nothing', ids:[]}, imps:{label:'🐸 Frog & Fly Imps', ids:['frog-imp','fly-imp']}, bees:{label:'🐝 Bee Drones', ids:['bee-drone']},
+  ants:{label:'🐜 Worker Ants', ids:['worker-ant']}, wolves:{label:'🐺 Wolf packs', ids:['wolf-pack-runner']}, bats:{label:'🦇 Cave Flitters', ids:['cave-flitter']},
+  sprouts:{label:'🌱 Bramble Sprouts', ids:['bramble-sprout']}, hatchlings:{label:'🐣 Nest Hatchlings', ids:['nest-hatchling']}, squid:{label:'🦑 Inkcloud Squid', ids:['inkcloud-squid']}};
 function setupEnemyBehaviour(m){
   if(m.enemyBehaviour!==undefined) return;
   if(!ENEMY_BEHAVIOUR_MODES.has(m.mode)){ m.enemyBehaviour = null; return; }
@@ -24727,7 +24833,8 @@ function setupEnemyBehaviour(m){
   if(!b && node && /boss|elite|champion/.test(node.kind||'')) b = 'neverSurrender';
   if(!b){ const r = seededRng((currentMatchSeed||1) ^ 0xbe7a)(); b = r < 0.75 ? 'surrender' : 'offerDraw'; }
   m.enemyBehaviour = b;
-  m.players[2].loopCards = b==='neverSurrender' ? LOOP_UNITS.slice() : [];
+  const lp = node && LOOP_PRESETS[node.loopUnits]; // only a chosen preset summons; the default is nothing
+  m.players[2].loopCards = lp ? lp.ids.slice() : [];
 }
 function enemyIsSpent(m, events){
   const e = m.players[2];
@@ -25706,6 +25813,7 @@ function rewardsPanelHTML(m){
     secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
+  if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Spare castle</div><div class="rw-row"><span class="rw-act" data-tip="Fuse it in the Forge (Castles) to bank progress toward its next levels">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
   if(m.conquestKibbleEarned){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Kibble</div><div class="rw-row"><span class="rw-act" data-tip="Trains a Level-0 card to Level 1 in the Nest">🦴 ${m.conquestKibbleEarned} Kibble</span></div></div>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}; secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Found</div><div class="rw-row"><span class="rw-act" data-tip="It's in your pack: place it in a hay nest in the Nest">${ek.icon || '🥚'} ${escapeHtml(ek.name || 'An egg')}</span></div></div>`); }
   if((m.unlockedActivities||[]).length){
@@ -29108,7 +29216,7 @@ function renderHome(){
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
-        ${adminEntryVisible() ? `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road (preview)"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>Preview</small></button>` : ''}
+        ${adminEntryVisible() || energyMarksEarned() > 0 ? (()=>{ const rd = energyUpgradesReady(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Stamina and passive skills for the Conquest road"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>${rd ? `⚡ ${rd} Stamina ready` : 'Stamina · trails (preview)'}</small>${rd ? `<span class="home-badge">${rd}</span>` : ''}</button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -29337,10 +29445,16 @@ function renderWildpaths(){
   root.innerHTML = `<div class="wp-page">
     <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Win fights to earn Path points, then walk a trail one mark at a time. Only in fights against the wood (PvE), never in the Arena.</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.maps} from maps cleared, ${wp.sRanks} from boss S ranks. 1 per map, +1 per boss S rank.</p>`; })()}</div>
       <span class="wp-points" title="Path points to spend">✦ 0 Path points</span></header>
+    ${(()=>{ const ready = energyUpgradesReady(), bought = energyUpgradesBought(), cost = energyUpgradeCost(), full = bought >= ENERGY_UPGRADE_MAX;
+      return `<section class="wp-stamina" aria-label="Stamina"><h3>⚡ Stamina <small>apart from the trails</small></h3>
+        <p>Every 20 different skirmishes you clear earns a Stamina mark. Spend one here to raise your max Energy by 1 (up to +${ENERGY_UPGRADE_MAX}).</p>
+        <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${bought} of ${ENERGY_UPGRADE_MAX} bought">${Array.from({length: ENERGY_UPGRADE_MAX}, (_, k)=> `<i class="${k < bought ? 'on' : k < bought + ready ? 'ready' : ''}"></i>`).join('')}</span>
+          <b>Max Energy ${energyMax()}</b>${full ? '<small>Fully grown.</small>' : `<button type="button" class="btn small primary" id="wpStaminaBuy" ${ready ? '' : 'disabled'}>Raise to ${energyMax() + 1} · ${mapleLeafIconHTML()} ${cost}</button><small>${ready ? `${ready} mark${ready === 1 ? '' : 's'} ready` : escapeHtml(energyNextStepText())}</small>`}</div></section>`; })()}
     <p class="wp-preview">Design preview: the trails and skills below are a first draft and don't change fights yet.</p>
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
     <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
   </div>`;
+  { const sb = root.querySelector('#wpStaminaBuy'); if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ updateEnergyHud && updateEnergyHud(); }catch(e){} renderWildpaths(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; }
   root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }
@@ -29774,12 +29888,15 @@ const SHOP_PACKS_DEFAULT = [
   //   rarityWeights how likely each rarity is, relative (blank = PACK_RARITY_WEIGHT)
   //   foilChance   chance each card comes out foil; foilGuaranteed = at least one foil per pack
   //   foilFinishes relative weights of the finish a foil card gets ('auto' = by rarity)
-  {id:'bronze', name:'Sprout Pouch', icon:'🌱', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
-  {id:'silver', name:'Acorn Chest', icon:'🌰', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false},
+  // 2026-10-12 (22:04, user: "Rename the pack names to something more about the themes of the maps they represent"): Hedgerow Pouch
+  // (the hedges, beaches and cliffs of Maps 0–5), Tidemire Chest (the swamps, caves and reefs of Maps 6–10), Highcrest Case (the heights,
+  // forests and savanna of Maps 11–15).
+  {id:'bronze', name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.04, foilGuaranteed:false},
+  {id:'silver', name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.08, foilGuaranteed:false},
   // Mystery Booster (2026-10-10, user: "Mystery booster with strange cards"): its own pool (tier 99) of oddities that
   // don't come out of any other pack.
   {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.1, foilGuaranteed:false},
-  {id:'gold', name:'Golden Bramble Case', icon:'👑', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
+  {id:'gold', name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.12, foilGuaranteed:true}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
@@ -29807,10 +29924,10 @@ async function publishShopPacks(packs){
   return cloudWriteCardOverride('__cfg:shop-packs', row);
 }
 // D14 (2026-10-03, explicit: "Don't let the latest chests/cases/packs be purchaseable except for
-// Sprout Pouch for now"): these show as "Coming soon" and can't be bought, even under an admin override.
-// 2026-10-10: the Acorn Chest now comes with the Ember Peddler (map 11) instead; the Golden Bramble Case waits for
+// Hedgerow Pouch for now"): these show as "Coming soon" and can't be bought, even under an admin override.
+// 2026-10-10: the Tidemire Chest now comes with the Ember Peddler (map 11) instead; the Highcrest Case waits for
 // the map-19 merchant.
-const SHOP_PACKS_COMING_SOON = new Set([]); // 2026-10-12: the Golden Bramble Case goes on sale with the Gilded Caravan (Map 13); was ['gold']
+const SHOP_PACKS_COMING_SOON = new Set([]); // 2026-10-12: the Highcrest Case goes on sale with the Gilded Caravan (Map 13); was ['gold']
 function packMerchant(p){ return p ? FEATURE_SPOTS.find(sp=> sp.merchant && sp.pack === p.id) || null : null; }
 function packMerchantLocked(p){ const sp = packMerchant(p); return !!(sp && !featureUnlocked(sp.key)); }
 function packOnSale(p){ if(p && p.id === MYSTERY_PACK_ID && !p.anytime) return mysteryPacksLeft() > 0; return p && (packMerchant(p) || !(p.comingSoon === undefined ? SHOP_PACKS_COMING_SOON.has(p.id) : p.comingSoon)) /* a pack with a merchant on the map is sold once that merchant is found, "coming soon" or not (2026-10-12) */ && p.available!==false && !packMerchantLocked(p); }
@@ -29882,7 +29999,7 @@ function refreshShopAfford(){
   if(row) row.innerHTML = shopCurrencyRowInnerHTML();
 }
 // Shop shelves (2026-10-10, user: "Heavily redesign the Market and Packs UI like a bakery or medicine shop: rows of
-// shelves, some non-straight rows, items on slots, a hover card with the details, tape labels like 'Sprout Pouch', y-scroll
+// shelves, some non-straight rows, items on slots, a hover card with the details, tape labels like 'Hedgerow Pouch', y-scroll
 // when it gets large"). Three shelves: single packs (straight), sets of 10/25 tied with string (a crooked shelf) and crates
 // of 50/100 (a stepped shelf). Jars and loaves fill the gaps. Hovering an item shows its details; clicking puts it on the
 // counter below, where the buy button is.
@@ -30466,7 +30583,7 @@ function nestCardHTML(id, d){
 function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? (parseInt(src.tier, 10) || 1) : 0; }
 // Faction cards in the basic packs (2026-10-11, user: "all otters and hummingbirds are contained within the various card
 // packs ... The otter specific cards are contained throughout the 3 basic packs"): a pack built on pool 1 (the Sprout
-// Pouch, Acorn Chest and Golden Bramble Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
+// Pouch, Tidemire Chest and Highcrest Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
 const BASIC_PACK_POOLS = [1, 11];   // 2026-10-12: the Otter, Hummingbird and Riverbank pools (11–13) merged into one Factions pool (11)
 function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
@@ -30709,7 +30826,7 @@ function rollConquestPackDrops(node, isFirstClear){
 }
 // Free packs on the road (2026-10-12, the user's map table: "Map 3 Free Pack A, 7 Free Pack B, 10 Free Mystery Pack A,
 // 11 Free Pack C, 13 Free Pack A, 15 Free Mystery Pack A, 16 Free Pack B, 18 Free Pack C, 20 Free Mystery Pack A").
-// Pack A = Sprout Pouch, B = Acorn Chest, C = Golden Bramble Case. Granted on the first clear of that map's boss (or its
+// Pack A = Hedgerow Pouch, B = Tidemire Chest, C = Highcrest Case. Granted on the first clear of that map's boss (or its
 // last fight, on a map without one) and kept unopened under Your packs in the Shop. They open for free whether or not that
 // pack is on sale yet: a free pack is the taste before the merchant shows up.
 const MAP_FREE_PACKS = {3:'bronze', 7:'silver', 10:'mystery', 11:'gold', 13:'bronze', 15:'mystery', 16:'silver', 18:'gold', 20:'mystery'};
@@ -30802,6 +30919,7 @@ function buyPack(packId, btnEl, qty, opts){
   for(let i=0; i<qty; i++){ const o = purchasePackOnce(pack, qty > 1); if(!o) break; opened.push(o); }
   saveCurrencies();
   if(opened.some(o=> o.leveledId)) saveCardLevels();
+  if((pack.pool||1) !== 99) opened.forEach(()=>{ const pc = rollPackCastle(); if(pc){ const ch = CHARACTER_DEFS[pc.id]; setTimeout(()=>{ try{ showToast(`🏰 ${pc.kind === 'new' ? 'A new castle in the pack' : 'A spare castle'}: ${ch.icon} ${ch.name}!`, 'ok'); }catch(e){} }, 2500); } });
   try{ bumpQuestCounter('packsOpened', opened.length); }catch(e){}
   if(pack.id === MYSTERY_PACK_ID && !pack.anytime && opened.length) noteMysteryBought(opened.length);
   if(wander && opened.length){ const ws = wandererState(); ws.bought = true; saveWandererState(ws); const wb = document.querySelector('[data-wander-buy]'); if(wb){ wb.outerHTML = '<button type="button" class="btn" disabled>Bought today</button>'; } }

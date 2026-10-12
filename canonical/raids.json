@@ -18,9 +18,10 @@
         "fight": {
           "castleHp": 420,
           "deck": {
-            "kraken-spawnling": 4,
-            "riptide-eel": 3,
-            "moray-ambusher": 3
+            "goliath-tentacle": 2,
+            "inkcloud-squid": 3,
+            "kraken-spawnling": 3,
+            "riptide-eel": 2
           }
         },
         "trench": {
@@ -44,9 +45,10 @@
         "fight": {
           "castleHp": 420,
           "deck": {
-            "kraken-spawnling": 4,
-            "reef-manta-glider": 3,
-            "coral-reef-shark": 3
+            "glass-octopus": 3,
+            "vampire-squid": 2,
+            "kraken-spawnling": 3,
+            "coral-reef-shark": 2
           }
         },
         "trench": {
@@ -71,8 +73,9 @@
           "castleHp": 420,
           "deck": {
             "humpback-elder": 3,
-            "orca-vanguard": 3,
-            "riptide-eel": 4
+            "abyss-lantern-squid": 3,
+            "orca-vanguard": 2,
+            "riptide-eel": 2
           }
         },
         "trench": {
@@ -101,10 +104,12 @@
         "fight": {
           "castleHp": 200,
           "deck": {
-            "humpback-elder": 4,
-            "orca-vanguard": 4,
+            "goliath-broodmother": 1,
+            "abyss-lantern-squid": 3,
+            "vampire-squid": 3,
             "kraken-spawnling": 4,
-            "coral-reef-shark": 3
+            "humpback-elder": 2,
+            "glass-octopus": 2
           }
         },
         "trench": {
@@ -254,6 +259,14 @@
           "taiga-lynx": 4
         }
       }
+    ],
+    "cards": [
+      "inkcloud-squid",
+      "abyss-lantern-squid",
+      "glass-octopus",
+      "vampire-squid",
+      "goliath-tentacle",
+      "goliath-broodmother"
     ]
   }
 ]

@@ -1,6 +1,21 @@
 # Action items
 
-_Updated 2026-10-12, 7:50 pm. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 10:50 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done tonight (21:35–22:50)
+
+| ID | What I did |
+|---|---|
+| ART | **Every card has art.** PixelLab is at its monthly limit, so I used your NightCafe credits (0.75 each, about 145 images, ~110 credits; 284 left). Each image is shrunk to the game's 128×128 pixel style with its background kept. Owl Sentinel, Ant Hill and Ant Warrior were redone as real animals; four upright ones (Bramblefox, Shieldbearer, Thistle Baron, Parish Sergeant) were redone on all fours. |
+| RAID | **Six Goliath cephalopods** (Inkcloud Squid, Abyss Lantern Squid, Glass Octopus, Vampire Squid, Goliath Tentacle, Goliath Broodmother) fill the Goliath's parts, and drop only from the raid: one card when it falls, a second for the top 10%. |
+| D20 | Darkness from your own losses now stops at 10. |
+| D38 | Closed: whether a card can be earned now comes from its source, not a flag. |
+| D48 | Spare castles: a map boss beaten again at rank S gives a spare of that map's castle; drop castles (below) give spares too. |
+| D51 | Skull Vulture drops on Map 8's Root Snare. |
+| P1/P2 | Closed: one Factions pool; the pack-only cards stay pack-only. |
+| BAL | Enemy levels flattened: Lv 2 at Map 5, +1 every 5 maps, Lv 5 at Map 20, boss decks one higher. |
+| 22:04 | Your 16 items: map emblems, Sunken Ferry side map, Stamina in Wildpaths, centipede and millipede, node panel, 22 drop castles, editor card details, out-of-cards summons, cosmetic types removed, 🔌 Shock, pack names. |
+| 22:25 | Bare shaking map emblems, the pack note on Gatorback Swamp, real battle ratings, X/Y ⚡ MM:SS clocks, castle art (generating). |
 
 ## 1. Your calls
 
@@ -9,7 +24,6 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
 | **B6** | Card balance inside the basic set (Duck Paddler 79% … Otter Kit 26%) | You're still playing the cards, so I haven't touched balance. The tutorial now uses the weakest Base cards on purpose, so the spread matters less early on | Do your pass after a few more evenings of play; I can run the win-rate sheet on demand |
-| **D20** | Six Devilry rules were my readings (Darkness +1 per unit of yours that perishes, …) | Darkness from your own losses rewards losing trades; a deck can farm it with cheap chaff | Keep, but cap Darkness at 10 so it can't snowball |
 | **D23** | Satiety's rule was my reading of the name | Nobody has played an Ecclesia deck yet, so the rule is untested | Keep; revisit after the first Ecclesia playtest |
 | **D24** | Arena: the second player gets an extra card. Add that to Conquest? | Conquest fights are already tuned with the AI going first; adding a card shifts every map's difficulty at once | Keep Conquest as is |
 | **D26** | Anti-Air→Boomerang on Otter Centurion, "SSS fast" = round 8, rare S find from Map 5 at 12% | Boomerang got stronger tonight (hits there and back), so Otter Centurion is now a better early card | Keep; watch Centurion's win rate in your play |
@@ -18,8 +32,6 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D32** | Wildpaths: earning Path points | Points are counted (1 per map cleared, +1 per boss S rank) but nothing spends them yet | Yes as counted; I'll wire spending when you pick the three trails |
 | **D34** | Map table readings (free packs, Wandering Trader on Map 13, errands from Map 9) | With the new Map 1, Maps 2 onwards keep their numbers, so the table still holds. Only the Armoury moved: it stays on Map 0 (you need decks early), not Map 1 | Keep; say if the Armoury should move to Clovermead |
 | **D35** | Base growth from bosses; errands pay 4–8% of a Materia Unit | Your note tonight: Base cards are weak, strong mid-levels, fade at 10, Lv 11 rebalances. Bosses levelling them early fits that | Keep |
-| **D37** | Boomerang return target, boss enemy extended art, unobtainable sweep scope | Superseded tonight by your Boomerang rule | Close |
-| **D38** | Which cards are obtainable | **This is why packs feel samey:** pools have only a handful of obtainable cards, so even with tonight's variety fix a pack can only show what's allowed | Send the list, or say "make Maps 0–5 rewards and Pack A obtainable" and I'll do that much |
 | **D39** | 22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching) | Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired | Keep the rest |
 | **D40** | Max energy and the Town | **Built tonight:** +1 max Energy per 20 different skirmishes cleared, up to +10, shown in the Energy pop-up. The Town is a big page; I'd rather you OK it first | Yes to the Town; start with the signpost and the Nest only |
 | **D41** | Late dungeons (14A–D, 15A, 18A) | **14A is built tonight** (The Mycelium Deep, five fights, two days after Map 14's boss). The rest need new decks and art (about 35 more fights) | Play 14A; if it feels right I'll build 14B–D the same way |
@@ -28,10 +40,8 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D44** | Tonight's readings: Outskirts = **Map 0**, new **Map 1 Clovermead** (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits **any** unit of yours in its lane without Boomerang. Raids are a full match: **three rows a side**, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only) | The raid rows are a first version. The boss's column attacks are back (the column glows red a round ahead; the hit lands on your front and reserve cards there, or your castle if the column is empty). The allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90 | Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours |
 | **D45** | **Forge tiers.** The Forge starts at Lv 3 and Commons to Quest cards. Upgrades: Iron at Map 13 (Lv 4, up to Super Rare, 600🍁 + 300✨); Ember at Map 16 (Lv 8, up to Unique, 1500 + 800); Dragonfire at Map 26 (Lv 9, up to Legendary, 3000 + 1500); Heartfire at Map 31 (Lv 10, everything, 5000 + 2500) | The prices are my guess. A save that had already tempered past Lv 3 starts at the tier that covers it, so nobody loses levels | Keep the map gates (they're the old level gates); say if the prices feel off |
 | **D47** | **Tutorial skills.** Part 1 has no skills; part 2 keeps only Swarm. The Fly and Boomerang remarks in part 2 therefore don't fire | Without Flying, part 2 teaches less about Hummingbirds | Keep; teach Flying on Map 1 instead (Admin → Tutorial editor can add it back: "swarm, hiveMind, flying") |
-| **D48** | **Castle duplicates.** Forge → 🏰 Castles can fuse spare castles, but nothing gives you a castle twice yet | Without a source the button stays at (0) | Say where spares should come from: a boss re-clear at rank S, or castles in packs |
 | **D49** | **Raid with allies.** Two allies (one plays each turn), your castle is three castles in one, and the boss is at 60% Attack / 70% Health | Not simulated yet; the numbers are a first guess | Play a raid or two and tell me if it's too easy or too hard |
 | **D50** | **Water lanes (idea, not built).** Ocean channels and whirlpools for swimmers, jet streams for flyers: a lane-wide current that moves or speeds the units in it | It adds a fourth board rule on top of tide, day/night and fields, so water maps could get busy | Park until the High tide fights have been played; then try one whirlpool lane on a single reef boss |
-| **D51** | **Skull Vulture** (your PixelLab art): 1 Lumber, Wait 1, 3/4, Flying, Daunt 1, Nocturnal, Uncommon, Swamp | My reading of "evil skull bird". It has no source yet, so it shows as not obtainable | Say where it drops (I'd put it on the Map 8 swamp) |
 | **D53** | **Volcano numbers:** eruptions of 2 / 3 / 5 (elites / bosses / world boss); the boss surge only in this map's boss fights; the world boss at 6/36 (8/40 surged) with a 240-Health castle | Not simulated yet. The Eye's castles are set by hand (170–260) | Play the world boss once and tell me the result |
 | **D54** | **Field kit:** 4 items, one of each a day, 20 at most, one per turn, PvE only | Fire Pot and the Draught are strong in early maps | Keep; say if a different daily mix suits you better |
 | **D55** | **World call-outs.** Today a raid's fall is read from the week's shared attempts, which every client checks every 3 minutes. A real message board would be one small append-only table (`world_events`: kind, text, at) that the game writes to and reads | The table is a write to the live Supabase, so it waits for you | Say "apply it" for the table, or keep reading the attempts |
@@ -40,8 +50,6 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D62** | **Field kit on Map 12.** Maps 12, 14, 15, 17, 18 and 19 have no new feature; I put the kit on Map 12 (Eyrie Heights), right after the Forge | None | Keep, or name another of those maps |
 | **D63** | **"No dragons yet!" in the Volcano Lair.** The world boss there is the Caldera Wyrm (a fire wyrm, 🐉), and its fights use Fire-Drake Hatchlings and Pyroclast Wyrms | I read your note as a reminder, not an instruction, so I changed nothing | Say "no dragons" and I'll swap them for volcanic beasts and give the lair a non-dragon boss |
 | **D64** | **The Old Bramble's lock.** Your list says "locked till Map 18 Submap complete", but Map 18 (Glass Dunes) has no side map; I tied it to the Ice Hollow (Map 17's new side map) | I may have read the number wrong | Keep, or add a Glass Dunes side map and tie it to that |
-| **P1** | **Faction packs (Otter, Hummingbird, shared; 32 cards)** under your four-pack road plan ([pack plan](pack-plan-2026-10-12.md)) | Folding them into Packs 1–4 spreads faction cards thin; keeping them separate adds a fifth pack | Make them faction reward cards (map-exclusive, from faction quests) |
-| **P2** | **The 43 pack-only cards** in today's pool 1 | Turning them into map cards empties the packs of anything you can't get elsewhere | Keep them pack-only (your "Booster cards"), each assigned to one of Packs 1–4 by biome |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed today:** D36 (Frenzy reworked to your rule), D46 (Rabbit Kit replaces the Quarry Mole), D58 (your egg rates), D59 (a free Base copy from each map's boss), D60 (Caldera Heart, ratings 350–500), D61 (enemy levels from Map 5), D52 (your map list is in).
@@ -86,7 +94,6 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
 - **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
-- **Art (PixelLab):** the account hit its **monthly generation limit** at 8 pm with 3 of batch C done (264 cards have art). The other 88 portraits, the Triumphvirate lion first, are saved in the PixelLab tab and resume when the limit resets or if you add credits (your call). Your NightCafe credits could cover them in the meantime; say if you want that.
-- **Your own PixelLab creations** (skeleton families for the volcano, sunken, bog and cave biomes, moogles, jade statue warriors, oriental gargoyles, lava slimes, a multiplying gremlin, a banana-throwing monkey, a stone golem, dragon animations): none are cards yet. Say which you want and I'll make cards for them.
-- **NightCafe (your 409 credits):** 9 painted pieces planned (3 splash/promo, 6 story scenes); waiting for the NightCafe tab to be free.
+- **Art (PixelLab):** at its monthly limit; NightCafe covered every card instead. Buying PixelLab credits is your call; nothing is waiting on it.
+- **NightCafe:** 284 credits left after tonight's card and castle art.
 
