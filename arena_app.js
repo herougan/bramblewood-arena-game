@@ -1574,7 +1574,8 @@ function buildCardDefs(){
   // Levels (2026-10-10): every card carries its base level; stats move only above it, on the LEVEL_STEPS levels.
   Object.keys(out).forEach(id=>{
     const base = out[id]; if(!base || id===HERO_ID) return;
-    const b = cardBaseLevel(base), lvl = Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
+    const b = cardBaseLevel(base), hatch = b > 0 && isHatchling(id), lvl = hatch ? 0 : Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
+    if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); return; }
     if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); return; }
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
@@ -1764,7 +1765,7 @@ function cardWhereToGetText(d){
   const src = cardSourceOf(d);
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
-  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster in the Shop' : `Card packs (Tier ${Math.max(1, Number(src.tier)||1)}) in the Shop`;
+  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Sprout Pouch, Acorn Chest or Golden Bramble Case' : 'A Sprout Pouch, Acorn Chest or Golden Bramble Case');
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   return 'Not obtainable yet';
 }
@@ -1866,13 +1867,23 @@ function phylaUnlocked(){
   try{ const sp = FEATURE_SPOTS.find(x=> x.key==='codex'), n = sp ? mapNumberOf(sp.map) : null; return n != null && playerMapReach() >= n + 5; }catch(e){ return false; }
 }
 function codexSeparateAllowed(){ return adminModeEnabled || playerMapReach() >= 10; }
+// 2026-10-12 (21:01, user: "In the codex, fuse the maps 0-5, 6-10, 11-15, 16-20"): base cards sit with Maps 0–5.
 function mapBandOf(num){
-  if(num <= 0) return {key:'band-0', order:[0,0,0,''], label:'🌱 Base cards & Map 0'};
-  if(num <= 20) return {key:'band-1', order:[1,1,0,''], label:'🗺️ Maps 1–20'};
-  if(num <= 40) return {key:'band-2', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
+  if(num <= 5) return {key:'band-0', order:[0,0,0,''], label:'🌱 Base cards & Maps 0–5'};
+  if(num <= 10) return {key:'band-6', order:[1,6,0,''], label:'🗺️ Maps 6–10'};
+  if(num <= 15) return {key:'band-11', order:[1,11,0,''], label:'🗺️ Maps 11–15'};
+  if(num <= 20) return {key:'band-16', order:[1,16,0,''], label:'🗺️ Maps 16–20'};
+  if(num <= 40) return {key:'band-21', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
   const lo = 41 + Math.floor((num - 41)/10)*10;
   return {key:'band-' + lo, order:[1,lo,0,''], label:`🗺️ Maps ${lo}–${lo + 9}`};
 }
+// Packs by their real names (2026-10-12, 21:01, user: "Don't call it Pack A, B, C in the codex. Call it by their actual names.
+// Only 3 packs and 1 advanced pack ... the rivergate and sunfeather pools can be combined into the factions pool"): pool 1 is
+// what the three basic packs share, pool 11 the Factions pool (Otter, Hummingbird and shared cards, in every basic pack too),
+// pool 99 the advanced Mystery Booster.
+const PACK_POOL_LABEL = {1:'🎁 Sprout Pouch · Acorn Chest · Golden Bramble Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
+function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
+  return {key: pre + '-pk-' + k, order:[2, k === 99 ? 3 : k === 11 ? 2 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
 function codexViewSectionOf(d, view){
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
@@ -1883,7 +1894,7 @@ function codexViewSectionOf(d, view){
   if(view==='bands'){
     if(src.kind==='base') return mapBandOf(0);
     if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
-    if(src.kind==='pack') return {key:'band-pack', order:[2,0,0,''], label:'🎁 Card packs'};
+    if(src.kind==='pack') return packSectionOf(src, 'band');
     if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
     if(src.kind==='smith') return {key:'smith', order:[9991,0,0,''], label:'⚒️ Blacksmith · equipment you craft'};
     return {key:'band-more', order:[9,0,0,''], label:'More cards'};
@@ -1892,9 +1903,8 @@ function codexViewSectionOf(d, view){
     // Advancement (2026-10-12): one section per step of the journey, in the order a player meets them.
     const k = advancementKey(d);
     if(src.kind==='base') return {key:'adv-base', order:[0,0,0,''], label:'🌱 Base'};
-    if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) ?? 999; return {key:'adv-map-'+src.id, order:[1,num,m && m.sub ? 1 : 0,''], label:`🗺️ Map ${num}${m ? ' · ' + m.name : ''}`}; }
-    if(src.kind==='pack'){ const t = Number(src.tier) || 1; const FP = {11:'Rivergate (Otter) pool', 12:'Sunfeather (Hummingbird) pool', 13:'Riverbank (shared) pool'};
-      return t === 99 ? {key:'adv-myst', order:[3,0,0,''], label:'❓ Mystery Pack A'} : {key:'adv-pk-'+t, order:[2,t,0,''], label: FP[t] ? `🎁 ${FP[t]}` : `🎁 Pack ${String.fromCharCode(64 + Math.min(26, t))}`}; }
+    if(src.kind==='map'){ const b = mapBandOf(mapNumberOf(src.id) ?? 999); return {key:'adv-' + b.key, order:[1, b.order[1], 0, ''], label: b.label.replace('🌱 Base cards & ', '🗺️ ')}; }
+    if(src.kind==='pack') return packSectionOf(src, 'adv');
     if(src.kind==='event') return {key:'adv-ev-'+(src.name||src.theme||''), order:[4,0,0,k], label:`🎉 Event: ${src.name || src.theme || 'unnamed'}`};
     return {key:'adv-un', order:[9,0,0,''], label:'Not obtainable yet'};
   }
@@ -5497,9 +5507,9 @@ function openCardInspector(defId, opts){
 function rawCardDef(id){ return JSON.parse(JSON.stringify(liveCards[id] || CARD_DEFS_BASELINE[id] || null)); }
 // From → Pack: a pool picker that names the packs drawing from each pool (2026-10-08).
 function packPoolOptionsHTML(sel){
-  const packs = getShopPacks(), pools = [...new Set(packs.map(p=> p.pool||1).concat([sel]))].sort((a,b)=> a-b);
+  const packs = getShopPacks(), pools = [...new Set(packs.map(p=> p.pool||1).concat([11, sel]))].sort((a,b)=> a-b);
   const next = Math.max(...pools) + 1;
-  return pools.map(n=>{ const names = packs.filter(p=> (p.pool||1)===n).map(p=> p.name); return `<option value="${n}" ${n===sel?'selected':''}>Pool ${n}${names.length ? ': ' + escapeHtml(names.join(', ')) : ' (no pack uses it yet)'}</option>`; }).join('') + `<option value="${next}">Pool ${next} (new)</option>`;
+  return pools.map(n=>{ const names = n === 11 ? ['Factions pool, in every basic pack'] : packs.filter(p=> (p.pool||1)===n).map(p=> p.name); return `<option value="${n}" ${n===sel?'selected':''}>Pool ${n}${names.length ? ': ' + escapeHtml(names.join(', ')) : ' (no pack uses it yet)'}</option>`; }).join('') + `<option value="${next}">Pool ${next} (new)</option>`;
 }
 function codexPlacementHTML(d){
   const raw = rawCardDef(d.id) || d;
@@ -7099,6 +7109,10 @@ const CURRENCY_META = {
   laurels: {glyph:'🌿', label:'Laurels'},
   // Food tokens (2026-10-11): retired the same day (faction packs are progress rewards now); kept so old balances still load.
   food: {glyph:'🍯', label:'Food tokens'},
+  // Kibble (2026-10-12, 21:01, user: "They can be trained in the Nest to lvl 1 with the right resources and maybe this process
+  // takes a special resource called kibble"): trains a Level-0 card (a hatchling or a Base card) to Level 1 in the Nest.
+  // From Conquest wins (first clears 1–5, repeats now and then) and grown babies. Local like Krooni for now.
+  kibble: {glyph:'🦴', label:'Kibble'},
 };
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
@@ -7869,7 +7883,7 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4};
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -7878,7 +7892,7 @@ function loadCurrencies(){
   // Conquest leader, not handed out as a starting stock. Raid Points (see its own block below)
   // start full at 5 — the literal here (not RAID_POINTS_MAX) is deliberate: this function runs
   // before that const is declared further down the file.
-  return {gold:200, gems:20, dust:60, metal:0, raidPoints:5, raidPointsUpdatedAt:null};
+  return {gold:200, gems:20, dust:60, metal:0, raidPoints:5, raidPointsUpdatedAt:null, kibble:4};
 }
 let myCurrencies = loadCurrencies();
 function saveCurrencies(skipCloudPush){ try{ localStorage.setItem('bramblewood_arena_currencies', JSON.stringify(myCurrencies)); }catch(e){} if(!skipCloudPush) cloudPushCurrencies(); }
@@ -8218,6 +8232,7 @@ function curveStatsAtLevel(d, L){
   return {attack: r(d.attack), health: r(d.health)};
 }
 function statsAtLevel(d, L){
+  if((L|0) < cardBaseLevel(d)){ const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(d.attack), health: r(d.health)}; } // a hatchling (Level 0)
   const cap = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d); // a limit-broken card reaches 11
   const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cap, L|0));
   const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
@@ -8270,7 +8285,12 @@ function prestigeUpCard(defId){
   myCardPrestige[defId] = getCardPrestige(defId)+1; saveCardPrestige();
   return true;
 }
-function getCardLevel(defId){ const d = (typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || (typeof liveCards!=='undefined' && liveCards[defId]) || null; return Math.max(cardBaseLevel(d), Math.min(LIMIT_BREAK_LEVEL, myCardLevels[defId]||0)); } // never below the card's base level; 11 only after a limit break
+// Hatchlings (2026-10-12, 21:01, user: "Hatched cards start at lvl 0. Normal cards can only be lvl 0 when hatched"): a card
+// you get for the first time from an egg is Level 0 (about 15% weaker than its printed stats) until it is trained in the Nest.
+function hatchlingIds(){ if(!window.__bwHatch){ try{ window.__bwHatch = new Set(JSON.parse(localStorage.getItem('bramblewood_hatchlings_v1') || '[]')); }catch(e){ window.__bwHatch = new Set(); } } return window.__bwHatch; }
+function saveHatchlings(){ try{ localStorage.setItem('bramblewood_hatchlings_v1', JSON.stringify([...hatchlingIds()])); }catch(e){} try{ invalidateCardDefs(); }catch(e){} }
+function isHatchling(id){ return hatchlingIds().has(id) && !((typeof myCardLevels !== 'undefined' && myCardLevels && myCardLevels[id]) > 0); }
+function getCardLevel(defId){ if(isHatchling(defId)) return 0; const d = (typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || (typeof liveCards!=='undefined' && liveCards[defId]) || null; return Math.max(cardBaseLevel(d), Math.min(LIMIT_BREAK_LEVEL, myCardLevels[defId]||0)); } // never below the card's base level; 11 only after a limit break
 // Card unlocking (2026-09-22, closing the gap batch #19 flagged: "player_card_unlocks sync was
 // scoped down to only level>0 cards, since real card unlocking doesn't exist yet"). A per-player
 // Set of card ids this player has unlocked via Shop packs (see SHOP_PACKS' new unlockChance
@@ -11631,14 +11651,12 @@ function terrainTierFor(map, node){
   if(/boss/.test(k)) return fights.length >= 8 ? 3 : 2;
   if(k === 'elite' || k === 'champion') return 2;
   const sk = map.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish');
-  return sk[0] === node ? 0 : 1;
+  return sk[0] && (sk[0] === node || sk[0].key === node.key) ? 0 : 1; // by key too, so an editor's draft copy reads the same
 }
 function terrainFor(mapId, node){
   const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!map || !node) return null;
   const biome = MAP_BIOME_OF[mapId] || (map.parent && MAP_BIOME_OF[map.parent]); const b = biome && TERRAIN_BIOMES[biome]; if(!b) return null;
-  const tier = terrainTierFor(map, node); if(!tier) return null;
-  const st = TERRAIN_TIER_STATS[tier];
-  return {biome, tier, name: b.name, icon: b.icon, types: b.types.slice(), atk: st.atk, hp: st.hp, grant: tier >= 2 && b.grant ? Object.assign({}, b.grant) : null, sig: tier >= 2 ? b.sig : null};
+  return terrainObj(biome, terrainTierFor(map, node));
 }
 // What the terrain does, in words (the field pill, its banner and a native card's light-blue line).
 function terrainSummary(t, rules){
@@ -11650,7 +11668,7 @@ function terrainSummary(t, rules){
   if(er > 0) txt += ` The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
   return txt;
 }
-function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : null; return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 ? {t: null, rules: r} : null); }catch(e){ return null; } }
+function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.engine && m.arenaRuleset && m.arenaRuleset.rules) || null; /* the Arena's portent can bring home ground or the eruption too */ return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 ? {t: null, rules: r} : null); }catch(e){ return null; } }
 // The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
 // bursts up through the struck card, embers fly, and the whole field flashes red.
 function eruptionGeyserVfx(el){
@@ -11812,6 +11830,67 @@ function openDeckBuilderPopup(o){
   ov.querySelector('#dbpSort').addEventListener('change', e=>{ sort = e.target.value; refresh(); });
   setTimeout(()=> ov.querySelector('#dbpSearch').focus(), 30);
 }
+// Edit skirmish's field effects (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc."):
+// every effect this fight runs with, whether the map gives it or it was set here, with ✕ (switch it off) and ↺ (back to the
+// map's default). Map defaults are switched off with an off value (field 'none', terrain false, eruption 0 …) so fightRules
+// keeps them off.
+const SE_PHASE_LABEL = {day:['☀️','Day all match'], night:['🌙','Night all match'], cycle:['🌗','Day and night'], nightFirst:['🌆','Dusk start'], off:['⏸️','No day or night'], realtime:['🕰️','Real-time day and night']};
+const SE_FX_OFF = {field:'none', terrain:false, eruption:0, highTide:false, bossSurge:false, enemyOre:false};
+function skirmishFxAuto(mapId, draft){
+  const auto = fightRules(mapId, Object.assign({}, draft, {rules:{}}));
+  let kind = null; try{ kind = typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mapId] : null; }catch(e){}
+  if(!auto.field && kind === 5) auto.field = 'frozen';
+  return auto;
+}
+function skirmishFieldChips(mapId, draft){
+  const exp = draft.rules || {}, auto = skirmishFxAuto(mapId, draft), eff = Object.assign({}, auto, exp), out = [];
+  const add = (key, on, icon, name, text)=> out.push({key, on, icon, name, text, src: key in exp ? 'set' : 'map', restore: (key in exp) && auto[key] != null && auto[key] !== false && auto[key] !== 0 && auto[key] !== 'none'});
+  const ph = eff.phase || 'day'; if(ph !== 'day' || 'phase' in exp){ const L = SE_PHASE_LABEL[ph] || ['🌗', ph]; add('phase', true, L[0], L[1] + ((ph === 'cycle' || ph === 'nightFirst') ? `, every ${eff.phaseLen || 3} rounds` : ''), 'Day & night, in the battle box above.'); }
+  if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); }
+  else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frozen Ground (off)', 'The map would freeze this fight.');
+  if(eff.terrain && eff.terrain.types) add('terrain', true, eff.terrain.icon, `${eff.terrain.name} ${ROMAN_TIER[eff.terrain.tier] || ''}`, terrainSummary(eff.terrain));
+  else if(eff.terrain === false && auto.terrain) add('terrain', false, auto.terrain.icon, `${auto.terrain.name} ${ROMAN_TIER[auto.terrain.tier] || ''} (off)`, 'Home ground is switched off for this fight.');
+  if(Number(eff.eruption) > 0) add('eruption', true, '🌋', `Eruption ${eff.eruption}`, `From round 2, one random unit on each side takes ${eff.eruption} fire damage every upkeep.`);
+  else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🌋', 'Eruption (off)', `The map would erupt for ${auto.eruption}.`);
+  if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'The tide runs Ebb, Flow, Ebb, High tide.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
+  if(eff.bossSurge) add('bossSurge', true, '💥', `Boss surge +${eff.bossSurge.atk}/+${eff.bossSurge.hp}`, 'The boss arrives stronger.'); else if(exp.bossSurge === false && auto.bossSurge) add('bossSurge', false, '💥', 'Boss surge (off)', '');
+  if(eff.enemyOre) add('enemyOre', true, '⛏️', 'Enemy mining', `The enemy digs ${eff.enemyOre.stone || 0} Stone a round${eff.enemyOre.metal ? ` and ${eff.enemyOre.metal} Metal every ${eff.enemyOre.metalEvery || 1}` : ''}.`); else if(exp.enemyOre === false && auto.enemyOre) add('enemyOre', false, '⛏️', 'Enemy mining (off)', '');
+  if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
+  if(Number(eff.firstBlood) > 0) add('firstBlood', true, '🩸', `First Blood +${eff.firstBlood}`, `The first Quick unit to attack each round hits +${eff.firstBlood}.`);
+  if(Number(eff.actions) > 1) add('actions', true, '⚡', `${eff.actions} actions a turn`, 'Actions per turn, in the battle box above.');
+  if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [eff.frostWait ? `+${eff.frostWait} Wait` : '', eff.frostCount ? `${eff.frostCount} a side` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
+  const g = draft.leaderGrant || exp.leaderGrant || {};
+  Object.keys(g).forEach(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key === k); out.push({key:'gift:' + k, on:true, icon:'👑', name:`Leader gift: ${pd ? pd.label : k}${g[k] === true ? '' : ' ' + g[k]}`, text:'Light blue on the enemy leaders.', src:'set'}); });
+  return out;
+}
+function skirmishFxAddOptionsHTML(){
+  const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`;
+  const grp = (label, list)=> `<optgroup label="${escapeAttr(label)}">${list.map(o).join('')}</optgroup>`;
+  const by = g=> FIELD_EFFECTS.filter(f=> !f.arenaOnly && g.includes(f.group));
+  const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🌋', name:'Eruption ' + n}));
+  const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'actions']).concat(erupt))}${grp('Home ground', grounds)}${grp('Leader gifts', by(['gift']))}`;
+}
+function applySkirmishFx(draft, id){
+  const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
+  if(m){ r.eruption = +m[1]; draft.rules = r; return true; }
+  const f = fieldEffectById(id); if(!f) return false;
+  if(f.rules) Object.assign(r, f.rules);
+  if(f.terrain) r.terrain = f.terrain;
+  if(f.leaderGrant) draft.leaderGrant = Object.assign({}, draft.leaderGrant || {}, f.leaderGrant);
+  if(Object.keys(r).length) draft.rules = r;
+  return true;
+}
+function removeSkirmishFx(mapId, draft, key, restore){
+  const r = Object.assign({}, draft.rules || {}), auto = skirmishFxAuto(mapId, draft);
+  if(key.startsWith('gift:')){ const k = key.slice(5); const g = Object.assign({}, draft.leaderGrant || {}); delete g[k]; if(Object.keys(g).length) draft.leaderGrant = g; else delete draft.leaderGrant; }
+  else if(key === 'frosttune'){ ['frostWait', 'frostCount', 'frostbite', 'frostResist'].forEach(k=> delete r[k]); }
+  else if(key === 'phase'){ delete r.phase; delete r.phaseLen; }
+  else if(restore) delete r[key];
+  else if(key in SE_FX_OFF && auto[key] && auto[key] !== 'none') r[key] = SE_FX_OFF[key];
+  else delete r[key];
+  if(Object.keys(r).length) draft.rules = r; else delete draft.rules;
+}
 function openSkirmishEditor(mapId, nodeKey, draftOverride){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); const node = map && map.nodes.find(n=> n.key===nodeKey); if(!node) return;
   let overlay = document.getElementById('skirmishEditorOverlay');
@@ -11855,6 +11934,11 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Infinite imps')}</select></label>
         </fieldset>
+        ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
+          return `<fieldset class="se-wide se-fx"><legend>🌦️ Field effects <small>what this fight plays under. ✕ switches one off, ↺ puts the map's default back</small></legend>
+            <div class="se-fx-chips">${chips.length ? chips.map(c=> `<span class="se-fx-chip${c.on ? '' : ' is-off'}" title="${escapeAttr(c.text || '')}"><span class="se-fx-ico" aria-hidden="true">${escapeHtml(c.icon)}</span><span class="se-fx-txt"><b>${escapeHtml(c.name)}</b><small>${c.src === 'set' ? 'set here' : 'map default'}${c.text ? ' · ' + escapeHtml(c.text) : ''}</small></span>${c.restore ? `<button type="button" class="se-fx-btn" data-fx-restore="${escapeAttr(c.key)}" title="Back to the map's default" aria-label="Restore ${escapeAttr(c.name)}">↺</button>` : ''}${c.on ? `<button type="button" class="se-fx-btn" data-fx-rm="${escapeAttr(c.key)}" title="Switch it off" aria-label="Remove ${escapeAttr(c.name)}">✕</button>` : ''}</span>`).join('') : '<small class="panel-sub">None. A plain fight in daylight.</small>'}</div>
+            <select id="seFxAdd" class="se-fx-add" aria-label="Add a field effect">${skirmishFxAddOptionsHTML()}</select>
+          </fieldset>`; })()}
         ${draft.kind === 'dungeon' ? (()=>{ const c = dungeonConfig(draft), w = dungeonWaves(draft), raw = draft.dungeon || {};
           const n = (id, key, min, max, title)=> `<input id="${id}" type="number" min="${min}" max="${max}" placeholder="${DUNGEON_DEFAULTS[key] != null ? DUNGEON_DEFAULTS[key] : c[key]}" value="${raw[key] != null ? escapeAttr(raw[key]) : ''}" title="${escapeAttr(title)}">`;
           return `<fieldset class="se-wide se-dungeon"><legend>🗝️ Dungeon</legend>
@@ -11954,6 +12038,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('.se-armour-in').forEach(inp=> inp.oninput = ()=>{ dirty = true; // a layer above 0 opens the next one; a 0 closes everything above it
       const ins = [...overlay.querySelectorAll('.se-armour-in')]; let open = true; ins.forEach((el, k)=>{ const lab = el.closest('.se-armour-layer'); if(k > 0) open = open && (Number(ins[k-1].value)||0) > 0; if(lab) lab.hidden = !open; }); });
     { const te = document.getElementById('seTutEdit'); if(te) te.onclick = ()=> openTutorialEditor(); }
+    { const fa = document.getElementById('seFxAdd'); if(fa) fa.onchange = ev=>{ ev.stopPropagation(); const id = fa.value; if(!id) return; read(); if(applySkirmishFx(draft, id)){ dirty = true; render(); } }; }
+    overlay.querySelectorAll('[data-fx-rm]').forEach(b=> b.onclick = ()=>{ read(); removeSkirmishFx(mapId, draft, b.dataset.fxRm, false); dirty = true; render(); });
+    overlay.querySelectorAll('[data-fx-restore]').forEach(b=> b.onclick = ()=>{ read(); removeSkirmishFx(mapId, draft, b.dataset.fxRestore, true); dirty = true; render(); });
     overlay.querySelectorAll('[data-wave-deck]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveDeck; draft.dungeon = draft.dungeon || {}; const wd = draft.dungeon.waveDecks = (draft.dungeon.waveDecks||[]).slice();
       while(wd.length <= k) wd.push(null); if(!wd[k]) wd[k] = {};
       openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · castle ${k + 1}`, counts: wd[k], unlimited: true, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
@@ -12010,7 +12097,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       else {
         const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
         const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -12895,6 +12982,7 @@ function pvpTileHTML(){
   const left = pvpTicketsLeft(), nx = msUntilNextPvpTicket();
   const mn = nx==null ? 0 : Math.ceil(nx/60000);
   return `<button class="btn primary big arena-mode-btn pvp-mode-btn" id="startPvpBtn" ${left?'':'disabled'}>
+    ${pvpPortentHTML()}
     <span class="amb-ico">⚔️</span><span class="amb-lbl">PvP</span>
     <span class="amb-sub">A stranger's deck from your tier</span>
     <span class="async-run-line">🏅 ${escapeHtml(rankForRating(myRating).label)} · rating ${Math.round(myRating)} · your deck Lv ${myPvpDeckLevel()}</span>
@@ -18787,38 +18875,103 @@ const ARENA_RULESETS = [
   {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frozen Ground all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
   {id:'fogmoor',   icon:'🌫️', name:'Fog on the Moor', text:'Thick Fog all match: attacks miss 1 in 3, except from Flying units.', rules:{phase:'cycle', field:'fog'}, secondDraw:1},
 ];
-// Daily Arena theme (2026-10-10, user: "Arena fights are themed by day. Most of the time it's using normal rules, not
-// collapse. But it WILL have at least 1 (max 2) field effects. Like freezing or day/night or perma-day or perma-night ...
-// Typically [day/night] takes 3 turns. Rarely (<10% of the time), flip every 1 turn"). Every day rolls (seeded by the
-// date, so everyone gets the same day): one day/night effect, about half the time one more field, and Open rules
-// (Gravity on roughly one day in eight).
-const ARENA_PHASES = [
-  {w:46, rules:{phase:'cycle'}, icon:'🌗', name:'Day and Night', text:'Day and night trade places every 3 rounds.'},
-  {w:8,  rules:{phase:'cycle', phaseLen:1}, icon:'🌀', name:'Restless Sky', text:'Day and night flip every round.'},
-  {w:14, rules:{phase:'nightFirst'}, icon:'🌆', name:'Dusk Start', text:'It starts at night; day comes after round 3.'},
-  {w:16, rules:{phase:'night'}, icon:'🌙', name:'The Long Night', text:'It is night all match.'},
-  {w:16, rules:{phase:'day'}, icon:'☀️', name:'Midsummer', text:'It is day all match.'},
+// Field effects in one place (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc." and
+// "PVP: ... Every 24h, generate an interesting combo of field effects (max 3, usually 2, min 1.) Rules count as 1 effect,
+// or 2 if extremely game-changing. Holidays are special and standard. Some days are marked with weirdness 4 allowed").
+// group: effects in the same group replace each other. weird: 1 (mild) to 4 (strange). cost: slots it takes of the day's 1–3.
+// rules merge into a fight's rules; battleMode sets the board; leaderGrant gives the fight's leaders skills (editor only).
+const FIELD_EFFECTS = [
+  {id:'daynight',  group:'phase', icon:'🌗', name:'Day and Night',  weird:1, cost:1, rules:{phase:'cycle'}, text:'Day and night trade places every 3 rounds.'},
+  {id:'restless',  group:'phase', icon:'🌀', name:'Restless Sky',   weird:3, cost:1, rules:{phase:'cycle', phaseLen:1}, text:'Day and night flip every round.'},
+  {id:'dusk',      group:'phase', icon:'🌆', name:'Dusk Start',     weird:1, cost:1, rules:{phase:'nightFirst'}, text:'It starts at night; day comes after round 3.'},
+  {id:'longnight', group:'phase', icon:'🌙', name:'The Long Night', weird:2, cost:1, rules:{phase:'night'}, text:'It is night all match.'},
+  {id:'midsummer', group:'phase', icon:'☀️', name:'Midsummer',      weird:1, cost:1, rules:{phase:'day'}, text:'It is day all match.'},
+  {id:'frost',     group:'field', icon:'❄️', name:'Frost',          weird:2, cost:1, rules:{field:'frozen'}, text:'Frozen Ground: each round one random card on each side gets +1 Wait.'},
+  {id:'fog',       group:'field', icon:'🌫️', name:'Fog',            weird:2, cost:1, rules:{field:'fog'}, text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
+  {id:'rain',      group:'field', icon:'🌧️', name:'Spring Rain',    weird:1, cost:1, rules:{field:'rain'}, text:'Spring Rain: every unit heals 2 at the start of each round.'},
+  {id:'heatwave',  group:'field', icon:'🔥', name:'Heatwave',       weird:2, cost:1, rules:{field:'heatwave'}, text:'Heatwave: every unit takes 1 damage at the start of each round.'},
+  {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
+  {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
+  {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
+  {id:'eruption',  group:'eruption', icon:'🌋', name:'The Mountain Wakes', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, one random unit on each side takes 2 fire damage every upkeep.'},
+  {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'The tide runs Ebb, Flow, Ebb, High tide (it moves Tide units only).', editorOnly:true},
+  {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
+  {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
+  {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
+  {id:'gift-inspiring',  group:'gift', icon:'📯', name:'Leader gift: Inspiring 2',  weird:2, cost:1, leaderGrant:{inspiring:2}, text:'The enemy leaders give +2 Attack to their row.', editorOnly:true},
+  {id:'gift-regen',      group:'gift', icon:'🌿', name:'Leader gift: Regen 2',      weird:2, cost:1, leaderGrant:{regen:2}, text:'The enemy leaders heal 2 every upkeep.', editorOnly:true},
+  {id:'gift-armor',      group:'gift', icon:'🛡️', name:'Leader gift: Armor 2',      weird:2, cost:1, leaderGrant:{armor:2}, text:'The enemy leaders take 2 less damage from each hit.', editorOnly:true},
 ];
-const ARENA_EXTRAS = [
-  {rules:{field:'frozen'}, icon:'❄️', name:'Frost', text:'Frozen Ground: each round one random card on each side gets +1 Wait.'},
-  {rules:{field:'fog'}, icon:'🌫️', name:'Fog', text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
-  {rules:{field:'rain'}, icon:'🌧️', name:'Spring Rain', text:'Spring Rain: every unit heals 2 at the start of each round.'},
-  {rules:{field:'heatwave'}, icon:'🔥', name:'Heatwave', text:'Heatwave: every unit takes 1 damage at the start of each round.'},
-  {rules:{lumberEvery:3}, icon:'🪵', name:'Timber Fair', text:'Both sides gain 1 Lumber every 3 rounds.'},
-];
-function arenaThemeFor(day){
-  const r = seededRng(hashStr('arena-theme:' + day));
-  let x = r() * ARENA_PHASES.reduce((t, p)=> t + p.w, 0), ph = ARENA_PHASES[0];
-  for(const p of ARENA_PHASES){ x -= p.w; if(x < 0){ ph = p; break; } }
-  const extra = r() < 0.5 ? ARENA_EXTRAS[Math.floor(r()*ARENA_EXTRAS.length)] : null;
-  const gravity = (r(), false); // 2026-10-12: the Arena (PvP) always plays normal rules; the roll stays so the daily theme sequence doesn't shift
-  const parts = [ph].concat(extra ? [extra] : []);
-  return {id:'daily-' + day, icon: parts.map(p=> p.icon).join(''), name: parts.map(p=> p.name).join(' · ') + (gravity ? ' · Collapse' : ''),
-    text: parts.map(p=> p.text).join(' ') + (gravity ? ' Collapse rules: cards slide toward the centre when one falls.' : '') + ' Whoever plays second opens with an extra card.',
-    rules: Object.assign({}, ph.rules, extra ? extra.rules : {}), secondDraw:1, battleMode: gravity ? 'gravity' : 'open'};
+// Home ground for any biome (the Arena rolls tier I or II; Edit skirmish can pick any tier).
+function terrainObj(biome, tier){
+  const b = TERRAIN_BIOMES[biome]; tier = Math.max(0, Math.min(3, tier|0)); if(!b || !tier) return null;
+  const st = TERRAIN_TIER_STATS[tier];
+  return {biome, tier, name: b.name, icon: b.icon, types: b.types.slice(), atk: st.atk, hp: st.hp, grant: tier >= 2 && b.grant ? Object.assign({}, b.grant) : null, sig: tier >= 2 ? b.sig : null};
+}
+const ROMAN_TIER = ['', 'I', 'II', 'III'];
+function groundEffect(biome, tier){ const t = terrainObj(biome, tier); if(!t) return null;
+  return {id:'ground-' + biome + '-' + tier, group:'terrain', icon: t.icon, name: `${t.name} ${ROMAN_TIER[tier]}`, weird: tier >= 2 ? 2 : 1, cost:1, terrain: t, text: terrainSummary(t)}; }
+function fieldEffectById(id){
+  const m = /^ground-(\w+)-(\d)$/.exec(id || ''); if(m) return groundEffect(m[1], +m[2]);
+  return FIELD_EFFECTS.find(f=> f.id === id) || null;
+}
+// Daily portents: the Arena's rules for the day, shown on the PvP tile. Seeded by the day, so everyone gets the same.
+// About one day in seven is a Strange day: it opens with a weirdness-4 effect (a rule that changes how the game plays).
+// Holidays are fixed: the same effects every year.
+const PORTENT_HOLIDAYS = {
+  '01-01': {name:'New Leaf',       icon:'🎆', fx:['daynight', 'timber', 'rain']},
+  '02-14': {name:'Bloomtide',      icon:'🌸', fx:['midsummer', 'ground-meadow-2']},
+  '03-20': {name:'The Thaw',       icon:'💧', fx:['restless', 'rain']},
+  '06-21': {name:'Midsummer Fair', icon:'🌞', fx:['midsummer', 'heatwave']},
+  '09-22': {name:'Harvest Home',   icon:'🌾', fx:['timber', 'ground-meadow-2']},
+  '10-31': {name:"Hallow's Eve",   icon:'🎃', fx:['longnight', 'fog']},
+  '12-21': {name:'Midwinter',      icon:'🕯️', fx:['longnight', 'frost']},
+  '12-25': {name:'Winterfeast',    icon:'🎁', fx:['frost', 'timber', 'firstblood']},
+};
+const PORTENT_GROUNDS = ['forest', 'meadow', 'water', 'beach', 'reef', 'swamp', 'cave', 'alpine', 'tundra', 'savanna', 'forge'];
+function dailyPortent(day){
+  const dt = new Date(day * 86400000), mmdd = String(dt.getUTCMonth() + 1).padStart(2, '0') + '-' + String(dt.getUTCDate()).padStart(2, '0');
+  const hol = PORTENT_HOLIDAYS[mmdd];
+  if(hol) return {day, holiday: hol.name, holidayIcon: hol.icon, strange: false, effects: hol.fx.map(fieldEffectById).filter(Boolean)};
+  const r = seededRng(hashStr('portent:' + day));
+  const strange = r() < 1/7, maxWeird = strange ? 4 : 3;
+  const x = r(); let slots = x < 0.2 ? 1 : x < 0.8 ? 2 : 3;
+  const pool = FIELD_EFFECTS.filter(f=> !f.editorOnly && f.weird <= maxWeird)
+    .concat(PORTENT_GROUNDS.map(b=> groundEffect(b, r() < 0.6 ? 1 : 2)));
+  const picks = [], groups = new Set();
+  const take = f=>{ picks.push(f); groups.add(f.group); slots -= f.cost; };
+  if(strange){ const w4 = pool.filter(f=> f.weird === 4); take(w4[Math.floor(r() * w4.length)]); slots = Math.max(slots, 1); }
+  for(let tries = 0; slots > 0 && tries < 40; tries++){
+    const f = pool[Math.floor(r() * pool.length)];
+    if(!f || groups.has(f.group) || f.cost > slots || (!strange && f.weird === 4)) continue;
+    take(f);
+  }
+  if(!picks.length) take(fieldEffectById('daynight'));
+  return {day, holiday: null, strange, effects: picks};
+}
+function portentRuleset(p){
+  const rules = {}; let battleMode = 'open';
+  p.effects.forEach(f=>{ if(f.rules) Object.assign(rules, f.rules); if(f.terrain) rules.terrain = f.terrain; if(f.battleMode) battleMode = f.battleMode; });
+  const name = (p.holiday ? p.holiday + ': ' : p.strange ? 'Strange day: ' : '') + p.effects.map(f=> f.name).join(' · ');
+  return {id:'daily-' + p.day, icon: p.effects.map(f=> f.icon).join(''), name, text: p.effects.map(f=> f.text.replace(/\.?$/, '.')).join(' ') + ' Whoever plays second opens with an extra card.',
+    rules, secondDraw:1, battleMode, portent: p};
+}
+function arenaThemeFor(day){ return portentRuleset(dailyPortent(day)); }
+function arenaDayNumber(d){ return Math.floor(((d || new Date()).getTime() - new Date().getTimezoneOffset()*60000) / 86400000); }
+// The portent on the PvP tile: today's effects as medallions on the right of the button, with tomorrow's under them.
+function pvpPortentHTML(){
+  let today, next; try{ const day = arenaDayNumber(); today = todaysArenaRuleset(); next = dailyPortent(day + 1); }catch(e){ return ''; }
+  const p = today.portent; if(!p) return '';
+  const ms = 86400000 - ((Date.now() - new Date().getTimezoneOffset()*60000) % 86400000), hrs = Math.max(1, Math.round(ms / 3600000));
+  const tip = p.effects.map(f=> `${f.icon} ${f.name}: ${f.text}`).join('\n');
+  return `<span class="pvp-portent${p.strange ? ' is-strange' : ''}${p.holiday ? ' is-holiday' : ''}" title="${escapeAttr((p.holiday ? p.holiday + '\n' : p.strange ? 'A strange day\n' : "Today's portent\n") + tip)}" aria-label="${escapeAttr("Today's portent: " + p.effects.map(f=> f.name).join(', '))}">
+    <span class="pvp-portent-k">${p.holiday ? escapeHtml(p.holidayIcon + ' ' + p.holiday) : p.strange ? '✷ Strange day' : 'Portent'}</span>
+    <span class="pvp-portent-icons">${p.effects.map(f=> `<i class="pp-fx pp-w${f.weird}">${f.icon}</i>`).join('')}</span>
+    <span class="pvp-portent-next" title="${escapeAttr('Tomorrow: ' + next.effects.map(f=> f.name).join(', '))}">next in ${hrs}h ${next.effects.map(f=> f.icon).join('')}</span>
+  </span>`;
 }
 function todaysArenaRuleset(d){
-  const day = Math.floor(((d || new Date()).getTime() - new Date().getTimezoneOffset()*60000) / 86400000);
+  const day = arenaDayNumber(d);
   try{ const forced = localStorage.getItem('bramblewood_arena_ruleset'); const f = ARENA_RULESETS.find(r=> r.id===forced); if(f) return Object.assign({battleMode:'open'}, f); }catch(e){}
   return arenaThemeFor(day);
 }
@@ -24145,6 +24298,7 @@ async function resolveRound(opts){
             if(unlockCardForPlayer(pickId, 'bossBaseGift')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(pickId); m.conquestBaseGift = pickId; } } } }catch(e){}
       // Egg drops (2026-10-12, user's rates): see rollEggDrop.
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const egg = rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
+      try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(`🐉 A Dragon Scale (${sc.index}/${sc.total}). ${sc.line}`, 'ok'); }catch(e){} }, 1600); } }catch(e){}
@@ -24421,7 +24575,8 @@ function fieldEffectOf(m){
     m._fieldInit = true;
     const mapId = m.conquestNode && m.conquestNode.mapId;
     const kind = mapId && typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mapId] : null;
-    if(kind === 5 && !m.engine.getField()) m.engine.setField('frozen', null, 'map');
+    let off = false; try{ const nd = m.conquestNode && findConquestNode(mapId, m.conquestNode.nodeId).node; off = !!(nd && nd.rules && nd.rules.field === 'none'); }catch(e){}
+    if(kind === 5 && !off && !m.engine.getField()) m.engine.setField('frozen', null, 'map'); // Edit skirmish can switch the Tundra's frost off (field:'none')
   }
   const f = m.engine.getField(); return f ? f.id : null;
 }
@@ -25551,6 +25706,7 @@ function rewardsPanelHTML(m){
     secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
+  if(m.conquestKibbleEarned){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Kibble</div><div class="rw-row"><span class="rw-act" data-tip="Trains a Level-0 card to Level 1 in the Nest">🦴 ${m.conquestKibbleEarned} Kibble</span></div></div>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}; secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Found</div><div class="rw-row"><span class="rw-act" data-tip="It's in your pack: place it in a hay nest in the Nest">${ek.icon || '🥚'} ${escapeHtml(ek.name || 'An egg')}</span></div></div>`); }
   if((m.unlockedActivities||[]).length){
     secs.push(`<div class="rw-sec"><div class="rw-head">Unlocked</div><div class="rw-row">${m.unlockedActivities.map(a=>`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`).join('')}</div></div>`);
@@ -28414,7 +28570,7 @@ function renderForge(){
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
-          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>`; })() : ''}
+          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
           <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
         </div>
         <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
@@ -28441,6 +28597,15 @@ function renderForge(){
   { const tn = document.getElementById('forgeToNestBtn'); if(tn) tn.onclick = ()=>{ nestNurturePrefill = forgeSelectedId; switchTab('nest'); }; }
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  const disBtn = document.getElementById('forgeDisBtn');
+  if(disBtn) disBtn.onclick = async ()=>{
+    const ds = disenchantSummary(); if(!ds.copies) return;
+    const ok = await bwConfirm({title:'♻️ Disenchant extras', body:`Melt ${ds.copies} extra cop${ds.copies===1?'y':'ies'} into ✨ ${ds.dust} Magic Dust? One copy of every card stays, and Base, Quest and Event cards and foil, Shiny and skinned copies are never touched.`, okLabel:'Disenchant'});
+    if(!ok) return;
+    const done = disenchantAllExtras();
+    showToast(`♻️ Disenchanted ${done.copies} cop${done.copies===1?'y':'ies'} for ✨ ${done.dust} Magic Dust.`, 'ok');
+    renderForge();
+  };
   const faBtn = document.getElementById('forgeFuseAllBtn');
   if(faBtn) faBtn.addEventListener('click', ()=>{ const r = fuseAllDuplicates(); if(!r.count){ denyShake(faBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(`🧩 Fused ${r.count} duplicate${r.count===1?'':'s'} into ${r.cards} card${r.cards===1?'':'s'}: ✨ ${r.dust} of credit.`, 'ok'); });
   root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(`🏰 ${(CHARACTER_DEFS[id]||{}).name||'Castle'} tempered to Lv ${castleLevelOf(id)}.`, 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
@@ -28709,7 +28874,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
       <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
 
       ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
-      ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is nurtured to Level 1 in the Nest.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>`}
+      ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>`}
       ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
     ` : `${lb && lb.why !== 'done' ? forgeLimitBreakHTML(id, lb) : ''}
       <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
@@ -29964,6 +30129,14 @@ function eggChanceFor(node, mapId, firstClear){
   let energy = 1; try{ energy = nodeEnergyCost(mapId, node) || 1; }catch(e){}
   return Math.min(1, 0.001 * energy * (EGG_REPEAT_MULT[k] || 1));
 }
+// Kibble from Conquest wins (2026-10-12, 21:01): a first clear gives 1 (elites and dungeons 2, bosses 3, the world boss 5);
+// a repeat win turns up 1 now and then (15%).
+const KIBBLE_FIRST = {skirmish:1, elite:2, champion:2, dungeon:2, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:5};
+function rollKibble(node, firstClear){
+  if(!node || node.kind === 'tutorial') return 0;
+  if(firstClear) return KIBBLE_FIRST[node.kind] || KIBBLE_FIRST[baseKind(node.kind || 'skirmish')] || 1;
+  return Math.random() < 0.15 ? 1 : 0;
+}
 function rollEggDrop(node, mapId, firstClear){
   const p = eggChanceFor(node, mapId, firstClear); if(!(p > 0) || Math.random() >= p) return null;
   const defs = getCardDefs(), tally = {};
@@ -29981,32 +30154,35 @@ function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id 
 // Nurture (2026-10-12, 11:39 list: "In the nest, let there be a function to nurture the base cards (usually kids) to lvl 1 -
 // gaining quite a decent amount of power - to a common's. This is pre-forge basically" + "Forging doesnt level a card from 0-1.
 // only nest can do that"): a Level-0 card in a nest for an hour, for a mote of materia (15 Dust, 10 Maple Leaves), comes out Level 1.
-const NURTURE_HOURS = 1, NURTURE_COST = {dust:15, gold:10};
+// 2026-10-12 (21:01): training now also takes Kibble (🦴), and hatchlings (Level-0 cards from eggs) train the same way.
+const NURTURE_HOURS = 1, NURTURE_COST = {kibble:2, dust:15, gold:10};
+function canAffordNurture(){ return Object.keys(NURTURE_COST).every(k=> (myCurrencies[k]||0) >= NURTURE_COST[k]); }
+const NURTURE_COST_TEXT = ()=> `🦴${NURTURE_COST.kibble} ✨${NURTURE_COST.dust} 🍁${NURTURE_COST.gold}`;
 function nurtureCandidates(){ const defs = getCardDefs(), busy = new Set(nestState().eggs.filter(e=> e.kind === 'nurture').map(e=> e.cardId));
   return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && defs[id].cardType !== 'materia' && (myCardCopies[id]||[]).length && getCardLevel(id) === 0 && !busy.has(id)); }
 function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= NEST_SLOTS) return 'full';
-  if((myCurrencies.dust||0) < NURTURE_COST.dust || (myCurrencies.gold||0) < NURTURE_COST.gold) return 'cost';
-  myCurrencies.dust -= NURTURE_COST.dust; myCurrencies.gold -= NURTURE_COST.gold; saveCurrencies();
+  if(!canAffordNurture()) return 'cost';
+  Object.keys(NURTURE_COST).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - NURTURE_COST[k]); saveCurrencies();
   const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + NURTURE_HOURS*3600e3, placed:true}); saveNestState(n); return 'ok'; }
 function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id === itemId); if(!e || e.kind !== 'nurture' || Date.now() < e.hatchAt) return null;
-  n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n); myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0); saveCardLevels(); return e.cardId; }
+  n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n); myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0); saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;
 function openNestPicker(){
   const defs = getCardDefs(), eggs = nestPackedEggs(), kids = nurtureCandidates();
   const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.setAttribute('role', 'dialog');
-  const afford = (myCurrencies.dust||0) >= NURTURE_COST.dust && (myCurrencies.gold||0) >= NURTURE_COST.gold;
+  const afford = canAffordNurture();
   ov.innerHTML = `<div class="modal nest-picker" aria-label="Fill a nest"><div class="modal-head-row"><h2>🪺 Fill a nest</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <h3>🥚 Eggs in your pack</h3>${eggs.length ? `<div class="np-grid">${eggs.map(e=>{ const k = EGG_KINDS[e.kind] || EGG_KINDS.woodland, t = NEST_TYPES[k.type] || NEST_TYPES.woodland;
       return `<button type="button" class="np-item" data-np-egg="${escapeAttr(e.id)}"><span class="np-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${t.icon} ${escapeHtml(t.name)} · hatches in ${k.hatchHours}h</small></button>`; }).join('')}</div>` : '<p class="panel-sub">No eggs in your pack. They turn up on the road.</p>'}
-    <h3>🌱 Nurture a Level-0 card to Level 1 <small>${NURTURE_HOURS}h · ✨${NURTURE_COST.dust} 🍁${NURTURE_COST.gold}</small></h3>
+    <h3>🌱 Train a Level-0 card to Level 1 <small>${NURTURE_HOURS}h · ${NURTURE_COST_TEXT()} · you have 🦴${myCurrencies.kibble||0}</small></h3>
     ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=> `<button type="button" class="np-item np-card ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" ${afford ? '' : 'aria-disabled="true"'}>${cardTileHTML(defs[id], {inPlay:true})}<b>${escapeHtml(defs[id].name)}</b></button>`).join('')}</div>` : '<p class="panel-sub">No Level-0 cards to nurture. Your Base cards start at Level 0.</p>'}
-    ${afford ? '' : '<p class="panel-sub">Not enough Dust or Maple Leaves to nurture right now.</p>'}</div>`;
+    ${afford ? '' : '<p class="panel-sub">Not enough Kibble, Dust or Maple Leaves to train right now. Kibble comes from Conquest wins and grown babies.</p>'}</div>`;
   document.body.appendChild(ov); nestNurturePrefill = null;
   const close = ()=> ov.remove();
   ov.addEventListener('click', e=>{ if(e.target === ov || e.target.closest('[data-close]')) return close();
     const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]');
     if(eg){ if(placeEggInNest(eg.dataset.npEgg)){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); } else denyShake(eg); }
-    else if(cd){ if(cd.getAttribute('aria-disabled') === 'true'){ denyShake(cd); return; } const r = startNurture(cd.dataset.npCard); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); showToast(`🌱 ${defs[cd.dataset.npCard].name} is being nurtured. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); } else denyShake(cd); } });
+    else if(cd){ if(cd.getAttribute('aria-disabled') === 'true'){ denyShake(cd); return; } const r = startNurture(cd.dataset.npCard); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); showToast(`🌱 ${defs[cd.dataset.npCard].name} is in training. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); } else denyShake(cd); } });
 }
 function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
   n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + BABY_GROW_HOURS*3600e3, from: from||''}); saveNestState(n);
@@ -30015,26 +30191,42 @@ function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EG
 // Hatching (2026-10-12, user: "Hatching should have a small animation, with clues to their rarity, then showing the card in
 // closeup! its an important facet!"): the egg rocks three times, harder each time; the glow leaking through its cracks tells
 // the rarity (warm white for Common, green sparks for Uncommon, blue rays for Rare); it bursts, and the card rises up close.
+// 2026-10-12 (21:01, user: "Dont use lines but a crack png or vfx instead. Then there should be a shining vfx coming out from
+// the egg, like Pokemon"): the cracks are drawn paths (a dark split with the rarity's light leaking through) that spread with
+// each rock; then the egg turns to light, beams pour out of it, a white flash, and the card fades in from a bright silhouette.
+const HATCH_CRACKS = [
+  ['M14,54 L26,47 L35,56 L45,46 L55,57 L65,47 L75,55 L86,49'],
+  ['M45,46 L42,36 L50,29 L46,19', 'M26,47 L23,38 L29,31'],
+  ['M55,57 L59,67 L52,75 L57,86', 'M75,55 L79,64 L74,72', 'M50,29 L58,24 L62,15'],
+];
+function hatchCrackSvg(){
+  return `<svg class="he-cracks" viewBox="0 0 100 100" aria-hidden="true"><defs><filter id="heGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter></defs>${HATCH_CRACKS.map((ps, i)=> `<g class="he-crack-g c${i + 1}">${ps.map(d=> `<path class="he-light" d="${d}" pathLength="1" filter="url(#heGlow)"/><path class="he-split" d="${d}" pathLength="1"/>`).join('')}</g>`).join('')}</svg>`;
+}
 function hatchRevealVfx(defId, eggIcon){
   const d = getCardDefs()[defId]; if(!d) return;
   const band = RARITY_TIER_BANDS.indexOf(d.rarity || 'common'), tier = band >= RARITY_TIER_BANDS.indexOf('rare') ? 'rare' : band >= RARITY_TIER_BANDS.indexOf('uncommon') ? 'uncommon' : 'common';
   const rdef = RARITY_DEFS.find(r=> r.key === (d.rarity || 'common')) || {};
+  const hatchling = isHatchling(defId);
   const ov = document.createElement('div'); ov.className = 'hatch-ov hatch-' + tier; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Hatching');
-  ov.innerHTML = `<div class="hatch-stage"><div class="hatch-rays" aria-hidden="true"></div><div class="hatch-egg" aria-hidden="true"><span class="he-ico">${eggIcon}</span><i class="he-crack c1"></i><i class="he-crack c2"></i><i class="he-crack c3"></i></div>
+  ov.innerHTML = `<div class="hatch-flash" aria-hidden="true"></div><div class="hatch-stage"><div class="hatch-rays" aria-hidden="true"></div><div class="hatch-beams" aria-hidden="true">${Array.from({length: 12}, (_, k)=> `<i style="--a:${k * 30}deg; --d:${(k % 3) * 0.08}s"></i>`).join('')}</div>
+    <div class="hatch-egg" aria-hidden="true"><span class="he-ico">${eggIcon}</span>${hatchCrackSvg()}</div>
     <div class="hatch-card" hidden>${cardTileHTML(d, {inPlay:true, extraClass: tier === 'rare' ? holoClass(d) : ''})}</div>
-    <div class="hatch-text" hidden><b>${escapeHtml(d.name)}</b><span class="hatch-rar" style="color:${escapeAttr(rdef.color || '#fff')}">${escapeHtml(rdef.label || d.rarity || '')}</span><small>It joined your collection.</small><button type="button" class="btn primary" data-hatch-ok>Lovely</button></div></div>`;
+    <div class="hatch-text" hidden><b>${escapeHtml(d.name)}</b><span class="hatch-rar" style="color:${escapeAttr(rdef.color || '#fff')}">${escapeHtml(rdef.label || d.rarity || '')}${hatchling ? ' · Level 0 hatchling' : ''}</span><small>${hatchling ? 'It joined your collection at Level 0. Train it to Level 1 in the Nest with 🦴 Kibble.' : 'It joined your collection.'}</small><button type="button" class="btn primary" data-hatch-ok>Lovely</button></div></div>`;
   document.body.appendChild(ov);
   try{ decorateHolo(ov); }catch(e){}
   const egg = ov.querySelector('.hatch-egg'), card = ov.querySelector('.hatch-card'), text = ov.querySelector('.hatch-text');
   const close = ()=>{ ov.classList.add('out'); setTimeout(()=> ov.remove(), 300); };
   ov.querySelector('[data-hatch-ok]').onclick = close;
   ov.addEventListener('keydown', e=>{ if(e.key === 'Escape') close(); });
-  const reveal = ()=>{ egg.classList.add('burst'); ov.classList.add('is-open'); card.hidden = false; text.hidden = false; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
-    if(hasGsap() && !reducedMotion()) gsap.fromTo(card, {scale:.2, y:60, opacity:0, rotation:-8}, {scale:1, y:0, opacity:1, rotation:0, duration:.7, ease:'back.out(1.7)'});
+  const reveal = ()=>{ egg.classList.add('burst'); ov.classList.add('is-open'); card.hidden = false; text.hidden = false; card.classList.add('from-light'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
+    if(hasGsap() && !reducedMotion()) gsap.fromTo(card, {scale:.55, y:30, opacity:0}, {scale:1, y:0, opacity:1, duration:.6, ease:'back.out(1.6)'});
     setTimeout(()=>{ try{ ov.querySelector('[data-hatch-ok]').focus(); }catch(e){} }, 400); };
   if(reducedMotion()){ reveal(); return; }
   [0, 700, 1300].forEach((t, i)=> setTimeout(()=>{ egg.classList.remove('rock'); void egg.offsetWidth; egg.classList.add('rock', 'crack' + (i + 1)); egg.style.setProperty('--rock', (6 + i*5) + 'deg'); try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){} }, t));
-  setTimeout(reveal, 2100);
+  setTimeout(()=>{ ov.classList.add('is-shining'); egg.classList.remove('rock'); egg.classList.add('shine'); }, 1900);   // the egg turns to light and beams pour out
+  setTimeout(()=> ov.classList.add('is-flash'), 3000);                                                                       // white flash …
+  setTimeout(reveal, 3250);                                                                                                  // … and the card is there
+  setTimeout(()=> ov.classList.remove('is-flash'), 3500);
 }
 function hatchEgg(eggId){
   const n = nestState(); const egg = n.eggs.find(e=> e.id===eggId); if(!egg || Date.now() < egg.hatchAt) return null;
@@ -30043,7 +30235,11 @@ function hatchEgg(eggId){
   const w = d=> ({common:6, uncommon:3, rare:1})[d.rarity || 'common'] || 1, tot = pool.reduce((a, d)=> a + w(d), 0);
   let r = Math.random()*tot, d = pool[pool.length-1]; for(const x of pool){ r -= w(x); if(r <= 0){ d = x; break; } }
   n.eggs = n.eggs.filter(e=> e.id!==eggId); saveNestState(n);
-  unlockCardForPlayer(d.id, 'egg'); return d.id;
+  const isNew = !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length;
+  unlockCardForPlayer(d.id, 'egg');
+  if(isNew && cardBaseLevel(d) > 0 && !(myCardLevels[d.id] > 0)){ hatchlingIds().add(d.id); saveHatchlings(); }
+  if(egg.kind === 'baby'){ myCurrencies.kibble = (myCurrencies.kibble||0) + 2; saveCurrencies(); } // a grown baby brings its leftover Kibble
+  return d.id;
 }
 // A rescue after a won Conquest fight: 6% a win, of the enemy deck's most common type.
 function rollBabyRescue(node){
@@ -30078,7 +30274,7 @@ function nestKeeperHTML(){
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
-        <p class="hatch-help">🌱 Tap an empty nest to nurture a Level-0 card (your Base cards) up to Level 1. Only the Nest can do that; the Forge takes it from there.</p>
+        <p class="hatch-help">🌱 Tap an empty nest to train a Level-0 card (a fresh hatchling or a Base card) up to Level 1 with 🦴 Kibble. You have <b>🦴${myCurrencies.kibble||0}</b>. Only the Nest can do that; the Forge takes it from there.</p>
         ${n.eggs.length ? '' : '<p class="hatch-wait">The nests are empty. Rumour says the third map hides an egg, and every fight might turn up a lost baby.</p>'}
       </div>
     </section>`;
@@ -30102,7 +30298,7 @@ function renderNest(){
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
       ${nestKeeperHTML()}
-      ${(()=>{ const ds = disenchantSummary(); return `<div class="nest-actions"><button type="button" class="btn small" id="nestDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button></div>`; })()}
+      <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
     </div>
     <div class="grid-view" id="nestGrid">${
       ownedIds.length ? ownedIds.map(id=> nestCardHTML(id, defs[id])).join('')
@@ -30133,16 +30329,6 @@ function renderNest(){
     wrap.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
   });
   startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS);
-  const dis = document.getElementById('nestDisBtn');
-  if(dis) dis.onclick = async ()=>{
-    const ds = disenchantSummary(); if(!ds.copies) return;
-    const defs = getCardDefs();
-    const ok = await bwConfirm({title:'♻️ Disenchant extras', body:`Melt ${ds.copies} extra cop${ds.copies===1?'y':'ies'} into ✨ ${ds.dust} Magic Dust? One copy of every card stays, and Base, Quest and Event cards and foil, Shiny and skinned copies are never touched. A spare copy is worth far more fed to its own card in the Forge (🧩).`, list: ds.per.slice(0, 12).map(p=> `${defs[p.id] ? defs[p.id].name : p.id} ×${p.n} → ✨ ${p.dust}`), okLabel:'Disenchant'});
-    if(!ok) return;
-    const done = disenchantAllExtras();
-    showToast(`♻️ Disenchanted ${done.copies} cop${done.copies===1?'y':'ies'} for ✨ ${done.dust} Magic Dust.`, 'ok');
-    renderNest();
-  };
 }
 // 2026-10-08 (user: "the tooltip '1 copy owned · foil · click to toggle…' is intrusive; rotate tips
 // here and there in the Nest instead, changing the 'Cards you've won…' line"): the per-card hover
@@ -30281,7 +30467,7 @@ function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? 
 // Faction cards in the basic packs (2026-10-11, user: "all otters and hummingbirds are contained within the various card
 // packs ... The otter specific cards are contained throughout the 3 basic packs"): a pack built on pool 1 (the Sprout
 // Pouch, Acorn Chest and Golden Bramble Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
-const BASIC_PACK_POOLS = [1, 11, 12, 13];
+const BASIC_PACK_POOLS = [1, 11];   // 2026-10-12: the Otter, Hummingbird and Riverbank pools (11–13) merged into one Factions pool (11)
 function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
@@ -30448,7 +30634,7 @@ function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) :
 //     or the Tribes gives your own faction's pack instead. Repeat wins: 5% chance of the same pack.
 const FACTION_PACKS = {
   otter:       {id:'otter', kind:'faction', name:'Rivergate Pack', icon:'🦦', own:11, faction:'otters', people:'legion', cover:'river-warden', tint:'#3f6f8f', blurb:'Otters of the Rivergate Legion: big bodies, and two tricks for knocking birds out of the sky.'},
-  hummingbird: {id:'hummingbird', kind:'faction', name:'Sunfeather Pack', icon:'🌺', own:12, faction:'hummingbirds', people:'tribes', cover:'sunspire-envoy', tint:'#b0457a', blurb:'Hummingbirds of the Sunfeather Tribes: almost everything flies.'},
+  hummingbird: {id:'hummingbird', kind:'faction', name:'Sunfeather Pack', icon:'🌺', own:11, faction:'hummingbirds', people:'tribes', cover:'sunspire-envoy', tint:'#b0457a', blurb:'Hummingbirds of the Sunfeather Tribes: almost everything flies.'},
   road:  {id:'road', kind:'sub', name:'Road-folk Bundle', icon:'🧳', people:'road', tint:'#8a6a3a', blurb:'Mice, raccoons and travellers: tolls, tricks and Lumber.'},
   beast: {id:'beast', kind:'sub', name:'Wild Beasts Bundle', icon:'🐾', people:'beast', tint:'#7a4a2a', blurb:'Wolves, bears, owls and other things with teeth.'},
   hive:  {id:'hive', kind:'sub', name:'Hive Bundle', icon:'🐝', people:'hive', tint:'#b08a1a', blurb:'Ants, bees and worms: many small bodies that add up.'},
@@ -30468,7 +30654,9 @@ function myFactionPackId(){ const f = (typeof loadFactionChoice === 'function') 
 function factionPackPool(fp, which){
   const defs = getCardDefs();
   if(which === 'general') return packCardPool(defs, 1).filter(id=> !(fp.own && packPoolOf(defs[id]) === fp.own));
-  if(fp.kind === 'faction') return packCardPool(defs, fp.own, true);
+  // 2026-10-12 (21:01, user: "Combine the rivergate and sunfeather pools into a factions pool"): one pool (11); a card's
+  // source.side ('tribes' = hummingbird side, 'shared' = Riverbank, none = otter side) still picks a faction pack's own cards.
+  if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want); }
   const ofPeople = id=>{ try{ const ps = peopleOfCard(defs[id]); return fp.people === 'folk' ? (ps.size === 0 || ps.has('folk')) : ps.has(fp.people); }catch(e){ return false; } }; // folk = everyone without another people (villagers, farm animals)
   let pool = packCardPool(defs, 1).filter(ofPeople);
   if(pool.length < 6){ const extra = Object.keys(defs).filter(id=>{ const d = defs[id]; const src = cardSourceOf(d); return src.kind==='map' && !d.token && !d.test && ['common','uncommon'].includes(d.rarity||'common') && ofPeople(id); }); pool = [...new Set(pool.concat(extra))]; }
@@ -33612,4 +33800,50 @@ const HandDrag = (function(){
   }, {passive:false});
   document.addEventListener('touchend', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
   document.addEventListener('touchcancel', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
+})();
+// In-page dropdowns (2026-10-12, user: "the filters ... is not an in-html window for checkboxes but an out-html window. Make
+// it an in-html window selection ... as i have dual screens, this window is hanging in the wrong window"). With a mouse or
+// trackpad, every plain <select> opens this in-page menu instead of the browser's own popup (which the OS draws, sometimes
+// on another screen). The <select> stays the source of truth: picking an option sets its value and fires input/change, so
+// no filter code changes. Phones keep their native picker. Keyboard use of a focused select is unchanged.
+(function inPageSelects(){
+  let menu = null, owner = null;
+  const close = ()=>{ if(menu){ menu.remove(); menu = null; } if(owner){ owner.classList.remove('bw-sel-open'); owner = null; } document.removeEventListener('keydown', onKey, true); };
+  const pick = (sel, value)=>{ if(sel.value !== value){ sel.value = value; sel.dispatchEvent(new Event('input', {bubbles:true})); sel.dispatchEvent(new Event('change', {bubbles:true})); } close(); try{ sel.focus({preventScroll:true}); }catch(e){} };
+  function onKey(e){
+    if(!menu) return;
+    const items = [...menu.querySelectorAll('.bw-sel-opt:not([aria-disabled="true"])')]; let i = items.indexOf(document.activeElement);
+    if(e.key === 'Escape'){ e.preventDefault(); const s = owner; close(); if(s) s.focus(); }
+    else if(e.key === 'ArrowDown'){ e.preventDefault(); (items[Math.min(items.length - 1, i + 1)] || items[0]).focus(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[Math.max(0, i - 1)] || items[0]).focus(); }
+    else if(e.key === 'Tab'){ close(); }
+  }
+  function open(sel){
+    close(); owner = sel; sel.classList.add('bw-sel-open');
+    menu = document.createElement('div'); menu.className = 'bw-sel-menu'; menu.setAttribute('role', 'listbox');
+    const add = (o, inGroup)=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'bw-sel-opt' + (inGroup ? ' in-group' : ''); b.setAttribute('role', 'option');
+      const on = o.value === sel.value; b.setAttribute('aria-selected', on ? 'true' : 'false'); if(o.disabled) b.setAttribute('aria-disabled', 'true');
+      b.innerHTML = `<span class="bw-sel-tick" aria-hidden="true">${on ? '✓' : ''}</span><span>${escapeHtml(o.textContent)}</span>`;
+      if(!o.disabled) b.addEventListener('click', ()=> pick(sel, o.value)); menu.appendChild(b); };
+    [...sel.children].forEach(ch=>{ if(ch.tagName === 'OPTGROUP'){ const h = document.createElement('div'); h.className = 'bw-sel-group'; h.textContent = ch.label; menu.appendChild(h); [...ch.children].forEach(o=> add(o, true)); } else if(ch.tagName === 'OPTION' && !ch.hidden) add(ch, false); });
+    document.body.appendChild(menu);
+    const r = sel.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
+    menu.style.minWidth = Math.max(140, r.width) + 'px';
+    const mh = Math.min(menu.scrollHeight, 340); const below = H - r.bottom - 8, above = r.top - 8;
+    const top = (below >= mh || below >= above) ? r.bottom + 4 : Math.max(8, r.top - 4 - Math.min(mh, above));
+    menu.style.maxHeight = Math.min(340, (top > r.top ? below : above)) + 'px';
+    menu.style.top = top + 'px'; menu.style.left = Math.max(8, Math.min(W - menu.offsetWidth - 8, r.left)) + 'px';
+    (menu.querySelector('[aria-selected="true"]') || menu.querySelector('.bw-sel-opt'))?.focus({preventScroll:true});
+    const cur = menu.querySelector('[aria-selected="true"]'); if(cur) cur.scrollIntoView({block:'nearest'});
+    document.addEventListener('keydown', onKey, true);
+  }
+  document.addEventListener('mousedown', e=>{
+    if(menu && !menu.contains(e.target)){ const was = owner; close(); if(was && was.contains(e.target)){ e.preventDefault(); return; } }
+    const sel = e.target.closest && e.target.closest('select');
+    if(!sel || sel.multiple || sel.size > 1 || sel.disabled || e.button !== 0) return;
+    if(!(window.matchMedia && matchMedia('(pointer: fine)').matches)) return;
+    e.preventDefault(); try{ sel.focus({preventScroll:true}); }catch(_){}
+    open(sel);
+  }, true);
+  window.addEventListener('resize', close); window.addEventListener('scroll', e=>{ if(menu && !menu.contains(e.target)) close(); }, true);
 })();

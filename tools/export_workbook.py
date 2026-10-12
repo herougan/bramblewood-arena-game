@@ -25,8 +25,7 @@ RLABEL = {'starter': 'Starter', 'common': 'Common', 'uncommon': 'Uncommon', 'rar
           'devlegendary': 'Dev-Legendary', 'devancient': 'Dev-Ancient', 'eventlegendary': 'Event-Legendary',
           'eventrare': 'Event-Rare', 'divine': 'Divine', 'void': 'Void', 'daemonic': 'Daemonic'}
 KIND = {'unit': 'Unit', 'spell': 'Spell', 'equipment': 'Equipment', 'structure': 'Structure', 'materia': 'Materia', 'field': 'Field'}
-PACK_POOL = {1: 'Basic packs (pool 1)', 11: 'Basic packs (Otter pool)', 12: 'Basic packs (Hummingbird pool)',
-             13: 'Basic packs (shared Riverbank pool)', 99: 'Mystery Booster'}
+PACK_POOL = {1: 'Basic packs (Sprout Pouch, Acorn Chest, Golden Bramble Case)', 11: 'Basic packs (Factions pool)', 99: 'Mystery Booster'}
 
 # ---------- maps: numbering, labels, who fights where ----------
 maps = [m for m in data['maps'] if not (m['id'].startswith('r') and not m['nodes'])]
@@ -173,13 +172,13 @@ for c in cards:
     s = c['src'] or {}
     if s.get('kind') == 'pack' and not c['token']:
         pool_sizes[int(s.get('tier') or 1)] += 1
-basic_pool = sum(pool_sizes[t] for t in (1, 11, 12, 13))
+basic_pool = sum(pool_sizes[t] for t in (1, 11))
 pack_rows = []
 merch_by_pack = {sp['pack']: sp for sp in data['spots'] if sp['merchant']}
 for p in data['packs']:
     pool = p['pool']
     content = f"{p['cards']} cards from the Mystery pool ({pool_sizes[99]} cards)" if pool == 99 else \
-        f"{p['cards']} cards from the basic pools ({basic_pool} cards: pool 1 = {pool_sizes[1]}, Otter = {pool_sizes[11]}, Hummingbird = {pool_sizes[12]}, shared = {pool_sizes[13]})"
+        f"{p['cards']} cards from the basic pools ({basic_pool} cards: pool 1 = {pool_sizes[1]}, Factions = {pool_sizes[11]})"
     sp = merch_by_pack.get(p['id'])
     if sp: sold = f"Map {sp['mapNumber']}: {sp['name']}"
     elif p['id'] == 'mystery' and wanderer: sold = f"Map {wanderer['mapNumber']}: Wanderer’s Camp (max 5 a visit, trader days only)"

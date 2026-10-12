@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (21:20)
+- **Daily portents in PvP.** The big PvP button now shows today's portent on its right: one medallion per field effect, with tomorrow's under them and when it changes. Every day rolls 1 to 3 effects (usually 2) from day and night, weather, Lumber, home ground for any biome, First Blood and the eruption; Double Time and Collapse count as 2. About one day in seven is a **Strange day**, which opens with one of those big rule changes (a purple medallion). Holidays are fixed every year (New Leaf, Bloomtide, The Thaw, Midsummer Fair, Harvest Home, Hallow's Eve, Midwinter, Winterfeast). These are the Arena's rules for the day, in every Arena mode.
+- **Edit skirmish shows its field effects.** A new Field effects box lists everything the fight plays under, marked "map default" or "set here": day and night, weather, home ground and its tier, the eruption, boss surge, enemy mining, frost tuning and leader gifts. ✕ switches one off (even a map default, such as the Tundra's frost), ↺ puts the map's default back, and "Add a field effect" adds weather, Lumber, the eruption (2, 3 or 5), High Tide, Double Time, any biome's home ground at tier I–III, or a leader gift (Immolation, Inspiring, Regen or Armor 2).
+- **Hatching, Pokémon style.** The egg now cracks with drawn splits that spread on each rock, with the rarity's light leaking through; then it turns to light, beams pour out, a white flash, and the card fades in from a bright silhouette.
+- **Hatchlings start at Level 0.** A card you get for the first time from an egg arrives at Level 0, about 15% weaker. Train it to Level 1 in the Nest. Training (for hatchlings and Base cards alike) now costs **🦴 2 Kibble**, 15 Dust and 10 Maple Leaves, for an hour. Kibble is new: first clears give 1 (elites and dungeons 2, bosses 3, the world boss 5), repeat wins sometimes 1, and a grown baby brings 2. Everyone starts with 4.
+- **Codex:** maps are grouped 0–5, 6–10, 11–15 and 16–20, and packs go by their names: Sprout Pouch · Acorn Chest · Golden Bramble Case, the Factions pool and the Mystery Booster.
+- **One Factions pool.** The Rivergate (Otter), Sunfeather (Hummingbird) and shared Riverbank pools are now a single Factions pool that every basic pack draws from. The Rivergate and Sunfeather packs you earn on the road still give their own side's cards.
+- **Dropdowns open in the page** (filters, editors and the rest) instead of the browser's own pop-up, which could open on another monitor.
+- **Disenchant extras** moved to the Forge, next to Fuse all extras; it's no longer in the Nest.
+- **Art:** War Hound and Bramblewood Macaque were grainy; they're cleaned up for now, and new portraits are queued for when PixelLab's monthly limit resets.
+
 ## 2026-10-12 (21:05)
 - **Two-stage sudden death, bosses included.** From round 20 any hit kills a unit (sudden death I); from round 30 a hit on a castle ends the game (sudden death II). A banner marks each stage. Raids only ever reach stage I.
 - **New card: Triumphvirate** (Unique leader, 6/22, Lumber 3, Wait 1, Felid, Leader and Savanna): a lion wrapped in jewellery on a carpet of gold, beside a lion-mane banner. It has the new **Dictator** skill: it can only be your Leader and never goes in a deck. It has no source yet, so it can't be earned; its portrait is queued in PixelLab.

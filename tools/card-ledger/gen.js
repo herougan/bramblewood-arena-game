@@ -13,7 +13,7 @@ const labels={}; for(const m of src.matchAll(/\{key:'(\w+)',\s*category:'\w+',\s
 const cards=JSON.parse(fs.readFileSync(R+'canonical/cards.json','utf8'));
 const bal={}; (JSON.parse(fs.readFileSync(R+'docs/balance/card-balance.json','utf8')).rows||[]).forEach(r=>bal[r.id]=r);
 const bands=JSON.parse(fs.readFileSync(R+'docs/balance/card-balance.json','utf8')).bands;
-const PACK={1:'Pack 1',11:'Otter pack',12:'Hummingbird pack',13:'Riverbank (both packs)',99:'Mystery Booster'};
+const PACK={1:'Basic packs',11:'Factions pool',99:'Mystery Booster'};
 const human=k=>labels[k]||k.replace(/([A-Z])/g,' $1').replace(/^./,c=>c.toUpperCase());
 const TRIG={onSpawn:'Spawn',onReady:'Ready',onDeath:'Death',onAttacked:'Attacked',onAttack:'Attack',onKill:'Kill',onRoundStart:'Round start',perTurn:'Each turn',onAllySpawn:'Ally spawn',onEnemySpawn:'Enemy spawn',onAllyDie:'Ally dies',onHealed:'Healed',onAllyPlayed:'Ally played',onAllyReady:'Ally ready',onMove:'Move',onExile:'Exile',onDiscard:'Discard',onColumnSpawn:'Column spawn',onHeal:'Heal',onAllyHealed:'Ally healed',onEnemyPlayed:'Enemy played',onEnemyReady:'Enemy ready'};
 const skills=c=>{ const e=c.effects||{}, out=[];
@@ -33,7 +33,7 @@ const {creatureOf, speciesOf} = require('./creatures.js');
 const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).startsWith('test-')).map(c=>{
   const s=c.source||{}; let src='Base', grp='Base', mno=null, gk='base';
   if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${fightCode(s.id, s.node)}`; grp='Map'; gk='map:'+s.id; }
-  else if(s.kind==='pack'){ src=PACK[s.tier]||('Pack '+s.tier); grp=s.tier===11||s.tier===12||s.tier===13?'Faction pack':'Pack'; gk='pack:'+s.tier; }
+  else if(s.kind==='pack'){ src=PACK[s.tier]||('Pack '+s.tier); grp=s.tier===11?'Faction pack':'Pack'; gk='pack:'+s.tier; }
   else if(s.kind==='smith'){ src='Blacksmith'; grp='Other'; gk='other:'+src; }
   else if(s.kind){ src=s.kind[0].toUpperCase()+s.kind.slice(1); grp='Other'; gk='other:'+src; }
   else if(c.token){ src='Token'; grp='Token'; gk='token'; }
@@ -52,7 +52,7 @@ if(process.argv[3]) JSON.parse(fs.readFileSync(process.argv[3],'utf8')).forEach(
 // Base, each pack, each map in play order (side maps after their parent) with the cards its enemy decks field.
 const cardById=Object.fromEntries(cards.map(c=>[c.id,c]));
 const groups=[{key:'base',kind:'Base',label:'Base cards',icon:'🌱',blurb:'Free or starter cards every player can own'}];
-Object.entries(PACK).forEach(([t,l])=> groups.push({key:'pack:'+t,kind:(t==11||t==12||t==13)?'Faction pack':'Pack',label:l,icon:'🎁'}));
+Object.entries(PACK).forEach(([t,l])=> groups.push({key:'pack:'+t,kind:(t==11)?'Faction pack':'Pack',label:l,icon:'🎁'}));
 const ordered=[]; mains.forEach(m=>{ ordered.push(m); MAPS.filter(x=>x.sub&&x.parent===m.id).forEach(x=>ordered.push(x)); });
 ordered.forEach(m=>{ const faced={}; m.nodes.forEach(n=>{ const decks=[n.deck||{}].concat(n.waveDecks||[]); decks.forEach(d=>Object.keys(d).forEach(id=>{ if(cardById[id]) faced[id]=1; })); (n.leaders||[]).forEach(id=>{ if(cardById[id]) faced[id]=1; }); });
   const fr={}; Object.keys(faced).forEach(id=>{ const r=cardById[id].rarity||'common'; fr[r]=(fr[r]||0)+1; });

@@ -1527,6 +1527,15 @@
   @keyframes ember{0%{opacity:1; transform:translate(0,0) scale(1);} 100%{opacity:0; transform:translate(var(--x), var(--y)) scale(.4);}}
   @media (max-width:699px){ .terrain-pill{top:10px; left:6px; font-size:11px; padding:3px 8px;} .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
+  /* In-page select menus (2026-10-12): replaces the browser's own <select> popup on mouse devices */
+  .bw-sel-menu{position:fixed; z-index:20000; overflow:auto; padding:5px; border-radius:12px; background:var(--surface, #fff8e6); color:var(--ink, #2c3320); border:1px solid var(--surface-border, #c9b483); box-shadow:0 12px 30px rgba(0,0,0,.3); display:flex; flex-direction:column; gap:1px; font-family:'Nunito', system-ui, sans-serif; font-size:13.5px;}
+  .bw-sel-opt{all:unset; box-sizing:border-box; display:flex; gap:8px; align-items:center; padding:6px 12px 6px 8px; border-radius:8px; cursor:pointer; white-space:nowrap;}
+  .bw-sel-opt.in-group{padding-left:18px;}
+  .bw-sel-opt:hover, .bw-sel-opt:focus-visible{background:color-mix(in srgb, var(--ink, #2c3320) 10%, transparent); outline:none;}
+  .bw-sel-opt[aria-selected="true"]{font-weight:800;}
+  .bw-sel-opt[aria-disabled="true"]{opacity:.45; cursor:default;}
+  .bw-sel-tick{width:14px; text-align:center; font-weight:900;}
+  .bw-sel-group{padding:6px 10px 2px; font-size:11px; font-weight:800; letter-spacing:.04em; opacity:.65;}
   .battlefield{background:var(--bg); border:1px solid var(--surface-border); border-radius:16px; padding:16px; margin-bottom:6px; position:relative; z-index:10; overflow:clip; overflow-clip-margin:90px;}
   /* Per-map battlefield gradient (2026-09-25, explicit request: "use a gradient faded background
      for the battlefield, depending on the map"). Deliberately NOT theme-adaptive (light/dark) --
@@ -4636,6 +4645,23 @@
      plain button next to it. */
   .arena-mode-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(230px,1fr)); gap:16px; margin-top:16px; align-items:stretch;}
   .arena-mode-btn{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; padding:20px 26px; border-radius:16px; white-space:normal; width:100%; box-sizing:border-box;}
+  /* Daily portent on the PvP tile (2026-10-12, 21:01, user: "on the right side of the background of the big button, show a portent
+     portrait (or just icons for now) for whats about to come") */
+  .pvp-mode-btn{position:relative; padding-right:112px; overflow:hidden;}
+  .pvp-portent{position:absolute; top:0; right:0; bottom:0; width:100px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    background:linear-gradient(90deg, rgba(20,16,40,0), rgba(30,22,60,.55) 30%, rgba(30,22,60,.75)); border-left:1px solid rgba(255,255,255,.08); pointer-events:auto;}
+  .pvp-portent-k{font-size:10px; letter-spacing:.06em; text-transform:uppercase; opacity:.8; text-align:center; line-height:1.15; padding:0 4px;}
+  .pvp-portent-icons{display:flex; flex-direction:column; gap:4px; align-items:center;}
+  .pvp-portent .pp-fx{font-style:normal; font-size:22px; width:38px; height:38px; display:grid; place-items:center; border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.18), rgba(255,255,255,.04) 70%); box-shadow:0 0 0 1px rgba(255,255,255,.18) inset;}
+  .pvp-portent .pp-fx.pp-w3{box-shadow:0 0 0 1px rgba(255,190,90,.6) inset, 0 0 10px rgba(255,170,60,.35);}
+  .pvp-portent .pp-fx.pp-w4{box-shadow:0 0 0 1px rgba(200,120,255,.8) inset, 0 0 14px rgba(180,90,255,.55); animation:ppStrange 2.6s ease-in-out infinite;}
+  .pvp-portent.is-strange{background:linear-gradient(90deg, rgba(40,10,60,0), rgba(70,20,110,.6) 30%, rgba(80,24,130,.82));}
+  .pvp-portent.is-holiday{background:linear-gradient(90deg, rgba(60,40,10,0), rgba(110,70,20,.55) 30%, rgba(130,84,24,.8));}
+  .pvp-portent-next{font-size:10px; opacity:.7; white-space:nowrap;}
+  @keyframes ppStrange{0%,100%{transform:scale(1);} 50%{transform:scale(1.08);}}
+  @media (prefers-reduced-motion: reduce){ .pvp-portent .pp-fx.pp-w4{animation:none;} }
+  @media (max-width:520px){ .pvp-mode-btn{padding-right:86px;} .pvp-portent{width:78px;} .pvp-portent .pp-fx{width:30px; height:30px; font-size:18px;} }
   .arena-mode-btn .amb-ico{font-size:34px;}
   .arena-mode-btn .amb-lbl{font-family:'Baloo 2'; font-size:17px;}
   /* One shared max-width for every variant's blurb (previously 180/210/230/210px per variant,
@@ -5863,7 +5889,7 @@
   .fc-row{display:flex; gap:14px; align-items:center; padding:8px; border-radius:12px;} .fc-row.is-on{background:rgba(255,200,90,.12);}
   .fc-tile{zoom:.62; flex-shrink:0;} .inv-grid > p.panel-sub{grid-column:1 / -1;} .fc-body{display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center; min-width:0;} .fc-lv{font-weight:700; opacity:.8;}
   /* Hatching (2026-10-12) */
-  .hatch-ov{position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center; background:rgba(10,8,14,.78); transition:opacity .3s; --glow:255,240,210;}
+  .hatch-ov{position:fixed; inset:0; z-index:2000; display:flex; align-items:center; justify-content:center; background:rgba(10,8,14,.86); transition:opacity .3s; --glow:255,240,210;}
   .hatch-ov.out{opacity:0;}
   .hatch-ov.hatch-uncommon{--glow:120,240,150;} .hatch-ov.hatch-rare{--glow:110,170,255;}
   .hatch-stage{position:relative; display:flex; flex-direction:column; align-items:center; gap:18px; min-height:360px; justify-content:center;}
@@ -5876,9 +5902,28 @@
   .hatch-egg.crack1{filter:drop-shadow(0 0 10px rgba(var(--glow),.5));} .hatch-egg.crack2{filter:drop-shadow(0 0 22px rgba(var(--glow),.75));} .hatch-egg.crack3{filter:drop-shadow(0 0 40px rgba(var(--glow),1));}
   .hatch-egg.rock{animation:hatchRock .5s ease-in-out;}
   @keyframes hatchRock{0%,100%{transform:rotate(0);} 25%{transform:rotate(calc(var(--rock,8deg) * -1));} 75%{transform:rotate(var(--rock,8deg));}}
-  .he-crack{position:absolute; height:3px; border-radius:2px; background:rgba(var(--glow),1); box-shadow:0 0 8px rgba(var(--glow),1); opacity:0; transition:opacity .2s;}
-  .he-crack.c1{left:38%; top:42%; width:26%; transform:rotate(-24deg);} .he-crack.c2{left:30%; top:55%; width:34%; transform:rotate(18deg);} .he-crack.c3{left:44%; top:34%; width:22%; transform:rotate(62deg);}
-  .hatch-egg.crack1 .c1, .hatch-egg.crack2 .c1, .hatch-egg.crack2 .c2, .hatch-egg.crack3 .he-crack{opacity:1;}
+  /* Cracks (2026-10-12, 21:01): drawn splits with the rarity's light leaking through, spreading with each rock */
+  .he-cracks{position:absolute; left:6%; top:4%; width:88%; height:92%; overflow:visible; pointer-events:none;}
+  .he-cracks path{fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; transition:stroke-dashoffset .28s ease-out;}
+  .he-cracks .he-light{stroke:rgb(var(--glow)); stroke-width:4.5; opacity:.95;}
+  .he-cracks .he-split{stroke:#3b2716; stroke-width:1.6;}
+  .hatch-egg.crack1 .c1 path, .hatch-egg.crack2 .c1 path, .hatch-egg.crack2 .c2 path, .hatch-egg.crack3 .he-crack-g path, .hatch-egg.shine .he-crack-g path{stroke-dashoffset:0;}
+  .hatch-egg.crack3 .he-light{stroke-width:6;}
+  /* The shine, Pokémon style: the egg turns to light, beams pour out, a white flash, then the card from a bright silhouette */
+  .hatch-egg.shine{animation:hatchShinePulse .55s ease-in-out infinite alternate; filter:brightness(2.6) saturate(.2) drop-shadow(0 0 30px rgba(255,255,255,1)) drop-shadow(0 0 60px rgba(var(--glow),1)); transition:filter .5s;}
+  @keyframes hatchShinePulse{from{transform:scale(1);} to{transform:scale(1.12);}}
+  .hatch-beams{position:absolute; left:50%; top:42%; width:0; height:0; pointer-events:none; opacity:0; transition:opacity .3s;}
+  .hatch-beams i{position:absolute; left:-7px; bottom:0; width:14px; height:min(46vh, 420px); transform-origin:50% 100%; transform:rotate(var(--a)) scaleY(0);
+    background:linear-gradient(to top, rgba(255,255,255,.95), rgba(var(--glow),.55) 40%, transparent); border-radius:50% 50% 0 0; filter:blur(1px);}
+  .hatch-ov.is-shining .hatch-beams{opacity:1; animation:hatchSpin 6s linear infinite;}
+  .hatch-ov.is-shining .hatch-beams i{animation:hatchBeam .9s cubic-bezier(.2,.8,.3,1) var(--d) forwards;}
+  @keyframes hatchBeam{to{transform:rotate(var(--a)) scaleY(1);}}
+  .hatch-ov.is-open .hatch-beams{opacity:0; transition:opacity 1.2s;}
+  .hatch-flash{position:fixed; inset:0; background:#fff; opacity:0; pointer-events:none; transition:opacity .25s ease-in; z-index:3;}
+  .hatch-ov.is-flash .hatch-flash{opacity:1;}
+  .hatch-card.from-light{animation:hatchFromLight .9s ease-out forwards;}
+  @keyframes hatchFromLight{from{filter:brightness(5) saturate(0);} to{filter:none;}}
+  @media (prefers-reduced-motion: reduce){ .hatch-egg.shine, .hatch-ov.is-shining .hatch-beams, .hatch-card.from-light{animation:none;} }
   .hatch-uncommon .hatch-egg.crack2::after, .hatch-uncommon .hatch-egg.crack3::after{content:'✦ ✧ ✦'; position:absolute; left:50%; top:-10px; transform:translateX(-50%); font-size:22px; color:rgb(var(--glow)); animation:hatchSpark 1s ease-out infinite;}
   @keyframes hatchSpark{0%{opacity:0; transform:translate(-50%, 10px);} 40%{opacity:1;} 100%{opacity:0; transform:translate(-50%, -24px);}}
   .hatch-egg.burst{animation:hatchBurst .45s ease-in forwards;}
@@ -7761,6 +7806,18 @@
   .skirmish-editor > .se-actions{position:static !important; flex:none; margin-top:0 !important; padding-top:12px !important; border-top:1px solid var(--surface-border);}
   .skirmish-editor .se-battle{display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:10px 14px; padding:8px 12px 12px;}
   .skirmish-editor .se-battle label{display:flex; flex-direction:column; gap:4px;}
+  /* Field effects in Edit skirmish (2026-10-12, 21:01) */
+  .skirmish-editor .se-fx{display:flex; flex-direction:column; gap:10px; padding:8px 12px 12px;}
+  .skirmish-editor .se-fx-chips{display:flex; flex-wrap:wrap; gap:8px;}
+  .skirmish-editor .se-fx-chip{display:flex; align-items:center; gap:8px; max-width:100%; padding:6px 6px 6px 10px; border-radius:12px; background:rgba(120,170,220,.12); border:1px solid rgba(140,190,240,.35);}
+  .skirmish-editor .se-fx-chip.is-off{opacity:.6; border-style:dashed; background:transparent;}
+  .skirmish-editor .se-fx-ico{font-size:20px; line-height:1;}
+  .skirmish-editor .se-fx-txt{display:flex; flex-direction:column; min-width:0;}
+  .skirmish-editor .se-fx-txt b{font-size:13px;}
+  .skirmish-editor .se-fx-txt small{font-size:11px; opacity:.75; max-width:340px;}
+  .skirmish-editor .se-fx-btn{border:0; background:rgba(255,255,255,.08); color:inherit; width:26px; height:26px; border-radius:8px; cursor:pointer; flex:none;}
+  .skirmish-editor .se-fx-btn:hover{background:rgba(255,255,255,.2);}
+  .skirmish-editor .se-fx-add{align-self:flex-start; min-width:220px;}
 
   /* Arena and Test lab full window (2026-10-10): the Conquest frame — no header, tabs pinned bottom-centre, the page
      scrolls in its own pane over a dark wood backdrop. */
