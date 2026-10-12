@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-11",
- "games": 60,
+ "generated": "2026-10-12",
+ "games": 24,
  "myCastleHp": 30,
  "decks": {
   "starter": {
@@ -52,16 +52,6 @@
      "n": 1
     },
     {
-     "id": "river-warden",
-     "name": "River Warden",
-     "n": 1
-    },
-    {
-     "id": "sunspire-envoy",
-     "name": "Sunspire Envoy",
-     "n": 1
-    },
-    {
      "id": "quarry-mole",
      "name": "Quarry Mole",
      "n": 1
@@ -72,28 +62,28 @@
    "variant": "built",
    "cards": [
     {
-     "id": "cobalt-talon-skirmisher",
-     "name": "Cobalt Talon Skirmisher",
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "n": 4
+    },
+    {
+     "id": "bee-sentry",
+     "name": "Bee Sentry",
+     "n": 4
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "n": 4
+    },
+    {
+     "id": "rootworm-colony",
+     "name": "Rootworm Colony",
      "n": 4
     },
     {
      "id": "duck-paddler",
      "name": "Duck Paddler",
-     "n": 4
-    },
-    {
-     "id": "crimson-wing-duelist-cadet",
-     "name": "Crimson Wing Duelist Cadet",
-     "n": 4
-    },
-    {
-     "id": "jaguar-stalker",
-     "name": "Jaguar Stalker",
-     "n": 4
-    },
-    {
-     "id": "river-carp",
-     "name": "River Carp",
      "n": 4
     }
    ]
@@ -102,28 +92,28 @@
    "variant": "built",
    "cards": [
     {
-     "id": "owl-fletcher",
-     "name": "Owl Fletcher",
+     "id": "bee-drone",
+     "name": "Bee Drone",
      "n": 4
     },
     {
-     "id": "cobalt-talon-skirmisher",
-     "name": "Cobalt Talon Skirmisher",
+     "id": "hedge-changeling",
+     "name": "Hedge Changeling",
      "n": 4
     },
     {
-     "id": "duck-paddler",
-     "name": "Duck Paddler",
+     "id": "puppeteer-imp",
+     "name": "Puppeteer Imp",
      "n": 4
     },
     {
-     "id": "coral-current-eel",
-     "name": "Coral Current Eel",
+     "id": "honey-bee",
+     "name": "Honey Bee",
      "n": 4
     },
     {
-     "id": "eagle-diver",
-     "name": "Eagle Diver",
+     "id": "lurking-dread",
+     "name": "Lurking Dread",
      "n": 4
     }
    ]
@@ -142,22 +132,22 @@
    "hp": 57,
    "res": {
     "starter": {
-     "win": 48.3,
-     "rounds": 11.9,
-     "hpLost": 78.3
+     "win": 37.5,
+     "rounds": 13.3,
+     "hpLost": 82.2
     },
     "mid": {
-     "win": 100,
-     "rounds": 8.5,
-     "hpLost": 16.6
+     "win": 83.3,
+     "rounds": 10.9,
+     "hpLost": 50
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.5,
-     "hpLost": 16.1
+     "win": 95.8,
+     "rounds": 9.4,
+     "hpLost": 26.4
     }
    },
-   "index": 17
+   "index": 27.5
   },
   {
    "map": "m1",
@@ -171,22 +161,22 @@
    "hp": 25,
    "res": {
     "starter": {
-     "win": 40,
-     "rounds": 9.1,
-     "hpLost": 84.4
+     "win": 37.5,
+     "rounds": 8.9,
+     "hpLost": 79.4
     },
     "mid": {
-     "win": 100,
-     "rounds": 7,
-     "hpLost": 16.1
+     "win": 95.8,
+     "rounds": 9.3,
+     "hpLost": 41.4
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 11.6
+     "win": 95.8,
+     "rounds": 7.2,
+     "hpLost": 21.4
     }
    },
-   "index": 17.9
+   "index": 23.1
   },
   {
    "map": "m1",
@@ -200,22 +190,22 @@
    "hp": 33,
    "res": {
     "starter": {
-     "win": 38.3,
-     "rounds": 9.9,
-     "hpLost": 84.3
+     "win": 8.3,
+     "rounds": 11,
+     "hpLost": 97.1
     },
     "mid": {
-     "win": 85,
-     "rounds": 7.3,
-     "hpLost": 37.1
+     "win": 20.8,
+     "rounds": 9.8,
+     "hpLost": 96.1
     },
     "strong": {
-     "win": 93.3,
-     "rounds": 7.1,
-     "hpLost": 34
+     "win": 66.7,
+     "rounds": 7.7,
+     "hpLost": 69.7
     }
    },
-   "index": 29.4
+   "index": 68.5
   },
   {
    "map": "m1",
@@ -229,101 +219,246 @@
    "hp": 64,
    "res": {
     "starter": {
-     "win": 26.7,
-     "rounds": 14,
-     "hpLost": 91.8
+     "win": 41.7,
+     "rounds": 12.3,
+     "hpLost": 77.9
     },
     "mid": {
-     "win": 85,
+     "win": 70.8,
+     "rounds": 11.9,
+     "hpLost": 46.5
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 10.6,
+     "hpLost": 31.1
+    }
+   },
+   "index": 30.7
+  },
+  {
+   "map": "mq",
+   "mapNo": "2",
+   "mapName": "Clovermead",
+   "side": false,
+   "key": "2-1",
+   "nodeKey": "q-1",
+   "kind": "skirmish",
+   "name": "Clover Patch",
+   "hp": 12,
+   "res": {
+    "starter": {
+     "win": 95.8,
+     "rounds": 7.3,
+     "hpLost": 37.4
+    },
+    "mid": {
+     "win": 100,
+     "rounds": 6.3,
+     "hpLost": 30.1
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 5.7,
+     "hpLost": 16.3
+    }
+   },
+   "index": 5.1
+  },
+  {
+   "map": "mq",
+   "mapNo": "2",
+   "mapName": "Clovermead",
+   "side": false,
+   "key": "2-2",
+   "nodeKey": "q-2",
+   "kind": "skirmish",
+   "name": "Bee Lines",
+   "hp": 13,
+   "res": {
+    "starter": {
+     "win": 87.5,
+     "rounds": 6.1,
+     "hpLost": 26.8
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 7.1,
+     "hpLost": 40.8
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 6.5,
+     "hpLost": 24.4
+    }
+   },
+   "index": 10.3
+  },
+  {
+   "map": "mq",
+   "mapNo": "2",
+   "mapName": "Clovermead",
+   "side": false,
+   "key": "2-3",
+   "nodeKey": "q-3",
+   "kind": "skirmish",
+   "name": "Puddle Hop",
+   "hp": 13,
+   "res": {
+    "starter": {
+     "win": 100,
+     "rounds": 6.8,
+     "hpLost": 34.6
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 6.9,
+     "hpLost": 28.7
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 5.5,
+     "hpLost": 8.2
+    }
+   },
+   "index": 3.1
+  },
+  {
+   "map": "mq",
+   "mapNo": "2",
+   "mapName": "Clovermead",
+   "side": false,
+   "key": "2-4",
+   "nodeKey": "q-4",
+   "kind": "skirmish",
+   "name": "Harvest Mice",
+   "hp": 15,
+   "res": {
+    "starter": {
+     "win": 95.8,
+     "rounds": 6.5,
+     "hpLost": 27.8
+    },
+    "mid": {
+     "win": 100,
+     "rounds": 6.9,
+     "hpLost": 26.7
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 5.7,
+     "hpLost": 11.4
+    }
+   },
+   "index": 3.9
+  },
+  {
+   "map": "mq",
+   "mapNo": "2",
+   "mapName": "Clovermead",
+   "side": false,
+   "key": "2-5",
+   "nodeKey": "q-5",
+   "kind": "boss",
+   "name": "The Old Hare",
+   "hp": 28,
+   "res": {
+    "starter": {
+     "win": 41.7,
      "rounds": 10.1,
-     "hpLost": 41.3
+     "hpLost": 85.1
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 9.2,
+     "hpLost": 61.9
     },
     "strong": {
      "win": 91.7,
-     "rounds": 9.5,
-     "hpLost": 37.2
+     "rounds": 8,
+     "hpLost": 34.2
     }
    },
-   "index": 33.5
+   "index": 32.5
   },
   {
    "map": "mf",
-   "mapNo": "2",
+   "mapNo": "3",
    "mapName": "Thistlewood",
    "side": false,
-   "key": "2-1",
+   "key": "3-1",
    "nodeKey": "f-1",
    "kind": "skirmish",
    "name": "Hedgerow Scouts",
    "hp": 14,
    "res": {
     "starter": {
-     "win": 51.7,
-     "rounds": 8.5,
-     "hpLost": 78.4
+     "win": 75,
+     "rounds": 7.9,
+     "hpLost": 68.3
     },
     "mid": {
-     "win": 100,
-     "rounds": 6.1,
-     "hpLost": 17.1
+     "win": 91.7,
+     "rounds": 7.6,
+     "hpLost": 38.3
     },
     "strong": {
      "win": 100,
-     "rounds": 5.5,
-     "hpLost": 18.9
+     "rounds": 6.3,
+     "hpLost": 19
     }
    },
-   "index": 16.8
+   "index": 13.1
   },
   {
    "map": "mf",
-   "mapNo": "2",
+   "mapNo": "3",
    "mapName": "Thistlewood",
    "side": false,
-   "key": "2-2",
+   "key": "3-2",
    "nodeKey": "f-2",
    "kind": "skirmish",
    "name": "Cricket Chorus",
    "hp": 15,
    "res": {
     "starter": {
-     "win": 41.7,
-     "rounds": 7.4,
-     "hpLost": 81.8
+     "win": 50,
+     "rounds": 7.5,
+     "hpLost": 73.5
     },
     "mid": {
-     "win": 100,
-     "rounds": 5.7,
-     "hpLost": 18.6
+     "win": 95.8,
+     "rounds": 7.4,
+     "hpLost": 43.5
     },
     "strong": {
      "win": 100,
-     "rounds": 5.3,
-     "hpLost": 13.3
+     "rounds": 6.2,
+     "hpLost": 20.3
     }
    },
-   "index": 17.9
+   "index": 18.6
   },
   {
    "map": "mf",
-   "mapNo": "2",
+   "mapNo": "3",
    "mapName": "Thistlewood",
    "side": false,
-   "key": "2-3",
+   "key": "3-3",
    "nodeKey": "f-3",
    "kind": "skirmish",
    "name": "Burrow Line",
    "hp": 15,
    "res": {
     "starter": {
-     "win": 16.7,
-     "rounds": 5.7,
-     "hpLost": 91.9
+     "win": 50,
+     "rounds": 7.1,
+     "hpLost": 66.7
     },
     "mid": {
-     "win": 86.7,
-     "rounds": 7.3,
-     "hpLost": 38.8
+     "win": 91.7,
+     "rounds": 7.8,
+     "hpLost": 47.9
     },
     "strong": {
      "win": 100,
@@ -331,2396 +466,337 @@
      "hpLost": 22.1
     }
    },
-   "index": 29.7
+   "index": 20.1
   },
   {
    "map": "mf",
-   "mapNo": "2",
+   "mapNo": "3",
    "mapName": "Thistlewood",
    "side": false,
-   "key": "2-4",
+   "key": "3-4",
    "nodeKey": "f-4",
    "kind": "skirmish",
    "name": "Sapper Hedge",
    "hp": 14,
    "res": {
     "starter": {
-     "win": 16.7,
-     "rounds": 6.1,
-     "hpLost": 90.6
+     "win": 58.3,
+     "rounds": 6.5,
+     "hpLost": 62.6
     },
     "mid": {
-     "win": 86.7,
-     "rounds": 6.7,
-     "hpLost": 38.2
+     "win": 83.3,
+     "rounds": 7.6,
+     "hpLost": 48.6
     },
     "strong": {
-     "win": 96.7,
-     "rounds": 5.8,
-     "hpLost": 22.9
+     "win": 95.8,
+     "rounds": 6.4,
+     "hpLost": 26.8
     }
    },
-   "index": 30.7
+   "index": 22.4
   },
   {
    "map": "mf",
-   "mapNo": "2",
+   "mapNo": "3",
    "mapName": "Thistlewood",
    "side": false,
-   "key": "2-5",
+   "key": "3-5",
    "nodeKey": "f-5",
    "kind": "boss",
    "name": "The Thistle Baron",
    "hp": 35,
    "res": {
     "starter": {
-     "win": 8.3,
-     "rounds": 9.8,
-     "hpLost": 96.9
+     "win": 12.5,
+     "rounds": 12.3,
+     "hpLost": 96.4
     },
     "mid": {
-     "win": 85,
-     "rounds": 9,
-     "hpLost": 44.1
+     "win": 62.5,
+     "rounds": 11.3,
+     "hpLost": 64
     },
     "strong": {
-     "win": 93.3,
-     "rounds": 8.1,
-     "hpLost": 30.3
-    }
-   },
-   "index": 35.9
-  },
-  {
-   "map": "mb",
-   "mapNo": "3",
-   "mapName": "Pebble Beach",
-   "side": false,
-   "key": "3-1",
-   "nodeKey": "b-1",
-   "kind": "skirmish",
-   "name": "Rock Pool Raiders",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 28.3,
-     "rounds": 10.1,
-     "hpLost": 86.2
-    },
-    "mid": {
-     "win": 100,
-     "rounds": 7.6,
-     "hpLost": 13.7
-    },
-    "strong": {
-     "win": 100,
-     "rounds": 7.4,
-     "hpLost": 14.6
-    }
-   },
-   "index": 21.6
-  },
-  {
-   "map": "mb",
-   "mapNo": "3",
-   "mapName": "Pebble Beach",
-   "side": false,
-   "key": "3-2",
-   "nodeKey": "b-2",
-   "kind": "skirmish",
-   "name": "Gull Gang",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 33.3,
-     "rounds": 10.1,
-     "hpLost": 90.3
-    },
-    "mid": {
-     "win": 96.7,
-     "rounds": 8.2,
-     "hpLost": 29.5
-    },
-    "strong": {
-     "win": 100,
-     "rounds": 7.2,
-     "hpLost": 22.6
-    }
-   },
-   "index": 23.2
-  },
-  {
-   "map": "mb",
-   "mapNo": "3",
-   "mapName": "Pebble Beach",
-   "side": false,
-   "key": "3-3",
-   "nodeKey": "b-3",
-   "kind": "skirmish",
-   "name": "Hermit Row",
-   "hp": 31,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 11,
-     "hpLost": 97.8
-    },
-    "mid": {
-     "win": 98.3,
+     "win": 95.8,
      "rounds": 9.5,
-     "hpLost": 32.4
-    },
-    "strong": {
-     "win": 100,
-     "rounds": 8.6,
-     "hpLost": 24.9
+     "hpLost": 37.4
     }
    },
-   "index": 30.4
+   "index": 41.7
   },
   {
-   "map": "mb",
-   "mapNo": "3",
-   "mapName": "Pebble Beach",
-   "side": false,
-   "key": "3-4",
-   "nodeKey": "b-4",
-   "kind": "skirmish",
-   "name": "Pelican Point",
-   "hp": 31,
-   "res": {
-    "starter": {
-     "win": 18.3,
-     "rounds": 9.5,
-     "hpLost": 93.6
-    },
-    "mid": {
-     "win": 100,
-     "rounds": 8.9,
-     "hpLost": 38.6
-    },
-    "strong": {
-     "win": 96.7,
-     "rounds": 8.1,
-     "hpLost": 32.5
-    }
-   },
-   "index": 29.4
-  },
-  {
-   "map": "mb",
-   "mapNo": "3",
-   "mapName": "Pebble Beach",
-   "side": false,
-   "key": "3-5",
-   "nodeKey": "b-5",
-   "kind": "boss",
-   "name": "The Old Shell",
-   "hp": 154,
-   "res": {
-    "starter": {
-     "win": 13.3,
-     "rounds": 18.1,
-     "hpLost": 95.5
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 15.1,
-     "hpLost": 55.5
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 14.3,
-     "hpLost": 43.2
-    }
-   },
-   "index": 41.2
-  },
-  {
-   "map": "mg",
-   "mapNo": "3-A",
-   "mapName": "Smugglers' Grotto",
-   "side": true,
-   "key": "3-A-1",
-   "nodeKey": "g-1",
-   "kind": "skirmish",
-   "name": "Drip Tunnel",
-   "hp": 76,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 15.3,
-     "hpLost": 97.8
-    },
-    "mid": {
-     "win": 98.3,
-     "rounds": 11.6,
-     "hpLost": 22.5
-    },
-    "strong": {
-     "win": 100,
-     "rounds": 10.7,
-     "hpLost": 17.4
-    }
-   },
-   "index": 28.1
-  },
-  {
-   "map": "mg",
-   "mapNo": "3-A",
-   "mapName": "Smugglers' Grotto",
-   "side": true,
-   "key": "3-A-2",
-   "nodeKey": "g-2",
-   "kind": "elite",
-   "name": "Smugglers' Stash",
-   "hp": 45,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 12,
-     "hpLost": 98.7
-    },
-    "mid": {
-     "win": 95,
-     "rounds": 9.2,
-     "hpLost": 35.1
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 9.1,
-     "hpLost": 47.6
-    }
-   },
-   "index": 39.8
-  },
-  {
-   "map": "mg",
-   "mapNo": "3-A",
-   "mapName": "Smugglers' Grotto",
-   "side": true,
-   "key": "3-A-3",
-   "nodeKey": "g-3",
-   "kind": "elite",
-   "name": "The Glowing Pool",
-   "hp": 107,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 14,
-     "hpLost": 99.6
-    },
-    "mid": {
-     "win": 81.7,
-     "rounds": 13.7,
-     "hpLost": 55.4
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 12.8,
-     "hpLost": 38.9
-    }
-   },
-   "index": 42.2
-  },
-  {
-   "map": "mg",
-   "mapNo": "3-A",
-   "mapName": "Smugglers' Grotto",
-   "side": true,
-   "key": "3-A-4",
-   "nodeKey": "g-4",
-   "kind": "elite",
-   "name": "The Grotto Keeper",
-   "hp": 27,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 10.2,
-     "hpLost": 97.3
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 9.5,
-     "hpLost": 54.3
-    },
-    "strong": {
-     "win": 93.3,
-     "rounds": 8.3,
-     "hpLost": 41.3
-    }
-   },
-   "index": 36.6
-  },
-  {
-   "map": "m2",
+   "map": "mu",
    "mapNo": "4",
-   "mapName": "Sunken Hollow",
+   "mapName": "The Morel Hollow",
    "side": false,
    "key": "4-1",
-   "nodeKey": "2-1",
+   "nodeKey": "u-1",
    "kind": "skirmish",
-   "name": "Reef Skirmishers",
-   "hp": 37,
+   "name": "Spore Drift",
+   "hp": 14,
    "res": {
     "starter": {
-     "win": 55,
-     "rounds": 11.8,
-     "hpLost": 75.6
+     "win": 58.3,
+     "rounds": 7.4,
+     "hpLost": 76.4
     },
     "mid": {
-     "win": 98.3,
-     "rounds": 8.3,
-     "hpLost": 20.4
+     "win": 62.5,
+     "rounds": 7.6,
+     "hpLost": 65.4
     },
     "strong": {
      "win": 100,
-     "rounds": 7.8,
-     "hpLost": 14.9
-    }
-   },
-   "index": 15.4
-  },
-  {
-   "map": "m2",
-   "mapNo": "4",
-   "mapName": "Sunken Hollow",
-   "side": false,
-   "key": "4-2",
-   "nodeKey": "2-2",
-   "kind": "skirmish",
-   "name": "Tidal Ring",
-   "hp": 41,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 9.7,
-     "hpLost": 93.9
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 8.8,
-     "hpLost": 37
-    },
-    "strong": {
-     "win": 90,
-     "rounds": 8.8,
-     "hpLost": 39
-    }
-   },
-   "index": 35.2
-  },
-  {
-   "map": "m2",
-   "mapNo": "4",
-   "mapName": "Sunken Hollow",
-   "side": false,
-   "key": "4-3",
-   "nodeKey": "2-3",
-   "kind": "elite",
-   "name": "Cetacean Pod",
-   "hp": 36,
-   "res": {
-    "starter": {
-     "win": 23.3,
-     "rounds": 9.2,
-     "hpLost": 91.7
-    },
-    "mid": {
-     "win": 95,
-     "rounds": 8.3,
-     "hpLost": 27
-    },
-    "strong": {
-     "win": 93.3,
-     "rounds": 7.8,
-     "hpLost": 28.3
+     "rounds": 6.5,
+     "hpLost": 37.4
     }
    },
    "index": 29.2
   },
   {
-   "map": "m2",
+   "map": "mu",
    "mapNo": "4",
-   "mapName": "Sunken Hollow",
+   "mapName": "The Morel Hollow",
    "side": false,
-   "key": "4-4",
-   "nodeKey": "2-4",
-   "kind": "elite",
-   "name": "The Kraken's Maw",
-   "hp": 66,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 12.4,
-     "hpLost": 96.7
-    },
-    "mid": {
-     "win": 88.3,
-     "rounds": 10.5,
-     "hpLost": 42.1
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 10.6,
-     "hpLost": 44.3
-    }
-   },
-   "index": 40.3
-  },
-  {
-   "map": "m2",
-   "mapNo": "4",
-   "mapName": "Sunken Hollow",
-   "side": false,
-   "key": "4-5",
-   "nodeKey": "2-5",
-   "kind": "boss",
-   "name": "The Drowned Colossus",
-   "hp": 106,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 14.5,
-     "hpLost": 98.2
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 12.8,
-     "hpLost": 60.3
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 12.7,
-     "hpLost": 56.6
-    }
-   },
-   "index": 51.7
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-1",
-   "nodeKey": "3-1",
+   "key": "4-2",
+   "nodeKey": "u-2",
    "kind": "skirmish",
-   "name": "Badger Warband",
-   "hp": 60,
+   "name": "Grub Tunnels",
+   "hp": 25,
    "res": {
     "starter": {
-     "win": 38.3,
-     "rounds": 12.1,
-     "hpLost": 81.6
-    },
-    "mid": {
-     "win": 100,
-     "rounds": 9.5,
-     "hpLost": 18.2
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 9.2,
-     "hpLost": 10.5
-    }
-   },
-   "index": 18.5
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-2",
-   "nodeKey": "3-2",
-   "kind": "skirmish",
-   "name": "Quill Line",
-   "hp": 72,
-   "res": {
-    "starter": {
-     "win": 11.7,
-     "rounds": 13.7,
-     "hpLost": 95
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 11.3,
-     "hpLost": 32.9
-    },
-    "strong": {
-     "win": 95,
-     "rounds": 11.4,
-     "hpLost": 36.3
-    }
-   },
-   "index": 34.9
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-3",
-   "nodeKey": "3-3",
-   "kind": "elite",
-   "name": "Porcupine Bastion",
-   "hp": 79,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 14.2,
-     "hpLost": 97.9
-    },
-    "mid": {
-     "win": 88.3,
-     "rounds": 12,
-     "hpLost": 41.6
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 12,
-     "hpLost": 43.7
-    }
-   },
-   "index": 39.7
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-4",
-   "nodeKey": "3-4",
-   "kind": "elite",
-   "name": "Sky Marks",
-   "hp": 59,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 13.2,
-     "hpLost": 95.7
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 10.7,
-     "hpLost": 39.1
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 10.4,
-     "hpLost": 43.4
-    }
-   },
-   "index": 37.9
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-5",
-   "nodeKey": "3-5",
-   "kind": "elite",
-   "name": "Sky Scraper Sentinel",
-   "hp": 59,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 13.2,
-     "hpLost": 95.7
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 10.7,
-     "hpLost": 39.1
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 10.4,
-     "hpLost": 43.4
-    }
-   },
-   "index": 37.9
-  },
-  {
-   "map": "m3",
-   "mapNo": "5",
-   "mapName": "The Ashen Peak",
-   "side": false,
-   "key": "5-6",
-   "nodeKey": "3-6",
-   "kind": "boss",
-   "name": "The Frost Yeti King",
-   "hp": 91,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 13.8,
-     "hpLost": 95.7
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 11.7,
-     "hpLost": 51.6
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 11.3,
-     "hpLost": 52.6
-    }
-   },
-   "index": 50.7
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-1",
-   "nodeKey": "4-1",
-   "kind": "skirmish",
-   "name": "Roost Flurry",
-   "hp": 17,
-   "res": {
-    "starter": {
-     "win": 43.3,
-     "rounds": 6.8,
-     "hpLost": 75.5
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 6.5,
-     "hpLost": 37.8
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 6.1,
-     "hpLost": 29.6
-    }
-   },
-   "index": 24.5
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-2",
-   "nodeKey": "4-2",
-   "kind": "skirmish",
-   "name": "Glowworm Grotto",
-   "hp": 24,
-   "res": {
-    "starter": {
-     "win": 31.7,
-     "rounds": 8.9,
-     "hpLost": 85.4
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 7.3,
-     "hpLost": 37.3
-    },
-    "strong": {
-     "win": 96.7,
-     "rounds": 6.9,
-     "hpLost": 34.3
-    }
-   },
-   "index": 29
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-3",
-   "nodeKey": "4-3",
-   "kind": "skirmish",
-   "name": "Cinder Vents",
-   "hp": 15,
-   "res": {
-    "starter": {
-     "win": 40,
-     "rounds": 7.2,
-     "hpLost": 83.8
-    },
-    "mid": {
-     "win": 96.7,
-     "rounds": 6.1,
-     "hpLost": 32.7
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 5.5,
-     "hpLost": 38.1
-    }
-   },
-   "index": 29.1
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-4",
-   "nodeKey": "4-4",
-   "kind": "skirmish",
-   "name": "Echo Chamber",
-   "hp": 42,
-   "res": {
-    "starter": {
-     "win": 31.7,
-     "rounds": 10.6,
-     "hpLost": 82.3
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 8.7,
-     "hpLost": 35.6
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 8.2,
-     "hpLost": 38.7
-    }
-   },
-   "index": 31.8
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-5",
-   "nodeKey": "4-5",
-   "kind": "skirmish",
-   "name": "Sulfur Vent Path",
-   "hp": 23,
-   "res": {
-    "starter": {
-     "win": 43.3,
-     "rounds": 8.7,
-     "hpLost": 76.9
-    },
-    "mid": {
-     "win": 93.3,
-     "rounds": 7.2,
-     "hpLost": 31.5
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 7,
-     "hpLost": 34.4
-    }
-   },
-   "index": 27.4
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-6",
-   "nodeKey": "4-6",
-   "kind": "skirmish",
-   "name": "Glowworm Deep",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 36.7,
-     "rounds": 10,
-     "hpLost": 84.8
-    },
-    "mid": {
-     "win": 100,
-     "rounds": 8.7,
-     "hpLost": 31.3
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 8.3,
-     "hpLost": 43.9
-    }
-   },
-   "index": 31
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-7",
-   "nodeKey": "4-7",
-   "kind": "elite",
-   "name": "The Roost Above",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 36.7,
-     "rounds": 9.1,
-     "hpLost": 83.4
-    },
-    "mid": {
-     "win": 68.3,
-     "rounds": 8.4,
-     "hpLost": 63.7
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 8,
-     "hpLost": 61.5
-    }
-   },
-   "index": 45.8
-  },
-  {
-   "map": "m4",
-   "mapNo": "6",
-   "mapName": "Caves & Alcoves",
-   "side": false,
-   "key": "6-8",
-   "nodeKey": "4-8",
-   "kind": "boss",
-   "name": "The Stalactite Warden",
-   "hp": 80,
-   "res": {
-    "starter": {
-     "win": 23.3,
-     "rounds": 13.6,
-     "hpLost": 89.8
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 11.3,
-     "hpLost": 56.1
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 10.9,
-     "hpLost": 49.1
-    }
-   },
-   "index": 42.7
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-1",
-   "nodeKey": "5-1",
-   "kind": "skirmish",
-   "name": "Zebra Stampede",
-   "hp": 40,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 14,
-     "hpLost": 97.9
-    },
-    "mid": {
-     "win": 98.3,
-     "rounds": 9.9,
-     "hpLost": 34.6
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 9.5,
-     "hpLost": 38.2
-    }
-   },
-   "index": 32.9
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-2",
-   "nodeKey": "5-2",
-   "kind": "skirmish",
-   "name": "Hyena Chorus",
-   "hp": 29,
-   "res": {
-    "starter": {
-     "win": 28.3,
-     "rounds": 9.2,
-     "hpLost": 85.9
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 7.8,
-     "hpLost": 43.5
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 7.3,
-     "hpLost": 19.1
-    }
-   },
-   "index": 28.1
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-3",
-   "nodeKey": "5-3",
-   "kind": "skirmish",
-   "name": "Howler Canopy",
-   "hp": 45,
-   "res": {
-    "starter": {
-     "win": 13.3,
-     "rounds": 10.3,
-     "hpLost": 96
-    },
-    "mid": {
-     "win": 78.3,
+     "win": 41.7,
      "rounds": 8.8,
-     "hpLost": 44.6
+     "hpLost": 82.8
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 9.3,
+     "hpLost": 52.2
     },
     "strong": {
-     "win": 91.7,
-     "rounds": 8.1,
-     "hpLost": 32.7
+     "win": 95.8,
+     "rounds": 7.8,
+     "hpLost": 30.8
     }
    },
-   "index": 37.4
+   "index": 24.4
   },
   {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
+   "map": "mu",
+   "mapNo": "4",
+   "mapName": "The Morel Hollow",
    "side": false,
-   "key": "7-4",
-   "nodeKey": "5-4",
+   "key": "4-3",
+   "nodeKey": "u-3",
    "kind": "skirmish",
-   "name": "Toucan Watch",
+   "name": "Web Hollow",
    "hp": 14,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 6.8,
-     "hpLost": 85.9
+     "win": 45.8,
+     "rounds": 6.4,
+     "hpLost": 80.7
     },
     "mid": {
-     "win": 70,
-     "rounds": 6.3,
-     "hpLost": 50.6
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 5.7,
-     "hpLost": 25.4
-    }
-   },
-   "index": 34.3
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-5",
-   "nodeKey": "5-5",
-   "kind": "elite",
-   "name": "Giraffe Vanguard",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 26.7,
-     "rounds": 8.4,
-     "hpLost": 86.6
-    },
-    "mid": {
-     "win": 78.3,
-     "rounds": 8.7,
-     "hpLost": 43.8
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 7.1,
-     "hpLost": 44
-    }
-   },
-   "index": 41.4
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-6",
-   "nodeKey": "5-6",
-   "kind": "elite",
-   "name": "Jaguar Run",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 8,
-     "hpLost": 98.7
-    },
-    "mid": {
-     "win": 58.3,
+     "win": 45.8,
      "rounds": 7.5,
-     "hpLost": 61.3
+     "hpLost": 86
     },
     "strong": {
-     "win": 86.7,
-     "rounds": 7.1,
-     "hpLost": 36.6
-    }
-   },
-   "index": 47.5
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-7",
-   "nodeKey": "5-7",
-   "kind": "elite",
-   "name": "The Cheetah Matriarch",
-   "hp": 33,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 7.6,
-     "hpLost": 96.1
-    },
-    "mid": {
-     "win": 58.3,
-     "rounds": 8,
-     "hpLost": 60.9
-    },
-    "strong": {
-     "win": 80,
-     "rounds": 7.5,
-     "hpLost": 46.1
-    }
-   },
-   "index": 49.9
-  },
-  {
-   "map": "m5",
-   "mapNo": "7",
-   "mapName": "Savanna Reaches",
-   "side": false,
-   "key": "7-8",
-   "nodeKey": "5-8",
-   "kind": "boss",
-   "name": "The Savanna Warlord",
-   "hp": 36,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 10,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 55,
-     "rounds": 10.2,
-     "hpLost": 79
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 9.2,
-     "hpLost": 64.4
-    }
-   },
-   "index": 58.6
-  },
-  {
-   "map": "my",
-   "mapNo": "7-A",
-   "mapName": "The Canopy",
-   "side": true,
-   "key": "7-A-1",
-   "nodeKey": "y-1",
-   "kind": "skirmish",
-   "name": "Dart Frogs",
-   "hp": 27,
-   "res": {
-    "starter": {
-     "win": 20,
-     "rounds": 9.9,
-     "hpLost": 92.8
-    },
-    "mid": {
-     "win": 86.7,
-     "rounds": 8.2,
-     "hpLost": 44.6
-    },
-    "strong": {
-     "win": 96.7,
-     "rounds": 7.4,
-     "hpLost": 28.2
-    }
-   },
-   "index": 31.2
-  },
-  {
-   "map": "my",
-   "mapNo": "7-A",
-   "mapName": "The Canopy",
-   "side": true,
-   "key": "7-A-2",
-   "nodeKey": "y-2",
-   "kind": "skirmish",
-   "name": "Strangler Arch",
-   "hp": 46,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 12.3,
-     "hpLost": 97.5
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 9.9,
-     "hpLost": 37.4
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 9.6,
-     "hpLost": 41.9
-    }
-   },
-   "index": 36.3
-  },
-  {
-   "map": "my",
-   "mapNo": "7-A",
-   "mapName": "The Canopy",
-   "side": true,
-   "key": "7-A-3",
-   "nodeKey": "y-3",
-   "kind": "skirmish",
-   "name": "Sloth Boughs",
-   "hp": 47,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 11.8,
-     "hpLost": 96.4
-    },
-    "mid": {
-     "win": 63.3,
-     "rounds": 9.4,
-     "hpLost": 55.8
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 8.7,
-     "hpLost": 35.2
+     "win": 87.5,
+     "rounds": 6.6,
+     "hpLost": 56
     }
    },
    "index": 44.2
   },
   {
-   "map": "my",
-   "mapNo": "7-A",
-   "mapName": "The Canopy",
-   "side": true,
-   "key": "7-A-4",
-   "nodeKey": "y-4",
-   "kind": "elite",
-   "name": "Drum Circle",
-   "hp": 81,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 12.5,
-     "hpLost": 99.2
-    },
-    "mid": {
-     "win": 65,
-     "rounds": 11.7,
-     "hpLost": 54.9
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 11.5,
-     "hpLost": 48.6
-    }
-   },
-   "index": 49.2
-  },
-  {
-   "map": "my",
-   "mapNo": "7-A",
-   "mapName": "The Canopy",
-   "side": true,
-   "key": "7-A-5",
-   "nodeKey": "y-5",
-   "kind": "boss",
-   "name": "The Jaguar's Path",
-   "hp": 57,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 10,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 63.3,
-     "rounds": 10,
-     "hpLost": 67.6
-    },
-    "strong": {
-     "win": 66.7,
-     "rounds": 10.3,
-     "hpLost": 56.2
-    }
-   },
-   "index": 56.1
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
+   "map": "mu",
+   "mapNo": "4",
+   "mapName": "The Morel Hollow",
    "side": false,
-   "key": "8-1",
-   "nodeKey": "6-1",
+   "key": "4-4",
+   "nodeKey": "u-4",
    "kind": "skirmish",
-   "name": "Ice Fang Patrol",
-   "hp": 106,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 16.4,
-     "hpLost": 94.6
-    },
-    "mid": {
-     "win": 88.3,
-     "rounds": 12.6,
-     "hpLost": 34.2
-    },
-    "strong": {
-     "win": 98.3,
-     "rounds": 12.8,
-     "hpLost": 21.5
-    }
-   },
-   "index": 29.6
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-2",
-   "nodeKey": "6-2",
-   "kind": "skirmish",
-   "name": "Frostbitten Pack",
-   "hp": 14,
-   "res": {
-    "starter": {
-     "win": 26.7,
-     "rounds": 6.9,
-     "hpLost": 85.7
-    },
-    "mid": {
-     "win": 93.3,
-     "rounds": 7,
-     "hpLost": 36.7
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 7,
-     "hpLost": 47.2
-    }
-   },
-   "index": 35.1
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-3",
-   "nodeKey": "6-3",
-   "kind": "skirmish",
-   "name": "Snowshoe Line",
-   "hp": 18,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 8,
-     "hpLost": 98.1
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 8.3,
-     "hpLost": 40.3
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 8.3,
-     "hpLost": 53.1
-    }
-   },
-   "index": 42.5
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-4",
-   "nodeKey": "6-4",
-   "kind": "skirmish",
-   "name": "Lynx Ambush",
-   "hp": 29,
-   "res": {
-    "starter": {
-     "win": 31.7,
-     "rounds": 11,
-     "hpLost": 86.8
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 9.7,
-     "hpLost": 38.1
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 9.8,
-     "hpLost": 44.6
-    }
-   },
-   "index": 34.5
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-5",
-   "nodeKey": "6-5",
-   "kind": "elite",
-   "name": "Musk Ox Bulwark",
-   "hp": 35,
-   "res": {
-    "starter": {
-     "win": 13.3,
-     "rounds": 13.1,
-     "hpLost": 96.9
-    },
-    "mid": {
-     "win": 91.7,
-     "rounds": 10.9,
-     "hpLost": 47.6
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 10.6,
-     "hpLost": 56.1
-    }
-   },
-   "index": 41.1
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-6",
-   "nodeKey": "6-6",
-   "kind": "elite",
-   "name": "Glacier Herd",
-   "hp": 69,
-   "res": {
-    "starter": {
-     "win": 18.3,
-     "rounds": 16.1,
-     "hpLost": 93.7
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 12.6,
-     "hpLost": 66.8
-    },
-    "strong": {
-     "win": 68.3,
-     "rounds": 12.4,
-     "hpLost": 65.9
-    }
-   },
-   "index": 51.9
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-7",
-   "nodeKey": "6-7",
-   "kind": "elite",
-   "name": "Alpha Howler's Den",
-   "hp": 59,
-   "res": {
-    "starter": {
-     "win": 11.7,
-     "rounds": 14.1,
-     "hpLost": 95.9
-    },
-    "mid": {
-     "win": 86.7,
-     "rounds": 12.1,
-     "hpLost": 48.9
-    },
-    "strong": {
-     "win": 80,
-     "rounds": 12.2,
-     "hpLost": 56.1
-    }
-   },
-   "index": 44.4
-  },
-  {
-   "map": "m6",
-   "mapNo": "8",
-   "mapName": "Wolfsbane Tundra",
-   "side": false,
-   "key": "8-8",
-   "nodeKey": "6-8",
-   "kind": "boss",
-   "name": "The Glacial Ape-King",
-   "hp": 59,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 15.3,
-     "hpLost": 98.1
-    },
-    "mid": {
-     "win": 70,
-     "rounds": 11.6,
-     "hpLost": 49.8
-    },
-    "strong": {
-     "win": 68.3,
-     "rounds": 11.3,
-     "hpLost": 52.3
-    }
-   },
-   "index": 51.8
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-1",
-   "nodeKey": "7-1",
-   "kind": "skirmish",
-   "name": "Clownfish Shoal",
-   "hp": 91,
-   "res": {
-    "starter": {
-     "win": 25,
-     "rounds": 16.1,
-     "hpLost": 88.1
-    },
-    "mid": {
-     "win": 86.7,
-     "rounds": 12.3,
-     "hpLost": 37.2
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 11.7,
-     "hpLost": 36.9
-    }
-   },
-   "index": 34.2
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-2",
-   "nodeKey": "7-2",
-   "kind": "skirmish",
-   "name": "Moray Ambush",
-   "hp": 79,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 12.8,
-     "hpLost": 97.5
-    },
-    "mid": {
-     "win": 83.3,
-     "rounds": 9.4,
-     "hpLost": 59.9
-    },
-    "strong": {
-     "win": 96.7,
-     "rounds": 9.1,
-     "hpLost": 26.8
-    }
-   },
-   "index": 35
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-3",
-   "nodeKey": "7-3",
-   "kind": "skirmish",
-   "name": "Tide Pool Line",
-   "hp": 45,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 11.2,
-     "hpLost": 95.4
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 9.3,
-     "hpLost": 49.4
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 8.7,
-     "hpLost": 47.9
-    }
-   },
-   "index": 48.7
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-4",
-   "nodeKey": "7-4",
-   "kind": "skirmish",
-   "name": "Riptide Channel",
-   "hp": 50,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 11.6,
-     "hpLost": 93.8
-    },
-    "mid": {
-     "win": 78.3,
-     "rounds": 9.3,
-     "hpLost": 45.6
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 9.2,
-     "hpLost": 36.6
-    }
-   },
-   "index": 38.8
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-5",
-   "nodeKey": "7-5",
-   "kind": "skirmish",
-   "name": "Current Split",
-   "hp": 38,
-   "res": {
-    "starter": {
-     "win": 11.7,
-     "rounds": 11.4,
-     "hpLost": 96.2
-    },
-    "mid": {
-     "win": 66.7,
-     "rounds": 9.5,
-     "hpLost": 62.4
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 9.1,
-     "hpLost": 55.6
-    }
-   },
-   "index": 49.7
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-6",
-   "nodeKey": "7-6",
-   "kind": "elite",
-   "name": "Reef Shark Pack",
-   "hp": 40,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 9.5,
-     "hpLost": 99.6
-    },
-    "mid": {
-     "win": 51.7,
-     "rounds": 8.5,
-     "hpLost": 76.8
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 7.8,
-     "hpLost": 42.6
-    }
-   },
-   "index": 50.7
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-7",
-   "nodeKey": "7-7",
-   "kind": "elite",
-   "name": "Eel Nest",
-   "hp": 45,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 9.7,
-     "hpLost": 98.1
-    },
-    "mid": {
-     "win": 56.7,
-     "rounds": 8.9,
-     "hpLost": 72.9
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 8.5,
-     "hpLost": 48.9
-    }
-   },
-   "index": 50.6
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-8",
-   "nodeKey": "7-8",
-   "kind": "elite",
-   "name": "Sea Turtle Elder's Court",
-   "hp": 29,
-   "res": {
-    "starter": {
-     "win": 30,
-     "rounds": 8,
-     "hpLost": 80.2
-    },
-    "mid": {
-     "win": 58.3,
-     "rounds": 7.6,
-     "hpLost": 53.6
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 7.4,
-     "hpLost": 45.2
-    }
-   },
-   "index": 48
-  },
-  {
-   "map": "m7",
-   "mapNo": "9",
-   "mapName": "Coral Current",
-   "side": false,
-   "key": "9-9",
-   "nodeKey": "7-9",
-   "kind": "boss",
-   "name": "The Orca Vanguard King",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 11,
-     "hpLost": 98.6
-    },
-    "mid": {
-     "win": 41.7,
-     "rounds": 8.9,
-     "hpLost": 78.2
-    },
-    "strong": {
-     "win": 55,
-     "rounds": 8.6,
-     "hpLost": 71.5
-    }
-   },
-   "index": 67.9
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-1",
-   "nodeKey": "8-1",
-   "kind": "skirmish",
-   "name": "Leech Bog",
+   "name": "Moonlit Gills",
    "hp": 95,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 15.5,
-     "hpLost": 97.2
-    },
-    "mid": {
-     "win": 93.3,
-     "rounds": 11,
-     "hpLost": 30.8
-    },
-    "strong": {
-     "win": 93.3,
-     "rounds": 10.9,
-     "hpLost": 32.4
-    }
-   },
-   "index": 34
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-2",
-   "nodeKey": "8-2",
-   "kind": "skirmish",
-   "name": "Mire Ambush",
-   "hp": 234,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 19.7,
-     "hpLost": 93.8
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 15.9,
-     "hpLost": 36.7
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 15,
-     "hpLost": 27.6
-    }
-   },
-   "index": 36.5
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-3",
-   "nodeKey": "8-3",
-   "kind": "skirmish",
-   "name": "Toad Chorus",
-   "hp": 235,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 17.8,
-     "hpLost": 95.9
-    },
-    "mid": {
-     "win": 66.7,
-     "rounds": 15.6,
-     "hpLost": 51.6
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 15,
-     "hpLost": 39.6
-    }
-   },
-   "index": 46.1
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-4",
-   "nodeKey": "8-4",
-   "kind": "skirmish",
-   "name": "Root Snare",
-   "hp": 107,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 17,
-     "hpLost": 99.2
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 11.5,
-     "hpLost": 57
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 11,
-     "hpLost": 40.2
-    }
-   },
-   "index": 47.1
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-5",
-   "nodeKey": "8-5",
-   "kind": "elite",
-   "name": "Venomlord's Coil",
-   "hp": 90,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 13.7,
-     "hpLost": 98.3
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 11.2,
-     "hpLost": 58.1
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 11.2,
-     "hpLost": 55.4
-    }
-   },
-   "index": 48.9
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-6",
-   "nodeKey": "8-6",
-   "kind": "elite",
-   "name": "Crocodile Run",
-   "hp": 46,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 10,
-     "hpLost": 92.3
-    },
-    "mid": {
-     "win": 78.3,
-     "rounds": 9.3,
-     "hpLost": 46
-    },
-    "strong": {
-     "win": 66.7,
-     "rounds": 8.8,
-     "hpLost": 52.8
-    }
-   },
-   "index": 48.2
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-7",
-   "nodeKey": "8-7",
-   "kind": "elite",
-   "name": "Adder Gauntlet",
-   "hp": 85,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 12.5,
-     "hpLost": 96.9
-    },
-    "mid": {
-     "win": 68.3,
-     "rounds": 11.1,
-     "hpLost": 63.4
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 10.7,
-     "hpLost": 52.3
-    }
-   },
-   "index": 51
-  },
-  {
-   "map": "m8",
-   "mapNo": "10",
-   "mapName": "Sable Swampmire",
-   "side": false,
-   "key": "10-8",
-   "nodeKey": "8-8",
-   "kind": "boss",
-   "name": "The Alligator King",
-   "hp": 34,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 9.5,
-     "hpLost": 97.2
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 9.6,
-     "hpLost": 61.6
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 9,
-     "hpLost": 68.8
-    }
-   },
-   "index": 53.9
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-1",
-   "nodeKey": "9-1",
-   "kind": "skirmish",
-   "name": "Cinder Swarm",
-   "hp": 32,
-   "res": {
-    "starter": {
-     "win": 33.3,
-     "rounds": 8.6,
-     "hpLost": 82.4
-    },
-    "mid": {
-     "win": 83.3,
-     "rounds": 6.8,
-     "hpLost": 30.5
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 7.1,
-     "hpLost": 30.8
-    }
-   },
-   "index": 31.9
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-2",
-   "nodeKey": "9-2",
-   "kind": "skirmish",
-   "name": "Salamander Vents",
-   "hp": 39,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 9,
-     "hpLost": 98.2
-    },
-    "mid": {
-     "win": 66.7,
-     "rounds": 8.6,
-     "hpLost": 61.7
-    },
-    "strong": {
-     "win": 93.3,
-     "rounds": 8,
-     "hpLost": 37.8
-    }
-   },
-   "index": 43.6
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-3",
-   "nodeKey": "9-9",
-   "kind": "skirmish",
-   "name": "Slag Runners",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 25,
-     "rounds": 8.5,
-     "hpLost": 86.8
-    },
-    "mid": {
-     "win": 93.3,
-     "rounds": 7.7,
-     "hpLost": 40.1
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 7.2,
-     "hpLost": 37.9
-    }
-   },
-   "index": 32.8
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-4",
-   "nodeKey": "9-3",
-   "kind": "skirmish",
-   "name": "Vent Skitter",
-   "hp": 36,
-   "res": {
-    "starter": {
-     "win": 25,
-     "rounds": 9.4,
-     "hpLost": 87.7
-    },
-    "mid": {
-     "win": 78.3,
-     "rounds": 7.6,
-     "hpLost": 49.2
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 7.6,
-     "hpLost": 34.6
-    }
-   },
-   "index": 35.8
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-5",
-   "nodeKey": "9-4",
-   "kind": "skirmish",
-   "name": "Ashfall Line",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 11.7,
-     "rounds": 9.4,
+     "win": 12.5,
+     "rounds": 13,
      "hpLost": 96.2
     },
     "mid": {
-     "win": 86.7,
-     "rounds": 7.6,
-     "hpLost": 49.4
+     "win": 75,
+     "rounds": 14.8,
+     "hpLost": 56.8
     },
     "strong": {
-     "win": 85,
-     "rounds": 7,
-     "hpLost": 34.7
+     "win": 83.3,
+     "rounds": 12.5,
+     "hpLost": 39.3
     }
    },
-   "index": 37.8
+   "index": 42.1
   },
   {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
+   "map": "mu",
+   "mapNo": "4",
+   "mapName": "The Morel Hollow",
    "side": false,
-   "key": "11-6",
-   "nodeKey": "9-10",
-   "kind": "skirmish",
-   "name": "Furnace Mouth",
-   "hp": 74,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 11.8,
-     "hpLost": 97.2
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 10,
-     "hpLost": 48.6
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 10,
-     "hpLost": 41.8
-    }
-   },
-   "index": 44.2
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-7",
-   "nodeKey": "9-5",
+   "key": "4-5",
+   "nodeKey": "u-5",
    "kind": "elite",
-   "name": "Basalt Vanguard",
-   "hp": 111,
+   "name": "The Oath Ring",
+   "hp": 55,
    "res": {
     "starter": {
-     "win": 6.7,
-     "rounds": 15,
-     "hpLost": 97.2
+     "win": 4.2,
+     "rounds": 14,
+     "hpLost": 98.9
     },
     "mid": {
-     "win": 73.3,
-     "rounds": 12.6,
-     "hpLost": 58.8
-    },
-    "strong": {
-     "win": 68.3,
-     "rounds": 11.9,
-     "hpLost": 52.7
-    }
-   },
-   "index": 51.1
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-8",
-   "nodeKey": "9-6",
-   "kind": "elite",
-   "name": "Titan's Shadow",
-   "hp": 35,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 9.3,
-     "hpLost": 95.3
-    },
-    "mid": {
-     "win": 61.7,
-     "rounds": 8.1,
-     "hpLost": 66.6
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 8.1,
-     "hpLost": 49.6
-    }
-   },
-   "index": 51.2
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-9",
-   "nodeKey": "9-7",
-   "kind": "elite",
-   "name": "The Pyroclast Wyrm",
-   "hp": 60,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 11,
-     "hpLost": 99.2
-    },
-    "mid": {
-     "win": 53.3,
-     "rounds": 10,
-     "hpLost": 68.1
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 10,
-     "hpLost": 53.1
-    }
-   },
-   "index": 52.5
-  },
-  {
-   "map": "m9",
-   "mapNo": "11",
-   "mapName": "Basalt Foundry",
-   "side": false,
-   "key": "11-10",
-   "nodeKey": "9-8",
-   "kind": "boss",
-   "name": "The Phoenix Ember King",
-   "hp": 123,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 14.7,
-     "hpLost": 97.9
-    },
-    "mid": {
-     "win": 35,
+     "win": 33.3,
      "rounds": 13.6,
-     "hpLost": 80.7
+     "hpLost": 81
     },
     "strong": {
-     "win": 66.7,
-     "rounds": 13.1,
-     "hpLost": 64.1
+     "win": 70.8,
+     "rounds": 10.4,
+     "hpLost": 47.9
     }
    },
-   "index": 64.4
+   "index": 59.9
   },
   {
-   "map": "m10",
-   "mapNo": "12",
-   "mapName": "Eyrie Heights",
+   "map": "mu",
+   "mapNo": "4",
+   "mapName": "The Morel Hollow",
    "side": false,
-   "key": "12-1",
-   "nodeKey": "10-1",
+   "key": "4-6",
+   "nodeKey": "u-6",
+   "kind": "boss",
+   "name": "The Morel Monarch",
+   "hp": 43,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 10,
+     "hpLost": 95.6
+    },
+    "mid": {
+     "win": 33.3,
+     "rounds": 12.5,
+     "hpLost": 86.7
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 9.6,
+     "hpLost": 61.8
+    }
+   },
+   "index": 60.3
+  },
+  {
+   "map": "mz",
+   "mapNo": "4-A",
+   "mapName": "The Mycelium Deep",
+   "side": true,
+   "key": "4-A-1",
+   "nodeKey": "z-1",
    "kind": "skirmish",
-   "name": "Goat Trail Runners",
-   "hp": 21,
+   "name": "Root Cellar",
+   "hp": 171,
+   "res": {
+    "starter": {
+     "win": 62.5,
+     "rounds": 17.1,
+     "hpLost": 56.4
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 16,
+     "hpLost": 41.5
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 14.7,
+     "hpLost": 27.5
+    }
+   },
+   "index": 19.4
+  },
+  {
+   "map": "mz",
+   "mapNo": "4-A",
+   "mapName": "The Mycelium Deep",
+   "side": true,
+   "key": "4-A-2",
+   "nodeKey": "z-2",
+   "kind": "skirmish",
+   "name": "Glowcap Grotto",
+   "hp": 220,
    "res": {
     "starter": {
      "win": 16.7,
-     "rounds": 8.9,
-     "hpLost": 93.7
+     "rounds": 19.3,
+     "hpLost": 92.9
     },
     "mid": {
-     "win": 88.3,
-     "rounds": 7.7,
-     "hpLost": 46.3
+     "win": 54.2,
+     "rounds": 18.7,
+     "hpLost": 71.7
     },
     "strong": {
-     "win": 83.3,
-     "rounds": 6.9,
-     "hpLost": 44.8
+     "win": 70.8,
+     "rounds": 16.7,
+     "hpLost": 46.7
     }
    },
-   "index": 39.1
+   "index": 51.3
   },
   {
-   "map": "m10",
-   "mapNo": "12",
-   "mapName": "Eyrie Heights",
-   "side": false,
-   "key": "12-2",
-   "nodeKey": "10-2",
-   "kind": "skirmish",
-   "name": "Avalanche Ridge",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 11.7,
-     "rounds": 8.9,
-     "hpLost": 93.7
-    },
-    "mid": {
-     "win": 93.3,
-     "rounds": 7.3,
-     "hpLost": 28.6
-    },
-    "strong": {
-     "win": 96.7,
-     "rounds": 7.2,
-     "hpLost": 24.2
-    }
-   },
-   "index": 30.6
-  },
-  {
-   "map": "m10",
-   "mapNo": "12",
-   "mapName": "Eyrie Heights",
-   "side": false,
-   "key": "12-3",
-   "nodeKey": "10-3",
-   "kind": "skirmish",
-   "name": "Cliffside Herd",
-   "hp": 27,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 8.8,
-     "hpLost": 95.8
-    },
-    "mid": {
-     "win": 96.7,
-     "rounds": 7.4,
-     "hpLost": 30.5
-    },
-    "strong": {
-     "win": 86.7,
-     "rounds": 7.2,
-     "hpLost": 31.1
-    }
-   },
-   "index": 34.9
-  },
-  {
-   "map": "m10",
-   "mapNo": "12",
-   "mapName": "Eyrie Heights",
-   "side": false,
-   "key": "12-4",
-   "nodeKey": "10-4",
-   "kind": "skirmish",
-   "name": "Ridge Fork",
-   "hp": 40,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 12.6,
-     "hpLost": 94.7
-    },
-    "mid": {
-     "win": 83.3,
-     "rounds": 9.3,
-     "hpLost": 50.3
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 8.7,
-     "hpLost": 50.9
-    }
-   },
-   "index": 43.6
-  },
-  {
-   "map": "m10",
-   "mapNo": "12",
-   "mapName": "Eyrie Heights",
-   "side": false,
-   "key": "12-5",
-   "nodeKey": "10-5",
+   "map": "mz",
+   "mapNo": "4-A",
+   "mapName": "The Mycelium Deep",
+   "side": true,
+   "key": "4-A-3",
+   "nodeKey": "z-3",
    "kind": "elite",
-   "name": "West Ledge",
-   "hp": 44,
+   "name": "Silk Gallery",
+   "hp": 52,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 15,
+     "hpLost": 97.8
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 12.8,
+     "hpLost": 64.4
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 10.3,
+     "hpLost": 33.5
+    }
+   },
+   "index": 44.8
+  },
+  {
+   "map": "mz",
+   "mapNo": "4-A",
+   "mapName": "The Mycelium Deep",
+   "side": true,
+   "key": "4-A-4",
+   "nodeKey": "z-4",
+   "kind": "elite",
+   "name": "The Rot Heart",
+   "hp": 216,
    "res": {
     "starter": {
      "win": 0,
@@ -2728,82 +804,1938 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 68.3,
+     "win": 33.3,
+     "rounds": 19.8,
+     "hpLost": 83.6
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 17.1,
+     "hpLost": 51.1
+    }
+   },
+   "index": 60.7
+  },
+  {
+   "map": "mz",
+   "mapNo": "4-A",
+   "mapName": "The Mycelium Deep",
+   "side": true,
+   "key": "4-A-5",
+   "nodeKey": "z-5",
+   "kind": "boss",
+   "name": "The Mycelium Mind",
+   "hp": 217,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 19.2,
+     "hpLost": 54.6
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 17.5,
+     "hpLost": 42.4
+    }
+   },
+   "index": 48.1
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-1",
+   "nodeKey": "p-1",
+   "kind": "skirmish",
+   "name": "Lily Hop",
+   "hp": 19,
+   "res": {
+    "starter": {
+     "win": 29.2,
+     "rounds": 8.1,
+     "hpLost": 89.2
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 8.8,
+     "hpLost": 54.2
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 7.4,
+     "hpLost": 39.4
+    }
+   },
+   "index": 30.7
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-2",
+   "nodeKey": "p-2",
+   "kind": "skirmish",
+   "name": "Duck Row",
+   "hp": 28,
+   "res": {
+    "starter": {
+     "win": 100,
+     "rounds": 10.1,
+     "hpLost": 44.4
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 8.9,
+     "hpLost": 36.5
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 7.9,
+     "hpLost": 19.7
+    }
+   },
+   "index": 7
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-3",
+   "nodeKey": "p-3",
+   "kind": "skirmish",
+   "name": "Beaver Dam",
+   "hp": 18,
+   "res": {
+    "starter": {
+     "win": 29.2,
+     "rounds": 7.9,
+     "hpLost": 88.2
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 9.4,
+     "hpLost": 55.8
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 7.5,
+     "hpLost": 35
+    }
+   },
+   "index": 29.6
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-4",
+   "nodeKey": "p-4",
+   "kind": "skirmish",
+   "name": "Pike Shallows",
+   "hp": 15,
+   "res": {
+    "starter": {
+     "win": 58.3,
+     "rounds": 7.6,
+     "hpLost": 78.5
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 8.1,
+     "hpLost": 42.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 7,
+     "hpLost": 29.6
+    }
+   },
+   "index": 19.9
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-5",
+   "nodeKey": "p-5",
+   "kind": "elite",
+   "name": "Croaker Chorus",
+   "hp": 158,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 19,
+     "hpLost": 97.9
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 17.2,
+     "hpLost": 75.4
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 15.2,
+     "hpLost": 35.3
+    }
+   },
+   "index": 46.3
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-6",
+   "nodeKey": "p-6",
+   "kind": "elite",
+   "name": "The Lodge",
+   "hp": 27,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 8.3,
+     "hpLost": 96.1
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 10.6,
+     "hpLost": 59.9
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 8.8,
+     "hpLost": 45.3
+    }
+   },
+   "index": 44.7
+  },
+  {
+   "map": "mp",
+   "mapNo": "5",
+   "mapName": "Lilypad Reach",
+   "side": false,
+   "key": "5-7",
+   "nodeKey": "p-7",
+   "kind": "boss",
+   "name": "The Lodge Matriarch",
+   "hp": 30,
+   "res": {
+    "starter": {
+     "win": 12.5,
      "rounds": 9.3,
-     "hpLost": 60.4
+     "hpLost": 97.1
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 10.8,
+     "hpLost": 60
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 9,
+     "hpLost": 47.8
+    }
+   },
+   "index": 44.3
+  },
+  {
+   "map": "mb",
+   "mapNo": "6",
+   "mapName": "Pebble Beach",
+   "side": false,
+   "key": "6-1",
+   "nodeKey": "b-1",
+   "kind": "skirmish",
+   "name": "Rock Pool Raiders",
+   "hp": 31,
+   "res": {
+    "starter": {
+     "win": 54.2,
+     "rounds": 10.5,
+     "hpLost": 73.9
+    },
+    "mid": {
+     "win": 100,
+     "rounds": 9.8,
+     "hpLost": 37.4
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8,
+     "hpLost": 23.2
+    }
+   },
+   "index": 17.3
+  },
+  {
+   "map": "mb",
+   "mapNo": "6",
+   "mapName": "Pebble Beach",
+   "side": false,
+   "key": "6-2",
+   "nodeKey": "b-2",
+   "kind": "skirmish",
+   "name": "Gull Gang",
+   "hp": 26,
+   "res": {
+    "starter": {
+     "win": 29.2,
+     "rounds": 9.1,
+     "hpLost": 91.4
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 9.1,
+     "hpLost": 39.6
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 7.4,
+     "hpLost": 31.5
+    }
+   },
+   "index": 28.7
+  },
+  {
+   "map": "mb",
+   "mapNo": "6",
+   "mapName": "Pebble Beach",
+   "side": false,
+   "key": "6-3",
+   "nodeKey": "b-3",
+   "kind": "skirmish",
+   "name": "Hermit Row",
+   "hp": 33,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 9,
+     "hpLost": 99.4
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 11.5,
+     "hpLost": 66.5
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8.9,
+     "hpLost": 35.8
+    }
+   },
+   "index": 40.2
+  },
+  {
+   "map": "mb",
+   "mapNo": "6",
+   "mapName": "Pebble Beach",
+   "side": false,
+   "key": "6-4",
+   "nodeKey": "b-4",
+   "kind": "skirmish",
+   "name": "Pelican Point",
+   "hp": 39,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 10.5,
+     "hpLost": 96.9
+    },
+    "mid": {
+     "win": 83.3,
+     "rounds": 11,
+     "hpLost": 61.8
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 9.1,
+     "hpLost": 30.1
+    }
+   },
+   "index": 36.7
+  },
+  {
+   "map": "mb",
+   "mapNo": "6",
+   "mapName": "Pebble Beach",
+   "side": false,
+   "key": "6-5",
+   "nodeKey": "b-5",
+   "kind": "boss",
+   "name": "The Old Shell",
+   "hp": 167,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 17,
+     "hpLost": 95
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 17.6,
+     "hpLost": 50.6
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 15.4,
+     "hpLost": 36.8
+    }
+   },
+   "index": 43.6
+  },
+  {
+   "map": "mg",
+   "mapNo": "6-A",
+   "mapName": "Smugglers' Grotto",
+   "side": true,
+   "key": "6-A-1",
+   "nodeKey": "g-1",
+   "kind": "skirmish",
+   "name": "Drip Tunnel",
+   "hp": 48,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 12.6,
+     "hpLost": 55.1
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 10.2,
+     "hpLost": 26
+    }
+   },
+   "index": 34.6
+  },
+  {
+   "map": "mg",
+   "mapNo": "6-A",
+   "mapName": "Smugglers' Grotto",
+   "side": true,
+   "key": "6-A-2",
+   "nodeKey": "g-2",
+   "kind": "elite",
+   "name": "Smugglers' Stash",
+   "hp": 89,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 14.5,
+     "hpLost": 92.4
+    },
+    "strong": {
+     "win": 50,
+     "rounds": 12.1,
+     "hpLost": 76.4
+    }
+   },
+   "index": 75.4
+  },
+  {
+   "map": "mg",
+   "mapNo": "6-A",
+   "mapName": "Smugglers' Grotto",
+   "side": true,
+   "key": "6-A-3",
+   "nodeKey": "g-3",
+   "kind": "elite",
+   "name": "The Glowing Pool",
+   "hp": 146,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 17.8,
+     "hpLost": 81.9
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 15.1,
+     "hpLost": 45.1
+    }
+   },
+   "index": 51.9
+  },
+  {
+   "map": "mg",
+   "mapNo": "6-A",
+   "mapName": "Smugglers' Grotto",
+   "side": true,
+   "key": "6-A-4",
+   "nodeKey": "g-4",
+   "kind": "elite",
+   "name": "The Grotto Keeper",
+   "hp": 47,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 13.7,
+     "hpLost": 82.5
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 11.7,
+     "hpLost": 70.7
+    }
+   },
+   "index": 63.5
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-1",
+   "nodeKey": "c-1",
+   "kind": "skirmish",
+   "name": "Goat Ledge",
+   "hp": 21,
+   "res": {
+    "starter": {
+     "win": 45.8,
+     "rounds": 8.9,
+     "hpLost": 81
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 9.5,
+     "hpLost": 42.1
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8.4,
+     "hpLost": 39.3
+    }
+   },
+   "index": 25.5
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-2",
+   "nodeKey": "c-2",
+   "kind": "skirmish",
+   "name": "Hawk Watch",
+   "hp": 63,
+   "res": {
+    "starter": {
+     "win": 45.8,
+     "rounds": 12.5,
+     "hpLost": 77.1
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 11.7,
+     "hpLost": 56.1
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 10.6,
+     "hpLost": 37.1
+    }
+   },
+   "index": 30.1
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-3",
+   "nodeKey": "c-3",
+   "kind": "skirmish",
+   "name": "Rockfall",
+   "hp": 37,
+   "res": {
+    "starter": {
+     "win": 58.3,
+     "rounds": 11.2,
+     "hpLost": 68.3
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 10.6,
+     "hpLost": 34.4
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8.7,
+     "hpLost": 17.8
+    }
+   },
+   "index": 15.9
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-4",
+   "nodeKey": "c-4",
+   "kind": "skirmish",
+   "name": "Condor Thermals",
+   "hp": 66,
+   "res": {
+    "starter": {
+     "win": 70.8,
+     "rounds": 13.1,
+     "hpLost": 68.9
+    },
+    "mid": {
+     "win": 100,
+     "rounds": 12,
+     "hpLost": 17.2
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 10.8,
+     "hpLost": 20.6
+    }
+   },
+   "index": 12.5
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-5",
+   "nodeKey": "c-5",
+   "kind": "elite",
+   "name": "Eagle Stoop",
+   "hp": 69,
+   "res": {
+    "starter": {
+     "win": 95.8,
+     "rounds": 12.8,
+     "hpLost": 36.5
+    },
+    "mid": {
+     "win": 100,
+     "rounds": 11.5,
+     "hpLost": 7.4
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 10.5,
+     "hpLost": 4.9
+    }
+   },
+   "index": 2.3
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-6",
+   "nodeKey": "c-6",
+   "kind": "elite",
+   "name": "Avalanche Pass",
+   "hp": 49,
+   "res": {
+    "starter": {
+     "win": 37.5,
+     "rounds": 11.6,
+     "hpLost": 81.9
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 12.2,
+     "hpLost": 46.5
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 9.5,
+     "hpLost": 26.5
+    }
+   },
+   "index": 28.5
+  },
+  {
+   "map": "mc",
+   "mapNo": "7",
+   "mapName": "Gannet Cliffs",
+   "side": false,
+   "key": "7-7",
+   "nodeKey": "c-7",
+   "kind": "boss",
+   "name": "The Gannet Queen",
+   "hp": 56,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 11.5,
+     "hpLost": 93.5
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 12,
+     "hpLost": 53.3
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 10.3,
+     "hpLost": 43.3
+    }
+   },
+   "index": 35.8
+  },
+  {
+   "map": "m2",
+   "mapNo": "8",
+   "mapName": "Sunken Hollow",
+   "side": false,
+   "key": "8-1",
+   "nodeKey": "2-1",
+   "kind": "skirmish",
+   "name": "Reef Skirmishers",
+   "hp": 14,
+   "res": {
+    "starter": {
+     "win": 50,
+     "rounds": 7.3,
+     "hpLost": 78.5
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 8,
+     "hpLost": 53.5
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 6.3,
+     "hpLost": 24.2
+    }
+   },
+   "index": 20.6
+  },
+  {
+   "map": "m2",
+   "mapNo": "8",
+   "mapName": "Sunken Hollow",
+   "side": false,
+   "key": "8-2",
+   "nodeKey": "2-2",
+   "kind": "skirmish",
+   "name": "Tidal Ring",
+   "hp": 65,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 11.8,
+     "hpLost": 94.9
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 11.7,
+     "hpLost": 79.6
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 10.1,
+     "hpLost": 47.2
+    }
+   },
+   "index": 53.5
+  },
+  {
+   "map": "m2",
+   "mapNo": "8",
+   "mapName": "Sunken Hollow",
+   "side": false,
+   "key": "8-3",
+   "nodeKey": "2-3",
+   "kind": "elite",
+   "name": "Cetacean Pod",
+   "hp": 72,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 13,
+     "hpLost": 97.2
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 12.6,
+     "hpLost": 70.4
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 10.4,
+     "hpLost": 39.2
+    }
+   },
+   "index": 49.4
+  },
+  {
+   "map": "m2",
+   "mapNo": "8",
+   "mapName": "Sunken Hollow",
+   "side": false,
+   "key": "8-4",
+   "nodeKey": "2-4",
+   "kind": "elite",
+   "name": "The Kraken's Maw",
+   "hp": 129,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 15.6,
+     "hpLost": 78.3
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 13.2,
+     "hpLost": 56.7
+    }
+   },
+   "index": 62.1
+  },
+  {
+   "map": "m2",
+   "mapNo": "8",
+   "mapName": "Sunken Hollow",
+   "side": false,
+   "key": "8-5",
+   "nodeKey": "2-5",
+   "kind": "boss",
+   "name": "The Drowned Colossus",
+   "hp": 187,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 33.3,
+     "rounds": 17.8,
+     "hpLost": 85.6
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 14.3,
+     "hpLost": 58.9
+    }
+   },
+   "index": 65.8
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-1",
+   "nodeKey": "w-1",
+   "kind": "skirmish",
+   "name": "Leech Pools",
+   "hp": 106,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 17,
+     "hpLost": 95.7
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 14.4,
+     "hpLost": 48.8
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 12.8,
+     "hpLost": 34.6
+    }
+   },
+   "index": 35.7
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-2",
+   "nodeKey": "w-2",
+   "kind": "skirmish",
+   "name": "Toad Hollow",
+   "hp": 134,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 15.5,
+     "hpLost": 64.4
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 14.1,
+     "hpLost": 51.7
+    }
+   },
+   "index": 51.5
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-3",
+   "nodeKey": "w-3",
+   "kind": "skirmish",
+   "name": "Cypress Roots",
+   "hp": 109,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 14.6,
+     "hpLost": 55.1
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 12.9,
+     "hpLost": 28.2
+    }
+   },
+   "index": 37.3
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-4",
+   "nodeKey": "w-4",
+   "kind": "skirmish",
+   "name": "Snapping Reeds",
+   "hp": 20,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 9,
+     "hpLost": 96.5
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 9.4,
+     "hpLost": 64.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 7.7,
+     "hpLost": 36.5
+    }
+   },
+   "index": 35.2
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-5",
+   "nodeKey": "w-5",
+   "kind": "elite",
+   "name": "Gator Slide",
+   "hp": 135,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 16.7,
+     "hpLost": 86.1
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 14,
+     "hpLost": 57.2
+    }
+   },
+   "index": 63.3
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-6",
+   "nodeKey": "w-6",
+   "kind": "elite",
+   "name": "Behemoth Bog",
+   "hp": 69,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 13.5,
+     "hpLost": 94.4
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 12.9,
+     "hpLost": 66
     },
     "strong": {
      "win": 58.3,
-     "rounds": 9.1,
-     "hpLost": 67.6
+     "rounds": 11.1,
+     "hpLost": 59.6
     }
    },
-   "index": 60.2
+   "index": 57.6
+  },
+  {
+   "map": "mw",
+   "mapNo": "9",
+   "mapName": "Gatorback Swamp",
+   "side": false,
+   "key": "9-7",
+   "nodeKey": "w-7",
+   "kind": "boss",
+   "name": "Old Snapjaw",
+   "hp": 87,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 15.1,
+     "hpLost": 81.5
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 12.7,
+     "hpLost": 50.4
+    }
+   },
+   "index": 57.4
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-1",
+   "nodeKey": "k-1",
+   "kind": "skirmish",
+   "name": "Mudflat Skippers",
+   "hp": 110,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 17.7,
+     "hpLost": 97.6
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 14.8,
+     "hpLost": 66.1
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 13.3,
+     "hpLost": 43.5
+    }
+   },
+   "index": 44.2
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-2",
+   "nodeKey": "k-2",
+   "kind": "skirmish",
+   "name": "Monitor Roots",
+   "hp": 68,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 16.7,
+     "rounds": 11.3,
+     "hpLost": 93.6
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 10.1,
+     "hpLost": 70.4
+    }
+   },
+   "index": 70.7
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-3",
+   "nodeKey": "k-3",
+   "kind": "skirmish",
+   "name": "Kingfisher Dive",
+   "hp": 35,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 8.3,
+     "hpLost": 92.8
+    },
+    "mid": {
+     "win": 58.3,
+     "rounds": 9.8,
+     "hpLost": 68.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8.8,
+     "hpLost": 37.5
+    }
+   },
+   "index": 40.6
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-4",
+   "nodeKey": "k-4",
+   "kind": "skirmish",
+   "name": "Kelp Curtains",
+   "hp": 86,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 13.5,
+     "hpLost": 69.3
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 11.8,
+     "hpLost": 50.4
+    }
+   },
+   "index": 55.3
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-5",
+   "nodeKey": "k-5",
+   "kind": "elite",
+   "name": "Moray Den",
+   "hp": 99,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 4.2,
+     "rounds": 13,
+     "hpLost": 99.4
+    },
+    "strong": {
+     "win": 58.3,
+     "rounds": 12.4,
+     "hpLost": 76.9
+    }
+   },
+   "index": 78.6
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-6",
+   "nodeKey": "k-6",
+   "kind": "elite",
+   "name": "Drifting Shell",
+   "hp": 99,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 14.8,
+     "hpLost": 89
+    },
+    "strong": {
+     "win": 54.2,
+     "rounds": 12.3,
+     "hpLost": 66.1
+    }
+   },
+   "index": 71.7
+  },
+  {
+   "map": "mk",
+   "mapNo": "10",
+   "mapName": "The Kelp Mangroves",
+   "side": false,
+   "key": "10-7",
+   "nodeKey": "k-7",
+   "kind": "boss",
+   "name": "The Kelp Witch",
+   "hp": 201,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 99.9
+    },
+    "strong": {
+     "win": 58.3,
+     "rounds": 17.2,
+     "hpLost": 67.4
+    }
+   },
+   "index": 76.2
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-1",
+   "nodeKey": "8-1",
+   "kind": "skirmish",
+   "name": "Leech Bog",
+   "hp": 95,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 16,
+     "hpLost": 98.6
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 15.1,
+     "hpLost": 60.3
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 12.3,
+     "hpLost": 35.3
+    }
+   },
+   "index": 39
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-2",
+   "nodeKey": "8-2",
+   "kind": "skirmish",
+   "name": "Mire Ambush",
+   "hp": 234,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 19.8,
+     "hpLost": 93.3
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 18.6,
+     "hpLost": 37.2
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 17.2,
+     "hpLost": 31.1
+    }
+   },
+   "index": 30.7
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-3",
+   "nodeKey": "8-3",
+   "kind": "skirmish",
+   "name": "Toad Chorus",
+   "hp": 235,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 19.7,
+     "hpLost": 79
+    },
+    "strong": {
+     "win": 54.2,
+     "rounds": 17.8,
+     "hpLost": 61.8
+    }
+   },
+   "index": 66.5
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-4",
+   "nodeKey": "8-4",
+   "kind": "skirmish",
+   "name": "Root Snare",
+   "hp": 107,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 17,
+     "hpLost": 96.7
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 15.3,
+     "hpLost": 71.7
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 12.9,
+     "hpLost": 46.8
+    }
+   },
+   "index": 51.3
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-5",
+   "nodeKey": "8-5",
+   "kind": "elite",
+   "name": "Venomlord's Coil",
+   "hp": 90,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 16,
+     "hpLost": 98.3
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 14.1,
+     "hpLost": 78.2
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 12,
+     "hpLost": 55.4
+    }
+   },
+   "index": 55.5
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-6",
+   "nodeKey": "8-6",
+   "kind": "elite",
+   "name": "Crocodile Run",
+   "hp": 46,
+   "res": {
+    "starter": {
+     "win": 25,
+     "rounds": 8.8,
+     "hpLost": 85.8
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 11.6,
+     "hpLost": 60.3
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 9.5,
+     "hpLost": 31.7
+    }
+   },
+   "index": 37.1
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-7",
+   "nodeKey": "8-7",
+   "kind": "elite",
+   "name": "Adder Gauntlet",
+   "hp": 85,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 15,
+     "hpLost": 99.4
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 13.6,
+     "hpLost": 81.7
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 11.5,
+     "hpLost": 49.7
+    }
+   },
+   "index": 53.1
+  },
+  {
+   "map": "m8",
+   "mapNo": "11",
+   "mapName": "Sable Swampmire",
+   "side": false,
+   "key": "11-8",
+   "nodeKey": "8-8",
+   "kind": "boss",
+   "name": "The Alligator King",
+   "hp": 34,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 9.5,
+     "hpLost": 95.7
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 10.2,
+     "hpLost": 71.1
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 8.9,
+     "hpLost": 51.7
+    }
+   },
+   "index": 47.3
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-1",
+   "nodeKey": "4-1",
+   "kind": "skirmish",
+   "name": "Roost Flurry",
+   "hp": 26,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 9.8,
+     "hpLost": 90.7
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 9.8,
+     "hpLost": 80
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 8.1,
+     "hpLost": 59.4
+    }
+   },
+   "index": 56.5
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-2",
+   "nodeKey": "4-2",
+   "kind": "skirmish",
+   "name": "Glowworm Grotto",
+   "hp": 48,
+   "res": {
+    "starter": {
+     "win": 37.5,
+     "rounds": 11.8,
+     "hpLost": 79.7
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 11.7,
+     "hpLost": 66.4
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 9.8,
+     "hpLost": 63.1
+    }
+   },
+   "index": 48.1
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-3",
+   "nodeKey": "4-3",
+   "kind": "skirmish",
+   "name": "Cinder Vents",
+   "hp": 26,
+   "res": {
+    "starter": {
+     "win": 33.3,
+     "rounds": 9.5,
+     "hpLost": 87.6
+    },
+    "mid": {
+     "win": 83.3,
+     "rounds": 9.6,
+     "hpLost": 44.3
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 7.9,
+     "hpLost": 29.3
+    }
+   },
+   "index": 29.2
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-4",
+   "nodeKey": "4-4",
+   "kind": "skirmish",
+   "name": "Echo Chamber",
+   "hp": 73,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 12,
+     "hpLost": 99.3
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 11,
+     "hpLost": 86.8
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 9.9,
+     "hpLost": 71.5
+    }
+   },
+   "index": 60.6
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-5",
+   "nodeKey": "4-5",
+   "kind": "skirmish",
+   "name": "Sulfur Vent Path",
+   "hp": 36,
+   "res": {
+    "starter": {
+     "win": 50,
+     "rounds": 11.7,
+     "hpLost": 81.5
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 9.5,
+     "hpLost": 29.6
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 9,
+     "hpLost": 27.1
+    }
+   },
+   "index": 21.4
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-6",
+   "nodeKey": "4-6",
+   "kind": "skirmish",
+   "name": "Glowworm Deep",
+   "hp": 31,
+   "res": {
+    "starter": {
+     "win": 41.7,
+     "rounds": 11.2,
+     "hpLost": 85.3
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 10.6,
+     "hpLost": 76.4
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 9.1,
+     "hpLost": 43.2
+    }
+   },
+   "index": 41
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-7",
+   "nodeKey": "4-7",
+   "kind": "elite",
+   "name": "The Roost Above",
+   "hp": 29,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 7.6,
+     "hpLost": 89
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 9,
+     "hpLost": 90.7
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 8.1,
+     "hpLost": 70.7
+    }
+   },
+   "index": 60.4
+  },
+  {
+   "map": "m4",
+   "mapNo": "12",
+   "mapName": "Caves & Alcoves",
+   "side": false,
+   "key": "12-8",
+   "nodeKey": "4-8",
+   "kind": "boss",
+   "name": "The Stalactite Warden",
+   "hp": 81,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 16,
+     "hpLost": 92.4
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 13.1,
+     "hpLost": 44.7
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 11.3,
+     "hpLost": 23.2
+    }
+   },
+   "index": 31.9
   },
   {
    "map": "m10",
-   "mapNo": "12",
+   "mapNo": "13",
    "mapName": "Eyrie Heights",
    "side": false,
-   "key": "12-6",
+   "key": "13-1",
+   "nodeKey": "10-1",
+   "kind": "skirmish",
+   "name": "Goat Trail Runners",
+   "hp": 21,
+   "res": {
+    "starter": {
+     "win": 54.2,
+     "rounds": 10.1,
+     "hpLost": 73.5
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 9.6,
+     "hpLost": 42.8
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 7.8,
+     "hpLost": 16.3
+    }
+   },
+   "index": 17.6
+  },
+  {
+   "map": "m10",
+   "mapNo": "13",
+   "mapName": "Eyrie Heights",
+   "side": false,
+   "key": "13-2",
+   "nodeKey": "10-2",
+   "kind": "skirmish",
+   "name": "Avalanche Ridge",
+   "hp": 28,
+   "res": {
+    "starter": {
+     "win": 79.2,
+     "rounds": 9.2,
+     "hpLost": 51.1
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 9.7,
+     "hpLost": 37.1
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 7.9,
+     "hpLost": 16.5
+    }
+   },
+   "index": 11.4
+  },
+  {
+   "map": "m10",
+   "mapNo": "13",
+   "mapName": "Eyrie Heights",
+   "side": false,
+   "key": "13-3",
+   "nodeKey": "10-3",
+   "kind": "skirmish",
+   "name": "Cliffside Herd",
+   "hp": 27,
+   "res": {
+    "starter": {
+     "win": 54.2,
+     "rounds": 8.9,
+     "hpLost": 71.8
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 10.2,
+     "hpLost": 36.5
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 8.3,
+     "hpLost": 20.8
+    }
+   },
+   "index": 18.7
+  },
+  {
+   "map": "m10",
+   "mapNo": "13",
+   "mapName": "Eyrie Heights",
+   "side": false,
+   "key": "13-4",
+   "nodeKey": "10-4",
+   "kind": "skirmish",
+   "name": "Ridge Fork",
+   "hp": 40,
+   "res": {
+    "starter": {
+     "win": 41.7,
+     "rounds": 12.2,
+     "hpLost": 81.3
+    },
+    "mid": {
+     "win": 83.3,
+     "rounds": 11.3,
+     "hpLost": 51.7
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 9,
+     "hpLost": 18.9
+    }
+   },
+   "index": 24.5
+  },
+  {
+   "map": "m10",
+   "mapNo": "13",
+   "mapName": "Eyrie Heights",
+   "side": false,
+   "key": "13-5",
+   "nodeKey": "10-5",
+   "kind": "elite",
+   "name": "West Ledge",
+   "hp": 44,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 12,
+     "hpLost": 88.6
+    },
+    "mid": {
+     "win": 58.3,
+     "rounds": 11.9,
+     "hpLost": 71.7
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 9,
+     "hpLost": 30.4
+    }
+   },
+   "index": 39.9
+  },
+  {
+   "map": "m10",
+   "mapNo": "13",
+   "mapName": "Eyrie Heights",
+   "side": false,
+   "key": "13-6",
    "nodeKey": "10-6",
    "kind": "elite",
    "name": "East Ledge",
    "hp": 36,
    "res": {
     "starter": {
-     "win": 1.7,
-     "rounds": 9,
-     "hpLost": 98.9
+     "win": 25,
+     "rounds": 10.2,
+     "hpLost": 90
     },
     "mid": {
-     "win": 81.7,
-     "rounds": 7.8,
-     "hpLost": 34.2
+     "win": 54.2,
+     "rounds": 10.7,
+     "hpLost": 69.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 7.6,
-     "hpLost": 20.9
+     "win": 95.8,
+     "rounds": 8.3,
+     "hpLost": 25
     }
    },
-   "index": 35.6
+   "index": 37.5
   },
   {
    "map": "m10",
-   "mapNo": "12",
+   "mapNo": "13",
    "mapName": "Eyrie Heights",
    "side": false,
-   "key": "12-7",
+   "key": "13-7",
    "nodeKey": "10-7",
    "kind": "elite",
    "name": "Eyrie Wardens",
    "hp": 60,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 10.3,
-     "hpLost": 95.3
+     "win": 12.5,
+     "rounds": 13.7,
+     "hpLost": 95.7
     },
     "mid": {
-     "win": 61.7,
-     "rounds": 9.3,
-     "hpLost": 54.9
+     "win": 50,
+     "rounds": 12.2,
+     "hpLost": 73.6
     },
     "strong": {
-     "win": 75,
-     "rounds": 9.1,
-     "hpLost": 46.4
+     "win": 87.5,
+     "rounds": 10.3,
+     "hpLost": 48.1
     }
    },
-   "index": 49.9
+   "index": 49.5
   },
   {
    "map": "m10",
-   "mapNo": "12",
+   "mapNo": "13",
    "mapName": "Eyrie Heights",
    "side": false,
-   "key": "12-8",
+   "key": "13-8",
    "nodeKey": "10-8",
    "kind": "elite",
    "name": "Summit Approach",
@@ -2815,1448 +2747,114 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 58.3,
-     "rounds": 9.2,
-     "hpLost": 61.1
+     "win": 45.8,
+     "rounds": 12.5,
+     "hpLost": 80
     },
     "strong": {
-     "win": 66.7,
-     "rounds": 9.5,
-     "hpLost": 56
+     "win": 79.2,
+     "rounds": 9.8,
+     "hpLost": 39.4
     }
    },
-   "index": 57.8
+   "index": 53.6
   },
   {
    "map": "m10",
-   "mapNo": "12",
+   "mapNo": "13",
    "mapName": "Eyrie Heights",
    "side": false,
-   "key": "12-9",
+   "key": "13-9",
    "nodeKey": "10-9",
    "kind": "elite",
    "name": "The Condor Sovereign",
    "hp": 45,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 11.5,
-     "hpLost": 95.7
+     "win": 25,
+     "rounds": 13.2,
+     "hpLost": 89.4
     },
     "mid": {
-     "win": 76.7,
-     "rounds": 9.4,
-     "hpLost": 51
+     "win": 79.2,
+     "rounds": 11.5,
+     "hpLost": 60.1
     },
     "strong": {
-     "win": 78.3,
-     "rounds": 9.1,
-     "hpLost": 45.1
+     "win": 91.7,
+     "rounds": 9.5,
+     "hpLost": 32.9
     }
    },
-   "index": 45
+   "index": 34.3
   },
   {
    "map": "m10",
-   "mapNo": "12",
+   "mapNo": "13",
    "mapName": "Eyrie Heights",
    "side": false,
-   "key": "12-10",
+   "key": "13-10",
    "nodeKey": "10-10",
    "kind": "boss",
    "name": "The Avalanche Colossus",
    "hp": 64,
    "res": {
     "starter": {
-     "win": 1.7,
-     "rounds": 11,
-     "hpLost": 99.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 43.3,
-     "rounds": 10.2,
-     "hpLost": 74.7
-    },
-    "strong": {
-     "win": 53.3,
-     "rounds": 10.1,
-     "hpLost": 67.7
-    }
-   },
-   "index": 67.4
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-1",
-   "nodeKey": "11-1",
-   "kind": "skirmish",
-   "name": "Silverback Watch",
-   "hp": 71,
-   "res": {
-    "starter": {
-     "win": 3.3,
+     "win": 16.7,
      "rounds": 12,
-     "hpLost": 99.4
-    },
-    "mid": {
-     "win": 75,
-     "rounds": 9.9,
-     "hpLost": 49.2
-    },
-    "strong": {
-     "win": 90,
-     "rounds": 9.6,
-     "hpLost": 25.4
-    }
-   },
-   "index": 39.3
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-2",
-   "nodeKey": "11-2",
-   "kind": "skirmish",
-   "name": "Grizzly Frontier",
-   "hp": 44,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 11.5,
-     "hpLost": 98.8
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 8.8,
-     "hpLost": 43
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 8.7,
-     "hpLost": 45.4
-    }
-   },
-   "index": 45.1
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-3",
-   "nodeKey": "11-9",
-   "kind": "skirmish",
-   "name": "Panther Ledge",
-   "hp": 37,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 8.4,
-     "hpLost": 89.9
-    },
-    "mid": {
-     "win": 75,
-     "rounds": 7.7,
-     "hpLost": 42.6
-    },
-    "strong": {
-     "win": 93.3,
-     "rounds": 7.2,
-     "hpLost": 19.9
-    }
-   },
-   "index": 33.7
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-4",
-   "nodeKey": "11-10",
-   "kind": "skirmish",
-   "name": "Shrine Steps",
-   "hp": 165,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 15,
-     "hpLost": 99.7
-    },
-    "mid": {
-     "win": 70,
-     "rounds": 14.4,
-     "hpLost": 58.7
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 13.5,
-     "hpLost": 57.1
-    }
-   },
-   "index": 55.5
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-5",
-   "nodeKey": "11-3",
-   "kind": "elite",
-   "name": "Cave Warlord's Guard",
-   "hp": 106,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 13.3,
-     "hpLost": 98.3
-    },
-    "mid": {
-     "win": 81.7,
-     "rounds": 11.8,
-     "hpLost": 53.3
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 11.1,
-     "hpLost": 46.1
-    }
-   },
-   "index": 44.4
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-6",
-   "nodeKey": "11-4",
-   "kind": "elite",
-   "name": "The Constrictor Sovereign",
-   "hp": 180,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 23.3,
-     "rounds": 14.6,
-     "hpLost": 90.9
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 13.2,
-     "hpLost": 44.2
-    }
-   },
-   "index": 59
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-7",
-   "nodeKey": "11-5",
-   "kind": "elite",
-   "name": "The Blessed Avatar",
-   "hp": 160,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 16,
-     "hpLost": 99.6
-    },
-    "mid": {
-     "win": 65,
-     "rounds": 14.3,
-     "hpLost": 59.6
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 14,
-     "hpLost": 49.1
-    }
-   },
-   "index": 51.4
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-8",
-   "nodeKey": "11-6",
-   "kind": "elite",
-   "name": "The Iron Cataphract",
-   "hp": 183,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 18,
-     "hpLost": 99.7
-    },
-    "mid": {
-     "win": 61.7,
-     "rounds": 14.8,
-     "hpLost": 61.8
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 14.4,
-     "hpLost": 61.4
-    }
-   },
-   "index": 58.3
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-9",
-   "nodeKey": "11-7",
-   "kind": "boss",
-   "name": "The Ancient Sloth Titan",
-   "hp": 145,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 14.5,
-     "hpLost": 94.6
-    },
-    "mid": {
-     "win": 50,
-     "rounds": 13.6,
-     "hpLost": 72.5
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 13.7,
-     "hpLost": 58.9
-    }
-   },
-   "index": 58.5
-  },
-  {
-   "map": "m11",
-   "mapNo": "13",
-   "mapName": "The Sundered Peak",
-   "side": false,
-   "key": "13-10",
-   "nodeKey": "11-8",
-   "kind": "finalboss",
-   "name": "The Cave Warlord",
-   "hp": 106,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 15.5,
-     "hpLost": 99.1
-    },
-    "mid": {
-     "win": 50,
-     "rounds": 12.7,
-     "hpLost": 70.2
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 12.2,
-     "hpLost": 52.8
-    }
-   },
-   "index": 57.4
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-1",
-   "nodeKey": "u-1",
-   "kind": "skirmish",
-   "name": "Spore Drift",
-   "hp": 34,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 9,
-     "hpLost": 96.4
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 8.8,
-     "hpLost": 51.9
+     "hpLost": 90.8
     },
     "strong": {
      "win": 83.3,
-     "rounds": 8.1,
-     "hpLost": 50.6
-    }
-   },
-   "index": 44.8
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-2",
-   "nodeKey": "u-2",
-   "kind": "skirmish",
-   "name": "Grub Tunnels",
-   "hp": 70,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 13,
-     "hpLost": 97.8
-    },
-    "mid": {
-     "win": 83.3,
-     "rounds": 10.5,
-     "hpLost": 42.9
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 9.9,
-     "hpLost": 36.3
-    }
-   },
-   "index": 39.5
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-3",
-   "nodeKey": "u-3",
-   "kind": "skirmish",
-   "name": "Web Hollow",
-   "hp": 28,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 7.3,
-     "hpLost": 97.8
-    },
-    "mid": {
-     "win": 76.7,
-     "rounds": 7.4,
-     "hpLost": 58.6
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 7,
-     "hpLost": 51.2
-    }
-   },
-   "index": 46.6
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-4",
-   "nodeKey": "u-4",
-   "kind": "skirmish",
-   "name": "Moonlit Gills",
-   "hp": 230,
-   "res": {
-    "starter": {
-     "win": 13.3,
-     "rounds": 18.3,
-     "hpLost": 95.4
-    },
-    "mid": {
-     "win": 80,
-     "rounds": 15.7,
-     "hpLost": 43.6
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 14.8,
-     "hpLost": 37.6
-    }
-   },
-   "index": 40.7
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-5",
-   "nodeKey": "u-5",
-   "kind": "elite",
-   "name": "The Oath Ring",
-   "hp": 158,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 15,
-     "hpLost": 99.1
-    },
-    "mid": {
-     "win": 61.7,
-     "rounds": 14.2,
-     "hpLost": 59.1
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 13.3,
-     "hpLost": 46.2
-    }
-   },
-   "index": 51.5
-  },
-  {
-   "map": "mu",
-   "mapNo": "14",
-   "mapName": "The Morel Hollow",
-   "side": false,
-   "key": "14-6",
-   "nodeKey": "u-6",
-   "kind": "boss",
-   "name": "The Morel Monarch",
-   "hp": 93,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 61.7,
-     "rounds": 11.3,
-     "hpLost": 68.9
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 11.1,
-     "hpLost": 53.9
-    }
-   },
-   "index": 53.9
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-1",
-   "nodeKey": "p-1",
-   "kind": "skirmish",
-   "name": "Lily Hop",
-   "hp": 38,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 10.7,
-     "hpLost": 98.1
-    },
-    "mid": {
-     "win": 95,
-     "rounds": 8.7,
-     "hpLost": 38.2
-    },
-    "strong": {
-     "win": 85,
-     "rounds": 7.8,
-     "hpLost": 42.5
-    }
-   },
-   "index": 38.1
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-2",
-   "nodeKey": "p-2",
-   "kind": "skirmish",
-   "name": "Duck Row",
-   "hp": 14,
-   "res": {
-    "starter": {
-     "win": 16.7,
-     "rounds": 7.6,
-     "hpLost": 94
-    },
-    "mid": {
-     "win": 90,
-     "rounds": 7.3,
-     "hpLost": 52.7
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 6.2,
-     "hpLost": 48.3
-    }
-   },
-   "index": 40
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-3",
-   "nodeKey": "p-3",
-   "kind": "skirmish",
-   "name": "Beaver Dam",
-   "hp": 40,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 66.7,
-     "rounds": 10.2,
-     "hpLost": 68.9
-    },
-    "strong": {
-     "win": 88.3,
-     "rounds": 9.1,
-     "hpLost": 55.3
-    }
-   },
-   "index": 50.1
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-4",
-   "nodeKey": "p-4",
-   "kind": "skirmish",
-   "name": "Pike Shallows",
-   "hp": 22,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 6,
-     "hpLost": 99.9
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 8.1,
-     "hpLost": 68.4
-    },
-    "strong": {
-     "win": 78.3,
-     "rounds": 7.4,
-     "hpLost": 54
-    }
-   },
-   "index": 50.6
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-5",
-   "nodeKey": "p-5",
-   "kind": "elite",
-   "name": "Croaker Chorus",
-   "hp": 192,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 20,
-     "hpLost": 99.9
-    },
-    "mid": {
-     "win": 71.7,
-     "rounds": 15.4,
-     "hpLost": 59.4
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 14.5,
-     "hpLost": 45.3
-    }
-   },
-   "index": 48.8
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-6",
-   "nodeKey": "p-6",
-   "kind": "elite",
-   "name": "The Lodge",
-   "hp": 33,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 8,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 58.3,
-     "rounds": 8.7,
-     "hpLost": 71.8
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 8.2,
-     "hpLost": 58.1
-    }
-   },
-   "index": 57
-  },
-  {
-   "map": "mp",
-   "mapNo": "15",
-   "mapName": "Lilypad Reach",
-   "side": false,
-   "key": "15-7",
-   "nodeKey": "p-7",
-   "kind": "boss",
-   "name": "The Lodge Matriarch",
-   "hp": 30,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 8,
-     "hpLost": 97.6
-    },
-    "mid": {
-     "win": 43.3,
-     "rounds": 8.6,
-     "hpLost": 75.8
-    },
-    "strong": {
-     "win": 40,
-     "rounds": 7.3,
-     "hpLost": 78.4
-    }
-   },
-   "index": 73
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-1",
-   "nodeKey": "c-1",
-   "kind": "skirmish",
-   "name": "Goat Ledge",
-   "hp": 61,
-   "res": {
-    "starter": {
-     "win": 18.3,
-     "rounds": 12.8,
-     "hpLost": 91.6
-    },
-    "mid": {
-     "win": 88.3,
-     "rounds": 10.8,
-     "hpLost": 45.9
-    },
-    "strong": {
-     "win": 91.7,
-     "rounds": 10.1,
-     "hpLost": 48.6
-    }
-   },
-   "index": 37.6
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-2",
-   "nodeKey": "c-2",
-   "kind": "skirmish",
-   "name": "Hawk Watch",
-   "hp": 33,
-   "res": {
-    "starter": {
-     "win": 16.7,
      "rounds": 10.6,
-     "hpLost": 92.2
-    },
-    "mid": {
-     "win": 56.7,
-     "rounds": 8.2,
-     "hpLost": 66.9
-    },
-    "strong": {
-     "win": 56.7,
-     "rounds": 8,
-     "hpLost": 66.8
+     "hpLost": 47.8
     }
    },
-   "index": 59.2
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-3",
-   "nodeKey": "c-3",
-   "kind": "skirmish",
-   "name": "Rockfall",
-   "hp": 19,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 8.2,
-     "hpLost": 91.1
-    },
-    "mid": {
-     "win": 75,
-     "rounds": 7.4,
-     "hpLost": 49.7
-    },
-    "strong": {
-     "win": 66.7,
-     "rounds": 6.4,
-     "hpLost": 51.1
-    }
-   },
-   "index": 48.6
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-4",
-   "nodeKey": "c-4",
-   "kind": "skirmish",
-   "name": "Condor Thermals",
-   "hp": 33,
-   "res": {
-    "starter": {
-     "win": 15,
-     "rounds": 9.4,
-     "hpLost": 91.8
-    },
-    "mid": {
-     "win": 61.7,
-     "rounds": 7.9,
-     "hpLost": 60.5
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 7.7,
-     "hpLost": 55.8
-    }
-   },
-   "index": 53.5
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-5",
-   "nodeKey": "c-5",
-   "kind": "elite",
-   "name": "Eagle Stoop",
-   "hp": 35,
-   "res": {
-    "starter": {
-     "win": 18.3,
-     "rounds": 8.5,
-     "hpLost": 89.4
-    },
-    "mid": {
-     "win": 81.7,
-     "rounds": 7.6,
-     "hpLost": 40.8
-    },
-    "strong": {
-     "win": 80,
-     "rounds": 7,
-     "hpLost": 38.9
-    }
-   },
-   "index": 39.7
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-6",
-   "nodeKey": "c-6",
-   "kind": "elite",
-   "name": "Avalanche Pass",
-   "hp": 39,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 46.7,
-     "rounds": 8.3,
-     "hpLost": 68.7
-    },
-    "strong": {
-     "win": 41.7,
-     "rounds": 7.6,
-     "hpLost": 70.5
-    }
-   },
-   "index": 70.5
-  },
-  {
-   "map": "mc",
-   "mapNo": "16",
-   "mapName": "Gannet Cliffs",
-   "side": false,
-   "key": "16-7",
-   "nodeKey": "c-7",
-   "kind": "boss",
-   "name": "The Gannet Queen",
-   "hp": 40,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 11,
-     "hpLost": 96.8
-    },
-    "mid": {
-     "win": 58.3,
-     "rounds": 9,
-     "hpLost": 61.4
-    },
-    "strong": {
-     "win": 51.7,
-     "rounds": 8.3,
-     "hpLost": 66.2
-    }
-   },
-   "index": 62.4
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-1",
-   "nodeKey": "w-1",
-   "kind": "skirmish",
-   "name": "Leech Pools",
-   "hp": 238,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 18.5,
-     "hpLost": 98.9
-    },
-    "mid": {
-     "win": 76.7,
-     "rounds": 15.7,
-     "hpLost": 42.8
-    },
-    "strong": {
-     "win": 95,
-     "rounds": 15.4,
-     "hpLost": 27.3
-    }
-   },
-   "index": 38.1
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-2",
-   "nodeKey": "w-2",
-   "kind": "skirmish",
-   "name": "Toad Hollow",
-   "hp": 217,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 17.5,
-     "hpLost": 98.5
-    },
-    "mid": {
-     "win": 76.7,
-     "rounds": 15.4,
-     "hpLost": 46.1
-    },
-    "strong": {
-     "win": 80,
-     "rounds": 14.9,
-     "hpLost": 41.4
-    }
-   },
-   "index": 45.4
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-3",
-   "nodeKey": "w-3",
-   "kind": "skirmish",
-   "name": "Cypress Roots",
-   "hp": 239,
-   "res": {
-    "starter": {
-     "win": 5,
-     "rounds": 18.3,
-     "hpLost": 99.4
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 15.8,
-     "hpLost": 46.9
-    },
-    "strong": {
-     "win": 83.3,
-     "rounds": 15.4,
-     "hpLost": 37.5
-    }
-   },
-   "index": 44
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-4",
-   "nodeKey": "w-4",
-   "kind": "skirmish",
-   "name": "Snapping Reeds",
-   "hp": 49,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 10.5,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 75,
-     "rounds": 10.6,
-     "hpLost": 64.9
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 10.2,
-     "hpLost": 74.2
-    }
-   },
-   "index": 58.2
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-5",
-   "nodeKey": "w-5",
-   "kind": "elite",
-   "name": "Gator Slide",
-   "hp": 230,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 18,
-     "hpLost": 99.7
-    },
-    "mid": {
-     "win": 48.3,
-     "rounds": 16.2,
-     "hpLost": 70.8
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 15.5,
-     "hpLost": 58.4
-    }
-   },
-   "index": 61.3
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-6",
-   "nodeKey": "w-6",
-   "kind": "elite",
-   "name": "Behemoth Bog",
-   "hp": 188,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 16.5,
-     "hpLost": 99
-    },
-    "mid": {
-     "win": 50,
-     "rounds": 15.3,
-     "hpLost": 72
-    },
-    "strong": {
-     "win": 60,
-     "rounds": 14.8,
-     "hpLost": 68.2
-    }
-   },
-   "index": 63.7
-  },
-  {
-   "map": "mw",
-   "mapNo": "17",
-   "mapName": "Gatorback Swamp",
-   "side": false,
-   "key": "17-7",
-   "nodeKey": "w-7",
-   "kind": "boss",
-   "name": "Old Snapjaw",
-   "hp": 240,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 18,
-     "hpLost": 99.3
-    },
-    "mid": {
-     "win": 35,
-     "rounds": 17.3,
-     "hpLost": 80.9
-    },
-    "strong": {
-     "win": 60,
-     "rounds": 17,
-     "hpLost": 67.7
-    }
-   },
-   "index": 67.8
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-1",
-   "nodeKey": "k-1",
-   "kind": "skirmish",
-   "name": "Mudflat Skippers",
-   "hp": 187,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 18.4,
-     "hpLost": 97.5
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 14.5,
-     "hpLost": 42.6
-    },
-    "strong": {
-     "win": 90,
-     "rounds": 14,
-     "hpLost": 30.3
-    }
-   },
-   "index": 39.7
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-2",
-   "nodeKey": "k-2",
-   "kind": "skirmish",
-   "name": "Monitor Roots",
-   "hp": 193,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 15,
-     "hpLost": 99.2
-    },
-    "mid": {
-     "win": 68.3,
-     "rounds": 13.8,
-     "hpLost": 62.7
-    },
-    "strong": {
-     "win": 90,
-     "rounds": 13.4,
-     "hpLost": 42.1
-    }
-   },
-   "index": 45.5
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-3",
-   "nodeKey": "k-3",
-   "kind": "skirmish",
-   "name": "Kingfisher Dive",
-   "hp": 35,
-   "res": {
-    "starter": {
-     "win": 8.3,
-     "rounds": 10,
-     "hpLost": 95.5
-    },
-    "mid": {
-     "win": 68.3,
-     "rounds": 8.4,
-     "hpLost": 61.9
-    },
-    "strong": {
-     "win": 81.7,
-     "rounds": 7.8,
-     "hpLost": 44.4
-    }
-   },
-   "index": 46.5
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-4",
-   "nodeKey": "k-4",
-   "kind": "skirmish",
-   "name": "Kelp Curtains",
-   "hp": 219,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 16,
-     "hpLost": 99.4
-    },
-    "mid": {
-     "win": 38.3,
-     "rounds": 15.8,
-     "hpLost": 77.7
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 14.8,
-     "hpLost": 49.1
-    }
-   },
-   "index": 61.5
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-5",
-   "nodeKey": "k-5",
-   "kind": "elite",
-   "name": "Moray Den",
-   "hp": 215,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 33.3,
-     "rounds": 14.8,
-     "hpLost": 82.3
-    },
-    "strong": {
-     "win": 68.3,
-     "rounds": 14.7,
-     "hpLost": 59.7
-    }
-   },
-   "index": 64.5
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-6",
-   "nodeKey": "k-6",
-   "kind": "elite",
-   "name": "Drifting Shell",
-   "hp": 235,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 16,
-     "hpLost": 98.7
-    },
-    "mid": {
-     "win": 31.7,
-     "rounds": 15.6,
-     "hpLost": 81.6
-    },
-    "strong": {
-     "win": 60,
-     "rounds": 15.5,
-     "hpLost": 53.1
-    }
-   },
-   "index": 64.9
-  },
-  {
-   "map": "mk",
-   "mapNo": "18",
-   "mapName": "The Kelp Mangroves",
-   "side": false,
-   "key": "18-7",
-   "nodeKey": "k-7",
-   "kind": "boss",
-   "name": "The Kelp Witch",
-   "hp": 240,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 18.3,
-     "rounds": 15.8,
-     "hpLost": 88.7
-    },
-    "strong": {
-     "win": 58.3,
-     "rounds": 15.6,
-     "hpLost": 57.7
-    }
-   },
-   "index": 70.3
+   "index": 62
   },
   {
    "map": "mh",
-   "mapNo": "19",
+   "mapNo": "14",
    "mapName": "The Briar Maze",
    "side": false,
-   "key": "19-1",
+   "key": "14-1",
    "nodeKey": "h-1",
    "kind": "skirmish",
    "name": "Hedge Mice",
-   "hp": 30,
+   "hp": 31,
    "res": {
     "starter": {
-     "win": 3.3,
+     "win": 8.3,
      "rounds": 9,
-     "hpLost": 99
+     "hpLost": 95.7
     },
     "mid": {
-     "win": 80,
-     "rounds": 8.6,
-     "hpLost": 51.8
+     "win": 62.5,
+     "rounds": 11.7,
+     "hpLost": 72.4
     },
     "strong": {
-     "win": 81.7,
-     "rounds": 7.9,
-     "hpLost": 48.3
-    }
-   },
-   "index": 45.8
-  },
-  {
-   "map": "mh",
-   "mapNo": "19",
-   "mapName": "The Briar Maze",
-   "side": false,
-   "key": "19-2",
-   "nodeKey": "h-2",
-   "kind": "skirmish",
-   "name": "Quill Path",
-   "hp": 56,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 12,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 70,
-     "rounds": 11.1,
-     "hpLost": 68.1
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 10.3,
-     "hpLost": 64.4
-    }
-   },
-   "index": 55.7
-  },
-  {
-   "map": "mh",
-   "mapNo": "19",
-   "mapName": "The Briar Maze",
-   "side": false,
-   "key": "19-3",
-   "nodeKey": "h-3",
-   "kind": "skirmish",
-   "name": "Warren Run",
-   "hp": 108,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 16,
-     "hpLost": 99.6
-    },
-    "mid": {
-     "win": 65,
-     "rounds": 12.5,
-     "hpLost": 60.7
-    },
-    "strong": {
-     "win": 75,
-     "rounds": 12,
-     "hpLost": 58.2
+     "win": 70.8,
+     "rounds": 9.2,
+     "hpLost": 58.1
     }
    },
    "index": 54.1
   },
   {
    "map": "mh",
-   "mapNo": "19",
+   "mapNo": "14",
    "mapName": "The Briar Maze",
    "side": false,
-   "key": "19-4",
-   "nodeKey": "h-4",
+   "key": "14-2",
+   "nodeKey": "h-2",
    "kind": "skirmish",
-   "name": "Thornvine Arch",
+   "name": "Quill Path",
    "hp": 61,
    "res": {
     "starter": {
@@ -4265,404 +2863,85 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 53.3,
-     "rounds": 10.9,
-     "hpLost": 71.3
-    },
-    "strong": {
-     "win": 61.7,
-     "rounds": 10.3,
-     "hpLost": 64.9
-    }
-   },
-   "index": 62.5
-  },
-  {
-   "map": "mh",
-   "mapNo": "19",
-   "mapName": "The Briar Maze",
-   "side": false,
-   "key": "19-5",
-   "nodeKey": "h-5",
-   "kind": "elite",
-   "name": "Quillback Hold",
-   "hp": 54,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 9,
-     "hpLost": 98.6
-    },
-    "mid": {
-     "win": 60,
-     "rounds": 10.1,
-     "hpLost": 65.6
-    },
-    "strong": {
-     "win": 58.3,
-     "rounds": 9.9,
-     "hpLost": 71.4
-    }
-   },
-   "index": 62.9
-  },
-  {
-   "map": "mh",
-   "mapNo": "19",
-   "mapName": "The Briar Maze",
-   "side": false,
-   "key": "19-6",
-   "nodeKey": "h-6",
-   "kind": "elite",
-   "name": "Rodent Court",
-   "hp": 69,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 53.3,
-     "rounds": 11.2,
-     "hpLost": 73
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 10.4,
-     "hpLost": 59.7
-    }
-   },
-   "index": 60.4
-  },
-  {
-   "map": "mh",
-   "mapNo": "19",
-   "mapName": "The Briar Maze",
-   "side": false,
-   "key": "19-7",
-   "nodeKey": "h-7",
-   "kind": "boss",
-   "name": "The Briar Queen",
-   "hp": 206,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 11.7,
-     "rounds": 16.4,
-     "hpLost": 93.2
-    },
-    "strong": {
-     "win": 41.7,
-     "rounds": 16.6,
-     "hpLost": 79.4
-    }
-   },
-   "index": 81.5
-  },
-  {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
-   "side": false,
-   "key": "20-1",
-   "nodeKey": "r-1",
-   "kind": "skirmish",
-   "name": "Cub Clearing",
-   "hp": 74,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 12,
-     "hpLost": 99
-    },
-    "mid": {
-     "win": 55,
-     "rounds": 11.7,
-     "hpLost": 74.3
-    },
-    "strong": {
-     "win": 61.7,
-     "rounds": 10.9,
-     "hpLost": 62.6
-    }
-   },
-   "index": 61.1
-  },
-  {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
-   "side": false,
-   "key": "20-2",
-   "nodeKey": "r-2",
-   "kind": "skirmish",
-   "name": "Fox Run",
-   "hp": 164,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 56.7,
+     "win": 62.5,
      "rounds": 13.9,
-     "hpLost": 68.7
+     "hpLost": 65.8
     },
     "strong": {
-     "win": 55,
-     "rounds": 13,
-     "hpLost": 64.1
+     "win": 83.3,
+     "rounds": 11.7,
+     "hpLost": 51.4
     }
    },
-   "index": 63.1
+   "index": 51.4
   },
   {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
+   "map": "mh",
+   "mapNo": "14",
+   "mapName": "The Briar Maze",
    "side": false,
-   "key": "20-3",
-   "nodeKey": "r-3",
+   "key": "14-3",
+   "nodeKey": "h-3",
    "kind": "skirmish",
-   "name": "Antler Grove",
-   "hp": 230,
+   "name": "Warren Run",
+   "hp": 82,
    "res": {
     "starter": {
-     "win": 3.3,
-     "rounds": 19,
-     "hpLost": 99.1
+     "win": 8.3,
+     "rounds": 13.5,
+     "hpLost": 94.2
     },
     "mid": {
-     "win": 68.3,
-     "rounds": 16.1,
-     "hpLost": 58.1
+     "win": 62.5,
+     "rounds": 14.3,
+     "hpLost": 67.8
     },
     "strong": {
-     "win": 68.3,
-     "rounds": 15,
-     "hpLost": 55.2
+     "win": 66.7,
+     "rounds": 12.1,
+     "hpLost": 52.8
     }
    },
    "index": 53.8
   },
   {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
+   "map": "mh",
+   "mapNo": "14",
+   "mapName": "The Briar Maze",
    "side": false,
-   "key": "20-4",
-   "nodeKey": "r-4",
+   "key": "14-4",
+   "nodeKey": "h-4",
    "kind": "skirmish",
-   "name": "Boar Wallow",
-   "hp": 107,
+   "name": "Thornvine Arch",
+   "hp": 43,
    "res": {
     "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
+     "win": 4.2,
+     "rounds": 11,
+     "hpLost": 98.9
     },
     "mid": {
-     "win": 45,
-     "rounds": 11.9,
-     "hpLost": 75.2
-    },
-    "strong": {
      "win": 75,
-     "rounds": 11.6,
-     "hpLost": 52.7
+     "rounds": 11,
+     "hpLost": 49
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 9.6,
+     "hpLost": 37.6
     }
    },
-   "index": 58.2
+   "index": 41.7
   },
   {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
+   "map": "mh",
+   "mapNo": "14",
+   "mapName": "The Briar Maze",
    "side": false,
-   "key": "20-5",
-   "nodeKey": "r-5",
+   "key": "14-5",
+   "nodeKey": "h-5",
    "kind": "elite",
-   "name": "Badger Setts",
-   "hp": 240,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 17,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 13.3,
-     "rounds": 15.5,
-     "hpLost": 93.3
-    },
-    "strong": {
-     "win": 55,
-     "rounds": 15.5,
-     "hpLost": 66
-    }
-   },
-   "index": 74
-  },
-  {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
-   "side": false,
-   "key": "20-6",
-   "nodeKey": "r-6",
-   "kind": "elite",
-   "name": "Grizzly Ridge",
-   "hp": 146,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 35,
-     "rounds": 13.9,
-     "hpLost": 79.7
-    },
-    "strong": {
-     "win": 53.3,
-     "rounds": 13.4,
-     "hpLost": 67.3
-    }
-   },
-   "index": 69.8
-  },
-  {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
-   "side": false,
-   "key": "20-7",
-   "nodeKey": "r-7",
-   "kind": "elite",
-   "name": "The King's Den",
-   "hp": 219,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 17,
-     "hpLost": 99.2
-    },
-    "mid": {
-     "win": 25,
-     "rounds": 15.3,
-     "hpLost": 87.8
-    },
-    "strong": {
-     "win": 63.3,
-     "rounds": 14.6,
-     "hpLost": 59.2
-    }
-   },
-   "index": 67.3
-  },
-  {
-   "map": "mr",
-   "mapNo": "20",
-   "mapName": "The Redwood Deep",
-   "side": false,
-   "key": "20-8",
-   "nodeKey": "r-8",
-   "kind": "boss",
-   "name": "The Stag-Lord",
-   "hp": 216,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 13.3,
-     "rounds": 15.8,
-     "hpLost": 93.3
-    },
-    "strong": {
-     "win": 51.7,
-     "rounds": 15.6,
-     "hpLost": 68.5
-    }
-   },
-   "index": 75.9
-  },
-  {
-   "map": "ml",
-   "mapNo": "21",
-   "mapName": "The Long Grass",
-   "side": false,
-   "key": "21-1",
-   "nodeKey": "l-1",
-   "kind": "skirmish",
-   "name": "Colt Meadow",
-   "hp": 62,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 14,
-     "hpLost": 99.9
-    },
-    "mid": {
-     "win": 60,
-     "rounds": 10.4,
-     "hpLost": 57.7
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 10,
-     "hpLost": 56.4
-    }
-   },
-   "index": 56.2
-  },
-  {
-   "map": "ml",
-   "mapNo": "21",
-   "mapName": "The Long Grass",
-   "side": false,
-   "key": "21-2",
-   "nodeKey": "l-2",
-   "kind": "skirmish",
-   "name": "Squire Road",
-   "hp": 42,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 10,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 45,
-     "rounds": 8.7,
-     "hpLost": 77.1
-    },
-    "strong": {
-     "win": 70,
-     "rounds": 8.2,
-     "hpLost": 64.5
-    }
-   },
-   "index": 62
-  },
-  {
-   "map": "ml",
-   "mapNo": "21",
-   "mapName": "The Long Grass",
-   "side": false,
-   "key": "21-3",
-   "nodeKey": "l-3",
-   "kind": "skirmish",
-   "name": "Stoat Ambush",
+   "name": "Quillback Hold",
    "hp": 46,
    "res": {
     "starter": {
@@ -4671,85 +2950,1448 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 48.3,
-     "rounds": 8.9,
-     "hpLost": 73.6
+     "win": 37.5,
+     "rounds": 13.1,
+     "hpLost": 85
     },
     "strong": {
-     "win": 56.7,
-     "rounds": 8.7,
-     "hpLost": 72.4
+     "win": 58.3,
+     "rounds": 10.2,
+     "hpLost": 69.6
     }
    },
-   "index": 66.9
+   "index": 68.4
+  },
+  {
+   "map": "mh",
+   "mapNo": "14",
+   "mapName": "The Briar Maze",
+   "side": false,
+   "key": "14-6",
+   "nodeKey": "h-6",
+   "kind": "elite",
+   "name": "Rodent Court",
+   "hp": 86,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 29.2,
+     "rounds": 15.9,
+     "hpLost": 87.5
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 12.8,
+     "hpLost": 71.5
+    }
+   },
+   "index": 70
+  },
+  {
+   "map": "mh",
+   "mapNo": "14",
+   "mapName": "The Briar Maze",
+   "side": false,
+   "key": "14-7",
+   "nodeKey": "h-7",
+   "kind": "boss",
+   "name": "The Briar Queen",
+   "hp": 128,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 12.5,
+     "rounds": 18,
+     "hpLost": 97.8
+    },
+    "strong": {
+     "win": 50,
+     "rounds": 13.9,
+     "hpLost": 77.4
+    }
+   },
+   "index": 78.7
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-1",
+   "nodeKey": "r-1",
+   "kind": "skirmish",
+   "name": "Cub Clearing",
+   "hp": 44,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 13.5,
+     "hpLost": 97.6
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 12,
+     "hpLost": 70.7
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 9.6,
+     "hpLost": 57.2
+    }
+   },
+   "index": 52.9
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-2",
+   "nodeKey": "r-2",
+   "kind": "skirmish",
+   "name": "Fox Run",
+   "hp": 59,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 12.3,
+     "hpLost": 96.1
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 11.7,
+     "hpLost": 57.4
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 10.6,
+     "hpLost": 51.8
+    }
+   },
+   "index": 44.2
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-3",
+   "nodeKey": "r-3",
+   "kind": "skirmish",
+   "name": "Antler Grove",
+   "hp": 200,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 20,
+     "hpLost": 98.5
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 18.3,
+     "hpLost": 62.1
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 15.6,
+     "hpLost": 38.7
+    }
+   },
+   "index": 43
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-4",
+   "nodeKey": "r-4",
+   "kind": "skirmish",
+   "name": "Boar Wallow",
+   "hp": 80,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 13.6,
+     "hpLost": 68.6
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 11.3,
+     "hpLost": 42.2
+    }
+   },
+   "index": 46
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-5",
+   "nodeKey": "r-5",
+   "kind": "elite",
+   "name": "Badger Setts",
+   "hp": 87,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 14.3,
+     "hpLost": 81.4
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 12.2,
+     "hpLost": 56.9
+    }
+   },
+   "index": 60.1
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-6",
+   "nodeKey": "r-6",
+   "kind": "elite",
+   "name": "Grizzly Ridge",
+   "hp": 81,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 16.7,
+     "rounds": 15.3,
+     "hpLost": 91.3
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 12.4,
+     "hpLost": 64.9
+    }
+   },
+   "index": 71.4
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-7",
+   "nodeKey": "r-7",
+   "kind": "elite",
+   "name": "The King's Den",
+   "hp": 158,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 97.9
+    },
+    "mid": {
+     "win": 29.2,
+     "rounds": 18.6,
+     "hpLost": 86.7
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 15.1,
+     "hpLost": 49.6
+    }
+   },
+   "index": 60.3
+  },
+  {
+   "map": "mr",
+   "mapNo": "15",
+   "mapName": "The Redwood Deep",
+   "side": false,
+   "key": "15-8",
+   "nodeKey": "r-8",
+   "kind": "boss",
+   "name": "The Stag-Lord",
+   "hp": 168,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 18,
+     "hpLost": 97.9
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 16.1,
+     "hpLost": 66.9
+    }
+   },
+   "index": 73
   },
   {
    "map": "ml",
-   "mapNo": "21",
+   "mapNo": "16",
    "mapName": "The Long Grass",
    "side": false,
-   "key": "21-4",
+   "key": "16-1",
+   "nodeKey": "l-1",
+   "kind": "skirmish",
+   "name": "Colt Meadow",
+   "hp": 86,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 12.5,
+     "rounds": 13.7,
+     "hpLost": 93.9
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 12.6,
+     "hpLost": 71.9
+    }
+   },
+   "index": 74.2
+  },
+  {
+   "map": "ml",
+   "mapNo": "16",
+   "mapName": "The Long Grass",
+   "side": false,
+   "key": "16-2",
+   "nodeKey": "l-2",
+   "kind": "skirmish",
+   "name": "Squire Road",
+   "hp": 28,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 12.5,
+     "rounds": 9.7,
+     "hpLost": 97.2
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 8.2,
+     "hpLost": 64.6
+    }
+   },
+   "index": 70.3
+  },
+  {
+   "map": "ml",
+   "mapNo": "16",
+   "mapName": "The Long Grass",
+   "side": false,
+   "key": "16-3",
+   "nodeKey": "l-3",
+   "kind": "skirmish",
+   "name": "Stoat Ambush",
+   "hp": 32,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 9.5,
+     "hpLost": 96.7
+    },
+    "strong": {
+     "win": 33.3,
+     "rounds": 8.6,
+     "hpLost": 87.6
+    }
+   },
+   "index": 86.5
+  },
+  {
+   "map": "ml",
+   "mapNo": "16",
+   "mapName": "The Long Grass",
+   "side": false,
+   "key": "16-4",
    "nodeKey": "l-4",
    "kind": "skirmish",
    "name": "Archer Hill",
-   "hp": 76,
+   "hp": 104,
    "res": {
     "starter": {
-     "win": 1.7,
-     "rounds": 11,
-     "hpLost": 98.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 60,
-     "rounds": 11.2,
-     "hpLost": 74.4
+     "win": 33.3,
+     "rounds": 15.6,
+     "hpLost": 81.9
     },
     "strong": {
-     "win": 70,
-     "rounds": 10.5,
-     "hpLost": 55.6
+     "win": 70.8,
+     "rounds": 12.8,
+     "hpLost": 57.8
     }
    },
-   "index": 56
+   "index": 63.4
   },
   {
    "map": "ml",
-   "mapNo": "21",
+   "mapNo": "16",
    "mapName": "The Long Grass",
    "side": false,
-   "key": "21-5",
+   "key": "16-5",
    "nodeKey": "l-5",
    "kind": "elite",
    "name": "Charge of the Warhorses",
-   "hp": 35,
+   "hp": 54,
    "res": {
     "starter": {
-     "win": 3.3,
-     "rounds": 8,
-     "hpLost": 98.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 61.7,
-     "rounds": 8.1,
-     "hpLost": 70.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 73.3,
-     "rounds": 7.6,
-     "hpLost": 63.2
+     "win": 54.2,
+     "rounds": 10.1,
+     "hpLost": 83.9
     }
    },
-   "index": 56.2
+   "index": 82.4
   },
   {
    "map": "ml",
-   "mapNo": "21",
+   "mapNo": "16",
    "mapName": "The Long Grass",
    "side": false,
-   "key": "21-6",
+   "key": "16-6",
    "nodeKey": "l-6",
    "kind": "elite",
    "name": "The Kennels",
+   "hp": 163,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "strong": {
+     "win": 41.7,
+     "rounds": 15.7,
+     "hpLost": 75.8
+    }
+   },
+   "index": 83.5
+  },
+  {
+   "map": "ml",
+   "mapNo": "16",
+   "mapName": "The Long Grass",
+   "side": false,
+   "key": "16-7",
+   "nodeKey": "l-7",
+   "kind": "boss",
+   "name": "The Horse-Lord",
+   "hp": 214,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "strong": {
+     "win": 29.2,
+     "rounds": 17.1,
+     "hpLost": 79.7
+    }
+   },
+   "index": 87.6
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-1",
+   "nodeKey": "t-1",
+   "kind": "skirmish",
+   "name": "Snowshoe Tracks",
+   "hp": 46,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 10.4,
+     "hpLost": 92.6
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 11.3,
+     "hpLost": 37.9
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 9.5,
+     "hpLost": 28.9
+    }
+   },
+   "index": 29.1
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-2",
+   "nodeKey": "t-2",
+   "kind": "skirmish",
+   "name": "Pinecone Drop",
+   "hp": 91,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 14.6,
+     "hpLost": 54.3
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 12.6,
+     "hpLost": 45.3
+    }
+   },
+   "index": 44.7
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-3",
+   "nodeKey": "t-3",
+   "kind": "skirmish",
+   "name": "Elk Crossing",
+   "hp": 110,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 15.5,
+     "hpLost": 95.8
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 15.1,
+     "hpLost": 60.3
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 12.3,
+     "hpLost": 36.3
+    }
+   },
+   "index": 45.6
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-4",
+   "nodeKey": "t-4",
+   "kind": "skirmish",
+   "name": "Lynx Shadow",
+   "hp": 239,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 19.5,
+     "hpLost": 95.4
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 19.3,
+     "hpLost": 62.9
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 16.7,
+     "hpLost": 42.2
+    }
+   },
+   "index": 48.1
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-5",
+   "nodeKey": "t-5",
+   "kind": "elite",
+   "name": "The Running Pack",
+   "hp": 215,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 97.8
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 18.4,
+     "hpLost": 75.8
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 16.3,
+     "hpLost": 49.6
+    }
+   },
+   "index": 60.3
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-6",
+   "nodeKey": "t-6",
+   "kind": "elite",
+   "name": "Reaver's Hollow",
+   "hp": 68,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 12.7,
+     "hpLost": 78.1
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 11,
+     "hpLost": 39.9
+    }
+   },
+   "index": 54.8
+  },
+  {
+   "map": "mt",
+   "mapNo": "17",
+   "mapName": "The Pinewood Taiga",
+   "side": false,
+   "key": "17-7",
+   "nodeKey": "t-7",
+   "kind": "boss",
+   "name": "The Howling Alpha",
+   "hp": 240,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 20,
+     "hpLost": 97.1
+    },
+    "strong": {
+     "win": 41.7,
+     "rounds": 17.6,
+     "hpLost": 73.1
+    }
+   },
+   "index": 80.8
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-1",
+   "nodeKey": "6-1",
+   "kind": "skirmish",
+   "name": "Ice Fang Patrol",
+   "hp": 140,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 19.7,
+     "hpLost": 95.7
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 17.5,
+     "hpLost": 37.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 15.3,
+     "hpLost": 19
+    }
+   },
+   "index": 28.7
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-2",
+   "nodeKey": "6-2",
+   "kind": "skirmish",
+   "name": "Frostbitten Pack",
+   "hp": 27,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 10.5,
+     "hpLost": 98.7
+    },
+    "mid": {
+     "win": 83.3,
+     "rounds": 11.6,
+     "hpLost": 55.8
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 9.4,
+     "hpLost": 36.5
+    }
+   },
+   "index": 37.3
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-3",
+   "nodeKey": "6-3",
+   "kind": "skirmish",
+   "name": "Snowshoe Line",
+   "hp": 36,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 9,
+     "hpLost": 99.3
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 12.4,
+     "hpLost": 77.1
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 11.1,
+     "hpLost": 69.7
+    }
+   },
+   "index": 64.3
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-4",
+   "nodeKey": "6-4",
+   "kind": "skirmish",
+   "name": "Lynx Ambush",
+   "hp": 56,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 13.8,
+     "hpLost": 90
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 13.5,
+     "hpLost": 58.7
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 11,
+     "hpLost": 18.8
+    }
+   },
+   "index": 30.8
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-5",
+   "nodeKey": "6-5",
+   "kind": "elite",
+   "name": "Musk Ox Bulwark",
+   "hp": 25,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 10,
+     "hpLost": 99.3
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 11.9,
+     "hpLost": 79.6
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 10.1,
+     "hpLost": 52.1
+    }
+   },
+   "index": 50.5
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-6",
+   "nodeKey": "6-6",
+   "kind": "elite",
+   "name": "Glacier Herd",
+   "hp": 135,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 4.2,
+     "rounds": 19,
+     "hpLost": 99.9
+    },
+    "strong": {
+     "win": 58.3,
+     "rounds": 15,
+     "hpLost": 63.1
+    }
+   },
+   "index": 75.2
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-7",
+   "nodeKey": "6-7",
+   "kind": "elite",
+   "name": "Alpha Howler's Den",
+   "hp": 65,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 16.7,
+     "hpLost": 92.1
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 13.7,
+     "hpLost": 52.4
+    }
+   },
+   "index": 61
+  },
+  {
+   "map": "m6",
+   "mapNo": "18",
+   "mapName": "Wolfsbane Tundra",
+   "side": false,
+   "key": "18-8",
+   "nodeKey": "6-8",
+   "kind": "boss",
+   "name": "The Glacial Ape-King",
+   "hp": 30,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "strong": {
+     "win": 8.3,
+     "rounds": 12.5,
+     "hpLost": 96.5
+    }
+   },
+   "index": 97.1
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-1",
+   "nodeKey": "5-1",
+   "kind": "skirmish",
+   "name": "Zebra Stampede",
+   "hp": 80,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 16,
+     "hpLost": 95.1
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 14,
+     "hpLost": 58.5
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 12.4,
+     "hpLost": 38.7
+    }
+   },
+   "index": 38.9
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-2",
+   "nodeKey": "5-2",
+   "kind": "skirmish",
+   "name": "Hyena Chorus",
+   "hp": 58,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 12.5,
+     "hpLost": 76.1
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 10.7,
+     "hpLost": 64.7
+    }
+   },
+   "index": 65.1
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-3",
+   "nodeKey": "5-3",
+   "kind": "skirmish",
+   "name": "Howler Canopy",
+   "hp": 88,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 12.5,
+     "hpLost": 93.1
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 13,
+     "hpLost": 71.9
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 12,
+     "hpLost": 52.2
+    }
+   },
+   "index": 49.5
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-4",
+   "nodeKey": "5-4",
+   "kind": "skirmish",
+   "name": "Toucan Watch",
+   "hp": 23,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 8,
+     "hpLost": 94.7
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 9.7,
+     "hpLost": 66.9
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 7.9,
+     "hpLost": 47.1
+    }
+   },
+   "index": 43
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-5",
+   "nodeKey": "5-5",
+   "kind": "elite",
+   "name": "Giraffe Vanguard",
+   "hp": 47,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 11.3,
+     "hpLost": 90.8
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 11.9,
+     "hpLost": 75
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 10.2,
+     "hpLost": 46.8
+    }
+   },
+   "index": 51.3
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-6",
+   "nodeKey": "5-6",
+   "kind": "elite",
+   "name": "Jaguar Run",
+   "hp": 56,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 10.8,
+     "hpLost": 86.3
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 11.3,
+     "hpLost": 35.6
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 9.9,
+     "hpLost": 40.3
+    }
+   },
+   "index": 34
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-7",
+   "nodeKey": "5-7",
+   "kind": "elite",
+   "name": "The Cheetah Matriarch",
+   "hp": 46,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 10.5,
+     "hpLost": 94.9
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 10.9,
+     "hpLost": 48.3
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 9.7,
+     "hpLost": 41.3
+    }
+   },
+   "index": 37.4
+  },
+  {
+   "map": "m5",
+   "mapNo": "19",
+   "mapName": "Savanna Reaches",
+   "side": false,
+   "key": "19-8",
+   "nodeKey": "5-8",
+   "kind": "boss",
+   "name": "The Savanna Warlord",
+   "hp": 64,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 11,
+     "hpLost": 98.9
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 13.2,
+     "hpLost": 90.6
+    },
+    "strong": {
+     "win": 58.3,
+     "rounds": 10.9,
+     "hpLost": 73.9
+    }
+   },
+   "index": 71.6
+  },
+  {
+   "map": "my",
+   "mapNo": "19-A",
+   "mapName": "The Canopy",
+   "side": true,
+   "key": "19-A-1",
+   "nodeKey": "y-1",
+   "kind": "skirmish",
+   "name": "Dart Frogs",
+   "hp": 54,
+   "res": {
+    "starter": {
+     "win": 25,
+     "rounds": 12,
+     "hpLost": 93.6
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 12.3,
+     "hpLost": 49.2
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 10.4,
+     "hpLost": 48.2
+    }
+   },
+   "index": 35
+  },
+  {
+   "map": "my",
+   "mapNo": "19-A",
+   "mapName": "The Canopy",
+   "side": true,
+   "key": "19-A-2",
+   "nodeKey": "y-2",
+   "kind": "skirmish",
+   "name": "Strangler Arch",
+   "hp": 83,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 13.5,
+     "hpLost": 96.8
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 13.4,
+     "hpLost": 51.7
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 11.6,
+     "hpLost": 55.8
+    }
+   },
+   "index": 48.3
+  },
+  {
+   "map": "my",
+   "mapNo": "19-A",
+   "mapName": "The Canopy",
+   "side": true,
+   "key": "19-A-3",
+   "nodeKey": "y-3",
+   "kind": "skirmish",
+   "name": "Sloth Boughs",
+   "hp": 92,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 83.3,
+     "rounds": 16.6,
+     "hpLost": 47.9
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 13.3,
+     "hpLost": 54.3
+    }
+   },
+   "index": 49
+  },
+  {
+   "map": "my",
+   "mapNo": "19-A",
+   "mapName": "The Canopy",
+   "side": true,
+   "key": "19-A-4",
+   "nodeKey": "y-4",
+   "kind": "elite",
+   "name": "Drum Circle",
+   "hp": 158,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 18.1,
+     "hpLost": 49.6
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 16.1,
+     "hpLost": 38.6
+    }
+   },
+   "index": 44
+  },
+  {
+   "map": "my",
+   "mapNo": "19-A",
+   "mapName": "The Canopy",
+   "side": true,
+   "key": "19-A-5",
+   "nodeKey": "y-5",
+   "kind": "boss",
+   "name": "The Jaguar's Path",
+   "hp": 112,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 41.7,
+     "rounds": 18.3,
+     "hpLost": 80
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 14.4,
+     "hpLost": 48.3
+    }
+   },
+   "index": 57.9
+  },
+  {
+   "map": "md",
+   "mapNo": "20",
+   "mapName": "The Glass Dunes",
+   "side": false,
+   "key": "20-1",
+   "nodeKey": "d-1",
+   "kind": "skirmish",
+   "name": "Dune Jackals",
+   "hp": 229,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 17,
+     "hpLost": 99.2
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 17.8,
+     "hpLost": 59
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 16.5,
+     "hpLost": 46.5
+    }
+   },
+   "index": 43.9
+  },
+  {
+   "map": "md",
+   "mapNo": "20",
+   "mapName": "The Glass Dunes",
+   "side": false,
+   "key": "20-2",
+   "nodeKey": "d-2",
+   "kind": "skirmish",
+   "name": "Scorpion Flats",
+   "hp": 240,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 19.5,
+     "hpLost": 98.3
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 19.3,
+     "hpLost": 70.1
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 17,
+     "hpLost": 53.2
+    }
+   },
+   "index": 51.9
+  },
+  {
+   "map": "md",
+   "mapNo": "20",
+   "mapName": "The Glass Dunes",
+   "side": false,
+   "key": "20-3",
+   "nodeKey": "d-3",
+   "kind": "skirmish",
+   "name": "Widow's Web",
+   "hp": 124,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 16.3,
+     "hpLost": 95.1
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 16.8,
+     "hpLost": 92.8
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 13.4,
+     "hpLost": 56.9
+    }
+   },
+   "index": 63.2
+  },
+  {
+   "map": "md",
+   "mapNo": "20",
+   "mapName": "The Glass Dunes",
+   "side": false,
+   "key": "20-4",
+   "nodeKey": "d-4",
+   "kind": "skirmish",
+   "name": "Sandstorm",
+   "hp": 230,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 98.5
+    },
+    "mid": {
+     "win": 25,
+     "rounds": 19.7,
+     "hpLost": 87.5
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 17.1,
+     "hpLost": 46.7
+    }
+   },
+   "index": 59.6
+  },
+  {
+   "map": "md",
+   "mapNo": "20",
+   "mapName": "The Glass Dunes",
+   "side": false,
+   "key": "20-5",
+   "nodeKey": "d-5",
+   "kind": "elite",
+   "name": "Obsidian Nest",
    "hp": 181,
    "res": {
     "starter": {
@@ -4758,452 +4400,1322 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 20,
-     "rounds": 15.5,
-     "hpLost": 92.9
-    },
-    "strong": {
-     "win": 66.7,
-     "rounds": 14.7,
-     "hpLost": 56.2
-    }
-   },
-   "index": 67.4
-  },
-  {
-   "map": "ml",
-   "mapNo": "21",
-   "mapName": "The Long Grass",
-   "side": false,
-   "key": "21-7",
-   "nodeKey": "l-7",
-   "kind": "boss",
-   "name": "The Horse-Lord",
-   "hp": 117,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 13,
-     "hpLost": 97.8
-    },
-    "mid": {
-     "win": 35,
-     "rounds": 12,
-     "hpLost": 80.7
-    },
-    "strong": {
-     "win": 65,
-     "rounds": 11.6,
-     "hpLost": 59.2
-    }
-   },
-   "index": 64
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-1",
-   "nodeKey": "t-1",
-   "kind": "skirmish",
-   "name": "Snowshoe Tracks",
-   "hp": 59,
-   "res": {
-    "starter": {
-     "win": 6.7,
-     "rounds": 11,
-     "hpLost": 98.4
-    },
-    "mid": {
-     "win": 73.3,
-     "rounds": 10.6,
-     "hpLost": 56
-    },
-    "strong": {
-     "win": 61.7,
-     "rounds": 10.3,
-     "hpLost": 62.9
-    }
-   },
-   "index": 55.3
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-2",
-   "nodeKey": "t-2",
-   "kind": "skirmish",
-   "name": "Pinecone Drop",
-   "hp": 235,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 20,
-     "hpLost": 99.7
-    },
-    "mid": {
-     "win": 41.7,
-     "rounds": 17.7,
-     "hpLost": 81.9
-    },
-    "strong": {
-     "win": 53.3,
-     "rounds": 16.3,
-     "hpLost": 70
-    }
-   },
-   "index": 68.3
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-3",
-   "nodeKey": "t-3",
-   "kind": "skirmish",
-   "name": "Elk Crossing",
-   "hp": 230,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 58.3,
-     "rounds": 15.3,
-     "hpLost": 63.5
-    },
-    "strong": {
-     "win": 75,
-     "rounds": 15.1,
-     "hpLost": 50.6
-    }
-   },
-   "index": 54.3
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-4",
-   "nodeKey": "t-4",
-   "kind": "skirmish",
-   "name": "Lynx Shadow",
-   "hp": 239,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 20,
-     "hpLost": 99.8
-    },
-    "mid": {
-     "win": 46.7,
-     "rounds": 15.8,
-     "hpLost": 68.7
-    },
-    "strong": {
-     "win": 58.3,
-     "rounds": 15.6,
-     "hpLost": 56.8
-    }
-   },
-   "index": 62.5
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-5",
-   "nodeKey": "t-5",
-   "kind": "elite",
-   "name": "The Running Pack",
-   "hp": 229,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 15,
-     "hpLost": 99.6
-    },
-    "mid": {
-     "win": 36.7,
-     "rounds": 15.5,
-     "hpLost": 74.1
-    },
-    "strong": {
-     "win": 53.3,
-     "rounds": 16,
-     "hpLost": 70.1
-    }
-   },
-   "index": 69.6
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-6",
-   "nodeKey": "t-6",
-   "kind": "elite",
-   "name": "Reaver's Hollow",
-   "hp": 116,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 51.7,
-     "rounds": 12.5,
-     "hpLost": 66.4
-    },
-    "strong": {
-     "win": 46.7,
-     "rounds": 12.4,
-     "hpLost": 71.1
-    }
-   },
-   "index": 68.2
-  },
-  {
-   "map": "mt",
-   "mapNo": "22",
-   "mapName": "The Pinewood Taiga",
-   "side": false,
-   "key": "22-7",
-   "nodeKey": "t-7",
-   "kind": "boss",
-   "name": "The Howling Alpha",
-   "hp": 240,
-   "res": {
-    "starter": {
-     "win": 1.7,
-     "rounds": 17,
-     "hpLost": 99.4
-    },
-    "mid": {
-     "win": 30,
-     "rounds": 15.7,
-     "hpLost": 79.5
-    },
-    "strong": {
-     "win": 33.3,
-     "rounds": 16,
-     "hpLost": 76.7
-    }
-   },
-   "index": 77.9
-  },
-  {
-   "map": "md",
-   "mapNo": "23",
-   "mapName": "The Glass Dunes",
-   "side": false,
-   "key": "23-1",
-   "nodeKey": "d-1",
-   "kind": "skirmish",
-   "name": "Dune Jackals",
-   "hp": 178,
-   "res": {
-    "starter": {
-     "win": 10,
-     "rounds": 17.5,
-     "hpLost": 96.6
-    },
-    "mid": {
-     "win": 65,
-     "rounds": 14.5,
-     "hpLost": 60.2
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 13.8,
-     "hpLost": 50.3
-    }
-   },
-   "index": 50.5
-  },
-  {
-   "map": "md",
-   "mapNo": "23",
-   "mapName": "The Glass Dunes",
-   "side": false,
-   "key": "23-2",
-   "nodeKey": "d-2",
-   "kind": "skirmish",
-   "name": "Scorpion Flats",
-   "hp": 234,
-   "res": {
-    "starter": {
-     "win": 3.3,
-     "rounds": 16.5,
-     "hpLost": 99.1
-    },
-    "mid": {
-     "win": 63.3,
-     "rounds": 15.8,
-     "hpLost": 60.3
-    },
-    "strong": {
-     "win": 66.7,
-     "rounds": 15.6,
-     "hpLost": 49.1
-    }
-   },
-   "index": 54
-  },
-  {
-   "map": "md",
-   "mapNo": "23",
-   "mapName": "The Glass Dunes",
-   "side": false,
-   "key": "23-3",
-   "nodeKey": "d-3",
-   "kind": "skirmish",
-   "name": "Widow's Web",
-   "hp": 229,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 35,
-     "rounds": 15.3,
-     "hpLost": 84.4
-    },
-    "strong": {
-     "win": 76.7,
-     "rounds": 14.7,
-     "hpLost": 46.1
-    }
-   },
-   "index": 58.6
-  },
-  {
-   "map": "md",
-   "mapNo": "23",
-   "mapName": "The Glass Dunes",
-   "side": false,
-   "key": "23-4",
-   "nodeKey": "d-4",
-   "kind": "skirmish",
-   "name": "Sandstorm",
-   "hp": 230,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
-     "win": 38.3,
-     "rounds": 15.1,
-     "hpLost": 84.7
-    },
-    "strong": {
-     "win": 73.3,
-     "rounds": 14.4,
-     "hpLost": 47.4
-    }
-   },
-   "index": 59
-  },
-  {
-   "map": "md",
-   "mapNo": "23",
-   "mapName": "The Glass Dunes",
-   "side": false,
-   "key": "23-5",
-   "nodeKey": "d-5",
-   "kind": "elite",
-   "name": "Obsidian Nest",
-   "hp": 240,
-   "res": {
-    "starter": {
-     "win": 0,
-     "rounds": null,
-     "hpLost": 100
-    },
-    "mid": {
      "win": 16.7,
-     "rounds": 15.3,
-     "hpLost": 91.1
+     "rounds": 20,
+     "hpLost": 94
     },
     "strong": {
-     "win": 55,
-     "rounds": 15.4,
-     "hpLost": 69.1
+     "win": 66.7,
+     "rounds": 15.9,
+     "hpLost": 60.3
     }
    },
-   "index": 74.4
+   "index": 69.2
   },
   {
    "map": "md",
-   "mapNo": "23",
+   "mapNo": "20",
    "mapName": "The Glass Dunes",
    "side": false,
-   "key": "23-6",
+   "key": "20-6",
    "nodeKey": "d-6",
    "kind": "elite",
    "name": "Komodo Wallow",
    "hp": 240,
    "res": {
     "starter": {
-     "win": 1.7,
-     "rounds": 16,
-     "hpLost": 99.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 31.7,
-     "rounds": 16.3,
-     "hpLost": 85
+     "win": 33.3,
+     "rounds": 19.8,
+     "hpLost": 93.3
     },
     "strong": {
-     "win": 68.3,
-     "rounds": 15.5,
-     "hpLost": 55.9
+     "win": 75,
+     "rounds": 18.1,
+     "hpLost": 53.9
     }
    },
-   "index": 63.6
+   "index": 61.4
   },
   {
    "map": "md",
-   "mapNo": "23",
+   "mapNo": "20",
    "mapName": "The Glass Dunes",
    "side": false,
-   "key": "23-7",
+   "key": "20-7",
    "nodeKey": "d-7",
    "kind": "boss",
    "name": "The Sand Widow Queen",
-   "hp": 205,
+   "hp": 177,
    "res": {
     "starter": {
-     "win": 3.3,
-     "rounds": 18.5,
-     "hpLost": 99.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 19.6,
+     "hpLost": 91.4
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 16.7,
+     "hpLost": 58.2
+    }
+   },
+   "index": 65.6
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-1",
+   "nodeKey": "9-1",
+   "kind": "skirmish",
+   "name": "Cinder Swarm",
+   "hp": 63,
+   "res": {
+    "starter": {
+     "win": 45.8,
+     "rounds": 12.6,
+     "hpLost": 80.8
+    },
+    "mid": {
+     "win": 91.7,
+     "rounds": 11.7,
+     "hpLost": 36.4
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 9.9,
+     "hpLost": 19
+    }
+   },
+   "index": 20.4
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-2",
+   "nodeKey": "9-2",
+   "kind": "skirmish",
+   "name": "Salamander Vents",
+   "hp": 60,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 12,
+     "hpLost": 98.3
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 13.3,
+     "hpLost": 80.6
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 9.9,
+     "hpLost": 30.1
+    }
+   },
+   "index": 46.1
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-3",
+   "nodeKey": "9-9",
+   "kind": "skirmish",
+   "name": "Slag Runners",
+   "hp": 50,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 10,
+     "hpLost": 94.9
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 12.3,
+     "hpLost": 68.9
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 10.5,
+     "hpLost": 36.8
+    }
+   },
+   "index": 43.6
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-4",
+   "nodeKey": "9-3",
+   "kind": "skirmish",
+   "name": "Vent Skitter",
+   "hp": 69,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 11.5,
+     "hpLost": 95.1
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 13.5,
+     "hpLost": 78.9
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 11,
+     "hpLost": 41.8
+    }
+   },
+   "index": 49
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-5",
+   "nodeKey": "9-4",
+   "kind": "skirmish",
+   "name": "Ashfall Line",
+   "hp": 43,
+   "res": {
+    "starter": {
+     "win": 54.2,
+     "rounds": 10.9,
+     "hpLost": 79.6
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 11.7,
+     "hpLost": 52.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 9,
+     "hpLost": 17.6
+    }
+   },
+   "index": 23.2
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-6",
+   "nodeKey": "9-10",
+   "kind": "skirmish",
+   "name": "Furnace Mouth",
+   "hp": 90,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 14,
+     "hpLost": 98.7
+    },
+    "mid": {
+     "win": 75,
+     "rounds": 14.5,
+     "hpLost": 58.3
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 11.5,
+     "hpLost": 28.3
+    }
+   },
+   "index": 37.3
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-7",
+   "nodeKey": "9-5",
+   "kind": "elite",
+   "name": "Basalt Vanguard",
+   "hp": 176,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 20,
+     "hpLost": 96.5
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 18.1,
+     "hpLost": 64.3
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 15.8,
+     "hpLost": 41.5
+    }
+   },
+   "index": 45.8
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-8",
+   "nodeKey": "9-6",
+   "kind": "elite",
+   "name": "Titan's Shadow",
+   "hp": 70,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 13,
+     "hpLost": 96.4
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 13.9,
+     "hpLost": 61.8
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 11,
+     "hpLost": 16.4
+    }
+   },
+   "index": 35.4
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-9",
+   "nodeKey": "9-7",
+   "kind": "elite",
+   "name": "The Pyroclast Wyrm",
+   "hp": 120,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 17.2,
+     "hpLost": 91.3
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 14.2,
+     "hpLost": 67.6
+    }
+   },
+   "index": 69
+  },
+  {
+   "map": "m9",
+   "mapNo": "21",
+   "mapName": "Basalt Foundry",
+   "side": false,
+   "key": "21-10",
+   "nodeKey": "9-8",
+   "kind": "boss",
+   "name": "The Phoenix Ember King",
+   "hp": 228,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 20,
+     "hpLost": 96.5
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 17.7,
+     "hpLost": 68.1
+    }
+   },
+   "index": 73.3
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-1",
+   "nodeKey": "11-1",
+   "kind": "skirmish",
+   "name": "Silverback Watch",
+   "hp": 139,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 16.7,
-     "rounds": 16.6,
-     "hpLost": 93.9
+     "rounds": 18.5,
+     "hpLost": 92.4
     },
     "strong": {
-     "win": 36.7,
-     "rounds": 15.6,
-     "hpLost": 77.1
+     "win": 37.5,
+     "rounds": 14.4,
+     "hpLost": 81.2
     }
    },
-   "index": 80.1
+   "index": 81.8
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-2",
+   "nodeKey": "11-2",
+   "kind": "skirmish",
+   "name": "Grizzly Frontier",
+   "hp": 70,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 15,
+     "hpLost": 99.6
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 14.2,
+     "hpLost": 95
+    },
+    "strong": {
+     "win": 41.7,
+     "rounds": 11.6,
+     "hpLost": 75.4
+    }
+   },
+   "index": 77.2
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-3",
+   "nodeKey": "11-9",
+   "kind": "skirmish",
+   "name": "Panther Ledge",
+   "hp": 74,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 54.2,
+     "rounds": 13.6,
+     "hpLost": 67.5
+    },
+    "strong": {
+     "win": 70.8,
+     "rounds": 11.5,
+     "hpLost": 56
+    }
+   },
+   "index": 57.8
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-4",
+   "nodeKey": "11-10",
+   "kind": "skirmish",
+   "name": "Shrine Steps",
+   "hp": 239,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 99.2
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 19.3,
+     "hpLost": 76.8
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 17,
+     "hpLost": 34.3
+    }
+   },
+   "index": 51.3
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-5",
+   "nodeKey": "11-3",
+   "kind": "elite",
+   "name": "Cave Warlord's Guard",
+   "hp": 212,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 99.3
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 19,
+     "hpLost": 96.5
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 16.6,
+     "hpLost": 72.4
+    }
+   },
+   "index": 74.4
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-6",
+   "nodeKey": "11-4",
+   "kind": "elite",
+   "name": "The Constrictor Sovereign",
+   "hp": 196,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 19.4,
+     "hpLost": 94.2
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 16,
+     "hpLost": 65.4
+    }
+   },
+   "index": 70.5
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-7",
+   "nodeKey": "11-5",
+   "kind": "elite",
+   "name": "The Blessed Avatar",
+   "hp": 238,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 19.5,
+     "hpLost": 96.8
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 17.1,
+     "hpLost": 64
+    }
+   },
+   "index": 72.3
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-8",
+   "nodeKey": "11-6",
+   "kind": "elite",
+   "name": "The Iron Cataphract",
+   "hp": 229,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 16.7,
+     "rounds": 20,
+     "hpLost": 94
+    },
+    "strong": {
+     "win": 50,
+     "rounds": 16.8,
+     "hpLost": 64.6
+    }
+   },
+   "index": 74.5
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-9",
+   "nodeKey": "11-7",
+   "kind": "boss",
+   "name": "The Ancient Sloth Titan",
+   "hp": 239,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 20,
+     "hpLost": 98.1
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 19.1,
+     "hpLost": 31.9
+    },
+    "strong": {
+     "win": 95.8,
+     "rounds": 17.9,
+     "hpLost": 26.4
+    }
+   },
+   "index": 32.7
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-10",
+   "nodeKey": "11-8",
+   "kind": "finalboss",
+   "name": "The Cave Warlord",
+   "hp": 201,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 98.2
+    },
+    "strong": {
+     "win": 54.2,
+     "rounds": 16.5,
+     "hpLost": 71.7
+    }
+   },
+   "index": 78.3
+  },
+  {
+   "map": "m11",
+   "mapNo": "22",
+   "mapName": "The Sundered Peak",
+   "side": false,
+   "key": "22-11",
+   "nodeKey": "11-wb",
+   "kind": "worldboss",
+   "name": "The Caldera Wyrm",
+   "hp": 240,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 8.3,
+     "rounds": 20,
+     "hpLost": 97.9
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 17.1,
+     "hpLost": 56.1
+    }
+   },
+   "index": 70.3
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-1",
+   "nodeKey": "e-1",
+   "kind": "elite",
+   "name": "The Ash Ossuary",
+   "hp": 170,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 37.5,
+     "rounds": 18.7,
+     "hpLost": 88.1
+    },
+    "strong": {
+     "win": 45.8,
+     "rounds": 16.1,
+     "hpLost": 74.9
+    }
+   },
+   "index": 72.9
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-2",
+   "nodeKey": "e-2",
+   "kind": "elite",
+   "name": "The Wraith Vents",
+   "hp": 190,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 18.7,
+     "hpLost": 77.2
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 16.2,
+     "hpLost": 59.3
+    }
+   },
+   "index": 59.6
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-3",
+   "nodeKey": "e-3",
+   "kind": "elite",
+   "name": "The Lich's Kiln",
+   "hp": 210,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 79.2,
+     "rounds": 19.2,
+     "hpLost": 63.3
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 16.9,
+     "hpLost": 59.9
+    }
+   },
+   "index": 53.5
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-4",
+   "nodeKey": "e-4",
+   "kind": "dungeon",
+   "name": "Heart of the Mountain",
+   "hp": 260,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 50,
+     "rounds": 19.9,
+     "hpLost": 82.5
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 18.8,
+     "hpLost": 64.4
+    }
+   },
+   "index": 61.9
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-5",
+   "nodeKey": "e-s1",
+   "kind": "elite",
+   "name": "Scorched Boars",
+   "hp": 180,
+   "res": {
+    "starter": {
+     "win": 33.3,
+     "rounds": 19.6,
+     "hpLost": 87.1
+    },
+    "mid": {
+     "win": 95.8,
+     "rounds": 16.9,
+     "hpLost": 41.4
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 14.8,
+     "hpLost": 20
+    }
+   },
+   "index": 22.7
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-6",
+   "nodeKey": "e-s2",
+   "kind": "elite",
+   "name": "The Vent Crabs",
+   "hp": 190,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 20,
+     "hpLost": 90.6
+    },
+    "strong": {
+     "win": 91.7,
+     "rounds": 16.1,
+     "hpLost": 43.9
+    }
+   },
+   "index": 57.9
+  },
+  {
+   "map": "me",
+   "mapNo": "22-A",
+   "mapName": "Eye of the Volcano",
+   "side": true,
+   "key": "22-A-7",
+   "nodeKey": "e-s3",
+   "kind": "elite",
+   "name": "Ash Condor Roost",
+   "hp": 200,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 20,
+     "hpLost": 99.2
+    },
+    "mid": {
+     "win": 87.5,
+     "rounds": 18.9,
+     "hpLost": 44.6
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 16.4,
+     "hpLost": 28.7
+    }
+   },
+   "index": 34.3
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-1",
+   "nodeKey": "3-1",
+   "kind": "skirmish",
+   "name": "Badger Warband",
+   "hp": 117,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 16,
+     "hpLost": 97.4
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 16.7,
+     "hpLost": 73.3
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 13.7,
+     "hpLost": 59.4
+    }
+   },
+   "index": 54.4
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-2",
+   "nodeKey": "3-2",
+   "kind": "skirmish",
+   "name": "Quill Line",
+   "hp": 144,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 17.5,
+     "hpLost": 86.7
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 14.4,
+     "hpLost": 59.2
+    }
+   },
+   "index": 59.6
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-3",
+   "nodeKey": "3-3",
+   "kind": "elite",
+   "name": "Porcupine Bastion",
+   "hp": 154,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 20.8,
+     "rounds": 17.8,
+     "hpLost": 93.2
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 15.1,
+     "hpLost": 62.6
+    }
+   },
+   "index": 68.8
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-4",
+   "nodeKey": "3-4",
+   "kind": "elite",
+   "name": "Sky Marks",
+   "hp": 113,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 16,
+     "hpLost": 74.9
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 13.3,
+     "hpLost": 53.5
+    }
+   },
+   "index": 53
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-5",
+   "nodeKey": "3-5",
+   "kind": "elite",
+   "name": "Sky Scraper Sentinel",
+   "hp": 113,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 62.5,
+     "rounds": 16,
+     "hpLost": 74.9
+    },
+    "strong": {
+     "win": 79.2,
+     "rounds": 13.3,
+     "hpLost": 53.5
+    }
+   },
+   "index": 53
+  },
+  {
+   "map": "m3",
+   "mapNo": "23",
+   "mapName": "The Ashen Peak",
+   "side": false,
+   "key": "23-6",
+   "nodeKey": "3-6",
+   "kind": "boss",
+   "name": "The Frost Yeti King",
+   "hp": 180,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 29.2,
+     "rounds": 18.1,
+     "hpLost": 83.1
+    },
+    "strong": {
+     "win": 75,
+     "rounds": 15.1,
+     "hpLost": 60.1
+    }
+   },
+   "index": 64
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-1",
+   "nodeKey": "7-1",
+   "kind": "skirmish",
+   "name": "Clownfish Shoal",
+   "hp": 95,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 33.3,
+     "rounds": 15.1,
+     "hpLost": 88.6
+    },
+    "strong": {
+     "win": 62.5,
+     "rounds": 13,
+     "hpLost": 69.4
+    }
+   },
+   "index": 68.4
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-2",
+   "nodeKey": "7-2",
+   "kind": "skirmish",
+   "name": "Moray Ambush",
+   "hp": 126,
+   "res": {
+    "starter": {
+     "win": 25,
+     "rounds": 15.7,
+     "hpLost": 83.3
+    },
+    "mid": {
+     "win": 70.8,
+     "rounds": 16,
+     "hpLost": 61.8
+    },
+    "strong": {
+     "win": 83.3,
+     "rounds": 13.8,
+     "hpLost": 50.1
+    }
+   },
+   "index": 42.8
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-3",
+   "nodeKey": "7-3",
+   "kind": "skirmish",
+   "name": "Tide Pool Line",
+   "hp": 57,
+   "res": {
+    "starter": {
+     "win": 16.7,
+     "rounds": 13.3,
+     "hpLost": 92.9
+    },
+    "mid": {
+     "win": 45.8,
+     "rounds": 13,
+     "hpLost": 71.5
+    },
+    "strong": {
+     "win": 87.5,
+     "rounds": 11.1,
+     "hpLost": 47.2
+    }
+   },
+   "index": 49.3
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-4",
+   "nodeKey": "7-4",
+   "kind": "skirmish",
+   "name": "Riptide Channel",
+   "hp": 95,
+   "res": {
+    "starter": {
+     "win": 12.5,
+     "rounds": 15,
+     "hpLost": 96.8
+    },
+    "mid": {
+     "win": 66.7,
+     "rounds": 15.1,
+     "hpLost": 73.9
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 12,
+     "hpLost": 57.6
+    }
+   },
+   "index": 52.9
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-5",
+   "nodeKey": "7-5",
+   "kind": "skirmish",
+   "name": "Current Split",
+   "hp": 76,
+   "res": {
+    "starter": {
+     "win": 4.2,
+     "rounds": 12,
+     "hpLost": 99
+    },
+    "mid": {
+     "win": 4.2,
+     "rounds": 16,
+     "hpLost": 99.9
+    },
+    "strong": {
+     "win": 58.3,
+     "rounds": 11.6,
+     "hpLost": 74.4
+    }
+   },
+   "index": 76.9
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-6",
+   "nodeKey": "7-6",
+   "kind": "elite",
+   "name": "Reef Shark Pack",
+   "hp": 59,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 11.5,
+     "hpLost": 97.9
+    },
+    "mid": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "strong": {
+     "win": 20.8,
+     "rounds": 10,
+     "hpLost": 92.4
+    }
+   },
+   "index": 90.8
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-7",
+   "nodeKey": "7-7",
+   "kind": "elite",
+   "name": "Eel Nest",
+   "hp": 82,
+   "res": {
+    "starter": {
+     "win": 8.3,
+     "rounds": 12.5,
+     "hpLost": 97.2
+    },
+    "mid": {
+     "win": 33.3,
+     "rounds": 13.4,
+     "hpLost": 91.3
+    },
+    "strong": {
+     "win": 66.7,
+     "rounds": 11.7,
+     "hpLost": 58.2
+    }
+   },
+   "index": 62.5
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-8",
+   "nodeKey": "7-8",
+   "kind": "elite",
+   "name": "Sea Turtle Elder's Court",
+   "hp": 36,
+   "res": {
+    "starter": {
+     "win": 20.8,
+     "rounds": 10,
+     "hpLost": 87.2
+    },
+    "mid": {
+     "win": 33.3,
+     "rounds": 11,
+     "hpLost": 78.2
+    },
+    "strong": {
+     "win": 25,
+     "rounds": 9,
+     "hpLost": 84.2
+    }
+   },
+   "index": 76.3
+  },
+  {
+   "map": "m7",
+   "mapNo": "24",
+   "mapName": "Coral Current",
+   "side": false,
+   "key": "24-9",
+   "nodeKey": "7-9",
+   "kind": "boss",
+   "name": "The Orca Vanguard King",
+   "hp": 57,
+   "res": {
+    "starter": {
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
+    },
+    "mid": {
+     "win": 29.2,
+     "rounds": 12.7,
+     "hpLost": 80.4
+    },
+    "strong": {
+     "win": 45.8,
+     "rounds": 10.3,
+     "hpLost": 70.4
+    }
+   },
+   "index": 73.9
   }
  ]
 }

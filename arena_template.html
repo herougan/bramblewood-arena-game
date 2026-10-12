@@ -647,7 +647,8 @@
   @keyframes goldStreak{0%,55%{--gold-x:-40%;} 85%,100%{--gold-x:140%;}}
   @media (prefers-reduced-motion: reduce){ .card-tile.rarity-tier-top::before{animation:none;} }
   .card-tile.rarity-tier-top.locked::before{filter:grayscale(1) brightness(.8);}
-  .card-tile:hover{border-color:var(--accent);}
+  .card-tile:hover{filter:brightness(.86);} /* 2026-10-12 (user: "Why does hovering over a card change its colour to brown? It should be darkened, respective to its original colour"): was border-color:var(--accent) */
+  .card-tile.locked:hover{filter:grayscale(85%) brightness(.86);}
   /* Card art (2026-09-17, reworked same day per explicit request: "card art should encompass
      the WHOLE card, fading to transparent softly at the edges — only fall back to the emoji if
      the art fails to load; all text atop the card needs a border in a different color so it
@@ -4107,6 +4108,8 @@
      reuses the dark-red gradient that previously lived at the old m14 slot (same map, same
      name/theme, just renumbered as the new structure's last regular map). */
   .map-theme-m11{--mt-a:#7c1f2a; --mt-b:#4d1319; --mt-c:#22090c;}
+  .map-theme-ms{--mt-a:#5a7c3a; --mt-b:#344d26; --mt-c:#1f3a2a;} .map-theme-mn{--mt-a:#5a4a7c; --mt-b:#392c54; --mt-c:#1c1530;} .map-theme-mv{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;} .map-theme-mi{--mt-a:#a9c6d9; --mt-b:#5c7c8f; --mt-c:#263840;} .map-theme-mo{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  .map-theme-mx{--mt-a:#9a2a14; --mt-b:#5e1a0c; --mt-c:#260a04;}
   .map-theme-m12{--mt-a:#8a5fc9; --mt-b:#5a3a8f; --mt-c:#2e1c4d;}
   .map-theme-m13{--mt-a:#b98a4e; --mt-b:#7a5a30; --mt-c:#3f2e18;}
   .map-theme-m14{--mt-a:#7c1f2a; --mt-b:#4d1319; --mt-c:#22090c;}
@@ -7917,6 +7920,23 @@ body.cq-opening .map-trail-svg{display:none !important;}
 @keyframes counterSlide{from{translate:0 -24px; opacity:0} to{translate:0 0; opacity:1}}
 @media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
 @media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
+#conquestCanvas .map-node, #conquestCanvas .map-spot{scale:var(--icon-scale, 1);}
+/* Skirmish panel v3 (2026-10-12, user: "The Skirmish detail UI is skuffed. Make the left and right elements on the same row ... The
+   Cleared can be reduced to a tick on the top right corner ... Put the Battle Rating UI under the [name] UI cell"): one row,
+   showcase | name, castle line and rating | first-clear rewards; Cleared is a tick in the corner. */
+.conquest-node-panel .cnp-head{display:grid !important; grid-template-columns:auto minmax(0,1fr) auto; align-items:start; column-gap:14px; flex-wrap:nowrap;}
+.conquest-node-panel .cnp-head > :last-child:not(.cnp-title){justify-self:end; align-self:start; margin:0 28px 0 0;}
+.conquest-node-panel .cnp-title{display:flex; flex-direction:column; align-items:flex-start; gap:5px; min-width:0;}
+.conquest-node-panel .cnp-title .cnp-name{line-height:1.15;}
+.conquest-node-panel .cnp-title .cnp-lvlbig{flex-direction:row; align-items:baseline; gap:8px; padding:4px 12px; min-width:0;}
+.conquest-node-panel .cnp-title .cnp-lvlbig b{font-size:20px;}
+.cnp-cleared-tick{position:absolute; top:10px; right:12px; z-index:5; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font:900 15px/1 system-ui,sans-serif; color:#fff; background:#43a047; box-shadow:0 0 0 2px rgba(255,255,255,.75), 0 3px 8px rgba(0,0,0,.35);}
+.castle-line{display:inline-flex; align-items:center; gap:4px; font-size:14px; color:rgba(255,255,255,.9);}
+.castle-line .cl-num{font-weight:800;} .castle-line .cl-heart{font-size:12px; margin-right:6px;}
+.armour-gem{display:inline-block; width:11px; height:11px; border-radius:2px; transform:rotate(45deg); background:linear-gradient(135deg, var(--g1), var(--g2)); box-shadow:0 0 6px var(--g2); margin-left:3px;}
+.conquest-node-panel .cnp-deck.is-open{max-height:84px; overflow-y:auto;}
+.conquest-node-panel .cnp-squad .dchip{font-size:12.5px; line-height:1.3; padding:2px 8px;}
+@media (max-width:620px){ .conquest-node-panel .cnp-head{grid-template-columns:auto minmax(0,1fr);} .conquest-node-panel .cnp-head > :last-child:not(.cnp-title){grid-column:1 / -1; justify-self:stretch; margin-top:8px;} }
 /* Shop polish (2026-10-12, user: "Improve ... the item shop visuals"): a lamp-lit wall with a scalloped valance, bigger
    pouches that cast a contact shadow on the plank and lift and tip when you reach for them, a light that falls on the
    chosen item, hanging price tags, and a counter with a wooden edge and a paper receipt. */
@@ -8149,8 +8169,9 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .tutorial-editor .te-pic{margin-top:6px; align-self:flex-start;}
 .autoplay-btn.is-on{background:var(--accent-strong); color:#fff; border-color:var(--accent-strong);}
 .lp-item.is-used{opacity:.45; filter:grayscale(.85); cursor:not-allowed;} .lp-item.is-used small{display:block; font-size:11px;}
-.conquest-map-item[style*="--band"]{border-left:6px solid var(--band); background:color-mix(in srgb, var(--band) 20%, var(--surface));}
-.conquest-map-item[style*="--band"].selected{background:color-mix(in srgb, var(--band) 38%, var(--surface));}
+.conquest-map-item[style*="--band"]{border-left:6px solid var(--band); background:color-mix(in srgb, var(--band) var(--band-mix, 34%), var(--surface)) !important; color:var(--band-fg, inherit);}
+.conquest-map-item[style*="--band-fg"] .cmi-name, .conquest-map-item[style*="--band-fg"] .cmi-body, .conquest-map-item[style*="--band-fg"] small{color:var(--band-fg) !important;}
+.conquest-map-item[style*="--band"].selected{box-shadow:0 0 0 3px #ffd98a inset;}
 #forgePickReady.is-fading{transition:opacity .35s ease, transform .35s ease; opacity:0; transform:scale(.92);}
 .hay-nest.is-empty{cursor:pointer; font:inherit; color:inherit;} button.hay-nest.is-empty{background:none; border:0; padding:0;}
 .hay-nest .nest-plus{position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:22px; opacity:.45; transition:opacity .2s;}

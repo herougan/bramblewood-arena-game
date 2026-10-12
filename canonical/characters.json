@@ -202,5 +202,130 @@
     },
     "flavor": "The swamp keeps trying to swallow it. The swamp keeps losing.",
     "unlockMap": "m8"
+  },
+  {
+    "id": "logjam",
+    "name": "The Logjam",
+    "icon": "🪵",
+    "health": 22,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle",
+      "Otter"
+    ],
+    "art": "",
+    "effects": {
+      "enemyWaitBonus": 1
+    },
+    "flavor": "The beavers built it, the otters moved in. Nothing gets down this river in a hurry.",
+    "unlockMap": "mp"
+  },
+  {
+    "id": "trojan-horse",
+    "name": "Trojan Horse",
+    "icon": "🐴",
+    "health": 22,
+    "rarity": "epic",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleSpawn": {
+        "first": 3,
+        "every": 0,
+        "defId": "trojan-raider",
+        "count": 1
+      }
+    },
+    "flavor": "A gift, they said. On the third night it opened.",
+    "unlockMap": "m5"
+  },
+  {
+    "id": "ballista-keep",
+    "name": "Ballista Keep",
+    "icon": "🏹",
+    "health": 22,
+    "rarity": "epic",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleBolt": 2
+    },
+    "flavor": "Two great crossbows on the battlements and a chipmunk who never sleeps.",
+    "unlockMap": "m10"
+  },
+  {
+    "id": "clam-farm",
+    "name": "Clam Farm",
+    "icon": "🦪",
+    "health": 26,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle",
+      "Otter"
+    ],
+    "art": "",
+    "effects": {
+      "castleLumberEvery": 3
+    },
+    "flavor": "Otter beds of clams in the shallows. Every few days the harvest pays for another plank.",
+    "unlockMap": "mk"
+  },
+  {
+    "id": "thorn-cage",
+    "name": "Thorn Cage",
+    "icon": "🌿",
+    "health": 26,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "castleThorns": 1
+    },
+    "flavor": "A fortress grown, not built. Every wall bites back.",
+    "unlockMap": "mh"
+  },
+  {
+    "id": "herb-refinery",
+    "name": "Herb Refinery",
+    "icon": "⚗️",
+    "health": 22,
+    "rarity": "epic",
+    "archetypes": [
+      "Castle"
+    ],
+    "art": "",
+    "effects": {
+      "herbRefinery": true
+    },
+    "flavor": "Bubbling stills of mushroom and moss. Nobody knows what today's batch does until it boils over.",
+    "unlockMap": "mu"
+  },
+  {
+    "id": "hidden-nest",
+    "name": "Hidden Nest",
+    "icon": "🪺",
+    "health": 22,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle",
+      "Hummingbird"
+    ],
+    "art": "",
+    "effects": {
+      "castleSpawn": {
+        "first": 2,
+        "every": 4,
+        "defId": "nest-hatchling",
+        "count": 1
+      }
+    },
+    "flavor": "Woven into a thorn bush where no paw can reach. Every few days another chick fledges.",
+    "unlockMap": "mf"
   }
 ]

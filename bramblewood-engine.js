@@ -412,6 +412,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Castle passives added 2026-10-10 (map castles): unitHpBonus (+N Health on every unit you play), flyerAtkBonus
       // (+N Attack on every Flying unit you play), castleRegen (the castle heals N at each round start).
       unitHpBonus: (chEffects.unitHpBonus||0), flyerAtkBonus: (chEffects.flyerAtkBonus||0), castleRegen: (chEffects.castleRegen||0),
+      // Castle passives added 2026-10-12 (user: "Where are our diversity of castles like logjam, trojan, ballistae, clam farms,
+      // thorn-cage, herb refinery, Hidden Nest"): enemyWaitBonus (the enemy's first 3 units arrive N Wait later), castleBolt (a bolt at a
+      // random enemy unit each round), castleLumberEvery (+1 Lumber every N rounds), castleThorns (a unit that hits the
+      // castle takes N), herbRefinery (each round one of: heal your most wounded unit 3, 2 damage to a random enemy, +1 Lumber),
+      // castleSpawn ({first, every, defId, count}: units join you from the castle on those rounds).
+      enemyWaitBonus: (chEffects.enemyWaitBonus||0), castleBolt: (chEffects.castleBolt||0), castleLumberEvery: (chEffects.castleLumberEvery||0),
+      castleThorns: (chEffects.castleThorns||0), herbRefinery: !!chEffects.herbRefinery, castleSpawn: chEffects.castleSpawn || null,
     };
   }
   // Assigns a player's Castle-type card (Castle/Colony/Nest/...). Not yet a
@@ -444,6 +451,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // start. Like Drunk = apply dizzy to yourself"): Drunk keeps the card Tipsy, Purblind keeps it Blind, Scatterbrained
   // keeps it Confused, from the moment it arrives and for good (a Cleanse only clears it until the next round).
   function selfInflict(c){ const e = (CARD_DEFS[c.defId] || {}).effects || {}; if(e.drunk && !(c.tipsy>0)) c.tipsy = 1; if(e.purblind && !(c.blind>0)) c.blind = 1; if(e.scatterbrained && !(c.confused>0)) c.confused = 1; }
+  // Frenzy (2026-10-12): a Frenzy card is frenzied while any status is on it.
+  function isFrenzied(c){
+    const d = c && CARD_DEFS[c.defId]; if(!d || !d.effects || !d.effects.frenzy) return false;
+    return (c.poison>0 || c.bleed>0 || c.decay>0 || c.scar>0 || c.exposed>0 || c.corrode>0 || c.frozen>0 || c.asleep>0 || c.paralyzed>0 ||
+      c.blind>0 || c.tipsy>0 || c.confused>0 || c.shocked>0 || c.staggered>0 || !!c.stunned);
+  }
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
@@ -654,11 +667,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isTide(card){ const d = card && CARD_DEFS[card.defId]; return !!(d && d.effects && d.effects.tide); }
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
+  function castleRoundActions(players, pid, round, sideOf, stats, events){
+    const pl = players[pid], foe = players[otherId(pid)], side = sideOf(pid);
+    const foes = ()=> allLive(foe).filter(c=> !c.cageOf);
+    if(pl.castleLumberEvery > 0 && (round - 1) % pl.castleLumberEvery === 0){ pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side, defId:null, amount:1, castle:true}); }
+    if(pl.castleBolt > 0){ const f = foes(); if(f.length){ const t = f[Math.floor(rnd()*f.length)];
+      if(recordEvents && events) events.push({type:'statusFx', kind:'castleBolt', side, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:pl.castleBolt});
+      fireDamageAction(players, sideOf, pid, 'castle', pl.castleBolt, 'physical', {kind:'card', card:t}, stats, events, null, null); } }
+    if(pl.herbRefinery){ const roll = Math.floor(rnd()*3);
+      if(roll === 0){ const hurt = allLive(pl).filter(c=> c.hp < c.maxHp).sort((x,y)=> (x.hp/x.maxHp) - (y.hp/y.maxHp));
+        if(hurt.length){ const h = applyHeal(hurt[0], 3, side, events); if(h > 0 && recordEvents && events) events.push({type:'statusFx', kind:'herbHeal', side, targetSide:side, targetDefId:hurt[0].defId, targetUid:hurt[0].uid, amount:h}); } }
+      else if(roll === 1){ const f = foes(); if(f.length){ const t = f[Math.floor(rnd()*f.length)]; if(recordEvents && events) events.push({type:'statusFx', kind:'herbBane', side, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:2});
+        fireDamageAction(players, sideOf, pid, 'castle', 2, 'poison', {kind:'card', card:t}, stats, events, null, null); } }
+      else { pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side, defId:null, amount:1, castle:true}); } }
+    const sp = pl.castleSpawn; if(sp && sp.defId && CARD_DEFS[sp.defId]){ const first = sp.first || 2, every = sp.every || 0;
+      if(round === first || (every > 0 && round > first && (round - first) % every === 0)){
+        for(let k = 0; k < (sp.count||1); k++){ if(!debugSpawnCard(players, sideOf, pid, sp.defId, rnd() < .5 ? 'left' : 'right', stats, events)) break; }
+        if(recordEvents && events) events.push({type:'statusFx', kind:'castleSpawn', side, targetSide:side, targetDefId:sp.defId, amount:sp.count||1}); } }
+  }
   function roundStart(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
     if(phaseMode === 'realtime' && rules.clock == null){ const was = phase; phase = realtimePhase(); if(phase !== was && recordEvents && events) events.push({type:'phase', phase, round, realtime:true}); }
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
+    if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || pl.hq.hp <= 0) return; castleRoundActions(players, pid, round, sideOf, stats, events); });
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -1940,6 +1972,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
     // to whichever card is the very first one this player plays in the match.
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
       boardCard.atk += pl.firstUnitAtkBonus;
@@ -2031,6 +2064,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const boardCard = makeBoardCard(defId); boardCard.isLeader = true;
     if(playerId === 2 && rules.bossSurge){ const g = rules.bossSurge; boardCard.atk += g.atk||0; boardCard.baseAtk += g.atk||0; boardCard.hp += g.hp||0; boardCard.maxHp += g.hp||0; boardCard.surged = true; }
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
       boardCard.atk += pl.firstUnitAtkBonus;
@@ -3828,7 +3862,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
               if(attDef.effects.poison && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
-              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
+              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
               if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
               rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
@@ -3952,7 +3986,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'daunt', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:Number(attDef.effects.daunt)});
         }
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
-        { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) : 0;
+        { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) : 0;
           if(bl > 0 && defCard.hp>0) defCard.bleed = (defCard.bleed||0) + bl; }
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
@@ -4112,6 +4146,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, ambush:ambushForce, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
+        { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
         if(attDef.effects && attDef.effects.sap && dmg>0){
           const healedHq = Math.min(a.att.maxHp - a.att.hp, dmg);
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
@@ -4152,7 +4188,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let frenziedAgain = false;
       // Twin Strike (2026-10-12, user: "a skill that means double strike without calling it double strike"): attacks twice
       // on its turn, the second swing straight after the first (the same path as Frenzy's bonus swing).
-      if(attDef.effects && (attDef.effects.frenzy || attDef.effects.twinStrike) && a.att.hp>0 && !a.att._frenziedThisRound){
+      // Frenzy (2026-10-12, user: "It should be an offensive one of course ... when it has a status applied to it, it gains
+      // twin strike and bleed 1"): while it suffers any status (Poison, Bleed, Decay, Corrode, Frozen, Shocked ...) it
+      // strikes twice and each hit adds 1 Bleed.
+      const frenzyNow = isFrenzied(a.att);
+      if(attDef.effects && (frenzyNow || attDef.effects.twinStrike) && a.att.hp>0 && !a.att._frenziedThisRound){
         a.att._frenziedThisRound = true;
         // VFX/SFX coverage audit (2026-09-21): Frenzy's bonus swing used to be a pure engine-
         // internal decision with no event at all — it replayed as an indistinguishable ordinary
@@ -4160,7 +4200,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Frenzy" as opposed to just being a second attacker further down the queue. A dedicated
         // 'frenzy' event gives the front end something to flourish right before that second swing
         // animates.
-        if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:!attDef.effects.frenzy});
+        if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:!frenzyNow});
         frenziedAgain = true;
       }
       // Live reflow, per-attacker (see reflowAfterKills' comment above): whatever this turn's
@@ -4235,7 +4275,7 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
   const recordEvents = !!opts.recordEvents;
   const engine = makeSimEngine(CARD_DEFS, rnd, {recordEvents, battleMode: opts.battleMode});
   const sideOf = (playerId)=> playerId===1 ? 'A' : 'B';
-  const players = { 1: engine.newPlayer(1, deckCountsA), 2: engine.newPlayer(2, deckCountsB) };
+  const players = { 1: engine.newPlayer(1, deckCountsA, opts.characterA || undefined), 2: engine.newPlayer(2, deckCountsB, opts.characterB || undefined) }; // castles (optional, 2026-10-12: for measuring castle passives)
   const stats = {};
   const events = recordEvents ? [] : null;
   if(opts.battleMode==='gladiator'){

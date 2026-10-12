@@ -56,5 +56,5 @@ const ordered=[]; mains.forEach(m=>{ ordered.push(m); MAPS.filter(x=>x.sub&&x.pa
 ordered.forEach(m=>{ const faced={}; m.nodes.forEach(n=>{ const decks=[n.deck||{}].concat(n.waveDecks||[]); decks.forEach(d=>Object.keys(d).forEach(id=>{ if(cardById[id]) faced[id]=1; })); (n.leaders||[]).forEach(id=>{ if(cardById[id]) faced[id]=1; }); });
   const fr={}; Object.keys(faced).forEach(id=>{ const r=cardById[id].rarity||'common'; fr[r]=(fr[r]||0)+1; });
   groups.push({key:'map:'+m.id,kind:'Map',label:m.name,icon:m.icon||'',no:mapNo(m.id),sub:!!m.sub,biome:BIOME_OF[m.id]||BIOME_OF[m.parent]||'',fights:m.nodes.filter(x=>x.kind!=='tutorial').length,faced:Object.keys(faced).length,facedR:fr}); });
-fs.writeFileSync(process.argv[2], JSON.stringify({groups, generated:new Date().toISOString().slice(0,10), balanceRun:'2026-10-09', bands, rows, live}));
+fs.writeFileSync(process.argv[2], JSON.stringify({groups, generated:new Date().toISOString().slice(0,10), balanceRun:'2026-10-12', bands, rows, live}));
 console.log(rows.length, 'rows', rows.filter(r=>r.wr!=null).length, 'with win rate', rows.filter(r=>r.stale).length, 'stale');

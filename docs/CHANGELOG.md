@@ -2,6 +2,43 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (17:00)
+- **Your map list:** the road is now 0 Outskirts, 1 Thistlewood, 2 Pebble Beach, 3 Gannet Cliffs, 4 Sunken Hollow, 5 Gatorback Swamp, 6 Sable Swampmire, 7 Morel Hollow, 8 Caves & Alcoves, 9 Kelp Mangroves, 10 Coral Current, 11 Eyrie Heights, 12 Briar Maze, 13 Redwood Deep, 14 Savanna Reaches, 15 Long Grass, 16 Pinewood Taiga, 17 Wolfsbane Tundra, 18 Glass Dunes, 19 Ashen Spurn, 20 Sundered Peak.
+  - **Fused in as side maps:** Clovermead (Thistlewood, after its first fight), Lilypad Reach (Pebble Beach), Basalt Foundry (Ashen Spurn). Your progress on them stays.
+  - **Renamed:** The Ashen Peak is **Ashen Spurn**; the Caldera Heart is the **Volcano Lair**.
+  - **Five new side maps,** four fights and a boss each, built from their map's own cards: The Sunken Grove (Gatorback Swamp), The Glimmer Depths (Caves), The Aerie Vault (Eyrie Heights), The Ice Hollow (Wolfsbane Tundra), and The Old Bramble (Outskirts), which opens only once the Ice Hollow is cleared.
+  - Feature spots follow the map numbers, so the field kit is now on Map 12 (the Briar Maze). The Sundered Peak's final boss is Map 20 at rating 400.
+- **Skirmish panel:** one row: the showcase card, then the name, "30 ❤️ 98 🔷" (only the top armour layer, in its colour) and the battle rating under it, and the first-clear rewards on the right. Cleared is a green tick in the top-right corner. The enemy's card list stays inside the panel.
+- **Admin off** now redraws the screen, so no admin buttons stay behind (skirmish panel, card details).
+- **Card hover** darkens the card instead of turning its border brown.
+- **Card art:** 51 new PixelLab portraits (the volcano undead, Caldera Wyrm, The Contradiction, bears, horses, pond and mangrove creatures, foxes, rabbits and more). 234 cards now have art; about 30 more are still generating.
+- **Rarity colours:** Starter/Common grey, Uncommon/Quest green, Rare blue, Very Rare light blue, Super Rare teal, Epic purple, Heroic orange, Unique/Special amber, Legendary yellow, Mythic red, Ancient deep blue, plus Divine white, Void purple-grey and Daemonic black. The other special rarities wear their tier's colour.
+
+## 2026-10-12 (16:30)
+- **Balance pass** ([report](balance-pass-2026-10-12.md)): 63 player cards moved into their rarity's band with the smallest Attack/Health change (200 simulated games each; Attack never below 1, no change bigger than 2 Attack or a third of Health). Starter cards (the tutorial is built from them) are untouched; Ecclesia, Devilry, Remember and Changeling cards, leaders, Heroic+ and 3+ cost cards were left alone. The whole set is now 264 of 436 in band (was 186 of 418). Some enemy decks use these cards, so a few fights got easier (Gannet Cliffs) or harder (Map 0's third skirmish).
+- **New cards:**
+  - **Creeper** (Common, Pack 1): a lime-green bee with a blank face and a wide smile. 1/2, Flying, Swarm, Scare 1.
+  - **Enemies:** Pigeon Peon, Farm Dog and House Cat (Clovermead), Dormouse (Thistlewood), Gatling Hog (Thistlewood), Newt Doctor and the kingfisher (Lilypad Reach), Beaver Lumberjack (Lilypad Reach), Dung Beetle (Morel Hollow), Subterraneaner (Caves), Marching Elephant and Siege Rhino (Savanna), Stonedrop Vulture (Gannet Cliffs, Eyrie Heights), Ür-Elk (Tundra, Taiga), Shellwright Apprentice and Otter Royal Guard (Outskirts).
+  - **Otter pack:** Otter Royal Guard, Shellwright Apprentice, Otter Flag Bearer, Otter Lantern Bearer, Riverbed Diver. **Hummingbird pack:** Hummingbird Needler (the Ruby-Throat Duelist is already there).
+  - **Riverwing Envoy** (an otter with a hummingbird on its shoulder): the Part 2 reward for players who pick both sides, with the Sunspire Envoy.
+- **Seven new castles** with new passives: The Logjam (the enemy's first 3 units arrive 1 Wait later), Trojan Horse (a Trojan Raider climbs out on round 3), Ballista Keep (a bolt at a random enemy unit each round), Clam Farm (+1 Lumber every 3 rounds), Thorn Cage (a unit that hits the castle takes 1), Herb Refinery (each round: heal, sting or Lumber at random), Hidden Nest (a Nest Hatchling joins on round 2 and every 4 rounds). Each opens with a map's boss.
+- **Frenzy** now means: while any status is on it, it strikes twice and each hit adds 1 Bleed.
+- **Ranks:** SS is "not one point of damage on your castle"; SSS adds "not a single unit lost" (it used to be a fast win).
+- **Field kit:** opens at Map 12 now (the Inventory still opens at Map 1). One item a fight. Nerfed and widened: Healing Draught 5, Kindling +1 Lumber, Scout's Map draw 2, Fire Pot 3 to every enemy unit, plus Honey Cake, Whetstone and Caltrops. One of each a day, up to 5 of each.
+- **Eggs:** first clears drop an egg 8% (skirmish), 16% (elite), 25% (mini-boss), 35% (boss), 50% (world boss); repeats 0.1% per energy, ×1.5 / ×2 / ×3 / ×5 for elites, mini-bosses, bosses and world bosses; raids 1%. The results screen shows the egg.
+- **The world boss has its own side map, the Caldera Heart**, opened by the Sundered Peak's final boss (rated 400) alongside the Eye of the Volcano (400–450). Its three fights are 350, 375, 400 and the Caldera Wyrm 500. An earlier world-boss win carries over.
+- **Map screen:**
+  - Swiping to another map needs a quick sideways finger swipe; a mouse press or a press on a node no longer changes the map.
+  - Map icons shrink 5% for every node or destination past six (the Sundered Peak's are about three-quarters size).
+  - The map list keeps its scroll when you change map. The tab colours darken further toward Map 20, with a little more red; deep tabs switch to light text.
+- **Battle on phones:** press and hold a card for 0.25 s to see its details; lifting doesn't play it.
+- **Lumber messages** say what's missing: "Need 2 more Lumber".
+- **Replays:** the "First clear · already earned" section is gone; the results show only what you won.
+- **Your decisions:**
+  - **Enemy levels from Map 5 (D61):** enemy cards fight at Lv 2 at Map 5, +1 every 3 maps (Lv 3 at Map 8, Lv 7 at Map 20); elites +1, bosses +2, side maps +1. A level set in the skirmish editor still wins. Stats only change on Lv 3, 6 and 9, so the jump shows from Map 8.
+  - **Tutorial Part 1 reward (D46):** the Rabbit Kit (3/2, Quick) replaces the Quarry Mole.
+  - **Free Base copy (D59):** each map's boss, on its first clear, gives a copy of the Base card you own the fewest of.
+
 ## 2026-10-12 (13:00)
 - **Pounce, a new evergreen keyword.** "On Play: deal damage" now has a name: **Pounce N** (🐾) hits a random enemy unit for N the moment the card lands, Waiting or not (the castle only if no units are left). It has its own log line and a crouch-and-spring on the card.
   - Kept as Pounce (9 cards): Raven Scout 2, Hawk Arrowkeeper 2, Eagle Diver 3, Golden Eagle Diver 3, Ford Kingfisher 2, Quill Volley 2, Mallard Marauder 1, Firetail Trickster 2, Caldera Wyrm 5.

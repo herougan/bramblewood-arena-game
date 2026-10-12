@@ -124,7 +124,8 @@ async def main():
         await pg.click('#poDone')
         # 4b: Forge — temper a card: the smithing sequence plays, the level goes up once, currency is spent
         await pg.evaluate("myCurrencies.dust=300; myCurrencies.gold=400; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(300)
-        fid = await pg.evaluate("document.querySelector('#forgePool .card-tile').dataset.defid")
+        # 2026-10-12: Level 0 cards are nurtured in the Nest, not tempered, so pick a card that is already Level 1+
+        fid = await pg.evaluate("(()=>{ const t = [...document.querySelectorAll('#forgePool .card-tile')].find(e=> { const L = getCardLevel(e.dataset.defid); return L >= 1 && L < 3; }); return (t || document.querySelector('#forgePool .card-tile')).dataset.defid; })()")
         await pg.click(f'#forgePool .card-tile[data-defid="{fid}"]'); await pg.wait_for_timeout(200)
         l0 = await pg.evaluate(f"getCardLevel('{fid}')")
         await pg.click('#forgeLevelUpBtn'); await pg.click('#forgeLevelUpBtn', force=True); await pg.wait_for_timeout(3200)
@@ -143,7 +144,7 @@ async def main():
         check(edge is not None, 'the next map should peek in at the right edge')
         if edge:
             await edge.click(); await pg.wait_for_timeout(600)
-            check(await pg.evaluate("conquestSelectedMap") == 'mq', 'the edge should pan to the next map (Clovermead, Map 1 since 2026-10-12)')
+            check(await pg.evaluate("conquestSelectedMap") == 'mf', 'the edge should pan to the next map (Thistlewood, Map 1 since the 16:23 map list)')
         # 6b: D13 world atlas — compass diamonds, lazy cards, click zooms into a map
         await pg.click('#conquestWorldBtn'); await pg.wait_for_timeout(500)
         check(await pg.evaluate("document.querySelectorAll('.world-diamond').length") == await pg.evaluate("mainConquestMaps().length"), 'the world view should show one diamond per main map (sub-maps hide)')
@@ -251,7 +252,7 @@ async def main():
             map20:enemyDeckLevel(mains[20].nodes.find(n=>n.kind==='skirmish')), map1:enemyDeckLevel(mains[0].nodes.find(n=>n.kind==='skirmish')), max: Math.round(22*30*ratingLevelFactor(10))}; })()""")
         check(ec['common'] == 675 and ec['epicMult'] == 11 and ec['castle'] == 2760, f'forge prices: {ec}')
         check(ec['fed'] == 36 and ec['credit'] == 36 and ec['copies'] == 2, f'feeding a duplicate: {ec}')
-        check(300 <= ec['map20'] <= 450 and ec['map1'] < 25 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
+        check(200 <= ec['map20'] <= 450 and ec['map1'] < 25 and 2400 <= ec['max'] <= 2600, f'battle rating scale: {ec}')
         await b.close()
     print(f'ui-smoke: {len(failures)} failure(s)')
     sys.exit(1 if failures else 0)

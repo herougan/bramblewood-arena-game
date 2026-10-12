@@ -11,3 +11,6 @@ Transfer goes through the built-in browser tab `seed` (also on pixellab.ai/creat
 Waiting as of 14:40: 29 done in Chrome but not pulled (see the keys file), 28 still generating, plus 4 added at
 the end: meerkat-wayfarer, strange-materia, forge-bg, forge-anvil (forge ones replace art/forge/bg.png and anvil.png;
 clear the anvil's grey background with clearbg.py).
+
+
+2026-10-12 17:00: pulled 51 (keys in pull_keys_2026_10_12.json). The seed tab's gallery ("Your gallery") is the account's, newest first, and loads lazily: scroll it in 150 px steps with a 1.5 s pause, scanning each step, and keep each javascript call under 45 s (start the loop without awaiting it, then poll). Results over ~260k characters get cut, so return about 235k characters of images per call.
