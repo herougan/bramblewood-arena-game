@@ -7892,6 +7892,18 @@
      at the bottom for the stats; extended art (artExtended on the card) keeps running to the edges. */
   .card-tile.art-framed{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12) 0%, color-mix(in srgb, var(--rarity-b, var(--rarity-a, #8a6a45)) 26%, #1c1209) 100%) !important;}
   .card-tile.art-framed > .ico{inset:5% 6% 22% 6% !important; border-radius:5px !important; box-shadow:0 0 0 1px rgba(0,0,0,.55), 0 1px 0 1px rgba(255,236,190,.12);}
+  /* 2026-10-12 (23:12, user: "Remove the south border image's hard cut-off. Make it like a gradient like the other directions"):
+     the framed art window now fades out at the bottom too, into the plate. */
+  .card-tile.art-framed > .ico{bottom:19% !important; -webkit-mask-image:linear-gradient(180deg, #000 72%, transparent 100%), radial-gradient(ellipse at center, #000 56%, transparent 92%) !important;
+    mask-image:linear-gradient(180deg, #000 72%, transparent 100%), radial-gradient(ellipse at center, #000 56%, transparent 92%) !important; -webkit-mask-composite:source-in; mask-composite:intersect;}
+  /* Extended art (same note: "Zoom out a little, but ... you get to see a lot more of the original art"): the art is no longer
+     cover-cropped to the tall card (which cut off a third of it). It shows nearly full width, anchored at the top, and fades out
+     softly at the bottom behind the stats, over a tinted ground. */
+  .card-tile.art-extended{background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 22%, #22170d) 0%, #140d07 100%) !important;}
+  .card-tile.art-extended > .ico{-webkit-mask-image:radial-gradient(ellipse 80% 75% at 50% 42%, #000 62%, transparent 100%) !important; mask-image:radial-gradient(ellipse 80% 75% at 50% 42%, #000 62%, transparent 100%) !important;}
+  .card-tile.art-extended > .ico .card-art-img{position:absolute; left:-4%; top:0; width:108% !important; height:auto !important; aspect-ratio:1/1; object-fit:cover;
+    -webkit-mask-image:linear-gradient(180deg, #000 74%, transparent 100%); mask-image:linear-gradient(180deg, #000 74%, transparent 100%);}
+  .card-tile.art-extended > .rarity-band, .card-tile.art-framed > .rarity-band{box-shadow:none !important;} .card-tile.art-extended > .rarity-band{background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,.22) 100%) !important;}
   .card-tile.art-framed > .rarity-band{background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.12)) !important; box-shadow:none !important; height:22% !important;}
 
   /* Phase aura (2026-10-10): a unit buffed by night (or day) glows green and leaks drifting spores while it lasts. */

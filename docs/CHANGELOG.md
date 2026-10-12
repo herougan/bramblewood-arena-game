@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (23:55)
+- **Every card starts hidden,** Base ones included. A card shows up in the Codex and deck lists once you've seen it or own it. Untick Hidden in the editor to keep a card always visible. Explicitly secret cards still get the "✨ Discovered!" pop; the rest just appear.
+- **Targets are a choice now.** Heal Self is just **Heal**, and every action that used to pick its own target (Heal, Cleanse, Damage, Buff, Debuff, Poison, Bleed, Expose, Stun, Increase Wait, Exile) takes Self / Ally / Opponent / Any, then a distance (Adjacent, Any distance, Furthest, All), then how many targets (up to 8, never the same unit twice). Missile, Swap and Mind Control stay fixed presets.
+- **New skill: Nature's Force N** 🌪️ — every Elemental on your side gets +N/+N while it lives; several stack. A value of 1 is the default and isn't printed, here and everywhere (Poison, Bleed and the rest show just the icon at 1).
+- **Extended art shows far more of the picture:** nearly the full width, top-anchored, fading softly behind the stats. Normal art's bottom edge now fades into the plate instead of stopping hard.
+- **Editing a card no longer takes it out of your inventory.** Only a fresh re-lock in the editor revokes your copy.
+- **Card editor:** stats by level include Lv 0 for cards that hatch at Lv 1; the card's source can be set right in the editor; maps are grouped into the First world's First to Fourth seasons (Maps 0–5, 6–10, 11–15, 16–20).
+- **Off Base:** Chapel Sparrow, Cinder Imp, Spring Rain, Echo Keeper and Voidfeather Scout now drop from maps.
+- **Card strip:** Esprit 🤝 and Rally 🚩 show on the bottom strip; the Swarm mark is a 🐜 (🐝 for bee swarms).
+
 ## 2026-10-12 (22:55)
 - **Every card has art now.** PixelLab is at its monthly limit, so 145 new portraits came from your NightCafe credits, shrunk to the game's 128×128 pixel style with their backgrounds kept. That covers every card that had none (enemy-only cards and items included), plus new Owl Sentinel, Ant Hill and Ant Warrior art as real animals, and War Hound and Bramblewood Macaque redone.
 - **Castle art.** All 42 castles have a picture.

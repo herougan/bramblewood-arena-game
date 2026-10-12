@@ -1232,9 +1232,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function tallyCastleDealt(defPl, n){ const ap = curPlayers && curPlayers[defPl.id===1 ? 2 : 1]; if(ap && n > 0) ap.castleDealt = (ap.castleDealt||0) + n; }
   function pickRandomEnemyTarget(enemyPl){
     const cards = [];
-    ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0) cards.push(c); }));
+    ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0 && !(targetExclude && targetExclude.has(c.uid))) cards.push(c); }));
     const pool = [...cards.map(c=>({kind:'card', card:c})), {kind:'hq'}];
     const pick = pool[Math.floor(rnd()*pool.length)];
+    if(targetExclude && pick.kind==='card') targetExclude.add(pick.card.uid);
     if(pick.kind==='card'){ const sh = shieldCall(enemyPl, pick.card); if(sh) return {kind:'card', card:sh}; }
     return pick;
   }
@@ -1294,13 +1295,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Returns {pl, card} or null (never null for 'self'). Never itself checks Evasion/dodge — every
   // caller below applies dodgeCheck the same way it always did, since whether a target can dodge
   // is a property of the ACTION (harmful vs. not), not of how the target was picked.
+  let targetExclude = null; // multi-target actions: units already picked this firing (2026-10-12)
+  // who:'any' -> 'ally' or 'enemy', weighted by how many live units each side has (never the caster itself).
+  function anySide(players, playerId, boardCard){
+    const live = p=> ['left','center','right'].reduce((n, s)=> n + p.row[s].filter(c=> c.hp>0 && c.uid!==boardCard.uid).length, 0);
+    const a = live(players[playerId]), e = live(players[otherId(playerId)]);
+    if(!a && !e) return 'enemy';
+    return rnd() * (a + e) < a ? 'ally' : 'enemy';
+  }
   function resolveGeneralTarget(players, playerId, boardCard, who, sub){
+    const r = resolveGeneralTarget0(players, playerId, boardCard, who === 'any' ? anySide(players, playerId, boardCard) : who, sub);
+    if(targetExclude && r && r.card) targetExclude.add(r.card.uid);
+    return r;
+  }
+  function resolveGeneralTarget0(players, playerId, boardCard, who, sub){
     const pl = players[playerId], enemy = players[otherId(playerId)];
     if(who==='self') return {pl, card:boardCard};
     const isAlly = who==='ally';
     const sidePl = isAlly ? pl : enemy;
     const order = physicalRowOrder(sidePl).filter(c=>c.hp>0);
-    const pool = isAlly ? order.filter(c=>c.uid!==boardCard.uid) : order;
+    const pool = (isAlly ? order.filter(c=>c.uid!==boardCard.uid) : order).filter(c=> !(targetExclude && targetExclude.has(c.uid)));
     if(!pool.length) return null;
     if(sub==='furthest'){
       if(isAlly){
@@ -1312,7 +1326,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       const mySide = findCardSide(pl, boardCard.uid) || 'center';
       const farSide = mySide==='left' ? 'right' : (mySide==='right' ? 'left' : (rnd()<0.5?'left':'right'));
-      const farPool = enemy.row[farSide].filter(c=>c.hp>0);
+      const farPool = enemy.row[farSide].filter(c=>c.hp>0 && !(targetExclude && targetExclude.has(c.uid)));
       const finalPool = farPool.length ? farPool : pool;
       const pickF = finalPool[Math.floor(rnd()*finalPool.length)];
       { const sh = shieldCall(enemy, pickF); if(sh) return {pl:sidePl, card:sh}; }
@@ -1322,12 +1336,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(isAlly){
         const fullOrder = physicalRowOrder(sidePl);
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0);
+        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && !(targetExclude && targetExclude.has(c.uid)));
         if(!cands.length) return null;
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
       const opp = opposingCardOf(players, playerId, boardCard);
       if(!opp) return null;
+      if(targetExclude && targetExclude.has(opp.card.uid)) return null; // only one unit stands opposite
       { const sh = shieldCall(enemy, opp.card); if(sh) return {pl:enemy, card:sh}; }
       return {pl:enemy, card:opp.card};
     }
@@ -1468,6 +1483,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(d.effects && d.effects.rally) total += d.effects.rally;
       }));
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ c.rallyBonus = total; }));
+      // Nature's Force N (2026-10-12, user: "All elementals on the field gain +N/+N. (Stacks!)"): every live source on your side adds
+      // N to each of your Elementals (the source too, if it is one). Attack is live (natureBonus, read by effAtk); Health is
+      // applied as a difference so it rises and falls with the sources without healing past it or killing anything.
+      let nf = 0; ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.natureForce) nf += (d.effects.natureForce === true ? 1 : Number(d.effects.natureForce)||0); }));
+      ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
+        const elem = (d.species||[]).includes('Elemental') || (d.archetypes||[]).includes('Elemental'); const want = elem ? nf : 0;
+        c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } }));
       // Worship (Ecclesia, 2026-10-10): +1 Attack for every 3 Prayer its owner has, recomputed every round.
       const pr = prayerOf(pl);
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; }));
@@ -1485,7 +1507,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // marks add up, and each lifts at the end of the round after the one it landed in.
   function dauntOf(card){ const d = card && card.daunts; if(!d || !d.length) return 0; let t = 0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; }
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) - (card.corrode||0) - dauntOf(card));
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) - (card.corrode||0) - dauntOf(card));
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -2399,7 +2421,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
       if(recordEvents && events) events.push({type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do});
-      switch(t.do){
+      const runAction = t=>{ switch(t.do){
         case 'gainGold': addLumber(pl, t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
         case 'gainGrace': pl.grace += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).graceGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
         case 'gainDevilry': pl.devilry += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).devilryGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
@@ -2547,8 +2569,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
           // result), same live-value convention as 'attack' resolving to boardCard.atk elsewhere.
           const healAmount = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : (t.amount||0);
-          const healed = applyHeal(boardCard, healAmount, mySide, events);
-          if(healed>0){ fireHealTriggers(players, sideOf, playerId, boardCard, boardCard, healed, stats, events); }
+          // Heal (2026-10-12, 23:12 list: "Change the Heal Self action to just Heal. The target will be its own parameter"):
+          // who/sub like every other targeted action; no who = itself, as before.
+          const who = t.who || 'self';
+          const tg = who==='self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who, t.sub || 'random');
+          if(!tg || !tg.card) break;
+          const foe = who==='enemy';
+          const healed = applyHeal(tg.card, healAmount, foe ? sideOf(otherId(playerId)) : mySide, events);
+          if(healed>0){ if(foe){ if(recordEvents && events) events.push({type:'heal', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:tg.card.defId, targetUid:tg.card.uid, amount:healed}); }
+            else fireHealTriggers(players, sideOf, playerId, boardCard, tg.card, healed, stats, events); }
           break;
         }
         // Poison/Bleed/Expose/Stun/Increase Wait (2026-09-30): target generalized to who/sub via
@@ -2691,6 +2720,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           break;
         }
         case 'cleanse': {
+          if(t.who && t.who!=='self'){ // Cleanse a chosen target (2026-10-12): the target's own owner's cell curse comes off first
+            const tg = resolveGeneralTarget(players, playerId, boardCard, t.who, t.sub || 'random'); if(!tg || !tg.card) break;
+            const tpid = t.who==='enemy' ? otherId(playerId) : playerId, c = tg.card;
+            const n = cleanseCounters(players, tpid, c, t.amount || 999);
+            if(!t.amount){ c.stunned = false; c.frozen = 0; c.asleep = 0; c.paralyzed = 0; c.blind = 0; c.tipsy = 0; c.confused = 0; c.staggered = 0; c.daunts = []; }
+            if(n > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, amount:n});
+            break;
+          }
           // Cleanse N (2026-10-10, user: "Cleanse N - cleanses curses for example"): with an amount, removes up to N
           // harmful counters, curses on its cell first (Desecrate), then poison, bleed, decay, corrosion, scar, expose
           // and the skip-a-turn statuses. Without an amount it clears everything, as before.
@@ -2729,7 +2766,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           }
           break;
         }
-      }
+      } };
+      // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
+      // and who:'any' picks an ally or an opponent at random each time.
+      const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
+      targetExclude = reps > 1 ? new Set() : null;
+      try{ for(let k=0; k<reps; k++) runAction(t.who==='any' ? Object.assign({}, t, {who: anySide(players, playerId, boardCard)}) : t); }
+      finally{ targetExclude = null; }
     });
   }
   // fireSpawnFamilyTriggers (2026-09-27, per explicit request: "Spawn triggers now refer to

@@ -160,12 +160,15 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
-function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', '); }
+// "Poison 1" reads "Poison" (2026-10-12, 23:12, user: "This omission of N if its default should be standardised everywhere" + "If
+// its just Poison 1 or Bleed 1 or ETC, just omit the number"): a skill value of 1 (or true) is shown without its number.
+function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
+function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', '); }
 // "fastForward 1, armor 2, evasive" <-> {fastForward:1, armor:2, evasive:true}; skill names or labels both work.
 function parseGrantText(v){
   if(v && typeof v === 'object') return v;
@@ -292,6 +295,8 @@ const PASSIVE_DEFS = [
   {key:'prayer', category:'passive', label:'Prayer', kind:'number', min:0, desc:v=>`While on your board, adds ${v} to your Prayer value (your Prayer = every Prayer on your board + the cards in your Removal Zone).`},
   {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
   {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
+  // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
+  {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
@@ -565,7 +570,7 @@ const ACTION_DEFS = [
   // 'target' generalized to who/sub (was: random enemy / opposite creature / all enemies only —
   // now also Self/Ally, so e.g. a card can genuinely hit its own HQ... no, itself, or an ally,
   // for a self-damage or friendly-fire archetype, not just ever the opponent).
-  {key:'damage', label:'Deal damage', fields:['amount','dmgType','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Deal damage to a chosen target — self, an ally, or an enemy — picked by Adjacent/Random/Furthest (or every card on that side, with "all").'},
+  {key:'damage', label:'Deal damage', fields:['amount','dmgType','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Deal damage to a chosen target — self, an ally, or an enemy — picked by Adjacent/Random/Furthest (or every card on that side, with "all").'},
   // Gain (2026-09-30, merges gainGrace/gainStone/gainLumber/gainDevilry/gainGold into one action
   // with the resource picked as its own parameter, per explicit request: "Same with 'Gain'.
   // Select the resource as the next parameter" — mirrors the same "simplify the verb, push the
@@ -590,17 +595,17 @@ const ACTION_DEFS = [
   // single-stat buff, same as before. The 3 canonical cards that used the old self-only actions
   // were migrated to who:'self' with the matching amount field; the 0 that used buffAlly needed
   // no migration.
-  {key:'buff', label:'Buff', fields:['who','sub','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, or an enemy. Effects last for good unless they say "until end of turn".'},
+  {key:'buff', label:'Buff', fields:['who','sub','targets','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, or an enemy. Effects last for good unless they say "until end of turn".'},
   // Debuff (2026-09-30, generalizes the old Debuff Attack the same way, now also lowering Health
   // — floored at 1, it weakens rather than kills; pair with Deal damage or Exile for an actual
   // kill) so Buff and Debuff are exact mirrors of each other. Self-targeting a debuff always lands
   // (no dodging your own effect, same as Buff); targeting an ally or enemy is Evasion-gated, same
   // as the old Debuff Attack was.
-  {key:'debuff', label:'Debuff', fields:['who','sub','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
-  {key:'poison', label:'Poison', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'bleed', label:'Bleed', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'expose', label:'Expose', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Mark a chosen target — self, an ally, or an enemy — for bonus damage on its next hit taken.'},
-  {key:'stun', label:'Stun', fields:['who','sub'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, or an enemy — no Wait tick, can't attack."},
+  {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
+  {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
+  {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
+  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Mark a chosen target — self, an ally, or an enemy — for bonus damage on its next hit taken.'},
+  {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, or an enemy — no Wait tick, can't attack."},
   {key:'reduceWaitOfSpawned', label:'Reduce Wait', fields:['amount'], desc:'Pair with On Ally Spawn — lowers the Wait of the ally just played.'},
   // Missile (2026-09-30, new action, per explicit request: "Add an action called Missile. Missile
   // just means do N damage to a random enemy unit"). Deliberately fixed to random-enemy, no
@@ -616,13 +621,13 @@ const ACTION_DEFS = [
   // instant-removal effect — the target is unconditionally sent to its owner's Removal Zone right
   // now (Evasion still applies, same as every other harmful skill effect here; Armor/Resist do
   // NOT, since this isn't damage, it's direct removal).
-  {key:'exile', label:'Exile', fields:['who','sub'], whoOptions:['self','ally','enemy'], desc:'Send a target to the Removal Zone instead of the graveyard. "Themselves" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
+  {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal self', fields:['amount'], desc:"Restore this card's own current HP (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."},
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."},
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
-  {key:'cleanse', label:'Cleanse', fields:['amount'], desc:"Cleanse N: remove up to N harmful counters from this card: a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
-  {key:'addWait', label:'Increase Wait', fields:['amount','who','sub'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
+  {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
+  {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
 // user named "opponent unit enters the battlefield" as just an example of "other ways" a
@@ -1302,14 +1307,14 @@ function describeEffects(def, liveCard){
   }
   if(def.cardType==='spell') lines.push(`✨ Spell — ${spellText(def)} It never takes a place on the field; casting it uses your play for the turn.`);
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
-  if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', ') : '';
+  if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
   if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
-  if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v===true ? '' : ' ' + v}`; }).join(', ') : '';
+  if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
   if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
@@ -1325,7 +1330,7 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
-    const head = p.kind==='number' && typeof v === 'number' ? `${p.label} ${v}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
+    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
@@ -1396,7 +1401,7 @@ function describeEffects(def, liveCard){
   if(e.immune && e.immune.length) core.push(`<span class="core-line">✳️ Immune: ${e.immune.map(resistOptionLabel).join(', ')}</span>`);
   if(core.length){ const at = lines.length && /^🧬/.test(lines[0]) ? 1 : 0; lines.splice(at, 0, ...core); }
   { const tr = (typeof matchState !== 'undefined' && matchState) ? terrainOfMatch(matchState) : null, t = tr && tr.t;
-    if(t && Array.isArray(def.archetypes) && def.archetypes.some(a=> t.types.includes(a))){ const g = t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v === true ? '' : ' ' + v}`; }).join(', ') : '';
+    if(t && Array.isArray(def.archetypes) && def.archetypes.some(a=> t.types.includes(a))){ const g = t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
       lines.push(`<span class="granted-skill" title="Given by this fight's terrain">${t.icon} Home ground — ${[t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', g].filter(Boolean).join(' and ')} on the ${t.name}.</span>`); } }
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
@@ -1630,14 +1635,14 @@ function buildCardDefs(){
   if(typeof matchDefsOverlay !== 'undefined' && matchDefsOverlay) Object.assign(out, matchDefsOverlay);
   return out;
 }
-function getDraftableIds(){
+function getDraftableIds(includeHidden){
   const defs = getCardDefs();
   // Test cards (2026-09-22, Test Suite feature) are excluded from the draftable pool exactly
   // like token cards already are — they exist purely for the Sandbox Test Battle's spawn picker,
   // never for a real deck, regardless of whether Developer Mode is currently on or off.
   // 2026-10-02: also never offers a card the player doesn't know exists yet (Hidden, undiscovered)
   // or a Hall of Fame draft / an Antique that fails its balance check.
-  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && defs[id].cardType!=='materia' && !isCardHiddenForPlayer(defs[id]) && !hofBlocked(defs[id], defs)); // materia is for crafting, never for a deck (2026-10-11)
+  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && defs[id].cardType!=='materia' && (includeHidden || !isCardHiddenForPlayer(defs[id])) && !hofBlocked(defs[id], defs)); // materia is for crafting, never for a deck (2026-10-11)
 }
 
 /* ============================================================
@@ -1670,7 +1675,10 @@ const DISCOVERED_KEY = 'bramblewood_arena_discovered';
 let myDiscoveredCardIds = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){ return new Set(); } })();
 function saveDiscovered(){ try{ localStorage.setItem(DISCOVERED_KEY, JSON.stringify(Array.from(myDiscoveredCardIds))); }catch(e){} }
 function isCardHiddenForPlayer(d){
-  if(!d || !d.hidden) return false;
+  // 2026-10-12 (23:12, user: "All cards should be hidden (even base ones) by default ... do this site-wide"): every card is hidden
+  // until you first see or own it, unless the editor unticks Hidden (hidden:false).
+  if(!d || d.hidden === false || d.isCastle || d.cardType === 'materia') return false;
+  if((myCardCopies && (myCardCopies[d.id]||[]).length)) return false;
   if(myDiscoveredCardIds.has(d.id)) return false;
   if(myUnlockedCardIds && myUnlockedCardIds.has(d.id)) return false;
   return true;
@@ -1712,9 +1720,9 @@ function noteSighted(defIds){
   if(fresh.length && matchState && !matchState.over){ const until = Date.now() + 4500; matchState.newSeenUntil = matchState.newSeenUntil || {}; fresh.forEach(id=>{ matchState.newSeenUntil[id] = until; }); setTimeout(()=>{ document.querySelectorAll('.board-card .seen-new').forEach(e=>{ const id = e.closest('.board-card') && e.closest('.board-card').dataset.defid; if(!matchState || !matchState.newSeenUntil || !(matchState.newSeenUntil[id] > Date.now())) e.remove(); }); }, 4600); }
   for(const id of defIds){
     const d = defs[id];
-    if(!d || !d.hidden || myDiscoveredCardIds.has(id)) continue;
+    if(!d || myDiscoveredCardIds.has(id) || !isCardHiddenForPlayer(d)) continue;
     myDiscoveredCardIds.add(id); changed = true;
-    discoverQueue.push(id);
+    if(d.hidden === true) discoverQueue.push(id); // the "Discovered!" pop stays for the explicitly secret cards; the rest just reveal (2026-10-12)
     try{ if(matchState && !matchState.over){ (matchState.discoveredThisMatch = matchState.discoveredThisMatch || []).push(id); } }catch(e){}
   }
   if(changed){ saveDiscovered(); pumpDiscoverQueue(); }
@@ -1876,10 +1884,13 @@ function phylaUnlocked(){
 function codexSeparateAllowed(){ return adminModeEnabled || playerMapReach() >= 10; }
 // 2026-10-12 (21:01, user: "In the codex, fuse the maps 0-5, 6-10, 11-15, 16-20"): base cards sit with Maps 0–5.
 function mapBandOf(num){
-  if(num <= 5) return {key:'band-0', order:[0,0,0,''], label:'🌱 Base cards & Maps 0–5'};
-  if(num <= 10) return {key:'band-6', order:[1,6,0,''], label:'🗺️ Maps 6–10'};
-  if(num <= 15) return {key:'band-11', order:[1,11,0,''], label:'🗺️ Maps 11–15'};
-  if(num <= 20) return {key:'band-16', order:[1,16,0,''], label:'🗺️ Maps 16–20'};
+  // 2026-10-12 (23:12, user: "Call Map 0-5 the first season, then second season, third season and fourth season accordingly.
+  // These make up the 'first world'").
+  if(num < 0) return {key:'band-base', order:[0,-1,0,''], label:'🌱 Base'};
+  if(num <= 5) return {key:'band-0', order:[0,0,0,''], label:'🌍 First world · First season (Maps 0–5)'};
+  if(num <= 10) return {key:'band-6', order:[1,6,0,''], label:'🌍 First world · Second season (Maps 6–10)'};
+  if(num <= 15) return {key:'band-11', order:[1,11,0,''], label:'🌍 First world · Third season (Maps 11–15)'};
+  if(num <= 20) return {key:'band-16', order:[1,16,0,''], label:'🌍 First world · Fourth season (Maps 16–20)'};
   if(num <= 40) return {key:'band-21', order:[1,21,0,''], label:'🗺️ Maps 21–40'};
   const lo = 41 + Math.floor((num - 41)/10)*10;
   return {key:'band-' + lo, order:[1,lo,0,''], label:`🗺️ Maps ${lo}–${lo + 9}`};
@@ -1899,7 +1910,7 @@ function codexViewSectionOf(d, view){
     return {key:'all', order:[0,0,0,''], label:'', bare:true};
   }
   if(view==='bands'){
-    if(src.kind==='base') return mapBandOf(0);
+    if(src.kind==='base') return mapBandOf(-1);
     if(src.kind==='map') return mapBandOf(mapNumberOf(src.id) ?? 999);
     if(src.kind==='pack') return packSectionOf(src, 'band');
     if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:'🎉 Events'};
@@ -4232,7 +4243,7 @@ function renderCodexGrid(){
     const tags = [];
     if(adminModeEnabled && isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag cx-tag-hidden">👁‍🗨 Hidden</span>');
     if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
-    if(adminModeEnabled && d.hidden && !isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag">✨ Discovered</span>');
+    if(adminModeEnabled && d.hidden !== false && !isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag">✨ Discovered</span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
     return `<div class="cx-tile-wrap">${cardTileHTML(d, {editable:true})}${tags.join('')}${src}</div>`;
   };
@@ -4534,7 +4545,9 @@ function cardArchetypeKey(d){
 function archMarkHTML(d, waitShown, live){
   if(!d || d.isCastle || d.field || d.cardType==='materia') return '';
   const key = cardArchetypeKey(d); if(!key) return '';
-  const [t, icon] = CARD_ARCHETYPE_MARK[key];
+  let [t, icon] = CARD_ARCHETYPE_MARK[key];
+  // 2026-10-12 (23:12, user: "JUST for swarm, use the Swarmer's animal type icon"): bees get the bee, everyone else the ant.
+  if(key === 'swarm') icon = (d.archetypes||[]).includes('Bee') ? '🐝' : '🐜';
   const ww = !waitShown ? 0 : live ? 24 : (Math.min(3, Math.max(1, d.wait|0)) * 11 + 14);
   return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t + ' archetype')}" aria-hidden="true">${icon}</div>`;
 }
@@ -4731,6 +4744,8 @@ function triggerBadges(d, live){
 }
 function abilityBadges(d, bopts){
   const e = d.effects||{};
+  // 2026-10-12 (23:12, user: "If its just Poison 1 or Bleed 1 or ETC, just omit the number. Just the logo is enough").
+  const n1 = v=> (v === 1 || v === true || v === '1') ? '' : v;
   const out = [];
   // 2026-09-19, per explicit request ("the items are not aligned" — the actual issue, confirmed by
   // reproducing the exact hand shown: bounty's badge sat in the top-center ability-badge row right
@@ -4739,29 +4754,32 @@ function abilityBadges(d, bopts){
   // just not the identical glyph as the cost pill it sits beside.
   // 2026-10-11 (user: "I wanted ALL symbols (incl like flying and poison) to be on the south border"): poison joins the
   // skill strip, which now sits on the card's bottom edge.
-  if(e.poison) out.push(`<span class="ab-poison">☠${e.poison}</span>`);
-  if(e.bounty) out.push(`<span class="ab-bounty">🏆${e.bounty}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
+  if(e.poison) out.push(`<span class="ab-poison">☠${n1(e.poison)}</span>`);
+  if(e.bounty) out.push(`<span class="ab-bounty">🏆${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
   if(e.explode) out.push(`💣${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
-  if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${e.armor}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
-  if(e.thorns) out.push(`🌵${e.thorns}`);
+  if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${n1(e.armor)}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
+  if(e.thorns) out.push(`🌵${n1(e.thorns)}`);
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">🍃</span>`);
   if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">↺</span>`);
   if(e.tide) out.push(`<span class="ab-tide" title="Tide: Flow +1 Attack, Ebb +1 Armor">🌊</span>`);
   if(e.swimmer) out.push(`🏊`);
-  if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${e.rainrunner}`); if(e.moonborn) out.push(`🌕${e.moonborn}`); if(e.frostbite) out.push(`🥶${e.frostbite}`);
-  if(e.inspiring) out.push(`📯${e.inspiring}`);
-  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${e.friction}</span>`);
-  if(e.worthy) out.push(`🪵${e.worthy}`);
+  if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${n1(e.rainrunner)}`); if(e.moonborn) out.push(`🌕${n1(e.moonborn)}`); if(e.frostbite) out.push(`🥶${n1(e.frostbite)}`);
+  // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
+  if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
+  if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
+  if(e.inspiring) out.push(`📯${n1(e.inspiring)}`);
+  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${n1(e.friction)}</span>`);
+  if(e.worthy) out.push(`🪵${n1(e.worthy)}`);
   if(e.lumberjack) out.push(`🪓`); if(e.heavyMetal) out.push(`🤘`);
   if(e.timber) out.push(`🌲`); if(e.rockSolid) out.push(`🪨`); if(e.ironWill) out.push(`🔩`);
   if(e.loyal || e.loyalGrant) out.push(`🎖️`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">👑<i>🗡️</i></span>`);
-  if(e.shell) out.push(`<span title="Shell">🐢${e.shell}</span>`); if(e.pitchfork) out.push(`<span class="ab-pair" title="Pitchfork: Trident + Pierce">🔱<i>🗡</i></span>`); if(e.trident) out.push(`<span title="Trident: front and both sides">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
+  if(e.shell) out.push(`<span title="Shell">🐢${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span class="ab-pair" title="Pitchfork: Trident + Pierce">🔱<i>🗡</i></span>`); if(e.trident) out.push(`<span title="Trident: front and both sides">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
-  if(e.demolisher) out.push(`⛏️${e.demolisher}`);
+  if(e.demolisher) out.push(`⛏️${n1(e.demolisher)}`);
   if(e.changeling) out.push(`🎭`);
   if(e.keenEye) out.push(`👁️`);
   if(e.primed) out.push(`🔋`);
@@ -4772,25 +4790,25 @@ function abilityBadges(d, bopts){
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
   if(e.fork || e.swipe === true) out.push(`<span class="ab-fork" title="Fork: hits left and right, never straight">⇔</span>`); // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
-  if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${e.swipe}`);
+  if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
   if(e.twinStrike) out.push(`⚔⚔`);
   if(e.converge) out.push(`🧲`);
   if(e.defiance) out.push(`😤${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
-  if(e.pack) out.push(`🐺${e.pack}`);
-  if(e.fastForward) out.push(`⏩${e.fastForward}`);
+  if(e.pack) out.push(`🐺${n1(e.pack)}`);
+  if(e.fastForward) out.push(`⏩${n1(e.fastForward)}`);
   // Sweep recolored from a bare ⚔+N (2026-09-18, per explicit request: "sweep should have a
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
-  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">😨${e.daunt}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">💢${e.recoil}</span>`);
-  if(e.sweep) out.push(`<span title="Sweep ${e.sweep}">🧹${e.sweep}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
+  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">😨${n1(e.daunt)}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">💢${n1(e.recoil)}</span>`);
+  if(e.sweep) out.push(`<span title="Sweep ${e.sweep}">🧹${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
   // but had NO badge at all before this — a card with Pierce looked completely identical to one
   // without it anywhere outside the card editor. 🎯 reads as "punches straight through to the
   // target beyond," and isn't used by any other badge here.
-  if(e.puncture) out.push(`🎯${e.puncture}`);
+  if(e.puncture) out.push(`🎯${n1(e.puncture)}`);
   if(e.rage) out.push(`😡`);
   // 🏹 also covers the generic Custom Trigger equivalent (On Spawn/On Ready + Deal damage to a
   // random enemy) that Arrow N/Arrow(=Attack) were migrated to (2026-09-20) -- see ACTIVE_PRESETS.
@@ -4838,11 +4856,11 @@ function abilityBadges(d, bopts){
   if(e.flying) out.push(`<span class="ab-wing">🪽</span>`); // 2026-10-06: 20% larger, it was easy to miss
   if(e.quick) out.push(`👢`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
-  if(e.earthquake) out.push(`<span class="ab-pair">🌎<i>💥</i></span>${e.earthquake}`);
-  if(e.pounce) out.push(`🐾${e.pounce}`); // Pounce (2026-10-12)
+  if(e.earthquake) out.push(`<span class="ab-pair">🌎<i>💥</i></span>${n1(e.earthquake)}`);
+  if(e.pounce) out.push(`🐾${n1(e.pounce)}`); // Pounce (2026-10-12)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
-  if(e.kingSlayer) out.push(`<span class="ab-pair">👑<i>⚔️</i></span>${e.kingSlayer}`);
+  if(e.kingSlayer) out.push(`<span class="ab-pair">👑<i>⚔️</i></span>${n1(e.kingSlayer)}`);
   if(d.graceCost) out.push(`🕊️cost`);
   if(d.exileCost) out.push(`🌫cost`);
   // 2026-09-29, per explicit request ("I think remove the lightning symbol - no need. Just have
@@ -5526,7 +5544,9 @@ function codexPlacementHTML(d){
   const src = raw.source || {};
   const auto = cardSourceOf(Object.assign({}, raw, {source:null}));
   const autoLabel = auto.kind==='base' ? (auto.tutorialReward ? 'auto: Tutorial reward' : 'auto: Base') : 'not obtainable';
-  const maps = CONQUEST_MAPS.map((m,i)=>`<option value="${escapeAttr(m.id)}" ${src.kind==='map'&&src.id===m.id?'selected':''}>${i+1}. ${escapeHtml(m.name)}</option>`).join('');
+  const mapOpt = m=> `<option value="${escapeAttr(m.id)}" ${src.kind==='map'&&src.id===m.id?'selected':''}>Map ${mapNumberOf(m.id) ?? '?'}${m.sub ? ' (side)' : ''} · ${escapeHtml(m.name)}</option>`;
+  const bySeason = {}; CONQUEST_MAPS.forEach(m=>{ const b = mapBandOf(mapNumberOf(m.id) ?? 999); (bySeason[b.label] = bySeason[b.label] || []).push(m); });
+  const maps = Object.entries(bySeason).map(([lab, ms])=> `<optgroup label="${escapeAttr(lab)}">${ms.sort((a,b)=> (mapNumberOf(a.id)??999) - (mapNumberOf(b.id)??999)).map(mapOpt).join('')}</optgroup>`).join('');
   return `<div class="panel cd-placement" id="cdPlacement">
     <h4>📂 From <span class="panel-sub-inline">(admin · where players get this card)</span></h4>
     <div class="cdp-row">
@@ -5543,7 +5563,7 @@ function codexPlacementHTML(d){
       <input id="cdpEventTheme" type="text" aria-label="Event theme" placeholder="Theme (e.g. Christmas)" value="${src.kind==='event'?escapeAttr(src.theme||''):''}" ${src.kind==='event'?'':'hidden'}>
       <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
     </div>
-    <label class="field-checkbox-row"><input type="checkbox" id="cdpHidden" ${raw.hidden?'checked':''}> Hidden — players don’t know it exists until they first see it</label>
+    <label class="field-checkbox-row"><input type="checkbox" id="cdpHidden" ${raw.hidden === false ? '' : 'checked'}> Hidden — players don’t know it exists until they first see it</label>
     <p class="cdp-obtain ${isUnattainable(d) ? 'is-no' : 'is-yes'}">${isUnattainable(d) ? '⛔ Not obtainable: no source yet. Pick one above.' : `✅ Obtainable: ${escapeHtml(cardWhereToGetText(d))}`}</p>
     <div class="cdp-actions"><button type="button" class="btn small primary" id="cdpSave">Save placement</button><span class="cdp-msg" id="cdpMsg"></span></div>
   </div>`;
@@ -5581,7 +5601,7 @@ function wireCodexPlacement(defId){
     }
     raw.hidden = document.getElementById('cdpHidden').checked;
     delete raw.unattainable; // obtainability is worked out from the source now (2026-10-12)
-    if(!raw.hidden) delete raw.hidden;
+    if(raw.hidden) delete raw.hidden; // hidden is the default now; only "not hidden" is stored (hidden:false)
     await saveCard(raw);
     document.getElementById('cdpMsg').textContent = 'Saved ✓';
     if(currentTab==='codex') renderCodex();
@@ -5651,6 +5671,12 @@ function openNodeRewardsEditor(mapId, nodeKey){
 function levelStatsEditorHTML(c){
   const {from, to} = cardLevelRange(c), ls = c.levelStats || {}, n = Object.keys(ls).length;
   const rows = [];
+  // 2026-10-12 (23:12, user: "include a level 0 ... some cards can be babies born from nests"): a card that starts at Lv 1 also
+  // gets a Lv 0 row, its hatchling stats (default about 15% weaker).
+  if(from > 0){ const cur = curveStatsAtLevel(c, 0), ov = ls[0] || ls['0'] || {};
+    rows.push(`<tr data-lv="0" class="is-hatch"><th>Lv 0 <small class="lvs-step">hatchling</small></th>
+      <td><input type="number" min="0" class="lvs-atk" aria-label="Attack at level 0" placeholder="${cur.attack}" value="${ov.attack != null ? ov.attack : ''}"></td>
+      <td><input type="number" min="1" class="lvs-hp" aria-label="Health at level 0" placeholder="${cur.health}" value="${ov.health != null ? ov.health : ''}"></td></tr>`); }
   for(let L = from + 1; L <= to; L++){
     const cur = curveStatsAtLevel(c, L), ov = ls[L] || ls[String(L)] || {}, step = LEVEL_STEPS[L];
     rows.push(`<tr data-lv="${L}"><th>Lv ${L}${step ? ` <small class="lvs-step is-${step}">${step === 'major' ? 'major' : 'minor'}</small>` : ''}</th>
@@ -5661,7 +5687,7 @@ function levelStatsEditorHTML(c){
     <p class="lvs-help">Leave a cell blank to follow the default curve (the grey number). Type a number to set that level exactly.${c.id === 'hero' ? ' The hero also has a skill path; that gets its own editor.' : ''}</p>
     <div class="lvs-tools"><button type="button" class="btn small" id="lvsFill">Fill blanks from the curve</button><button type="button" class="btn small ghost" id="lvsClear">Clear all</button></div>
     <div class="lvs-scroll"><table class="lvs-table"><thead><tr><th>Level</th><th>⚔ Attack</th><th>❤ Health</th></tr></thead><tbody>
-      <tr class="is-base"><th>Lv ${from} <small>base</small></th><td>${c.attack}</td><td>${c.health}</td></tr>${rows.join('')}</tbody></table></div></details>`;
+      ${rows.filter(r=> r.includes('is-hatch')).join('')}<tr class="is-base"><th>Lv ${from} <small>base</small></th><td>${c.attack}</td><td>${c.health}</td></tr>${rows.filter(r=> !r.includes('is-hatch')).join('')}</tbody></table></div></details>`;
 }
 function readLevelStatsEditor(){
   const box = document.querySelector('#editorOverlay .lvs-box'); if(!box) return editingCard && editingCard.levelStats || null;
@@ -5739,6 +5765,7 @@ function renderEditor(){
   const modal = overlay.querySelector('.modal'); if(!modal) return;
   modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); modal.setAttribute('aria-label', 'Card editor');
   try{ wireLevelStatsEditor(); }catch(e){}
+  try{ if(editingCard && editingCard.id && document.querySelector('#editorOverlay #cdpKind')){ document.querySelectorAll('.cd-placement').forEach(el=>{ if(!el.closest('#editorOverlay')) el.remove(); }); wireCodexPlacement(editingCard.id); } }catch(e){} // one placement panel at a time (ids)
   if(scroll) modal.scrollTop = scroll;
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
   overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
@@ -5906,7 +5933,7 @@ function renderEditorInner(){
            decks)" checkbox — checked meant NOT locked, the opposite of the underlying c.locked
            field it wrote to (c.locked = !checked). Now the checkbox IS c.locked directly: label
            reads "Locked", checked when the card is actually locked, no double-negative. -->
-      <div class="field" title="Locked cards can't be added to a deck yet — use this to keep new/experimental cards out of play until you're ready."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden cards don't appear anywhere for a player until they first see one in play — then it shows a 'Discovered!' pop and becomes a normal Locked card."><input type="checkbox" id="fHidden" ${c.hidden?'checked':''}> Hidden</label></div>
+      <div class="field" title="Locked cards can't be added to a deck yet — use this to keep new/experimental cards out of play until you're ready."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden cards don't appear anywhere for a player until they first see one in play — then it shows a 'Discovered!' pop and becomes a normal Locked card."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}> Hidden</label></div>
       ${devModeEnabled ? `<div class="field" title="Test cards never appear in the draftable pool or ordinary Codex browsing (same as a locked card, but permanently, regardless of unlocking) -- they only ever show up in the Codex's dedicated 🧪 Test cards filter and the Sandbox Test Battle's spawn picker."><label>Developer</label><label class="field-checkbox-row"><input type="checkbox" id="fTest" ${c.test?'checked':''}> 🧪 Test card</label></div>` : ''}
     </div>
     <div class="field-row">
@@ -5955,6 +5982,8 @@ function renderEditorInner(){
       </div>
     </div>
     ${levelStatsEditorHTML(c)}
+    ${'' /* 2026-10-12 (23:12, user: "Let me edit their source in the web-app"): the Codex's placement panel, right in the editor */}
+    ${c.id && rawCardDef(c.id) ? codexPlacementHTML(c) : ''}
     <div class="field-row">
       <!-- 2026-09-22 ("don't use gold anymore. the current symbol that represents gold looks
            like stone anyway!"): the base play cost is paid in Lumber, not Gold — the underlying
@@ -6300,6 +6329,12 @@ function renderEditorInner(){
     c.effects.triggers[i] = {on: readOnValue(row), do: sel.value};
     renderEditor();
   }));
+  // 2026-10-12: changing Target or Distance redraws the row, so the distance and "how many" pickers appear as they apply.
+  overlay.querySelectorAll('#triggerRows .trigger-row select[data-t="who"], #triggerRows .trigger-row select[data-t="sub"]').forEach(sel=> sel.addEventListener('change', ()=>{
+    const i = Number(sel.getAttribute('data-i')); const row = sel.closest('.trigger-row');
+    try{ const nt = Object.assign({}, c.effects.triggers[i], readTriggerRow(row)); if(nt.who && nt.who!=='self' && !nt.sub){ const ad = ACTION_DEFS.find(x=> x.key===nt.do); nt.sub = ((ad && ad.subOptions) || ['adjacent'])[0]; } c.effects.triggers[i] = nt; }catch(e){}
+    setTimeout(renderEditor, 0); // after the row's own preview refresh
+  }));
   // Item #51: live human-readable preview — every field inside a trigger row (On, Do,
   // and whichever amount/count/target/etc. inputs that action needs) re-renders its own
   // plain-English sentence on every edit, not just when the row is fully rebuilt.
@@ -6527,6 +6562,8 @@ function readTriggerRow(row){
   if(whoEl) t.who = whoEl.value;
   const subEl = row.querySelector('[data-t="sub"]');
   if(subEl) t.sub = subEl.value;
+  const targetsEl = row.querySelector('[data-t="targets"]');
+  if(targetsEl && Number(targetsEl.value) > 1 && t.who !== 'self' && t.sub !== 'all') t.targets = Math.min(8, Math.floor(Number(targetsEl.value)));
   const defIdEl = row.querySelector('[data-t="defId"]');
   if(defIdEl && defIdEl.value.trim()) t.defId = defIdEl.value.trim();
   return t;
@@ -6551,7 +6588,14 @@ function triggerPreviewText(t){
   // field now (see the long comment above ACTION_DEFS). 'self' reads as "itself"; ally/enemy
   // read as "an ally"/"an enemy", qualified by the sub-pick.
   // 2026-10-12 (user: "On Death: Deal 5 fire damage to an adjacent enemy"): plain English targets.
-  const whoTarget = t.who==='self' ? 'itself' : (t.who==='ally' || t.who==='enemy') ? ({adjacent:`an adjacent ${t.who}`, random:`a random ${t.who}`, furthest:`the furthest ${t.who}`, all: t.who==='ally' ? 'all allies' : 'all enemies'}[t.sub] || `an ${t.who}`) : FILL;
+  const whoTarget = (()=>{ if(t.who==='self') return 'itself';
+    const n = t.targets > 1 && t.sub !== 'all' ? t.targets : 1;
+    const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', any: n>1 ? 'units' : 'unit'}[t.who];
+    if(!noun) return FILL;
+    if(t.sub === 'all') return {ally:'all allies', enemy:'all opponents', any:'every unit'}[t.who];
+    const lead = n > 1 ? n + ' ' : (t.sub === 'furthest' ? 'the ' : (t.sub === 'adjacent' && t.who !== 'any') ? 'an ' : 'a ');
+    const adj = {adjacent:'adjacent ', random: n>1 ? 'random ' : 'random ', furthest:'furthest '}[t.sub] || '';
+    return (lead + adj + noun).replace(/^a (adjacent|opponent|ally)/, 'an $1'); })();
   const resourceLabel = {lumber:'lumber', grace:'grace', stone:'stone', devilry:'Dark Point'}[t.resource] || 'lumber';
   const dmgType = t.dmgType || FILL;
   let doText;
@@ -6603,10 +6647,10 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal itself for ${amt} (Bleed first, capped at its own max HP)`; break;
+    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Bleed first, capped at max HP)`; break;
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
-    case 'cleanse': doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from itself (curses first)` : `cleanse itself of every ailment`; break;
+    case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
     default: doText = aDef.label.toLowerCase();
   }
@@ -6656,15 +6700,17 @@ function actionFieldsHTML(t,i){
   // vocabulary — see the long comment above ACTION_DEFS). `who` is always offered whenever an
   // action lists it; `sub` only renders once `who` isn't 'self' (a lone target has no sub-pick).
   if(aDef.fields.includes('who')){
-    const whoOptions = aDef.whoOptions || ['self','ally','enemy'];
-    const whoLabels = {self:'Themselves', ally:'Ally', enemy:'Enemy'};
+    // 2026-10-12 (23:12 list): Self / Ally / Opponent / Any, then distance (Adjacent or Any), then how many targets.
+    const whoOptions = aDef.whoOptions || ['self','ally','enemy','any'];
+    const whoLabels = {self:'Self', ally:'Ally', enemy:'Opponent', any:'Any'};
     const curWho = t.who && whoOptions.includes(t.who) ? t.who : whoOptions[0];
     html += `<select data-t="who" data-i="${i}">${whoOptions.map(w=>`<option value="${w}" ${curWho===w?'selected':''}>${whoLabels[w]}</option>`).join('')}</select>`;
     if(aDef.fields.includes('sub') && curWho!=='self'){
       const subOptions = aDef.subOptions || ['adjacent','random','furthest'];
-      const subLabels = {adjacent:'Adjacent', random:'Random', furthest:'Furthest', all:'All'};
+      const subLabels = {adjacent:'Adjacent', random:'Any distance', furthest:'Furthest', all:'All of them'};
       const curSub = t.sub && subOptions.includes(t.sub) ? t.sub : subOptions[0];
       html += `<select data-t="sub" data-i="${i}">${subOptions.map(s=>`<option value="${s}" ${curSub===s?'selected':''}>${subLabels[s]}</option>`).join('')}</select>`;
+      if(aDef.fields.includes('targets') && curSub!=='all') html += `<input type="number" min="1" max="8" placeholder="1" class="w-56" title="How many different targets" data-t="targets" data-i="${i}" value="${t.targets>1 ? t.targets : ''}"><span class="t-unit">target(s)</span>`;
     }
   }
   // Spawn Card(s)'s defId (2026-09-16, per explicit request — this was a free-text "card id"
@@ -6693,7 +6739,7 @@ function readEditorFormIntoCard(){
   // no more !checked inversion.
   c.locked = document.getElementById('fLocked').checked;
   const fHiddenEl = document.getElementById('fHidden');
-  if(fHiddenEl){ if(fHiddenEl.checked) c.hidden = true; else delete c.hidden; }
+  if(fHiddenEl){ if(!fHiddenEl.checked) c.hidden = false; else if(c.hidden === false) delete c.hidden; } // hidden is the default (2026-10-12)
   // Test-card checkbox only exists in the DOM when Developer Mode is on (see renderEditor above)
   // — preserve whatever the card already carried rather than clobbering it to false whenever it's
   // saved with the field hidden.
@@ -6822,7 +6868,10 @@ async function onSaveEditor(){
   // and should actually take effect for THIS player, so saving a card as locked now also revokes
   // this player's own personal unlock of it -- otherwise "lock this card" would be a button that
   // visibly does nothing, which is worse than not having it.
-  if(c.locked && myUnlockedCardIds.has(c.id)){
+  // 2026-10-12 (23:12, user: "When I edit a card - unless its a starter, it seems to remove it from my inventory. dont do that"):
+  // every earnable card is stored locked:true, so this used to fire on ANY save. Only a fresh re-lock (was unlocked, now locked) revokes.
+  const wasLocked = (()=>{ const r = c.id && rawCardDef(c.id); return !!(r && r.locked); })();
+  if(c.locked && !wasLocked && myUnlockedCardIds.has(c.id)){
     myUnlockedCardIds.delete(c.id);
     saveUnlockedCardIds();
   }
@@ -8256,13 +8305,15 @@ function cardMaxLevel(d){ if(!d) return 10; if(d.id === 'hero') return 100; if(d
 function cardLevelRange(d){ return {from: cardBaseLevel(d), to: cardMaxLevel(d)}; }
 // The default curve at a level, ignoring any per-level override (what the editor shows as the placeholder).
 function curveStatsAtLevel(d, L){
+  if((L|0) < cardBaseLevel(d)){ const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(d.attack), health: r(d.health)}; } // Lv 0 hatchling
   const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cardMaxLevel(d), L|0));
   let g = 0; for(let l = base + 1; l <= lv; l++){ const k = LEVEL_STEPS[l] !== undefined ? LEVEL_STEPS[l] : (l % 3 === 0 ? 'minor' : null); if(k) g += LEVEL_STEP_GAIN[k]; }
   const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
   return {attack: r(d.attack), health: r(d.health)};
 }
 function statsAtLevel(d, L){
-  if((L|0) < cardBaseLevel(d)){ const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85)); return {attack: r(d.attack), health: r(d.health)}; } // a hatchling (Level 0)
+  if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
+    return {attack: ov0 && ov0.attack != null ? ov0.attack : r(d.attack), health: ov0 && ov0.health != null ? ov0.health : r(d.health)}; } // a hatchling (Level 0); the editor can set it
   const cap = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d); // a limit-broken card reaches 11
   const base = cardBaseLevel(d), lv = Math.max(base, Math.min(cap, L|0));
   const ov = d.levelStats && (d.levelStats[lv] || d.levelStats[String(lv)]);
@@ -9176,7 +9227,7 @@ const DECK_SIZE = 20;
 // capped at 4 copies each (DEFAULT_DECK's own max) so no single card can dominate the draw.
 function randomAiDeck(){
   const defs = getCardDefs();
-  const pool = getDraftableIds().filter(id=>!defs[id].locked);
+  const pool = getDraftableIds(true).filter(id=>!defs[id].locked);
   if(pool.length===0) return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1}; // fallback if somehow nothing is unlocked
   const shuffled = [...pool].sort(()=>Math.random()-0.5);
   const distinctCount = Math.max(1, Math.min(pool.length, 5 + Math.floor(Math.random()*5))); // 5-9 distinct cards, clamped to what's actually available
@@ -11725,7 +11776,7 @@ function terrainFor(mapId, node){
 // What the terrain does, in words (the field pill, its banner and a native card's light-blue line).
 function terrainSummary(t, rules){
   if(!t) return '';
-  const bonus = [t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v === true ? '' : ' ' + v}`; }).join(', ') : ''].filter(Boolean).join(' and ');
+  const bonus = [t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : ''].filter(Boolean).join(' and ');
   const who = t.types.length > 1 ? t.types.slice(0, -1).join(', ') + ' and ' + t.types[t.types.length - 1] : t.types[0];
   let txt = `${who} units on both sides are on home ground: ${bonus}.`;
   const er = rules && Number(rules.eruption) || 0;

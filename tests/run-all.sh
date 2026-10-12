@@ -39,6 +39,7 @@ run node tests/pounce.js
 run node tests/earthquake.js
 run node tests/terrain.js
 run node tests/testkit-manual.js
+run node tests/action-targets.js
 run node tests/ecclesia.js
 run node tests/integrity.js
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; fi
