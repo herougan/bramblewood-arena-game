@@ -1,5 +1,7 @@
 # Map schedule (2026-10-12)
 
+_Updated 11:30: the road now follows the 0–20 tiers (Clovermead kept as Map 1, so the Volcano is Map 21). Features stay on the same map numbers; the map names below are the new order._
+
 This applies your per-map table to the game. "Ally" means your side's pack (Otter or Hummingbird). Map numbers are the order of play.
 
 ## Pack names
@@ -16,28 +18,28 @@ This applies your per-map table to the game. "Ally" means your side's pack (Otte
 
 | Map | In the game | Unlocks (map spot) | Pack on sale | Free pack (boss first clear) | Gaps |
 |---|---|---|---|---|---|
-| 0 | Tutorial | | | Ally Pack, plus 3 Base cards | |
-| 1 | Bramblewood Outskirts | ⛺ Armoury (deck) | | | |
+| 0 | Bramblewood Outskirts | | | Ally Pack, plus 3 Base cards | |
+| 1 | Clovermead | ⛺ Armoury (deck) | | | |
 | 2 | Thistlewood | 🪺 Nest | | | |
-| 3 | Pebble Beach (+ Smugglers' Grotto, "3A") | | | Sprout Pouch | |
-| 4 | Sunken Hollow | 📜 Notices | | | |
-| 5 | The Ashen Peak (boss) | 🛒 Traveller's Cart; 🧩 Whisper's Game stays here | Sprout Pouch | | |
-| 6 | Caves & Alcoves | | | | No "6A" dungeon yet |
-| 7 | Savanna Reaches (+ The Canopy) | 📖 Codex | | Acorn Chest | The Canopy is this map's side map. Your table puts the 6A dungeon one map earlier. |
-| 8 | Wolfsbane Tundra | 🏟️ Arena; 🏮 Ember Peddler | Acorn Chest | | |
-| 9 | Coral Current | 📌 Quest Board (errands) | | | No "9A" dungeon yet |
-| 10 | Sable Swampmire (boss) | | | Mystery Booster | |
-| 11 | Basalt Foundry | 🔨 Forge | | Golden Bramble Case | |
+| 3 | The Morel Hollow (+ The Mycelium Deep) | | | Sprout Pouch | |
+| 4 | Lilypad Reach | 📜 Notices | | | |
+| 5 | Pebble Beach (+ Smugglers' Grotto) | 🛒 Traveller's Cart; 🧩 Whisper's Game stays here | Sprout Pouch | | |
+| 6 | Gannet Cliffs | | | | No "6A" dungeon yet |
+| 7 | Sunken Hollow | 📖 Codex | | Acorn Chest | The Canopy is this map's side map. Your table puts the 6A dungeon one map earlier. |
+| 8 | Gatorback Swamp | 🏟️ Arena; 🏮 Ember Peddler | Acorn Chest | | |
+| 9 | The Kelp Mangroves | 📌 Quest Board (errands) | | | No "9A" dungeon yet |
+| 10 | Sable Swampmire | | | Mystery Booster | |
+| 11 | Caves & Alcoves | 🔨 Forge | | Golden Bramble Case | |
 | 12 | Eyrie Heights | | | | No "12A" dungeon yet |
-| 13 | The Sundered Peak | 🐲 Raid Banner (Raid 1); 🐫 Gilded Caravan; 🧭 Wanderer's Camp | Golden Bramble Case; Mystery Boosters from the trader, 5 per visit | Sprout Pouch | |
-| 14 | The Morel Hollow | | | | No "14A–D" dungeons yet |
-| 15 | Lilypad Reach (boss) | | | Mystery Booster | No "15A" dungeon yet |
-| 16 | Gannet Cliffs | 🏅 Gauntlet Gate | | Acorn Chest | |
-| 17 | Gatorback Swamp | | | | "Quest 1" isn't built |
-| 18 | The Kelp Mangroves | | | Golden Bramble Case | No "18A" dungeon yet |
-| 19 | The Briar Maze | | | | Raid 2: the second raid domain isn't tied to this map yet |
-| 20 | The Redwood Deep (boss) | | | Mystery Booster | No world boss yet |
-| 21 | The Long Grass | 🧪 Test Lab (the Sandbox, for players) | | | |
+| 13 | The Briar Maze | 🐲 Raid Banner (Raid 1); 🐫 Gilded Caravan; 🧭 Wanderer's Camp | Golden Bramble Case; Mystery Boosters from the trader, 5 per visit | Sprout Pouch | |
+| 14 | The Redwood Deep | | | | No "14A–D" dungeons yet |
+| 15 | The Long Grass | | | Mystery Booster | No "15A" dungeon yet |
+| 16 | The Pinewood Taiga | 🏅 Gauntlet Gate | | Acorn Chest | |
+| 17 | Wolfsbane Tundra | | | | "Quest 1" isn't built |
+| 18 | Savanna Reaches (+ The Canopy) | | | Golden Bramble Case | No "18A" dungeon yet |
+| 19 | The Glass Dunes | | | | Raid 2: the second raid domain isn't tied to this map yet |
+| 20 | Basalt Foundry | | | Mystery Booster | |
+| 21 | The Sundered Peak (Volcano, world boss; + Eye of the Volcano) | 🧪 Test Lab (the Sandbox, for players) | | | |
 
 ## How it works
 

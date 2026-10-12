@@ -245,6 +245,7 @@
      every renderBoard(), so narrowing this container is the whole fix — the battlefield's own
      auto zoom-to-fit just recomputes against the smaller width, no JS change needed. */
   #appWrap.in-match .content-wrap{max-width:min(1500px, 94vw);}
+  html.is-fs #appWrap.in-match{min-height:100vh; min-height:100dvh; display:flex; flex-direction:column; justify-content:center;} html.is-fs #appWrap.in-match .content-wrap{width:100%;}
   /* 2026-09-22 (explicit bug report: "there is significant portion of the screen that is blocked
      off from the field. Remove that, use the full width when zoomed out!"): fitBattlefieldZoom()
      (arena_app.js) toggles this class on #appWrap specifically (and only) while the battlefield
@@ -916,6 +917,9 @@
   .ab-trig.is-spent{animation:trigSpent 1.6s ease forwards; display:inline-flex; overflow:hidden; max-width:4em;}
   @keyframes trigSpent{0%{filter:none; text-shadow:0 0 0 rgba(255,230,120,0);} 15%{filter:brightness(1.8) drop-shadow(0 0 6px #ffe27a);} 30%{filter:none;} 55%{filter:grayscale(1) brightness(.75); opacity:.6;} 100%{filter:grayscale(1); opacity:0; max-width:0;}}
   @media (prefers-reduced-motion:reduce){ .ab-trig.is-spent{animation:none; opacity:0;} }
+  .badges.is-all-spent{animation:badgesAllSpent 1.6s ease forwards;}
+  @keyframes badgesAllSpent{0%,55%{opacity:1;} 100%{opacity:0; visibility:hidden;}}
+  @media (prefers-reduced-motion:reduce){ .badges.is-all-spent{animation:none; opacity:0;} }
   .ab-trig.is-off{opacity:.8;}
   .ab-trig.is-waking .ab-bolt{animation:boltWake .7s ease-out;}
   @keyframes boltWake{0%{transform:scale(1.7); filter:brightness(2.2);} 100%{transform:none; filter:none;}}
@@ -1639,6 +1643,15 @@
     #appWrap.in-match .board-row{min-height:calc(var(--match-card-h) + 36px); padding-top:18px; padding-bottom:18px;}
     #appWrap.in-match .battlefield{padding-top:10px; padding-bottom:10px;}
   }
+  /* RWD large pass (2026-10-12, 10:57 list: "Put Responsive web design (RWD) large pass"): on big screens the match grows into
+     the space instead of sitting small in the middle (cards up to 1.6x), and the menu pages scale up as a whole. */
+  @media (min-width: 1700px) and (min-height: 950px){
+    #appWrap.in-match .content-wrap{max-width:min(2300px, 94vw);}
+    #appWrap.in-match{--match-card-h: clamp(104px, calc((100dvh - 250px) / 4.55), 240px);}
+    #appWrap.in-match .card-tile{font-size:calc(var(--match-card-w) / 95 * 1em);}
+  }
+  @media (min-width: 1700px) and (min-height: 950px){ #view-home > *, #view-inventory > *, #view-profile > *, #view-nest > *, #view-shop > *{zoom:1.2;} }
+  @media (min-width: 2300px) and (min-height: 1250px){ #view-home > *, #view-inventory > *, #view-profile > *, #view-nest > *, #view-shop > *{zoom:1.45;} }
   /* Direct-to-battlefield drop target (2026-09-17, per explicit request: "Dragging the card
      Left right of the actual field or in the centre position should ALSO play the card") —
      the active player's own row glows the same accent color as the dedicated Left/Right
@@ -3906,6 +3919,38 @@
   .achv-claimed-badge{font-size:11px; font-weight:700; color:var(--health, #3f5c3a); text-transform:uppercase; letter-spacing:.03em;}
   .achv-reward-preview{display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;}
   .achv-reward-preview .hud-pill{font-size:10.5px; padding:2px 6px;}
+  /* 2026-10-12 (user: "Upgrade the Achievements page"): a progress ring, filters, groups and medal tiles */
+  .achievements-panel{--achv-bronze-a:#e7b384; --achv-bronze-b:#8a5332; --achv-silver-a:#eef1f5; --achv-silver-b:#8c97a6; --achv-gold-a:#ffe49a; --achv-gold-b:#b8862a; --achv-dragon-a:#ffb08a; --achv-dragon-b:#9b2a18;}
+  .achv-head{display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:12px;}
+  .achv-head-txt{flex:1; min-width:180px;} .achv-head-txt h2{margin:0;}
+  .achv-ring{--p:0; width:68px; height:68px; border-radius:50%; flex-shrink:0; display:grid; place-items:center; position:relative;
+    background:conic-gradient(var(--accent-strong) calc(var(--p)*1%), rgba(127,127,127,.22) 0);}
+  .achv-ring::before{content:''; position:absolute; inset:7px; border-radius:50%; background:var(--surface);}
+  .achv-ring > span{position:relative; display:flex; flex-direction:column; align-items:center; line-height:1; font-family:'Baloo 2';} .achv-ring b{font-size:22px;} .achv-ring small{font-size:10.5px; opacity:.7; margin-top:2px; font-variant-numeric:tabular-nums;}
+  .achv-filters{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px;}
+  .achv-f{font:inherit; font-weight:700; font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--surface-border); background:transparent; color:inherit; cursor:pointer;}
+  .achv-f small{opacity:.6; font-variant-numeric:tabular-nums;} .achv-f.is-on{background:var(--accent-strong); border-color:var(--accent-strong); color:#fff;}
+  .achv-f:focus-visible{outline:2px solid var(--accent-strong); outline-offset:2px;}
+  .achv-group{margin-bottom:16px;} .achv-group h3{font-family:'Baloo 2'; font-size:16px; margin:0 0 8px; display:flex; align-items:baseline; gap:8px;} .achv-group h3 small{font-size:12px; opacity:.6; font-variant-numeric:tabular-nums;}
+  .achv-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap:10px;}
+  .achv-tile{display:grid; grid-template-columns:52px 1fr; align-items:start; gap:12px; padding:12px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border); min-width:0;}
+  .achv-tile .achv-title{display:block; font-family:'Baloo 2'; font-size:15px; line-height:1.2; text-wrap:balance;}
+  .achv-meter{display:flex; align-items:center; gap:8px; margin-top:6px;} .achv-meter .achv-bar{flex:1; margin:0;}
+  .achv-foot{display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-top:8px;} .achv-foot .achv-reward-preview{justify-content:flex-start;}
+  .achv-tile .achv-body{min-width:0;} .achv-tile .achv-desc{margin:2px 0 0; font-size:12px; color:var(--ink-muted);}
+  .achv-medal{width:52px; height:52px; border-radius:50%; display:grid; place-items:center; position:relative; font-size:24px;
+    background:radial-gradient(circle at 35% 30%, var(--m-a), var(--m-b)); box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), 0 2px 6px rgba(0,0,0,.18);}
+  .achv-tile.tier-1{--m-a:var(--achv-bronze-a); --m-b:var(--achv-bronze-b);} .achv-tile.tier-2{--m-a:var(--achv-silver-a); --m-b:var(--achv-silver-b);}
+  .achv-tile.tier-3{--m-a:var(--achv-gold-a); --m-b:var(--achv-gold-b);} .achv-tile.tier-4{--m-a:var(--achv-dragon-a); --m-b:var(--achv-dragon-b);}
+  .achv-tile.is-locked .achv-medal{filter:grayscale(1) brightness(.85); opacity:.6;} .achv-tile.is-going .achv-medal{filter:grayscale(.55);}
+  .achv-tile.is-ready{border-color:var(--accent-strong); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent-strong) 35%, transparent);}
+  .achv-tile.is-ready .achv-medal{animation:achvGlow 1.8s ease-in-out infinite;}
+  @keyframes achvGlow{0%,100%{box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), 0 0 0 0 rgba(255,210,90,.0);} 50%{box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), 0 0 14px 4px rgba(255,210,90,.55);}}
+  .achv-tile.is-claimed{opacity:.8;} .achv-stamp{position:absolute; right:-4px; bottom:-4px; width:22px; height:22px; border-radius:50%; background:var(--health, #3f5c3a); color:#fff; font-style:normal; font-size:13px; display:grid; place-items:center; border:2px solid var(--surface-2);}
+  .achv-tile .achv-bar{height:6px; border-radius:4px; background:rgba(127,127,127,.25); overflow:hidden; margin-top:6px;} .achv-tile .achv-bar i{display:block; height:100%; background:var(--accent-strong); border-radius:inherit;}
+  .achv-tile .achv-progress{font-size:11px; color:var(--ink-muted); font-variant-numeric:tabular-nums;}
+  @media (max-width:520px){ .achv-tile{grid-template-columns:44px 1fr;} .achv-medal{width:44px; height:44px; font-size:20px;} }
+  @media (prefers-reduced-motion: reduce){ .achv-tile.is-ready .achv-medal{animation:none;} }
 
   /* ---- Conquest / Raid (2026-09-16) ---- */
   /* Item #3 (2026-09-18, "add 10 more conquest maps... it is too 'long', turn the tab pane into
@@ -5389,6 +5434,17 @@
   .rank-hex.wl-rank{position:relative !important; top:auto !important; right:auto !important; transform:scale(1.35); margin:0 8px;}
   .winloss-card.is-glory .rw-cur{background:rgba(255,255,255,.14) !important; color:#fff !important; border-color:rgba(255,220,150,.35) !important; font-size:18px;}
   .winloss-card.is-glory .rw-cur .cur-label{color:#ffe2a6 !important; opacity:1 !important;}
+  /* 2026-10-12 the volcano: a boss that surges on arrival glows ember-red for a moment */
+  .board-card.surge-glow .card-tile{animation:surgeGlow 1.4s ease-out;}
+  @keyframes surgeGlow{0%{box-shadow:0 0 0 0 rgba(255,90,30,0);} 30%{box-shadow:0 0 26px 8px rgba(255,90,30,.85);} 100%{box-shadow:0 0 0 0 rgba(255,90,30,0);}}
+  @media (prefers-reduced-motion: reduce){ .board-card.surge-glow .card-tile{animation:none;} }
+  .battlefield.erupt-rumble{animation:eruptRumble .6s ease-out;}
+  @keyframes eruptRumble{0%,100%{transform:translate(0,0);} 15%{transform:translate(-3px,2px);} 30%{transform:translate(3px,-2px);} 45%{transform:translate(-2px,1px);} 60%{transform:translate(2px,0);} 80%{transform:translate(-1px,0);}}
+  .board-card.erupt-hit .card-tile{animation:eruptHit .9s ease-out;}
+  @keyframes eruptHit{0%{filter:none;} 25%{filter:brightness(1.5) sepia(.6) saturate(3) hue-rotate(-20deg); box-shadow:0 14px 26px -6px rgba(255,80,20,.9);} 100%{filter:none;}}
+  .board-card.immolate-pulse .card-tile{animation:immolatePulse .9s ease-out;}
+  @keyframes immolatePulse{0%{box-shadow:0 0 0 0 rgba(255,120,30,0);} 40%{box-shadow:0 0 0 10px rgba(255,120,30,.55);} 100%{box-shadow:0 0 0 22px rgba(255,120,30,0);}}
+  @media (prefers-reduced-motion: reduce){ .battlefield.erupt-rumble, .board-card.erupt-hit .card-tile, .board-card.immolate-pulse .card-tile{animation:none;} }
   /* 2026-10-12 (10:12 screenshot): Iron Shard / Base-growth pills were cream with pale text on the gold results card */
   .winloss-card.is-glory .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){background:rgba(255,255,255,.14) !important; color:#fff !important; border:1px solid rgba(255,220,150,.35) !important; box-shadow:none !important;}
   .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(130px, 16vw, 170px) !important; height:auto !important;}
@@ -5796,6 +5852,11 @@
   .wander-deal .wd-offer{display:flex; flex-direction:column; gap:3px; margin:8px 0; padding:8px 10px; border-radius:10px; background:rgba(200,144,42,.12);}
   .wander-deal .wd-price s{opacity:.6;} .wander-deal .wd-actions{display:flex; gap:8px; flex-wrap:wrap;}
   .te-deck-list{list-style:none; margin:6px 0 0; padding:0; font-size:12px; line-height:1.5; font-weight:400;}
+  /* 2026-10-12: the tutorial editor's decks are pictures with 🃏 Edit deck; the text box hides under "Edit as text" */
+  .te-deck-box{border:1px solid var(--surface-border); border-radius:12px; padding:8px 10px; min-width:0;}
+  .te-deck-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap;} .te-deck-head small{opacity:.7; flex:1; font-variant-numeric:tabular-nums;}
+  .te-prev .se-deck-stacks{padding:8px 2px; gap:10px 8px;} .te-prev .se-stack{width:46px;}
+  .te-text summary{cursor:pointer; font-size:12px; opacity:.75;} .te-text textarea{width:100%; margin-top:6px;}
   .te-deck-list .te-kept{color:#2f7a3a; font-weight:700;}
   .te-deck-list .te-cut{color:#a0523a; opacity:.8;}
   @media (max-width:560px){ .winloss-card.is-glory .rw-panel.winloss-conquest-rewards{grid-template-columns:auto minmax(0,1fr); gap:8px 12px;} .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(76px, 24vw, 120px) !important;} .winloss-card.is-glory .wl-glory{gap:8px;} }
@@ -8010,6 +8071,41 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .dbp-stack:hover .card-tile, .dbp-stack:focus-visible .card-tile{transform:translateY(-3px);}
 .dbp-stack .ps-count{font-size:10.5px;}
 .se-deck-stacks{display:flex; flex-wrap:wrap; gap:14px 12px; padding:12px 8px;}
+/* 2026-10-12 (user: "The deck preview in the editor should show cards left to right, not up to down"): .skirmish-editor .se-deck was a column */
+.skirmish-editor .se-deck.se-deck-stacks{flex-direction:row; flex-wrap:wrap; align-items:flex-start;}
+.se-dg-decks{display:flex; flex-direction:column; gap:10px; margin-top:10px; grid-column:1 / -1;}
+.se-dg-deck{border:1px solid var(--surface-border); border-radius:10px; padding:8px 10px;}
+.se-dg-deck-head{display:flex; align-items:center; gap:8px; flex-wrap:wrap;} .se-dg-deck-head small{opacity:.7; flex:1;}
+.se-dg-strip{padding:8px 2px 2px; gap:10px 8px;} .se-dg-strip .se-stack{width:46px;}
+.tutorial-editor .te-pic{margin-top:6px; align-self:flex-start;}
+.autoplay-btn.is-on{background:var(--accent-strong); color:#fff; border-color:var(--accent-strong);}
+.lp-item.is-used{opacity:.45; filter:grayscale(.85); cursor:not-allowed;} .lp-item.is-used small{display:block; font-size:11px;}
+.pack-qty{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; justify-content:center;}
+.pq-opt{font:inherit; font-family:'Baloo 2'; font-weight:800; padding:4px 12px; border-radius:999px; border:1px solid var(--surface-border); background:transparent; color:inherit; cursor:pointer; font-variant-numeric:tabular-nums;}
+.pq-opt.is-on{background:var(--accent-strong); border-color:var(--accent-strong); color:#fff;} .pq-opt:focus-visible{outline:2px solid var(--accent-strong); outline-offset:2px;}
+/* 2026-10-12 quest claim flight */
+.qf-ribbon{position:fixed; z-index:10060; transform:translate(-50%,-50%); pointer-events:none; font-family:'Baloo 2'; font-weight:800; font-size:20px; color:#4a2a05; padding:6px 18px; border-radius:999px;
+  background:linear-gradient(180deg,#ffe9a0,#f0b93a); box-shadow:0 8px 24px rgba(160,100,0,.45); animation:qfRibbon 1.9s ease-out forwards; white-space:nowrap;}
+@keyframes qfRibbon{0%{transform:translate(-50%,-30%) scale(.4); opacity:0;} 15%{transform:translate(-50%,-50%) scale(1.15); opacity:1;} 25%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{transform:translate(-50%,-90%) scale(1); opacity:0;}}
+.qf-chip{position:fixed; z-index:10061; pointer-events:none; display:flex; align-items:center; gap:4px; padding:4px 10px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border); font-family:'Baloo 2'; font-weight:800; font-size:16px; box-shadow:0 6px 16px rgba(0,0,0,.25); transform:translate(-50%,-50%);}
+.qf-bag{position:fixed; right:22px; bottom:22px; z-index:10059; width:64px; height:64px; border-radius:50%; display:grid; place-items:center; font-size:34px; pointer-events:none;
+  background:var(--surface); border:2px solid var(--accent-strong); box-shadow:0 10px 26px rgba(0,0,0,.3); transform:scale(0); transition:transform .35s cubic-bezier(.3,1.5,.5,1);}
+.qf-bag.is-in{transform:scale(1);} .qf-bag.is-bump span{animation:qfBump .3s ease;}
+@keyframes qfBump{50%{transform:scale(1.25);}}
+.sr-only{position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+@media (prefers-reduced-motion: reduce){ .qf-ribbon{animation-duration:.01s;} }
+/* 2026-10-12: the tutorial's ghost card and hand while you hold a card */
+.coach-phantom{position:fixed; left:0; top:0; z-index:10050; pointer-events:none; filter:saturate(.7) drop-shadow(0 8px 14px rgba(0,0,0,.35));}
+.coach-phantom .card-tile{width:100% !important; pointer-events:none;}
+.coach-phantom .cph-hand{position:absolute; left:58%; top:42%; font-size:34px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));}
+/* 2026-10-12 field kit: the 🎒 pill in a fight and its pop-over */
+.hud-pack{cursor:pointer; border:1px solid var(--surface-border);} .hud-pack.is-used{opacity:.55;}
+.pack-pop{position:fixed; z-index:9000; min-width:260px; max-width:min(340px, calc(100vw - 16px)); background:var(--surface); color:var(--text, inherit); border:1px solid var(--surface-border); border-radius:14px; box-shadow:0 14px 34px rgba(0,0,0,.35); padding:10px; display:flex; flex-direction:column; gap:6px;}
+.pack-pop-h{font-family:'Baloo 2'; font-size:15px; display:flex; align-items:baseline; gap:8px;} .pack-pop-h small{font-weight:600; opacity:.65; font-size:12px;}
+.pack-item{display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:8px; text-align:left; padding:6px 8px; border-radius:10px; border:1px solid transparent; background:transparent; color:inherit; cursor:pointer; font:inherit;}
+.pack-item:hover:not(:disabled), .pack-item:focus-visible{border-color:var(--surface-border); background:rgba(127,127,127,.12);}
+.pack-item:disabled{opacity:.45; cursor:not-allowed;}
+.pack-ico{font-size:24px; text-align:center;} .pack-txt{display:flex; flex-direction:column; min-width:0;} .pack-txt small{opacity:.75; font-size:12px;} .pack-n{font-weight:800; font-variant-numeric:tabular-nums;}
 .se-deck-stacks .se-stack{width:58px;} .se-deck-stacks .card-tile{width:100% !important;}
   /* Dungeon waves (2026-10-11) */
   .dungeon-chip{position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:60; pointer-events:none;

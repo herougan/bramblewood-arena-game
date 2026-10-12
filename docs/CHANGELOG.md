@@ -2,6 +2,91 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (12:30)
+- **Raids:**
+  - **Leaders take the field.** All three leaders open on the board, one in each of the centre three columns: yours in your front row, each ally's in their own row. An ally's leader is the one saved on their deck, else the rarest card in it that can lead.
+  - **Boss units.** On rounds 3, 7 and 11 the part sends in its biggest card as a boss unit with huge Health: ×(2 + 10·r²), where r is the share of the part's Health still standing this week. A fresh boss's unit is a wall; once the raid has pounded it, the unit is ordinary.
+  - **Minimum damage.** A raid's full per-attempt reward starts at 120 damage (`minDamage`, editable per raid). Below that you get a pittance (8 Maple Leaves, 6 Dust).
+  - **Raid materia.** Every attempt brings home at least one 🦑 Abyssal Ink, the raid's materia (up to 5 for big damage). It shows in the Inventory with the other Materia.
+  - **World call-out.** When a raid falls, everyone sees "🌍 The Goliath has fallen! The last blow: …" once. If it was the hardest live raid and you were on when it fell, you get 0.8% of a Materia Unit (5 Dust, 4 Maple Leaves).
+- **Leaders in the deck editor:** cards that could lead but sit in your deck now show in the picker, greyed out and marked "In your deck".
+- **A leaders lesson:** the first time you get a card that can lead (Heroic, Unique or rarer), the Wandering Traveller explains leaders after the fight and offers to open the Armoury.
+- **Shop quantities:**
+  - With two or more packs on sale, each pack sits on the shelf once, and its counter asks how many: ×1, ×10, ×25, ×50, ×100 or ×250.
+  - A tier shows once you've reached its map (10 at Map 9, 25 at 14, 50 at 19, 100 at 29, 250 at 44) and can afford the tier before it.
+  - With a single pack on sale, its bundles stay on the shelves under the same map gates.
+
+## 2026-10-12 (12:00)
+- **Tutorial rewards come in two parts:**
+  - Part 1 gives the Quarry Mole. "Add to deck" no longer shows the deck size.
+  - Part 2 gives your side's two cards (Otters: River Warden and Otter Centurion; Hummingbirds: Sunspire Envoy and Crimson Recruit; both: River Warden and Sunspire Envoy). They fly into the deck, which now counts up to 20/20 with "A deck holds 20 cards".
+  - Picking both sides also brings the new **Meerkat Wayfarer** (Uncommon, 3/7, Reach, Inspiring 1: "another traveller on the same road") to your collection.
+  - Every list is editable in the tutorial editor (Part 1 reward; Part 2 rewards for each pick).
+- **Tutorial flow:**
+  - Part 1's win offers 🗺️ Back to the map beside the main button.
+  - The guide to Part 2 takes two taps: tap the marker, then ⚔️ Fight, which is lit in the spotlight.
+  - While you hold a card during "drag a card onto the field", a ghost card and hand glide from it to your row. Let go and the pointer comes back.
+  - Tutorial cards keep their own skills (your edited cards play as they are).
+- **Tutorial editor:**
+  - Every deck shows as pictures with 🃏 Edit deck; the text box is under "Edit as text".
+  - Save closes the editor and refreshes the map editor's preview.
+  - The picture builder has ✓ Done.
+- **Auto-play:** on a Conquest fight you've cleared at rank S or better, 🤖 Auto-play (top right) lets your side play itself. Press again to take over.
+- **Quest rewards:** claiming one bursts at the button and shows a gold "Quest complete!" ribbon. Each reward arcs into a backpack that pops up in the corner, with no OK to press.
+- **Used-up skill strips:** when everything left in a card's strip is a trigger that's fading, the strip fades with it and leaves no empty pill (e.g. the Wandering Traveller after his draw).
+- **Shell** shows 🐢 on the card's skill strip too.
+- **Full screen:** the match sits vertically centred.
+- **Big screens (a first large RWD pass):**
+  - From 1700×950 the match grows into the space: cards up to 240px tall, with their text scaled to match, and a wider board.
+  - Home, Inventory, Profile, Nest and Shop scale up 1.2× (1.45× from 2300×1250).
+- **Difficulty after the reorder:** the moved maps were retuned to the road's rising curve (tools/curve_tune.js). For example, the Morel Hollow (now Map 3) was much too hard, and the Sundered Peak (now Map 21) too easy. The world boss and the Eye of the Volcano keep their hand-set numbers.
+
+## 2026-10-12 (11:30)
+- **The road follows the 0–20 tiers.** Clovermead stays Map 1, so the road runs Maps 0–21:
+  - 0 Outskirts, 1 Clovermead, 2 Thistlewood, 3 Morel Hollow, 4 Lilypad Reach, 5 Pebble Beach;
+  - 6 Gannet Cliffs, 7 Sunken Hollow, 8 Gatorback Swamp, 9 Kelp Mangroves, 10 Sable Swampmire;
+  - 11 Caves & Alcoves, 12 Eyrie Heights, 13 Briar Maze, 14 Redwood Deep, 15 Long Grass;
+  - 16 Pinewood Taiga, 17 Wolfsbane Tundra, 18 Savanna Reaches, 19 Glass Dunes, 20 Basalt Foundry;
+  - **21 The Sundered Peak (the Volcano, with the world boss)**.
+  - The Ashen Peak (22) and Coral Current (23) come after it, as the tier list had them leaving the road.
+  - Features stay on the map numbers from your table: the Forge on Map 11, Raid 1 on Map 13, and so on.
+  - Maps you've already fought on stay open.
+- **Icons:** the Sundered Peak is now the 🌋, the Ashen Peak a snowy 🗻 (no magma) and the Basalt Foundry ⚒️.
+- **World boss: The Caldera Wyrm** (on the Sundered Peak, after its boss; optional like a raid boss).
+  - It leads the enemy. It costs 2 Stone + 1 Metal, which the enemy digs each round, and it comes out the moment it can.
+  - It deals 5 on landing and gains +2/+4 when cast.
+  - Immolation 2: at every round start, 2 fire damage to the units beside it (theirs and yours) and the one facing it.
+  - On death, it deals 5 to whatever faces it. It has Armor 2 and is immune to heat.
+  - **The mountain erupts:** one random unit a side takes fire damage every round: 2 in elites, 3 in the boss fights, 5 against the world boss. The board rumbles and the struck card flares.
+  - The boss fights here (and the world boss) surge +2/+4 when their leader is cast.
+  - Its own theme, "The Caldera Heart": slow and very low, with war drums and the mountain rumbling under every bar.
+  - A new achievement, Wyrmslayer.
+- **Eye of the Volcano** (sub-map at the crater's edge, after the Sundered Peak's boss):
+  - Three undead elites lead to Heart of the Mountain, a four-castle Dungeon in which every castle has its own deck. **The Contradiction** waits at the bottom.
+  - Three wildlife elites (boars, vent crabs, ash condors) turn up at random after wins once their path is open.
+  - New cards: Ashbone Ghoul, Cinder Skeleton, Magma Wraith, Obsidian Lich, Ember Revenant, and The Contradiction, a snow bear with a red-glowing heart (Bleed 2, Rage, Regen 2). It has its own background.
+  - Their PixelLab portraits are queued next in the Chrome run.
+- **Field kit and the backpack:**
+  - Four items: Healing Draught (castle +6), Kindling Bundle (+2 Lumber), Scout's Map (draw 2) and Fire Pot (4 fire damage).
+  - The kit refills one of each every day. Unused items pile up, to 20 each.
+  - In a fight against the CPU, the 🎒 beside your Lumber uses one item a turn, without spending your play.
+  - The Inventory stays hidden until a note from the Wandering Traveller on Map 1 shows you the backpack. Saves past Map 1 have it already.
+- **Achievements page:**
+  - A progress ring and Claim all.
+  - Filters: All, Ready, In progress, Claimed.
+  - Groups: Battles, The road, Bosses and raids, Collection, The Forge.
+  - Medal tiles in bronze, silver, gold and dragon.
+  - Four new achievements: Five Horizons, To the Caldera, Eye of the Volcano, Wyrmslayer.
+- **Editors:**
+  - Dungeon: each castle can have its own deck (🃏 Give it a deck), and the castle count is set right there.
+  - Skirmish deck previews run left to right again.
+  - Tutorial editor: every deck shows as pictures with 🃏 Edit deck (the picture builder); the text box is under "Edit as text". Save now closes the editor and refreshes the map editor's deck preview.
+  - The picture builder has a ✓ Done button.
+- **Tutorial cards keep their skills:** nothing is taken off any more, so your edited cards play as you made them.
+- **Results card:**
+  - The rank medal shows once, beside First Clear.
+  - The Iron Shard and Base-growth pills are readable on the gold card.
+
 ## 2026-10-12 (11:00)
 - **Winning keeps the board:**
   - A card that died in the part of the round skipped by the win now falls with the others instead of vanishing.

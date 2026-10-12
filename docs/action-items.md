@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-12, 10:30 am. The short list of what matters now. Everything else is in the other tabs._
+_Updated 2026-10-12, 12:30 pm. The short list of what matters now. Everything else is in the other tabs._
 
 ## 1. Your calls
 
@@ -34,6 +34,12 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | **D49** | **Raid with allies.** Two allies (one plays each turn), your castle is three castles in one, and the boss is at 60% Attack / 70% Health | Not simulated yet; the numbers are a first guess | Play a raid or two and tell me if it's too easy or too hard |
 | **D50** | **Water lanes (idea, not built).** Ocean channels and whirlpools for swimmers, jet streams for flyers: a lane-wide current that moves or speeds the units in it | It adds a fourth board rule on top of tide, day/night and fields, so water maps could get busy | Park until the High tide fights have been played; then try one whirlpool lane on a single reef boss |
 | **D51** | **Skull Vulture** (your PixelLab art): 1 Lumber, Wait 1, 3/4, Flying, Daunt 1, Nocturnal, Uncommon, Swamp | My reading of "evil skull bird". It has no source yet, so it shows as not obtainable | Say where it drops (I'd put it on the Map 8 swamp) |
+| **D52** | **Where the Volcano sits.** I read your 0–20 tiers onto the road with Clovermead kept as Map 1, so the Volcano (the Sundered Peak, with the world boss) is **Map 21**. The Ashen Peak and Coral Current follow it as 22 and 23 | The lore says the world boss is on Map 20 | Keep. Or say "fold Clovermead" and it becomes a side map of the Outskirts, putting the Volcano on Map 20 |
+| **D53** | **Volcano numbers:** eruptions of 2 / 3 / 5 (elites / bosses / world boss); the boss surge only in this map's boss fights; the world boss at 6/36 (8/40 surged) with a 240-Health castle | Not simulated yet. The Eye's castles are set by hand (170–260) | Play the world boss once and tell me the result |
+| **D54** | **Field kit:** 4 items, one of each a day, 20 at most, one per turn, PvE only | Fire Pot and the Draught are strong in early maps | Keep; say if a different daily mix suits you better |
+| **D55** | **World call-outs.** Today a raid's fall is read from the week's shared attempts, which every client checks every 3 minutes. A real message board would be one small append-only table (`world_events`: kind, text, at) that the game writes to and reads | The table is a write to the live Supabase, so it waits for you | Say "apply it" for the table, or keep reading the attempts |
+| **D56** | **Tutorial part 2 cards.** Otters get River Warden + Otter Centurion, Hummingbirds Sunspire Envoy + Crimson Recruit, both get River Warden + Sunspire Envoy, plus the Meerkat Wayfarer in the collection | My reading of "the 2nd one nets you the side-specific card" with "2 more cards" | Keep, or change them in the tutorial editor |
+| **D57** | **Test Tutorial hang.** I played Test the tutorial from a finished account through both parts (Next, Got it, drags, Part 2, the leader joining) and couldn't make it stick | I may be missing a step you take | Tell me where it stops (which message is showing), or send a screenshot |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed tonight:** D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.

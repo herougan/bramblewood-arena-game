@@ -700,6 +700,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'wash', side:sideOf(pid), uid:c.uid, defId:c.defId, targetUid:t.uid, targetDefId:t.defId});
         })); });
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
+    volcanoTick(players, round, sideOf, stats, events);
     if(!field) return;
     const f = field.id;
     if(f === 'frozen'){
@@ -721,6 +722,31 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, heal:h}); } }));
     }
     if(field && field.rounds != null){ field.rounds -= 1; if(field.rounds <= 0){ if(recordEvents && events) events.push({type:'fieldEnd', field:f, back: baseField ? baseField.id : null}); field = baseField; baseField = null; } }
+  }
+  // The Volcano (2026-10-12, user: "a strong volcano effect on the field, maybe like deal 2/3/5 fire damage to a random unit
+  // on both sides every turn"; the world boss: "Immolation 2, it deals 2 fire damage to all surrounding units allied and
+  // enemy"; "when this monster is cast, it gains +2/+4. This is for the boss AND world boss"):
+  //   rules.eruption N  from round 2, one random unit on each side takes N fire damage at the start of every round;
+  //   Immolation N      (a card skill) at the start of every round it burns its neighbours on both sides and the enemy facing it;
+  //   rules.enemyOre    {stone, metal, metalEvery} the enemy digs ore each round (so a Stone/Metal leader can be cast);
+  //   rules.bossSurge   {atk, hp} an enemy leader gains +atk/+hp when it is cast.
+  function volcanoTick(players, round, sideOf, stats, events){
+    const o = rules.enemyOre; const P2 = players[2];
+    if(o && P2){ if(o.stone) addOre(P2, 'stone', o.stone); if(o.metal && round % Math.max(1, o.metalEvery||2) === 0) addOre(P2, 'metal', o.metal); }
+    const heatProof = c=>{ const d = CARD_DEFS[c.defId] || {}; return (d.resist||[]).includes('heat') || (d.resist||[]).includes('fire'); };
+    let burnt = false;
+    const n = Number(rules.eruption)||0;
+    if(n > 0 && round > 1) [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !heatProof(c)); if(!cs.length) return;
+      const c = cs[Math.floor(rnd()*cs.length)]; damageCardFlat(c, n, 'heat'); burnt = true;
+      if(recordEvents && events) events.push({type:'fieldTick', field:'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:n}); });
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      allLive(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return;
+        const order = physicalRowOrder(pl), i = order.indexOf(src), hits = [];
+        [order[i-1], order[i+1]].forEach(c=>{ if(c && c.hp > 0) hits.push([pid, c]); });
+        const opp = opposingCardOf(players, pid, src); if(opp && opp.card && opp.card.hp > 0) hits.push([otherId(pid), opp.card]);
+        hits.forEach(([tp, c])=>{ if(heatProof(c)) return; damageCardFlat(c, k, 'heat'); burnt = true;
+          if(recordEvents && events) events.push({type:'fieldTick', field:'immolation', side:sideOf(tp), uid:c.uid, defId:c.defId, dmg:k, srcUid:src.uid, srcDefId:src.defId}); }); }); });
+    if(burnt) removeDeadCards(players, sideOf, {}, stats, events);
   }
   function fogMiss(attCard){
     if(!field || field.id!=='fog' || !attCard) return false;
@@ -2003,6 +2029,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     payExileCost(players, sideOf, playerId, exileCostOfCard(defId), null, stats, events);
     markPlayed(pl);
     const boardCard = makeBoardCard(defId); boardCard.isLeader = true;
+    if(playerId === 2 && rules.bossSurge){ const g = rules.bossSurge; boardCard.atk += g.atk||0; boardCard.baseAtk += g.atk||0; boardCard.hp += g.hp||0; boardCard.maxHp += g.hp||0; boardCard.surged = true; }
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
@@ -2015,6 +2042,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), defId).played++;
     if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, leader:true});
+    if(boardCard.surged && recordEvents && events) events.push({type:'statusFx', kind:'surge', side:sideOf(playerId), attUid:boardCard.uid, attDefId:defId, targetSide:sideOf(playerId), targetUid:boardCard.uid, targetDefId:defId, atk:rules.bossSurge.atk||0, hp:rules.bossSurge.hp||0});
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     const opp = players[otherId(playerId)];
@@ -2723,7 +2751,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(fieldCard && rnd() < 0.5) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
-      if(ready.length && (!affordable.length || rnd() < 0.35)){
+      if(ready.length && (!affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
         const id = ready[Math.floor(rnd()*ready.length)];
         if(summonLeader(players, sideOf, aiId, id, rnd() < 0.5 ? 'left' : 'right', stats, events)){ ai.reserveLeaders = ai.reserveLeaders.filter(x=> x!==id); return; }
       }

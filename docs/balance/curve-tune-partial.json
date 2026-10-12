@@ -1,196 +1,91 @@
 [
  {
-  "map": "m3",
-  "key": "3-1",
+  "map": "mu",
+  "key": "u-1",
   "kind": "skirmish",
-  "target": 20,
-  "before": 28.4,
-  "after": 20.3,
+  "target": 17.7,
+  "before": 36.9,
+  "after": 18.6,
   "hp": [
-   90,
-   60
+   34,
+   14
   ],
-  "swaps": 0,
-  "deck": null
+  "swaps": 2,
+  "deck": {
+   "compost-grub": 3,
+   "garden-snail": 2,
+   "trapdoor-spider": 2,
+   "raccoon-nightcrew": 1,
+   "beetle-grunt": 2,
+   "nightshade-moth": 2
+  }
  },
  {
-  "map": "m3",
-  "key": "3-2",
+  "map": "mu",
+  "key": "u-2",
   "kind": "skirmish",
-  "target": 28,
-  "before": 38.5,
-  "after": 28,
+  "target": 20.4,
+  "before": 24.5,
+  "after": 20.4,
   "hp": [
-   115,
-   72
+   70,
+   53
   ],
   "swaps": 0,
   "deck": null
  },
  {
-  "map": "m3",
-  "key": "3-3",
+  "map": "mu",
+  "key": "u-3",
+  "kind": "skirmish",
+  "target": 23.1,
+  "before": 26,
+  "after": 21.4,
+  "hp": [
+   28,
+   14
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mu",
+  "key": "u-4",
+  "kind": "skirmish",
+  "target": 25.7,
+  "before": 21.8,
+  "after": 21.8,
+  "hp": [
+   230,
+   230
+  ],
+  "swaps": 0,
+  "deck": null
+ },
+ {
+  "map": "mu",
+  "key": "u-5",
   "kind": "elite",
-  "target": 34,
-  "before": 37.6,
-  "after": 33.7,
+  "target": 31.7,
+  "before": 39.5,
+  "after": 32.9,
   "hp": [
-   88,
-   79
+   158,
+   100
   ],
   "swaps": 0,
   "deck": null
  },
  {
-  "map": "m3",
-  "key": "3-4",
-  "kind": "elite",
-  "target": 34,
-  "before": 44,
-  "after": 34.1,
-  "hp": [
-   92,
-   59
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m3",
-  "key": "3-5",
-  "kind": "elite",
-  "target": 34,
-  "before": 44,
-  "after": 34.1,
-  "hp": [
-   92,
-   59
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m3",
-  "key": "3-6",
+  "map": "mu",
+  "key": "u-6",
   "kind": "boss",
-  "target": 40,
-  "before": 44.6,
-  "after": 39.4,
+  "target": 37.7,
+  "before": 55.8,
+  "after": 37.3,
   "hp": [
-   106,
-   91
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-1",
-  "kind": "skirmish",
-  "target": 22,
-  "before": 22.3,
-  "after": 22.3,
-  "hp": [
-   17,
-   17
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-2",
-  "kind": "skirmish",
-  "target": 23.6,
-  "before": 23.1,
-  "after": 23.1,
-  "hp": [
-   24,
-   24
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-3",
-  "kind": "skirmish",
-  "target": 25.2,
-  "before": 24.1,
-  "after": 25.1,
-  "hp": [
-   14,
-   15
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-4",
-  "kind": "skirmish",
-  "target": 26.8,
-  "before": 28.5,
-  "after": 27.3,
-  "hp": [
-   45,
-   42
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-5",
-  "kind": "skirmish",
-  "target": 28.4,
-  "before": 22.5,
-  "after": 28.4,
-  "hp": [
-   19,
-   23
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-6",
-  "kind": "skirmish",
-  "target": 30,
-  "before": 21.5,
-  "after": 30.5,
-  "hp": [
-   21,
-   30
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-7",
-  "kind": "elite",
-  "target": 36,
-  "before": 37.7,
-  "after": 36.2,
-  "hp": [
-   31,
-   30
-  ],
-  "swaps": 0,
-  "deck": null
- },
- {
-  "map": "m4",
-  "key": "4-8",
-  "kind": "boss",
-  "target": 42,
-  "before": 44.4,
-  "after": 42,
-  "hp": [
-   87,
-   80
+   93,
+   41
   ],
   "swaps": 0,
   "deck": null

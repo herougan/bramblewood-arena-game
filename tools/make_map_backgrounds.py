@@ -481,7 +481,17 @@ def mz(rng):  # The Mycelium Deep (2026-10-12, dungeon 14A): spore cave under th
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz'))}
+
+def me(rng):  # Eye of the Volcano (2026-10-12, sub-map of the Sundered Peak): a crater floor, a lava lake in the middle, bone piles
+    img = dither_palette(fbm(rng, W, H), ['#140708', '#1f0b0b', '#2c1010', '#3b1512', '#4a1b14'])
+    ponds(img, rng, 3, '#ff7a2a', '#ffc36b', '#7a1a10', rmin=10, rmax=20)   # lava pools
+    cracks(img, rng, 30, '#ff4a1f', '#ffd08a', (16, 60))
+    scatter(img, rng, BOULDER, {'a': '#3a1c1c', 'b': '#170808'}, 40, shadow_w=lambda w: w)
+    scatter(img, rng, BOULDER, {'a': '#d8cfc0', 'b': '#8a8070'}, 14, shadow_w=lambda w: w)   # bleached bones
+    sparkle(img, rng, 160, '#ffb36b')
+    return img
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me'))}
 
 
 def make(map_id):
