@@ -36,6 +36,7 @@ run node tests/devilry.js
 run node tests/caged.js
 run node tests/turn-start.js
 run node tests/pounce.js
+run node tests/earthquake.js
 run node tests/testkit-manual.js
 run node tests/ecclesia.js
 run node tests/integrity.js

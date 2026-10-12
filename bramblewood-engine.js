@@ -2245,11 +2245,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 'earthquake' event fires once, before the per-target hits, so the front end can play a
     // single "the ground shook" flourish that actually matches what triggered it.
     if(recordEvents && events) events.push({type:'earthquake', side:sideOf(ownerId), defId:attCard.defId, uid:attCard.uid, amount});
+    const grounded = c=>{ const cDef = CARD_DEFS[c.defId]; return c.hp > 0 && !(cDef && cDef.effects && cDef.effects.flying); }; // Earthquake never hits Flying units
     ['left','center','right'].forEach(side=> enemy.row[side].slice().forEach(c=>{
-      if(c.hp<=0) return;
-      const cDef = CARD_DEFS[c.defId];
-      if(cDef && cDef.effects && cDef.effects.flying) return; // Earthquake never hits Flying units
+      if(!grounded(c)) return;
+      const before = events ? events.length : 0;
       fireDamageAction(players, sideOf, ownerId, attCard.defId, amount, 'physical', {kind:'card', card:c}, stats, events, null, attCard.uid);
+      if(recordEvents && events) for(let i = before; i < events.length; i++) if(events[i].type==='hit' || events[i].type==='evaded') events[i].quake = true;
+    }));
+    // 2026-10-12 (user: "This skill should also hit allied non-flying as well"): the shaking ground hurts your own grounded
+    // units too, every one but the caster itself.
+    const own = players[ownerId];
+    ['left','center','right'].forEach(side=> own.row[side].slice().forEach(c=>{
+      if(c === attCard || !grounded(c)) return;
+      const r = damageCard(c, amount, 'physical', null);
+      ensureStat(stats, sideOf(ownerId), c.defId).taken += r.dmg;
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(ownerId), targetDefId:c.defId, targetUid:c.uid, dmg:r.dmg, dmgType:'physical', armorBlocked:r.armorBlocked, friendly:true, quake:true});
     }));
   }
   // Arrow N / Fire Arrow N (2026-10-04, "new skills: Arrow and Fire Arrow — an arrow flies towards

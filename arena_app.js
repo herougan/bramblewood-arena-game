@@ -405,7 +405,7 @@ const PASSIVE_DEFS = [
   // as Gash (bleed instead of damage, single target instead of AOE) — see fireEarthquake in the
   // engine, hooked into applyOnSpawnEffects so it always fires immediately on spawn, independent
   // of Wait/Ready state entirely (it never goes through gatherAttackers at all).
-  {key:'earthquake', category:'evergreen', label:'Earthquake', kind:'number', min:0, desc:v=>`On Spawn: deals ${v} damage to every enemy unit. It doesn't hit Flying units.`},
+  {key:'earthquake', category:'evergreen', label:'Earthquake', kind:'number', min:0, desc:v=>`On Spawn: deals ${v} damage to every other unit on the field, yours included. It doesn't hit Flying units.`},
   // Skyfall (2026-09-30, replaces Rally in the evergreen list, per explicit request "Add Skyfall
   // to evergreen abilities"): the single-target ranged sibling of Earthquake's AOE — same
   // "one-shot on-spawn skill" shape as Gash/Earthquake, but reuses the engine's existing
@@ -7061,7 +7061,7 @@ function achievementsPanelHTML(){
 function wireAchievementsPanel(){
   const redraw = ()=>{ const panel = document.querySelector('.achievements-panel'); if(panel) panel.outerHTML = achievementsPanelHTML(); try{ if(window.renderTopbar) renderTopbar(); }catch(e){} wireAchievementsPanel(); };
   document.querySelectorAll('[data-achv-filter]').forEach(b=> b.onclick = ()=>{ achvFilter = b.dataset.achvFilter; redraw(); });
-  { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)) n++; }); if(!n) return; try{ SoundKit.buffUp(); }catch(e){} if(window.starFallVfx) starFallVfx.celebrate(all, 5); showToast(`🏆 Claimed ${n} achievements.`, 'ok'); redraw(); }; }
+  { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; const sum = {}; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)){ n++; Object.entries(d.reward||{}).forEach(([k, v])=> sum[k] = (sum[k]||0) + v); } }); if(!n) return; rewardRush(all.getBoundingClientRect(), sum, {big:true}); showToast(`🏆 Claimed ${n} achievements.`, 'ok'); redraw(); }; }
   document.querySelectorAll('.achv-claim-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const id = btn.getAttribute('data-achv');
@@ -7070,7 +7070,7 @@ function wireAchievementsPanel(){
       // Small celebratory flourish reusing the existing star-fall system (same one Forge level-
       // ups and match wins already use) — celebrate() reads its own originEl.getBoundingClientRect()
       // internally (see starFallCelebration), so this passes the button itself, not a point.
-      if(window.starFallVfx) starFallVfx.celebrate(btn, 3);
+      { const def = ACHIEVEMENT_DEFS.find(a=> a.id===id); rewardRush(btn.getBoundingClientRect(), def ? def.reward : {}); }
       const panel = document.querySelector('.achievements-panel');
       if(panel) panel.outerHTML = achievementsPanelHTML();
       try{ if(window.renderTopbar) renderTopbar(); }catch(e){}
@@ -10349,6 +10349,8 @@ const DIALOGUE_SPEAKERS = {
 const DIALOGUES = {
   pitch_spent_o: {lines:[{who:'swiftpaw', text:'You have already pitched for the turn. Wait till next turn.'}]},
   pitch_spent_h: {lines:[{who:'aurelia', text:'You have already pitched for the turn. Wait till next turn.'}]},
+  pitch_lesson_o: {lines:[{who:'swiftpaw', text:'The big ones eat Lumber. Toss a card you can spare on the pile and I\'ll turn it into planks.'}]},
+  pitch_lesson_h: {lines:[{who:'aurelia', text:'Strong allies need Lumber. Give up a card you can spare, and the forest pays you back.'}]},
   outskirts_reveal: {lines:[
     {who:'swiftpaw', text:'There — the Outskirts. Scouts and stragglers, mostly.'},
     {who:'shieldback', text:'Mostly. Which means not entirely. We go carefully.'},
@@ -10594,10 +10596,39 @@ let DIALOGUE_REPLY_MS = 30000, DIALOGUE_LINE_MS = 3600; // let: tests shorten th
 function loadDialogueFlags(){ try{ return JSON.parse(localStorage.getItem(DIALOGUE_FLAGS_KEY)||'{}') || {}; }catch(e){ return {}; } }
 function setDialogueFlag(k, v){ const f = loadDialogueFlags(); f[k] = v; try{ localStorage.setItem(DIALOGUE_FLAGS_KEY, JSON.stringify(f)); }catch(e){} }
 let dialogueQueue = Promise.resolve();
+// 2026-10-12 (user: "The NPC dialogue often blocks my interactions in both PC and mobile... make it more 'out-of-the-way'"):
+// the dock shows fewer lines (2 on a computer, 1 on a phone), goes see-through whenever your pointer or finger is over it or
+// you're dragging a card, and has a hide button that tucks it into a small 💬 chip until you tap it again.
+// dialogueDock() returns the lines container, so the scene code below can keep treating it as the list of lines.
+let dialogueDockCollapsed = false;
+function dialogueMaxLines(){ return window.innerWidth < 700 ? 1 : 2; }
 function dialogueDock(){
   let dock = document.getElementById('dialogueDock');
-  if(!dock){ dock = document.createElement('div'); dock.id = 'dialogueDock'; dock.className = 'dialogue-dock'; dock.setAttribute('aria-live','polite'); document.body.appendChild(dock); }
-  return dock;
+  if(!dock){
+    dock = document.createElement('div'); dock.id = 'dialogueDock'; dock.className = 'dialogue-dock'; dock.setAttribute('aria-live','polite');
+    dock.innerHTML = `<button type="button" class="dlg-hide" title="Hide the conversation" aria-label="Hide the conversation">▾</button><button type="button" class="dlg-chip" title="Show the conversation" aria-label="Show the conversation">💬<b></b></button><div class="dlg-lines" id="dialogueLines"></div>`;
+    document.body.appendChild(dock);
+    const setCollapsed = on=>{ dialogueDockCollapsed = on; dock.classList.toggle('is-collapsed', on); if(!on) dock.querySelector('.dlg-chip b').textContent = ''; };
+    dock.querySelector('.dlg-hide').onclick = ()=> setCollapsed(true);
+    dock.querySelector('.dlg-chip').onclick = ()=> setCollapsed(false);
+    dock.classList.toggle('is-collapsed', dialogueDockCollapsed);
+    const lines = dock.querySelector('.dlg-lines');
+    new MutationObserver(muts=>{
+      dock.classList.toggle('has-lines', lines.children.length > 0);
+      const max = dialogueMaxLines(); while(lines.children.length > max) lines.firstElementChild.remove();
+      if(dialogueDockCollapsed && muts.some(mu=> mu.addedNodes.length)){ const b = dock.querySelector('.dlg-chip b'); b.textContent = String((+b.textContent || 0) + 1); }
+      dock.classList.toggle('has-question', !!lines.querySelector('.dlg-to-you'));
+    }).observe(lines, {childList:true, subtree:true, attributes:true, attributeFilter:['class']});
+    // see-through while you point at it (not at a reply button) or drag a card
+    let peekTimer = 0;
+    const overLine = (x, y)=> [...lines.children].some(el=>{ const r = el.getBoundingClientRect(); return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom; });
+    const peek = (on, ms)=>{ clearTimeout(peekTimer); dock.classList.toggle('is-peek', on); if(on && ms) peekTimer = setTimeout(()=> dock.classList.remove('is-peek'), ms); };
+    document.addEventListener('pointermove', e=>{ if(e.pointerType !== 'mouse' || !lines.children.length) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return peek(false); peek(overLine(e.clientX, e.clientY)); }, {passive:true});
+    document.addEventListener('pointerdown', e=>{ if(e.pointerType === 'mouse' || !lines.children.length) return; const t = e.target; if(t && t.closest && t.closest('.dlg-reply, .dlg-hide, .dlg-chip')) return; if(overLine(e.clientX, e.clientY)) peek(true, 2500); }, {passive:true, capture:true});
+    document.addEventListener('dragstart', ()=> dock.classList.add('is-dragging'), true);
+    document.addEventListener('dragend', ()=> dock.classList.remove('is-dragging'), true);
+  }
+  return dock.querySelector('.dlg-lines');
 }
 function speakerPortraitHTML(sp){
   const d = sp.card && getCardDefs()[sp.card];
@@ -10695,7 +10726,7 @@ function playDialogue(id, opts){
       b.className = 'dlg-line' + (line.options ? ' dlg-to-you' : '');
       b.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(line.text)}</div></div>`;
       dock.appendChild(b);
-      while(dock.children.length > 3) dock.firstElementChild.remove();
+      while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
       if(hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
       let next = i+1;
       if(line.options){
@@ -10715,7 +10746,7 @@ function playDialogue(id, opts){
           const bye = document.createElement('div'); bye.className = 'dlg-line';
           bye.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(afkLineFor(line.who))}</div></div>`;
           dock.appendChild(bye); if(hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
-          while(dock.children.length > 3) dock.firstElementChild.remove();
+          while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
           if(opts.once) setDialogueFlag('seen:'+id, false);
           await sleep(2600);
           Array.from(dock.children).forEach(el=>{ if(hasGsap()) gsap.to(el, {opacity:0, x:-30, duration:.3, onComplete:()=> el.remove()}); else el.remove(); });
@@ -10730,7 +10761,7 @@ function playDialogue(id, opts){
         b.classList.remove('dlg-to-you'); // 2026-10-08 (user: "the conversation is a little broken"): answered lines stop glowing
         dock.appendChild(reply);
         if(hasGsap()) gsap.from(reply, {x: 40, opacity: 0, duration: .3, ease: 'power3.out'});
-        while(dock.children.length > 3) dock.firstElementChild.remove();
+        while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
         replies.push(choice ? choice.label : '…');
         const target = choice ? choice.goto : line.silent;
         if(target && byLabel[target]!=null) next = byLabel[target];
@@ -10940,6 +10971,16 @@ const CAVE_M2_LINES = [
 ];
 // Sub-map entrances (2026-10-09). A dark cave mouth on the parent map; locked until its `entry.after`
 // node is cleared (then a "!" until you first go in).
+// Side maps that really are caves keep the cave mouth on the parent map; the rest show an emblem.
+const SUBMAP_CAVES = new Set(['mg', 'mz', 'mn', 'mx']);
+// Drawn emblems where the emoji is too new to count on (the lotus is Unicode 14).
+const SUBMAP_EMBLEM_SVG = {
+  mp: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="41" rx="27" ry="6" fill="#3f8f4a"/><ellipse cx="32" cy="40" rx="22" ry="4" fill="#5fb35c"/>
+    <path d="M32 38 C14 37 6 26 8 20 C18 22 26 30 32 38Z" fill="#f2a6c4"/><path d="M32 38 C50 37 58 26 56 20 C46 22 38 30 32 38Z" fill="#f2a6c4"/>
+    <path d="M32 38 C20 32 15 18 19 9 C27 15 31 27 32 38Z" fill="#f7bfd6"/><path d="M32 38 C44 32 49 18 45 9 C37 15 33 27 32 38Z" fill="#f7bfd6"/>
+    <path d="M32 38 C25 28 26 12 32 3 C38 12 39 28 32 38Z" fill="#fcd9e7"/><path d="M32 36 C29 28 29 18 32 10 C35 18 35 28 32 36Z" fill="#fff0f6"/>
+    <circle cx="32" cy="35" r="3" fill="#f6c94a"/></svg>`,
+};
 let conquestSubZoom = null;
 function subMapEntrancesHTML(map, progress){
   return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry).map(sm=>{
@@ -10948,6 +10989,13 @@ function subMapEntrancesHTML(map, progress){
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
     const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
     const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
+    // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
+    // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
+    // side map is just its own emblem (a lotus, a clover, a nest…), with a padlock badge while it's locked.
+    if(!SUBMAP_CAVES.has(sm.id)){
+      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+    }
     return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span><span class="msc-ico" aria-hidden="true">${open ? sm.icon : '🔒'}</span>${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
   }).join('');
@@ -10967,17 +11015,21 @@ function enterSubMap(id, el, body){
   try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
   // An iris closes on the cave mouth while the map dives into it (the map art lives on the layout
   // behind #conquestMain, so the iris is what sells the "into the cave" part).
-  const iris = subMapIris(mr, r.left + r.width/2 - mr.left, r.top + r.height/2 - mr.top);
-  const cx = r.left + r.width/2 - mr.left, cy = r.top + r.height/2 - mr.top;
-  const big = 2 * Math.hypot(Math.max(cx, mr.width-cx), Math.max(cy, mr.height-cy));
+  // 2026-10-12 (user: "When entering a cave, the blackness is not full-screen"): the iris covers the whole screen, not
+  // just the map panel, closing on the cave mouth wherever it sits.
+  const vw = window.innerWidth, vh = window.innerHeight, scr = {left:0, top:0, width:vw, height:vh};
+  const cx = r.left + r.width/2, cy = r.top + r.height/2;
+  const iris = subMapIris(scr, cx, cy);
+  const big = 2 * Math.hypot(Math.max(cx, vw-cx), Math.max(cy, vh-cy));
   iris.firstChild.animate([{width:big+'px', height:big+'px'}, {width:'0px', height:'0px'}], {duration:470, easing:'ease-in', fill:'forwards'});
   const a = mainEl.animate([{transform:'none', filter:'none'}, {transform:'scale(5)', filter:'brightness(0)'}], {duration:470, easing:'cubic-bezier(.6,0,.9,.4)', fill:'forwards'});
   a.onfinish = ()=>{ mainEl.style.transformOrigin = ''; go();
     // …and opens again from the middle of the new map.
     const m2 = document.getElementById('conquestMain'); const nr = m2 ? m2.getBoundingClientRect() : mr;
-    iris.style.left = nr.left+'px'; iris.style.top = nr.top+'px'; iris.style.width = nr.width+'px'; iris.style.height = nr.height+'px';
-    iris.firstChild.style.left = (nr.width/2)+'px'; iris.firstChild.style.top = (nr.height/2)+'px';
-    const big2 = Math.hypot(nr.width, nr.height) * 1.05;
+    const W = window.innerWidth, H = window.innerHeight, ox = nr.left + nr.width/2, oy = nr.top + nr.height/2;
+    iris.style.left = '0px'; iris.style.top = '0px'; iris.style.width = W+'px'; iris.style.height = H+'px';
+    iris.firstChild.style.left = ox+'px'; iris.firstChild.style.top = oy+'px';
+    const big2 = 2 * Math.hypot(Math.max(ox, W-ox), Math.max(oy, H-oy)) * 1.05;
     const o = iris.firstChild.animate([{width:'0px', height:'0px'}, {width:big2+'px', height:big2+'px'}], {duration:600, easing:'cubic-bezier(.4,0,.3,1)', fill:'forwards'});
     o.onfinish = ()=> iris.remove(); setTimeout(()=> iris.remove(), 900);
   };
@@ -11945,6 +11997,96 @@ function claimQuest(kind, id){
 // Claiming a quest (2026-10-12, 10:57 list: "Collecting quest rewards should be more triumphant, but show the rewards going
 // into your inventory! (no need user interaction to press ok after to end effects. just a post-click effect)"): a burst and
 // a gold ribbon at the button, then each reward arcs into a backpack that pops up in the corner and bumps as it lands.
+// Reward rush (2026-10-12, user: "The claim rewards button has to have more fanfare - and some stars coming out of where i
+// clicked too! ... I should feel the immensity of the rewards earned. E.g. alot of icons rushing to a number at the top right,
+// then the number fades off after a while (usually only viewable in Forge)"). Stars burst from the click, a shock ring
+// spreads, then a swarm of reward icons sprays out and rushes into a tally in the top-right corner, where each currency's
+// total counts up as they land. The tally fades a couple of seconds after the last one. Several claims in a row (or Claim
+// all) feed the same tally. reward: {kind: amount}; opts.xp adds an XP row.
+let _rrTally = null, _rrFade = 0;
+function rewardRushTally(){
+  if(_rrTally && _rrTally.isConnected) return _rrTally;
+  _rrTally = document.createElement('div'); _rrTally.className = 'rr-tally'; _rrTally.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(_rrTally); requestAnimationFrame(()=> _rrTally && _rrTally.classList.add('is-in'));
+  return _rrTally;
+}
+function rewardRushRow(kind, glyph, startVal){
+  const t = rewardRushTally(); let row = t.querySelector(`[data-rr="${kind}"]`);
+  if(!row){ row = document.createElement('div'); row.className = 'rr-row'; row.dataset.rr = kind; row.innerHTML = `<i>${glyph}</i><b>${fmtRushNum(startVal)}</b><small></small>`; row._val = startVal; row._gain = 0; t.appendChild(row); }
+  return row;
+}
+function fmtRushNum(n){ return Math.round(n).toLocaleString(); }
+function rewardRushStars(cx, cy, n){
+  const glyphs = ['★', '✦', '✧', '★', '✶'];
+  for(let i = 0; i < n; i++){
+    const st = document.createElement('span'); st.className = 'rr-star'; st.textContent = glyphs[i % glyphs.length];
+    st.style.left = cx + 'px'; st.style.top = cy + 'px'; st.style.fontSize = (12 + Math.random()*16) + 'px';
+    if(i % 3 === 0) st.style.color = '#fff7d1';
+    document.body.appendChild(st);
+    const ang = (i / n) * Math.PI * 2 + Math.random()*0.5, dist = 70 + Math.random()*110;
+    const a = st.animate([{transform:'translate(-50%,-50%) scale(.2) rotate(0deg)', opacity:1},
+      {transform:`translate(calc(-50% + ${Math.cos(ang)*dist*0.7}px), calc(-50% + ${Math.sin(ang)*dist*0.7}px)) scale(1.2) rotate(${180 + Math.random()*180}deg)`, opacity:1, offset:.55},
+      {transform:`translate(calc(-50% + ${Math.cos(ang)*dist}px), calc(-50% + ${Math.sin(ang)*dist + 30}px)) scale(.5) rotate(${360 + Math.random()*180}deg)`, opacity:0}],
+      {duration:850 + Math.random()*350, easing:'cubic-bezier(.15,.8,.3,1)', fill:'forwards'});
+    a.onfinish = ()=> st.remove();
+  }
+  const ring = document.createElement('span'); ring.className = 'rr-ring'; ring.style.left = cx + 'px'; ring.style.top = cy + 'px'; document.body.appendChild(ring);
+  setTimeout(()=> ring.remove(), 900);
+}
+function rewardRush(fromRect, reward, opts){
+  opts = opts || {};
+  const cx = fromRect.left + fromRect.width/2, cy = fromRect.top + fromRect.height/2;
+  const entries = Object.entries(reward || {}).filter(([k, v])=> v > 0 && CURRENCY_META[k]);
+  if(opts.xp) entries.push(['xp', opts.xp]);
+  if(!entries.length) return;
+  const total = entries.reduce((a, [, v])=> a + v, 0);
+  try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.buffUp(); }catch(e){}
+  clearTimeout(_rrFade);
+  const rows = entries.map(([k, v])=>{
+    const glyph = k === 'xp' ? '⭐' : CURRENCY_META[k].glyph;
+    const now = k === 'xp' ? 0 : (myCurrencies[k] || 0);
+    const row = rewardRushRow(k, glyph, k === 'xp' ? 0 : now - v);
+    row._target = (row._target != null ? row._target : row._val) + v; row._gain += v;
+    row.querySelector('small').textContent = `+${fmtRushNum(row._gain)}`;
+    if(k === 'xp') row.querySelector('b').textContent = 'XP';
+    return {k, v, glyph, row};
+  });
+  const scheduleFade = (ms)=>{ clearTimeout(_rrFade); _rrFade = setTimeout(()=>{ const t = _rrTally; if(!t) return; t.classList.remove('is-in'); t.classList.add('is-out'); setTimeout(()=>{ if(t === _rrTally){ t.remove(); _rrTally = null; } }, 600); }, ms); };
+  if(reducedMotion()){
+    rows.forEach(({k, row})=>{ if(k !== 'xp'){ row._val = row._target; row.querySelector('b').textContent = fmtRushNum(row._val); } });
+    scheduleFade(2600); return;
+  }
+  rewardRushStars(cx, cy, opts.big ? 30 : 20);
+  // how many icons: more for bigger hauls, so a Claim all feels like a flood
+  const swarm = Math.max(6, Math.min(opts.big ? 48 : 28, Math.round(6 + Math.log2(total + 1) * (opts.big ? 4 : 2.6))));
+  let launched = 0, lastLand = 0;
+  rows.forEach(({k, v, glyph, row}, ri)=>{
+    const n = Math.max(3, Math.round(swarm * (entries.length === 1 ? 1 : Math.max(0.25, v / total))));
+    const per = v / n;
+    for(let i = 0; i < n; i++){
+      const delay = 220 + launched * 45; launched++;
+      const ic = document.createElement('span'); ic.className = 'rr-ico'; ic.innerHTML = glyph; ic.style.left = cx + 'px'; ic.style.top = cy + 'px';
+      document.body.appendChild(ic);
+      setTimeout(()=>{
+        const tr = row.getBoundingClientRect(), tx = tr.left + 18 - cx, ty = tr.top + tr.height/2 - cy;
+        const ang = Math.random() * Math.PI * 2, spread = 40 + Math.random()*70;
+        const sx = Math.cos(ang)*spread, sy = Math.sin(ang)*spread - 30;
+        const dur = 700 + Math.random()*250;
+        const a = ic.animate([{transform:'translate(-50%,-50%) scale(.3)', opacity:0},
+          {transform:`translate(calc(-50% + ${sx}px), calc(-50% + ${sy}px)) scale(1.25)`, opacity:1, offset:.3},
+          {transform:`translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(.55)`, opacity:.95}], {duration:dur, easing:'cubic-bezier(.45,.05,.55,1)', fill:'forwards'});
+        a.onfinish = ()=>{
+          ic.remove();
+          if(k !== 'xp'){ row._val = Math.min(row._target, row._val + per); if(i === n - 1) row._val = row._target; row.querySelector('b').textContent = fmtRushNum(row._val); }
+          row.classList.remove('is-bump'); void row.offsetWidth; row.classList.add('is-bump');
+          if(i % 3 === 0) try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
+        };
+        lastLand = Math.max(lastLand, delay + dur);
+      }, delay);
+    }
+  });
+  scheduleFade(220 + launched * 45 + 1100 + 2400);
+}
 function questRewardFlight(fromRect, res){
   if(!res) return;
   const items = Object.entries(res.reward||{}).map(([k, v])=> ({glyph: (CURRENCY_META[k]||{}).glyph || '🎁', text: `+${v}`, label: (CURRENCY_META[k]||{label:k}).label}));
@@ -11955,18 +12097,7 @@ function questRewardFlight(fromRect, res){
   try{ if(window.confettiBurst) confettiBurst(cx, cy); else if(window.starFallVfx){ const o = document.createElement('div'); o.style.cssText = `position:fixed; left:${fromRect.left}px; top:${fromRect.top}px; width:${fromRect.width}px; height:${fromRect.height}px; pointer-events:none`; document.body.appendChild(o); starFallVfx.celebrate(o, 5); setTimeout(()=> o.remove(), 2500); } }catch(e){}
   const rib = document.createElement('div'); rib.className = 'qf-ribbon'; rib.textContent = '🏆 ' + res.title; rib.style.left = cx + 'px'; rib.style.top = (cy - 30) + 'px'; document.body.appendChild(rib);
   setTimeout(()=> rib.remove(), 1900);
-  const bag = document.createElement('div'); bag.className = 'qf-bag'; bag.innerHTML = '<span>🎒</span>'; document.body.appendChild(bag);
-  requestAnimationFrame(()=> bag.classList.add('is-in'));
-  const br = ()=> bag.getBoundingClientRect();
-  if(reducedMotion()){ setTimeout(()=>{ bag.classList.remove('is-in'); setTimeout(()=> bag.remove(), 400); }, 1400); return; }
-  items.forEach((it, i)=>{
-    const chip = document.createElement('div'); chip.className = 'qf-chip'; chip.innerHTML = `<i>${it.glyph}</i><b>${it.text}</b>`; chip.style.left = cx + 'px'; chip.style.top = cy + 'px'; document.body.appendChild(chip);
-    setTimeout(()=>{ const r = br(), tx = r.left + r.width/2 - cx, ty = r.top + r.height/2 - cy, lift = -90 - i*18;
-      const a = chip.animate([{transform:'translate(-50%,-50%) scale(.6)', opacity:0}, {transform:`translate(calc(-50% + ${tx*0.35}px), calc(-50% + ${lift}px)) scale(1.15)`, opacity:1, offset:.35},
-        {transform:`translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(.45)`, opacity:.9}], {duration:950, easing:'cubic-bezier(.3,.7,.4,1)', fill:'forwards'});
-      a.onfinish = ()=>{ chip.remove(); bag.classList.remove('is-bump'); void bag.offsetWidth; bag.classList.add('is-bump'); try{ SoundKit.draw && SoundKit.draw(); }catch(e){} }; }, 350 + i*170);
-  });
-  setTimeout(()=>{ bag.classList.remove('is-in'); setTimeout(()=> bag.remove(), 450); }, 350 + items.length*170 + 1500);
+  rewardRush(fromRect, res.reward || {}, {xp: res.xp});
 }
 function medalTier(counter, value){ const m = STAT_MEDALS.find(x=> x.counter===counter); let t = -1; if(m) m.steps.forEach((s,i)=>{ if(value>=s) t = i; }); return t; }
 // Notices (2026-10-08, user: "Quest UI ... looks a bit simple. Like the wonderful job you've done with
@@ -12021,7 +12152,7 @@ function claimErrand(id){
   const sp = DIALOGUE_SPEAKERS[x.who] || {};
   showToast(`${sp.icon||'📌'} ${t.thanks || 'Errand done!'} +${rw.dust} Dust, +${rw.gold} Maple Leaves${t.shard ? ', an Iron Shard' : ''}`, 'ok');
   try{ refreshQuestBadge(); }catch(_){}
-  return true;
+  return {dust: rw.dust, gold: rw.gold};
 }
 function claimableErrandCount(){ try{ return loadErrands().active.filter(x=> errandProgress(x) >= x.goal).length; }catch(_){ return 0; } }
 // After a Conquest win: sometimes, someone on the road asks a favour (a short conversation with a yes/no).
@@ -12139,7 +12270,7 @@ function openQuestsModal(focus){
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const res = claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); questRewardFlight(r, res); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
-  overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ if(claimErrand(b.dataset.errandClaim)) openQuestsModal(); else denyShake(b); }));
+  overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const rw = claimErrand(b.dataset.errandClaim); if(rw){ openQuestsModal(); rewardRush(r, rw, {xp:20}); } else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
   overlay.querySelectorAll('[data-errand-drop]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.armed){ abandonErrand(b.dataset.errandDrop); openQuestsModal(); } else { b.dataset.armed = '1'; b.textContent = 'Drop it?'; } }));
@@ -18976,6 +19107,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   });
 }
 function renderMatchUI(){
+  try{ centreFieldInFs(); }catch(e){}
   try{ const mm = matchState; if(mm && !mm.over && dayNightOn(mm)) document.body.dataset.phase = mm.engine.getPhase(); else delete document.body.dataset.phase; }catch(e){}
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const root = document.getElementById('view-play');
@@ -19092,13 +19224,8 @@ function renderMatchUI(){
            ->Metal power ladder. Metal is a separate, out-of-match currency (earned from Conquest
            bosses, spent in the Forge screen) with no live pill here to reorder yet — see the
            reply to this batch of feedback for why that one wasn't touched blind. -->
-      ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}${itemsHudHTML(m)}
+      ${itemsHudHTML(m)}
     ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
-      ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}${(me.metal||0)>0?`<span class="hud-pill metal" id="hudMetalPill" title="Metal: some cards cost it; Iron-will units grow with it">🔩 ${me.metal}</span>`:''}${(me.uranium||0)>0?`<span class="hud-pill uranium" id="hudUraniumPill" title="Uranium: only Irradiated cards make it and spend it">☢️ ${me.uranium}</span>`:''}
-      ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
-      ${deckHasEcclesia(m, me)?`<span class="hud-pill prayer" id="hudPrayerPill" title="${escapeAttr(RESOURCE_TOOLTIP.prayer)}">🙏 ${m.engine.prayerOf ? m.engine.prayerOf(me) : 0}${(m.engine.prayerOfferReady && m.engine.prayerOfferReady(me)) ? '<small class="dark-left"> · offer ready</small>' : ''}</span>`:''}
-      ${deckHasDevilry(m, me)?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(me) : 1) - (me.darkUsed||0))}</small></span>`:''}
-      ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
   `;
   const tkKeep = testKitCaptureForRerender(m);
   root.innerHTML = `
@@ -19140,6 +19267,7 @@ function renderMatchUI(){
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow frost-lv${frostLevelOf(m)}" aria-hidden="true">${Array.from({length: Math.round((fxAtLeast('high') ? 28 : 14) * [1, 1, 1.6, 2.2][frostLevelOf(m)])}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
       ${fieldOverlayHTML(fieldEffectOf(m))}
+      ${fieldResourcesHTML(m)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -19303,6 +19431,7 @@ function renderMatchUI(){
   if(fsBtn) fsBtn.addEventListener('click', ()=>{
     if(document.fullscreenElement){ document.exitFullscreen(); }
     else if(document.documentElement.requestFullscreen){ document.documentElement.requestFullscreen().catch(()=>{}); }
+    else { document.documentElement.classList.toggle('is-fs'); centreFieldInFs(); } // iPhone: no Fullscreen API, so a full-screen layout only
   });
   const passBtn = document.getElementById('passReadyBtn');
   if(passBtn) passBtn.addEventListener('click', ()=>{ m.awaitingPass = false; renderMatchUI(); });
@@ -22437,6 +22566,32 @@ async function autoplayStep(){
 setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900);
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
+// 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen
+// the match is pushed down by --fs-shift so the battlefield's middle sits on the screen's middle, as far as that keeps your
+// hand on screen. When the match is taller than the screen, it scrolls the field to the centre instead.
+let _fsCentreRaf = 0;
+function centreFieldInFs(){
+  if(_fsCentreRaf) return;
+  _fsCentreRaf = requestAnimationFrame(()=>{
+    _fsCentreRaf = 0;
+    const wrap = document.getElementById('appWrap'), bf = document.getElementById('battlefieldEl');
+    const fs = document.documentElement.classList.contains('is-fs');
+    if(!wrap) return;
+    if(!fs || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); return; }
+    const pad = parseFloat(wrap.style.getPropertyValue('--fs-shift')) || 0;
+    const vh = window.innerHeight;
+    const wr = wrap.getBoundingClientRect(), r = bf.getBoundingClientRect();
+    const centre = (r.top - wr.top) - pad + r.height / 2;      // field middle, measured from the top of the match with no shift
+    let bottom = 0; for(const ch of wrap.children){ const cr = ch.getBoundingClientRect(); if(cr.height > 0) bottom = Math.max(bottom, cr.bottom); }
+    const contentH = (bottom - wr.top) - pad;                     // the match's own height (#appWrap itself is min-height 100vh)
+    const spare = Math.max(0, vh - contentH);
+    const want = Math.round(Math.min(spare, Math.max(0, vh / 2 - centre)));
+    if(Math.abs(want - pad) > 1) wrap.style.setProperty('--fs-shift', want + 'px');
+    if(contentH > vh) window.scrollTo({top: Math.max(0, wr.top + window.scrollY + centre - vh / 2), behavior: 'auto'});
+  });
+}
+document.addEventListener('fullscreenchange', ()=> setTimeout(centreFieldInFs, 120));
+window.addEventListener('resize', ()=> centreFieldInFs());
 async function skipTurn(){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;
@@ -22452,6 +22607,36 @@ async function skipTurn(){
   const activePid = activePlayerId(m);
   await afterPlayerAction(activePid);
 }
+// 2026-10-12 (user: "I want to know how much resources the enemy owns as well... display it on the field itself, on the
+// bottom row, left and right"): both sides' resource pills now sit on the battlefield's bottom edge, yours on the left and
+// the enemy's on the right. Your pills keep their ids so the gain floats still fly to them; the enemy's get an "Enemy" suffix.
+function sideResourcePillsHTML(m, p, mine){
+  if(!m || !p) return '';
+  const sfx = mine ? '' : 'Enemy';
+  const pill = (cls, id, title, body)=> `<span class="hud-pill ${cls}" id="${id}${sfx}" title="${escapeAttr((mine ? '' : 'Enemy ') + title)}">${body}</span>`;
+  const out = [];
+  if((p.lumber||0) > 0) out.push(pill('lumber', 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `🪵 ${p.lumber}`));
+  if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `🪨 ${p.stone}`));
+  if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `🔩 ${p.metal}`));
+  if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `☢️ ${p.uranium}`));
+  if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `🕊️ ${p.grace}`));
+  if(deckHasEcclesia(m, p)) out.push(pill('prayer', 'hudPrayerPill', RESOURCE_TOOLTIP.prayer, `🙏 ${m.engine.prayerOf ? m.engine.prayerOf(p) : 0}${(mine && m.engine.prayerOfferReady && m.engine.prayerOfferReady(p)) ? '<small class="dark-left"> · offer ready</small>' : ''}`));
+  if(deckHasDevilry(m, p)) out.push(pill('devilry', 'hudDevilryPill', RESOURCE_TOOLTIP.devilry, `★ ${p.devilry||0}${mine ? `<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(p) : 1) - (p.darkUsed||0))}</small>` : ''}`));
+  if((p.elementalEnergy||0) > 0) out.push(pill('elementalenergy', 'hudElementalEnergyPill', RESOURCE_TOOLTIP.elementalenergy, `✨ ${p.elementalEnergy}`));
+  return out.join('');
+}
+function fieldResourcesHTML(m){
+  if(!m || !m.players) return '';
+  const mePid = viewerHandPid(m), foePid = mePid === 1 ? 2 : 1;
+  const mine = sideResourcePillsHTML(m, m.players[mePid], true), foe = sideResourcePillsHTML(m, m.players[foePid], false);
+  return `<div class="field-res mine" id="fieldResMine">${mine}</div><div class="field-res enemy" id="fieldResEnemy">${foe ? `<span class="field-res-tag">Enemy</span>${foe}` : ''}</div>`;
+}
+function renderFieldResources(m){
+  const a = document.getElementById('fieldResMine'), b = document.getElementById('fieldResEnemy');
+  if(!a || !b){ const bf = document.getElementById('battlefieldEl'); if(bf){ bf.insertAdjacentHTML('beforeend', fieldResourcesHTML(m)); } return; }
+  const tmp = document.createElement('div'); tmp.innerHTML = fieldResourcesHTML(m);
+  a.innerHTML = tmp.children[0].innerHTML; b.innerHTML = tmp.children[1].innerHTML;
+}
 function renderHUD(){
   const m = matchState; if(!m) return;
   const me = m.players[viewerHandPid(m)];
@@ -22464,16 +22649,13 @@ function renderHUD(){
          template above — see that copy's comment for the full why. -->
     <!-- 2026-09-30: zero-value pills hidden entirely now, mirrors renderMatchUI's own copy above
          — see that copy's comment for the full why. -->
-    ${(me.lumber||0)>0?`<span class="hud-pill lumber" id="hudLumberPill" title="${escapeAttr(RESOURCE_TOOLTIP.lumber)}">🪵 ${me.lumber||0}</span>`:''}${itemsHudHTML(m)}
+    ${itemsHudHTML(m)}
     ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
-    ${stoneOnEitherBoard(m)&&(me.stone||0)>0?`<span class="hud-pill stone" id="hudStonePill" title="${escapeAttr(RESOURCE_TOOLTIP.stone)}">🪨 ${me.stone||0}</span>`:''}${(me.metal||0)>0?`<span class="hud-pill metal" id="hudMetalPill" title="Metal: some cards cost it; Iron-will units grow with it">🔩 ${me.metal}</span>`:''}${(me.uranium||0)>0?`<span class="hud-pill uranium" id="hudUraniumPill" title="Uranium: only Irradiated cards make it and spend it">☢️ ${me.uranium}</span>`:''}
-    ${mechLineOnEitherBoard(m,'grace')&&(me.grace||0)>0?`<span class="hud-pill grace" id="hudGracePill" title="${escapeAttr(RESOURCE_TOOLTIP.grace)}">🕊️ ${me.grace}</span>`:''}
-    ${mechLineOnEitherBoard(m,'devilry')&&(me.devilry||0)>0?`<span class="hud-pill devilry" id="hudDevilryPill" title="${escapeAttr(RESOURCE_TOOLTIP.devilry)}">★ ${me.devilry||0}</span>`:''}
-    ${refineOnEitherBoard(m)&&(me.elementalEnergy||0)>0?`<span class="hud-pill elementalenergy" id="hudElementalEnergyPill" title="${escapeAttr(RESOURCE_TOOLTIP.elementalenergy)}">✨ ${me.elementalEnergy||0}</span>`:''}
     `;
   // (2026-10-04) Settings and Quit live in the top bar now; this used to add a second copy of
   // both (with a duplicate #quitMatchBtn id) under the board after every HUD refresh.
   wireHudChrome();
+  renderFieldResources(m);
   updateHqHpDisplay('A'); updateHqHpDisplay('B');
 }
 // Live HP feedback (2026-09-14): both HQ widgets and board-card HP numbers now update the
@@ -24285,7 +24467,6 @@ function passiveTipCandidates(){
   // Castle passives (2026-10-12): the first time an enemy castle with a passive shows up.
   out.push({id:'castle-passive', html:'🗼 Their castle has a <b class="kw-jargon">passive</b> of its own. Rest your pointer on it (or press and hold) to read what it does.', text:'Their castle has a passive of its own.',
     anchor:()=>{ const c = m.players[2] && m.players[2].character; return (c && c.effects && Object.keys(c.effects).length) ? hqTileEl('B') : null; }});
-  if(pitchAllowedIn(m)) out.push({id:'lumber', text:'🪵 This card needs Lumber to play. Drag a card you don’t need onto the Graveyard to discard it for Lumber, then play the big one later.', anchor:()=> coachHandEl(d=> (d.cost||0)>0)});
   out.push({id:'leader', text:'👑 Your Leader: drag it onto the field to summon it, once per match. Summoning uses your play for the turn.', anchor:()=> document.querySelector('#leaderWidget.summonable')});
   out.push({id:'handLimit', text:'✋ You can hold 5 cards. Draw past that and the extra card is discarded for +1 Lumber automatically.', anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
   // Triggers (2026-10-12, user: "Tutorials should teach about triggers - when they enable, when they disable, and their
@@ -24332,6 +24513,39 @@ function firstUncommonEnemy(m){
   const r = m.players[2].row, defs = getCardDefs(), unc = RARITY_TIER_BANDS.indexOf('uncommon');
   return [...r.left, ...r.center, ...r.right].find(c=> c.hp > 0 && !c.gap && defs[c.defId] && defs[c.defId].cardType !== 'structure' && !((defs[c.defId].archetypes||[]).includes('Structure')) && RARITY_TIER_BANDS.indexOf(defs[c.defId].rarity || 'common') >= unc) || null;
 }
+// Pitching lesson (2026-10-12, user: "Tutorial regarding pitching: Has to be handled within Map 1 or 2 ... only in Map 2 do you
+// get a card that requires lumber"). Three spotlighted steps: why you need Lumber, pitch a card to the Graveyard (only your
+// hand, the Graveyard and this bubble take input until you do), then where your Lumber shows. It starts the first time you
+// hold a card you can't afford, or in any fight from Map 2 on, whichever comes first. Replaces the old one-line Lumber tip.
+function pitchLessonMine(m){ return m.players[viewerHandPid(m)]; }
+function pitchLessonCostly(m){ const me = pitchLessonMine(m); return coachHandEl(d=> (d.cost||0) > (me.lumber||0)); }
+const PITCH_LESSON = [
+  {id:'pl-need', gate:true,
+    text:'🪵 Bigger cards cost Lumber (the 🪵 pips on the card). You get Lumber by pitching: giving up a card from your hand.',
+    anchor:()=>{ const m = matchState; return m ? (pitchLessonCostly(m) || document.getElementById('dropDiscard')) : null; }},
+  {id:'pl-do', gate:true, action:true, allow:['.coach-tip', '#handStrip', '#dropDiscard', '#quitMatchBtn'],
+    text:'👉 Drag a card you don’t need onto the Graveyard to pitch it. Most cards give 1 Lumber; the yield shows as you hold one over it.',
+    anchor:()=> document.getElementById('dropDiscard'),
+    done:m=> !!pitchLessonMine(m).discardUsedThisTurn},
+  {id:'pl-after', gate:true,
+    text:'✅ Your Lumber shows here, on the field. You can pitch once a turn, and Lumber carries over, so save up and play the big card when it lights up.',
+    anchor:()=> document.getElementById('hudLumberPill') || document.getElementById('fieldResMine')},
+];
+function pitchLessonTip(m){
+  if(!m || m.mode==='tutorial' || m.mode==='sandbox' || m.adminTest || !pitchAllowedIn(m)) return null;
+  const next = PITCH_LESSON.find(t=> !coachSeen.has(t.id)); if(!next) return null;
+  if(activePlayerId(m) !== viewerHandPid(m) || m.awaitingPass) return null;
+  const me = pitchLessonMine(m);
+  if(next.id === 'pl-need'){
+    if(me.discardUsedThisTurn || !me.hand.length) return null;           // wait for a turn where a pitch is still possible
+    const mapNo = m.conquestNode ? mapNumberOf(m.conquestNode.mapId) : null;
+    if(!pitchLessonCostly(m) && !(mapNo != null && mapNo >= 2)) return null;
+    if(!m._toldPitch){ m._toldPitch = true; try{ playDialogue(loadFactionChoice() === 'hummingbirds' ? 'pitch_lesson_h' : 'pitch_lesson_o'); }catch(e){} }
+  }
+  if(next.id === 'pl-do' && me.discardUsedThisTurn){ markCoachSeen('pl-do'); return PITCH_LESSON[2]; }
+  if(next.id === 'pl-do' && !me.hand.length) return null;
+  return next;
+}
 function peekGateTip(m){
   if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
   return firstUncommonEnemy(m) ? PEEK_GATE : null;
@@ -24360,6 +24574,8 @@ function maybeShowCoachTip(){
   const g = guidedStepActive(m);
   if(g){ const el = g.anchor(); if(el){ showCoachTip(g, el); return; } if(g.action) return; }
   matchNumberOf(m);
+  const pl = pitchLessonTip(m);
+  if(pl){ const el = pl.anchor(); if(el){ showCoachTip(pl, el); return; } }
   const pg = peekGateTip(m);
   if(pg){ lastPeekUid = null; const el = pg.anchor(); if(el){ showCoachTip(pg, el); return; } }
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
@@ -24858,6 +25074,7 @@ function delayForEvent(ev, prevKind){
   let base;
   if(ev.type==='arrow') base = 40;
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
+  else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
   else if(ev.type==='sweepWhiff') base = 620;
   else if(ev.type==='fastForward') base = 520;
@@ -26428,6 +26645,24 @@ function renderVfxForEvent(ev){
     flagFirstFieldFlash(firstSide);
   }
   if(ev.type==='triggerFired'){ triggerFiredVfx(ev); return; }
+  // Earthquake hits (2026-10-12, user: "The earthquake should hit each unit faster (0.1s separation per hit anim)"): no lunge
+  // and no projectile, the ground just jolts each unit in turn, 0.1 s apart (delayForEvent), yours included.
+  if(ev.quake && (ev.type==='hit' || ev.type==='evaded')){
+    const targetEl = boardCardEl(ev.targetUid);
+    setTimeout(()=>{
+      if(!targetEl) return;
+      if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); return; }
+      const tile = targetEl.querySelector('.card-tile') || targetEl;
+      tile.classList.remove('quake-jolt'); void tile.offsetWidth; tile.classList.add('quake-jolt'); setTimeout(()=> tile.classList.remove('quake-jolt'), 420);
+      SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, false));
+      if(ev.armorBlocked) SoundKit.clang();
+      flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, false);
+      const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
+      if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
+      updateCardHpDisplay(ev.targetUid); updateCardStatusDisplay(ev.targetUid);
+    }, 40);
+    return;
+  }
   if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded'){
     const attEl = boardCardEl(ev.attUid);
     const targetEl = ev.type==='hitHQ' ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid);
@@ -33064,12 +33299,18 @@ const HandDrag = (function(){
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
   }
+  // 2026-10-12 (user: "On mobile, in the deck editor, I can't scroll the card selection very well... I mostly drag the
+  // cards"): outside the battle hand, a card only starts dragging after you hold it still for a moment (HOLD_TO_DRAG_MS).
+  // A finger that moves straight away is a scroll, so the card list scrolls from anywhere, cards included.
+  const HOLD_TO_DRAG_MS = 260;
+  let startAt = 0, holdNeeded = false;
   document.addEventListener('touchstart', (e)=>{
     const t = e.target.closest('[draggable="true"]');
     if(!t || t.getAttribute('draggable')==='false') return;
     candidate = t;
     const touch = e.touches[0];
     startX = touch.clientX; startY = touch.clientY;
+    startAt = Date.now(); holdNeeded = !t.closest('#handStrip, #leaderWidget, #view-play .battlefield');
   }, {passive:true});
   document.addEventListener('touchmove', (e)=>{
     if(!candidate) return;
@@ -33077,6 +33318,7 @@ const HandDrag = (function(){
     if(!dragActive){
       const dx = touch.clientX-startX, dy = touch.clientY-startY;
       if((dx*dx + dy*dy) < DRAG_THRESHOLD_PX*DRAG_THRESHOLD_PX) return; // still just a tap, let native click fire
+      if(holdNeeded && Date.now() - startAt < HOLD_TO_DRAG_MS){ candidate = null; return; } // moved before the hold: let the page scroll
       beginDrag(touch);
     }
     e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it

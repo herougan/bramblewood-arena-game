@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (19:10)
+- **Resources on the field:** your Lumber (and Stone, Metal, Grace and so on) now sits on the battlefield's bottom-left corner, and the enemy's on the bottom-right with a red "Enemy" tag, so you can see what they have saved up.
+- **Full screen centres the field:** in full screen the battlefield sits in the middle of the screen, as far as that keeps your hand in view. On iPhone (no full-screen support) the ⤢ button gives the same layout.
+- **Deck editor on phones:** swiping over the cards now scrolls the list. To drag a card, hold it still for a quarter of a second first.
+- **Conversations stay out of the way:** at most 2 lines on a computer and 1 on a phone. They turn see-through while your pointer or finger is over them or while you drag a card, and a ▾ button tucks them into a small 💬 chip (with a count of new lines) until you tap it.
+- **Pitching lesson:** the first time you hold a card you can't afford, or in any fight from Map 2 on, three spotlighted steps teach it: why you need Lumber, pitch a card onto the Graveyard (only that works until you do), and where your Lumber shows. Your guide says a line too. This replaces the old one-line Lumber tip.
+- **Claiming rewards:** stars burst from the button, a ring spreads, and a swarm of reward icons rushes into a tally in the top-right corner. Each currency's total counts up as they land, then the tally fades. Claim all sends a bigger flood. Covers achievements, quests and errands.
+- **Caves:** the blackout when you enter a side map now covers the whole screen.
+- **Side map icons:** only real caves (Smugglers' Grotto, the Mycelium Deep, the Glimmer Depths, the Volcano Lair) keep the cave mouth. The others show just their emblem; Lilypad Reach is a lotus.
+- **Earthquake** now also hits your own grounded units (never the caster, never flyers). The hits land 0.1 s apart, each unit jolting in turn. Gorge Wyrm and Glacial Ape King change with it.
+- **Pack plan:** a proposal for your four-pack road structure is in `docs/pack-plan-2026-10-12.md`. It needs two decisions from you.
+
 ## 2026-10-12 (18:15)
 - **Enemy card marker:** the red tint on top of enemy cards is smaller (a thin 5 px strip, inset from the corners) and much fainter. It now sits inside the card itself, so it moves with every lunge, hit, flip and topple instead of staying behind, and fades out when a card dies, falls or burns.
 
