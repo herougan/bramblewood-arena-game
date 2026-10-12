@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (19:05)
+- **The last PixelLab batch is in:** portraits for Creeper and the 18 new cards (Pigeon Peon, Marching Elephant, Siege Rhino, Stonedrop Vulture, Newt Doctor, Gatling Hog, Dung Beetle, Ur-Elk, Subterraneaner, Farm Dog, House Cat, Shellwright Apprentice, Otter Royal Guard, Otter Flag Bearer, Otter Lantern Bearer, Riverbed Diver, Hummingbird Needler, Riverwing Envoy). Also new: Boar Rampager, Berserker Boar, Tusked Vanguard, Raccoon Bandit, Land Tiller, Talon Archer, Meerkat Wayfarer and Strange Materia. All 153 queued images are done.
+- **The Forge** now uses the PixelLab hearth for its backdrop and the PixelLab anvil on its stump.
+- **Card Ledger: Creature count.** A new view counts every unit by species and by creature, as a share of the cards a player can own, and flags anything crowded (a species at 12% or more, a creature at 6% or more; Otters and Hummingbirds are marked as the factions). Click a name to see its cards.
+- **Fix:** the six otters added today are now species Mustelid like every other otter (they were tagged Mammal).
+
 ## 2026-10-12 (19:10)
 - **Resources on the field:** your Lumber (and Stone, Metal, Grace and so on) now sits on the battlefield's bottom-left corner, and the enemy's on the bottom-right with a red "Enemy" tag, so you can see what they have saved up.
 - **Full screen centres the field:** in full screen the battlefield sits in the middle of the screen, as far as that keeps your hand in view. On iPhone (no full-screen support) the ⤢ button gives the same layout.

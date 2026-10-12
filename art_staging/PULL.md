@@ -14,3 +14,7 @@ clear the anvil's grey background with clearbg.py).
 
 
 2026-10-12 17:00: pulled 51 (keys in pull_keys_2026_10_12.json). The seed tab's gallery ("Your gallery") is the account's, newest first, and loads lazily: scroll it in 150 px steps with a 1.5 s pause, scanning each step, and keep each javascript call under 45 s (start the loop without awaiting it, then poll). Results over ~260k characters get cut, so return about 235k characters of images per call.
+
+2026-10-12 18:55: the runner finished all 153 jobs; the last 29 were pulled (keys in pull_keys_2026_10_12b.json; land-tiller,
+talon-archer and forge-anvil use Chrome's actual prompt tails, which differ from the local job files). Forge bg is the
+16:9 band (rows 26-98) of variant B; the anvil is variant C with its grey cleared and trimmed. Nothing is queued now.
