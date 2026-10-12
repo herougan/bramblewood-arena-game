@@ -193,16 +193,7 @@
     "flavor": "Less a warrior, more a siege engine that occasionally roars. Give it five turns to get moving.",
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "scare": 2
     },
     "locked": true,
     "archetypes": [
@@ -882,16 +873,7 @@
     "effects": {
       "sweep": 1,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "earthquake": 3
     },
     "flavor": "A worm the size of a siege engine, because someone fed it entirely too well.",
     "locked": true,
@@ -1099,18 +1081,9 @@
     "health": 3,
     "dmgType": "heat",
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "heat",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ]
+      "immolation": 1
     },
-    "flavor": "Barely more than a floating spark. Throws one wild ember the instant it arrives.",
+    "flavor": "Barely more than a floating spark, and everything standing next to it gets singed.",
     "locked": true,
     "archetypes": [
       "Elemental"
@@ -1405,16 +1378,7 @@
     "effects": {
       "poison": 3,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "gash": 3
     },
     "flavor": "Patient, armored, and in absolutely no hurry to lose. The bite is the least of the problem.",
     "locked": true,
@@ -1576,17 +1540,8 @@
     "attack": 2,
     "health": 3,
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
-      "flying": true
+      "flying": true,
+      "pounce": 2
     },
     "flavor": "Circles once, marks a target, and dives before anyone finishes reading the omen.",
     "locked": true,
@@ -1718,18 +1673,9 @@
     "health": 9,
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 3,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
       "flying": true,
-      "diurnal": true
+      "diurnal": true,
+      "pounce": 3
     },
     "flavor": "Announces itself with a strike, and only then with a screech.",
     "locked": true,
@@ -1935,16 +1881,7 @@
       },
       "bounty": 1,
       "flying": true,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "daunt": 1
     },
     "flavor": "Watches from a height nothing else can reach, then arrives before the watching is noticed.",
     "locked": true,
@@ -2106,16 +2043,7 @@
         "dmgType": "physical"
       },
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 8,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "daunt": 2
     },
     "flavor": "Wakes up exactly once a fight, and the ground remembers it for longer than that.",
     "locked": true,
@@ -2272,16 +2200,7 @@
     "dmgType": "heat",
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "heat",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ]
+      "pounce": 2
     },
     "flavor": "Nine tales, one of them true, and a tail that's genuinely on fire. Ask it which is which.",
     "locked": true,
@@ -2534,16 +2453,7 @@
     "effects": {
       "poison": 3,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "ambush": true
     },
     "flavor": "Immune to its own venom, which is the only mercy anyone's ever found in it.",
     "locked": true,
@@ -2868,16 +2778,7 @@
         "dmgType": "physical"
       },
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 8,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "overwhelm": true
     },
     "flavor": "Armored nose to tail in wood-fired steel. The rider is almost beside the point.",
     "locked": true,
@@ -2964,17 +2865,8 @@
     ],
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ],
-      "nocturnal": true
+      "nocturnal": true,
+      "regen": 3
     },
     "flavor": "Older than the castle, wider than the moat, and in absolutely no hurry to leave the mud.",
     "locked": true,
@@ -3110,16 +3002,7 @@
     "health": 58,
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "bulwark": 2
     },
     "flavor": "Has been hanging from that same branch since before the castle had a name. In no rush to change that.",
     "locked": true,
@@ -3172,17 +3055,8 @@
     "attack": 4,
     "health": 10,
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 1,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
-      "flying": true
+      "flying": true,
+      "pounce": 1
     },
     "flavor": "Comes in low over the water and hits harder than something this size has any right to.",
     "locked": true,
@@ -3212,16 +3086,7 @@
     ],
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 8,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "earthquake": 4
     },
     "flavor": "The Yeti's elder. Rarely leaves the high passes, and the passes are grateful for that.",
     "locked": true,
@@ -3284,16 +3149,7 @@
     "effects": {
       "sweep": 1,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "momentum": 2
     },
     "flavor": "Hunts in a pack that never needs to be told the plan twice.",
     "locked": true,
@@ -3320,16 +3176,7 @@
     "health": 14,
     "effects": {
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ]
+      "pounce": 2
     },
     "flavor": "Doesn't wait to be grabbed. Fires first and rolls into a ball to think it over later.",
     "locked": true,
@@ -3488,20 +3335,11 @@
     "attack": 3,
     "health": 14,
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": "attack",
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
       "flying": true,
-      "diurnal": true
+      "diurnal": true,
+      "arrow": 2
     },
-    "flavor": "Its first shot lands before it's finished landing. The arrow is not the point — the eye is.",
+    "flavor": "Every round, one arrow, one target. The arrow is not the point — the eye is.",
     "locked": true,
     "archetypes": [
       "Eagle"
@@ -3524,18 +3362,9 @@
     "attack": 2,
     "health": 8,
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
       "flying": true,
-      "diurnal": true
+      "diurnal": true,
+      "pounce": 2
     },
     "flavor": "Two arrows, always. One for the target, one for anyone thinking of helping.",
     "locked": true,
@@ -3862,8 +3691,9 @@
     "uuid": "86f77331-2e4f-4c75-af8f-e72cad4305f5",
     "art": "data:image/png;base64,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",
     "source": {
-      "kind": "pack",
-      "tier": 1
+      "kind": "map",
+      "id": "my",
+      "node": "y-1"
     },
     "rarity": "common",
     "species": [
@@ -4168,17 +3998,8 @@
     ],
     "effects": {
       "sweep": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ],
-      "nocturnal": true
+      "nocturnal": true,
+      "frostbite": 2
     },
     "flavor": "Thawed out ill-tempered and has not warmed up since.",
     "locked": true,
@@ -4413,18 +4234,9 @@
       "Mountain"
     ],
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 3,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ],
       "flying": true,
-      "diurnal": true
+      "diurnal": true,
+      "pounce": 3
     },
     "flavor": "Stoops from a height that makes the math feel unfair.",
     "locked": true,
@@ -4830,16 +4642,7 @@
     ],
     "effects": {
       "rage": true,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "siege": 4
     },
     "flavor": "Calm right up until it very much is not.",
     "locked": true,
@@ -4994,16 +4797,7 @@
     ],
     "dmgType": "heat",
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "heat",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ]
+      "fireArrow": 2
     },
     "flavor": "Too young to fly. Old enough to already be a problem.",
     "locked": true,
@@ -5822,16 +5616,7 @@
     ],
     "effects": {
       "thorns": 3,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "inspiring": 2
     },
     "flavor": "Old enough to remember when this reef was someone else's territory.",
     "dmgType": "physical",
@@ -6274,17 +6059,8 @@
       "Cephalopod"
     ],
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ],
-      "fork": true
+      "fork": true,
+      "gash": 3
     },
     "flavor": "Small for its family. The family is not a useful comparison.",
     "dmgType": "physical",
@@ -6766,16 +6542,7 @@
     "health": 26,
     "effects": {
       "scar": 2,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ]
+      "immolation": 1
     },
     "dmgType": "heat",
     "resist": [
@@ -6858,17 +6625,8 @@
     "attack": 7,
     "health": 16,
     "effects": {
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 6,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "adjacent"
-        }
-      ],
-      "pierce": 5
+      "pierce": 5,
+      "fireArrow": 2
     },
     "dmgType": "heat",
     "archetypes": [
@@ -9462,16 +9220,7 @@
       "flying": true,
       "bounty": 1,
       "stunOnHit": 50,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 4,
-          "dmgType": "heat",
-          "who": "enemy",
-          "sub": "all"
-        }
-      ]
+      "fireArrow": 4
     },
     "flavor": "It doesn't burn the field. It just breathes, and the field forgets it was ever green.",
     "locked": true,
@@ -9508,16 +9257,7 @@
         "chance": 50,
         "duration": 1
       },
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 4,
-          "dmgType": "cold",
-          "who": "enemy",
-          "sub": "all"
-        }
-      ]
+      "scare": 3
     },
     "flavor": "The blizzard isn't weather. It's the White Dragon turning over in its sleep.",
     "locked": true,
@@ -9554,16 +9294,7 @@
         "chance": 50,
         "duration": 1
       },
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 4,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "all"
-        }
-      ]
+      "lightning": 4
     },
     "flavor": "Its roar arrives as a crackle in your fur. Then nothing moves for a while.",
     "locked": true,
@@ -9596,16 +9327,7 @@
     "effects": {
       "flying": true,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 4,
-          "dmgType": "poison",
-          "who": "enemy",
-          "sub": "all"
-        }
-      ]
+      "poison": 3
     },
     "flavor": "The swamp gas you smelled for three days was not the swamp.",
     "locked": true,
@@ -9638,16 +9360,7 @@
     "effects": {
       "flying": true,
       "bounty": 1,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 4,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "all"
-        }
-      ]
+      "corrode": 3
     },
     "flavor": "Where it nests, even the stone rots.",
     "locked": true,
@@ -12770,16 +12483,7 @@
     "health": 6,
     "effects": {
       "flying": true,
-      "triggers": [
-        {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 2,
-          "dmgType": "physical",
-          "who": "enemy",
-          "sub": "random"
-        }
-      ]
+      "pounce": 2
     },
     "dmgType": "physical",
     "resist": [],
@@ -14201,14 +13905,6 @@
       "armor": 2,
       "triggers": [
         {
-          "on": "onSpawn",
-          "do": "damage",
-          "amount": 5,
-          "dmgType": "heat",
-          "who": "enemy",
-          "sub": "random"
-        },
-        {
           "on": "onDeath",
           "do": "damage",
           "amount": 5,
@@ -14216,7 +13912,8 @@
           "who": "enemy",
           "sub": "adjacent"
         }
-      ]
+      ],
+      "pounce": 5
     },
     "flavor": "It sleeps in the mountain's heart. When it wakes, so does the mountain.",
     "numericId": 482,
@@ -14465,6 +14162,31 @@
     "rarity": "uncommon",
     "numericId": 490,
     "uuid": "1bb92e2a-30d9-4478-b952-83c4bbe229a7",
+    "cardType": "materia",
+    "source": {
+      "kind": "materia"
+    }
+  },
+  {
+    "id": "strange-materia",
+    "name": "Strange Materia",
+    "icon": "🔮",
+    "cost": 0,
+    "wait": 0,
+    "attack": 0,
+    "health": 1,
+    "effects": {},
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "flavor": "It hums in a key no smith can name. Only a map's master carries one, and the Forge will not grow without it.",
+    "locked": true,
+    "archetypes": [
+      "Materia"
+    ],
+    "rarity": "rare",
+    "numericId": 491,
+    "uuid": "5d3b8fd8-ac09-4432-b965-2a2c3afe477f",
     "cardType": "materia",
     "source": {
       "kind": "materia"

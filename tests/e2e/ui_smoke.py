@@ -110,7 +110,9 @@ async def main():
         check(await pg.evaluate("!document.querySelector('.card-inspect') && !document.getElementById('packOpenOverlay').hidden"), 'Escape should close only the card viewer over the pack summary')
         await pg.click('#poDone'); await pg.wait_for_timeout(300)
         # 4a: a set of 10 offers Skip and Open all; Open all shows everything grouped
-        await pg.click('[data-shelfitem="bronze:10"]'); await pg.wait_for_timeout(200)
+        # 2026-10-12: sets sit behind map gates now, and with 2+ packs on sale one shelf item asks how many (×1/×10 ...)
+        await pg.evaluate("(()=>{ shopBundlesOpen = ()=> true; const o = packQtyOptions; packQtyOptions = p=> [...new Set([1, 10].concat(o(p)))].sort((a,b)=> a-b); renderShop(); return 1; })()"); await pg.wait_for_timeout(300)
+        await pg.evaluate("(()=>{ const b = document.querySelector('[data-shelfitem=\"bronze:10\"]') || document.querySelector('[data-shelfitem=\"bronze:1\"]'); b.click(); const q = document.querySelector('[data-pq=\"10\"]'); if(q) q.click(); return 1; })()"); await pg.wait_for_timeout(300)
         await pg.click('[data-buypack="bronze"][data-qty="10"]'); await pg.wait_for_timeout(500)
         # 2026-10-08 Packs v3: 10+ packs lay out on a table to slash at once; Open all is still offered
         check(await pg.query_selector('#poTable') is not None and await pg.query_selector('#poOpenAll') is not None, 'a set of 10 packs should show the table with Open all')

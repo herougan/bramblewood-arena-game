@@ -4,8 +4,11 @@ const src=fs.readFileSync(R+'arena_app.js','utf8');
 const i0=src.indexOf('const CONQUEST_MAPS = ['), j0=src.indexOf('\n];',i0);
 const MAPS=eval(src.slice(i0+'const CONQUEST_MAPS = '.length, j0+2));
 const mains=MAPS.filter(m=>!m.sub && !m.reserved);
-const mapNo=id=>{ const m=MAPS.find(x=>x.id===id); if(!m) return null; const p=m.sub?MAPS.find(x=>x.id===m.parent):m; const i=mains.indexOf(p); return i<0?null:(m.sub? (i+1)+'-A' : String(i+1)); }; // from 1, as on the world screen
-const fightCode=(id,key)=>{ const m=MAPS.find(x=>x.id===id); if(!m) return key; const n=m.nodes.find(x=>x.key===key); if(!n) return key; if(n.kind==='raidboss') return mapNo(id)+'-R'; const f=m.nodes.filter(x=>x.kind!=='tutorial'&&x.kind!=='raidboss'); return mapNo(id)+'-'+(f.indexOf(n)+1); };
+// Map numbers as the game shows them (2026-10-12): the first map is Map 0; a side map is its parent's number then A, B…
+const mapNo=id=>{ const m=MAPS.find(x=>x.id===id); if(!m) return null; const p=m.sub?MAPS.find(x=>x.id===m.parent):m; const i=mains.indexOf(p); if(i<0) return null;
+  if(!m.sub) return String(i); const sibs=MAPS.filter(x=>x.sub&&x.parent===m.parent); return i+'-'+String.fromCharCode(65+Math.max(0,sibs.indexOf(m))); };
+const fightCode=(id,key)=>{ const m=MAPS.find(x=>x.id===id); if(!m) return key; const n=m.nodes.find(x=>x.key===key); if(!n) return key; if(n.kind==='tutorial') return mapNo(id)+'-0'; if(n.kind==='raidboss') return mapNo(id)+'-R'; const f=m.nodes.filter(x=>x.kind!=='tutorial'&&x.kind!=='raidboss'); return mapNo(id)+'-'+(f.indexOf(n)+1); };
+const bi=src.indexOf('const MAP_BIOME_OF = '); const BIOME_OF= bi<0?{}:eval('('+src.slice(bi+'const MAP_BIOME_OF = '.length, src.indexOf('};',bi)+1)+')');
 const labels={}; for(const m of src.matchAll(/\{key:'(\w+)',\s*category:'\w+',\s*label:'([^']+)'/g)) labels[m[1]]=m[2];
 const cards=JSON.parse(fs.readFileSync(R+'canonical/cards.json','utf8'));
 const bal={}; (JSON.parse(fs.readFileSync(R+'docs/balance/card-balance.json','utf8')).rows||[]).forEach(r=>bal[r.id]=r);
@@ -27,16 +30,16 @@ const inDecks=new Set(); MAPS.forEach(m=>m.nodes.forEach(n=>Object.keys(n.deck||
 const MULT={starter:1,common:1,uncommon:2,rare:4,veryrare:6,superrare:8,epic:11,heroic:14,unique:17,legendary:21,mythic:25,ancient:30,quest:2,questunique:17,special:4,devlegendary:21,devancient:30,eventlegendary:21,eventrare:4};
 const forgeMU=c=>{ let k=MULT[c.rarity||'common']||1; const s=c.source||{}; if(/^event/.test(c.rarity||'')||s.kind==='event') k*=1.5; else if(c.rarity==='starter'||c.rarity==='quest'||c.rarity==='questunique'||(!s.kind && (c.basic||!c.locked))||s.kind==='map'||s.kind==='quest') k*=0.5; return Math.round(k*10)/10; };
 const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).startsWith('test-')).map(c=>{
-  const s=c.source||{}; let src='Base', grp='Base', mno=null;
-  if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${fightCode(s.id, s.node)}`; grp='Map'; }
-  else if(s.kind==='pack'){ src=PACK[s.tier]||('Pack '+s.tier); grp=s.tier===11||s.tier===12||s.tier===13?'Faction pack':'Pack'; }
-  else if(s.kind==='smith'){ src='Blacksmith'; grp='Other'; }
-  else if(s.kind){ src=s.kind[0].toUpperCase()+s.kind.slice(1); grp='Other'; }
-  else if(c.token){ src='Token'; grp='Token'; }
-  else if(c.locked && c.rarity!=='starter' && !c.basic){ src= inDecks.has(c.id) ? 'Enemy only' : 'Unused'; grp='Other'; }
+  const s=c.source||{}; let src='Base', grp='Base', mno=null, gk='base';
+  if(s.kind==='map'){ mno=mapNo(s.id); src=`Map ${mno} · ${fightCode(s.id, s.node)}`; grp='Map'; gk='map:'+s.id; }
+  else if(s.kind==='pack'){ src=PACK[s.tier]||('Pack '+s.tier); grp=s.tier===11||s.tier===12||s.tier===13?'Faction pack':'Pack'; gk='pack:'+s.tier; }
+  else if(s.kind==='smith'){ src='Blacksmith'; grp='Other'; gk='other:'+src; }
+  else if(s.kind){ src=s.kind[0].toUpperCase()+s.kind.slice(1); grp='Other'; gk='other:'+src; }
+  else if(c.token){ src='Token'; grp='Token'; gk='token'; }
+  else if(c.locked && c.rarity!=='starter' && !c.basic){ src= inDecks.has(c.id) ? 'Enemy only' : 'Unused'; grp='Other'; gk='other:'+src; }
   const b= c.cardType==='spell' ? null : bal[c.id]; // a deck of 8 spells has too few units for the win-rate test to mean anything
   return {id:c.id,n:c.name,i:c.icon||'',r:c.rarity||'common',c:c.cost||0,w:c.wait||0,a:c.attack||0,h:c.health||0,
-    t:(c.archetypes||[]).join(', '),sk:skills(c),src,g:grp,m:mno,f:forgeMU(c),tok:!!c.token,eq:c.cardType==='equipment',
+    t:(c.archetypes||[]).join(', '),sk:skills(c),src,g:grp,gk,m:mno,f:forgeMU(c),tok:!!c.token,eq:c.cardType==='equipment',
     wr:b? b.winRate : null, band:b? b.band : null, stale: b ? (b.cost!==c.cost||b.wait!==c.wait||b.attack!==c.attack||b.health!==c.health) : null};
 });
 // Live values (2026-10-11): pass a JSON array of card_overrides rows ({id, data, deleted}) as the 2nd argument to show
@@ -44,5 +47,14 @@ const rows=cards.filter(c=>!c.test && c.cardType!=='materia' && !String(c.id).st
 const live = {}; const KEYS = {c:'cost', w:'wait', a:'attack', h:'health', r:'rarity'};
 if(process.argv[3]) JSON.parse(fs.readFileSync(process.argv[3],'utf8')).forEach(o=>{ if(!o || o.deleted || !o.data) return; const row = rows.find(r=> r.id===o.id); if(!row) return;
   const x = {}; Object.entries(KEYS).forEach(([k,f])=>{ if(o.data[f] != null && o.data[f] !== row[k]) x[k] = o.data[f]; }); if(Object.keys(x).length) live[o.id] = x; });
-fs.writeFileSync(process.argv[2], JSON.stringify({generated:new Date().toISOString().slice(0,10), balanceRun:'2026-10-09', bands, rows, live}));
+// Groups for the summary view (2026-10-12, user: "summarise the cards from each biome, each card pack, and base"):
+// Base, each pack, each map in play order (side maps after their parent) with the cards its enemy decks field.
+const cardById=Object.fromEntries(cards.map(c=>[c.id,c]));
+const groups=[{key:'base',kind:'Base',label:'Base cards',icon:'🌱',blurb:'Free or starter cards every player can own'}];
+Object.entries(PACK).forEach(([t,l])=> groups.push({key:'pack:'+t,kind:(t==11||t==12||t==13)?'Faction pack':'Pack',label:l,icon:'🎁'}));
+const ordered=[]; mains.forEach(m=>{ ordered.push(m); MAPS.filter(x=>x.sub&&x.parent===m.id).forEach(x=>ordered.push(x)); });
+ordered.forEach(m=>{ const faced={}; m.nodes.forEach(n=>{ const decks=[n.deck||{}].concat(n.waveDecks||[]); decks.forEach(d=>Object.keys(d).forEach(id=>{ if(cardById[id]) faced[id]=1; })); (n.leaders||[]).forEach(id=>{ if(cardById[id]) faced[id]=1; }); });
+  const fr={}; Object.keys(faced).forEach(id=>{ const r=cardById[id].rarity||'common'; fr[r]=(fr[r]||0)+1; });
+  groups.push({key:'map:'+m.id,kind:'Map',label:m.name,icon:m.icon||'',no:mapNo(m.id),sub:!!m.sub,biome:BIOME_OF[m.id]||BIOME_OF[m.parent]||'',fights:m.nodes.filter(x=>x.kind!=='tutorial').length,faced:Object.keys(faced).length,facedR:fr}); });
+fs.writeFileSync(process.argv[2], JSON.stringify({groups, generated:new Date().toISOString().slice(0,10), balanceRun:'2026-10-09', bands, rows, live}));
 console.log(rows.length, 'rows', rows.filter(r=>r.wr!=null).length, 'with win rate', rows.filter(r=>r.stale).length, 'stale');

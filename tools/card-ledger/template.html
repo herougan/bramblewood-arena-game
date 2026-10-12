@@ -81,6 +81,36 @@ td.chg input, td.chg select{background:var(--amber-bg); border-color:var(--amber
 .sk{color:var(--muted); font-size:12px; max-width:280px;}
 .sk span{display:inline-block; margin:0 6px 2px 0;}
 .empty{padding:28px; text-align:center; color:var(--muted);}
+[hidden]{display:none !important;}
+.wrap > *{min-width:0;}
+.cardsview{display:flex; flex-direction:column; gap:14px;}
+.cardsview > *{min-width:0;}
+.views{display:flex; gap:4px; border-bottom:1px solid var(--line);}
+.views button{all:unset; cursor:pointer; font:600 14px var(--f-body); color:var(--muted); padding:8px 14px; border-bottom:3px solid transparent; margin-bottom:-1px;}
+.views button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--moss);}
+.views button:focus-visible{outline:2px solid var(--moss); outline-offset:2px; border-radius:4px;}
+.sum{display:flex; flex-direction:column; gap:22px;}
+.sum h2{font-family:var(--f-display); font-weight:600; font-size:19px; margin:0 0 4px;}
+.sum h2 + p{margin:0 0 10px; color:var(--muted); font-size:13px; max-width:80ch;}
+.sum table{min-width:980px;}
+.sum td{vertical-align:middle;}
+.sum th span{display:block; padding:9px 8px;}
+.sum .gname{all:unset; cursor:pointer; display:flex; gap:8px; align-items:center; font-weight:600;}
+.sum .gname:hover .gl{text-decoration:underline;} .sum .gname:focus-visible{outline:2px solid var(--moss); outline-offset:2px; border-radius:4px;}
+.sum .gname .no{font:600 11.5px var(--f-data); color:var(--muted); min-width:34px;}
+.sum tr.subrow .gname{padding-left:18px;}
+.sum .biome{font-size:12px; color:var(--muted); margin-left:42px;}
+.sum tbody td:first-child{min-width:240px;}
+.sum tr.subrow .biome{margin-left:60px;}
+.mix{display:flex; height:10px; border-radius:5px; overflow:hidden; background:var(--line); min-width:150px;}
+.mix i{display:block; height:100%; background:var(--rc);}
+.mixl{font-size:11px; color:var(--muted); margin-top:3px; display:flex; flex-wrap:wrap; gap:2px 8px;}
+.mixl span{display:inline-flex; align-items:center; gap:3px;} .mixl span::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--rc);}
+.bal{display:flex; gap:6px; font:600 11.5px var(--f-data);}
+.bal .s{color:var(--strong);} .bal .o{color:var(--ok);} .bal .w{color:var(--weak);} .bal .n{color:var(--muted); font-weight:400;}
+.sum tfoot td{font-weight:600; border-top:2px solid var(--line); border-bottom:none; padding:6px 8px;}
+.gpill{display:inline-flex; gap:6px; align-items:center; font:600 12.5px var(--f-body); background:var(--moss); color:var(--moss-ink); border-radius:999px; padding:4px 6px 4px 12px;}
+.gpill button{all:unset; cursor:pointer; width:18px; height:18px; text-align:center; border-radius:50%; background:color-mix(in oklab, var(--moss-ink) 25%, transparent);}
 footer{color:var(--muted); font-size:13px; max-width:80ch;}
 @media (max-width:640px){ .count{margin-left:0; width:100%;} }
 @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
@@ -92,6 +122,12 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
     <p>Every card in the game with the stats it has in the game right now, where it comes from and how it did in the last balance run. Type a new Lumber, Wait, Attack, Health or rarity in a card's “→” box; changes save here as you go. Commit queues them for the game.</p>
   </header>
 
+  <div class="views" role="tablist" aria-label="View">
+    <button type="button" role="tab" id="vCards" data-view="cards" aria-selected="true">Every card</button>
+    <button type="button" role="tab" id="vSum" data-view="sum" aria-selected="false">Summary by source</button>
+  </div>
+  <section class="sum" id="sumView" hidden></section>
+  <div id="cardsView" class="cardsview">
   <div class="chips" id="chips" role="group" aria-label="Quick filters"></div>
 
   <div class="tools">
@@ -100,6 +136,7 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
     <select id="fSource" aria-label="Where it comes from"></select>
     <button class="btn" id="copyBtn" type="button">Copy edits as text</button>
     <button class="btn commit" id="commitBtn" type="button" disabled>Commit to game</button>
+    <span id="gpill"></span>
     <span class="count" id="count"></span>
   </div>
   <div class="status" id="status">Connecting to saved edits…</div>
@@ -111,6 +148,7 @@ footer{color:var(--muted); font-size:13px; max-width:80ch;}
     </table>
   </div>
 
+  </div>
   <footer id="foot"></footer>
 </div>
 
@@ -128,7 +166,7 @@ const rows = DATA.rows;
 const byId = Object.fromEntries(rows.map(r=> [r.id, r]));
 let edits = {};           // id -> {c,w,a,h,r,note}
 let db = null, canWrite = false;
-const state = {q:'', rarity:'', source:'', quick:'', sort:'src', dir:1};
+const state = {q:'', rarity:'', source:'', quick:'', sort:'src', dir:1, group:'', view:'cards'};
 try{ const saved = JSON.parse(localStorage.getItem('ledger-view')||'null'); if(saved) Object.assign(state, saved); }catch(e){}
 const saveView = ()=>{ try{ localStorage.setItem('ledger-view', JSON.stringify(state)); }catch(e){} };
 
@@ -171,6 +209,7 @@ function filtered(){
   return rows.filter(r=>{
     if(state.rarity && game(r,'r') !== state.rarity) return false;
     if(state.source && r.g !== state.source && r.src !== state.source) return false;
+    if(state.group && r.gk !== state.group) return false;
     if(state.quick==='edited' && !isEdited(r)) return false;
     if(['strong','weak','ok','none'].includes(state.quick) && verdict(r) !== state.quick) return false;
     if(q && !(`${r.n} ${r.id} ${r.t} ${r.sk.join(' ')} ${r.src} ${val(r,'note')||''}`.toLowerCase().includes(q))) return false;
@@ -219,6 +258,8 @@ function render(){
   document.getElementById('q').value = state.q;
   document.getElementById('fRarity').value = state.rarity;
   document.getElementById('fSource').value = state.source;
+  const g = state.group && groupMeta(state.group);
+  document.getElementById('gpill').innerHTML = g ? `<span class="gpill">${esc(g.icon||'')} ${esc(groupTitle(g))}<button type="button" id="gClear" aria-label="Show every source">×</button></span>` : '';
 }
 function refreshRow(id){
   const tr = document.querySelector(`tr[data-row="${CSS.escape(id)}"]`); if(!tr) return;
@@ -311,8 +352,57 @@ async function commitEdits(){
   committing = false; refreshCommit();
 }
 document.getElementById('commitBtn').addEventListener('click', commitEdits);
-
-render();
+// ---- SUMMARY (2026-10-12, user: "In your card ledger, summarise the cards from each biome, each card pack, and base").
+// One row per source: Base, each pack, each map in play order (side maps under their parent), then everything else.
+// Clicking a row opens the card list filtered to it.
+const GROUPS = (DATA.groups||[]).slice();
+const seenG = new Set(GROUPS.map(g=> g.key));
+[...new Set(rows.map(r=> r.gk))].filter(k=> k && !seenG.has(k)).sort().forEach(k=> GROUPS.push({key:k, kind:'Other', label: k==='token' ? 'Tokens' : k.replace(/^other:/,''), icon: k==='token' ? '✨' : ''}));
+function groupMeta(k){ return GROUPS.find(g=> g.key===k); }
+function groupTitle(g){ return g.kind==='Map' ? `Map ${g.no} · ${g.label}` : g.label; }
+const avg = (list, f)=> list.length ? list.reduce((t,r)=> t + f(r), 0) / list.length : 0;
+function mixHTML(byR, total){
+  const order = RARITIES.filter(x=> byR[x]);
+  if(!total) return '<span class="stale">none</span>';
+  return `<div class="mix" role="img" aria-label="${order.map(x=> byR[x]+' '+(RLABEL[x]||x)).join(', ')}">${order.map(x=> `<i style="--rc:${RCOL[x]||'#888'}; width:${byR[x]/total*100}%" title="${byR[x]} ${esc(RLABEL[x]||x)}"></i>`).join('')}</div>
+    <div class="mixl">${order.map(x=> `<span style="--rc:${RCOL[x]||'#888'}">${byR[x]} ${esc(RLABEL[x]||x)}</span>`).join('')}</div>`;
+}
+const statCells = list=>{ const u = list.filter(r=> !r.eq); const f = k=> u.length ? avg(u, r=> +game(r,k)).toFixed(1) : '—';
+  return `<td class="num">${f('c')}</td><td class="num">${f('a')}</td><td class="num">${f('h')}</td><td class="num">${list.length ? avg(list, score).toFixed(2) : '—'}</td>`; };
+const rarityCount = list=>{ const byR = {}; list.forEach(r=>{ const x = game(r,'r'); byR[x] = (byR[x]||0) + 1; }); return byR; };
+function sumRow(g){
+  const list = rows.filter(r=> r.gk===g.key);
+  const v = {strong:0, ok:0, weak:0, none:0}; list.forEach(r=> v[verdict(r)]++);
+  const faced = g.kind==='Map' ? `<td class="num">${g.faced||0}</td><td>${mixHTML(g.facedR||{}, g.faced||0)}</td>` : '';
+  return `<tr class="${g.sub?'subrow':''}"><td><button type="button" class="gname" data-group="${esc(g.key)}">${g.kind==='Map'?`<span class="no">${esc(g.no)}</span>`:''}<span>${esc(g.icon||'')}</span><span class="gl">${esc(g.label)}</span></button>${g.kind==='Map'?`<div class="biome">${g.biome?esc(g.biome[0].toUpperCase()+g.biome.slice(1))+' biome · ':''}${g.fights} fights</div>`:''}</td>
+    <td class="num">${list.length}</td><td>${mixHTML(rarityCount(list), list.length)}</td>${statCells(list)}
+    <td><span class="bal" title="Last balance run: too strong / in band / too weak / not measured"><span class="s">${v.strong}▲</span><span class="o">${v.ok}●</span><span class="w">${v.weak}▼</span><span class="n">${v.none}?</span></span></td>
+    ${faced}</tr>`;
+}
+function sumTable(title, blurb, gs, maps){
+  const th = (l, n)=> `<th${n?' class="num"':''}><span>${l}</span></th>`;
+  const head = `<tr>${th('Source')}${th('Cards',1)}${th('Rarity mix')}${th('Avg Lumber',1)}${th('Avg Attack',1)}${th('Avg Health',1)}${th('Avg score',1)}${th('Balance')}${maps ? th('Enemy cards',1)+th('Enemy rarity mix') : ''}</tr>`;
+  const all = rows.filter(r=> gs.some(g=> g.key===r.gk));
+  const foot = `<tr><td>All ${esc(title.toLowerCase())}</td><td class="num">${all.length}</td><td>${mixHTML(rarityCount(all), all.length)}</td>${statCells(all)}<td></td>${maps?'<td></td><td></td>':''}</tr>`;
+  return `<div><h2>${esc(title)}</h2><p>${blurb}</p><div class="tablebox"><table><thead>${head}</thead><tbody>${gs.map(sumRow).join('')}</tbody><tfoot>${foot}</tfoot></table></div></div>`;
+}
+function renderSummary(){
+  const base = GROUPS.filter(g=> g.kind==='Base'), packs = GROUPS.filter(g=> g.kind==='Pack' || g.kind==='Faction pack'), maps = GROUPS.filter(g=> g.kind==='Map'), other = GROUPS.filter(g=> g.kind==='Other');
+  document.getElementById('sumView').innerHTML =
+    sumTable('Base and card packs', 'Cards every player starts with or can buy. Averages leave out equipment; balance counts come from the last balance run.', base.concat(packs), false) +
+    sumTable('Maps', 'The cards each map gives as rewards, in the order you play the maps, with side maps under their parent. Enemy cards counts the different cards its enemy decks and leaders field.', maps, true) +
+    sumTable('Everything else', 'Blacksmith and secret cards, design-only cards, cards only enemies use, tokens, and cards nothing uses yet.', other, false);
+}
+function setView(v){
+  state.view = v; saveView();
+  document.getElementById('vCards').setAttribute('aria-selected', v==='cards'); document.getElementById('vSum').setAttribute('aria-selected', v==='sum');
+  document.getElementById('cardsView').hidden = v!=='cards'; document.getElementById('sumView').hidden = v!=='sum';
+  if(v==='sum') renderSummary(); else render();
+}
+document.querySelector('.views').addEventListener('click', e=>{ const b = e.target.closest('[data-view]'); if(b) setView(b.dataset.view); });
+document.getElementById('sumView').addEventListener('click', e=>{ const b = e.target.closest('[data-group]'); if(!b) return; state.group = b.dataset.group; state.source = ''; state.quick = ''; state.q = ''; setView('cards'); window.scrollTo(0, 0); });
+document.getElementById('gpill').addEventListener('click', e=>{ if(e.target.id==='gClear'){ state.group = ''; saveView(); render(); } });
+setView(state.view==='sum' ? 'sum' : 'cards');
 (async ()=>{
   try{
     const user = window.claude && window.claude.use ? await window.claude.use('user') : null; userApi = user;

@@ -2181,6 +2181,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.skyfall){
       fireMissile(players, sideOf, playerId, boardCard, {amount:def.effects.skyfall, dmgType:'physical'}, stats, events);
     }
+    // Pounce (2026-10-12, user: "On Play – deal damage should be an evergreen keyword"): the named keyword for "when
+    // played, deal N damage to a random enemy unit (the castle if there are none)". Fires on play, Waiting or not.
+    if(def.effects.pounce){
+      if(recordEvents && events) events.push({type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.pounce});
+      const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
+      let target = foes.length ? {kind:'card', card: foes[Math.floor(rnd()*foes.length)]} : {kind:'hq'};
+      if(target.kind==='card'){ const sh = shieldCall(players[otherId(playerId)], target.card); if(sh) target = {kind:'card', card:sh}; }
+      bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+      fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
+    }
     runCustomTriggers(players, sideOf, playerId, boardCard, def, 'onSpawn', stats, events);
   }
   // Earthquake: AOE version of Gash/Missile's "one-shot on-spawn skill" shape — instead of

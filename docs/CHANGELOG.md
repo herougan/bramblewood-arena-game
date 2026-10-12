@@ -2,6 +2,26 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-12 (13:00)
+- **Pounce, a new evergreen keyword.** "On Play: deal damage" now has a name: **Pounce N** (🐾) hits a random enemy unit for N the moment the card lands, Waiting or not (the castle only if no units are left). It has its own log line and a crouch-and-spring on the card.
+  - Kept as Pounce (9 cards): Raven Scout 2, Hawk Arrowkeeper 2, Eagle Diver 3, Golden Eagle Diver 3, Ford Kingfisher 2, Quill Volley 2, Mallard Marauder 1, Firetail Trickster 2, Caldera Wyrm 5.
+  - Changed to other skills (25 cards): Yeti Scare 2, Gorge Wyrm Earthquake 3, Ember Wisp Immolation 1, Komodo Warlord Gash 3, Eyrie Warden Daunt 1, Cave Warlord Daunt 2, Venomlord Serpent Ambush, Cataphract Destrier Stampede, Bog Behemoth Regeneration 3, Ancient Sloth Titan Bulwark 2, Glacial Ape King Earthquake 4, Orca Vanguard Momentum 2, Permafrost Mammoth Frostbite 2, Eagle Sharpshooter Arrow 2, Deep Cave Troll Siege 4, Humpback Elder Inspiring 2, Kraken Spawnling Gash 3, Magma Titan Immolation 1, Pyroclast Wyrm and Fire-Drake Hatchling Fire Arrow 2, Red Dragon Fire Arrow 4, White Dragon Scare 3, Blue Dragon Lightning 4, Green Dragon Poison 3, Black Dragon Corrode 3. Most are enemy cards, so a few fights play a little differently.
+- **Card drops.** Winning a fight can drop a card: 10% skirmish, 20% elite/champion/dungeon, 30% mini-boss, 40% boss, 70% world or raid boss, always for a raid win. Rarity: 1% Heroic from bosses, 1% Epic from world bosses and raids, then 2% Super Rare, 5% Very Rare, 10% Rare, 30% Uncommon, else Common.
+- **Nest:**
+  - Eggs now go into your pack. Tap an empty hay nest to place one, or to **nurture** a Level 0 base card to Level 1 (1 hour, 15 Dust + 10 Maple Leaves).
+  - The Forge no longer takes cards from Level 0 to 1: a Level 0 card shows "Nurture it in the Nest", which opens the Nest with that card picked.
+- **Forge:**
+  - Upgrades past the Village Forge need 🔮 **Strange Materia** (1, 1, 2, 3), dropped by the bosses of Maps 12, 15, 25 and 30 on their first clear.
+  - "Show the N I can temper" works once per visit, then fades with a small gadget sound. Tempering strikes the anvil.
+  - **New forge art:** a pixel-art hearth, hood and tool wall behind the forge, and a pixel anvil on a stump. Drawn in code for now; PixelLab versions are queued.
+- **Card opening:** light rays in the card's rarity colour behind Rare-and-up and new cards, a spotlight under the deck, a gold-trimmed card back with a moving sheen, a "2 of 3" count, and a tray of empty slots that fill as each card flies down. Fixed: the card that flies to the row below had stopped landing there.
+- **Shop:** a lamp-lit back wall with a scalloped valance, bigger pouches with a shadow on the plank that lift and tip when you point at them, a beam of light on the chosen item, hanging price tags, and a counter with a wooden edge and a receipt.
+- **Sweep** hits its three targets in quick succession, 0.3 s apart.
+- **Map tabs** shade by tier: warm browns that darken from Map 0 to 20, then lime turning purple and darker up to Map 40.
+- **Toucan Courier** is out of the Glass Dunes decks (Dust Hyenas instead) and now comes from the Canopy (y-1).
+- **Card Ledger:** a "Summary by source" view: Base, each pack and each map in play order (side maps under their parent), with card counts, rarity mix, average stats, score, balance results and, for maps, the enemy cards they field. Map numbers now count from 0 as in the game. Click a row to see its cards.
+- **Decisions waiting:** D58 egg rates, D59 free base copies and B2/B3 tiers, D60 the Map 20 boss battle rating (your note was cut off).
+
 ## 2026-10-12 (12:30)
 - **Raids:**
   - **Leaders take the field.** All three leaders open on the board, one in each of the centre three columns: yours in your front row, each ally's in their own row. An ally's leader is the one saved on their deck, else the rarest card in it that can lead.

@@ -155,6 +155,10 @@ for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w",
     _fp = SCRATCH + "art/maps/m%s.png" % _mid
     if os.path.exists(_fp):
         _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, open(_fp, "rb").read())))
+# Forge art (2026-10-12): tools/make_forge_art.py -> art/forge/bg.png + anvil.png (PixelLab versions replace them).
+_fg = [(k, SCRATCH + "art/forge/%s.png" % f) for k, f in (("--forge-art", "bg"), ("--anvil-art", "anvil"))]
+_fg = ["%s:url(%s);" % (k, asset_url("forge/" + os.path.basename(fp), open(fp, "rb").read())) for k, fp in _fg if os.path.exists(fp)]
+if _fg: _map_css.append(":root{" + "".join(_fg) + "}")
 out = out.replace("/*__MAP_ART_CSS__*/", "\n".join(_map_css), 1)
 # Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): small pixel-art PNGs from art/fx/.
 for _ph, _fn in (("__ARROW_PNG__", "art/fx/arrow.png"), ("__FIRE_ARROW_PNG__", "art/fx/fire_arrow.png")):

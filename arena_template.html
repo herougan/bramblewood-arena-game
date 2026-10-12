@@ -5933,6 +5933,36 @@
   @keyframes po2MiniNew{0%{box-shadow:0 0 0 3px #ffd75e, 0 0 14px #ffd75e;}}
   .po2-sum-card{transition:transform .18s ease-out; transform-style:preserve-3d;}
   .po2-sum-card.is-new .card-tile{box-shadow:none; animation:po2NewBorder 1.6s ease-out;}
+  /* Opening polish (2026-10-12, user: "Improve the card opening visual"): a spotlight on the floor under the deck, slow
+     light rays behind the card in its rarity's colour once it turns, a gold-trimmed card back with a sheen that sweeps
+     across it, a "2 of 3" count, and a tray of empty slots that fill as each card lands. */
+  .po2-reveal{gap:12px;}
+  .po2-reveal::before{content:''; position:absolute; left:50%; top:50%; width:min(150vh, 170vw); aspect-ratio:1; translate:-50% -54%; pointer-events:none; z-index:-1; opacity:0; transition:opacity .5s ease;
+    background:repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--ray, #ffe6aa) 60%, transparent) 0deg 7deg, transparent 7deg 22deg);
+    -webkit-mask:radial-gradient(closest-side, #000 8%, transparent 72%); mask:radial-gradient(closest-side, #000 8%, transparent 72%); animation:po2Rays 26s linear infinite;}
+  .po2-reveal.is-rays::before{opacity:.55;} .po2-reveal.is-rays.is-rays-big::before{opacity:.9; animation-duration:14s;}
+  @keyframes po2Rays{to{rotate:360deg;}}
+  .po2-deck::after{content:''; position:absolute; left:-18%; right:-28%; bottom:-11%; height:16%; border-radius:50%; pointer-events:none; z-index:-2;
+    background:radial-gradient(closest-side, rgba(255,240,210,.22), rgba(0,0,0,.35) 70%, transparent);}
+  .po2-back{background:
+      radial-gradient(circle at 50% 44%, rgba(255,215,120,.38), transparent 58%),
+      radial-gradient(circle at 0 0, #d7b46a 0 9%, transparent 9.5%), radial-gradient(circle at 100% 0, #d7b46a 0 9%, transparent 9.5%),
+      radial-gradient(circle at 0 100%, #d7b46a 0 9%, transparent 9.5%), radial-gradient(circle at 100% 100%, #d7b46a 0 9%, transparent 9.5%),
+      repeating-linear-gradient(45deg, rgba(0,0,0,.13) 0 8px, transparent 8px 17px), repeating-linear-gradient(-45deg, rgba(255,230,160,.06) 0 8px, transparent 8px 17px), #2f5b3a;}
+  .po2-back::before{content:''; position:absolute; inset:15%; border-radius:50%; border:2px dashed rgba(215,180,106,.55); pointer-events:none;}
+  .po2-back::after{content:''; position:absolute; inset:-20%; pointer-events:none; background:linear-gradient(105deg, transparent 38%, rgba(255,250,225,.38) 48%, transparent 58%); translate:-70% 0; animation:po2Sheen 3.2s ease-in-out infinite;}
+  .po2-card:not(.is-current) .po2-back::after{animation:none; opacity:0;}
+  @keyframes po2Sheen{0%,55%{translate:-70% 0} 85%,100%{translate:70% 0}}
+  .po2-tally{margin-top:16px; font:800 13px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; opacity:.75; min-height:1.2em;}
+  .po2-got{padding:8px 10px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.25);}
+  .po2-got:empty{display:none;}
+  .po2-slot{width:46px; aspect-ratio:.72; border-radius:8px; border:2px dashed rgba(255,255,255,.22); display:grid; place-items:center;}
+  .po2-slot:has(.po2-mini){border-color:transparent;}
+  .po2-slot .po2-mini{width:100%;}
+  :where(html[data-fx="none"]) .po2-reveal::before, :where(html[data-fx="none"]) .po2-back::after{display:none;}
+  :where(html[data-fx="low"]) .po2-reveal::before{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .po2-reveal::before, .po2-back::after{animation:none !important;} }
+
   .po2 .pack-open-foot{position:sticky; bottom:0; z-index:6; padding:10px 14px; border-radius:14px; background:rgba(18,11,28,.88); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);}
   .po2-pile-count{margin-top:16px; font:800 13px 'Baloo 2',system-ui,sans-serif; opacity:.7;}
   /* the open-all table */
@@ -6525,6 +6555,14 @@
       repeating-linear-gradient(90deg, rgba(0,0,0,.28) 0 2px, transparent 2px 52px),
       linear-gradient(180deg, #2b2320, #3a2a22 60%, #4a2c1c);
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.4);}
+  /* 2026-10-12: the pixel-art forge (hearth, hood, tools) under a darkening veil so the panels stay readable */
+  #view-forge.forge-scene{background:
+      radial-gradient(ellipse 80% 55% at 50% 108%, rgba(255,140,40,.35), transparent 75%),
+      linear-gradient(180deg, rgba(20,12,8,.18) 0, rgba(20,12,8,.5) 380px, rgba(28,18,14,.97) 640px),
+      var(--forge-art, none) center top/max(100%, 1000px) auto no-repeat, #2b2320; image-rendering:pixelated;}
+  #view-forge.forge-scene > *{image-rendering:auto;}
+  .anvil-art{width:192px; height:120px; justify-content:flex-end; background:var(--anvil-art, none) center bottom/contain no-repeat; image-rendering:pixelated; filter:drop-shadow(0 6px 6px rgba(0,0,0,.5));}
+  .anvil-art span{display:none !important;}
   #view-forge.forge-scene::after{content:attr(data-sign); position:absolute; top:16px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
     font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#f6e3c0; padding:4px 16px; border-radius:6px;
     background:linear-gradient(180deg,#5a5a60,#3a3a40); border:2px solid #222; box-shadow:0 6px 10px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.2);}
@@ -7879,6 +7917,37 @@ body.cq-opening .map-trail-svg{display:none !important;}
 @keyframes counterSlide{from{translate:0 -24px; opacity:0} to{translate:0 0; opacity:1}}
 @media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
 @media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
+/* Shop polish (2026-10-12, user: "Improve ... the item shop visuals"): a lamp-lit wall with a scalloped valance, bigger
+   pouches that cast a contact shadow on the plank and lift and tip when you reach for them, a light that falls on the
+   chosen item, hanging price tags, and a counter with a wooden edge and a paper receipt. */
+.shelf-wall{background:
+    radial-gradient(60% 46% at 50% -6%, rgba(255,226,160,.55), transparent 70%),
+    radial-gradient(140% 90% at 50% 120%, rgba(70,40,15,.28), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(120,150,110,.10) 0 22px, rgba(255,250,235,0) 22px 44px),
+    radial-gradient(120% 80% at 50% 0%, #f4eacf, #dccaa3 70%, #c4ad80);
+  padding-top:34px;}
+.shelf-wall::before{content:''; position:absolute; left:10px; right:10px; top:0; height:16px; border-radius:0 0 4px 4px; pointer-events:none;
+  background:radial-gradient(circle at 12px 0, #7d522a 11px, transparent 12px) 0 0/24px 16px repeat-x; filter:drop-shadow(0 3px 2px rgba(60,35,10,.35));}
+.booster{--bw:clamp(66px,8.6vw,86px);}
+.shelf-item{transition:transform .25s cubic-bezier(.2,1.3,.4,1); isolation:isolate;}
+.shelf-item::before{content:''; position:absolute; left:14%; right:14%; bottom:-7px; height:10px; border-radius:50%; background:radial-gradient(closest-side, rgba(50,28,10,.42), transparent); pointer-events:none; transition:transform .25s, opacity .25s; z-index:-1;}
+.shelf-item:hover, .shelf-item:focus-visible{transform:translateY(-8px) rotate(-2deg);}
+.shelf-item:hover::before, .shelf-item:focus-visible::before{transform:scale(.8); opacity:.6;}
+.shelf-item:active{transform:translateY(-3px) scale(.97);}
+.shelf-item.is-selected .booster, .shelf-item.is-selected .shelf-bundle, .shelf-item.is-selected .shelf-crate, .shelf-item.is-selected .shelf-loaf{filter:drop-shadow(0 0 10px rgba(255,214,120,.95));}
+.shelf-item.is-selected::after{left:-6%; right:-6%; bottom:auto; top:-46px; height:calc(100% + 40px); border-radius:0; z-index:-1;
+  background:linear-gradient(180deg, rgba(255,232,170,.0), rgba(255,232,170,.42) 60%, rgba(255,232,170,.0)); clip-path:polygon(38% 0, 62% 0, 100% 100%, 0 100%);}
+.shelf-tag{position:relative; margin-top:7px; padding:2px 9px 1px 13px; border-radius:2px 4px 4px 2px; clip-path:polygon(8px 0, 100% 0, 100% 100%, 8px 100%, 0 50%); box-shadow:none; background:linear-gradient(180deg, #fffaf0, #f2e6cc); transform:rotate(calc(var(--tilt, 0deg) * -1));}
+.shelf-tag::before{content:''; position:absolute; left:6px; top:50%; width:4px; height:4px; margin-top:-2px; border-radius:50%; background:#b9a27a;}
+.shelf-hover::after{content:''; position:absolute; left:50%; bottom:-7px; width:12px; height:12px; margin-left:-6px; rotate:45deg; background:#fffaf0; box-shadow:2px 2px 0 0 #8a5a32;}
+.shop-counter{position:relative; background:linear-gradient(180deg, #9a6a3a 0 3px, #7d522a 3px 9px, #f6ecd5 9px), #f6ecd5; padding-top:20px;}
+.shop-counter::after{content:''; position:absolute; right:clamp(12px,3vw,26px); top:9px; width:46px; height:20px; border-radius:0 0 3px 3px; pointer-events:none;
+  background:repeating-linear-gradient(180deg, transparent 0 4px, rgba(120,90,50,.18) 4px 5px), #fffdf7; box-shadow:0 2px 3px rgba(60,35,10,.25);
+  -webkit-mask:conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/6px 3px repeat-x, linear-gradient(#000 0 0) top/100% calc(100% - 3px) no-repeat;
+          mask:conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom/6px 3px repeat-x, linear-gradient(#000 0 0) top/100% calc(100% - 3px) no-repeat;}
+.shop-counter .counter-goods{min-width:120px;} .shop-counter .counter-goods .booster{--bw:clamp(78px,9vw,96px);}
+@media (prefers-reduced-motion: reduce){ .shelf-item:hover, .shelf-item:focus-visible{transform:translateY(-4px);} }
+
 /* the opened booster gets the same cream foil */
 .po2-body, .po2-strip-face{background:var(--foil-grain), linear-gradient(118deg, #f7edd6 0%, #e6d2a8 22%, #fff7e4 41%, #d9c193 58%, #f4e7c8 76%, #e2cd9f 100%); background-blend-mode:multiply, normal;}
 .po2-foil{mix-blend-mode:soft-light; opacity:.35;}
@@ -8080,6 +8149,16 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .tutorial-editor .te-pic{margin-top:6px; align-self:flex-start;}
 .autoplay-btn.is-on{background:var(--accent-strong); color:#fff; border-color:var(--accent-strong);}
 .lp-item.is-used{opacity:.45; filter:grayscale(.85); cursor:not-allowed;} .lp-item.is-used small{display:block; font-size:11px;}
+.conquest-map-item[style*="--band"]{border-left:6px solid var(--band); background:color-mix(in srgb, var(--band) 20%, var(--surface));}
+.conquest-map-item[style*="--band"].selected{background:color-mix(in srgb, var(--band) 38%, var(--surface));}
+#forgePickReady.is-fading{transition:opacity .35s ease, transform .35s ease; opacity:0; transform:scale(.92);}
+.hay-nest.is-empty{cursor:pointer; font:inherit; color:inherit;} button.hay-nest.is-empty{background:none; border:0; padding:0;}
+.hay-nest .nest-plus{position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:22px; opacity:.45; transition:opacity .2s;}
+.hay-nest.is-empty:hover .nest-plus, .hay-nest.is-empty:focus-visible .nest-plus{opacity:.95;}
+.nest-picker{max-width:min(720px, 94vw);} .np-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 150px), 1fr)); gap:8px; margin-bottom:12px;}
+.np-item{display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px; border-radius:12px; border:1px solid var(--surface-border); background:var(--surface-2); color:inherit; font:inherit; cursor:pointer; text-align:center;}
+.np-item:hover, .np-item:focus-visible{border-color:var(--accent-strong);} .np-item.is-pre{box-shadow:0 0 0 2px var(--accent-strong);} .np-item[aria-disabled="true"]{opacity:.5;}
+.np-item .np-ico{font-size:28px;} .np-item small{opacity:.7; font-size:11px;} .np-cards .card-tile{width:96px !important;}
 .pack-qty{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; justify-content:center;}
 .pq-opt{font:inherit; font-family:'Baloo 2'; font-weight:800; padding:4px 12px; border-radius:999px; border:1px solid var(--surface-border); background:transparent; color:inherit; cursor:pointer; font-variant-numeric:tabular-nums;}
 .pq-opt.is-on{background:var(--accent-strong); border-color:var(--accent-strong); color:#fff;} .pq-opt:focus-visible{outline:2px solid var(--accent-strong); outline-offset:2px;}
