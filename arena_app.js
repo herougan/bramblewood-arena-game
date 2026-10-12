@@ -8324,7 +8324,7 @@ const LEVEL_STEP_GAIN = {major:0.10, minor:0.05};
 function cardBaseLevel(d){
   if(!d) return 1;
   // 2026-10-12 (user: "base creatures start at 0, rewarded creatures at 1, quest creatures should also start at 0").
-  const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand');
+  const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
   return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs || d.id==='wandering-traveller') ? 0 : 1;
 }
 // Level range per card (2026-10-11, user: "let me edit the stats PER level ... The start level and end level depend on the
@@ -12757,6 +12757,7 @@ function questsModalHTML(){
       ${dailyBoard()}
       ${section('weekly', 'Weekly', nextMon - now)}
       ${errandsBoardHTML()}
+      ${journeysHTML()}
     </div>
     <section class="qn-medals-wrap"><div class="qn-sign qn-sign-dark"><b>Medals</b><span>lifetime stats: for bragging, not power</span></div><div class="qn-medals">${medals}</div></section>
   </div>`;
@@ -24485,7 +24486,10 @@ async function resolveRound(opts){
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(`🐉 A Dragon Scale (${sc.index}/${sc.total}). ${sc.line}`, 'ok'); }catch(e){} }, 1600); } }catch(e){}
       try{ const md = rollMateriaDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear, rank); if(Object.keys(md).length) m.conquestMateriaEarned = md; }catch(e){}
-      try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; }catch(e){}
+      try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; if(drops.cards && drops.cards.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drops.cards); }catch(e){}
+      try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(`${J.icon} ${J.name}: step ${jr.step} of ${J.steps.length}${jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}`, 'ok'); }catch(e){} }, 1400); } }catch(e){}
+      try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
+        if(isFirstClear && mi === 20 && bn && ['boss','finalboss'].includes(baseKind(bn.kind||''))){ const crown = grantMap20FactionCrown(); if(crown.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(crown); } }catch(e){}
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
       // map's enemy decks that you don't own yet. At most once per map.
@@ -30671,7 +30675,7 @@ function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? 
 // Faction cards in the basic packs (2026-10-11, user: "all otters and hummingbirds are contained within the various card
 // packs ... The otter specific cards are contained throughout the 3 basic packs"): a pack built on pool 1 (the Sprout
 // Pouch, Tidemire Chest and Highcrest Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
-const BASIC_PACK_POOLS = [1, 11];   // 2026-10-12: the Otter, Hummingbird and Riverbank pools (11–13) merged into one Factions pool (11)
+const BASIC_PACK_POOLS = [1]; // 2026-10-13 (user: "the otters and hummingbirds that you get along the way - i think remove them from all packs. They can only be gotten through progress"); was [1, 11]   // 2026-10-12: the Otter, Hummingbird and Riverbank pools (11–13) merged into one Factions pool (11)
 function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
@@ -30901,14 +30905,88 @@ function factionPackForNode(node){
   const sub = Object.values(FACTION_PACKS).find(fp=> fp.kind==='sub' && fp.people === people);
   return sub ? sub.id : myFactionPackId();
 }
+/* ============================================================
+   Reward tracks (2026-10-13, user: "progress means getting 1 random card reward from the factions pack and 1 from the base
+   pack. In-game, you won't see this. At the start its not random - we want you to collect all the commons, then uncommons,
+   then rares! then after that, its repeated collecting from a pool of duplicates each ... At some point, super and very
+   rares will be added into the pool. You will end up with a Heroic and Epic card of your faction at Map 20").
+   A track is a pool of cards. trackPick() hands out, in order: every Common you don't own yet, then every Uncommon, then
+   every Rare (random among the ones still missing at that step). Once all are owned it draws from the duplicates still
+   allowed (a Rare can be held 4 times, so 3 more are in the pool), weighted by how many are left. Very Rare and Super Rare
+   join the pool from Map 10 on. Epic, Heroic and higher never come from the pool: the faction's Epic and Heroic are given
+   on the first clear of Map 20's boss.
+   ============================================================ */
+const TRACK_STAGES = ['common', 'uncommon', 'rare'];
+const TRACK_LATE = ['veryrare', 'superrare'], TRACK_LATE_MAP = 10;
+function copiesOwned(id){ return ((myCardCopies && myCardCopies[id]) || []).length; }
+function trackMapReached(){ try{ const prog = loadConquestProgress(); const mains = mainConquestMaps(); let hi = 0; mains.forEach((m, i)=>{ if((prog.completed||[]).some(cid=> cid.indexOf(m.id + ':') === 0)) hi = i; }); return hi; }catch(e){ return 0; } }
+function trackPick(pool, rnd){
+  rnd = rnd || Math.random;
+  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test);
+  const rar = id=> defs[id].rarity || 'common';
+  const stages = TRACK_STAGES.concat(trackMapReached() >= TRACK_LATE_MAP ? TRACK_LATE : []);
+  for(const r of stages){ const missing = pool.filter(id=> rar(id) === r && !copiesOwned(id)); if(missing.length) return missing[Math.floor(rnd()*missing.length)]; }
+  const dupes = pool.filter(id=> stages.includes(rar(id))).map(id=> [id, Math.max(0, maxCopiesForRarity(rar(id)) - copiesOwned(id))]).filter(x=> x[1] > 0);
+  const tot = dupes.reduce((t, x)=> t + x[1], 0); if(!tot) return null;
+  let r = rnd()*tot; for(const [id, w] of dupes){ r -= w; if(r <= 0) return id; } return dupes[dupes.length-1][0];
+}
+function factionTrackPool(){ const fp = FACTION_PACKS[myFactionPackId()]; return fp ? factionPackPool(fp, 'own') : []; }
+function baseTrackPool(){ return packCardPool(getCardDefs(), 1, true); }
+// One step of progress: a card from your faction's track and one from the base track. Returns the ids granted.
+function grantTrackCards(why, extraPool){
+  const out = [];
+  [extraPool || factionTrackPool(), baseTrackPool()].forEach(pool=>{ const id = trackPick(pool); if(!id) return; const before = copiesOwned(id); unlockCardForPlayer(id, why || 'progressTrack'); if(copiesOwned(id) > before) out.push(id); });
+  return out;
+}
+// Map 20's boss, first clear: the faction's Epic and Heroic (the highest-numbered card of each rarity on your side).
+function grantMap20FactionCrown(){
+  const defs = getCardDefs(), pool = factionTrackPool(), out = [];
+  ['epic', 'heroic'].forEach(r=>{ const c = pool.filter(id=> (defs[id].rarity||'') === r).sort((a,b)=> copiesOwned(a) - copiesOwned(b) || (defs[b].numericId||0) - (defs[a].numericId||0))[0]; if(!c) return; const before = copiesOwned(c); unlockCardForPlayer(c, 'map20Crown'); if(copiesOwned(c) > before) out.push(c); });
+  return out;
+}
+/* Subfaction journeys (2026-10-13, user: "Subfactions - same mechanic as above. I think the quest can start in around Map
+   15-20, and a few 3 quests, end there. The rest continue past 20. The quests bring you all over Maps 15-20"): each people
+   has a journey of fights spread over Maps 15–20. Winning the next fight on it gives one card from that people's track and
+   one from the base track. Road-folk, Wild Beasts and Woodland Folk finish by Map 20 and join you; the Hive and the Deep go
+   on past Map 20. Journeys open once Map 15 is reached. */
+const SUBFACTION_JOURNEYS = {
+  road:  {name:'The Toll Road', icon:'🧳', ends:true, steps:[['ml','l-2','A peddler on Squire Road says the tolls are rigged.'],['ml','l-3','The stoats who rigged them are waiting in ambush.'],['md','d-1','Their fence fled into the dunes with the jackals.'],['m3','3-1','The badgers are holding the stolen strongbox.'],['m11','11-10','Return the box to the shrine at the top of the steps.']]},
+  beast: {name:'The Call of the Wild', icon:'🐾', ends:true, steps:[['mt','t-4','A lynx has been shadowing the road. Follow it.'],['m6','6-2','It leads to a starving pack on the tundra.'],['mt','t-5','The pack runs with you now. Prove you can keep up.'],['m11','11-2','The grizzlies of the frontier will test them.'],['m11','11-9','The panther on the ledge decides whether the wild follows you.']]},
+  folk:  {name:'The Long Harvest', icon:'🌾', ends:true, steps:[['ml','l-1','The colts in the meadow trampled a farmer\'s field.'],['mt','t-3','The elk herd ate what was left. Bargain with them.'],['m6','6-3','The hares in the snow know where the seed store went.'],['m3','3-2','The porcupines guard it now.'],['m11','11-1','Bring the seed past the silverbacks to the high fields.']]},
+  hive:  {name:'The Swarm Below', icon:'🐝', ends:false, steps:[['md','d-2','Something is hollowing out the dunes.'],['md','d-3','The widows have been feeding on it.'],['m3','3-4','It flies at night over the spurn.'],['m11','11-3','The cave warlord keeps its queen. The trail goes on past the Peak.']]},
+  deep:  {name:'The Drowned Bell', icon:'🌊', ends:false, steps:[['md','d-4','The sandstorm uncovered an old ship\'s bell, a sea away from any sea.'],['m3','3-5','The sentinel on the spurn heard it ring.'],['m11','11-4','The Constrictor Sovereign swallowed the clapper. The bell\'s sea lies past the Peak.']]},
+};
+const JOURNEYS_KEY = 'bramblewood_journeys_v1';
+function loadJourneys(){ try{ const o = JSON.parse(localStorage.getItem(JOURNEYS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
+function saveJourneys(o){ try{ localStorage.setItem(JOURNEYS_KEY, JSON.stringify(o)); }catch(e){} }
+function journeysOpen(){ const i = mainConquestMaps().findIndex(m=> m.id === 'ml'); try{ return i >= 0 && isMapUnlocked(mainConquestMaps()[i], loadConquestProgress()); }catch(e){ return false; } }
+function journeyStepFor(mapId, nodeKey){ const st = loadJourneys(); return Object.keys(SUBFACTION_JOURNEYS).find(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, step = j.steps[n]; return step && step[0] === mapId && step[1] === nodeKey; }) || null; }
+function subfactionTrackPool(id){ const fp = FACTION_PACKS[id]; return fp ? factionPackPool(fp, 'own') : []; }
+// Called on every conquest win. Returns {journey, step, done, cards} when a journey moved on.
+function advanceJourney(mapId, nodeKey){
+  if(!journeysOpen()) return null;
+  const k = journeyStepFor(mapId, nodeKey); if(!k) return null;
+  const j = SUBFACTION_JOURNEYS[k], st = loadJourneys(), n = (st[k]|0) + 1; st[k] = n; saveJourneys(st);
+  const cards = grantTrackCards('journey', subfactionTrackPool(k));
+  const done = n >= j.steps.length; if(done && j.ends) collectSubfaction(k);
+  return {journey:k, step:n, done, cards};
+}
+function journeysHTML(){
+  if(!journeysOpen()) return '';
+  const st = loadJourneys();
+  const rows = Object.keys(SUBFACTION_JOURNEYS).map(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n];
+    const where = next ? (()=>{ const f = findConquestNode(next[0], next[1]); return f ? conquestNodeLabel(next[0], next[1]) : next[0]; })() : '';
+    const tail = next ? `<div class="jr-next"><b>Next:</b> ${escapeHtml(next[2])} <span class="jr-where">${escapeHtml(where)}</span></div>` : `<div class="jr-next">${j.ends ? `${(FACTION_PACKS[k]||{}).name ? 'The ' + escapeHtml(FACTION_PACKS[k].name.replace(/ Bundle$/, '')) + ' walk with you now.' : 'Finished.'}` : 'The trail goes on past the Sundered Peak.'}</div>`;
+    return `<div class="jr-row ${next ? '' : 'is-done'}"><span class="jr-ico" aria-hidden="true">${j.icon}</span><div class="jr-body"><div class="jr-name">${escapeHtml(j.name)} <span class="jr-count">${n}/${j.steps.length}${j.ends ? '' : '+'}</span></div>${tail}</div></div>`; }).join('');
+  return `<section class="qn-board qn-journeys"><div class="qn-sign"><b>Journeys</b><span>each step wins you two cards</span></div>${rows}</section>`;
+}
 function rollConquestPackDrops(node, isFirstClear){
   const out = {pack:null, food:0, newSub:false};
   if(!node || node.kind === 'tutorial') return out;
   const bigFight = ['elite','boss','raidboss','finalboss'].includes(baseKind(node.kind||'skirmish'));
-  if(bigFight && (isFirstClear || Math.random() < FACTION_PACK_REPEAT_CHANCE)){
-    out.pack = factionPackForNode(node); grantFactionPack(out.pack, 1);
-    if(FACTION_PACKS[out.pack].kind === 'sub') out.newSub = collectSubfaction(out.pack);
-  }
+  // 2026-10-13: an elite or boss, first clear, now hands out one faction-track card and one base-track card straight away
+  // (no pack to open). Subfaction bundles retired: subfactions come from Journeys (Maps 15–20).
+  if(bigFight && isFirstClear) out.cards = grantTrackCards('progressTrack');
   return out;
 }
 // Free packs on the road (2026-10-12, the user's map table: "Map 3 Free Pack A, 7 Free Pack B, 10 Free Mystery Pack A,

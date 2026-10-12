@@ -15338,5 +15338,71 @@
       "node": "3-3"
     },
     "flavor": "Sure-footed on the way up. Takes the mountain with it on the way down."
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "numericId": 528,
+    "uuid": "0036a5ae-627a-488d-893a-728dbff0eb16",
+    "id": "rivergate-tribune",
+    "name": "Rivergate Tribune",
+    "icon": "\ud83e\udda6",
+    "cost": 3,
+    "wait": 2,
+    "attack": 7,
+    "health": 28,
+    "effects": {
+      "armor": 2,
+      "rally": 1
+    },
+    "archetypes": [
+      "River",
+      "Otter"
+    ],
+    "species": [
+      "Mustelid"
+    ],
+    "rarity": "heroic",
+    "source": {
+      "kind": "pack",
+      "tier": 11
+    },
+    "flavor": "The Legion follows the crest. The crest follows her."
+  },
+  {
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "numericId": 529,
+    "uuid": "dee780ae-3374-4ade-98e7-22a9119a1c0e",
+    "id": "sunspire-sky-sovereign",
+    "name": "Sunspire Sky-Sovereign",
+    "icon": "\ud83d\udc26",
+    "cost": 3,
+    "wait": 1,
+    "attack": 6,
+    "health": 16,
+    "effects": {
+      "flying": true,
+      "swift": true,
+      "esprit": 1,
+      "espritHp": 1
+    },
+    "archetypes": [
+      "Hummingbird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "rarity": "heroic",
+    "source": {
+      "kind": "pack",
+      "tier": 11,
+      "side": "tribes"
+    },
+    "flavor": "Faster than the sun can follow, and the sun has tried."
   }
 ]

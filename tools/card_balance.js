@@ -23,7 +23,14 @@ const MODE = (args.find(a=> a.startsWith('--mode=')) || '--mode=open').slice(7);
 const ONLY = ((args.find(a=> a.startsWith('--only=')) || '').slice(7)).split(',').filter(Boolean);
 
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
-const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = d; });
+// Level 1 for everyone (2026-10-13, user: "when analysing cards for their strength, we should care about rarity AND level 0s
+// (assume level 1 for all units. but for those that start at level 0, note that the 1st level is a major improvement)"):
+// a card that starts at Level 0 (starter, tutorial, Base, quest cards) prints its Level 0 stats, so it is measured at Level 1
+// (its levelStats[1] if set, else +10%), and the report flags it.
+function baseLevel0(d){ const k = d.source && d.source.kind; return !!(d.basic || d.rarity==='starter' || d.tutorial || d.quest || k==='quest' || k==='errand' || k==='base' || d.id==='wandering-traveller'); }
+function atLevel1(d){ if(!baseLevel0(d)) return d; const ov = d.levelStats && (d.levelStats[1] || d.levelStats['1']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 1.10));
+  return Object.assign({}, d, {attack: ov && ov.attack!=null ? ov.attack : r(d.attack), health: ov && ov.health!=null ? ov.health : r(d.health), startsAt0: true}); }
+const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; defs[c.id] = atLevel1(d); });
 const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].baseId && !defs[id].field) // field cards are situational: measured in themed decks instead (fields-and-day-night-2026-10-09.md).sort();
 
 // The reference: a mid-strength mix (two plain cost-0 units, a flyer, a cost-1 tank and a poisoner)
@@ -63,7 +70,7 @@ const rows = fieldable.filter(id=> !ONLY.length || ONLY.includes(id)).map(id=>{
   const verdict = wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
   return {id, name:d.name, rarity:d.rarity || null, cost:d.cost||0, wait:d.wait||0, attack:d.attack||0, health:d.health||0,
     skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []),
-    winRate: Math.round(wr*1000)/10, band:[lo*100, hi*100], verdict, locked: !!d.locked, source: (d.source||{}).kind || 'base'};
+    winRate: Math.round(wr*1000)/10, band:[lo*100, hi*100], verdict, locked: !!d.locked, source: (d.source||{}).kind || 'base', startsAt0: !!d.startsAt0, note: d.startsAt0 ? 'measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)' : undefined};
 });
 
 // Suggest a fix for outliers: step Attack, then Health, toward the band (max 4 steps each).

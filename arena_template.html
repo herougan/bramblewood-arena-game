@@ -7887,6 +7887,13 @@
   ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, #c99e62, #8d6438); background-clip:padding-box; border:2px solid transparent;}
   ::-webkit-scrollbar-corner{background:transparent;}
 
+  /* Journeys (2026-10-13): the subfaction quests over Maps 15–20, on the Notices board. */
+  .qn-journeys .jr-row{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; margin:6px 0; border-radius:10px; background:rgba(255,248,230,.85); color:#3a2a14; box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .qn-journeys .jr-row.is-done{opacity:.7;}
+  .qn-journeys .jr-ico{font-size:22px; line-height:1;}
+  .qn-journeys .jr-body{min-width:0;}
+  .qn-journeys .jr-name{font-weight:800;} .qn-journeys .jr-count{font-weight:600; opacity:.7; margin-left:4px; font-variant-numeric:tabular-nums;}
+  .qn-journeys .jr-next{font-size:.92em; line-height:1.35;} .qn-journeys .jr-where{display:inline-block; opacity:.75; font-style:italic;}
   /* Codex (2026-10-13): one list. No copies = greyed; locked = a 🔒 on the corner. */
   .cx-tile-wrap{position:relative;}
   .cx-tile-wrap.cx-unowned > .card-tile{filter:grayscale(.85) brightness(.72); opacity:.85;}
