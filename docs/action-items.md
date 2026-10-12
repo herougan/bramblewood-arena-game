@@ -1,6 +1,39 @@
 # Action items
 
-_Updated 2026-10-12, 10:50 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 1:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done overnight (your 00:17 list)
+
+| # | What I did |
+|---|---|
+| 1 | Strength analysis measures every card at Level 1; Base, starter and quest cards (Level 0 at the start) are measured at Level 1 and flagged ("first level is a major +10% step"). Base cards now start at Level 0 in the game too. |
+| 2 | Otters and Hummingbirds are out of every pack. Elite and boss first clears give 1 faction-track card + 1 base-track card (Commons → Uncommons → Rares → duplicates; Very/Super Rare from Map 10). Map 20's boss gives your faction's Epic + Heroic; two Heroics made (Rivergate Tribune, Sunspire Sky-Sovereign). |
+| 3 | Journeys: five subfaction quests across Maps 15–20 (three end there, two go past). Each step is a real fight and pays 2 cards. On the Notices board; the next fight shows its step. |
+| 4 | Phyla filter shows each phylum's emblem. |
+| 5 | Arrow / Fire Arrow shoot the nearest enemy (random on ties); "Never misses Flying units" on Arrow, Fire Arrow and Boomerang. |
+| 6 | Deep Cave Troll → Cave Bear (new art). |
+| 7 | Esprit is a passive. |
+| 8 | New evergreen: Landslide N (when it falls: N to the enemy facing it and both its neighbours; Flying is above it). |
+| 9 | Codex: one list; unowned greyed, locked 🔒. |
+| 10 | Saving a card keeps your scroll position. |
+| 11 | Spells shelved everywhere (`SPELLS_SHELVED`). |
+| 12–13 | Windy rounds (1 in 2) with Tailwind and Headwind; night dims non-Nocturnal units (1 in 4 misses) unless they have Darksight or a Lantern; Dry. Design note and who-gets-what list: weather-and-time-2026-10-13.md. |
+| 15 | Max Energy 50, 1 per 5 minutes. |
+| 16 | Auto (Map 20 + rank S), Sweep (Map 30 + an Auto win at S), Auto-Sweep (Map 50), Idle-Sweep (Map 70). |
+| 17 | Glass Dunes themed: Dry, Swift and Thorns; new Thorny Devil, Fennec Fox, Meerkat Sentry. |
+| 18 | Lone Wolf X/Y and Sociable X/Y (Lone Grey Wolf, Meerkat Sentry). |
+| 19 | Coffee N (Buzzed Chipmunk). Your workbook was byte-for-byte the one I exported, so it had no Codex changes in it: send the Codex version and I'll pick up the new skills. |
+| 20 | Every NightCafe picture re-pixelated on a 64-pixel grid (chunkier); Mirror Moth, Elder Willow, Conch Herald, Tidewall Fort redrawn; art for the 9 new cards. Daily credits: a check-in is set for 08:20 your time. |
+
+New calls for you:
+
+| ID | What | (a) Pushback | (b) Recommendation |
+|---|---|---|---|
+| **D65** | Heat and Cold side effects on normal creatures (Scorch: Burn 1, 1 in 3; Chill: +1 Wait, 1 in 3) | Adds two more statuses to read | Yes, after a playtest of the wind and night changes |
+| **D66** | Apply the Nocturnal / Diurnal / Tailwind / Headwind / Swimmer list (weather note) | Every one is a stat change on an existing card | Apply Tailwind and Headwind first (they only show up on Windy rounds) |
+| **D67** | Night dimness is 1 miss in 4 for everyone without Nocturnal or Darksight | Day/night maps get a little slower | Keep; it is what makes Nocturnal and Darksight worth having |
+| **D68** | The two Heroics (Rivergate Tribune 7/28 Armor 2 Rally 1; Sunspire Sky-Sovereign 6/16 Flying Swift Esprit 1/1) are my first designs | Not simulated against the Epics | Look them over in the Codex |
+| **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |
 
 ## Done at 23:55 (your 23:12 list, all ten)
 

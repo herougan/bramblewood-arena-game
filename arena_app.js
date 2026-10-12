@@ -15346,6 +15346,7 @@ function renderConquestSubTab(body){
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
+      ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span><span class="rank-hex rank-${conquestDeckNeed(selectedNode)}" aria-hidden="true"><i></i><b>${conquestDeckNeed(selectedNode)}</b></span></div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
@@ -26273,7 +26274,7 @@ function logText(ev){
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
     case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
-    case 'blindMiss': return {cls:'', text:`${nm(ev.attDefId)} swings blindly and misses! 👁`};
+    case 'blindMiss': return {cls:'', text: ev.night ? `${nm(ev.attDefId)} can't see in the dark and misses! 🌙` : `${nm(ev.attDefId)} swings blindly and misses! 👁`};
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
     case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
@@ -27851,7 +27852,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='blindMiss'){
     const el = boardCardEl(ev.attUid);
     animateAttacker(ev.attUid, ev.side==='A');
-    setTimeout(()=>{ SoundKit.blindTone(); if(el) floatText(el, '👁 Miss!', 'debuff'); }, animMs().windup);
+    setTimeout(()=>{ SoundKit.blindTone(); if(el) floatText(el, ev.night ? '🌙 Miss!' : '👁 Miss!', 'debuff'); }, animMs().windup);
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a
   // bolder, emoji-led, distinctly-styled float ("🫧 5!") so a poison TICK (actual damage,
@@ -27967,6 +27968,9 @@ function renderVfxForEvent(ev){
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
   if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🌊 +1 Wait', 'debuff'); }catch(e){} }
   if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
+  // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
+  if(ev.type==='wind'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf){ let p = bf.querySelector('.wind-pill'); if(!p){ p = document.createElement('div'); p.className = 'wind-pill'; p.setAttribute('role', 'status'); bf.appendChild(p); }
+      p.textContent = ev.windy ? '🌬️ Windy: Tailwind units get an extra turn, Headwind +1 Armor' : '🍂 Calm'; p.classList.toggle('is-windy', !!ev.windy); bf.classList.toggle('is-windy', !!ev.windy); } }catch(e){} }
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
     try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }

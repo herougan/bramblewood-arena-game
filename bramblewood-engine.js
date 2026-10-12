@@ -4036,7 +4036,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
             }
       };
-      const blindNow = (a.att.blind>0 && rnd() < 0.5) || (!(a.att.blind>0) && nightDim(a.att, otherId(a.enemyId)) && rnd() < 0.25);
+      const nightMiss = !(a.att.blind>0) && nightDim(a.att, otherId(a.enemyId)) && rnd() < 0.25;
+      const blindNow = (a.att.blind>0 && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
         // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
@@ -4048,7 +4049,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         });
       } else
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
-        if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind});
+        if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, night: nightMiss || undefined});
       } else
       // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
       // successful evade means the primary attack whiffs entirely (no damage, no Thorns/

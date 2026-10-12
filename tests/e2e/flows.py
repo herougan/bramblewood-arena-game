@@ -229,6 +229,8 @@ async def main():
     # 4. Dungeon (2026-10-11): a fallen castle brings the next one, the enemy field refills, the chip counts castles
     for bm in ('open', 'gravity'):
         pg, errs = await fresh(b)
+        # 2026-10-13: first-time coach tips (Wait, Lumber) can open mid-run and wait for a click; this check is about the dungeon.
+        await pg.evaluate("COACH_MODES.clear(); 1")
         await pg.evaluate("(()=>{const m=CONQUEST_MAPS[0]; const n=m.nodes.find(n=>n.kind==='skirmish'); n.kind='dungeon'; n.battleMode='%s'; n.dungeon={rounds:3, roundLimit:3}; conquestSelectedMap=m.id; playSubTab='conquest'; switchTab('play'); startConquestMatch(m.id,n.key,{skipEnergyCost:true,noOpener:true}); matchState.players[1].hq.hp = matchState.players[1].hq.maxHp = 999; return 1;})()" % bm)
         await pg.wait_for_timeout(500)
         seen = set(); spawned = 0

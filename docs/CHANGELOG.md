@@ -2,6 +2,21 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (overnight)
+- **Otters and Hummingbirds left the packs.** You earn them through progress now: the first clear of every elite and boss gives one card from your faction's track and one from the base track. Each track hands out every Common first, then every Uncommon, then every Rare; after that it draws duplicates (a Rare can be held 4 times, so 3 more stay in the pool). Very Rare and Super Rare join from Map 10. Map 20's boss gives your faction's Epic and Heroic. Two new Heroic cards: **Rivergate Tribune** (otters) and **Sunspire Sky-Sovereign** (hummingbirds).
+- **Journeys (Maps 15–20).** Five subfaction quests take you across six maps, one fight per step, and every step pays two cards: the Toll Road (Road-folk), the Call of the Wild (Wild Beasts) and the Long Harvest (Woodland Folk) finish by Map 20; the Swarm Below and the Drowned Bell go on past it. They're on the Notices board, and the next fight shows its step. Subfaction bundles no longer drop.
+- **Auto, Sweep, Auto-Sweep, Idle-Sweep.** Auto needs rank S on the fight and Map 20 passed. Sweep (Map 30 passed, after an Auto win at S) plays a fight for you N times on your Energy, paying the clear-again reward for each win. Auto-Sweep (Map 50) doesn't need the Auto win. Idle-Sweep (Map 70) spends the Energy that would spill past your maximum on a fight you pick.
+- **Energy:** 50 max, 1 every 5 minutes.
+- **New skills:** Lone Wolf X/Y (stronger with empty slots near it), Sociable X/Y (stronger with allies near it), Coffee N (Wait −N on arrival, then a nap), Dry (half Heat damage, immune to Heatwave), Darksight, Tailwind and Headwind (Windy rounds), and the **Landslide N** evergreen (when it falls: N to the enemy facing it and both its neighbours).
+- **Weather:** every round can be Windy (1 in 2) when a Tailwind or Headwind unit is out, and night now dims everyone without Nocturnal or Darksight (1 attack in 4 misses; a Lantern keeps your side lit). Design note: weather-and-time-2026-10-13.
+- **New cards:** Thorny Devil, Fennec Fox and Meerkat Sentry (the Glass Dunes is now Swift, Thorns and Dry throughout), Lone Grey Wolf, Buzzed Chipmunk and Scree Goat. The Deep Cave Troll is now the **Cave Bear**.
+- **Arrow** shoots the nearest enemy (random when tied). Arrow, Fire Arrow and Boomerang say they never miss Flying units.
+- **Esprit** is a passive. Spells are shelved (hidden everywhere) for now.
+- **Codex:** locked, unlocked and owned cards sit in one list; cards you don't own are greyed, locked ones carry a 🔒. The phyla filter shows each phylum's emblem.
+- **Card editor:** saving no longer jumps the page back to the top.
+- **Art:** every NightCafe picture got a chunkier pixel pass (a 64-pixel grid on a 128 card). The Mirror Moth, Elder Willow, Conch Herald and Tidewall Fort (no more "HOME BASE" lettering) were redrawn.
+- **Strength analysis** measures every card at Level 1; Base, starter and quest cards start at Level 0, so their first level (+10%) is noted.
+
 ## 2026-10-12 (23:55)
 - **Every card starts hidden,** Base ones included. A card shows up in the Codex and deck lists once you've seen it or own it. Untick Hidden in the editor to keep a card always visible. Explicitly secret cards still get the "✨ Discovered!" pop; the rest just appear.
 - **Targets are a choice now.** Heal Self is just **Heal**, and every action that used to pick its own target (Heal, Cleanse, Damage, Buff, Debuff, Poison, Bleed, Expose, Stun, Increase Wait, Exile) takes Self / Ally / Opponent / Any, then a distance (Adjacent, Any distance, Furthest, All), then how many targets (up to 8, never the same unit twice). Missile, Swap and Mind Control stay fixed presets.
