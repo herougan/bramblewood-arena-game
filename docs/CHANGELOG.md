@@ -31,6 +31,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **NPC speeches:** Admin → 💬 NPC speeches lists every conversation. You can change any line's words, who says it, or the reply buttons, and play it to hear it. A cloud admin's save publishes for everyone.
 - **Deck builder:** the 0/2 copy counters sit 2px further right.
 - **Fixed:** "Campaign Cleared" (and the maps-cleared count) were awarded for maps that have no fights yet.
+- **Art:** 25 more portraits:
+  - the redrawn **Duck Paddler** (a mallard paddling across a pond);
+  - volcano cards: Pyroclast Wyrm, Magma Titan, Basalt Boar, Magma Salamander, Obsidian Scorpion, Cinder Hornet, Ember Jackal, Phoenix Fledgling, Sulfur Vent Crab;
+  - Tide Spirit, Trapdoor Spider, Mountain Goat Climber, Beaver Lumberjack, Beaver Builder, Echo Keeper, Mallard Marauder;
+  - War-Drum Mandrill, Golden Eagle Diver, Ravenous Wolverine, Gangrenous Leech, Chipmunk Stockpiler, Chipmunk Hoarder, Quill Volley, Bat Swarmling.
+
+  Marsh Wisp came out as a bear, so it's being redrawn.
 
 ## 2026-10-12 (10:00)
 - **Boomerang (your rules):**
