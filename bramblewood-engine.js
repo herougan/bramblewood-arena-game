@@ -538,7 +538,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // type, an attacker's type or an attacker's skill); a match takes no damage at all.
     const immuneList = (def && def.effects && def.effects.immune) || [];
     if(immuneList.length && immuneList.some(r=> matchesResistKey(r, dmgType, attDef))) return 0;
-    const resistList = [...((def && def.resist) || []), ...((def && def.effects && def.effects.resist) || [])];
+    const resistList = [...((def && def.resist) || []), ...((def && def.effects && def.effects.resist) || []), ...((def && def.effects && def.effects.dry) ? ['heat'] : [])]; // Dry (2026-10-13): desert-hardy, Heat Resist built in
     if(!resistList.length) return 1;
     const hit = resistList.some(r=> matchesResistKey(r, dmgType, attDef));
     return hit ? 0.5 : 1;
@@ -686,6 +686,33 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
   function tideArmor(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ const d = card && CARD_DEFS[card.defId]; return !!(d && d.effects && d.effects.tide); }
+  // Wind (2026-10-13, user: "Tailwind is the same - on 'Windy' the following effects activate. Windy works like this - every turn
+  // has a 1/2 chance to be Windy or not - by default"): every round is Windy or calm, 1 in 2, unless the fight says otherwise
+  // (rules.wind: 'always' | 'never'). The roll uses its own little generator, seeded the first time anyone on the board cares,
+  // so fights with no wind units play out exactly as before.
+  let windSeed = null, windRound = -1, windNow = false;
+  function windCares(players){ return [1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; return c.hp > 0 && (e.tailwind || e.headwind); })); }
+  function rollWind(players, sideOf, events){
+    if(rules.wind === 'never'){ windNow = false; return; }
+    if(rules.wind === 'always'){ windNow = true; }
+    else { if(!windCares(players)){ windNow = false; return; }
+      if(windSeed === null) windSeed = Math.floor(rnd() * 4294967296) >>> 0;
+      let h = (windSeed ^ Math.imul(turnNo + 1, 2654435761)) >>> 0; h ^= h >>> 15; h = Math.imul(h, 2246822507) >>> 0; h ^= h >>> 13;
+      windNow = (h & 1) === 1; }
+    if(windRound !== turnNo){ windRound = turnNo; if(recordEvents && events) events.push({type:'wind', windy: windNow, round: turnNo}); }
+  }
+  function isWindy(){ return windNow; }
+  function windArmor(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return (windNow && e && e.headwind) ? 1 : 0; }
+  // Night dims the eyes (2026-10-13, user: "Night causes Blindness on non Nocturnal or Darksight creatures"): at night a unit that
+  // isn't Nocturnal and has no Darksight misses 1 attack in 4 (Blind is 1 in 2). A Lantern on its side keeps its side lit.
+  function nightDim(card, ownerId){
+    if(!card || !phaseActive() || getPhase() !== 'night') return false;
+    const e = (CARD_DEFS[card.defId]||{}).effects || {};
+    if(e.nocturnal || e.nocturnalHp || e.darksight) return false;
+    const pl = curPlayers && curPlayers[ownerId];
+    if(pl && allBoardCards(pl).some(c=> c.hp > 0 && ((CARD_DEFS[c.defId]||{}).effects||{}).lantern)) return false;
+    return true;
+  }
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function castleRoundActions(players, pid, round, sideOf, stats, events){
@@ -708,6 +735,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function roundStart(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
+    rollWind(players, sideOf, events);
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
     if(phaseMode === 'realtime' && rules.clock == null){ const was = phase; phase = realtimePhase(); if(phase !== was && recordEvents && events) events.push({type:'phase', phase, round, realtime:true}); }
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
@@ -767,7 +795,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const fb = (Number(((CARD_DEFS[c.defId]||{}).effects||{}).frostbite)||0) + (pid === 2 ? (Number(rules.frostbite)||0) : 0);
           if(fb > 0){ c.atk += fb; c.baseAtk += fb; c.hp += fb; c.maxHp += fb; if(recordEvents && events) events.push({type:'statusFx', kind:'frostbite', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:fb}); } } });
     } else if(f === 'heatwave'){
-      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const d = CARD_DEFS[c.defId]; if((d.resist||[]).includes('heat')) return; damageCardFlat(c, 1, 'heat');
+      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const d = CARD_DEFS[c.defId]; if((d.resist||[]).includes('heat') || (d.effects && d.effects.dry)) return; damageCardFlat(c, 1, 'heat');
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:1}); }));
       removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'rain'){
@@ -1108,7 +1136,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.pitchfork) ? Infinity : /* Pitchfork = Trident + Pierce (2026-10-12) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + windArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
     // Rend (VFX/SFX coverage audit, 2026-09-21): rendBypass is a pure display flag for the front
@@ -1490,6 +1518,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
         const elem = (d.species||[]).includes('Elemental') || (d.archetypes||[]).includes('Elemental'); const want = elem ? nf : 0;
         c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } }));
+      // Lone Wolf X/Y and Sociable X/Y (2026-10-13, user: "Sociable likes being crowded (up to 4, 2 on each side) While Lone Wolf
+      // likes being alone, separated by 2 squares on each side ... +X/+Y per slot freed up or not. If all 4 freed up, ANOTHER
+      // +X/+Y"): counts the 4 slots within 2 of it. Lone Wolf: +X/+Y per empty one (+1 more step when all 4 are); Sociable: per
+      // filled one (+1 more when all 4 are). Off the edge of the board counts as empty. Health moves as a difference, like Nature's Force.
+      { const live = ['left','center','right'].flatMap(side=> pl.row[side]).filter(c=> c && c.hp > 0 && !c.gap);
+        let posOf;
+        if(slotMode){ syncSlots(pl); posOf = c=> c.slot; } else { const order = physicalRowOrder(pl); posOf = c=> order.indexOf(c); }
+        const taken = new Set(live.map(posOf));
+        live.forEach(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {};
+          const pv = v=> Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : (v === true ? [1,1] : [Number(v)||0, Number(v)||0]);
+          let a = 0, h = 0; const p = posOf(c), near = [p-2, p-1, p+1, p+2];
+          if(e.loneWolf){ const [x, y] = pv(e.loneWolf); const n = near.filter(q=> !taken.has(q)).length, steps = n + (n === 4 ? 1 : 0); a += x*steps; h += y*steps; }
+          if(e.sociable){ const [x, y] = pv(e.sociable); const n = near.filter(q=> taken.has(q)).length, steps = n + (n === 4 ? 1 : 0); a += x*steps; h += y*steps; }
+          c.packBonus = a; const had = c.packHp || 0, d = h - had; if(d){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + d); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + d)); c.packHp = h; } }); }
       // Worship (Ecclesia, 2026-10-10): +1 Attack for every 3 Prayer its owner has, recomputed every round.
       const pr = prayerOf(pl);
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const d = CARD_DEFS[c.defId]; c.worshipBonus = (d && d.effects && d.effects.worship) ? Math.floor(pr / 3) : 0; }));
@@ -1507,7 +1549,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // marks add up, and each lifts at the end of the round after the one it landed in.
   function dauntOf(card){ const d = card && card.daunts; if(!d || !d.length) return 0; let t = 0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; }
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) - (card.corrode||0) - dauntOf(card));
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) - (card.corrode||0) - dauntOf(card));
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -2268,6 +2310,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
       fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
     }
+    // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
+    // later) it crashes and naps for a round (Stunned 1).
+    if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
+      const before = boardCard.wait || 0; boardCard.wait = Math.max(0, before - n); boardCard.coffeeCrash = n + 1;
+      if(recordEvents && events) events.push({type:'statusFx', kind:'coffee', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount: before - boardCard.wait}); }
     runCustomTriggers(players, sideOf, playerId, boardCard, def, 'onSpawn', stats, events);
   }
   // Earthquake: AOE version of Gash/Missile's "one-shot on-spawn skill" shape — instead of
@@ -2277,6 +2324,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // effects.flying:true. Reuses fireDamageAction per target rather than inventing a bespoke event
   // type, so each hit gets the same floating damage number / hit VFX / action-log line every
   // other damage source already gets, for free.
+  // Landslide N (2026-10-13, a new evergreen whose targets are set: "earthquake for example, doesnt let you 'switch targets'"):
+  // when it falls, rocks come down on the enemy facing it and the enemy on each side of that one, N damage each. Flying units
+  // are above it.
+  function fireLandslide(players, sideOf, ownerId, card, amount, stats, events){
+    const enemy = players[otherId(ownerId)];
+    let cols = [];
+    if(slotMode){ const s0 = card.slot; cols = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); }
+    else { const opp = opposingCardOf(players, ownerId, card); if(opp){ const order = physicalRowOrder(enemy), i = order.indexOf(opp.card); cols = [order[i-1], opp.card, order[i+1]].filter(c=> c && c.hp > 0); } }
+    if(recordEvents && events) events.push({type:'earthquake', side:sideOf(ownerId), defId:card.defId, uid:card.uid, amount, landslide:true});
+    cols.forEach(c=>{ const d = CARD_DEFS[c.defId]; if(d && d.effects && d.effects.flying) return;
+      fireDamageAction(players, sideOf, ownerId, card.defId, amount, 'physical', {kind:'card', card:c}, stats, events, null, card.uid); });
+  }
   function fireEarthquake(players, sideOf, ownerId, attCard, amount, stats, events){
     const enemy = players[otherId(ownerId)];
     bleedTick(sideOf, ownerId, attCard, stats, events, 'skill');
@@ -2327,7 +2386,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
         shots.forEach(shot=>{
           const opp = opposingCardOf(players, pid, c);
-          const target = (opp && opp.card && opp.card.hp>0) ? {kind:'card', card:opp.card} : pickRandomEnemyTarget(enemy);
+          const near = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c);
+          const target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'};
           if(recordEvents && events) events.push({type:'arrow', fire: shot.fire, side: sideOf(pid), defId: c.defId, uid: c.uid,
             targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.amount});
           fired = true;
@@ -2336,6 +2396,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // Nearest enemy for Arrow (2026-10-13, user: "Arrow should shoot the nearest enemy. If tied, random."): the same
+  // nearest-unit rule Backstab uses. null when the enemy board is empty.
+  function arrowTargetOf(players, ownerId, boardCard){
+    const myCols = combatColumnsOf(players[ownerId]), enemyCols = combatColumnsOf(players[otherId(ownerId)]);
+    let myCol = null; Object.keys(myCols).forEach(k=>{ const e = myCols[k]; if(e.kind==='card' && e.card.uid===boardCard.uid) myCol = Number(k); });
+    if(myCol === null) return null;
+    const r = nearestEnemyCard(players, ownerId, boardCard, myCols, enemyCols, myCol);
+    return r && r.entry ? r.entry.card : null;
   }
   function fireMissile(players, sideOf, ownerId, attCard, eff, stats, events){
     const enemy = players[otherId(ownerId)];
@@ -3150,6 +3219,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Blind/Shock/Corrode (2026-09-17 batch) — same "_justSet" survive-one-round-before-
       // decaying convention as Frozen/Asleep/Paralyzed above.
       if(c.blind>0){ if(c._blindJustSet) c._blindJustSet=false; else c.blind -= 1; }
+      if(c.coffeeCrash > 0){ c.coffeeCrash -= 1; if(c.coffeeCrash === 0){ c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); } }
       if(c.tipsy>0){ if(c._tipsyJustSet) c._tipsyJustSet=false; else c.tipsy -= 1; }
       if(c.confused>0){ if(c._confusedJustSet) c._confusedJustSet=false; else c.confused -= 1; }
       selfInflict(c); // Drunk / Purblind / Scatterbrained keep their own status on for good
@@ -3337,6 +3407,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         pl.graveyard.push({defId:card.defId});
       }
       if(card.equipment) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11)
+      if(cdef.effects && cdef.effects.landslide) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events);
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
@@ -3565,10 +3636,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
     // gets one Fast Forward turn before the round's main order.
     if(!pass) firstBloodTaken = false; // a new round: first blood is up for grabs again
-    if(!pass){ const flow = tideRising(), wind = false; // Tailwind is a spell (castSpell), not a field
+    if(!pass){ const flow = tideRising(), wind = isWindy(); // Windy rounds: Tailwind units get the extra turn (2026-10-13)
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
-          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying) ? 'tailwind' : null; if(!why) continue;
+          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.tailwind) ? 'tailwind' : null; if(!why) continue;
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -3965,7 +4036,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
             }
       };
-      const blindNow = a.att.blind>0 && rnd() < 0.5;
+      const blindNow = (a.att.blind>0 && rnd() < 0.5) || (!(a.att.blind>0) && nightDim(a.att, otherId(a.enemyId)) && rnd() < 0.25);
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
         // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
@@ -4341,7 +4412,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { isWindy, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

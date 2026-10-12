@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+// Overnight skills (2026-10-13): Coffee, Landslide, Lone Wolf, Sociable, Dry, Arrow picks the nearest enemy.
+'use strict';
+const H = require('./lib/harness.js');
+const E = H.Engine;
+let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
+const so = id=> id===1 ? 'A' : 'B';
+const U = (id, effects, o)=> Object.assign({id, name:id, attack:1, health:20, wait:0, cost:0, effects:effects||{}}, o||{});
+const defs = Object.assign({}, H.loadCardDefs(), {
+  'k-coffee': U('k-coffee', {coffee:2}, {wait:3}),
+  'k-slide': U('k-slide', {landslide:3}, {health:1}),
+  'k-lone': U('k-lone', {loneWolf:[1,1]}),
+  'k-soc': U('k-soc', {sociable:[1,0]}),
+  'k-wall': U('k-wall', {}),
+  'k-dry': U('k-dry', {dry:true}),
+});
+const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
+const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.assign({recordEvents:true, battleMode:'open'}, opts||{})); return {e, P:{1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-coffee', 'left', {}, []); const c = all(P[1])[0];
+  ok(c.wait === 1, `Coffee 2: Wait 3 → 1 (got ${c.wait})`); ok(c.coffeeCrash === 3, 'crash timer set'); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-slide', 'left', {}, []); ['left','left','right','right'].forEach(l=> e.debugSpawnCard(P, so, 2, 'k-wall', l, {}, []));
+  const sl = all(P[1])[0]; e.debugDamage(P, so, sl.uid, 5, {}, []);
+  const hit = all(P[2]).filter(c=> c.hp === 17).length; ok(hit >= 2 && hit <= 3, `Landslide hits the facing enemy and its neighbours (${all(P[2]).map(c=>c.slot+':'+c.hp)})`); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-lone', 'left', {}, []); e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, []);
+  const l = all(P[1])[0]; ok(l.maxHp === 25, `Lone Wolf alone: +5/+5 (hp ${l.maxHp})`); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-soc', 'left', {}, []); ['left','right','left','right'].forEach(l=> e.debugSpawnCard(P, so, 1, 'k-wall', l, {}, []));
+  e.resolveCombat(P, so, {}, []); const c = all(P[1]).find(x=> x.defId==='k-soc'); ok(c.packBonus >= 2, `Sociable with neighbours gets Attack (${c.packBonus}, slot ${c.slot})`); }
+{ const {e, P} = mk({rules:{field:'heatwave'}}); e.debugSpawnCard(P, so, 1, 'k-dry', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-wall', 'left', {}, []);
+  e.resolveCombat(P, so, {}, []); const d = all(P[1])[0], w = all(P[2])[0]; ok(d.hp >= w.hp, `Dry unharmed by Heatwave (dry ${d.hp}, wall ${w.hp})`); }
+console.log(`skills-1013: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

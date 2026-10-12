@@ -7887,6 +7887,11 @@
   ::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg, #c99e62, #8d6438); background-clip:padding-box; border:2px solid transparent;}
   ::-webkit-scrollbar-corner{background:transparent;}
 
+  /* Codex (2026-10-13): one list. No copies = greyed; locked = a 🔒 on the corner. */
+  .cx-tile-wrap{position:relative;}
+  .cx-tile-wrap.cx-unowned > .card-tile{filter:grayscale(.85) brightness(.72); opacity:.85;}
+  .cx-tile-wrap.cx-unowned > .card-tile:hover{filter:grayscale(.4) brightness(.9);}
+  .cx-tile-wrap .cx-lock{position:absolute; top:6px; left:6px; z-index:6; font-size:15px; line-height:1; padding:3px 4px; border-radius:8px; background:rgba(20,14,8,.8); box-shadow:0 1px 3px rgba(0,0,0,.5); pointer-events:none;}
   /* Normal vs extended art (2026-10-10, user: "All cards by default are normal art, meaning, there's a thicker border,
      especially at the bottom"): normal art sits in a window inside a rarity-tinted walnut frame, with a solid plate
      at the bottom for the stats; extended art (artExtended on the card) keeps running to the edges. */

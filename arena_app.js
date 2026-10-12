@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', tailwind:'🪁', headwind:'🌬️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -256,7 +256,7 @@ const PASSIVE_DEFS = [
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
-  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
+  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
@@ -296,6 +296,19 @@ const PASSIVE_DEFS = [
   {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
   {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
   // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
+  // 2026-10-13 (overnight list): Lone Wolf, Sociable, Coffee, Dry, Darksight, Tailwind, Headwind and the Landslide evergreen.
+  {key:'loneWolf', category:'passive', label:'Lone Wolf', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `Likes room: +${a}/+${h} for each empty slot within 2 of it (4 in all), and +${a}/+${h} more when all 4 are empty.`; },
+    get:e=> e.loneWolf ? (Array.isArray(e.loneWolf) ? e.loneWolf : [e.loneWolf, 0]) : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.loneWolf = [a, h]; }},
+  {key:'sociable', category:'passive', label:'Sociable', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `Likes a crowd: +${a}/+${h} for each ally within 2 slots of it (up to 4), and +${a}/+${h} more with all 4 filled.`; },
+    get:e=> e.sociable ? (Array.isArray(e.sociable) ? e.sociable : [e.sociable, 0]) : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.sociable = [a, h]; }},
+  {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
+  {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Heatwave can't touch it.`},
+  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark: never night-blind (other units miss 1 attack in 4 at night unless they're Nocturnal).`},
+  {key:'tailwind', category:'passive', label:'Tailwind', kind:'boolean', desc:()=>`On Windy rounds: an extra turn before combat (Quick Attack). Every round is Windy 1 time in 2.`},
+  {key:'headwind', category:'passive', label:'Headwind', kind:'boolean', desc:()=>`On Windy rounds: braces against the wind, +1 Armor.`},
+  {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
@@ -337,7 +350,7 @@ const PASSIVE_DEFS = [
   // as every other retired mechanic in this file (gainGold, the old Arrow N missile, etc).
   // Esprit (2026-10-08, user: "just gain +X/+Y when an ally enters. Not just same archetype"): any ally you play
   // counts now, and it can grow Health too (effects.espritHp). Two numbers in the editor: Attack, Health.
-  {key:'esprit', category:'evergreen', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} whenever another ally enters play.`; },
+  {key:'esprit', category:'passive', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} whenever another ally enters play.`; },
     get:e=> (e.esprit || e.espritHp) ? [e.esprit||0, e.espritHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0) e.esprit = a; if(h>0) e.espritHp = h; }},
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
@@ -433,8 +446,8 @@ const PASSIVE_DEFS = [
   // bonus-damage check. Retroactively tagged the two existing cards whose names already say
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
-  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the enemy facing it (a random enemy if none, the castle if the board is empty).`},
-  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the enemy facing it (Heat resistance and weakness apply).`},
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the nearest enemy (a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
+  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the nearest enemy (Heat resistance and weakness apply). Never misses Flying units.`},
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
 ];
 const ACTIVE_PRESETS = [
@@ -1083,9 +1096,11 @@ const FIELD_TEXT = {
 // Species and phyla (2026-10-10, user: "There can't be units without a animal type ... Can there be hybrids? ... Beasts -
 // this phylum contains canids, bovines, felids, mustelids, etc."). Every card carries `species` (one, or two for a
 // hybrid); the phylum groups them. See docs/card-types-2026-10-10.md for the audit.
+// Each phylum's own emblem (2026-10-13, user: the phyla filter "should show the phyla's representative icon").
+const PHYLUM_ICON = {Beast:'🐾', Bird:'🪶', Arthropod:'🐜', Scaled:'🦎', Aquatic:'🐟', Crawler:'🐌', Elemental:'🔥'};
 const SPECIES_PHYLUM = {
   Canid:'Beast', Felid:'Beast', Bovine:'Beast', Mustelid:'Beast', Ursid:'Beast', Rodent:'Beast', Lagomorph:'Beast', Cervid:'Beast', Suid:'Beast',
-  Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
+  Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Herpestid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
   Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
   Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
 function speciesLine(def){
@@ -1674,9 +1689,11 @@ function getDraftableIds(includeHidden){
 const DISCOVERED_KEY = 'bramblewood_arena_discovered';
 let myDiscoveredCardIds = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){ return new Set(); } })();
 function saveDiscovered(){ try{ localStorage.setItem(DISCOVERED_KEY, JSON.stringify(Array.from(myDiscoveredCardIds))); }catch(e){} }
+const SPELLS_SHELVED = true; // flip to false when spells come back
 function isCardHiddenForPlayer(d){
   // 2026-10-12 (23:12, user: "All cards should be hidden (even base ones) by default ... do this site-wide"): every card is hidden
   // until you first see or own it, unless the editor unticks Hidden (hidden:false).
+  if(d && d.cardType === 'spell' && SPELLS_SHELVED) return true; // 2026-10-13 (user: "Hide all my spells for now")
   if(!d || d.hidden === false || d.isCastle || d.cardType === 'materia') return false;
   if((myCardCopies && (myCardCopies[d.id]||[]).length)) return false;
   if(myDiscoveredCardIds.has(d.id)) return false;
@@ -3989,7 +4006,7 @@ function renderCodex(){
       <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
-      ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>🧬 ${ph}</option>`).join('')}</select>` : ''}
+      ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
@@ -4212,7 +4229,7 @@ function renderCodexGrid(){
   // materia aren't cards but items in your inventory! Don't put them in the codex"): a player's Codex shows only cards
   // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
   // Materia live in the Inventory, for everyone.
-  const codexVisible = id=> defs[id].cardType !== 'materia' && (adminModeEnabled || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id])));
+  const codexVisible = id=> defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && (adminModeEnabled || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id])));
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
   const totalVisible = Object.keys(defs).filter(id=> !defs[id].test && !isHofVariant(defs[id]) && codexVisible(id)).length;
   const unlockedCount = ids.filter(id=>!defs[id].locked).length;
@@ -4245,18 +4262,21 @@ function renderCodexGrid(){
     if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
     if(adminModeEnabled && d.hidden !== false && !isCardHiddenForPlayer(d)) tags.push('<span class="cx-tag">✨ Discovered</span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
-    return `<div class="cx-tile-wrap">${cardTileHTML(d, {editable:true})}${tags.join('')}${src}</div>`;
+    // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)
+    // will be greyed out. Those locked will have a locked symbol on them"): one list; no copies = greyed; locked = 🔒.
+    const owned = (myCardCopies[id]||[]).length > 0;
+    return `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
   };
   let html = '';
   ordered.forEach(({sec, ids:gIds})=>{
     const un = gIds.filter(id=>!defs[id].locked).sort(cmp), lo = gIds.filter(id=>defs[id].locked).sort(cmp);
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
     if(!sec.bare) html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}</span><span class="cx-section-right">${gIds.length ? `<span class="cx-section-count">${un.length}/${gIds.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}</span></div>`;
-    html += un.map(tileFor).join('');
+    html += gIds.slice().sort(cmp).map(tileFor).join(''); // locked and unlocked together (2026-10-13)
     // 2026-09-22: corrected — this used to say "click one to unlock it" with no click handler
     // to back it up (flagged in batch #18's audit). Real card unlocking now exists (a chance
     // per Shop pack), so this points there instead, with an actual working link.
-    if(lo.length) html += `<div class="lock-divider">🔒 Locked — unlock new cards from the <a href="#" class="codexShopLink">Shop</a></div>` + lo.map(tileFor).join('');
+
   });
   const hints = {
     skirmish: 'Cards here are granted the first time a player clears that node. Edit a node with ✏️ Edit rewards, or set a card’s source in its detail view.',
@@ -4769,6 +4789,10 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
+  if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
+  if(e.coffee) out.push(`<span title="Coffee">☕${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">🏜️</span>`);
+  if(e.darksight) out.push(`<span title="Darksight">👁️</span>`); if(e.tailwind) out.push(`<span title="Tailwind">🪁</span>`); if(e.headwind) out.push(`<span title="Headwind">🌬️</span>`);
+  if(e.landslide) out.push(`<span title="Landslide">🪨${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`📯${n1(e.inspiring)}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${n1(e.friction)}</span>`);
   if(e.worthy) out.push(`🪵${n1(e.worthy)}`);
@@ -6876,10 +6900,16 @@ async function onSaveEditor(){
     saveUnlockedCardIds();
   }
   delete c.__fromHistory;
+  // 2026-10-13 (user: "When I edit cards, sometimes i lose my y-scroll position"): the lists redraw after a save; keep the
+  // page where it was.
+  const keepY = window.scrollY, keepEls = [...document.querySelectorAll('.admin-card-list, #codexGrid, .view:not([hidden])')].map(el=> [el, el.scrollTop]);
+  const restoreY = ()=>{ window.scrollTo(0, keepY); keepEls.forEach(([el, t])=>{ if(el.isConnected) el.scrollTop = t; }); };
+  setTimeout(restoreY, 0); setTimeout(restoreY, 120); setTimeout(restoreY, 400);
   const published = await saveCard(c);
   if(cardEditorHooks && cardEditorHooks.saved) try{ cardEditorHooks.saved(c.id); showToast(`➕ ${c.name} added to the skirmish deck.`, 'ok'); }catch(e){}
   if(!published) showToast(`💾 ${c.name} saved in this browser` + (cloudCardAdmin ? '' : ' — sign in with an admin account to publish it for everyone') + '.', 'ok');
   closeCardEditor();
+  restoreY(); setTimeout(restoreY, 50); setTimeout(restoreY, 300);
 }
 /* ============================================================
    PART 6 — PLAY VIEW: a full match vs. a local AI opponent on
@@ -7972,7 +8002,7 @@ function grantCurrency(kind, amount){
 // time can be measured on every read — a plain running setInterval would reset to 0 elapsed every
 // reload and never credit the time the app was closed.
 const ENERGY_KEY = 'bramblewood_arena_energy_v1';
-const ENERGY_MAX_BASE = 20;
+const ENERGY_MAX_BASE = 50; // 2026-10-13 (user: "Give 50 Max Energy instead, each regenerating every 5 minutes")
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
 // 2026-10-12 (22:04, user: "Improving your energy limits is not automatic. Its done in Wildpaths - not part of the tree, but
@@ -13505,15 +13535,16 @@ const CONQUEST_MAPS = [
       { key:"6-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", deck:{"glacial-ape-king":2,"permafrost-mammoth":2,"beaver-builder":3,"porcupine-roller":1,"ravenous-wolverine":2,"chipmunk-forager":1,"ur-elk":1}, hqHp:30, flavor:"Old enough to remember when the ice was thicker.", rules:{frostResist:['Tundra','Frost','Taiga'], frostbite:1, frostWait:3, frostCount:3}, requires:["6-7"] },
     ]},
   // The Glass Dunes (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"md", unlockAfter:"m6", name:"The Glass Dunes", icon:"🏜️", blurb:"Heat so fierce the sand turns to glass — scorpions, jackals and things that wait under the dunes.", sequential:true,
+  { id:"md", unlockAfter:"m6", name:"The Glass Dunes", icon:"🏜️", // 2026-10-13: Desert theme: Swift, Thorns and Dry throughout
+    blurb:"Heat so fierce the sand turns to glass — scorpions, jackals and things that wait under the dunes.", sequential:true,
     nodes: [
-      { key:"d-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"dust-hyena":3,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2}, hqHp:229, flavor:"They laugh at you from the next dune over.", requires:[] },
+      { key:"d-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"thorny-devil":2,"dust-hyena":1,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2}, hqHp:229, flavor:"They laugh at you from the next dune over.", requires:[] },
       { key:"d-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"dust-hyena":3,"komodo-warlord":4,"trapdoor-spider":2}, hqHp:240, flavor:"Every stone you turn has a tail under it.", requires:["d-1"] },
       { key:"d-3", kind:"skirmish", name:"Widow's Web", icon:"🕷️", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":3,"obsidian-scorpion":2}, hqHp:124, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["d-1"] },
       { key:"d-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"dust-hyena":2,"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":2}, hqHp:230, flavor:"The storm has wings.", requires:["d-2","d-3"] },
-      { key:"d-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"plains-zebra":2}, hqHp:181, flavor:"Black glass scorpions in a black glass nest.", requires:["d-4"] },
-      { key:"d-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"dust-hyena":2,"caustic-scorpion":2,"obsidian-scorpion":1,"plains-zebra":2,"howler-monkey":2}, hqHp:240, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["d-4"] },
-      { key:"d-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"obsidian-scorpion":2,"komodo-warlord":3,"caustic-scorpion":2,"dust-hyena":4,"howler-monkey":2,"plains-zebra":2,"snapper-hatchling":1}, hqHp:177, flavor:"The dunes are her web.", requires:["d-5","d-6"] },
+      { key:"d-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"fennec-fox":2}, hqHp:181, flavor:"Black glass scorpions in a black glass nest.", requires:["d-4"] },
+      { key:"d-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"dust-hyena":2,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2}, hqHp:240, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["d-4"] },
+      { key:"d-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"obsidian-scorpion":2,"komodo-warlord":3,"caustic-scorpion":2,"dust-hyena":4,"fennec-fox":2,"meerkat-sentry":2,"sand-widow":1}, hqHp:177, flavor:"The dunes are her web.", requires:["d-5","d-6"] },
     ]},
   // 2026-10-11 (16:20, user: old maps first, new maps after): the Ashen Peak is a main map again, Map 5.
   // Maps 3–4 auto-tuned 2026-10-04 (D18, tools/autotune_map.js) against a deck built from the earlier maps' rewards.
@@ -26131,6 +26162,7 @@ function logText(ev){
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.'};
+    case 'wind': return {cls:'', text: ev.windy ? '🌬️ The wind picks up: a Windy round.' : '🍂 The air is calm this round.'};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
@@ -26230,7 +26262,9 @@ function logText(ev){
         shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
         shellDown: `came out of its shell 🐚`,
         swimmer: `rode the Flow for a quick attack 🏊`,
-        tailwind: `caught the Tailwind for an extra turn 🍃`,
+        tailwind: `caught the Tailwind for an extra turn 🪁`,
+        coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
+        coffeeCrash: `crashed after its coffee and dozes off 😴`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
         frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
         firstBlood: `drew first blood this round (+${ev.amount}) 🩸`,
@@ -27556,7 +27590,9 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
-    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🍃 Tailwind!', 'quick'); }
+    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
+    else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
@@ -30640,7 +30676,7 @@ function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell')) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
 // so every slot rolled it. A pack now needs at least as many different cards as it holds (Shop says "coming soon"
