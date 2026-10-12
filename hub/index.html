@@ -110,7 +110,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-12, 3 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
+<p><em>Updated 2026-10-12, 8 am. The short list of what matters now. Everything else is in the other tabs.</em></p>
 <h2>1. Your calls</h2>
 <p>Every open item, with <strong>(a) my pushback</strong> (what worries me about it) and <strong>(b) my recommendation</strong>. Reply with the ID and a word ("D36 yes", "D24 keep").</p>
 <table>
@@ -234,7 +234,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <tr>
 <td><strong>D44</strong></td>
 <td>Tonight's readings: Outskirts = <strong>Map 0</strong>, new <strong>Map 1 Clovermead</strong> (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits <strong>any</strong> unit of yours in its lane without Boomerang. Raids are a full match: <strong>three rows a side</strong>, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only)</td>
-<td>The raid rows are a first version: the boss's column attacks from the trench aren't in the full game yet, and the allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90</td>
+<td>The raid rows are a first version. The boss's column attacks are back (the column glows red a round ahead; the hit lands on your front and reserve cards there, or your castle if the column is empty). The allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90</td>
 <td>Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours</td>
 </tr>
 <tr>
@@ -302,7 +302,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <ul>
 <li><strong>The claude.ai project</strong> is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).</li>
 <li><strong>Supabase:</strong> turn on leaked-password protection (Auth → Passwords, one click).</li>
-<li><strong>Art (PixelLab in your Chrome):</strong> 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 12 are in the game; the run paused when your computer went to sleep. Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.</li>
+<li><strong>Art (PixelLab in your Chrome):</strong> 120 card portraits are queued in the PixelLab tab (Base cards first, then Maps 0–6). 39 are in the game and the run is at 40 of 120 (about 4 minutes each, so roughly 5–6 more hours). Leave the Mac awake with Chrome and the Claude app open and it carries on; tell me and I'll pull and wire the rest. About 160 more cards have no art after that.</li>
 </ul></article></section>
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
 <section class="panel" id="p-playground" role="tabpanel" aria-labelledby="t-playground" hidden><iframe title="VFX Playground" data-src="playground.html"></iframe></section>
@@ -316,6 +316,11 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-12 (08:30)</h2>
+<ul>
+<li><strong>Art:</strong> Beetle Battering Ram, Field Mouse, Fiddler Crab Swarm and Pelican Diver. 39 of tonight's 120 portraits are in; the rest keep generating in your Chrome.</li>
+<li><strong>Raids:</strong> the action items now describe the boss's column attacks (a red glow on the column a round ahead).</li>
+</ul>
 <h2>2026-10-12 (07:50)</h2>
 <ul>
 <li><strong>Tutorial rivals are fixed and weak:</strong><ul>
