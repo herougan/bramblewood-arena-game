@@ -5347,11 +5347,12 @@
      on the border on the top"): units on the opponent's row get a faint red fade along their top edge. Mostly matters when
      a card changes sides (Mind Control) or a caged leader sits on the other board. */
   .board-card > .owner-edge{display:none;}
-  #rowEnemy .board-card > .owner-edge{display:block; position:absolute; left:6%; right:6%; top:-1px; height:9px; z-index:5; pointer-events:none; border-radius:8px 8px 0 0;
-    background:linear-gradient(180deg, rgba(225,70,70,.75), rgba(225,70,70,0)); filter:blur(.3px);}
-  .board-card[style*="--scatter"] > .owner-edge, .board-card.scatter > .owner-edge{display:none !important;}
-  .board-card.dying > .owner-edge, .board-card.fly-falling > .owner-edge, .board-card.burning > .owner-edge{opacity:0; transition:opacity .25s;}
-  #rowEnemy .board-card.is-mine-caged > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.8), rgba(110,200,120,0));}
+  .card-tile > .owner-edge{display:none;}
+  #rowEnemy .board-card .card-tile > .owner-edge{display:block; position:absolute; left:12%; right:12%; top:0; height:5px; z-index:6; pointer-events:none; border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg, rgba(225,70,70,.42), rgba(225,70,70,0));}
+  .board-card[style*="--scatter"] .owner-edge, .board-card.scatter .owner-edge{display:none !important;}
+  .board-card.dying .owner-edge, .board-card.fly-falling .owner-edge, .board-card.burning .owner-edge{opacity:0; transition:opacity .25s;}
+  #rowEnemy .board-card.is-mine-caged .card-tile > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.5), rgba(110,200,120,0));}
   /* Mobile Conquest (2026-10-10, user: "sometimes conquest is not scrollable"): on phones the headline and the admin
      toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
      covered the fight nodes. The content area now scrolls, with room for the tab bar, and the fight panel scrolls
@@ -16660,7 +16661,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c9e2fc73cecc', BUILD_CARD_HASH = 'e43a976898cf622e57bbc9f92a80b9da51ed49954799219362929f0a0f20d22a';
+const BUILD_ID = '8394ecc08f7f', BUILD_CARD_HASH = 'e43a976898cf622e57bbc9f92a80b9da51ed49954799219362929f0a0f20d22a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -37069,14 +37070,18 @@ function boardCardHTML(c, defs, opts){
   const guards = !!((d.effects||{}).guardian), winged = !!((d.effects||{}).revive) && !c.revivedOnce;
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
-  return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
-  </div>`;
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
+  </div>`);
 }
+// Owner edge inside the tile (2026-10-12, user: "Make the red auras on the top of enemies less large and less opaque! then make
+// them fade during card animations or successfully make the aura follow the card's movements exactly"): the strip lives in the
+// card tile itself, so every lunge, shake, flip and topple carries it along.
+function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[^>]*>)/, '$1<span class="owner-edge" aria-hidden="true"></span>'); }
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
 // lumber... coloured so it looks like a reward... visible only when the player is holding a card.
 // It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's

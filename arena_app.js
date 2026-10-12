@@ -21741,14 +21741,18 @@ function boardCardHTML(c, defs, opts){
   const guards = !!((d.effects||{}).guardian), winged = !!((d.effects||{}).revive) && !c.revivedOnce;
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
-  return `<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
-    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}<span class="owner-edge" aria-hidden="true"></span>
-  </div>`;
+    }})}${flies?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? '<span class="seen-new" aria-label="First time seen">NEW!</span>' : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
+  </div>`);
 }
+// Owner edge inside the tile (2026-10-12, user: "Make the red auras on the top of enemies less large and less opaque! then make
+// them fade during card animations or successfully make the aura follow the card's movements exactly"): the strip lives in the
+// card tile itself, so every lunge, shake, flip and topple carries it along.
+function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[^>]*>)/, '$1<span class="owner-edge" aria-hidden="true"></span>'); }
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
 // lumber... coloured so it looks like a reward... visible only when the player is holding a card.
 // It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's

@@ -5313,11 +5313,12 @@
      on the border on the top"): units on the opponent's row get a faint red fade along their top edge. Mostly matters when
      a card changes sides (Mind Control) or a caged leader sits on the other board. */
   .board-card > .owner-edge{display:none;}
-  #rowEnemy .board-card > .owner-edge{display:block; position:absolute; left:6%; right:6%; top:-1px; height:9px; z-index:5; pointer-events:none; border-radius:8px 8px 0 0;
-    background:linear-gradient(180deg, rgba(225,70,70,.75), rgba(225,70,70,0)); filter:blur(.3px);}
-  .board-card[style*="--scatter"] > .owner-edge, .board-card.scatter > .owner-edge{display:none !important;}
-  .board-card.dying > .owner-edge, .board-card.fly-falling > .owner-edge, .board-card.burning > .owner-edge{opacity:0; transition:opacity .25s;}
-  #rowEnemy .board-card.is-mine-caged > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.8), rgba(110,200,120,0));}
+  .card-tile > .owner-edge{display:none;}
+  #rowEnemy .board-card .card-tile > .owner-edge{display:block; position:absolute; left:12%; right:12%; top:0; height:5px; z-index:6; pointer-events:none; border-radius:6px 6px 0 0;
+    background:linear-gradient(180deg, rgba(225,70,70,.42), rgba(225,70,70,0));}
+  .board-card[style*="--scatter"] .owner-edge, .board-card.scatter .owner-edge{display:none !important;}
+  .board-card.dying .owner-edge, .board-card.fly-falling .owner-edge, .board-card.burning .owner-edge{opacity:0; transition:opacity .25s;}
+  #rowEnemy .board-card.is-mine-caged .card-tile > .owner-edge{background:linear-gradient(180deg, rgba(110,200,120,.5), rgba(110,200,120,0));}
   /* Mobile Conquest (2026-10-10, user: "sometimes conquest is not scrollable"): on phones the headline and the admin
      toolbar push the map below the fold inside a fixed full-screen layout that didn't scroll, and the bottom tab bar
      covered the fight nodes. The content area now scrolls, with room for the tab bar, and the fight panel scrolls
