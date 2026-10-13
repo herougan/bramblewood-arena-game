@@ -1167,7 +1167,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ignores all of it); Perforate N also counts as Pierce N. Armor a Perforate hit stripped (targetCard.armorLoss) is
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
-    const pierceN = (ae.pierce === true || ae.rend || ae.pitchfork) ? Infinity : /* Pitchfork = Trident + Pierce (2026-10-12) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
+    const pierceN = (ae.pierce === true || ae.rend) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
     const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
@@ -3284,6 +3284,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Blind/Shock/Corrode (2026-09-17 batch) — same "_justSet" survive-one-round-before-
       // decaying convention as Frozen/Asleep/Paralyzed above.
       if(c.blind>0){ if(c._blindJustSet) c._blindJustSet=false; else c.blind -= 1; }
+      // Shedding N (2026-10-13, user: "the idea of molting or shedding - getting stronger as time progresses"): every N rounds on the
+      // field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose fall away with the old skin.
+      { const shN = Number(((CARD_DEFS[c.defId]||{}).effects||{}).shedding === true ? 3 : ((CARD_DEFS[c.defId]||{}).effects||{}).shedding) || 0;
+        if(shN > 0 && c.hp > 0){ c.shedAge = (c.shedAge||0) + 1; if(c.shedAge % shN === 0){ c.atk += 1; c.baseAtk = (c.baseAtk||0) + 1; c.maxHp += 1; c.hp += 1; c.poison = 0; c.bleed = 0; c.corrode = 0; c.scar = 0; c.exposed = 0;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'shed', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:1}); } } }
       if(c.coffeeCrash > 0){ c.coffeeCrash -= 1; if(c.coffeeCrash === 0){ c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); } }
       if(c.tipsy>0){ if(c._tipsyJustSet) c._tipsyJustSet=false; else c.tipsy -= 1; }
       if(c.confused>0){ if(c._confusedJustSet) c._confusedJustSet=false; else c.confused -= 1; }
@@ -3977,7 +3982,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
       // beside it with its full Attack; an empty side column takes that prong to the castle. Pitchfork is a Trident whose
       // prongs ignore Armour. Octolash lashes the 8 enemy units nearest it (front first), full Attack each, never the castle.
-      const tridentAtk = !!(attDef.effects && (attDef.effects.trident || attDef.effects.pitchfork) && !attDef.effects.stealth);
+      const tridentAtk = !!(attDef.effects && attDef.effects.trident && !attDef.effects.stealth);
       const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth);
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
@@ -4375,6 +4380,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const sides = lanesT.integer ? [lanesT.left, lanesT.right] : [lanesT.left, lanesT.right].filter(c=> !(target && target.kind==='card' && target.col === c)).concat([null]).slice(0, 2);
         sides.forEach(c=> forkStrike(c, true, 'trident')); }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
+      // Pitchfork (2026-10-13 rework, user: "Hits the nearest 4 opposing units. (Can't be more than 2 x-units away)"): besides its
+      // normal swing, it strikes the next-nearest enemy units within 2 columns, up to 4 units in all (ties at random).
+      if(attDef.effects && attDef.effects.pitchfork && !attDef.effects.stealth && !blindNow){
+        const tc = target && target.kind === 'card' ? target.col : null;
+        const cand = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const e = liveEnemyCols[c]; return c !== tc && e && e.kind === 'card' && e.card.hp > 0 && Math.abs(c - liveSelf.col) <= 2; })
+          .map(c=> [c, Math.abs(c - liveSelf.col) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
+        cand.slice(0, tc != null ? 3 : 4).forEach(c=> forkStrike(c, false, 'pitchfork')); }
       if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // thrown: it flies on even if the thrower falls
         const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
         pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null});

@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {shedding:'🐍', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -220,7 +220,7 @@ const PASSIVE_DEFS = [
   // should be simple like 'Hide' or 'Lunge'"): trimmed the "(legacy)"/"%" suffixes off Sweep,
   // Stun (on hit) %, and Reflect % below — those three were the only labels in this list that
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
-  {key:'sweep', category:'passive', label:'Sweep', kind:'number', min:0, desc:v=>`With a unit in front, it swings left, centre, then right: ${v} damage to each side unit (an empty side is a miss). With nothing in front, it hits the castle.`},
+  {key:'sweep', category:'passive', label:'Cleave', kind:'number', min:0, desc:v=>`Cleaves through the line: hits the unit in front, and the enemy units on its left and right each take ${v} bonus damage.`}, // renamed from Sweep (2026-10-13); key kept
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: its Attack doubles (castles too), and it takes half damage.`},
   {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units next to it, yours and theirs, and to the enemy facing it.`}, // 2026-10-12, the world boss
   // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
@@ -266,7 +266,7 @@ const PASSIVE_DEFS = [
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
-  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`A Trident that ignores Armour: the unit in front and both columns beside it, full Attack, Armour ignored. An empty side sends that prong to the castle.`},
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits the 4 nearest enemy units, full Attack each (none more than 2 columns away).`},
   {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
   // 2026-10-12 skills (the 22:40 list).
   {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:0, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
@@ -307,6 +307,7 @@ const PASSIVE_DEFS = [
   // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
   // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow ... Keep a concise one in a long
   // description in the Codex of skills").
+  {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose come off with it.`},
   {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit knocks out one of the target's defences.`,
     longDesc:`On every hit that lands, one defence the target still has is broken for the rest of the fight: its Armor, its Flying, its Swimmer (and Burrow, when that arrives). If it has several, each is as likely as the others. Map traits such as Tide are left alone.`},
   {key:'snipe', category:'evergreen', label:'Snipe', kind:'number', min:1, defaultValue:1, desc:v=>`Every round while Ready, if nothing stands opposite it: shoots a random enemy unit for ${v||1}.`},
@@ -342,7 +343,7 @@ const PASSIVE_DEFS = [
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
   {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`When first hit: +${v} Armor and +${v} temporary Health until the end of next round. It can't attack for the rest of that round.`},
   {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy HQ directly.`},
-  {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Sweep and Swipe extra hits can't be evaded.`},
+  {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Cleave and Swipe extra hits can't be evaded.`},
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): unconditional damage multipliers, a deliberately
   // separate family from the existing Resistance/Weakness boxes (which only apply against a
   // matching dmgType/archetype/keyword) — see attackerDamageFactor/defenderDamageFactor in the
@@ -3678,7 +3679,7 @@ function cardActionLogHTML(uid){
     const ev = m.log[i];
     if(ev.type==='hit' || ev.type==='hitHQ'){
       if(ev.attUid!==uid) continue;
-      const label = ev.sweep ? 'Sweep' : (ev.fork || ev.swipe) ? 'Fork' : ev.ranged ? 'Missile' : 'Strike';
+      const label = ev.sweep ? 'Cleave' : (ev.fork || ev.swipe) ? 'Fork' : ev.ranged ? 'Missile' : 'Strike';
       lines.push(`<li>${label}${ev.crit?' 💥':''} → ${ev.dmg}</li>`);
     } else if(ev.type==='sap'){
       if(ev.attUid!==uid) continue;
@@ -4805,6 +4806,7 @@ function abilityBadges(d, bopts){
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
   if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">🌆</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">🕶️</span>`); if(e.nightblind) out.push(`<span title="Night-blind">🌑</span>`);
+  if(e.shedding) out.push(`<span title="Shedding">🐍${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
@@ -4843,7 +4845,7 @@ function abilityBadges(d, bopts){
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
   if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">😨${n1(e.daunt)}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">💢${n1(e.recoil)}</span>`);
-  if(e.sweep) out.push(`<span title="Sweep ${e.sweep}">🧹${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
+  if(e.sweep) out.push(`<span title="Cleave ${e.sweep}">🪓${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
@@ -26469,6 +26471,7 @@ function logText(ev){
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         rocket: `launched a rocket 🚀`,
+        shed: `shed its skin and came out stronger (+1/+1) 🐍`,
         bludgeon: `bludgeoned ${nm(ev.targetDefId)}: its ${({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || ev.broke} is broken 🔨`,
         coffeeCrash: `crashed after its coffee and dozes off 😴`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
@@ -27399,7 +27402,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
   if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl){
-    const label = ev.sweep ? '🧹 Sweep!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : '⇔ Fork!';
+    const label = ev.sweep ? '🪓 Cleave!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : ev.prong==='pitchfork' ? '🔱 Pitchfork!' : '⇔ Fork!';
     // 2026-10-12 (user: "The Fork float label appears too early"): it now shows 0.1 s before the damage number lands.
     const am = animMs(), at = ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
     setTimeout(()=> { (ev.sweep ? SoundKit.sweepTone() : SoundKit.swipeTone()); floatText(targetEl, label, 'quick'); }, Math.max(0, at - 100));
@@ -27798,6 +27801,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🪁 Tailwind!', 'quick'); }
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + (({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || '') + ' broken', 'debuff'); }
+    else if(ev.kind==='shed'){ if(el) floatText(el, '🐍 +1/+1', 'heal'); }
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
     else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
