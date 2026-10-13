@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-13, 1:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 8:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
 
 ## Done overnight (your 00:17 list)
 
@@ -30,7 +30,7 @@ New calls for you:
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
 | **D65** | Heat and Cold side effects on normal creatures (Scorch: Burn 1, 1 in 3; Chill: +1 Wait, 1 in 3) | Adds two more statuses to read | Yes, after a playtest of the wind and night changes |
-| **D66** | Apply the Nocturnal / Diurnal / Tailwind / Headwind / Swimmer list (weather note) | Every one is a stat change on an existing card | Apply Tailwind and Headwind first (they only show up on Windy rounds) |
+| **D66** | Apply the Nocturnal / Diurnal / Swimmer list (weather note). **Tailwind and Headwind are applied (08:30).** | Every one is a stat change on an existing card | Apply Swimmer next (fish, turtles, frogs); Nocturnal/Diurnal after a day/night playtest |
 | **D67** | Night dimness is 1 miss in 4 for everyone without Nocturnal or Darksight | Day/night maps get a little slower | Keep; it is what makes Nocturnal and Darksight worth having |
 | **D68** | The two Heroics (Rivergate Tribune 7/28 Armor 2 Rally 1; Sunspire Sky-Sovereign 6/16 Flying Swift Esprit 1/1) are my first designs | Not simulated against the Epics | Look them over in the Codex |
 | **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |

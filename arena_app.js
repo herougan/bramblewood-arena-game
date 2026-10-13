@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', tailwind:'🪁', headwind:'🌬️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', tailwind:'🪁', headwind:'🌬️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -297,6 +297,12 @@ const PASSIVE_DEFS = [
   {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
   // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
   // 2026-10-13 (overnight list): Lone Wolf, Sociable, Coffee, Dry, Darksight, Tailwind, Headwind and the Landslide evergreen.
+  // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"). The blank
+  // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
+  {key:'kinship', category:'passive', label:'Kinship', kind:'typeTwoNumber', desc:(v, n, e)=>{ const k = (e && e.kinship) || (Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : {}); return `All your ${k.type || '<Type>'} units get +${k.atk||0}/+${k.hp||0} (itself too, if it is one). Stacks.`; },
+    get:e=> e.kinship ? [e.kinship.type, e.kinship.atk||0, e.kinship.hp||0] : undefined,
+    apply:(e, vals)=>{ const t = String(vals && vals[0] || '').trim(), a = Math.max(0, Number(vals && vals[1])||0), h = Math.max(0, Number(vals && vals[2])||0); if(t && (a || h)) e.kinship = {type:t, atk:a, hp:h}; }},
+  {key:'rocket', category:'evergreen', label:'Rocket', kind:'number', min:1, defaultValue:1, desc:v=>`Once, when it's Ready (on arrival if it has no Wait): a rocket hits the strongest enemy unit (highest Attack) for ${v||1} Heat damage and 1 to each enemy beside it. The castle if they have no units.`},
   {key:'loneWolf', category:'passive', label:'Lone Wolf', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `Likes room: +${a}/+${h} for each empty slot within 2 of it (4 in all), and +${a}/+${h} more when all 4 are empty.`; },
     get:e=> e.loneWolf ? (Array.isArray(e.loneWolf) ? e.loneWolf : [e.loneWolf, 0]) : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.loneWolf = [a, h]; }},
@@ -1345,7 +1351,7 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
-    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : p.label;
+    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
@@ -4789,6 +4795,7 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
+  if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
   if(e.coffee) out.push(`<span title="Coffee">☕${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">🏜️</span>`);
   if(e.darksight) out.push(`<span title="Darksight">👁️</span>`); if(e.tailwind) out.push(`<span title="Tailwind">🪁</span>`); if(e.headwind) out.push(`<span title="Headwind">🌬️</span>`);
@@ -6421,6 +6428,7 @@ function defaultSkillValue(key){
   if(s.kind==='text') return '';
   if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
   if(s.kind==='selectNumber'){ const opts = s.selectOptions ? s.selectOptions() : []; return [opts[0]?opts[0].value:'', 1]; }
+  if(s.kind==='typeTwoNumber') return ['', 1, 1];
   // cardCount (2026-09-21, On Death: Spawn / On Attacked: Spawn): a fresh row defaults to no
   // card picked yet (forces a deliberate choice, same "— pick a card —" placeholder convention
   // as the Spawn card(s) custom-trigger action's own defId dropdown) and a count of 1.
@@ -6458,6 +6466,11 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   } else if(s.kind==='select'){
     const opts = resistOptionsList();
     valueHtml = `<select data-sk="val" data-i="${i}">${opts.map(o=>`<option value="${o}" ${row.value===o?'selected':''}>${resistOptionLabel(o)}</option>`).join('')}</select>`;
+  } else if(s.kind==='typeTwoNumber'){
+    const vals = Array.isArray(row.value) ? row.value : ['', 1, 1];
+    const types = [...new Set(Object.values(getCardDefs()).flatMap(d=> (d.archetypes||[]).concat(d.species||[])))].filter(t=> t && !TYPE_HIDDEN.has(t)).sort();
+    valueHtml = `<select data-sk="val0" data-i="${i}" aria-label="Type"><option value="">— pick a Type —</option>${types.map(t=> `<option value="${escapeAttr(t)}" ${vals[0]===t?'selected':''}>${escapeHtml(t)}</option>`).join('')}</select>` +
+      `<input type="number" min="0" class="w-52" placeholder="Attack" aria-label="Attack" data-sk="val1" data-i="${i}" value="${vals[1]!=null?vals[1]:1}"><input type="number" min="0" class="w-52" placeholder="Health" aria-label="Health" data-sk="val2" data-i="${i}" value="${vals[2]!=null?vals[2]:1}">`;
   } else if(s.kind==='selectNumber'){
     // Chained (Devilry, 2026-09-17): a break-condition dropdown (val0) plus a numeric
     // threshold (val1) that only matters for the 'damage' break condition — hidden (not
@@ -6841,7 +6854,8 @@ function readEditorFormIntoCard(){
     const key = row.querySelector('[data-sk="key"]').value;
     const sdef = SKILL_DEFS.find(x=>x.key===key);
     if(!sdef) return;
-    if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount'){
+    if(sdef.kind==='typeTwoNumber'){ sdef.apply(newEffects, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
+    else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount'){
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value;
       sdef.apply(newEffects, [v0,v1]);
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text'){
@@ -26339,6 +26353,7 @@ function logText(ev){
         swimmer: `rode the Flow for a quick attack 🏊`,
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
+        rocket: `launched a rocket 🚀`,
         coffeeCrash: `crashed after its coffee and dozes off 😴`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
         frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
@@ -27666,6 +27681,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
     else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }

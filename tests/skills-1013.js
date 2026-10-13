@@ -13,6 +13,10 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k-soc': U('k-soc', {sociable:[1,0]}),
   'k-wall': U('k-wall', {}),
   'k-dry': U('k-dry', {dry:true}),
+  'k-kin': U('k-kin', {kinship:{type:'Otter', atk:2, hp:1}}),
+  'k-otter': U('k-otter', {}, {archetypes:['Otter']}),
+  'k-rocket': U('k-rocket', {rocket:5}),
+  'k-big': U('k-big', {}, {attack:9}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.assign({recordEvents:true, battleMode:'open'}, opts||{})); return {e, P:{1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
@@ -27,4 +31,8 @@ const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.ass
   e.resolveCombat(P, so, {}, []); const c = all(P[1]).find(x=> x.defId==='k-soc'); ok(c.packBonus >= 2, `Sociable with neighbours gets Attack (${c.packBonus}, slot ${c.slot})`); }
 { const {e, P} = mk({rules:{field:'heatwave'}}); e.debugSpawnCard(P, so, 1, 'k-dry', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-wall', 'left', {}, []);
   e.resolveCombat(P, so, {}, []); const d = all(P[1])[0], w = all(P[2])[0]; ok(d.hp >= w.hp, `Dry unharmed by Heatwave (dry ${d.hp}, wall ${w.hp})`); }
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-kin', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k-otter', 'right', {}, []); e.resolveCombat(P, so, {}, []);
+  const o = all(P[1]).find(c=> c.defId==='k-otter'), k = all(P[1]).find(c=> c.defId==='k-kin'); ok(o.kinBonus === 2 && o.maxHp === 21 && !k.kinBonus, `Kinship Otter 2/1 (otter +${o.kinBonus}, hp ${o.maxHp}; source +${k.kinBonus||0})`); }
+{ const {e, P} = mk(); ['left','right'].forEach(l=> e.debugSpawnCard(P, so, 2, 'k-wall', l, {}, [])); e.debugSpawnCard(P, so, 2, 'k-big', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k-rocket', 'left', {}, []);
+  const big = all(P[2]).find(c=> c.defId==='k-big'); ok(big.hp <= 15, `Rocket hits the strongest enemy (hp ${big.hp})`); }
 console.log(`skills-1013: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

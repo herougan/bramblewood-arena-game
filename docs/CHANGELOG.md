@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (08:30)
+- **New passive: Kinship <Type> X/Y.** All your units of that Type get +X/+Y (the card itself too, if it is one). Several stack. In the card editor, pick the Type, then Attack and Health.
+- **New evergreen: Rocket N** 🚀. Fires once, when the unit is Ready (on arrival if it has no Wait): the strongest enemy unit (highest Attack) takes N Heat damage and each enemy beside it takes 1. It hits the castle if the enemy has no units.
+- **D66 (first half):** Tailwind went on the big soarers (eagles, condors, ravens, gulls, Pelican Diver, Migration Leader, Hawk Arrowkeeper). Headwind went on the heavy ground animals (Marching Elephant, Siege Rhino, Permafrost Mammoth, Tundra Musk Ox, Glacier Yak, the elks and the boars). Nocturnal, Diurnal and Swimmer are still waiting for your OK.
+
 ## 2026-10-13 (overnight)
 - **Otters and Hummingbirds left the packs.** You earn them through progress now: the first clear of every elite and boss gives one card from your faction's track and one from the base track. Each track hands out every Common first, then every Uncommon, then every Rare; after that it draws duplicates (a Rare can be held 4 times, so 3 more stay in the pool). Very Rare and Super Rare join from Map 10. Map 20's boss gives your faction's Epic and Heroic. Two new Heroic cards: **Rivergate Tribune** (otters) and **Sunspire Sky-Sovereign** (hummingbirds).
 - **Journeys (Maps 15–20).** Five subfaction quests take you across six maps, one fight per step, and every step pays two cards: the Toll Road (Road-folk), the Call of the Wild (Wild Beasts) and the Long Harvest (Woodland Folk) finish by Map 20; the Swarm Below and the Drowned Bell go on past it. They're on the Notices board, and the next fight shows its step. Subfaction bundles no longer drop.

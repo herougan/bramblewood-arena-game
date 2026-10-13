@@ -1518,6 +1518,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
         const elem = (d.species||[]).includes('Elemental') || (d.archetypes||[]).includes('Elemental'); const want = elem ? nf : 0;
         c.natureBonus = want; const had = c.natureHp || 0, delta = want - had; if(delta){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + delta); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + delta)); c.natureHp = want; } }));
+      // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"): every live
+      // source on your side gives +X/+Y to each of your units of that Type (itself too, if it is one). Stacks. Health moves as a
+      // difference, like Nature's Force.
+      { const kin = {}; ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const k = ((CARD_DEFS[c.defId]||{}).effects||{}).kinship;
+          if(k && k.type){ const t = kin[k.type] || (kin[k.type] = [0,0]); t[0] += Number(k.atk)||0; t[1] += Number(k.hp)||0; } }));
+        ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.hp<=0) return; const d = CARD_DEFS[c.defId] || {};
+          let a = 0, h = 0; Object.keys(kin).forEach(t=>{ if((d.archetypes||[]).includes(t) || (d.species||[]).includes(t)){ a += kin[t][0]; h += kin[t][1]; } });
+          c.kinBonus = a; const had = c.kinHp || 0, dl = h - had; if(dl){ c.maxHp = Math.max(1, (c.maxHp||c.hp) + dl); c.hp = Math.max(1, Math.min(c.maxHp, c.hp + dl)); c.kinHp = h; } })); }
       // Lone Wolf X/Y and Sociable X/Y (2026-10-13, user: "Sociable likes being crowded (up to 4, 2 on each side) While Lone Wolf
       // likes being alone, separated by 2 squares on each side ... +X/+Y per slot freed up or not. If all 4 freed up, ANOTHER
       // +X/+Y"): counts the 4 slots within 2 of it. Lone Wolf: +X/+Y per empty one (+1 more step when all 4 are); Sociable: per
@@ -1549,7 +1557,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // marks add up, and each lifts at the end of the round after the one it landed in.
   function dauntOf(card){ const d = card && card.daunts; if(!d || !d.length) return 0; let t = 0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; }
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) - (card.corrode||0) - dauntOf(card));
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) - (card.corrode||0) - dauntOf(card));
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -2310,6 +2318,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
       fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
     }
+    if(def.effects.rocket && !(boardCard.wait > 0)) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
     // later) it crashes and naps for a round (Stunned 1).
     if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
@@ -2324,6 +2333,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // effects.flying:true. Reuses fireDamageAction per target rather than inventing a bespoke event
   // type, so each hit gets the same floating damage number / hit VFX / action-log line every
   // other damage source already gets, for free.
+  // Rocket N (2026-10-13, user: "New Skill: Rocket"): once, when the unit is Ready (on arrival if it has no Wait), a rocket
+  // flies at the strongest enemy unit (highest Attack; ties random): N damage to it and 1 to each enemy beside it. The castle
+  // if the enemy has no units.
+  function fireRocket(players, sideOf, ownerId, card, amount, stats, events){
+    if(card._rocketFired) return; card._rocketFired = true;
+    const enemy = players[otherId(ownerId)];
+    const live = allBoardCards(enemy).filter(c=> c.hp > 0 && !c.cageOf);
+    if(recordEvents && events) events.push({type:'statusFx', kind:'rocket', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), amount});
+    if(!live.length){ fireDamageAction(players, sideOf, ownerId, card.defId, amount, 'heat', {kind:'hq'}, stats, events, null, card.uid); return; }
+    const top = Math.max(...live.map(c=> effAtk(c))), best = live.filter(c=> effAtk(c) === top), t = best[Math.floor(rnd()*best.length)];
+    let side = [];
+    if(slotMode){ side = live.filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1); }
+    else { const order = physicalRowOrder(enemy), i = order.indexOf(t); side = [order[i-1], order[i+1]].filter(c=> c && c.hp > 0); }
+    fireDamageAction(players, sideOf, ownerId, card.defId, amount, 'heat', {kind:'card', card:t}, stats, events, null, card.uid);
+    side.forEach(c=>{ if(c.hp > 0) fireDamageAction(players, sideOf, ownerId, card.defId, 1, 'heat', {kind:'card', card:c}, stats, events, null, card.uid); });
+  }
   // Landslide N (2026-10-13, a new evergreen whose targets are set: "earthquake for example, doesnt let you 'switch targets'"):
   // when it falls, rocks come down on the enemy facing it and the enemy on each side of that one, N damage each. Flying units
   // are above it.
@@ -3270,6 +3295,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(def.effects.render && def.effects.render.trigger==='onReady'){
         fireRender(players, sideOf, pl.id, card, def.effects.render, stats, events);
       }
+      if(def.effects.rocket) fireRocket(players, sideOf, pl.id, card, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
       runCustomTriggers(players, sideOf, pl.id, card, def, 'onReady', stats, events);
       if(def.effects.converge) convergeBoard(players, sideOf, pl.id, card, def.effects.converge === true ? 'enemy' : def.effects.converge, events);
       // On Ally/Enemy Ready (2026-09-27, per explicit request: "Then On Ally Ready, On Enemy

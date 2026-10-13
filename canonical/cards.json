@@ -1564,7 +1564,8 @@
     "health": 3,
     "effects": {
       "flying": true,
-      "pounce": 2
+      "pounce": 2,
+      "tailwind": true
     },
     "flavor": "Circles once, marks a target, and dives before anyone finishes reading the omen.",
     "locked": true,
@@ -1620,7 +1621,8 @@
     "health": 14,
     "effects": {
       "sweep": 1,
-      "bounty": 1
+      "bounty": 1,
+      "headwind": true
     },
     "flavor": "Does not so much choose a target as choose a direction.",
     "locked": true,
@@ -1703,7 +1705,8 @@
       "bounty": 1,
       "flying": true,
       "diurnal": true,
-      "pounce": 2
+      "pounce": 2,
+      "tailwind": true
     },
     "flavor": "Announces itself with a strike, and only then with a screech.",
     "locked": true,
@@ -1972,7 +1975,8 @@
     "effects": {
       "poison": 2,
       "bounty": 1,
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "Its call is an old, bad omen. Whatever it lands on tends to prove the omen right.",
     "locked": true,
@@ -3289,7 +3293,8 @@
     "attack": 1,
     "health": 14,
     "effects": {
-      "thorns": 3
+      "thorns": 3,
+      "headwind": true
     },
     "flavor": "It never learned to dodge. It never had to.",
     "locked": true,
@@ -3319,7 +3324,8 @@
     "attack": 6,
     "health": 16,
     "effects": {
-      "rage": true
+      "rage": true,
+      "headwind": true
     },
     "flavor": "Wounded, it stops defending entirely. That is not recklessness. That is the plan.",
     "locked": true,
@@ -3378,7 +3384,8 @@
         "trigger": "onSpawn",
         "amount": 3
       },
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "It doesn't fight the blade. It just quietly convinces the arm holding it that swinging sounds exhausting.",
     "locked": true,
@@ -3405,7 +3412,8 @@
     "effects": {
       "flying": true,
       "diurnal": true,
-      "arrow": 2
+      "arrow": 2,
+      "tailwind": true
     },
     "flavor": "Every round, one arrow, one target. The arrow is not the point \u2014 the eye is.",
     "locked": true,
@@ -3432,7 +3440,8 @@
     "effects": {
       "flying": true,
       "diurnal": true,
-      "pounce": 2
+      "pounce": 2,
+      "tailwind": true
     },
     "flavor": "Two arrows, always. One for the target, one for anyone thinking of helping.",
     "locked": true,
@@ -4016,7 +4025,8 @@
       "Tundra"
     ],
     "effects": {
-      "thorns": 2
+      "thorns": 2,
+      "headwind": true
     },
     "flavor": "The herd forms a wall. This one IS the wall.",
     "locked": true,
@@ -4072,7 +4082,8 @@
     "effects": {
       "sweep": 1,
       "nocturnal": true,
-      "frostbite": 2
+      "frostbite": 2,
+      "headwind": true
     },
     "flavor": "Thawed out ill-tempered and has not warmed up since.",
     "locked": true,
@@ -4309,7 +4320,8 @@
     "effects": {
       "flying": true,
       "diurnal": true,
-      "pounce": 3
+      "pounce": 3,
+      "tailwind": true
     },
     "flavor": "Stoops from a height that makes the math feel unfair.",
     "locked": true,
@@ -4407,7 +4419,8 @@
     ],
     "effects": {
       "reload": 1,
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "One devastating pass, then a long climb back to altitude.",
     "locked": true,
@@ -4782,7 +4795,8 @@
           "sub": "adjacent"
         }
       ],
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "A wingbeat of ash and grit \u2014 the first thing anyone opposite it does is cough and freeze.",
     "locked": true,
@@ -4929,7 +4943,8 @@
       "Deer"
     ],
     "effects": {
-      "sweep": 1
+      "sweep": 1,
+      "headwind": true
     },
     "flavor": "Antlers wide enough to clear a path through anything in the lane.",
     "locked": true,
@@ -5088,7 +5103,8 @@
           "resource": "lumber"
         }
       ],
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "Steals the kill credit and the sandwich, in that order.",
     "locked": true,
@@ -5192,7 +5208,8 @@
           "sub": "random"
         }
       ],
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "Folds up, drops like a stone, comes back up with something it should not have.",
     "locked": true,
@@ -5460,7 +5477,8 @@
           "amount": 1,
           "who": "self"
         }
-      ]
+      ],
+      "headwind": true
     },
     "locked": true,
     "flavor": "Berserker: every hit it survives just makes it angrier \u2014 and considerably less survivable to fight.",
@@ -6281,7 +6299,8 @@
       "Duck"
     ],
     "effects": {
-      "flying": true
+      "flying": true,
+      "tailwind": true
     },
     "flavor": "Points south. The whole flock gets stronger just for following.",
     "dmgType": "physical",
@@ -6699,7 +6718,8 @@
     "attack": 4,
     "health": 20,
     "effects": {
-      "grit": 1
+      "grit": 1,
+      "headwind": true
     },
     "archetypes": [
       "Volcanic",
@@ -6938,7 +6958,8 @@
           "who": "enemy",
           "sub": "adjacent"
         }
-      ]
+      ],
+      "headwind": true
     },
     "dmgType": "cold",
     "archetypes": [
@@ -10894,7 +10915,8 @@
     "effects": {
       "worship": true,
       "flying": true,
-      "prayer": 1
+      "prayer": 1,
+      "tailwind": true
     },
     "flavor": "When it lands on the spire, the whole valley goes quiet.",
     "dmgType": "physical",
@@ -13731,7 +13753,8 @@
     "rarity": "common",
     "flavor": "Strong, and absolutely no fun to stand next to.",
     "effects": {
-      "friction": 2
+      "friction": 2,
+      "headwind": true
     },
     "wait": 1,
     "cost": 1,
@@ -14335,7 +14358,8 @@
     ],
     "effects": {
       "overwhelm": true,
-      "armor": 1
+      "armor": 1,
+      "headwind": true
     },
     "flavor": "It doesn't charge. It simply keeps walking, and the line ahead of it stops being a line.",
     "numericId": 494,
@@ -14361,7 +14385,8 @@
     ],
     "effects": {
       "siege": 4,
-      "demolisher": 3
+      "demolisher": 3,
+      "headwind": true
     },
     "flavor": "Every wall it meets becomes a door.",
     "numericId": 495,
@@ -14488,7 +14513,8 @@
     ],
     "effects": {
       "overwhelm": true,
-      "rage": true
+      "rage": true,
+      "headwind": true
     },
     "flavor": "An elk from before the ice. Its antlers are wider than your fort and twice as old.",
     "numericId": 500,
