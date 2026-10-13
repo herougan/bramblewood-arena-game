@@ -491,7 +491,26 @@ def me(rng):  # Eye of the Volcano (2026-10-12, sub-map of the Sundered Peak): a
     sparkle(img, rng, 160, '#ffb36b')
     return img
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me'))}
+def m21(rng):  # The Quiet Summit (2026-10-13, Map 21): above the clouds after the storm, snow peaks, still blue tarns, a soft dawn
+    img = dither_palette(fbm(rng, W, H), ['#8d93a6', '#a7aec0', '#c3c9d8', '#dde2ec', '#f2f4f8'])
+    ridge = fbm(rng, W, H, (64, 32), (0.7, 0.3))
+    blend_mask(img, np.clip((ridge - 0.62) * 6, 0, 1), '#e9c9b8')  # dawn light on the high snow
+    ponds(img, rng, 3, '#6f9fc4', '#a8cde4', '#e6edf4', 7, 13)
+    scatter(img, rng, CLOUD, {'a': '#ffffff', 'b': '#d9dfeb'}, 22, avoid_band=False)
+    scatter(img, rng, SNOWPINE, {'w': '#f7f9fc', 'b': '#3c5f58', 'c': '#4a3a30'}, 16, shadow_w=lambda w: w)
+    scatter(img, rng, BOULDER, {'a': '#e3e8f0', 'b': '#8d93a6'}, 36, shadow_w=lambda w: w)
+    sparkle(img, rng, 90, '#ffffff')
+    return img
+
+
+def mtut(rng):  # Tutorial (2026-10-13): a gentle training meadow, trampled practice rings, a brook
+    img = mq(rng)
+    ring = fbm(rng, W, H, (32, 16), (0.7, 0.3))
+    blend_mask(img, np.clip((ring - 0.66) * 7, 0, 1), '#b59a62')  # worn patches where everyone practises
+    return img
+
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut'))}
 
 
 def make(map_id):

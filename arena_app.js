@@ -4062,6 +4062,7 @@ function renderCodex(){
   if((codexSubTab==='deleted' || codexSubTab==='txns') && !adminModeEnabled){ codexSubTab = 'browse'; }
   const root = document.getElementById('view-codex');
   root.innerHTML = codexShell();
+  try{ refreshPageBar('codex'); }catch(e){}
   root.querySelectorAll('[data-codextab]').forEach(b=> b.addEventListener('click', ()=>{
     const order = [...root.querySelectorAll('[data-codextab]')].map(x=> x.getAttribute('data-codextab'));
     const next = b.getAttribute('data-codextab'), dir = order.indexOf(next) >= order.indexOf(codexSubTab) ? 'fwd' : 'back';
@@ -4600,6 +4601,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m9:'map-m9',   // Basalt Foundry -- dark basalt/lava
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
+  m21:'map-m21', // The Quiet Summit -- snow and dawn
   mf:'map-mf',   // Thistle Fields -- sunny meadow (2026-10-09)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
   mg:'map-m4',   // Smugglers' Grotto (sub-map) -- borrows the cave look
@@ -11048,6 +11050,11 @@ const DIALOGUES = {
     {who:'traveller', text:'Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
     {label:'go', who:'traveller', text:'Max Energy, raised one cup at a time.'},
   ]},
+  unlock_stomp: {lines:[
+    {who:'traveller', text:'Hoofprints, pawprints, clawprints. Everything that trains up here trains on this field.'},
+    {who:'traveller', text:'The Stomping Grounds. Bring your Hero: level it, spend its points, pick its skills.', options:[{label:'Show me.', goto:'go', act:'tab:stomp'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Mind the ruts. Some of them are mine.'},
+  ]},
   unlock_testlab: {lines:[
     {who:'whisper', text:'Psst. A tent full of tables. Nobody fights for real in here.'},
     {who:'whisper', text:'Put any cards down, see what they do. Nothing you win, nothing you lose.', options:[{label:'Let me try.', goto:'go', act:'sub:sandbox'}], silent:'go'},
@@ -11433,11 +11440,12 @@ const FEATURE_SPOTS = [
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   {key:'codex', icon:'📖', name:'Codex', mapNumber:7, get map(){ return mapIdAt(7); }, after:null, dialogue:'unlock_codex', tabs:['codex'], go:()=> switchTab('codex')},
-  {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  // 2026-10-13 (user: "Move the Arena to Map 11"; "the quest board can be moved into the caves and alcoves", Map 8).
+  {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
   // Pack B (Tidemire Chests) from Map 8.
   {key:'shop2', icon:'🏮', name:'Ember Peddler', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
-  {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], go:()=> openQuestsModal('errands')},
+  {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], go:()=> openQuestsModal('errands')},
   {key:'forge', icon:'🔨', name:'The Forge', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_forge', tabs:['forge'], go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }},
   // Map 13: Raid 1, Pack C (Highcrest Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
   {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
@@ -11446,6 +11454,9 @@ const FEATURE_SPOTS = [
   // The Tavern (2026-10-13, user D40: "max energy progression is upgraded in a Tavern ... Maybe Map 14 or 16 for now").
   {key:'tavern', icon:'🍺', name:'The Tavern', mapNumber:14, get map(){ return mapIdAt(14); }, after:null, dialogue:'unlock_tavern', tabs:[], go:()=> openTavern()},
   {key:'gauntlet', icon:'🏅', name:'Gauntlet Gate', mapNumber:16, get map(){ return mapIdAt(16); }, after:null, dialogue:'unlock_gauntlet', tabs:['gauntlet'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  // Stomping Grounds (2026-10-13, user: "Hero shouldn't be a button. Training them is in a new page! Stomping Grounds! ... one of
+  // the maps in 21-25 that's not already oversubscribed"): on Map 21, past its third fight.
+  {key:'stomp', icon:'🐾', name:'Stomping Grounds', mapNumber:21, get map(){ return mapIdAt(21); }, get after(){ return nthFightKey(this.map, 3); }, dialogue:'unlock_stomp', tabs:['stomp'], go:()=> switchTab('stomp')},
   {key:'testlab', icon:'🧪', name:'Test Lab', mapNumber:21, get map(){ return mapIdAt(21); }, after:null, dialogue:'unlock_testlab', tabs:['sandbox'], go:()=>{ playSubTab = 'sandbox'; switchTab('play'); }},
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
@@ -11501,7 +11512,7 @@ function activateSpot(spot){
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
-const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11"]);
+const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","mtut","mj"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -11607,12 +11618,23 @@ const SUBMAP_EMBLEM_SVG = {
   // The Glimmer Depths (user: "like a diamond stuck in a rock"): a grey boulder with a cut gem set in it.
   mn: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="44" rx="24" ry="3" fill="rgba(0,0,0,.25)"/><path d="M8 42 L12 24 L22 14 L38 12 L52 20 L57 34 L52 42 Z" fill="#7d776c"/><path d="M12 24 L22 14 L38 12 L30 22 Z" fill="#9b958a"/><path d="M52 20 L57 34 L52 42 L44 36 Z" fill="#5f5a52"/>
     <path d="M24 26 L30 20 L40 20 L44 26 L34 38 Z" fill="#7fe3ff"/><path d="M24 26 L44 26 L34 38 Z" fill="#3fb6e6"/><path d="M30 20 L34 26 L40 20" stroke="#d8f7ff" stroke-width="1.4" fill="none"/><path d="M27 23 L29 21" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>`,
+  // The Sunken Depths (2026-10-13, user: "Add another wreck w anchor symbol"): a broken hull on its side, a snapped mast, an anchor.
+  mj: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="44" rx="26" ry="3.5" fill="rgba(0,0,0,.28)"/>
+    <path d="M6 30 L50 24 L58 30 L52 40 L14 42 Z" fill="#6b4423"/><path d="M6 30 L50 24 L52 28 L9 34 Z" fill="#8a5a30"/>
+    <path d="M14 34 L50 29 M16 38 L51 33" stroke="#4e3018" stroke-width="1.2"/><path d="M40 35 L44 31 L47 35 L44 39 Z" fill="#1d2b33"/>
+    <path d="M28 27 L22 6" stroke="#5a3a1e" stroke-width="3" stroke-linecap="round"/><path d="M22 6 L30 10 L24 14" fill="#cfc4a8" opacity=".85"/>
+    <g transform="translate(48 6)" fill="none" stroke="#c9d3d6" stroke-width="2.4" stroke-linecap="round"><circle cx="0" cy="2" r="2.2"/><path d="M0 4 L0 16"/><path d="M-4 8 L4 8"/><path d="M-6 12 C-5 17 5 17 6 12"/></g></svg>`,
   mp: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="41" rx="27" ry="6" fill="#3f8f4a"/><ellipse cx="32" cy="40" rx="22" ry="4" fill="#5fb35c"/>
     <path d="M32 38 C14 37 6 26 8 20 C18 22 26 30 32 38Z" fill="#f2a6c4"/><path d="M32 38 C50 37 58 26 56 20 C46 22 38 30 32 38Z" fill="#f2a6c4"/>
     <path d="M32 38 C20 32 15 18 19 9 C27 15 31 27 32 38Z" fill="#f7bfd6"/><path d="M32 38 C44 32 49 18 45 9 C37 15 33 27 32 38Z" fill="#f7bfd6"/>
     <path d="M32 38 C25 28 26 12 32 3 C38 12 39 28 32 38Z" fill="#fcd9e7"/><path d="M32 36 C29 28 29 18 32 10 C35 18 35 28 32 36Z" fill="#fff0f6"/>
     <circle cx="32" cy="35" r="3" fill="#f6c94a"/></svg>`,
 };
+// A campfire in the Glimmer Depths (2026-10-13, user: "add a fireplace near the top left, that has some light. The light
+// sparkles around like a real campfire"): a flickering glow on the cave floor with sparks drifting up.
+function mapCampfireHTML(){
+  return `<span class="map-campfire" style="left:11%; top:16%;" aria-hidden="true"><i class="mcf-glow"></i><b class="mcf-fire">🔥</b><span class="mcf-logs"></span>${Array.from({length:7}, (_, k)=> `<i class="mcf-spark" style="--sx:${(k*13)%22 - 11}px; animation-delay:${(k*0.37).toFixed(2)}s; animation-duration:${(1.6 + (k%3)*0.45).toFixed(2)}s"></i>`).join('')}</span>`;
+}
 let conquestSubZoom = null;
 function subMapEntrancesHTML(map, progress){
   return CONQUEST_MAPS.filter(m=> m.sub && m.parent===map.id && m.entry).map(sm=>{
@@ -11690,6 +11712,7 @@ const CAVE_SUBMAPS = new Set(['mg', 'mz', 'mx']);
 function isCaveSubMap(map){ return !!(map && (map.cave || CAVE_SUBMAPS.has(map.id))); }
 function subMapExitHTML(map, positions){
   if(!map.sub) return '';
+  if(map.id === 'mtut' && !loadTutorial2Done()) return ''; // the way out opens with Tutorial II
   const parent = CONQUEST_MAPS.find(m=> m.id === map.parent); if(!parent) return '';
   const idx = map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
   const def = {x: Math.max(6, Math.min(94, base.x - 12)), y: Math.max(10, Math.min(90, base.y + 16))};
@@ -12151,7 +12174,8 @@ function fieldConditionRows(r){
   if(r.highTide) add('highTide', '🌊', 'High tide', 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.');
   if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
     add('frost', '❄️', 'Frost', (()=>{ const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1); return `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`; })());
-    if((r.frostResist||[]).length) add('frostResist', '🧥', 'Used to the cold', `Their ${r.frostResist.join(', ')} units are never chilled.`);
+    // 2026-10-13 (user: 'Remove "Used to the cold" - what's that!'): units that ignore the frost are part of the Frost line now.
+    if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
   }
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`);
@@ -12172,7 +12196,7 @@ function skirmishFieldHTML(mapId, node){
 function noteFieldEvent(ev){
   const m = matchState; if(!m || !ev) return;
   const r = matchFieldRules(m) || {}; let hit = null;
-  if(ev.type === 'fieldTick' && ev.field === 'frozen'){ hit = markFieldRow('frost'); if((r.frostResist||[]).length) hit = markFieldRow('frostResist') || hit; }
+  if(ev.type === 'fieldTick' && ev.field === 'frozen'){ hit = markFieldRow('frost'); }
   else if(ev.type === 'statusFx' && ev.kind === 'frostbite') hit = markFieldRow('frostbite');
   else if(ev.type === 'fieldTick' && ev.field === 'eruption') hit = markFieldRow('eruption');
   else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
@@ -13742,12 +13766,12 @@ const CONQUEST_MAPS = [
       // 2026-10-03 ("There should only be 1 tutorial at max, with a pre-seeded run… the tutorial
       // should appear as a lone isolated icon on the map. It must be complete before any
       // skirmishes can be attempted. The first two should be available as fights."):
-      { key:"tutorial", kind:"tutorial", stage:1, name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics.", requires:[] },
+      // The two tutorials moved to their own side map, Tutorial (mtut), on 2026-10-13.
       // 2026-10-12 (user: "you see the 2 tutorials front and centre of a zoomed in map, one on the left one on the right. After
       // you defeat the 2nd tutorial, it expands"): part 2 is its own marker, and the Outskirts open after it.
-      { key:"tutorial2", kind:"tutorial", stage:2, name:"Tutorial II", icon:"🎓", hqHp:20, flavor:"Your leader joins you. Clear it to open the Outskirts.", requires:["tutorial"] },
-      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":3,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2,"shellwright-apprentice":1}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:["tutorial2"] },
-      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:["tutorial2"] },
+
+      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":3,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2,"shellwright-apprentice":1}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:[] },
+      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:[] },
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:33, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":1,"otter-royal-guard":1}, hqHp:64, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
@@ -13977,8 +14001,19 @@ const CONQUEST_MAPS = [
     ]},
   // Maps 14–20 (2026-10-10, user: "Add maps up till 20, for now name them reserved"): placeholders that never open
   // until they get real fights. They show on the world map so the campaign's length is visible.
-  { id:"r14", unlockAfter:"m11", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
-  { id:"r15", unlockAfter:"r14", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
+  // Map 21 (2026-10-13, user: "Do a map 21. Maybe it's like the calm AFTER the storm. In the high mountain peaks"): above the
+  // clouds once the Peak's storm has passed, a still, bright summit. The mountain folk and the birds of the heights, rested and
+  // ready. Day all fight, no wind; its first visit plays the zoom-out like every new map.
+  { id:"m21", unlockAfter:"m11", name:"The Quiet Summit", icon:"🏔️", blurb:"Above the clouds, the storm has passed. The air is thin and still, and everything that lives this high has had all night to rest.", sequential:true,
+    nodes: [
+      { key:"21-1", kind:"skirmish", name:"Thaw Path", icon:"🐐", deck:{"mountain-goat-climber":3,"rockslide-ram":2,"scree-goat":2,"hawk-arrowkeeper":3,"snowshoe-hare":2}, hqHp:180, flavor:"Meltwater runs down a path the goats have walked since before the storm.", requires:[] },
+      { key:"21-2", kind:"skirmish", name:"Tarn Shore", icon:"🧊", deck:{"glacier-yak":2,"snow-owl-sentinel":2,"snowshoe-hare":3,"alpine-avalanche":1,"peak-condor":2,"scree-goat":2}, hqHp:200, flavor:"The tarn is so still the sky sits in it twice.", requires:["21-1"] },
+      { key:"21-3", kind:"skirmish", name:"Cloud Ledge", icon:"☁️", deck:{"eagle-diver":2,"golden-eagle-diver":2,"peak-condor":3,"stonedrop-vulture":2,"ash-cloud-condor":1,"hawk-arrowkeeper":2}, hqHp:210, flavor:"Step off the ledge and you land on cloud. Probably.", requires:["21-1"] },
+      { key:"21-4", kind:"elite", name:"The Avalanche's Wake", icon:"🏔️", deck:{"alpine-avalanche":2,"rockslide-ram":2,"glacier-yak":2,"scree-goat":2,"eagle-sharpshooter":2,"mountain-goat-climber":2}, hqHp:240, flavor:"The snow came down last night. The rams are still standing on top of it.", requires:["21-2"] },
+      { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"snow-owl-sentinel":3,"hawk-arrowkeeper":2,"eagle-sharpshooter":2,"golden-eagle-diver":2,"snowshoe-hare":2}, hqHp:230, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
+      { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", deck:{"cathedral-eagle":1,"eagle-diver":2,"peak-condor":2,"golden-eagle-diver":2,"snow-owl-sentinel":2,"alpine-avalanche":1,"eagle-sharpshooter":2}, hqHp:280, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"] },
+    ]},
+  { id:"r15", unlockAfter:"m21", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r16", unlockAfter:"r15", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r17", unlockAfter:"r16", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r18", unlockAfter:"r17", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
@@ -13992,6 +14027,18 @@ const CONQUEST_MAPS = [
   // Map 1, Clovermead (2026-10-12, user: "the first map with the otters ... is map 0, not 1 ... If it doesnt fit with our
   // previous map plans, than add a new map between this map 1 and the current map 2"): the Outskirts became Map 0 and this
   // meadow sits between it and Thistlewood, so every later map keeps its number. Easy fights built from Base cards.
+  // Tutorial (2026-10-13, user: "Put T-0 and T-1 in a submap, called Tutorial. Add a T-2 there ... The reward is 1 pack ... BR >50.
+  // Then add a T-4 there ... much harder, at BR>120. For T-3, a new tutorial: challenges give more rewards, and if you get hit,
+  // the less HP you lose, the higher your rank. Some card rewards are only unlocked at S"). New players start here; Map 0
+  // opens once T-1 is won. T-2 to T-4 are optional, for later. Their decks are placeholders for you to edit.
+  { id:"mtut", sub:true, parent:"m1", entry:{x:7, y:80, label:"Tutorial"}, name:"Tutorial", icon:"🎓", blurb:"Where every road starts. Come back later: the last three fights here are not gentle.", sequential:true,
+    nodes: [
+      { key:"tutorial", kind:"tutorial", stage:1, name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics.", requires:[], fixedPos:{x:16, y:64} },
+      { key:"tutorial2", kind:"tutorial", stage:2, name:"Tutorial II", icon:"🎓", hqHp:20, flavor:"Your leader joins you. Clear it to open the Outskirts.", requires:["tutorial"], fixedPos:{x:34, y:40} },
+      { key:"t-2", code:"T-2", kind:"skirmish", name:"The Odd Lot", icon:"🃏", deck:{"bee-knight":2,"dynamite-packrat":2,"helmeted-otter":2,"caustic-scorpion":2,"gull-thief":2,"rockslide-ram":2,"pufferfish-bulwark":2,"toucan-courier":2}, hqHp:90, firstPack:"bronze", flavor:"A travelling show of the strangest cards on the road. Win and they pay you in a pack.", requires:["tutorial2"], fixedPos:{x:52, y:62} },
+      { key:"t-3", code:"T-3", kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":3,"otter-paddler":3,"meadow-rabbit":3,"pond-trout":3,"worker-ant":3,"ant-scout":3}, hqHp:60, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["t-2"], fixedPos:{x:68, y:38} },
+      { key:"t-4", code:"T-4", kind:"elite", name:"The Final Exam", icon:"🎓", deck:{"alpine-avalanche":2,"cathedral-eagle":1,"rockslide-ram":2,"glacier-yak":2,"snow-owl-sentinel":2,"scree-goat":2,"eagle-sharpshooter":2,"peak-condor":2}, hqHp:220, flavor:"Nobody passes this one by accident.", requires:["t-3"], fixedPos:{x:86, y:58} },
+    ]},
   { id:"mq", sub:true, parent:"mf", entry:{x:36, y:26, after:"f-1", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
       { key:"q-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"harvest-mouse":2,"pigeon-peon":2}, hqHp:12, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
@@ -14039,7 +14086,7 @@ const CONQUEST_MAPS = [
   // deeper and faster ... Like sunken boat (from the otters, probably). Unlocked after defeating the boss of that map"): an otter
   // ferry that went down past the reef wall. Darker (night all through) and faster (First Blood: the first Quick unit to swing
   // each round hits +2). Electric eels and the Goliath's brood live in the wreck.
-  { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"7-9", label:"A mast below the reef"}, name:"The Sunken Ferry", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
+  { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"7-9", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
     nodes: [
       { key:"j-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"inkcloud-squid":3,"riptide-eel":3,"clownfish-scout":2,"coral-current-eel":2}, hqHp:110, rules:{phase:"night", firstBlood:2}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
       { key:"j-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"moray-ambusher":2,"voltaic-eel":2,"inkcloud-squid":2,"tide-pool-crab":2,"coral-current-eel":2}, hqHp:120, rules:{phase:"night", firstBlood:2}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["j-1"] },
@@ -14415,7 +14462,7 @@ const MAP_BIOMES = {
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
 };
-const MAP_BIOME_OF = {mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -15235,13 +15282,11 @@ let conquestDeckShowOverride = {};
 // than leaving 1-1 permanently unreachable.
 function ensureTutorialMarkersComplete(progress){
   if(!loadTutorialDone()) return progress;
-  const m1 = CONQUEST_MAPS.find(m=>m.id==='m1');
-  if(!m1) return progress;
   let changed = false;
-  m1.nodes.filter(n=>n.kind==='tutorial').forEach(n=>{
-    const id = conquestNodeId(m1.id, n.key);
+  CONQUEST_MAPS.forEach(mp=> mp.nodes.filter(n=> n.kind==='tutorial' && (n.stage === 2 ? loadTutorial2Done() : true)).forEach(n=>{
+    const id = conquestNodeId(mp.id, n.key);
     if(!progress.completed.includes(id)){ progress.completed.push(id); changed = true; }
-  });
+  }));
   if(changed) saveConquestProgress(progress);
   return progress;
 }
@@ -15554,7 +15599,39 @@ function maybeOfferDeckSwap(){
     ov.querySelector('.ds2-focus').classList.add('is-swapped');
     setTimeout(()=>{ try{ showToast(`🃏 ${d.name} is in your deck, in place of ${od.name}.`, 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 1300); };
 }
+// Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"): ↑ the next map, ↓ the one
+// before (or out of a side map). Only on the open map, never while typing, in a fight or over a window.
+let conquestKeyNav = null;
+document.addEventListener('keydown', e=>{
+  if(e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
+  const k = conquestKeyNav; if(!k || typeof currentTab === 'undefined' || currentTab !== 'play' || playSubTab !== 'conquest') return;
+  if((typeof matchState !== 'undefined' && matchState && !matchState.over) || conquestLayoutEdit || conquestLinkEdit) return;
+  const t = e.target; if(t && (t.closest && t.closest('input, textarea, select, [contenteditable="true"]'))) return;
+  if(!document.getElementById('conquestCanvas') || document.querySelector('.modal-overlay:not([hidden]) .modal, .ds2-overlay, .lumber-lesson, .po2-stage, .winloss-overlay')) return;
+  const go = e.key === 'ArrowUp' ? k.next : k.prev; if(!go || !isMapUnlocked(go, loadConquestProgress())) return;
+  e.preventDefault();
+  if(k.map.sub) leaveSubMap(k.map, k.body); else conquestPanTo(go.id, k.body, k.progress);
+});
+// The Sweep menu: how many runs, and the Idle-Sweep switch.
+function openSweepMenu(anchor, map, node, energyCost, body){
+  document.getElementById('sweepMenu')?.remove();
+  const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
+  const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
+  const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Sweep');
+  m.innerHTML = `<div class="sm-q">🧹 How many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
+    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Idle-Sweep here</label>` : ''}</div>`;
+  document.body.appendChild(m);
+  const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
+  const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
+  const away = e=>{ if(!m.contains(e.target) && e.target !== anchor) close(); };
+  setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
+  m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Sweeping…';
+    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(r2) showToast(`🧹 ${r2.played} sweep${r2.played===1?'':'s'}: ${r2.wins} won · +${r2.gold} Maple Leaves${r2.dust ? ' · +' + r2.dust + ' Dust' : ''}`, r2.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); });
+  const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? '🌙 Idle-Sweep set: spare Energy goes here while you are away.' : 'Idle-Sweep off.', 'ok'); };
+}
 function renderConquestSubTab(body){
+  // Until Tutorial II is won, the road starts in the Tutorial side map (2026-10-13).
+  if(!loadTutorial2Done() && !adminModeEnabled && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   setTimeout(maybeOfferDeckSwap, 600);
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
@@ -15580,9 +15657,9 @@ function renderConquestSubTab(body){
   const worldOpen = worldRevealed();
   if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast('🧭 The world opens up: every map you can reach is on the left, and the 🧭 shows them all.', 'ok'); SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
-  document.body.classList.toggle('cq-opening', !loadTutorial2Done() && conquestSelectedMap==='m1' && !adminModeEnabled);
+  document.body.classList.toggle('cq-opening', !loadTutorial2Done() && (conquestSelectedMap==='m1' || conquestSelectedMap==='mtut') && !adminModeEnabled);
   body.innerHTML = `
-    <div class="conquest-layout ${worldOpen ? '' : 'world-hidden'} ${(!loadTutorial2Done() && conquestSelectedMap==='m1') ? 'is-opening' : ''}" id="conquestLayout">
+    <div class="conquest-layout ${worldOpen ? '' : 'world-hidden'} ${(!loadTutorial2Done() && (conquestSelectedMap==='m1' || conquestSelectedMap==='mtut')) ? 'is-opening' : ''}" id="conquestLayout">
       <div class="conquest-maps" id="conquestMapList"></div>
       <div class="conquest-main" id="conquestMain"></div>
     </div>
@@ -15703,7 +15780,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
-      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${mapCuriositiesHTML(map)}`}${tutPhase ? '' : `${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}`}
+      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${map.id==='mn' ? mapCampfireHTML() : ''}${mapCuriositiesHTML(map)}`}${tutPhase ? '' : `${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}`}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -15791,6 +15868,7 @@ function renderConquestSubTab(body){
     const edge = (m, side)=>{ if(!m) return ''; const open = isMapUnlocked(m, progress), lbl = (map.sub ? 'Climb back out to ' : side==='left' ? 'Back to ' : 'On to ') + m.name + (open ? '' : ' (locked)');
       const editing = !!(conquestLayoutEdit || conquestLinkEdit);
       return `<button type="button" class="world-edge world-edge-${side} ${open?'':'is-locked'} ${editing?'is-editing':''}" ${open && !editing?`data-world-go="${m.id}"`:'disabled'} title="${escapeAttr(lbl)}" aria-label="${escapeAttr(lbl)}">${side==='left'?'<b aria-hidden="true">‹</b>':''}<span aria-hidden="true">${open?m.icon:'🔒'}</span>${side==='right'?'<b aria-hidden="true">›</b>':''}</button>`; };
+    conquestKeyNav = {map, body, progress, prev, next};
     if(canvasEl){
       canvasEl.insertAdjacentHTML('beforeend', edge(prev,'left') + edge(next,'right'));
       canvasEl.querySelectorAll('[data-world-go]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(map.sub) leaveSubMap(map, body); else conquestPanTo(b.dataset.worldGo, body, progress); }));
@@ -15928,9 +16006,10 @@ function renderConquestSubTab(body){
     panelEl.innerHTML = `
       ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
       ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
-      ${selectedNode.virtual ? '' : `<button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>`}
-      ${!selectedNode.virtual && done && sweepAllowed(map.id, selectedNode.key) ? (()=>{ const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))); const idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === selectedNode.key;
-        return `<div class="cnp-sweep" title="Sweep: the CPU plays this fight for you several times. Each run costs ${energyCost}⚡; a win pays the clear-again reward."><label>🧹 Sweep <select id="cnpSweepN" ${most ? '' : 'disabled'}>${Array.from({length: Math.max(1, most)}, (_, i)=> `<option value="${i+1}" ${i+1 === most ? 'selected' : ''}>${i+1}×</option>`).join('')}</select></label><button type="button" class="btn small" id="cnpSweepBtn" ${most ? '' : 'disabled'}>Sweep</button>${autoTier('idleSweep') ? `<label class="cnp-idle"><input type="checkbox" id="cnpIdleSweep" ${idleHere ? 'checked' : ''}> Idle-Sweep here</label>` : ''}</div>`; })() : ''}
+      ${selectedNode.virtual ? '' : (()=>{ const canSweep = done && sweepAllowed(map.id, selectedNode.key);
+        // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
+        // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Sweep: the CPU plays this fight for you. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Sweep</button>` : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
@@ -15948,6 +16027,7 @@ function renderConquestSubTab(body){
     wireRewardZoom(panelEl);
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
+    { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
     { const sb = document.getElementById('cnpSweepBtn'); if(sb) sb.addEventListener('click', ()=>{ const n = Number((document.getElementById('cnpSweepN')||{}).value)||1; sb.disabled = true; sb.textContent = 'Sweeping…';
         setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); if(r) showToast(`🧹 ${r.played} sweep${r.played===1?'':'s'}: ${r.wins} won · +${r.gold} Maple Leaves${r.dust ? ' · +' + r.dust + ' Dust' : ''}`, r.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); }); }
     { const ib = document.getElementById('cnpIdleSweep'); if(ib) ib.addEventListener('change', ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, selectedNode.key); showToast(ib.checked ? '🌙 Idle-Sweep set: spare Energy goes here while you are away.' : 'Idle-Sweep off.', 'ok'); }); }
@@ -20894,7 +20974,7 @@ function renderMatchUI(){
     // win also offers the map. A first win still hands over the rewards and the starter deck on the way.
     { const tb = document.getElementById('wlTutMapBtn'); if(tb) tb.addEventListener('click', ()=>{ const pick = m.tutorialFaction || loadFactionChoice() || 'both', first = !loadTutorialDone() && !m.adminTest && !m.tutorialReplay;
       endMatch(); if(first){ try{ claimTutorialWin(pick); }catch(e){} }
-      conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); if(!loadTutorial2Done()) try{ guideToTutorial2(); }catch(e){} }); }
+      conquestSelectedMap = loadTutorial2Done() ? 'm1' : 'mtut'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); if(!loadTutorial2Done()) try{ guideToTutorial2(); }catch(e){} }); }
     document.getElementById('wlPrimaryBtn').addEventListener('click', ()=>{
       const mode=m.mode;
       if(mode==='tutorial'){
@@ -26195,6 +26275,12 @@ function maybeShowCoachTip(){
   const m = matchState;
   try{ tutorialAllyRemarks(m); }catch(e){}
   try{ if(m && !m.resolving && m.mode !== 'tutorial') lumberDrawNudges(m); }catch(e){}
+  // T-3's lesson (2026-10-13): tougher fights pay more; the less your Castle loses, the higher your rank; some cards need S.
+  try{ if(m && !m.over && !m.resolving && !coachOpen && m.conquestNode){ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId), nd = fn && fn.node;
+    if(nd && nd.lesson === 'rank'){
+      if(!coachSeen.has('rank-pay')){ const el = hqTileEl('B'); if(el){ showCoachTip({id:'rank-pay', text:'🏅 Tougher fights pay more. Elites and bosses give bigger rewards than plain skirmishes.', anchor:()=> hqTileEl('B')}, el); return; } }
+      const me = m.players[1].hq; if(!coachSeen.has('rank-hp') && me.hp < me.maxHp){ const el = hqTileEl('A'); if(el){ showCoachTip({id:'rank-hp', text:'🛡️ The less health your Castle loses, the higher your rank. Some card rewards only unlock at rank S.', anchor:()=> hqTileEl('A')}, el); return; } }
+    } } }catch(e){}
   if(!m || m.over || !COACH_MODES.has(m.mode) || m.resolving || coachOpen) return;
   // 1) guided tutorial steps take priority, in order
   const g = guidedStepActive(m);
@@ -29765,7 +29851,7 @@ function forgeMateriaBenchHTML(){
 }
 function wireForgeMateriaBench(root){
   root.querySelectorAll('[data-fmb]').forEach(b=>{ if(b._fmb) return; b._fmb = 1; b.addEventListener('click', ()=>{
-    if(b.dataset.fmb === 'hero'){ deckHeroView = true; switchTab('deck'); return; }
+    if(b.dataset.fmb === 'hero'){ switchTab(tabOpen('stomp') ? 'stomp' : 'deck'); return; }
     if(b.dataset.fmb === 'open' || b.dataset.fmb === 'close'){ forgeBenchOpen = b.dataset.fmb === 'open'; renderForge(); return; }
     if(craftMateria()) renderForge();
   }); });
@@ -30762,6 +30848,13 @@ var deckOpenBuilderOnce = false; // set by buttons that should land in the build
 let deckShowList = true; // D16 (2026-10-03): Deck opens straight into the active deck's builder; "Manage decks" shows the list
 // ---- The Hero Hall (Deck → 🦸 Hero) ----
 let heroCreatePeople = 'legion';
+// The Hero Hall lives in the Stomping Grounds now (2026-10-13); it redraws whichever page it's on.
+function heroHallRerender(){ if(typeof currentTab !== 'undefined' && currentTab === 'stomp') renderStomp(); else renderDeckSection(); }
+function renderStomp(){
+  const root = document.getElementById('view-stomp'); if(!root) return;
+  root.innerHTML = `<div class="stomp-scene"><div class="panel stomp-head"><h2>🐾 Stomping Grounds</h2><p class="panel-sub">Where heroes train. Level yours, spend its points and pick its skills.</p></div><div id="stompBody"></div></div>`;
+  renderHeroHall(document.getElementById('stompBody'));
+}
 function renderHeroHall(body){
   if(!body) return;
   if(!myHero){
@@ -30779,7 +30872,7 @@ function renderHeroHall(body){
       const name = (document.getElementById('heroNameInput').value || '').trim().slice(0, 24) || HERO_PEOPLES[heroCreatePeople].label;
       myHero = {people: heroCreatePeople, name, xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0, created: Date.now()};
       saveHero(); showToast(`🦸 ${escapeHtml(name)} joins your cause. Add them to your deck to start earning XP.`, 'ok');
-      renderDeckSection();
+      heroHallRerender();
     });
     return;
   }
@@ -30826,17 +30919,17 @@ function renderHeroHall(body){
   body.querySelectorAll('[data-hstat]').forEach(b=> b.addEventListener('click', ()=>{
     const k = b.dataset.hstat, dir = +b.dataset.dir;
     if(dir > 0 && heroPointsFree(myHero) < HERO_COSTS[k]) return;
-    myHero.alloc[k] = Math.max(0, myHero.alloc[k] + dir); saveHero(); renderDeckSection();
+    myHero.alloc[k] = Math.max(0, myHero.alloc[k] + dir); saveHero(); heroHallRerender();
   }));
-  body.querySelectorAll('[data-hpick]').forEach(b=> b.addEventListener('click', ()=>{ myHero.picks[b.dataset.hpick] = b.dataset.skill; saveHero(); showToast(`🦸 Learned ${escapeHtml(heroSkillDef(b.dataset.skill).label)}.`, 'ok'); renderDeckSection(); }));
-  const rs = document.getElementById('heroRespecBtn'); if(rs) rs.addEventListener('click', ()=>{ myHero.alloc = {atk:0,hp:0,speed:0}; saveHero(); renderDeckSection(); });
+  body.querySelectorAll('[data-hpick]').forEach(b=> b.addEventListener('click', ()=>{ myHero.picks[b.dataset.hpick] = b.dataset.skill; saveHero(); showToast(`🦸 Learned ${escapeHtml(heroSkillDef(b.dataset.skill).label)}.`, 'ok'); heroHallRerender(); }));
+  const rs = document.getElementById('heroRespecBtn'); if(rs) rs.addEventListener('click', ()=>{ myHero.alloc = {atk:0,hp:0,speed:0}; saveHero(); heroHallRerender(); });
   document.getElementById('heroDeckBtn').addEventListener('click', ()=>{
     if(inDeck){ delete myDeckCounts[HERO_ID]; }
     else { myDeckCounts[HERO_ID] = 1; if(deckTotal(myDeckCounts) > DECK_SIZE){ deckHeroView = false; showToast(`🦸 Your Hero takes a deck slot — take one card out to get back to ${DECK_SIZE}.`); } }
     try{ saveMyDeck(); }catch(e){ try{ syncActiveDeckFromCounts && syncActiveDeckFromCounts(); }catch(_){} }
-    renderDeckSection();
+    heroHallRerender();
   });
-  document.getElementById('heroCraftBtn').addEventListener('click', ()=>{ if(craftMateria()) renderDeckSection(); });
+  document.getElementById('heroCraftBtn').addEventListener('click', ()=>{ if(craftMateria()) heroHallRerender(); });
   heroHallLevelFlourish(body);
 }
 function addTentPoles(root){ if(root && !root.querySelector(':scope > .tent-pole')) root.insertAdjacentHTML('afterbegin', '<span class="tent-pole left" aria-hidden="true"></span><span class="tent-pole right" aria-hidden="true"></span>'); }
@@ -30861,9 +30954,7 @@ function renderDeckSection(){
         </div>
         <div class="play-subtabs-actions">
           ${deckEditingId===mainDeckId ? '<span class="deck-main-tag" title="You play with this deck">★ Main deck</span>' : '<button type="button" class="btn small" id="deckMakeMainBtn" title="Play with this deck">★ Make main deck</button>'}
-          <button type="button" class="btn small ${deckHeroView?'primary':'ghost'} hero-hall-btn" id="deckHeroBtn" title="Your Hero — level it, spend its points, pick its skills">🦸 Hero${myHero && heroPointsFree(myHero)>0 ? '<span class="hero-dot" aria-label="points to spend"></span>' : ''}</button>
           <button type="button" class="btn small ghost" id="deckManageBtn" title="Rename, copy codes, import or delete decks">🗂 Manage decks</button>
-          <button type="button" class="btn small ghost" id="deckEditorToCodexBtn" title="Go to Codex">📇 Codex</button>
         </div>
       </div>
       <div id="deckBuilderBody"></div>`;
@@ -30876,11 +30967,8 @@ function renderDeckSection(){
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
     document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
-    document.getElementById('deckEditorToCodexBtn').addEventListener('click', ()=> switchTab('codex'));
 
-    document.getElementById('deckHeroBtn').addEventListener('click', ()=>{ deckHeroView = !deckHeroView; renderDeckSection(); });
-    if(deckHeroView) renderHeroHall(document.getElementById('deckBuilderBody'));
-    else renderPlayerSubTab(document.getElementById('deckBuilderBody'));
+    renderPlayerSubTab(document.getElementById('deckBuilderBody'));
     return;
   }
   endDeckDraft();
@@ -30898,7 +30986,7 @@ function renderDeckSection(){
            it up onto this row instead, using the exact same .play-subtabs-row/.play-subtabs-actions
            space-between pattern renderPlay() already uses for its own Energy-pill/Settings actions,
            so it now sits genuinely right-aligned and only shows on the "My Decks" sub-tab. -->
-      <div class="play-subtabs-actions">${deckSubTab==='list' ? `<button type="button" class="btn small ghost hero-hall-btn" id="deckHeroBtn" title="Your Hero — level it, spend its points, pick its skills">🦸 Hero${myHero && heroPointsFree(myHero)>0 ? '<span class="hero-dot" aria-label="points to spend"></span>' : ''}</button><button type="button" class="btn small ghost" id="deckToCodexBtn" title="Go to Codex">📇 Codex</button>` : ''}</div>
+      <div class="play-subtabs-actions"></div>
     </div>
     <div id="deckSubBody"></div>`;
   root.querySelectorAll('[data-decktab]').forEach(b=> b.addEventListener('click', ()=>{ deckSubTab = b.getAttribute('data-decktab'); renderDeckSection(); }));
@@ -30911,10 +30999,10 @@ function renderDeckSection(){
   if(deckSubTab==='sim'){ body.innerHTML = '<div id="view-sim"></div>'; renderSim(); return; }
   renderDeckListTab(body);
 }
-let deckListView = (()=>{ try{ return localStorage.getItem('bramblewood_deck_view') || 'large'; }catch(e){ return 'large'; } })();
+let deckListView = 'medium'; // 2026-10-13 (user: "By default, deck editor shows decks in 'Medium'. Remove the 'Large vs Medium' option")
 function renderDeckListTab(body){
   body.innerHTML = `<div class="panel"><div class="dl-head"><h2>🃏 My Decks</h2>
-      <div class="tk-seg dl-view" role="group" aria-label="Deck view"><button type="button" class="tk-speed-btn ${deckListView==='large'?'is-on':''}" data-deckview="large" aria-pressed="${deckListView==='large'}">Large</button><button type="button" class="tk-speed-btn ${deckListView==='medium'?'is-on':''}" data-deckview="medium" aria-pressed="${deckListView==='medium'}">Medium</button></div></div>
+</div>
       <p class="panel-sub">Your ★ main deck is the one you play with. Decks can hold any number of cards while you build; only a ${DECK_SIZE}-card deck can be played.</p>
       <div class="deck-menu-grid ${deckListView==='medium'?'is-medium':''}" id="deckMenuGrid"></div>
       <div class="deck-menu-bottom-actions">
@@ -31333,6 +31421,24 @@ function renderShopShelves(grid, signedIn){
 }
 let shopTab = 'packs';
 let shopCameFrom = null, pageCameFrom = null;
+const PAGE_SHORTCUTS = [
+  {key:'deck', icon:'⛺', name:'Armoury', open:()=> tabOpen('deck'), go:()=> switchTab('deck'), here:t=> t==='deck'},
+  {key:'stomp', icon:'🐾', name:'Stomping Grounds', open:()=> tabOpen('stomp'), go:()=> switchTab('stomp'), here:t=> t==='stomp'},
+  {key:'codex', icon:'📖', name:'Codex', open:()=> tabOpen('codex'), go:()=>{ codexSubTab = 'browse'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab !== 'forge'},
+  {key:'forge', icon:'🔨', name:'Forge', open:()=> tabOpen('forge'), go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab === 'forge'},
+  {key:'nest', icon:'🪺', name:'Nest', open:()=> tabOpen('nest'), go:()=> switchTab('nest'), here:t=> t==='nest'},
+  {key:'inventory', icon:'🎒', name:'Inventory', open:()=> tabOpen('inventory'), go:()=> switchTab('inventory'), here:t=> t==='inventory'},
+];
+function refreshPageBar(tab){
+  tab = tab || (typeof currentTab !== 'undefined' ? currentTab : 'home');
+  const bar = document.getElementById('pageBackBar'); if(!bar) return;
+  const FEATURE = !['home','play','admin'].includes(tab); bar.hidden = !FEATURE; if(!FEATURE){ bar.innerHTML = ''; return; }
+  const c = pageCameFrom, back = c && c.tab === 'play' ? 'Back to the map' : c && c.tab !== 'home' && c.tab !== tab ? 'Back' : 'Home';
+  const sc = PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } });
+  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="Places">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">↩</button>`;
+  bar.querySelectorAll('[data-pbsc]').forEach(b=> b.onclick = ()=>{ const x = PAGE_SHORTCUTS.find(y=> y.key === b.dataset.pbsc); if(x && !x.here(tab)) x.go(); });
+  bar.querySelector('#pageBackBtn').onclick = ()=>{ const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
+}
 function shopBackHTML(){
   const c = shopCameFrom; if(!c || c.tab === 'shop' || c.tab === 'home') return ''; // 2026-10-13 UI audit: the header's Home already does this
   const lbl = c.tab === 'play' && c.sub === 'conquest' ? 'Back to the map' : c.tab === 'home' ? 'Back home' : 'Back';
@@ -32166,6 +32272,7 @@ function grantFreePack(id, n){ const o = loadFreePacks(); o[id] = (o[id]|0) + (n
 function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const e = map.nodes.find(n=> n.ender); if(e) return e.key; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
   if(!isFirstClear) return null;
+  { const m0 = CONQUEST_MAPS.find(m=> m.id === mapId), n0 = m0 && m0.nodes.find(n=> n.key === nodeKey); if(n0 && n0.firstPack){ grantFreePack(n0.firstPack, 1); return n0.firstPack; } } // a skirmish can pay a pack (T-2, 2026-10-13)
   const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
   const pid = MAP_FREE_PACKS[idx], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
   grantFreePack(pid, 1);
@@ -32983,7 +33090,7 @@ function applyPendingMapReset(){
     try{ localStorage.setItem(NAME_CHOSEN_KEY, '1'); }catch(e){}
     if(job.n >= 2){ try{ localStorage.setItem(PITCH_OPEN_KEY, '1'); }catch(e){} }
     const maps = mainConquestMaps().filter((m, i)=> i < job.n), p = loadConquestProgress();
-    CONQUEST_MAPS.filter(m=> m.id === 'm1').forEach(m=> m.nodes.filter(nd=> nd.kind === 'tutorial').forEach(nd=>{ const id = conquestNodeId(m.id, nd.key); if(!p.completed.includes(id)) p.completed.push(id); }));
+    CONQUEST_MAPS.forEach(m=> m.nodes.filter(nd=> nd.kind === 'tutorial').forEach(nd=>{ const id = conquestNodeId(m.id, nd.key); if(!p.completed.includes(id)) p.completed.push(id); }));
     let cards = 0;
     maps.forEach(m=> m.nodes.filter(nd=> nd.kind !== 'tutorial').forEach(nd=>{ const id = conquestNodeId(m.id, nd.key); if(!p.completed.includes(id)) p.completed.push(id); p.ranks[id] = 'S';
       nodeRewardCardIds(m.id, nd.key).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) cards++; }catch(e){} }); markCardRewardsClaimed(id); }));
@@ -33653,13 +33760,13 @@ function switchTab(tab){
       if(v){ v.classList.remove('view-turn-fwd','view-turn-back'); void v.offsetWidth; v.classList.add('view-turn-' + dir); setTimeout(()=> v.classList.remove('view-turn-' + dir), 420); }
     }
   }catch(e){}
-  // In-page Back (2026-10-13, user: "Feature pages (Nest, Forge, etc.) need a prominent in-page Back button, not in the header;
-  // testers couldn't exit"): every page but Home, the map and Admin opens with a big ← Back to where you came from.
-  { const bar = document.getElementById('pageBackBar'), FEATURE = !['home','play','admin'].includes(tab);
+  // In-page Back (2026-10-13, user: "Feature pages (Nest, Forge, etc.) need a prominent in-page Back button"; then "Make the Back
+  // button more inline with the page itself ... on the same row as the title like 'Armoury', but on the far right? With no
+  // text, just a return indicator. The Hero, Codex, Forge and Nest etc should have shortcuts to each other"): one row at the
+  // top right of every page off the map: shortcuts to the other places you've opened, then ↩.
+  { const FEATURE = !['home','play','admin'].includes(tab);
     if(FEATURE && currentTabBeforeSwitch && currentTabBeforeSwitch !== tab && !['admin'].includes(currentTabBeforeSwitch)) pageCameFrom = {tab:currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null)};
-    if(bar){ bar.hidden = !FEATURE; const b = document.getElementById('pageBackBtn');
-      if(b){ const c = pageCameFrom; b.textContent = c && c.tab === 'play' ? '← Back to the map' : c && c.tab !== 'home' && c.tab !== tab ? '← Back' : '← Home';
-        b.onclick = ()=>{ const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); }; } } }
+    refreshPageBar(tab); }
   document.getElementById('view-home').hidden = tab!=='home';
   document.getElementById('view-codex').hidden = tab!=='codex';
   document.getElementById('view-play').hidden = tab!=='play';
@@ -33672,6 +33779,7 @@ function switchTab(tab){
   { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
   { const vp = document.getElementById('view-paths'); if(vp) vp.hidden = tab!=='paths'; }
   { const vi = document.getElementById('view-inventory'); if(vi) vi.hidden = tab!=='inventory'; }
+  { const vs = document.getElementById('view-stomp'); if(vs) vs.hidden = tab!=='stomp'; }
   document.getElementById('view-guild').hidden = tab!=='guild';
   { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
   document.getElementById('view-admin').hidden = tab!=='admin';
@@ -33696,6 +33804,7 @@ function switchTab(tab){
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
   if(tab==='inventory') safeRender('Inventory', renderInventory);
+  if(tab==='stomp') safeRender('Stomp', renderStomp);
   if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);

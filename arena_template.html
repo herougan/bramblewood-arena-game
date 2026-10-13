@@ -1508,7 +1508,7 @@
   /* Terrain (2026-10-12): the field pill (top-left), its tooltip, the intro banner, the volcano's lava glow and geyser */
   .terrain-pill{position:absolute; top:14px; left:12px; z-index:31; display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:999px; border:1px solid rgba(255,255,255,.35); background:rgba(28,22,14,.72); color:#fff6dc; font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:12.5px; cursor:help; box-shadow:0 2px 8px rgba(0,0,0,.35);}
   .fcr-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;} .fcr{display:flex; flex-direction:column; gap:1px;} .fcr-h{font-weight:800;} .fcr-t{font-weight:500;}
-  .fcr.is-unknown .fcr-h{opacity:.85;} .fcr-q{display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background:rgba(120,100,60,.25); font-weight:800;}
+  .fcr.is-unknown .fcr-h{opacity:.85;} .fcr.is-unknown{flex-direction:row; align-items:center; gap:8px;} /* 2026-10-13: the (?) sits right of the name */ .fcr-q{display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background:rgba(120,100,60,.25); font-weight:800;}
   .fcr-new{display:inline-block; padding:0 6px; border-radius:999px; background:#e8b23a; color:#2b1d05; font-size:11px;} .terrain-pill.has-new .tp-head::after{content:' •'; color:#ffd76a;}
   .cnp-field{margin:6px 0; padding:8px 10px; border-radius:10px; background:rgba(110,90,50,.1); font-size:13px;} .cnp-field-k{display:block; margin-bottom:4px;}
   .terrain-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
@@ -1562,6 +1562,7 @@
   .battlefield.map-m8{background:radial-gradient(ellipse at 50% 20%, #5f6b3a, transparent 65%), linear-gradient(180deg, #3d4526 0%, #2a3019 55%, #191c0f 100%);}
   .battlefield.map-m9{background:radial-gradient(ellipse at 50% 12%, #f0682e, transparent 55%), linear-gradient(180deg, #4a1e14 0%, #2c130d 55%, #170a07 100%);}
   .battlefield.map-m10{background:radial-gradient(ellipse at 50% 12%, #eef4fb, transparent 55%), linear-gradient(180deg, #a9c4dd 0%, #6f8faf 55%, #3f5872 100%);}
+  .battlefield.map-m21{background:radial-gradient(ellipse at 50% 10%, #fff3ea, transparent 55%), linear-gradient(180deg, #d9dfeb 0%, #a7aec0 55%, #6b7286 100%);}
   .battlefield.map-m11{background:radial-gradient(ellipse at 50% 12%, #b04f6b, transparent 55%), linear-gradient(180deg, #3a1d34 0%, #241426 55%, #130b17 100%);}
   /* 2026-09-30, battlefield background picker (queued backlog item, "extremely undistracting"
      calm option): unlike the 11 biome themes above, this one IS theme-adaptive (built from
@@ -2831,7 +2832,7 @@
   .dialogue-dock.is-peek .dlg-lines, .dialogue-dock.is-dragging .dlg-lines{opacity:.14;}
   .dialogue-dock.is-dragging .dlg-reply{pointer-events:none;}
   .dlg-hide, .dlg-chip{pointer-events:auto; border:0; cursor:pointer; font-family:'Baloo 2'; font-weight:800; color:#2b2117; background:#fff8e6; box-shadow:0 4px 12px rgba(0,0,0,.35);}
-  .dlg-hide{display:none; position:absolute; right:calc(4% - 10px); top:-10px; z-index:2; width:26px; height:26px; border-radius:50%; font-size:14px; line-height:26px; padding:0;}
+  .dlg-hide{display:none; position:absolute; right:calc(4% - 16px); top:-10px; z-index:2; width:26px; height:26px; border-radius:50%; font-size:14px; line-height:26px; padding:0;}
   .dialogue-dock.has-lines:not(.is-collapsed) .dlg-hide{display:block;}
   .dlg-chip{display:none; align-self:flex-start; border-radius:999px; padding:4px 10px; font-size:16px; gap:4px; align-items:center;}
   .dlg-chip b{font-size:11px; background:#c9853a; color:#fff; border-radius:999px; padding:0 6px;}
@@ -3094,41 +3095,17 @@
   .hand-strip .card-tile .lumber-nudge{position:absolute; left:50%; top:-14px; transform:translateX(-50%); z-index:8; white-space:nowrap; pointer-events:none; background:#7a4a1c; color:#fff; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:4px 8px; border-radius:999px; box-shadow:0 2px 6px rgba(0,0,0,.4); animation:lnudge 3.6s ease both;}
   @keyframes lnudge{0%{opacity:0; transform:translate(-50%,6px);} 10%,80%{opacity:1; transform:translate(-50%,0);} 100%{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .lumber-lesson .ll-spare, .lumber-lesson .ll-cost, .hand-strip .card-tile .lumber-nudge{animation:none;} }
-  /* In-page Back (2026-10-13, user: testers couldn't leave the Nest, Forge and the rest) */
-  .page-back-bar{display:flex; margin:0 0 10px;}
-  .page-back-btn{font:800 17px/1 'Baloo 2',system-ui,sans-serif; padding:10px 18px 9px; border-radius:999px; background:#fff8e6; color:#2b2117; border:0; box-shadow:0 0 0 2px #c9853a, 0 4px 12px rgba(0,0,0,.3); cursor:pointer;}
-  .page-back-btn:hover{background:#ffe9b8;}
-  body:has(#shopBackBtn) .page-back-bar{display:none;}
-  /* Deck swap (2026-10-13) */
-  .ds2-overlay{position:fixed; inset:0; z-index:1250; display:grid; place-items:center; padding:16px; background:rgba(10,7,3,.7); animation:llIn .3s ease both;}
-  .ds2-overlay.is-out{opacity:0; transition:opacity .25s;}
-  .ds2{background:#fff8e6; color:#2b2117; border-radius:18px; padding:16px 18px; width:min(420px, 100%); box-shadow:0 0 0 3px #c9853a, 0 18px 40px rgba(0,0,0,.5); display:flex; flex-direction:column; align-items:center; gap:12px; animation:llPop .4s cubic-bezier(.3,1.5,.5,1) both;}
-  .ds2-stage{width:100%; overflow:hidden; padding:30px 0 6px;}
-  .ds2-strip{display:flex; justify-content:center; align-items:flex-end; gap:6px;}
-  .ds2 .card-tile{width:78px !important; height:98px !important; margin:0; font-size:9px; pointer-events:none;}
-  .ds2-side{opacity:.55; animation:ds2SideL .9s calc(.5s + var(--k) * .12s) ease-in both;}
-  .ds2-side.is-right{animation-name:ds2SideR;}
-  @keyframes ds2SideL{from{opacity:.55; transform:none;} to{opacity:0; transform:translateX(-60px) scale(.85);}}
-  @keyframes ds2SideR{from{opacity:.55; transform:none;} to{opacity:0; transform:translateX(60px) scale(.85);}}
-  .ds2-focus{position:relative; width:78px; height:98px; flex:0 0 auto; margin:0 6px;}
-  .ds2-old, .ds2-new{position:absolute; inset:0; transition:transform .6s cubic-bezier(.5,0,.3,1), opacity .5s ease, filter .5s;}
-  .ds2-old{box-shadow:0 0 0 3px #e0703a; border-radius:10px; animation:ds2Focus 1.2s .9s ease-in-out 2;}
-  @keyframes ds2Focus{50%{transform:scale(1.08);}}
-  .ds2-new{transform:translate(70px,-26px) rotate(8deg) scale(.92); opacity:0; animation:ds2NewIn .5s 1.2s ease-out forwards;}
-  @keyframes ds2NewIn{to{opacity:1;}}
-  .ds2-arrows{position:absolute; right:-28px; top:50%; transform:translateY(-50%); font-size:20px; color:#c9853a; opacity:0; animation:ds2NewIn .4s 1.4s forwards;}
-  .ds2-focus.is-swapped .ds2-old{transform:translate(-70px, 30px) rotate(-10deg) scale(.8); opacity:0; filter:grayscale(1);}
-  .ds2-focus.is-swapped .ds2-new{animation:none; opacity:1; transform:none; box-shadow:0 0 0 3px #4caf50, 0 0 20px rgba(120,220,120,.8); border-radius:10px;}
-  .ds2-focus.is-swapped .ds2-arrows{display:none;}
-  .ds2-say{margin:0; text-align:center; font:600 15px/1.35 'Baloo 2',system-ui,sans-serif;} .ds2-say span{font-weight:500; opacity:.85;}
-  .ds2-actions{display:flex; gap:10px; align-items:center;}
-  @media (prefers-reduced-motion: reduce){ .ds2-side, .ds2-old, .ds2-new, .ds2-arrows{animation:none !important;} .ds2-new{opacity:1; transform:translate(70px,-26px) rotate(8deg) scale(.92);} .ds2-side{opacity:0;} }
-  .starter-step.is-compact{background:rgba(10,7,3,.72);}
-  .starter-step.is-compact .starter-modal{max-width:340px; padding:16px 18px; box-shadow:0 0 0 3px #c9853a, 0 18px 40px rgba(0,0,0,.5);}
-  .starter-step.is-compact h2{font-size:20px; margin:0 0 8px; text-align:center;}
-  .starter-step.is-compact .ss-grid{gap:8px; justify-content:center;}
-  .starter-step.is-compact .ss-card .card-tile{width:84px !important; height:105px !important; font-size:9.5px;}
-  .starter-step.is-compact .ss-foot{gap:12px;}
+  /* Page bar (2026-10-13): shortcuts to the other places, then ↩, on the title row at the far right */
+  .page-back-bar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin:0 0 10px; position:relative; z-index:20;}
+  .page-back-bar .pb-shortcuts{margin-right:auto;}
+  .page-back-bar .pb-shortcuts{display:flex; gap:4px; padding:3px; border-radius:999px; background:rgba(20,14,8,.45); box-shadow:inset 0 0 0 1px rgba(255,236,190,.2);}
+  .page-back-bar .pb-sc{display:inline-flex; align-items:center; gap:5px; border:0; cursor:pointer; padding:5px 10px; border-radius:999px; background:transparent; color:#fff8e6; font:800 13px 'Baloo 2',system-ui,sans-serif;}
+  .page-back-bar .pb-sc span{font-size:16px; line-height:1;}
+  .page-back-bar .pb-sc:hover{background:rgba(255,248,230,.16);} .page-back-bar .pb-sc.is-here{background:#fff8e6; color:#2b2117; cursor:default;}
+  .page-back-bar .pb-back{width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; font-size:20px; font-weight:900; background:#fff8e6; color:#2b2117; box-shadow:0 0 0 2px #c9853a, 0 4px 10px rgba(0,0,0,.35);}
+  .page-back-bar .pb-back:hover{background:#ffe9b8;}
+  @media (max-width:900px){ .page-back-bar .pb-sc b{display:none;} .page-back-bar .pb-sc{padding:6px 8px;} }
+  body:has(#shopBackBtn) .page-back-bar .pb-back{display:none;}
   /* Castle crumble (2026-10-13) */
   .crumble-layer{position:fixed; z-index:1150; pointer-events:none; overflow:visible;}
   .crumble-layer .crumble-stone{position:absolute; border-radius:3px 5px 2px 4px; background:linear-gradient(160deg,#b9a68a,#7d6a52 60%,#55473a); box-shadow:inset -1px -2px 0 rgba(0,0,0,.3);
@@ -4254,7 +4231,7 @@
   .map-theme-m7{--mt-a:#1f9e93; --mt-b:#146b63; --mt-c:#0b3b36;}
   .map-theme-m8{--mt-a:#384a2e; --mt-b:#212e1a; --mt-c:#10160c;}
   .map-theme-m9{--mt-a:#d9481f; --mt-b:#8f2a10; --mt-c:#401407;}
-  .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;}
+  .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;} .map-theme-m21{--mt-a:#f2f4f8; --mt-b:#a7aec0; --mt-c:#5b6276;} .map-theme-mtut{--mt-a:#90c95a; --mt-b:#5c9a3a; --mt-c:#2f5a22;}
   .map-theme-mf{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}  /* Thistle Fields (2026-10-09) */
   .map-theme-mb{--mt-a:#ecd9a4; --mt-b:#3f9fb5; --mt-c:#1e5f78;}  /* Pebble Beach (2026-10-09) */
   /* The 0–20 road (2026-10-11) */
@@ -4516,6 +4493,15 @@
   .conquest-node-panel{position:relative;}
   .conquest-node-panel .cnp-fight{position:absolute; top:0; left:50%; transform:translate(-50%, -55%); margin:0; z-index:4; font-size:18px; padding:10px 38px; border:2px solid rgba(255,226,160,.85);}
   .conquest-node-panel .cnp-fight:hover{transform:translate(-50%, -58%) scale(1.04);}
+  /* Fight | Sweep split pill (2026-10-13) */
+  .conquest-node-panel .cnp-fight-wrap{position:absolute; top:0; left:50%; transform:translate(-50%, -55%); z-index:4; display:flex; filter:drop-shadow(0 6px 10px rgba(0,0,0,.3));}
+  .conquest-node-panel .cnp-fight-wrap > .cnp-fight{position:static; transform:none; box-shadow:none;}
+  .conquest-node-panel .cnp-fight-wrap > .cnp-fight:hover{transform:scale(1.03);}
+  .conquest-node-panel .cnp-fight-wrap.has-sweep > .cnp-fight{border-radius:999px 0 0 999px; padding-right:22px; border-right-width:1px;}
+  .conquest-node-panel .cnp-sweep-half{font-family:'Baloo 2'; font-weight:800; font-size:16px; padding:10px 22px 10px 18px; border-radius:0 999px 999px 0; border:2px solid rgba(255,226,160,.85); border-left-width:1px; filter:saturate(.8) brightness(.95);}
+  .conquest-node-panel .cnp-sweep-half:hover{filter:none;}
+  .sweep-menu{position:fixed; z-index:1200; background:#fff8e6; color:#2b2117; border-radius:14px; padding:10px 12px; box-shadow:0 0 0 2px #c9853a, 0 12px 28px rgba(0,0,0,.45); display:flex; flex-direction:column; gap:8px; min-width:200px;}
+  .sweep-menu .sm-q{font:800 15px 'Baloo 2',system-ui,sans-serif;} .sweep-menu .sm-opts{display:flex; gap:6px; flex-wrap:wrap;} .sweep-menu .sm-foot{font-size:12px; opacity:.8; display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
   .conquest-node-panel:has(> .cnp-fight){padding-top:26px;}
   /* Skirmish panel (2026-10-11, user: "the contents should start from the top ... The 'cleared' thing can be on the top
      row, and also the boundaries of this card can be very faintly green to represent defeated. Red if the fight outlevels
@@ -5519,6 +5505,8 @@
     .conquest-main > .conquest-node-panel{overflow-y:auto !important; overflow-x:hidden !important; max-height:min(46dvh, 380px) !important; padding-top:0 !important; overscroll-behavior:contain;}
     body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:calc(96px + env(safe-area-inset-bottom, 0px)) !important;}
     .conquest-node-panel .cnp-fight{position:sticky !important; top:0; left:auto !important; transform:none !important; display:block; width:100%; margin:0 0 10px !important; z-index:5; font-size:17px !important; padding:9px 18px !important;}
+    .conquest-node-panel .cnp-fight-wrap{position:sticky !important; top:0; left:auto !important; transform:none !important; width:100%; margin:0 0 10px; z-index:5;}
+    .conquest-node-panel .cnp-fight-wrap > .cnp-fight{position:static !important; flex:1; margin:0 !important;}
     .conquest-node-panel .cnp-fight:hover{transform:none !important;}
     .conquest-node-panel:has(> .cnp-fight){padding-top:10px !important;}
   }
@@ -8549,11 +8537,26 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
-.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(3, auto); justify-content:start; align-items:center; width:auto; flex:0 0 auto;}
+.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(2, auto); justify-content:center; align-items:center; width:auto; flex:0 0 auto;}
 .conquest-node-panel .cnp-rw .cnp-rw-label{grid-column:1 / -1;}
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
 @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
+/* Glimmer Depths campfire and the cleared-gem shine (2026-10-13) */
+.map-campfire{position:absolute; z-index:5; width:40px; height:40px; transform:translate(-50%,-50%); pointer-events:none;}
+.map-campfire .mcf-glow{position:absolute; left:50%; top:60%; width:220px; height:180px; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(closest-side, rgba(255,190,90,.55), rgba(255,140,40,.22) 45%, rgba(255,120,30,0) 100%); mix-blend-mode:screen; animation:mcfGlow 1.9s ease-in-out infinite;}
+.map-campfire .mcf-fire{position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:26px; filter:drop-shadow(0 0 8px rgba(255,170,60,.9)); animation:mcfFlick .45s steps(2) infinite alternate;}
+.map-campfire .mcf-logs{position:absolute; left:50%; bottom:2px; width:30px; height:7px; transform:translateX(-50%); background:linear-gradient(100deg, transparent 8%, #5b3a1e 10% 46%, transparent 48%), linear-gradient(80deg, transparent 52%, #6e4624 54% 90%, transparent 92%); border-radius:3px;}
+.map-campfire .mcf-spark{position:absolute; left:50%; top:40%; width:3px; height:3px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,170,60,.9); opacity:0; animation:mcfSpark 2s ease-out infinite;}
+@keyframes mcfGlow{0%,100%{opacity:.85; transform:translate(-50%,-50%) scale(1);} 30%{opacity:1; transform:translate(-50%,-50%) scale(1.06);} 55%{opacity:.7;} 75%{opacity:.95; transform:translate(-50%,-50%) scale(.97);}}
+@keyframes mcfFlick{from{transform:translate(-50%,-50%) scale(1,1) rotate(-2deg);} to{transform:translate(-50%,-52%) scale(.94,1.08) rotate(2deg);}}
+@keyframes mcfSpark{0%{opacity:0; transform:translate(0,0);} 10%{opacity:1;} 100%{opacity:0; transform:translate(var(--sx), -46px);}}
+.map-subemblem.is-done[data-submap="mn"] .mse-ico{position:relative; filter:drop-shadow(0 0 10px rgba(140,230,255,.85));}
+.map-subemblem.is-done[data-submap="mn"]::after{content:''; position:absolute; left:50%; top:44%; width:16px; height:16px; margin:-8px; pointer-events:none;
+  background:radial-gradient(circle, #fff 0 18%, rgba(255,255,255,0) 60%), linear-gradient(90deg, transparent 46%, #fff 50%, transparent 54%), linear-gradient(0deg, transparent 46%, #fff 50%, transparent 54%);
+  animation:mnShine 2.6s ease-in-out infinite;}
+@keyframes mnShine{0%,55%,100%{opacity:0; transform:scale(.3) rotate(0);} 70%{opacity:1; transform:scale(1.5) rotate(45deg);} 85%{opacity:0; transform:scale(.6) rotate(90deg);}}
+@media (prefers-reduced-motion: reduce){ .map-campfire *, .map-subemblem.is-done[data-submap="mn"]::after{animation:none !important;} }
 /* Admin resets in the profile (2026-10-13) */
 .pf-admin{margin-top:14px;} .pf-admin-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:8px 0;} .pf-admin-row span{font-size:13px; opacity:.8;}
 .pf-admin-row input{width:64px;} .pf-admin-confirm{font-size:13px; font-weight:700; color:#c0392b; margin:6px 0 0;}
@@ -9125,6 +9128,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   <div id="view-achievements" hidden></div>
   <div id="view-paths" hidden></div>
   <div id="view-inventory" hidden></div>
+  <div id="view-stomp" hidden></div>
   <div id="view-guild" hidden></div>
   <div id="view-admin" hidden></div>
   </div>

@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (01:30)
+- **Map 21: The Quiet Summit.** Above the clouds after the Sundered Peak's storm: six fights among goats, rams, yaks, owls and eagles, ending at the Cathedral Eagle. Its own snowy map, with the zoom-out on your first visit. The Test Lab sits here as planned.
+- **Stomping Grounds (Map 21, after its third fight):** your Hero is trained here now, on its own page; the Armoury no longer has a Hero button.
+- **The Tutorial side map.** T-0 and T-1 live in their own side map, Tutorial, entered from the left edge of Map 0; new players start there and Map 0 opens when T-1 is won. Three new fights follow for later: **T-2 The Odd Lot** (a deck of odd cards, pays a Hedgerow Pouch on the first win), **T-3 Ranks and Challenges** (teaches that tougher fights pay more and that the less your Castle loses the higher your rank, with some cards only at S) and **T-4 The Final Exam** (an elite). Their decks are placeholders for you.
+- **Page row:** on every page off the map, a row of shortcuts to your other places (Armoury, Stomping Grounds, Codex, Forge, Nest, Inventory, whichever are open) and a round ↩ on the right. The Armoury's Hero and Codex buttons are gone.
+- **↑ / ↓** on the map go to the next or previous map.
+- **Fight | Sweep** is one pill split down the middle; Sweep asks how many runs (and holds the Idle-Sweep switch).
+- **Skirmish card:** the reward box's contents are centred.
+- **The Arena opens on Map 11** and **the Quest Board on Map 8** (Caves & Alcoves).
+- **The Sunken Depths** (was the Sunken Ferry): its entrance is a wreck with an anchor.
+- **The Glimmer Depths** gem shines once the map is cleared, and a campfire burns at its top left, its glow flickering and sparks rising.
+- **Field conditions:** an unseen one shows its (?) beside its name. "Used to the cold" is gone; the units that ignore frost are named in the Frost line.
+- The Armoury always shows decks at Medium (the Large/Medium switch is gone); the conversation's hide arrow moved a little right.
+
 ## 2026-10-14 (00:40)
 - **Map critters and your pawn face where they're going:** moving right, they look right; moving left, they look left.
 - **Art:** portraits for the seven road folk who talk to you (Brother Ripple, Pip, Old Heron Wade, Bramble, Sister Carapace, Croaker, Thimble), all 13 raid bosses and the Goliath (shown in the raid panels and the VS screen), and a map for The Sunken Ferry.
