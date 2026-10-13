@@ -14052,6 +14052,7 @@ function applyNodeEdits(){
     map.nodes.length = 0; nodes.forEach(n=> map.nodes.push(n));
   });
   try{ applyRoadKinds(); }catch(e){}
+  try{ applyAmbushNode(); }catch(e){}
 }
 // The road's map enders (2026-10-13, user: "Map 0's final fight is a normal fight btw. Map 1's is a Elite at the end. Map 5's is a
 // boss. Map 6 onwards, the last Skirmish is always a miniboss. This will not change from Map 0-100. Every 5 maps the boss, every
@@ -14060,6 +14061,62 @@ function applyNodeEdits(){
 // their own fights (the Caldera Heart and the like).
 // Road structure (2026-10-13, 11:40 list): a boss every 5 maps and a world boss every 20; from Map 50, every 10 maps a harder
 // boss (finalboss) with a normal boss as the fight before it.
+// The ambush (2026-10-13, user: "as you progress, the enemy faction stops you from clicking Fight on the next Skirmish. E.g. 3-2
+// ... your profile icon is moved down (keep the hopping animation) by an antagonistic icon of the opposing faction! And a new
+// Skirmish pops up, w bouncing effect, then you enter the fight" + "This is where you can get faction card reward(s) ... the
+// Growth one"): the first Fight on 3-2 is interrupted. A scout of the other side hops in and shoves your pawn aside, an
+// Ambush skirmish bounces onto the map, and the fight starts. Winning it pays a Faction Growth card; 3-2 waits until then.
+const AMBUSH_KEY = 'bramblewood_ambush_v1', AMBUSH_MAP_INDEX = 3, AMBUSH_AT = '3-2';
+function ambushState(){ try{ return JSON.parse(localStorage.getItem(AMBUSH_KEY) || 'null') || {}; }catch(e){ return {}; } }
+function saveAmbushState(st){ try{ localStorage.setItem(AMBUSH_KEY, JSON.stringify(st)); }catch(e){} }
+function ambushFoe(){ const f = (typeof loadFactionChoice === 'function') ? loadFactionChoice() : 'otters'; return f === 'hummingbirds' ? 'otters' : 'hummingbirds'; }
+function ambushDeck(foe){
+  const defs = getCardDefs(), want = foe === 'hummingbirds' ? 'tribes' : '';
+  let ids = Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero) return false; const src = cardSourceOf(d) || {};
+    return src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11 && (src.side||'') === want && ['common','uncommon','starter'].includes(d.rarity||'common'); });
+  if(ids.length < 3){ try{ ids = Object.keys(tutorialDecksFor(1, foe).mine).filter(id=> defs[id]); }catch(e){} }
+  const deck = {}; let n = 0; ids.slice(0, 7).forEach(id=>{ const k = Math.min(3, 18 - n); if(k > 0){ deck[id] = k; n += k; } });
+  return deck;
+}
+function ambushMap(){ try{ return mainConquestMaps()[AMBUSH_MAP_INDEX] || null; }catch(e){ return null; } }
+function ambushPending(){ const st = ambushState(); return !!st.triggered && !(loadConquestProgress().completed || []).includes(conquestNodeId((ambushMap()||{}).id, 'ambush')); }
+function applyAmbushNode(){
+  const st = ambushState(), map = ambushMap(); if(!st.triggered || !map || map.nodes.some(n=> n.key === 'ambush')) return;
+  const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
+  map.nodes.push({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: st.deck || ambushDeck(foe), hqHp:24,
+    flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
+    rewardTokens:['factionGrowth'], requires:[], ambush:true, fixedPos: st.pos || null, faction: foe});
+}
+function ambushShouldTrigger(map, node){
+  if(!map || !node || ambushState().triggered || !loadTutorialDone()) return false;
+  const am = ambushMap(); return !!am && am.id === map.id && skirmishCode(map.id, node.key) === AMBUSH_AT;
+}
+function runAmbush(map, nodeKey){
+  const foe = ambushFoe(), hb = foe === 'hummingbirds', positions = mapNodePositions(map), i = map.nodes.findIndex(n=> n.key === nodeKey), at = positions[i] || {x:50, y:50};
+  const pos = {x: Math.max(6, Math.min(94, at.x + 7)), y: Math.max(8, Math.min(92, at.y + 15))};
+  const st = {triggered: Date.now(), foe, pos, deck: ambushDeck(foe), justPopped: true}; saveAmbushState(st);
+  const panel = document.getElementById('conquestNodePanel'); if(panel) panel.hidden = true; document.body.classList.remove('cq-node-focus');
+  const cv = document.getElementById('conquestCanvas'), pawn = cv && cv.querySelector('.map-pawn');
+  const go = ()=>{ applyAmbushNode(); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){}
+    setTimeout(()=>{ if(!matchState) startConquestMatch(map.id, 'ambush'); }, reducedMotion() ? 300 : 1700); };
+  if(!cv || !pawn || !hasGsap() || reducedMotion()){ showToast(hb ? '🐦 Ambush! A Dominion patrol blocks the way.' : '🦦 Ambush! A Rivergate shield-line blocks the way.', 'warn'); go(); return; }
+  const foeEl = document.createElement('div'); foeEl.className = 'map-pawn map-foe ' + (hb ? 'foe-humming' : 'foe-otter'); foeEl.setAttribute('aria-hidden', 'true');
+  foeEl.innerHTML = `<span class="mp-body">${hb ? '🐦' : '🦦'}</span><span class="mp-shadow"></span>`;
+  const fx = Math.max(4, Math.min(96, at.x + 22)), fy = Math.max(6, at.y - 18);
+  foeEl.style.left = fx + '%'; foeEl.style.top = fy + '%'; cv.appendChild(foeEl);
+  const body = foeEl.querySelector('.mp-body'), pBody = pawn.querySelector('.mp-body');
+  try{ SoundKit.siegeTone && SoundKit.siegeTone(); }catch(e){}
+  const tl = gsap.timeline({onComplete: go});
+  tl.fromTo(foeEl, {scale:0}, {scale:1, duration:.3, ease:'back.out(2)'})
+    .to(foeEl, {left: at.x + '%', top: at.y + '%', duration:.6, ease:'none'})
+    .fromTo(body, {y:0}, {y:-12, duration:.1, yoyo:true, repeat:5, ease:'power1.out'}, '<')
+    .add(()=>{ try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.pawnStep && SoundKit.pawnStep()); }catch(e){} })
+    .to(pawn, {left: pos.x + '%', top: pos.y + '%', duration:.55, ease:'power2.out'})
+    .fromTo(pBody, {y:0, rotation:0}, {y:-14, rotation:-18, duration:.14, yoyo:true, repeat:3, ease:'power1.out'}, '<')
+    .to(pBody, {rotation:0, duration:.15})
+    .to(body, {scale:1.25, duration:.18, yoyo:true, repeat:1}, '+=0.05');
+  showToast(hb ? '🐦 Ambush! A Dominion patrol blocks the way.' : '🦦 Ambush! A Rivergate shield-line blocks the way.', 'warn');
+}
 function roadEnderKind(i){ if(i === 0) return 'skirmish'; if(i < 5) return 'elite'; if(i % 20 === 0) return 'worldboss'; if(i >= 50 && i % 10 === 0) return 'finalboss'; if(i % 5 === 0) return 'boss'; return 'miniboss'; }
 function applyRoadKinds(){
   const mains = CONQUEST_MAPS.filter(m=> !m.sub);
@@ -14826,7 +14883,7 @@ function wireMapLayoutEditor(map, body){
   });
 }
 function mapNodePositions(map){
-  const base = autoMapNodePositions(map);
+  const base = autoMapNodePositions(map).map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return base;
   const opening = map.id === 'm1' && !loadTutorial2Done();
@@ -15503,12 +15560,13 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
+  { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
   if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
     const cv = document.getElementById('conquestCanvas'); tutBgZoom(1.25, false);
@@ -16830,17 +16888,15 @@ function showFactionScreen(){
   const el = document.getElementById('factionScreen');
   if(!el){ beginTutorialStage(1); return; } // defensive: DOM node missing -> skip straight to the series rather than getting stuck
   el.hidden = false;
-  let secondsLeft = 60; // 2026-10-12 (user: "that option should only appear 1 minute later")
-  const countdownEl = document.getElementById('factionCountdown');
-  const bothBtn = document.getElementById('factionBothBtn');
-  if(bothBtn){ bothBtn.hidden = true; bothBtn.onclick = ()=>{ try{ SoundKit.leaderFanfare ? SoundKit.leaderFanfare() : SoundKit.unlock(); }catch(e){} setTimeout(()=> resolveFactionChoice('both'), 450); }; }
-  const tick = ()=>{ if(countdownEl) countdownEl.textContent = secondsLeft>0 ? 'Take your time.' : 'Can’t decide? Both sides will lend you their strength.'; };
-  tick();
-  if(factionCountdownTimer) clearInterval(factionCountdownTimer);
-  factionCountdownTimer = setInterval(()=>{
-    secondsLeft -= 1; tick();
-    if(secondsLeft<=0){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; if(bothBtn){ bothBtn.hidden = false; bothBtn.focus(); } else resolveFactionChoice('both'); }
-  }, 1000);
+  // 2026-10-13 (user: "take out the do both - it just makes planning more complicated. Instead, its random"): a third button picks
+  // a side at random. Hovering a side writes one line of lore and one of play at the bottom of the screen.
+  if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
+  const rb = document.getElementById('factionRandomBtn');
+  if(rb) rb.onclick = ()=>{ const pick = Math.random() < 0.5 ? 'otters' : 'hummingbirds'; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(pick === 'otters' ? '🎲 The river chose the Otters.' : '🎲 The river chose the Hummingbirds.', 'ok'); setTimeout(()=> resolveFactionChoice(pick), 350); };
+  const lore = document.getElementById('factionLore');
+  const setLore = key=>{ if(!lore) return; const L = FACTION_LORE[key]; lore.innerHTML = L ? `<b>${escapeHtml(L.name)}</b>${escapeHtml(L.lore)} ${escapeHtml(L.play)}` : 'Hover a side to hear its story.'; };
+  [['factionOtterBtn','otters'],['factionHummingbirdBtn','hummingbirds'],['factionRandomBtn','random']].forEach(([id, key])=>{ const b0 = document.getElementById(id); if(!b0) return;
+    b0.addEventListener('mouseenter', ()=> setLore(key)); b0.addEventListener('focus', ()=> setLore(key)); });
   const otterBtn = document.getElementById('factionOtterBtn'); if(otterBtn) otterBtn.onclick = ()=> resolveFactionChoice('otters');
   const hbBtn = document.getElementById('factionHummingbirdBtn'); if(hbBtn) hbBtn.onclick = ()=> resolveFactionChoice('hummingbirds');
   wireFactionShowcase(el);
@@ -16850,6 +16906,11 @@ function showFactionScreen(){
 // in that direction, in a thunderous immense move."). Characters are the faction's painted art,
 // shown frameless (soft-edged, floating); below them, three real card tiles. The scene surges
 // toward the hovered side with a quake, a flash and a low boom.
+const FACTION_LORE = {
+  otters: {name:'Rivergate Otters', lore:'Rivergate was raised dam by dam by otters who never forget a flood, and never forgive one.', play:'They fight in shield walls: tough, armoured units that hold a lane and win the long fight.'},
+  hummingbirds: {name:'Sunfeather Dominion', lore:'From flower-thrones high in the canopy, the Dominion rules a court where every courtier is a duelist.', play:'They are fast fencers on the wing: flyers that strike first and slip past anything on the ground.'},
+  random: {name:'Random', lore:'Some warbands are born on the riverbank, some under the canopy.', play:'You get one side at random, with its starter cards and its faction rewards.'},
+};
 const FACTION_SHOWCASE = {
   otters: {title:'Rivergate Otters', blurb:'Shield walls, slick armour and stubborn river pride.', characters:['otter-centurion','otter-riverguard','otter-shieldback'], cards:['otter-kit','otter-paddler','otter-guard'], dir:-1},
   hummingbirds: {title:'Sunfeather Dominion', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
@@ -17730,6 +17791,9 @@ function levelledEnemyDeck(node, deck){
 function startConquestMatch(mapId, nodeKey, opts){
   const found = findConquestNode(mapId, nodeKey); if(!found) return false;
   const {node} = found;
+  { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
+    if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
+    if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast('The ambush still blocks the way. Beat it first.', 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
   if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playFactionWarning('That one doesn\'t surrender. Don\'t wait for it to.'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   if(!deckSizeOkOrWarn()) return false;
@@ -31531,8 +31595,8 @@ function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) :
 //     Deep, Woodland folk), collected for good the first time: 2 cards of that people, 1 general card. Beating the Legion
 //     or the Tribes gives your own faction's pack instead. Repeat wins: 5% chance of the same pack.
 const FACTION_PACKS = {
-  otter:       {id:'otter', kind:'faction', name:'Rivergate Pack', icon:'🦦', own:11, faction:'otters', people:'legion', cover:'river-warden', tint:'#3f6f8f', blurb:'Otters of the Rivergate Legion: big bodies, and two tricks for knocking birds out of the sky.'},
-  hummingbird: {id:'hummingbird', kind:'faction', name:'Sunfeather Pack', icon:'🌺', own:11, faction:'hummingbirds', people:'tribes', cover:'sunspire-envoy', tint:'#b0457a', blurb:'Hummingbirds of the Sunfeather Tribes: almost everything flies.'},
+  otter:       {id:'otter', kind:'faction', name:'Rivergate Pack', icon:'🦦', own:11, faction:'otters', people:'legion', cover:'river-warden', tint:'#a8463c', blurb:'Otters of the Rivergate Legion: big bodies, and two tricks for knocking birds out of the sky.'},
+  hummingbird: {id:'hummingbird', kind:'faction', name:'Sunfeather Pack', icon:'🌺', own:11, faction:'hummingbirds', people:'tribes', cover:'sunspire-envoy', tint:'#3a6fae', blurb:'Hummingbirds of the Sunfeather Tribes: almost everything flies.'},
   road:  {id:'road', kind:'sub', name:'Road-folk Bundle', icon:'🧳', people:'road', tint:'#8a6a3a', blurb:'Mice, raccoons and travellers: tolls, tricks and Lumber.'},
   beast: {id:'beast', kind:'sub', name:'Wild Beasts Bundle', icon:'🐾', people:'beast', tint:'#7a4a2a', blurb:'Wolves, bears, owls and other things with teeth.'},
   hive:  {id:'hive', kind:'sub', name:'Hive Bundle', icon:'🐝', people:'hive', tint:'#b08a1a', blurb:'Ants, bees and worms: many small bodies that add up.'},

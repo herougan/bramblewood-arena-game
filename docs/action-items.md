@@ -1,6 +1,16 @@
 # Action items
 
-_Updated 2026-10-13, 7:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 8:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 20:00 (your 17:37 list)
+
+| Item | What's in the game now |
+|---|---|
+| 1 | No more "Both". The side screen has a third button, 🎲 Random (red Otters, blue Hummingbirds, green Random), and hovering any of them writes one line of lore and one of play at the bottom |
+| 2 + 4 | **The ambush.** Your first Fight on 3-2 (Gannet Cliffs) is interrupted: a scout of the other side hops in and shoves your pawn aside, an Ambush skirmish bounces onto the map, and the fight starts. Winning it pays a **Faction Growth** card (the next card of your side you don't have, lowest rarity first). 3-2 waits until the ambush is beaten |
+| 3 | Faction colours: Otters red, Hummingbirds blue, neutral green (side screen, entrance ribbon, faction packs, the ambush) |
+| 6 | Battle ratings are live: worked out from the actual deck, each card's rarity weight and the level it fights at (road level or the editor's), plus leaders, scaled to 20 cards. They don't yet count map conditions or your Wildpath bonuses |
+| D69 | Closed (okay) |
 
 ## Done at 18:00 (your 16:09 note)
 
@@ -92,8 +102,7 @@ New calls for you:
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **D70** | Daily / Weekly dungeons: your note ended at the colon | — | My proposal: Daily = 3 castles, once a day, a different cleared map's enemies each day; Weekly = 5 harder castles, once a week, bigger reward. Say "go" or describe yours |
-| **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |
+| **D70** | **Endless dungeons** (your 17:37 brief: endless x/y-scrolling submaps, codes like 6-MM-1 to 6-MM-50, the same fight getting harder). My proposal: the first opens when Map 6's boss falls (Murgle Mayhem, 6-MM), a new one every 5 maps after that (11, 16, 21…), each starting at its map's difficulty and adding about 4% enemy stats a floor, a mini-boss every 10th floor and a checkpoint after it | Decide where they introduce themselves | Say yes, or name the maps |
 
 ## Done overnight (your 00:17 list)
 

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (20:00)
+- **Random instead of Both.** The side screen offers Otters, Hummingbirds or 🎲 Random, and hovering one shows a line of lore and a line of play.
+- **The ambush.** Your first Fight on 3-2 is interrupted: a scout of the other side shoves your pawn aside, an Ambush skirmish bounces onto the map and the fight starts. Winning it pays a Faction Growth card.
+- **Faction colours:** Otters red, Hummingbirds blue, neutral green.
+
 ## 2026-10-13 (19:00)
 - **More UI audit fixes.** Skill badges on small cards no longer sit on the Attack and Health numbers. On phones the map's fullscreen button clears the Energy pill and toasts appear above the tab bar instead of over the HUD. The Shop drops its duplicate "Back home" button and title, and the Autobattler's header button reads "← Arena".
 
