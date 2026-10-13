@@ -114,7 +114,46 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-13, 4:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<p><em>Updated 2026-10-13, 6:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<h2>Done at 18:00 (your 16:09 note)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What's in the game now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wildpaths</td>
+<td>Hidden until Map 21 is reached (Map 20's last fight won); only maps 21+ give points</td>
+</tr>
+<tr>
+<td>UI audit</td>
+<td>Phone fight layout, art on off-map boards, one card count, tab bar clearance, Tavern note spot, contrast fixes, Forge tabs, twin daily notices, "Test Lab"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Still open from the UI audit (Low/Medium):</strong> ability badges overlap attack and health on small cards (phone hand, Armoury strip); the phone map's fullscreen button sits behind the Energy pill; toasts cover the phone HUD; Codex sort is missing on phones; duplicate back/home buttons on Shop, Autobattle and Raid; "?" placeholders in the Shop's subfaction row; low-contrast Home header pills.</p>
+<h2>Done at 17:15 (your 15:58 list)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What's in the game now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zeitgebers</td>
+<td>In a fight that's day by default, the first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round (Day first). Maps with a phase set by the designer keep it. The first Tide unit already starts the tide</td>
+</tr>
+<tr>
+<td>D80</td>
+<td>A "Next round" strip by the field: nightfall or dawn, the tide's turn, the wind (at your back or in your face) and eruptions</td>
+</tr>
+</tbody>
+</table>
 <h2>Done at 16:30 (your 14:50 list)</h2>
 <table>
 <thead>
@@ -150,38 +189,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </tr>
 </tbody>
 </table>
-<p><strong>New calls from the pushback (D79–D82):</strong></p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>What</th>
-<th>Recommendation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>D79</strong></td>
-<td>Two plays a turn from Map 5 (the Actions rule), to give each turn a real choice</td>
-<td>Try it on 3 fights first</td>
-</tr>
-<tr>
-<td><strong>D80</strong></td>
-<td>A "next round" forecast strip (wind, frost targets, nightfall)</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td><strong>D81</strong></td>
-<td>At most two board conditions per fight, one signature per map</td>
-<td>Yes</td>
-</tr>
-<tr>
-<td><strong>D82</strong></td>
-<td>Cut the 8 currencies to 3 before Steam</td>
-<td>Yes, after the economy questions (D75)</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Pushback calls:</strong> D79 no, D80 built (the forecast), D81 not now, D82 vetoed.</p>
 <h2>Done at 15:30 (your 14:21 list)</h2>
 <table>
 <thead>
@@ -698,6 +706,25 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-13 (18:00)</h2>
+<ul>
+<li><strong>Wildpaths wait for Map 21.</strong> The Home note and the perks stay hidden until Map 20's last fight is won, and only maps from 21 on earn Path points.</li>
+<li><strong>UI audit fixes.</strong><ul>
+<li>Phone fights fit the screen: castle, deck and graveyard share a row, the leader and hand the next, and Pass turn floats bottom-right.</li>
+<li>Quick Battle, PvP and other off-map fights get a map's ground instead of a flat grey board.</li>
+<li>One card count everywhere (Home's Codex note, Profile).</li>
+<li>The floating Play tab bar no longer covers the last Arena and Raid cards.</li>
+<li>The Tavern note has its own spot on Home instead of sitting on the Play tile.</li>
+<li>Readable Community title and Codex subtitle; Forge tabs scroll on phones; the Field kit heading no longer squeezes.</li>
+<li>No more twin daily notices; the Test tab is called Test Lab.</li>
+</ul>
+</li>
+</ul>
+<h2>2026-10-13 (17:15)</h2>
+<ul>
+<li><strong>Zeitgebers.</strong> In a fight that's day by default, the first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round (Day first), like the first Tide unit starts the tide. Maps whose designer set a phase keep it.</li>
+<li><strong>Next round forecast.</strong> A strip by the field says what next round brings: nightfall or dawn, the tide's turn, the wind (at your back or in your face) and eruptions.</li>
+</ul>
 <h2>2026-10-13 (16:30)</h2>
 <ul>
 <li><strong>Into the first fight.</strong> After you pick a side, your tutorial cards arc from the top right into your deck at the bottom left while the screen zooms in, then the battlefield fades in.</li>
