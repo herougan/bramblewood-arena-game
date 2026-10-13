@@ -114,7 +114,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-13, 6:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<p><em>Updated 2026-10-13, 7:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
 <h2>Done at 18:00 (your 16:09 note)</h2>
 <table>
 <thead>
@@ -134,7 +134,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </tr>
 </tbody>
 </table>
-<p><strong>Still open from the UI audit (Low/Medium):</strong> ability badges overlap attack and health on small cards (phone hand, Armoury strip); the phone map's fullscreen button sits behind the Energy pill; toasts cover the phone HUD; Codex sort is missing on phones; duplicate back/home buttons on Shop, Autobattle and Raid; "?" placeholders in the Shop's subfaction row; low-contrast Home header pills.</p>
+<p><strong>UI audit, fixed at 19:00:</strong> badges over stats on small cards, the phone fullscreen button, phone toasts, the Shop's duplicate back button and title, the Autobattler's Arena button. <strong>Left as is:</strong> Codex sort on phones lives under Filters (by design); the Shop's "?" marks are undiscovered subfactions (intended mystery).</p>
 <h2>Done at 17:15 (your 15:58 list)</h2>
 <table>
 <thead>
@@ -706,6 +706,10 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-13 (19:00)</h2>
+<ul>
+<li><strong>More UI audit fixes.</strong> Skill badges on small cards no longer sit on the Attack and Health numbers. On phones the map's fullscreen button clears the Energy pill and toasts appear above the tab bar instead of over the HUD. The Shop drops its duplicate "Back home" button and title, and the Autobattler's header button reads "← Arena".</li>
+</ul>
 <h2>2026-10-13 (18:00)</h2>
 <ul>
 <li><strong>Wildpaths wait for Map 21.</strong> The Home note and the perks stay hidden until Map 20's last fight is won, and only maps from 21 on earn Path points.</li>
