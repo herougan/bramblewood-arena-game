@@ -30005,10 +30005,10 @@ const WILDPATH_TREES = [
   {id:'thorn', name:'The Thorn', icon:'🌹', tint:'#f07a6a', blurb:'Striking first and hard: Attack, Quick, crits and finishing blows.', nodes:[
     {id:'t1', x:150, y:395, icon:'⚔', name:'Sharpened Briars', desc:'+1 Attack to your units with 3 Attack or less.', ranks:2},
     {id:'t2', x:200, y:315, icon:'👢', name:'Light Feet', desc:'Your first Quick unit each fight also ignores its Wait.', req:['t1']},
-    {id:'t3', x:95, y:300, icon:'🩸', name:'Thornbite', desc:'Bleed lasts one extra tick.', req:['t1']},
+    {id:'t3', x:95, y:300, icon:'🩸', name:'Thornbite', desc:'Your Bleed hits put on 1 more Bleed.', req:['t1']},
     {id:'t4', x:215, y:220, icon:'💥', name:'Weak Spots', desc:'Units below half Health take +1 damage from your attacks.', req:['t2'], ranks:2},
     {id:'t5', x:110, y:205, icon:'🏹', name:'Fletcher’s Eye', desc:'Arrow skills deal +1 damage.', req:['t3']},
-    {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Sweep and Fork hits deal +1 damage.', req:['t4', 't5']},
+    {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Cleave side hits deal +1 damage.', req:['t4', 't5']},
     {id:'t7', x:150, y:40, icon:'🌹', name:'Crown of Thorns', desc:'Capstone. Whenever one of your units gets a kill, it gains +1 Attack.', req:['t6'], capstone:true},
   ]},
   {id:'bloom', name:'The Bloom', icon:'🌸', tint:'#e2a6f0', blurb:'Lumber, cards and tricks: drawing, pitching and growing your board.', nodes:[
@@ -30027,7 +30027,7 @@ let wildpathSel = null;
 const WILDPATH_KEY = 'bramblewood_wildpaths_v1';
 // Wildpath effects that are live (2026-10-13): applied to your side at the start of every Conquest fight. The rest of the
 // marks still read "preview" in their detail panel until their engine hooks exist.
-const WILDPATH_LIVE = new Set(['r1','r3','r6','r7','b1','b2','b3','b7']);
+const WILDPATH_LIVE = new Set(['r1','r2','r3','r4','r5','r6','r7','t1','t2','t3','t4','t5','t6','t7','b1','b2','b3','b5','b7']);
 function applyWildpathPerks(engine, pl, stats){
   const rk = wildpathRanks(); if(!pl || !Object.keys(rk).length) return;
   const r = id=> rk[id] || 0, perks = {};
@@ -30038,6 +30038,17 @@ function applyWildpathPerks(engine, pl, stats){
   if(r('r6')) perks.ward = true;
   if(r('r7')) perks.heartwood = true;
   if(r('b7')) perks.everbloom = true;
+  if(r('r2')) perks.barkSkin = true;
+  if(r('r4')) perks.hedgeWall = r('r4');
+  if(r('r5')) perks.oldGrowth = true;
+  if(r('t1')) perks.briars = r('t1');
+  if(r('t2')) perks.lightFeet = true;
+  if(r('t5')) perks.fletcher = true;
+  if(r('t6')) perks.brambleStorm = true;
+  if(r('b5')) perks.pollen = r('b5');
+  if(r('t3')) perks.thornbite = true;
+  if(r('t4')) perks.weakSpots = r('t4');
+  if(r('t7')) perks.crown = true;
   if(Object.keys(perks).length) pl.perks = perks;
 }
 function wildpathCost(n){ return n.capstone ? 25 : n.y >= 380 ? 5 : n.y >= 290 ? 10 : n.y >= 200 ? 15 : 20; }

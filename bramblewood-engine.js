@@ -462,6 +462,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return (c.poison>0 || c.bleed>0 || c.decay>0 || c.scar>0 || c.exposed>0 || c.corrode>0 || c.frozen>0 || c.asleep>0 || c.paralyzed>0 ||
       c.blind>0 || c.tipsy>0 || c.confused>0 || c.shocked>0 || c.staggered>0 || !!c.stunned);
   }
+  // Wildpath perks on arrival (2026-10-13): Bark Skin, Hedge Wall, Old Growth, Sharpened Briars, Light Feet. Only the side
+  // that carries pl.perks gets them, so the enemy's copies of the same cards are untouched.
+  function applyArrivalPerks(pl, c){
+    const k = pl && pl.perks; if(!k || !c) return; const d = CARD_DEFS[c.defId] || {}, e = d.effects || {};
+    if(k.briars && (c.atk|0) <= 3 && (c.atk|0) > 0){ c.atk += k.briars; c.baseAtk += k.briars; }
+    if(k.oldGrowth && (d.wait|0) >= 2){ c.atk += 1; c.baseAtk += 1; c.hp += 2; c.maxHp += 2; }
+    if(k.hedgeWall && e.guardian){ c.hp += 2*k.hedgeWall; c.maxHp += 2*k.hedgeWall; }
+    if(k.lightFeet && e.quick){ k.lightFeet = false; c.wait = 0; }
+    if(k.barkSkin){ k.barkSkin = false; deriveDef(c, {armor: (Number(e.armor)||0) + 1}); }
+  }
+  function perksOfSide(side){ const pl = curPlayers && curPlayers[side==='A' ? 1 : 2]; return (pl && pl.perks) || null; }
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
@@ -1109,8 +1120,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Full melee-style damage pipeline: attacker rage bonus -> target resist
   // -> target rage reduction -> target armor (flat, floors at 0, last so
   // Armor is genuinely the last line of defense). Returns {dmg, armorBlocked}.
+  function perksOfCard(card){ if(!card || !curPlayers) return null; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && pl.perks && ['left','center','right'].some(l=> (pl.row[l]||[]).includes(card))) return pl.perks; } return null; }
   function computeHitDamage(attCard, rawAmount, dmgType, targetCard){
     let amt = rawAmount;
+    if(attCard && targetCard && targetCard.hp > 0 && targetCard.hp < targetCard.maxHp / 2){ const k = perksOfCard(attCard); if(k && k.weakSpots) amt += k.weakSpots; } // Wildpath "Weak Spots"
     const attDef = attCard ? CARD_DEFS[attCard.defId] : null;
     // King Slayer (2026-09-22, per explicit request: "New type: King. New card: King Maker -
     // Passive: King Slayer N - does N extra damage to Kings on hit."). Flat bonus damage
@@ -2105,6 +2118,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
     // to whichever card is the very first one this player plays in the match.
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
+    applyArrivalPerks(pl, boardCard);
     { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
@@ -2159,6 +2173,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!CARD_DEFS[defId]) return false;
     const pl = players[playerId];
     const boardCard = makeBoardCard(defId);
+    applyArrivalPerks(pl, boardCard);
     let actualSide;
     if(slotMode){ const sl = resolvePlacementSlot(pl, side); if(sl===null) return false; actualSide = putInSlot(pl, boardCard, sl); }
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
@@ -2448,7 +2463,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(passOnlyUid && c.uid !== passOnlyUid) return;
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return;
         const shots = [];
-        if(fx.arrow > 0) shots.push({amount: fx.arrow, dmgType: 'physical', fire: false});
+        const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
+        if(fx.arrow > 0) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false});
         if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
         // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
@@ -3198,7 +3214,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0));
           if(others.length){
             const bloomTarget = others[Math.floor(rnd()*others.length)];
-            const bloomHealed = applyHeal(bloomTarget, def.effects.bloom, sideOf(pl.id), events);
+            const bloomHealed = applyHeal(bloomTarget, def.effects.bloom + ((pl.perks && pl.perks.pollen) || 0), sideOf(pl.id), events); // + Wildpath "Pollen Drift"
             if(bloomHealed>0){ fireHealTriggers(players, sideOf, pl.id, c, bloomTarget, bloomHealed, stats, events); }
           }
         }
@@ -3449,6 +3465,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const parts = key.split('|');
           ensureStat(stats, parts[0], parts[1]).kills += 1;
           sidesCredited.add(parts[0]);
+          { const kp = players[parts[0]==='A' ? 1 : 2]; if(kp && kp.perks && kp.perks.crown){ // Wildpath "Crown of Thorns": the killer gains +1 Attack
+              const killer = allBoardCards(kp).find(x=> x.hp > 0 && (x.defId === parts[1] || (CARD_DEFS[x.defId]||{}).derivedFrom === parts[1]));
+              if(killer){ killer.atk += 1; killer.baseAtk += 1; if(recordEvents && events) events.push({type:'statusFx', kind:'grit', side:parts[0], attDefId:killer.defId, attUid:killer.uid, amount:1}); } } }
           // Midas Touch N (Ecclesia, 2026-10-10): a kill by this card pays its owner N Lumber.
           const kd = CARD_DEFS[parts[1]], midas = kd && kd.effects && Number(kd.effects.midas);
           if(midas > 0){ const kp = players[parts[0]==='A'?1:2]; kp.lumber += midas; if(recordEvents && events) events.push({type:'lumber', side:parts[0], defId:parts[1], amount:midas, cause:'midas'}); }
@@ -4043,7 +4062,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // The sides take N each (armour counts, no on-hit effects); an empty side is a swing at thin air (sweepWhiff), never
       // redirected. Nothing in front: it just hits the castle.
       let swingLanded = false;
-      const sweepN = (attDef.effects && Number(attDef.effects.sweep) > 0 && target.kind==='card') ? Number(attDef.effects.sweep) : 0;
+      const sweepN = (attDef.effects && Number(attDef.effects.sweep) > 0 && target.kind==='card') ? Number(attDef.effects.sweep) + (((perksOfSide(mySide)||{}).brambleStorm) ? 1 : 0) : 0; // + Wildpath "Bramble Storm"
       const sweepNear = sweepN ? target.card : null, sweepCol = sweepN ? target.col : null;
       const sweepStrike = (col, dir)=>{
         const entry = liveEnemyCols[col];
@@ -4088,7 +4107,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
               if(attDef.effects.poison && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ c2.poison = (c2.poison||0) + attDef.effects.poison; aStat.poisonApplied += attDef.effects.poison; }
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
-              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
+              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0){ c2.bleed = (c2.bleed||0) + bl; } }
               if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
               rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
@@ -4213,7 +4232,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'daunt', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:Number(attDef.effects.daunt)});
         }
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
-        { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) : 0;
+        { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
           if(bl > 0 && defCard.hp>0) defCard.bleed = (defCard.bleed||0) + bl; }
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;

@@ -1,12 +1,12 @@
 # Action items
 
-_Updated 2026-10-13, 1:15 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 1:50 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
 
 ## Done at 13:15 (continuing)
 
 | Item | What's in the game now |
 |---|---|
-| Wildpaths | 8 of the 21 marks now apply in Conquest fights (Deep Foundations, Sap Mending, Unmoving, Heart of the Wood, Forager, Keen Eye, Prospector, Everbloom). The others say "Preview"; they buff card stats, which needs a per-side stat hook in the engine |
+| Wildpaths | 19 of the 21 marks apply in Conquest fights, to your side only. Second Pitch and Echoing Wood still say "Preview" |
 | Road | Map 20 (and every 20th) ends on a world boss. From Map 50: every 10th map a harder boss with a normal boss before it |
 | D54 | Field-kit items come from quests: A notices and above, and finished weekly tiers |
 

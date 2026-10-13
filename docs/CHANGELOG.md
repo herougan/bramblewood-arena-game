@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (13:50)
+- **19 of 21 Wildpath marks now work in Conquest.** New since 13:15: Bark Skin (first unit Armor 1), Hedge Wall (Guardians +2 Health a rank), Old Growth (Wait 2+ units +1/+2), Sharpened Briars (+1 Attack a rank to 3-Attack-or-less units), Light Feet (first Quick unit has no Wait), Thornbite (+1 Bleed on your Bleed hits), Weak Spots (+1 damage a rank to units under half Health), Fletcher's Eye (Arrow +1), Bramble Storm (Cleave side hits +1) Pollen Drift (Bloom heals +1 a rank) and Crown of Thorns (a kill gives the killer +1 Attack). Only your side gets them. Second Pitch and Echoing Wood are still previews.
+
 ## 2026-10-13 (13:15)
 - **Wildpaths work in fights.** Deep Foundations (+2 castle Health a rank), Sap Mending, Unmoving, Heart of the Wood, Forager (+1 Lumber a rank), Keen Eye (draw 4), Prospector (+1 Iron Shard on an elite's first clear) and Everbloom now apply in Conquest. The other marks say "Preview" in their panel.
 - **World bosses on the road.** Every 20th map ends on a world boss. From Map 50, every 10th map ends on a harder boss, with a normal boss as the fight before it.
