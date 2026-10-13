@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (21:30)
+- **Dynamite N.** No Wait: the unit lands with a red 🧨 fuse that burns down one a round. At 0 it explodes for 5 damage to the cards beside it and the three enemy cards facing it (a 3×3 around it). If it dies first, nothing happens. New card: **Dynamite Packrat** (1/18, 1 Stone, Dynamite 3, Caves & Alcoves).
+- **Helmet.** Half the time, an arrow, missile or single bolt aimed at it glances off. Its badge is a drawn helmet (the emoji set has none cute enough). New card: **Helmeted Otter** (2/8, Otter pack).
+- **Signing out switches accounts.** Sign out (and Log out) now really end the session, and this device starts fresh for the next person; the account's progress stays in the cloud. Sound and effects settings stay.
+- **Start the tutorial starts over.** The guides show again from part 1, and you pick your side again.
+
 ## 2026-10-13 (20:45)
 - **Small cards read cleanly.** On small cards (phone hand, leader, Armoury strip) the skill badges hang just below the card instead of sitting on the Attack and Health numbers.
 

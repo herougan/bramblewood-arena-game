@@ -475,7 +475,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function perksOfSide(side){ const pl = curPlayers && curPlayers[side==='A' ? 1 : 2]; return (pl && pl.perks) || null; }
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
-    const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
+    const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, fuse: Number(def.effects && def.effects.dynamite) || 0, poison:0, decay:0, bleed:0, exposed:0, scar:0, firedOnce:{},
       ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
       reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, _frenziedThisRound:false,
       critUsed:0, rallyBonus:0,
@@ -780,7 +780,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(pl.castleLumberEvery > 0 && (round - 1) % pl.castleLumberEvery === 0){ pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side, defId:null, amount:1, castle:true}); }
     if(pl.castleBolt > 0){ const f = foes(); if(f.length){ const t = f[Math.floor(rnd()*f.length)];
       if(recordEvents && events) events.push({type:'statusFx', kind:'castleBolt', side, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:pl.castleBolt});
-      fireDamageAction(players, sideOf, pid, 'castle', pl.castleBolt, 'physical', {kind:'card', card:t}, stats, events, null, null); } }
+      if(!helmetDeflects({kind:'card', card:t}, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, 'castle', pl.castleBolt, 'physical', {kind:'card', card:t}, stats, events, null, null); } }
     if(pl.herbRefinery){ const roll = Math.floor(rnd()*3);
       if(roll === 0){ const hurt = allLive(pl).filter(c=> c.hp < c.maxHp).sort((x,y)=> (x.hp/x.maxHp) - (y.hp/y.maxHp));
         if(hurt.length){ const h = applyHeal(hurt[0], 3, side, events); if(h > 0 && recordEvents && events) events.push({type:'statusFx', kind:'herbHeal', side, targetSide:side, targetDefId:hurt[0].defId, targetUid:hurt[0].uid, amount:h}); } }
@@ -805,6 +805,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(k.everbloom && (round - 1) % 5 === 0){ pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, perk:true}); draw(pl, 1, sideOf(pid), stats, events); } });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || pl.hq.hp <= 0) return; castleRoundActions(players, pid, round, sideOf, stats, events); });
+    if(round > 1){ const blasts = []; // Dynamite fuses burn down at the start of each round (see fireDynamite)
+      [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; allBoardCards(pl).forEach(c=>{ if(c.fuse > 0 && c.hp > 0){ c.fuse -= 1; if(recordEvents && events) events.push({type:'fuse', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.fuse}); if(c.fuse === 0) blasts.push([pid, c]); } }); });
+      blasts.forEach(([pid, c])=>{ if(c.hp > 0) fireDynamite(players, sideOf, pid, c, stats, events); });
+      if(blasts.length) removeDeadCards(players, sideOf, {}, stats, events); }
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -2438,6 +2442,27 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Rocket N (2026-10-13, user: "New Skill: Rocket"): once, when the unit is Ready (on arrival if it has no Wait), a rocket
   // flies at the strongest enemy unit (highest Attack; ties random): N damage to it and 1 to each enemy beside it. The castle
   // if the enemy has no units.
+  // Helmet (2026-10-13, user: "50% chance to deflect arrow or missile or single target bolt"): a single shot aimed at it glances off
+  // half the time. Splash, earthquakes and melee aren't shots.
+  function helmetDeflects(target, side, events){
+    const c = target && target.kind === 'card' ? target.card : null; if(!c || !(c.hp > 0)) return false;
+    const e = (CARD_DEFS[c.defId]||{}).effects || {}; if(!e.helmet || rnd() >= 0.5) return false;
+    if(recordEvents && events) events.push({type:'deflect', side, uid:c.uid, defId:c.defId});
+    return true;
+  }
+  // Dynamite N (2026-10-13, user: "It doesn't have a wait, instead it has Dynamite 3: It comes with a red wait timer. When it counts
+  // down to 0, it explodes, dealing damage to a 3x3 square, centered on it! If it dies in that time, no explosion - just whiff"):
+  // the fuse burns down one a round; at 0 it blows up the cards on either side of it and the three enemy cards facing it
+  // (effects.dynamiteDmg, 5 by default). The dynamiter itself holds on. Dead before the fuse runs out: nothing.
+  function fireDynamite(players, sideOf, ownerId, card, stats, events){
+    const pl = players[ownerId], enemy = players[otherId(ownerId)], dmg = Number(((CARD_DEFS[card.defId]||{}).effects||{}).dynamiteDmg) || 5;
+    let mine = [], theirs = [];
+    if(slotMode){ const s0 = card.slot; mine = allBoardCards(pl).filter(c=> c !== card && c.hp > 0 && Number.isInteger(c.slot) && Math.abs(c.slot - s0) <= 1); theirs = allBoardCards(enemy).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && Math.abs(-c.slot - s0) <= 1); }
+    else { const order = physicalRowOrder(pl), i = order.indexOf(card); mine = [order[i-1], order[i+1]].filter(c=> c && c.hp > 0);
+      const opp = opposingCardOf(players, ownerId, card); if(opp){ const eo = physicalRowOrder(enemy), j = eo.indexOf(opp.card); theirs = [eo[j-1], opp.card, eo[j+1]].filter(c=> c && c.hp > 0); } }
+    if(recordEvents && events) events.push({type:'dynamite', side:sideOf(ownerId), defId:card.defId, uid:card.uid, amount:dmg, hits: mine.length + theirs.length});
+    theirs.concat(mine).forEach(c=> fireDamageAction(players, sideOf, ownerId, card.defId, dmg, 'heat', {kind:'card', card:c}, stats, events, null, card.uid));
+  }
   function fireRocket(players, sideOf, ownerId, card, amount, stats, events){
     if(card._rocketFired) return; card._rocketFired = true;
     const enemy = players[otherId(ownerId)];
@@ -2516,7 +2541,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt});
-            fired = true; fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', {kind:'card', card: shieldCall(enemy, t) || t}, stats, events, null, c.uid); } } }
+            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, null, c.uid); } } } }
         if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
         shots.forEach(shot=>{
           const opp = opposingCardOf(players, pid, c);
@@ -2525,7 +2550,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'arrow', fire: shot.fire, side: sideOf(pid), defId: c.defId, uid: c.uid,
             targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.amount});
           fired = true;
-          fireDamageAction(players, sideOf, pid, c.defId, shot.amount, shot.dmgType, target, stats, events, null, c.uid);
+          if(!helmetDeflects(target, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, shot.amount, shot.dmgType, target, stats, events, null, c.uid);
         });
       });
     });
@@ -2552,7 +2577,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return;
     }
     const target = pickRandomEnemyTarget(enemy);
-    fireDamageAction(players, sideOf, ownerId, attCard.defId, amount, eff.dmgType, target, stats, events, null, attCard.uid);
+    if(!helmetDeflects(target, sideOf(otherId(ownerId)), events)) fireDamageAction(players, sideOf, ownerId, attCard.defId, amount, eff.dmgType, target, stats, events, null, attCard.uid);
     // resolve any kill this missile caused (separate pass so onDeathSpawn/bounty run in the normal cleanup)
   }
   // Gash (2026-09-17): the one-shot on-spawn version of Bleed, mirroring fireRender's shape

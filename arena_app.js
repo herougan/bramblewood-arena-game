@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {shedding:'🐍', molting:'🦀', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'🪖', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -307,6 +307,8 @@ const PASSIVE_DEFS = [
   // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
   // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow ... Keep a concise one in a long
   // description in the Codex of skills").
+  {key:'dynamite', category:'passive', label:'Dynamite', kind:'number', min:1, defaultValue:3, desc:v=>`No Wait: it comes in with a lit fuse of ${v||3}. The fuse burns down one a round; at 0 it explodes for 5 damage to the cards beside it and the three enemy cards facing it (a 3×3 around it). If it dies first, the fuse goes out.`},
+  {key:'helmet', category:'passive', label:'Helmet', kind:'boolean', desc:()=>`Half the time, an arrow, missile or single bolt aimed at it glances off the helmet.`},
   {key:'molting', category:'passive', label:'Molting', kind:'number', min:1, defaultValue:4, desc:v=>`Every ${v||4} rounds on the field it molts into a bigger shell: +1 Attack and +2 Health for good.`},
   {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose come off with it.`},
   {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit knocks out one of the target's defences.`,
@@ -4874,6 +4876,8 @@ function abilityBadges(d, bopts){
   if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">🌆</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">🕶️</span>`); if(e.nightblind) out.push(`<span title="Night-blind">🌑</span>`);
   if(e.shedding) out.push(`<span title="Shedding">🐍${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.molting) out.push(`<span title="Molting">🦀${e.molting}</span>`);
+  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands">🧨${e.dynamite}</span>`);
+  if(e.helmet) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
   if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
@@ -7731,9 +7735,21 @@ function resetCloudIdentity(){
 // Signs out of the cloud account only. Everything already on this device (decks, currencies,
 // cards — including whatever was synced down) stays in localStorage and keeps working as a guest.
 async function cloudSignOut(){
-  if(sbClient){ try{ await sbClient.auth.signOut(); }catch(e){} }
+  if(sbClient){ try{ await sbClient.auth.signOut({scope:'local'}); }catch(e){} }
+  // 2026-10-13 (user: "I can't log out ... cant switch account either"): the session token is removed by hand too, in case the
+  // sign-out call didn't reach the server, so the next load can't quietly restore it.
+  try{ Object.keys(localStorage).filter(k=> /^sb-.*-auth-token/.test(k)).forEach(k=> localStorage.removeItem(k)); }catch(e){}
   resetCloudIdentity();
   refreshAuthGateUI();
+}
+// Switching accounts (2026-10-13): a signed-in account's progress lives in the cloud, so signing out leaves this device
+// fresh for the next person: the game's saves are cleared (sound, music and effects settings stay) and the entrance comes back.
+const DEVICE_SETTING_KEYS = /^(bw_(music|sfx|voice)Volume|bramblewood_fx_level|bramblewood_deck_stackfx)$/;
+async function signOutAndSwitch(){
+  const real = isSignedIn();
+  await cloudSignOut();
+  if(real){ try{ Object.keys(localStorage).filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k)).forEach(k=> localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){} }
+  location.reload();
 }
 async function cloudPullState(){
   if(!sbClient || !cloudUserId) return;
@@ -17032,6 +17048,13 @@ function quitTutorialToHome(){
   showToast('Tutorial paused — tap “Start the tutorial” on Home (or the 🎓 on the Outskirts map) whenever you’re ready.');
 }
 function continueTutorialFromHome(){
+  // 2026-10-13 (user: "when you click start the tutorial, it should reset"): a fresh start — the guides show again, from part 1,
+  // and the side is picked again — instead of resuming with every tip already marked seen on this device.
+  if(!loadTutorialDone()){
+    GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); ['go-tutorial2','go-tutorial2b','leader','wait','lumber','handLimit','g-peek'].forEach(id=> coachSeen.delete(id));
+    try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); localStorage.removeItem('bramblewood_arena_faction'); }catch(e){}
+    saveTutorialStage(1); showFactionScreen(); return;
+  }
   if(!loadFactionChoice()){ showFactionScreen(); return; }
   beginTutorialStage(loadTutorialStage());
 }
@@ -23021,7 +23044,7 @@ function boardCardHTML(c, defs, opts){
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
@@ -26890,6 +26913,9 @@ function logText(ev){
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
     case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
+    case 'dynamite': return {cls:'', text:`🧨 ${nm(ev.defId)}'s dynamite goes off: ${ev.amount} damage to ${ev.hits} card${ev.hits===1?'':'s'} around it!`};
+    case 'deflect': return {cls:'', text:`🪖 The shot glances off ${nm(ev.defId)}'s helmet.`};
+    case 'fuse': return null;
     case 'blindMiss': return {cls:'', text: ev.night ? `${nm(ev.attDefId)} can't see in the dark and misses! 🌙` : `${nm(ev.attDefId)} swings blindly and misses! 👁`};
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
     case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
@@ -28472,6 +28498,12 @@ function renderVfxForEvent(ev){
   // (which plays on the TARGET, not the attacker).
   if(ev.type==='tipsySwing'){ const el = boardCardEl(ev.attUid); if(el){ el.classList.remove('tipsy-lurch'); void el.offsetWidth; el.style.setProperty('--lurch', (ev.drift<0 ? -1 : 1)*14 + 'px'); el.classList.add('tipsy-lurch'); setTimeout(()=> el.classList.remove('tipsy-lurch'), 700); if(ev.miss) setTimeout(()=> floatText(el, '🍺 Miss!', 'debuff'), animMs().windup); } }
   if(ev.type==='confusedWhiff'){ const el = boardCardEl(ev.uid); if(el){ floatText(el, '❓ Fizzle', 'debuff'); } }
+  if(ev.type==='dynamite'){ const el = boardCardEl(ev.uid); const bf = document.getElementById('battlefieldEl');
+    try{ SoundKit.siegeTone ? SoundKit.siegeTone() : (SoundKit.thud && SoundKit.thud()); }catch(e){}
+    if(el && !reducedMotion()){ const r = el.getBoundingClientRect(), b = document.createElement('div'); b.className = 'dyn-blast'; b.setAttribute('aria-hidden', 'true'); b.style.left = (r.left + r.width/2) + 'px'; b.style.top = (r.top + r.height/2) + 'px'; document.body.appendChild(b); setTimeout(()=> b.remove(), 900); }
+    if(bf && !reducedMotion()){ bf.classList.remove('dyn-shake'); void bf.offsetWidth; bf.classList.add('dyn-shake'); setTimeout(()=> bf.classList.remove('dyn-shake'), 600); } }
+  if(ev.type==='deflect'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, '🪖 Deflect!', 'buff'); }catch(e){} }
+  if(ev.type==='fuse'){ const el = boardCardEl(ev.uid); const fb = el && el.querySelector('.fuse-badge'); if(fb){ fb.textContent = '🧨' + ev.left; fb.classList.toggle('is-last', ev.left === 1); if(!ev.left) fb.remove(); } }
   if(ev.type==='blindMiss'){
     const el = boardCardEl(ev.attUid);
     animateAttacker(ev.attUid, ev.side==='A');
@@ -32630,6 +32662,7 @@ function renderProfile(){
   wireMatchHistoryPanel();
   if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    if(isSignedIn()){ if(!confirm('Log out? Your progress is saved to your account. This device starts fresh, so someone else can sign in or play.')) return; signOutAndSwitch(); return; }
     if(!confirm('Log out? Your decks, currencies, and cards all stay saved on this device — logging back in (even under a different name) won\'t lose any of it.')) return;
     clearMyProfile();
     matchHistoryList = null;
@@ -32637,9 +32670,8 @@ function renderProfile(){
   });
   const signOutBtn = document.getElementById('cloudSignOutBtn');
   if(signOutBtn) signOutBtn.addEventListener('click', async ()=>{
-    if(!confirm('Sign out? Everything stays on this device and you can keep playing as a guest — online features lock until you sign in again.')) return;
-    await cloudSignOut();
-    showToast('Signed out — playing as a guest on this device.');
+    if(!confirm('Sign out? Your progress is saved to your account. This device starts fresh, so someone else can sign in or play.')) return;
+    await signOutAndSwitch();
   });
   const statusLine = document.getElementById('cloudSyncStatusLine');
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? '✅ Active, your progress is backed up' : (cloudReady ? 'Playing as a guest.' : 'Connecting…'));

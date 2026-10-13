@@ -8351,6 +8351,15 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 .map-pawn.map-foe .mp-body{filter:drop-shadow(0 0 6px rgba(255,60,40,.8)) drop-shadow(0 2px 2px rgba(0,0,0,.45));}
 .map-pawn.map-foe.foe-humming .mp-body{filter:drop-shadow(0 0 6px rgba(58,120,200,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.45));}
 @media (prefers-reduced-motion: reduce){ .map-node.ambush-pop{animation:none;} }
+.fuse-badge{position:absolute; top:-9px; right:-6px; z-index:7; padding:1px 6px; border-radius:999px; background:#c62f22; color:#fff; font:800 12px/1.3 'Baloo 2', system-ui, sans-serif; box-shadow:0 0 0 2px #fff3d6, 0 2px 6px rgba(0,0,0,.4);}
+.fuse-badge.is-last{animation:fuseLast .5s ease-in-out infinite alternate;}
+@keyframes fuseLast{from{transform:scale(1); box-shadow:0 0 0 2px #fff3d6, 0 0 6px rgba(255,80,40,.6);} to{transform:scale(1.15); box-shadow:0 0 0 2px #fff3d6, 0 0 16px rgba(255,80,40,1);}}
+.dyn-blast{position:fixed; z-index:9000; width:10px; height:10px; margin:-5px 0 0 -5px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, #fff6c8 0%, #ffb23a 35%, #e0451f 60%, rgba(120,30,10,0) 72%); animation:dynBlast .8s ease-out forwards;}
+@keyframes dynBlast{from{transform:scale(1); opacity:1;} to{transform:scale(36); opacity:0;}}
+#battlefieldEl.dyn-shake{animation:dynShake .5s ease-out;}
+@keyframes dynShake{0%,100%{transform:none;} 20%{transform:translate(-6px,3px);} 40%{transform:translate(5px,-4px);} 60%{transform:translate(-4px,2px);} 80%{transform:translate(2px,-1px);}}
+.ab-helm{vertical-align:-0.1em;}
+@media (prefers-reduced-motion: reduce){ .fuse-badge.is-last{animation:none;} }
 .dark-veil{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; background:radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(4,4,12,.45) 100%);}
 .dark-veil.lvl-pitch{background:radial-gradient(ellipse at 50% 50%, rgba(4,4,12,.1) 20%, rgba(4,4,12,.65) 100%);}
 .dark-veil.lvl-absolute{background:radial-gradient(ellipse at 50% 50%, rgba(2,2,8,.3) 10%, rgba(2,2,8,.85) 100%);}
