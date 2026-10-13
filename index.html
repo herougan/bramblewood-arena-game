@@ -17325,7 +17325,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '3d2a6d55ed46', BUILD_CARD_HASH = '14f3fc2278925b5870a4d5971e558b5e41eee818bc743965ab45411feee5e377';
+const BUILD_ID = '636de66552c6', BUILD_CARD_HASH = '14f3fc2278925b5870a4d5971e558b5e41eee818bc743965ab45411feee5e377';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -26994,7 +26994,7 @@ const FEATURE_SPOTS = [
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
   // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
-  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[30]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
+  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:31, get map(){ const m = mainConquestMaps()[31]; return m ? m.id : '~map31'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
 // Spots added on 2026-10-12 that cover something a player may already have opened under the old schedule (the Codex
 // came with the Armoury, the Forge with the Codex, the Gauntlet with the Arena): an existing save keeps them open.

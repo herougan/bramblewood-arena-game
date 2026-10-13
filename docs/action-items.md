@@ -1,6 +1,33 @@
 # Action items
 
-_Updated 2026-10-13, 9:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 11:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 11:30 (your 10:57 list)
+
+| # | What I did |
+|---|---|
+| 1 | Test Lab → 📊 **Card check**: measures only the cards a player meets up to a map you pick (that map's and earlier rewards, Base cards, your faction's cards), at Level 1, against their rarity band. |
+| 1–3 | **Faction Reward** 🎁 and **Faction Growth** 🌱 placeholders in ✏️ Edit rewards. Reward: a random card from your faction pool (5 copies of each Common, 4 Uncommon, 3 Rare, 2 above, min 1), with odds by faction tier (10/20/30/40 collected: at 20 it's 50% Common / 30% Uncommon / 20% Rare). Growth: 1 of each faction card, lowest rarity first. Elites and bosses give 1 Faction Reward + 1 base card unless the fight has placeholders. |
+| 4 | Hummingbirds as fencers: Crimson Wing Recruit and Duelist Cadet got Quick, Cobalt Talon Skirmisher Pierce 1, Ruby-throat Duelist Pierce 1 + Evasive. None use Poison. |
+| 5 | Danger warnings v2: a card warns until you've **beaten** it (won a fight it was in). The ladder: 2 at Uncommon, 3 at Rare, 4 at Very Rare, 5 at Super Rare… A fight can name its own ⚠️ Danger cards (✏️ Edit rewards); those always warn until beaten. |
+| 6 | **Shedding N**: every N rounds +1/+1 and its harmful counters come off (Grass Viper, Adder Ambusher). |
+| 7 | **Twilight** in the cycle (D, N, D, N, T) on twilight maps or with a **Crepuscular** card in a deck; Diurnal and Nocturnal both active in Twilight. |
+| 8 | Frost → **Frigid**, Heatwave → **Scorching**. Eclipse / Syzygy planned for Map 35+ (roadmap note). |
+| 9, 11, 12 | Floodplains, Abyssal Plains (Map 29) and the Map 20–60 road: world-roadmap-2026-10-13. |
+| 10 | Blindness only in complete darkness (caves today) unless Darksight or a Lantern; new **Sun-shy** and **Night-blind**. Night alone dims no one now. |
+| 13 | The tide waits for the first Tide card. |
+| 18 | Sweep is **Cleave** ("hits the unit in front, and the enemy units on its left and right each take N bonus damage"). |
+| 19 | **Pitchfork** hits the 4 nearest enemy units, none more than 2 columns away (no longer pierces). |
+| 14–17, 20, 21 | B6, D23, D24, D26, D32 closed; the Flea Market moved to Map 31. |
+
+New calls for you:
+
+| ID | What | (a) Pushback | (b) Recommendation |
+|---|---|---|---|
+| **D70** | Daily / Weekly dungeons: your note ended at the colon | — | My proposal: Daily = 3 castles, once a day, a different cleared map's enemies each day; Weekly = 5 harder castles, once a week, bigger reward. Say "go" or describe yours |
+| **D71** | Faction pools: today your side has 22 cards (16 + 6 shared). Your plan is 16 + 16 + 8 generic = 40 | Which 8 are generic is your call | Tag the generic ones "shared" in the editor (source side), or tell me which and I'll do it |
+| **D72** | Shedding / molting: your note ended at "besides" | — | Tell me the rest |
+| **D73** | Dark maps: only Smugglers' Grotto is completely dark | Caves & Alcoves (Map 8) dark would make Darksight decisive there | Keep it to the literal caves until the Abyssal Plains |
 
 ## Done overnight (your 00:17 list)
 
@@ -63,13 +90,7 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **B6** | Card balance (re-run 09:30 at Level 1 on a fixed yardstick: 228/454 in band; see CHANGELOG). Inside the basic set (Duck Paddler 79% … Otter Kit 26%) | You're still playing the cards, so I haven't touched balance. The tutorial now uses the weakest Base cards on purpose, so the spread matters less early on | Do your pass after a few more evenings of play; I can run the win-rate sheet on demand |
-| **D23** | Satiety's rule was my reading of the name | Nobody has played an Ecclesia deck yet, so the rule is untested | Keep; revisit after the first Ecclesia playtest |
-| **D24** | Arena: the second player gets an extra card. Add that to Conquest? | Conquest fights are already tuned with the AI going first; adding a card shifts every map's difficulty at once | Keep Conquest as is |
-| **D26** | Anti-Air→Boomerang on Otter Centurion, "SSS fast" = round 8, rare S find from Map 5 at 12% | Boomerang got stronger tonight (hits there and back), so Otter Centurion is now a better early card | Keep; watch Centurion's win rate in your play |
 | **D27** | Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit | None | Keep |
-| **D28** | Flea Market sits on Map 30 (admin-only until it exists) | With Map 0 added, "Map 30" is now the 31st map; I kept the number, not the position | Keep; build Maps 13–30 before it opens |
-| **D32** | Wildpaths: earning Path points | Points are counted (1 per map cleared, +1 per boss S rank) but nothing spends them yet | Yes as counted; I'll wire spending when you pick the three trails |
 | **D34** | Map table readings (free packs, Wandering Trader on Map 13, errands from Map 9) | With the new Map 1, Maps 2 onwards keep their numbers, so the table still holds. Only the Armoury moved: it stays on Map 0 (you need decks early), not Map 1 | Keep; say if the Armoury should move to Clovermead |
 | **D35** | Base growth from bosses; errands pay 4–8% of a Materia Unit | Your note tonight: Base cards are weak, strong mid-levels, fade at 10, Lv 11 rebalances. Bosses levelling them early fits that | Keep |
 | **D39** | 22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching) | Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired | Keep the rest |

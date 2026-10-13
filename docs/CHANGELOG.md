@@ -2,6 +2,29 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (11:30)
+- **Faction Reward 🎁 and Faction Growth 🌱.** Two reward placeholders for any fight (✏️ Edit rewards).
+  - A Faction Reward draws a random card from your faction pool. The pool holds 5 copies of each Common, 4 of each Uncommon, 3 of each Rare and fewer above. Your faction tier (10/20/30/40 cards collected) sets the odds, e.g. at 20: 50% Common, 30% Uncommon, 20% Rare.
+  - A Faction Growth gives the next card of the lowest rarity you don't have yet.
+  - Elites and bosses give one Faction Reward and one base card unless the fight has its own placeholders.
+  - The Map 20 "crown" is retired: Growth reaches the Epic and Heroic last.
+- **📊 Card check in the Test Lab.** Win-rate test on just the cards a player can meet up to a map you pick, at Level 1, next to each rarity's band.
+- **Danger warnings v2.**
+  - Only cards you haven't beaten warn; a card counts as beaten once you win a fight it was in. The same big card warns every time until then.
+  - The ladder steps up after 2 Uncommons, 3 Rares, 4 Very Rares, 5 Super Rares…
+  - A fight can name its own ⚠️ danger cards.
+- **Seeing.**
+  - Normal units are blind only in complete darkness (caves), unless they have Darksight or a Lantern; night alone dims no one now.
+  - New **Sun-shy** (blind by day) and **Night-blind** (blind at night).
+- **Twilight.** With a Crepuscular card in a deck (or on a twilight map) the day runs Day, Night, Day, Night, Twilight. In Twilight Diurnal and Nocturnal are both on, and the new **Crepuscular** only then.
+- **The tide** starts with the first Tide card played.
+- **Frigid** and **Scorching** are the new names for Frost and Heatwave.
+- **Cleave** (was Sweep): hits the unit in front, and the enemy units on its left and right each take N bonus damage.
+- **Pitchfork** hits the 4 nearest enemy units, none more than 2 columns away.
+- **Shedding N:** every N rounds +1/+1, and Poison, Bleed, Corrosion, Scar and Expose come off. Grass Viper and Adder Ambusher have it.
+- **Hummingbirds fence:** Quick on Crimson Wing Recruit and Duelist Cadet, Pierce 1 on Cobalt Talon Skirmisher, Pierce 1 and Evasive on Ruby-throat Duelist.
+- **Flea Market** moved to Map 31.
+
 ## 2026-10-13 (10:45)
 - **Danger warnings ⚠️.** A red warning crosses the field when a dangerous enemy card is played. By default the first one is for an Uncommon; each warning raises the bar one rarity (Rare, then Very Rare and up), so big-rarity fights don't keep firing it. Settings → Danger warnings sets where it starts (Uncommon, Rare, Very Rare, Epic, Legendary) or turns it off; changing it restarts the climb.
 - **Wind, rebuilt.** Wind belongs to the map now. Windy maps (Gannet Cliffs, The Glass Dunes, Ashen Spurn, The Sundered Peak) get strong wind every other round; gale maps (Eyrie Heights, The Aerie Vault) get it every round. Each gust blows the other way from the last, starting at your back.

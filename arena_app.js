@@ -11203,7 +11203,7 @@ const FEATURE_SPOTS = [
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
   // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
   // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
-  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:30, get map(){ const m = mainConquestMaps()[30]; return m ? m.id : '~map30'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
+  {key:'market', icon:'🧺', name:'Flea Market', mapNumber:31, get map(){ const m = mainConquestMaps()[31]; return m ? m.id : '~map31'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
 // Spots added on 2026-10-12 that cover something a player may already have opened under the old schedule (the Codex
 // came with the Armoury, the Forge with the Codex, the Gauntlet with the Arena): an existing save keeps them open.
