@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (12:30)
+- **Standard PvP.** Arena → Format: Collection or Standard. Standard has its own deck, built from every card, all at Level 1, with no foils, shinies or Materia. It covers Quick Battle, Pass & Play, Gauntlet and friend invites. Collection (your own cards and levels) stays the normal format.
+- **The road's last fights.** Map 0 ends on a normal fight, Maps 1–4 on an Elite, every 5th map on a boss and the rest on a miniboss.
+- **Card rewards by rank.** From Map 5 a fight's card needs rank B, from Map 15 rank A, from Map 30 rank S.
+- **The Armoury is on Map 1.** Every Map 0 win gives a card, and until the Armoury opens you can swap it into your deck from the map.
+- **Wildpaths cost points:** 5 and 10, then 15, 20 and 25 for the advanced ones.
+- **🍺 The Tavern** (Map 14) now holds the max-Energy upgrades.
+- **Field conditions are spelled out.** The skirmish panel lists every condition (terrain, eruptions, wind, darkness, night, twilight, high tide, frost, boss surge). In a fight each row shows ? until it first happens, then New!, then plain text.
+- **Field kit:** no daily refill (one starter fill; more will come from dailies and weeklies). **🔋 Energy capsule** (+20) for your first win on Map 2.
+- **Admin:** edit Forge tier prices, send 📣 world call-outs and GM messages (once the world_events table is applied), and a launch switch that hides every admin surface.
+- **Swarm and Tide** are keyword families now, not archetypes, so they lose the archetype mark.
+- **New docs:** economy and monetization, co-op dungeon for 4 players, Steam launch plan.
+
 ## 2026-10-13 (11:30)
 - **Faction Reward 🎁 and Faction Growth 🌱.** Two reward placeholders for any fight (✏️ Edit rewards).
   - A Faction Reward draws a random card from your faction pool. The pool holds 5 copies of each Common, 4 of each Uncommon, 3 of each Rare and fewer above. Your faction tier (10/20/30/40 cards collected) sets the odds, e.g. at 20: 50% Common, 30% Uncommon, 20% Rare.

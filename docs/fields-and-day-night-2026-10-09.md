@@ -76,5 +76,5 @@ Day and night, the new tags and the new cards moved 56 of 96 fights more than 12
 ## Ideas for later
 
 - More fields: Rainstorm (Flying grounded), Earthquake (shuffle positions), Eclipse (no day/night bonus), Tailwind (Quick for everyone).
-- Map-based phases: caves always night, Pebble Beach tides (the Tide archetype).
+- Map-based phases: caves always night, Pebble Beach tides (the Tide keyword family).
 - Fields as rewards or modifiers for elite fights ("This fight is fought in fog").

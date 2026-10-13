@@ -3,7 +3,7 @@
 **Status:** Devilry, Ecclesia, the Exile zone and the Forgotten Ones are built. The rest are designed only.
 
 **Two kinds of thing, kept apart (your 2026-10-10 note: "Tide, Swarm are not archetypes. Their passive effects are not locked to that archetype"):**
-- **Archetypes** are play styles built around a resource or zone (Darkness, Prayer, Stone and Scrap, Echoes). They're still never a lock: decks can mix freely or run none.
+- **Archetypes** are complete skill frameworks (2026-10-13 list): **Devilry, Ecclesia, Evolution, Scrappers, Exiled Ones, Forgotten Ones, Ancient Ones, Outer Ones and Void.** Each is built around a resource or zone (Darkness, Prayer, Stone and Scrap, Echoes and so on). They're still never a lock: decks can mix freely or run none. Only archetypes get the corner mark on a card.
 - **Keyword families** are plain skills any card can carry: Swarm, Tide, Nocturnal and Diurnal. They're themed by the animals that have them, not owned by an archetype.
 
 ---

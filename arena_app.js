@@ -223,7 +223,7 @@ const PASSIVE_DEFS = [
   {key:'sweep', category:'passive', label:'Cleave', kind:'number', min:0, desc:v=>`Cleaves through the line: hits the unit in front, and the enemy units on its left and right each take ${v} bonus damage.`}, // renamed from Sweep (2026-10-13); key kept
   {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: its Attack doubles (castles too), and it takes half damage.`},
   {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units next to it, yours and theirs, and to the enemy facing it.`}, // 2026-10-12, the world boss
-  // Swarm archetype (2026-10-09, archetypes-design-2026-10-09.md): strength in numbers; Sweep and Swipe are its answer.
+  // Swarm keyword family (2026-10-09; not an archetype, 2026-10-13): strength in numbers; Cleave and Swipe are its answer.
   // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
   {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
     get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined,
@@ -244,7 +244,7 @@ const PASSIVE_DEFS = [
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
     get:e=> (e.diurnal || e.diurnalHp) ? [e.diurnal===true ? 1 : (e.diurnal||0), e.diurnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.diurnal = a; if(h>0) e.diurnalHp = h; } }},
-  // Tide (2026-10-09, second archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
+  // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
   {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
@@ -1587,7 +1587,67 @@ function _cardDefsSignature(){
     (typeof mySightedCardIds!=='undefined' && mySightedCardIds && mySightedCardIds.size) || 0].join('|');
 }
 function invalidateCardDefs(){ _cardDefsCache = null; }
+// Standard PvP (2026-10-13, user: "all cards at level 1, just build your deck - all cards available ... no shinies or foils.
+// This is for our play testers"). The normal format is "Collection". While a Standard match runs, getCardDefs serves
+// every card unlocked at Level 1, with no prestige, foil or Materia.
+const STANDARD_FORMAT_KEY = 'bramblewood_standard_on_v1', STANDARD_DECK_KEY = 'bramblewood_standard_deck_v1';
+let standardMatchActive = false, _stdDefsCache = null;
+function buildStandardDefs(){
+  if(_stdDefsCache) return _stdDefsCache;
+  const src = Object.assign({}, CARD_DEFS_BASELINE, liveCards); Object.keys(liveDeletes).forEach(id=>{ delete src[id]; });
+  const out = {};
+  Object.keys(src).forEach(id=>{
+    const d = src[id]; if(!d) return;
+    const o = Object.assign({}, d, {locked:false, hidden:false});
+    ['prestigeTier','prestigeClass','prestigeIcon','prestigeLabel','foil','shiny','enchant','hatchling'].forEach(k=>{ delete o[k]; });
+    if(d.attack!=null || d.health!=null){ const st = statsAtLevel(d, 1); o.attack = st.attack; o.health = st.health; }
+    o.level = 1; o.baseLevel = cardBaseLevel(d); out[id] = o;
+  });
+  return (_stdDefsCache = out);
+}
+function standardFormatOn(){ try{ return localStorage.getItem(STANDARD_FORMAT_KEY)==='1'; }catch(e){ return false; } }
+function setStandardFormat(on){ try{ localStorage.setItem(STANDARD_FORMAT_KEY, on ? '1' : '0'); }catch(e){} }
+function standardPoolIds(){
+  const defs = buildStandardDefs();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; return !d.token && !d.test && !d.hero && !d.hallOfFame && d.cardType!=='materia' && !(SPELLS_SHELVED && d.cardType==='spell') && !/^dev|^event/.test(d.rarity||''); });
+}
+function loadStandardDeck(){
+  try{ const raw = localStorage.getItem(STANDARD_DECK_KEY); if(raw) return JSON.parse(raw)||{}; }catch(e){}
+  const out = {}; Object.keys(myDeckCounts||{}).forEach(id=>{ if(id!==HERO_ID) out[id] = myDeckCounts[id]; }); return out; // starts as a copy of your Collection deck
+}
+function saveStandardDeck(c){ try{ localStorage.setItem(STANDARD_DECK_KEY, JSON.stringify(c)); }catch(e){} }
+function standardDeckOk(){ return deckTotal(loadStandardDeck())===DECK_SIZE; }
+function openStandardDeckBuilder(onDone){
+  let counts = loadStandardDeck(), q = '';
+  const defs = buildStandardDefs(), pool = standardPoolIds().sort((a,b)=> (defs[a].name||a).localeCompare(defs[b].name||b));
+  let ov = document.getElementById('stdDeckOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'stdDeckOverlay'; ov.className = 'modal-overlay std-deck-overlay'; document.body.appendChild(ov); }
+  const cap = id=> maxCopiesForRarity(defs[id].rarity);
+  const row = id=>{ const d = defs[id], n = counts[id]||0;
+    return `<div class="std-row ${n?'is-in':''}"><span class="std-name">${escapeHtml(d.name||id)}</span><span class="std-meta">${escapeHtml(d.rarity||'common')} · ${d.attack!=null?d.attack:'–'}/${d.health!=null?d.health:'–'} · ⏳${d.wait!=null?d.wait:'?'}${d.cost?` · 🪵${d.cost}`:''}</span>
+      <span class="std-ctl"><button type="button" class="btn small" data-std-dec="${id}" ${n?'':'disabled'} aria-label="Remove one">−</button><b>${n}</b><button type="button" class="btn small" data-std-inc="${id}" ${n>=cap(id)?'disabled':''} aria-label="Add one">+</button></span></div>`; };
+  const draw = ()=>{
+    const tot = deckTotal(counts), list = pool.filter(id=> !q || (defs[id].name||id).toLowerCase().includes(q));
+    const inDeck = pool.filter(id=> counts[id]);
+    ov.innerHTML = `<div class="modal std-deck-modal" role="dialog" aria-labelledby="stdTitle">
+      <div class="modal-head-row"><h2 id="stdTitle">🃏 Standard deck</h2><button class="modal-close-btn" id="stdClose" aria-label="Close">✕</button></div>
+      <p class="panel-sub">Every card, all at Level 1. No foils or shinies. <b class="${tot===DECK_SIZE?'std-ok':'std-bad'}">${tot} / ${DECK_SIZE}</b></p>
+      <div class="std-in">${inDeck.length ? inDeck.map(row).join('') : '<p class="panel-sub">Empty. Add cards below.</p>'}</div>
+      <input type="search" class="std-search" id="stdSearch" placeholder="Search all cards" value="${escapeHtml(q)}">
+      <div class="std-pool">${list.filter(id=>!counts[id]).slice(0, 400).map(row).join('')}</div>
+      <div class="auth-actions"><button type="button" class="btn" id="stdCopy">Copy my Collection deck</button><button type="button" class="btn primary" id="stdDone">Done</button></div></div>`;
+    ov.hidden = false;
+    const close = ()=>{ saveStandardDeck(counts); ov.hidden = true; ov.innerHTML = ''; if(onDone) onDone(); };
+    ov.querySelector('#stdClose').onclick = close; ov.querySelector('#stdDone').onclick = close;
+    ov.querySelector('#stdCopy').onclick = ()=>{ counts = {}; Object.keys(myDeckCounts||{}).forEach(id=>{ if(id!==HERO_ID && defs[id]) counts[id] = myDeckCounts[id]; }); draw(); };
+    ov.querySelectorAll('[data-std-inc]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.stdInc; if(deckTotal(counts)>=DECK_SIZE){ showToast(`A deck is exactly ${DECK_SIZE} cards.`, 'warn'); return; } counts[id] = Math.min(cap(id), (counts[id]||0)+1); draw(); });
+    ov.querySelectorAll('[data-std-dec]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.stdDec; counts[id] = (counts[id]||0)-1; if(counts[id]<=0) delete counts[id]; draw(); });
+    const se = ov.querySelector('#stdSearch'); se.oninput = ()=>{ q = se.value.trim().toLowerCase(); const pos = se.selectionStart; draw(); const s2 = ov.querySelector('#stdSearch'); s2.focus(); try{ s2.setSelectionRange(pos,pos); }catch(e){} };
+  };
+  draw();
+}
 function getCardDefs(){
+  if(standardMatchActive) return buildStandardDefs();
   const sig = _cardDefsSignature();
   if(_cardDefsCache && sig === _cardDefsSig) return _cardDefsCache;
   const res = buildCardDefs();
@@ -2179,6 +2239,7 @@ function applyCloudCfgRow(r){
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
   if(r.id==='__cfg:dialogues'){ dialogueEdits = (r.deleted || !r.data) ? {} : (r.data.edits || {}); saveDialogueEdits(); return; }
   if(r.id==='__cfg:shop-packs'){ applyCloudShopPacks(r); return; }
+  if(r.id==='__cfg:forge-tiers'){ applyCloudForgeTiers(r); return; }
   const m = /^__cfg:map-layout:(.+)$/.exec(r.id);
   if(!m) return;
   if(r.deleted || !r.data || !r.data.positions) delete mapLayoutOverrides[m[1]];
@@ -3755,14 +3816,16 @@ function fieldHoverHTML(){
   const f = m.engine.getField(); if(!f) return '';
   const node = m.conquestNode && (()=>{ try{ return findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node; }catch(e){ return null; } })(), r = (node && node.rules) || {};
   const extra = [];
-  if(f.id === 'frozen'){
+  let rowsHTML = '';
+  if(f.id === 'frozen' && (r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length)){ rowsHTML = `<ul class="fcr-list">${fieldRowsListHTML(fieldConditionRows(r).filter(x=> /^frost/.test(x.key)))}</ul>`; extra.push('Units that resist cold are never chilled.'); }
+  else if(f.id === 'frozen'){
     extra.push(`Each round ${r.frostCount > 1 ? r.frostCount + ' random units' : 'one random unit'} on each side ${r.frostCount > 1 ? 'get' : 'gets'} +${r.frostWait||1} Wait.`);
     if(r.frostResist && r.frostResist.length) extra.push(`Their ${r.frostResist.join(', ')} units are used to the cold: the frost never touches them.`);
     if(r.frostbite) extra.push(`Frostbite: an enemy the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
     extra.push('Units that resist cold are never chilled.');
   }
   const left = f.rounds != null ? `${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left, then it clears.` : 'It lasts the whole fight.';
-  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${keywordizeHTML(escapeHtml(f.text))}</p>${extra.map(t=> `<p>${keywordizeHTML(escapeHtml(t))}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
+  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${keywordizeHTML(escapeHtml(f.text))}</p>${rowsHTML}${extra.map(t=> `<p>${keywordizeHTML(escapeHtml(t))}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
 }
 function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
@@ -4571,19 +4634,19 @@ function shinyHue(id){ let h = 0; for(const ch of String(id||'')) h = (h*31 + ch
 // 2026-10-12 (user: "Remove the animal type marker on the top right hand corner of the card. When I said archetype marker
 // previously - i meant ecclesia etc. Types are like volcano, river (geographic) and otter, insect (family), ant (tribe)"): the
 // corner mark is the card's archetype (Ecclesia, Devilry, Scrapper, Evolution, Swarm, Tide), never its type.
-const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrapper','🌫️'], evolution:['Evolution','🧬'], swarm:['Swarm','🐝'], tide:['Tide','🌊']};
+// 2026-10-13 (user: "Swarm and Tide are NOT archetypes. Archetypes are complete skill frameworks like Devilry, Ecclesia, Evolution,
+// Scrappers, Exiled ones, Forgotten ones, Ancient ones, Outer ones, Void"): Swarm and Tide are keyword families and lose the mark.
+const CARD_ARCHETYPE_MARK = {grace:['Ecclesia','🙏'], devilry:['Devilry','⛧'], exile:['Scrappers','🌫️'], evolution:['Evolution','🧬'], exiled:['Exiled Ones','🥀'], forgotten:['Forgotten Ones','🕯️'], ancient:['Ancient Ones','🗿'], outer:['Outer Ones','🌌'], void:['Void','🕳️']};
+const ARCHETYPE_NAMES = Object.values(CARD_ARCHETYPE_MARK).map(x=> x[0]);
 function cardArchetypeKey(d){
   const line = inferMechanicLine(d||{}); if(line && line !== 'none' && line !== 'None' && CARD_ARCHETYPE_MARK[line]) return line;
   if((d.archetypes||[]).includes('Ecclesia') || d.prayerReq > 0) return 'grace';
-  const e = d.effects || {}; if(e.swarm) return 'swarm'; if(e.tide) return 'tide';
   return null;
 }
 function archMarkHTML(d, waitShown, live){
   if(!d || d.isCastle || d.field || d.cardType==='materia') return '';
   const key = cardArchetypeKey(d); if(!key) return '';
   let [t, icon] = CARD_ARCHETYPE_MARK[key];
-  // 2026-10-12 (23:12, user: "JUST for swarm, use the Swarmer's animal type icon"): bees get the bee, everyone else the ant.
-  if(key === 'swarm') icon = (d.archetypes||[]).includes('Bee') ? '🐝' : '🐜';
   const ww = !waitShown ? 0 : live ? 24 : (Math.min(3, Math.max(1, d.wait|0)) * 11 + 14);
   return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t + ' archetype')}" aria-hidden="true">${icon}</div>`;
 }
@@ -8101,6 +8164,12 @@ function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringif
 // - once a day for non-admins"): tapping any Energy pill opens it. +5 free Energy once a day for everyone (it can go over
 // the cap); admins also get an unlimited refill.
 const FREE_ENERGY_KEY = 'bramblewood_free_energy_day', FREE_ENERGY_AMOUNT = 5;
+// Energy capsules (D54, 2026-10-13, user: "An energy capsule early, around Map 2"): a stored refill. Your first win on Map 2
+// gives one; using it (from the Energy panel) adds 20 Energy and can go over the cap.
+const ENERGY_CAPSULE_KEY = 'bramblewood_energy_capsules_v1', ENERGY_CAPSULE_AMOUNT = 20, MAP2_CAPSULE_KEY = 'bramblewood_map2_capsule_v1';
+function energyCapsules(){ try{ return Number(localStorage.getItem(ENERGY_CAPSULE_KEY)) || 0; }catch(e){ return 0; } }
+function addEnergyCapsules(n){ try{ localStorage.setItem(ENERGY_CAPSULE_KEY, String(Math.max(0, energyCapsules() + n))); }catch(e){} }
+function useEnergyCapsule(){ if(energyCapsules() < 1) return false; addEnergyCapsules(-1); const st = settleEnergy(); st.current += ENERGY_CAPSULE_AMOUNT; saveEnergyState(st); return true; }
 const todayKey = ()=>{ const d = new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; };
 function freeEnergyClaimedToday(){ try{ return localStorage.getItem(FREE_ENERGY_KEY) === todayKey(); }catch(e){ return false; } }
 function openEnergyPanel(anchor){
@@ -8109,6 +8178,7 @@ function openEnergyPanel(anchor){
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
   pop.innerHTML = `<b>⚡ ${s.current}/${energyMax()} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small><small class="ep-grow">${escapeHtml(energyNextStepText())}</small>
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
+    ${energyCapsules() ? `<button type="button" class="btn small" id="epCapsule">🔋 Use an Energy capsule (+${ENERGY_CAPSULE_AMOUNT}) · ${energyCapsules()} left</button>` : ''}
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5">−5</button><button type="button" class="btn small" data-ep="-1">−1</button><button type="button" class="btn small" data-ep="1">+1</button><button type="button" class="btn small" data-ep="5">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
@@ -8118,6 +8188,7 @@ function openEnergyPanel(anchor){
   pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
+  const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); } };
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
   // instant refill tick. They show for an admin account even with Admin mode switched off.
@@ -8726,7 +8797,11 @@ const ADMIN_MODE_KEY = 'bramblewood_arena_adminmode';
 // local copy of the game (file:// or localhost) for development and the test suites. The stored switch
 // is only honoured once one of those is true; for everyone else Admin Mode stays off.
 function isDevHost(){ try{ const h = location.hostname; return location.protocol === 'file:' || h === 'localhost' || h === '127.0.0.1' || /\.local$/.test(h); }catch(e){ return false; } }
-function adminAllowed(){ return isDevHost() || (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin === true); }
+// Launch switch (2026-10-13, user: "deactivate admin features at the official launch"): set to true for the launch build and
+// every in-game admin surface disappears on the live site (local dev hosts keep them). Server-side, admin writes are already
+// refused for non-admins by the is_app_admin() row policies, so a packet forwarder can't run them either way.
+const LAUNCH_BUILD = false;
+function adminAllowed(){ if(LAUNCH_BUILD && !isDevHost()) return false; return isDevHost() || (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin === true); }
 let adminModeEnabled = false;
 try{ adminModeEnabled = isDevHost() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){}
 function syncAdminModeToAccount(){
@@ -8869,6 +8944,34 @@ const STRANGE_MATERIA_DROPS = {12:1, 15:1, 25:2, 30:3};
 setTimeout(()=>{ try{ if(loadDialogueFlags()['mig:strange']) return; setDialogueFlag('mig:strange', true); const p = loadConquestProgress(), mains = mainConquestMaps();
   Object.entries(STRANGE_MATERIA_DROPS).forEach(([num, n])=>{ const m = mains[+num]; const key = m && mapRewardNodeKey(m); if(key && p.completed.includes(conquestNodeId(m.id, key))) for(let i = 0; i < n; i++) unlockCardForPlayer('strange-materia', 'materia'); }); }catch(e){} }, 4000);
 const FORGE_TIER_KEY = 'bramblewood_forge_tier_v1';
+// Forge tier prices are editable (D45, 2026-10-13, user: "balancing comes later; add an edit button on the site"): admins edit
+// each tier's Gold, Dust, Strange Materia and map gate; the edit is published as the `__cfg:forge-tiers` config row.
+const FORGE_TIER_EDITS_KEY = 'bramblewood_forge_tier_edits_v1', FORGE_TIERS_DEFAULT = JSON.parse(JSON.stringify(FORGE_TIERS));
+function applyForgeTierEdits(ed){
+  ed = ed || {};
+  FORGE_TIERS.forEach((t, i)=>{ const d = FORGE_TIERS_DEFAULT[i], e = ed[t.tier] || {}; if(!d.cost) return; const num = (v, dv)=> (v != null && v !== '' && isFinite(+v)) ? Math.max(0, Math.round(+v)) : dv;
+    t.cost = {gold: num(e.gold, d.cost.gold), dust: num(e.dust, d.cost.dust)}; t.strange = num(e.strange, d.strange || 0); t.map = num(e.map, d.map); });
+}
+function loadForgeTierEdits(){ try{ return JSON.parse(localStorage.getItem(FORGE_TIER_EDITS_KEY) || '{}') || {}; }catch(e){ return {}; } }
+applyForgeTierEdits(loadForgeTierEdits());
+function applyCloudForgeTiers(r){ const ed = (r.deleted || !r.data) ? {} : (r.data.edits || {}); try{ localStorage.setItem(FORGE_TIER_EDITS_KEY, JSON.stringify(ed)); }catch(e){} applyForgeTierEdits(ed); }
+function openForgeTierEditor(){
+  let ov = document.getElementById('forgeTierEditOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'forgeTierEditOverlay'; ov.className = 'modal-overlay std-deck-overlay'; document.body.appendChild(ov); }
+  const rows = FORGE_TIERS.filter(t=> t.cost).map(t=> `<tr><th scope="row">${t.tier}. ${escapeHtml(t.name)}</th>${['gold','dust','strange','map'].map(k=> `<td><input type="number" min="0" class="w-60" data-ft="${t.tier}" data-k="${k}" value="${k==='gold'||k==='dust' ? t.cost[k] : (t[k]||0)}" aria-label="${escapeAttr(t.name + ' ' + k)}"></td>`).join('')}</tr>`).join('');
+  ov.innerHTML = `<div class="modal" role="dialog" aria-labelledby="ftTitle" style="max-width:620px">
+    <div class="modal-head-row"><h2 id="ftTitle">🏭 Forge tier prices</h2><button class="modal-close-btn" id="ftClose" aria-label="Close">✕</button></div>
+    <div style="overflow-x:auto"><table class="ft-table"><thead><tr><th>Tier</th><th>🪙 Gold</th><th>✨ Dust</th><th>🔮 Strange</th><th>🗺️ Map</th></tr></thead><tbody>${rows}</tbody></table></div>
+    <div class="auth-actions"><button type="button" class="btn" id="ftReset">Reset to defaults</button><button type="button" class="btn primary" id="ftSave">Save for everyone</button></div></div>`;
+  ov.hidden = false;
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+  const save = async ed=>{ try{ localStorage.setItem(FORGE_TIER_EDITS_KEY, JSON.stringify(ed)); }catch(e){} applyForgeTierEdits(ed); close(); try{ renderForge(); }catch(e){}
+    const ok = await cloudWriteCardOverride('__cfg:forge-tiers', Object.keys(ed).length ? {data:{kind:'forge-tiers', edits: ed}, deleted:false, deleted_snapshot:null} : {data:null, deleted:true, deleted_snapshot:null});
+    showToast(ok ? '🏭 Forge prices saved and published.' : '🏭 Forge prices saved in this browser. Sign in as an admin to publish them.', ok ? 'ok' : 'warn'); };
+  ov.querySelector('#ftClose').onclick = close;
+  ov.querySelector('#ftReset').onclick = ()=> save({});
+  ov.querySelector('#ftSave').onclick = ()=>{ const ed = {}; ov.querySelectorAll('[data-ft]').forEach(i=>{ (ed[i.dataset.ft] = ed[i.dataset.ft] || {})[i.dataset.k] = Math.max(0, Math.round(+i.value || 0)); }); save(ed); };
+}
 function forgeTier(){
   let t = 0; try{ t = +localStorage.getItem(FORGE_TIER_KEY) || 0; }catch(e){}
   if(!t){ // first look: a save that already tempered past Lv 3 keeps the tier that covers it
@@ -8913,6 +9016,7 @@ function forgeUpgradeHTML(){
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
       ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : `<span class="forge-cost-row">${forgeCostChipsHTML(next.cost)}${next.strange ? `<span class="hud-pill ${ownedCount('strange-materia') >= next.strange ? '' : 'is-short'}" title="Strange Materia: the boss of Maps ${Object.keys(STRANGE_MATERIA_DROPS).join(', ')} drops it on its first clear">🔮 ${ownedCount('strange-materia')}/${next.strange}</span>` : ''}</span>`}
       <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+    ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
 function canAffordLevelUp(currentLevel, defId){
@@ -8922,6 +9026,7 @@ function canAffordLevelUp(currentLevel, defId){
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
 }
 let myDeckCounts = loadMyDeck();
+window.__bwMainDeck = ()=> myDeckCounts; // startMatchInner shadows the name with the chosen deck
 let myCharacterId = loadMyCharacter();
 function loadMyCharacter(){
   try{
@@ -10427,10 +10532,12 @@ async function enterLiveMatch(row){
     if(oppProfile && oppProfile.display_name) oppName = oppProfile.display_name;
   }catch(e){ /* non-fatal — the generic "Opponent" label is fine */ }
   const settings = row.settings || {};
-  startLiveRankedMatch({
+  const isStd = settings.format==='standard';
+  standardMatchActive = isStd; _stdDefsCache = null;
+  startLiveRankedMatch({ standard: isStd,
     friendly: row.ranked===false, battleMode: Registry.battleMode(settings.battleMode) ? settings.battleMode : Registry.defaultBattleMode(),
     matchId: row.id, role, mySeat, oppId, oppRating, oppName,
-    myDeck: myDeckCounts, myCharacter: myCharacterId,
+    myDeck: isStd ? loadStandardDeck() : myDeckCounts, myCharacter: myCharacterId,
     oppDeck: oppDeck || {}, oppCharacter: oppCharacter || 'castle',
   });
 }
@@ -10459,7 +10566,7 @@ function startLiveRankedMatch(cfg){
     leaderDefId:null, leaderUid:null, // leader-summon isn't wired up for a real 2-player match yet — see module header, limitation #4
     liveMatchId: cfg.matchId, liveRole: cfg.role, liveMySeat: cfg.mySeat, liveOpponentId: cfg.oppId,
     liveOpponentRating: cfg.oppRating, liveOpponentName: cfg.oppName, liveReplaying: false,
-    liveFriendly: !!cfg.friendly, battleMode: cfg.battleMode || Registry.defaultBattleMode(),
+    liveFriendly: !!cfg.friendly, battleMode: cfg.battleMode || Registry.defaultBattleMode(), standard: !!cfg.standard,
   };
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
@@ -10830,6 +10937,11 @@ const DIALOGUES = {
     {who:'swiftpaw', text:'Ten in a row? That’s the Gauntlet.', options:[{label:'Bring it.', goto:'go'}], silent:'go'},
     {label:'go', who:'vesper', text:'Lose once and you start again from nothing. That’s the point.'},
   ]},
+  unlock_tavern: {lines:[
+    {who:'traveller', text:'A tavern, this far out. Warm fire, long tables, and a keeper who has heard every road story twice.'},
+    {who:'traveller', text:'Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Max Energy, raised one cup at a time.'},
+  ]},
   unlock_testlab: {lines:[
     {who:'whisper', text:'Psst. A tent full of tables. Nobody fights for real in here.'},
     {who:'whisper', text:'Put any cards down, see what they do. Nothing you win, nothing you lose.', options:[{label:'Let me try.', goto:'go', act:'sub:sandbox'}], silent:'go'},
@@ -11020,6 +11132,7 @@ function performDialogueAct(act){
     if(k === 'tab') switchTab(v);
     else if(k === 'sub'){ playSubTab = v; switchTab('play'); }
     else if(k === 'quests') openQuestsModal(v || undefined);
+    else if(k === 'tavern') openTavern();
     else if(k === 'forge'){ codexSubTab = 'forge'; switchTab('codex'); }
     else if(k === 'map'){ playSubTab = 'conquest'; conquestSelectedMap = v; conquestSelectedNodeKey = null; switchTab('play'); }
     else if(k === 'spot'){ const sp = FEATURE_SPOTS.find(x=> x.key === v); if(sp && featureUnlocked(sp.key)) sp.go(); }
@@ -11174,7 +11287,9 @@ const FEATURE_SPOTS = [
   // Map schedule (2026-10-12, user's per-map table: "Map 1 Armoury, 2 Nest, 3 Dungeon 3A, 4 Notices, 5 Boss (Pack A),
   // 7 Codex, 8 Arena (Pack B), 9 Quest board, 11 Forge, 13 Raid 1 + Wandering Trader A (Pack C), 16 Arena: Gauntlet,
   // 21 Test Lab"). Map numbers are play order (mainConquestMaps). Players who already opened a feature keep it.
-  {key:'deck', icon:'⛺', name:'Armoury', map:'m1', after:'1-1', dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
+  // 2026-10-13 (user: "Move it to Map 1. But everytime they win a card, show a special UI subwindow on the conquest map ... that lets
+  // them switch out a basic card with the card gotten"): the Armoury opens on Map 1; on Map 0 each card won offers a swap.
+  {key:'deck', icon:'⛺', name:'Armoury', mapNumber:1, get map(){ return mapIdAt(1); }, after:null, dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
   // The backpack (2026-10-12, 10:23 list): a note from the Wandering Traveller on Map 1 opens the Inventory and the field kit.
   {key:'fieldkit', icon:'🧰', name:'The traveller\'s kit', mapNumber:12, get map(){ return mapIdAt(12); }, after:null, dialogue:'unlock_fieldkit', tabs:['inventory'], go:()=> switchTab('inventory')},
   // 2026-10-12 (22:25, user: "Note in your pack ... after clicking it, you get some stuff in your pack-inventory. Then it disappears
@@ -11198,6 +11313,8 @@ const FEATURE_SPOTS = [
   {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
   {key:'shop3', icon:'🐫', name:'Gilded Caravan', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_shop3', tabs:[], merchant:true, pack:'gold', go:()=> switchTab('shop')},
   {key:'wanderer', icon:'🧭', name:'Wanderer’s Camp', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_wanderer', tabs:[], go:()=> switchTab('shop')},
+  // The Tavern (2026-10-13, user D40: "max energy progression is upgraded in a Tavern ... Maybe Map 14 or 16 for now").
+  {key:'tavern', icon:'🍺', name:'The Tavern', mapNumber:14, get map(){ return mapIdAt(14); }, after:null, dialogue:'unlock_tavern', tabs:[], go:()=> openTavern()},
   {key:'gauntlet', icon:'🏅', name:'Gauntlet Gate', mapNumber:16, get map(){ return mapIdAt(16); }, after:null, dialogue:'unlock_gauntlet', tabs:['gauntlet'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
   {key:'testlab', icon:'🧪', name:'Test Lab', mapNumber:21, get map(){ return mapIdAt(21); }, after:null, dialogue:'unlock_testlab', tabs:['sandbox'], go:()=>{ playSubTab = 'sandbox'; switchTab('play'); }},
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
@@ -11876,13 +11993,71 @@ function maybeTerrainIntro(m){
 }
 document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('#terrainPill'); document.querySelectorAll('.terrain-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); } });
 const TIER_NUMERAL = ['', 'I', 'II', 'III'];
+// Field conditions, row by row (D53, 2026-10-13, user: "Full pass so field effects are clearly mentioned. Multi-line field
+// effects show '?' per row until that row happens once, then 'New!', then plain text in later skirmishes").
+const FIELD_ROWS_KEY = 'bramblewood_field_rows_v1', FIGHT_SERIAL_KEY = 'bramblewood_fight_serial_v1';
+function fightSerial(){ try{ return Number(localStorage.getItem(FIGHT_SERIAL_KEY)) || 0; }catch(e){ return 0; } }
+function bumpFightSerial(){ try{ localStorage.setItem(FIGHT_SERIAL_KEY, String(fightSerial() + 1)); }catch(e){} }
+function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function markFieldRow(key){ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
+function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
+// Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
+const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind']);
+function fieldConditionRows(r){
+  r = r || {}; const rows = [], add = (key, icon, name, text)=> rows.push({key, icon, name, text});
+  if(r.terrain){ const t = r.terrain; add('terrain', t.icon, `${t.name} ${TIER_NUMERAL[t.tier]||''}`.trim(), terrainSummary(t, r)); }
+  if(Number(r.eruption) > 0) add('eruption', '🌋', 'Eruptions', `From round 2, one random unit on each side takes ${r.eruption} fire damage every upkeep. Units that resist fire are spared.`);
+  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
+  else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
+  if(r.dark) add('dark', '🌑', 'Complete darkness', 'Units without Darksight miss 1 attack in 2. Lanterns light their lane.');
+  if(r.phase === 'night') add('night', '🌙', 'Night all fight', 'Nocturnal units have their bonus; Night-blind units miss 1 attack in 2.');
+  if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.');
+  if(r.highTide) add('highTide', '🌊', 'High tide', 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.');
+  if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
+    add('frost', '❄️', 'Frost', `Each round ${r.frostCount > 1 ? r.frostCount + ' random units' : 'one random unit'} on each side ${r.frostCount > 1 ? 'get' : 'gets'} +${r.frostWait||1} Wait.`);
+    if((r.frostResist||[]).length) add('frostResist', '🧥', 'Used to the cold', `Their ${r.frostResist.join(', ')} units are never chilled.`);
+    if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
+  }
+  if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`);
+  if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.');
+  return rows;
+}
+function fieldRowsListHTML(rows){
+  return rows.map(row=>{ const st = fieldRowState(row.key);
+    if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="Shows what it does once it first happens">?</span></li>`;
+    return `<li class="fcr ${st==='new' ? 'is-new' : ''}"><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
+}
+function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } }
+function skirmishFieldHTML(mapId, node){
+  if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
+  const rows = fieldConditionRows(r); if(!rows.length) return '';
+  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`;
+}
+function noteFieldEvent(ev){
+  const m = matchState; if(!m || !ev) return;
+  const r = matchFieldRules(m) || {}; let hit = null;
+  if(ev.type === 'fieldTick' && ev.field === 'frozen'){ hit = markFieldRow('frost'); if((r.frostResist||[]).length) hit = markFieldRow('frostResist') || hit; }
+  else if(ev.type === 'statusFx' && ev.kind === 'frostbite') hit = markFieldRow('frostbite');
+  else if(ev.type === 'fieldTick' && ev.field === 'eruption') hit = markFieldRow('eruption');
+  else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
+  else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
+  else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
+  else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
+  if(hit){ const p = document.getElementById('terrainPill'); if(p) p.classList.add('has-new'); }
+}
 function terrainPillHTML(m){
-  const tr = terrainOfMatch(m); if(!tr) return '';
+  const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
+  if(m && m.mode !== 'tutorial') rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); });
+  const tr = terrainOfMatch(m);
+  if(!tr && rows.length){ const head = rows.length === 1 ? `${rows[0].icon} ${rows[0].name}` : `${rows.map(x=> x.icon).join('')} Field`;
+    return `<button type="button" class="terrain-pill biome-ash" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr('Field: ' + rows.map(x=> x.name).join(', '))}"><span class="tp-head">${escapeHtml(head)}</span><span class="tp-tip" role="tooltip"><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></span></button>`; }
+  if(!tr) return '';
   maybeTerrainIntro(m);
   const t = tr.t, er = Number(tr.rules.eruption) || 0;
   const title = t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions';
   const body = t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
-  return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}</span><span class="tp-tip" role="tooltip">${keywordizeHTML(escapeHtml(body))}</span></button>`;
+  const tip = rows.length > 1 ? `<ul class="fcr-list">${fieldRowsListHTML(rows)}</ul>` : keywordizeHTML(escapeHtml(body));
+  return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}${rows.length > 1 ? ` <small>+${rows.length - 1}</small>` : ''}</span><span class="tp-tip" role="tooltip">${tip}</span></button>`;
 }
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
 const DARK_MAPS = new Set(['mg']); // the literal caves (Smugglers' Grotto); the Abyssal Plains will join
@@ -13252,7 +13427,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset'];
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -13276,6 +13451,7 @@ function tryResumeAbandonedMatch(){
 function resumeAbandonedMatchNow(){
   const snap = loadResumeSnapshot(); if(!snap) return false;
   try{
+    standardMatchActive = !!snap.standard; _stdDefsCache = null;
     const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'open', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && fightRules(snap.conquestNode.mapId, (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node)) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
@@ -13298,7 +13474,7 @@ function renderArenaSubTab(body){
   body.innerHTML = `
     <div class="panel" style="text-align:center;">
       <p class="panel-sub">${deckSizeBadgeHTML(myDeckCounts)} · ${(CHARACTER_DEFS[myCharacterId]||{}).name||'—'}</p>
-      <div class="arena-today"><span class="arena-today-k">Today's Arena</span>${arenaRulesetPillHTML(todaysArenaRuleset())}<span class="arena-today-sub">Changes every day. Ranked Live always plays Standard.</span></div>
+      <div class="arena-today"><span class="arena-today-k">Today's Arena</span>${arenaRulesetPillHTML(todaysArenaRuleset())}<span class="arena-today-sub">Changes every day. Ranked Live always plays the classic arena.</span></div>
       <!-- 2026-09-26 (user report, screenshot: "the cards are all over the place. make them
            consistently sized") — these used to be five separate .arena-mode-row flex containers,
            one per mode-group, each centering and sizing its own 1-3 buttons independently with a
@@ -13313,6 +13489,11 @@ function renderArenaSubTab(body){
            row at a given screen width. -->
       ${resumable?`<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
           <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>`:''}
+      <div class="arena-format" role="radiogroup" aria-label="Deck format"><span class="arena-format-k">Format</span>
+        <button type="button" class="tk-speed-btn ${standardFormatOn()?'':'is-on'}" role="radio" aria-checked="${!standardFormatOn()}" data-arena-format="collection">📚 Collection</button>
+        <button type="button" class="tk-speed-btn ${standardFormatOn()?'is-on':''}" role="radio" aria-checked="${standardFormatOn()}" data-arena-format="standard">🃏 Standard</button>
+        ${standardFormatOn() ? `<button type="button" class="btn small" id="stdDeckBtn">Edit Standard deck (${deckTotal(loadStandardDeck())}/${DECK_SIZE})</button>` : ''}
+        <span class="arena-format-sub">${standardFormatOn() ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass &amp; Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.'}</span></div>
       <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid arena-practice-grid">
         <button class="btn primary big arena-mode-btn arena-hero" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer · costs no Energy</span></button>
         <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span></button>
@@ -13356,6 +13537,8 @@ ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn g
       ${recentOpponentsPlayerHTML()}
     </div>`;
   { const ab = document.getElementById('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
+  body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); renderArenaSubTab(body); }));
+  { const sb = document.getElementById('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
   document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   const abBtn = document.getElementById('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); });
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
@@ -13820,6 +14003,20 @@ function applyNodeEdits(){
     nodes.forEach(n=>{ const p = (ed.patches||{})[n.key]; if(p) Object.assign(n, JSON.parse(JSON.stringify(p))); });
     map.nodes.length = 0; nodes.forEach(n=> map.nodes.push(n));
   });
+  try{ applyRoadKinds(); }catch(e){}
+}
+// The road's map enders (2026-10-13, user: "Map 0's final fight is a normal fight btw. Map 1's is a Elite at the end. Map 5's is a
+// boss. Map 6 onwards, the last Skirmish is always a miniboss. This will not change from Map 0-100. Every 5 maps the boss, every
+// 20 maps the world boss."): each main map's last fight (its old boss, or its last fight) is marked `ender` and gets its kind
+// from its map number: Map 0 a skirmish, Maps 1–4 an elite, every 5th map a boss, the rest a mini-boss. World bosses stay
+// their own fights (the Caldera Heart and the like).
+function roadEnderKind(i){ if(i === 0) return 'skirmish'; if(i < 5) return 'elite'; if(i % 5 === 0) return 'boss'; return 'miniboss'; }
+function applyRoadKinds(){
+  const mains = CONQUEST_MAPS.filter(m=> !m.sub);
+  mains.forEach((m, i)=>{ const nodes = (m.nodes||[]).filter(n=> n.kind !== 'tutorial' && !/raidboss|worldboss|megaraid|dungeon/.test(n.kind||'')); if(!nodes.length) return;
+    const old = nodes.slice().reverse().find(n=> /^(boss|finalboss|subboss)$/.test(n.kind||'')) || nodes[nodes.length - 1];
+    (m.nodes||[]).forEach(n=>{ if(n.ender && n !== old) delete n.ender; });
+    old.ender = true; old.kind = roadEnderKind(i); });
 }
 applyNodeEdits();
 // Item #7 (2026-09-18): "foreshadow the upcoming bosses with dark blurred card divs indicating
@@ -14246,9 +14443,10 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
-  const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
-    : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
+  const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId) : null;
+  const cards = (needR ? `<span class="cnp-rw-need" aria-label="Cards need rank ${needR} or better">${needR}+</span>` : '') + ids.map(id=> isCardHiddenForPlayer(defs[id])
+    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
@@ -15028,7 +15226,33 @@ function grantClearedBossLeaders(){
         unlockCardForPlayer(d.id, 'conquestReward'); if(myUnlockedCardIds.has(d.id) || (myCardCopies[d.id]||[]).length) try{ showToast(`👑 ${d.name} joins you, for beating that map's boss.`, 'ok'); }catch(e){} } });
   }catch(e){}
 }
+const CARD_REWARD_CLAIMED_KEY = 'bramblewood_card_rewards_claimed_v1';
+function cardRewardsClaimed(){ try{ const raw = localStorage.getItem(CARD_REWARD_CLAIMED_KEY); if(raw) return new Set(JSON.parse(raw)); }catch(e){}
+  // first run: every fight already cleared has had its cards (the old rule gave them on the first clear)
+  const s0 = new Set((loadConquestProgress().completed||[])); try{ localStorage.setItem(CARD_REWARD_CLAIMED_KEY, JSON.stringify([...s0])); }catch(e){} return s0; }
+function markCardRewardsClaimed(nid){ const s0 = cardRewardsClaimed(); s0.add(nid); try{ localStorage.setItem(CARD_REWARD_CLAIMED_KEY, JSON.stringify([...s0])); }catch(e){} }
+function cardRewardRankFor(mapId){ const n = mapNumberOf(mapId); if(n == null) return null; return n >= 30 ? 'S' : n >= 15 ? 'A' : n >= 5 ? 'B' : null; }
+// The Map 0 swap window (2026-10-13): "everytime they win a card, show a special UI subwindow on the conquest map ... that lets
+// them switch out a basic card with the card gotten". One window per card won; pick a deck card to trade out, or keep the deck.
+let pendingDeckSwap = null;
+function maybeOfferDeckSwap(){
+  if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay')) return;
+  const defs = getCardDefs(), id = pendingDeckSwap.shift(), d = defs[id]; if(!d){ maybeOfferDeckSwap(); return; }
+  if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
+  const deckIds = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== id).sort((a, b)=> (defs[a].cost||0) - (defs[b].cost||0) || (defs[a].attack + defs[a].health) - (defs[b].attack + defs[b].health));
+  const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'modal-overlay';
+  ov.innerHTML = `<div class="modal deck-swap" role="dialog" aria-label="Swap a card in">
+    <h2>New card: ${escapeHtml(d.name)}</h2>
+    <div class="ds-row"><div class="ds-new">${cardTileHTML(d, {inPlay:true})}</div><p>Put it in your deck? Pick a card to trade out for it. Your old card stays in your collection.</p></div>
+    <div class="ds-deck">${deckIds.map(k=> `<button type="button" class="ds-out" data-out="${escapeAttr(k)}" aria-label="Swap out ${escapeAttr(defs[k].name)}">${cardTileHTML(defs[k], {inPlay:true})}<span class="ds-n">×${myDeckCounts[k]}</span></button>`).join('')}</div>
+    <div class="ds-actions"><button type="button" class="btn ghost" id="dsKeep">Keep my deck</button></div></div>`;
+  document.body.appendChild(ov);
+  const close = ()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); };
+  ov.querySelector('#dsKeep').onclick = close;
+  ov.querySelectorAll('[data-out]').forEach(b=> b.onclick = ()=>{ const out = b.getAttribute('data-out'); myDeckCounts[out] -= 1; if(myDeckCounts[out] <= 0) delete myDeckCounts[out]; myDeckCounts[id] = (myDeckCounts[id]||0) + 1; saveMyDeck(); try{ showToast(`🃏 ${d.name} is in your deck, in place of ${defs[out].name}.`, 'ok'); }catch(e){} close(); });
+}
 function renderConquestSubTab(body){
+  setTimeout(maybeOfferDeckSwap, 600);
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
@@ -15388,6 +15612,7 @@ function renderConquestSubTab(body){
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
+      ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span><span class="rank-hex rank-${conquestDeckNeed(selectedNode)}" aria-hidden="true"><i></i><b>${conquestDeckNeed(selectedNode)}</b></span></div>`}
@@ -15590,7 +15815,31 @@ async function checkRaidFalls(){
       if(fresh && def === hardest){ grantCurrency('dust', 5); grantCurrency('gold', 4); setTimeout(()=> showToast('🎁 For being there when it fell: +5 Dust, +4 Maple Leaves.', 'ok'), 2600); }
     } }catch(e){}
 }
-setTimeout(()=>{ checkRaidFalls(); setInterval(checkRaidFalls, 3*60*1000); }, 20000);
+// World call-outs (D55, 2026-10-13, user: "The 3-minute check should cover ALL world call-outs, including events and GM
+// messages"): the same 3-minute check reads the world_events table (kinds 'event' and 'gm', written by admins). Until the
+// table exists (supabase/migrations/20261013_world_events.sql, waiting on "apply it") the read fails quietly.
+const WORLD_EVENTS_SEEN_KEY = 'bramblewood_world_events_seen_v1';
+async function checkWorldEvents(){
+  try{ if(typeof sbClient === 'undefined' || !sbClient) return;
+    let last = 0; try{ last = Number(localStorage.getItem(WORLD_EVENTS_SEEN_KEY)) || 0; }catch(e){}
+    let q = sbClient.from('world_events').select('id,kind,title,body,created_at,expires_at').order('id', {ascending:true}).limit(10);
+    q = last ? q.gt('id', last) : q.gt('created_at', new Date(Date.now() - 24*3600*1000).toISOString());
+    const { data, error } = await q; if(error || !data) return;
+    let delay = 0;
+    data.forEach(ev=>{ last = Math.max(last, ev.id);
+      if(ev.expires_at && Date.parse(ev.expires_at) < Date.now()) return;
+      const ico = ev.kind === 'gm' ? '📣' : '🌍', txt = `${ico} ${ev.title}${ev.body ? ' ' + ev.body : ''}`;
+      setTimeout(()=>{ try{ showToast(txt, 'ok'); }catch(e){} }, delay); delay += 3200; });
+    try{ localStorage.setItem(WORLD_EVENTS_SEEN_KEY, String(last)); }catch(e){}
+  }catch(e){}
+}
+async function sendWorldEvent(kind, title, body, hours){
+  if(!sbClient || !cloudCardAdmin) return {ok:false, why:'Sign in as an admin first.'};
+  const row = {kind, title: String(title||'').slice(0, 140), body: body ? String(body).slice(0, 600) : null, expires_at: hours ? new Date(Date.now() + hours*3600*1000).toISOString() : null};
+  const { error } = await sbClient.from('world_events').insert(row);
+  return error ? {ok:false, why: /relation|does not exist|schema cache/i.test(error.message||'') ? 'The world_events table is not set up yet (needs "apply it").' : (error.message||'Error')} : {ok:true};
+}
+setTimeout(()=>{ checkRaidFalls(); checkWorldEvents(); setInterval(()=>{ checkRaidFalls(); checkWorldEvents(); }, 3*60*1000); }, 20000);
 function currentRaidAttempts(def, cycle){
   const live = (liveRaidParts[def.id+':'+cycle] || {}).rows || [];
   return live.concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===cycle && !a.pushed));
@@ -18701,6 +18950,9 @@ function renderAdmin(){
     <div class="panel admin-subpanel"><h3>💰 My currencies</h3><p class="panel-sub">Set your own balances (admins only). Saved to this browser and, where the cloud has a column for it, to your account.</p>
       <div class="admin-cur-row">${Object.keys(CURRENCY_META).map(k=> `<label>${CURRENCY_META[k].glyph} ${escapeHtml(CURRENCY_META[k].label)}<input type="number" min="0" step="1" data-admin-cur="${k}" value="${Math.floor(myCurrencies[k]||0)}"></label>`).join('')}</div>
       <button type="button" class="btn small primary" id="adminCurSave">💾 Set balances</button></div>
+    <div class="panel admin-subpanel"><h3>📣 World call-out</h3><p class="panel-sub">Everyone online sees it within 3 minutes, and anyone who logs in within a day. GM messages show 📣, events 🌍.</p>
+      <div class="admin-cur-row"><select id="adminWeKind"><option value="gm">📣 GM message</option><option value="event">🌍 Event</option></select><input type="text" id="adminWeTitle" maxlength="140" placeholder="Headline"><input type="text" id="adminWeBody" maxlength="600" placeholder="Details (optional)"><label>Hours <input type="number" id="adminWeHours" min="0" value="24" class="w-60"></label></div>
+      <button type="button" class="btn small primary" id="adminWeSend">Send call-out</button></div>
     <div class="panel admin-subpanel">
       <h3>Developer Mode</h3>
       <p class="panel-sub">Unlocks the testing-only surfaces: a 🧪 Sandbox Play tab (spawn any card straight onto either board and run real combat — no deck, no cost, no lock gates), a "Test card" flag in the card editor, and a matching Test filter in the Codex. Off by default.</p>
@@ -18791,6 +19043,9 @@ function renderAdmin(){
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `bramblewood-card-edits-${new Date().toISOString().slice(0,10)}.json`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=> URL.revokeObjectURL(a.href), 2000);
   });
+  { const wb = document.getElementById('adminWeSend'); if(wb) wb.onclick = async ()=>{ const t = (document.getElementById('adminWeTitle').value||'').trim(); if(!t){ showToast('Write a headline first.', 'warn'); return; }
+      wb.disabled = true; const r = await sendWorldEvent(document.getElementById('adminWeKind').value, t, (document.getElementById('adminWeBody').value||'').trim(), Number(document.getElementById('adminWeHours').value)||0); wb.disabled = false;
+      showToast(r.ok ? '📣 Sent. Players see it within 3 minutes.' : r.why, r.ok ? 'ok' : 'warn'); if(r.ok){ document.getElementById('adminWeTitle').value = ''; document.getElementById('adminWeBody').value = ''; } }; }
   { const cs = document.getElementById('adminCurSave'); if(cs) cs.onclick = ()=>{ if(!adminAllowed()){ showToast('Admins only.', 'warn'); return; }
       document.querySelectorAll('[data-admin-cur]').forEach(i=>{ const v = Math.max(0, Math.floor(Number(i.value)||0)); myCurrencies[i.dataset.adminCur] = v; });
       saveCurrencies(); try{ refreshShopAfford && refreshShopAfford(); }catch(e){} showToast('💰 Balances set.', 'ok'); }; }
@@ -19281,6 +19536,19 @@ function arenaRulesetPillHTML(rs){
 }
 function startMatch(mode, opts){
   opts = opts || {};
+  // Standard format (2026-10-13): Quick Battle, Pass & Play and Gauntlet follow the Arena's Standard toggle.
+  const standard = opts.standard != null ? !!opts.standard : (standardFormatOn() && (mode==='ai' || mode==='pc' || mode==='gauntlet'));
+  if(standard){
+    const sd = loadStandardDeck();
+    if(deckTotal(sd)!==DECK_SIZE){ showToast(`Your Standard deck has ${deckTotal(sd)} cards. It needs exactly ${DECK_SIZE}.`, 'warn'); openStandardDeckBuilder(); return; }
+    standardMatchActive = true; _stdDefsCache = null;
+    return startMatchInner(mode, opts, sd);
+  }
+  standardMatchActive = false;
+  return startMatchInner(mode, opts, null);
+}
+function startMatchInner(mode, opts, standardDeck){
+  const myDeckCounts = standardDeck || window.__bwMainDeck();
   // Deck size gate (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not
   // allow a deck with <20 or >20 cards.") — checked here rather than hard-blocking every
   // pool click, so a deck-in-progress can sit above/below 20 mid-build; it just can't START
@@ -19348,7 +19616,7 @@ function startMatch(mode, opts){
     // editing your leader mid-match (you can't reach the deck editor while in a match anyway)
     // never retroactively changes an in-progress match. leaderUid is set once the leader is
     // actually summoned onto the board; null before that and if no leader was ever chosen.
-    leaderDefId: matchLeaderId(), leaderUid: null, asyncGhost, asyncStage, pvpGhost: mode==='pvp' ? asyncGhost : null, pvpStage: mode==='pvp' ? asyncStage : null};
+    standard: !!standardDeck, leaderDefId: standardDeck ? null : matchLeaderId(), leaderUid: null, asyncGhost, asyncStage, pvpGhost: mode==='pvp' ? asyncGhost : null, pvpStage: mode==='pvp' ? asyncStage : null};
   lastBoardSig = {1:null, 2:null}; // fresh match, fresh board — never let a stale signature from a previous match skip a real render
   knownBoardUids = new Set(); // fresh match — uids reset with it, so no carried-over "already seen" state either
   if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet' || mode==='pvp'){
@@ -19379,6 +19647,8 @@ function leaveMatchResumable(){
   showToast('⏸️ Fight saved. Press ▶ Continue (on Home or the map) to carry on.', 'ok');
 }
 function endMatch(opts){
+  standardMatchActive = false;
+  if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
@@ -24659,10 +24929,16 @@ async function resolveRound(opts){
       }
       // Skirmish reward cards (2026-10-02): every card whose source is this exact node is granted on
       // the FIRST clear only.
-      if(isFirstClear){
+      // Card rewards by rank (2026-10-13, user: "As games progress, card rewards are only guaranteed on B->A->S"): from Map 5 a
+      // fight's reward cards need rank B, from Map 15 rank A, from Map 30 rank S. Below that they wait for a better win; the
+      // fight's other first-clear rewards still pay out.
+      const needRank = cardRewardRankFor(m.conquestNode.mapId), claimedSet = cardRewardsClaimed();
+      if(!claimedSet.has(preId)){
         const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId);
-        cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward'));
-        if(cardIds.length) m.conquestCardsEarned = cardIds;
+        if(!needRank || rankAtLeast(rank, needRank)){ cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward')); if(cardIds.length) m.conquestCardsEarned = cardIds; markCardRewardsClaimed(preId); }
+        else if(cardIds.length) m.conquestCardsNeedRank = needRank;
+      }
+      if(isFirstClear){
         // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
         if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('water', CONQUEST_MAPS[3].id); } // Map 4 is Sunken Hollow (old maps first again, 2026-10-11 16:20); was: Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
@@ -24670,7 +24946,7 @@ async function resolveRound(opts){
       // Free Base copy (2026-10-12, user D59: "First boss of each map"): a map's boss, first clear only, gives a copy of the
       // Base card you own the fewest of.
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const bk = bn && baseKind(bn.kind||'');
-        if(isFirstClear && bn && (bk === 'boss' || bk === 'finalboss')){ const defs = getCardDefs();
+        if(isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender)){ const defs = getCardDefs();
           const base = Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero || id === 'wandering-traveller' || d.cardType === 'materia' || (d.cost||0) > 0) return false; const src = cardSourceOf(d); return src && src.kind === 'base' && !isUnattainable(d); });
           if(base.length){ const n = id=> ((myCardCopies && myCardCopies[id]) || []).length; base.sort((a,b)=> n(a) - n(b) || a.localeCompare(b));
             const few = base.filter(id=> n(id) === n(base[0])), pickId = few[Math.floor(Math.random()*few.length)];
@@ -24679,7 +24955,7 @@ async function resolveRound(opts){
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const egg = rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
       // D48 (2026-10-12): a map boss beaten again at rank S or better gives a spare of that map's castle (fuse it in the Forge).
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, bk = bn && baseKind(bn.kind||'');
-        if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss') && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
+        if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender) && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
           const cs = Object.values(CHARACTER_DEFS).filter(ch=> ch && ch.unlockMap === m.conquestNode.mapId);
           cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleSpare = cs.map(ch=> ch.name).join(', '); } }catch(e){}
       try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New castle: ' : 'Spare: ') + ch.name; } }catch(e){}
@@ -24689,6 +24965,11 @@ async function resolveRound(opts){
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(`🐉 A Dragon Scale (${sc.index}/${sc.total}). ${sc.line}`, 'ok'); }catch(e){} }, 1600); } }catch(e){}
       try{ const md = rollMateriaDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear, rank); if(Object.keys(md).length) m.conquestMateriaEarned = md; }catch(e){}
       try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; if(drops.cards && drops.cards.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drops.cards); }catch(e){}
+      // Map 0 (2026-10-13): every win there brings a card, and before the Armoury opens each one offers a swap into the deck.
+      try{ if(mapNumberOf(m.conquestNode.mapId) === 0 && !featureUnlocked('deck')){
+          if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
+          if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned); } }catch(e){}
+      try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(`🔋 You found an Energy capsule. Tap ⚡ Energy to use it (+${ENERGY_CAPSULE_AMOUNT}).`, 'ok'); }catch(e){} }, 1800); } }catch(e){}
       try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(`${J.icon} ${J.name}: step ${jr.step} of ${J.steps.length}${jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}`, 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
         void mi; void bn; }catch(e){} // the Map 20 crown is retired (2026-10-13): Faction Growth hands out the Epic and Heroic last
@@ -26188,7 +26469,7 @@ function matchStatsHTML(m){
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="Food tokens buy Sunfeather packs in the Shop">🍯 ${m.conquestFoodEarned} Food</span>` : ''}
       ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? ' · new subfaction!' : ''}</span>` : ''}
-      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}
+      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}${m.conquestCardsNeedRank ? `<span class="hud-pill" title="Win this fight at rank ${m.conquestCardsNeedRank} or better to take its card">🔒 Card at rank ${m.conquestCardsNeedRank}+</span>` : ''}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
   // sets conquestRankEarned (it isn't a Conquest node at all).
@@ -27450,6 +27731,7 @@ function triggerFiredVfx(ev){
   if(fxAtLeast('med')){ const a = document.createElement('span'); a.className = 'trigger-aura'; a.setAttribute('aria-hidden','true'); el.prepend(a); setTimeout(()=> a.remove(), 900); }
 }
 function renderVfxForEvent(ev){
+  try{ noteFieldEvent(ev); }catch(e){}
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
@@ -29020,6 +29302,7 @@ function renderForge(){
   if(faBtn) faBtn.addEventListener('click', ()=>{ const r = fuseAllDuplicates(); if(!r.count){ denyShake(faBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(`🧩 Fused ${r.count} duplicate${r.count===1?'':'s'} into ${r.cards} card${r.cards===1?'':'s'}: ✨ ${r.dust} of credit.`, 'ok'); });
   root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(`🏰 ${(CHARACTER_DEFS[id]||{}).name||'Castle'} tempered to Lv ${castleLevelOf(id)}.`, 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
   root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(`🧩 Fused ${v.n} spare castle${v.n===1?'':'s'}: ✨ ${v.dust} of credit.`, 'ok'); }));
+  { const fe = document.getElementById('forgeTierEditBtn'); if(fe) fe.addEventListener('click', openForgeTierEditor); }
   const fuBtn = document.getElementById('forgeUpgradeBtn');
   if(fuBtn) fuBtn.addEventListener('click', ()=>{ const t = upgradeForge(); if(!t){ denyShake(fuBtn); return; } try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderForge(); showToast(`🏭 The Forge is now the ${t.name}: Lv ${t.cap}, rarer cards too.`, 'ok'); });
   const lbBtn = document.getElementById('forgeLimitBreakBtn');
@@ -29518,14 +29801,15 @@ function renderHome(){
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
-        ${adminEntryVisible() || energyMarksEarned() > 0 ? (()=>{ const rd = energyUpgradesReady(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Stamina and passive skills for the Conquest road"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>${rd ? `⚡ ${rd} Stamina ready` : 'Stamina · trails (preview)'}</small>${rd ? `<span class="home-badge">${rd}</span>` : ''}</button>`; })() : ''}
+        ${adminEntryVisible() || wildpathPoints().total > 0 ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
+        ${featureUnlocked('tavern') ? (()=>{ const rd = energyUpgradesReady(); return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${rd ? `⚡ ${rd} Stamina ready` : 'Stamina'}</small>${rd ? `<span class="home-badge">${rd}</span>` : ''}</button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
-  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=> switchTab(b.getAttribute('data-hometab'))));
+  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab'); if(t === 'tavern') openTavern(); else switchTab(t); }));
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
@@ -29589,8 +29873,9 @@ function loadItems(){
   if(!o || typeof o !== 'object') o = {counts:{}, day:null};
   o.counts = o.counts || {};
   // the refill: one of each per local day since the last one (the first day you have the pack counts too)
-  if(featureUnlockedSafe('fieldkit')){ const today = itemDay(); const days = o.day == null ? 2 : Math.max(0, today - o.day); // the first fill is two days' worth
-    if(days > 0){ Object.entries(ITEM_REFILL).forEach(([id, n])=>{ o.counts[id] = Math.min(ITEM_CAP, (o.counts[id]||0) + n*days); }); o.day = today; saveItems(o); } }
+  // D54 (2026-10-13, user: "No daily field kit; it comes from dailies, weeklies and so on"): no more daily refill. The traveller
+  // packs one starter fill (two of each) when the kit opens; after that, items come from daily and weekly rewards.
+  if(featureUnlockedSafe('fieldkit') && o.day == null){ Object.entries(ITEM_REFILL).forEach(([id, n])=>{ o.counts[id] = Math.min(ITEM_CAP, (o.counts[id]||0) + 2*n); }); o.day = 'starter'; saveItems(o); }
   return o;
 }
 function saveItems(o){ try{ localStorage.setItem(ITEMS_KEY, JSON.stringify(o)); }catch(e){} }
@@ -29657,9 +29942,10 @@ function renderInventory(){
         return `<li class="${got ? 'got' : ''}"><span class="st-ico">${got ? '🐉' : '❔'}</span><span>${got ? `<b>${escapeHtml(skirmishCode(sn.map, sn.key))} · ${escapeHtml(map ? map.name : '')}</b> ${escapeHtml(sn.line)}` : '<i>Somewhere on the road, something glints.</i>'}</span></li>`; }).join('')}</ol></section>` : '';
   root.innerHTML = `<div class="inv-page">
     <div class="panel inv-head"><h2>🎒 Inventory</h2><p class="panel-sub">Everything you carry that isn't in a deck.</p></div>
-    ${featureUnlockedSafe('fieldkit') ? (()=>{ const ic = loadItems().counts; return `<section class="panel inv-sec inv-kit"><h3>🎒 Field kit <small>one item a fight · refills one of each every day · up to ${ITEM_CAP} of each</small></h3>
+    ${featureUnlockedSafe('fieldkit') ? (()=>{ const ic = loadItems().counts; return `<section class="panel inv-sec inv-kit"><h3>🎒 Field kit <small>one item a fight · more from daily and weekly rewards · up to ${ITEM_CAP} of each</small></h3>
       <div class="inv-slots">${Object.entries(ITEM_DEFS).map(([id, d])=> slot(d.icon, ic[id]||0, d.name, d.desc)).join('')}</div>
       <p class="panel-sub">In a fight against the CPU, press 🎒 beside your Lumber: one item a turn, and it doesn't use your play.</p></section>`; })() : ''}
+    ${energyCapsules() ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slot('🔋', energyCapsules(), 'Energy capsule', '+' + ENERGY_CAPSULE_AMOUNT + ' Energy')}</div></section>` : ''}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     ${trail}
     <section class="panel inv-sec"><h3>🪺 In the Nest <button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button></h3><div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
@@ -29717,6 +30003,15 @@ const WILDPATH_TREES = [
   ]},
 ];
 let wildpathSel = null;
+// Costs (2026-10-13, user D32: "Wildpath skills cost alot of points, like maybe 5 then 10 then advanced ones start at 15, then 20
+// then 25. This is a rare thing to upgrade"): by how far up its trail a mark sits, 5 / 10 / 15 / 20 / 25 a rank (the capstone 25).
+const WILDPATH_KEY = 'bramblewood_wildpaths_v1';
+function wildpathCost(n){ return n.capstone ? 25 : n.y >= 380 ? 5 : n.y >= 290 ? 10 : n.y >= 200 ? 15 : 20; }
+function wildpathRanks(){ try{ return JSON.parse(localStorage.getItem(WILDPATH_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function wildpathSpent(){ const r = wildpathRanks(); let t = 0; WILDPATH_TREES.forEach(tr=> tr.nodes.forEach(n=>{ t += (r[n.id]||0) * wildpathCost(n); })); return t; }
+function wildpathAvailable(){ return Math.max(0, wildpathPoints().total - wildpathSpent()); }
+function wildpathCanLearn(n){ const r = wildpathRanks(); if((r[n.id]||0) >= (n.ranks||1)) return 'max'; if(!(n.req||[]).every(q=> (r[q]||0) > 0) && (n.req||[]).length) return 'locked'; return wildpathAvailable() >= wildpathCost(n) ? 'ok' : 'points'; }
+function wildpathLearn(id){ const n = WILDPATH_TREES.flatMap(t=> t.nodes).find(x=> x.id === id); if(!n || wildpathCanLearn(n) !== 'ok') return false; const r = wildpathRanks(); r[id] = (r[id]||0) + 1; try{ localStorage.setItem(WILDPATH_KEY, JSON.stringify(r)); }catch(e){} return true; }
 function wildpathTreeSVG(tree){
   const byId = Object.fromEntries(tree.nodes.map(n=> [n.id, n]));
   // a wobbly, hand-inked line between two nodes (deterministic jitter from the ids)
@@ -29726,7 +30021,7 @@ function wildpathTreeSVG(tree){
   const links = tree.nodes.flatMap(n=> (n.req||[]).map(r=> byId[r] ? `<path class="wp-ink" d="${ink(byId[r], n)}" style="--len:${Math.round(Math.hypot(n.x - byId[r].x, n.y - byId[r].y) * 1.15)}"/>` : ''));
   const nodes = tree.nodes.map((n, i)=> `<g class="wp-node${n.capstone ? ' is-cap' : ''}${i === 0 ? ' is-start' : ''}${wildpathSel === n.id ? ' is-sel' : ''}" data-wp="${n.id}" tabindex="0" role="button" aria-label="${escapeAttr(n.name + ': ' + n.desc)}" transform="translate(${n.x} ${n.y})" style="--i:${i}">
       <circle class="wp-halo" r="${n.capstone ? 26 : 20}"/><circle class="wp-dot" r="${n.capstone ? 19 : 15}"/><text class="wp-ico" text-anchor="middle" dominant-baseline="central">${n.icon}</text>
-      ${n.ranks ? `<text class="wp-rank" x="${n.capstone ? 18 : 14}" y="${n.capstone ? -16 : -12}" text-anchor="middle">0/${n.ranks}</text>` : ''}</g>`);
+      ${n.ranks ? `<text class="wp-rank" x="${n.capstone ? 18 : 14}" y="${n.capstone ? -16 : -12}" text-anchor="middle">${wildpathRanks()[n.id]||0}/${n.ranks}</text>` : ''}</g>`);
   return `<svg class="wp-tree-svg" viewBox="0 0 300 430" style="--tint:${tree.tint}" aria-label="${escapeAttr(tree.name)} path">${links.join('')}${nodes.join('')}</svg>`;
 }
 // Path points (2026-10-12, action-items lap, D32 with my suggested default: "1 per map, +1 per boss S rank"): worked out
@@ -29736,7 +30031,7 @@ function wildpathPoints(){
   let maps = 0, sRanks = 0;
   mainConquestMaps().filter(m=> !m.reserved).forEach(m=>{
     const key = mapRewardNodeKey(m); if(key && done.has(conquestNodeId(m.id, key))) maps++;
-    (m.nodes||[]).forEach(n=>{ if(['boss','finalboss'].includes(baseKind(n.kind||'')) && rankAtLeast(ranks[conquestNodeId(m.id, n.key)], 'S')) sRanks++; });
+    (m.nodes||[]).forEach(n=>{ if((n.ender || ['boss','finalboss'].includes(baseKind(n.kind||''))) && rankAtLeast(ranks[conquestNodeId(m.id, n.key)], 'S')) sRanks++; });
   });
   return {maps, sRanks, total: maps + sRanks};
 }
@@ -29745,23 +30040,32 @@ function renderWildpaths(){
   const all = WILDPATH_TREES.flatMap(t=> t.nodes.map(n=> Object.assign({tree:t}, n)));
   const sel = all.find(n=> n.id === wildpathSel);
   root.innerHTML = `<div class="wp-page">
-    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Win fights to earn Path points, then walk a trail one mark at a time. Only in fights against the wood (PvE), never in the Arena.</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.maps} from maps cleared, ${wp.sRanks} from boss S ranks. 1 per map, +1 per boss S rank.</p>`; })()}</div>
-      <span class="wp-points" title="Path points to spend">✦ 0 Path points</span></header>
-    ${(()=>{ const ready = energyUpgradesReady(), bought = energyUpgradesBought(), cost = energyUpgradeCost(), full = bought >= ENERGY_UPGRADE_MAX;
-      return `<section class="wp-stamina" aria-label="Stamina"><h3>⚡ Stamina <small>apart from the trails</small></h3>
-        <p>Every 20 different skirmishes you clear earns a Stamina mark. Spend one here to raise your max Energy by 1 (up to +${ENERGY_UPGRADE_MAX}).</p>
-        <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${bought} of ${ENERGY_UPGRADE_MAX} bought">${Array.from({length: ENERGY_UPGRADE_MAX}, (_, k)=> `<i class="${k < bought ? 'on' : k < bought + ready ? 'ready' : ''}"></i>`).join('')}</span>
-          <b>Max Energy ${energyMax()}</b>${full ? '<small>Fully grown.</small>' : `<button type="button" class="btn small primary" id="wpStaminaBuy" ${ready ? '' : 'disabled'}>Raise to ${energyMax() + 1} · ${mapleLeafIconHTML()} ${cost}</button><small>${ready ? `${ready} mark${ready === 1 ? '' : 's'} ready` : escapeHtml(energyNextStepText())}</small>`}</div></section>`; })()}
+    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for the Conquest road. Each map you finish and each boss you beat at rank S earns a Path point; marks cost 5, 10, 15, 20 and 25, so learning one is a rare event. Only in fights against the wood (PvE), never in the Arena.</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.maps} from maps cleared, ${wp.sRanks} from boss S ranks. 1 per map, +1 per boss S rank.</p>`; })()}</div>
+      <span class="wp-points" title="Path points to spend">✦ ${wildpathAvailable()} Path point${wildpathAvailable()===1?'':'s'}</span></header>
     <p class="wp-preview">Design preview: the trails and skills below are a first draft and don't change fights yet.</p>
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
-    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
+    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the mark before it first.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
   </div>`;
-  { const sb = root.querySelector('#wpStaminaBuy'); if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ updateEnergyHud && updateEnergyHud(); }catch(e){} renderWildpaths(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; }
+  { const sb = null; if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ updateEnergyHud && updateEnergyHud(); }catch(e){} renderWildpaths(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; }
+  { const lb = root.querySelector('#wpLearn'); if(lb) lb.onclick = ()=>{ if(wildpathLearn(wildpathSel)){ showToast('✦ Learned. (The trails are still a design preview: fights don\'t use them yet.)', 'ok'); renderWildpaths(); } }; }
   root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }
 }
+function tavernStaminaHTML(){ return (()=>{ const ready = energyUpgradesReady(), bought = energyUpgradesBought(), cost = energyUpgradeCost(), full = bought >= ENERGY_UPGRADE_MAX;
+      return `<section class="wp-stamina" aria-label="Stamina"><h3>⚡ Stamina</h3>
+        <p>Every 20 different skirmishes you clear earns a Stamina mark. Spend one here to raise your max Energy by 1 (up to +${ENERGY_UPGRADE_MAX}).</p>
+        <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${bought} of ${ENERGY_UPGRADE_MAX} bought">${Array.from({length: ENERGY_UPGRADE_MAX}, (_, k)=> `<i class="${k < bought ? 'on' : k < bought + ready ? 'ready' : ''}"></i>`).join('')}</span>
+          <b>Max Energy ${energyMax()}</b>${full ? '<small>Fully grown.</small>' : `<button type="button" class="btn small primary" id="wpStaminaBuy" ${ready ? '' : 'disabled'}>Raise to ${energyMax() + 1} · ${mapleLeafIconHTML()} ${cost}</button><small>${ready ? `${ready} mark${ready === 1 ? '' : 's'} ready` : escapeHtml(energyNextStepText())}</small>`}</div></section>`; })(); }
+function openTavern(){
+  let ov = document.getElementById('tavernOverlay'); if(!ov){ ov = document.createElement('div'); ov.id = 'tavernOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>${tavernStaminaHTML().replace(/Spend one here/, 'Spend one with the keeper')}</div>`;
+    ov.hidden = false; ov.querySelector('#tvClose').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} };
+    const sb = ov.querySelector('#wpStaminaBuy'); if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} draw(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; };
+  draw(); ov.onclick = e=>{ if(e.target === ov){ ov.hidden = true; ov.innerHTML = ''; } };
+}
 function adminEntryVisible(){
+  if(LAUNCH_BUILD && !isDevHost()) return false;
   return !!(cloudCardAdmin || devModeEnabled || adminModeEnabled || /^(file:|https?:\/\/(localhost|127\.0\.0\.1))/.test(location.href));
 }
 function renderSettingsLinks(){
@@ -31205,7 +31509,7 @@ function factionGrowth(rnd){
   return grantOne(pick, 'factionGrowth') ? pick : null;
 }
 // Reward placeholders on a fight (node.rewardTokens): 'factionReward' and 'factionGrowth', set in ✏️ Edit rewards.
-const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}};
+const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', run:()=>{ addEnergyCapsules(1); return null; }}};
 function grantRewardTokens(node){ const out = []; ((node && node.rewardTokens) || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(T){ const id = T.run(); if(id) out.push(id); } }); return out; }
 function saveNodeField(mapId, nodeKey, field, value){
   const e = nodePatchFor(mapId);
@@ -31269,7 +31573,7 @@ const FREE_PACKS_KEY = 'bramblewood_free_packs_v1';
 function loadFreePacks(){ try{ const o = JSON.parse(localStorage.getItem(FREE_PACKS_KEY)||'{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
 function saveFreePacks(o){ try{ localStorage.setItem(FREE_PACKS_KEY, JSON.stringify(o)); }catch(e){} }
 function grantFreePack(id, n){ const o = loadFreePacks(); o[id] = (o[id]|0) + (n||1); saveFreePacks(o); }
-function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
+function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const e = map.nodes.find(n=> n.ender); if(e) return e.key; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
   if(!isFirstClear) return null;
   const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
@@ -32331,14 +32635,15 @@ function openInviteModal(friendId){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
   const modes = liveBattleModes();
   if(!inviteSettings.battleMode || !modes.some(m=>m.id===inviteSettings.battleMode)) inviteSettings.battleMode = modes[0] ? modes[0].id : Registry.defaultBattleMode();
-  const deckOk = deckTotal(myDeckCounts)===DECK_SIZE;
+  const std = standardFormatOn(), inviteDeck = std ? loadStandardDeck() : myDeckCounts;
+  const deckOk = deckTotal(inviteDeck)===DECK_SIZE;
   const modeHTML = ()=> modes.map(m=> `<button type="button" class="tk-speed-btn ${m.id===inviteSettings.battleMode?'is-on':''}" role="radio" aria-checked="${m.id===inviteSettings.battleMode}" data-inv-mode="${m.id}">${m.icon} ${escapeHtml(m.label)}</button>`).join('');
   overlay.innerHTML = `<div class="modal invite-modal" role="dialog" aria-labelledby="invTitle">
     <div class="modal-head-row"><h2 id="invTitle">⚔️ Invite ${escapeHtml(p.display_name||'friend')}</h2><button class="modal-close-btn" id="invClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">A private, friendly match — no rating change.</p>
     <div class="inv-field"><div class="inv-label">Arena type</div><div class="tk-seg inv-modes" role="radiogroup" aria-label="Arena type">${modeHTML()}</div>
       <p class="inv-blurb" id="invBlurb">${escapeHtml((Registry.battleMode(inviteSettings.battleMode)||{}).blurb||'')}</p></div>
-    <div class="inv-field"><div class="inv-label">Your deck</div><div class="inv-deck ${deckOk?'':'is-bad'}">${deckOk ? `✅ Active deck · ${DECK_SIZE} cards` : `⚠️ Your deck has ${deckTotal(myDeckCounts)} cards — it needs exactly ${DECK_SIZE}. Fix it in Deck first.`}</div></div>
+    <div class="inv-field"><div class="inv-label">Your deck</div><div class="inv-deck ${deckOk?'':'is-bad'}">${deckOk ? `✅ ${std?'🃏 Standard deck (all Level 1)':'Active deck'} · ${DECK_SIZE} cards` : `⚠️ Your ${std?'Standard ':''}deck has ${deckTotal(inviteDeck)} cards — it needs exactly ${DECK_SIZE}. Fix it in Deck first.`}</div></div>
     <div class="auth-actions"><button type="button" class="btn" id="invCancel">Cancel</button><button type="button" class="btn primary" id="invSend" ${deckOk?'':'disabled'}>Send invite</button></div>
   </div>`;
   overlay.hidden = false;
@@ -32353,7 +32658,7 @@ function openInviteModal(friendId){
   document.getElementById('invSend').onclick = async ()=>{
     const btn = document.getElementById('invSend'); btn.disabled = true;
     try{
-      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true}, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null});
+      const { data, error } = await sbClient.rpc('send_match_invite', {p_to: friendId, p_settings: {battleMode: inviteSettings.battleMode, friendly: true, format: std ? 'standard' : 'collection'}, p_deck: publicDeck(inviteDeck), p_character: myCharacterId, p_leader: matchLeaderId() || null});
       if(error) throw error;
       Social.outgoingInvite = data; close();
       showToast(`Invite sent to ${p.display_name||'your friend'}.`, 'ok');
@@ -32406,15 +32711,16 @@ function showInviteBanner(){
   if(!el){ el = document.createElement('div'); el.id = 'inviteBanner'; el.className = 'invite-banner'; el.setAttribute('role','alert'); document.body.appendChild(el); }
   const from = (Registry.users._cache.get(inv.from_id)||{}).display_name || 'A friend';
   const mode = Registry.battleMode((inv.settings||{}).battleMode) || Registry.battleMode(Registry.defaultBattleMode());
-  el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}</span>
+  el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}${(inv.settings||{}).format==='standard'?' · 🃏 Standard':''}</span>
     <span class="ib-actions"><button type="button" class="btn small primary" id="ibAccept">Accept</button><button type="button" class="btn small" id="ibDecline">Decline</button></span>`;
   el.hidden = false;
   document.getElementById('ibDecline').onclick = async ()=>{ try{ await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null}); }catch(e){} Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
   document.getElementById('ibAccept').onclick = async ()=>{
-    if(deckTotal(myDeckCounts)!==DECK_SIZE){ showToast(`Your deck needs exactly ${DECK_SIZE} cards to play — fix it in Deck, then accept.`, 'error'); return; }
+    const invStd = (inv.settings||{}).format==='standard', accDeck = invStd ? loadStandardDeck() : myDeckCounts;
+    if(deckTotal(accDeck)!==DECK_SIZE){ showToast(`Your ${invStd?'Standard ':''}deck needs exactly ${DECK_SIZE} cards to play — fix it, then accept.`, 'error'); if(invStd) openStandardDeckBuilder(); return; }
     const b = document.getElementById('ibAccept'); b.disabled = true;
     try{
-      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null});
+      const { data: row, error } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: true, p_deck: publicDeck(accDeck), p_character: myCharacterId, p_leader: matchLeaderId() || null});
       if(error) throw error;
       Social.incomingInvites = []; hideInviteBanner(); refreshFriendsBadge();
       switchTab('play'); await enterLiveMatch(row);

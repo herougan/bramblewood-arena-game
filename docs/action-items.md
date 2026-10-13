@@ -1,6 +1,25 @@
 # Action items
 
-_Updated 2026-10-13, 11:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 12:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 12:30 (your 11:40 list)
+
+| Item | What's in the game now |
+|---|---|
+| D32 Wildpaths | Points cost 5 and 10 for the first rings, then 15, 20 and 25 (the capstone) for the advanced ones. Learn from the detail panel; ranks show on the tree. The bonuses are still a preview |
+| Standard PvP | Arena → **Format: Collection / Standard**. Standard has its own deck (🃏 builder over every card), every card at Level 1, no foils, shinies or Materia. It covers Quick Battle, Pass & Play, Gauntlet and friend invites (the invite and banner say Standard). Collection is the normal format |
+| Armoury | Moved to Map 1. Every Map 0 win now gives a card, and before the Armoury opens a window on the map offers to swap a deck card out for it |
+| Road enders | Map 0 ends on a normal fight, Maps 1–4 on an Elite, every 5th map on a boss, the rest on a miniboss. Card rewards need rank B from Map 5, A from Map 15, S from Map 30 (a 🔒 pill shows the rank) |
+| D40 Tavern | 🍺 The Tavern opens on Map 14 and now holds the max-Energy upgrades |
+| D45 | Admin Mode → Forge → **✏️ Edit tier prices** (Gold, Dust, Strange Materia, map) publishes to everyone |
+| D53 | Every fight's conditions are listed in the skirmish panel (terrain, eruptions, wind, gale, darkness, night, twilight, high tide, frost and its parts, boss surge). In a fight each row shows **?** until it first happens, then **New!** for that fight, then plain text |
+| D54 | The daily field-kit refill is gone (the traveller packs one starter fill; more will come from dailies and weeklies). Your first win on Map 2 gives a 🔋 Energy capsule (+20 Energy, used from the Energy panel); it's also a reward token in ✏️ Edit rewards |
+| D55 | The 3-minute check now also reads world events and GM messages, and Admin has a 📣 World call-out composer. The `world_events` table is written up in `supabase/migrations/20261013_world_events.sql` and is **not applied**: it waits for "apply it" |
+| Archetypes | Swarm and Tide are keyword families, not archetypes: they lost the corner mark. Archetypes are Devilry, Ecclesia, Evolution, Scrappers, Exiled Ones, Forgotten Ones, Ancient Ones, Outer Ones and Void |
+| Admin at launch | A `LAUNCH_BUILD` switch hides every admin surface on the live site. Server-side, admin writes are already refused by the `is_app_admin()` row policies, so a packet forwarder can't run them |
+| Docs | [Economy and monetization](economy-monetization-2026-10-13.md), [co-op dungeon](coop-dungeon-design-2026-10-13.md), [Steam launch plan](steam-launch-plan-2026-10-13.md) |
+
+**Closed:** D34, D41, D42, D43, D44, D47, D49 (replaced by the co-op dungeon doc), D50, D56, D57, D62, D63, D64.
 
 ## Done at 11:30 (your 10:57 list)
 
@@ -91,26 +110,13 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
 | **D27** | Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit | None | Keep |
-| **D34** | Map table readings (free packs, Wandering Trader on Map 13, errands from Map 9) | With the new Map 1, Maps 2 onwards keep their numbers, so the table still holds. Only the Armoury moved: it stays on Map 0 (you need decks early), not Map 1 | Keep; say if the Armoury should move to Clovermead |
-| **D35** | Base growth from bosses; errands pay 4–8% of a Materia Unit | Your note tonight: Base cards are weak, strong mid-levels, fade at 10, Lv 11 rebalances. Bosses levelling them early fits that | Keep |
 | **D39** | 22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching) | Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired | Keep the rest |
-| **D40** | Max energy and the Town | **Built tonight:** +1 max Energy per 20 different skirmishes cleared, up to +10, shown in the Energy pop-up. The Town is a big page; I'd rather you OK it first | Yes to the Town; start with the signpost and the Nest only |
-| **D41** | Late dungeons (14A–D, 15A, 18A) | **14A is built tonight** (The Mycelium Deep, five fights, two days after Map 14's boss). The rest need new decks and art (about 35 more fights) | Play 14A; if it feels right I'll build 14B–D the same way |
-| **D42** | 23:42 readings (Trident, Pitchfork, Sweep; advanced packs at sale map + 25; Rainrunner; world map after Map 2) | None | Keep |
-| **D43** | "img not found" on the Wait badge | Still not reproduced; tonight's clock-icon change touched the same badges | Send a screenshot if you see it again |
-| **D44** | Tonight's readings: Outskirts = **Map 0**, new **Map 1 Clovermead** (Thistlewood stays Map 2). A Boomerang return is the thrower's swing for that round. A dead thrower's boomerang hits **any** unit of yours in its lane without Boomerang. Raids are a full match: **three rows a side**, reserves step up at the start of a round, reserves can't be hit. The trench minigame is benched (Admin only) | The raid rows are a first version. The boss's column attacks are back (the column glows red a round ahead; the hit lands on your front and reserve cards there, or your castle if the column is empty). The allies' rows from the trench are gone (one deck, yours). To keep it winnable alone, the boss's cards are at 35% Attack / 45% Health and your castle is 90 | Keep; tell me whether allies should hold your middle and back rows (as in the trench) or all three are yours |
-| **D45** | **Forge tiers.** The Forge starts at Lv 3 and Commons to Quest cards. Upgrades: Iron at Map 13 (Lv 4, up to Super Rare, 600🍁 + 300✨); Ember at Map 16 (Lv 8, up to Unique, 1500 + 800); Dragonfire at Map 26 (Lv 9, up to Legendary, 3000 + 1500); Heartfire at Map 31 (Lv 10, everything, 5000 + 2500) | The prices are my guess. A save that had already tempered past Lv 3 starts at the tier that covers it, so nobody loses levels | Keep the map gates (they're the old level gates); say if the prices feel off |
-| **D47** | **Tutorial skills.** Part 1 has no skills; part 2 keeps only Swarm. The Fly and Boomerang remarks in part 2 therefore don't fire | Without Flying, part 2 teaches less about Hummingbirds | Keep; teach Flying on Map 1 instead (Admin → Tutorial editor can add it back: "swarm, hiveMind, flying") |
-| **D49** | **Raid with allies.** Two allies (one plays each turn), your castle is three castles in one, and the boss is at 60% Attack / 70% Health | Not simulated yet; the numbers are a first guess | Play a raid or two and tell me if it's too easy or too hard |
-| **D50** | **Water lanes (idea, not built).** Ocean channels and whirlpools for swimmers, jet streams for flyers: a lane-wide current that moves or speeds the units in it | It adds a fourth board rule on top of tide, day/night and fields, so water maps could get busy | Park until the High tide fights have been played; then try one whirlpool lane on a single reef boss |
-| **D53** | **Volcano numbers:** eruptions of 2 / 3 / 5 (elites / bosses / world boss); the boss surge only in this map's boss fights; the world boss at 6/36 (8/40 surged) with a 240-Health castle | Not simulated yet. The Eye's castles are set by hand (170–260) | Play the world boss once and tell me the result |
-| **D54** | **Field kit:** 4 items, one of each a day, 20 at most, one per turn, PvE only | Fire Pot and the Draught are strong in early maps | Keep; say if a different daily mix suits you better |
-| **D55** | **World call-outs.** Today a raid's fall is read from the week's shared attempts, which every client checks every 3 minutes. A real message board would be one small append-only table (`world_events`: kind, text, at) that the game writes to and reads | The table is a write to the live Supabase, so it waits for you | Say "apply it" for the table, or keep reading the attempts |
-| **D56** | **Tutorial part 2 cards.** Otters get River Warden + Otter Centurion, Hummingbirds Sunspire Envoy + Crimson Recruit, both get River Warden + Sunspire Envoy, plus the Meerkat Wayfarer in the collection | My reading of "the 2nd one nets you the side-specific card" with "2 more cards" | Keep, or change them in the tutorial editor |
-| **D57** | **Test Tutorial hang.** I played Test the tutorial from a finished account through both parts (Next, Got it, drags, Part 2, the leader joining) and couldn't make it stick | I may be missing a step you take | Tell me where it stops (which message is showing), or send a screenshot |
-| **D62** | **Field kit on Map 12.** Maps 12, 14, 15, 17, 18 and 19 have no new feature; I put the kit on Map 12 (Eyrie Heights), right after the Forge | None | Keep, or name another of those maps |
-| **D63** | **"No dragons yet!" in the Volcano Lair.** The world boss there is the Caldera Wyrm (a fire wyrm, 🐉), and its fights use Fire-Drake Hatchlings and Pyroclast Wyrms | I read your note as a reminder, not an instruction, so I changed nothing | Say "no dragons" and I'll swap them for volcanic beasts and give the lair a non-dragon boss |
-| **D64** | **The Old Bramble's lock.** Your list says "locked till Map 18 Submap complete", but Map 18 (Glass Dunes) has no side map; I tied it to the Ice Hollow (Map 17's new side map) | I may have read the number wrong | Keep, or add a Glass Dunes side map and tie it to that |
+| **D55** | `world_events` table for call-outs and GM messages | A live Supabase write | Say "apply it" (with T3/S1/S2 if you like) |
+| **D74** | **Standard PvP scope.** Ranked Live, PvP strangers, Dungeon and Conquest stay Collection-only | Ranked Live with levels is pay-to-win-ish | Later: make Ranked Live Standard, or cap levels |
+| **D75** | **Economy** ([doc](economy-monetization-2026-10-13.md)): Gold Leaves bundles 0.99–99.99 USD, a 4.99 USD Bramble Pass, monthly pack bonuses at 10/25/50/80/120 packs | Prices are first guesses; SGD comes from each store's tier | Answer the three questions at the end of the doc |
+| **D76** | **Co-op dungeon** ([doc](coop-dungeon-design-2026-10-13.md)): 30-second simultaneous plan, shared castle, friends-only rooms first | Needs a new `coop_rooms` table (live write) and a 4-seat host sync | Answer the doc's three questions; then I build a 2-player version first |
+| **D77** | **Steam: free-to-play or paid** ([plan](steam-launch-plan-2026-10-13.md)) | Paid splits the economy between web and Steam | Decide by month 2 (December) |
+| **D78** | **Map 0 swap window** shows after every Map 0 win until the Armoury opens (Map 0 has 4 fights, so about 3–4 swaps) | You said about 3 | Keep |
 | **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
 
 **Closed today:** D36 (Frenzy reworked to your rule), D46 (Rabbit Kit replaces the Quarry Mole), D58 (your egg rates), D59 (a free Base copy from each map's boss), D60 (Caldera Heart, ratings 350–500), D61 (enemy levels from Map 5), D52 (your map list is in).
@@ -154,7 +160,7 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 ## 3. Things only you can do (outside chat)
 
 - **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
-- **Supabase:** turn on leaked-password protection (Auth → Passwords, one click).
+- **Supabase:** leaked-password protection needs the Pro plan (the project is on Free), so it is off. Upgrading is your call.
 - **Art (PixelLab):** at its monthly limit; NightCafe covered every card instead. Buying PixelLab credits is your call; nothing is waiting on it.
 - **NightCafe:** 284 credits left after tonight's card and castle art.
 
