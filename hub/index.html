@@ -114,7 +114,74 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-13, 3:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<p><em>Updated 2026-10-13, 4:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<h2>Done at 16:30 (your 14:50 list)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>What's in the game now</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>The side pick flows into the fight: cards arc into your deck, the screen zooms, the battlefield fades in</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Part 1's highlighted card glows only from the "drag a card" step</td>
+</tr>
+<tr>
+<td>3</td>
+<td>The tutorial's ghost card is the real card's size (it was copying the lifted, scaled-up card)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>"Tutorial Complete!" and a single Claim Rewards button. Admin: the rewards are in Admin → 🎓 Tutorial editor ("Part 1 reward" and the part 2 lists)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Map 0 shows only the tutorials until part 2 is won (admins too, unless the layout editor is open), zoomed 25%, with a gold ring pointer; winning part 2 zooms out to the whole map</td>
+</tr>
+<tr>
+<td>7</td>
+<td><span class="doc-ref" title="Project doc: claude/design-pushback-2026-10-13.md">Design pushback</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>New calls from the pushback (D79–D82):</strong></p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>What</th>
+<th>Recommendation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D79</strong></td>
+<td>Two plays a turn from Map 5 (the Actions rule), to give each turn a real choice</td>
+<td>Try it on 3 fights first</td>
+</tr>
+<tr>
+<td><strong>D80</strong></td>
+<td>A "next round" forecast strip (wind, frost targets, nightfall)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>D81</strong></td>
+<td>At most two board conditions per fight, one signature per map</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>D82</strong></td>
+<td>Cut the 8 currencies to 3 before Steam</td>
+<td>Yes, after the economy questions (D75)</td>
+</tr>
+</tbody>
+</table>
 <h2>Done at 15:30 (your 14:21 list)</h2>
 <table>
 <thead>
@@ -631,6 +698,13 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-13 (16:30)</h2>
+<ul>
+<li><strong>Into the first fight.</strong> After you pick a side, your tutorial cards arc from the top right into your deck at the bottom left while the screen zooms in, then the battlefield fades in.</li>
+<li><strong>Tutorial polish.</strong> In part 1 the highlighted card glows only once the "drag a card onto the field" step comes up. The tutorial's ghost card is the size of the real card. Both parts end on "Tutorial Complete!" with one button, Claim Rewards.</li>
+<li><strong>The map during the tutorial.</strong> Until part 2 is won, Map 0 shows only the two tutorials (no other fights, trails or features), zoomed in 25% on them, and a gold ring that starts 50% bigger and settles onto the Part 2 marker points the way. Winning part 2 zooms the map out from the tutorial marker and the rest of Map 0 fades in.</li>
+<li><strong>New doc:</strong> design pushback (is it too much, is it boring, what I'd change).</li>
+</ul>
 <h2>2026-10-13 (15:30)</h2>
 <ul>
 <li><strong>Your name, front and centre.</strong> The entrance asks "What should we call you?" over a bigger, glowing name field, and a first sign-in with an account that never picked a name gets a name prompt in the middle of the screen.</li>
