@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -232,6 +232,12 @@ const PASSIVE_DEFS = [
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
   // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
+  // 2026-10-13 (10:57 list): Crepuscular (Twilight only), Sun-shy (blind by day), Night-blind (blind at night).
+  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At Twilight: gain +${a}/+${h}. (A deck with one turns the day into Day, Night, Day, Night, Twilight.)`; },
+    get:e=> (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
+  {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
+  {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (a Lantern on your side lights it).`},
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; },
     get:e=> (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
@@ -315,8 +321,8 @@ const PASSIVE_DEFS = [
     get:e=> e.sociable ? (Array.isArray(e.sociable) ? e.sociable : [e.sociable, 0]) : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.sociable = [a, h]; }},
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
-  {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Heatwave can't touch it.`},
-  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark: never night-blind (other units miss 1 attack in 4 at night unless they're Nocturnal).`},
+  {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
+  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in complete darkness: in caves and the deep, everyone else without a Lantern swings blind (misses 1 in 2).`},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
@@ -1096,8 +1102,8 @@ function liveAmountValue(mode, liveCard){
   return null;
 }
 const FIELD_TEXT = {
-  frozen:   {name:'Frozen Ground', text:'At the start of every round, one random card on each side gets +1 Wait.'},
-  heatwave: {name:'Heatwave', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
+  frozen:   {name:'Frigid', text:'At the start of every round, one random card on each side gets +1 Wait.'},
+  heatwave: {name:'Scorching', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
   rain:     {name:'Spring Rain', text:'At the start of every round, every unit heals 2.'},
   fog:      {name:'Thick Fog', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
   moon:     {name:'Full Moon', text:'It stays night while the moon is up.'},
@@ -4798,6 +4804,7 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
+  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">🌆</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">🕶️</span>`); if(e.nightblind) out.push(`<span title="Night-blind">🌑</span>`);
   if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
@@ -5679,6 +5686,11 @@ function openNodeRewardsEditor(mapId, nodeKey){
       <div class="modal-head-row"><h2>✏️ Rewards — ${escapeHtml(found.node.name)}</h2><button class="modal-close-btn" id="nrClose" aria-label="Close">✕</button></div>
       <p class="panel-sub">${escapeHtml(conquestNodeLabel(mapId, nodeKey))}. Players get each of these cards the first time they clear this fight. Adding a card here moves its source to this node.</p>
       <div class="nr-current">${current.length ? current.map(id=>`<div class="nr-card">${cardTileHTML(defs[id], {inPlay:true})}<button type="button" class="btn small ghost nr-remove" data-id="${escapeAttr(id)}">Remove</button></div>`).join('') : '<p class="panel-sub">No reward cards yet.</p>'}</div>
+      <div class="nr-tokens"><b>Placeholders</b> ${((found.node.rewardTokens)||[]).map((t, i)=> `<span class="nr-token">${(REWARD_TOKENS[t]||{}).icon||''} ${escapeHtml((REWARD_TOKENS[t]||{label:t}).label)} <button type="button" class="nr-tok-x" data-i="${i}" aria-label="Remove">✕</button></span>`).join('') || '<span class="panel-sub">none</span>'}
+        ${Object.keys(REWARD_TOKENS).map(k=> `<button type="button" class="btn small ghost nr-tok-add" data-tok="${k}">+ ${REWARD_TOKENS[k].icon} ${REWARD_TOKENS[k].label}</button>`).join('')}
+        <p class="panel-sub">A Faction Reward is a random card from the player's faction pool at their faction tier; a Faction Growth is the next card of the lowest rarity they don't have yet. With any placeholder set, this fight gives these instead of the default elite/boss faction card.</p></div>
+      <div class="nr-tokens nr-danger"><b>⚠️ Danger cards</b> ${Object.keys(found.node.deck||{}).map(id=> defs[id] ? `<button type="button" class="nr-token nr-dg ${((found.node.dangerCards)||[]).includes(id) ? 'is-on' : ''}" data-id="${escapeAttr(id)}" aria-pressed="${((found.node.dangerCards)||[]).includes(id)}">${defs[id].icon||''} ${escapeHtml(defs[id].name)}</button>` : '').join('')}
+        <p class="panel-sub">Ticked enemy cards always get a danger warning in this fight until the player has beaten them.</p></div>
       <input type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}" autocomplete="off">
       <div class="nr-results">${matches.map(id=>`<button type="button" class="nr-result" data-id="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${srcNote(id)}</span></button>`).join('')}</div>
     </div>`;
@@ -5691,6 +5703,9 @@ function openNodeRewardsEditor(mapId, nodeKey){
       raw.source = {kind:'map', id:mapId, node:nodeKey};
       await saveCard(raw); q = ''; render();
     }));
+    overlay.querySelectorAll('.nr-dg').forEach(b=> b.addEventListener('click', ()=>{ const id = b.getAttribute('data-id'); const cur = (((findConquestNode(mapId, nodeKey)||{}).node||{}).dangerCards || []).slice(); const k = cur.indexOf(id); if(k >= 0) cur.splice(k, 1); else cur.push(id); saveNodeField(mapId, nodeKey, 'dangerCards', cur.length ? cur : null); found.node = findConquestNode(mapId, nodeKey).node; render(); }));
+    overlay.querySelectorAll('.nr-tok-add').forEach(b=> b.addEventListener('click', ()=>{ const cur = ((findConquestNode(mapId, nodeKey)||{}).node||{}).rewardTokens || []; saveNodeField(mapId, nodeKey, 'rewardTokens', cur.concat(b.getAttribute('data-tok'))); found.node = findConquestNode(mapId, nodeKey).node; render(); }));
+    overlay.querySelectorAll('.nr-tok-x').forEach(b=> b.addEventListener('click', ()=>{ const cur = (((findConquestNode(mapId, nodeKey)||{}).node||{}).rewardTokens || []).slice(); cur.splice(Number(b.getAttribute('data-i')), 1); saveNodeField(mapId, nodeKey, 'rewardTokens', cur.length ? cur : null); found.node = findConquestNode(mapId, nodeKey).node; render(); }));
     overlay.querySelectorAll('.nr-remove').forEach(b=> b.addEventListener('click', async ()=>{
       const raw = rawCardDef(b.getAttribute('data-id')); if(!raw) return;
       delete raw.source;
@@ -11779,6 +11794,7 @@ const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, 
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
   if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
+  if(r.dark == null && DARK_MAPS.has(mid)) r.dark = true; // complete darkness: only Darksight sees (2026-10-13)
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
   if(r.highTide == null && node && /boss|elite|champion/.test(node.kind || '') && (typeof MAP_MUSIC !== 'undefined' && MAP_MUSIC[mid] === 'map_water')) r.highTide = true;
   // The Volcano (2026-10-12, 10:23 list): on the Sundered Peak and the Eye of the Volcano the mountain erupts in the big
@@ -11867,6 +11883,7 @@ function terrainPillHTML(m){
   return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}</span><span class="tp-tip" role="tooltip">${keywordizeHTML(escapeHtml(body))}</span></button>`;
 }
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
+const DARK_MAPS = new Set(['mg']); // the literal caves (Smugglers' Grotto); the Abyssal Plains will join
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
@@ -12035,7 +12052,7 @@ function skirmishFieldChips(mapId, draft){
   const add = (key, on, icon, name, text)=> out.push({key, on, icon, name, text, src: key in exp ? 'set' : 'map', restore: (key in exp) && auto[key] != null && auto[key] !== false && auto[key] !== 0 && auto[key] !== 'none'});
   const ph = eff.phase || 'day'; if(ph !== 'day' || 'phase' in exp){ const L = SE_PHASE_LABEL[ph] || ['🌗', ph]; add('phase', true, L[0], L[1] + ((ph === 'cycle' || ph === 'nightFirst') ? `, every ${eff.phaseLen || 3} rounds` : ''), 'Day & night, in the battle box above.'); }
   if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); }
-  else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frozen Ground (off)', 'The map would freeze this fight.');
+  else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frigid (off)', 'The map would freeze this fight.');
   if(eff.terrain && eff.terrain.types) add('terrain', true, eff.terrain.icon, `${eff.terrain.name} ${ROMAN_TIER[eff.terrain.tier] || ''}`, terrainSummary(eff.terrain));
   else if(eff.terrain === false && auto.terrain) add('terrain', false, auto.terrain.icon, `${auto.terrain.name} ${ROMAN_TIER[auto.terrain.tier] || ''} (off)`, 'Home ground is switched off for this fight.');
   if(Number(eff.eruption) > 0) add('eruption', true, '🌋', `Eruption ${eff.eruption}`, `From round 2, one random unit on each side takes ${eff.eruption} fire damage every upkeep.`);
@@ -14226,6 +14243,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const ids = nodeRewardCardIds(mapId, node.key);
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
+  const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
   const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${done?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
     : `<span class="cnp-rw-card ${done?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (done ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
@@ -14233,8 +14251,9 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
-  if(!cards && !cur.length && !rankHTML) return '';
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">${done ? 'Won' : 'First clear'}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cards ? `<div class="cnp-rw-items">${cards}</div>` : ''}${rankHTML}</div>`;
+  const cardsAll = cards + tokenChips;
+  if(!cardsAll && !cur.length && !rankHTML) return '';
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">${done ? 'Won' : 'First clear'}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
 }
 const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 5; // index in play order = map number (from 0): Map 5 and later
 function rollSRankFind(mapId, rank, rng){
@@ -17619,8 +17638,61 @@ function renderSandboxSubTab(body){
   if(btn) btn.addEventListener('click', startSandboxMatch);
   const tk = document.getElementById('testKitStartBtn');
   if(tk) tk.addEventListener('click', startTestKit);
+  const cc = document.createElement('div'); cc.className = 'panel card-check'; body.appendChild(cc); renderCardCheck(cc);
   const dp = document.createElement('div'); dp.className = 'panel card-decorator'; body.appendChild(dp);
   renderCardDecorator(dp);
+}
+// 📊 Card check (2026-10-13, user: "In the test lab, let me have the ability to only test every single card up to my progression
+// level ... I don't care about all the cards we have. Only those cards I've selected to appear in Map 0-5, and the base cards
+// delivered then"): the balance sheet's win-rate test, run in the browser on just the cards a player can meet up to a map.
+// Same method as tools/card_balance.js: 8 copies of the card (fewer if it costs more) + filler against 20 filler, every card at
+// Level 1; then each card is compared with the band its rarity should land in.
+const CC_BANDS = {starter:[.20,.48], common:[.35,.60], uncommon:[.45,.68], quest:[.45,.68], rare:[.52,.75], veryrare:[.56,.80], superrare:[.60,.84], epic:[.62,.87], heroic:[.64,.89], unique:[.66,.92], questunique:[.66,.92], legendary:[.70,.97], mythic:[.72,1], ancient:[.75,1]};
+const CC_FILLER = ['warren-scout', 'fawn-scout', 'bee-sentry', 'mouse-sapper', 'poison-dart-croaker'];
+let ccState = {upTo: null, games: 30, rows: null, running: false};
+function cardCheckPool(upTo){
+  const defs = getCardDefs();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero || d.cardType === 'materia' || d.cardType === 'spell' || isHofVariant(d) || d.derivedFrom) return false;
+    const src = cardSourceOf(d);
+    if(src.kind === 'base' || d.rarity === 'starter' || d.basic) return true;
+    if(src.kind === 'map'){ const n = mapNumberOf(src.id); return n != null && n <= upTo; }
+    if(src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11) return true; // your faction's cards come with progress
+    return false; }).sort((a, b)=> (defs[a].name||a).localeCompare(defs[b].name||b));
+}
+function ccLevel1(d){ if(cardBaseLevel(d) >= 1) return d; const s = statsAtLevel(d, 1); return Object.assign({}, d, {attack: s.attack, health: s.health}); }
+function runCardCheck(host){
+  if(ccState.running) return; ccState.running = true;
+  const defs0 = getCardDefs(), defs = {}; Object.keys(defs0).forEach(id=> defs[id] = ccLevel1(defs0[id]));
+  CC_FILLER.forEach(id=>{ if(defs0[id]) defs[id] = Object.assign({}, defs0[id], {effects: Object.fromEntries(Object.entries(defs0[id].effects||{}).filter(([k])=> !['swimmer','darksight','dry'].includes(k)))}); });
+  const fill = CC_FILLER.filter(id=> defs[id]), fillerDeck = n=>{ const d = {}; for(let i=0;i<n;i++){ const id = fill[i % fill.length]; d[id] = (d[id]||0) + 1; } return d; };
+  const OPP = fillerDeck(20), N = Math.max(4, ccState.games|0), ids = cardCheckPool(ccState.upTo), rows = [];
+  let i = 0;
+  const step = ()=>{
+    const t0 = performance.now();
+    while(i < ids.length && performance.now() - t0 < 40){
+      const id = ids[i++], d = defs[id], k = [8, 6, 4, 3][Math.min(3, d.cost||0)], deck = fillerDeck(20 - k); deck[id] = (deck[id]||0) + k;
+      let w = 0; for(let g = 0; g < N; g++){ const r = simulateOneMatch(defs, g%2 ? deck : OPP, g%2 ? OPP : deck, {rnd: mulberry32(7700 + g*131), maxRounds: 60, battleMode: 'open'}); const mine = g%2 ? 1 : 2; w += r.winner===mine ? 1 : r.winner===0 ? 0.5 : 0; }
+      const wr = w / N, band = CC_BANDS[d.rarity || 'common'] || CC_BANDS.common, src = cardSourceOf(d);
+      rows.push({id, name: d.name, rarity: d.rarity || 'common', wr, band, verdict: wr > band[1] ? 'strong' : wr < band[0] ? 'weak' : 'ok', where: src.kind === 'map' ? 'Map ' + mapNumberOf(src.id) : src.kind === 'pack' ? 'Faction' : 'Base', lv0: cardBaseLevel(defs0[id]) === 0});
+    }
+    const prog = host.querySelector('#ccProg'); if(prog) prog.textContent = `${i} / ${ids.length} cards`;
+    if(i < ids.length) setTimeout(step, 0); else { ccState.rows = rows; ccState.running = false; renderCardCheck(host); }
+  };
+  renderCardCheck(host); setTimeout(step, 30);
+}
+function renderCardCheck(host){
+  if(ccState.upTo == null) ccState.upTo = Math.max(0, mapsPassed() + 1);
+  const n = cardCheckPool(ccState.upTo).length, rows = ccState.rows;
+  const sorted = rows ? rows.slice().sort((a, b)=> ({strong:0, weak:1, ok:2})[a.verdict] - ({strong:0, weak:1, ok:2})[b.verdict] || b.wr - a.wr) : [];
+  const counts = rows ? ['strong','ok','weak'].map(v=> rows.filter(r=> r.verdict === v).length) : null;
+  host.innerHTML = `<h2>📊 Card check</h2>
+    <p class="panel-sub">How strong each card is, measured in simulated matches against the same filler deck, next to what its rarity should deliver. Only the cards a player meets up to the map you pick: that map's and earlier maps' rewards, the Base cards and your faction's cards. Every card is measured at Level 1 (Lv 0 cards are marked: their first level is a big step).</p>
+    <div class="cc-controls"><label>Up to Map <input type="number" id="ccUpTo" min="0" max="60" value="${ccState.upTo}" class="w-60"></label><label>Games per card <input type="number" id="ccGames" min="4" max="200" value="${ccState.games}" class="w-60"></label>
+      <button type="button" class="btn primary" id="ccRun" ${ccState.running ? 'disabled' : ''}>${ccState.running ? 'Running…' : `Check ${n} cards`}</button><span id="ccProg" class="panel-sub"></span></div>
+    ${rows ? `<p class="panel-sub">${counts[0]} too strong · ${counts[1]} in band · ${counts[2]} too weak</p><div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>From</th><th>Win rate</th><th>Band</th><th></th></tr></thead><tbody>${sorted.map(r=> `<tr class="cc-${r.verdict}"><td>${escapeHtml(r.name)}${r.lv0 ? ' <small title="Starts at Level 0">Lv0</small>' : ''}</td><td>${escapeHtml(r.rarity)}</td><td>${escapeHtml(r.where)}</td><td>${Math.round(r.wr*100)}%</td><td>${Math.round(r.band[0]*100)}–${Math.round(r.band[1]*100)}%</td><td>${r.verdict === 'ok' ? '✓' : r.verdict === 'strong' ? '▲ strong' : '▼ weak'}</td></tr>`).join('')}</tbody></table></div>` : ''}`;
+  const up = host.querySelector('#ccUpTo'); if(up) up.addEventListener('change', ()=>{ ccState.upTo = Math.max(0, Number(up.value)||0); ccState.rows = null; renderCardCheck(host); });
+  const gm = host.querySelector('#ccGames'); if(gm) gm.addEventListener('change', ()=>{ ccState.games = Math.max(4, Math.min(200, Number(gm.value)||30)); });
+  const rb = host.querySelector('#ccRun'); if(rb) rb.addEventListener('click', ()=> runCardCheck(host));
 }
 // 🎨 Card Decorator (2026-10-11, user: "Test centre: card decorator. Pick a card from the collection, change the art frame
 // and foil, and adjust chromatic parameters, e.g. Ice: crystalline line opacity down, rainbow colours more ice-like"). A
@@ -19098,7 +19170,7 @@ const ARENA_RULESETS = [
   {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match.', rules:{phase:'day'}, secondDraw:1},
   {id:'dusk',      icon:'🌆', name:'Dusk Start',    text:'The match starts at night; day comes after round 3.', rules:{phase:'nightFirst'}, secondDraw:1},
   {id:'timber',    icon:'🪵', name:'Timber Fair',   text:'Both sides gain 1 Lumber every 3 rounds, on top of what cards give.', rules:{phase:'cycle', lumberEvery:3}, secondDraw:1},
-  {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frozen Ground all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
+  {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frigid all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
   {id:'fogmoor',   icon:'🌫️', name:'Fog on the Moor', text:'Thick Fog all match: attacks miss 1 in 3, except from Flying units.', rules:{phase:'cycle', field:'fog'}, secondDraw:1},
 ];
 // Field effects in one place (2026-10-12, 21:01, user: "Show the field effects in the Edit Skirmish. Allow me to add etc." and
@@ -19112,10 +19184,10 @@ const FIELD_EFFECTS = [
   {id:'dusk',      group:'phase', icon:'🌆', name:'Dusk Start',     weird:1, cost:1, rules:{phase:'nightFirst'}, text:'It starts at night; day comes after round 3.'},
   {id:'longnight', group:'phase', icon:'🌙', name:'The Long Night', weird:2, cost:1, rules:{phase:'night'}, text:'It is night all match.'},
   {id:'midsummer', group:'phase', icon:'☀️', name:'Midsummer',      weird:1, cost:1, rules:{phase:'day'}, text:'It is day all match.'},
-  {id:'frost',     group:'field', icon:'❄️', name:'Frost',          weird:2, cost:1, rules:{field:'frozen'}, text:'Frozen Ground: each round one random card on each side gets +1 Wait.'},
+  {id:'frost',     group:'field', icon:'❄️', name:'Frigid',         weird:2, cost:1, rules:{field:'frozen'}, text:'Frigid: each round one random card on each side gets +1 Wait.'},
   {id:'fog',       group:'field', icon:'🌫️', name:'Fog',            weird:2, cost:1, rules:{field:'fog'}, text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
   {id:'rain',      group:'field', icon:'🌧️', name:'Spring Rain',    weird:1, cost:1, rules:{field:'rain'}, text:'Spring Rain: every unit heals 2 at the start of each round.'},
-  {id:'heatwave',  group:'field', icon:'🔥', name:'Heatwave',       weird:2, cost:1, rules:{field:'heatwave'}, text:'Heatwave: every unit takes 1 damage at the start of each round.'},
+  {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:'Scorching: every unit takes 1 damage at the start of each round.'},
   {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
@@ -22739,20 +22811,33 @@ function renderHand(){
 // card") — called once from each of playCardByUid/discardCardByUid/skipTurn, right before
 // the shared render, so both sides' cards land on the board together in one paint instead
 // of the enemy's card silently appearing moments later, right before combat.
-// Danger warnings (2026-10-13, user: "warning sign! when a dangerous enemy drops by (first time - a strong uncommon - my setting.
-// then subsequent times, a strong rare, then it slowly goes up.) Or maybe let me set - because this can't keep triggering for
-// high level rarity skirmishes"): an enemy card at or above the bar gets a warning, and every warning raises the bar one step.
-// Settings → Danger warnings sets where the bar starts (or Off); changing it resets the climb.
+// Danger warnings (2026-10-13; reworked 10:57: "Maybe there's a default danger warning that climbs in rarity: 2 next uncommons,
+// 3 next rares, 4 next very rares, 5 next super rares... But there's also the skirmish definite warning! Oh, and only new cards
+// trigger the warning ... an unseen attribute: 'Beaten'. You could've seen this super rare card, but never won the skirmish.
+// Non-beaten cards still can trigger warnings"; "In big fights, i intend for the same big guy to keep triggering it").
+//  - A card is Beaten once you win a fight it was in. Beaten cards never warn.
+//  - The ladder: warnings fire for cards at or above the current rarity; after 2 at Uncommon it moves to Rare, after 3 at Rare
+//    to Very Rare, then 4, 5, 6… A card above the current step warns too, without using up the step.
+//  - A fight can name its own danger cards (✏️ Edit rewards → ⚠️ Danger cards): those always warn until Beaten.
+//  - Settings → Danger warnings: where the ladder starts, or Off.
 const DANGER_LADDER = ['uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient'];
-const DANGER_FROM_KEY = 'bramblewood_danger_from_v1', DANGER_LEVEL_KEY = 'bramblewood_danger_level_v1';
+const DANGER_FROM_KEY = 'bramblewood_danger_from_v1', DANGER_STATE_KEY = 'bramblewood_danger_state_v2', BEATEN_KEY = 'bramblewood_beaten_v1';
 function dangerFrom(){ try{ return localStorage.getItem(DANGER_FROM_KEY) || 'uncommon'; }catch(e){ return 'uncommon'; } }
-function dangerLevel(){ try{ const v = localStorage.getItem(DANGER_LEVEL_KEY); if(v != null) return parseInt(v, 10) || 0; }catch(e){} return Math.max(0, DANGER_LADDER.indexOf(dangerFrom())); }
-function setDangerFrom(v){ try{ localStorage.setItem(DANGER_FROM_KEY, v); localStorage.removeItem(DANGER_LEVEL_KEY); }catch(e){} }
-function rarityStep(r){ const i = DANGER_LADDER.indexOf(r || 'common'); if(i >= 0) return i; const b = RARITY_TIER_BANDS.indexOf(r || 'common'); return b < 0 ? -1 : DANGER_LADDER.findIndex(x=> RARITY_TIER_BANDS.indexOf(x) >= b); }
+function dangerQuota(step){ return step + 2; } // Uncommon 2, Rare 3, Very Rare 4, Super Rare 5 …
+function dangerState(){ let st = null; try{ st = JSON.parse(localStorage.getItem(DANGER_STATE_KEY) || 'null'); }catch(e){} return (st && typeof st === 'object') ? st : {step: Math.max(0, DANGER_LADDER.indexOf(dangerFrom())), used: 0}; }
+function saveDangerState(st){ try{ localStorage.setItem(DANGER_STATE_KEY, JSON.stringify(st)); }catch(e){} }
+function dangerLevel(){ return dangerState().step; }
+function setDangerFrom(v){ try{ localStorage.setItem(DANGER_FROM_KEY, v); localStorage.removeItem(DANGER_STATE_KEY); }catch(e){} }
+function beatenCards(){ try{ return new Set(JSON.parse(localStorage.getItem(BEATEN_KEY) || '[]')); }catch(e){ return new Set(); } }
+function markBeaten(ids){ const b = beatenCards(); let ch = false; (ids||[]).forEach(id=>{ if(id && !b.has(id)){ b.add(id); ch = true; } }); if(ch) try{ localStorage.setItem(BEATEN_KEY, JSON.stringify([...b])); }catch(e){} }
+function rarityStep(r){ const i = DANGER_LADDER.indexOf(r || 'common'); if(i >= 0) return i; const b = RARITY_TIER_BANDS.indexOf(r || 'common'); if(b < 0) return -1; const k = DANGER_LADDER.findIndex(x=> RARITY_TIER_BANDS.indexOf(x) >= b); return k < 0 ? -1 : (RARITY_TIER_BANDS.indexOf(DANGER_LADDER[k]) === b ? k : k - 1); }
 function maybeDangerWarn(defId){
-  if(dangerFrom() === 'off') return; const d = getCardDefs()[defId]; if(!d || d.token) return;
-  const lvl = dangerLevel(), step = rarityStep(d.rarity); if(step < 0 || step < lvl) return;
-  try{ localStorage.setItem(DANGER_LEVEL_KEY, String(Math.min(DANGER_LADDER.length - 1, lvl + 1))); }catch(e){}
+  if(dangerFrom() === 'off') return; const defs = getCardDefs(); const d = defs[defId]; if(!d || d.token) return;
+  const base = d.derivedFrom || defId; if(beatenCards().has(base)) return;
+  const m = matchState, node = m && m.conquestNode ? ((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || null) : null;
+  const named = !!(node && (node.dangerCards||[]).includes(base));
+  const st = dangerState(), step = rarityStep(d.rarity);
+  if(!named){ if(step < 0 || step < st.step) return; if(step === st.step){ st.used += 1; if(st.used >= dangerQuota(st.step)){ st.step = Math.min(DANGER_LADDER.length - 1, st.step + 1); st.used = 0; } saveDangerState(st); } }
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const rl = (RARITY_DEFS.find(r=> r.key === d.rarity) || {}).label || d.rarity;
   const el = document.createElement('div'); el.className = 'danger-warn'; el.setAttribute('role', 'alert');
@@ -24555,7 +24640,8 @@ async function resolveRound(opts){
       const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       const unlockBefore = snapshotUnlocks();
       completeConquestNode(m.conquestNode, rank);
-      if(m.autoplay && rankAtLeast(rank, 'S')) noteAutoS(preId); // Sweep needs an Auto win at S on this fight (2026-10-13)
+      if(m.autoplay && rankAtLeast(rank, 'S')) noteAutoS(preId);
+      try{ markBeaten(Object.keys(((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node||{}).deck || {})); }catch(e){} // Beaten (2026-10-13): no more danger warnings for these // Sweep needs an Auto win at S on this fight (2026-10-13)
       m.conquestRankEarned = rank; // read once by the post-match screen (renderMatchUI) below
       const rewardTier = nodeRewardTier((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       if(rewardTier){
@@ -24603,7 +24689,7 @@ async function resolveRound(opts){
       try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; if(drops.cards && drops.cards.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drops.cards); }catch(e){}
       try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(`${J.icon} ${J.name}: step ${jr.step} of ${J.steps.length}${jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}`, 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
-        if(isFirstClear && mi === 20 && bn && ['boss','finalboss'].includes(baseKind(bn.kind||''))){ const crown = grantMap20FactionCrown(); if(crown.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(crown); } }catch(e){}
+        void mi; void bn; }catch(e){} // the Map 20 crown is retired (2026-10-13): Faction Growth hands out the Epic and Heroic last
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
       // map's enemy decks that you don't own yet. At most once per map.
@@ -24950,7 +25036,7 @@ function fieldEffectCardHTML(m){
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
   const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
   const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
-    : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: the minute on the dot. Nocturnal and Diurnal bonuses both apply, doubled.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
+    : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: Nocturnal and Diurnal bonuses both apply, and Crepuscular units wake up.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
   const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
   if(!f) return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML;
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
@@ -26279,7 +26365,7 @@ function logText(ev){
     // card it drew leaked something the player has no legitimate way to see. Only the player's
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
-    case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.'};
+    case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : ev.phase==='twilight' ? '🌆 Twilight: day and night creatures are both awake.' : '☀️ Day breaks.'};
     case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).`};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
@@ -31065,6 +31151,64 @@ function grantMap20FactionCrown(){
   ['epic', 'heroic'].forEach(r=>{ const c = pool.filter(id=> (defs[id].rarity||'') === r).sort((a,b)=> copiesOwned(a) - copiesOwned(b) || (defs[b].numericId||0) - (defs[a].numericId||0))[0]; if(!c) return; const before = copiesOwned(c); unlockCardForPlayer(c, 'map20Crown'); if(copiesOwned(c) > before) out.push(c); });
   return out;
 }
+/* Faction Reward and Faction Growth (2026-10-13, 10:57 list):
+   "16 Otter and Hummingbird faction cards ... and 8 generic cards - 40. The faction pool = 5 of each common card, 4 of each
+   uncommon, 3 of each rare... etc. min 1. When you gain a 1x faction reward, you gain a random card of Faction tier. Your faction
+   tier grows as your faction collection grows - 10, 20, 30, 40. At 20 for example, you can get rares at 20%, uncommons at 30% and
+   commons at 50%." and "Faction Growth: Get a random card of the lowest rarity left in the growth pool. The growth pool is made
+   out of 1 of each card in your faction."
+   Your faction's cards = the Factions pool cards of your side plus the shared (generic) ones. Both pools live in localStorage
+   and pick up cards added later. A Faction Reward takes a copy out of the pool (so the pool runs dry); a Faction Growth takes
+   one card off the growth list. */
+const FACTION_POOL_KEY = 'bramblewood_faction_pool_v2';
+const FACTION_POOL_COPIES = {common:5, uncommon:4, rare:3, veryrare:2, superrare:2};
+const FACTION_TIER_AT = [10, 20, 30, 40];
+const FACTION_TIER_ODDS = [ {common:80, uncommon:20}, {common:60, uncommon:30, rare:10}, {common:50, uncommon:30, rare:20}, {common:40, uncommon:30, rare:20, high:10}, {common:30, uncommon:30, rare:25, high:15} ];
+function factionCardsOfMine(){
+  const defs = getCardDefs(), fp = FACTION_PACKS[myFactionPackId()]; if(!fp) return [];
+  const want = fp.faction === 'hummingbirds' ? 'tribes' : '';
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || isUnattainable(d)) return false; const src = cardSourceOf(d); if(src.kind !== 'pack' || (parseInt(src.tier, 10)||1) !== 11) return false; const side = src.side || ''; return side === want || side === 'shared'; });
+}
+function loadFactionPool(){
+  let st; try{ st = JSON.parse(localStorage.getItem(FACTION_POOL_KEY) || 'null'); }catch(e){ st = null; }
+  st = st && typeof st === 'object' ? st : {left:{}, collected:0, growth:[], seen:{}}; st.left = st.left || {}; st.growth = st.growth || []; st.seen = st.seen || {};
+  const defs = getCardDefs();
+  factionCardsOfMine().forEach(id=>{ if(st.seen[id]) return; st.seen[id] = 1; st.left[id] = FACTION_POOL_COPIES[defs[id].rarity||'common'] || 1; st.growth.push(id); });
+  return st;
+}
+function saveFactionPool(st){ try{ localStorage.setItem(FACTION_POOL_KEY, JSON.stringify(st)); }catch(e){} }
+function factionTier(st){ st = st || loadFactionPool(); let t = 0; FACTION_TIER_AT.forEach(n=>{ if(st.collected >= n) t++; }); return t; }
+function rarityClass(r){ r = r || 'common'; return (r === 'common' || r === 'uncommon' || r === 'rare') ? r : (r === 'starter' ? 'common' : 'high'); }
+function grantOne(id, why){ const before = copiesOwned(id); unlockCardForPlayer(id, why); return copiesOwned(id) > before || (loadPitchHeld()||[]).some(h=> h.id === id); }
+function factionReward(rnd){
+  rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id]); if(!live.length) return null;
+  const odds = FACTION_TIER_ODDS[factionTier(st)], have = {}; live.forEach(id=> have[rarityClass(defs[id].rarity)] = true);
+  let classes = Object.keys(odds).filter(k=> have[k]); if(!classes.length) classes = Object.keys(have);
+  const tot = classes.reduce((t,k)=> t + (odds[k]||1), 0); let r = rnd()*tot, cls = classes[classes.length-1];
+  for(const k of classes){ r -= (odds[k]||1); if(r <= 0){ cls = k; break; } }
+  const pool = live.filter(id=> rarityClass(defs[id].rarity) === cls), w = pool.reduce((t,id)=> t + st.left[id], 0);
+  let q = rnd()*w, pick = pool[pool.length-1]; for(const id of pool){ q -= st.left[id]; if(q <= 0){ pick = id; break; } }
+  st.left[pick] -= 1; st.collected += 1; saveFactionPool(st);
+  return grantOne(pick, 'factionReward') ? pick : null;
+}
+function factionGrowth(rnd){
+  rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
+  const left = st.growth.filter(id=> defs[id]); if(!left.length) return null;
+  const rank = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity || 'common');
+  const low = Math.min(...left.map(rank)), cands = left.filter(id=> rank(id) === low), pick = cands[Math.floor(rnd()*cands.length)];
+  st.growth = st.growth.filter(id=> id !== pick); saveFactionPool(st);
+  return grantOne(pick, 'factionGrowth') ? pick : null;
+}
+// Reward placeholders on a fight (node.rewardTokens): 'factionReward' and 'factionGrowth', set in ✏️ Edit rewards.
+const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}};
+function grantRewardTokens(node){ const out = []; ((node && node.rewardTokens) || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(T){ const id = T.run(); if(id) out.push(id); } }); return out; }
+function saveNodeField(mapId, nodeKey, field, value){
+  const e = nodePatchFor(mapId);
+  if(isAddedNode(mapId, nodeKey)) e.added = e.added.map(n=> n.key === nodeKey ? Object.assign({}, n, {[field]: value}) : n);
+  else e.patches[nodeKey] = Object.assign({}, e.patches[nodeKey] || {}, {[field]: value});
+  nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits(); try{ publishNodeEdits(mapId); }catch(e){}
+}
 /* Subfaction journeys (2026-10-13, user: "Subfactions - same mechanic as above. I think the quest can start in around Map
    15-20, and a few 3 quests, end there. The rest continue past 20. The quests bring you all over Maps 15-20"): each people
    has a journey of fights spread over Maps 15–20. Winning the next fight on it gives one card from that people's track and
@@ -31107,7 +31251,8 @@ function rollConquestPackDrops(node, isFirstClear){
   const bigFight = ['elite','boss','raidboss','finalboss'].includes(baseKind(node.kind||'skirmish'));
   // 2026-10-13: an elite or boss, first clear, now hands out one faction-track card and one base-track card straight away
   // (no pack to open). Subfaction bundles retired: subfactions come from Journeys (Maps 15–20).
-  if(bigFight && isFirstClear) out.cards = grantTrackCards('progressTrack');
+  if(isFirstClear && node.rewardTokens && node.rewardTokens.length) out.cards = grantRewardTokens(node); // the editor's placeholders win
+  else if(bigFight && isFirstClear){ out.cards = []; const f = factionReward(); if(f) out.cards.push(f); const b = trackPick(baseTrackPool()); if(b && grantOne(b, 'progressTrack')) out.cards.push(b); }
   return out;
 }
 // Free packs on the road (2026-10-12, the user's map table: "Map 3 Free Pack A, 7 Free Pack B, 10 Free Mystery Pack A,
@@ -33367,7 +33512,7 @@ function wireSettingsButton(idSuffix){
     fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast('Effects: ' + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
   }
   { const dg = document.getElementById('dangerSelect'+idSuffix); if(dg){
-      dg.innerHTML = [['uncommon','From Uncommon, then rarer each time'],['rare','From Rare, then rarer'],['veryrare','From Very Rare, then rarer'],['epic','From Epic, then rarer'],['legendary','Legendary and up'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+      dg.innerHTML = [['uncommon','From Uncommon (2), then Rare (3), Very Rare (4)…'],['rare','From Rare, then rarer'],['veryrare','From Very Rare, then rarer'],['epic','From Epic, then rarer'],['legendary','Legendary and up'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
       dg.value = dangerFrom(); dg.addEventListener('change', ()=>{ setDangerFrom(dg.value); showToast(dg.value === 'off' ? 'Danger warnings off.' : 'Danger warnings: ' + dg.options[dg.selectedIndex].text + '.'); }); } }
   wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);

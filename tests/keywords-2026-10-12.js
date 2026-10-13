@@ -40,7 +40,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k2-tail':  {id:'k2-tail', name:'Tailwind', attack:0, health:0, wait:0, cost:0, cardType:'spell', spell:{do:'tailwind', amount:1}, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
-function mk(seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), {recordEvents:true, battleMode:'open'}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
+function mk(seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), {recordEvents:true, battleMode:'open'}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
 const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*9999), defId:id}; P[pid].hand.push(h); return h; };
 // Fork: a blind Fork rolls each prong on its own (over many tries, sometimes exactly one prong lands)
 { let one = 0;
@@ -110,13 +110,13 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
   const ws = all(P[2]), b = ws.map(c=> c.hp), hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
   const n = ws.filter((c, i)=> c.hp < b[i]).length; ok(n === 8 && P[2].hq.hp === hq, `Octolash hits 8 of 10 units and not the castle (${n})`); }
 // Frost rules: frostResist keeps enemy Tundra units warm; frostWait/frostCount/frostbite
-{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{field:'frozen', frostResist:['Tundra'], frostWait:3, frostCount:2, frostbite:1}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{field:'frozen', frostResist:['Tundra'], frostWait:3, frostCount:2, frostbite:1}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 2, 'k2-tundra', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-wall', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'right', {}, []);
   const T = all(P[2]).find(c=> c.defId==='k2-tundra'), W = all(P[2]).find(c=> c.defId==='k2-wall'); const tw = T.wait, ww = W.wait, wa = W.atk; e.roundStart(P, 2, so, {}, []);
   ok(T.wait === tw, 'a Tundra enemy resists the frost'); ok(W.wait === ww + 3 && W.atk === wa + 1, `the frost adds 3 Wait and Frostbite +1 to the other enemy (wait ${W.wait}, atk ${W.atk})`);
   ok(all(P[1]).every(c=> c.wait >= 3), 'frostCount 2 chills both of yours'); }
 // First blood: the first Quick swing of a round hits +1, the next one doesn't
-{ const e = E.makeSimEngine(defs, E.mulberry32(4), {recordEvents:true, battleMode:'open', rules:{firstBlood:1}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+{ const e = E.makeSimEngine(defs, E.mulberry32(4), {recordEvents:true, battleMode:'open', rules:{firstBlood:1}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'k2-quick', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-quick', 'right', {}, []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
   ok(hq - P[2].hq.hp === 5, `two Quick swings: 3 + 2 (castle took ${hq - P[2].hq.hp})`); }
 // Rainmaker brings rain; Rainrunner gets +2/+2 and goes straight for the castle
@@ -125,7 +125,7 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
   e.syncPhaseStats(P, so, []); const hq = P[2].hq.hp, wall = all(P[2])[0].hp; e.debugAttack(P, so, R.uid, {}, []);
   ok(R.phaseAtk === 2 && hq - P[2].hq.hp === 4 && all(P[2])[0].hp === wall, `Rainrunner hits the castle for 4 past the wall (${hq - P[2].hq.hp}, bonus ${R.phaseAtk})`); }
 // Moonborn: full moon field = all of it at night
-{ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open', rules:{phase:'night', field:'moon'}}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+{ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open', rules:{phase:'night', field:'moon'}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'k2-moon', 'left', {}, []); e.syncPhaseStats(P, so, []); const M = all(P[1])[0];
   ok(e.moonPhase() === 4 && M.phaseAtk === 4, `Moonborn 4 under a full moon at night (+${M.phaseAtk})`); }
 console.log(`keywords-2026-10-12: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

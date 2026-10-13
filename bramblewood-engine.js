@@ -590,8 +590,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // card (for N rounds; a new field card replaces the old one). Day and night alternate every 3 rounds; Dawn
   // (the first round of each new day) lets both sides draw a card. Nocturnal cards hit +1 at night, Diurnal by day.
   const FIELDS = {
-    frozen:   {name:'Frozen Ground', icon:'❄️', text:'At the start of every round, one random card on each side gets +1 Wait.'},
-    heatwave: {name:'Heatwave', icon:'🔥', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
+    frozen:   {name:'Frigid', icon:'❄️', text:'At the start of every round, one random card on each side gets +1 Wait.'},
+    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
     rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
     fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
     moon:     {name:'Full Moon', icon:'🌕', text:'It stays night while the moon is up.'},
@@ -640,10 +640,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // + "the weredog gains +5/+6 at night"): while it's night (day for Diurnal) the unit has +N Attack and +M Health
   // (effects.nocturnal = N, effects.nocturnalHp = M; the old `true` means +1/+0). syncPhaseStats applies and removes it
   // as the phase turns, reporting phaseGrow / phaseFade so the board can show it.
+  function twilightOn(players){ if(rules.twilight) return true; if(!players) return false;
+    return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); })); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || (field && field.id==='moon') || phaseFixed); }
   function phaseStatsOf(e, ph){
     const pick = k=>{ const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; };
-    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0]; return [(n[0] + d[0]) * 2, (n[1] + d[1]) * 2]; }
+    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0], c = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0]; return [n[0] + d[0] + c[0], n[1] + d[1] + c[1]]; } // 2026-10-13: both are active in Twilight, and Crepuscular only then
     if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
     if(ph==='day' && (e.diurnal || e.diurnalHp)) return pick('diurnal');
     return [0, 0];
@@ -681,7 +683,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-12 (09:48, user: "On tide, the card gains 1 Attack. ON ebb, the card gains 1 Armour. On high tide (rare - only in the
   // boss fight and elite water fights) +2 Attack, +2 Armour. (Ebb -> Tide -> Ebb -> High Tide)"): rules.highTide turns on the
   // four-round cycle Ebb, Flow, Ebb, High; otherwise Flow and Ebb alternate as before.
-  function getTide(){ if(!(turnNo > 0)) return null; if(rules.highTide){ const k = turnNo % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return turnNo % 2 === 1 ? 'flow' : 'ebb'; }
+  // 2026-10-13 (10:57 list: "Tide and Ebb cycle only begins once the first Tide card is played"): the tide waits for the first
+  // Tide unit to arrive (either side); the round after, it runs Flow, Ebb, Flow… (Ebb, Flow, Ebb, High tide with High tide on).
+  let tideStart = null;
+  function noteTideCard(def){ if(tideStart === null && def && def.effects && def.effects.tide) tideStart = turnNo; }
+  function getTide(){ if(tideStart === null || !(turnNo > tideStart)) return null; const d = turnNo - tideStart; if(rules.highTide){ const k = d % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return d % 2 === 1 ? 'flow' : 'ebb'; }
   function tideRising(){ const t = getTide(); return t === 'flow' || t === 'high'; }
   function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
   function tideArmor(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
@@ -705,16 +711,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function windSideOf(pid){ return !windNow ? null : (pid === windFrom ? 'tail' : 'head'); }
   function isFlyingCard(c){ const e = c && (CARD_DEFS[c.defId]||{}).effects; return !!(e && e.flying); }
   function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && windSideOf(pid) === 'head'; }
-  // Night dims the eyes (2026-10-13, user: "Night causes Blindness on non Nocturnal or Darksight creatures"): at night a unit that
-  // isn't Nocturnal and has no Darksight misses 1 attack in 4 (Blind is 1 in 2). A Lantern on its side keeps its side lit.
-  function nightDim(card, ownerId){
-    if(!card || !phaseActive() || getPhase() !== 'night') return false;
+  // Seeing (2026-10-13, 10:57 list: "Sun-shyness ... Blind during the day. Night-blindness - blind at night. Perma-blind in cave.
+  // ... normal units are only blind in complete darkness"): night alone no longer dims anyone. A unit swings blind (misses 1 in
+  // 2, like Blind) when: the fight is in complete darkness (rules.dark: caves, the abyss) and it has no Darksight, or it is
+  // Sun-shy and it is day, or it is Night-blind and it is night. A Lantern on its side lights it up in the dark and at night.
+  function sightBlind(card, ownerId){
+    if(!card) return false;
     const e = (CARD_DEFS[card.defId]||{}).effects || {};
-    if(e.nocturnal || e.nocturnalHp || e.darksight) return false;
     const pl = curPlayers && curPlayers[ownerId];
-    if(pl && allBoardCards(pl).some(c=> c.hp > 0 && ((CARD_DEFS[c.defId]||{}).effects||{}).lantern)) return false;
-    return true;
+    const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && ((CARD_DEFS[c.defId]||{}).effects||{}).lantern));
+    if(rules.dark && !e.darksight && !lit()) return true;
+    const ph = phaseActive() ? getPhase() : null;
+    if(ph === 'day' && e.sunshy) return true;
+    if(ph === 'night' && e.nightblind && !lit()) return true;
+    return false;
   }
+  function nightDim(card, ownerId){ return sightBlind(card, ownerId); } // old name, kept for callers
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
   function castleRoundActions(players, pid, round, sideOf, stats, events){
@@ -748,6 +760,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(dayNight && round > 1 && !phaseFixed && !phaseOff){
       const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3); const first = ((round - 1) % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+      // Twilight (2026-10-13, 10:57 list: "Diurnal and Nocturnal are both active. Crepuscular are also active - but only in Twilight
+      // ... D/N/D/N/T repeating"): on twilight maps, or when either deck carries a Crepuscular card, the cycle is Day, Night, Day,
+      // Night, Twilight, each PL rounds long.
+      if(twilightOn(curPlayers)){ const k = Math.floor((round - 1) / PL) % 5; phase = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
       if(phase === 'night' && before !== 'night'){ lunar = (lunar + 1) % 8; if(recordEvents && events && anyMoonborn(players)) events.push({type:'moon', phase: lunar, round}); }
       if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
       if(phase === 'day' && before === 'night'){
@@ -2334,6 +2350,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
       fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
     }
+    noteTideCard(def);
     if(def.effects.rocket && !(boardCard.wait > 0)) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
     // later) it crashes and naps for a round (Stunned 1).
@@ -4085,7 +4102,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
             }
       };
-      const nightMiss = !(a.att.blind>0) && nightDim(a.att, otherId(a.enemyId)) && rnd() < 0.25;
+      const nightMiss = !(a.att.blind>0) && sightBlind(a.att, otherId(a.enemyId)) && rnd() < 0.5;
       const blindNow = (a.att.blind>0 && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
@@ -4465,7 +4482,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { isWindy, windSideOf, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, isWindy, windSideOf, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

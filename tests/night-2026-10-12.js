@@ -23,7 +23,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'n-hit5':  {id:'n-hit5', name:'Hit5', attack:5, health:100, wait:0, cost:0, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
-function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), {recordEvents:true, battleMode:mode||'open'}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
+function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), {recordEvents:true, battleMode:mode||'open'}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
 // Boomerang into an empty lane: castle on the way out AND on the way back
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-boom', 'left', {}, []); const hq = P[2].hq.hp;
   e.resolveCombat(P, so, {}, [], 1); ok(hq - P[2].hq.hp === 3 && P[1].boomerangs.length === 1, `the throw hits the castle (${hq - P[2].hq.hp}) and the boomerang is out`);
@@ -87,7 +87,7 @@ function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), 
   ok(far === 0, `a straddling Fork never hits two enemies two slots apart (${far} times)`); }
 // Reserve rows (raids as a full game, 3 rows a side): a card goes behind a front unit, doesn't fight, and steps up when the
 // column in front of it clears
-{ const e = E.makeSimEngine(defs, E.mulberry32(9), {recordEvents:true, battleMode:'open', reserveRows:2}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+{ const e = E.makeSimEngine(defs, E.mulberry32(9), {recordEvents:true, battleMode:'open', reserveRows:2}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'n-frail', 'left', {}, []); const F = all(P[1])[0];
   ok(e.legalReserveSlots(P[1], 1).includes(F.slot) && !e.legalReserveSlots(P[1], 2).length, 'a reserve slot opens behind a front unit only');
   const h = {uid: 77001, defId:'n-boom'}; P[1].hand.push(h);

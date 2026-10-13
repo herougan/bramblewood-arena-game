@@ -7902,6 +7902,18 @@
   @keyframes dangerIn{0%{opacity:0; transform:translate(-50%,-50%) scale(.8);} 10%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 18%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0;}}
   @keyframes dangerPulse{to{transform:scale(1.25);}}
   @media (prefers-reduced-motion: reduce){ .danger-warn, .danger-warn .dw-sign{animation:none; opacity:1;} }
+  .nr-tokens{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:8px 0;}
+  .nr-tokens .nr-token{display:inline-flex; gap:4px; align-items:center; padding:3px 8px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); font-weight:700;}
+  .nr-tokens .nr-tok-x{border:0; background:none; cursor:pointer; color:inherit; opacity:.7;}
+  .nr-tokens .nr-dg{cursor:pointer; color:inherit;} .nr-tokens .nr-dg.is-on{background:rgba(190,40,30,.85); color:#fff; border-color:#ffb199;}
+  .nr-tokens .panel-sub{flex-basis:100%; margin:2px 0 0;}
+  .cnp-rw-token .cnp-rw-back{font-size:18px;}
+  /* Card check (2026-10-13) */
+  .cc-controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0;}
+  .cc-table-wrap{overflow-x:auto; max-height:520px; overflow-y:auto;}
+  .cc-table{border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums;}
+  .cc-table th, .cc-table td{padding:4px 8px; border-bottom:1px solid var(--surface-border); text-align:left;}
+  .cc-table tr.cc-strong td:last-child{color:#c0392b; font-weight:800;} .cc-table tr.cc-weak td:last-child{color:#2a6fb0; font-weight:800;}
   /* Sweep (2026-10-13): under the Fight button on a fight you have mastered. */
   .cnp-sweep{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:6px 0 2px; font-size:.9em;}
   .cnp-sweep select{margin-left:4px;} .cnp-sweep .cnp-idle{display:flex; gap:4px; align-items:center; opacity:.9;}
@@ -8850,7 +8862,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
             <div class="settings-row">
               <div class="settings-row-label"><span>⚠️ Danger warnings</span></div>
               <select id="dangerSelect" aria-label="Danger warnings"></select>
-              <div class="settings-row-note">A warning when a dangerous enemy card arrives. Each warning raises the bar one rarity, so they stay rare.</div>
+              <div class="settings-row-note">A warning when a dangerous enemy card you haven't beaten yet arrives. After a few warnings at one rarity it waits for the next rarity up.</div>
             </div>
             <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>

@@ -17,7 +17,7 @@ const defs = Object.assign({}, base, {
   'tt-wash':  {id:'tt-wash', name:'T Wash', attack:0, health:500, wait:0, cost:0, effects:{tide:true, wash:true}},
 });
 function setup(rounds){
-  const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, battleMode:'open'});
+  const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */
   const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
   for(let r=2; r<=rounds; r++) e.roundStart(P, r, so, {}, []);
   return {e, P};
@@ -41,7 +41,7 @@ function dealt(att, def, rounds){
 { const p = dealt('tt-hit', 'tt-wall', 3), t = dealt('tt-hit', 'tt-twall', 3);
   ok(p > 0 && t * 5 === p * 4, `on Ebb a Tide unit should take 4 from a 5 hit (plain ${p}, tide ${t})`); }
 // 4) Wash: +1 Wait to the facing enemy on Flow, once per enemy card
-{ const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, battleMode:'open'});
+{ const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */
   const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
   e.debugSpawnCard(P, so, 1, 'tt-wash', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'tt-wall', 'left', {}, []);
   const foe = all(P[2])[0], w0 = foe.wait || 0; const ev = [];
@@ -52,7 +52,7 @@ function dealt(att, def, rounds){
   ok((foe.wait||0) === w0 + 1, `a card is washed back only once (wait ${foe.wait})`); }
 
 // 2026-10-12: High tide (rules.highTide): Ebb, Flow, Ebb, High; on High a Tide unit gets +2 Attack
-{ const H2 = require('./lib/harness.js'); const e = H2.Engine.makeSimEngine(defs, H2.Engine.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{highTide:true}}); const so = id=> id===1?'A':'B';
+{ const H2 = require('./lib/harness.js'); const e = H2.Engine.makeSimEngine(defs, H2.Engine.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{highTide:true}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const so = id=> id===1?'A':'B';
   const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}; const seen = [];
   for(let r = 2; r <= 5; r++){ e.roundStart(P, r, so, {}, []); seen.push(e.getTide()); }
   ok(seen.join(',') === 'ebb,flow,ebb,high', `high-tide cycle is ebb,flow,ebb,high (got ${seen.join(',')})`); }
