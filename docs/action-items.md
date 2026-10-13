@@ -1,6 +1,20 @@
 # Action items
 
-_Updated 2026-10-13, 8:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 11:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 23:30 (your 20:55, 21:36 and 22:05 lists)
+
+| Item | What's in the game now |
+|---|---|
+| Tutorial | The tutorials are skirmishes T-0 and T-1 (no "!"); part 1 unlocks "Tutorial Part 2", part 2 "Conquest Map" and has one Claim Rewards button; "This is the enemy Castle" holds the round; the leader's Wait is taught with a pause and a pointer; Initiative waits a turn; all tutorial words shortened |
+| Maps | First visit to any map: zoom out, then the skirmishes drop in. Interactibles have no circles. Open-air side maps exit through the main map's icon; caves have a lamp. Critters and your pawn face the way they walk |
+| Lessons | Lumber shown as a picture, a "Needs Lumber" tag on drawn cards, a ghost card dragged to the Graveyard; Maps 0–1 swap in Flying, Swimmer and Diurnal cards; later, better cards are offered as swaps. Armoury on Map 0 |
+| Screens | Back buttons on every page off the map; iPad laid out like a computer; skirmish card fits, B beside the lock, New skills strip off; admin buttons beside the card and Clear/Unclear map on the toolbar (clearing pays the cards) |
+| Codex | Only cards you've seen (admins: "Show unseen"); no Hidden/Discovered pills; 50 a page; 🎁 Get all per section; seasons 🍂🌸❄️☀️ |
+| Admin | Profile: Reset all, Reset Codex, Reset to Map N |
+| Fights | Deck thickness, castle crumble, Traveller conversation fixes (no repeats, no stuck see-through panel, fading arrow) |
+| Art | Portraits for the 7 road folk and the 14 raid bosses (raid panels and VS screen); The Sunken Ferry map. About 17 NightCafe credits, roughly 218 left |
+| Balance | ⚖️ Stat budget in the Test Lab: N = 8 + rarity step + level (Level 0: −2) + 0.1 per map number. Report only; no card has been changed |
 
 ## Done at 20:00 (your 17:37 list)
 
