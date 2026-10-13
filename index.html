@@ -17660,7 +17660,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7a326f79bc11', BUILD_CARD_HASH = 'c94e342795e0bdbc0036c2da081cc2bb7121d7320d7cdd40cb7386e3d7ea294a';
+const BUILD_ID = '831ccb8aa389', BUILD_CARD_HASH = 'c94e342795e0bdbc0036c2da081cc2bb7121d7320d7cdd40cb7386e3d7ea294a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -30554,6 +30554,10 @@ function generatedMapDecor(map, positions){
   place(30, 2, (x,y)=> ({cls:'map-small', emoji: biome.small[Math.floor(rnd()*biome.small.length)], x, y, size: 11+Math.floor(rnd()*7), rot: Math.round(rnd()*20-10)}));
   return out;
 }
+// Facing (2026-10-13, user: "When the emoji is moving right, it faces the right & vice versa"): animal emoji are drawn
+// looking left, so one walking right is mirrored. The few drawn looking right are listed.
+const EMOJI_FACES_RIGHT = new Set(['🦖','🦕','🐎','🏇','🦄','🐉']);
+function emojiFacing(emoji, movingLeft){ const right = EMOJI_FACES_RIGHT.has(String(emoji||'').trim()); return (movingLeft === right) ? -1 : 1; }
 let mapMoverToken = 0;
 // Where each map's critters are right now, kept across re-renders (2026-10-03 fix, explicit: "the
 // butterflies fly then teleport around. They should move FROM where they WERE"). Every click on the
@@ -30652,7 +30656,7 @@ async function moverLoop(el, spots, kind, token, cur, posStore, idx, resumed){
     const dist = Math.hypot(tgt.x-cur.x, tgt.y-cur.y);
     const speed = kind==='fish' ? 5 : kind==='bird' ? 14 : kind==='bat' ? 12 : kind==='firefly' ? 3 : 7; // % per second
     const dur = Math.max(1.2, dist/speed);
-    gsap.set(el, {scaleX: tgt.x<cur.x ? -1 : 1});
+    gsap.set(el, {scaleX: emojiFacing(el.textContent, tgt.x < cur.x)});
     const wob = kind==='fish' ? 4 : kind==='firefly' ? 10 : 14;
     gsap.to(el, {left: tgt.x+'%', top: tgt.y+'%', duration: dur, ease:'sine.inOut', onUpdate: track});
     gsap.to(el, {y: -wob, duration: .28, repeat: Math.max(1, Math.round(dur/.28)), yoyo:true, ease:'sine.inOut'});
@@ -30674,7 +30678,7 @@ async function moverLoop(el, spots, kind, token, cur, posStore, idx, resumed){
       gsap.to(o, {t:1, duration: loopMs/1000, ease:'none', onUpdate: ()=>{
         if(!alive()) return;
         const th = dir * o.t * turns * Math.PI*2, env = Math.sin(Math.PI*o.t), r = env*(R + a*Math.sin(k*th));
-        gsap.set(el, {x: r*Math.cos(th), y: r*Math.sin(th)*0.65 - env*6, scaleX: Math.cos(th + dir*Math.PI/2) < 0 ? -1 : 1});
+        gsap.set(el, {x: r*Math.cos(th), y: r*Math.sin(th)*0.65 - env*6, scaleX: emojiFacing(el.textContent, Math.cos(th + dir*Math.PI/2) < 0)});
       }, onComplete: ()=>{ if(alive()) gsap.set(el, {x:0, y:0}); }});
       await sleep(loopMs);
     } else await sleep(rest);
@@ -31308,7 +31312,7 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
   const body = pawn.querySelector('.mp-body');
   const tl = gsap.timeline();
   legs.forEach(L=>{
-    tl.add(()=> gsap.set(body, {scaleX: L.to.x < L.from.x ? -1 : 1}));
+    tl.add(()=> gsap.set(body, {scaleX: emojiFacing(body.textContent, L.to.x < L.from.x)}));
     tl.to(pawn, {left: L.to.x + '%', top: L.to.y + '%', duration: L.dur, ease: 'none'});
     tl.fromTo(body, {y:0}, {y:-9, duration: L.dur / L.hops / 2, ease:'power1.out', yoyo:true, repeat: L.hops*2 - 1}, '<');
     try{ for(let k = 0; k < L.hops; k++) setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (L.t0 - performance.now()) + (L.dur / L.hops) * 1000 * (k + 1) - 40); }catch(e){}
@@ -34419,10 +34423,10 @@ function runCardCheck(host){
 // < N. Each rarity increases N by 1. Each level increases N by 1. Then for each skill - introduce a N formula. The full formula
 // will be then A*2+D+SKILLS < N+2 or A*D+SKILLS < N. Level 0 cards have a -2 penalty"). Map placement is ignored for now.
 // N = base + rarity step (Starter 0, Common 1, Uncommon 2 …) + level (−2 at Level 0) + per-Lumber bonus. Every number and
-// every skill's cost is editable here and kept on this device; "Fit" lowers Attack, then Health, until both rules pass.
+// every skill's cost is editable here and kept on this device (base 8, +0.1 per map number); "Fit" lowers Attack, then Health, until both rules pass.
 const SB_KEY = 'bramblewood_stat_budget_v1';
 const SB_DEFAULT_SKILLS = {flying:3, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
-function sbLoad(){ try{ return Object.assign({base:7, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return {base:7, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}; } }
+function sbLoad(){ try{ return Object.assign({base:8, perMap:0.1, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return {base:8, perMap:0.1, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}; } }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
@@ -34432,7 +34436,9 @@ function sbSkillCost(effects, cfg){
 }
 function sbBudget(d, cfg){
   const r = Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')), lv = cardBaseLevel(d);
-  return cfg.base + r + (lv <= 0 ? -2 : lv) + (d.cost||0) * (cfg.perLumber||0);
+  // 2026-10-13 (22:07, user: "N is 8 ... as we go through the maps, the map count also gives a +0.1 bonus. So Map 30 = +3").
+  const src = cardSourceOf(d), mapNo = src.kind === 'map' ? (mapNumberOf(src.id) || 0) : 0;
+  return Math.round((cfg.base + r + (lv <= 0 ? -2 : lv) + (d.cost||0) * (cfg.perLumber||0) + mapNo * (cfg.perMap == null ? 0.1 : cfg.perMap)) * 10) / 10;
 }
 function sbCheck(A, D, S, N, mode){ const r1 = 2*A + D + S < N + 2, r2 = A*D + S < N; return {r1, r2, ok: mode === 'or' ? (r1 || r2) : (r1 && r2)}; }
 function sbFit(d, S, N, mode){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
@@ -34442,8 +34448,8 @@ function renderStatBudget(host){
   const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), N = sbBudget(d, cfg), A = d.attack||0, D = d.health||0, c = sbCheck(A, D, S, N, cfg.mode); return {id, d, S, N, A, D, c, fit: c.ok ? null : sbFit(d, S, N, cfg.mode)}; });
   const fails = rows.filter(r=> !r.c.ok), shown = sbState.onlyFail ? fails : rows;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">Rule: <b>2×Attack + Health + Skills &lt; N + 2</b> ${cfg.mode === 'or' ? '<b>or</b>' : '<b>and</b>'} <b>Attack × Health + Skills &lt; N</b>. N = base + rarity step (Starter 0, Common 1, Uncommon 2, …) + Level (Level 0: −2)${cfg.perLumber ? ' + ' + cfg.perLumber + ' per Lumber' : ''}. Map placement is ignored for now.</p>
-    <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber||0}" class="w-60"></label>
+    <p class="panel-sub">Rule: <b>2×Attack + Health + Skills &lt; N + 2</b> ${cfg.mode === 'or' ? '<b>or</b>' : '<b>and</b>'} <b>Attack × Health + Skills &lt; N</b>. N = base + rarity step (Starter 0, Common 1, Uncommon 2, …) + Level (Level 0: −2) + ${cfg.perMap == null ? 0.1 : cfg.perMap} per map number (Map 30: +3)${cfg.perLumber ? ' + ' + cfg.perLumber + ' per Lumber' : ''}.</p>
+    <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per map <input type="number" step="0.05" id="sbPerMap" value="${cfg.perMap == null ? 0.1 : cfg.perMap}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber||0}" class="w-60"></label>
       <label>Rules <select id="sbMode"><option value="and" ${cfg.mode==='and'?'selected':''}>Both must pass</option><option value="or" ${cfg.mode==='or'?'selected':''}>Either passes</option></select></label>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number, or v = its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
@@ -34452,7 +34458,7 @@ function renderStatBudget(host){
     ${shown.map(r=> `<tr class="${r.c.ok ? '' : 'cc-strong'}"><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.A}/${r.D}</td><td>${r.S}</td><td>${r.N}</td><td>${2*r.A + r.D + r.S} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N + 2}</td><td>${r.A*r.D + r.S} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbLumber', 'perLumber');
+  num('#sbBase', 'base'); num('#sbLumber', 'perLumber'); num('#sbPerMap', 'perMap');
   host.querySelector('#sbMode').onchange = e=>{ const c = sbLoad(); c.mode = e.target.value; sbSave(c); re(); };
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
