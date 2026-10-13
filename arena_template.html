@@ -1690,6 +1690,13 @@
     #appWrap.in-match .board-row{min-height:calc(var(--match-card-h) + 36px); padding-top:18px; padding-bottom:18px;}
     #appWrap.in-match .battlefield{padding-top:10px; padding-bottom:10px;}
   }
+  /* iPad (2026-10-13, user: "On iPad-size screens, make the game look like on PC. Cards currently look minimised and oddly
+     proportioned"): tablets use the computer layout, with cards sized so a full row (castle, deck, five cards, Graveyard) fits
+     the width in portrait too, instead of wrapping your hand into a column. The tablet-only name sizes are gone. */
+  @media (min-width: 701px) and (max-width: 1199px){
+    #appWrap.in-match{--match-card-h: clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px);}
+    #appWrap.in-match .hand-strip{flex-wrap:nowrap;}
+  }
   /* RWD large pass (2026-10-12, 10:57 list: "Put Responsive web design (RWD) large pass"): on big screens the match grows into
      the space instead of sitting small in the middle (cards up to 1.6x), and the menu pages scale up as a whole. */
   @media (min-width: 1700px) and (min-height: 950px){
@@ -2833,6 +2840,8 @@
   .dialogue-dock.is-collapsed.has-lines .dlg-chip{display:inline-flex;}
   .dialogue-dock.is-collapsed.has-question .dlg-chip{animation:dlgChipPulse 1.1s ease-in-out infinite; box-shadow:0 0 0 2px #e0b85a, 0 4px 12px rgba(0,0,0,.35);}
   @keyframes dlgChipPulse{50%{transform:scale(1.12);}}
+  .dlg-hide, .dlg-chip{transition:opacity .6s ease;}
+  .dialogue-dock.is-idle .dlg-hide, .dialogue-dock.is-idle .dlg-chip{opacity:0; pointer-events:none;}
   @media (max-width:699px){
     .dialogue-dock{left:8px; top:64px; width:min(300px, calc(100vw - 56px));}
     .dialogue-dock .dlg-line{padding:6px 8px; gap:8px;}
@@ -3068,6 +3077,76 @@
   .coach-anchor{position:relative; z-index:1145 !important;}
   .coach-locked, .coach-locked *{pointer-events:none !important;}
   .coach-anchor{outline:3px solid #ffd76a; outline-offset:3px; border-radius:12px;}
+  /* Lumber lesson (2026-10-13): a picture, not a paragraph */
+  .lumber-lesson{position:fixed; inset:0; z-index:1300; display:grid; place-items:center; background:rgba(10,7,3,.66); animation:llIn .3s ease both; padding:16px;}
+  .lumber-lesson.is-out{opacity:0; transition:opacity .25s;}
+  @keyframes llIn{from{opacity:0;}}
+  .lumber-lesson .ll-box{background:#fff8e6; color:#2b2117; border-radius:18px; padding:18px 20px; box-shadow:0 0 0 3px #c9853a, 0 18px 40px rgba(0,0,0,.5); display:flex; flex-direction:column; align-items:center; gap:12px; max-width:min(380px, 100%); animation:llPop .4s cubic-bezier(.3,1.5,.5,1) both;}
+  @keyframes llPop{from{transform:scale(.7); opacity:0;}}
+  .lumber-lesson .ll-row{display:flex; align-items:center; gap:14px;}
+  .lumber-lesson .ll-card{position:relative; width:96px;} .lumber-lesson .ll-card .card-tile{width:96px; height:120px; margin:0; font-size:10px;}
+  .lumber-lesson .ll-cost{position:absolute; z-index:20; top:-14px; left:-14px; background:#7a4a1c; color:#fff; font:800 15px/1 'Baloo 2',system-ui,sans-serif; padding:5px 8px; border-radius:999px; box-shadow:0 0 0 2px #fff8e6, 0 0 14px rgba(255,170,60,.9); animation:llPulse 1s ease-in-out infinite;}
+  @keyframes llPulse{50%{transform:scale(1.15);}}
+  .lumber-lesson .ll-say{font:600 17px/1.3 'Baloo 2',system-ui,sans-serif; text-align:center; max-width:220px;}
+  .lumber-lesson .ll-how{font-size:34px; gap:8px;} .lumber-lesson .ll-gain{font:800 22px/1 'Baloo 2',system-ui,sans-serif; color:#7a4a1c;}
+  .lumber-lesson .ll-spare{animation:llToss 1.6s ease-in-out infinite;} .lumber-lesson .ll-arrow{font-size:22px; color:#c9853a;}
+  @keyframes llToss{0%,15%{transform:translateX(0) rotate(0);} 55%{transform:translateX(52px) rotate(18deg) scale(.6); opacity:0;} 56%,100%{transform:none; opacity:1;}}
+  .hand-strip .card-tile .lumber-nudge{position:absolute; left:50%; top:-14px; transform:translateX(-50%); z-index:8; white-space:nowrap; pointer-events:none; background:#7a4a1c; color:#fff; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:4px 8px; border-radius:999px; box-shadow:0 2px 6px rgba(0,0,0,.4); animation:lnudge 3.6s ease both;}
+  @keyframes lnudge{0%{opacity:0; transform:translate(-50%,6px);} 10%,80%{opacity:1; transform:translate(-50%,0);} 100%{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .lumber-lesson .ll-spare, .lumber-lesson .ll-cost, .hand-strip .card-tile .lumber-nudge{animation:none;} }
+  /* In-page Back (2026-10-13, user: testers couldn't leave the Nest, Forge and the rest) */
+  .page-back-bar{display:flex; margin:0 0 10px;}
+  .page-back-btn{font:800 17px/1 'Baloo 2',system-ui,sans-serif; padding:10px 18px 9px; border-radius:999px; background:#fff8e6; color:#2b2117; border:0; box-shadow:0 0 0 2px #c9853a, 0 4px 12px rgba(0,0,0,.3); cursor:pointer;}
+  .page-back-btn:hover{background:#ffe9b8;}
+  body:has(#shopBackBtn) .page-back-bar{display:none;}
+  /* Deck swap (2026-10-13) */
+  .ds2-overlay{position:fixed; inset:0; z-index:1250; display:grid; place-items:center; padding:16px; background:rgba(10,7,3,.7); animation:llIn .3s ease both;}
+  .ds2-overlay.is-out{opacity:0; transition:opacity .25s;}
+  .ds2{background:#fff8e6; color:#2b2117; border-radius:18px; padding:16px 18px; width:min(420px, 100%); box-shadow:0 0 0 3px #c9853a, 0 18px 40px rgba(0,0,0,.5); display:flex; flex-direction:column; align-items:center; gap:12px; animation:llPop .4s cubic-bezier(.3,1.5,.5,1) both;}
+  .ds2-stage{width:100%; overflow:hidden; padding:30px 0 6px;}
+  .ds2-strip{display:flex; justify-content:center; align-items:flex-end; gap:6px;}
+  .ds2 .card-tile{width:78px !important; height:98px !important; margin:0; font-size:9px; pointer-events:none;}
+  .ds2-side{opacity:.55; animation:ds2SideL .9s calc(.5s + var(--k) * .12s) ease-in both;}
+  .ds2-side.is-right{animation-name:ds2SideR;}
+  @keyframes ds2SideL{from{opacity:.55; transform:none;} to{opacity:0; transform:translateX(-60px) scale(.85);}}
+  @keyframes ds2SideR{from{opacity:.55; transform:none;} to{opacity:0; transform:translateX(60px) scale(.85);}}
+  .ds2-focus{position:relative; width:78px; height:98px; flex:0 0 auto; margin:0 6px;}
+  .ds2-old, .ds2-new{position:absolute; inset:0; transition:transform .6s cubic-bezier(.5,0,.3,1), opacity .5s ease, filter .5s;}
+  .ds2-old{box-shadow:0 0 0 3px #e0703a; border-radius:10px; animation:ds2Focus 1.2s .9s ease-in-out 2;}
+  @keyframes ds2Focus{50%{transform:scale(1.08);}}
+  .ds2-new{transform:translate(70px,-26px) rotate(8deg) scale(.92); opacity:0; animation:ds2NewIn .5s 1.2s ease-out forwards;}
+  @keyframes ds2NewIn{to{opacity:1;}}
+  .ds2-arrows{position:absolute; right:-28px; top:50%; transform:translateY(-50%); font-size:20px; color:#c9853a; opacity:0; animation:ds2NewIn .4s 1.4s forwards;}
+  .ds2-focus.is-swapped .ds2-old{transform:translate(-70px, 30px) rotate(-10deg) scale(.8); opacity:0; filter:grayscale(1);}
+  .ds2-focus.is-swapped .ds2-new{animation:none; opacity:1; transform:none; box-shadow:0 0 0 3px #4caf50, 0 0 20px rgba(120,220,120,.8); border-radius:10px;}
+  .ds2-focus.is-swapped .ds2-arrows{display:none;}
+  .ds2-say{margin:0; text-align:center; font:600 15px/1.35 'Baloo 2',system-ui,sans-serif;} .ds2-say span{font-weight:500; opacity:.85;}
+  .ds2-actions{display:flex; gap:10px; align-items:center;}
+  @media (prefers-reduced-motion: reduce){ .ds2-side, .ds2-old, .ds2-new, .ds2-arrows{animation:none !important;} .ds2-new{opacity:1; transform:translate(70px,-26px) rotate(8deg) scale(.92);} .ds2-side{opacity:0;} }
+  .starter-step.is-compact{background:rgba(10,7,3,.72);}
+  .starter-step.is-compact .starter-modal{max-width:340px; padding:16px 18px; box-shadow:0 0 0 3px #c9853a, 0 18px 40px rgba(0,0,0,.5);}
+  .starter-step.is-compact h2{font-size:20px; margin:0 0 8px; text-align:center;}
+  .starter-step.is-compact .ss-grid{gap:8px; justify-content:center;}
+  .starter-step.is-compact .ss-card .card-tile{width:84px !important; height:105px !important; font-size:9.5px;}
+  .starter-step.is-compact .ss-foot{gap:12px;}
+  /* Castle crumble (2026-10-13) */
+  .crumble-layer{position:fixed; z-index:1150; pointer-events:none; overflow:visible;}
+  .crumble-layer .crumble-stone{position:absolute; border-radius:3px 5px 2px 4px; background:linear-gradient(160deg,#b9a68a,#7d6a52 60%,#55473a); box-shadow:inset -1px -2px 0 rgba(0,0,0,.3);
+    opacity:0; animation:crumbleStone 1.1s cubic-bezier(.5,0,.9,.6) both;}
+  @keyframes crumbleStone{0%{opacity:0; transform:translate(0,0) rotate(0);} 8%{opacity:1;} 100%{opacity:0; transform:translate(var(--dx), 140px) rotate(var(--rot));}}
+  .crumble-layer .crumble-dust{position:absolute; left:-20%; right:-20%; bottom:-10%; height:70%; border-radius:50%; background:radial-gradient(ellipse at 50% 70%, rgba(214,196,160,.85), rgba(214,196,160,0) 70%);
+    opacity:0; animation:crumbleDust 1.6s .55s ease-out both;}
+  @keyframes crumbleDust{0%{opacity:0; transform:scale(.4);} 30%{opacity:1;} 100%{opacity:0; transform:scale(1.5) translateY(-12px);}}
+  .crumble-layer .crumble-crack{position:absolute; inset:12% 30%; background:linear-gradient(100deg, transparent 46%, rgba(30,20,10,.85) 47% 50%, transparent 51%), linear-gradient(70deg, transparent 54%, rgba(30,20,10,.75) 55% 57%, transparent 58%);
+    opacity:0; animation:crumbleCrack .4s .1s ease-out both;}
+  @keyframes crumbleCrack{from{opacity:0; clip-path:inset(0 0 100% 0);} to{opacity:1; clip-path:inset(0 0 0 0);}}
+  .is-crumbling{animation:crumbleShake .45s linear, crumbleSink 1s .45s cubic-bezier(.6,0,.9,.5) forwards !important;}
+  @keyframes crumbleShake{0%,100%{translate:0 0;} 20%{translate:-3px 1px;} 40%{translate:3px -1px;} 60%{translate:-2px 0;} 80%{translate:2px 1px;}}
+  @keyframes crumbleSink{to{translate:0 14%; filter:grayscale(1) brightness(.6); opacity:.35; clip-path:inset(35% 0 0 0);}}
+  .is-crumbled{translate:0 14%; filter:grayscale(1) brightness(.6); opacity:.35; clip-path:inset(35% 0 0 0);}
+  /* 2026-10-13 (user, SS#1: the yellow outline sat under the red and green castle bars): while a unit on the field is
+     outlined (a tip pointing at it, or picking a target), the field's cards rise above the bars. */
+  .battlefield > .battlefield-inner:has(.coach-anchor, .tk-subject), body.tk-picking .battlefield > .battlefield-inner{z-index:4;}
   @keyframes coachIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
   /* ---- Social: Friends / invites / Market (2026-10-02) ---- */
   .home-menu-row{grid-template-columns:repeat(4, minmax(0,1fr)) !important; grid-auto-flow:row;}
@@ -7111,7 +7190,6 @@
   .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(141,230,109,.45);}
   /* Names: a step smaller relative to the card, capped lower, so the scroll covers less art. */
   .card-tile .nm{font-size:clamp(9px, 11cqw, 17px) !important;}
-  @media (min-width:700px) and (max-width:1366px) and (pointer:coarse){ .card-tile .nm{font-size:clamp(9px, 10cqw, 15px) !important; padding:.14em .75em .16em .9em;} }
   /* Damage numbers: a chunky display face, a lit gradient fill, and a separate dark outline layer
      drawn underneath (::before), so thin digits stay crisp at any size. --g1/--g2 tint by type. */
   .dmg-float{font-family:'Lilita One','Baloo 2',system-ui,sans-serif !important; font-weight:400 !important; letter-spacing:.5px !important;
@@ -7481,7 +7559,6 @@
      outer width; a small floor stays for legibility on tiny tiles. */
   .card-tile{--cw:calc(100cqw + 16px);}
   .card-tile .nm{font-size:max(8px, calc(var(--cw) * .09)) !important;}
-  @media (min-width:700px) and (max-width:1366px) and (pointer:coarse){ .card-tile .nm{font-size:max(8px, calc(var(--cw) * .082)) !important;} }
   .card-tile .atk, .card-tile .hp{font-size:max(10px, calc(var(--cw) * .155)) !important; bottom:max(2px, calc(var(--cw) * .025));}
   .card-tile .atk{left:max(3px, calc(var(--cw) * .05));} .card-tile .hp{right:max(3px, calc(var(--cw) * .05));}
   .card-tile .costbadge, .card-tile .waitbadge{font-size:max(8px, calc(var(--cw) * .078)); height:max(14px, calc(var(--cw) * .148)); min-width:max(16px, calc(var(--cw) * .197));}
@@ -8296,8 +8373,11 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-map-canvas.tut-zoom{transform:scale(1.25); transform-origin:var(--tut-x, 50%) var(--tut-y, 50%);}
 .conquest-map-canvas.tut-zoom-out{transform:scale(1); transform-origin:var(--tut-x, 50%) var(--tut-y, 50%); transition:transform 1.8s cubic-bezier(.45,0,.2,1);}
 .conquest-map-canvas .tut-reveal{animation:tutReveal 1.4s .9s ease both;}
+/* 2026-10-13: on a map's first visit its skirmishes drop into place after the zoom-out */
+.conquest-map-canvas .map-node.map-drop{animation:mapDrop .6s calc(2.2s + var(--drop-i, 0) * 90ms) cubic-bezier(.3,1.4,.5,1) both;}
+@keyframes mapDrop{0%{translate:0 -90px; opacity:0;} 60%{opacity:1;} 80%{translate:0 6px;} 100%{translate:0 0; opacity:1;}}
 @keyframes tutReveal{from{opacity:0;} to{opacity:1;}}
-@media (prefers-reduced-motion: reduce){ .conquest-map-canvas.tut-zoom-out{transition:none;} .conquest-map-canvas .tut-reveal{animation:none;} }
+@media (prefers-reduced-motion: reduce){ .conquest-map-canvas.tut-zoom-out{transition:none;} .conquest-map-canvas .tut-reveal, .conquest-map-canvas .map-node.map-drop{animation:none;} }
 .f2b-layer{position:fixed; inset:0; z-index:13000; pointer-events:none; transition:opacity .45s ease;}
 .f2b-layer.is-out{opacity:0;}
 .f2b-card{position:absolute; left:0; top:0; width:110px; opacity:0; will-change:transform;}
@@ -8994,6 +9074,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   </div>
 
   <div class="content-wrap">
+  <div class="page-back-bar" id="pageBackBar" hidden><button type="button" class="btn page-back-btn" id="pageBackBtn">← Back</button></div>
   <div id="view-home"></div>
   <div id="view-codex" hidden></div>
   <div id="view-play" hidden></div>

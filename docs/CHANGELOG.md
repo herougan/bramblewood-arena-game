@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (23:30)
+- **The tutorials are skirmishes T-0 and T-1** on Map 0, joined by a trail, with no "!" on them. Part 2's button says Fight, not Fight again.
+- **Tutorial Complete!** Part 1 lists only "Tutorial Part 2" under Unlocked, part 2 only "Conquest Map"; part 2 has one button, Claim Rewards (no Next fight, no Finish).
+- **First visit to a map:** it opens zoomed in on where you start, pulls back to the whole map, then its skirmishes drop into place one by one. Map 0 does this once Tutorial II is won; every later map (the bigger ones too) the first time you enter it.
+- **"This is the enemy Castle" holds the round** until you press Next, so you don't miss the first fight. Any blocking tip now pauses the round.
+- **Leader and Wait (Tutorial II):** when your leader lands, a tip explains its Wait and the round waits for OK; then a pointer stays on its Wait until it drops by 1. Initiative waits a turn after another tip, and on an iPad a tip on the whole field sits over it, not under it.
+- **Lumber, shown not told.** The first card you get or draw that needs Lumber opens a small picture: the card, its 🪵 cost, and a spare card going to the Graveyard for +1 🪵. After that, a "🪵 Needs Lumber" tag pops on newly drawn Lumber cards for a few fights. The pitching tip now plays a ghost card being dragged from your hand to the Graveyard.
+- **Shorter tutorial words** everywhere, the Traveller and the side guides included.
+- **Deck suggestions.** On Maps 0 and 1 the first wins each bring a card that teaches Flying, Swimmer or Diurnal, swapped in for the weakest card in your deck. Later, a clearly better card won anywhere is offered the same way (turn it down three times and it stops asking). The swap shows your deck sliding away, the weak card in focus and the new one taking its place. The Armoury opens on Map 0.
+- **"Two more cards"** after Tutorial II is a small card over a darkened screen with one OK button.
+- **Castle crumble:** an enemy castle knocked to 0 shakes, cracks and slumps into falling stones and dust before the result.
+- **Back buttons:** every page off the map (Nest, Codex and Forge, Armoury, Inventory and the rest) opens with a big ← Back to where you came from.
+- **iPad looks like the computer:** cards keep their computer proportions, and in portrait the whole hand row fits on one line.
+- **Conversations:** a reminder that just played stays quiet for 3 minutes (it used to repeat), the 💬 chip counts conversations rather than lines, the panel no longer gets stuck see-through with dead buttons after a card drag, and the ▾ and 💬 fade out after 20 seconds untouched.
+- **Fixes:** the NEW! tag on a first-seen enemy fades once instead of coming back; the post-fight New! cascade runs 35% faster; a yellow tip outline on a unit now draws above the castle bars.
+
 ## 2026-10-13 (22:45)
 - **Murgle Mayhem (6-MM), the first endless dungeon.** A side map of Sable Swampmire (Map 6) that opens when its last fight is won. Fifty floors, 6-MM-1 to 6-MM-50, on one long trail you scroll up; the map starts at your next floor. Every floor is the same frog-and-leech fight, 4% stronger than the floor below, and every 10th floor is the Murgle King with an alligator and a crocodile. Each cleared floor stays cleared, so a loss never sends you back.
 
