@@ -10110,7 +10110,7 @@ function renderPlay(){
                refreshEnergyHud() alongside the topbar original, closes that gap without touching
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
-          ${tabOpen('arena') && playSubTab !== 'arena' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
+          ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
             <div class="settings-panel" id="settingsPanelPlaySub" hidden>
@@ -30919,7 +30919,7 @@ function renderShopShelves(grid, signedIn){
 let shopTab = 'packs';
 let shopCameFrom = null;
 function shopBackHTML(){
-  const c = shopCameFrom; if(!c || c.tab === 'shop') return '';
+  const c = shopCameFrom; if(!c || c.tab === 'shop' || c.tab === 'home') return ''; // 2026-10-13 UI audit: the header's Home already does this
   const lbl = c.tab === 'play' && c.sub === 'conquest' ? 'Back to the map' : c.tab === 'home' ? 'Back home' : 'Back';
   return `<button type="button" class="btn small shop-back" id="shopBackBtn">← ${lbl}</button>`;
 }
@@ -30930,7 +30930,7 @@ function renderShop(){
   shopTab = 'packs';
   const signedInShop = isSignedIn();
   const merchants = merchantsUnlocked();
-  root.innerHTML = `<div class="panel">${shopBackHTML()}<h2>${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
+  root.innerHTML = `<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool(null, 1).length} cards).</p>
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}

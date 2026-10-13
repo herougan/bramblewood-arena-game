@@ -8327,6 +8327,16 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 #view-codex .section-divider > .st-sub{color:#e9dcc0;}
 @media (max-width:640px){ .forge-modes{max-width:calc(100vw - 24px); overflow-x:auto; scrollbar-width:none; justify-content:flex-start;} .forge-modes > *{flex-shrink:0;} }
 @media (max-width:640px){ .inv-sec h3{display:flex; flex-wrap:wrap; gap:2px 8px; align-items:baseline;} .inv-sec h3 small{flex-basis:100%;} }
+/* 2026-10-13 UI audit: on small cards the skill badges sat on top of the Attack and Health numbers; they lift above the
+   stat row instead and shrink a little. */
+@container (max-width: 96px){
+  .card-tile .badges, .card-tile .badges-2row{bottom:clamp(17px, 27cqw, 24px) !important;}
+  .card-tile .badges .abadge{font-size:clamp(9px, 11cqw, 13px) !important; padding:0 2px !important;}
+}
+@media (max-width:640px){
+  .conquest-fs-btn{top:58px !important;} /* 2026-10-13 UI audit: it hid behind the Energy pill */
+  .toast-host{top:auto !important; bottom:calc(92px + env(safe-area-inset-bottom, 0px)) !important;} /* toasts no longer cover the HUD and the map title */
+}
 .dark-veil{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; background:radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(4,4,12,.45) 100%);}
 .dark-veil.lvl-pitch{background:radial-gradient(ellipse at 50% 50%, rgba(4,4,12,.1) 20%, rgba(4,4,12,.65) 100%);}
 .dark-veil.lvl-absolute{background:radial-gradient(ellipse at 50% 50%, rgba(2,2,8,.3) 10%, rgba(2,2,8,.85) 100%);}
