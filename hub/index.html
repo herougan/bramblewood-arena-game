@@ -114,7 +114,7 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </nav></header>
 <main>
 <section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc"><h1>Action items</h1>
-<p><em>Updated 2026-10-13, 11:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
+<p><em>Updated 2026-10-14, 3:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below.</em></p>
 <h2>Done at 23:30 (your 20:55, 21:36 and 22:05 lists)</h2>
 <table>
 <thead>
@@ -638,75 +638,47 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </tbody>
 </table>
 <h2>1. Your calls</h2>
-<p>Every open item, with <strong>(a) my pushback</strong> (what worries me about it) and <strong>(b) my recommendation</strong>. Reply with the ID and a word ("D36 yes", "D24 keep").</p>
+<p><strong>Cleared 2026-10-14 (you asked to clear every action item).</strong> Each is closed on my recommendation; say the ID to reopen one.</p>
 <table>
 <thead>
 <tr>
 <th>ID</th>
-<th>What</th>
-<th>(a) Pushback</th>
-<th>(b) Recommendation</th>
+<th>Closed as</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>D27</strong></td>
-<td>Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit</td>
-<td>None</td>
-<td>Keep</td>
+<td>D27</td>
+<td>Kept: Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit</td>
 </tr>
 <tr>
-<td><strong>D39</strong></td>
-<td>22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching)</td>
-<td>Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired</td>
-<td>Keep the rest</td>
+<td>D39</td>
+<td>Kept, except the retired Pitchfork reading (it's Trident + Pierce now)</td>
 </tr>
 <tr>
-<td><strong>D55</strong></td>
-<td><code>world_events</code> table for call-outs and GM messages</td>
-<td>A live Supabase write</td>
-<td>Say "apply it" (with T3/S1/S2 if you like)</td>
+<td>D74</td>
+<td><strong>Built:</strong> Ranked Live plays Standard (every card at Level 1); friendly invites keep their own format</td>
 </tr>
 <tr>
-<td><strong>D74</strong></td>
-<td><strong>Standard PvP scope.</strong> Ranked Live, PvP strangers, Dungeon and Conquest stay Collection-only</td>
-<td>Ranked Live with levels is pay-to-win-ish</td>
-<td>Later: make Ranked Live Standard, or cap levels</td>
+<td>D75</td>
+<td>Answered in the economy doc: the bundle sizes and the 4.99 USD Bramble Pass stand as first prices; Krooni and Laurels buy cosmetics only; Ranked uses Standard (D74)</td>
 </tr>
 <tr>
-<td><strong>D75</strong></td>
-<td><strong>Economy</strong> (<span class="doc-ref" title="Project doc: claude/economy-monetization-2026-10-13.md">doc</span>): Gold Leaves bundles 0.99–99.99 USD, a 4.99 USD Bramble Pass, monthly pack bonuses at 10/25/50/80/120 packs</td>
-<td>Prices are first guesses; SGD comes from each store's tier</td>
-<td>Answer the three questions at the end of the doc</td>
+<td>D76</td>
+<td>Answered in the co-op doc: a 30-second plan timer (60 in casual rooms), one shared castle, friends-only rooms first. Building it waits on the <code>coop_rooms</code> table (below)</td>
 </tr>
 <tr>
-<td><strong>D76</strong></td>
-<td><strong>Co-op dungeon</strong> (<span class="doc-ref" title="Project doc: claude/coop-dungeon-design-2026-10-13.md">doc</span>): 30-second simultaneous plan, shared castle, friends-only rooms first</td>
-<td>Needs a new <code>coop_rooms</code> table (live write) and a 4-seat host sync</td>
-<td>Answer the doc's three questions; then I build a 2-player version first</td>
+<td>D77</td>
+<td>Recommendation recorded: free-to-play on Steam with a cosmetic-leaning shop, to keep one economy across web and Steam. Revisit by December</td>
 </tr>
 <tr>
-<td><strong>D77</strong></td>
-<td><strong>Steam: free-to-play or paid</strong> (<span class="doc-ref" title="Project doc: claude/steam-launch-plan-2026-10-13.md">plan</span>)</td>
-<td>Paid splits the economy between web and Steam</td>
-<td>Decide by month 2 (December)</td>
-</tr>
-<tr>
-<td><strong>D78</strong></td>
-<td><strong>Map 0 swap window</strong> shows after every Map 0 win until the Armoury opens (Map 0 has 4 fights, so about 3–4 swaps)</td>
-<td>You said about 3</td>
-<td>Keep</td>
-</tr>
-<tr>
-<td><strong>T3 / S1 / S2</strong></td>
-<td>One-use fight seeds, admin player list, anti-cheat tier 1</td>
-<td>All three write to the live Supabase, so they wait for you</td>
-<td>Say "apply it" when you're at the desk</td>
+<td>D78</td>
+<td>Moot: the Camp (Armoury) opens on Map 0 now, and Maps 0–1 swap in teaching cards instead</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Closed today:</strong> D36 (Frenzy reworked to your rule), D46 (Rabbit Kit replaces the Quarry Mole), D58 (your egg rates), D59 (a free Base copy from each map's boss), D60 (Caldera Heart, ratings 350–500), D61 (enemy levels from Map 5), D52 (your map list is in).</p>
-<p><strong>Closed tonight:</strong> D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.</p>
+<p><strong>Parked, not open items:</strong> D55 (<code>world_events</code>), T3 / S1 / S2 and the D76 <code>coop_rooms</code> table all write to the live Supabase, so they wait for you to say "apply it". Nothing else is waiting on you.</p>
+<p><strong>Closed earlier:</strong> D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.</p>
 <h2>2. Where things stand</h2>
 <ul>
 <li><strong>Balancing:</strong> the <span class="doc-ref" title="Project doc: claude/card-list-2026-10-10.md">card list</span> has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood &amp; Village; move 3 overpowered and 18 biome cards out; add 14).</li>
@@ -778,6 +750,34 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-14 (03:30)</h2>
+<ul>
+<li><strong>Card plan workbook</strong> (docs/bramblewood-card-plan-2026-10-14.xlsx): every card sorted into Base, the two factions, the tutorial, Maps 0–21 (4 uniques each), fodder for the Ocean, Swamp, Ice, Volcano and Cave, the Mystery pack (Map 20's side map), Later worlds (the occult and alien cards) and Retired; plus a skill curriculum (Map 0: Flying, Swarm, Regeneration; Map 1: Diurnal, Thorns, Worthy …), animal-type counts (3–6 each, 4 Elementals, no trolls, 1 changeling) and the Card Pack seller at Maps 5, 11 and 17. Extra ordinary animals are listed as Spare, not placed.</li>
+<li><strong>18 new cards, with art:</strong> Bramble Hoglet, Clover Butterfly, The Gannet Queen, Old Snapjaw, Alpine Marmot, Meerkat Burrower, Moon Jelly, Lion's Mane Jelly, Caiman Hatchling, Mudpuppy, Harbor Seal, Snow Ermine, Ember Centipede, Cinder Gecko, Ash Moth, Cave Olm, Glimmer Spider, Field Crow. They have no source yet, for you to place.</li>
+<li><strong>New art:</strong> Bee Knight, the Puddle Changeling (looking at its reflection in the river) and the Two-Headed Calf (one body, two heads).</li>
+<li><strong>Sharper NightCafe art:</strong> the blur came from our own pixel step, not NightCafe. All 185 NightCafe card portraits are redone from their originals on a finer grid (96 px, 48 colours), so eyes and outlines survive; five lost their drawn frames.</li>
+<li><strong>Effects Lab:</strong> 16 new skill effects (Swarm, Regeneration, Poison cloud, Bleed, Thorns, Earthquake, Quick, Evasive, Cleave, Guardian, Dynamite, Helmet, Darksight, Frostbite, Scorch, Lantern), 8 new foils (Aurora, Galaxy, Molten gold, Frost, Oil slick, Sakura, Sparkle, Scanline) and 5 general effects (shockwave, three castle crumbles, level up, unlock sparkle, sky drop).</li>
+<li><strong>Action items cleared:</strong> D27, D39, D74 (built), D75, D76, D77, D78 closed; only the live-database items wait for "apply it".</li>
+</ul>
+<h2>2026-10-14 (02:00)</h2>
+<ul>
+<li><strong>Skill Codex (Map 9)</strong> and <strong>Map Codex (Map 11)</strong>: two new Codex pages. Skills lists every skill you've met, what it does and what answers it ("Answered by" moved here from the card view). Maps lists every map you've reached with the field effects you've learned there (? until seen).</li>
+<li><strong>Card view:</strong> no repeated name or stat tiles (the card shows them); its type is the species with its family's icon; a card that brings another card shows that card and its abilities on the right.</li>
+<li><strong>Card editor:</strong> Species picks from every species in the game with its icon, and a new one becomes its own family. Each skill row has a ＋ that adds the same skill at a later level (with a Lv picker); those level skills switch on as the card levels up.</li>
+<li><strong>Saving a card's placement</strong> sticks now: the card editor no longer puts the old source back when you save it afterwards.</li>
+<li><strong>Cards edited in the cloud before their art existed</strong> show their art again (Shepherd, Owl Nightwatch, Tomcat, Sergeant Bramblefox).</li>
+<li><strong>Tutorial castle health</strong> is set beside its Castle in the skirmish editor (the castle choice now applies to the tutorials too).</li>
+<li><strong>Deck editors:</strong> click adds a card, Shift+click takes one out (the skirmish editor's deck and its popup).</li>
+<li><strong>Classic cards removed</strong> (Otter Centurion and Bee Knight classics).</li>
+<li><strong>Map 0:</strong> 0-1's castle is plain; the field effect starts at 0-3 (level I) and is level II at 0-4; 0-4 teaches the castle's Shield.</li>
+<li><strong>Boomerang:</strong> it hits and flies on far past its target; against a castle it bounces off and out the top of the map; next round it drops back in from the top, hits, and spins home.</li>
+<li><strong>Skirmish card:</strong> a revealed deck is a strip of the real cards with counts, each opening its details.</li>
+<li><strong>Codex:</strong> the Factions pool comes first; the skill badges under each card are no longer cut off; Full Art view is 5% wider.</li>
+<li><strong>Armoury renamed Camp.</strong></li>
+<li><strong>First visit to a map:</strong> the skirmishes now fall from the sky after the map's name card lifts, each with a landing shadow.</li>
+<li><strong>Ranked Live plays Standard</strong> (every card at Level 1), closing D74.</li>
+<li>Swarm: I couldn't make it count itself (a lone Swarm unit gets +0 in the engine and on screen); a screenshot of the case would help.</li>
+</ul>
 <h2>2026-10-14 (01:30)</h2>
 <ul>
 <li><strong>Map 21: The Quiet Summit.</strong> Above the clouds after the Sundered Peak's storm: six fights among goats, rams, yaks, owls and eagles, ending at the Cathedral Eagle. Its own snowy map, with the zoom-out on your first visit. The Test Lab sits here as planned.</li>
