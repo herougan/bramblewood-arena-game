@@ -1367,7 +1367,7 @@ function describeEffects(def, liveCard){
     const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
-    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}${ans.length ? ` <span class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</span>` : ''}`); });
+    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -1659,6 +1659,9 @@ function getCardDefs(){
   return res;
 }
 function buildCardDefs(){
+  // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
+  // Owl Nightwatch, Tomcat and Sergeant Bramblefox were saved before their art existed and hid it).
+  Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -1684,6 +1687,7 @@ function buildCardDefs(){
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
     out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
+    if(base.levelSkills){ const fx = Object.assign({}, base.effects||{}); Object.keys(base.levelSkills).map(Number).filter(L=> L <= lvl).sort((x, y)=> x - y).forEach(L=> Object.assign(fx, base.levelSkills[L])); out[id].effects = fx; } // level skills (2026-10-13)
   });
   // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
   if(typeof myCardEnchants !== 'undefined' && myCardEnchants) Object.keys(myCardEnchants).forEach(id=>{
@@ -1973,6 +1977,11 @@ let codexSeparate = (()=>{ try{ return localStorage.getItem('bramblewood_codex_s
 // Phyla in the Codex (2026-10-12, user: "Phyla are not indicated, but we need to teach players Phyla. Maybe we, along the way
 // unlock Phyla sorting and filtering in the Codex, 5 maps after Codex"): the Codex opens on Map 7, so phylum sort and filter
 // open on Map 12.
+// Species as the card's one type (2026-10-13, user: "only include the lowest type, otherwise just a generic 2nd level like Bird or
+// Insect ... In the card detail, it shows this 2nd level type only ... If you type something unique - it becomes a new phyla"):
+// a species not in the table is its own phylum, with a 🧬 mark.
+function speciesIcon(sp){ return PHYLUM_ICON[SPECIES_PHYLUM[sp] || sp] || '🧬'; }
+function allSpeciesNames(){ const out = new Set(Object.keys(SPECIES_PHYLUM)); try{ Object.values(getCardDefs()).forEach(d=> (d.species||[]).forEach(x=> x && out.add(x))); }catch(e){} return [...out].sort(); }
 function phylumOf(d){ const sp = (d && d.species) || []; const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))]; return ph.join(' & ') || ''; }
 function phylaUnlocked(){
   if(adminModeEnabled) return true;
@@ -1999,7 +2008,8 @@ function mapBandOf(num){
 // pool 99 the advanced Mystery Booster.
 const PACK_POOL_LABEL = {1:'🎁 Hedgerow Pouch · Tidemire Chest · Highcrest Case', 11:'🎁 Factions pool (in every basic pack)', 99:'❓ Mystery Booster'};
 function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
-  return {key: pre + '-pk-' + k, order:[2, k === 99 ? 3 : k === 11 ? 2 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
+  // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
+  return {key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, ''], label: PACK_POOL_LABEL[k]}; }
 function codexViewSectionOf(d, view){
   if(view==='tiers') return codexSectionOf(d);
   const src = cardSourceOf(d);
@@ -2036,7 +2046,8 @@ function codexViewSectionOf(d, view){
   if(view==='pack'){
     if(src.kind!=='pack') return null;
     const tier = Math.max(1, Number(src.tier)||1);
-    return {key:`pk-${tier}`, order:[tier,0,0,''], label:`Pack Tier ${tier}`};
+    if(tier >= 11 && tier <= 13) return {key:'pk-factions', order:[0,0,0,''], label:PACK_POOL_LABEL[11]}; // the Factions pool, first (2026-10-13)
+    return {key:`pk-${tier}`, order:[tier,0,0,''], label: tier === 99 ? PACK_POOL_LABEL[99] : `Pack pool ${tier}`};
   }
   if(view==='event'){
     if(src.kind!=='event') return null;
@@ -3355,7 +3366,7 @@ const SONGBOOK = {
   bakery: {name:'Flour and Copper', place:'Shop', bpm:132, beats:3, root:293.66, scale:[0,2,4,5,7,9,11], lead:'reed', comp:'oompah',
     chords:[0,0,3,0, 4,4,0,0, 3,3,0,5, 1,4,0,0],
     mel:['4:2 2:1','4:1 5:1 4:1','5:2 3:1','2:3', '1:1 2:1 3:1','4:2 3:1','2:1 1:1 0:1','1:3', '3:2 5:1','7:2 5:1','4:2 2:1','5:3', '1:1 3:1 5:1','4:1 6:1 8:1','7:2 4:1','7:3']},
-  armoury: {name:'Tent Pegs', place:'Armoury', bpm:104, beats:4, root:392.00, scale:[0,2,4,5,7,9,10], lead:'fife', comp:'march',
+  armoury: {name:'Tent Pegs', place:'Camp', bpm:104, beats:4, root:392.00, scale:[0,2,4,5,7,9,10], lead:'fife', comp:'march',
     chords:[0,0,3,0, 4,3,0,0],
     mel:['0:1 2:1 4:1 4:1','5:1 4:1 2:2','3:1 5:1 7:1 5:1','4:4', '4:1 6:1 8:1 6:1','5:1 3:1 5:1 3:1','2:1 1:1 0:1 2:1','0:3 -:1']},
   forge: {name:'Bellows', place:'Forge', bpm:84, beats:4, root:146.83, scale:[0,2,3,5,7,9,10], lead:'brass', comp:'anvil',
@@ -3978,6 +3989,8 @@ function codexShell(){
          Forge no longer has its own top-level nav tab (see the Home landing page rewrite) — it's
          now just another Codex sub-tab, routed below exactly like Brambles/Reference/etc. -->
     ${tabOpen('forge') ? `<button class="btn small ${codexSubTab==='forge'?'primary':''}" data-codextab="forge">🔨 Forge</button>` : ''}
+    ${tabOpen('skillcodex') ? `<button class="btn small ${codexSubTab==='skills'?'primary':''}" data-codextab="skills">📘 Skills</button>` : ''}
+    ${tabOpen('mapcodex') ? `<button class="btn small ${codexSubTab==='maps'?'primary':''}" data-codextab="maps">🗺️ Maps</button>` : ''}
     <button class="btn small ${codexSubTab==='reference'?'primary':''}" data-codextab="reference">📚 Reference</button>
     <button class="btn small ${codexSubTab==='halloffame'?'primary':''}" data-codextab="halloffame">🏛 Hall of Fame</button>
     ${adminModeEnabled ? `<button class="btn small ${codexSubTab==='deleted'?'primary':''}" data-codextab="deleted">🗑 Deleted</button>
@@ -4076,6 +4089,10 @@ function renderCodex(){
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
   if(codexSubTab==='forge'){ body.innerHTML = '<div id="view-forge"></div>'; renderForge(); return; }
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
+  if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
+  if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
+  if(codexSubTab==='skills'){ body.innerHTML = skillCodexHTML(); return; }
+  if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
     body.innerHTML = hallOfFameTabHTML();
@@ -4429,8 +4446,8 @@ function hallOfFameTabHTML(){
     }).join('');
     return `<div class="panel hof-panel"><h3>${title}</h3><p class="panel-sub">${blurb}</p><div class="hof-grid">${tiles || '<p class="panel-sub">None yet.</p>'}</div></div>`;
   };
-  return block('classic', '🏛 Classic', 'Famous cards in their original look and words. Mechanically identical to today’s version — same card under the hood.')
-    + block('antique', '🏺 Antique', 'Forgotten, humble cards brought back as they were, each with one small improvement. Never strong, never abusable, one copy per deck.');
+  // Classic cards removed (2026-10-13, user: "Remove the 'classic' cards").
+  return block('antique', '🏺 Antique', 'Forgotten, humble cards brought back as they were, each with one small improvement. Never strong, never abusable, one copy per deck.');
 }
 // Card art (2026-09-17): a card's `.ico` box shows real sprite artwork (d.art, a data URI)
 // when the canonical card def has one, falling back to the plain emoji (d.icon) otherwise —
@@ -5065,6 +5082,33 @@ function skillsByMapHTML(){
   }).join('');
   return `<div class="panel sbm"><h3 class="ref-heading">Skills along the road</h3><p class="panel-sub">Where each skill first turns up. Hover one you've met to read it again.</p>${rows}</div>`;
 }
+// Skill Codex (2026-10-13, user: "The 'Answered by' - I like that, but keep it in the Codex of skills. This codex of skills will be
+// unlocked 2 maps after the codex"): every skill you've met on a card, what it does, and what answers it. Admins see them all.
+function skillCodexHTML(){
+  const defs = getCardDefs(), met = new Set();
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token) return; if(!adminModeEnabled && (isCardHiddenForPlayer(d) || !codexRevealedForPlayer(id, d))) return;
+    PASSIVE_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); });
+  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label).sort((a, b)=> a.label.localeCompare(b.label));
+  const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
+  const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
+    const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
+    return `<div class="sk-row"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b></div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
+  return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}</div>`;
+}
+// Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
+function mapCodexHTML(){
+  const pr = loadConquestProgress();
+  const maps = CONQUEST_MAPS.filter(m=> !m.reserved && (adminModeEnabled || isMapUnlocked(m, pr)) && m.nodes.length && !m.endless);
+  const cards = maps.map(m=>{
+    const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
+    const fights = m.nodes.filter(n=> n.kind !== 'tutorial'), done = fights.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length;
+    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
+      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : '<span class="fcr-q">?</span>'}</li>`; }).join('');
+    const num = mapNumberOf(m.id);
+    return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
+      <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
+  return `<div class="panel"><h2>🗺️ Maps</h2><p class="panel-sub">Every map you've reached and the field effects you've learned on it. An effect shows ? until you've seen it happen.</p><div class="mc-grid">${cards}</div></div>`;
+}
 function referenceHTML(){
   return `
   ${skillsByMapHTML()}
@@ -5469,28 +5513,35 @@ function openCardDetail(defId){
   // to get it on the right. Stacks on phones.
   const rar = String(d.rarity||'common').replace(/_/g,' ');
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
-    .concat((d.archetypes||[]).filter(a=> a && !TYPE_HIDDEN.has(a)).slice(0,3).map(a=> `<span class="cd-chip">${escapeHtml(a)}</span>`))
+    .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
     .concat(d.token ? ['<span class="cd-chip">Token</span>'] : []).concat(d.hero ? ['<span class="cd-chip cd-hero">🦸 Your Hero</span>'] : []).join('');
+  // A card that brings another card (2026-10-13, user: "If a card spawns another card - show the other card's detail on the right
+  // side"): every other card named in its skills or triggers, shown beside it with its abilities.
+  const spawnIds = (()=>{ const defsAll = getCardDefs(), txt = JSON.stringify(d.effects||{}) + JSON.stringify(d.triggers||[]) + JSON.stringify(d.onDeath||'') + JSON.stringify(d.spawn||'');
+    return [...new Set((txt.match(/"([a-z0-9][a-z0-9-]{2,60})"/g)||[]).map(x=> x.slice(1, -1)))].filter(x=> x !== d.id && defsAll[x] && !defsAll[x].test).slice(0, 2); })();
+  const spawnHTML = spawnIds.length ? `<aside class="cd-spawns" aria-label="Cards it brings">${spawnIds.map(id=>{ const sd = getCardDefs()[id], sl = describeEffects(sd);
+      return `<div class="cd-spawn"><h3>Brings</h3>${cardTileHTML(sd, {inPlay:true})}${sl.length ? `<div class="cd-spawn-ab">${abilityListHTML(sl)}</div>` : '<p class="panel-sub">A plain stat card.</p>'}</div>`; }).join('')}</aside>` : '';
   const tiles = `<div class="cd-tiles">
       <span class="cdt-atk"><b>${d.attack||0}</b><small>⚔ Attack</small></span>
       <span class="cdt-hp"><b>${d.health||0}</b><small>❤ Health</small></span>
       <span class="cdt-cost"><b>${d.cost||0}</b><small>🪵 Cost</small></span>
       <span class="cdt-wait"><b>${d.wait||0}</b><small>⏳ Wait</small></span>
     </div>`;
-  overlay.innerHTML = `<div class="modal card-detail-card">
+  overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''}">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
       <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}<button type="button" class="cd-inspect-btn" id="cdInspectBtn" title="Inspect the card up close and turn it in the light"><span aria-hidden="true">🔍</span> <span>Inspect</span></button></div>
       <div class="cd-info">
-      <h2 class="cd-name">${escapeHtml(d.name||'')}</h2>
+      ${'' /* 2026-10-13 (user: "Don't repeat the name of the card in the card detail. Don't repeat its stats too!"): the card shows both */}
+      <h2 class="cd-name sr-only">${escapeHtml(d.name||'')}</h2>
       <div class="cd-chips">${chips}</div>
-      ${tiles}
       <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
       ${adminModeEnabled ? codexPlacementHTML(d) : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
       </div>
+      ${spawnHTML}
       </div>
       <div class="modal-actions">
         ${adminModeEnabled ? `<button class="btn" id="cdEditBtn" type="button">✏️ Edit (Admin)</button><button class="btn" id="cdGetBtn" type="button" title="Admin: put a copy of this card in your Nest">🎁 Get this card</button>` : ''}
@@ -5741,9 +5792,13 @@ function wireCodexPlacement(defId){
     raw.hidden = document.getElementById('cdpHidden').checked;
     delete raw.unattainable; // obtainability is worked out from the source now (2026-10-12)
     if(raw.hidden) delete raw.hidden; // hidden is the default now; only "not hidden" is stored (hidden:false)
+    // 2026-10-13 (user: "Saving placement doesn't work"): the card editor kept its own copy of the card, so its Save put the
+    // old source back. The editor's copy now takes the new placement too, and the panel says where the card now comes from.
+    try{ if(typeof editingCard !== 'undefined' && editingCard && editingCard.id === defId){ if(raw.source) editingCard.source = JSON.parse(JSON.stringify(raw.source)); else delete editingCard.source; if(raw.hidden === false) editingCard.hidden = false; else delete editingCard.hidden; delete editingCard.unattainable; } }catch(e){}
     await saveCard(raw);
-    document.getElementById('cdpMsg').textContent = 'Saved ✓';
-    if(currentTab==='codex') renderCodex();
+    const msg = document.getElementById('cdpMsg'); if(msg) msg.textContent = 'Saved ✓';
+    const ob = document.querySelector('#cdPlacement .cdp-obtain'); if(ob){ const d2 = getCardDefs()[defId] || raw; ob.className = 'cdp-obtain ' + (isUnattainable(d2) ? 'is-no' : 'is-yes'); ob.textContent = isUnattainable(d2) ? '⛔ Not obtainable: no source yet. Pick one above.' : '✅ Obtainable: ' + cardWhereToGetText(d2); }
+    if(currentTab==='codex') renderCodexGrid(true);
   });
 }
 // Skirmish rewards editor (2026-10-02, admin). A node's reward cards are simply the cards whose
@@ -6064,7 +6119,7 @@ function renderEditorInner(){
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack']].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> p.kind==='boolean' || p.kind==='number').map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
-      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Canid, Primate"><datalist id="speciesList">${Object.keys(SPECIES_PHYLUM).map(k=> `<option value="${k}">`).join('')}</datalist></div>
+      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -6417,6 +6472,9 @@ function renderEditorInner(){
     renderEditor();
   });
   overlay.querySelectorAll('#skillRows [data-rmskill], #evergreenRows [data-rmskill]').forEach(b=> b.addEventListener('click', ()=>{ c._skillRows.splice(Number(b.getAttribute('data-rmskill')),1); renderEditor(); }));
+  overlay.querySelectorAll('#skillRows [data-addskillrow], #evergreenRows [data-addskillrow]').forEach(b=> b.addEventListener('click', ()=>{ const r = c._skillRows[Number(b.getAttribute('data-addskillrow'))]; if(!r) return;
+    const next = Math.min(11, Math.max(cardBaseLevel(c) + 1, ...c._skillRows.filter(x=> x.key === r.key).map(x=> (x.lv || cardBaseLevel(c)) + 1)));
+    c._skillRows.push({key:r.key, value:defaultSkillValue(r.key), lv:next}); renderEditor(); })); // added at the end so the form keeps every other row's typing
   overlay.querySelectorAll('#skillRows select[data-sk="key"], #evergreenRows select[data-sk="key"]').forEach(sel=> sel.addEventListener('change', ()=>{
     const i = Number(sel.getAttribute('data-i'));
     c._skillRows[i] = {key:sel.value, value:defaultSkillValue(sel.value)};
@@ -6532,6 +6590,9 @@ function deriveSkillRows(c){
       const v = s.get(c.effects||{});
       if(v!==undefined && v!==false) rows.push({key:s.key, value:v, n: s.numberKey ? (Number((c.effects||{})[s.numberKey]) || (s.key==='swarm' && typeof (c.effects||{}).swarm==='number' ? c.effects.swarm : 1)) : undefined});
     });
+    // Skills that arrive at a level (2026-10-13): one row each, tagged with the level.
+    Object.keys(c.levelSkills || {}).map(Number).filter(L=> L > 0).sort((a, b)=> a - b).forEach(L=>{ const fx = c.levelSkills[L] || {};
+      SKILL_DEFS.forEach(s=>{ const v = s.get(fx); if(v!==undefined && v!==false) rows.push({key:s.key, value:v, lv:L, n: s.numberKey ? (Number(fx[s.numberKey]) || 1) : undefined}); }); });
     c._skillRows = rows;
   }
   return c._skillRows;
@@ -6629,6 +6690,9 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${valueHtml}
     ${liveReadout}
+    ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
+    ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
+    <button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>
     <button class="btn small danger rm" data-rmskill="${i}">✕</button>
   </div>`;
 }
@@ -6966,20 +7030,23 @@ function readEditorFormIntoCard(){
   // abilities section (#evergreenRows, split out per "On Death: Passive is not a passive
   // ability"). Missing #evergreenRows here would silently drop On Death: Spawn/Gash/Render/
   // Earthquake/Inherent Darkness on every save once they moved to their own container.
+  const levelFx = {};
   document.querySelectorAll('#skillRows .skill-row, #evergreenRows .skill-row').forEach(row=>{
     const key = row.querySelector('[data-sk="key"]').value;
     const sdef = SKILL_DEFS.find(x=>x.key===key);
     if(!sdef) return;
-    if(sdef.kind==='typeTwoNumber'){ sdef.apply(newEffects, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
+    const lvEl = row.querySelector('[data-sk="lv"]'), L = lvEl ? Number(lvEl.value) : 0;
+    const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
+    if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
     else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount'){
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value;
-      sdef.apply(newEffects, [v0,v1]);
+      sdef.apply(fx, [v0,v1]);
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text'){
-      sdef.apply(newEffects, row.querySelector('[data-sk="val"]').value);
+      sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
-      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(newEffects, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
+      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(fx, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
     } else {
-      sdef.apply(newEffects, true);
+      sdef.apply(fx, true);
     }
   });
   const triggers = [];
@@ -6995,6 +7062,7 @@ function readEditorFormIntoCard(){
   if(c.effects.weakness && c.effects.weakness.length) newEffects.weakness = c.effects.weakness.slice();
   if(c.effects.immune && c.effects.immune.length) newEffects.immune = c.effects.immune.slice();
   c.effects = newEffects;
+  if(Object.keys(levelFx).length) c.levelSkills = levelFx; else delete c.levelSkills; // skills that arrive at a level (2026-10-13)
   delete c._skillRows; // transient editor-only state — never persisted
   delete c._speechTrigger; delete c._speechSlot; // same — just remembers which dropdown combo was showing
   if(!c.id){
@@ -8708,7 +8776,7 @@ function maybeLeaderLesson(){
   DIALOGUES.lesson_leaders = {lines:[
     {who:'traveller', text:`${d.name || 'That card'} is ${({heroic:'Heroic', unique:'Unique', questunique:'Quest-Unique', legendary:'Legendary', mythic:'Mythic', ancient:'Ancient'})[d.rarity] || 'rare'}. Cards that rare can do more than fight in a deck.`},
     {who:'traveller', text:'Rare cards can lead. A leader joins you once a fight.'},
-    {who:'traveller', text:'Pick one in the Armoury, in the 👑 slot.', options:[{label:'Show me.', goto:'go', act:'tab:deck'}, {label:'Later.', goto:'go'}], silent:'go'},
+    {who:'traveller', text:'Pick one in the Camp, in the 👑 slot.', options:[{label:'Show me.', goto:'go', act:'tab:deck'}, {label:'Later.', goto:'go'}], silent:'go'},
     {label:'go', who:'traveller', text:'Mind you, I am still the best leader you have got.'},
   ]};
   try{ playDialogue('lesson_leaders'); }catch(e){}
@@ -10640,12 +10708,14 @@ async function enterLiveMatch(row){
     if(oppProfile && oppProfile.display_name) oppName = oppProfile.display_name;
   }catch(e){ /* non-fatal — the generic "Opponent" label is fine */ }
   const settings = row.settings || {};
-  const isStd = settings.format==='standard';
+  // D74 (closed 2026-10-14): Ranked Live plays Standard, every card at Level 1, so levels bought or ground out don't decide a
+  // ranked game. Both players run this same rule, so they stay in step. Friendly invites keep the format they chose.
+  const isStd = settings.format==='standard' || row.ranked !== false;
   standardMatchActive = isStd; _stdDefsCache = null;
   startLiveRankedMatch({ standard: isStd,
     friendly: row.ranked===false, battleMode: Registry.battleMode(settings.battleMode) ? settings.battleMode : Registry.defaultBattleMode(),
     matchId: row.id, role, mySeat, oppId, oppRating, oppName,
-    myDeck: isStd ? loadStandardDeck() : myDeckCounts, myCharacter: myCharacterId,
+    myDeck: settings.format==='standard' ? loadStandardDeck() : myDeckCounts, myCharacter: myCharacterId, // the deck you queued with is the one your opponent sees
     oppDeck: oppDeck || {}, oppCharacter: oppCharacter || 'castle',
   });
 }
@@ -11050,6 +11120,14 @@ const DIALOGUES = {
     {who:'traveller', text:'Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
     {label:'go', who:'traveller', text:'Max Energy, raised one cup at a time.'},
   ]},
+  unlock_skillcodex: {lines:[
+    {who:'traveller', text:'A field guide to tricks. Every skill you have run into, and what beats it.', options:[{label:'Show me.', goto:'go', act:'codex:skills'}], silent:'go'},
+    {label:'go', who:'traveller', text:'It is a new page in your Codex: Skills.'},
+  ]},
+  unlock_mapcodex: {lines:[
+    {who:'traveller', text:'Somebody has been drawing the road as you go. Every map, and what the weather does on each.'},
+    {who:'traveller', text:'It is in your Codex now, under Maps.'},
+  ]},
   unlock_stomp: {lines:[
     {who:'traveller', text:'Hoofprints, pawprints, clawprints. Everything that trains up here trains on this field.'},
     {who:'traveller', text:'The Stomping Grounds. Bring your Hero: level it, spend its points, pick its skills.', options:[{label:'Show me.', goto:'go', act:'tab:stomp'}], silent:'go'},
@@ -11264,6 +11342,7 @@ function performDialogueAct(act){
     else if(k === 'quests') openQuestsModal(v || undefined);
     else if(k === 'tavern') openTavern();
     else if(k === 'forge'){ codexSubTab = 'forge'; switchTab('codex'); }
+    else if(k === 'codex'){ codexSubTab = v || 'browse'; switchTab('codex'); }
     else if(k === 'map'){ playSubTab = 'conquest'; conquestSelectedMap = v; conquestSelectedNodeKey = null; switchTab('play'); }
     else if(k === 'spot'){ const sp = FEATURE_SPOTS.find(x=> x.key === v); if(sp && featureUnlocked(sp.key)) sp.go(); }
   }catch(e){}
@@ -11426,7 +11505,7 @@ const FEATURE_SPOTS = [
   // 2026-10-13 (user: "Move it to Map 1. But everytime they win a card, show a special UI subwindow on the conquest map ... that lets
   // them switch out a basic card with the card gotten"): the Armoury opens on Map 1; on Map 0 each card won offers a swap.
   // 2026-10-13 (user: "The Armoury becomes available ASAP"): it opens on Map 0, once the tutorials are done.
-  {key:'deck', icon:'⛺', name:'Armoury', mapNumber:0, get map(){ return mapIdAt(0); }, after:null, dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
+  {key:'deck', icon:'⛺', name:'Camp', mapNumber:0, get map(){ return mapIdAt(0); }, after:null, dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
   // The backpack (2026-10-12, 10:23 list): a note from the Wandering Traveller on Map 1 opens the Inventory and the field kit.
   {key:'fieldkit', icon:'🧰', name:'The traveller\'s kit', mapNumber:12, get map(){ return mapIdAt(12); }, after:null, dialogue:'unlock_fieldkit', tabs:['inventory'], go:()=> switchTab('inventory')},
   // 2026-10-12 (22:25, user: "Note in your pack ... after clicking it, you get some stuff in your pack-inventory. Then it disappears
@@ -11439,6 +11518,9 @@ const FEATURE_SPOTS = [
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'autobattle', icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
+  {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
+  {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
   {key:'codex', icon:'📖', name:'Codex', mapNumber:7, get map(){ return mapIdAt(7); }, after:null, dialogue:'unlock_codex', tabs:['codex'], go:()=> switchTab('codex')},
   // 2026-10-13 (user: "Move the Arena to Map 11"; "the quest board can be moved into the caves and alcoves", Map 8).
   {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
@@ -11969,7 +12051,10 @@ const NODE_MAP_HINT = new WeakMap(); // a skirmish editor draft is a copy, so it
 function mapOfNode(node){ const all = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []; const hint = node && NODE_MAP_HINT.get(node); return (hint && all.find(m=> m.id===hint)) || all.find(m=> (m.nodes||[]).includes(node)) || null; }
 function nodeCastleId(node){
   if(!node) return null; if(node.characterId) return node.characterId;
-  const m = mapOfNode(node); if(!m) return null; const id = MAP_CASTLE[m.sub ? m.parent : m.id];
+  const m = mapOfNode(node); if(!m) return null;
+  // Map 0 (2026-10-13, user: "For the skirmishes in Map 0, the castles have no effect until 0-2"): 0-1's castle is plain.
+  if(!m.sub && m.id === 'm1'){ const f = m.nodes.filter(n=> baseKind(n.kind || 'skirmish') !== 'tutorial'); if(f[0] && (f[0] === node || f[0].key === node.key)) return null; }
+  const id = MAP_CASTLE[m.sub ? m.parent : m.id];
   return id && CHARACTER_DEFS[id] ? id : null;
 }
 function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
@@ -12107,6 +12192,8 @@ function terrainTierFor(map, node){
   const k = baseKind(node.kind || 'skirmish');
   if(k === 'tutorial') return 0;
   const fights = map.nodes.filter(n=> !/tutorial|raidboss/.test(n.kind || ''));
+  // Map 0 (2026-10-13, user: "In 0-3, there is the field effect at level I. At the last map, its II"): nothing on 0-1 and 0-2.
+  if(map.id === 'm1'){ const i = fights.findIndex(n=> n === node || n.key === node.key); return i < 0 ? 0 : i === fights.length - 1 ? 2 : i >= 2 ? 1 : 0; }
   if(/boss/.test(k)) return fights.length >= 8 ? 3 : 2;
   if(k === 'elite' || k === 'champion') return 2;
   const sk = map.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish');
@@ -12352,7 +12439,7 @@ function openDeckBuilderPopup(o){
   const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q))).sort(deckSortFn(sort)); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
   const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(deckSortFn(sort));
-    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
+    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolHTML = ()=>{ const defs = getCardDefs(); return all().slice(0, 400).map(id=> `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`).join(''); };
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
@@ -12368,6 +12455,8 @@ function openDeckBuilderPopup(o){
     if(e.target === ov || e.target.closest('[data-close]')) return close();
     const a = e.target.closest('[data-add]'), r = e.target.closest('[data-rm]');
     if(a){ const id = a.dataset.add; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(a); return; } counts[id] = (counts[id]||0) + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} refresh(); }
+    // 2026-10-13 (user: "In the mini deck editor of the skirmish editor, click means +, shift+click means -").
+    else if(r && !e.shiftKey){ const id = r.dataset.rm; if(rarityCap && editionCapReached(counts, id, getCardDefs())){ denyShake(r); return; } counts[id] = (counts[id]||0) + 1; o.onChange && o.onChange(); try{ SoundKit.pickup(); }catch(_){} refresh(); }
     else if(r){ const id = r.dataset.rm; if(--counts[id] <= 0) delete counts[id]; o.onChange && o.onChange(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(_){} refresh(); }
   });
   ov.querySelector('#dbpSearch').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); refresh('pool'); });
@@ -12506,7 +12595,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
                 return `<div class="se-dg-deck"><div class="se-dg-deck-head"><b>Castle ${i + 1}</b><small>${i === 0 ? `the deck below · ${n} cards` : n ? `${n} cards` : 'keeps the deck it already has'}</small>${i === 0 ? '' : `<button type="button" class="btn small" data-wave-deck="${i}">🃏 ${n ? 'Edit' : 'Give it a deck'}</button>${n ? `<button type="button" class="btn small ghost" data-wave-clear="${i}" title="Use the deck it already has">✕</button>` : ''}`}</div>
                   ${n ? `<div class="se-deck-stacks se-dg-strip">${ids.sort(deckSortFn('cost')).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), dk[id], '×' + dk[id])}</span>`).join('')}</div>` : ''}</div>`; }).join('')}</div>`; })()}
           </fieldset>`; })() : ''}
-        <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>
+        <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>${draft.kind === 'tutorial' ? `<label class="se-tut-hp" title="The rival castle's health in this tutorial (blank: the tutorial editor's number)">Castle HP<input id="seTutHp" type="number" min="1" max="500" placeholder="${(tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0)}" value="${draft.tutHp != null ? escapeAttr(draft.tutHp) : ''}"></label>` : ''}
         <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once</small></div>
           <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
 
@@ -12547,6 +12636,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         { const ac = v('seActions'); delete r.actions; if(ac !== '' && ac != null && Number(ac) > 1) r.actions = Math.max(1, Math.min(5, Math.round(Number(ac)))); }
         if(Object.keys(r).length) draft.rules = r; else delete draft.rules; }
       delete draft.rating; // the rating is computed from the deck now (2026-10-12)
+      // Tutorial castle health (2026-10-13, user: "For Tutorials, let me set the HP, beside the Castle choice").
+      if(draft.kind === 'tutorial'){ const th = v('seTutHp'); if(th === '' || th == null) delete draft.tutHp; else draft.tutHp = Math.max(1, Math.min(500, Math.round(Number(th)||1))); }
       { const cl = v('seCastleLv'); if(cl === '' || cl == null) delete draft.castleLevel; else draft.castleLevel = Math.max(0, Math.min(20, Math.round(Number(cl)||0))); }
       { const sc = v('seShowcase'); if(sc) draft.showcase = sc; else delete draft.showcase; }
       if(document.getElementById('seDgRounds')){
@@ -12594,6 +12685,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
     { const g = document.getElementById('seGallery'); if(g) g.onclick = ()=>{ read();
         openSkirmishGallery({kind:'deck', counts: draft.deck, pick: id=>{ draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; }, minus: id=>{ if(--draft.deck[id] <= 0) delete draft.deck[id]; dirty = true; }, onClose: render}); }; }
+    overlay.querySelectorAll('.se-deck > .se-stack[data-defid]').forEach(b=>{ b.title = 'Click: +1 · Shift+click: −1'; b.style.cursor = 'pointer'; b.onclick = e=>{ read(); const id = b.dataset.defid; if(e.shiftKey){ if(--draft.deck[id] <= 0) delete draft.deck[id]; } else draft.deck[id] = (draft.deck[id]||0) + 1; dirty = true; render(); }; });
     overlay.querySelectorAll('[data-dec]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.dec]--; if(draft.deck[b.dataset.dec]<=0) delete draft.deck[b.dataset.dec]; dirty = true; render(); });
     overlay.querySelectorAll('[data-add]').forEach(b=> b.onclick = ()=>{ read(); draft.deck[b.dataset.add] = (draft.deck[b.dataset.add]||0) + 1; q = ''; dirty = true; render(); });
     // 2026-10-08 (user: "in the add cards section, can I also create a new card - it loads the same UI. When I click
@@ -14221,6 +14313,8 @@ let nodeEdits = {};
 try{ nodeEdits = JSON.parse(localStorage.getItem(NODE_EDITS_KEY)||'{}') || {}; }catch(e){ nodeEdits = {}; }
 function persistNodeEdits(){ try{ localStorage.setItem(NODE_EDITS_KEY, JSON.stringify(nodeEdits)); }catch(e){} }
 function applyNodeEdits(){
+  // The tutorials moved from Map 0 to the Tutorial side map (2026-10-13): their saved edits move with them.
+  try{ const p1 = nodeEdits.m1 && nodeEdits.m1.patches; if(p1 && (p1.tutorial || p1.tutorial2)){ const t = nodeEdits.mtut = nodeEdits.mtut || {}; t.patches = t.patches || {}; ['tutorial','tutorial2'].forEach(k=>{ if(p1[k] && !t.patches[k]) t.patches[k] = p1[k]; delete p1[k]; }); } }catch(e){}
   CONQUEST_MAPS.forEach((map, mi)=>{
     const base = CONQUEST_MAPS_BASELINE[mi] ? JSON.parse(JSON.stringify(CONQUEST_MAPS_BASELINE[mi].nodes)) : [];
     const ed = nodeEdits[map.id] || {};
@@ -15849,9 +15943,13 @@ function renderConquestSubTab(body){
       // skirmishes drop in from above, nearest first, once the zoom has settled
       const nodes = [...cv.querySelectorAll('.map-node')].filter(el=> !(map.id === 'm1' && el.classList.contains('kind-tutorial')));
       const zx = zoomAt ? zoomAt.x : 50, zy = zoomAt ? zoomAt.y : 50, dist = el=> Math.hypot(parseFloat(el.style.left) - zx, parseFloat(el.style.top) - zy);
-      nodes.sort((a, b)=> dist(a) - dist(b)).forEach((el, i)=>{ el.style.setProperty('--drop-i', i); el.classList.add('map-drop'); });
-      setTimeout(()=> nodes.forEach(el=> el.classList.remove('map-drop')), reducedMotion() ? 0 : 2600 + nodes.length * 90);
-      setTimeout(()=>{ cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 700); } }
+      nodes.sort((a, b)=> dist(a) - dist(b)).forEach((el, i)=>{ el.style.setProperty('--drop-i', i); el.classList.add('map-drop-wait'); });
+      // 2026-10-13 (user: "Add the dropping of skirmishes from the skies ... when we see it for the first time, after the map reveal
+      // screen is done"): the zoom-out and the drop wait for the map's name card to lift, then the skirmishes fall from above.
+      const begin = ()=>{ setTimeout(()=>{ cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 250);
+        setTimeout(()=>{ nodes.forEach(el=>{ el.classList.remove('map-drop-wait'); el.classList.add('map-drop'); }); setTimeout(()=> nodes.forEach(el=> el.classList.remove('map-drop')), reducedMotion() ? 0 : 900 + nodes.length * 90); }, reducedMotion() ? 0 : 1500); };
+      let tries = 0; const waitVeil = ()=>{ const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
+      setTimeout(waitVeil, 150); } }
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
@@ -15991,7 +16089,10 @@ function renderConquestSubTab(body){
     // toggle, not just a one-way reveal) — e.g. for a self-imposed "blind" run.
     const earned = conquestDeckRevealed(map, selectedNode, progress);
     const revealed = earned; // 2026-10-10: no Show/Hide toggle any more
-    const squadChips = Object.entries(selectedNode.deck||{}).map(([id,n])=>{ const d=defs[id]; return d?`<span class="dchip">${d.icon} ${d.name} ×${n}</span>`:''; }).join('');
+    // 2026-10-13 (user: "Improve the skirmish card detail"): a revealed deck is a strip of the real cards with their counts, each
+    // opening its details, instead of a list of names.
+    const squadChips = Object.entries(selectedNode.deck||{}).filter(([id])=> defs[id]).sort((x, y)=> (defs[y[0]].cost||0) - (defs[x[0]].cost||0) || ((defs[y[0]].attack||0) + (defs[y[0]].health||0)) - ((defs[x[0]].attack||0) + (defs[x[0]].health||0)))
+      .map(([id,n])=> `<button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(defs[id], {inPlay:true})}<b class="cnp-sq-n">×${n}</b></button>`).join('');
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
@@ -16025,6 +16126,7 @@ function renderConquestSubTab(body){
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
     wireRewardZoom(panelEl);
+    panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef)));
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
@@ -17563,8 +17665,11 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const rivalName = (cfg.rivalNames && cfg.rivalNames[pick]) || (pick==='hummingbirds' ? 'Rivergate Otter Scout' : 'Sunfeather Fledgling Guard');
   // Castle passives (2026-10-12, user: "Watchtower effects should be included in the tutorial ... the first skirmish might
   // have no effect. Then only the 2nd onwards"): part 1's rival castle is plain; part 2's is the Outskirts Watchtower.
-  const watch = st >= 2 && CHARACTER_DEFS['outskirts-watchtower'];
-  const rivalCharacter = Object.assign({}, watch || CHARACTER_DEFS['castle'], {id: watch ? 'outskirts-watchtower' : 'tutorial-rival', name: watch ? watch.name : rivalName}, cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
+  const tutNode = (()=>{ for(const mp of CONQUEST_MAPS){ const n = mp.nodes.find(x=> x.kind === 'tutorial' && (x.stage === 2 ? 2 : 1) === (st >= 2 ? 2 : 1)); if(n) return n; } return null; })();
+  const chosen = tutNode && tutNode.characterId && CHARACTER_DEFS[tutNode.characterId]; // the editor's Castle choice (2026-10-13)
+  const watch = !chosen && st >= 2 && CHARACTER_DEFS['outskirts-watchtower'];
+  const rivalCharacter = Object.assign({}, chosen || watch || CHARACTER_DEFS['castle'], {id: chosen ? tutNode.characterId : watch ? 'outskirts-watchtower' : 'tutorial-rival', name: chosen ? chosen.name : watch ? watch.name : rivalName},
+    tutNode && tutNode.tutHp ? {health: tutNode.tutHp} : cfg.rivalHp ? {health: (cfg.rivalHp + (st >= 2 ? 2 : 0))} : {}); // 2026-10-12 (user: "make it much easier"): part 2's castle is only 2 sturdier
   const players = {
     1: engine.newPlayer(1, deckCounts, myCharacter),
     2: engine.newPlayer(2, rivalCounts, rivalCharacter),
@@ -25424,7 +25529,7 @@ async function resolveRound(opts){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Armoury (your deck), the Nest and Notices on the map. The Arena opens on the next region.'},
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Camp (your deck), the Nest and Notices on the map. The Arena opens on the next region.'},
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -26275,6 +26380,9 @@ function maybeShowCoachTip(){
   const m = matchState;
   try{ tutorialAllyRemarks(m); }catch(e){}
   try{ if(m && !m.resolving && m.mode !== 'tutorial') lumberDrawNudges(m); }catch(e){}
+  // The shield (2026-10-13, user: "On Map 0-4, teach the player about the shield value"): the first enemy castle with a shield.
+  try{ if(m && !m.over && !m.resolving && !coachOpen && !coachSeen.has('castle-shield') && COACH_MODES.has(m.mode) && m.mode !== 'tutorial' && (m.players[2].hq.shield||0) > 0 && !(m.conquestNode && m.conquestNode.mapId === 'm1' && (()=>{ const f = CONQUEST_MAPS.find(x=> x.id==='m1').nodes.filter(n=> n.kind !== 'tutorial'); return m.conquestNode.nodeId !== (f[f.length-1]||{}).key; })())){ const el = hqTileEl('B');
+    if(el){ showCoachTip({id:'castle-shield', html:'🔷 This castle has a <b class="kw-jargon">Shield</b>: the blue number. Hits break the Shield first, then its Health.', text:'This castle has a Shield: hits break it first, then its Health.', anchor:()=> hqTileEl('B')}, el); return; } } }catch(e){}
   // T-3's lesson (2026-10-13): tougher fights pay more; the less your Castle loses, the higher your rank; some cards need S.
   try{ if(m && !m.over && !m.resolving && !coachOpen && m.conquestNode){ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId), nd = fn && fn.node;
     if(nd && nd.lesson === 'rank'){
@@ -26935,7 +27043,7 @@ const DEFEAT_QUOTES = [
   ['Speak softly and carry a big Otter.', 'Theodore Moosevelt'],
   ['The only thing we have to fear is a full row of Fliers.', 'Franklin D. Roostervelt'],
   ['Ask not what your deck can do for you. Ask what you can cut from it.', 'John F. Kenneduck'],
-  ['Retreat? We are simply advancing toward the Armoury.', 'Douglas MacOtter'],
+  ['Retreat? We are simply advancing toward the Camp.', 'Douglas MacOtter'],
   ['I cannot tell a lie: that was a bad Wait 3.', 'George Washingtoad'],
   ['Eureka! I have found another way to lose. Next, the way to win.', 'Archimouse'],
   ['The best-laid plans of mice and otters often meet a Bee Knight.', 'Robert Burrows'],
@@ -28620,7 +28728,9 @@ function renderVfxForEvent(ev){
     try{ if(el && window.SkillFX && SkillFX.backstab){ const fromLeft = at ? at.getBoundingClientRect().left < el.getBoundingClientRect().left : true; SkillFX.backstab(el, fromLeft); } }catch(e){} }
   // Anti-Air (2026-10-10): a hit on a flier from an Anti-Air unit throws a boomerang that knocks feathers loose.
   if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
-    if(ad && td && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; SkillFX.boomerang(t, a, {flight:420}); } else SkillFX.boomerang(a, t, {flight:420}); } } }catch(e){} }
+    if(ad && td && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420}); } } }catch(e){} }
+  // A boomerang thrown at the castle bounces off it and flies out the top (2026-10-13).
+  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); if(ev.boomerang || (matchState && matchState.boomerangBack === String(ev.attUid))){ matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420}); } else SkillFX.boomerangCastle(a, c, {flight:420}); } } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
   if(ev.type==='boomerangReturn'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Boomerang returns!', 'quick'); if(matchState) matchState.boomerangBack = String(ev.uid); }
   // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
@@ -30434,8 +30544,8 @@ function renderHome(){
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
-        ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Armoury')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
-          : `${big('deck','⛺','Armoury')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
+        ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
+          : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
@@ -31422,7 +31532,7 @@ function renderShopShelves(grid, signedIn){
 let shopTab = 'packs';
 let shopCameFrom = null, pageCameFrom = null;
 const PAGE_SHORTCUTS = [
-  {key:'deck', icon:'⛺', name:'Armoury', open:()=> tabOpen('deck'), go:()=> switchTab('deck'), here:t=> t==='deck'},
+  {key:'deck', icon:'⛺', name:'Camp', open:()=> tabOpen('deck'), go:()=> switchTab('deck'), here:t=> t==='deck'},
   {key:'stomp', icon:'🐾', name:'Stomping Grounds', open:()=> tabOpen('stomp'), go:()=> switchTab('stomp'), here:t=> t==='stomp'},
   {key:'codex', icon:'📖', name:'Codex', open:()=> tabOpen('codex'), go:()=>{ codexSubTab = 'browse'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab !== 'forge'},
   {key:'forge', icon:'🔨', name:'Forge', open:()=> tabOpen('forge'), go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }, here:t=> t==='codex' && codexSubTab === 'forge'},
@@ -33710,7 +33820,7 @@ function placeOverlay(cls, html, ms){
   document.body.appendChild(f); setTimeout(()=> f.remove(), ms || 900);
 }
 const PLACES = {
-  deck: {cls:'tent-scene', icon:'⛺', sign:'Armoury', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
+  deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
   shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
   market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},

@@ -242,6 +242,51 @@ function boomerang(shooter, target, o){
     .to(s, {t:1, duration:back, ease:'power2.out', onUpdate:()=>{ const p = qpt(b, m2, a, s.t); g.set(bm, {x:p.x, y:p.y}); }}, out)
     .to(bm, {scale:.5, opacity:0, duration:.12}, out + back - .12);
 }
+// Boomerang flights (2026-10-13, user: "Hits PAST the enemy, flying far ahead. If its castle, it flies towards the castle,
+// bounces, that goes north past the map. Then it comes from the top of the map on the next turn"). Throw: it curves into the
+// target, hits, and keeps going far past it, off the screen. Castle: it hits the castle, bounces up and flies out the top.
+// Return: next round it drops in from the top of the screen above the target, hits, and spins home to the thrower.
+function boomerangThrow(shooter, target, o){
+  o = o || {}; const g = G(); const a = centre(shooter), b = centre(target);
+  if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
+  const bm = layer('sfx-boomerang', '🪃'); const out = (o.flight || 520)/1000;
+  const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, H = innerHeight, W = innerWidth;
+  const far = {x: b.x + dx/L * Math.max(W, H), y: b.y + dy/L * Math.max(W, H)};
+  const m1 = {x:(a.x + b.x)/2 + dy*0.22, y:(a.y + b.y)/2 - dx*0.22};
+  const s = {t:0}; g.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  const tl = g.timeline({onComplete:()=> bm.remove()});
+  tl.to(s, {t:1, duration:out, ease:'power1.in', onUpdate:()=>{ const p = qpt(a, m1, b, s.t); g.set(bm, {x:p.x, y:p.y}); }})
+    .to(bm, {rotation:`+=${360*5}`, duration:out + .7, ease:'none'}, 0)
+    .add(()=>{ feathers(b.x, b.y, 10); knock(target, dy < 0 ? -60 : 60, 1); if(o.light) o.light(b.x, b.y, [1, 0.95, 0.8], false); o.onImpact && o.onImpact(); }, out)
+    .to(bm, {x:far.x, y:far.y, duration:.7, ease:'power1.in'}, out);
+}
+function boomerangCastle(shooter, castle, o){
+  o = o || {}; const g = G(); const a = centre(shooter), b = centre(castle);
+  if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
+  const bm = layer('sfx-boomerang', '🪃'); const out = (o.flight || 520)/1000;
+  const m1 = {x:(a.x + b.x)/2 + 40, y:(a.y + b.y)/2};
+  const s = {t:0}; g.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  g.timeline({onComplete:()=> bm.remove()})
+    .to(s, {t:1, duration:out, ease:'power1.in', onUpdate:()=>{ const p = qpt(a, m1, b, s.t); g.set(bm, {x:p.x, y:p.y}); }})
+    .to(bm, {rotation:`+=${360*5}`, duration:out + .8, ease:'none'}, 0)
+    .add(()=>{ knock(castle, -40, 0.8); ring(b.x, b.y, 'sfx-ring-dust', 60, 420); o.onImpact && o.onImpact(); }, out)
+    .to(bm, {x:b.x + 30, y:b.y + 26, duration:.12, ease:'power2.out'}, out)
+    .to(bm, {x:b.x + 60, y:-120, duration:.65, ease:'power2.in'}, out + .12);
+}
+function boomerangReturn(thrower, target, o){
+  o = o || {}; const g = G(); const a = centre(thrower), b = centre(target);
+  if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
+  const bm = layer('sfx-boomerang', '🪃'); const down = .45, home = (o.flight || 520)/1000 * 1.15;
+  g.set(bm, {x:b.x - 40, y:-80, xPercent:-50, yPercent:-50});
+  const m2 = {x:(a.x + b.x)/2 - (b.y - a.y)*0.2, y:(a.y + b.y)/2};
+  const s = {t:0};
+  g.timeline({onComplete:()=> bm.remove()})
+    .to(bm, {x:b.x, y:b.y, duration:down, ease:'power2.in'})
+    .to(bm, {rotation:`+=${360*5}`, duration:down + home, ease:'none'}, 0)
+    .add(()=>{ feathers(b.x, b.y, 8); knock(target, -40, 0.9); o.onImpact && o.onImpact(); }, down)
+    .to(s, {t:1, duration:home, ease:'power2.out', onUpdate:()=>{ const p = qpt(b, m2, a, s.t); g.set(bm, {x:p.x, y:p.y}); }}, down)
+    .to(bm, {scale:.5, opacity:0, duration:.12}, down + home - .12);
+}
 // Shield Call: a big round shield drops from above into a slot and lands with a dust ring.
 function shieldDrop(target, o){
   o = o || {}; const g = G(); const c = centre(target);
@@ -284,5 +329,5 @@ function elementDeath(target, kind, o){
     .to(t, kind === 'cold' ? {opacity:0, scale:1.08, duration:.25, ease:'steps(4)'} : kind === 'poison' ? {scaleY:.15, y:c.h*0.4, opacity:0, duration:.55, ease:'power2.in'} : {opacity:0, filter:'brightness(.2) sepia(1)', duration:.55, ease:'power1.in'});
 }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
-root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, shieldDrop, backstab, elementDeath, feathers};
+root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
 })(typeof window !== 'undefined' ? window : globalThis);

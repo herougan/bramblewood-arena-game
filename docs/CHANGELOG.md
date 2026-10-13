@@ -2,6 +2,24 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (02:00)
+- **Skill Codex (Map 9)** and **Map Codex (Map 11)**: two new Codex pages. Skills lists every skill you've met, what it does and what answers it ("Answered by" moved here from the card view). Maps lists every map you've reached with the field effects you've learned there (? until seen).
+- **Card view:** no repeated name or stat tiles (the card shows them); its type is the species with its family's icon; a card that brings another card shows that card and its abilities on the right.
+- **Card editor:** Species picks from every species in the game with its icon, and a new one becomes its own family. Each skill row has a ＋ that adds the same skill at a later level (with a Lv picker); those level skills switch on as the card levels up.
+- **Saving a card's placement** sticks now: the card editor no longer puts the old source back when you save it afterwards.
+- **Cards edited in the cloud before their art existed** show their art again (Shepherd, Owl Nightwatch, Tomcat, Sergeant Bramblefox).
+- **Tutorial castle health** is set beside its Castle in the skirmish editor (the castle choice now applies to the tutorials too).
+- **Deck editors:** click adds a card, Shift+click takes one out (the skirmish editor's deck and its popup).
+- **Classic cards removed** (Otter Centurion and Bee Knight classics).
+- **Map 0:** 0-1's castle is plain; the field effect starts at 0-3 (level I) and is level II at 0-4; 0-4 teaches the castle's Shield.
+- **Boomerang:** it hits and flies on far past its target; against a castle it bounces off and out the top of the map; next round it drops back in from the top, hits, and spins home.
+- **Skirmish card:** a revealed deck is a strip of the real cards with counts, each opening its details.
+- **Codex:** the Factions pool comes first; the skill badges under each card are no longer cut off; Full Art view is 5% wider.
+- **Armoury renamed Camp.**
+- **First visit to a map:** the skirmishes now fall from the sky after the map's name card lifts, each with a landing shadow.
+- **Ranked Live plays Standard** (every card at Level 1), closing D74.
+- Swarm: I couldn't make it count itself (a lone Swarm unit gets +0 in the engine and on screen); a screenshot of the case would help.
+
 ## 2026-10-14 (01:30)
 - **Map 21: The Quiet Summit.** Above the clouds after the Sundered Peak's storm: six fights among goats, rams, yaks, owls and eagles, ending at the Cathedral Eagle. Its own snowy map, with the zoom-out on your first visit. The Test Lab sits here as planned.
 - **Stomping Grounds (Map 21, after its third fight):** your Hero is trained here now, on its own page; the Armoury no longer has a Hero button.
