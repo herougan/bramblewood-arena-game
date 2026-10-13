@@ -102,7 +102,7 @@ New calls for you:
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **D70** | **Endless dungeons** (your 17:37 brief: endless x/y-scrolling submaps, codes like 6-MM-1 to 6-MM-50, the same fight getting harder). My proposal: the first opens when Map 6's boss falls (Murgle Mayhem, 6-MM), a new one every 5 maps after that (11, 16, 21…), each starting at its map's difficulty and adding about 4% enemy stats a floor, a mini-boss every 10th floor and a checkpoint after it | Decide where they introduce themselves | Say yes, or name the maps |
+| **D70** | **Endless dungeons: Murgle Mayhem (6-MM) is built** on my proposal (opens after Map 6, 50 floors, +4% a floor, a mini-boss every 10th, every floor a checkpoint) | You hadn't picked the placement, so this is my reading; it's easy to move | Play a few floors; then say where the next ones go (my plan: one every 5 maps) |
 
 ## Done overnight (your 00:17 list)
 

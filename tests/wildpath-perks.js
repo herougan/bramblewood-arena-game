@@ -34,4 +34,6 @@ const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:
 { const {e, P} = mk(); P[1].perks = {echo:true}; const sp = defs['fungal-colossus'].effects.onDeathSpawn;
   e.debugSpawnCard(P, so, 1, 'fungal-colossus', 'left', {}, []); const fc = all(P[1])[0]; e.debugDamage(P, so, fc.uid, 999, {}, []);
   const n = all(P[1]).length, want = (sp.count||1) + 1; ok(n === want, `Echoing Wood: the first tokens come with a copy (${n} vs ${want})`); ok(P[1].perks.echo === false, 'Echoing Wood is used up'); }
+{ const {e, P} = mk(); P[2].perks = {floorPct: 0.4}; e.debugSpawnCard(P, so, 2, 'k-slow', 'left', {}, []); const c = all(P[2])[0];
+  ok(c.atk === 6 && c.maxHp === 28, `endless floor +40%: 4/20 → ${c.atk}/${c.maxHp}`); }
 console.log(`wildpath-perks: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

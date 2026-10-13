@@ -1895,6 +1895,7 @@ function skirmishCode(mapId, nodeKey){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return '';
   const n = mapNumberOf(mapId); if(n===null) return '';
   const node = m.nodes.find(x=> x.key===nodeKey); if(!node) return '';
+  if(node.code) return node.code; // endless dungeons: 6-MM-1 … (2026-10-13)
   if(node.kind==='tutorial') return `${n}-0`;
   if(node.kind==='raidboss') return `${n}-R`;
   const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss');
@@ -14054,6 +14055,29 @@ const CONQUEST_MAPS = [
 // above. CONQUEST_MAPS_BASELINE keeps the original; applyNodeEdits() rebuilds every map's node list
 // from it plus the edits (patched fields, admin-added skirmishes, removed added ones). Edits live in
 // this browser and, when published, in card_overrides as `__cfg:map-nodes:<mapId>` (live for all).
+// Endless dungeons (D70, 2026-10-13, user: "Their submaps are special, being eternally y or x-scrollable. Then their subcode is
+// like a abbreviation of their name, like maybe murgle mayhem: 6-MM-1 to 6-MM-50 ... They all are the same btw, just more and
+// more difficult"; placement on my proposal, since there was no answer yet: the first opens when Map 6's last fight falls).
+// One side map, 50 floors climbing a long scrolling trail. Every floor is the same fight; each floor's enemies arrive 4%
+// stronger than the last (rounded), and every 10th floor is a mini-boss with two extra big cards. Clears are kept, so a loss
+// never sends you back: each floor is its own checkpoint.
+function endlessDungeon(cfg){
+  const n = cfg.floors || 50, nodes = [];
+  for(let f = 1; f <= n; f++){
+    const boss = f % 10 === 0, deck = Object.assign({}, cfg.deck, boss ? cfg.bossAdds : {});
+    nodes.push({key:`${cfg.code.toLowerCase()}-${f}`, kind: boss ? 'miniboss' : 'skirmish', name: boss ? `${cfg.bossName}, floor ${f}` : `${cfg.name}, floor ${f}`,
+      icon: boss ? cfg.bossIcon : cfg.icon, deck, hqHp: Math.round((cfg.baseHq||40) + f*3 + (boss ? 20 : 0)), floor: f, code: `${cfg.mapNumber}-${cfg.code}-${f}`,
+      flavor: boss ? cfg.bossFlavor : cfg.flavor, requires: f === 1 ? [] : [`${cfg.code.toLowerCase()}-${f-1}`],
+      rewards:{first:{gold: 15 + f*3 + (boss ? 40 : 0), dust: 4 + f + (boss ? 20 : 0)}},
+      fixedPos:{x: [50, 66, 50, 34][f % 4], y: +(98 - (f - 1) * (96 / (n - 1))).toFixed(2)}}); // floor 1 at the bottom, climbing up
+  }
+  return {id: cfg.id, sub: true, parent: cfg.parent, endless: true, entry: cfg.entry, name: cfg.name, icon: cfg.icon, blurb: cfg.blurb, sequential: true, nodes};
+}
+CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', entry:{x:88, y:16, after:'8-8', label:'Murgle Mayhem'},
+  name:'Murgle Mayhem', icon:'🐸', bossName:'The Murgle King', bossIcon:'👑', floors:50, baseHq:40,
+  blurb:'A sinkhole of bog water under the Swampmire that goes down further than anyone has counted. Something down there keeps sending the frogs back up.',
+  flavor:'More frogs. Angrier frogs.', bossFlavor:'Every tenth floor something bigger is waiting in the reeds.',
+  deck:{'meadow-frog':3, 'puddle-hopper':3, 'bog-leech':3, 'marsh-wisp':2, 'willow-o-wisp':2}, bossAdds:{'swamp-alligator':2, 'crocodile-ambusher':1}}));
 const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
 const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
 let nodeEdits = {};
@@ -15513,7 +15537,7 @@ function renderConquestSubTab(body){
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
-    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${tutPos && (tutPhase || tutZoomOut) ? `--tut-x:${tutPos.x}%; --tut-y:${tutPos.y}%;` : ''}">
+    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' : ''}" id="conquestCanvas" style="${map.endless ? `min-height:${map.nodes.length * 86}px;` : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${tutPos && (tutPhase || tutZoomOut) ? `--tut-x:${tutPos.x}%; --tut-y:${tutPos.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
@@ -15582,6 +15606,10 @@ function renderConquestSubTab(body){
       }).join('')}
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
+  if(map.endless){ // start the long climb at your next floor
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+      const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
+      if(el && main){ const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
   if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
@@ -15629,7 +15657,7 @@ function renderConquestSubTab(body){
   }
   // Crowded maps (2026-10-12, user: "The more skirmishes and interactibles and 'destinations' there are, the smaller all
   // these icons are. It's default from 0-6. Then it gets 5% smaller for every next thing"): 0.95^(count - 6).
-  { const cv = document.getElementById('conquestCanvas'); if(cv){ const n = cv.querySelectorAll('.map-node, .map-spot').length; cv.style.setProperty('--icon-scale', Math.pow(0.95, Math.max(0, n - 6)).toFixed(3)); } }
+  { const cv = document.getElementById('conquestCanvas'); if(cv){ const n = cv.querySelectorAll('.map-node, .map-spot').length; cv.style.setProperty('--icon-scale', map.endless ? '1' : Math.pow(0.95, Math.max(0, n - 6)).toFixed(3)); } } // endless maps keep full-size floors
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   try{ startMapAdornments(document.getElementById('conquestCanvas'), map); }catch(e){}
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
@@ -17862,6 +17890,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
   try{ if(wildpathsOpen()) applyWildpathPerks(engine, players[1], stats); }catch(e){}
+  if(node.floor > 1) players[2].perks = Object.assign({}, players[2].perks || {}, {floorPct: (node.floor - 1) * 0.04}); // endless dungeon floors
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,

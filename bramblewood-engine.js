@@ -466,6 +466,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // that carries pl.perks gets them, so the enemy's copies of the same cards are untouched.
   function applyArrivalPerks(pl, c){
     const k = pl && pl.perks; if(!k || !c) return; const d = CARD_DEFS[c.defId] || {}, e = d.effects || {};
+    if(k.floorPct > 0){ const f = 1 + k.floorPct; const a = Math.round((c.atk||0) * f), h = Math.round((c.hp||0) * f); c.baseAtk += a - c.atk; c.atk = a; c.maxHp += h - c.hp; c.hp = h; } // endless dungeon floors (2026-10-13)
     if(k.briars && (c.atk|0) <= 3 && (c.atk|0) > 0){ c.atk += k.briars; c.baseAtk += k.briars; }
     if(k.oldGrowth && (d.wait|0) >= 2){ c.atk += 1; c.baseAtk += 1; c.hp += 2; c.maxHp += 2; }
     if(k.hedgeWall && e.guardian){ c.hp += 2*k.hedgeWall; c.maxHp += 2*k.hedgeWall; }
