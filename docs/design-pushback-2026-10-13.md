@@ -33,3 +33,10 @@ You asked: is it too much, and is the game boring? These are my honest answers. 
 5. **Retire the bottom 30 skills.** Use the Card check to find the ones that never move a win rate, and merge or delete them.
 
 None of this is urgent for balance; it decides whether a new player stays past Map 5. The fastest test is a playtester's first 30 minutes: note every moment they ask "why did that happen?"
+
+## Your answers (15:58)
+
+- **Conditions:** up to the map designer. Tide and Diurnal/Nocturnal units are **Zeitgebers**: like day/night in Magic, the first one played starts its cycle. (Built: in a day-by-default fight, the first Diurnal, Nocturnal or Crepuscular unit starts the day/night cycle; the first Tide unit starts the tide.)
+- **Currencies:** keep them; they're contextual, and fewer would give each one too many uses. A new player meets only two (forging and packs). D82 vetoed.
+- **Misses:** the 1-in-2 miss chance is meant as tension, like Tyrant Unleashed.
+- **D79** (two plays a turn): no. **D80** (forecast): yes, built. **D81** (condition cap): not now.

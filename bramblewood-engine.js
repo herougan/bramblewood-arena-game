@@ -697,7 +697,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-13 (10:57 list: "Tide and Ebb cycle only begins once the first Tide card is played"): the tide waits for the first
   // Tide unit to arrive (either side); the round after, it runs Flow, Ebb, Flow… (Ebb, Flow, Ebb, High tide with High tide on).
   let tideStart = null;
-  function noteTideCard(def){ if(tideStart === null && def && def.effects && def.effects.tide) tideStart = turnNo; }
+  function noteTideCard(def){ if(tideStart === null && def && def.effects && def.effects.tide) tideStart = turnNo; noteZeitgeber(def); }
+  // Zeitgebers (2026-10-13, user: "tide and diurnal/nocturnal units start a system just like day/night or carnival rides in Magic
+  // the Gathering"; the word is Zeitgeber, a time-giver): in a fight that's day by default (no phase set by the map designer), the
+  // first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round: Day first, PL rounds each.
+  // The first Tide unit does the same for the tide (tideStart, above).
+  const zeitOK = !rules.phase || !!rules.zeitgeber;
+  let zeitStart = null;
+  function noteZeitgeber(def){ const e = def && def.effects; if(zeitStart !== null || !zeitOK || phaseMode !== 'day' || !e) return;
+    if(e.diurnal || e.diurnalHp || e.nocturnal || e.nocturnalHp || e.crepuscular || e.crepuscularHp) zeitStart = turnNo; }
   function getTide(){ if(tideStart === null || !(turnNo > tideStart)) return null; const d = turnNo - tideStart; if(rules.highTide){ const k = d % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return d % 2 === 1 ? 'flow' : 'ebb'; }
   function tideRising(){ const t = getTide(); return t === 'flow' || t === 'high'; }
   function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
@@ -717,6 +725,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(mode === 'windy' && turnNo % 2 === 1){ if(recordEvents && events && windRound !== turnNo){ windRound = turnNo; events.push({type:'wind', windy:false, round: turnNo}); } return; }
     windNow = true; windGusts += 1; windFrom = (windGusts % 2 === 1) ? 1 : 2; // the first gust is at the player's back
     if(windRound !== turnNo){ windRound = turnNo; if(recordEvents && events) events.push({type:'wind', windy:true, from: sideOf ? sideOf(windFrom) : (windFrom===1?'A':'B'), round: turnNo}); }
+  }
+  // The forecast (D80, 2026-10-13): what next round's start will bring, worked out with the same rules roundStart uses, so the
+  // board can say it a round early. Random picks (which unit the frost or the eruption hits) stay hidden; only that they come.
+  function forecast(){
+    const r = turnNo + 1, out = {round:r};
+    let ph = getPhase();
+    if(!(field && field.id==='moon') && dayNight && r > 1 && ((!phaseFixed && !phaseOff) || (zeitStart !== null && r > zeitStart))){
+      const PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? r - zeitStart : r - 1, first = (rr % (2*PL)) < PL;
+      ph = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+      if(twilightOn(curPlayers)){ const k = Math.floor(rr / PL) % 5; ph = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
+    }
+    out.phase = ph; out.phaseChanges = !!(ph && ph !== getPhase());
+    if(tideStart !== null && r > tideStart){ const d = r - tideStart; out.tide = rules.highTide ? ({0:'high', 2:'flow'}[d % 4] || 'ebb') : (d % 2 === 1 ? 'flow' : 'ebb'); }
+    const wm = rules.wind; if(wm === 'gale' || (wm === 'windy' && r % 2 === 0)) out.wind = {from: (windGusts + 1) % 2 === 1 ? 1 : 2};
+    if(field){ out.field = field.id; out.fieldLeft = field.rounds; }
+    if(Number(rules.eruption) > 0 && r >= 2) out.eruption = Number(rules.eruption);
+    return out;
   }
   function isWindy(){ return windNow; }
   function windSideOf(pid){ return !windNow ? null : (pid === windFrom ? 'tail' : 'head'); }
@@ -784,12 +809,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
     }
-    if(dayNight && round > 1 && !phaseFixed && !phaseOff){
-      const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3); const first = ((round - 1) % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+    if(dayNight && round > 1 && ((!phaseFixed && !phaseOff) || (zeitStart !== null && round > zeitStart))){
+      const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? round - zeitStart : round - 1; const first = (rr % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
       // Twilight (2026-10-13, 10:57 list: "Diurnal and Nocturnal are both active. Crepuscular are also active - but only in Twilight
       // ... D/N/D/N/T repeating"): on twilight maps, or when either deck carries a Crepuscular card, the cycle is Day, Night, Day,
       // Night, Twilight, each PL rounds long.
-      if(twilightOn(curPlayers)){ const k = Math.floor((round - 1) / PL) % 5; phase = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
+      if(twilightOn(curPlayers)){ const k = Math.floor(rr / PL) % 5; phase = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
       if(phase === 'night' && before !== 'night'){ lunar = (lunar + 1) % 8; if(recordEvents && events && anyMoonborn(players)) events.push({type:'moon', phase: lunar, round}); }
       if(phase !== before && recordEvents && events) events.push({type:'phase', phase, round});
       if(phase === 'day' && before === 'night'){
@@ -4549,7 +4574,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

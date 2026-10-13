@@ -1,6 +1,13 @@
 # Action items
 
-_Updated 2026-10-13, 4:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 5:15 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 17:15 (your 15:58 list)
+
+| Item | What's in the game now |
+|---|---|
+| Zeitgebers | In a fight that's day by default, the first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round (Day first). Maps with a phase set by the designer keep it. The first Tide unit already starts the tide |
+| D80 | A "Next round" strip by the field: nightfall or dawn, the tide's turn, the wind (at your back or in your face) and eruptions |
 
 ## Done at 16:30 (your 14:50 list)
 
@@ -13,14 +20,7 @@ _Updated 2026-10-13, 4:30 pm. One combined list. You said I can work through the
 | 5 | Map 0 shows only the tutorials until part 2 is won (admins too, unless the layout editor is open), zoomed 25%, with a gold ring pointer; winning part 2 zooms out to the whole map |
 | 7 | [Design pushback](design-pushback-2026-10-13.md) |
 
-**New calls from the pushback (D79–D82):**
-
-| ID | What | Recommendation |
-|---|---|---|
-| **D79** | Two plays a turn from Map 5 (the Actions rule), to give each turn a real choice | Try it on 3 fights first |
-| **D80** | A "next round" forecast strip (wind, frost targets, nightfall) | Yes |
-| **D81** | At most two board conditions per fight, one signature per map | Yes |
-| **D82** | Cut the 8 currencies to 3 before Steam | Yes, after the economy questions (D75) |
+**Pushback calls:** D79 no, D80 built (the forecast), D81 not now, D82 vetoed.
 
 ## Done at 15:30 (your 14:21 list)
 

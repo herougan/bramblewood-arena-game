@@ -11936,7 +11936,7 @@ function skirmishTargetWinRate(mapId, node){
 // D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
 const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
-function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
+function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase){ r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day'; if(r.phase === 'day') r.zeitgeber = true; } // a Zeitgeber unit can start the cycle (2026-10-13)
   if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
   if(r.dark == null && DARK_MAPS.has(mid)) r.dark = DARK_MAPS.get(mid); // complete darkness: only Darksight sees (2026-10-13)
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
@@ -17767,7 +17767,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   }
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
-  try{ applyWildpathPerks(engine, players[1], stats); }catch(e){}
+  try{ if(wildpathsOpen()) applyWildpathPerks(engine, players[1], stats); }catch(e){}
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
@@ -20322,7 +20322,7 @@ function renderMatchUI(){
         <div class="ico deck-back-mark">🌰</div>
         ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
-      ${fieldEffectCardHTML(m)}
+      ${fieldEffectCardHTML(m)}${forecastPillHTML(m)}
       <div class="top-row-controls">
         <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
@@ -25057,7 +25057,7 @@ async function resolveRound(opts){
       try{ if(mapNumberOf(m.conquestNode.mapId) === 0 && !featureUnlocked('deck')){
           if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
           if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned); } }catch(e){}
-      try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast('⛓️ Prospector: +1 Iron Shard.', 'ok'); }catch(e){} }, 2000); } }catch(e){}
+      try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0 && wildpathsOpen()){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast('⛓️ Prospector: +1 Iron Shard.', 'ok'); }catch(e){} }, 2000); } }catch(e){}
       try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(`🔋 You found an Energy capsule. Tap ⚡ Energy to use it (+${ENERGY_CAPSULE_AMOUNT}).`, 'ok'); }catch(e){} }, 1800); } }catch(e){}
       try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(`${J.icon} ${J.name}: step ${jr.step} of ${J.steps.length}${jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}`, 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
@@ -25428,14 +25428,28 @@ function tidePillHTML(m){
 // Fields that act every round wear the clock on their south border, like a unit's trigger badge (2026-10-12, user: "On the
 // frost effect card, also include that on its south border - let's start doing that to make the game consistent").
 const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
+// Next round, said a round early (D80, 2026-10-13): nightfall and dawn, the tide's turn, the wind and the eruption.
+function forecastPillHTML(m){
+  try{ if(!m || m.over || m.mode === 'tutorial' || !m.engine || !m.engine.forecast) return '';
+    const f = m.engine.forecast(), bits = [], mine = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 2 : 1;
+    if(f.phaseChanges && matchHasPhaseCards(m)) bits.push(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)');
+    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) bits.push(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb');
+    if(f.wind) bits.push(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face');
+    if(f.eruption) bits.push(`🌋 Eruption ${f.eruption}`);
+    if(f.field && f.fieldLeft === 1) bits.push('The field clears');
+    if(!bits.length) return '';
+    return `<div class="forecast-pill" role="status" aria-label="${escapeAttr('Next round: ' + bits.join(', '))}"><span class="fp-k">Next round</span>${bits.map(b=> `<span class="fp-b">${escapeHtml(b)}</span>`).join('')}</div>`;
+  }catch(e){ return ''; }
+}
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField();
   const phase = (dayNightOn(m) && matchHasPhaseCards(m)) ? m.engine.getPhase() : null;
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
-  const roundInPhase = ((Math.max(1, m.round||1) - 1) % PL) + 1;
+  const zs = (m.engine && m.engine.getZeitStart) ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1;
+  const roundInPhase = (rr0 % PL) + 1;
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
   const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
-  const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${Math.ceil(Math.max(1, m.round||1)/PL)*PL}. At dawn both sides draw a card." aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
+  const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${(m.round||1) + (PL - roundInPhase)}. At dawn both sides draw a card.${zs != null ? ' A Zeitgeber started the cycle.' : ''}" aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
     : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: Nocturnal and Diurnal bonuses both apply, and Crepuscular units wake up.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
   const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
   if(!f) return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML;
@@ -29922,7 +29936,7 @@ function renderHome(){
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
-        ${adminEntryVisible() || wildpathPoints().total > 0 ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
+        ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: passive skills for the Conquest road"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
         ${featureUnlocked('tavern') ? (()=>{ const rd = energyUpgradesReady(); return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${rd ? `⚡ ${rd} Stamina ready` : 'Stamina'}</small>${rd ? `<span class="home-badge">${rd}</span>` : ''}</button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
@@ -30175,10 +30189,17 @@ function wildpathTreeSVG(tree){
 }
 // Path points (2026-10-12, action-items lap, D32 with my suggested default: "1 per map, +1 per boss S rank"): worked out
 // from Conquest progress, so every save already has its points. Spending them waits until the trails leave preview.
+// Wildpaths wait for Map 21 (2026-10-13, user: "remove it till about Map 21. At that point, do not count Skirmishes from Map 0-20
+// for this"): the note and the page open once Map 20's last fight is won, and only maps from 21 on earn points.
+const WILDPATH_FROM_MAP = 21;
+function wildpathsOpen(){
+  try{ const m20 = mainConquestMaps()[WILDPATH_FROM_MAP - 1]; if(!m20) return false; const key = mapRewardNodeKey(m20);
+    return !!key && (loadConquestProgress().completed || []).includes(conquestNodeId(m20.id, key)); }catch(e){ return false; }
+}
 function wildpathPoints(){
   const pr = loadConquestProgress(), done = new Set(pr.completed || []), ranks = pr.ranks || {};
   let maps = 0, sRanks = 0;
-  mainConquestMaps().filter(m=> !m.reserved).forEach(m=>{
+  mainConquestMaps().filter((m, i)=> !m.reserved && i >= WILDPATH_FROM_MAP).forEach(m=>{
     const key = mapRewardNodeKey(m); if(key && done.has(conquestNodeId(m.id, key))) maps++;
     (m.nodes||[]).forEach(n=>{ if((n.ender || ['boss','finalboss'].includes(baseKind(n.kind||''))) && rankAtLeast(ranks[conquestNodeId(m.id, n.key)], 'S')) sRanks++; });
   });
