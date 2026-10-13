@@ -186,6 +186,11 @@
     ['Animation', 'Walking map pawn (hops node to node)', 'live', 'Conquest map'], ['Animation', 'Hourglass flip on Wait', 'idea', 'Board cards'], ['Animation', 'Idle breathing on board cards', 'live', 'Board cards'], ['Animation', 'Low-HP tremble', 'live', 'Units at ≤25% HP'], ['Battlefield', 'Castle cracks by HP stage', 'live', 'Castles'], ['Animation', 'Ready pulse', 'live', 'Wait reaches 0'],
     ['Combat', 'Frost creep on frozen units', 'live', 'Freeze'],['Combat', 'Pixel shatter for tokens', 'live', 'Token deaths'],['Combat', 'Chromatic glitch on shock', 'live', 'Shock'],['Combat', 'Feather burst on flyers', 'live', 'Hits on flyers'],['Battlefield', 'Sudden-death red sky', 'live', 'Turn 20 onward'],['Battlefield', 'Storm lightning with thunder', 'live', 'Storm and rain fields'],['Animation', 'Card drag trail', 'live', 'Dragging a hand card'],['Animation', 'Deck shuffle at match start', 'live', 'Match start'],['Animation', 'Draw flip from the deck', 'live', 'Every draw'],['Animation', 'Victory toss (launch, knock about, land)', 'live', 'Match end'],['Cards', 'Lattice foil (43° grid)', 'idea', 'Foils tab'],['Cards', 'Starlight sparkle finish', 'live', 'Legendary and up'],['Animation', 'Card emotes (22 moods)', 'live', 'Board cards'],['Animation', 'Leader summon throne', 'live', 'Summoning your leader'],['Combat', 'Raid telegraph: boss glows, arrow down the lane', 'live', 'Raid trench'],['Battlefield', 'Water ripples under landing cards', 'live', 'Water and rain fields'],
     ['Battlefield', 'Raindrops on cards', 'live', 'Water and rain fields'],['Screens', 'Boss entrance', 'live', 'Boss skirmishes'],['Screens', 'Coin shower on rewards', 'live', 'Results screen'],['TBC', 'Combo counter', 'idea', 'Coming next'],['TBC', 'Card tilt in hand', 'idea', 'Coming next'],['Screens', 'Seasonal maps', 'live', 'Conquest maps'],
+    ['Combat', 'Skill effects: Swarm, Regeneration, Poison cloud, Bleed, Thorns, Earthquake, Quick strike, Evasive dodge', 'part', 'Skills tab (Lab)'],
+    ['Combat', 'Skill effects: Cleave, Guardian wall, Dynamite, Helmet deflect, Darksight, Frostbite chill, Immolation scorch, Lantern glow', 'part', 'Skills tab (Lab)'],
+    ['Cards', 'Foils: Aurora, Galaxy swirl, Molten gold, Frost crystal, Oil slick, Sakura, Glitter field, Holo scanlines', 'part', 'Foils tab (Lab)'],
+    ['Battlefield', 'Shockwave ripple (DOM ring that shoves cards)', 'part', 'Card ideas tab (Lab)'], ['Battlefield', 'Castle crumble: collapse, sink, topple', 'part', 'Card ideas tab (Lab)'],
+    ['Cards', 'Level-up burst', 'part', 'Card ideas tab (Lab)'], ['Cards', 'Card unlock sparkle', 'part', 'Card ideas tab (Lab)'], ['Animation', 'Skirmish sky-drop', 'part', 'Card ideas tab (Lab)'],
   ];
   const label = {live:'<span class="st live">Live</span>', part:'<span class="st part">Partly</span>', idea:'<span class="st idea">Idea</span>'};
   $('#allTbl').innerHTML = '<thead><tr><th>Area</th><th>Effect</th><th>Status</th><th>Where</th></tr></thead><tbody>' + ALL.map(r=> `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${label[r[2]]}</td><td>${r[3]}</td></tr>`).join('') + '</tbody>';
@@ -225,6 +230,23 @@
     backstab(){ const t = pick(); S('backstabSlice'); SkillFX.backstab(t, Math.random() < 0.5); setTimeout(()=> dmg(t, '-6', 'crit'), 170); },
     frostdeath(){ const t = pick(); S('iceShatter'); SkillFX.elementDeath(t, 'cold', {particlesOnly:true}); },
     poisondeath(){ const t = pick(); S('bubble'); SkillFX.elementDeath(t, 'poison', {particlesOnly:true}); },
+    // 2026-10-14: sixteen more, named after real skills (SkillFX additions)
+    swarm(){ const t = pick(); S('buzz'); SkillFX.swarm(shooter(), t, {onImpact:()=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
+    regen(){ const t = mine()[0]; S('bloomTone'); SkillFX.regen(t, {onDone:()=>{ S('healTone'); dmg(t, '+2', 'heal'); }}); },
+    poisoncloud(){ const t = pick(); S('bubble'); SkillFX.poisonCloud(t, {onImpact:()=>{ S('poisonApply'); dmg(t, '-1', 'poison'); }}); },
+    bleed(){ const t = pick(); S('gashTone'); SkillFX.bleedDrip(t, {onImpact:()=>{ S('bleedApply'); dmg(t, '-2', 'bleed-tick'); }}); },
+    thorns(){ const d = mine()[0], a = enemy()[0]; S('hitAt', 3, false); SkillFX.knock(d, 90, .8); SkillFX.thorns(d, a, {onImpact:()=>{ S('rendTone'); dmg(a, '-1'); }}); },
+    earthquake(){ S('earthquakeTone'); SkillFX.earthquake(enemy(), {host:arena, onEachImpact:(t)=>{ dmg(t, '-2'); }}); },
+    quick(){ const t = pick(); S('quick'); SkillFX.quickStrike(shooter(), t, {onImpact:()=>{ S('hitAt', 3, false); dmg(t, '-3'); }}); },
+    evasive(){ const t = mine()[2]; S('dodge'); SkillFX.knock(enemy()[2], 90, .5); SkillFX.evasiveDodge(t, {fromLeft:Math.random() < .5}); },
+    cleave(){ S('sweepTone'); SkillFX.cleave(shooter(), enemy(), {onEachImpact:(t)=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
+    guardian(){ const t = mine()[1]; S('bulwarkTone'); SkillFX.guardian(t, {dir:-1}); },
+    dynamite(){ const t = enemy()[1]; S('launch'); SkillFX.dynamite(shooter(), t, {host:arena, onImpact:()=>{ S('boom'); dmg(t, '-6', 'heat'); }}); },
+    helmet(){ const t = mine()[0]; S('clang'); SkillFX.helmetDeflect(t, {from:-90, onImpact:()=> dmg(t, '0', 'blocked')}); },
+    darksight(){ S('stealthTone'); SkillFX.darksight(shooter(), {targets:enemy()}); },
+    frostbite(){ const t = pick(); S('freezeChime'); SkillFX.frostChill(t, {onImpact:()=> dmg(t, '-2', 'cold')}); },
+    scorch(){ const t = pick(); S('burnAway2'); SkillFX.scorch(t, {onImpact:()=> dmg(t, '-3', 'heat')}); },
+    lantern(){ S('readyChime'); SkillFX.lanternGlow(shooter(), {cards:[mine()[0], mine()[2]]}); },
   };
   $$('[data-skill]').forEach(b=> b.addEventListener('click', ()=>{ setSpeed(); run[b.dataset.skill] && run[b.dataset.skill](); }));
   const sl = $('#skSlow'); if(sl) sl.addEventListener('change', setSpeed);
@@ -296,7 +318,35 @@
     const t = host.querySelector('.card-tile'); t.style.cssText = ''; drawFlipVfx([t], $('#drawStage .deck-widget'), 0); };
   cardRun.parade = ()=>{ victoryParade($('#paradeStage'), -1); try{ SoundKit.win && SoundKit.win(); }catch(e){} };
   $$('[data-card]').forEach(b=> b.addEventListener('click', ()=> cardRun[b.dataset.card] && cardRun[b.dataset.card]()));
+  // General effects (2026-10-14): shockwave, castle crumble, level-up, unlock, sky-drop (all SkillFX).
+  let crumbling = false;
+  const genRun = {
+    shockwave(){ const tiles = $$('#waveStage .card-tile'); S('hitAt', 12, true); SkillFX.shockwave(tiles[1], null, {size:380, cards:[tiles[0], tiles[2]]}); },
+    collapse(){ crumble('collapse'); }, sink(){ crumble('sink'); }, topple(){ crumble('topple'); },
+    levelup(){ const t = $('#lvlStage .card-tile'); S('heroLevel'); SkillFX.levelUp(t); },
+    unlock(){ const t = $('#unlockStage .card-tile'); S('unlock'); SkillFX.unlockSparkle(t); },
+    skydrop(){ const tiles = $$('#dropStage .card-tile'); if(window.gsap){ gsap.killTweensOf(tiles); gsap.set(tiles, {clearProps:'transform'}); } S('launch'); SkillFX.skyDrop(tiles, {onEachLand:()=>{ S('play'); S('boom'); }}); },
+  };
+  function crumble(v){ if(crumbling) return; crumbling = true; const t = $('#crumbleStage .card-tile'); S('castleCollapse');
+    SkillFX.castleCrumble(t, {variant:v, host:$('#crumbleStage'), restoreAfter:800}); setTimeout(()=>{ crumbling = false; }, 2900); }
+  $$('[data-gen]').forEach(b=> b.addEventListener('click', ()=>{ setSpeed(); genRun[b.dataset.gen] && genRun[b.dataset.gen](); }));
 })();
+
+// Lab foils (2026-10-14): finishes in lab-foils.css that need moving bits get a .foil-fx layer here: drips for
+// Molten gold, petals for Sakura, glints for Glitter field, the crystal layer for Frost crystal. Positions are fixed per index so it looks the same each load.
+function decorateLabFoils(root){
+  (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
+    const kind = t.classList.contains('holo-molten') ? 'molten' : t.classList.contains('holo-sakura') ? 'sakura' : t.classList.contains('holo-sparkle') ? 'sparkle' : t.classList.contains('holo-frost') ? 'frost' : '';
+    if(!kind || t.querySelector(':scope > .foil-fx')) return;
+    const f = document.createElement('span'); f.className = 'foil-fx'; f.setAttribute('aria-hidden', 'true');
+    if(kind === 'molten') f.innerHTML = [12, 31, 52, 68, 86].map((x, k)=> `<i style="left:${x}%; --len:${14 + (k*11)%22}px; animation-delay:${-(k*1.7)%6}s"></i>`).join('');
+    if(kind === 'sakura') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(k*29)%96}%; --d:${6 + (k*1.3)%4}s; --dl:${-(k*0.9)}s; --sx:${((k%5) - 2)*10 + 8}px; transform:scale(${0.8 + (k%3)*0.2})"></i>`).join('');
+    if(kind === 'sparkle') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(9 + (k*41)%84)}%; top:${(7 + (k*59)%86)}%; --dl:${((k*0.31)%1.9).toFixed(2)}s; --h:${(k*67)%360}"></i>`).join('');
+    const glare = t.querySelector(':scope > .holo-glare'); t.insertBefore(f, glare || null);
+  });
+}
+window.decorateLabFoils = decorateLabFoils;
+try{ decorateLabFoils(document); }catch(e){}
 
 // Card treatment centre (2026-10-08): swap the card across every finish, and an auto-tilt that
 // walks the light around each card so the foils show without hovering.
@@ -307,7 +357,7 @@
   const paint = ()=>{ const html = (window.TREAT_CARDS||{})[sel.value]; if(!html) return; const plus = star && star.checked;
     stages.forEach(st=>{ let cls = st.dataset.treat; if(plus && cls !== 'holo-starlight') cls = (cls ? cls + ' ' : '') + 'holo-starlight';
       st.innerHTML = cls ? html.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ') : html; });
-    if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments')); };
+    if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments')); decorateLabFoils(document.getElementById('treatments')); };
   sel.addEventListener('change', paint); if(star) star.addEventListener('change', paint);
   let t0 = performance.now();
   const loop = now=>{
@@ -325,6 +375,7 @@
   };
   requestAnimationFrame(loop);
   if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments'));
+  decorateLabFoils(document.getElementById('treatments'));
 })();
 
 

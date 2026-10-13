@@ -16,6 +16,7 @@ skillfx=open(f'{ROOT}/bramblewood-skillfx.js').read()
 gsap=open(f'{ROOT}/gsap.min.js').read().replace('</script','<\\/script')
 gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
 C=lambda k,v='plain': cards[k][v]
+labfoils=open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lab-foils.css'), encoding='utf-8').read()
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
 .lab{max-width:1180px; margin:0 auto; padding:24px 16px 80px; color:var(--ink);}
@@ -51,6 +52,7 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 .stage{position:relative; min-height:170px; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:10px; background:var(--surface-2); overflow:visible;}
 .stage.dark{background:#1b2416;}
 .stage .card-tile{width:110px !important; height:138px !important; margin:0;}
+#waveStage .card-tile, #dropStage .card-tile{width:72px !important; height:92px !important;}
 #breathStage .card-tile, #paradeStage .card-tile{width:72px !important; height:92px !important;} #drawStage .card-tile{width:84px !important; height:108px !important;} #paradeStage .board-card{width:72px !important; height:92px !important; flex:none;}
 .stage .board-card{position:relative;}
 .btns{display:flex; flex-wrap:wrap; gap:6px;}
@@ -102,13 +104,23 @@ TREATS = [('', 'No foil', 'The everyday print.', 'live'),
   ('holo-reverse', 'Reverse holo', 'Rainbow foil on the frame, with the art left plain.', 'new'),
   ('holo-prism', 'Prism', 'Sharp prismatic facets that turn around the light.', 'new'),
   ('holo-lattice', 'Lattice', 'A grid of fine foil lines crossed at 43°, each line catching the rainbow as the light moves.', 'new'),
-  ('holo-starlight', 'Starlight', 'Twinkling four-point star sparkles. Its own layer: Legendary cards wear it over Cosmos, and it can go over any finish.', 'live')]
+  ('holo-starlight', 'Starlight', 'Twinkling four-point star sparkles. Its own layer: Legendary cards wear it over Cosmos, and it can go over any finish.', 'live'),
+  # 2026-10-14 (user: "more foil vfx"): Lab-only finishes, CSS in tools/effects-lab/lab-foils.css, ready to move into the game.
+  ('holo-aurora', 'Aurora', 'Slow northern-lights curtains of green, teal and violet drifting across the art.', 'lab'),
+  ('holo-galaxy', 'Galaxy swirl', 'A spiral of violet and blue arms turning slowly around the light, over a fine star field.', 'lab'),
+  ('holo-molten', 'Molten gold', 'A hot gold sheen and glowing rim; liquid gold drips from the top edge and swells.', 'lab'),
+  ('holo-frost', 'Frost crystal', 'Fern-like ice crystals grow in from the corners, then thaw, over a cold blue sheen.', 'lab'),
+  ('holo-oilslick', 'Oil slick', 'Thin-film rainbow pooled in organic blotches that slide as the light moves.', 'lab'),
+  ('holo-sakura', 'Sakura', 'A soft pink sheen with cherry petals drifting down across the card.', 'lab'),
+  ('holo-sparkle', 'Glitter field', 'Dense multicolour glitter that flashes where the light falls, with a few bright glints.', 'lab'),
+  ('holo-scanline', 'Holo scanlines', 'Fine scanlines with a bright bar rolling down and the odd flicker, like a projected hologram.', 'lab')]
+STATUS_PILL = {'live': ('live', 'Live'), 'new': ('idea', 'New'), 'lab': ('part', 'Lab')}
 def treat_tile(k, cls):
     t = C(k)
     return t.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ', 1) if cls else t
 TREAT_KEYS = ['legendary', 'epic', 'rare', 'fire', 'bee', 'common']
 def treat_cards(k):
-    return ''.join(f'<div class="fx treat"><div class="treat-stage" data-treat="{c}">{treat_tile(k, c)}</div><h3>{n} <span class="st {"live" if st=="live" else "idea"}">{"Live" if st=="live" else "New"}</span></h3><p>{d}</p></div>' for c, n, d, st in TREATS)
+    return ''.join(f'<div class="fx treat"><div class="treat-stage" data-treat="{c}">{treat_tile(k, c)}</div><h3>{n} <span class="st {STATUS_PILL[st][0]}">{STATUS_PILL[st][1]}</span></h3><p>{d}</p></div>' for c, n, d, st in TREATS)
 TREAT_OPTS = ''.join(f'<option value="{k}">{cards[k]["name"]}</option>' for k in TREAT_KEYS)
 TREAT_JSON = json.dumps({k: cards[k]['plain'] for k in TREAT_KEYS})
 TREAT_CARDS = treat_cards('legendary')
@@ -118,6 +130,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>{gamecss}</style>
 <style>{page_css}</style>
+<style>{labfoils}</style>
 <div class="lab">
 <header>
   <h1>Bramblewood Effects Lab</h1>
@@ -142,6 +155,13 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <button class="btn" data-skill="frostdeath">❄️ Frost death shards</button><button class="btn" data-skill="poisondeath">☠ Poison death drips</button>
   <label class="sk-slow"><input type="checkbox" id="skSlow"> Slow motion (×4)</label>
 </div>
+<h3 class="disp-h">More skills <span class="st part" style="vertical-align:middle">Lab</span></h3>
+<div class="btns sk-btns" id="skMore" style="margin-top:4px">
+  <button class="btn" data-skill="swarm">🐜 Swarm</button><button class="btn" data-skill="regen">💚 Regeneration</button><button class="btn" data-skill="poisoncloud">☠ Poison cloud</button><button class="btn" data-skill="bleed">🩸 Bleed</button>
+  <button class="btn" data-skill="thorns">🌵 Thorns</button><button class="btn" data-skill="earthquake">🌎💥 Earthquake</button><button class="btn" data-skill="quick">👢 Quick strike</button><button class="btn" data-skill="evasive">🍃 Evasive dodge</button>
+  <button class="btn" data-skill="cleave">🪓 Cleave (Sweep)</button><button class="btn" data-skill="guardian">🛡 Guardian wall</button><button class="btn" data-skill="dynamite">🧨 Dynamite</button><button class="btn" data-skill="helmet">🪖 Helmet deflect</button>
+  <button class="btn" data-skill="darksight">👁️ Darksight</button><button class="btn" data-skill="frostbite">🥶 Frostbite chill</button><button class="btn" data-skill="scorch">🔥 Immolation scorch</button><button class="btn" data-skill="lantern">🏮 Lantern glow</button>
+</div>
 <div class="tbl" style="margin-top:12px"><table><thead><tr><th>Skill</th><th>Status</th><th>Beats</th></tr></thead><tbody>
 <tr><td>🏹 Arrow</td><td><span class="st live">Live</span></td><td>Draw (lean back, arrow pulled) → release, recoil, string ring → arcing, accelerating flight → stick, quiver, knock-back, splinters</td></tr>
 <tr><td>🔥 Fire Arrow</td><td><span class="st live">Live</span></td><td>As Arrow, plus a flame lit on the tip while drawing, an ember trail, a burst of flame, an ignite ring and a scorched edge on the target</td></tr>
@@ -155,6 +175,22 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <tr><td>🗡️ Backstab</td><td><span class="st live">Live</span></td><td>A dagger flashes in from the attacker's side and leaves a thin red slash; the target is shoved away from it</td></tr>
 <tr><td>❄️ / ☠ Element deaths</td><td><span class="st live">Live</span></td><td>Cold deaths shed ice shards with a glassy crack; poison deaths drip green as the card melts</td></tr>
 <tr><td>💚 Heal · 🛡️ Shield up · 🚩 Rally</td><td><span class="st idea">Prototype</span></td><td>Rising pluses and rings; a shield dome; a banner with golden chevrons rising through allies</td></tr>
+<tr><td>🐜 Swarm</td><td><span class="st part">Lab</span></td><td>A buzzing cloud lifts off the attacker, converges on the target, mobs it, then scatters</td></tr>
+<tr><td>💚 Regeneration</td><td><span class="st part">Lab</span></td><td>Green motes spiral in from around the card and a glowing stitch knits it closed</td></tr>
+<tr><td>☠ Poison cloud</td><td><span class="st part">Lab</span></td><td>Green puffs billow up around the card, bubbles rise and the card sickens for a beat</td></tr>
+<tr><td>🩸 Bleed</td><td><span class="st part">Lab</span></td><td>A quick red cut, then drops swell on the lower edge, fall and splat below</td></tr>
+<tr><td>🌵 Thorns</td><td><span class="st part">Lab</span></td><td>Spikes burst from the defender toward the attacker, who is stung and knocked back</td></tr>
+<tr><td>🌎💥 Earthquake</td><td><span class="st part">Lab</span></td><td>The board rumbles, cracks tear open under each card and they jump in dust</td></tr>
+<tr><td>👢 Quick strike</td><td><span class="st part">Lab</span></td><td>Speed lines and afterimages as the attacker darts in, strikes and darts back</td></tr>
+<tr><td>🍃 Evasive dodge</td><td><span class="st part">Lab</span></td><td>A blink sidestep leaving an afterimage; leaves flutter and “Miss!” pops</td></tr>
+<tr><td>🪓 Cleave (Sweep)</td><td><span class="st part">Lab</span></td><td>One wide glowing arc swept across the row; each card is hit as the blade passes</td></tr>
+<tr><td>🛡 Guardian wall</td><td><span class="st part">Lab</span></td><td>A hex shield wall rises in front of the card and pulses twice as it draws attacks</td></tr>
+<tr><td>🧨 Dynamite</td><td><span class="st part">Lab</span></td><td>A lit stick is lobbed, fizzes, then blows: flash, fireball, smoke, debris and a rumble</td></tr>
+<tr><td>🪖 Helmet deflect</td><td><span class="st part">Lab</span></td><td>A helmet flashes up; a bright ping, sparks, and a chip skips away</td></tr>
+<tr><td>👁️ Darksight</td><td><span class="st part">Lab</span></td><td>The card darkens, two glowing eyes open and glance about, and hidden foes are marked</td></tr>
+<tr><td>🥶 Frostbite chill</td><td><span class="st part">Lab</span></td><td>An icy breath rolls across, flakes settle, rime creeps in from the edges</td></tr>
+<tr><td>🔥 Immolation scorch</td><td><span class="st part">Lab</span></td><td>Flames lick up from the lower edge in a heat shimmer; embers rise and the edge chars</td></tr>
+<tr><td>🏮 Lantern glow</td><td><span class="st part">Lab</span></td><td>A lantern swings above the card, casting a warm flickering pool; moths circle</td></tr>
 </tbody></table></div>
 </section>
 
@@ -174,13 +210,18 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <div class="fx"><h3>Victory toss <span class="st live">Live</span></h3><div class="stage dark" id="paradeStage" style="gap:6px">{{C_P1}}{{C_P2}}{{C_P3}}</div><div class="btns"><button class="btn small" data-card="parade">🚩 Win</button></div><p>Under the Victory sign the winners are launched into the air one after another, get knocked about, land with a squash and settle back in place. Some cheer with an emote.</p><div class="where">Match end, winning side</div></div>
   <div class="fx"><h3>Card emotes <span class="st live">Live</span></h3><div class="stage dark" id="emoteStage">{stage_card('bee')}</div><div class="btns" id="emoteBtns"></div><p>Small emoji bubbles for moments that don't need words: summoned, attacking, hurt, low Health, dodging, healed, a kill, defeat and victory, and idle fidgets. They share the speech cooldown, so a card never talks and emotes at once.</p><div class="where">Board units during a battle</div></div>
   <div class="fx"><h3>Heat haze <span class="st live">Live</span></h3><div class="stage dark" id="hazeStage">{stage_card('fire')}</div><p>Fire creatures have hot air shimmering up off the card: faint wavy bands drifting upward.</p><div class="where">Fire and volcanic units on the board</div></div>
+  <div class="fx"><h3>Shockwave ripple <span class="st part">Lab</span></h3><div class="stage dark" id="waveStage">{{C_W1}}{{C_W2}}{{C_W3}}</div><div class="btns"><button class="btn small" data-gen="shockwave">💥 Shockwave</button></div><p>A ring of rippled, brightened air rolls out from the middle card; neighbours are shoved outward as it passes. For castle hits and big crits.</p><div class="where">SkillFX.shockwave</div></div>
+  <div class="fx"><h3>Castle crumble <span class="st part">Lab</span></h3><div class="stage dark" id="crumbleStage">{{C_CASTLE2}}</div><div class="btns"><button class="btn small" data-gen="collapse">🧱 Collapse</button><button class="btn small" data-gen="sink">⬇ Sink</button><button class="btn small" data-gen="topple">↘ Topple</button></div><p><b>Collapse:</b> the tower breaks into bands that tumble down. <b>Sink:</b> it shudders and sinks into the ground in dust. <b>Topple:</b> it leans over its foot and crashes.</p><div class="where">SkillFX.castleCrumble</div></div>
+  <div class="fx"><h3>Level-up burst <span class="st part">Lab</span></h3><div class="stage dark" id="lvlStage">{{C_LVL}}</div><div class="btns"><button class="btn small" data-gen="levelup">⭐ Level up</button></div><p>Gold rays turn behind the card, it pops, a LEVEL UP! ribbon stamps on and stars rise.</p><div class="where">SkillFX.levelUp</div></div>
+  <div class="fx"><h3>Card unlock sparkle <span class="st part">Lab</span></h3><div class="stage dark" id="unlockStage">{{C_UNLOCK}}</div><div class="btns"><button class="btn small" data-gen="unlock">🔓 Unlock</button></div><p>The card starts greyed and locked; the padlock shakes and springs open, colour floods back with a glint and sparkles burst out.</p><div class="where">SkillFX.unlockSparkle</div></div>
+  <div class="fx"><h3>Skirmish sky-drop <span class="st part">Lab</span></h3><div class="stage dark" id="dropStage" style="overflow:hidden">{{C_D1}}{{C_D2}}{{C_D3}}</div><div class="btns"><button class="btn small" data-gen="skydrop">🪂 Drop in</button></div><p>Cards fall from the sky one after another, their shadows growing on the ground, and land with a squash and a dust ring.</p><div class="where">SkillFX.skyDrop · map skirmish start</div></div>
   <div class="fx"><h3>Critical hit <span class="st live">Live</span></h3><div class="stage dark" id="critStage">{{C_CRIT}}</div><div class="btns"><button class="btn small" data-card="crit">▶ Critical hit</button></div><p>A 👊 number bursts out big on a gold starburst and recoils to size; a quick flash on the card. No CRIT! word any more.</p></div>
 </div></section>
 
 <section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">The first list is all built. Here is the next one, not built yet; veto or reorder freely.</p>
 <div class="fx-grid"><div class="fx tbc"><h3>🔗 Combo counter <span class="st idea">TBC</span></h3><p>Several hits in one round build a x2, x3… counter over the board. Waiting on a decision: cosmetic only, a small reward per step, or drop it.</p></div><div class="fx tbc"><h3>🧭 Card tilt in hand <span class="st idea">On hold</span></h3><p>Hand cards lean toward the pointer. On hold: the style guide keeps the magnetic tilt out of the hand strip, because it fights the drag and selection motion there.</p></div></div></section>
 
-<section id="treatments"><h2>Foils</h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. The first four are live in the game today; the rest are ready to assign to print variants, pack rarities or events.</p>
+<section id="treatments"><h2>Foils</h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. Live ones are in the game today; New ones are in the game's stylesheet, ready to assign to print variants, pack rarities or events; Lab ones (Aurora onward) exist only here so far (tools/effects-lab/lab-foils.css).</p>
 <div class="bf-controls"><label>Card <select id="treatCard">{TREAT_OPTS}</select></label><label class="sk-slow"><input type="checkbox" id="treatAuto" checked> Auto-tilt</label><label class="sk-slow"><input type="checkbox" id="treatStar"> ＋ Starlight on every card</label></div>
 <div class="treat-grid">{TREAT_CARDS}</div></section>
 
@@ -306,7 +347,7 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 <script src="effects-lab.js"></script>
 '''
 rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
- '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
+ '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_W1}':C('rare'),'{C_W2}':C('legendary'),'{C_W3}':C('bee'),'{C_CASTLE2}':C('castle'),'{C_LVL}':C('epic'),'{C_UNLOCK}':C('legendary'),'{C_D1}':C('common'),'{C_D2}':C('fire'),'{C_D3}':C('bee'),'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
 for k,v in rep.items(): html=html.replace(k, v)
 open(f'{ROOT}/.fxcat/effects.html','w',encoding='utf-8').write(html)
 print(len(html))

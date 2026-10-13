@@ -89,3 +89,9 @@ Standard PvP (built 2026-10-13) sits outside both: every card at Level 1, so the
 1. Do the bundle sizes and the 4.99 USD Bramble Pass look right?
 2. Should Krooni and Laurels buy cosmetics only?
 3. Ranked Live: level cap or Standard format?
+
+## Answers (closed 2026-10-14, D75)
+
+1. Bundle sizes and the 4.99 USD Bramble Pass stand as first prices, to revisit with real store tiers.
+2. Krooni and Laurels buy cosmetics only.
+3. Ranked Live uses the Standard format (built: every card at Level 1).

@@ -78,6 +78,16 @@ The Effects Lab's **Card treatment centre** shows every print finish on the same
 | Gold leaf | warm gold sheen and gold rim (prestige/event) | 🆕 ready to assign |
 | Reverse holo | rainbow foil on the frame, art left plain | 🆕 ready to assign |
 | Prism | sharp prismatic facets that turn with the light | 🆕 ready to assign |
+| Aurora (`holo-aurora`) | slow northern-lights curtains of green, teal and violet | 🧪 Lab only (2026-10-14) |
+| Galaxy swirl (`holo-galaxy`) | violet and blue spiral arms turning around the light over a star field | 🧪 Lab only |
+| Molten gold (`holo-molten`) | hot gold sheen, glowing rim, liquid gold dripping from the top edge | 🧪 Lab only |
+| Frost crystal (`holo-frost`) | fern-like ice crystals grow in from the corners and thaw, over a cold sheen | 🧪 Lab only |
+| Oil slick (`holo-oilslick`) | thin-film rainbow in organic blotches that slide with the light | 🧪 Lab only |
+| Sakura (`holo-sakura`) | pink sheen with cherry petals drifting down the card | 🧪 Lab only |
+| Glitter field (`holo-sparkle`) | dense multicolour glitter flashing where the light falls, plus glints | 🧪 Lab only |
+| Holo scanlines (`holo-scanline`) | fine scanlines, a rolling bright bar and the odd flicker | 🧪 Lab only |
+
+The Lab-only finishes live in `tools/effects-lab/lab-foils.css`. Molten gold, Sakura, Glitter field and Frost crystal also need a `.foil-fx` child layer, which the Lab's `decorateLabFoils()` adds; to ship one, copy its CSS block into `arena_template.html` and have `decorateHolo()` add the same `.foil-fx` markup.
 
 The same finishes can be previewed in game from **Codex → 🔍 View large** (admins see all of them; players see Plain and the foil they own). There the light is driven by the card's turn (trig on the spin angle) rather than the pointer.
 
@@ -85,7 +95,7 @@ The same finishes can be previewed in game from **Codex → 🔍 View large** (a
 
 | Effect | What it looks like | Where | How | Status |
 |---|---|---|---|---|
-| **Ripple / shockwave** | A ring of distortion expanding from an impact | Castle hit, big crits, a Swamp splash | Background only: [Overlay]. Real board distortion: [DOM shader] (Chrome) or a short [SVG] displacement pulse | 📝 |
+| **Ripple / shockwave** | A ring of distortion expanding from an impact | Castle hit, big crits, a Swamp splash | Background only: [Overlay]. Real board distortion: [DOM shader] (Chrome) or a short [SVG] displacement pulse | ✅ floor ring (`layer.wave`); 🧪 DOM ring that blurs and brightens what's under it and shoves nearby cards (`SkillFX.shockwave`, Lab, 2026-10-14) |
 | **Heat haze** | A wavering shimmer of the air | Fire cards, volcano and foundry maps, burning castle | Maps: [Art shader]/[Overlay] (✅ on maps). Over cards: [SVG] animated displacement on a small region, or [DOM shader] | 🟡 maps only |
 | **Burn / dissolve** | The card burns away from the edges with glowing embers | Death, discard, "castle destroyed" | [CSS]: a ragged-edge SVG mask slides up through the card, a matching glow line rides the edge, embers lift off (`burnAwayVfx`). An [Art shader] noise version would look richer | ✅ card deaths and the falling castle (shudder + dust + burn under the Victory/Defeat sign), 2026-10-04. Discards keep their fly-to-pile animation (a pitch isn't a death) |
 | **Pixel shatter** | The card breaks into its own pixels, which fall and fade | Token deaths, "Exile" | [Overlay] 2D canvas: draw the card art, then animate blocks | 📝 |
@@ -297,3 +307,38 @@ Home keeps CalmMusic's endless improvising piano; battles keep BattleMusic's sev
 - **Element deaths:** cold deaths shed ice shards, poison deaths drip green (on top of the existing burn-away for heat).
 
 **Still sketches (VFX Playground):** cream pearl foil shader on cards, living ink rarity frame, DrawSVG claw/bite marks, shield-to-thorns morph, SplitText titles, time-of-day map grading, chaos-returns map sketch.
+
+## 2026-10-14 additions: more skill effects, foils and general effects (Effects Lab)
+
+User: "on our effects lab, add more effects, more skill effects, more foil vfx." Everything below is playable in the Effects Lab and not wired into battles yet. The skill and general effects are new functions in `bramblewood-skillfx.js` (shared with the game), each named after a real skill key. They inject their own small stylesheet once (`#sfx-more-css`, classes `sfx-*`), so the game can call them without template changes. Every layer is removed when the effect ends. With reduced motion (or without GSAP) the motion is skipped and the callbacks still fire.
+
+**Skill effects (16, Skills tab → "More skills"):**
+
+| Skill (key) | Function | Look |
+|---|---|---|
+| 🐜 Swarm (`swarm`) | `SkillFX.swarm(attacker, target)` | A buzzing cloud lifts off the attacker, converges on the target, mobs it, then scatters |
+| 💚 Regeneration (`regen`) | `SkillFX.regen(target)` | Green motes spiral in from around the card; a glowing stitch knits it closed |
+| ☠ Poison (`poison`) | `SkillFX.poisonCloud(target)` | Green puffs billow up around the card, bubbles rise, the card sickens for a beat |
+| 🩸 Bleed (`bleed`) | `SkillFX.bleedDrip(target)` | A quick red cut; drops swell on the lower edge, fall and splat |
+| 🌵 Thorns (`thorns`) | `SkillFX.thorns(defender, attacker)` | Spikes burst toward the attacker, who is stung and knocked back |
+| 🌎💥 Earthquake (`earthquake`) | `SkillFX.earthquake(cards, {host})` | The board rumbles; cracks tear open under each card and they jump in dust |
+| 👢 Quick (`quick`) | `SkillFX.quickStrike(attacker, target)` | Speed lines and afterimages as the attacker darts in, strikes and darts back |
+| 🍃 Evasive (`evasive`) | `SkillFX.evasiveDodge(target, {fromLeft})` | A blink sidestep with an afterimage; leaves flutter and "Miss!" pops |
+| 🪓 Cleave (`sweep`) | `SkillFX.cleave(attacker, targets)` | One wide glowing arc swept across the row; each card is hit as the blade passes |
+| 🛡 Guardian (`guardian`) | `SkillFX.guardian(target, {dir})` | A hex shield wall rises in front of the card and pulses twice |
+| 🧨 Dynamite (`dynamite`) | `SkillFX.dynamite(thrower, target, {host})` | A lit stick is lobbed and fizzes, then blows: flash, fireball, smoke, debris, a rumble |
+| 🪖 Helmet (`helmet`) | `SkillFX.helmetDeflect(target, {from})` | A helmet flashes up; a bright ping, sparks, a chip skips away |
+| 👁️ Darksight (`darksight`) | `SkillFX.darksight(target, {targets})` | The card darkens, two glowing eyes open and glance about, and foes are marked |
+| 🥶 Frostbite (`frostbite`) | `SkillFX.frostChill(target)` | An icy breath rolls across, flakes settle, rime creeps in from the edges |
+| 🔥 Immolation (`immolation`) | `SkillFX.scorch(target)` | Flames lick up from the lower edge in a heat shimmer; embers rise, the edge chars |
+| 🏮 Lantern (`lantern`) | `SkillFX.lanternGlow(target, {cards})` | A lantern swings above the card and casts a warm, flickering pool; moths circle |
+
+**General effects (5, Card ideas tab):**
+- **Shockwave ripple** (`SkillFX.shockwave(xOrEl, y, {cards})`): a ring of rippled, brightened air (a `backdrop-filter` ring) rolls out, and cards in its path are shoved outward as it passes. For castle hits and big crits.
+- **Castle crumble** (`SkillFX.castleCrumble(castle, {variant})`), three variants. *Collapse:* the tower breaks into three bands that tumble down. *Sink:* it shudders and sinks into the ground in dust. *Topple:* it leans over its foot and crashes.
+- **Level-up burst** (`SkillFX.levelUp(target, {text})`): gold rays turn behind the card (a card-shaped hole keeps the art clear), it pops, a LEVEL UP! ribbon stamps on and stars rise.
+- **Card unlock sparkle** (`SkillFX.unlockSparkle(target)`): a greyed card's padlock shakes and springs open, colour floods back with a glint, and sparkles burst out.
+- **Skirmish sky-drop** (`SkillFX.skyDrop(cards, {onEachLand})`): cards fall from the sky one after another, their shadows growing on the ground, and land with a squash and a dust ring.
+
+**Foils (8, Foils tab, marked Lab):** Aurora, Galaxy swirl, Molten gold, Frost crystal, Oil slick, Sakura, Glitter field, Holo scanlines. See the treatment table above.
+

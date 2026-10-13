@@ -51,3 +51,11 @@ Every player gets the floor's reward chest. The last floor gives a pick of three
 1. Plan timer: 30 seconds, or longer for casual rooms?
 2. Shared castle, or one castle per player where losing yours makes you a spectator?
 3. Matchmaking: friends-only rooms first, public queue later?
+
+## Answers (closed 2026-10-14, D76)
+
+1. Plan timer: 30 seconds, 60 in casual rooms.
+2. One shared castle.
+3. Friends-only rooms first, a public queue later.
+
+Building starts with a 2-player version once the `coop_rooms` table is applied ("apply it").

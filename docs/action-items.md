@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-13, 11:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-14, 3:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
 
 ## Done at 23:30 (your 20:55, 21:36 and 22:05 lists)
 
@@ -170,23 +170,21 @@ New calls for you:
 
 ## 1. Your calls
 
-Every open item, with **(a) my pushback** (what worries me about it) and **(b) my recommendation**. Reply with the ID and a word ("D36 yes", "D24 keep").
+**Cleared 2026-10-14 (you asked to clear every action item).** Each is closed on my recommendation; say the ID to reopen one.
 
-| ID | What | (a) Pushback | (b) Recommendation |
-|---|---|---|---|
-| **D27** | Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit | None | Keep |
-| **D39** | 22:40 readings (Inspiring, Loyal/Usurper, Worthy, Tailwind, Pitchfork, Pitching) | Pitchfork changed again on 23:42 (Trident + Pierce), so that reading is retired | Keep the rest |
-| **D55** | `world_events` table for call-outs and GM messages | A live Supabase write | Say "apply it" (with T3/S1/S2 if you like) |
-| **D74** | **Standard PvP scope.** Ranked Live, PvP strangers, Dungeon and Conquest stay Collection-only | Ranked Live with levels is pay-to-win-ish | Later: make Ranked Live Standard, or cap levels |
-| **D75** | **Economy** ([doc](economy-monetization-2026-10-13.md)): Gold Leaves bundles 0.99–99.99 USD, a 4.99 USD Bramble Pass, monthly pack bonuses at 10/25/50/80/120 packs | Prices are first guesses; SGD comes from each store's tier | Answer the three questions at the end of the doc |
-| **D76** | **Co-op dungeon** ([doc](coop-dungeon-design-2026-10-13.md)): 30-second simultaneous plan, shared castle, friends-only rooms first | Needs a new `coop_rooms` table (live write) and a 4-seat host sync | Answer the doc's three questions; then I build a 2-player version first |
-| **D77** | **Steam: free-to-play or paid** ([plan](steam-launch-plan-2026-10-13.md)) | Paid splits the economy between web and Steam | Decide by month 2 (December) |
-| **D78** | **Map 0 swap window** shows after every Map 0 win until the Armoury opens (Map 0 has 4 fights, so about 3–4 swaps) | You said about 3 | Keep |
-| **T3 / S1 / S2** | One-use fight seeds, admin player list, anti-cheat tier 1 | All three write to the live Supabase, so they wait for you | Say "apply it" when you're at the desk |
+| ID | Closed as |
+|---|---|
+| D27 | Kept: Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit |
+| D39 | Kept, except the retired Pitchfork reading (it's Trident + Pierce now) |
+| D74 | **Built:** Ranked Live plays Standard (every card at Level 1); friendly invites keep their own format |
+| D75 | Answered in the economy doc: the bundle sizes and the 4.99 USD Bramble Pass stand as first prices; Krooni and Laurels buy cosmetics only; Ranked uses Standard (D74) |
+| D76 | Answered in the co-op doc: a 30-second plan timer (60 in casual rooms), one shared castle, friends-only rooms first. Building it waits on the `coop_rooms` table (below) |
+| D77 | Recommendation recorded: free-to-play on Steam with a cosmetic-leaning shop, to keep one economy across web and Steam. Revisit by December |
+| D78 | Moot: the Camp (Armoury) opens on Map 0 now, and Maps 0–1 swap in teaching cards instead |
 
-**Closed today:** D36 (Frenzy reworked to your rule), D46 (Rabbit Kit replaces the Quarry Mole), D58 (your egg rates), D59 (a free Base copy from each map's boss), D60 (Caldera Heart, ratings 350–500), D61 (enemy levels from Map 5), D52 (your map list is in).
+**Parked, not open items:** D55 (`world_events`), T3 / S1 / S2 and the D76 `coop_rooms` table all write to the live Supabase, so they wait for you to say "apply it". Nothing else is waiting on you.
 
-**Closed tonight:** D21/D22 (built), D29 (done), D30 (all 22 faction-pack cards have art), D31, D33, D37.
+**Closed earlier:** D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.
 
 ## 2. Where things stand
 
