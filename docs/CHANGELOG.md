@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (18:00)
+- **Wildpaths wait for Map 21.** The Home note and the perks stay hidden until Map 20's last fight is won, and only maps from 21 on earn Path points.
+- **UI audit fixes.**
+  - Phone fights fit the screen: castle, deck and graveyard share a row, the leader and hand the next, and Pass turn floats bottom-right.
+  - Quick Battle, PvP and other off-map fights get a map's ground instead of a flat grey board.
+  - One card count everywhere (Home's Codex note, Profile).
+  - The floating Play tab bar no longer covers the last Arena and Raid cards.
+  - The Tavern note has its own spot on Home instead of sitting on the Play tile.
+  - Readable Community title and Codex subtitle; Forge tabs scroll on phones; the Field kit heading no longer squeezes.
+  - No more twin daily notices; the Test tab is called Test Lab.
+
 ## 2026-10-13 (17:15)
 - **Zeitgebers.** In a fight that's day by default, the first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round (Day first), like the first Tide unit starts the tide. Maps whose designer set a phase keep it.
 - **Next round forecast.** A strip by the field says what next round brings: nightfall or dawn, the tide's turn, the wind (at your back or in your face) and eruptions.

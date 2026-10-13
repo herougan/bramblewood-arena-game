@@ -1,6 +1,15 @@
 # Action items
 
-_Updated 2026-10-13, 5:15 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 6:00 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 18:00 (your 16:09 note)
+
+| Item | What's in the game now |
+|---|---|
+| Wildpaths | Hidden until Map 21 is reached (Map 20's last fight won); only maps 21+ give points |
+| UI audit | Phone fight layout, art on off-map boards, one card count, tab bar clearance, Tavern note spot, contrast fixes, Forge tabs, twin daily notices, "Test Lab" |
+
+**Still open from the UI audit (Low/Medium):** ability badges overlap attack and health on small cards (phone hand, Armoury strip); the phone map's fullscreen button sits behind the Energy pill; toasts cover the phone HUD; Codex sort is missing on phones; duplicate back/home buttons on Shop, Autobattle and Raid; "?" placeholders in the Shop's subfaction row; low-contrast Home header pills.
 
 ## Done at 17:15 (your 15:58 list)
 

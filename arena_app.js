@@ -4259,7 +4259,7 @@ function codexStatsHTML(defs){
     ['Unlocked by you', pctOf(d=> !d.locked && !isCardHiddenForPlayer(d))]];
   const pick = CHARTS.find(c=> c[0]===codexStatsChart) || CHARTS[0];
   return `<div class="codex-stats ${codexStatsOpen?'is-open':''}" id="codexStatsBox">
-    <div class="section-divider group-header" style="margin-top:22px;"><span class="st-label">Codex Stats</span><span class="st-sub">Breakdowns across all ${n} cards.</span>
+    <div class="section-divider group-header" style="margin-top:22px;"><span class="st-label">Codex Stats</span><span class="st-sub">Breakdowns across the ${n} cards in the Codex.</span>
       <button type="button" class="btn small ${codexStatsOpen?'ghost':''}" onclick="toggleCodexStats()" aria-expanded="${codexStatsOpen}">${codexStatsOpen ? 'Hide' : '📊 Reveal stats'}</button></div>
     ${codexStatsOpen ? `<div class="cx-facts">${facts.map(([k,v])=> `<div class="cx-fact"><b>${v}</b><span>${k}</span></div>`).join('')}</div>
       <label class="cx-chart-pick">Chart <select onchange="setCodexStatsChart(this.value)" aria-label="Choose a chart">${CHARTS.map(c=> `<option value="${c[0]}" ${c===pick?'selected':''}>${escapeHtml(c[1])}</option>`).join('')}</select></label>
@@ -4615,7 +4615,9 @@ function battlefieldMapClass(m){
     const oc = MAP_BATTLEFIELD_CLASS[override] || '';
     return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' : oc;
   }
-  const mapId = m && m.conquestNode && m.conquestNode.mapId;
+  let mapId = m && m.conquestNode && m.conquestNode.mapId;
+  // 2026-10-13 (UI audit: the Arena's board was a flat grey box): fights off the map borrow a map's ground, picked once per match.
+  if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id)); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   return cls && MAP_ART_IDS.has(mapId) ? cls + ' has-floor-art' : cls;
 }
@@ -10094,7 +10096,7 @@ function renderPlay(){
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
-          ${(adminModeEnabled || featureUnlocked('testlab')) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test</button>` : ''}
+          ${(adminModeEnabled || featureUnlocked('testlab')) ? `<button class="tab-btn ${playSubTab==='sandbox'?'active':''}" data-playtab="sandbox" role="tab" aria-selected="${playSubTab==='sandbox'}"><span class="tab-emoji">🧪</span> Test Lab</button>` : ''}
         </div>
         <div class="play-subtabs-actions">
           <!-- 2026-09-26 (explicit request: "The energy left should be displayed in the Play
@@ -12729,7 +12731,10 @@ function syncDailyNotices(q){
   const hour = new Date().getHours();
   DAILY_QUEST_SLOTS.forEach((h, slot)=>{
     if(hour < h || q.dailyList.some(x=> x.slot === slot)) return;
-    const qd = rollDailyQuest(q.day, slot, 0); qd.base = (q.daily||{})[qd.counter]||0; q.dailyList.push(qd);
+    let qd = rollDailyQuest(q.day, slot, 0);
+    // 2026-10-13 UI audit: two identical notices could land on one day; reroll a twin (same task and goal) a few times.
+    for(let k = 1; k < 6 && q.dailyList.some(x=> x.counter === qd.counter && x.goal === qd.goal); k++) qd = rollDailyQuest(q.day, slot, 100 + k);
+    qd.base = (q.daily||{})[qd.counter]||0; q.dailyList.push(qd);
   });
   return q;
 }
@@ -29879,7 +29884,7 @@ function homeTileDetails(){
     for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
   }catch(e){}
   try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · ⚔ ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
-  try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = `${ids.filter(id=> !isCardHiddenForPlayer(defs[id]) && !defs[id].locked).length} / ${ids.length} cards`; }catch(e){}
+  try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = (()=>{ const c = collectionStats(); return `${c.owned} / ${c.total} cards`; })(); }catch(e){}
   try{ const owned = Object.keys(myCardCopies||{}).filter(k=> (myCardCopies[k]||[]).length).length; out.nest = owned ? `${owned} card${owned===1?'':'s'} collected` : 'Win cards to fill it'; }catch(e){}
   try{ const packs = (typeof SHOP_PACKS_DEFAULT!=='undefined' ? SHOP_PACKS_DEFAULT : []).filter(x=> packOnSale(x) && x.cost && x.cost.gold); if(packs.length){ const c = Math.min(...packs.map(x=> x.cost.gold)); out.shop = `Packs from ${c} 🍁`; } }catch(e){}
   try{ const live = liveRaidDefs(); if(live.length) out.raid = live.length >= 2 ? `${live.length} bosses this week` : `This week: ${live[0].name}`; }catch(e){}
@@ -32452,8 +32457,9 @@ setTimeout(()=>{ try{ checkBirthdayGift(); }catch(e){} }, 4000);
 // (wallet, achievements, what rivals see), right is account (sign-in, about you, log out).
 function collectionStats(){
   const defs = getCardDefs();
-  const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !d.hero; });
-  const owned = ids.filter(id=> !defs[id].locked || (myCardCopies[id]||[]).length);
+  // One count everywhere (2026-10-13 UI audit: Home, Codex and Profile each counted cards differently): collectible cards only.
+  const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isHofVariant(d) && !(SPELLS_SHELVED && d.cardType === 'spell'); });
+  const owned = ids.filter(id=> (!defs[id].locked && !isCardHiddenForPlayer(defs[id])) || (myCardCopies[id]||[]).length);
   const levelSum = owned.reduce((t, id)=> t + getCardLevel(id), 0);
   // Skins (for now): each card has its plain print and its foil. Owning the card unlocks the plain
   // one; owning a foil copy unlocks the foil. More finishes will add to the total.
