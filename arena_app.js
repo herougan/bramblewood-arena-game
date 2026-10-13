@@ -12665,6 +12665,18 @@ const QUEST_RANK_REWARD = {
   D:{gold:40, dust:50, xp:25}, C:{gold:50, dust:60, xp:30}, B:{gold:60, dust:70, xp:40}, A:{gold:100, dust:110, xp:70},
   S:{gold:280, dust:300, gems:6, xp:180}, SS:{gold:560, dust:600, gems:15, xp:360}, SSS:{gold:1100, dust:1200, gems:30, metal:3, xp:750}};
 const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
+// Field-kit items from quests (D54, 2026-10-13, user: "it comes from dailies, weeklies and so on (won't balance now)"): an A
+// notice or better gives items, and each finished weekly tier gives a few. Random kinds, capped as usual; only once the
+// traveller's kit is open.
+const QUEST_KIT_ITEMS = {daily:{A:1, S:1, SS:2, SSS:3}, weekly:[3, 2, 1]};
+function grantKitItems(n){
+  if(!n || !featureUnlockedSafe('fieldkit')) return [];
+  const o = loadItems(), ids = Object.keys(ITEM_DEFS), got = [];
+  for(let i = 0; i < n; i++){ const id = ids[Math.floor(Math.random()*ids.length)]; if((o.counts[id]||0) >= ITEM_CAP) continue; o.counts[id] = (o.counts[id]||0) + 1; got.push(id); }
+  saveItems(o);
+  if(got.length) setTimeout(()=>{ try{ showToast(`🎒 Field kit: ${got.map(id=> ITEM_DEFS[id].icon + ' ' + ITEM_DEFS[id].name).join(', ')}`, 'ok'); }catch(e){} }, 1200);
+  return got;
+}
 const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
 const DAILY_QUEST_KINDS = [
   {counter:'energyConquest', goals:[10,20,30,50,80,120,160], label:g=> `Use ${g} ⚡ Energy on Conquest fights`},
@@ -12725,6 +12737,7 @@ function claimQuest(kind, id){
     const rw = QUEST_RANK_REWARD[x.rank] || QUEST_RANK_REWARD.C;
     Object.entries(rw).forEach(([k,v])=>{ if(k !== 'xp') grantCurrency(k, v); });
     awardXp(rw.xp || 20, 'quest');
+    { const n = QUEST_KIT_ITEMS.daily[x.rank] || 0; if(n) grantKitItems(n); }
     refreshQuestBadge(); return {title: QUEST_SHOWN_RANKS.has(x.rank) ? 'Rank ' + x.rank + ' notice!' : 'Quest complete!', reward: Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')), xp: rw.xp || 20};
   }
   const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
@@ -12735,6 +12748,7 @@ function claimQuest(kind, id){
   Object.entries(tier.reward).forEach(([k,v])=> grantCurrency(k, v));
   const tierIdx = QUEST_TIERS[kind].indexOf(tier);
   const xp = (kind==='daily' ? [100,60,30] : [400,250,120])[tierIdx] || 20; awardXp(xp, 'quest');
+  if(kind === 'weekly' && tier.quests.every(z=> claimed.includes(z.id))) grantKitItems(QUEST_KIT_ITEMS.weekly[tierIdx] || 0); // a finished weekly tier
   refreshQuestBadge();
   return {title: kind === 'weekly' ? 'Weekly quest complete!' : 'Quest complete!', reward: Object.assign({}, tier.reward), xp};
 }
@@ -14010,13 +14024,16 @@ function applyNodeEdits(){
 // 20 maps the world boss."): each main map's last fight (its old boss, or its last fight) is marked `ender` and gets its kind
 // from its map number: Map 0 a skirmish, Maps 1–4 an elite, every 5th map a boss, the rest a mini-boss. World bosses stay
 // their own fights (the Caldera Heart and the like).
-function roadEnderKind(i){ if(i === 0) return 'skirmish'; if(i < 5) return 'elite'; if(i % 5 === 0) return 'boss'; return 'miniboss'; }
+// Road structure (2026-10-13, 11:40 list): a boss every 5 maps and a world boss every 20; from Map 50, every 10 maps a harder
+// boss (finalboss) with a normal boss as the fight before it.
+function roadEnderKind(i){ if(i === 0) return 'skirmish'; if(i < 5) return 'elite'; if(i % 20 === 0) return 'worldboss'; if(i >= 50 && i % 10 === 0) return 'finalboss'; if(i % 5 === 0) return 'boss'; return 'miniboss'; }
 function applyRoadKinds(){
   const mains = CONQUEST_MAPS.filter(m=> !m.sub);
-  mains.forEach((m, i)=>{ const nodes = (m.nodes||[]).filter(n=> n.kind !== 'tutorial' && !/raidboss|worldboss|megaraid|dungeon/.test(n.kind||'')); if(!nodes.length) return;
-    const old = nodes.slice().reverse().find(n=> /^(boss|finalboss|subboss)$/.test(n.kind||'')) || nodes[nodes.length - 1];
-    (m.nodes||[]).forEach(n=>{ if(n.ender && n !== old) delete n.ender; });
-    old.ender = true; old.kind = roadEnderKind(i); });
+  mains.forEach((m, i)=>{ const nodes = (m.nodes||[]).filter(n=> n.ender || (n.kind !== 'tutorial' && !/raidboss|worldboss|megaraid|dungeon/.test(n.kind||''))); if(!nodes.length) return;
+    const old = nodes.find(n=> n.ender) || nodes.slice().reverse().find(n=> /^(boss|finalboss|subboss)$/.test(n.kind||'')) || nodes[nodes.length - 1];
+    (m.nodes||[]).forEach(n=>{ if(n.ender && n !== old) delete n.ender; if(n.preEnder && n !== old) delete n.preEnder; });
+    old.ender = true; old.kind = roadEnderKind(i);
+    if(i >= 50 && i % 10 === 0){ const before = nodes.filter(n=> n !== old).pop(); if(before){ before.preEnder = true; before.kind = 'boss'; } } });
 }
 applyNodeEdits();
 // Item #7 (2026-09-18): "foreshadow the upcoming bosses with dark blurred card divs indicating
@@ -17686,6 +17703,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   }
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
+  try{ applyWildpathPerks(engine, players[1], stats); }catch(e){}
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
@@ -24969,6 +24987,7 @@ async function resolveRound(opts){
       try{ if(mapNumberOf(m.conquestNode.mapId) === 0 && !featureUnlocked('deck')){
           if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
           if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned); } }catch(e){}
+      try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast('⛓️ Prospector: +1 Iron Shard.', 'ok'); }catch(e){} }, 2000); } }catch(e){}
       try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(`🔋 You found an Energy capsule. Tap ⚡ Energy to use it (+${ENERGY_CAPSULE_AMOUNT}).`, 'ok'); }catch(e){} }, 1800); } }catch(e){}
       try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(`${J.icon} ${J.name}: step ${jr.step} of ${J.steps.length}${jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}`, 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
@@ -30006,6 +30025,21 @@ let wildpathSel = null;
 // Costs (2026-10-13, user D32: "Wildpath skills cost alot of points, like maybe 5 then 10 then advanced ones start at 15, then 20
 // then 25. This is a rare thing to upgrade"): by how far up its trail a mark sits, 5 / 10 / 15 / 20 / 25 a rank (the capstone 25).
 const WILDPATH_KEY = 'bramblewood_wildpaths_v1';
+// Wildpath effects that are live (2026-10-13): applied to your side at the start of every Conquest fight. The rest of the
+// marks still read "preview" in their detail panel until their engine hooks exist.
+const WILDPATH_LIVE = new Set(['r1','r3','r6','r7','b1','b2','b3','b7']);
+function applyWildpathPerks(engine, pl, stats){
+  const rk = wildpathRanks(); if(!pl || !Object.keys(rk).length) return;
+  const r = id=> rk[id] || 0, perks = {};
+  if(r('r1')){ pl.hq.hp += 2*r('r1'); pl.hq.maxHp += 2*r('r1'); }
+  if(r('b1')) pl.lumber = (pl.lumber||0) + r('b1');
+  if(r('b2')) engine.draw(pl, 1, 'A', stats, []);
+  if(r('r3')) perks.sapMending = true;
+  if(r('r6')) perks.ward = true;
+  if(r('r7')) perks.heartwood = true;
+  if(r('b7')) perks.everbloom = true;
+  if(Object.keys(perks).length) pl.perks = perks;
+}
 function wildpathCost(n){ return n.capstone ? 25 : n.y >= 380 ? 5 : n.y >= 290 ? 10 : n.y >= 200 ? 15 : 20; }
 function wildpathRanks(){ try{ return JSON.parse(localStorage.getItem(WILDPATH_KEY) || '{}') || {}; }catch(e){ return {}; } }
 function wildpathSpent(){ const r = wildpathRanks(); let t = 0; WILDPATH_TREES.forEach(tr=> tr.nodes.forEach(n=>{ t += (r[n.id]||0) * wildpathCost(n); })); return t; }
@@ -30044,10 +30078,10 @@ function renderWildpaths(){
       <span class="wp-points" title="Path points to spend">✦ ${wildpathAvailable()} Path point${wildpathAvailable()===1?'':'s'}</span></header>
     <p class="wp-preview">Design preview: the trails and skills below are a first draft and don't change fights yet.</p>
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
-    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the mark before it first.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
+    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${WILDPATH_LIVE.has(sel.id) ? '' : '<small class="wp-req">Preview: not in fights yet.</small>'}${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">A starting mark on ${escapeHtml(sel.tree.name)}.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the mark before it first.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark on any trail to read it.</span>'}</div>
   </div>`;
   { const sb = null; if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ updateEnergyHud && updateEnergyHud(); }catch(e){} renderWildpaths(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; }
-  { const lb = root.querySelector('#wpLearn'); if(lb) lb.onclick = ()=>{ if(wildpathLearn(wildpathSel)){ showToast('✦ Learned. (The trails are still a design preview: fights don\'t use them yet.)', 'ok'); renderWildpaths(); } }; }
+  { const lb = root.querySelector('#wpLearn'); if(lb) lb.onclick = ()=>{ if(wildpathLearn(wildpathSel)){ showToast(WILDPATH_LIVE.has(wildpathSel) ? '✦ Learned. It works from your next Conquest fight.' : '✦ Learned. This one is still a preview: fights don\'t use it yet.', 'ok'); renderWildpaths(); } }; }
   root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }

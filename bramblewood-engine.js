@@ -752,6 +752,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     rollWind(players, sideOf, events);
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
     if(phaseMode === 'realtime' && rules.clock == null){ const was = phase; phase = realtimePhase(); if(phase !== was && recordEvents && events) events.push({type:'phase', phase, round, realtime:true}); }
+    // Wildpath perks (2026-10-13): plain data on the player (pl.perks), so a saved fight resumes with them.
+    if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid], k = pl && pl.perks; if(!k || pl.hq.hp <= 0) return;
+      const heal = n=>{ const h = Math.min(n, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h, perk:true}); } };
+      if(k.sapMending && (round - 1) % 3 === 0) heal(1);
+      if(k.heartwood && pl._hqHitTurn !== turnNo - 1) heal(1);
+      if(k.everbloom && (round - 1) % 5 === 0){ pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, perk:true}); draw(pl, 1, sideOf(pid), stats, events); } });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || pl.hq.hp <= 0) return; castleRoundActions(players, pid, round, sideOf, stats, events); });
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
@@ -1273,7 +1279,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // reduction at every call site.
   function damageHQ(pl, amount){
     if(typeof pl.onHqHit === 'function'){ const r = pl.onHqHit(amount, currentAttacker); if(typeof r === 'number') return r; }
+    if(pl.perks && pl.perks.ward && amount > 0){ pl.perks.ward = false; return 0; } // Wildpath "Unmoving": the first castle hit is ignored
     const reduced = Math.max(0, amount - bulwarkReductionFor(pl));
+    if(reduced > 0) pl._hqHitTurn = turnNo;
     if(isGladiator && pl.gladiatorLeaderUid!=null){
       const ld = gladiatorLeaderOf(pl);
       if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && suddenDeathStage >= 2 && reduced>0) ? ld.hp : reduced;

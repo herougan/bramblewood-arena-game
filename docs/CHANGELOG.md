@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (13:15)
+- **Wildpaths work in fights.** Deep Foundations (+2 castle Health a rank), Sap Mending, Unmoving, Heart of the Wood, Forager (+1 Lumber a rank), Keen Eye (draw 4), Prospector (+1 Iron Shard on an elite's first clear) and Everbloom now apply in Conquest. The other marks say "Preview" in their panel.
+- **World bosses on the road.** Every 20th map ends on a world boss. From Map 50, every 10th map ends on a harder boss, with a normal boss as the fight before it.
+- **Field-kit items from quests.** An A notice or better gives items, and each finished weekly tier gives 3, 2 or 1.
+
 ## 2026-10-13 (12:30)
 - **Standard PvP.** Arena → Format: Collection or Standard. Standard has its own deck, built from every card, all at Level 1, with no foils, shinies or Materia. It covers Quick Battle, Pass & Play, Gauntlet and friend invites. Collection (your own cards and levels) stays the normal format.
 - **The road's last fights.** Map 0 ends on a normal fight, Maps 1–4 on an Elite, every 5th map on a boss and the rest on a miniboss.
