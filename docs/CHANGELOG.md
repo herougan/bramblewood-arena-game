@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (00:15)
+- **Your deck has thickness:** the pile grows up and to the left as it fills (one edge per two cards) and thins as you draw. An empty deck says "Deck / Empty".
+- **Map interactibles lose their circles:** curiosities, the wanderer and the "?" spots are now bare icons, so they blend into the map.
+- **Skirmish card:** the first-clear box is only as wide as what's in it, the New skills strip is off (Admin can switch it back on), the locked deck is a shorter slab with the rank right beside the lock, and the card is tall enough to show it all.
+- **Admin on the map:** the skirmish card's admin buttons sit outside it on the right; the map toolbar says Layout, Links, ➕ Skirmishes, ✅ Clear map and ↩ Unclear map. Clearing a map by hand now also hands you its skirmishes' card rewards.
+- **Codex shows only cards you've seen**, admins included (tick 👁 Show unseen to see the rest). No more Hidden/Discovered pills. 50 cards a page, or whole sources until 50 is passed, with page buttons, so it's quick again. Admins get 🎁 Get all on every section (a season, a pack, a skirmish).
+- **Admin resets in Profile:** Reset all (a fresh player, your edits kept), Reset Codex (forget every card seen) and Reset to Map N (every map before N cleared with its card rewards, their features open, you standing on Map N). Each asks for a second tap.
+- **Season names:** 🍂 First season, 🌸 Second, ❄️ Third, ☀️ Fourth.
+- **Side-map exits:** an open-air side map's way out is the main map's own icon; a cave's mouth has a flickering lamp hanging over it.
+- **⚖️ Stat budget (Test Lab):** your formula, 2×Attack + Health + Skills < N + 2 and Attack × Health + Skills < N, with N from rarity and level (Level 0: −2). Base N, the per-skill costs, a per-Lumber bonus and "both rules" or "either rule" are editable. It lists cards over budget with the stats that would fit, and Fit applies them as card edits.
+- The conversation panel's hide arrow sits a little further left.
+
 ## 2026-10-13 (23:30)
 - **The tutorials are skirmishes T-0 and T-1** on Map 0, joined by a trail, with no "!" on them. Part 2's button says Fight, not Fight again.
 - **Tutorial Complete!** Part 1 lists only "Tutorial Part 2" under Unlocked, part 2 only "Conquest Map"; part 2 has one button, Claim Rewards (no Next fight, no Finish).

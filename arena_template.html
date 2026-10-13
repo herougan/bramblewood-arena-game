@@ -2831,7 +2831,7 @@
   .dialogue-dock.is-peek .dlg-lines, .dialogue-dock.is-dragging .dlg-lines{opacity:.14;}
   .dialogue-dock.is-dragging .dlg-reply{pointer-events:none;}
   .dlg-hide, .dlg-chip{pointer-events:auto; border:0; cursor:pointer; font-family:'Baloo 2'; font-weight:800; color:#2b2117; background:#fff8e6; box-shadow:0 4px 12px rgba(0,0,0,.35);}
-  .dlg-hide{display:none; position:absolute; right:-10px; top:-10px; z-index:2; width:26px; height:26px; border-radius:50%; font-size:14px; line-height:26px; padding:0;}
+  .dlg-hide{display:none; position:absolute; right:calc(4% - 10px); top:-10px; z-index:2; width:26px; height:26px; border-radius:50%; font-size:14px; line-height:26px; padding:0;}
   .dialogue-dock.has-lines:not(.is-collapsed) .dlg-hide{display:block;}
   .dlg-chip{display:none; align-self:flex-start; border-radius:999px; padding:4px 10px; font-size:16px; gap:4px; align-items:center;}
   .dlg-chip b{font-size:11px; background:#c9853a; color:#fff; border-radius:999px; padding:0 6px;}
@@ -4862,6 +4862,8 @@
     border:2px solid color-mix(in srgb, var(--gold) 50%, var(--banner-ink) 15%);
     box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--banner) 55%, var(--gold) 12%), 0 3px 0 rgba(0,0,0,.22);
   }
+  .deck-widget.is-empty{background:transparent; border-style:dashed; box-shadow:none;}
+  .deck-widget .deck-empty-label{font:800 12px/1.25 'Nunito',system-ui,sans-serif; text-align:center; opacity:.7; text-transform:uppercase; letter-spacing:.04em;}
   .deck-widget .deck-back-mark{font-size:26px; opacity:.95; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
   .removal-badge{position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); background:var(--exile); color:var(--badge-ink); font-size:9.5px; font-weight:800; border-radius:999px; padding:1px 6px; border:2px solid var(--surface); white-space:nowrap;}
 
@@ -7826,6 +7828,20 @@
   .map-exit-link line{stroke:rgba(255,236,170,.55) !important;}
   @keyframes mseShine{0%,100%{opacity:.65; transform:translate(-50%,-50%) rotate(-4deg) scale(.95);} 50%{opacity:1; transform:translate(-50%,-50%) rotate(4deg) scale(1.05);}}
   @media (prefers-reduced-motion: reduce){ .map-subexit .mse-rays{animation:none;} }
+  /* 2026-10-13: an open-air side map's way out is the main map's own icon; a cave's mouth has a lamp lighting it */
+  .map-subexit.is-open{width:56px; height:56px;}
+  .map-subexit .mse-home{position:absolute; inset:0; display:grid; place-items:center; font-size:34px; filter:drop-shadow(0 3px 4px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(255,240,200,.5));}
+  .map-subexit .mse-lamp{position:absolute; left:50%; top:4px; width:10px; height:10px; margin-left:-5px; border-radius:50%; background:radial-gradient(circle, #fff, #ffe7a0 45%, #f0a830 75%); box-shadow:0 0 10px 4px rgba(255,220,140,.9), 0 0 26px 10px rgba(255,200,100,.45); animation:mseFlicker 2.4s ease-in-out infinite;}
+  .map-subexit .mse-lamp::before{content:''; position:absolute; left:50%; bottom:100%; width:1px; height:6px; background:rgba(60,40,20,.8);}
+  @keyframes mseFlicker{0%,100%{opacity:1; transform:scale(1);} 45%{opacity:.82; transform:scale(.92);} 60%{opacity:1; transform:scale(1.05);}}
+  @media (prefers-reduced-motion: reduce){ .map-subexit .mse-lamp{animation:none;} }
+  /* 2026-10-13 (user: "interactibles on the maps do not need a surrounding circle pill. In a way its to hide them") */
+  .map-curio{background:none !important; border:0 !important; box-shadow:none !important;}
+  .map-curio .mcu-ico{font-size:26px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));}
+  .map-wanderer{background:none !important; border:0 !important; box-shadow:none !important;}
+  .map-wanderer .mwd-ico{font-size:30px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));}
+  .map-spot.is-unknown .map-spot-ico{background:none !important; box-shadow:none !important; color:rgba(255,248,230,.75); text-shadow:0 2px 4px rgba(0,0,0,.7);}
+
   /* 2026-10-10 (user): the map's prev/next arrows sit in the very bottom corners, clear of the skirmish detail card. */
   .world-edge{bottom:0 !important; z-index:8 !important; border-radius:0 12px 0 0;} .world-edge-right{border-radius:12px 0 0 0;}
 
@@ -8526,6 +8542,23 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .conquest-node-panel > .cnp-rank-corner{position:absolute !important; top:0 !important; right:0 !important; left:auto !important; transform:translate(40%,-40%) !important; z-index:6; margin:0;}
 .cnp-rw .cnp-rw-card, .cnp-rw-card{width:74px;}
 @media (max-width:640px){ .cnp-rw .cnp-rw-card, .cnp-rw-card{width:60px;} }
+/* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
+   beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
+   shorter with the rank right beside the lock, and the panel is allowed to be taller. */
+.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(3, auto); justify-content:start; align-items:center; width:auto; flex:0 0 auto;}
+.conquest-node-panel .cnp-rw .cnp-rw-label{grid-column:1 / -1;}
+.conquest-node-panel .cnp-deck-locked{height:52px;}
+.conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
+@media (min-width:821px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
+/* Admin resets in the profile (2026-10-13) */
+.pf-admin{margin-top:14px;} .pf-admin-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:8px 0;} .pf-admin-row span{font-size:13px; opacity:.8;}
+.pf-admin-row input{width:64px;} .pf-admin-confirm{font-size:13px; font-weight:700; color:#c0392b; margin:6px 0 0;}
+/* Codex pages (2026-10-13) */
+.cx-pager{grid-column:1 / -1; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:16px 0 8px;}
+/* 2026-10-13 (user: "Put the admin buttons to the side on the right, outside the card") */
+.cnp-admin-side{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+@media (min-width:821px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}
+  .conquest-node-panel > .cnp-admin-side .btn{justify-content:flex-start; white-space:nowrap; background:rgba(20,16,10,.82) !important; color:#fff8e6;} }
 .cnp-lvl-inline{display:inline-flex; align-items:center; gap:3px; margin-left:10px; padding:1px 8px; border-radius:999px; font-weight:800; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); white-space:nowrap;}
 .cnp-lvl-inline.lv-red{color:#ffb4a8; border-color:rgba(255,120,100,.5);} .cnp-lvl-inline.lv-darkred{color:#ff8a7a; border-color:rgba(255,80,60,.7);} .cnp-lvl-inline.lv-green{color:#b8f5b0;}
 .cnp-deck{margin-top:6px;} .cnp-deck > summary{cursor:pointer; font-weight:800; font-size:13px; opacity:.85; list-style:none;} .cnp-deck > summary::before{content:'▸ ';} .cnp-deck[open] > summary::before{content:'▾ ';}
