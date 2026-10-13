@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (09:30)
+- **D66, second half:** Swimmer now on the fish, turtles and tortoises, frogs, Voltaic Eel, Orca Vanguard, Narwhal Lancer and Humpback Elder (+1 Attack on Flow). Nocturnal and Diurnal still wait for a day/night playtest.
+- **The new skills on cards:** Rivergate Tribune now has Kinship Otter 1/1 (all your Otters +1/+1) instead of Rally. New **Bombardier Beetle** (Uncommon, Insect, 3/10, Rocket 4) is a reward from the Morel Hollow's Web Hollow fight; its art comes next time Chrome is reachable.
+- **B6 balance sheet re-run** with every card measured at Level 1, against a fixed yardstick (the filler deck no longer picks up new traits). 228 of 454 cards are in band. Tonight's new cards were tuned toward their bands: Fennec Fox 2/10, Meerkat Sentry 2/7, Thorny Devil 2/14, Buzzed Chipmunk 3/7, Scree Goat 5/14, Lone Grey Wolf 4/18, the two Heroics 8/30 and 7/18. Cost-3+ cards still read weak on this test (the test deck carries fewer copies of them), so the Heroics, Epics and Legendaries need a hand check rather than this number.
+
 ## 2026-10-13 (08:30)
 - **New passive: Kinship <Type> X/Y.** All your units of that Type get +X/+Y (the card itself too, if it is one). Several stack. In the card editor, pick the Type, then Attack and Health.
 - **New evergreen: Rocket N** 🚀. Fires once, when the unit is Ready (on arrival if it has no Wait): the strongest enemy unit (highest Attack) takes N Heat damage and each enemy beside it takes 1. It hits the castle if the enemy has no units.

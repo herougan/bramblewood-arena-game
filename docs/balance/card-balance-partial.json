@@ -1,6 +1,6 @@
 {
- "generated": "2026-10-12",
- "games": 4,
+ "generated": "2026-10-13",
+ "games": 60,
  "mode": "open",
  "filler": [
   "warren-scout",
@@ -69,48 +69,200 @@
  },
  "rows": [
   {
-   "id": "otter-centurion",
-   "name": "Otter Centurion",
-   "rarity": "rare",
-   "cost": 0,
-   "wait": 1,
-   "attack": 2,
-   "health": 9,
-   "skills": [
-    "boomerang"
-   ],
-   "winRate": 100,
-   "band": [
-    52,
-    75
-   ],
-   "verdict": "strong",
-   "locked": false,
-   "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
-  },
-  {
-   "id": "dune-jackal",
-   "name": "Dune Jackal",
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
    "rarity": "common",
-   "cost": 1,
-   "wait": 0,
+   "cost": 2,
+   "wait": 2,
    "attack": 2,
-   "health": 10,
+   "health": 12,
    "skills": [
-    "quick",
-    "dry",
-    "swift"
+    "thorns",
+    "dry"
    ],
-   "winRate": 50,
+   "winRate": 26.7,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "swift",
+    "dry",
+    "darksight"
+   ],
+   "winRate": 28.3,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "sociable",
+    "dry"
+   ],
+   "winRate": 25,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "rarity": "rare",
+   "cost": 3,
+   "wait": 2,
+   "attack": 4,
+   "health": 14,
+   "skills": [
+    "loneWolf"
+   ],
+   "winRate": 36.7,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "coffee"
+   ],
+   "winRate": 23.3,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
+   "startsAt0": false
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "landslide"
+   ],
+   "winRate": 23.3,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "rarity": "heroic",
+   "cost": 3,
+   "wait": 2,
+   "attack": 8,
+   "health": 30,
+   "skills": [
+    "armor",
+    "kinship"
+   ],
+   "winRate": 36.7,
+   "band": [
+    64,
+    89
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "rarity": "heroic",
+   "cost": 3,
+   "wait": 1,
+   "attack": 7,
+   "health": 18,
+   "skills": [
+    "flying",
+    "swift",
+    "esprit",
+    "espritHp"
+   ],
+   "winRate": 38.3,
+   "band": [
+    64,
+    89
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 2,
+   "health": 9,
+   "skills": [
+    "rocket"
+   ],
+   "winRate": 23.3,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
    "startsAt0": false
   }
  ]

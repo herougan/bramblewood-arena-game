@@ -38,6 +38,10 @@ const fieldable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].tes
 // show (against plain filler anything decent won ~98%). Both decks share it, so only the tested card
 // differs.
 const FILLER = ['warren-scout', 'fawn-scout', 'bee-sentry', 'mouse-sapper', 'poison-dart-croaker'].filter(id=> defs[id]);
+// 2026-10-13: the filler is the yardstick, so it stays as it was measured on 2026-10-09: printed stats (no Level 1 step) and none
+// of the later situational traits (Swimmer etc.), or every new trait on a filler card would move every card's score.
+const RAW = {}; cards.forEach(c=>{ RAW[c.id] = c; });
+FILLER.forEach(id=>{ const d = Object.assign({effects:{}}, RAW[id]); delete d.art; d.effects = Object.assign({}, d.effects); ['swimmer','tailwind','headwind','darksight','dry'].forEach(k=> delete d.effects[k]); defs[id] = d; });
 function fillerDeck(n){ const d = {}; for(let i=0;i<n;i++){ const id = FILLER[i % FILLER.length]; d[id] = (d[id]||0) + 1; } return d; }
 const OPP = fillerDeck(20);
 const COPIES_BY_COST = [8, 6, 4, 3];

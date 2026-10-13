@@ -1,6 +1,6 @@
 # Action items
 
-_Updated 2026-10-13, 8:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 9:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
 
 ## Done overnight (your 00:17 list)
 
@@ -30,7 +30,7 @@ New calls for you:
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
 | **D65** | Heat and Cold side effects on normal creatures (Scorch: Burn 1, 1 in 3; Chill: +1 Wait, 1 in 3) | Adds two more statuses to read | Yes, after a playtest of the wind and night changes |
-| **D66** | Apply the Nocturnal / Diurnal / Swimmer list (weather note). **Tailwind and Headwind are applied (08:30).** | Every one is a stat change on an existing card | Apply Swimmer next (fish, turtles, frogs); Nocturnal/Diurnal after a day/night playtest |
+| **D66** | Nocturnal / Diurnal from the weather note. **Tailwind, Headwind (08:30) and Swimmer (09:30) are applied.** | Nocturnal/Diurnal are +N/+M stat swings on day/night maps | Apply after you've played one day/night map with tonight's night dimness |
 | **D67** | Night dimness is 1 miss in 4 for everyone without Nocturnal or Darksight | Day/night maps get a little slower | Keep; it is what makes Nocturnal and Darksight worth having |
 | **D68** | The two Heroics (Rivergate Tribune 7/28 Armor 2 Rally 1; Sunspire Sky-Sovereign 6/16 Flying Swift Esprit 1/1) are my first designs | Not simulated against the Epics | Look them over in the Codex |
 | **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |
@@ -63,7 +63,7 @@ Every open item, with **(a) my pushback** (what worries me about it) and **(b) m
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **B6** | Card balance inside the basic set (Duck Paddler 79% … Otter Kit 26%) | You're still playing the cards, so I haven't touched balance. The tutorial now uses the weakest Base cards on purpose, so the spread matters less early on | Do your pass after a few more evenings of play; I can run the win-rate sheet on demand |
+| **B6** | Card balance (re-run 09:30 at Level 1 on a fixed yardstick: 228/454 in band; see CHANGELOG). Inside the basic set (Duck Paddler 79% … Otter Kit 26%) | You're still playing the cards, so I haven't touched balance. The tutorial now uses the weakest Base cards on purpose, so the spread matters less early on | Do your pass after a few more evenings of play; I can run the win-rate sheet on demand |
 | **D23** | Satiety's rule was my reading of the name | Nobody has played an Ecclesia deck yet, so the rule is untested | Keep; revisit after the first Ecclesia playtest |
 | **D24** | Arena: the second player gets an extra card. Add that to Conquest? | Conquest fights are already tuned with the AI going first; adding a card shifts every map's difficulty at once | Keep Conquest as is |
 | **D26** | Anti-Air→Boomerang on Otter Centurion, "SSS fast" = round 8, rare S find from Map 5 at 12% | Boomerang got stronger tonight (hits there and back), so Otter Centurion is now a better early card | Keep; watch Centurion's win rate in your play |
