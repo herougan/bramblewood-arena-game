@@ -3,6 +3,7 @@
     "id": "goliath",
     "name": "The Goliath",
     "icon": "🐙",
+    "art": "art/raids/goliath.png",
     "blurb": "Something vast has wrapped itself around the river mouth. Every deck that fights it takes a little off — together, we bring it down.",
     "cost": {
       "raidPoints": 1,

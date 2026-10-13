@@ -4,6 +4,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-10-14 (00:40)
 - **Map critters and your pawn face where they're going:** moving right, they look right; moving left, they look left.
+- **Art:** portraits for the seven road folk who talk to you (Brother Ripple, Pip, Old Heron Wade, Bramble, Sister Carapace, Croaker, Thimble), all 13 raid bosses and the Goliath (shown in the raid panels and the VS screen), and a map for The Sunken Ferry.
 - **Stat budget:** base N is 8, plus 0.1 per map number (Map 30: +3). Still a report only; no card stats were changed.
 
 ## 2026-10-14 (00:15)

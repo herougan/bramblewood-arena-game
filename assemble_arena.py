@@ -151,7 +151,7 @@ app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
 # Conquest map backgrounds (2026-10-04): tools/make_map_backgrounds.py -> art/maps/<id>.png, one CSS
 # custom property per map theme, shown pixelated under the map's light/vignette gradients.
 _map_css = []
-for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o"]:   # m1..m29 plus the 2026-10-09 field/beach maps
+for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j"]:   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/m%s.png" % _mid
     if os.path.exists(_fp):
         _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, open(_fp, "rb").read())))
@@ -190,8 +190,19 @@ build_id = hashlib.sha256((app_src + engine_src + ghosts_src + card_defs_literal
 app_src = sub_once(app_src, "__BUILD_ID__", build_id)
 app_src = sub_once(app_src, "__BUILD_CARD_HASH__", card_hash)
 with open(SCRATCH + "version.json", "w", encoding="utf-8") as _fh: json.dump({"build": build_id, "cardHash": card_hash}, _fh)
+# Raid boss + NPC portraits (2026-10-13): `art` values that are repo paths (art/raids/<id>.png, art/npc/<speaker>.png)
+# become hashed assets/ URLs (or data URIs under BW_INLINE), the same as card art.
+def _path_art(rel):
+    fp = SCRATCH + rel
+    return asset_url(rel[len("art/"):], open(fp, "rb").read()) if rel.startswith("art/") and os.path.exists(fp) else rel
+def _with_path_art(items):
+    for it in items:
+        if isinstance(it, dict) and isinstance(it.get("art"), str) and not it["art"].startswith("data:"): it["art"] = _path_art(it["art"])
+    return items
+raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8"))), ensure_ascii=False)
+app_src = _re.sub(r"art:'(art/npc/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
-app_src = sub_once(app_src, "__RAIDS__", json.dumps(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8")), ensure_ascii=False))
+app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --
 # GSAP must load and register its plugin BEFORE arena_app.js runs (it calls gsap.Flip.from()
 # and gsap.timeline() at module-eval-adjacent times, e.g. inside renderBoard()).

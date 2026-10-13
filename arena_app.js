@@ -10920,16 +10920,16 @@ const DIALOGUE_SPEAKERS = {
   aurelia:    {name:'Matriarch Aurelia', card:'sunthroat-courier', icon:'🐦'},
   vesper:     {name:'Warlord Vesper', card:'crimson-wing-duelist-cadet', icon:'🐦'},
   whisper:    {name:'Whisper-of-Ash', card:'voidfeather-scout', icon:'🐦'},
-  otternarian:{name:'Brother Ripple, the otternarian', icon:'🦦'},
+  otternarian:{name:'Brother Ripple, the otternarian', icon:'🦦', art:'art/npc/otternarian.png'},
   traveller:  {name:'The Wandering Traveller', card:'wandering-traveller', icon:'🧳'},
   peddler:    {name:'Old Cinder, the Ember Peddler', card:'quarry-mole', icon:'🏮'},
   // Errand givers (2026-10-12): folk met on the road who ask for small favours.
-  mole:       {name:'Pip, a lost mole', icon:'🐹'},
-  heron:      {name:'Old Heron Wade', icon:'🪶'},
-  mouse:      {name:'Bramble the courier mouse', icon:'🐭'},
-  beetle:     {name:'Sister Carapace', icon:'🪲'},
-  frog:       {name:'Croaker, a pond warden', icon:'🐸'},
-  hedgehog:   {name:'Thimble the hedgehog', icon:'🦔'},
+  mole:       {name:'Pip, a lost mole', icon:'🐹', art:'art/npc/mole.png'},
+  heron:      {name:'Old Heron Wade', icon:'🪶', art:'art/npc/heron.png'},
+  mouse:      {name:'Bramble the courier mouse', icon:'🐭', art:'art/npc/mouse.png'},
+  beetle:     {name:'Sister Carapace', icon:'🪲', art:'art/npc/beetle.png'},
+  frog:       {name:'Croaker, a pond warden', icon:'🐸', art:'art/npc/frog.png'},
+  hedgehog:   {name:'Thimble the hedgehog', icon:'🦔', art:'art/npc/hedgehog.png'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
 const DIALOGUES = {
@@ -11238,6 +11238,7 @@ function dialogueDock(){
   return dock.querySelector('.dlg-lines');
 }
 function speakerPortraitHTML(sp){
+  if(sp.art) return `<img class="dlg-portrait" src="${sp.art}" alt="">`; // 2026-10-13: NPC portraits (art/npc/<speaker>.png)
   const d = sp.card && getCardDefs()[sp.card];
   return d && d.art ? `<img class="dlg-portrait" src="${d.art}" alt="">` : `<span class="dlg-portrait dlg-portrait-ico">${sp.icon||'💬'}</span>`;
 }
@@ -15985,6 +15986,10 @@ function renderConquestSubTab(body){
    attempts (yours are recorded in this browser) and, if the party is thin, seeded raiders whose
    fights are simulated with the real engine — see bramblewood-ghosts.js raidState(). No sign-in. ---- */
 const RAID_BOSSES = __RAID_BOSSES__;
+// Raid boss portraits (2026-10-13): canonical/raid-bosses.json and raids.json carry `art` (art/raids/<id>.png); a boss row
+// from the server is matched to its canonical entry by id. Shows the picture when there is one, else the emoji icon.
+function raidBossArt(b){ if(!b) return ''; if(b.art) return b.art; const c = RAID_BOSSES.find(x=> x.id === b.id); return (c && c.art) || ''; }
+function raidBossIconHTML(b, fallback){ const art = raidBossArt(b); return art ? `<img class="raid-boss-art" src="${escapeAttr(art)}" alt="">` : ((b && b.icon) || fallback || '🐲'); }
 const RAID_ATTEMPTS_KEY = 'bramblewood_raid_attempts_v1';
 function loadRaidAttempts(){ try{ return JSON.parse(localStorage.getItem(RAID_ATTEMPTS_KEY)||'[]') || []; }catch(e){ return []; } }
 function saveRaidAttempts(list){ try{ localStorage.setItem(RAID_ATTEMPTS_KEY, JSON.stringify(list)); }catch(e){} }
@@ -16016,7 +16021,7 @@ function offlineRaidPanelHTML(){
   const party = st.party.slice().sort((a,b)=> b.damage - a.damage);
   const defs = getCardDefs();
   return `<div class="panel offline-raid-panel">
-    <h2>${b.icon} ${escapeHtml(b.name)} <span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span></h2>
+    <h2>${raidBossIconHTML(b, b.icon)} ${escapeHtml(b.name)} <span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span></h2>
     <p class="panel-sub">${escapeHtml(b.blurb||'')} Every deck that fights it this week chips down one shared health pool.</p>
     <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${st.remaining}</b> / ${st.max} HP</span></div>
     <div class="or-actions">${st.defeated ? `<span class="conquest-rank-badge">🏆 Defeated this week — a new boss arrives in ${daysLeft} day${daysLeft===1?'':'s'}</span>`
@@ -16057,7 +16062,7 @@ function startOfflineRaidMatch(){
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: boss, raidCycle: st.cycle, raidCastleStart: castle, opponentName: boss.name, leaderDefId: matchLeaderId(), leaderUid: null};
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${st.remaining} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon}).then(()=> renderPlay());
+  showVsScreen(me, {name: boss.name, deck: `${castle} HP of ${st.remaining} left`, avatar: {character:'otter', color:'night', title:'newcomer'}, icon: boss.icon, art: raidBossArt(boss)}).then(()=> renderPlay());
 }
 function settleOfflineRaidAfterMatch(m){
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
@@ -16224,7 +16229,7 @@ function raidPanelHTML(){
   const claims = raidClaimsFor(def);
   const cost = def.cost || {};
   return `<div class="panel raid2-panel">
-    <div class="r2-head"><span class="r2-ico">${def.icon||'🐙'}</span><div><h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+    <div class="r2-head"><span class="r2-ico">${raidBossIconHTML(def, '🐙')}</span><div><h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
       <p class="panel-sub">${escapeHtml(def.blurb||'')}</p></div>
       ${adminModeEnabled ? `<button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button>` : ''}</div>
     <div class="r2-total"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
@@ -19561,7 +19566,7 @@ function onlineRaidBossCardHTML(boss){
   const curHp = boss.current_hp!=null ? boss.current_hp : maxHp;
   const hpPct = Math.max(0, Math.min(100, Math.round((curHp/maxHp)*100)));
   return `<div class="conquest-node kind-raidboss online-raid-node" data-bossid="${escapeHtml(boss.id)}">
-    <div class="cn-ico">${boss.icon||'🐲'}</div>
+    <div class="cn-ico">${raidBossIconHTML(boss, '🐲')}</div>
     <div class="cn-kind">Strength ${boss.strength}</div>
     <div class="cn-name">${escapeHtml(boss.name)}</div>
     <div class="cn-hp">🏰 ${curHp}/${maxHp} HP</div>
@@ -26451,7 +26456,7 @@ function showVsScreen(left, right){
   return new Promise(resolve=>{
     const el = document.createElement('div');
     el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
-    const side = (p, cls)=> `<div class="vs-side ${cls}">${avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-allies"><small>With your allies</small>${p.allies.map(a=> `<span class="vs-ally">🤝 <b>${escapeHtml(a.name)}</b> · ⚔ ${a.level} · 🏰 ${escapeHtml(a.castle.name)}</span>`).join('')}</div>` : ''}</div>`;
+    const side = (p, cls)=> `<div class="vs-side ${cls}">${p.art ? `<img class="vs-boss-art" src="${escapeAttr(p.art)}" alt="">` : avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-allies"><small>With your allies</small>${p.allies.map(a=> `<span class="vs-ally">🤝 <b>${escapeHtml(a.name)}</b> · ⚔ ${a.level} · 🏰 ${escapeHtml(a.castle.name)}</span>`).join('')}</div>` : ''}</div>`;
     el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
     // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
     // coloured by the same gap scale as the skirmish card.
