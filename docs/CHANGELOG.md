@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (15:30)
+- **Your name, front and centre.** The entrance asks "What should we call you?" over a bigger, glowing name field, and a first sign-in with an account that never picked a name gets a name prompt in the middle of the screen.
+- **Darkness (D67, D73).** No more "night dimness". At night and in caves it's Darkness: units without Darksight (or Nocturnal, at night) miss 1 attack in 4. Pitchblack: 1 in 2. Absolute darkness: every attack misses. A Lantern lights its side (Absolute drops to 1 in 2). Smugglers' Grotto is Pitchblack and Caves & Alcoves is now Darkness. Dark fights get a vignette over the board.
+- **Frigid and Scorching (D66).** Frost's level is how many units a side get chilled; each gets +1 Wait, and units weak to cold also take ice damage. Scorching level L burns L+1 random units a side for L fire damage; heat-resistant and Dry units are spared, units weak to heat take double.
+- **Molting N (D72):** every N rounds +1 Attack and +2 Health for good. The Tide-pool, Sulfur-vent and Hermit crabs have Molting 4.
+
 ## 2026-10-13 (14:20)
 - **All 21 Wildpath marks work now.** Second Pitch (once a fight, pitch twice in one turn) and Echoing Wood (your first token each fight comes with a copy) were the last two.
 

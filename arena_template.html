@@ -7922,6 +7922,12 @@
   .wp-learn{display:flex; gap:8px; align-items:center; margin-top:6px;}
   .tavern-modal{max-width:560px;}
   /* Map 0 deck swap (2026-10-13) */
+  .name-prompt-overlay{position:fixed; inset:0; z-index:12000; display:grid; place-items:center; padding:16px; background:rgba(20,14,8,.72); backdrop-filter:blur(3px);}
+  .name-prompt{width:min(420px, 100%); display:flex; flex-direction:column; gap:12px; align-items:stretch; text-align:center; padding:28px 24px; border-radius:20px; background:#fbf3df; color:#2b2117; box-shadow:0 18px 50px rgba(0,0,0,.5), 0 0 0 3px #d9a441;}
+  .name-prompt h2{margin:0; font-family:'Baloo 2', system-ui, sans-serif; font-size:26px; text-wrap:balance;} .name-prompt p{margin:0; font-size:14px; opacity:.8;} .np-ico{font-size:44px;}
+  .name-prompt input{font-size:20px; padding:12px 14px; border-radius:12px; border:2px solid #d9a441; text-align:center;}
+  .entrance-login-form input#loginNameInput{font-size:19px; text-align:center; border:2px solid #e8b23a; box-shadow:0 0 0 4px rgba(232,178,58,.25), 0 0 22px rgba(232,178,58,.35);}
+  .entrance-name-label{display:block; margin-bottom:6px; font-weight:800; font-size:17px; color:#ffe9b0; text-align:center;}
   .arena-format{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:10px 0 4px;} .arena-format-k{font-weight:700;} .arena-format-sub{flex-basis:100%; font-size:12px; opacity:.8;}
   .std-deck-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.55); padding:16px;}
   .std-deck-modal{max-width:640px; width:100%; max-height:92vh; display:flex; flex-direction:column; gap:8px;}
@@ -8276,6 +8282,9 @@ body.cq-opening .map-trail-svg{display:none !important;}
 /* World edges are off while editing the layout (2026-10-10) */
 .world-edge.is-editing{opacity:.35; filter:grayscale(1); cursor:not-allowed;}
 /* Cave darkness over the whole map, with a lantern hole at the pointer (2026-10-10) */
+.dark-veil{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; background:radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(4,4,12,.45) 100%);}
+.dark-veil.lvl-pitch{background:radial-gradient(ellipse at 50% 50%, rgba(4,4,12,.1) 20%, rgba(4,4,12,.65) 100%);}
+.dark-veil.lvl-absolute{background:radial-gradient(ellipse at 50% 50%, rgba(2,2,8,.3) 10%, rgba(2,2,8,.85) 100%);}
 .cave-dark{position:absolute; inset:0; z-index:7; pointer-events:none; border-radius:inherit;
   background:radial-gradient(circle at var(--lx, 50%) var(--ly, 50%), rgba(4,6,12,0) 0, rgba(4,6,12,0) calc(var(--lr, 150px) * .45), rgba(4,6,12,.55) calc(var(--lr, 150px) * .9), rgba(4,6,12,.9) calc(var(--lr, 150px) * 1.6), rgba(2,3,8,.94) calc(var(--lr, 150px) * 2.6));}
 @media (prefers-reduced-motion: reduce){ .cave-dark{background:radial-gradient(circle at 50% 50%, rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }

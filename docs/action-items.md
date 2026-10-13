@@ -1,6 +1,18 @@
 # Action items
 
-_Updated 2026-10-13, 2:20 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-13, 3:30 pm. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## Done at 15:30 (your 14:21 list)
+
+| Item | What's in the game now |
+|---|---|
+| First sign-in | The name field is the centre of the entrance ("What should we call you?"), and a first account sign-in without a chosen name opens a name prompt |
+| D67 / D73 | Darkness 1 in 4 (night, Caves & Alcoves), Pitchblack 1 in 2 (Smugglers' Grotto), Absolute darkness 100% (for the Abyssal Plains). Darksight sees through all of it; Nocturnal sees at night; a Lantern lights its side |
+| D66 | Frigid: level = units chilled a side, always +1 Wait, cold-weak units also take ice damage. Scorching: level L hits L+1 units a side for L fire damage, double on heat-weak units |
+| D72 | New **Molting N** (+1/+2 every N rounds) on three crabs. My reading: Shedding stays for snakes and lizards (+1/+1 and the old skin's statuses fall away) |
+| Extra | Dark fights get a vignette over the board, thicker with each level |
+
+**Closed:** D65/D66, D67, D68, D72, D73. D71 is yours (mark the generic cards' Source in the editor).
 
 ## Done at 13:15 (continuing)
 
@@ -52,9 +64,7 @@ New calls for you:
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
 | **D70** | Daily / Weekly dungeons: your note ended at the colon | — | My proposal: Daily = 3 castles, once a day, a different cleared map's enemies each day; Weekly = 5 harder castles, once a week, bigger reward. Say "go" or describe yours |
-| **D71** | Faction pools: today your side has 22 cards (16 + 6 shared). Your plan is 16 + 16 + 8 generic = 40 | Which 8 are generic is your call | Tag the generic ones "shared" in the editor (source side), or tell me which and I'll do it |
-| **D72** | Shedding / molting: your note ended at "besides" | — | Tell me the rest |
-| **D73** | Dark maps: only Smugglers' Grotto is completely dark | Caves & Alcoves (Map 8) dark would make Darksight decisive there | Keep it to the literal caves until the Abyssal Plains |
+| **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |
 
 ## Done overnight (your 00:17 list)
 
@@ -83,11 +93,6 @@ New calls for you:
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **D65** | Heat and Cold side effects on normal creatures (Scorch: Burn 1, 1 in 3; Chill: +1 Wait, 1 in 3) | Adds two more statuses to read | Yes, after a playtest of the wind and night changes |
-| **D66** | Nocturnal / Diurnal from the weather note. **Tailwind, Headwind (08:30) and Swimmer (09:30) are applied.** | Nocturnal/Diurnal are +N/+M stat swings on day/night maps | Apply after you've played one day/night map with tonight's night dimness |
-| **D67** | Night dimness is 1 miss in 4 for everyone without Nocturnal or Darksight | Day/night maps get a little slower | Keep; it is what makes Nocturnal and Darksight worth having |
-| **D68** | The two Heroics (Rivergate Tribune 7/28 Armor 2 Rally 1; Sunspire Sky-Sovereign 6/16 Flying Swift Esprit 1/1) are my first designs | Not simulated against the Epics | Look them over in the Codex |
-| **D69** | Sweep pays the clear-again reward with the rank bonus for each win | None | Keep |
 
 ## Done at 23:55 (your 23:12 list, all ten)
 

@@ -114,8 +114,8 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 { const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{field:'frozen', frostResist:['Tundra'], frostWait:3, frostCount:2, frostbite:1}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 2, 'k2-tundra', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-wall', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'right', {}, []);
   const T = all(P[2]).find(c=> c.defId==='k2-tundra'), W = all(P[2]).find(c=> c.defId==='k2-wall'); const tw = T.wait, ww = W.wait, wa = W.atk; e.roundStart(P, 2, so, {}, []);
-  ok(T.wait === tw, 'a Tundra enemy resists the frost'); ok(W.wait === ww + 3 && W.atk === wa + 1, `the frost adds 3 Wait and Frostbite +1 to the other enemy (wait ${W.wait}, atk ${W.atk})`);
-  ok(all(P[1]).every(c=> c.wait >= 3), 'frostCount 2 chills both of yours'); }
+  ok(T.wait === tw, 'a Tundra enemy resists the frost'); ok(W.wait === ww + 1 && W.atk === wa + 1, `D66: the frost adds 1 Wait (level = targets) and Frostbite +1 to the other enemy (wait ${W.wait}, atk ${W.atk})`);
+  ok(all(P[1]).every(c=> c.wait >= 1), 'level 3 chills both of yours'); }
 // First blood: the first Quick swing of a round hits +1, the next one doesn't
 { const e = E.makeSimEngine(defs, E.mulberry32(4), {recordEvents:true, battleMode:'open', rules:{firstBlood:1}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'k2-quick', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-quick', 'right', {}, []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);

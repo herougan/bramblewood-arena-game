@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {shedding:'🐍', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {shedding:'🐍', molting:'🦀', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -238,7 +238,7 @@ const PASSIVE_DEFS = [
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (a Lantern on your side lights it).`},
-  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; },
+  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}, and it sees in the night's Darkness.`; },
     get:e=> (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
@@ -258,7 +258,7 @@ const PASSIVE_DEFS = [
   {key:'primed', category:'passive', label:'Primed', kind:'boolean', desc:()=>`Its triggers stay online while it is Waiting, Stunned, Frozen or Asleep.`},
   {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
-  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board at Night, your Diurnal units keep their daytime bonus.`},
+  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board, it lights your side: Darkness and Pitchblack stop making your units miss, Absolute darkness drops to 1 in 2, and at Night your Diurnal units keep their daytime bonus.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
@@ -307,6 +307,7 @@ const PASSIVE_DEFS = [
   // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
   // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow ... Keep a concise one in a long
   // description in the Codex of skills").
+  {key:'molting', category:'passive', label:'Molting', kind:'number', min:1, defaultValue:4, desc:v=>`Every ${v||4} rounds on the field it molts into a bigger shell: +1 Attack and +2 Health for good.`},
   {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose come off with it.`},
   {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit knocks out one of the target's defences.`,
     longDesc:`On every hit that lands, one defence the target still has is broken for the rest of the fight: its Armor, its Flying, its Swimmer (and Burrow, when that arrives). If it has several, each is as likely as the others. Map traits such as Tide are left alone.`},
@@ -323,7 +324,7 @@ const PASSIVE_DEFS = [
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.sociable = [a, h]; }},
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
-  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in complete darkness: in caves and the deep, everyone else without a Lantern swings blind (misses 1 in 2).`},
+  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark. Without it, units miss 1 attack in 4 in Darkness (night, caves), 1 in 2 in Pitchblack, and every attack in Absolute darkness, unless a Lantern lights their side.`},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
@@ -3819,7 +3820,7 @@ function fieldHoverHTML(){
   let rowsHTML = '';
   if(f.id === 'frozen' && (r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length)){ rowsHTML = `<ul class="fcr-list">${fieldRowsListHTML(fieldConditionRows(r).filter(x=> /^frost/.test(x.key)))}</ul>`; extra.push('Units that resist cold are never chilled.'); }
   else if(f.id === 'frozen'){
-    extra.push(`Each round ${r.frostCount > 1 ? r.frostCount + ' random units' : 'one random unit'} on each side ${r.frostCount > 1 ? 'get' : 'gets'} +${r.frostWait||1} Wait.`);
+    { const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1); extra.push(`Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`); }
     if(r.frostResist && r.frostResist.length) extra.push(`Their ${r.frostResist.join(', ')} units are used to the cold: the frost never touches them.`);
     if(r.frostbite) extra.push(`Frostbite: an enemy the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
     extra.push('Units that resist cold are never chilled.');
@@ -4870,6 +4871,7 @@ function abilityBadges(d, bopts){
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
   if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">🌆</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">🕶️</span>`); if(e.nightblind) out.push(`<span title="Night-blind">🌑</span>`);
   if(e.shedding) out.push(`<span title="Shedding">🐍${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
+  if(e.molting) out.push(`<span title="Molting">🦀${e.molting}</span>`);
   if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
@@ -7631,6 +7633,29 @@ async function applySessionIdentity(user){
   }
   livePullProgress();
   liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
+  // First sign-in (2026-10-13, user: "When signing in for the first time, put the 'enter name' thing front and centre"): a real
+  // account that has never picked a name gets the name prompt in the middle of the screen.
+  try{ if(isSignedIn() && !hasChosenName()) setTimeout(()=> openNamePrompt(), 600); }catch(e){}
+}
+const NAME_CHOSEN_KEY = 'bramblewood_name_chosen_v1';
+function hasChosenName(){ try{ if(localStorage.getItem(NAME_CHOSEN_KEY) === '1') return true; }catch(e){} return !!(myProfile && myProfile.name && myProfile.name !== 'Woodland Warrior'); }
+function markNameChosen(){ try{ localStorage.setItem(NAME_CHOSEN_KEY, '1'); }catch(e){} }
+function openNamePrompt(){
+  if(document.getElementById('namePromptOverlay')) return;
+  const guess = (myProfile && myProfile.name && myProfile.name !== 'Woodland Warrior') ? myProfile.name : (cloudUserLabel && cloudUserLabel !== cloudUserEmail ? cloudUserLabel.split(' ')[0] : '');
+  const ov = document.createElement('div'); ov.id = 'namePromptOverlay'; ov.className = 'name-prompt-overlay';
+  ov.innerHTML = `<form class="name-prompt" role="dialog" aria-modal="true" aria-labelledby="npTitle" autocomplete="off">
+    <div class="np-ico" aria-hidden="true">🌰</div>
+    <h2 id="npTitle">What should we call you?</h2>
+    <p>This is the name other players see on raids, friend lists and the Arena.</p>
+    <input id="npInput" type="text" maxlength="24" placeholder="Your warband name" value="${escapeAttr(guess.slice(0,24))}" aria-label="Your name" required>
+    <button type="submit" class="btn primary big">Save my name</button></form>`;
+  document.body.appendChild(ov);
+  const inp = ov.querySelector('#npInput'); setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
+  ov.querySelector('form').addEventListener('submit', async e=>{ e.preventDefault(); const name = inp.value.trim().slice(0,24); if(!name){ inp.focus(); return; }
+    saveMyProfile(Object.assign({}, myProfile||{}, {name})); markNameChosen(); ov.remove();
+    try{ if(sbClient && cloudUserId) await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); }catch(err){}
+    try{ renderEntranceAuth(); }catch(err){} showToast(`Welcome to the Grove, ${name}!`, 'ok'); });
 }
 async function initCloudSync(){
   // Coming back from Google (2026-10-02): Supabase hands the result back in the URL — tokens on
@@ -11913,7 +11938,7 @@ const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, 
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
   if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
-  if(r.dark == null && DARK_MAPS.has(mid)) r.dark = true; // complete darkness: only Darksight sees (2026-10-13)
+  if(r.dark == null && DARK_MAPS.has(mid)) r.dark = DARK_MAPS.get(mid); // complete darkness: only Darksight sees (2026-10-13)
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
   if(r.highTide == null && node && /boss|elite|champion/.test(node.kind || '') && (typeof MAP_MUSIC !== 'undefined' && MAP_MUSIC[mid] === 'map_water')) r.highTide = true;
   // The Volcano (2026-10-12, 10:23 list): on the Sundered Peak and the Eye of the Volcano the mountain erupts in the big
@@ -12009,12 +12034,14 @@ function fieldConditionRows(r){
   if(Number(r.eruption) > 0) add('eruption', '🌋', 'Eruptions', `From round 2, one random unit on each side takes ${r.eruption} fire damage every upkeep. Units that resist fire are spared.`);
   if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
   else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
-  if(r.dark) add('dark', '🌑', 'Complete darkness', 'Units without Darksight miss 1 attack in 2. Lanterns light their lane.');
-  if(r.phase === 'night') add('night', '🌙', 'Night all fight', 'Nocturnal units have their bonus; Night-blind units miss 1 attack in 2.');
+  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).');
+  else if(r.dark === 'pitch') add('dark', '🌑', 'Pitchblack', 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.');
+  else if(r.dark) add('dark', '🌘', 'Darkness', 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.');
+  if(r.phase === 'night') add('night', '🌙', 'Night all fight', 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.');
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.');
   if(r.highTide) add('highTide', '🌊', 'High tide', 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.');
   if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
-    add('frost', '❄️', 'Frost', `Each round ${r.frostCount > 1 ? r.frostCount + ' random units' : 'one random unit'} on each side ${r.frostCount > 1 ? 'get' : 'gets'} +${r.frostWait||1} Wait.`);
+    add('frost', '❄️', 'Frost', (()=>{ const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1); return `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`; })());
     if((r.frostResist||[]).length) add('frostResist', '🧥', 'Used to the cold', `Their ${r.frostResist.join(', ')} units are never chilled.`);
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
   }
@@ -12060,7 +12087,9 @@ function terrainPillHTML(m){
   return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}${rows.length > 1 ? ` <small>+${rows.length - 1}</small>` : ''}</span><span class="tp-tip" role="tooltip">${tip}</span></button>`;
 }
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
-const DARK_MAPS = new Set(['mg']); // the literal caves (Smugglers' Grotto); the Abyssal Plains will join
+// Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
+// The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
+const DARK_MAPS = new Map([['mg','pitch'], ['m4','dark']]);
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
@@ -12240,7 +12269,7 @@ function skirmishFieldChips(mapId, draft){
   if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
   if(Number(eff.firstBlood) > 0) add('firstBlood', true, '🩸', `First Blood +${eff.firstBlood}`, `The first Quick unit to attack each round hits +${eff.firstBlood}.`);
   if(Number(eff.actions) > 1) add('actions', true, '⚡', `${eff.actions} actions a turn`, 'Actions per turn, in the battle box above.');
-  if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [eff.frostWait ? `+${eff.frostWait} Wait` : '', eff.frostCount ? `${eff.frostCount} a side` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
+  if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [(eff.frostWait || eff.frostCount) ? `level ${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} (${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} a side, +1 Wait)` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
   const g = draft.leaderGrant || exp.leaderGrant || {};
   Object.keys(g).forEach(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key === k); out.push({key:'gift:' + k, on:true, icon:'👑', name:`Leader gift: ${pd ? pd.label : k}${g[k] === true ? '' : ' ' + g[k]}`, text:'Light blue on the enemy leaders.', src:'set'}); });
   return out;
@@ -20381,6 +20410,7 @@ function renderMatchUI(){
   wireLeaderWidget();
   try{ castleShieldSync('A'); castleShieldSync('B'); }catch(e){}
   try{ syncNightVeil(m); }catch(e){}
+  try{ syncDarkVeil(m); }catch(e){}
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
   // native `title="..."` tooltip on the deck pile with a themed one showing the same X/Y count;
@@ -25313,6 +25343,16 @@ function moonPillHTML(m){
 // Night creeps in (2026-10-12, user: "When night happens, cause darkness to creep into the field. As fast as night enters,
 // when its day, the night leaves the other direction, mimicking the way the earth travels around the sun"): a dark veil
 // slides over the board from the right at nightfall and carries on out to the left at dawn. Only with phase cards in play.
+// Darkness you can see (2026-10-13): Darkness, Pitchblack and Absolute darkness fights get a vignette over the board, thicker
+// with each level, so the miss chance has a look.
+function syncDarkVeil(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const dk = (matchFieldRules(m) || {}).dark, lvl = !dk || m.over ? '' : dk === 'absolute' ? 'absolute' : dk === 'pitch' ? 'pitch' : 'dark';
+  let v = bf.querySelector(':scope > .dark-veil');
+  if(!lvl){ if(v) v.remove(); return; }
+  if(!v){ v = document.createElement('div'); v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); }
+  v.className = 'dark-veil lvl-' + lvl;
+}
 function syncNightVeil(m, phase){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   let v = bf.querySelector(':scope > .night-veil');
@@ -33208,7 +33248,8 @@ function renderEntranceAuth(){
     if(btn) btn.addEventListener('click', triggerEntranceAnimation);
   } else {
     el.innerHTML = `<form id="loginForm" class="entrance-login-form" autocomplete="off">
-        <input id="loginNameInput" type="text" maxlength="24" placeholder="Choose a warband name…" autocomplete="off">
+        <label class="entrance-name-label" for="loginNameInput">What should we call you?</label>
+        <input id="loginNameInput" type="text" maxlength="24" placeholder="Your warband name" autocomplete="off" autofocus>
         <button type="submit" class="btn primary big splash-enter" id="loginSubmitBtn">🌿 Enter the Grove</button>
       </form>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
@@ -33224,7 +33265,7 @@ function renderEntranceAuth(){
       try{
         const input = document.getElementById('loginNameInput');
         const raw = (input && input.value || '').trim().slice(0,24);
-        saveMyProfile({name: raw || 'Woodland Warrior'});
+        saveMyProfile({name: raw || 'Woodland Warrior'}); if(raw) markNameChosen();
         // 2026-10-12 (user: "When I press enter the grove as a new player, please dont ask me to press Start. skip straight to
         // the next page"): entering the grove plays the entrance straight away.
         renderEntranceAuth(); triggerEntranceAnimation();

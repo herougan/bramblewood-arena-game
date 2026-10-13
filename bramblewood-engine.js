@@ -601,8 +601,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // card (for N rounds; a new field card replaces the old one). Day and night alternate every 3 rounds; Dawn
   // (the first round of each new day) lets both sides draw a card. Nocturnal cards hit +1 at night, Diurnal by day.
   const FIELDS = {
-    frozen:   {name:'Frigid', icon:'❄️', text:'At the start of every round, one random card on each side gets +1 Wait.'},
-    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, every unit takes 1 damage (heat-resistant units are spared).'},
+    frozen:   {name:'Frigid', icon:'❄️', text:'At the start of every round, one random unit on each side gets +1 Wait (more at higher levels). Units weak to cold also take 1 damage.'},
+    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, two random units on each side take 1 fire damage (more at higher levels). Heat-resistant units are spared; units weak to heat take double.'},
     rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
     fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
     moon:     {name:'Full Moon', icon:'🌕', text:'It stays night while the moon is up.'},
@@ -726,17 +726,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // ... normal units are only blind in complete darkness"): night alone no longer dims anyone. A unit swings blind (misses 1 in
   // 2, like Blind) when: the fight is in complete darkness (rules.dark: caves, the abyss) and it has no Darksight, or it is
   // Sun-shy and it is day, or it is Night-blind and it is night. A Lantern on its side lights it up in the dark and at night.
-  function sightBlind(card, ownerId){
-    if(!card) return false;
+  // Darkness (D67, 2026-10-13, user: "Don't call it Night Dimness. Just Darkness - in caves and night. Absolute darkness - Miss
+  // 100%. Pitchblack - Miss 50%" and "maybe 1/4 is better"): the chance a unit's swing misses because it can't see.
+  //   Darkness (night, or rules.dark 'dark'/true): 1 in 4, unless Darksight, Nocturnal, or a Lantern on its side.
+  //   Pitchblack (rules.dark 'pitch'): 1 in 2, unless Darksight or a Lantern.
+  //   Absolute darkness (rules.dark 'absolute'): every swing misses, unless Darksight (a Lantern brings it down to 1 in 2).
+  //   Sun-shy by day and Night-blind at night: 1 in 2.
+  function sightMiss(card, ownerId){
+    if(!card) return 0;
     const e = (CARD_DEFS[card.defId]||{}).effects || {};
     const pl = curPlayers && curPlayers[ownerId];
     const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && ((CARD_DEFS[c.defId]||{}).effects||{}).lantern));
-    if(rules.dark && !e.darksight && !lit()) return true;
+    let miss = 0; const dk = rules.dark;
     const ph = phaseActive() ? getPhase() : null;
-    if(ph === 'day' && e.sunshy) return true;
-    if(ph === 'night' && e.nightblind && !lit()) return true;
-    return false;
+    if(dk && !e.darksight){ miss = dk === 'absolute' ? (lit() ? 0.5 : 1) : lit() ? 0 : dk === 'pitch' ? 0.5 : 0.25; }
+    if(ph === 'night' && !e.darksight && !e.nocturnal && !e.nocturnalHp && !e.moonborn && !lit()) miss = Math.max(miss, 0.25);
+    if(ph === 'day' && e.sunshy) miss = Math.max(miss, 0.5);
+    if(ph === 'night' && e.nightblind && !lit()) miss = Math.max(miss, 0.5);
+    return miss;
   }
+  function sightBlind(card, ownerId){ return sightMiss(card, ownerId) > 0; }
   function nightDim(card, ownerId){ return sightBlind(card, ownerId); } // old name, kept for callers
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
   // Runs once at the start of every round after the first: the day/night step, then the field.
@@ -823,15 +832,27 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-12 (user: the Tundra's frost grows fight by fight): rules.frostWait (Wait added, default 1), rules.frostCount
       // (units chilled per side, default 1), rules.frostResist (enemy types the frost can't touch), rules.frostbite (an enemy
       // unit that gets chilled gains +N/+N). Units that resist cold are never chilled; Frostbite N on a card does the same.
-      const fw = Math.max(1, Number(rules.frostWait)||1), fc = Math.max(1, Number(rules.frostCount)||1), immune = new Set(rules.frostResist||[]);
-      [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if((d.resist||[]).includes('cold')) return false; if(pid === 2 && immune.size && (d.archetypes||[]).some(t=> immune.has(t))) return false; return true; });
-        for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.wait = (c.wait||0) + fw;
-          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, wait:fw});
+      // D66 (2026-10-13, user: "Chill increases wait in units ... number of targets increases. Wait is always (1). For those
+      // vulnerable, they ... take wait + take a little ice damage"): the frost's level (frostWait / frostCount, 1–3) is how many
+      // units a side get chilled; each gets +1 Wait. Units weak to cold also take 1 ice damage.
+      const fc = Math.max(1, Number(rules.frostCount)||1, Number(rules.frostWait)||1), immune = new Set(rules.frostResist||[]);
+      let iced = false;
+      [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if(resistFactor(c.defId, 'cold') < 1) return false; if(pid === 2 && immune.size && (d.archetypes||[]).some(t=> immune.has(t))) return false; return true; });
+        for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.wait = (c.wait||0) + 1;
+          const weak = weaknessFactor(c.defId, 'cold') > 1; if(weak){ damageCardFlat(c, 1, 'cold'); iced = true; }
+          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, wait:1, dmg: weak ? 1 : 0});
           const fb = (Number(((CARD_DEFS[c.defId]||{}).effects||{}).frostbite)||0) + (pid === 2 ? (Number(rules.frostbite)||0) : 0);
           if(fb > 0){ c.atk += fb; c.baseAtk += fb; c.hp += fb; c.maxHp += fb; if(recordEvents && events) events.push({type:'statusFx', kind:'frostbite', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:fb}); } } });
+      if(iced) removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'heatwave'){
-      [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const d = CARD_DEFS[c.defId]; if((d.resist||[]).includes('heat') || (d.effects && d.effects.dry)) return; damageCardFlat(c, 1, 'heat');
-        if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:1}); }));
+      // D66 (2026-10-13, user: "Scorch does fire damage to non resistance ... The damage increases, number of targets increases
+      // ... For those vulnerable, they take double fire damage"): level L (rules.heatLevel, 1–3): L+1 random units a side take
+      // L fire damage. Heat-resistant and Dry units are spared; units weak to heat take double.
+      const L = Math.max(1, Math.min(3, Number(rules.heatLevel)||1));
+      [1,2].forEach(pid=>{ const cards = allLive(players[pid]).filter(c=> resistFactor(c.defId, 'heat') >= 1);
+        for(let k = 0; k <= L && cards.length; k++){ const c = cards.splice(Math.floor(rnd()*cards.length), 1)[0]; const hp0 = c.hp;
+          damageCardFlat(c, L, 'heat'); const dmg = Math.max(0, hp0 - c.hp); // weakness doubles inside damageCardFlat
+          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg}); } });
       removeDeadCards(players, sideOf, {}, stats, events);
     } else if(f === 'rain'){
       [1,2].forEach(pid=> allLive(players[pid]).forEach(c=>{ const h = applyHeal(c, 2, sideOf(pid), events); if(h > 0){
@@ -3314,6 +3335,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       { const shN = Number(((CARD_DEFS[c.defId]||{}).effects||{}).shedding === true ? 3 : ((CARD_DEFS[c.defId]||{}).effects||{}).shedding) || 0;
         if(shN > 0 && c.hp > 0){ c.shedAge = (c.shedAge||0) + 1; if(c.shedAge % shN === 0){ c.atk += 1; c.baseAtk = (c.baseAtk||0) + 1; c.maxHp += 1; c.hp += 1; c.poison = 0; c.bleed = 0; c.corrode = 0; c.scar = 0; c.exposed = 0;
           if(recordEvents && events) events.push({type:'statusFx', kind:'shed', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:1}); } } }
+      // Molting N (D72, 2026-10-13, user: "Shedding and molting is about getting stronger"): the shell-growers' version. Every N
+      // rounds on the field: +1 Attack and +2 Health for good. Crabs have it.
+      { const mN = Number(((CARD_DEFS[c.defId]||{}).effects||{}).molting) || 0;
+        if(mN > 0 && c.hp > 0){ c.moltAge = (c.moltAge||0) + 1; if(c.moltAge % mN === 0){ c.atk += 1; c.baseAtk = (c.baseAtk||0) + 1; c.maxHp += 2; c.hp += 2;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'shed', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:1, molt:true}); } } }
       if(c.coffeeCrash > 0){ c.coffeeCrash -= 1; if(c.coffeeCrash === 0){ c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); } }
       if(c.tipsy>0){ if(c._tipsyJustSet) c._tipsyJustSet=false; else c.tipsy -= 1; }
       if(c.confused>0){ if(c._confusedJustSet) c._confusedJustSet=false; else c.confused -= 1; }
@@ -4136,7 +4162,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
             }
       };
-      const nightMiss = !(a.att.blind>0) && sightBlind(a.att, otherId(a.enemyId)) && rnd() < 0.5;
+      const sMiss = a.att.blind>0 ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
       const blindNow = (a.att.blind>0 && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
@@ -4523,7 +4549,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, isWindy, windSideOf, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

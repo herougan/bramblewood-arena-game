@@ -4860,7 +4860,8 @@
     ],
     "effects": {
       "thorns": 1,
-      "tide": true
+      "tide": true,
+      "molting": 4
     },
     "flavor": "Lives somewhere that would kill almost anything else instantly. Unbothered.",
     "locked": true,
@@ -5069,7 +5070,8 @@
     ],
     "effects": {
       "armor": 1,
-      "tide": true
+      "tide": true,
+      "molting": 4
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pinch out of a fight.",
     "locked": true,
@@ -5627,7 +5629,8 @@
     ],
     "effects": {
       "armor": 1,
-      "tide": true
+      "tide": true,
+      "molting": 4
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pick a fight with.",
     "dmgType": "physical",
