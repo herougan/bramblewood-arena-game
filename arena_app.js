@@ -23550,7 +23550,8 @@ async function discardCardByUid(uid){
       else if(t.do==='gainDevilry'){ me.devilry = (me.devilry||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId}); }
     });
   }
-  me.discardUsedThisTurn = true;
+  if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
+  else me.discardUsedThisTurn = true;
   if(m.selectedUid===uid) m.selectedUid = null;
   // Cashing in (2026-09-16, per explicit request): its own coin sound (was the generic
   // "play a card" tone) plus a "+1" that jumps out of the resource's own HUD pill, reusing the
@@ -30027,7 +30028,7 @@ let wildpathSel = null;
 const WILDPATH_KEY = 'bramblewood_wildpaths_v1';
 // Wildpath effects that are live (2026-10-13): applied to your side at the start of every Conquest fight. The rest of the
 // marks still read "preview" in their detail panel until their engine hooks exist.
-const WILDPATH_LIVE = new Set(['r1','r2','r3','r4','r5','r6','r7','t1','t2','t3','t4','t5','t6','t7','b1','b2','b3','b5','b7']);
+const WILDPATH_LIVE = new Set(['r1','r2','r3','r4','r5','r6','r7','t1','t2','t3','t4','t5','t6','t7','b1','b2','b3','b4','b5','b6','b7']);
 function applyWildpathPerks(engine, pl, stats){
   const rk = wildpathRanks(); if(!pl || !Object.keys(rk).length) return;
   const r = id=> rk[id] || 0, perks = {};
@@ -30049,6 +30050,8 @@ function applyWildpathPerks(engine, pl, stats){
   if(r('t3')) perks.thornbite = true;
   if(r('t4')) perks.weakSpots = r('t4');
   if(r('t7')) perks.crown = true;
+  if(r('b4')) perks.secondPitch = true;
+  if(r('b6')) perks.echo = true;
   if(Object.keys(perks).length) pl.perks = perks;
 }
 function wildpathCost(n){ return n.capstone ? 25 : n.y >= 380 ? 5 : n.y >= 290 ? 10 : n.y >= 200 ? 15 : 20; }

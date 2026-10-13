@@ -2822,7 +2822,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const side = flankOrShorter(pl, findCardSide(pl, boardCard.uid) || 'left');
           const newUids = [];
           const newCards = [];
-          for(let i=0;i<(t.count||1);i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
+          const echoN = (pl.perks && pl.perks.echo) ? (pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood": the first token comes with a copy
+          for(let i=0;i<(t.count||1)+echoN;i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
           if(recordEvents && events && newUids.length) events.push({type:'spawn', side:mySide, defId:t.defId, count:newUids.length, cause:'triggerSpawn', uids:newUids, lane:side, nearUid:boardCard.uid});
           // On Ally/Enemy Spawn (2026-09-27, "Spawn triggers now refer to those spawned from
           // units"): THIS is the genuine "spawned from a unit" case — a card's own ability
@@ -3571,7 +3572,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // legitimately land in a DIFFERENT lane than the first one, per the comment above).
       const placements = [];
       const spawnedTokens = [];
-      for(let i=0;i<s.count;i++){
+      const echoN = (s.pl.perks && s.pl.perks.echo) ? (s.pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood"
+      for(let i=0;i<s.count+echoN;i++){
         const side = (i===0) ? s.side : flankOrShorter(s.pl, s.side);
         const tok = makeBoardCard(s.defId);
         if(slotMode && i===0 && Number.isInteger(s.slot)) tok.slot = s.slot; // first token takes the fallen card's slot
