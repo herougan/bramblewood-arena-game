@@ -7894,6 +7894,14 @@
   @keyframes windDrift{to{background-position:300px 0;}}
   @media (prefers-reduced-motion: reduce){ #battlefieldEl.is-windy::after{animation:none;} }
   .cnp-journey{margin:6px 0; padding:6px 10px; border-radius:10px; background:rgba(255,236,190,.16); border:1px dashed rgba(255,220,150,.55); font-size:.92em; line-height:1.35;}
+  .ref-card .ref-long{font-size:.88em; opacity:.85; margin-top:4px; border-top:1px dashed rgba(127,127,127,.35); padding-top:4px;}
+  /* Danger warning (2026-10-13): a red banner across the field when a dangerous enemy card arrives. */
+  .danger-warn{position:absolute; left:50%; top:38%; transform:translate(-50%,-50%) scale(.9); z-index:60; display:flex; align-items:center; gap:10px; padding:10px 18px; border-radius:14px; background:rgba(120,14,14,.9); color:#fff3ee; border:2px solid #ffb199; box-shadow:0 0 0 4px rgba(255,80,60,.25), 0 10px 30px rgba(0,0,0,.5); font-weight:800; pointer-events:none; opacity:0; animation:dangerIn 2.8s ease forwards;}
+  .danger-warn .dw-sign{font-size:30px; animation:dangerPulse .5s ease-in-out 4 alternate;}
+  .danger-warn small{display:block; font-weight:600; opacity:.85;}
+  @keyframes dangerIn{0%{opacity:0; transform:translate(-50%,-50%) scale(.8);} 10%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 18%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0;}}
+  @keyframes dangerPulse{to{transform:scale(1.25);}}
+  @media (prefers-reduced-motion: reduce){ .danger-warn, .danger-warn .dw-sign{animation:none; opacity:1;} }
   /* Sweep (2026-10-13): under the Fight button on a fight you have mastered. */
   .cnp-sweep{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:6px 0 2px; font-size:.9em;}
   .cnp-sweep select{margin-left:4px;} .cnp-sweep .cnp-idle{display:flex; gap:4px; align-items:center; opacity:.9;}
@@ -8838,6 +8846,11 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <div class="settings-row-label"><span>🌊 Shader effects</span></div>
               <select id="shaderSelect" aria-label="Shader effects"></select>
               <div class="settings-row-note">Moving water, wind and light on the maps and title screens.</div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-label"><span>⚠️ Danger warnings</span></div>
+              <select id="dangerSelect" aria-label="Danger warnings"></select>
+              <div class="settings-row-note">A warning when a dangerous enemy card arrives. Each warning raises the bar one rarity, so they stay rare.</div>
             </div>
             <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>

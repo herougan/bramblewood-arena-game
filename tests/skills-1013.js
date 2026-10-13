@@ -35,4 +35,19 @@ const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.ass
   const o = all(P[1]).find(c=> c.defId==='k-otter'), k = all(P[1]).find(c=> c.defId==='k-kin'); ok(o.kinBonus === 2 && o.maxHp === 21 && !k.kinBonus, `Kinship Otter 2/1 (otter +${o.kinBonus}, hp ${o.maxHp}; source +${k.kinBonus||0})`); }
 { const {e, P} = mk(); ['left','right'].forEach(l=> e.debugSpawnCard(P, so, 2, 'k-wall', l, {}, [])); e.debugSpawnCard(P, so, 2, 'k-big', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k-rocket', 'left', {}, []);
   const big = all(P[2]).find(c=> c.defId==='k-big'); ok(big.hp <= 15, `Rocket hits the strongest enemy (hp ${big.hp})`); }
+{ const D2 = Object.assign({}, defs, {'k-club': U('k-club', {bludgeon:true}, {attack:2}), 'k-armfly': U('k-armfly', {armor:3, flying:true}, {attack:0, health:40})});
+  const e = E.makeSimEngine(D2, E.mulberry32(9), {recordEvents:true, battleMode:'open'}); const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
+  e.debugSpawnCard(P, so, 1, 'k-club', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-armfly', 'left', {}, []);
+  const club = all(P[1])[0]; let broke = [];
+  for(let i=0;i<8;i++){ const ev = []; e.debugAttack(P, so, club.uid, {}, ev); ev.filter(x=> x.kind==='bludgeon').forEach(x=> broke.push(x.broke)); }
+  ok(broke.includes('armor') && broke.includes('flying') && broke.length === 2, `Bludgeon breaks Armor and Flying, once each (${broke})`); }
+{ const D3 = Object.assign({}, defs, {'k-snipe': U('k-snipe', {snipe:4})});
+  const e = E.makeSimEngine(D3, E.mulberry32(3), {recordEvents:true, battleMode:'open'}); const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
+  e.debugSpawnCard(P, so, 1, 'k-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k-snipe', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-wall', 'left', {}, []);
+  const ev = []; e.resolveCombat(P, so, {}, ev); ok(ev.some(x=> x.type==='arrow' && x.snipe), 'Snipe fires when nothing faces it'); }
+{ const D4 = Object.assign({}, defs, {'k-fly': U('k-fly', {flying:true}, {attack:1})});
+  const e = E.makeSimEngine(D4, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{wind:'gale'}}); const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
+  e.debugSpawnCard(P, so, 1, 'k-fly', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-fly', 'left', {}, []);
+  const ev = []; e.roundStart(P, 2, so, {}, ev); const w1 = e.windSideOf(1); e.roundStart(P, 3, so, {}, ev); const w2 = e.windSideOf(1);
+  ok(e.isWindy() && w1 && w2 && w1 !== w2, `Gale: strong wind every round, flipping (${w1} then ${w2})`); }
 console.log(`skills-1013: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

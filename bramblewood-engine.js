@@ -686,23 +686,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
   function tideArmor(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ const d = card && CARD_DEFS[card.defId]; return !!(d && d.effects && d.effects.tide); }
-  // Wind (2026-10-13, user: "Tailwind is the same - on 'Windy' the following effects activate. Windy works like this - every turn
-  // has a 1/2 chance to be Windy or not - by default"): every round is Windy or calm, 1 in 2, unless the fight says otherwise
-  // (rules.wind: 'always' | 'never'). The roll uses its own little generator, seeded the first time anyone on the board cares,
-  // so fights with no wind units play out exactly as before.
-  let windSeed = null, windRound = -1, windNow = false;
-  function windCares(players){ return [1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; return c.hp > 0 && (e.tailwind || e.headwind); })); }
+  // Wind (2026-10-13, 09:56 list: "On windy maps, every alternate turn, there is strong wind. On certain maps, there is always
+  // strong wind. The wind flips direction between ally side -> opponent or opponent -> ally side ... tailwind on the allies side,
+  // then headwind on the opponent's side. If tailwind - action twice, one at +1 speed, and one at normal speed. Then headwind -
+  // skills activate twice. (Triggers too!)"): rules.wind 'windy' = strong wind every other round (rounds 2, 4, 6…), 'gale' =
+  // every round. Each strong wind blows the other way from the last one. It acts on Flying units: the side it blows FROM has a
+  // Tailwind (its Flyers get a quick extra turn before combat, then their normal one); the side it blows INTO has a Headwind
+  // (its Flyers' skills and triggers go off twice).
+  let windNow = false, windFrom = 0, windGusts = 0, windRound = -1;
   function rollWind(players, sideOf, events){
-    if(rules.wind === 'never'){ windNow = false; return; }
-    if(rules.wind === 'always'){ windNow = true; }
-    else { if(!windCares(players)){ windNow = false; return; }
-      if(windSeed === null) windSeed = Math.floor(rnd() * 4294967296) >>> 0;
-      let h = (windSeed ^ Math.imul(turnNo + 1, 2654435761)) >>> 0; h ^= h >>> 15; h = Math.imul(h, 2246822507) >>> 0; h ^= h >>> 13;
-      windNow = (h & 1) === 1; }
-    if(windRound !== turnNo){ windRound = turnNo; if(recordEvents && events) events.push({type:'wind', windy: windNow, round: turnNo}); }
+    const mode = rules.wind; windNow = false; windFrom = 0;
+    if(mode !== 'windy' && mode !== 'gale') return;
+    if(mode === 'windy' && turnNo % 2 === 1){ if(recordEvents && events && windRound !== turnNo){ windRound = turnNo; events.push({type:'wind', windy:false, round: turnNo}); } return; }
+    windNow = true; windGusts += 1; windFrom = (windGusts % 2 === 1) ? 1 : 2; // the first gust is at the player's back
+    if(windRound !== turnNo){ windRound = turnNo; if(recordEvents && events) events.push({type:'wind', windy:true, from: sideOf ? sideOf(windFrom) : (windFrom===1?'A':'B'), round: turnNo}); }
   }
   function isWindy(){ return windNow; }
-  function windArmor(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return (windNow && e && e.headwind) ? 1 : 0; }
+  function windSideOf(pid){ return !windNow ? null : (pid === windFrom ? 'tail' : 'head'); }
+  function isFlyingCard(c){ const e = c && (CARD_DEFS[c.defId]||{}).effects; return !!(e && e.flying); }
+  function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && windSideOf(pid) === 'head'; }
   // Night dims the eyes (2026-10-13, user: "Night causes Blindness on non Nocturnal or Darksight creatures"): at night a unit that
   // isn't Nocturnal and has no Darksight misses 1 attack in 4 (Blind is 1 in 2). A Lantern on its side keeps its side lit.
   function nightDim(card, ownerId){
@@ -874,6 +876,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // derived definition: a copy of its card with the granted skills merged in. derivedDefs is exported so the app can
   // render it.
   const derivedDefs = {}; let derivedSeq = 0;
+  // The defences Bludgeon can break, in one list so a new one (a future Burrow, Shell…) is one line here. Tide is left alone:
+  // it belongs to the map, not the unit.
+  const BLUDGEON_BREAKS = [
+    {key:'armor', has:(c, e)=> Math.max(0, (Number(e.armor)||0) - (c.armorLoss||0)) > 0, br:(c, e)=>{ c.armorLoss = Number(e.armor)||0; }},
+    {key:'flying', has:(c, e)=> !!e.flying, br:c=> deriveDef(c, {flying:false})},
+    {key:'swimmer', has:(c, e)=> !!e.swimmer, br:c=> deriveDef(c, {swimmer:false})},
+    {key:'burrow', has:(c, e)=> !!e.burrow, br:c=> deriveDef(c, {burrow:false})},
+  ];
+  function bludgeonHit(att, c, side, targetSide, events){
+    const e = (CARD_DEFS[c.defId] || {}).effects || {};
+    const can = BLUDGEON_BREAKS.filter(b=> b.has(c, e)); if(!can.length) return;
+    const b = can[Math.floor(rnd()*can.length)]; b.br(c, e);
+    if(recordEvents && events) events.push({type:'statusFx', kind:'bludgeon', broke:b.key, side, attDefId:att.defId, attUid:att.uid, targetSide, targetDefId:c.defId, targetUid:c.uid});
+  }
   function deriveDef(card, grant){
     const base = CARD_DEFS[card.defId]; const id = (base.derivedFrom || base.id) + '~dv' + (++derivedSeq);
     CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, effects: Object.assign({}, base.effects||{}, grant)});
@@ -1136,7 +1152,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.pitchfork) ? Infinity : /* Pitchfork = Trident + Pierce (2026-10-12) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + windArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard); // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     const armor = Math.max(0, nominalArmor - pierceN);
     const rend = pierceN > 0;
     // Rend (VFX/SFX coverage audit, 2026-09-21): rendBypass is a pure display flag for the front
@@ -2409,6 +2425,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const shots = [];
         if(fx.arrow > 0) shots.push({amount: fx.arrow, dmgType: 'physical', fire: false});
         if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
+        // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
+        if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
+          if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
+            if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt});
+            fired = true; fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', {kind:'card', card: shieldCall(enemy, t) || t}, stats, events, null, c.uid); } } }
+        if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
         shots.forEach(shot=>{
           const opp = opposingCardOf(players, pid, c);
           const near = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c);
@@ -2481,7 +2503,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // Shield Call logs into whichever event list is live
     const pl = players[playerId], enemy = players[otherId(playerId)];
     const mySide = sideOf(playerId);
-    def.effects.triggers.filter(t=>t.on===hook).forEach((t, i)=>{
+    const reps0 = headwindDouble(boardCard, playerId) ? 2 : 1; // Headwind: a Flyer's triggers go off twice (2026-10-13)
+    for(let rep0 = 0; rep0 < reps0; rep0++) def.effects.triggers.filter(t=>t.on===hook).forEach((t, i)=>{
       // Generic "once" flag: this exact trigger fires at most once for this
       // specific board-card INSTANCE (not the card definition, so every copy
       // of a card in play gets its own one-time use).
@@ -3662,10 +3685,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
     // gets one Fast Forward turn before the round's main order.
     if(!pass) firstBloodTaken = false; // a new round: first blood is up for grabs again
-    if(!pass){ const flow = tideRising(), wind = isWindy(); // Windy rounds: Tailwind units get the extra turn (2026-10-13)
+    if(!pass){ const flow = tideRising(), wind = isWindy(); // strong wind: the Flyers on the Tailwind side get the extra turn (2026-10-13)
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
-          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.tailwind) ? 'tailwind' : null; if(!why) continue;
+          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue;
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -4186,6 +4209,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           defCard.scar = (defCard.scar||0) + attDef.effects.scar;
           if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.scar});
         }
+        // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow - and in the future, anything
+        // like that"): each landed hit knocks out one defence the target still has, picked at random with equal odds.
+        if(attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
         if(attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
@@ -4439,7 +4465,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { isWindy, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { isWindy, windSideOf, nightDim, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> phaseMode, prayerOf, prayerReqOf, prayerOfferReady, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

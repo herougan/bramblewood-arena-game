@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (10:45)
+- **Danger warnings ⚠️.** A red warning crosses the field when a dangerous enemy card is played. By default the first one is for an Uncommon; each warning raises the bar one rarity (Rare, then Very Rare and up), so big-rarity fights don't keep firing it. Settings → Danger warnings sets where it starts (Uncommon, Rare, Very Rare, Epic, Legendary) or turns it off; changing it restarts the climb.
+- **Wind, rebuilt.** Wind belongs to the map now. Windy maps (Gannet Cliffs, The Glass Dunes, Ashen Spurn, The Sundered Peak) get strong wind every other round; gale maps (Eyrie Heights, The Aerie Vault) get it every round. Each gust blows the other way from the last, starting at your back.
+  - Flying units on the side it blows from have a Tailwind: they act twice, a quick extra turn and then their normal one.
+  - Flying units on the side it blows into have a Headwind: their skills and triggers go off twice.
+  - The Tailwind and Headwind card passives are gone.
+- **New skill: Bludgeon** 🔨. Each hit knocks out one of the target's defences: Armor, Flying or Swimmer (Burrow when it exists), at equal odds. The Codex → Reference page has the long description.
+- **New skill: Snipe N** 🎯. Every round while Ready, if nothing stands opposite it, it shoots a random enemy unit for N.
+- **New cards, with art:**
+  - Cunning Vixen: Evasive, Backstab 2; Briar Maze.
+  - Fox Sharpshot: Snipe 3; Briar Maze.
+  - Balloon Archer: a mouse in a patchwork balloon, Flying, Arrow 2; Eyrie Heights.
+  - Frillneck Duelist: an upright lizard in spiked knuckles, Quick, Bludgeon, Dry; Glass Dunes.
+  - Monitor Rambler: a plated lizard on all fours, Armor 2, Thorns 1; Savanna Reaches.
+  - Bombardier Beetle now has its picture.
+
 ## 2026-10-13 (09:30)
 - **D66, second half:** Swimmer now on the fish, turtles and tortoises, frogs, Voltaic Eel, Orca Vanguard, Narwhal Lancer and Humpback Elder (+1 Attack on Flow). Nocturnal and Diurnal still wait for a day/night playtest.
 - **The new skills on cards:** Rivergate Tribune now has Kinship Otter 1/1 (all your Otters +1/+1) instead of Rally. New **Bombardier Beetle** (Uncommon, Insect, 3/10, Rocket 4) is a reward from the Morel Hollow's Web Hollow fight; its art comes next time Chrome is reachable.

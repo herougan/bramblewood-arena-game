@@ -16,6 +16,10 @@ INIT=("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage
       "sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek']));")
 issues=[]
 def bad(m): issues.append(m); print('  ISSUE', m)
+async def safe_click(el):
+    # the versus opener can finish and leave the page between finding it and clicking it (2026-10-13)
+    try: await el.click(timeout=3000)
+    except Exception: pass
 async def fresh(b, w=1366, h=860):
     pg=await b.new_page(viewport={'width':w,'height':h}); errs=[]
     pg.on('pageerror', lambda e: errs.append(str(e))); pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
@@ -60,7 +64,7 @@ async def main():
         try:
             await pg.evaluate(f"(()=>{{ playSubTab='arena'; switchTab('play'); {js}; return 1; }})()"); await pg.wait_for_timeout(900)
             vs = await pg.query_selector('.vs-screen')
-            if vs: await vs.click(); await pg.wait_for_timeout(600)
+            if vs: await safe_click(vs); await pg.wait_for_timeout(600)
             if not await pg.evaluate("!!matchState"):
                 # maybe a picker opened first (tutorial deck picker etc.)
                 bad(f'{label}: match did not start (no matchState)')
@@ -102,7 +106,7 @@ async def main():
     pg, errs = await fresh(b, 390, 844)
     await pg.evaluate("playSubTab='arena'; switchTab('play'); startMatch('ai'); 1"); await pg.wait_for_timeout(900)
     vs = await pg.query_selector('.vs-screen')
-    if vs: await vs.click(); await pg.wait_for_timeout(600)
+    if vs: await safe_click(vs); await pg.wait_for_timeout(600)
     q = await pg.query_selector('#quitMatchBtn')
     if not q or not await pg.evaluate("(()=>{ const r=document.getElementById('quitMatchBtn').getBoundingClientRect(); return r.width>0 && r.right<=innerWidth+1 && r.bottom>0; })()"): bad('phone: Quit button not on screen in a match')
     else: await quit_via_button(pg, 'phone quick battle')
@@ -111,7 +115,7 @@ async def main():
     pg, errs = await fresh(b)
     await pg.evaluate("playSubTab='arena'; switchTab('play'); startMatch('ai'); 1"); await pg.wait_for_timeout(900)
     vs = await pg.query_selector('.vs-screen')
-    if vs: await vs.click(); await pg.wait_for_timeout(600)
+    if vs: await safe_click(vs); await pg.wait_for_timeout(600)
     await pg.evaluate("(async()=>{ const m=matchState; const me=m.players[1]; const h=me.hand.find(x=> m.engine.canPlay(me,x.defId,x.uid)); if(h) playCardByUid(h.uid,'left'); else skipTurn(); })()")
     await pg.wait_for_timeout(300)
     await quit_via_button(pg, 'quit mid-resolve'); await pg.wait_for_timeout(2500)
@@ -188,7 +192,7 @@ async def main():
         else:
             await el.click(); await pg.wait_for_timeout(900)
             vs = await pg.query_selector('.vs-screen')
-            if vs: await vs.click(); await pg.wait_for_timeout(500)
+            if vs: await safe_click(vs); await pg.wait_for_timeout(500)
             state = await pg.evaluate("[!!matchState, matchState && matchState.over, !!document.querySelector('.winloss-overlay'), currentTab]")
             if btn_id=='wlBackBtn' and state[2]: bad('win screen: Back to board did not close the modal')
             if btn_id in ('wlPrimaryBtn','wlNextBattleBtn') and not (state[0] and not state[1]): bad(f'win screen: {btn_id} did not start a new fight {state}')
@@ -202,7 +206,7 @@ async def main():
     pg, errs = await fresh(b)
     await pg.evaluate("playSubTab='arena'; switchTab('play'); startMatch('ai'); 1"); await pg.wait_for_timeout(900)
     vs = await pg.query_selector('.vs-screen')
-    if vs: await vs.click(); await pg.wait_for_timeout(500)
+    if vs: await safe_click(vs); await pg.wait_for_timeout(500)
     sb = await pg.query_selector('#settingsBtnHud')
     if not sb: bad('match: no settings button')
     else:

@@ -160,7 +160,7 @@
    dropdowns and the Reference tab, so the two can never drift.
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
-const SKILL_ICON = {kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', tailwind:'🪁', headwind:'🌬️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
+const SKILL_ICON = {bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🧹', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
@@ -299,6 +299,11 @@ const PASSIVE_DEFS = [
   // 2026-10-13 (overnight list): Lone Wolf, Sociable, Coffee, Dry, Darksight, Tailwind, Headwind and the Landslide evergreen.
   // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"). The blank
   // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
+  // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow ... Keep a concise one in a long
+  // description in the Codex of skills").
+  {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit knocks out one of the target's defences.`,
+    longDesc:`On every hit that lands, one defence the target still has is broken for the rest of the fight: its Armor, its Flying, its Swimmer (and Burrow, when that arrives). If it has several, each is as likely as the others. Map traits such as Tide are left alone.`},
+  {key:'snipe', category:'evergreen', label:'Snipe', kind:'number', min:1, defaultValue:1, desc:v=>`Every round while Ready, if nothing stands opposite it: shoots a random enemy unit for ${v||1}.`},
   {key:'kinship', category:'passive', label:'Kinship', kind:'typeTwoNumber', desc:(v, n, e)=>{ const k = (e && e.kinship) || (Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : {}); return `All your ${k.type || '<Type>'} units get +${k.atk||0}/+${k.hp||0} (itself too, if it is one). Stacks.`; },
     get:e=> e.kinship ? [e.kinship.type, e.kinship.atk||0, e.kinship.hp||0] : undefined,
     apply:(e, vals)=>{ const t = String(vals && vals[0] || '').trim(), a = Math.max(0, Number(vals && vals[1])||0), h = Math.max(0, Number(vals && vals[2])||0); if(t && (a || h)) e.kinship = {type:t, atk:a, hp:h}; }},
@@ -312,8 +317,6 @@ const PASSIVE_DEFS = [
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Heatwave can't touch it.`},
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark: never night-blind (other units miss 1 attack in 4 at night unless they're Nocturnal).`},
-  {key:'tailwind', category:'passive', label:'Tailwind', kind:'boolean', desc:()=>`On Windy rounds: an extra turn before combat (Quick Attack). Every round is Windy 1 time in 2.`},
-  {key:'headwind', category:'passive', label:'Headwind', kind:'boolean', desc:()=>`On Windy rounds: braces against the wind, +1 Armor.`},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
@@ -666,7 +669,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, mechLineGate:p.mechLineGate,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
@@ -4795,10 +4798,11 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
+  if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
   if(e.coffee) out.push(`<span title="Coffee">☕${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">🏜️</span>`);
-  if(e.darksight) out.push(`<span title="Darksight">👁️</span>`); if(e.tailwind) out.push(`<span title="Tailwind">🪁</span>`); if(e.headwind) out.push(`<span title="Headwind">🌬️</span>`);
+  if(e.darksight) out.push(`<span title="Darksight">👁️</span>`);
   if(e.landslide) out.push(`<span title="Landslide">🪨${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`📯${n1(e.inspiring)}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${n1(e.friction)}</span>`);
@@ -4989,9 +4993,9 @@ function referenceHTML(){
     <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the castle instead of a card always deals its normal, unconverted damage.</p></div>
     <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the castle instead of a card deals normal, unconverted damage.</p></div>
   </div></div>
-  <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen').map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p></div>`).join('')}
+  <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen').map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
-  <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen').map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p></div>`).join('')}
+  <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen').map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
     <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Killing blow's owner gains this much lumber. Set on the main form.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Resistance &amp; Weaknesses</h3><p class="panel-sub">Its own dedicated area on the card form (2026-09-16) — a Resistance box and a Weakness box, side by side, separate from the "+ Add Skill" list. Each can hold any number of match-keys: a damage type, an archetype/type-tag the attacker belongs to, or another ability the attacker has.</p><div class="ref-grid">
@@ -11774,6 +11778,7 @@ function skirmishTargetWinRate(mapId, node){
 const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = NIGHT_MAPS.has(mid) ? 'night' : 'day';
+  if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
   if(r.highTide == null && node && /boss|elite|champion/.test(node.kind || '') && (typeof MAP_MUSIC !== 'undefined' && MAP_MUSIC[mid] === 'map_water')) r.highTide = true;
   // The Volcano (2026-10-12, 10:23 list): on the Sundered Peak and the Eye of the Volcano the mountain erupts in the big
@@ -11861,6 +11866,8 @@ function terrainPillHTML(m){
   const body = t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
   return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}</span><span class="tp-tip" role="tooltip">${keywordizeHTML(escapeHtml(body))}</span></button>`;
 }
+// Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
+const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
   const defs = getCardDefs(), engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
@@ -22732,10 +22739,32 @@ function renderHand(){
 // card") — called once from each of playCardByUid/discardCardByUid/skipTurn, right before
 // the shared render, so both sides' cards land on the board together in one paint instead
 // of the enemy's card silently appearing moments later, right before combat.
+// Danger warnings (2026-10-13, user: "warning sign! when a dangerous enemy drops by (first time - a strong uncommon - my setting.
+// then subsequent times, a strong rare, then it slowly goes up.) Or maybe let me set - because this can't keep triggering for
+// high level rarity skirmishes"): an enemy card at or above the bar gets a warning, and every warning raises the bar one step.
+// Settings → Danger warnings sets where the bar starts (or Off); changing it resets the climb.
+const DANGER_LADDER = ['uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient'];
+const DANGER_FROM_KEY = 'bramblewood_danger_from_v1', DANGER_LEVEL_KEY = 'bramblewood_danger_level_v1';
+function dangerFrom(){ try{ return localStorage.getItem(DANGER_FROM_KEY) || 'uncommon'; }catch(e){ return 'uncommon'; } }
+function dangerLevel(){ try{ const v = localStorage.getItem(DANGER_LEVEL_KEY); if(v != null) return parseInt(v, 10) || 0; }catch(e){} return Math.max(0, DANGER_LADDER.indexOf(dangerFrom())); }
+function setDangerFrom(v){ try{ localStorage.setItem(DANGER_FROM_KEY, v); localStorage.removeItem(DANGER_LEVEL_KEY); }catch(e){} }
+function rarityStep(r){ const i = DANGER_LADDER.indexOf(r || 'common'); if(i >= 0) return i; const b = RARITY_TIER_BANDS.indexOf(r || 'common'); return b < 0 ? -1 : DANGER_LADDER.findIndex(x=> RARITY_TIER_BANDS.indexOf(x) >= b); }
+function maybeDangerWarn(defId){
+  if(dangerFrom() === 'off') return; const d = getCardDefs()[defId]; if(!d || d.token) return;
+  const lvl = dangerLevel(), step = rarityStep(d.rarity); if(step < 0 || step < lvl) return;
+  try{ localStorage.setItem(DANGER_LEVEL_KEY, String(Math.min(DANGER_LADDER.length - 1, lvl + 1))); }catch(e){}
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const rl = (RARITY_DEFS.find(r=> r.key === d.rarity) || {}).label || d.rarity;
+  const el = document.createElement('div'); el.className = 'danger-warn'; el.setAttribute('role', 'alert');
+  el.innerHTML = `<span class="dw-sign" aria-hidden="true">⚠️</span><span>${escapeHtml(d.name)} is here!<small>${escapeHtml(rl)} · watch out</small></span>`;
+  bf.appendChild(el); setTimeout(()=> el.remove(), 3000);
+  try{ SoundKit.blindTone && SoundKit.blindTone(); }catch(e){}
+}
 function aiActNow(){
   const m = matchState; if(!m) return;
   const events = [];
   m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
+  try{ events.filter(ev=> ev.type==='play' && ev.side==='B').forEach(ev=> maybeDangerWarn(ev.defId)); }catch(e){}
   // 2026-10-12 (user: "An opponent card with 0 wait deals damage immediately without animation"): whatever the new card
   // does on arrival (a Wait-0 swing, an on-spawn missile) used to fire in the same tick as the play, before the card was
   // even on the board. Those events now wait until it has landed (afterPlayerAction → replayAiArrivalEvents).
@@ -26251,7 +26280,7 @@ function logText(ev){
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.'};
-    case 'wind': return {cls:'', text: ev.windy ? '🌬️ The wind picks up: a Windy round.' : '🍂 The air is calm this round.'};
+    case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).`};
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
@@ -26354,6 +26383,7 @@ function logText(ev){
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         rocket: `launched a rocket 🚀`,
+        bludgeon: `bludgeoned ${nm(ev.targetDefId)}: its ${({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || ev.broke} is broken 🔨`,
         coffeeCrash: `crashed after its coffee and dozes off 😴`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
         frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
@@ -27681,6 +27711,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + (({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || '') + ' broken', 'debuff'); }
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
     else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
@@ -27986,7 +28017,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf){ let p = bf.querySelector('.wind-pill'); if(!p){ p = document.createElement('div'); p.className = 'wind-pill'; p.setAttribute('role', 'status'); bf.appendChild(p); }
-      p.textContent = ev.windy ? '🌬️ Windy: Tailwind units get an extra turn, Headwind +1 Armor' : '🍂 Calm'; p.classList.toggle('is-windy', !!ev.windy); bf.classList.toggle('is-windy', !!ev.windy); } }catch(e){} }
+      const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); p.textContent = ev.windy ? (mine ? '🌬️ Strong wind at your back: your Flyers act twice; theirs use skills twice' : '🌬️ Strong wind against you: their Flyers act twice; yours use skills twice') : '🍂 Calm'; p.classList.toggle('is-windy', !!ev.windy); bf.classList.toggle('is-windy', !!ev.windy); } }catch(e){} }
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   if(ev.type==='phase' && matchState && matchHasPhaseCards(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
     try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }
@@ -33335,6 +33366,9 @@ function wireSettingsButton(idSuffix){
     fxSel.value = fxLevel();
     fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast('Effects: ' + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
   }
+  { const dg = document.getElementById('dangerSelect'+idSuffix); if(dg){
+      dg.innerHTML = [['uncommon','From Uncommon, then rarer each time'],['rare','From Rare, then rarer'],['veryrare','From Very Rare, then rarer'],['epic','From Epic, then rarer'],['legendary','Legendary and up'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+      dg.value = dangerFrom(); dg.addEventListener('change', ()=>{ setDangerFrom(dg.value); showToast(dg.value === 'off' ? 'Danger warnings off.' : 'Danger warnings: ' + dg.options[dg.selectedIndex].text + '.'); }); } }
   wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
   if(atmo){
