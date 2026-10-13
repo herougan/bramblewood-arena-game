@@ -8360,6 +8360,7 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 @keyframes dynShake{0%,100%{transform:none;} 20%{transform:translate(-6px,3px);} 40%{transform:translate(5px,-4px);} 60%{transform:translate(-4px,2px);} 80%{transform:translate(2px,-1px);}}
 .ab-helm{vertical-align:-0.1em;}
 @media (prefers-reduced-motion: reduce){ .fuse-badge.is-last{animation:none;} }
+.faction-btn.fs-appear{animation:fsAppear .6s ease both;} @keyframes fsAppear{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
 .dark-veil{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; background:radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(4,4,12,.45) 100%);}
 .dark-veil.lvl-pitch{background:radial-gradient(ellipse at 50% 50%, rgba(4,4,12,.1) 20%, rgba(4,4,12,.65) 100%);}
 .dark-veil.lvl-absolute{background:radial-gradient(ellipse at 50% 50%, rgba(2,2,8,.3) 10%, rgba(2,2,8,.85) 100%);}
@@ -8866,7 +8867,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
         <span class="faction-name">Hummingbirds</span>
         <span class="faction-sub">Sunfeather Dominion</span>
       </button>
-      <button class="faction-btn faction-btn-random" id="factionRandomBtn" type="button" data-faction="random">
+      <button class="faction-btn faction-btn-random" id="factionRandomBtn" type="button" data-faction="random" hidden>
         <span class="faction-ico">🎲</span>
         <span class="faction-name">Random</span>
         <span class="faction-sub">Let the river decide</span>

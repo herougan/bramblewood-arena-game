@@ -16906,8 +16906,10 @@ function showFactionScreen(){
   el.hidden = false;
   // 2026-10-13 (user: "take out the do both - it just makes planning more complicated. Instead, its random"): a third button picks
   // a side at random. Hovering a side writes one line of lore and one of play at the bottom of the screen.
-  if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
+  if(factionCountdownTimer){ clearInterval(factionCountdownTimer); clearTimeout(factionCountdownTimer); factionCountdownTimer = null; }
   const rb = document.getElementById('factionRandomBtn');
+  // 2026-10-13 (user: "random faction option only appears 15s later"): it fades in after 15 seconds of looking.
+  if(rb){ rb.hidden = true; factionCountdownTimer = setTimeout(()=>{ rb.hidden = false; rb.classList.add('fs-appear'); factionCountdownTimer = null; }, 15000); }
   if(rb) rb.onclick = ()=>{ const pick = Math.random() < 0.5 ? 'otters' : 'hummingbirds'; try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(pick === 'otters' ? '🎲 The river chose the Otters.' : '🎲 The river chose the Hummingbirds.', 'ok'); setTimeout(()=> resolveFactionChoice(pick), 350); };
   const lore = document.getElementById('factionLore');
   const setLore = key=>{ if(!lore) return; const L = FACTION_LORE[key]; lore.innerHTML = L ? `<b>${escapeHtml(L.name)}</b>${escapeHtml(L.lore)} ${escapeHtml(L.play)}` : 'Hover a side to hear its story.'; };
@@ -17003,7 +17005,7 @@ function tutorialProgressText(p){
 function resolveFactionChoice(pick){
   { const el0 = document.getElementById('factionScreen'); if(el0 && el0.hidden && matchState && matchState.mode === 'tutorial') return; } // a second tap
   noteTutorialProgress({level:1, faction:pick, pickedAt:Date.now()});
-  if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
+  if(factionCountdownTimer){ clearInterval(factionCountdownTimer); clearTimeout(factionCountdownTimer); factionCountdownTimer = null; }
   saveFactionChoice(pick);
   const el = document.getElementById('factionScreen');
   saveTutorialStage(1);

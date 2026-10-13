@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-13 (22:00)
+- **Art for the two new cards:** the Helmeted Otter in its cooking-pot helmet and the Dynamite Packrat with its lit fuse (NightCafe, pixelized like the rest).
+- **🎲 Random** on the side screen appears after 15 seconds.
+
 ## 2026-10-13 (21:30)
 - **Dynamite N.** No Wait: the unit lands with a red 🧨 fuse that burns down one a round. At 0 it explodes for 5 damage to the cards beside it and the three enemy cards facing it (a 3×3 around it). If it dies first, nothing happens. New card: **Dynamite Packrat** (1/18, 1 Stone, Dynamite 3, Caves & Alcoves).
 - **Helmet.** Half the time, an arrow, missile or single bolt aimed at it glances off. Its badge is a drawn helmet (the emoji set has none cute enough). New card: **Helmeted Otter** (2/8, Otter pack).
