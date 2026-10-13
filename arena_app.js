@@ -15386,7 +15386,14 @@ function renderConquestSubTab(body){
   // back to the old prev-in-array edge for any node that doesn't define `requires`.
   const nodeIndexByKey = {}; map.nodes.forEach((n,i)=>{ nodeIndexByKey[n.key]=i; });
   const edgeLines = [], trailGrads = [];
+  // The tutorial phase (2026-10-13, user: "The other skirmishes shouldn't be visible at this point ... The background will also
+  // look 25% larger and zoomed in. When they complete the 2nd tutorial, the screen, centered slightly to the tutorial button,
+  // will zoom out to show the full map"): until part 2 is won, Map 0 shows only the tutorials, no trails, zoomed in 25% on them.
+  const tutPhase = map.id === 'm1' && !loadTutorial2Done() && !conquestLayoutEdit;
+  const tutIdx = map.nodes.findIndex(n=> n.key === 'tutorial2'), tutPos = tutIdx >= 0 ? positions[tutIdx] : null;
+  const tutZoomOut = map.id === 'm1' && !tutPhase && (()=>{ try{ return localStorage.getItem('bramblewood_tut_zoomout_v1') === '1'; }catch(e){ return false; } })();
   map.nodes.forEach((n,i)=>{
+    if(tutPhase) return;
     const reqs = Array.isArray(n.requires) ? n.requires : (i>0 ? [map.nodes[i-1].key] : []);
     reqs.forEach(reqKey=>{
       const j = nodeIndexByKey[reqKey];
@@ -15428,11 +15435,11 @@ function renderConquestSubTab(body){
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
-    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}">
+    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''}" id="conquestCanvas" style="${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${tutPos && (tutPhase || tutZoomOut) ? `--tut-x:${tutPos.x}%; --tut-y:${tutPos.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
-      ${mapSpotsHTML(map, positions, progress)}
-      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${mapCuriositiesHTML(map)}`}${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}
+      ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
+      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${mapCuriositiesHTML(map)}`}${tutPhase ? '' : `${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}`}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -15445,7 +15452,7 @@ function renderConquestSubTab(body){
         // stand-ins for the real, separately-mandatory 6-stage tutorial series a player has
         // already had to finish before they could ever see this map at all — not a fightable
         // node, so no deck/hqHp, no click-to-fight, always shown already-cleared.
-        if(node.kind!=='tutorial' && map.id==='m1' && !loadTutorial2Done() && !adminModeEnabled) return ''; // only the two tutorials until part 2 is won
+        if(node.kind!=='tutorial' && tutPhase) return ''; // only the two tutorials until part 2 is won (admins too, outside the layout editor)
         if(node.kind==='tutorial'){
           // 2026-10-12: part 2 waits here (with a "!") until it's won; after that, both parts live in this one slot.
           const t2 = node.stage === 2, tDone = t2 ? loadTutorial2Done() : loadTutorialDone();
@@ -15497,6 +15504,11 @@ function renderConquestSubTab(body){
       }).join('')}
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
+  if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
+  if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
+    const cv = document.getElementById('conquestCanvas'); tutBgZoom(1.25, false);
+    if(cv){ cv.querySelectorAll('.map-node:not(.kind-tutorial), .map-trail-svg').forEach(el=> el.classList.add('tut-reveal'));
+      setTimeout(()=>{ cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 700); } }
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
@@ -16911,10 +16923,33 @@ function resolveFactionChoice(pick){
   noteTutorialProgress({level:1, faction:pick, pickedAt:Date.now()});
   if(factionCountdownTimer){ clearInterval(factionCountdownTimer); factionCountdownTimer = null; }
   saveFactionChoice(pick);
-  const el = document.getElementById('factionScreen'); if(el) el.hidden = true;
+  const el = document.getElementById('factionScreen');
   saveTutorialStage(1);
-  beginTutorialStage(1);
+  const go = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); } beginTutorialStage(1); fadeInBattlefield(); };
+  if(el && !el.hidden && !reducedMotion()){ try{ factionToBattleFx(pick, el, go); return; }catch(e){} }
+  go();
 }
+// Into the first fight (2026-10-13, user: "After clicking the faction you want, it shows cards from the top right jumping to the
+// deck (bottom left) and at the same time, the screen 'zooms in', And then the battlefield fades in"): your tutorial cards arc
+// from the top-right corner down into a deck at the bottom left while the faction screen zooms in and fades; then the
+// battlefield fades in.
+function factionToBattleFx(pick, screen, done){
+  const defs = getCardDefs(); let ids = [];
+  try{ const D = tutorialDecksFor(1, pick).mine; Object.keys(D).forEach(id=>{ for(let i = 0; i < Math.min(2, D[id]); i++) ids.push(id); }); }catch(e){}
+  ids = ids.filter(id=> defs[id]).slice(0, 8);
+  const layer = document.createElement('div'); layer.className = 'f2b-layer'; layer.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(layer); screen.classList.add('fs-zoom');
+  const W = innerWidth, H = innerHeight, ex = Math.min(180, W * 0.14), ey = H - 170; // about where the deck sits
+  ids.forEach((id, i)=>{ const c = document.createElement('div'); c.className = 'f2b-card'; c.innerHTML = cardTileHTML(defs[id], {inPlay:true}); layer.appendChild(c);
+    const sx = W - 120, sy = 40;
+    c.animate([{transform:`translate(${sx}px, ${sy}px) rotate(12deg) scale(.9)`, opacity:0}, {transform:`translate(${sx - 60}px, ${sy + 30}px) rotate(6deg) scale(1)`, opacity:1, offset:.15},
+      {transform:`translate(${(sx + ex)/2}px, ${Math.min(sy, ey) - 60}px) rotate(-8deg) scale(.95)`, opacity:1, offset:.55}, {transform:`translate(${ex + i*1.5}px, ${ey - i*1.5}px) rotate(-3deg) scale(.6)`, opacity:1}],
+      {duration:720, delay:i*90, easing:'cubic-bezier(.45,0,.3,1)', fill:'forwards'}); });
+  try{ SoundKit.swipeTone && SoundKit.swipeTone(); }catch(e){}
+  const total = 720 + ids.length*90 + 250;
+  setTimeout(()=>{ layer.classList.add('is-out'); done(); setTimeout(()=> layer.remove(), 500); }, total);
+}
+function fadeInBattlefield(){ const v = document.getElementById('view-play'); if(!v || reducedMotion()) return; v.classList.remove('bf-fade-in'); void v.offsetWidth; v.classList.add('bf-fade-in'); setTimeout(()=> v.classList.remove('bf-fade-in'), 1200); }
 // Central dispatcher for "enter whichever skirmish the player is currently on" -- stage 3 (the
 // deck-arranging lesson) needs a picker screen first; every other stage jumps straight into the
 // fight. Both the "just won stage N, advance to N+1" path and the "reload mid-series, resume
@@ -17203,7 +17238,7 @@ function guideToTutorial2(){
   const go = ()=>{
     const el = document.querySelector('.map-node[data-nodekey="tutorial2"]');
     if(!el){ if(++tries < 12) setTimeout(go, 300); return; }
-    try{ showCoachTip({id:'go-tutorial2', action:true, gate:true, text:'🎓 Part 2 is ready. Tap it once to look, then press ⚔️ Fight: a friend joins you there.', anchor:()=> document.querySelector('.map-node[data-nodekey="tutorial2"]')}, el); }catch(e){}
+    try{ showCoachTip({id:'go-tutorial2', action:true, gate:true, ring:true, text:'🎓 Part 2 is ready. Tap it once to look, then press ⚔️ Fight: a friend joins you there.', anchor:()=> document.querySelector('.map-node[data-nodekey="tutorial2"]')}, el); }catch(e){}
     // 2026-10-12 (10:57, user: "it should ask you to click twice. The play button should also be highlighted, out of the
     // darkness"): once Part 2 is selected, the second tap is the Fight button, lit in the spotlight.
     let n = 0; const watch = setInterval(()=>{ n++;
@@ -17399,7 +17434,7 @@ function winTitle(m){ return ((m && (m.round||0)) % 4 === 3) ? 'Hurrah!' : 'Vict
 function tutorialWinLossTitle(m){
   const stage = m.tutorialStage || 1;
   if(m.winner!==1) return 'Not This Time — Try Again';
-  return stage >= 2 ? 'Tutorial Complete!' : 'Part 1 Complete!';
+  return 'Tutorial Complete!'; // 2026-10-13 (user: "Just say Tutorial Complete!"), both parts
 }
 function tutorialWinLossSubtitleHTML(m){
   const stage = m.tutorialStage || 1;
@@ -20392,8 +20427,8 @@ function renderMatchUI(){
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
-          <button class="btn ${m.nextBattle && m.winner===1 ? '' : 'primary'} big" id="wlPrimaryBtn" ${playAgainEnergyAttrs(m)}>${isTutorial?(m.winner===1?((m.tutorialStage||1)>=2 ? 'Finish' : (m.tutorialReplay || m.adminTest) ? 'Part 2 ▶' : loadTutorialDone() ? 'Back to the map' : 'Claim Rewards'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again') + (m.mode==='pvp' ? ' <small class="wl-cost wl-ticket" title="Costs one PvP ticket">−1 🎟️</small>' : '')}</button>
-          ${isTutorial && m.winner===1 && (m.tutorialStage||1) < 2 && !(loadTutorialDone() && !m.tutorialReplay && !m.adminTest) ? `<button class="btn big" id="wlTutMapBtn" title="Back to the map (your rewards are kept)">🗺️ Back to the map</button>` : ''}
+          <button class="btn ${m.nextBattle && m.winner===1 && !isTutorial ? '' : 'primary'} big" id="wlPrimaryBtn" ${playAgainEnergyAttrs(m)}>${isTutorial?(m.winner===1?((m.tutorialStage||1)>=2 ? 'Finish' : (m.tutorialReplay || m.adminTest) ? 'Part 2 ▶' : loadTutorialDone() ? 'Back to the map' : 'Claim Rewards'):'Try Again'):isDungeon?(m.dungeonRunComplete?'Claim Rewards':(m.dungeonRunFailed?'Return to Arena':'Next Fight')):((!isPc && m.winner===2)?'↻ Try again':'↻ Play again') + (m.mode==='pvp' ? ' <small class="wl-cost wl-ticket" title="Costs one PvP ticket">−1 🎟️</small>' : '')}</button>
+          ${isTutorial && m.winner===1 && (m.tutorialStage||1) < 2 && (m.tutorialReplay || m.adminTest) ? `<button class="btn big" id="wlTutMapBtn" title="Back to the map (your rewards are kept)">🗺️ Back to the map</button>` : ''}
           ${isTutorial && m.winner!==1 && !m.adminTest ? `<div class="winloss-secondary"><button class="btn ghost" id="wlSkipTutBtn" title="Finish the tutorial now with the starter deck">Skip the tutorial</button></div>` : ''}
 
         </div>
@@ -20553,7 +20588,7 @@ function renderMatchUI(){
         }
         // Part 2 won: the tutorials fold into one slot on the map, and the training wheels come off.
         const first = !loadTutorial2Done() && !adminTest;
-        if(first){ saveTutorial2Done(); try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){} }
+        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){} }
         const after = ()=>{
           // Both tribes (2026-10-12, 10:57 list): the Meerkat Wayfarer, another traveller on the road, joins your collection (not
           // your deck), and the otternarian has a word about how hard peace is.
@@ -23072,7 +23107,11 @@ function renderHand(){
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard || (d.cardType==='equipment' && !me.playedThisTurn)) && !m.resolving;
     const whyNot = can ? '' : unplayableReason(me, d);
-    const hl = m.tutorialHighlight && (hc.defId === m.tutorialHighlight || d.derivedFrom === m.tutorialHighlight) ? 'tut-highlight' : '';
+    // 2026-10-13 (user: "The first card has a golden glow - only glow when you reach the 2nd tutorial that asks you to pull it
+    // out"): in part 1 the glow waits until the "drag a card onto the field" step.
+    const hlReady = m.mode !== 'tutorial' || (m.tutorialStage||1) >= 2 || coachSeen.has('g-hand');
+    const isHl = m.tutorialHighlight && (hc.defId === m.tutorialHighlight || d.derivedFrom === m.tutorialHighlight);
+    const hl = isHl ? (hlReady ? 'tut-highlight tut-hl-cand' : 'tut-hl-cand') : '';
     return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
@@ -25345,6 +25384,24 @@ function moonPillHTML(m){
 // slides over the board from the right at nightfall and carries on out to the left at dawn. Only with phase cards in play.
 // Darkness you can see (2026-10-13): Darkness, Pitchblack and Absolute darkness fights get a vignette over the board, thicker
 // with each level, so the miss chance has a look.
+// The map art zooms with the tutorial (2026-10-13): the background layer of #conquestLayout is scaled about the tutorial node,
+// in step with the canvas's own transform, by setting that layer's size and position in pixels.
+function tutBgZoom(z, animate, clear){
+  const lay = document.getElementById('conquestLayout'), cv = document.getElementById('conquestCanvas'); if(!lay || !cv) return;
+  if(clear){ lay.style.backgroundSize = ''; lay.style.backgroundPosition = ''; lay.style.transition = ''; return; }
+  const m = /url\(["']?([^"')]+)["']?\)/.exec(getComputedStyle(lay).backgroundImage || ''); if(!m) return;
+  const img = new Image(); img.onload = ()=>{
+    const L = lay.getBoundingClientRect(), C = cv.getBoundingClientRect(), W = L.width, H = L.height, sc = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+    const iw = img.naturalWidth * sc, ih = img.naturalHeight * sc, ox = (W - iw)/2, oy = (H - ih)/2;
+    const tx = parseFloat(cv.style.getPropertyValue('--tut-x')) || 50, ty = parseFloat(cv.style.getPropertyValue('--tut-y')) || 50;
+    const px = C.left - L.left + C.width * tx/100, py = C.top - L.top + C.height * ty/100;
+    const nx = px - (px - ox) * z, ny = py - (py - oy) * z;
+    lay.style.transition = animate && !reducedMotion() ? 'background-size 1.8s cubic-bezier(.45,0,.2,1), background-position 1.8s cubic-bezier(.45,0,.2,1)' : 'none';
+    lay.style.backgroundSize = `auto, auto, ${iw*z}px ${ih*z}px, auto`; lay.style.backgroundPosition = `center, center, ${nx}px ${ny}px, center`;
+    if(animate && z === 1) setTimeout(()=> tutBgZoom(1, false, true), 2000);
+  };
+  img.src = m[1];
+}
 function syncDarkVeil(m){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const dk = (matchFieldRules(m) || {}).dark, lvl = !dk || m.over ? '' : dk === 'absolute' ? 'absolute' : dk === 'pitch' ? 'pitch' : 'dark';
@@ -25565,7 +25622,7 @@ async function showFightSign(){
    ============================================================ */
 const COACH_SEEN_KEY = 'bramblewood_coach_seen';
 let coachSeen = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(COACH_SEEN_KEY)||'[]')); }catch(e){ return new Set(); } })();
-function markCoachSeen(id){ { const i = GUIDED_STEPS.findIndex(st=> st.id===id); if(i >= 0 && matchState && matchState.mode==='tutorial' && !matchState.adminTest){ const tp = loadTutorialProgress(); if((tp.stepIndex||0) < i+1) noteTutorialProgress({level:2, step:id, stepIndex:i+1}); } }
+function markCoachSeen(id){ if(id === 'g-hand') setTimeout(()=> document.querySelectorAll('#handStrip .card-tile.tut-hl-cand').forEach(el=> el.classList.add('tut-highlight')), 0); { const i = GUIDED_STEPS.findIndex(st=> st.id===id); if(i >= 0 && matchState && matchState.mode==='tutorial' && !matchState.adminTest){ const tp = loadTutorialProgress(); if((tp.stepIndex||0) < i+1) noteTutorialProgress({level:2, step:id, stepIndex:i+1}); } }
   coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
 function coachHandEl(pred){
   const m = matchState; if(!m) return null;
@@ -25783,8 +25840,9 @@ function showCoachTip(tip, anchorEl){
   let spot = null, pointer = null;
   if(GUIDED_STEPS.includes(tip) || tip.gate){
     spot = document.createElement('div'); spot.className = 'coach-spotlight'; spot.setAttribute('aria-hidden', 'true');
-    pointer = document.createElement('div'); pointer.className = 'coach-pointer' + (tip.action ? ' is-action' : ''); pointer.setAttribute('aria-hidden', 'true');
-    pointer.innerHTML = '<span class="cp-ring"></span><span class="cp-hand">👆</span>';
+    pointer = document.createElement('div'); pointer.className = 'coach-pointer' + (tip.action ? ' is-action' : '') + (tip.ring ? ' is-ring' : ''); pointer.setAttribute('aria-hidden', 'true');
+    pointer.innerHTML = tip.ring ? '<span class="cp-target"></span>' : '<span class="cp-ring"></span><span class="cp-hand">👆</span>';
+    if(tip.ring) spot.classList.add('is-round');
     document.body.appendChild(spot); document.body.appendChild(pointer);
     b.classList.add('has-spot');
   }
@@ -25821,7 +25879,8 @@ function showCoachTip(tip, anchorEl){
     b.style.left = x+'px'; b.style.top = y+'px';
     b.classList.toggle('below', below);
     if(spot){ const pad = 8; spot.style.left = (r.left - pad)+'px'; spot.style.top = (r.top - pad)+'px'; spot.style.width = (r.width + pad*2)+'px'; spot.style.height = (r.height + pad*2)+'px'; }
-    if(pointer){ const px = r.left + r.width/2, py = below ? r.top + Math.min(r.height*0.35, 40) : r.top + r.height*0.6; pointer.style.left = px+'px'; pointer.style.top = Math.max(8, Math.min(H - 8, py))+'px'; }
+    if(pointer && tip.ring){ const d = Math.max(r.width, r.height) + 10; pointer.style.left = (r.left + r.width/2)+'px'; pointer.style.top = (r.top + r.height/2)+'px'; pointer.style.setProperty('--d', d+'px'); }
+    else if(pointer){ const px = r.left + r.width/2, py = below ? r.top + Math.min(r.height*0.35, 40) : r.top + r.height*0.6; pointer.style.left = px+'px'; pointer.style.top = Math.max(8, Math.min(H - 8, py))+'px'; }
     // 2026-10-12 (10:57, user: "The tutorial that asks me to drag a unit onto the field should change effect when im already
     // holding the card - then it should show a phantom hand and card dragging that phantom card onto the battlefield position.
     // If they let go again, it's back to the original visual"): while a hand card is held, a ghost card and hand glide from it
@@ -25858,12 +25917,14 @@ function syncCoachPhantom(pointer){
   const row = document.getElementById('rowMine');
   if(!held || !row || reducedMotion()){ if(coachPhantom){ coachPhantom.remove(); coachPhantom = null; } if(pointer) pointer.style.opacity = ''; return; }
   if(coachPhantom && coachPhantom.isConnected) return;
-  const hr = held.getBoundingClientRect(), rr = row.getBoundingClientRect(), w = Math.min(96, hr.width || 90);
+  // 2026-10-13 (user: "The card shadows are way too big. Reduce it to the same size as the card"): the held card is lifted and
+  // scaled up, so its on-screen box is ~25% bigger than the card itself; the phantom uses the card's own (unscaled) width.
+  const hr = held.getBoundingClientRect(), rr = row.getBoundingClientRect(), w = Math.min(96, held.offsetWidth || (hr.width || 90) * 0.8);
   const ph = document.createElement('div'); ph.className = 'coach-phantom'; ph.setAttribute('aria-hidden', 'true');
-  const ghost = held.cloneNode(true); ghost.classList.remove('dragging', 'coach-anchor', 'coach-locked'); ghost.removeAttribute('id'); ghost.removeAttribute('draggable');
+  const ghost = held.cloneNode(true); ghost.classList.remove('dragging', 'coach-anchor', 'coach-locked', 'tut-highlight'); ghost.style.transform = 'none'; ghost.removeAttribute('id'); ghost.removeAttribute('draggable');
   ph.appendChild(ghost); const hand = document.createElement('span'); hand.className = 'cph-hand'; hand.textContent = '👆'; ph.appendChild(hand);
   ph.style.width = w + 'px'; document.body.appendChild(ph);
-  const sx = hr.left + hr.width/2 - w/2, sy = hr.top, ex = rr.left + rr.width/2 - w/2, ey = rr.top + rr.height/2 - (hr.height || 120)/2;
+  const sx = hr.left + hr.width/2 - w/2, sy = hr.top, ex = rr.left + rr.width/2 - w/2, ey = rr.top + rr.height/2 - (held.offsetHeight || hr.height || 120)/2;
   try{ ph.animate([
       {transform:`translate(${sx}px, ${sy}px) scale(.9)`, opacity:0}, {transform:`translate(${sx}px, ${sy - 12}px) scale(1)`, opacity:.75, offset:.12},
       {transform:`translate(${ex}px, ${ey}px) scale(1)`, opacity:.75, offset:.75}, {transform:`translate(${ex}px, ${ey + 6}px) scale(.96)`, opacity:0}],
@@ -26465,7 +26526,7 @@ function rewardsPanelHTML(m){
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
-  if(m.mode==='tutorial' && !loadTutorialDone()) return `<button class="btn primary big" id="wlNextBattleBtn">🗺️ Reveal the map</button>`;
+  if(m.mode==='tutorial' && !loadTutorialDone()) return ''; // 2026-10-13 (user: "On the buttons below only have the button 'Claim Rewards'")
   return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` — needs ${e}⚡, you have ${currentEnergy()}⚡` : ''))}">Next: ${escapeHtml(nb.node.name)} ⚔️</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
