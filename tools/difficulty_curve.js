@@ -98,7 +98,10 @@ function build(pool, seed){
 }
 const decks = {};
 const starterDeck = (()=>{ const m = /const STARTER_CFG_DEFAULT = \{([\s\S]*?)\n\};/.exec(src); const cfg = eval('({' + m[1] + '})');
-  const d = Object.assign({}, cfg.starterShared); Object.entries(cfg.starterOtters).forEach(([id,n])=> d[id] = (d[id]||0) + n); cfg.rewards.forEach(id=> d[id] = (d[id]||0) + 1); return d; })();
+  const d = Object.assign({}, cfg.starterShared); Object.entries(cfg.starterOtters).forEach(([id,n])=> d[id] = (d[id]||0) + n);
+  // 2026-10-15: the baby filler tops the base deck up to 17 (see starterDeckParts in arena_app.js)
+  { let n = Object.values(d).reduce((a, b)=> a + b, 0); Object.entries(cfg.starterFiller || {}).forEach(([id, k])=>{ for(let i = 0; i < k && n < 17; i++, n++) d[id] = (d[id]||0) + 1; }); }
+  cfg.rewards.forEach(id=> d[id] = (d[id]||0) + 1); return d; })();
 decks.starter = {variant: 'Otter starter', deck: starterDeck};
 // --reuse-decks keeps the Mid-road and Strong decks from the last run (tools/curve_tune.js tunes against those).
 const prev = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8')).decks; }catch(e){ return null; } })();

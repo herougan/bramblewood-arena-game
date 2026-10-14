@@ -9167,6 +9167,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   // owning more copies, not a silent no-op.
   grantCardCopy(id, copyOpts);
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
+  noteGainedForSwap(id, source); // a clearly better card than one in your deck is offered as a swap (2026-10-15, at most 10 ever)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
   myUnlockedCardIds.add(id);
   saveUnlockedCardIds();
@@ -10882,7 +10883,7 @@ function renderPlayerSubTab(body){
   body.innerHTML = `
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
-      <h2>🃏 Your Loadout</h2><p class="panel-sub">Tap a card below to add a copy; tap it in your deck list to take one out. Press 💾 Save deck to keep your changes.</p>
+      <h2>🃏 Your Loadout</h2><p class="panel-sub">Click a card to add a copy; <b>Shift+click</b> (or right-click, or its − corner) takes one out. Press 💾 Save deck to keep your changes.</p>
       <h3 class="deck-section-h">🃏 Cards</h3>
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
@@ -12063,7 +12064,9 @@ const FEATURE_SPOTS = [
   // 2026-10-13 (user: "Move it to Map 1. But everytime they win a card, show a special UI subwindow on the conquest map ... that lets
   // them switch out a basic card with the card gotten"): the Armoury opens on Map 1; on Map 0 each card won offers a swap.
   // 2026-10-13 (user: "The Armoury becomes available ASAP"): it opens on Map 0, once the tutorials are done.
-  {key:'deck', icon:'⛺', name:'Camp', mapNumber:0, get map(){ return mapIdAt(0); }, after:null, dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
+  // 2026-10-15 (user: "before you get the armory (i moved it to Map 0-3), you have 2 skirmishes to clear, 0-1 and 0-2"): the
+  // Armoury appears once BOTH 0-1 and 0-2 are cleared, by 0-3 (a spot's `after` may now list several fights; all must be won).
+  {key:'deck', icon:'⛺', name:'Camp', mapNumber:0, get map(){ return mapIdAt(0); }, get after(){ return [nthFightKey(this.map, 1), nthFightKey(this.map, 2)].filter(Boolean); }, dialogue:'unlock_deck', tabs:['deck'], go:()=> switchTab('deck')},
   // The backpack (2026-10-12, 10:23 list): a note from the Wandering Traveller on Map 1 opens the Inventory and the field kit.
   {key:'fieldkit', icon:'🧰', name:'The traveller\'s kit', mapNumber:12, get map(){ return mapIdAt(12); }, after:null, dialogue:'unlock_fieldkit', tabs:['inventory'], go:()=> switchTab('inventory')},
   // 2026-10-12 (22:25, user: "Note in your pack ... after clicking it, you get some stuff in your pack-inventory. Then it disappears
@@ -12123,10 +12126,13 @@ function saveUnlocks(u){ try{ localStorage.setItem(UNLOCKS_KEY, JSON.stringify(u
 function spotAvailable(spot, progress){
   progress = progress || loadConquestProgress();
   const map = CONQUEST_MAPS.find(m=> m.id===spot.map); if(!map || !isMapUnlocked(map, progress)) return false;
-  const after = spotAfter(spot);
-  return !after || (progress.completed||[]).includes(conquestNodeId(spot.map, after));
+  const after = spotAfterKeys(spot);
+  return after.every(k=> (progress.completed||[]).includes(conquestNodeId(spot.map, k)));
 }
-function spotAfter(spot){ try{ return decorAfter(spot.map, '~spot:' + spot.key, spot.after); }catch(e){ return spot.after; } }
+// The fight a spot hangs off (the last one when it waits on several); spotAfterKeys gives them all.
+function spotAfter(spot){ const a = spotAfterRaw(spot); return Array.isArray(a) ? (a[a.length - 1] || null) : a; }
+function spotAfterRaw(spot){ try{ return decorAfter(spot.map, '~spot:' + spot.key, spot.after); }catch(e){ return spot.after; } }
+function spotAfterKeys(spot){ const a = spotAfterRaw(spot); return (Array.isArray(a) ? a : [a]).filter(Boolean); }
 // First run of this build for an existing player: grant whatever their progress has already reached.
 function migrateFeatureUnlocks(){
   const u = {unlocked:{}, migrated: Date.now(), sched1012: Date.now()};
@@ -12145,6 +12151,7 @@ function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocke
 function activateSpot(spot){
   const first = !featureUnlocked(spot.key);
   if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok');
+    if(spot.key === 'deck') setTimeout(()=>{ try{ releaseHeldPacks(); }catch(e){} }, 1200); // packs won before the Armoury (2026-10-15)
     const script = DIALOGUES[spot.dialogue];
     // A first visit whose conversation offers to take you there (a reply with an act) lets that reply do it (2026-10-12).
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true}); return; }
@@ -12166,7 +12173,7 @@ function decorPos(mapId, key, fallback){
 // sets it and publishing the layout carries it. Curiosities, the well and the chat cave default to the map's first fight.
 function decorAfter(mapId, key, fallback){
   const o = (mapLayoutOverrides[mapId]||{})[key];
-  return (o && Object.prototype.hasOwnProperty.call(o, 'after')) ? (o.after || null) : (fallback || null);
+  return (o && Object.prototype.hasOwnProperty.call(o, 'after')) ? (o.after || null) : ((Array.isArray(fallback) ? fallback.length : fallback) ? fallback : null);
 }
 function firstFightKey(map){ const n = map && map.nodes.find(x=> x.kind!=='tutorial'); return n ? n.key : null; }
 function decorEditing(){ return !!(adminModeEnabled && (conquestLayoutEdit || conquestLinkEdit)); }
@@ -12179,7 +12186,7 @@ function decorRevealed(mapId, key, fallback, progress){
 function decorShown(mapId, key, fallback){ return decorEditing() || decorRevealed(mapId, key, fallback); }
 function decorGateNote(map, key, fallback){
   if(!decorEditing()) return '';
-  const a = decorAfter(map.id, key, fallback), n = a && map.nodes.find(x=> x.key === a);
+  const a0 = decorAfter(map.id, key, fallback), a = Array.isArray(a0) ? a0[a0.length - 1] : a0, n = a && map.nodes.find(x=> x.key === a);
   return n ? ` · appears after ${skirmishCode(map.id, a) || a} ${n.name}` : ' · always there';
 }
 // One tap at a time (2026-10-12, user: "Dont let me spam click the sign"; "The interactibles shouldn't be spammable"):
@@ -14543,8 +14550,10 @@ const CONQUEST_MAPS = [
       // 2026-10-12 (user: "you see the 2 tutorials front and centre of a zoomed in map, one on the left one on the right. After
       // you defeat the 2nd tutorial, it expands"): part 2 is its own marker, and the Outskirts open after it.
 
-      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":3,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2,"shellwright-apprentice":1}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:[] },
-      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:[] },
+      // 2026-10-15 (user: "before you get the armory (i moved it to Map 0-3), you have 2 skirmishes to clear, 0-1 and 0-2. 0-1 will
+      // give a single card reward. The swap is for that. 0-2 will give a faction pack"): firstOneCard / firstFactionPack.
+      { key:"1-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":3,"meadow-rabbit":2,"pond-trout":2,"glacier-wolf-pack":2,"shellwright-apprentice":1}, hqHp:57, flavor:"A river patrol that wandered too far from the water.", requires:[], firstOneCard:true },
+      { key:"1-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:[], firstFactionPack:"mine" },
       { key:"1-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:33, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["1-1","1-2"] },
       { key:"1-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":1,"otter-royal-guard":1}, hqHp:64, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["1-3"] },
     ]},
@@ -15535,7 +15544,10 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
-  const cardsAll = cards + tokenChips;
+  // 2026-10-15 (user: "0-2 will give a faction pack. (This has to be clearly seen in the first clear rewards section of the skirmish
+  // review btw)"): a pack the first clear gives shows as a small pack with its name.
+  const packChips = nodeFirstClearPacks(mapId, node).map(rewardPackInfo).filter(Boolean).map(pi=> `<span class="cnp-rw-card cnp-rw-pack ${done?'is-got':''}" role="img" aria-label="${escapeAttr(pi.name + (done ? ', already won' : ''))}" title="${escapeAttr(pi.name + ': ' + pi.cards + ' cards')}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(pi.name)}</b></span>`).join('');
+  const cardsAll = packChips + cards + tokenChips;
   if(!cardsAll && !cur.length && !rankHTML) return '';
   return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">${done ? 'Won' : 'First clear'}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
 }
@@ -16353,22 +16365,71 @@ function weakestDeckCard(exceptId){
   return ids.sort((a, b)=> one(defs[a]) - one(defs[b]) || ((defs[a].attack||0) + (defs[a].health||0)) - ((defs[b].attack||0) + (defs[b].health||0)) || (defs[a].cost||0) - (defs[b].cost||0))[0] || null;
 }
 const SWAP_DECLINES_KEY = 'bramblewood_swap_declines_v1';
+// Better-card swaps for the rest of the game (2026-10-15, user: "idk if swaps should continue happening throughout the game, but
+// maybe prepare 10 swap suggestions in general if the player gets a card that is clearly strictly better than one of their cards.
+// This won't happen after the 10th time"). After the tutorial swap (the first forced one, from Map 0-1), a card you gain is
+// offered as a swap only when it STRICTLY DOMINATES a card in your main deck:
+//   - Cost <= and Wait <= the deck card's, Attack >= and Health >= its, and at least one of those four strictly better;
+//   - and it has no fewer skills (keyword effects) than the deck card.
+// The deck card offered for the trade is the weakest one it dominates. At most SWAP_OFFERS_MAX of these are ever shown
+// (SWAP_OFFERS_KEY counts them, whether taken or turned down); forced teaching swaps on Maps 0-1 don't count.
+const SWAP_OFFERS_KEY = 'bramblewood_swap_offers_v1', SWAP_OFFERS_MAX = 10, SWAP_TUTORIAL_FLAG = 'swap:tutorialDone';
+function swapOffersShown(){ try{ return +localStorage.getItem(SWAP_OFFERS_KEY) || 0; }catch(e){ return SWAP_OFFERS_MAX; } }
+function noteSwapOfferShown(){ try{ localStorage.setItem(SWAP_OFFERS_KEY, String(swapOffersShown() + 1)); }catch(e){} }
+function swapTutorialDone(){ try{ return !!loadDialogueFlags()[SWAP_TUTORIAL_FLAG] || (featureUnlocked('deck') && (loadConquestProgress().completed||[]).some(id=> !/^mtut:/.test(id))); }catch(e){ return false; } }
+function cardSkillCount(d){ const e = (d && d.effects) || {}; return Object.keys(e).filter(k=> e[k] != null && e[k] !== false && e[k] !== 0 && e[k] !== '').length; }
+function strictlyDominates(d, o){
+  if(!d || !o || d.id === o.id) return false;
+  const c = x=> +x.cost || 0, w = x=> +x.wait || 0, a = x=> +x.attack || 0, h = x=> +x.health || 0;
+  if(c(d) > c(o) || w(d) > w(o) || a(d) < a(o) || h(d) < h(o) || cardSkillCount(d) < cardSkillCount(o)) return false;
+  return c(d) < c(o) || w(d) < w(o) || a(d) > a(o) || h(d) > h(o);
+}
+function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
+// The weakest card in your main deck that `id` strictly dominates, or null.
+function dominatedDeckCard(id){
+  const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
+  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && strictlyDominates(d, defs[k]));
+  const pw = x=> (x.attack||0) + (x.health||0);
+  return ids.sort((a, b)=> pw(defs[a]) - pw(defs[b]) || (defs[b].cost||0) - (defs[a].cost||0) || a.localeCompare(b))[0] || null;
+}
+// One queue entry per card: a forced (teaching) entry replaces a plain one for the same card.
+function queueDeckSwap(item){
+  if(!item || !item.id) return; pendingDeckSwap = pendingDeckSwap || [];
+  const had = pendingDeckSwap.find(x=> (typeof x === 'string' ? x : x.id) === item.id);
+  if(had && typeof had === 'object'){ if(item.forced) Object.assign(had, item); return; }
+  if(had) return;
+  pendingDeckSwap.push(item);
+}
+// Called for every card gained (unlockCardForPlayer): queue a swap offer when it clearly beats a deck card.
+const SWAP_SKIP_SOURCES = new Set(['admin', 'adminGrant', 'test', 'sandbox', 'devGrant', 'tutorialReward', 'tutorialBonus', 'baseGrowth', 'starterDeck', 'materia']);
+function noteGainedForSwap(id, source){
+  try{
+    if(SWAP_SKIP_SOURCES.has(source) || adminModeEnabled) return;
+    if(swapOffersShown() >= SWAP_OFFERS_MAX || !swapTutorialDone()) return;
+    if(!dominatedDeckCard(id)) return;
+    queueDeckSwap({id, natural:true, strict:true});
+  }catch(e){}
+}
 // Deck swap (2026-10-13, user: "Later suggestions are more natural, like swapping: preview some deck cards fading off left and
 // right, focus on one weaker 1-attack or 1-defence card, a swap animation and a Swap button, with text recommending the switch").
 // A teaching card (Maps 0–1) must be swapped in; a later one can be turned down, and after three no-thanks they stop.
 function maybeOfferDeckSwap(){
   if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step, #lumberLesson')) return;
+  // not over a pack being opened, nor with one still waiting to be shown (2026-10-15); the opener calls back when it closes
+  { const po = document.getElementById('packOpenOverlay'); if((po && !po.hidden) || (typeof packRevealQueue !== 'undefined' && packRevealQueue.length)) return; }
   const defs = getCardDefs(); let item = pendingDeckSwap.shift(); if(typeof item === 'string') item = {id:item};
   const id = item.id, d = defs[id]; if(!d){ maybeOfferDeckSwap(); return; }
   if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
-  const out = weakestDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
-  const od = defs[out], power = x=> (x.attack||0) + (x.health||0);
+  // 2026-10-15: a forced (teaching) swap trades out the weakest card; any other offer needs a deck card it strictly dominates,
+  // after the tutorial swap, and no more than SWAP_OFFERS_MAX of them ever (see strictlyDominates).
+  const out = item.forced ? weakestDeckCard(id) : dominatedDeckCard(id); if(!out){ setTimeout(maybeOfferDeckSwap, 50); return; }
+  const od = defs[out];
   if(!item.forced){
-    let dec = 0; try{ dec = +localStorage.getItem(SWAP_DECLINES_KEY) || 0; }catch(e){}
-    if(dec >= 3 || power(d) < power(od) + 2 || (d.cost||0) > 0 && !pitchingUnlocked()){ setTimeout(maybeOfferDeckSwap, 50); return; }
+    if(swapOffersShown() >= SWAP_OFFERS_MAX || !swapTutorialDone() || (d.cost||0) > 0 && !pitchingUnlocked()){ setTimeout(maybeOfferDeckSwap, 50); return; }
+    noteSwapOfferShown();
   }
   const others = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== out && k !== id).slice(0, 4);
-  const why = item.teach ? (TEACH_SAY[item.teach] || '') : `${d.attack||0}/${d.health||0} beats ${od.attack||0}/${od.health||0}.`;
+  const why = item.teach ? (TEACH_SAY[item.teach] || '') : item.forced ? `${d.attack||0}/${d.health||0} in place of ${od.attack||0}/${od.health||0}.` : `⚔${d.attack||0} ❤${d.health||0}${(d.wait||0) < (od.wait||0) ? ` ⏳${d.wait||0}` : ''}${(d.cost||0) < (od.cost||0) ? ` 🪵${d.cost||0}` : ''} against ⚔${od.attack||0} ❤${od.health||0}${(d.wait||0) < (od.wait||0) ? ` ⏳${od.wait||0}` : ''}${(d.cost||0) < (od.cost||0) ? ` 🪵${od.cost||0}` : ''}: as good or better in every way.`;
   const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'ds2-overlay';
   ov.innerHTML = `<div class="ds2" role="dialog" aria-modal="true" aria-label="Swap a card">
     <div class="ds2-stage">
@@ -16379,7 +16440,7 @@ function maybeOfferDeckSwap(){
     <p class="ds2-say"><b>${item.teach ? 'New card!' : 'Better card!'}</b> Swap <b>${escapeHtml(od.name)}</b> for <b>${escapeHtml(d.name)}</b>?<br><span>${escapeHtml(why)}</span></p>
     <div class="ds2-actions">${item.forced ? '' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
   document.body.appendChild(ov);
-  const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 260); };
+  const close = ()=>{ ov.classList.add('is-out'); if(item.forced) setDialogueFlag(SWAP_TUTORIAL_FLAG, true); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 260); };
   const keep = ov.querySelector('#dsKeep'); if(keep) keep.onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
   const sw = ov.querySelector('#dsSwap'); setTimeout(()=>{ try{ sw.focus(); }catch(e){} }, 60);
   sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true;
@@ -17863,11 +17924,28 @@ function sharedBasicIds(){ const defs = getCardDefs(); return Object.keys(defs).
 function buildFactionStarterDeck(pick){
   // 2026-10-10: shared basics + the side's basics from the tutorial config (17 by default). The tutorial's reward cards
   // are added by claimTutorialWin, which makes 20.
+  return starterDeckParts(pick).all;
+}
+// The starting deck, seen and unseen (2026-10-15, user: "At the end of Part I, you have a 8-card sized deck. Then we put the rewards
+// into your deck (1 card). Part II, we show you a leader and put it into your deck, then you win additional card rewards (2 cards)
+// - you put them into your deck - forming 20 cards. Behind the scenes, you actual deck was always 17 cards, and you did put those
+// 1+2 cards into your deck. Many of them are 'baby' cards with total stats of 3 or less").
+//   shown  - the first STARTER_SHOWN (8) copies of your side's list then the shared list: the deck Part I hands you;
+//   hidden - whatever else those lists hold, then the baby filler (cfg.starterFiller, Attack + Health <= 3), up to
+//            STARTER_BASE_SIZE (17) cards in all. Nobody sees these until the Armoury opens; Part II's deck box counts them.
+//   all    - shown + hidden: the real base deck (17). Part I's reward makes 18, Part II's two make 20.
+const STARTER_SHOWN = 8, STARTER_BASE_SIZE = 17;
+function starterDeckParts(pick){
   const defs = getCardDefs(), cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT;
   const side = pick==='otters' ? cfg.starterOtters : pick==='hummingbirds' ? cfg.starterHummingbirds : cfg.starterBoth;
-  const counts = {};
-  [cfg.starterShared || STARTER_CFG_DEFAULT.starterShared, side || {}].forEach(list=> Object.entries(list).forEach(([id, n])=>{ if(defs[id] && n > 0) counts[id] = (counts[id]||0) + n; }));
-  return counts;
+  const copies = [];
+  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared].forEach(list=> Object.entries(list).forEach(([id, n])=>{ if(defs[id]) for(let i = 0; i < (n|0); i++) copies.push(id); }));
+  const filler = []; Object.entries(cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller || {}).forEach(([id, n])=>{ if(defs[id]) for(let i = 0; i < (n|0); i++) filler.push(id); });
+  const add = (o, id)=>{ o[id] = (o[id]||0) + 1; };
+  const shown = {}, hidden = {}, all = {};
+  copies.forEach((id, i)=>{ add(i < STARTER_SHOWN ? shown : hidden, id); add(all, id); });
+  for(let i = 0; i < filler.length && copies.length + i < STARTER_BASE_SIZE; i++){ add(hidden, filler[i]); add(all, filler[i]); }
+  return {shown, hidden, all};
 }
 function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
   // an older saved config listed all three rewards for part 1; the part-2 cards now come with part 2
@@ -18155,11 +18233,15 @@ function beginTutorialStage(stage, opts){
 // Starting deck (2026-10-10, user: "Can I edit the starting deck?"): shared basics + the picked side's basics = 17
 // cards; the tutorial's 3 reward cards go in on top, making 20. Every list is editable in Admin → Tutorial editor.
 const STARTER_CFG_DEFAULT = {
-  starterShared: {'duck-paddler':2, 'pond-trout':3, // the list as given summed to 13 (21 cards); Duck Paddler, the strongest basic, went 3 -> 2 to make 20
-                  'meadow-frog':2, 'forager-ant':2, 'bee-knight':2, 'crossed-eyes':1},
-  starterOtters: {'otter-kit':2, 'otter-centurion':2, 'fleetfootd':1},
-  starterHummingbirds: {'cobalt-talon-fledgling':2, 'crimson-wing-recruit':2, 'mosswing-laborer':1},
-  starterBoth: {'otter-kit':1, 'otter-centurion':1, 'cobalt-talon-fledgling':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
+  // 2026-10-15 (user: "At the end of Part I, you have a 8-card sized deck ... Behind the scenes, you actual deck was always 17
+  // cards ... Many of them are 'baby' cards with total stats of 3 or less"): the side's 3 + 5 shared = the 8 cards Part I shows;
+  // starterFiller tops the real deck up to 17 with baby cards (Attack + Health <= 3). See starterDeckParts.
+  // Was (2026-10-10): shared {duck-paddler 2, pond-trout 3, meadow-frog 2, forager-ant 2, bee-knight 2, crossed-eyes 1} + side 5.
+  starterShared: {'duck-paddler':2, 'pond-trout':2, 'meadow-frog':1},
+  starterOtters: {'otter-kit':1, 'otter-centurion':1, 'fleetfootd':1},
+  starterHummingbirds: {'crimson-wing-recruit':2, 'mosswing-laborer':1},
+  starterBoth: {'otter-centurion':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
+  starterFiller: {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3}, // 1/2 each: the trainees the swaps replace
   // 2026-10-12 (10:57, user: "the first card nets you the quarry mole, only the 2nd one nets you the side-specific card. If you
   // chose both sides, maybe you get a 3rd uncommon card ... a meerkat"): part 1 gives the Quarry Mole, part 2 two more cards
   // (your side's), making 20; picking both also brings the Meerkat Wayfarer to your collection.
@@ -18517,8 +18599,23 @@ function showTutorialDeckPicker(){
 // The starter deck, handed over (2026-10-08): after the last tutorial fight the player sees the 20
 // cards they've earned (plus the tutorial reward cards) and must press "Add to deck"; the cards fly
 // into the deck box, and only then does the map open.
+// 2026-10-15 (user: "in the 'Add to deck' screen of the tutorial part 1 ending, the cards rush into your deck. But the middle
+// label is lying OVER the cards. So the cards looked like their disappeared into the label. Change the layering of that."):
+// the grid scrolls (overflow:auto), so a card flying out of it was clipped at its edge, right where the label sits. Each
+// flying card is now a fixed-position copy on its own top layer above the whole modal; the real tile just fades in place.
+function ssFlyTile(t, br, vars){
+  const r = t.getBoundingClientRect();
+  const fly = t.cloneNode(true); fly.classList.add('ss-fly'); fly.setAttribute('aria-hidden', 'true');
+  Object.assign(fly.style, {position:'fixed', left:r.left+'px', top:r.top+'px', width:r.width+'px', height:r.height+'px', margin:'0', zIndex:'10050', pointerEvents:'none'});
+  document.body.appendChild(fly);
+  gsap.set(t, {opacity:0});
+  const done = vars.onComplete;
+  gsap.to(fly, Object.assign({}, vars, {x: br.left + br.width/2 - (r.left + r.width/2), y: br.top + br.height/2 - (r.top + r.height/2),
+    onComplete:()=>{ fly.remove(); done && done(); }}));
+}
 function openStarterDeckStep(pick, onDone){
-  const defs = getCardDefs(), counts = buildFactionStarterDeck(pick);
+  // 2026-10-15: the 8 cards you are shown (starterDeckParts.shown) + Part I's reward; the rest of the 17 goes in quietly.
+  const defs = getCardDefs(), counts = Object.assign({}, starterDeckParts(pick).shown);
   const rewards = grantTutorialSeriesRewardsPreview(pick).filter(id=> defs[id]);
   // 2026-10-12 (user: "when we get those 3 cards - then im told to put those cards in my deck - put those 3 cards in my deck
   // too!"): the tutorial's reward cards are in the grid and fly into the deck with the rest (claimTutorialWin adds them).
@@ -18545,8 +18642,8 @@ function openStarterDeckStep(pick, onDone){
       btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 700); };
     if(!hasGsap() || reducedMotion()){ finish(); return; }
     tiles.forEach((t, i)=>{
-      const r = t.getBoundingClientRect(), id = ids[i];
-      gsap.to(t, {x: br.left + br.width/2 - (r.left + r.width/2), y: br.top + br.height/2 - (r.top + r.height/2), scale:.25, opacity:0, duration:.45, delay:i*0.05, ease:'power2.in',
+      const id = ids[i];
+      ssFlyTile(t, br, {scale:.25, opacity:0, duration:.45, delay:i*0.05, ease:'power2.in',
         onComplete:()=>{ added += counts[id] || 1; box.classList.remove('is-bump'); void box.offsetWidth; box.classList.add('is-bump'); try{ SoundKit.draw && SoundKit.draw(); }catch(e){} if(i === tiles.length - 1) finish(); }});
     });
   };
@@ -18575,8 +18672,8 @@ function openDeckTopUpStep(ids, onDone){
     const finish = ()=>{ countEl.textContent = `${after}/${Math.max(DECK_SIZE, after)}`; const f = ov.querySelector('.ss-full'); if(f && after >= DECK_SIZE) f.hidden = false; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
       btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 1500); };
     if(!hasGsap() || reducedMotion()){ finish(); return; }
-    tiles.forEach((t, i)=>{ const r = t.getBoundingClientRect();
-      gsap.to(t, {x: br.left + br.width/2 - (r.left + r.width/2), y: br.top + br.height/2 - (r.top + r.height/2), scale:.25, opacity:0, duration:.5, delay:i*0.12, ease:'power2.in',
+    tiles.forEach((t, i)=>{
+      ssFlyTile(t, br, {scale:.25, opacity:0, duration:.5, delay:i*0.12, ease:'power2.in',
         onComplete:()=>{ n++; countEl.textContent = `${n}/${Math.max(DECK_SIZE, after)}`; box.classList.remove('is-bump'); void box.offsetWidth; box.classList.add('is-bump'); try{ SoundKit.draw && SoundKit.draw(); }catch(e){} if(i === tiles.length - 1) finish(); }}); });
   };
 }
@@ -18589,7 +18686,6 @@ function claimTutorialWin(pick){
     // 2026-10-10 (user: "Playing the tutorial forces the player to put the 3 cards they won from the tutorial into their deck -> forming 20!")
     const deck = buildFactionStarterDeck(pick); won.forEach(id=> deck[id] = (deck[id]||0) + 1);
     myDeckCounts = deck; saveMyDeck(); saveTutorialDone();
-    // Map 0's Ally Pack (2026-10-12) now comes with tutorial part 2.
     noteTutorialProgress({level:4, doneAt:Date.now()});
   }
   return firstTime;
@@ -18628,7 +18724,7 @@ function tutorialWinLossSubtitleHTML(m){
     if(pick==='hummingbirds' || pick==='both') rewardIds.push('sunspire-envoy');
     rewardIds.push('rabbit-kit');
     if(loadTutorial2Done() && !m.tutorialFirstPart2) return `<p class="splash-sub">Nicely done — that was a replay, so no rewards this time.</p>`;
-    return `<p class="splash-sub">That's everything. The training wheels are off now: from here, fights don't stop to explain. Your Ally Pack opens as soon as you leave this screen.</p>`; // 2026-10-14: packs open at once
+    return `<p class="splash-sub">That's everything. The training wheels are off now: from here, fights don't stop to explain.</p>`; // 2026-10-15: no Ally Pack here any more
   }
   return `<p class="splash-sub">${meta.title} — ${meta.teaches}${m.winner===1?'':`. ${meta.lesson}`}</p>`;
 }
@@ -21255,7 +21351,9 @@ function renderMyDeckPanels(){
   try{ refreshDeckHeroBanner(); }catch(e){}
   const listEl = document.getElementById('myDeckList'); listEl.classList.add('is-stacks');
   listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(deckSortFn(sortMode)).map(id=>{ const n = myDeckCounts[id];
-    return `<span class="dchip deck-stack" draggable="true" data-defid="${id}" title="${escapeAttr(defs[id].name)} ×${n}: click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), n, '×' + n)}</span>`; }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
+    // 2026-10-15 (user: "In the main deck editor - click = +, shift click = -"): a deck card adds a copy on click and takes one out on
+    // Shift+click (or right-click); the small − corner does it with a tap on touch screens.
+    return `<span class="dchip deck-stack" draggable="true" data-defid="${id}" title="${escapeAttr(defs[id].name)} ×${n}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), n, '×' + n)}<button type="button" class="dchip-minus" data-minus="${id}" aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`; }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const baseSort = deckSortFn(sortMode);
   const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
   const allIds = (defs[HERO_ID] ? [HERO_ID] : []).concat(getDraftableIds())
@@ -21276,7 +21374,12 @@ function renderMyDeckPanels(){
       if(groups && groups.length > 1) return groups.map(g=> stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: copyFinishClass(defs[id], g.copy)}), g.n, `×${g.n}`, 'is-finish')).join('');
       return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '');
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
-  document.querySelectorAll('#myDeckList .dchip').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
+  { const after = ()=>{ saveMyDeck(); renderMyDeckPanels(); };
+    document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid');
+      el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); return; } deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); });
+      el.addEventListener('contextmenu', e=>{ e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); });
+    document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=>{ el.title = (el.title ? el.title + ' · ' : '') + 'Click: add one · Shift+click: take one out';
+      el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); }); }
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
   // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
@@ -22387,7 +22490,7 @@ function renderMatchUI(){
       // 2026-10-07 playtest: a loss used to offer only "Try Again", so a player who couldn't win was stuck.
       const pick = m.tutorialFaction || loadFactionChoice() || 'both', part2 = (m.tutorialStage||1) >= 2;
       endMatch();
-      if(part2 && !loadTutorial2Done()){ saveTutorial2Done(); try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){} }
+      if(part2 && !loadTutorial2Done()){ saveTutorial2Done(); } // 2026-10-15: no Ally Pack here any more; the first pack is Map 0-2's
       const firstTime = claimTutorialWin(pick);
       conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest';
       switchTab('play');
@@ -22428,7 +22531,9 @@ function renderMatchUI(){
         }
         // Part 2 won: the tutorials fold into one slot on the map, and the training wheels come off.
         const first = !loadTutorial2Done() && !adminTest;
-        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} try{ grantFactionPack(/humming/.test(String(pick||'')) ? 'hummingbird' : 'otter', 1); }catch(e){} }
+        // 2026-10-15 (user: "The pack award was abit anti-climatic cause i didnt expect to get it. Don't give it till I unlock the
+        // armoury"): the Ally Pack that came with part 2 is gone; the first pack is Map 0-2's faction pack, next to the Armoury.
+        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} }
         const after = ()=>{
           // Both tribes (2026-10-12, 10:57 list): the Meerkat Wayfarer, another traveller on the road, joins your collection (not
           // your deck), and the otternarian has a word about how hard peace is.
@@ -22472,7 +22577,7 @@ function renderMatchUI(){
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
     const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
-    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below — tap one to add it, tap a card in your list to take one out.', 'ok'); });
+    const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); showToast('🃏 Your new cards are in the pool below: click one to add it, Shift+click to take one out.', 'ok'); });
     // GSAP entrance (2026-09-16, "GSAP-quality" pass): the win/loss modal previously had zero
     // mount animation at all -- it just appeared instantly via innerHTML. Backdrop fades in
     // while the card itself pops in with a spring overshoot and the trophy/skull/handshake
@@ -27005,7 +27110,8 @@ async function resolveRound(opts){
       const m1 = CONQUEST_MAPS.find(x=>x.id==='m1');
       if(firstTime){
         const pick = m.tutorialFaction || loadFactionChoice() || 'both';
-        m.rewardCardIds = [...(pick==='otters'||pick==='both' ? ['river-warden'] : []), ...(pick==='hummingbirds'||pick==='both' ? ['sunspire-envoy'] : []), 'rabbit-kit'];
+        // 2026-10-15: part 1's result shows part 1's reward only (Rabbit Kit); part 2's cards come with part 2.
+        m.rewardCardIds = tutorialRewardIds();
         m.unlockedFights = m1.nodes.filter(n=> (n.requires||[]).includes('tutorial')).map(n=>({mapId:'m1', key:n.key, node:n}));
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
@@ -27028,6 +27134,9 @@ async function resolveRound(opts){
       const preProgress = loadConquestProgress();
       const preId = conquestNodeId(m.conquestNode.mapId, m.conquestNode.nodeId);
       const isFirstClear = !preProgress.completed.includes(preId);
+      // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
+      // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
+      try{ cardRewardsClaimed(); }catch(e){}
       // Rank (item #4): graded off how much of the player's own castle HP survived the fight.
       const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       const unlockBefore = snapshotUnlocks();
@@ -27053,8 +27162,13 @@ async function resolveRound(opts){
       // fight's reward cards need rank B, from Map 15 rank A, from Map 30 rank S. Below that they wait for a better win; the
       // fight's other first-clear rewards still pay out.
       const needRank = cardRewardRankFor(m.conquestNode.mapId), claimedSet = cardRewardsClaimed();
-      if(!claimedSet.has(preId)){
-        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId);
+      // Map 0's opening fights (2026-10-15, user: "0-1 will give a single card reward. The swap is for that. 0-2 will give a faction
+      // pack"): on their first clear, 0-1 (node.firstOneCard) gives exactly one card and 0-2 (node.firstFactionPack) exactly one
+      // faction pack; no extra drops, teaching cards or track cards ride along.
+      const openNode = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode;
+      const opening = isFirstClear && openNode && (openNode.firstOneCard || openNode.firstFactionPack) ? openNode : null;
+      if(!claimedSet.has(preId) && !(opening && opening.firstFactionPack)){
+        const cardIds = nodeRewardCardIds(m.conquestNode.mapId, m.conquestNode.nodeId).slice(0, opening ? 1 : Infinity);
         if(!needRank || rankAtLeast(rank, needRank)){ cardIds.forEach(id=> unlockCardForPlayer(id, 'conquestReward')); if(cardIds.length) m.conquestCardsEarned = cardIds; markCardRewardsClaimed(preId); }
         else if(cardIds.length) m.conquestCardsNeedRank = needRank;
       }
@@ -27084,20 +27198,29 @@ async function resolveRound(opts){
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(`🐉 A Dragon Scale (${sc.index}/${sc.total}). ${sc.line}`, 'ok'); }catch(e){} }, 1600); } }catch(e){}
       try{ const md = rollMateriaDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear, rank); if(Object.keys(md).length) m.conquestMateriaEarned = md; }catch(e){}
-      try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; if(drops.cards && drops.cards.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drops.cards); }catch(e){}
+      if(!opening) try{ const drops = rollConquestPackDrops((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(drops.pack) m.conquestPackEarned = drops.pack; if(drops.newSub) m.conquestSubCollected = drops.pack; if(drops.cards && drops.cards.length) m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drops.cards); }catch(e){}
       // Map 0 (2026-10-13): every win there brings a card, and before the Armoury opens each one offers a swap into the deck.
       // Maps 0 and 1 (2026-10-13, user: "make card suggestions at the end of each skirmish where a card reward is won, forcing
       // flying/swimming/diurnal cards into the deck so players learn those abilities"): the first wins there each bring a card
       // that teaches one of those, swapped into your deck; later, a clearly better card won anywhere is offered as a swap.
       try{ const mapNo = mapNumberOf(m.conquestNode.mapId);
-        if(mapNo != null && mapNo <= 1){
+        if(opening && opening.firstOneCard){
+          // 0-1: the one card (its own reward card, else a keyword-teaching card, else one from your faction's track), swapped in.
+          if(!(m.conquestCardsEarned||[]).length){ let id = teachingCardPick(); if(id && !grantOne(id, 'map0Win')) id = null; if(!id){ id = factionReward(); } if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
+          const one = (m.conquestCardsEarned||[])[0];
+          if(one){ m.conquestCardsEarned = [one]; const tk = teachingKeyOf(one); queueDeckSwap({id:one, teach:tk, forced:true, first:true}); if(tk) setDialogueFlag('teach:' + tk, true); }
+        } else if(opening && opening.firstFactionPack){
+          // 0-2: your side's faction pack. Credited now; it rises out of the results into the opener when you leave them.
+          const fid = FACTION_PACKS[opening.firstFactionPack] ? opening.firstFactionPack : myFactionPackId();
+          if(grantFactionPack(fid, 1).length || loadFactionPacks()[fid] > 0) m.conquestFactionPack = fid;
+        } else if(mapNo != null && mapNo <= 1){
           const tid = teachingCardPick();
-          if(tid && grantOne(tid, 'map0Win')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat([tid]); pendingDeckSwap = (pendingDeckSwap||[]).concat([{id:tid, teach:teachingKeyOf(tid), forced:true}]); setDialogueFlag('teach:' + teachingKeyOf(tid), true); }
+          if(tid && grantOne(tid, 'map0Win')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat([tid]); queueDeckSwap({id:tid, teach:teachingKeyOf(tid), forced:true}); setDialogueFlag('teach:' + teachingKeyOf(tid), true); }
           else if(mapNo === 0){
             if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
-            if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned.map(id=> ({id, natural:true}))); }
-          else if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned.map(id=> ({id, natural:true})));
-        } else if((m.conquestCardsEarned||[]).length) pendingDeckSwap = (pendingDeckSwap||[]).concat(m.conquestCardsEarned.slice(0, 1).map(id=> ({id, natural:true})));
+            (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); }
+          else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true}));
+        } else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); // offered only when it clearly beats a deck card (2026-10-15)
       }catch(e){}
       try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0 && wildpathsOpen()){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast('⛓️ Prospector: +1 Iron Shard.', 'ok'); }catch(e){} }, 2000); } }catch(e){}
       try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(`🔋 You found an Energy capsule. Tap ⚡ Energy to use it (+${ENERGY_CAPSULE_AMOUNT}).`, 'ok'); }catch(e){} }, 1800); } }catch(e){}
@@ -27107,11 +27230,11 @@ async function resolveRound(opts){
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
       // you a card reward"): from the fifth map on, an S-or-better win has a 12% chance to turn up one card from this
       // map's enemy decks that you don't own yet. At most once per map.
-      try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
+      if(!opening) try{ const drop = rollSRankFind(m.conquestNode.mapId, rank); if(drop){ unlockCardForPlayer(drop, 'conquestRareFind'); m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(drop); m.conquestRareFind = drop; } }catch(e){}
       // Card drops (2026-10-12, 11:39 list): any win can drop one of the enemy's cards. See rollCardDrop.
-      try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId); if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
+      if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId); if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
       // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
-      try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp) m.conquestFreePack = fp; }catch(e){}
+      try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; }catch(e){}
       try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
       // Errands (2026-10-12): sometimes someone on the road asks a favour once the result screen has settled.
       setTimeout(()=>{ try{ maybeOfferErrand(); }catch(e){} }, 2600);
@@ -28154,7 +28277,9 @@ function showCoachTip(tip, anchorEl){
   // board row for "play a card"); a click anywhere else just nudges the tip.
   if(tip.action && (GUIDED_STEPS.includes(tip) || tip.gate)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b, gate: !!tip.gate};
   // a gate always offers a way out after a while (touch screens without long-press, say)
-  if(tip.gate) setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip && !b.querySelector('.coach-ok')){ const s = document.createElement('button'); s.type = 'button'; s.className = 'btn small coach-ok coach-skip'; s.textContent = 'Skip'; s.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); }; b.appendChild(s); } }, 12000);
+  // 2026-10-15 (user: "The tutorials shouldn't write 'Skip' but Okay. (Unless they're non instructional and theyre leading to
+  // the next box)"): every gate is an instruction ("do this"), so its late way-out button reads "Okay", not "Skip".
+  if(tip.gate) setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip && !b.querySelector('.coach-ok')){ const s = document.createElement('button'); s.type = 'button'; s.className = 'btn small coach-ok coach-skip'; s.textContent = 'Okay'; s.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); }; b.appendChild(s); } }, 12000);
   const ok = b.querySelector('.coach-ok');
   if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
 }
@@ -28748,6 +28873,17 @@ function rewardsPanelHTML(m){
     secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">Cards won</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock" data-tip="${escapeAttr(defs[id].name)} — now in your collection">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span></div>` : '').join('')}</div>
       ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="Open your deck to swap ${cards.length===1?'it':'them'} in">🃏 Put ${cards.length===1?'it':'them'} in my deck</button>` : ''}</div>`);
   }
+  // Packs won (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it hovers up and goes
+  // into the pack opening screen"): the pack itself, glowing, with its name; leaving the screen lifts it into the opener.
+  const packRefs = [];
+  if(m.conquestFactionPack) packRefs.push({kind:'faction', id:m.conquestFactionPack});
+  if(m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned]) packRefs.push({kind:'faction', id:m.conquestPackEarned});
+  if(m.conquestFreePack) packRefs.push({kind:'free', id:m.conquestFreePack});
+  const packInfos = packRefs.map(rewardPackInfo).filter(Boolean);
+  if(packInfos.length || m.conquestPackHeld){
+    const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
+    secs.push(`<div class="rw-sec rw-packs"><div class="rw-head">🎁 ${packInfos.length > 1 ? 'Packs' : 'Pack'} won!</div><div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(pi.name)}: ${pi.cards} cards. It opens as soon as you leave this screen">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(pi.name)}</b><small>${pi.cards} cards · opens next</small></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="Packs open once the Armoury (⛺ Camp) is open on the map">${rewardPackBoosterHTML(heldInfo)}<b>${escapeHtml(heldInfo.name)}</b><small>opens with the Armoury</small></div>` : ''}</div></div>`);
+  }
   // 2026-10-08 (user): cards first seen this match follow the unlocks, each with a "NEW!" reveal.
   const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !cards.includes(id));
   if(seen.length){
@@ -28760,7 +28896,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack, opened: its cards are already in your collection. You'll see it open when you leave this screen">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Spare castle</div><div class="rw-row"><span class="rw-act" data-tip="Fuse it in the Forge (Castles) to bank progress toward its next levels">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
@@ -28782,7 +28918,7 @@ function rewardsPanelHTML(m){
   // into two equal halves, the cards on the left and everything else on the right, each centred.
   const ui = secs.findIndex(x=> x.startsWith('<div class="rw-sec rw-unlocks"'));
   if(ui >= 0 && secs.length > 1){
-    const rest = secs.filter((_, i)=> i !== ui);
+    const rest = secs.filter((_, i)=> i !== ui).sort((a, b)=> b.startsWith('<div class="rw-sec rw-packs"') - a.startsWith('<div class="rw-sec rw-packs"'));
     return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards">${secs[ui]}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
   }
   return `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>`;
@@ -33576,7 +33712,7 @@ function shelfRows(){
   ].filter(r=> r.items.length);
 }
 function boosterHTML(p, cls){
-  return `<span class="booster ${cls||''} ${p.advanced ? 'is-advanced' : ''}" style="--tint:${PACK_TINT[p.baseId || p.id] || '#6b5a3a'}" aria-hidden="true"><span class="booster-crimp"></span><span class="booster-ico">${p.icon}</span><span class="booster-band">${escapeHtml(p.name)}</span><span class="booster-crimp is-b"></span></span>`;
+  return `<span class="booster ${cls||''} ${p.advanced ? 'is-advanced' : ''}" style="--tint:${p.tint || PACK_TINT[p.baseId || p.id] || '#6b5a3a'}" aria-hidden="true"><span class="booster-crimp"></span><span class="booster-ico">${p.icon}</span><span class="booster-band">${escapeHtml(p.name)}</span><span class="booster-crimp is-b"></span></span>`;
 }
 function shelfGoodsHTML(p, qty){
   if(qty >= 50) return `<span class="shelf-crate" aria-hidden="true">${boosterHTML(p, 'is-peek is-l')}${boosterHTML(p, 'is-peek')}${boosterHTML(p, 'is-peek is-r')}<span class="crate-front"><b>×${qty}</b></span></span>`;
@@ -34393,19 +34529,47 @@ const packRevealQueue = []; let packRevealTimer = null;
 function queuePackReveal(pack, o){ packRevealQueue.push({pack, o}); schedulePackReveals(); }
 function packRevealReady(){
   const ov = document.getElementById('packOpenOverlay'); if(ov && !ov.hidden) return false;
-  if(typeof matchState !== 'undefined' && matchState && !matchState.over) return false;
+  // 2026-10-15: a won pack waits until you LEAVE the results (the match is closed), so it can rise out of them into the opener;
+  // before, it could open during the castle-crumble pause before the results appeared, on top of them.
+  if(typeof matchState !== 'undefined' && matchState) return false;
   if(document.querySelector('.winloss-overlay')) return false;
   return true;
+}
+// The pack rises out of the results (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it
+// hovers up and goes into the pack opening screen"): pressing a button on the results screen remembers where its pack art sat
+// (rewardPackFloat); when the reveal starts, a copy of that pack floats up from there to the middle of the screen, grows, and
+// the opening screen takes over. Without one (a pack from elsewhere) the opener just appears.
+let rewardPackFloat = null;
+document.addEventListener('click', e=>{
+  const t = e.target, wl = t && t.closest && t.closest('.winloss-overlay'); if(!wl || !t.closest('button')) return;
+  const art = wl.querySelector('.rw-pack-art .booster'); if(!art) return;
+  const r = art.getBoundingClientRect(); if(!r.width) return;
+  rewardPackFloat = {rect:{left:r.left, top:r.top, width:r.width, height:r.height}, html: art.outerHTML, at: Date.now()};
+}, true);
+function floatRewardPackUp(then){
+  const f = rewardPackFloat; rewardPackFloat = null;
+  if(!f || Date.now() - f.at > 10000 || reducedMotion() || !hasGsap()){ then(); return; }
+  const fly = document.createElement('div'); fly.className = 'rw-pack-fly'; fly.setAttribute('aria-hidden', 'true'); fly.innerHTML = f.html;
+  Object.assign(fly.style, {left: f.rect.left + 'px', top: f.rect.top + 'px', width: f.rect.width + 'px', height: f.rect.height + 'px'});
+  document.body.appendChild(fly);
+  const tx = innerWidth/2 - (f.rect.left + f.rect.width/2), ty = innerHeight*0.46 - (f.rect.top + f.rect.height/2), sc = Math.min(3.2, (Math.min(innerHeight*0.56*0.64, innerWidth*0.7, 300)) / Math.max(1, f.rect.width));
+  try{ SoundKit.pickup && SoundKit.pickup(); }catch(e){}
+  gsap.timeline({onComplete:()=>{ then(); setTimeout(()=> fly.remove(), 160); }})
+    .to(fly, {y:-28, scale:1.12, duration:.35, ease:'power2.out'})
+    .to(fly, {x:tx, y:ty, scale:sc, rotation:-4, duration:.6, ease:'power2.inOut'})
+    .to(fly, {opacity:0, duration:.2, ease:'none'}, '-=.04');
 }
 function schedulePackReveals(){
   if(packRevealTimer) return;
   const tick = ()=>{ packRevealTimer = null; if(!packRevealQueue.length) return;
-    if(!packRevealReady()){ packRevealTimer = setTimeout(tick, 700); return; }
+    if(!packRevealReady()){ packRevealTimer = setTimeout(tick, 300); return; }
     const first = packRevealQueue[0], same = [], rest = [];
     packRevealQueue.splice(0).forEach(b=> (b.pack.id === first.pack.id ? same : rest).push(b));
     packRevealQueue.push(...rest);
-    try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
-    openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, onClose: ()=> schedulePackReveals()}); };
+    const open = ()=>{ try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
+      openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, oneByOne:true, moreAfter: rest.length,
+        onClose: ()=>{ schedulePackReveals(); if(!packRevealQueue.length) setTimeout(()=>{ try{ maybeOfferDeckSwap(); }catch(e){} }, 400); }}); };
+    floatRewardPackUp(open); };
   packRevealTimer = setTimeout(tick, 80);
 }
 // Older saves: packs that were waiting unopened are opened silently on load and credited (2026-10-14).
@@ -34629,9 +34793,48 @@ function creditFreePack(id){
   return {pack, o};
 }
 function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const e = map.nodes.find(n=> n.ender); if(e) return e.key; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
+// Reward packs as packs (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis!" and "This has to be
+// clearly seen in the first clear rewards section of the skirmish review"): one description for a pack a fight gives, a basic
+// (free) pack {kind:'free', id:'bronze'} or a faction pack {kind:'faction', id:'otter'|'hummingbird'|'mine'}; 'mine' is your
+// side's pack (a both-sides player gets one of the two at random when it is granted, so the preview shows both icons).
+function rewardPackInfo(ref){
+  if(!ref) return null;
+  if(ref.kind === 'faction'){
+    const pick = loadFactionChoice() || 'both';
+    const id = ref.id !== 'mine' ? ref.id : pick === 'hummingbirds' ? 'hummingbird' : pick === 'otters' ? 'otter' : null;
+    const fp = id && FACTION_PACKS[id];
+    if(fp) return {id:'fp-' + fp.id, name:fp.name, icon:fp.icon, tint:fp.tint, cards: FACTION_PACK_OWN + FACTION_PACK_GENERAL, kind:'faction'};
+    return {id:'fp-both', name:'Faction Pack', icon:'🦦🌺', tint:'#7a4f7a', cards: FACTION_PACK_OWN + FACTION_PACK_GENERAL, kind:'faction'};
+  }
+  const p = getShopPacks().find(x=> x.id === ref.id); if(!p) return null;
+  return {id:p.id, name: 'Free ' + p.name, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards:p.cards || 3, kind:'free'};
+}
+function rewardPackBoosterHTML(info, cls){ return info ? boosterHTML({id:info.id, name:info.name.replace(/^Free /, ''), icon:info.icon, tint:info.tint}, cls) : ''; }
+// The packs a fight's first clear gives, for the First Clear box: its own free pack (node.firstPack), its faction pack
+// (node.firstFactionPack), and the map's free pack when this is the fight that pays it (MAP_FREE_PACKS).
+function nodeFirstClearPacks(mapId, node){
+  const out = []; if(!node) return out;
+  if(node.firstPack) out.push({kind:'free', id:node.firstPack});
+  if(node.firstFactionPack) out.push({kind:'faction', id: FACTION_PACKS[node.firstFactionPack] ? node.firstFactionPack : 'mine'});
+  try{ const idx = mainConquestMaps().findIndex(m=> m.id === mapId), pid = MAP_FREE_PACKS[idx]; if(pid && !node.firstPack && mapRewardNodeKey(mainConquestMaps()[idx]) === node.key) out.push({kind:'free', id:pid}); }catch(e){}
+  return out;
+}
+// No packs before the Armoury (2026-10-15, user: "The pack award was abit anti-climatic cause i didnt expect to get it. Don't give
+// it till I unlock the armoury"): a free pack won before the Armoury (⛺ Camp) is open waits, and is opened the moment the Armoury
+// is. Map 0-2's faction pack is the first pack a new player sees; it comes with the clear that reveals the Armoury.
+const HELD_PACKS_KEY = 'bramblewood_held_packs_v1';
+function armouryOpen(){ try{ return featureUnlocked('deck'); }catch(e){ return true; } }
+function holdPackForArmoury(ref){ try{ const a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); a.push(ref); localStorage.setItem(HELD_PACKS_KEY, JSON.stringify(a)); }catch(e){} }
+function releaseHeldPacks(){
+  let a = []; try{ a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); localStorage.removeItem(HELD_PACKS_KEY); }catch(e){}
+  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else grantFreePack(ref.id, 1); }catch(e){} });
+  return (a || []).length;
+}
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
   if(!isFirstClear) return null;
-  { const m0 = CONQUEST_MAPS.find(m=> m.id === mapId), n0 = m0 && m0.nodes.find(n=> n.key === nodeKey); if(n0 && n0.firstPack){ grantFreePack(n0.firstPack, 1); return n0.firstPack; } } // a skirmish can pay a pack (T-2, 2026-10-13)
+  { const m0 = CONQUEST_MAPS.find(m=> m.id === mapId), n0 = m0 && m0.nodes.find(n=> n.key === nodeKey); if(n0 && n0.firstPack){
+    if(!armouryOpen()){ holdPackForArmoury({kind:'free', id:n0.firstPack}); return {held:true, id:n0.firstPack}; } // 2026-10-15: no packs before the Armoury
+    grantFreePack(n0.firstPack, 1); return n0.firstPack; } } // a skirmish can pay a pack (T-2, 2026-10-13)
   const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
   const pid = MAP_FREE_PACKS[idx], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
   grantFreePack(pid, 1);
@@ -34768,7 +34971,13 @@ function openPackAnimation(pack, opened, opts){
     phase = 'pack'; cur = 0;
     const o = opened[packIdx];
     const glow = o.glow, glowCol = glow ? rarityStops(glow.rarity)[0] : '';
+    // The pack stack (2026-10-15, user: "If there's multiple packs, in the pack opening screen, you see layered packs. But you open
+    // each pack one, one by one. As you go through packs, you rip each one one by one, the pack stack gets smaller"): the packs
+    // still to come (this set's, then any other reward packs queued behind it) sit as a layered pile behind the one you tear.
+    const behind = Math.max(0, opened.length - packIdx - 1) + Math.max(0, opts.moreAfter|0);
+    const pile = behind ? `<div class="po2-pile" aria-hidden="true">${Array.from({length: Math.min(6, behind)}, (_, j)=> `<span class="po2-pile-pack" style="--j:${j + 1}"></span>`).join('')}</div>` : '';
     overlay.innerHTML = topBar() + `<div class="po2-stage">
+      <div class="po2-pile-wrap">${pile}
       <div class="po2-pack ${glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" id="poPack" style="${glow ? `--leak:${glowCol}; --glow:${glowCol};` : ''}">
         <span class="po2-shadow" aria-hidden="true"></span><span class="po2-leak" aria-hidden="true"></span>
         <div class="po2-body">
@@ -34781,7 +34990,8 @@ function openPackAnimation(pack, opened, opts){
         <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
           <span class="po2-strip-face"><span class="po2-crimp" aria-hidden="true"></span><span class="po2-rip" aria-hidden="true"></span></span>
         </button>
-      </div>
+      </div></div>
+      ${behind ? `<div class="po2-pile-n">${behind} more pack${behind === 1 ? '' : 's'} to open</div>` : ''}
     </div>
     <div class="po2-hint" id="poHint" aria-live="polite">Drag across the top to tear it open</div>`;
     wireTop();
@@ -34864,7 +35074,7 @@ function openPackAnimation(pack, opened, opts){
       if(r.isNew){
         later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 380);
         later(()=> overlay.classList.remove('po2-flash'), 900);
-        hint.textContent = 'New card! It’s in your Nest now.';
+        hint.textContent = featureUnlockedSafe('nest') ? 'New card! It’s in your Nest now.' : 'New card! It’s in your collection now.'; // 2026-10-15: no Nest talk before the Nest
       } else {
         if(tierOf(r.id) >= 4) burst(c, ['✨'], 10);
         hint.textContent = cur < cards.length - 1 ? 'Tap again for the next card' : 'Tap to finish';
@@ -34923,7 +35133,10 @@ function openPackAnimation(pack, opened, opts){
   };
   const footActions = ()=>{
     const left = opened.length - packIdx - 1;
-    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button><button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
+    // 2026-10-15 (user: "The NEST icon shouldnt be available when opening packs till we have it unlocked"): the 🪺 shortcut
+    // shows only once the Nest's map spot has been opened.
+    const nestBtn = featureUnlockedSafe('nest') ? `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button>` : '';
+    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `${nestBtn}<button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
   };
   const wireFoot = ()=>{
     const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
@@ -35044,7 +35257,8 @@ function openPackAnimation(pack, opened, opts){
   };
   document.addEventListener('keydown', onKey, true);
   packOpenStop = close;
-  if(bundle && opened.length >= 10) showTable(); else showPack();
+  // Reward packs open one by one (2026-10-15); a bought set of 10+ still starts on the slash table.
+  if(bundle && opened.length >= 10 && !opts.oneByOne) showTable(); else showPack();
 }
 
 /* ============================================================

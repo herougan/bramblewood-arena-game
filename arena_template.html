@@ -6743,6 +6743,41 @@
   .po2-pack.is-rising::before{transform:translateY(-62%);}
   .po2-pack.is-rising{animation:po2Sink .65s ease-in .25s forwards;}
   @keyframes po2Sink{to{translate:0 40vh; opacity:0;}}
+  /* 2026-10-15 (user: "If there's multiple packs ... you see layered packs ... the pack stack gets smaller"): the packs still to
+     open sit in a fanned pile behind the one being torn, one fewer each time. */
+  .po2-pile-wrap{position:relative; isolation:isolate;}
+  .po2-pile{position:absolute; inset:0; z-index:-3; pointer-events:none;}
+  .po2-pile-pack{position:absolute; left:0; right:0; top:12%; bottom:0; border-radius:4px 4px 8px 8px;
+    background:linear-gradient(115deg, #cdb6f5 0%, #f5bedc 30%, #f6e6a8 55%, #b4e6f3 80%, #cbb7f2 100%);
+    box-shadow:0 0 0 2px rgba(255,255,255,.55) inset, 0 6px 14px rgba(0,0,0,.4);
+    transform:translate(calc(var(--j) * 16px), calc(var(--j) * -10px)) rotate(calc(var(--j) * 3.4deg)); filter:brightness(calc(1 - var(--j) * .1));
+    transition:transform .4s ease;}
+  .po2-pile-pack::after{content:''; position:absolute; left:6%; right:6%; bottom:9%; height:22%; border-radius:12px; background:linear-gradient(180deg, #5a2d7a, #3a1a55); opacity:.85;}
+  .po2-pile-n{margin-top:14px; font:800 13px 'Nunito',system-ui,sans-serif; letter-spacing:.04em; color:#fff; opacity:.85; text-align:center;}
+  .po2-pack.is-rising ~ .po2-pile, .po2-pile-wrap:has(.po2-pack.is-rising) .po2-pile-pack:first-child{transform:translate(0, 0) rotate(0deg);}
+  /* the reward pack lifting off the results screen into the opener */
+  .rw-pack-fly{position:fixed; z-index:10060; pointer-events:none; display:flex; align-items:center; justify-content:center; will-change:transform;}
+  .rw-pack-fly .booster{--bw:100% !important; width:100%; filter:drop-shadow(0 10px 18px rgba(0,0,0,.45));}
+  /* the pack on the results screen (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis!") */
+  .rw-sec.rw-packs{display:flex; flex-direction:column; align-items:center;}
+  .rw-pack-row{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; padding-top:4px;}
+  .rw-pack-art{position:relative; display:flex; flex-direction:column; align-items:center; gap:4px; max-width:150px; text-align:center;}
+  .rw-pack-art .booster{--bw:74px; animation:rwPackBob 2.4s ease-in-out infinite; filter:drop-shadow(0 0 12px rgba(255,214,120,.85)) drop-shadow(0 6px 10px rgba(0,0,0,.35));}
+  .rw-pack-art::before{content:''; position:absolute; left:50%; top:46px; width:120px; height:120px; translate:-50% -50%; border-radius:50%; background:radial-gradient(closest-side, rgba(255,220,130,.55), transparent); z-index:-1; animation:rwPackGlow 2.4s ease-in-out infinite;}
+  .rw-pack-art b{font:800 14px 'Baloo 2',system-ui,sans-serif; line-height:1.1;}
+  .rw-pack-art small{font:700 11px 'Nunito',system-ui,sans-serif; opacity:.8;}
+  .rw-pack-art .rw-pack-n{position:absolute; top:-6px; right:18px; min-width:22px; padding:1px 6px; border-radius:999px; background:#d0483a; color:#fff; font:800 12px 'Nunito',system-ui,sans-serif; box-shadow:0 2px 4px rgba(0,0,0,.3);}
+  @keyframes rwPackBob{0%,100%{translate:0 0; rotate:-3deg} 50%{translate:0 -6px; rotate:3deg}}
+  @keyframes rwPackGlow{0%,100%{opacity:.7} 50%{opacity:1}}
+  @media (prefers-reduced-motion: reduce){ .rw-pack-art .booster, .rw-pack-art::before{animation:none;} }
+  /* the First Clear box: a pack shown as a pack (2026-10-15, user: "This has to be clearly seen in the first clear rewards section") */
+  .cnp-rw-pack{display:inline-flex; align-items:center; gap:6px; padding:2px 8px 2px 2px; border-radius:10px; background:rgba(255,214,120,.18); box-shadow:0 0 0 1px rgba(200,150,60,.45) inset;}
+  .cnp-rw .cnp-rw-card.cnp-rw-pack, .cnp-rw-card.cnp-rw-pack{width:auto; max-width:180px;}
+  .cnp-rw-pack .booster{--bw:30px; flex:0 0 auto; border-radius:3px;}
+  .cnp-rw-pack .booster .booster-ico{font-size:15px; margin-top:0;}
+  .cnp-rw-pack .booster .booster-band{display:none;}
+  .cnp-rw-pack b{font:800 12px 'Nunito',system-ui,sans-serif; line-height:1.1; white-space:nowrap;}
+  .cnp-rw-pack.is-got{filter:grayscale(.7); opacity:.7;}
   /* the reveal */
   .po2-deck{--cw:min(58vh * .8, 80vw, 360px); position:relative; width:var(--cw); aspect-ratio:4/5; margin-right:calc(var(--cw) * .1);}
   .po2-card{position:absolute; inset:0; padding:0; border:0; background:none; cursor:pointer; perspective:1300px; touch-action:pan-y; --k:0;
@@ -9091,6 +9126,11 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 #myDeckList .deck-stack{display:block; width:66px; padding:0; background:none; border:0; cursor:pointer;}
 #myDeckList .deck-stack .card-tile{width:100% !important; pointer-events:none;}
 #myDeckList .deck-stack:hover .card-tile{transform:translateY(-3px);}
+/* 2026-10-15 (click = +, Shift+click = −): the − corner takes a copy out with one tap on touch screens */
+#myDeckList .deck-stack{position:relative;}
+#myDeckList .dchip-minus{position:absolute; top:-6px; left:-6px; z-index:3; width:22px; height:22px; padding:0; border-radius:50%; border:1px solid rgba(0,0,0,.25); background:#fff6ea; color:#8a2a1e; font:900 15px/1 'Nunito',system-ui,sans-serif; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.3); cursor:pointer; opacity:.8;}
+#myDeckList .dchip-minus:hover, #myDeckList .dchip-minus:focus-visible{opacity:1; background:#ffe1d6;}
+@media (hover:hover){ #myDeckList .dchip-minus{opacity:0;} #myDeckList .deck-stack:hover .dchip-minus, #myDeckList .dchip-minus:focus-visible{opacity:.9;} }
 .deck-stackfx-btn{white-space:nowrap;}
 
 /* Deck builder popup (skirmish decks, 2026-10-10) */
