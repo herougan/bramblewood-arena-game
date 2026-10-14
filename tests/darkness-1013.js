@@ -23,7 +23,7 @@ ok(missOf({phase:'night'}, 'd-plain') === 0.25, 'night is Darkness: 1 in 4');
 ok(missOf({phase:'night'}, 'd-noc') === 0, 'Nocturnal sees at night');
 ok(missOf({phase:'day'}, 'd-plain') === 0, 'day: no miss');
 { const {e, P} = mk({field:'frozen', frostWait:1}); e.debugSpawnCard(P, so, 1, 'd-coldweak', 'left', {}, []); const c = all(P[1])[0], h = c.hp, w = c.wait;
-  e.roundStart(P, 2, so, {}, []); ok(c.wait === w + 1 && c.hp === h - 2, `cold-weak unit: +1 Wait and ice damage (wait ${c.wait - w}, dmg ${h - c.hp})`); }
+  e.roundStart(P, 2, so, {}, []); ok(c.wait + c.frozen === w + 1 && c.frozen === 1 && c.hp === h - 2, `cold-weak unit: +1 on the clock (a freeze counter, 2026-10-14) and ice damage (clock ${c.wait + c.frozen - w}, dmg ${h - c.hp})`); }
 { const {e, P} = mk({field:'heatwave', heatLevel:2}); ['d-plain','d-hotweak','d-dry'].forEach((id, i)=> e.debugSpawnCard(P, so, 1, id, i ? 'right' : 'left', {}, []));
   e.roundStart(P, 2, so, {}, []); const g = id=> all(P[1]).find(c=> c.defId===id);
   ok(g('d-plain').hp === 28, `Scorching level 2: 2 fire damage (${30 - g('d-plain').hp})`); ok(g('d-hotweak').hp === 26, `heat-weak takes double (${30 - g('d-hotweak').hp})`); ok(g('d-dry').hp === 30, 'Dry is spared'); }

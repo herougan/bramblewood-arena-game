@@ -182,8 +182,11 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   'onAllySpawn','onEnemySpawn','onColumnSpawn','onAllyDie','onHeal','onHealed','onAllyHealed','onDiscard',
   // 2026-09-27 batch: On Ally/Enemy Played (the "played from hand" half of the played/spawned
   // split — see fireSpawnFamilyTriggers in this file), On Ally/Enemy Ready, and On Move.
-  'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove'];
-const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard']); // fire even while Waiting
+  'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove',
+  // Sacrifice - {} (2026-10-14, user: "The designer's toolkit: Sacrifice - {} aka On Sacrifice -> Do {}. But it's framed as
+  // Sacrifice - { }"): fires when this card is consumed as Sacrifice fodder, eaten by Devour, or given up as a prayer offering.
+  'onSacrifice'];
+const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -511,6 +514,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (breakOn:'enemySpawn'). Unlike Frozen/Asleep this never counts down on its own; it only
     // ever clears via its specific break condition, however many rounds that takes.
     if(def.effects && def.effects.chained){ board.chained = true; }
+    if(chargeOf(def) && !(board.wait > 0)) board.chargeLeft = chargeOf(def).n; // Charge N (2026-10-14): Ready on arrival, so the clock starts now
     selfInflict(board);
     return board;
   }
@@ -886,6 +890,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; allBoardCards(pl).forEach(c=>{ if(c.fuse > 0 && c.hp > 0){ c.fuse -= 1; if(recordEvents && events) events.push({type:'fuse', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.fuse}); if(c.fuse === 0) blasts.push([pid, c]); } }); });
       blasts.forEach(([pid, c])=>{ if(c.hp > 0) fireDynamite(players, sideOf, pid, c, stats, events); });
       if(blasts.length) removeDeadCards(players, sideOf, {}, stats, events); }
+    restlessMoves(players, sideOf, stats, events); // Restless (2026-10-14)
     if(rules.lumberEvery > 0 && round > 1 && (round - 1) % rules.lumberEvery === 0){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; pl.lumber = (pl.lumber||0) + 1;
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
@@ -945,9 +950,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const fc = Math.max(1, Number(rules.frostCount)||1, Number(rules.frostWait)||1), immune = new Set(rules.frostResist||[]);
       let iced = false;
       [1,2].forEach(pid=>{ let cards = allLive(players[pid]).filter(c=>{ const d = CARD_DEFS[c.defId] || {}; if(resistFactor(c.defId, 'cold') < 1) return false; if(pid === 2 && immune.size && (d.archetypes||[]).some(t=> immune.has(t))) return false; return true; });
-        for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.wait = (c.wait||0) + 1;
+        // Freeze counters (2026-10-14, user: "Freeze - instead of giving a +Wait, it gives a freeze counter. The clock DOES +1. But
+        // it looks icy"): the chill is a freeze counter now, not +1 Wait; it holds the unit exactly as long (see endOfRoundUpkeep).
+        for(let k = 0; k < fc && cards.length; k++){ const i = Math.floor(rnd()*cards.length), c = cards.splice(i, 1)[0]; c.frozen = (c.frozen||0) + 1;
           const weak = weaknessFactor(c.defId, 'cold') > 1; if(weak){ damageCardFlat(c, 1, 'cold'); iced = true; }
-          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, wait:1, dmg: weak ? 1 : 0});
+          if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, wait:1, freeze:1, dmg: weak ? 1 : 0});
           const fb = (Number(((CARD_DEFS[c.defId]||{}).effects||{}).frostbite)||0) + (pid === 2 ? (Number(rules.frostbite)||0) : 0);
           if(fb > 0){ c.atk += fb; c.baseAtk += fb; c.hp += fb; c.maxHp += fb; if(recordEvents && events) events.push({type:'statusFx', kind:'frostbite', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:fb}); } } });
       if(iced) removeDeadCards(players, sideOf, {}, stats, events);
@@ -1189,6 +1196,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!dv || tgt.devoured) return false;
     const idx = pl.hand.findIndex(h=> h.uid===handUid); if(idx < 0) return false;
     const [h] = pl.hand.splice(idx, 1); pl.graveyard.push({defId:h.defId}); markPlayed(pl);
+    fireOnSacrifice(players, sideOf, pid, null, h.defId, stats, events, 'devour'); // Sacrifice - {} (2026-10-14)
     const a = dv.attack||0, hp = dv.health||0;
     tgt.atk += a; tgt.baseAtk += a; tgt.hp += hp; tgt.maxHp += hp; tgt.devoured = true;
     if(dv.grant && typeof dv.grant==='object') deriveDef(tgt, dv.grant);
@@ -1229,8 +1237,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const slot = fod.slot, lane = ['left','center','right'].find(l=> pl.row[l].includes(fod));
     fod.hp = 0; fod.sacrificed = true;
     if(recordEvents && events) events.push({type:'sacrifice', side:sideOf(pid), uid:fod.uid, defId:fod.defId, forDefId:h.defId, discount:n});
+    fireOnSacrifice(players, sideOf, pid, fod, fod.defId, stats, events, 'sacrifice'); // Sacrifice - {} (2026-10-14)
     removeDeadCards(players, sideOf, {}, stats, events);
     return placeCard(players, sideOf, pid, handUid, slotMode && slot != null ? slot : (lane==='center' ? 'left' : lane), stats, events, {discount:n});
+  }
+  // Sacrifice - {} (2026-10-14, user: "Sacrifice - haven't designed a card around this. The designer's toolkit: Sacrifice - {}
+  // aka On Sacrifice -> Do {}. But it's framed as Sacrifice - { }."): a custom trigger, on:'onSacrifice', that fires when this
+  // card is consumed: as the fodder of a Sacrifice (Dark Summon), as the card a Devour unit eats, or as a prayer offering.
+  // A unit on the board fires it as itself (just before it perishes); a card given up from the hand has no unit, so it fires
+  // from a stand-in that never touches the board (actions that hit enemies or pay resources work; "itself" is nobody).
+  function fireOnSacrifice(players, sideOf, pid, card, defId, stats, events, how){
+    const def = CARD_DEFS[defId]; if(!def || !def.effects || !Array.isArray(def.effects.triggers) || !def.effects.triggers.some(t=> t.on==='onSacrifice')) return false;
+    const src = card || Object.assign(makeBoardCard(defId), {phantom:true});
+    if(recordEvents && events) events.push({type:'statusFx', kind:'sacrificed', how, side:sideOf(pid), attUid:src.uid, attDefId:defId, targetUid:src.uid, targetDefId:defId, fromHand:!card});
+    runCustomTriggers(players, sideOf, pid, src, def, 'onSacrifice', stats || {}, events);
+    return true;
   }
   // ---- Caged Fight (2026-10-10, user: "Leader is trapped 4 squares to the right, on the opponent's board ... Depending on
   // deck level of A + B/100 (rounded) = cage level (max 10, min 0) ... 6 HP at lvl 1 (5 hp at lvl 0), growing by 2 per
@@ -1680,17 +1701,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     return {dmg: amt, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount};
   }
+  // Nullify (2026-10-14, user: "an Evergreen effect like Shield Burn in Duel Masters. when this card hits the enemy, ignore all
+  // triggers and effects that would result from that hit from that unit. E.g. if the unit has an on-death trigger, ignore that.
+  // And when it dies, it goes straight to Exile zone."): a Nullify attacker's landed hit gets no reaction from the unit it hits:
+  // no Thorns, Reflect, Spiteful, Counterattack, Ichor, Shell, Cower, defending Bleed tick, On Attacked triggers (or the legacy
+  // On Attacked: Spawn). If the hit kills it, none of its own death effects happen (On Death triggers, On Death: Spawn,
+  // Revive, Meiosis, Landslide, Hive Mind, Worthy) and it goes to the Removal Zone, not the graveyard. Its allies still notice
+  // (On Ally Die, Berserk, Divine Retribution), and the killer still collects a Bounty.
+  function isNullifier(att){ return !!(att && effectsOf(att).nullify); }
+  function nullifyKill(card){ card.nullified = true; card.forceExileZone = true; }
   function damageCard(card, amount, dmgType, attCard){
     const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
     if(shelledByCower(card) && !crush) r0.dmg = 0; // Cower 'shell' (2026-10-14): attacks can't hurt it this round
     if(card.petrified && !crush) r0.dmg = Math.floor(r0.dmg / 2); // Petrification (2026-10-14): stone takes half
     const dmg = crush ? r0.dmg : spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
-    noteHit(card, dmg, dmgType);
+    const nul = isNullifier(attCard); // Nullify (2026-10-14): the hit doesn't count as "hit" for Cower, and Shell doesn't go up
+    if(!nul) noteHit(card, dmg, dmgType);
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
-    shellUp(card);
+    if(!nul) shellUp(card);
+    if(nul && card.hp <= 0) nullifyKill(card);
     return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
@@ -2478,6 +2510,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         ensureStat(stats, sideOfPl, h.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:sideOfPl, defId:h.defId, zone:'hand'});
         fireOnExile(players, sideOf, playerId, h.defId, stats, events);
+        fireOnSacrifice(players, sideOf, playerId, null, h.defId, stats, events, 'offering'); // Offering N gives up a hand card (2026-10-14)
       }
     }
   }
@@ -2565,6 +2598,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const oi = pl.hand.findIndex(h=> h.uid===offerUid), off = pl.hand.splice(oi, 1)[0];
       pl.exile.push({defId: off.defId}); pl.echoes = (pl.echoes||0) + 1; pl.prayerOfferTurn = turnNo;
       if(recordEvents && events) events.push({type:'exile', side:sideOf(playerId), defId:off.defId, zone:'hand', prayer:true});
+      fireOnSacrifice(players, sideOf, playerId, null, off.defId, stats, events, 'offering'); // Sacrifice - {} (2026-10-14)
     }
     pl.hand.splice(pl.hand.findIndex(h=> h.uid===uid), 1);
     { let dC = devilryCostOfCard(hc.defId), lC = costOfCard(hc.defId); if(discount > 0){ const fd = Math.min(dC, discount); dC -= fd; lC = Math.max(0, lC - (discount - fd)); }
@@ -2662,6 +2696,57 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid});
     fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
     return nc;
+  }
+  // Restless (2026-10-14, user: "Some cards have abilities that make them keep moving — I didn't like this, but good to have this
+  // option."): effects.restless. At the start of every round it moves one column toward the nearest enemy unit (a tie is a
+  // coin flip), swapping places with an ally standing there. It stays put when an enemy is already in front of it, when there
+  // are no enemy units, or when the way is held by a pinned unit or a cage. Open boards only (packed rows have no columns to walk).
+  function restlessMoves(players, sideOf, stats, events){
+    if(!slotMode) return;
+    [1,2].forEach(pid=>{ const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !foe) return;
+      allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !c.pinned && effectsOf(c).restless).forEach(c=>{
+        syncSlots(pl); syncSlots(foe);
+        const foes = allBoardCards(foe).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf && Number.isInteger(x.slot)); if(!foes.length) return;
+        const s0 = c.slot; if(foes.some(x=> x.slot === s0)) return;
+        const best = Math.min(...foes.map(x=> Math.abs(x.slot - s0))); const near = foes.filter(x=> Math.abs(x.slot - s0) === best);
+        const dirs = [...new Set(near.map(x=> Math.sign(x.slot - s0)))]; const dir = dirs.length > 1 ? (rnd() < .5 ? -1 : 1) : dirs[0];
+        const d = s0 + dir, other = allBoardCards(pl).find(x=> x !== c && x.slot === d && !x.gap) || null;
+        if(other && other.hp > 0 && (other.pinned || other.cageOf)) return;
+        c.slot = d; if(other) other.slot = s0; relayoutRow(pl);
+        if(recordEvents && events) events.push({type:'restless', side:sideOf(pid), uid:c.uid, defId:c.defId, from:s0, to:d, swapUid: other ? other.uid : null});
+        runCustomTriggers(players, sideOf, pid, c, CARD_DEFS[c.defId], 'onMove', stats || {}, events, {movedCard: c});
+        if(other && other.hp > 0) runCustomTriggers(players, sideOf, pid, other, CARD_DEFS[other.defId], 'onMove', stats || {}, events, {movedCard: c}); }); });
+  }
+  // Meiosis N (2026-10-14, user: "Meiosis N (Default 1): Simple units only - this Passive skill means that the creature breaks into
+  // 2 smaller parts when it dies, with half the stats, and skill numbers. Their Meiosis count drops by 1."): effects.meiosis N
+  // (true = 1). When it dies, two halves appear: tokens of the same card with half its printed Attack and Health (rounded up,
+  // at least 1), every number skill halved (rounded down; a skill that reaches 0 is dropped) and Meiosis N-1 (gone at 0).
+  // The first half takes the fallen unit's place, the second the nearest free slot beside it (none free: only one half).
+  function meiosisOf(d){ const v = d && d.effects && d.effects.meiosis; return v === true ? 1 : Math.max(0, Math.floor(Number(v)||0)); }
+  function meiosisDefOf(defId){ const base = CARD_DEFS[defId], id = base.id + '~half';
+    if(!CARD_DEFS[id]){ const eff = {};
+      Object.entries(base.effects||{}).forEach(([k, v])=>{ if(k === 'meiosis'){ const n = meiosisOf(base) - 1; if(n > 0) eff.meiosis = n; return; }
+        if(typeof v === 'number'){ const h = Math.floor(v / 2); if(h > 0) eff[k] = h; return; }
+        eff[k] = v; });
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, attack: Math.max(1, Math.ceil((Number(base.attack)||0) / 2)), health: Math.max(1, Math.ceil((Number(base.health)||0) / 2)),
+        derivedFrom: base.derivedFrom || base.id, token:true, halfOf: base.derivedFrom || base.id, effects: eff}); }
+    return id; }
+  function meiosisSplit(players, sideOf, sp, stats, events){
+    const pl = sp.pl, hid = meiosisDefOf(sp.card.defId), made = [];
+    if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(c=> c.slot)); const s0 = Number.isInteger(sp.slot) ? sp.slot : 0;
+      const free = []; if(!used.has(s0)) free.push(s0);
+      for(let d = 1; d < 16 && free.length < 2; d++){ const a = !used.has(s0 - d), b = !used.has(s0 + d);
+        if(a && b) free.push(...(rnd() < .5 ? [s0 - d, s0 + d] : [s0 + d, s0 - d])); else if(a) free.push(s0 - d); else if(b) free.push(s0 + d); }
+      free.slice(0, 2).forEach(sl=>{ const nc = makeBoardCard(hid); putInSlot(pl, nc, sl); made.push(nc); });
+    } else {
+      for(let i = 0; i < 2; i++){ const nc = makeBoardCard(hid); const lane = (i === 0 && (sp.side !== 'center' || !pl.row.center.length)) ? sp.side : flankOrShorter(pl, sp.side === 'center' ? 'left' : sp.side);
+        pl.row[lane].push(nc); made.push(nc); }
+    }
+    if(!made.length) return [];
+    ensureStat(stats, sideOf(pl.id), sp.card.defId).spawnedTokens = (ensureStat(stats, sideOf(pl.id), sp.card.defId).spawnedTokens||0) + made.length;
+    if(recordEvents && events) events.push({type:'spawn', side:sideOf(pl.id), defId:hid, count:made.length, cause:'onDeathSpawn', kind:'meiosis', uids:made.map(c=> c.uid), placements:made.map(c=> ({uid:c.uid, lane: findCardSide(pl, c.uid)})), fromUid:sp.card.uid, nearUid:sp.card.uid});
+    made.forEach(nc=> fireSpawnFamilyTriggers(players, sideOf, pl.id, nc, stats, events, 'spawned'));
+    return made;
   }
   // A brood token's card (Brood N, 2026-10-14): one per parent card per match.
   function broodDefOf(defId){ const base = CARD_DEFS[defId], root = base.derivedFrom || base.id, id = root + '~brood';
@@ -3821,7 +3906,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // rollStatusOnHit) must survive into NEXT round's gatherAttackers gate before it starts
       // counting down — otherwise a duration:1 status would tick to 0 in the same upkeep pass
       // it was set in and never actually gate anything.
-      if(c.frozen>0){ if(c._frozenJustSet) c._frozenJustSet=false; else c.frozen -= 1; }
+      // Freeze counters (2026-10-14, user: "On upkeep, if a card has a freeze counter, it removes it instead of downclocking its
+      // wait. If it doesnt have freeze counters anymore, the effect fades out."): c.frozen is the unit's freeze counters (the clock
+      // shows Wait + counters). An upkeep that removes a counter doesn't tick the Wait. A counter laid during this round's combat
+      // waits one upkeep before it starts melting (that upkeep the Wait ticks as usual), so a Freeze lasts as long as it did.
+      let frostTick = false;
+      if(c.frozen>0){ if(c._frozenJustSet) c._frozenJustSet=false; else { c.frozen -= 1; frostTick = true; } }
+      if(frostTick && c.frozen === 0 && c._readyAfterThaw){ c._readyAfterThaw = false; if(c.wait === 0) readyNow.push({pl, card:c}); }
       if(c.asleep>0){ if(c._asleepJustSet) c._asleepJustSet=false; else c.asleep -= 1; }
       if(c.paralyzed>0){ if(c._paralyzedJustSet) c._paralyzedJustSet=false; else c.paralyzed -= 1; }
       // Blind/Shock/Corrode (2026-09-17 batch) — same "_justSet" survive-one-round-before-
@@ -3857,7 +3948,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Stun counters (2026-10-10, user: "the unit removes a stun counter, then skips their turn including what it does
       // during upkeep"): each stunned round removes one counter and skips the Wait countdown.
       if(c.stunned){ if(c._stunnedJustSet) c._stunnedJustSet = false; else c.stunned = Math.max(0, (c.stunned|0) - 1); return; } // Stun: skip this round's wait decrement entirely; clear starting the round AFTER it was set
-      if(c.frozen>0 || c.asleep>0) return; // Frozen/Asleep: also skip the wait decrement while active, same as Stun
+      if(frostTick){
+        if(recordEvents && events) events.push({type:'statusFx', kind:'thaw', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pl.id), targetUid:c.uid, targetDefId:c.defId, left:c.frozen});
+        return; } // a freeze counter melts instead of the Wait ticking
+      if(c.asleep>0) return; // Asleep: also skip the wait decrement while active, same as Stun
       // Chronos wait-countdown (2026-09-17, per explicit request): every ordinary decrement
       // that DOESN'T reach 0 pushes its own 'waitTick' event (used purely for the UI's
       // per-round tick pulse + sound on the ring badge) — reaching exactly 0 still only
@@ -3865,7 +3959,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // special magnify-and-fade final flourish, so the two are never both fired the same round.
       if(c.wait>0){
         c.wait -= 1;
-        if(c.wait===0) readyNow.push({pl,card:c});
+        if(c.wait===0 && c.frozen>0) c._readyAfterThaw = true; // still frozen: it's Ready once the ice is gone
+        else if(c.wait===0) readyNow.push({pl,card:c});
         else if(recordEvents && events) events.push({type:'waitTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, waitRemaining:c.wait});
       }
     })));
@@ -3936,7 +4031,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
       }
     })));
+    chargeTick(players, sideOf, stats, events, inUpkeep);
     removeDeadCards(players, sideOf, killCredit, stats, events);
+  }
+  // Charge N - {} (2026-10-14, user: "Charge N - {}. A yellow wait timer = N starts on the top right. Charge only starts when the
+  // card is ready. When the timer reaches 0, the thing in {} happens."): effects.charge = {n, do:'<action>', ...the action's own
+  // fields, exactly as a custom trigger's}. The charge clock starts at N the moment the unit is Ready (on arrival with no Wait,
+  // else at the upkeep its Wait runs out), then counts down 1 every upkeep. At 0 the action happens and the clock winds back to
+  // N, so it repeats every N rounds. It holds (doesn't count) while the unit is Waiting, Stunned, Frozen or Asleep.
+  function chargeOf(d){ const c = d && d.effects && d.effects.charge; if(!c || typeof c !== 'object') return null; const n = Math.max(1, Math.floor(Number(c.n)||1)); const act = c.do && typeof c.do === 'object' ? c.do : c; return act && act.do ? {n, act} : null; }
+  function chargeTick(players, sideOf, stats, events, inUp){
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || (inUp && !inUp(pl))) return;
+      allBoardCards(pl).slice().forEach(c=>{ const def = CARD_DEFS[c.defId], ch = chargeOf(def); if(!ch || !(c.hp > 0) || c.cageOf) return;
+        if(c.wait > 0 || c.frozen > 0) return;
+        if(c.chargeLeft == null){ c.chargeLeft = ch.n; if(recordEvents && events) events.push({type:'charge', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.chargeLeft, start:true}); return; }
+        if(c.stunned || c.asleep > 0) return;
+        c.chargeLeft -= 1;
+        const fire = c.chargeLeft <= 0; if(fire) c.chargeLeft = ch.n;
+        if(recordEvents && events) events.push({type:'charge', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.chargeLeft, fired:fire});
+        if(fire) runCustomTriggers(players, sideOf, pid, c, {effects:{triggers:[Object.assign({}, ch.act, {on:'onCharge'})]}}, 'onCharge', stats || {}, events); }); });
   }
   // Repeats the pass while something is still at 0 HP (Divine Retribution can kill during a pass), at most 6 times.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
@@ -3954,7 +4067,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
-    const spawns = [], freed = [], retributions = [];
+    const spawns = [], freed = [], retributions = [], splits = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
@@ -3965,7 +4078,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // die. It's tagged with a Removal Counter (card.hasRemovalCounter): the NEXT time it
       // would die after that, it skips the graveyard entirely and goes straight to the
       // Removal Zone instead (see the graveyard-vs-exile decision below) — a real, final death.
-      if(cdef.effects && cdef.effects.revive && !card.revivedOnce){
+      if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
         card.revivedOnce = true;
         card.hasRemovalCounter = true;
         card.hp = 1;
@@ -4008,9 +4121,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           });
         }
       }
-      if(cdef.effects && cdef.effects.worthy){ const foe = players[otherId(pl.id)]; const got = addLumber(foe, 1);
+      const nulled = !!card.nullified; // Nullify (2026-10-14): its own death effects don't happen
+      if(cdef.effects && cdef.effects.worthy && !nulled){ const foe = players[otherId(pl.id)]; const got = addLumber(foe, 1);
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(foe.id), defId:card.defId, uid:card.uid, amount:got, cause:'worthyDeath'}); }
-      if(cdef.effects && cdef.effects.onDeathSpawn){
+      if(cdef.effects && cdef.effects.onDeathSpawn && !nulled){
         spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
       }
@@ -4029,8 +4143,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         pl.graveyard.push({defId:card.defId});
       }
       if(card.equipment) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11)
-      if(cdef.effects && cdef.effects.landslide) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
-      runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events);
+      if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
+      if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events);
+      // Meiosis N (2026-10-14): it splits in two once the board has cleared its dead (see the splits pass below)
+      if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf) splits.push({pl, side, slot:card.slot, card});
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
@@ -4051,7 +4167,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
       // Hive Mind (2026-10-09, Swarm archetype): when a Hive Mind card dies, the newest Swarm ally on its
       // board gains +1/+1, so a swarm grows stronger as it is whittled down.
-      if(cdef.effects && cdef.effects.hiveMind){
+      if(cdef.effects && cdef.effects.hiveMind && !nulled){
         const heirs = survivors.filter(sc=> CARD_DEFS[sc.defId] && CARD_DEFS[sc.defId].effects && CARD_DEFS[sc.defId].effects.swarm);
         if(heirs.length){ const h = heirs.reduce((a, b)=> b.uid > a.uid ? b : a);
           h.atk += 1; h.baseAtk += 1; h.hp += 1; h.maxHp += 1;
@@ -4111,6 +4227,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // comment for the played/spawned split this feeds.
       spawnedTokens.forEach(tok=> fireSpawnFamilyTriggers(players, sideOf, s.pl.id, tok, stats, events, 'spawned'));
     });
+    splits.forEach(sp=> meiosisSplit(players, sideOf, sp, stats, events)); // Meiosis N (2026-10-14)
     // Center collapse-in (2026-09-16, per explicit request: "units should fall in towards
     // the holes created. Including the center. 1/2 to be left, 1/2 to be right"). A gap
     // opened in the middle of a flank already closes itself for free — the filter pass just
@@ -4552,6 +4669,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         target = near ? near.entry : null;
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
+      // Crab claws (2026-10-14, user: "Crab claws: Attacks left or right only."): it never strikes the unit straight in front.
+      // Each swing goes to the enemy unit in the column to its left or right, alternating (left first, unless only the right
+      // has a unit). Neither side has a unit: with a unit in front the swing is wasted (a pinch at thin air); with nothing in
+      // front either, it walks through to the castle.
+      if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0)){
+        const lanesC = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
+        const has = col=>{ const en = col != null ? liveEnemyCols[col] : null; return !!(en && en.kind==='card' && en.card && en.card.hp > 0); };
+        const pref = a.att.crabNext === 'right' ? ['right','left'] : ['left','right'];
+        const pick = pref.find(sd=> has(lanesC[sd]));
+        if(pick){ const col = lanesC[pick], en = liveEnemyCols[col]; en.col = col; target = en; a.att.crabNext = pick === 'left' ? 'right' : 'left';
+          if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, dir:pick, targetUid:en.card.uid}); }
+        else if(target && target.kind === 'card'){ if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, whiff:true}); target = null; }
+      }
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
@@ -4635,11 +4765,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
-              applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
+              const nullF = isNullifier(a.att); // Nullify (2026-10-14)
+              if(!nullF) applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
               { const pz = poisonOn(attDef); if(pz && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ c2.poison = (c2.poison||0) + pz; aStat.poisonApplied += pz; } } // + Rabid (2026-10-14)
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
               { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl; } } // Ghosts don't bleed (2026-10-14)
-              ichorSplash(players, sideOf, a.enemyId, c2, a.att, stats, events, killCredit); // Ichor (2026-10-14)
+              if(!nullF) ichorSplash(players, sideOf, a.enemyId, c2, a.att, stats, events, killCredit); // Ichor (2026-10-14)
               if(attDef.effects.scar && c2.hp>0){ c2.scar = (c2.scar||0) + attDef.effects.scar; if(recordEvents && events) events.push({type:'statusFx', kind:'scar', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:attDef.effects.scar}); }
               rollStatusOnHit('freeze', attDef.effects.freeze, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
@@ -4647,7 +4778,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, c2, mySide, a.att, sideOf, a.enemyId, events);
               if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, r3.dmg); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
               if(c2.hp<=0){ if(!killCredit[c2.uid]) killCredit[c2.uid] = new Set(); killCredit[c2.uid].add(statKey(mySide, a.att.defId)); }
-              else {
+              else if(!nullF){
                 bleedTick(sideOf, a.enemyId, c2, stats, events, 'defend');
                 runCustomTriggers(players, sideOf, a.enemyId, c2, CARD_DEFS[c2.defId], 'onAttacked', stats, events);
               }
@@ -4718,7 +4849,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // damage taken" convention Sleep already uses, just gated to a configurable threshold.
         maybeBreakChain(players, sideOf, a.enemyId, defCard, stats, events, {kind:'damage', amount:dmg});
         // Thorns: defender reflects flat damage back to the attacker on every normal attack it receives.
-        const defDefEarly = CARD_DEFS[defCard.defId];
+        const nullHit = isNullifier(a.att); // Nullify (2026-10-14): none of the reactions below
+        if(nullHit && recordEvents && events) events.push({type:'statusFx', kind:'nullify', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid:defCard.uid, targetDefId:defCard.defId, killed: defCard.hp <= 0});
+        const defDefEarly = nullHit ? {effects:{}} : CARD_DEFS[defCard.defId];
         if(defDefEarly.effects && defDefEarly.effects.thorns){
           const thornsDmg = defDefEarly.effects.thorns;
           a.att.hp = Math.max(0, a.att.hp - thornsDmg);
@@ -4730,9 +4863,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             killCredit[a.att.uid].add(statKey(sideOf(a.enemyId), defCard.defId));
           }
         }
+        if(!nullHit){
         ichorSplash(players, sideOf, a.enemyId, defCard, a.att, stats, events, killCredit); // Ichor (2026-10-14)
         applySpite(players, sideOf, a.enemyId, defCard, a.att, dmg, stats, events, killCredit);
         counterStrike(players, sideOf, a.enemyId, defCard, stats, events, killCredit);
+        }
         // Reflect (2026-09-17): a chance-based twist on Thorns — instead of a guaranteed flat
         // counter-hit, Reflect% is a chance to throw the FULL damage of the incoming hit
         // straight back at the attacker. Both can coexist on the same card (rare, but not
@@ -4842,7 +4977,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             a.att.atk += momAmt; a.att.baseAtk += momAmt;
             if(recordEvents && events) events.push({type:'statusFx', kind:'momentum', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:momAmt});
           }
-        } else {
+        } else if(!nullHit){
           const defDef = CARD_DEFS[defCard.defId];
           // LEGACY (2026-09-21 consolidation, "Make consistent the abilities... remove On
           // Attacked: Spawn to the trigger system"): the card editor can no longer author
@@ -5057,7 +5192,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

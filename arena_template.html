@@ -4955,6 +4955,55 @@
   .board-card.is-paralyzed .card-tile{background:color-mix(in srgb, var(--status-paralyze-tint) 24%, var(--bg));}
   .freeze-overlay{font-size:24px; animation:freezeShimmer 2.4s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes freezeShimmer{0%,100%{opacity:.75; transform:scale(1);}50%{opacity:1; transform:scale(1.12);}}
+  /* ===== 2026-10-14 (fourth pass): freeze counters, the stun halo, the Charge clock, Sacrifice's teeth, Nullify, Crab Claws ===== */
+  /* Freeze counters (user: "The clock DOES +1. But it looks icy, with a snowflake effect ... If it doesnt have freeze counters
+     anymore, the effect fades out."): the Wait clock frosts over and snowflakes drift down the card until the last counter melts. */
+  .card-tile .waitbadge.is-icy{background:linear-gradient(180deg,#f2fbff,#a9dcf7) !important; color:#0b4a73 !important; border:1.5px solid #ffffff !important;
+    box-shadow:0 0 0 1px #7dd3fc, 0 0 8px rgba(125,211,252,.9), inset 0 1px 0 #fff !important; text-shadow:0 1px 0 #fff !important;}
+  .waitbadge.is-icy .wait-ring-fg{stroke:#38a3d9;} .waitbadge.is-icy .wait-ring-bg{stroke:rgba(56,163,217,.25);}
+  /* the Frost creep crystals (::after on the board card) leave a hole for the icy clock, so its number stays readable */
+  .board-card.is-frozen::after{-webkit-mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px); mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px);}
+  .waitbadge .frost-mark{position:absolute; right:-5px; bottom:-5px; font-size:.75em; line-height:1; filter:drop-shadow(0 0 2px #fff); pointer-events:none;}
+  .frost-flakes{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:4; border-radius:inherit; transition:opacity .9s ease;
+    background:linear-gradient(180deg, rgba(220,244,255,.28), rgba(220,244,255,0) 45%);}
+  .frost-flakes i{position:absolute; top:-12%; font-style:normal; font-size:11px; color:#eaf8ff; text-shadow:0 0 3px #7dd3fc, 0 0 1px #0369a1; animation:frostFall 3.2s linear infinite;}
+  .frost-flakes i:nth-child(1){left:10%; animation-delay:0s;} .frost-flakes i:nth-child(2){left:32%; animation-delay:-1.1s; font-size:9px;}
+  .frost-flakes i:nth-child(3){left:55%; animation-delay:-2.2s;} .frost-flakes i:nth-child(4){left:74%; animation-delay:-.6s; font-size:8px;} .frost-flakes i:nth-child(5){left:88%; animation-delay:-1.7s;}
+  @keyframes frostFall{0%{transform:translate(0,0) rotate(0); opacity:0;} 12%{opacity:.95;} 85%{opacity:.85;} 100%{transform:translate(6px,120%) rotate(200deg); opacity:0;}}
+  .frost-flakes.is-thawing{opacity:0;}
+  /* The stun halo (user: "A cartoony stun effect plays above its head."): stars and a dizzy chick circle over the card's top edge. */
+  .status-overlay.stun-halo{inset:auto; top:-14px; left:50%; width:64%; height:20px; transform:translateX(-50%); animation:none; z-index:6; display:block;}
+  .stun-halo i{position:absolute; left:50%; top:4px; font-style:normal; font-size:13px; line-height:1; animation:stunHaloSpin 1.3s linear infinite; filter:drop-shadow(0 1px 1px rgba(0,0,0,.45));}
+  .stun-halo i:nth-child(2){animation-delay:-.325s;} .stun-halo i:nth-child(3){animation-delay:-.65s;} .stun-halo i:nth-child(4){animation-delay:-.975s; font-size:12px;}
+  @keyframes stunHaloSpin{0%{transform:translate(-50%,0) translateX(-24px) scale(.85); opacity:.85; z-index:1;} 25%{transform:translate(-50%,0) translate(0,5px) scale(1.1); opacity:1; z-index:2;}
+    50%{transform:translate(-50%,0) translateX(24px) scale(.85); opacity:.85;} 75%{transform:translate(-50%,0) translate(0,-4px) scale(.6); opacity:.45; z-index:0;} 100%{transform:translate(-50%,0) translateX(-24px) scale(.85); opacity:.85;}}
+  /* The Charge clock (user: "A yellow wait timer = N starts on the top right."): where the Wait clock was, in yellow. */
+  .card-tile .chargebadge{position:absolute; z-index:3; top:-7px; right:-7px; width:clamp(18px, 22cqw, 28px); height:clamp(18px, 22cqw, 28px); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:clamp(8.5px, 9.5cqw, 14px); color:#3a2600;
+    background:linear-gradient(180deg,#ffe57a,#e0a913); border:1.5px solid #fff4b8; box-shadow:0 2px 3px rgba(0,0,0,.5), 0 0 6px rgba(255,214,64,.7);}
+  .board-card .card-tile .chargebadge{transform:scale(.72); transform-origin:top right;}
+  .chargebadge .wait-ring{position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg);}
+  .chargebadge .wait-ring-bg{fill:none; stroke:rgba(122,82,0,.25); stroke-width:2.2;} .chargebadge .wait-ring-fg{fill:none; stroke:#7a5200; stroke-width:2.2; stroke-linecap:round; transition:stroke-dashoffset 420ms ease;}
+  .chargebadge .wait-num{position:relative; z-index:1; line-height:1;}
+  .chargebadge.tick-pulse{animation:waitTickPulse 550ms ease;}
+  .chargebadge.charge-fire{animation:chargeFire 680ms cubic-bezier(.2,.8,.3,1);}
+  @keyframes chargeFire{0%{box-shadow:0 0 0 0 rgba(255,214,64,.95);} 40%{transform:scale(1.35); box-shadow:0 0 0 8px rgba(255,214,64,0);} 100%{transform:scale(1);}}
+  /* Sacrifice's teeth (user: "The middle of the card has a dark foreboding set of teeth when you're holding a card."). */
+  .card-tile .sac-teeth{position:absolute; left:5%; right:5%; top:30%; height:24%; z-index:2; pointer-events:none; opacity:.8; filter:drop-shadow(0 0 4px rgba(150,0,30,.55));}
+  .sac-teeth svg{width:100%; height:100%; display:block; overflow:visible;}
+  .sac-teeth .st-top, .sac-teeth .st-bot{fill:#16070c; stroke:#6b0f22; stroke-width:.8; stroke-linejoin:round;}
+  .sac-teeth .st-top{animation:sacJawTop 3.6s ease-in-out infinite;} .sac-teeth .st-bot{animation:sacJawBot 3.6s ease-in-out infinite;}
+  @keyframes sacJawTop{0%,70%,100%{transform:translateY(0);} 80%{transform:translateY(3px);} 86%{transform:translateY(-1px);}}
+  @keyframes sacJawBot{0%,70%,100%{transform:translateY(0);} 80%{transform:translateY(-3px);} 86%{transform:translateY(1px);}}
+  .board-card.sac-chomp .card-tile{animation:sacChomp 650ms ease;}
+  @keyframes sacChomp{0%{filter:none;} 35%{filter:brightness(.5) sepia(1) hue-rotate(-40deg) saturate(3);} 100%{filter:none;}}
+  /* Nullify: the struck card flashes grey, its reaction snuffed out. Crab Claws: a sideways snap. */
+  .board-card.nullify-flash .card-tile{animation:nullifyFlash 650ms ease;}
+  @keyframes nullifyFlash{0%{filter:none;} 30%{filter:grayscale(1) brightness(.7); box-shadow:inset 0 0 0 3px rgba(200,30,30,.8);} 100%{filter:none;}}
+  .board-card.crab-pinch .card-tile{animation:crabPinch 450ms ease;}
+  @keyframes crabPinch{0%,100%{transform:translateX(0);} 40%{transform:translateX(var(--crab-dx, -8px)) rotate(-2deg);}}
+  .sk-warn{color:#b45309; font-weight:700;}
+  @media (prefers-reduced-motion: reduce){ .frost-flakes i, .stun-halo i, .sac-teeth .st-top, .sac-teeth .st-bot{animation:none !important;} }
   .sleep-overlay{font-size:22px; animation:sleepBob 2.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes sleepBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
   .paralyze-overlay{font-size:24px; animation:paralyzeJitter .35s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}

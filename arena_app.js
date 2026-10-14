@@ -172,7 +172,31 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   moonpull:'🌙🌊', twin:'👯', sprout:'🌱', growth:'🌿', shade:'🌫️', shadow:'👤', supreme:'✨',
   // 2026-10-14 (third pass). Bloom (conditions) is 🌷 because the old Bloom N heal has 🌸 (the in-bloom chip on the board is 🌸);
   // Wave is 〰️ because Tide has 🌊 and Scatterbrained 🌀; Brood 🥚; Pack Leader 🐺👑; Supreme Tide ✨🌊.
-  bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊'};
+  bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊',
+  // 2026-10-14 (fourth pass). Crab Claws is 🦞 because Molting already has 🦀; Nullify 🚫 (only the Player Stun action's
+  // trigger badge used it); Meiosis 🧫; Restless 👣; Charge ⏲️ (Primed has 🔋, and ⚡ is Frenzy/Lightning).
+  crabClaws:'🦞', meiosis:'🧫', nullify:'🚫', restless:'👣', charge:'⏲️'};
+// The Exile zone's name on screen (2026-10-14, user: "I will have to rename the Exile zone in the future"): new text reads it from
+// here, so a rename is one line.
+const EXILE_ZONE_NAME = 'Removal Zone';
+// Charge N - {} (2026-10-14, user: "Charge N - {}. A yellow wait timer = N starts on the top right. Charge only starts when the card
+// is ready. When the timer reaches 0, the thing in {} happens."): effects.charge = {n, do:{do:'<action>', ...}}, the action in the
+// custom-trigger format. Its card text is "Charge N - <effect>"; the editor reads and writes "N, <action> [amount] [who] [sub]".
+function chargeParts(c){ if(!c || typeof c !== 'object') return null; const n = Math.max(1, Math.floor(Number(c.n)||1)); const act = c.do && typeof c.do === 'object' ? c.do : c; return act && act.do ? {n, act} : {n, act:null}; }
+function triggerDetailText(t){ let p = ''; try{ p = triggerPreviewText(t); }catch(e){ return ''; } const i = p.indexOf(', '); const d = i >= 0 ? p.slice(i + 2) : p; return d.charAt(0).toUpperCase() + d.slice(1); }
+function chargeLabel(c){ const cp = chargeParts(c) || {n:1, act:null}; return `Charge ${cp.n} - ${cp.act ? triggerDetailText(Object.assign(cp.act.do === 'damage' ? {dmgType:'physical'} : {}, cp.act, {on:'onSpawn'})).replace(/\.$/, '') : '?'}`; }
+function chargeToText(c){ const cp = chargeParts(c); if(!cp || !cp.act) return ''; const a = cp.act; return [cp.n + ',', a.do, a.amount, a.who, a.sub].filter(x=> x != null && x !== '').join(' '); }
+function parseChargeText(v){ const m = String(v||'').trim().match(/^(\d+)\s*[,:\-]?\s*(.*)$/); if(!m) return null; const toks = m[2].split(/[\s,]+/).filter(Boolean); if(!toks.length) return null;
+  const ad = (typeof ACTION_DEFS !== 'undefined' ? ACTION_DEFS : []).find(a=> a.key.toLowerCase() === toks[0].toLowerCase() || String(a.label||'').toLowerCase() === toks[0].toLowerCase()); if(!ad) return null;
+  const act = {do: ad.key}; toks.slice(1).forEach(t=>{ const lt = t.toLowerCase(); if(/^-?\d+$/.test(t)) act.amount = Number(t); else if(['self','ally','enemy','any'].includes(lt)) act.who = lt; else if(['adjacent','random','furthest','all'].includes(lt)) act.sub = lt; else if(['attack','health'].includes(lt)) act.amount = lt; });
+  return {n: Math.max(1, Number(m[1])||1), do: act}; }
+// Meiosis (2026-10-14, user: "Meiosis N (Default 1): Simple units only"): the editor warns when a Meiosis card carries more than
+// 2 other skills. Returns the warning, or '' when the card is simple enough.
+function meiosisWarning(e){
+  e = e || {}; if(!e.meiosis) return '';
+  const others = Object.keys(e).filter(k=> k !== 'meiosis' && k !== 'triggers' && !/Hp$|N$|Grant$/.test(k) && e[k] !== false && e[k] != null).length + (Array.isArray(e.triggers) ? e.triggers.length : 0);
+  return others > 2 ? `Meiosis is for simple units only: this card has ${others} other skills (2 at most).` : '';
+}
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
 const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'};
@@ -337,6 +361,21 @@ const PASSIVE_DEFS = [
     selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate (left, right, ...)'}, {value:'room', label:'Toward more room'}],
     get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
+  // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
+  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never strikes the unit in front: each swing pinches the enemy unit in the column to its left or right, taking turns (left first). With no unit either side, a unit in front means a wasted pinch; with nothing in front either, it goes for the castle.`},
+  // Meiosis N (user: "Simple units only - this Passive skill means that the creature breaks into 2 smaller parts when it dies, with
+  // half the stats, and skill numbers. Their Meiosis count drops by 1.").
+  {key:'meiosis', category:'passive', label:'Meiosis', kind:'number', min:1, defaultValue:1, desc:v=>{ const n = v === true ? 1 : (Number(v)||1); return `Simple units only. When it dies it splits into 2 halves beside each other: tokens with half its Attack and Health (rounded up), every skill number halved (rounded down; a skill at 0 is lost) and ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
+    get:e=> e.meiosis ? (e.meiosis === true ? 1 : e.meiosis) : undefined},
+  // Nullify (user: "an Evergreen effect like Shield Burn in Duel Masters. when this card hits the enemy, ignore all triggers and
+  // effects that would result from that hit from that unit ... And when it dies, it goes straight to Exile zone.").
+  {key:'nullify', category:'evergreen', label:'Nullify', kind:'boolean', desc:()=>`The unit its hit lands on gets no reaction from that hit: no Thorns, Reflect, Spiteful, Counterattack, Ichor, Shell, Cower or On Attacked triggers. If the hit kills it, none of its own death effects happen (On Death, Revive, Meiosis, Landslide…) and it goes straight to the ${EXILE_ZONE_NAME}.`},
+  // Restless (user: "Some cards have abilities that make them keep moving — I didn't like this, but good to have this option.").
+  {key:'restless', category:'passive', label:'Restless', kind:'boolean', desc:()=>`Keeps moving: at the start of every round it steps one column toward the nearest enemy unit, swapping with an ally in the way, until an enemy faces it.`},
+  // Charge N - {} (user: "When the timer reaches 0, the thing in {} happens").
+  {key:'charge', category:'evergreen', label:'Charge', kind:'text', placeholder:'2, damage 3 enemy random',
+    desc:(v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. Once it is Ready, a yellow clock starts at ${cp.n} and counts down every upkeep; at 0 the effect happens and the clock starts again. Write it as "N, action amount who sub" (e.g. "2, damage 3 enemy random").`; },
+    get:e=> e.charge ? chargeToText(e.charge) : undefined, apply:(e, v)=>{ const c = parseChargeText(v); if(c) e.charge = c; }},
   {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flow or Ebb. Nothing that moves the tide can take them away.`},
   // Brood N (user: "Swarm units tend to like summoning more units of their type").
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
@@ -617,6 +656,9 @@ const TRIGGER_DEFS = [
   // same restricted-scope reasoning as On Exile: no live board instance exists yet, so only
   // the plain resource-gain actions (Gain Lumber/Grace/Stone/Dark Points) apply here.
   {key:'onDiscard', label:'On Discard', desc:'the moment this card is discarded/pitched for its resource, instead of played (only Gain Lumber/Grace/Stone/Dark Points actions apply here — the card has no board presence)'},
+  // Sacrifice - {} (2026-10-14, user: "Sacrifice - haven't designed a card around this. The designer's toolkit: Sacrifice - {} aka On
+  // Sacrifice -> Do {}. But it's framed as Sacrifice - { }."): the card text reads "Sacrifice - <effect>".
+  {key:'onSacrifice', label:'On Sacrifice', desc:'the moment this card is sacrificed: the fodder of a Sacrifice (Dark Summon), the card a Devour unit eats, or a card given up as an Offering or prayer offering. From the hand it has no unit on the board, so effects on "itself" do nothing. Its card text reads "Sacrifice - <effect>"'},
 ];
 // Trigger-picker UX redesign (2026-09-27, item 4a, per explicit request: "the first dropdown
 // should only display unique triggers. Then all the 'On Enemy X' should just be displayed as
@@ -1322,6 +1364,10 @@ const SKILL_TEXT = {
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
   wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flow or Ebb. Tide effects can't take them away.`,
+  crabClaws: ()=> `Attacks left or right only: each swing hits the enemy beside the one in front, taking turns.`,
+  meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
+  nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
+  restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${v} damage to the units beside its target.`,
   rage: ()=> `Below half Health: double Attack and takes half damage.`,
@@ -1453,6 +1499,8 @@ function describeEffects(def, liveCard){
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
+    if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
+    if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
@@ -1512,7 +1560,7 @@ function describeEffects(def, liveCard){
     }
     if(t.count!=null && t.do!=='spawnCard' && t.do!=='drawCard' && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
-    lines.push(`${tDef.label}: ${detail}`);
+    lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : `${tDef.label}: ${detail}`); // Sacrifice - {} (2026-10-14, user: "it's framed as Sacrifice - { }")
   });
   if(def.dmgType && def.dmgType!=='physical') lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
   // Resist can live in the legacy top-level array or the new effects.resist box (see
@@ -4892,7 +4940,7 @@ function cardTileHTML(d, opts){
     </div>`;
   }
   return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
-    ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}
+    ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
     ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
@@ -4952,7 +5000,7 @@ function poisonTagHTML(d){
 // like Lightning -> Action's Emoji. If grave = a skill related to GY. When the creature isn't ready, the lightning is
 // greyed out"): one ⚡→X chip per custom trigger, X being what it does (🪦 for anything that works the graveyard). On the
 // board, a reactive trigger is off while its card is still Waiting (the engine's rule), and its ⚡ greys out.
-const TRIGGER_ALWAYS_ON = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard']);
+const TRIGGER_ALWAYS_ON = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // + Sacrifice and Charge (2026-10-14)
 function triggerActionEmoji(t){
   const defs = getCardDefs();
   switch(t.do){
@@ -5013,7 +5061,7 @@ function triggerBadges(d, live){
     const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
-    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : '⚡';
+    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14)
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
@@ -5084,6 +5132,12 @@ function abilityBadges(d, bopts){
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">🥚${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flow or Ebb">✨🌊</span>`);
+  // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
+  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only">🦞</span>`);
+  if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">🧫${n1(e.meiosis)}</span>`);
+  if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">🚫</span>`);
+  if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">👣</span>`);
+  if(e.charge){ const cp = chargeParts(e.charge) || {n:1}; out.push(`<span class="ab-charge" title="${escapeAttr(chargeLabel(e.charge))}">⏲️${cp.n}</span>`); }
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
@@ -7232,6 +7286,7 @@ async function onSaveEditor(){
   const bad = [...document.querySelectorAll('#editorOverlay .modal input[type="number"]')].find(el=> !el.disabled && el.value !== '' && (Number(el.value) < 0 || !Number.isInteger(Number(el.value))));
   if(bad){ showToast('Numbers must be whole and 0 or more.', 'warn'); bad.focus(); bad.select && bad.select(); return; }
   const c = readEditorFormIntoCard();
+  { const mw = meiosisWarning(c.effects); if(mw) showToast('⚠ ' + mw, 'warn'); } // Meiosis: "Simple units only" (2026-10-14) — a warning, the save goes ahead
   // 2026-09-25 fix (explicit user report: "i can't lock and unlock cards for the player
   // anymore"): getCardDefs() additively ORs myUnlockedCardIds onto the baseline `locked` flag —
   // by design, a per-player unlock (Shop pack, tutorial reward, etc.) is never supposed to be
@@ -23579,11 +23634,16 @@ function ritualChipHTML(c, pid){
     return `<div class="ritual-chip" title="Ritual: it acts once these are met (counted since it arrived): units perished, cards drawn, castle damage dealt">${part('☠', pr.perished)}${part('🂠', pr.drawn)}${part('🏰', pr.castleDamage)}</div>`;
   }catch(e){ return ''; }
 }
-function waitBadgeHTML(waitRemaining, waitTotal){
+function waitBadgeHTML(waitRemaining, waitTotal, frost){
   const total = Math.max(1, waitTotal||waitRemaining||1);
   const frac = Math.max(0, Math.min(1, waitRemaining/total));
   const r = 8, circumference = 2*Math.PI*r;
   const offset = (circumference * (1-frac)).toFixed(2);
+  // Freeze counters (2026-10-14, user: "The clock DOES +1. But it looks icy"): the clock counts Wait + freeze counters and frosts over.
+  if(frost > 0) return `<div class="waitbadge is-icy" data-wait-total="${Math.max(total, waitRemaining)}" title="Frozen: ${frost} freeze counter${frost===1?'':'s'} on the clock (${waitRemaining} in all). Each upkeep melts one instead of the Wait ticking.">
+      <svg class="wait-ring" viewBox="0 0 20 20" aria-hidden="true"><circle class="wait-ring-bg" cx="10" cy="10" r="${r}"></circle><circle class="wait-ring-fg" cx="10" cy="10" r="${r}" style="stroke-dasharray:${circumference.toFixed(2)}; stroke-dashoffset:0"></circle></svg>
+      <span class="wait-num">${waitRemaining}</span><span class="frost-mark" aria-hidden="true">❄</span>
+    </div>`;
   return `<div class="waitbadge" data-wait-total="${total}" title="Wait — ${waitRemaining} more turn${waitRemaining===1?'':'s'} until it can act">
       <svg class="wait-ring" viewBox="0 0 20 20" aria-hidden="true">
         <circle class="wait-ring-bg" cx="10" cy="10" r="${r}"></circle>
@@ -23592,6 +23652,48 @@ function waitBadgeHTML(waitRemaining, waitTotal){
       <span class="wait-num">${waitRemaining}</span>
     </div>`;
 }
+// Charge clock (2026-10-14, user: "A yellow wait timer = N starts on the top right. Charge only starts when the card is ready."):
+// once a Charge unit is Ready, its charge clock sits where the Wait clock was, in yellow.
+function liveEngineCardByUid(uid){ const m = matchState; if(!m || !m.players) return null; for(const pid of [1,2]){ const pl = m.players[pid]; if(!pl || !pl.row) continue; const c = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x && x.uid === uid); if(c) return c; } return null; }
+function chargeBadgeHTML(c, d){
+  const cp = chargeParts((d && d.effects || {}).charge); if(!cp || !cp.act || !c || c.wait > 0 || c.frozen > 0) return '';
+  const lc = c.chargeLeft != null ? c : liveEngineCardByUid(c.uid); const left = lc && lc.chargeLeft != null ? lc.chargeLeft : null; if(left == null) return '';
+  const r = 8, circ = 2*Math.PI*r, off = (circ * (1 - Math.max(0, Math.min(1, left / cp.n)))).toFixed(2);
+  return `<div class="chargebadge" data-charge-n="${cp.n}" title="${escapeAttr(chargeLabel(d.effects.charge))}: ${left} more upkeep${left===1?'':'s'}">
+      <svg class="wait-ring" viewBox="0 0 20 20" aria-hidden="true"><circle class="wait-ring-bg" cx="10" cy="10" r="${r}"></circle><circle class="wait-ring-fg" cx="10" cy="10" r="${r}" style="stroke-dasharray:${circ.toFixed(2)}; stroke-dashoffset:${off}"></circle></svg>
+      <span class="wait-num">${left}</span></div>`;
+}
+function updateChargeBadge(uid, left, fired){
+  const el = boardCardEl(uid); if(!el) return; const tile = el.querySelector('.card-tile'); if(!tile) return;
+  let b = tile.querySelector('.chargebadge');
+  if(!b){ const c = currentCardByUid(uid) || liveEngineCardByUid(uid); const d = c && getCardDefs()[c.defId]; const html = d ? chargeBadgeHTML(Object.assign({}, c, {chargeLeft:left}), d) : ''; if(!html) return; tile.insertAdjacentHTML('afterbegin', html); b = tile.querySelector('.chargebadge'); }
+  const n = Number(b.getAttribute('data-charge-n'))||1, num = b.querySelector('.wait-num'), fg = b.querySelector('.wait-ring-fg');
+  if(num) num.textContent = left; if(fg){ const circ = 2*Math.PI*8; fg.style.strokeDashoffset = (circ * (1 - Math.max(0, Math.min(1, left / n)))).toFixed(2); }
+  b.classList.remove('charge-fire', 'tick-pulse'); void b.offsetWidth; b.classList.add(fired ? 'charge-fire' : 'tick-pulse'); setTimeout(()=> b.classList.remove('charge-fire', 'tick-pulse'), 700);
+}
+// Freeze counters (2026-10-14, user: "But it looks icy, with a snowflake effect ... If it doesnt have freeze counters anymore, the
+// effect fades out."): snowflakes drift over a frozen card; when the last counter melts they fade out.
+const FROST_FLAKES_HTML = '<div class="frost-flakes" aria-hidden="true"><i>❄</i><i>❅</i><i>❆</i><i>❄</i><i>❅</i></div>';
+// Stun (2026-10-14, user: "Stun clock - similar, but for stun. A cartoony stun effect plays above its head. Only Stun 1 for now, no
+// clock needed."): stars and a dizzy little bird circle above a stunned unit's head for as long as it is stunned.
+const STUN_HALO_INNER = '<i>⭐</i><i>💫</i><i>⭐</i><i>🐤</i>';
+function syncFrostDisplay(tile, c){
+  const n = c.frozen|0; const fl = tile.querySelector('.frost-flakes');
+  if(n > 0){ if(!fl) tile.insertAdjacentHTML('afterbegin', FROST_FLAKES_HTML); else fl.classList.remove('is-thawing'); }
+  else if(fl && !fl.classList.contains('is-thawing')){ fl.classList.add('is-thawing'); setTimeout(()=>{ if(fl.classList.contains('is-thawing')) fl.remove(); }, 900); }
+  const wb = tile.querySelector('.waitbadge'), total = (c.wait|0) + n;
+  if(n > 0){
+    if(!wb) tile.insertAdjacentHTML('afterbegin', waitBadgeHTML(total, total, n));
+    else { wb.classList.add('is-icy'); const num = wb.querySelector('.wait-num'); if(num) num.textContent = total; if(!wb.querySelector('.frost-mark')) wb.insertAdjacentHTML('beforeend', '<span class="frost-mark" aria-hidden="true">❄</span>'); }
+  } else if(wb && wb.classList.contains('is-icy')){
+    wb.classList.remove('is-icy'); const fm = wb.querySelector('.frost-mark'); if(fm) fm.remove();
+    if(!(c.wait > 0)) wb.remove(); else { const num = wb.querySelector('.wait-num'); if(num) num.textContent = c.wait; }
+  }
+}
+// Sacrifice - {} (2026-10-14, user: "The middle of the card has a dark foreboding set of teeth when you're holding a card."): a card
+// with a Sacrifice trigger shows a jaw of dark teeth across the middle of its art while it's in your hand.
+function hasSacrificeTrigger(d){ return !!(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onSacrifice')); }
+const SAC_TEETH_HTML = `<div class="sac-teeth" aria-hidden="true" title="Sacrifice"><svg viewBox="0 0 100 40" preserveAspectRatio="none"><path class="st-top" d="M0 0 H100 V8 L94 20 L88 8 L82 22 L76 8 L70 21 L64 8 L58 23 L52 8 L46 23 L40 8 L34 21 L28 8 L22 22 L16 8 L10 20 L4 8 L0 14 Z"/><path class="st-bot" d="M0 40 H100 V32 L97 24 L91 32 L85 22 L79 32 L73 21 L67 32 L61 20 L55 32 L49 20 L43 32 L37 21 L31 32 L25 22 L19 32 L13 24 L7 32 L3 26 L0 30 Z"/></svg></div>`;
 // Heat haze (2026-10-07, effects "Coming next"): fire creatures have shimmering hot air rising off
 // the top of the card. Two faint wavy bands drifting upward, on the compositor (transform/opacity
 // only); none with reduced motion.
@@ -23713,8 +23815,7 @@ function boardCardHTML(c, defs, opts){
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
-  if(c.frozen>0) badges.push(`<span class="abadge freeze">❄${c.frozen}</span>`);
-  if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`);
+  if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
   // path but were missing from this fresh-render template entirely, same class of bug as the
@@ -23751,9 +23852,9 @@ function boardCardHTML(c, defs, opts){
   const floats = !flies && isTideDefApp(d) && !caged;
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
   const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}">${tideNow==='flow' ? '🌊⚔' : tideNow==='high' ? '🌊⚔🛡' : '🐚🛡'}</div>` : ''}
-      ${c.stunned?`<div class="status-overlay stun-overlay">💫</div>`:''}
+      ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
-      ${c.frozen>0?`<div class="status-overlay freeze-overlay">❄</div>`:''}
+      ${c.frozen>0?FROST_FLAKES_HTML:''}
       ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
@@ -23770,7 +23871,7 @@ function boardCardHTML(c, defs, opts){
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : '', wait: c.wait||0, uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
@@ -24771,8 +24872,7 @@ function updateCardStatusDisplay(uid){
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
-  if(c.frozen>0) badges.push(`<span class="abadge freeze">❄${c.frozen}</span>`);
-  if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`);
+  if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
@@ -24796,10 +24896,11 @@ function updateCardStatusDisplay(uid){
   }
   let stunEl = tile.querySelector('.stun-overlay');
   if(c.stunned){
-    if(!stunEl){ stunEl = document.createElement('div'); stunEl.className = 'status-overlay stun-overlay'; stunEl.textContent = '💫'; tile.insertBefore(stunEl, tile.firstChild); }
+    if(!stunEl){ stunEl = document.createElement('div'); stunEl.className = 'status-overlay stun-overlay stun-halo'; stunEl.innerHTML = STUN_HALO_INNER; tile.insertBefore(stunEl, tile.firstChild); } // the stun halo (2026-10-14)
   } else if(stunEl){
     stunEl.remove();
   }
+  syncFrostDisplay(tile, c); // freeze counters: the icy clock and the snowflakes (2026-10-14)
   // Chained (Devilry, 2026-09-17): same on/off overlay pattern as Stun just above — the break
   // itself gets its own distinct removal flourish via playChainBreakFlourish() instead of the
   // overlay just vanishing here, so this only ever ADDS the overlay, never removes it (removal
@@ -24912,7 +25013,7 @@ function updateCardWaitDisplay(uid, waitRemaining){
     fg.style.strokeDashoffset = (circumference*(1-frac)).toFixed(2);
   }
   const numEl = badge.querySelector('.wait-num');
-  if(numEl) numEl.textContent = waitRemaining;
+  if(numEl) numEl.textContent = waitRemaining + (((currentCardByUid(uid)||{}).frozen)|0); // + freeze counters on the clock (2026-10-14)
   // Hourglass flip (2026-10-07, effects A7): a small ⏳ turns over above the badge on each tick.
   if(fxAtLeast('low')){ const g = document.createElement('span'); g.className = 'wait-flip'; g.textContent = '⏳'; g.setAttribute('aria-hidden', 'true'); badge.appendChild(g); setTimeout(()=> g.remove(), 760); }
   badge.classList.remove('tick-pulse'); void badge.offsetWidth; // restart the animation if it's already mid-pulse
@@ -27749,7 +27850,7 @@ function logText(ev){
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: +${ev.wait||1} Wait.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -27869,6 +27970,10 @@ function logText(ev){
         bleed: `bled ${nm(ev.targetDefId)} (+${ev.amount} 🩸)`,
         esprit: `grew stronger from a new ally's arrival (+${ev.amount}⚔${ev.hp ? ' +'+ev.hp+'❤' : ''}) 🤝`,
         pack: `arrives with its pack (+${ev.amount}❤) 🐺`,
+        // 2026-10-14 (fourth pass)
+        sacrificed: `is sacrificed 🦷`,
+        nullify: `nullifies ${nm(ev.targetDefId)}: no reaction from that hit${ev.killed ? `, and it goes to the ${EXILE_ZONE_NAME}` : ''} 🚫`,
+        thaw: ev.left ? `thaws a little (${ev.left} freeze counter${ev.left===1?'':'s'} left) ❄` : `thaws out ❄`,
       }[ev.kind] || ev.kind;
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
@@ -27911,6 +28016,9 @@ function logText(ev){
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
+    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // Crab Claws (2026-10-14)
+    case 'charge': return {cls: ev.fired ? 'gold' : '', text: ev.start ? `⏲️ ${nm(ev.defId)} starts charging (${ev.left}).` : ev.fired ? `⏲️ ${nm(ev.defId)}'s charge goes off!` : `⏲️ ${nm(ev.defId)} charges… ${ev.left} to go.`}; // Charge N (2026-10-14)
+    case 'restless': return {cls:'', text:`👣 ${nm(ev.defId)} can't keep still: it moves ${ev.to > ev.from ? 'right' : 'left'}${ev.swapUid != null ? ', swapping places' : ''}.`}; // Restless (2026-10-14)
     case 'wave': return {cls:'', text: ev.blocked ? `〰️ ${nm(ev.attDefId)}'s wave breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.` : `〰️ ${nm(ev.attDefId)}'s wave pushes ${nm(ev.targetDefId)} ${ev.dir}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; // Wave (2026-10-14)
     default: return {cls:'', text: ev.type};
   }
@@ -28784,7 +28892,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
 // triggered ability triggers, like On Death or On Enemy Play"): a gold rune ring opens on the card
 // with the trigger's symbol above it, and a soft two-note chime.
 const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'🕐', perTurn:'🕐', /* 2026-10-12: turn-based triggers wear a clock */ onReady:'⚡', onExile:'🌀',
-  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️'};
+  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️', onSacrifice:'🦷', onCharge:'⏲️'}; // 2026-10-14: Sacrifice's teeth, Charge's clock
 // Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
 // shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
@@ -29201,6 +29309,10 @@ function renderVfxForEvent(ev){
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
+    // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
+    if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
+    if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }
+    if(ev.kind==='sacrificed'){ const se = boardCardEl(ev.attUid); if(se){ floatText(se, '🦷 Sacrifice', 'debuff'); se.classList.add('sac-chomp'); setTimeout(()=> se.classList.remove('sac-chomp'), 700); } }
     // 2026-10-12 skills
     if(ev.kind==='surge'){ try{ SoundKit.rageRoar ? SoundKit.rageRoar() : SoundKit.swipeTone(); }catch(e){} if(el){ floatText(el, `🌋 +${ev.atk}/+${ev.hp}`, 'heal slow'); el.classList.add('surge-glow'); setTimeout(()=> el.classList.remove('surge-glow'), 1400); } }
     // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
@@ -29378,6 +29490,18 @@ function renderVfxForEvent(ev){
       try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
       [ev.targetUid, ev.swapUid].forEach(u=>{ const e2 = u != null && boardCardEl(u); if(e2){ e2.style.setProperty('--wave-dx', ev.dir === 'left' ? '-10px' : '10px'); e2.style.setProperty('--wave-rot', ev.dir === 'left' ? '-3deg' : '3deg'); e2.classList.add('wave-pushed'); setTimeout(()=> e2.classList.remove('wave-pushed'), 600); } }); }
   }
+  // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
+  if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }
+  // Charge N (2026-10-14): the yellow clock ticks; at 0 it flashes and the effect's own events follow.
+  if(ev.type==='charge'){ updateChargeBadge(ev.uid, ev.left, !!ev.fired); if(ev.fired){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⏲️ Charge!', 'gold'); try{ SoundKit.gritUp(); }catch(e){} } }
+  // Restless (2026-10-14): it slides one column over (swapping with an ally there), like a Wave push.
+  if(ev.type==='restless'){ const m = matchState, pid = ev.side==='A' ? 1 : 2, rr = m && m.replayRows && m.replayRows[pid];
+    const moves = [{uid:ev.uid, to:ev.to}].concat(ev.swapUid != null ? [{uid:ev.swapUid, to:ev.from}] : []);
+    if(m && m.replayCards) moves.forEach(mv=>{ if(m.replayCards[mv.uid]) m.replayCards[mv.uid].slot = mv.to; });
+    if(rr){ const all = ['left','center','right'].flatMap(ln=> rr[ln]); const slotOf = u=>{ const mv = moves.find(x=> String(x.uid)===String(u)); if(mv) return mv.to; const rc = m.replayCards && m.replayCards[u]; return rc && rc.slot!=null ? rc.slot : 0; };
+      rr.center = all.filter(u=> slotOf(u)===0); rr.left = all.filter(u=> slotOf(u)<0).sort((a,b)=> Math.abs(slotOf(a))-Math.abs(slotOf(b))); rr.right = all.filter(u=> slotOf(u)>0).sort((a,b)=> slotOf(a)-slotOf(b)); }
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el) floatText(el, '👣', 'quick'); }
   if(ev.type==='swapPositions'){
     SoundKit.shift();
     const targetPid = ev.targetSide==='A' ? 1 : 2;

@@ -4860,7 +4860,8 @@
     "effects": {
       "thorns": 1,
       "tide": true,
-      "molting": 4
+      "molting": 4,
+      "crabClaws": true
     },
     "flavor": "Lives somewhere that would kill almost anything else instantly. Unbothered.",
     "locked": true,
@@ -5630,7 +5631,8 @@
     "effects": {
       "armor": 1,
       "tide": true,
-      "molting": 4
+      "molting": 4,
+      "crabClaws": true
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pick a fight with.",
     "dmgType": "physical",
