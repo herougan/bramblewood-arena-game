@@ -6301,6 +6301,23 @@
   .wp-stam-pips i.on{background:linear-gradient(#ffe27a,#f2a33a);} .wp-stam-pips i.ready{background:rgba(255,214,90,.35); box-shadow:inset 0 0 0 1px #ffd65a; animation:mseBob 1.6s ease-in-out infinite;}
   /* NPC speech editor (2026-10-12) */
   .dialogue-editor{max-width:980px; width:min(980px, calc(100vw - 32px));}
+  /* Showcase picker (2026-10-15, user: "im just having trouble picking the cards i want to showcase per map") */
+  .showcase-picker{max-width:980px; width:min(980px, calc(100vw - 32px));}
+  .showcase-picker .scp-map{display:flex; align-items:center; gap:8px; margin:6px 0 10px; font-weight:700;}
+  .showcase-picker .scp-map select{flex:1; min-width:0; max-width:420px;}
+  .showcase-picker .scp-list{display:flex; flex-direction:column; gap:10px;}
+  .showcase-picker .scp-row{display:flex; gap:12px; align-items:flex-start; padding:8px; border-radius:12px; background:var(--surface-2, rgba(0,0,0,.06)); border:1px solid var(--line, rgba(0,0,0,.12));}
+  .showcase-picker .scp-now{flex:0 0 92px; width:92px; container-type:inline-size;}
+  .showcase-picker .scp-now .card-tile{width:100%;}
+  .showcase-picker .scp-none{font-size:12px; opacity:.7; padding:20px 4px; text-align:center;}
+  .showcase-picker .scp-main{flex:1; min-width:0;}
+  .showcase-picker .scp-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin-bottom:6px;}
+  .showcase-picker .scp-head small{opacity:.7;}
+  .showcase-picker .scp-picks{display:flex; flex-wrap:wrap; gap:6px;}
+  .showcase-picker .scp-pick{font:inherit; font-size:12.5px; padding:5px 10px; border-radius:999px; border:1px solid var(--line, rgba(0,0,0,.18)); background:var(--surface, #fff); color:inherit; cursor:pointer;}
+  .showcase-picker .scp-pick:hover{border-color:var(--gold, #c9a227);}
+  .showcase-picker .scp-pick.is-on{background:var(--gold, #c9a227); color:var(--gold-ink, #1a1a1a); border-color:transparent; font-weight:700;}
+  @media (max-width:560px){ .showcase-picker .scp-now{flex-basis:70px; width:70px;} }
   .de-layout{display:grid; grid-template-columns:minmax(0, 240px) minmax(0, 1fr); gap:16px; max-height:70vh;}
   @media (max-width:640px){ .de-layout{grid-template-columns:minmax(0,1fr); max-height:none;} }
   .de-list{display:flex; flex-direction:column; gap:4px; overflow:auto; min-width:0;} .de-list input{margin-bottom:6px;}

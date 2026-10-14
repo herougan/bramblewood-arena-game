@@ -411,6 +411,17 @@ function parseBloomText(v){ const t = String(v||'').toLowerCase(); const m = t.m
 // "Poison 1" reads "Poison" (2026-10-12, 23:12, user: "This omission of N if its default should be standardised everywhere" + "If
 // its just Poison 1 or Bleed 1 or ETC, just omit the number"): a skill value of 1 (or true) is shown without its number.
 function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
+// Swimmer, in words (2026-10-15, user: "Swimmer skill does not seem to show up. It shows up as Tide instead maybe? It should be
+// Swimmer - On tide, { ... }"): what a Swimmer gets while the Tide is in (Flow, or High tide with t === 'high'). A Swimmer is still a
+// Tide unit in the engine (Flow +1 Attack, Ebb +1 Armor), so its own pick is added on top: +2 Attack in all for the plain Swimmer.
+function swimmerBonusText(e, t){
+  e = e || {}; const sw = (e.swimmer === true || !e.swimmer) ? 'extraAttack' : e.swimmer, up = t === 'high' ? 2 : 1;
+  const parts = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`, sw === 'quickAttack' ? 'Quick Attack' : sw === 'evade' ? 'Evade' : '+1 Attack'];
+  if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) parts.push(grantText(e.swimmerGrant));
+  if(t === 'high') parts.push('+2 Armor');
+  return parts.join(', ');
+}
+function swimmerLine(e){ return `Swimmer – On Tide, ${swimmerBonusText(e, 'flow')}. On Ebb, +1 Armor.`; }
 function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', '); }
 // "fastForward 1, armor 2, evasive" <-> {fastForward:1, armor:2, evasive:true}; skill names or labels both work.
 function parseGrantText(v){
@@ -485,7 +496,7 @@ const PASSIVE_DEFS = [
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (a Lantern on your side lights it).`},
-  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}, and it sees in the night's Darkness.`; },
+  {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
     get:e=> (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
@@ -505,7 +516,7 @@ const PASSIVE_DEFS = [
   {key:'primed', category:'passive', label:'Primed', kind:'boolean', desc:()=>`Its triggers stay online while it is Waiting, Stunned, Frozen or Asleep.`},
   {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
-  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board, it lights your side: Darkness and Pitchblack stop making your units miss, Absolute darkness drops to 1 in 2, and at Night your Diurnal units keep their daytime bonus.`},
+  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board, it lights your side: Darkness and Pitch Black stop making your units miss, Absolute darkness drops to 1 in 2, and at Night your Diurnal units keep their daytime bonus.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
@@ -588,7 +599,7 @@ const PASSIVE_DEFS = [
   // Swimmer (2026-10-12, 09:48: "Swimmer is too strong. Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick
   // Attack} or {Evade}"): one pick. A Swimmer saved before this keeps working as Extra Attack.
   // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit (Flow +1 Attack, Ebb +1 Armor) on top of its Flow pick.
-  {key:'swimmer', category:'passive', label:'Swimmer', kind:'select', desc:(v, n, e)=>`A Tide unit (Flow: +1 Attack, Ebb: +1 Armor). On Flow it also gets: ${({extraAttack:'+1 Attack', quickAttack:'Quick Attack (an extra turn before combat)', evade:'Evade (dodges half of single hits)'})[v === true || !v ? 'extraAttack' : v] || '+1 Attack'}${e && e.swimmerGrant ? ', and ' + grantText(e.swimmerGrant) : ''}.`,
+  {key:'swimmer', category:'passive', label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
     selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evade'}],
     get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
   // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
@@ -639,7 +650,7 @@ const PASSIVE_DEFS = [
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.sociable = [a, h]; }},
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
-  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark. Without it, units miss 1 attack in 4 in Darkness (night, caves), 1 in 2 in Pitchblack, and every attack in Absolute darkness, unless a Lantern lights their side.`},
+  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark. Without it, units miss 1 attack in 4 in Darkness, 1 in 2 in Pitch Black, and every attack in Absolute darkness, unless a Lantern lights their side.`}, // 2026-10-15: Darkness is a field effect (caves), not night
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
@@ -804,7 +815,7 @@ const PASSIVE_DEFS = [
   {key:'durian', category:'passive', label:'Durian', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +1 for the rest of the fight. It stacks.`},
   {key:'shield', category:'passive', label:'Shield', kind:'number', min:1, defaultValue:1, desc:v=>`It arrives with ${v||1} Shield: temporary Health (the blue 💠) that soaks damage before its Health does. Unlike Armor it doesn't block, it just absorbs, and it never comes back once spent.`},
   {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage. Wet units (Swimmers and Tide units, anyone in the rain or while the Tide is in) take +1 from it, and a wet target takes +1 too.`},
-  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, night and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
+  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
   // This is an evergreen skill. It happens 50% of the time every turn. (The banana and bananarang and boomerang ones are all
@@ -1652,7 +1663,7 @@ const SKILL_TEXT = {
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
   desecrate: v=> `Its hits curse the ground: whoever stands there takes ${v} damage every upkeep. Stacks.`,
-  tide: ()=> `Flow: +1 Attack. Ebb: +1 Armor.`, swimmer: v=> `A Tide unit. On Flow: ${v === 'quickAttack' ? 'Quick Attack' : v === 'evade' ? 'Evade' : '+1 Attack more'}.`,
+  tide: ()=> `Flow: +1 Attack. Ebb: +1 Armor.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits mark the target: +${v} damage on the next hit it takes.`,
   guardian: ()=> `Takes the hits aimed at adjacent allies.`,
@@ -1758,9 +1769,11 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
-    if(p.key==='tide' || p.key==='swimmer'){ if(p.key==='tide' && e.swimmer) return; // one Tide line for a Tide Swimmer
-      const lt = liveCard ? liveTideState(e) : null, sw = p.key==='swimmer' && v !== true && v !== 'extraAttack' ? ` <small>(on Flow: ${v === 'quickAttack' ? 'Quick Attack' : v === 'evade' ? 'Evade' : '+1 Attack more'})</small>` : '';
-      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide${sw}`); return; }
+    if(p.key==='tide' || p.key==='swimmer'){ if(p.key==='tide' && e.swimmer) return; // one line for a Tide Swimmer: the Swimmer one
+      const lt = liveCard ? liveTideState(e) : null;
+      // 2026-10-15 (user: "It should be Swimmer - On tide, { ... }"): a Swimmer reads as Swimmer, never as Tide.
+      if(p.key==='swimmer'){ lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('swimmer')}Swimmer – ${lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide'}, ${lt.bonus}</span>` : `${ic('swimmer')}${swimmerLine(e)}`); return; }
+      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide`); return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -5023,6 +5036,12 @@ function costBadgeParts(d){
   if(d.graceCost>0) parts.push(`🕊️${d.graceCost}`);
   if(d.prayerReq>0) parts.push(`🙏${d.prayerReq}`);
   if(d.devilryCost>0) parts.push(`★${d.devilryCost}`);
+  // 2026-10-15 (user: "The stone cost should be on the top left."): ore costs (Stone, and Metal/Uranium
+  // with it) are costs, so they sit in this same top-left cost badge beside the Lumber pips instead of
+  // down among the skill badges.
+  if(d.stoneCost>0) parts.push(pipsHTML('🪨', d.stoneCost, 'stone'));
+  if(d.metalCost>0) parts.push(pipsHTML('🔩', d.metalCost, 'metal'));
+  if(d.uraniumCost>0) parts.push(pipsHTML('☢️', d.uraniumCost, 'uranium'));
   return parts;
 }
 // Biome-specific card-tile background (2026-09-22, explicit feedback: "For the forest and river
@@ -5376,7 +5395,7 @@ function abilityBadges(d, bopts){
   if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`);
   { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
     if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${iconHTML('tide', '🌊')}</span>`);
-    if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr(lt.name + ' – ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="Tide">${iconHTML('swimmer', '🏊')}</span>`); }
+    if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
   if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
@@ -5448,7 +5467,8 @@ function abilityBadges(d, bopts){
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
-  if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">${iconHTML('stone-cost', '🪨')}${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">${iconHTML('metal-cost', '🔩')}${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">${iconHTML('uranium-cost', '☢️')}${d.uraniumCost}</span>`);
+  // 2026-10-15 (user: "The stone cost should be on the top left."): ore costs moved to costBadgeParts (the top-left cost badge).
+  if(bopts && bopts.oreCostBadges){ if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">${iconHTML('stone-cost', '🪨')}${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">${iconHTML('metal-cost', '🔩')}${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">${iconHTML('uranium-cost', '☢️')}${d.uraniumCost}</span>`); }
   if(e.boomerang || e.antiAir) out.push(`${iconHTML('boomerang', '🪃')}`);
   if(e.demolisher) out.push(`${iconHTML('demolisher', '⛏️')}${n1(e.demolisher)}`);
   if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
@@ -5620,7 +5640,7 @@ function mapCodexHTML(){
   const cards = maps.map(m=>{
     const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
     const fights = m.nodes.filter(n=> n.kind !== 'tutorial'), done = fights.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length;
-    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
+    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldPlainMap(m.id) || fieldRowState(row.key) !== 'unknown'; // Map 0 shows plainly (2026-10-15)
       return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : '<span class="fcr-q">?</span>'}</li>`; }).join('');
     const num = mapNumberOf(m.id);
     return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
@@ -12055,6 +12075,58 @@ function dialogueScript(id){
   return Object.assign({}, base, {lines: base.lines.map((l, i)=>{ const e = ed[i]; if(!e) return l; const o = Object.assign({}, l); if(e.text != null) o.text = e.text; if(e.who) o.who = e.who;
     if(e.options && Array.isArray(o.options)) o.options = o.options.map((op, k)=> e.options[k] != null ? Object.assign({}, op, {label: e.options[k]}) : op); return o; })});
 }
+// Showcase picker (2026-10-15, user: "OKAY im still balancing. im just having trouble picking the cards i want to showcase per
+// map."): one Admin screen, a map at a time: every skirmish with its showcase card now (chosen, or Auto = the strongest), and its
+// enemy deck's cards to pick from in one click. A pick saves like the skirmish editor's Save: in this browser, and live for every
+// player when you're a cloud admin (publishNodeEdits).
+async function saveNodeShowcase(mapId, key, id){
+  const e = nodePatchFor(mapId);
+  if(isAddedNode(mapId, key)){ e.added = e.added.map(n=>{ if(n.key !== key) return n; const c = Object.assign({}, n); if(id) c.showcase = id; else delete c.showcase; return c; }); }
+  else {
+    const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===key) || {};
+    const p = Object.assign({}, e.patches[key] || {});
+    if(id && id !== base.showcase) p.showcase = id; else if(!id && base.showcase) p.showcase = null; else delete p.showcase;
+    if(Object.keys(p).length) e.patches[key] = p; else delete e.patches[key];
+  }
+  nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
+  try{ return await publishNodeEdits(mapId); }catch(err){ return false; }
+}
+let showcasePickerMapId = null;
+function openShowcasePicker(){
+  let ov = document.getElementById('showcasePickerOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'showcasePickerOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+  const maps = CONQUEST_MAPS.filter(m=> !m.reserved && (m.nodes||[]).some(n=> n.deck && n.kind !== 'tutorial'));
+  if(!maps.some(m=> m.id === showcasePickerMapId)) showcasePickerMapId = (maps[0] || {}).id;
+  const paint = ()=>{
+    const defs = getCardDefs(), map = maps.find(m=> m.id === showcasePickerMapId);
+    const nodes = map ? map.nodes.filter(n=> n.deck && n.kind !== 'tutorial') : [];
+    const label = m=>{ const num = mapNumberOf(m.id); return `${m.icon} ${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${m.name}`; };
+    const rows = nodes.map(n=>{
+      const ids = Object.keys(n.deck||{}).filter(id=> n.deck[id] > 0 && defs[id]);
+      const chosen = n.showcase && ids.includes(n.showcase) ? n.showcase : '', autoId = nodeShowcaseId(Object.assign({}, n, {showcase:null})), cur = chosen || autoId;
+      const pick = (id, txt, on, title)=> `<button type="button" class="scp-pick ${on ? 'is-on' : ''}" data-scp-node="${escapeAttr(n.key)}" data-scp-id="${escapeAttr(id)}" aria-pressed="${on}" title="${escapeAttr(title)}">${txt}</button>`;
+      return `<div class="scp-row" data-scp-row="${escapeAttr(n.key)}">
+        <div class="scp-now">${cur && defs[cur] ? cardTileHTML(defs[cur], {extraClass:'scp-tile', inPlay:true}) : '<div class="scp-none">No cards</div>'}</div>
+        <div class="scp-main"><div class="scp-head"><b>${escapeHtml(n.icon || '⚔️')} ${escapeHtml(n.name)}</b><small>${escapeHtml(n.code || n.key)} · ${escapeHtml(KIND_LABEL[n.kind] || n.kind)} · ${chosen ? 'chosen' : 'auto'}</small></div>
+          <div class="scp-picks">${pick('', `✨ Auto${autoId && defs[autoId] ? ': ' + escapeHtml(defs[autoId].name) : ''}`, !chosen, 'Auto: the deck\'s strongest card')}${ids.map(id=> pick(id, `${escapeHtml(defs[id].icon || '')} ${escapeHtml(defs[id].name)}${n.deck[id] > 1 ? ` <small>×${n.deck[id]}</small>` : ''}`, id === chosen, defs[id].name)).join('')}</div></div></div>`; }).join('');
+    ov.innerHTML = `<div class="modal showcase-picker" role="dialog" aria-label="Showcase cards">
+      <div class="modal-head-row"><h2>🃏 Showcase cards</h2><button class="modal-close-btn" data-scp-close aria-label="Close">✕</button></div>
+      <p class="panel-sub">The card each skirmish shows big on its panel. Click a card to make it the showcase; ✨ Auto goes back to the strongest. ${cloudCardAdmin ? '☁️ Each pick publishes live for every player.' : '💾 Picks save in this browser (sign in as a cloud admin to publish).'}</p>
+      <label class="scp-map">Map <select id="scpMap">${maps.map(m=> `<option value="${escapeAttr(m.id)}" ${m.id === showcasePickerMapId ? 'selected' : ''}>${escapeHtml(label(m))}</option>`).join('')}</select></label>
+      <div class="scp-list">${rows || '<p class="panel-sub">No skirmishes with a deck on this map.</p>'}</div></div>`;
+    ov.hidden = false;
+    ov.querySelector('[data-scp-close]').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; };
+    ov.onclick = ev=>{ if(ev.target === ov){ ov.hidden = true; ov.innerHTML = ''; } };
+    ov.querySelector('#scpMap').onchange = ev=>{ showcasePickerMapId = ev.target.value; paint(); };
+    ov.querySelectorAll('[data-scp-node]').forEach(b=> b.onclick = async ()=>{
+      const key = b.dataset.scpNode, id = b.dataset.scpId || null, mid = showcasePickerMapId;
+      const published = await saveNodeShowcase(mid, key, id);
+      const n = (CONQUEST_MAPS.find(m=> m.id === mid) || {nodes:[]}).nodes.find(x=> x.key === key), d = getCardDefs()[nodeShowcaseId(n)];
+      showToast(`${published ? '☁️' : '💾'} ${n ? n.name : key}: ${id ? d ? d.name : id : 'Auto'}${published ? ' (live)' : ' (this browser)'}`, 'ok');
+      paint(); });
+  };
+  paint();
+}
 function openDialogueEditor(){
   let ov = document.getElementById('dialogueEditorOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'dialogueEditorOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
@@ -13067,10 +13139,11 @@ function fieldConditionRows(r){
   if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every round');
   else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every other round');
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', '', 'No Darksight: every attack misses');
-  else if(r.dark === 'pitch') add('dark', '🌑', 'Pitchblack', 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.', '', 'No Darksight: miss 1 in 2');
-  else if(r.dark) add('dark', '🌘', 'Darkness', 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.', '', 'No Darksight: miss 1 in 4');
-  if(r.misty) add('misty', '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.', '', 'No day or night'); // 2026-10-14
-  if(r.phase === 'night') add('night', '🌙', 'Night', 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.', '', 'Always night');
+  // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
+  else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
+  else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
+  if(r.misty) add('misty', '🌫️', 'Misty', MISTY_TEXT, '', MISTY_SHORT); // 2026-10-14; real wording 2026-10-15
+  if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "The Tide is always in. Tide effects can't change it.", '', 'The Tide is always in'); // 2026-10-14: Flow every round from round 1
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
@@ -13087,8 +13160,17 @@ function fieldConditionRows(r){
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
 }
-function fieldRowsListHTML(rows){
-  return rows.map(row=>{ const st = fieldRowState(row.key);
+// 2026-10-15 (user: "Map 0-1 is Misty. But the field effect is '?'. Only in Map 1 then we start learning more."): on Map 0 (the
+// Outskirts and its Tutorial side map) every field effect shows plainly; the '?' you learn by seeing starts on Map 1.
+function fieldPlainMap(mapId){ try{ return mapId != null && mapNumberOf(mapId) === 0; }catch(e){ return false; } }
+function matchFieldPlain(m){ return !!(m && m.conquestNode && fieldPlainMap(m.conquestNode.mapId)); }
+// Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
+// day/night cycle off (fightRules: phase 'off'), so Diurnal and Nocturnal bonuses never apply, and the fog's tint drifts instead.
+const MISTY_TEXT = 'Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply.';
+const MISTY_SHORT = 'Sun and moon hidden';
+function fieldRowsListHTML(rows, plain){
+  if(plain === undefined) plain = matchFieldPlain(typeof matchState !== 'undefined' ? matchState : null);
+  return rows.map(row=>{ const st = plain && fieldRowState(row.key) === 'unknown' ? 'known' : fieldRowState(row.key);
     if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="Shows what it does once it first happens">?</span></li>`;
     return `<li class="fcr ${st==='new' ? 'is-new' : ''}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
 }
@@ -13096,7 +13178,7 @@ function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conq
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
-  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`;
+  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows, fieldPlainMap(mapId || mapIdOfNode(node)))}</ul></div>`;
 }
 function noteFieldEvent(ev){
   const m = matchState; if(!m || !ev) return;
@@ -13116,7 +13198,13 @@ function noteFieldEvent(ev){
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
 // Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
 // The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
-const DARK_MAPS = new Map([['mg','pitch'], ['m4','dark']]);
+// 2026-10-15 (user: "It should only be for dark environments only. It will be an explicit field effect called 'Darkness'. 'Pitch Black'
+// is the level 2 variant."): night no longer dims anyone, so the dark places carry it as a field effect: Darkness (level 1, 1 in 4) in
+// Caves & Alcoves, the Mycelium Deep and the Sunken Depths; Pitch Black (level 2, 1 in 2) in Smugglers' Grotto. (The Glimmer Depths
+// shine, the Ice Hollow is blue ice and the Volcano Lair burns, so they stay lit.)
+const DARK_MAPS = new Map([['mg','pitch'], ['m4','dark'], ['mz','dark'], ['mj','dark']]);
+const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
+const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. A Lantern lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. A Lantern lights your side.'};
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
@@ -13169,6 +13257,8 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
 // The map's difficulty curve in the editor: one chip per fight with the new-player win rate last
 // measured this session (grey until checked), coloured against that fight's target.
 const skirmishCurveCache = {};
+const SKIRMISH_CURVE_SIMS = 30; // fights per skirmish for "Check the whole map" (was 60, 2026-10-15)
+const skirmishCurveSimCache = new Map(); // fight signature -> win rate (2026-10-15)
 function skirmishCurveHTML(mapId, currentKey){
   const map = CONQUEST_MAPS.find(m=> m.id===mapId); if(!map) return '';
   const nodes = map.nodes.filter(n=> n.deck && n.kind!=='tutorial');
@@ -13275,7 +13365,7 @@ function openDeckBuilderPopup(o){
 // map's default). Map defaults are switched off with an off value (field 'none', terrain false, eruption 0 …) so fightRules
 // keeps them off.
 const SE_PHASE_LABEL = {day:['☀️','Day all match'], night:['🌙','Night all match'], cycle:['🌗','Day and night'], nightFirst:['🌆','Dusk start'], off:['⏸️','No day or night'], realtime:['🕰️','Real-time day and night']};
-const SE_FX_OFF = {field:'none', terrain:false, eruption:0, highTide:false, tideSpout:false, bossSurge:false, enemyOre:false, misty:false};
+const SE_FX_OFF = {field:'none', terrain:false, eruption:0, highTide:false, tideSpout:false, bossSurge:false, enemyOre:false, misty:false, dark:false};
 function skirmishFxAuto(mapId, draft){
   const auto = fightRules(mapId, Object.assign({}, draft, {rules:{}}));
   let kind = null; try{ kind = typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mapId] : null; }catch(e){}
@@ -13294,7 +13384,9 @@ function skirmishFieldChips(mapId, draft){
   else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
   if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
-  if(eff.misty) add('misty', true, '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.'); // 2026-10-14
+  if(eff.misty) add('misty', true, '🌫️', 'Misty', MISTY_TEXT); // 2026-10-14
+  if(eff.dark){ const k = eff.dark === 'pitch' ? 'pitch' : eff.dark === 'absolute' ? 'absolute' : 'dark'; add('dark', true, k === 'pitch' ? '🌑' : k === 'absolute' ? '⚫' : '🌘', DARK_LEVEL_NAME[k], DARK_LEVEL_TEXT[k] || 'Units without Darksight miss every attack.'); } // 2026-10-15
+  else if(exp.dark === false && auto.dark) add('dark', false, '🌘', 'Darkness (off)', 'This map would be dark.');
   if(eff.bossSurge) add('bossSurge', true, '💥', `Boss surge +${eff.bossSurge.atk}/+${eff.bossSurge.hp}`, 'The boss arrives stronger.'); else if(exp.bossSurge === false && auto.bossSurge) add('bossSurge', false, '💥', 'Boss surge (off)', '');
   if(eff.enemyOre) add('enemyOre', true, '⛏️', 'Enemy mining', `The enemy digs ${eff.enemyOre.stone || 0} Stone a round${eff.enemyOre.metal ? ` and ${eff.enemyOre.metal} Metal every ${eff.enemyOre.metalEvery || 1}` : ''}.`); else if(exp.enemyOre === false && auto.enemyOre) add('enemyOre', false, '⛏️', 'Enemy mining (off)', '');
   if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
@@ -13312,7 +13404,7 @@ function skirmishFxAddOptionsHTML(){
   const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'dark', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -13544,8 +13636,23 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         render();
       }, 30);
     };
-    { const cb = document.getElementById('seCurveRun'); if(cb) cb.onclick = ()=>{ read(); cb.disabled = true; cb.textContent = 'Checking…';
-        setTimeout(()=>{ map.nodes.filter(n=> n.deck && n.kind!=='tutorial').forEach(n=>{ const nn = n.key===draft.key ? draft : n; skirmishCurveCache[mapId+':'+n.key] = simulateSkirmishVsDeck(nn, expectedPlayerDeck(mapId, n.key), 60).wins / 60; }); render(); }, 30); }; }
+    // 2026-10-15 (user: "The 'Check against whole map' button loads very long. Check it."): it ran 60 full AI-vs-AI fights for every
+    // fight on the map in one blocking go (about 5 ms a fight: 2.5 s frozen on Caves & Alcoves on a desktop, far more on a phone). Now:
+    // 30 fights a skirmish (enough for the ±12% target band), one skirmish per tick with the chips filling in and a counter on the
+    // button, and a result cache keyed by everything the fight depends on (seeded runs are deterministic), so a re-check only
+    // re-runs the skirmishes that changed.
+    { const cb = document.getElementById('seCurveRun'); if(cb) cb.onclick = async ()=>{ read(); cb.disabled = true;
+        const list = map.nodes.filter(n=> n.deck && n.kind!=='tutorial'), N = SKIRMISH_CURVE_SIMS;
+        for(let i = 0; i < list.length; i++){
+          const n = list[i], nn = n.key===draft.key ? draft : n, deck = expectedPlayerDeck(mapId, n.key);
+          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.armour || nn.armor || null, nn.setup || null, deck, N]);
+          let v = skirmishCurveSimCache.get(sig);
+          if(v == null){ cb.textContent = `Checking ${i + 1}/${list.length}…`; await sleep(0); v = simulateSkirmishVsDeck(nn, deck, N).wins / N; skirmishCurveSimCache.set(sig, v); }
+          skirmishCurveCache[mapId+':'+n.key] = v;
+          const chips = document.querySelectorAll('.se-curve .se-curve-chip'); const ch = chips[i];
+          if(ch){ const t = skirmishTargetWinRate(mapId, n); ch.classList.remove('ok', 'easy', 'hard'); ch.classList.add(Math.abs(v - t) <= .12 ? 'ok' : v > t ? 'easy' : 'hard'); const bEl = ch.querySelector('b'); if(bEl) bEl.textContent = Math.round(v*100) + '%'; }
+        }
+        if(document.getElementById('seCurveRun')) render(); }; } // the editor may have closed while it ran
     document.getElementById('seSave').onclick = async ()=>{
       // 2026-10-07 audit: say so instead of silently keeping the old name or defaulting the HP.
       const rawName = ((document.getElementById('seName')||{}).value||'').trim();
@@ -20355,20 +20462,20 @@ const FXL_FIELDS = [
   {key:'rain', icon:'🌧️', name:'Spring Rain', text:()=> FIELD_TEXT.rain.text, rules:{field:'rain'}, rainy:true, note:'One round of blows first, so the rain has wounds to heal.'},
   {key:'fog', icon:'🌫️', name:'Thick Fog', text:()=> FIELD_TEXT.fog.text, rules:{field:'fog'}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}},
   {key:'moon', icon:'🌕', name:'Full Moon', text:()=> FIELD_TEXT.moon.text, rules:{field:'moon', phase:'night'}, units:{mine:[{role:'subject', slot:0, def:{name:'Moon Hare', icon:'🐇', effects:{moonborn:2}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}},
-  {key:'night', icon:'🌙', name:'Night all fight', text:()=> 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.', rules:{phase:'night'}, units:FXL_PHASE_UNITS},
+  {key:'night', icon:'🌙', name:'Night all fight', text:()=> 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2. (Night alone makes no one else miss, 2026-10-15.)', rules:{phase:'night'}, units:FXL_PHASE_UNITS},
   {key:'dayToNight', icon:'🌗', name:'Day → Night', text:()=> 'Day and night alternate. Nocturnal units gain their bonus at night, Diurnal units by day.', rules:{phase:'cycle', phaseLen:1}, units:FXL_PHASE_UNITS, note:'The phase length is set to 1 round so night falls at once.'},
   {key:'nightToDay', icon:'🌅', name:'Night → Dawn', text:()=> 'At dawn (the first round of a new day) both sides draw a card.', rules:{phase:'nightFirst', phaseLen:1}, units:FXL_PHASE_UNITS, decks:true},
   {key:'twilight', icon:'🌆', name:'Twilight', text:()=> 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', rules:{phase:'cycle', phaseLen:1, twilight:true}, pre:3, units:{mine:[{role:'subject', slot:0, def:{name:'Dusk Moth', icon:'🦋', effects:{crepuscular:2, crepuscularHp:2}}}, {role:'ally', slot:-1, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
-  {key:'misty', icon:'🌫️', name:'Misty', text:()=> 'No day or night; the mist shifts from orange to blue and back.', rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
-  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once a Tide unit (Swimmers count) is in play the water flows and ebbs every round. On Flow, Tide units get +1 Attack.', rules:{}, units:FXL_TIDE_UNITS},
-  {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, units:FXL_TIDE_UNITS, pre:1, note:'The Flow passes silently first, so this round brings the Ebb.'},
+  {key:'misty', icon:'🌫️', name:'Misty', text:()=> MISTY_TEXT, rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
+  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once the Tide comes in (a field effect, Moonpull or a Tsunami brings it) the water flows and ebbs every round. On Flow, Tide units get +1 Attack.', rules:{}, startTide:true, units:FXL_TIDE_UNITS},
+  {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, startTide:true, units:FXL_TIDE_UNITS, pre:1, note:'The Flow passes silently first, so this round brings the Ebb.'},
   {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'Periodic High Tides. At High Tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
   {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds: the wind rises at the start of round 2.'},
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, so you see a round fought in the wind.'},
-  {key:'dark', icon:'🌘', name:'Darkness', text:()=> 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.', rules:{dark:'dark'}, units:FXL_DARK_UNITS},
-  {key:'pitch', icon:'🌑', name:'Pitchblack', text:()=> 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.', rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
+  {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
+  {key:'pitch', icon:'🌑', name:'Pitch Black', text:()=> DARK_LEVEL_TEXT.pitch, rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
   {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
@@ -20393,7 +20500,7 @@ const FXL_SKILL_SETUPS = {
   nocturnal: {rules:{phase:'night'}, note:'Fought at night.'}, nightblind: {rules:{phase:'night'}, note:'Fought at night.'},
   moonborn: {rules:{phase:'night', field:'moon'}, note:'Fought at night under a Full Moon.'},
   crepuscular: {rules:{phase:'cycle', phaseLen:1}, pre:3, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
-  darksight: {rules:{dark:'pitch'}, note:'Fought in Pitchblack.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitchblack.'},
+  darksight: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'},
   frostbite: {rules:{field:'frozen', frostCount:3}, note:'Fought on Frigid ground.'},
   restless: {foes:[{role:'foe', slot:2}, {role:'foe2', slot:3}], note:'No enemy in front of it, so it walks toward one.'},
   converge: {foes:[{role:'foe', slot:-2}, {role:'foe2', slot:2}], note:'The enemy row has gaps to close.'},
@@ -20411,8 +20518,9 @@ const FXL_SKILL_SETUPS = {
   frenzy: {status:{subject:{poison:2}}, note:'The Specimen starts Poisoned.'}, fester: {status:{subject:{poison:3}}, note:'The Specimen starts Poisoned.'},
   helmet: {foeFx:{arrow:2}, note:'The dummies shoot arrows.'},
   swipe: {foeLumber:3, note:'The enemy has 3 Lumber to lose.'},
-  bloomWhen: {rules:{phase:'night'}, mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], steps:['round', 'round'], note:'At night, with a Swimmer ally to bring the Tide in.'},
-  swimmerGrant: {helperFx:{swimmer:true}, steps:['round', 'round'], note:'The Specimen is a Swimmer, so the Tide comes in with it.'},
+  bloomWhen: {rules:{phase:'night'}, mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], steps:['round', 'round'], startTide:true, note:'At night, with the Tide in.'},
+  tide: {steps:['round', 'round'], startTide:true, note:'The Tide is in (2026-10-15: a Tide card no longer brings it).'}, swimmer: {steps:['round', 'round'], startTide:true, note:'The Tide is in, so the Swimmer gets its bonus.'},
+  swimmerGrant: {helperFx:{swimmer:true}, steps:['round', 'round'], startTide:true, note:'The Specimen is a Swimmer, and the Tide is in.'},
   charge: {steps:['round', 'round'], note:'Two rounds, so the clock runs down.'},
   shade: {rules:{phase:'night'}, note:'Fought at night.'}, shadow: {rules:{phase:'night'}, note:'Fought at night.'},
   rainrunner: {rules:{field:'rain'}, rainy:true, note:'Fought in the rain.'},
@@ -20543,7 +20651,7 @@ function fxlScenario(entry){
     const sk = fxlSkillEffects(entry.sd); if(sk.unsupported){ sc.unsupported = sk.unsupported; return sc; }
     sc.subjectFx = sk.e; if(sk.from) sc.notes.push(`Its value is taken from ${sk.from}.`);
     const hm = FXL_SKILL_SETUPS[entry.key];
-    if(hm){ sc.hand = true; if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.note) sc.notes.push(hm.note); }
+    if(hm){ sc.hand = true; if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.startTide) sc.startTide = true; if(hm.note) sc.notes.push(hm.note); }
     if(!sc.steps){ const how = fxlProbeTiming(sc); sc.steps = how.steps; if(how.note) sc.notes.push(how.note); }
   } else if(entry.group === 'on'){
     const hm = FXL_TRIGGER_SETUPS[entry.key] || {}; sc.hand = true;
@@ -20573,7 +20681,7 @@ function fxlScenario(entry){
     const f = entry.field; sc.hand = true;
     if(f.unsupported){ sc.unsupported = f.unsupported; return sc; }
     sc.rules = JSON.parse(JSON.stringify(f.rules || {}));
-    useUnits(f.units); if(f.pre) sc.pre = f.pre; sc.steps = (f.steps || ['round']).slice(); sc.rainy = !!f.rainy; if(f.decks) sc.decks = true;
+    useUnits(f.units); if(f.pre) sc.pre = f.pre; sc.steps = (f.steps || ['round']).slice(); sc.rainy = !!f.rainy; if(f.decks) sc.decks = true; if(f.startTide) sc.startTide = true;
     if(f.myTypes){ ['subject', 'ally', 'ally2'].forEach(r=> setRoleDef(r, {archetypes: f.myTypes.slice()})); }
     if(f.note) sc.notes.push(f.note);
   }
@@ -20617,6 +20725,7 @@ function fxlPopulate(E, P, so, stats, sc, events){
 function fxlNewEngine(sc, defs, rng){
   const all = Object.assign({}, getCardDefs(), defs);
   const E = makeSimEngine(all, rng, {recordEvents:true, rules: sc.rules || undefined, battleMode:'open'});
+  if(sc.startTide && E.startTide) E.startTide(); // 2026-10-15: a Tide card no longer starts the tide, so the tide entries start it here
   const deck = sc.decks ? {[FXL_IDS.ally2]: 6} : {}, foeDeck = sc.decks ? {[FXL_IDS.foe3]: 6} : {};
   const P = {1: E.newPlayer(1, deck, TESTKIT_WALL), 2: E.newPlayer(2, foeDeck, TESTKIT_WALL)};
   return {E, P, all};
@@ -21132,6 +21241,8 @@ function renderAdmin(){
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
       <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
+    <div class="panel admin-subpanel"><h3>🃏 Showcase cards</h3><p class="panel-sub">Every map's skirmishes with the card each one shows off, and a one-click picker from its enemy deck.</p>
+      <button type="button" class="btn small" id="adminShowcaseBtn">🃏 Pick showcase cards</button></div>
     <div class="panel admin-subpanel"><h3>💬 NPC speeches</h3><p class="panel-sub">Every conversation: change what a character says, or who says it.</p>
       <button type="button" class="btn small" id="adminDialogueBtn">💬 Edit NPC speeches</button></div>
     <div class="panel admin-subpanel"><h3>🧪 Card workbench</h3><p class="panel-sub">Try any card with any art, rarity colour, foil, foil strength and art style. Nothing is saved.</p>
@@ -21232,6 +21343,7 @@ function renderAdmin(){
   });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
   const deOpen = document.getElementById('adminDialogueBtn'); if(deOpen) deOpen.onclick = ()=> openDialogueEditor();
+  const scOpen = document.getElementById('adminShowcaseBtn'); if(scOpen) scOpen.onclick = ()=> openShowcasePicker(); // 2026-10-15
   const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
   const fxOpen = document.getElementById('adminFxLibBtn'); if(fxOpen) fxOpen.onclick = ()=> openEffectsLibrary();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
@@ -21622,7 +21734,9 @@ const FIELD_EFFECTS = [
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
-  {id:'misty',     group:'misty', icon:'🌫️', name:'Misty',        weird:1, cost:1, rules:{misty:true}, text:'No day or night; the mist shifts from orange to blue and back.', editorOnly:true}, // 2026-10-14: no map has it yet
+  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'misty',     group:'misty', icon:'🌫️', name:'Misty',        weird:1, cost:1, rules:{misty:true}, text:'Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply.', editorOnly:true}, // 2026-10-14: no map has it yet
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
@@ -23349,7 +23463,14 @@ function speedSteps(){
 }
 // Slow motion (2026-10-14): at 0.5× the delays double (they divide by speedMult everywhere) and, while a round plays out, GSAP's
 // own tweens run at half speed too. Back to normal the moment the round hands control back.
-function syncFightTimeScale(m){ try{ if(hasGsap()) gsap.globalTimeline.timeScale(m && m.resolving && m.speedMult > 0 && m.speedMult < 1 ? m.speedMult : 1); }catch(e){} }
+// 2026-10-15 (user: "the card died before my unit attacked. Then when my unit attacked, no animation happened. But it did do a small
+// shake. No damage numbers nothing."): root cause. At 0.5x the fight slowed GSAP's global clock to 0.5 AND every combat duration was
+// already divided by the speed (animMs, delayForEvent: 2x longer). The lunge (a GSAP tween) so ran 4x slower while the impact and the
+// event sequencer (timers) ran 2x slower: the damage number popped during the wind-up, the death played mid-lunge, and the strike
+// itself came last with nothing left to hit (just the squash). The speed is now applied once, through the durations, so GSAP stays at 1.
+// GSAP's lag smoothing is also off while a round plays, so a long frame (a phone, a heavy shader) can't leave the lunges behind the
+// timer-driven numbers and deaths either.
+function syncFightTimeScale(m){ try{ if(hasGsap()){ gsap.globalTimeline.timeScale(1); gsap.ticker.lagSmoothing(m && m.resolving ? 0 : 500, 33); } }catch(e){} }
 function speedKeeps(){ try{ const mains = mainConquestMaps(); return adminModeEnabled || !!(mains[5] && conquestMapCleared(mains[5].id)); }catch(e){ return false; } }
 function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getItem(SPEED_KEEP_KEY) || 0; }catch(e){ return 0; } }
 function ffBtnLabel(mult){ if(mult > 0 && mult < 1) return `<span class="ff-arrows">▷</span> ${mult}×`; const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
@@ -27028,6 +27149,13 @@ async function resolveRound(opts){
     if(ev.type==='hit' && ev.targetUid!=null) m.lastHurtBy[ev.targetUid] = ev.dmgType || ((getCardDefs()[ev.attDefId]||{}).dmgType) || 'physical';
     else if(ev.type==='poisonTick') m.lastHurtBy[ev.uid] = 'poison';
     else if(ev.type==='bleedTick') m.lastHurtBy[ev.uid] = 'bleed';
+    // 2026-10-15 (user: "I spotted an animation error where the card died before my unit attacked"): a death waits for the
+    // blow that caused it to land on screen first (its damage number), then a short beat, so the order is attack, number, death.
+    if(ev.type==='death' && ev.uid!=null && m._pendingImpacts && m._pendingImpacts[String(ev.uid)]){
+      const pr = m._pendingImpacts[String(ev.uid)]; delete m._pendingImpacts[String(ev.uid)];
+      if(!pr.landed){ await Promise.race([pr, sleep(1600)]); await sleep(Math.max(60, Math.round(220 / ((matchState && matchState.speedMult) || 1)))); }
+      if(matchState !== m) return;
+    }
     pushLog(ev); renderVfxForEvent(ev);
     // 2026-10-12 (11:39 list: "Sweep should use a different effect, where a sudden quick rapid hit of 3 units happens, separated
     // by 0.3s"): a Sweep's hits come 0.3 s apart instead of a full beat each.
@@ -27122,6 +27250,13 @@ async function resolveRound(opts){
           // when resolveRound captured that snapshot) — without an entry here replayCardLike()
           // would return null and rowsFor() would filter it back out despite the uid now being
           // in replayRows. Backfill it from the live (already fully-resolved) board card.
+          // 2026-10-15 (user: "when my unit attacked, no animation happened ... No damage numbers nothing"): a token that was
+          // spawned AND killed in this same round is gone from the live board by now, so it used to get no snapshot, never showed,
+          // and the blow that killed it played at nothing. It is built from its card instead.
+          if(!m.replayCards[u] && !['left','center','right'].some(ln=> (m.players[pid].row[ln]||[]).some(c=> c.uid===u))){
+            const sd = getCardDefs()[ev.defId] || {}, near = ev.nearUid!=null ? m.replayCards[ev.nearUid] : null;
+            if(sd.id || ev.defId) m.replayCards[u] = {slot: near && near.slot!=null ? near.slot + (near.slot < 0 ? -1 : 1) * (i + 1) : null, atk:sd.attack||0, rallyBonus:0, worshipBonus:0, phaseAtk:0, hp:sd.health||1, maxHp:sd.health||1, poison:0, bleed:0, scar:0, stunned:false, defId:ev.defId, wait:sd.wait||0, chained:false, frozen:0, asleep:0, paralyzed:0, blind:0, tipsy:0, confused:0, shocked:0, corrode:0, staggered:0};
+          }
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
             if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0};
@@ -27717,10 +27852,13 @@ function irrSkillName(p){ if(!p) return 'a skill'; if(p.key === 'trigger') retur
 // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit; both float on the board.
 function isTideDefApp(d){ const e = d && d.effects; return !!(e && (e.tide || e.swimmer)); }
 function matchHasTide(m){
+  try{ if(m && m.engine && m.engine.getTide && m.engine.getTide()) return true; }catch(e){} // the tide is in: it shows (2026-10-15)
   if(m._hasTide !== undefined) return m._hasTide;
   if(!m.players || !m.players[1] || !m.players[2]) return false; // not set up yet: don't cache
-  const DEFS = getCardDefs(); const isT = id=> isTideDefApp(DEFS[id && (id.defId || id)]);
-  let yes = false; try{ const fr = matchFieldRules(m); if(fr && fr.tideSpout) yes = true; }catch(e){} // a Tide-spout brings the tide in itself (2026-10-14)
+  // 2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): a Tide card no longer brings the tide, so the
+  // pill shows only when something can: the field (Tide-spout, Perma-tide, High Tide) or a Moonpull/Tsunami card in either deck.
+  const DEFS = getCardDefs(); const isT = id=>{ const e = (DEFS[id && (id.defId || id)] || {}).effects; return !!(e && (e.moonpull || e.tsunami)); };
+  let yes = false; try{ const fr = matchFieldRules(m); if(fr && (fr.tideSpout || fr.permaTide || fr.highTide)) yes = true; }catch(e){} // a Tide-spout brings the tide in itself (2026-10-14)
   try{ [1,2].forEach(p=>{ const pl = m.players[p]; if(!pl) return;
     if((pl.deck||[]).some(isT) || (pl.hand||[]).some(isT) || (pl.graveyard||[]).some(isT) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && isT(c)))) yes = true; }); }catch(e){}
   return (m._hasTide = yes);
@@ -27853,6 +27991,7 @@ function liveTideState(e){
     const t = m.engine.getTide(); if(!t) return null;
     const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
     const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evade'] : []);
+    if(sw && e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) rising.push(grantText(e.swimmerGrant)); // 2026-10-15
     if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+1 Armor'};
     if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+2 Armor').join(', ')};
     return {k:'flow', name:'Tide', bonus: rising.join(', ')};
@@ -27958,7 +28097,7 @@ function fieldCondCardHTML(m){
   if(!rows.length) return '';
   const n = rows.length;
   const cards = rows.map((row, i)=>{
-    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line
+    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib) && !matchFieldPlain(m); // the Effects library always shows the line; so does Map 0 (2026-10-15)
     const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title:'An environment card: a rule of this battlefield'}};
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? 'Not seen yet.' : row.text))}"`, line);
@@ -30992,6 +31131,12 @@ function renderVfxForEvent(ev){
       }
       if(ev.guardianRedirect) flashShield(targetEl);
     }, impactDelay);
+    // 2026-10-15 (user: "the card died before my unit attacked. Then when my unit attacked, no animation happened"): the impact
+    // above is a timer that lands well after this event starts. The replay loop waits for it before it plays the target's death
+    // (see m._pendingImpacts in resolveRound), so it always reads lunge, then the damage number, then the death.
+    if(ev.type==='hit' && ev.targetUid!=null){ const pi = matchState._pendingImpacts || (matchState._pendingImpacts = {});
+      let done; const pr = new Promise(res=> done = res); pr.landed = false; pi[String(ev.targetUid)] = pr;
+      setTimeout(()=>{ pr.landed = true; done(); }, impactDelay + 20); }
   }
   if(ev.type==='render'){
     animateAttacker(ev.attUid, isMine);

@@ -764,11 +764,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // four-round cycle Ebb, Flow, Ebb, High; otherwise Flow and Ebb alternate as before.
   // 2026-10-13 (10:57 list: "Tide and Ebb cycle only begins once the first Tide card is played"): the tide waits for the first
   // Tide unit to arrive (either side); the round after, it runs Flow, Ebb, Flow… (Ebb, Flow, Ebb, High tide with High tide on).
-  let tideStart = null;
+  // 2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): playing a Tide (or Swimmer) unit no longer
+  // starts the tide. Only the field and the explicit tide-bringers do: High Tide (rules.highTide, a field effect: its cycle runs
+  // from round 1, so round 2 is Ebb, 3 Flow, 4 Ebb, 5 High), Perma-tide, the Tide-spout, Moonpull and Tsunami.
+  let tideStart = rules.highTide ? 0 : null;
   // 2026-10-14 (user: "Tide effects: All swimmers and Tide units float. Remove Tide from those who are Swimmers. Swimmers = Tide"):
   // a Swimmer is a Tide unit. It gets Flow's +1 Attack and Ebb's +1 Armor, and the first one played starts the tide too.
   function isTideDef(def){ const e = def && def.effects; return !!(e && (e.tide || e.swimmer || e.supremeTide)); }
-  function noteTideCard(def){ if(tideStart === null && isTideDef(def)) tideStart = turnNo; noteZeitgeber(def); }
+  function noteTideCard(def){ noteZeitgeber(def); } // 2026-10-15: a Tide card no longer starts the tide (see tideStart above)
   // Moonpull (2026-10-14, user: "There is a creature that has a cool sounding evergreen effect - its effect brings in the Tide!"):
   // when it arrives, the Tide comes in at once: Flow this very round (High tide's cycle: its Flow step). A tide already rising
   // stays as it is; an Ebb turns to Flow. The Tide-spout field brings the tide in the same way.
@@ -838,8 +841,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Sun-shy and it is day, or it is Night-blind and it is night. A Lantern on its side lights it up in the dark and at night.
   // Darkness (D67, 2026-10-13, user: "Don't call it Night Dimness. Just Darkness - in caves and night. Absolute darkness - Miss
   // 100%. Pitchblack - Miss 50%" and "maybe 1/4 is better"): the chance a unit's swing misses because it can't see.
-  //   Darkness (night, or rules.dark 'dark'/true): 1 in 4, unless Darksight, Nocturnal, or a Lantern on its side.
-  //   Pitchblack (rules.dark 'pitch'): 1 in 2, unless Darksight or a Lantern.
+  //   Darkness (rules.dark 'dark'/true; night no longer counts, 2026-10-15): 1 in 4, unless Darksight or a Lantern on its side.
+  //   Pitch Black (rules.dark 'pitch'): 1 in 2, unless Darksight or a Lantern.
   //   Absolute darkness (rules.dark 'absolute'): every swing misses, unless Darksight (a Lantern brings it down to 1 in 2).
   //   Sun-shy by day and Night-blind at night: 1 in 2.
   function sightMiss(card, ownerId){
@@ -850,7 +853,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let miss = 0; const dk = rules.dark;
     const ph = phaseActive() ? getPhase() : null;
     if(dk && !e.darksight){ miss = dk === 'absolute' ? (lit() ? 0.5 : 1) : lit() ? 0 : dk === 'pitch' ? 0.5 : 0.25; }
-    if(ph === 'night' && !e.darksight && !e.nocturnal && !e.nocturnalHp && !e.moonborn && !lit()) miss = Math.max(miss, 0.25);
+    // 2026-10-15 (user: "Remove nightblindness causing 1/4 miss. It should only be for dark environments only. It will be an explicit
+    // field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): night alone no longer makes anyone miss. Only the
+    // field does: Darkness (rules.dark 'dark', level 1: 1 in 4), Pitch Black (rules.dark 'pitch', level 2: 1 in 2), Absolute darkness.
+    // (A Night-blind unit still misses 1 in 2 at night: that is its own trait, below.)
     if(ph === 'day' && e.sunshy) miss = Math.max(miss, 0.5);
     if(ph === 'night' && e.nightblind && !lit()) miss = Math.max(miss, 0.5);
     return miss;
