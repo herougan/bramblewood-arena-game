@@ -186,6 +186,16 @@ New calls for you:
 
 **Closed earlier:** D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.
 
+## Planned, not built yet (your 08:28 note: "Dont add now")
+
+| Idea | Notes |
+|---|---|
+| **Electricity** (new skill) | For cave and water cards. Needs its rules: e.g. a shock that chains to the next unit, or stuns. New units to carry it |
+| **Keen Sense** (new skill) | For moles: senses non-flying enemies even when blind; unaffected by Blind. A second effect still to come |
+| **Hammerhead** (new card) | A shark for the Ocean fodder |
+| **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
+| **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
+
 ## 2. Where things stand
 
 - **Balancing:** the [card list](card-list-2026-10-10.md) has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood & Village; move 3 overpowered and 18 biome cards out; add 14).

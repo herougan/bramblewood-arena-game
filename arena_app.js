@@ -28473,8 +28473,42 @@ function triggerFiredVfx(ev){
   // behind the card, under the tile.
   if(fxAtLeast('med')){ const a = document.createElement('span'); a.className = 'trigger-aura'; a.setAttribute('aria-hidden','true'); el.prepend(a); setTimeout(()=> a.remove(), 900); }
 }
+// The Effects Lab's skill effects in real fights (2026-10-14): each layers over the existing feedback (numbers, sounds, tints)
+// on Medium effects and up, at most once per unit per round for the ones that repeat, so a busy round doesn't turn to soup.
+const skillFxSeen = new Set();
+function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
+function labSkillFx(ev){
+  const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
+  const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
+  const bf = document.getElementById('battlefieldEl');
+  switch(ev.type){
+    case 'heal': if(ev.attUid != null && ev.attUid === ev.targetUid && F.regen && skillFxOnce('regen' + ev.targetUid)){ const t = el(ev.targetUid); if(t) F.regen(t); } break;
+    case 'poisonTick': if(F.poisonCloud && skillFxOnce('poison' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); } break;
+    case 'bleedTick': if(F.bleedDrip && skillFxOnce('bleed' + ev.uid)){ const t = el(ev.uid); if(t) F.bleedDrip(t); } break;
+    case 'thorns': if(F.thorns){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d && a) F.thorns(d, a); } break;
+    case 'deflect': if(F.helmetDeflect){ const t = el(ev.uid); if(t) F.helmetDeflect(t); } break;
+    case 'earthquake': if(F.earthquake && bf){ const foe = [...bf.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].filter(x=> x.querySelector('.card-tile')).slice(0, 8); if(foe.length) F.earthquake(foe, {host: bf}); } break;
+    case 'fieldTick':
+      if(ev.field === 'frozen' && F.frostChill && skillFxOnce('frost' + ev.uid)){ const t = el(ev.uid); if(t) F.frostChill(t); }
+      else if((ev.field === 'heat' || ev.field === 'immolation') && F.scorch && skillFxOnce('scorch' + ev.uid)){ const t = el(ev.uid); if(t) F.scorch(t); }
+      break;
+    case 'statusFx': if(ev.kind === 'frostbite' && F.frostChill){ const t = el(ev.targetUid || ev.uid || ev.attUid); if(t) F.frostChill(t); } break;
+    case 'play': { const fx = fxOf(ev.defId), t = el(ev.uid); if(!t) break;
+      if(fx.lantern && F.lanternGlow) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.lanternGlow(t2); }, 500);
+      else if(fx.darksight && F.darksight) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.darksight(t2); }, 500);
+      else if((fx.guardian || fx.taunt) && F.guardian) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.guardian(t2); }, 500);
+      break; }
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t) F.evasiveDodge(t); } break;
+    case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
+      if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) F.swarm(a, t);
+      else if(ev.sweep && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]);
+      else if(fx.quick && F.quickStrike && skillFxOnce('quick' + ev.attUid)) F.quickStrike(a, t);
+      break; }
+  }
+}
 function renderVfxForEvent(ev){
   try{ noteFieldEvent(ev); }catch(e){}
+  try{ labSkillFx(ev); }catch(e){}
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
