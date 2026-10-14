@@ -3257,6 +3257,54 @@
     .testkit-layout{grid-template-columns:1fr;}
     .testkit-panel{position:static; max-height:none;}
   }
+  /* ---------- 🔬 Effects library (2026-10-14, user: "an examiner's page that i can load up EACH Skill & action & trigger") ---------- */
+  #view-play.fxlib-mode{display:block;}
+  .fxl-layout{display:grid; grid-template-columns:minmax(230px,290px) minmax(0,1fr); gap:14px; align-items:start;}
+  .fxl-main{min-width:0; display:flex; flex-direction:column; gap:10px;}
+  .fxl-stage{min-width:0; display:flex; flex-direction:column; gap:8px;}
+  #view-play.fxlib-mode #deckWidgetTop, #view-play.fxlib-mode #deckWidgetBottom, #view-play.fxlib-mode #leaderWidgetWrap,
+  #view-play.fxlib-mode > .hud, #view-play.fxlib-mode .hud-opponent-tag, #view-play.fxlib-mode #ffBtn, #view-play.fxlib-mode .battle-log-panel{display:none !important;}
+  #view-play.fxlib-mode .battlefield{min-height:0;}
+  #view-play.fxlib-mode .board-row{min-height:150px;}
+  .fxl-list, .fxl-info, .fxl-log{background:var(--panel, #1f2a1e); color:var(--page-ink, #f4ecd8); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 14px; font-size:13.5px; box-sizing:border-box;}
+  .fxl-list{position:sticky; top:8px; max-height:calc(100vh - 16px); display:flex; flex-direction:column; gap:8px;}
+  .fxl-list-head{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .fxl-list-head h2{margin:0; font-size:17px;}
+  .fxl-list input[type=search]{width:100%; background:rgba(0,0,0,.3); color:inherit; border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 8px; font:inherit; min-height:34px; box-sizing:border-box;}
+  .fxl-items{overflow:auto; min-height:0; flex:1; display:flex; flex-direction:column; gap:8px;}
+  .fxl-group-h{position:sticky; top:0; z-index:1; background:#26331f; font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:5px 6px; border-radius:6px; opacity:.95;}
+  .fxl-group-h small{opacity:.6; font-weight:700;}
+  .fxl-item{display:flex; gap:8px; align-items:center; width:100%; text-align:left; background:transparent; color:inherit; border:0; border-radius:8px; padding:5px 8px; min-height:32px; font:inherit; cursor:pointer;}
+  .fxl-item:hover{background:rgba(255,255,255,.07);}
+  .fxl-item.is-on{background:rgba(213,139,58,.32); box-shadow:inset 3px 0 0 var(--accent, #d58b3a); font-weight:700;}
+  .fxl-item:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
+  .fxl-ico{width:26px; text-align:center; flex:none;}
+  .fxl-title{display:flex; gap:12px; align-items:center;}
+  .fxl-title h2{margin:0 0 2px; font-size:20px;}
+  .fxl-big-ico{font-size:34px; line-height:1;}
+  .fxl-chip{display:inline-block; font-size:11.5px; font-weight:700; background:rgba(255,255,255,.1); border-radius:999px; padding:2px 8px;}
+  .fxl-key{font-size:11px; opacity:.6;}
+  .fxl-desc{margin:8px 0 6px; line-height:1.45;}
+  .fxl-cardtext{font-size:12.5px; line-height:1.45; background:rgba(0,0,0,.2); border-radius:8px; padding:6px 9px; margin-bottom:6px;}
+  .fxl-setup{font-size:12.5px; line-height:1.45; opacity:.9;}
+  .fxl-hand{display:inline-block; font-size:11px; font-weight:700; color:#ffd27a;}
+  .fxl-warn{margin-top:6px; font-size:13px; line-height:1.4; background:rgba(192,57,43,.25); border:1px solid rgba(255,140,120,.4); border-radius:8px; padding:7px 10px;}
+  .fxl-warn.is-soft{background:rgba(255,210,122,.12); border-color:rgba(255,210,122,.35);}
+  .fxl-controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .fxl-controls .tk-speed{margin-left:0;}
+  .fxl-log h3{margin:0 0 6px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; opacity:.8;}
+  .fxl-log h3 small{text-transform:none; letter-spacing:0; opacity:.7;}
+  .fxl-hurt{font-size:13px; margin-bottom:6px;}
+  .fxl-events{margin:0; padding-left:22px; max-height:260px; overflow:auto; font-size:12.5px; line-height:1.4;}
+  .fxl-events li{padding:2px 0; border-bottom:1px solid rgba(255,255,255,.06);}
+  .fxl-events li.is-hurt > b{color:#ff9a8a;}
+  .fxl-events li.is-err{color:#ff9a8a;}
+  .fxl-kv{opacity:.65; font-family:ui-monospace, monospace; font-size:11.5px;}
+  .fxl-said{opacity:.8; font-size:12px;}
+  @media (max-width: 900px){
+    .fxl-layout{grid-template-columns:1fr;}
+    .fxl-list{position:static; max-height:300px;}
+  }
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 248px; padding-bottom:16px;} /* 2026-10-13: room for the skill badges that hang below the card (they were clipped) */
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */

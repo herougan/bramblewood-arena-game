@@ -3257,6 +3257,54 @@
     .testkit-layout{grid-template-columns:1fr;}
     .testkit-panel{position:static; max-height:none;}
   }
+  /* ---------- 🔬 Effects library (2026-10-14, user: "an examiner's page that i can load up EACH Skill & action & trigger") ---------- */
+  #view-play.fxlib-mode{display:block;}
+  .fxl-layout{display:grid; grid-template-columns:minmax(230px,290px) minmax(0,1fr); gap:14px; align-items:start;}
+  .fxl-main{min-width:0; display:flex; flex-direction:column; gap:10px;}
+  .fxl-stage{min-width:0; display:flex; flex-direction:column; gap:8px;}
+  #view-play.fxlib-mode #deckWidgetTop, #view-play.fxlib-mode #deckWidgetBottom, #view-play.fxlib-mode #leaderWidgetWrap,
+  #view-play.fxlib-mode > .hud, #view-play.fxlib-mode .hud-opponent-tag, #view-play.fxlib-mode #ffBtn, #view-play.fxlib-mode .battle-log-panel{display:none !important;}
+  #view-play.fxlib-mode .battlefield{min-height:0;}
+  #view-play.fxlib-mode .board-row{min-height:150px;}
+  .fxl-list, .fxl-info, .fxl-log{background:var(--panel, #1f2a1e); color:var(--page-ink, #f4ecd8); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 14px; font-size:13.5px; box-sizing:border-box;}
+  .fxl-list{position:sticky; top:8px; max-height:calc(100vh - 16px); display:flex; flex-direction:column; gap:8px;}
+  .fxl-list-head{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .fxl-list-head h2{margin:0; font-size:17px;}
+  .fxl-list input[type=search]{width:100%; background:rgba(0,0,0,.3); color:inherit; border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 8px; font:inherit; min-height:34px; box-sizing:border-box;}
+  .fxl-items{overflow:auto; min-height:0; flex:1; display:flex; flex-direction:column; gap:8px;}
+  .fxl-group-h{position:sticky; top:0; z-index:1; background:#26331f; font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:5px 6px; border-radius:6px; opacity:.95;}
+  .fxl-group-h small{opacity:.6; font-weight:700;}
+  .fxl-item{display:flex; gap:8px; align-items:center; width:100%; text-align:left; background:transparent; color:inherit; border:0; border-radius:8px; padding:5px 8px; min-height:32px; font:inherit; cursor:pointer;}
+  .fxl-item:hover{background:rgba(255,255,255,.07);}
+  .fxl-item.is-on{background:rgba(213,139,58,.32); box-shadow:inset 3px 0 0 var(--accent, #d58b3a); font-weight:700;}
+  .fxl-item:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
+  .fxl-ico{width:26px; text-align:center; flex:none;}
+  .fxl-title{display:flex; gap:12px; align-items:center;}
+  .fxl-title h2{margin:0 0 2px; font-size:20px;}
+  .fxl-big-ico{font-size:34px; line-height:1;}
+  .fxl-chip{display:inline-block; font-size:11.5px; font-weight:700; background:rgba(255,255,255,.1); border-radius:999px; padding:2px 8px;}
+  .fxl-key{font-size:11px; opacity:.6;}
+  .fxl-desc{margin:8px 0 6px; line-height:1.45;}
+  .fxl-cardtext{font-size:12.5px; line-height:1.45; background:rgba(0,0,0,.2); border-radius:8px; padding:6px 9px; margin-bottom:6px;}
+  .fxl-setup{font-size:12.5px; line-height:1.45; opacity:.9;}
+  .fxl-hand{display:inline-block; font-size:11px; font-weight:700; color:#ffd27a;}
+  .fxl-warn{margin-top:6px; font-size:13px; line-height:1.4; background:rgba(192,57,43,.25); border:1px solid rgba(255,140,120,.4); border-radius:8px; padding:7px 10px;}
+  .fxl-warn.is-soft{background:rgba(255,210,122,.12); border-color:rgba(255,210,122,.35);}
+  .fxl-controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .fxl-controls .tk-speed{margin-left:0;}
+  .fxl-log h3{margin:0 0 6px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; opacity:.8;}
+  .fxl-log h3 small{text-transform:none; letter-spacing:0; opacity:.7;}
+  .fxl-hurt{font-size:13px; margin-bottom:6px;}
+  .fxl-events{margin:0; padding-left:22px; max-height:260px; overflow:auto; font-size:12.5px; line-height:1.4;}
+  .fxl-events li{padding:2px 0; border-bottom:1px solid rgba(255,255,255,.06);}
+  .fxl-events li.is-hurt > b{color:#ff9a8a;}
+  .fxl-events li.is-err{color:#ff9a8a;}
+  .fxl-kv{opacity:.65; font-family:ui-monospace, monospace; font-size:11.5px;}
+  .fxl-said{opacity:.8; font-size:12px;}
+  @media (max-width: 900px){
+    .fxl-layout{grid-template-columns:1fr;}
+    .fxl-list{position:static; max-height:300px;}
+  }
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 248px; padding-bottom:16px;} /* 2026-10-13: room for the skill badges that hang below the card (they were clipped) */
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */
@@ -20198,7 +20246,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '3dedb37bb3ae', BUILD_CARD_HASH = 'f846dee886e0e3e0bd9656c80ab272cea390694bbb5b18ae53c5a9ddf8885631';
+const BUILD_ID = '1a70ac7963a4', BUILD_CARD_HASH = 'f846dee886e0e3e0bd9656c80ab272cea390694bbb5b18ae53c5a9ddf8885631';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -20476,7 +20524,7 @@ function seenCardIds(){
   return mySeenCardIds;
 }
 function noteSighted(defIds){
-  if(!defIds) return;
+  if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
   defIds = defIds.map(id=> (defs[id] && defs[id].derivedFrom) || id); // a tutorial/levelled copy counts as its card
   let changed = false;
@@ -31097,7 +31145,7 @@ const FIELD_ROWS_KEY = 'bramblewood_field_rows_v1', FIGHT_SERIAL_KEY = 'bramblew
 function fightSerial(){ try{ return Number(localStorage.getItem(FIGHT_SERIAL_KEY)) || 0; }catch(e){ return 0; } }
 function bumpFightSerial(){ try{ localStorage.setItem(FIGHT_SERIAL_KEY, String(fightSerial() + 1)); }catch(e){} }
 function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS_KEY) || '{}') || {}; }catch(e){ return {}; } }
-function markFieldRow(key){ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
+function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 🔬 the Effects library never marks a field row seen (2026-10-14) */ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
 const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty']);
@@ -38205,6 +38253,537 @@ document.addEventListener('keydown', e=>{
   else if(e.key==='ArrowRight' && !testKit.running){ e.preventDefault(); testKitPlayRound(testKit.token); }
   else if(e.key==='r' || e.key==='R'){ testKitRequestReset('Manual reset'); }
 });
+/* ============================================================
+   🔬 Effects library (2026-10-14, user: "Effects library - an examiner's page that i can load up EACH Skill & action &
+   trigger and see how its applied, how it looks, how it hurts - basically all vfx and sfx related to that effect. Useful
+   since now we have so much. Also effects such as field effects - the tide coming in making all the tide and swimmer cards
+   float."). Admin → 🔬 Effects library.
+
+   Left: every skill (SKILL_DEFS via Registry.skills()), every trigger event (TRIGGER_DEFS, the "On …" of a custom trigger),
+   every trigger action (ACTION_DEFS, the "Do …") and the field and fight conditions (FXL_FIELDS below). Right: the entry's
+   text and a small live stage that runs on Sandbox's own machinery (mode 'sandbox' + m.fxLib), so ▶ Play goes through the
+   real resolveRound / renderVfxForEvent / SoundKit pipeline at normal speed.
+
+   Scenarios are built from data (fxlScenario): a Specimen carrying the entry (3/20, its value taken from a real card that has
+   it, else a default) with a Sparring Partner beside it, facing a 5/20 Training Dummy with a second one beside. Two silent
+   probes decide how to show a skill: if the Specimen's arrival does something it's spawned on ▶ Play, if its death does, it's
+   killed on ▶ Play, otherwise one round is fought. FXL_SKILL_SETUPS / the trigger and action tables are the hand-made
+   setups. A third probe runs the scenario with and without the entry; when the engine reports no difference, the page says
+   so instead of pretending.
+
+   Nothing here touches saved progress: the synthetic cards live in matchDefsOverlay only while the page is open, castles
+   are Practice Walls refilled after every step, the match never ends, and noteSighted / markFieldRow / the coach skip
+   while m.fxLib is set.
+   ============================================================ */
+const FXL_IDS = {subject:'__fxl_subject__', ally:'__fxl_ally__', ally2:'__fxl_ally2__', foe:'__fxl_foe__', foe2:'__fxl_foe2__', foe3:'__fxl_foe3__'};
+const FXL_MY_TYPE = 'Forest', FXL_FOE_TYPE = 'Ocean';
+const FXL_PREFS_KEY = 'bramblewood_fxlib_prefs_v1';
+const FXL_GROUPS = [
+  {key:'passive', icon:'⚔️', label:'Skills'},
+  {key:'evergreen', icon:'🌿', label:'Evergreen skills'},
+  {key:'on', icon:'🎬', label:'Trigger events (On …)'},
+  {key:'do', icon:'⚙️', label:'Trigger actions (Do …)'},
+  {key:'field', icon:'🌦️', label:'Field & fight conditions'},
+];
+let fxLib = null;
+// Base looks of each stage role; a scenario adds to them.
+function fxlBaseDef(role){
+  const mine = role === 'subject' || role === 'ally' || role === 'ally2';
+  const base = {subject:{name:'Specimen', icon:'🔬', attack:3, health:20}, ally:{name:'Sparring Partner', icon:'🪵', attack:2, health:20}, ally2:{name:'Second Partner', icon:'🪵', attack:2, health:20},
+    foe:{name:'Training Dummy', icon:'🎯', attack:5, health:20}, foe2:{name:'Training Dummy', icon:'🎯', attack:5, health:20}, foe3:{name:'Training Dummy', icon:'🎯', attack:5, health:20}}[role];
+  return Object.assign({id:FXL_IDS[role], cost:0, wait:0, rarity:'common', dmgType:'physical', effects:{}, archetypes:[mine ? FXL_MY_TYPE : FXL_FOE_TYPE], token:true, test:true, flavor:'A stand-in from the Effects library.'}, base);
+}
+// Field and fight conditions. rules go to the engine as an Arena ruleset would; units/steps/pre as in fxlScenario.
+const FXL_TIDE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}, {role:'ally', slot:-1, def:{name:'Tide Runner', icon:'🌊', effects:{tide:true}}}, {role:'ally2', slot:1, def:{name:'Landlubber', icon:'🪨'}}],
+  foes:[{role:'foe', slot:0, def:{name:'Wave Washer', icon:'💦', effects:{tide:true, wash:true}}}, {role:'foe2', slot:1}]};
+const FXL_PHASE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2, nocturnalHp:2}}}, {role:'ally', slot:-1, def:{name:'Sun Lark', icon:'🐦', effects:{diurnal:2, diurnalHp:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
+const FXL_FLYER_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}]};
+const FXL_DARK_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}, {role:'ally', slot:-1, def:{name:'Lantern Bearer', icon:'🏮', effects:{lantern:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
+const FXL_FIELDS = [
+  {key:'frozen', icon:'❄️', name:'Frigid (frost)', text:()=> FIELD_TEXT.frozen.text, rules:{field:'frozen', frostCount:2}, note:'One round, then the frost chills at the next round\'s start.'},
+  {key:'frostbite', icon:'🥶', name:'Frost + Frostbite', text:()=> 'Frigid ground where an enemy unit the frost chills gains +2/+2.', rules:{field:'frozen', frostCount:2, frostbite:2}},
+  {key:'heatwave', icon:'🔥', name:'Scorching', text:()=> FIELD_TEXT.heatwave.text, rules:{field:'heatwave'}},
+  {key:'rain', icon:'🌧️', name:'Spring Rain', text:()=> FIELD_TEXT.rain.text, rules:{field:'rain'}, rainy:true, note:'One round of blows first, so the rain has wounds to heal.'},
+  {key:'fog', icon:'🌫️', name:'Thick Fog', text:()=> FIELD_TEXT.fog.text, rules:{field:'fog'}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}},
+  {key:'moon', icon:'🌕', name:'Full Moon', text:()=> FIELD_TEXT.moon.text, rules:{field:'moon', phase:'night'}, units:{mine:[{role:'subject', slot:0, def:{name:'Moon Hare', icon:'🐇', effects:{moonborn:2}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}},
+  {key:'night', icon:'🌙', name:'Night all fight', text:()=> 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.', rules:{phase:'night'}, units:FXL_PHASE_UNITS},
+  {key:'dayToNight', icon:'🌗', name:'Day → Night', text:()=> 'Day and night alternate. Nocturnal units gain their bonus at night, Diurnal units by day.', rules:{phase:'cycle', phaseLen:1}, units:FXL_PHASE_UNITS, note:'The phase length is set to 1 round so night falls at once.'},
+  {key:'nightToDay', icon:'🌅', name:'Night → Dawn', text:()=> 'At dawn (the first round of a new day) both sides draw a card.', rules:{phase:'nightFirst', phaseLen:1}, units:FXL_PHASE_UNITS, decks:true},
+  {key:'twilight', icon:'🌆', name:'Twilight', text:()=> 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', rules:{phase:'cycle', phaseLen:1, twilight:true}, pre:3, units:{mine:[{role:'subject', slot:0, def:{name:'Dusk Moth', icon:'🦋', effects:{crepuscular:2, crepuscularHp:2}}}, {role:'ally', slot:-1, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
+  {key:'misty', icon:'🌫️', name:'Misty', text:()=> 'No day or night; the mist shifts from orange to blue and back.', rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
+  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once a Tide unit (Swimmers count) is in play the water flows and ebbs every round. On Flow, Tide units get +1 Attack and Wash units push the card facing them back 1 Wait.', rules:{}, units:FXL_TIDE_UNITS},
+  {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, units:FXL_TIDE_UNITS, pre:1, note:'The Flow passes silently first, so this round brings the Ebb.'},
+  {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
+  {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
+  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are washed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
+  {key:'windy', icon:'🌬️', name:'Windy', text:()=> 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds: the wind rises at the start of round 2.'},
+  {key:'gale', icon:'🌪️', name:'Gale', text:()=> 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, so you see a round fought in the wind.'},
+  {key:'dark', icon:'🌘', name:'Darkness', text:()=> 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.', rules:{dark:'dark'}, units:FXL_DARK_UNITS},
+  {key:'pitch', icon:'🌑', name:'Pitchblack', text:()=> 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.', rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
+  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
+  {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
+  {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
+  {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
+  {key:'eruption', icon:'🌋', name:'Eruptions (fixed)', text:()=> 'From round 2, one random unit on each side takes 3 fire damage every upkeep. Units that resist fire are spared.', rules:{eruption:3}},
+  ...Object.keys(TERRAIN_BIOMES).filter(k=> k !== 'ash').map(k=>{ const b = TERRAIN_BIOMES[k];
+    return {key:'terrain-' + k, icon:b.icon, name:`Terrain: ${b.name} II`, text:()=> terrainSummary(terrainObj(k, 2), {}), rules:{terrain: terrainObj(k, 2)}, myTypes:[b.types[0]], note:`Your side is ${b.types[0]} here (home ground); the enemy is not.`}; }),
+  {key:'bossSurge', icon:'💢', name:'Boss surge', text:()=> "Their boss surges when it's cast.", unsupported:'It needs a real boss fight (a boss card cast by the enemy) and can\'t be staged with stand-ins.'},
+  {key:'enemyOre', icon:'⛏️', name:'Deep mines', text:()=> 'Their side digs the Stone and Metal it needs.', unsupported:'It only changes the enemy\'s resources, so there is nothing to see on the field.'},
+];
+// Hand-made skill setups (merged over the default scenario). steps: see fxlRunStep.
+const FXL_FOES3 = [{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}];
+const FXL_SKILL_SETUPS = {
+  fork: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so both prongs land.'},
+  sweep: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so the cleave lands.'},
+  swarm: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}, {role:'ally2', slot:1}], note:'Two allies of the same type stand with it.'},
+  pack: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{pack:2}}}, {role:'ally2', slot:1, def:{effects:{pack:2}}}], note:'Two Pack allies of the same type side by side.'},
+  packLeader: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-2, def:{effects:{pack:2}}}, {role:'ally2', slot:2, def:{effects:{pack:2}}}], note:'Two Pack allies of its type, standing apart.'},
+  hiveMind: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{swarm:true}}}], steps:[{kill:'subject'}], note:'A Swarm ally beside it; the Specimen is killed.'},
+  reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
+  boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
+  keenEye: {foes:[{role:'foe', slot:0, def:{name:'Mimic', icon:'🎭', effects:{changeling:true}}}, {role:'foe2', slot:1}], note:'It faces a Changeling.'},
+  nocturnal: {rules:{phase:'night'}, note:'Fought at night.'}, nightblind: {rules:{phase:'night'}, note:'Fought at night.'},
+  moonborn: {rules:{phase:'night', field:'moon'}, note:'Fought at night under a Full Moon.'},
+  crepuscular: {rules:{phase:'cycle', phaseLen:1}, pre:3, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
+  darksight: {rules:{dark:'pitch'}, note:'Fought in Pitchblack.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitchblack.'},
+  frostbite: {rules:{field:'frozen', frostCount:3}, note:'Fought on Frigid ground.'},
+  restless: {foes:[{role:'foe', slot:2}, {role:'foe2', slot:3}], note:'No enemy in front of it, so it walks toward one.'},
+  converge: {foes:[{role:'foe', slot:-2}, {role:'foe2', slot:2}], note:'The enemy row has gaps to close.'},
+  guardian: {foes:[{role:'foe', slot:-1}, {role:'foe2', slot:1}], note:'The enemies stand in front of its allies.'},
+  shieldCall: {foes:[{role:'foe', slot:-1}, {role:'foe2', slot:0}], note:'An enemy faces its ally.'},
+  healing: {steps:['round', 'round'], note:'Two rounds, so there are wounds to mend.'},
+  rage: {status:{subject:{hp:8}}, note:'The Specimen starts below half Health.'},
+  siege: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands in front of it, so it hits the castle.'},
+  pierce: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'}, perforate: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'}, puncture: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'},
+  momentum: {foeDef:{health:3, name:'Frail Dummy'}, steps:['round', 'round'], note:'The dummy in front has 3 Health, so it lands a killing blow.'},
+  midas: {foeDef:{health:3, name:'Frail Dummy'}, note:'The dummy in front has 3 Health, so it lands a killing blow.'},
+  overwhelm: {foeDef:{health:2, name:'Frail Dummy'}, note:'The dummy in front has 2 Health, so the rest of the blow carries on.'},
+  berserk: {steps:[{kill:'ally'}, 'round'], note:'The Sparring Partner is killed first.'},
+  retribution: {steps:[{kill:'ally'}], note:'The Sparring Partner is killed.'},
+  frenzy: {status:{subject:{poison:2}}, note:'The Specimen starts Poisoned.'}, fester: {status:{subject:{poison:3}}, note:'The Specimen starts Poisoned.'},
+  helmet: {foeFx:{arrow:2}, note:'The dummies shoot arrows.'},
+  wash: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], note:'A Swimmer ally starts the tide.'},
+  swipe: {foeLumber:3, note:'The enemy has 3 Lumber to lose.'},
+  bloomWhen: {rules:{phase:'night'}, mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], steps:['round', 'round'], note:'At night, with a Swimmer ally to bring the Tide in.'},
+  swimmerGrant: {helperFx:{swimmer:true}, steps:['round', 'round'], note:'The Specimen is a Swimmer, so the Tide comes in with it.'},
+  charge: {steps:['round', 'round'], note:'Two rounds, so the clock runs down.'},
+  shade: {rules:{phase:'night'}, note:'Fought at night.'}, shadow: {rules:{phase:'night'}, note:'Fought at night.'},
+  rainrunner: {rules:{field:'rain'}, rainy:true, note:'Fought in the rain.'},
+  dry: {rules:{field:'heatwave'}, note:'Fought on a Scorching day.'},
+  timber: {res:{lumber:3}, note:'You hold 3 Lumber.'}, rockSolid: {res:{stone:2}, note:'You hold 2 Stone.'}, ironWill: {res:{metal:1}, note:'You hold 1 Metal.'},
+  worship: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Acolyte', icon:'🙏', effects:{prayer:3}}}], note:'An ally with Prayer 3 stands beside it.'},
+  snipe: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands opposite it.'},
+  backstab: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'The nearest enemy is not the one in front.'},
+  bloom: {steps:[{dmg:'ally', n:6}, 'round', 'round'], note:'The Sparring Partner is wounded first.'},
+  festering: {status:{foe:{poison:3}}, steps:['round', 'round'], note:'The dummy in front starts Poisoned.'},
+  rupture: {status:{subject:{bleed:3}}, note:'The Specimen starts Bleeding.'},
+  kingSlayer: {foeDef:{archetypes:['King'], name:'Dummy King', icon:'👑'}, note:'The dummy in front is a King.'},
+  shieldCall: {foeFx:{arrow:2}, note:'The dummies shoot arrows at your units.'},
+};
+// Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
+const FXL_TRIGGER_SETUPS = {
+  onSpawn: {withhold:'subject'},
+  onReady: {wait:{subject:1}, note:'The Specimen starts on Wait 1.'},
+  onDeath: {steps:[{kill:'subject'}]},
+  onAttacked: {steps:[{attack:'foe'}], note:'The dummy in front swings at it once.'},
+  onAttack: {steps:[{attack:'subject'}]},
+  onKill: {steps:[{attack:'subject'}], foeDef:{health:3, name:'Frail Dummy'}, note:'The dummy in front has 3 Health.'},
+  onRoundStart: {}, perTurn: {},
+  onExile: {fire:true, why:'It happens when the card goes to the Removal Zone, which a test stage can\'t do on its own.'},
+  onAllySpawn: {fire:true, why:'It needs another ability to spawn an ally.'},
+  onEnemySpawn: {fire:true, why:'It needs another ability to spawn an enemy.'},
+  onColumnSpawn: {fire:true, why:'It needs another ability to spawn into its column.'},
+  onAllyPlayed: {withhold:'ally'},
+  onEnemyPlayed: {withhold:'foe2'},
+  onAllyReady: {wait:{ally:1}, note:'The Sparring Partner starts on Wait 1.'},
+  onEnemyReady: {wait:{foe:1}, note:'The dummy in front starts on Wait 1.'},
+  onMove: {subjectFx:{restless:true}, foes:[{role:'foe', slot:2}, {role:'foe2', slot:3}], note:'The Specimen is Restless with no enemy in front, so it moves at the next round\'s start.'},
+  onAllyDie: {steps:[{kill:'ally'}]},
+  onHeal: {subjectFx:{regen:2}, steps:[{dmg:'subject', n:6}, 'round'], note:'The Specimen has Regen 2 and is wounded first.'},
+  onHealed: {steps:[{dmg:'subject', n:6}, {heal:'subject', n:3}]},
+  onAllyHealed: {steps:[{dmg:'ally', n:6}, {heal:'ally', n:3}]},
+  onDiscard: {fire:true, why:'It happens from the hand, when the card is pitched.'},
+  onSacrifice: {fire:true, why:'It needs a Sacrifice, Devour or Offering.'},
+};
+// Trigger actions: On Spawn, Do <action>, unless said otherwise.
+const FXL_ACTION_SETUPS = {
+  damage: {t:{amount:3, dmgType:'physical', who:'enemy', sub:'adjacent'}},
+  gain: {t:{resource:'lumber', amount:2}, note:'Watch the Lumber pill; nothing on the field changes.'},
+  refine: {on:'perTurn', t:{amount:2}, lumber:2, steps:['round'], note:'On Turn Start, with 2 Lumber to refine.'},
+  drawCard: {t:{count:2}, decks:true, note:'Its owner draws into the hand below the field.'},
+  exileGrave: {t:{count:1}, steps:[{kill:'ally'}, {spawn:'subject'}], note:'The Sparring Partner dies first, so the graveyard has a card.'},
+  spawnCard: {t:{defId:FXL_IDS.ally2, count:2}},
+  buff: {t:{who:'ally', sub:'adjacent', amount:2, amount2:2}},
+  debuff: {t:{who:'enemy', sub:'adjacent', amount:2, amount2:2}},
+  poison: {t:{amount:3, who:'enemy', sub:'adjacent'}}, bleed: {t:{amount:3, who:'enemy', sub:'adjacent'}}, expose: {t:{amount:3, who:'enemy', sub:'adjacent'}},
+  stun: {t:{who:'enemy', sub:'adjacent'}},
+  reduceWaitOfSpawned: {on:'onAllyPlayed', t:{amount:2}, withhold:'ally', wait:{ally:3}, note:'On Ally Played; the Sparring Partner arrives on Wait 3.'},
+  missile: {t:{amount:3}},
+  exile: {t:{who:'enemy', sub:'adjacent'}},
+  swapPositions: {t:{}},
+  heal: {t:{who:'ally', sub:'adjacent', amount:4}, steps:[{dmg:'ally', n:8}, {spawn:'subject'}], note:'The Sparring Partner is wounded first.'},
+  mindControl: {t:{sub:'adjacent'}},
+  stunPlayer: {t:{count:1}, note:'The enemy player skips a turn: it shows in the log only.'},
+  cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
+  addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
+};
+const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger']);
+function fxlEntries(){
+  if(fxLib && fxLib.entries) return fxLib.entries;
+  const out = [];
+  Registry.skills().forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', name: sd.label || sd.key, key: sd.key, sd}));
+  TRIGGER_DEFS.forEach(t=> out.push({id:'on:' + t.key, group:'on', icon:'🎬', name:t.label, key:t.key, desc:t.desc}));
+  ACTION_DEFS.forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
+  FXL_FIELDS.forEach(f=> out.push({id:'field:' + f.key, group:'field', icon:f.icon, name:f.name, key:f.key, field:f}));
+  if(fxLib) fxLib.entries = out;
+  return out;
+}
+// The value a real card gives this skill (the commonest one), with the effect keys it writes; else null.
+function fxlRealSkillValue(sd){
+  const defs = getCardDefs(), seen = {};
+  const probe = {}; try{ sd.apply(probe, sd.kind === 'boolean' ? true : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'types' ? ['X'] : 2, 2); }catch(e){}
+  const keys = [...new Set([sd.key, ...Object.keys(probe), sd.numberKey].filter(Boolean))];
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || !d.effects || String(id).startsWith('__')) return; let v; try{ v = sd.get(d.effects); }catch(e){} if(v === undefined || v === false || v === 0) return;
+    const raw = {}; keys.forEach(k=>{ if(d.effects[k] !== undefined) raw[k] = d.effects[k]; }); const sig = JSON.stringify(raw); seen[sig] = seen[sig] || {raw, n:0, from:d.name}; seen[sig].n++; });
+  const best = Object.values(seen).sort((a, b)=> b.n - a.n)[0];
+  return best ? {raw: JSON.parse(JSON.stringify(best.raw)), from: best.from} : null;
+}
+function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
+function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
+function fxlSkillEffects(sd){
+  const e = {}; let from = null;
+  const real = fxlRealSkillValue(sd);
+  const chance = (()=>{ try{ return /%/.test(String(sd.desc(50, 1, {}))); }catch(_){ return false; } })();
+  if(FXL_CHANCE_TWO.has(sd.key)) sd.apply(e, [100, 2]);
+  else if(sd.key === 'explode') sd.apply(e, [1, 5]);
+  else if(real){ Object.assign(e, fxlRetype(real.raw, sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE)); from = real.from; if(chance && sd.kind === 'number') e[sd.key] = 100; }
+  else {
+    const opts = (()=>{ try{ const o = typeof sd.selectOptions === 'function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }catch(_){ return []; } })();
+    const v = sd.kind === 'boolean' ? true : sd.kind === 'number' ? (chance ? 100 : 3) : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'select' ? ((opts[0] && opts[0].value) || true)
+      : sd.kind === 'selectNumber' ? [(opts[0] && opts[0].value) || 'damage', 3] : sd.kind === 'text' ? (()=>{ const pd = PASSIVE_DEFS.find(p=> p.key === sd.key); return pd && pd.placeholder ? String(pd.placeholder).split('·')[0].trim() : undefined; })() : sd.kind === 'types' ? [sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE] : sd.kind === 'cardCount' ? {defId: FXL_IDS.ally2, count: 1} : undefined;
+    if(v === undefined) return {e, from, unsupported:`No card uses it yet and its value (${sd.kind}) can't be guessed.`};
+    try{ sd.apply(e, v, 2); }catch(err){ return {e, from, unsupported:'Its value could not be applied.'}; }
+  }
+  if(!Object.keys(e).length) return {e, from, unsupported:'It writes nothing onto a card.'};
+  return {e, from};
+}
+// One scenario: {units:{mine, foes}, defs:{role: def}, rules, pre, steps, withhold, wait, status, lumber, decks, note, unsupported}
+function fxlScenario(entry){
+  const sc = {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], defOver:{}, rules:null, pre:0, steps:null, withhold:null, wait:{}, status:{}, notes:[], subjectFx:{}};
+  const setRoleDef = (role, over)=>{ sc.defOver[role] = Object.assign({}, sc.defOver[role] || {}, over, {effects: Object.assign({}, (sc.defOver[role]||{}).effects || {}, (over && over.effects) || {})}); };
+  const useUnits = u=>{ if(!u) return; ['mine', 'foes'].forEach(side=>{ if(u[side]){ sc[side] = u[side].map(x=> ({role:x.role, slot:x.slot})); u[side].forEach(x=>{ if(x.def) setRoleDef(x.role, x.def); }); } }); };
+  if(entry.sd){
+    const sk = fxlSkillEffects(entry.sd); if(sk.unsupported){ sc.unsupported = sk.unsupported; return sc; }
+    sc.subjectFx = sk.e; if(sk.from) sc.notes.push(`Its value is taken from ${sk.from}.`);
+    const hm = FXL_SKILL_SETUPS[entry.key];
+    if(hm){ sc.hand = true; if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.note) sc.notes.push(hm.note); }
+    if(!sc.steps){ const how = fxlProbeTiming(sc); sc.steps = how.steps; if(how.note) sc.notes.push(how.note); }
+  } else if(entry.group === 'on'){
+    const hm = FXL_TRIGGER_SETUPS[entry.key] || {}; sc.hand = true;
+    sc.triggers = [{on: entry.key, do:'damage', amount:3, dmgType:'physical', who:'enemy', sub:'random'}];
+    sc.notes.push('The Specimen carries "' + entry.name + ': deal 3 damage to a random enemy".');
+    if(hm.subjectFx) Object.assign(sc.subjectFx, hm.subjectFx);
+    if(hm.foes) useUnits({foes:hm.foes});
+    if(hm.foeDef) setRoleDef('foe', hm.foeDef);
+    if(hm.withhold){ sc.withhold = hm.withhold; sc.steps = [{spawn: hm.withhold}]; }
+    if(hm.wait) sc.wait = Object.assign({}, hm.wait);
+    if(hm.steps) sc.steps = hm.steps.slice();
+    if(hm.fire){ sc.steps = [{fire: entry.key}]; sc.notes.push('Fired by hand: ' + hm.why); }
+    if(!sc.steps) sc.steps = ['round'];
+    if(hm.note) sc.notes.push(hm.note);
+  } else if(entry.group === 'do'){
+    const hm = FXL_ACTION_SETUPS[entry.key] || {t:{}}; sc.hand = true;
+    sc.triggers = [Object.assign({on: hm.on || 'onSpawn', do: entry.key}, hm.t || {})];
+    if(hm.withhold || !hm.on){ sc.withhold = hm.withhold || 'subject'; }
+    sc.steps = hm.steps ? hm.steps.slice() : [{spawn: sc.withhold}];
+    if(hm.wait) sc.wait = Object.assign({}, hm.wait);
+    if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status));
+    if(hm.lumber) sc.lumber = hm.lumber; if(hm.decks) sc.decks = true;
+    sc.notes.push(`The Specimen carries "${(TRIGGER_DEFS.find(t=> t.key === (hm.on || 'onSpawn'))||{}).label || hm.on}: ${entry.name}".`);
+    if(hm.note) sc.notes.push(hm.note);
+  } else if(entry.field){
+    const f = entry.field; sc.hand = true;
+    if(f.unsupported){ sc.unsupported = f.unsupported; return sc; }
+    sc.rules = JSON.parse(JSON.stringify(f.rules || {}));
+    useUnits(f.units); if(f.pre) sc.pre = f.pre; sc.steps = (f.steps || ['round']).slice(); sc.rainy = !!f.rainy; if(f.decks) sc.decks = true;
+    if(f.myTypes){ ['subject', 'ally', 'ally2'].forEach(r=> setRoleDef(r, {archetypes: f.myTypes.slice()})); }
+    if(f.note) sc.notes.push(f.note);
+  }
+  return sc;
+}
+// The stand-in cards for a scenario (with or without the entry under test).
+function fxlDefs(sc, bare){
+  const out = {};
+  Object.keys(FXL_IDS).forEach(role=>{ const d = fxlBaseDef(role), o = sc.defOver[role] || {};
+    Object.assign(d, o, {effects: Object.assign({}, d.effects, o.effects || {}), id: FXL_IDS[role]});
+    if(role === 'subject' && !bare){ Object.assign(d.effects, sc.subjectFx || {}); if(sc.triggers) d.effects.triggers = JSON.parse(JSON.stringify(sc.triggers)); }
+    if(role === 'subject' && bare && sc.subjectFx && sc.triggers) Object.assign(d.effects, sc.subjectFx);
+    if(role === 'subject' && sc.helperFx) Object.assign(d.effects, sc.helperFx); // a helper skill the entry needs, kept in the bare run too // trigger setups keep their helpers (Regen, Restless) in the bare run
+    out[FXL_IDS[role]] = d; });
+  return out;
+}
+// Puts a stand-in on an exact column, even one not beside the others (a gap), the way a board with gaps looks after deaths.
+function fxlPlace(E, P, so, pid, role, slot, stats, events){
+  const pl = P[pid], legal = E.legalSlots(pl);
+  const ok = E.debugSpawnCard(P, so, pid, FXL_IDS[role], legal.includes(slot) ? slot : (slot < 0 ? 'left' : slot > 0 ? 'right' : 0), stats, events); if(!ok) return null;
+  const c = E.allBoardCards(pl).slice().sort((a, b)=> b.uid - a.uid)[0]; if(!c) return null;
+  if(c.slot !== slot && !E.allBoardCards(pl).some(x=> x !== c && x.slot === slot)){
+    ['left', 'center', 'right'].forEach(k=>{ pl.row[k] = pl.row[k].filter(x=> x !== c); });
+    c.slot = slot; pl.row[slot === 0 ? 'center' : slot < 0 ? 'left' : 'right'].push(c); E.syncSlots(pl);
+    (events||[]).forEach(ev=>{ if(ev.uid === c.uid && ev.type === 'play'){ ev.slot = slot; ev.boardSide = slot === 0 ? 'center' : slot < 0 ? 'left' : 'right'; } }); }
+  return c;
+}
+// Builds the board on an engine: every unit but the withheld one, its Wait and statuses. Returns {roles: role→uid}.
+function fxlPopulate(E, P, so, stats, sc, events){
+  const roles = {};
+  [[1, sc.mine], [2, sc.foes]].forEach(([pid, list])=> list.slice().sort((a, b)=> Math.abs(a.slot) - Math.abs(b.slot)).forEach(u=>{
+    if(sc.withhold === u.role) return;
+    const c = fxlPlace(E, P, so, pid, u.role, u.slot, stats, events); if(c) roles[u.role] = c.uid;
+  }));
+  [1, 2].forEach(pid=> E.allBoardCards(P[pid]).forEach(c=>{ const role = Object.keys(roles).find(r=> roles[r] === c.uid); c.wait = (role && sc.wait[role] != null) ? sc.wait[role] : 0; if(role && sc.status[role]) Object.assign(c, sc.status[role]); }));
+  if(sc.lumber) P[1].lumber = sc.lumber;
+  if(sc.foeLumber) P[2].lumber = sc.foeLumber;
+  if(sc.res) Object.keys(sc.res).forEach(k=>{ P[1][k] = sc.res[k]; });
+  return roles;
+}
+function fxlNewEngine(sc, defs, rng){
+  const all = Object.assign({}, getCardDefs(), defs);
+  const E = makeSimEngine(all, rng, {recordEvents:true, rules: sc.rules || undefined, battleMode:'open'});
+  const deck = sc.decks ? {[FXL_IDS.ally2]: 6} : {}, foeDeck = sc.decks ? {[FXL_IDS.foe3]: 6} : {};
+  const P = {1: E.newPlayer(1, deck, TESTKIT_WALL), 2: E.newPlayer(2, foeDeck, TESTKIT_WALL)};
+  return {E, P, all};
+}
+// Runs one step on an engine with no screen. Returns the round number after it.
+function fxlStepSilent(E, P, so, stats, roles, step, round, events, sc){
+  if(step === 'round'){ E.resolveCombat(P, so, stats, events, round % 2 === 0 ? 1 : 2); round++; E.roundStart(P, round, so, stats, events); }
+  else if(step.spawn){ const u = [...sc.mine.map(x=> [1, x]), ...sc.foes.map(x=> [2, x])].find(([, x])=> x.role === step.spawn); const c = u && fxlPlace(E, P, so, u[0], step.spawn, u[1].slot, stats, events); if(c){ roles[step.spawn] = c.uid; c.wait = sc.wait[step.spawn] != null ? sc.wait[step.spawn] : 0; } }
+  else if(step.kill) E.debugDamage(P, so, roles[step.kill], 99999, stats, events);
+  else if(step.dmg) E.debugDamage(P, so, roles[step.dmg], step.n || 5, stats, events);
+  else if(step.heal) E.debugHeal(P, so, roles[step.heal], step.n || 3, stats, events);
+  else if(step.attack) E.debugAttack(P, so, roles[step.attack], stats, events);
+  else if(step.fire) E.debugFireTrigger(P, so, roles.subject, step.fire, stats, events);
+  [1, 2].forEach(pid=>{ P[pid].hq.hp = P[pid].hq.maxHp; });
+  return round;
+}
+// What the steps report, without uids: the same fight with and without the entry is compared on this.
+function fxlSig(events){ return events.map(ev=> Object.keys(ev).filter(k=> !/uid|slot/i.test(k) && ev[k] != null && typeof ev[k] !== 'object').sort().map(k=> k + '=' + ev[k]).join(',')).join('|'); }
+function fxlProbe(sc, bare, steps, seed){
+  try{
+    const {E, P} = fxlNewEngine(sc, fxlDefs(sc, bare), seededRng(seed || 4242)), so = id=> id===1?'A':'B', stats = {}, roles = fxlPopulate(E, P, so, stats, sc, []);
+    let round = 1; for(let i = 0; i < (sc.pre||0); i++){ round++; E.roundStart(P, round, so, stats, []); }
+    const ev = []; (steps || sc.steps).forEach(st=>{ round = fxlStepSilent(E, P, so, stats, roles, st, round, ev, sc); });
+    const state = [1, 2].map(pid=> E.allBoardCards(P[pid]).map(c=> Object.keys(c).filter(k=> !/uid/i.test(k) && c[k] != null && typeof c[k] !== 'object' && typeof c[k] !== 'function').sort().map(k=> k + '=' + c[k]).join(',')).sort().join(';')).join('||');
+    return {ev, sig: fxlSig(ev), state, both: fxlSig(ev) + '##' + state};
+  }catch(e){ return {ev:[], sig:'error:' + e.message, error:e}; }
+}
+// A skill shown by its arrival, its death, or a round of fighting: whichever the engine says it changes.
+function fxlProbeTiming(sc){
+  const arrive = Object.assign({}, sc, {withhold:'subject'});
+  const a1 = fxlProbe(arrive, false, [{spawn:'subject'}]), a0 = fxlProbe(arrive, true, [{spawn:'subject'}]);
+  if(a1.sig !== a0.sig) return {steps:[{spawn:'subject'}, 'round'], note:'It acts when it arrives, so ▶ Play brings the Specimen in, then fights a round.', withhold:true};
+  const d1 = fxlProbe(sc, false, [{kill:'subject'}]), d0 = fxlProbe(sc, true, [{kill:'subject'}]);
+  if(d1.sig !== d0.sig) return {steps:[{kill:'subject'}], note:'It acts when it dies, so ▶ Play kills the Specimen.'};
+  const r1 = fxlProbe(sc, false, ['round']), r0 = fxlProbe(sc, true, ['round']);
+  if(r1.sig !== r0.sig) return {steps:['round']};
+  const t1 = fxlProbe(sc, false, ['round', 'round']), t0 = fxlProbe(sc, true, ['round', 'round']);
+  if(t1.both !== t0.both) return {steps:['round', 'round'], note:'Two rounds: it only shows from the second.'};
+  return {steps:['round']};
+}
+function fxlPrepare(entry){
+  const sc = fxlScenario(entry);
+  if(!sc.unsupported && sc.steps && sc.steps[0] && sc.steps[0].spawn === 'subject' && !sc.withhold) sc.withhold = 'subject';
+  if(!sc.unsupported && !(entry.field && (!sc.rules || !Object.keys(sc.rules).length || entry.field.visual))){
+    const seeds = [4242, 777, 1234]; let same = true;
+    for(const s of seeds){ const w = fxlProbe(sc, false, null, s), wo = entry.field ? fxlProbe(Object.assign({}, sc, {rules:null}), false, null, s) : fxlProbe(sc, true, null, s); if(w.error){ sc.unsupported = 'The engine threw: ' + w.error.message; break; } if(w.both !== wo.both){ same = false; break; } }
+    if(!sc.unsupported && same) sc.quiet = true;
+  }
+  return sc;
+}
+/* ---------- the live stage ---------- */
+function fxlLoadPrefs(){ try{ return JSON.parse(localStorage.getItem(FXL_PREFS_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function fxlSavePrefs(){ if(!fxLib) return; try{ localStorage.setItem(FXL_PREFS_KEY, JSON.stringify({sel: fxLib.sel, speed: fxLib.speed})); }catch(e){} }
+function openEffectsLibrary(entryId){
+  if(matchState && !matchState.fxLib && !matchState.over && matchState.mode !== 'sandbox'){ showToast('Finish or leave the fight you are in first.', 'warn'); return; }
+  if(matchState && matchState.testKit) stopTestKit();
+  const p = fxlLoadPrefs();
+  fxLib = {sel: entryId || p.sel || 'skill:fork', speed: p.speed === 0.5 ? 0.5 : 1, search:'', token:0, busy:false, pending:null, cap:null, played:false, bodyKids: new Set([...document.body.children])};
+  if(!fxlEntries().some(x=> x.id === fxLib.sel)) fxLib.sel = fxlEntries()[0].id;
+  fxlBuildUi();
+  fxlBuildStage();
+  switchTab('play');
+  renderPlay();
+  setTimeout(()=>{ const r = fxLib && fxLib.ui && fxLib.ui.list.querySelector('.fxl-item.is-on'), box = fxLib && fxLib.ui && fxLib.ui.list.querySelector('#fxlItems'); if(r && box) box.scrollTop = Math.max(0, r.offsetTop - box.offsetTop - box.clientHeight / 2); window.scrollTo(0, 0); }, 60);
+}
+function fxlEntry(){ return fxlEntries().find(x=> x.id === fxLib.sel); }
+// Fresh stage for the selected entry (between plays, and on Reset).
+function fxlBuildStage(){
+  const entry = fxlEntry(); fxLib.sc = fxlPrepare(entry); const sc = fxLib.sc; fxLib.played = false;
+  fxlSweep();
+  matchDefsOverlay = fxlDefs(sc, false); invalidateCardDefs();
+  const {E, P} = fxlNewEngine(sc, matchDefsOverlay, Math.random), so = id=> id===1?'A':'B', stats = {};
+  const rs = sc.rules && Object.keys(sc.rules).length ? {id:'fxlib', name: entry.name, icon: entry.icon, text: entry.field ? entry.field.text() : '', rules: sc.rules} : null;
+  matchState = {engine:E, players:P, sideOf:so, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, mode:'sandbox', fxLib:true,
+    active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals:{1:0,2:0}, speedMult:fxLib.speed, leaderDefId:null, leaderUid:null, battleMode:'open', arenaRuleset: rs, rainy: !!sc.rainy};
+  lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
+  fxLib.roles = sc.unsupported ? {} : fxlPopulate(E, P, so, stats, sc, []);
+  for(let i = 0; i < (sc.pre||0); i++){ matchState.round++; E.roundStart(P, matchState.round, so, stats, []); }
+  [1,2].forEach(pid=>{ P[pid].hq.hp = P[pid].hq.maxHp; });
+  fxlRenderInfo(); fxlRenderLog(null); fxlRenderControls();
+}
+// Leftover effect layers from the last play (VFX nodes the game hangs on <body>) are removed, and any lightning timer stops.
+function fxlSweep(){
+  try{ clearTimeout(lightningTimer); lightningTimer = null; }catch(e){}
+  try{ SoundKit.stopAll(); }catch(e){}
+  if(!fxLib || !fxLib.bodyKids) return;
+  [...document.body.children].forEach(el=>{ if(!fxLib.bodyKids.has(el) && el.getAttribute('aria-hidden') === 'true' && !el.id) el.remove(); });
+  document.documentElement.classList.remove('bw-resolving');
+}
+function fxlRequest(fn){ if(!fxLib) return; if(fxLib.busy){ fxLib.pending = fn; fxlRenderControls(); return; } fn(); }
+function fxlSelect(id){ fxlRequest(()=>{ fxLib.sel = id; fxlSavePrefs(); fxlBuildStage(); fxlRenderList(); renderPlay(); }); }
+function fxlReset(){ fxlRequest(()=>{ fxlBuildStage(); renderPlay(); }); }
+function closeEffectsLibrary(){
+  if(!fxLib) return;
+  if(fxLib.busy){ fxLib.pending = closeEffectsLibrary; fxLib.token++; return; }
+  fxlSweep(); fxLib.token++;
+  matchDefsOverlay = {}; invalidateCardDefs();
+  if(matchState && matchState.fxLib){ matchState = null; }
+  try{ if(battleWeather){ battleWeather.destroy(); battleWeather = null; } }catch(e){}
+  const root = document.getElementById('view-play'); if(root) root.classList.remove('fxlib-mode');
+  fxLib = null;
+  switchTab('admin');
+}
+async function fxlPlay(){
+  if(!fxLib || fxLib.busy) return;
+  const sc = fxLib.sc; if(!sc || sc.unsupported) return;
+  if(fxLib.played){ fxlBuildStage(); renderPlay(); await sleep(250); }
+  const m = matchState, token = ++fxLib.token; if(!m || !m.fxLib) return;
+  fxLib.busy = true; fxLib.cap = []; fxlRenderControls(); fxlRenderLog([]);
+  try{
+    for(const step of sc.steps){
+      if(!fxLib || fxLib.token !== token || matchState !== m) break;
+      await fxlRunStep(m, step);
+      [1,2].forEach(pid=>{ m.players[pid].hq.hp = m.players[pid].hq.maxHp; }); m.over = false; m.winner = 0;
+      try{ updateHqHpDisplay('A'); updateHqHpDisplay('B'); }catch(e){}
+      await sleep(Math.round(350 / (m.speedMult||1)));
+    }
+  } catch(e){ console.warn('Effects library play', e); if(fxLib) fxLib.cap.push({type:'error', text:String(e && e.message || e)}); }
+  finally {
+    if(fxLib){ fxLib.busy = false; fxLib.played = true; fxlRenderLog(fxLib.cap); fxLib.cap = null; fxlRenderControls();
+      const p = fxLib.pending; fxLib.pending = null; if(p) p(); }
+  }
+}
+async function fxlRunStep(m, step){
+  const E = m.engine, P = m.players, so = m.sideOf, roles = fxLib.roles, sc = fxLib.sc;
+  if(step === 'round'){ await resolveRound(); return; }
+  if(step.spawn){
+    const u = [...sc.mine.map(x=> [1, x]), ...sc.foes.map(x=> [2, x])].find(([, x])=> x.role === step.spawn); if(!u) return;
+    const events = [];
+    const c = fxlPlace(E, P, so, u[0], step.spawn, u[1].slot, m.stats, events); if(!c) return;
+    roles[step.spawn] = c.uid; c.wait = sc.wait[step.spawn] != null ? sc.wait[step.spawn] : 0;
+    SoundKit.play();
+    renderBoard(); renderHUD();
+    await sleep(Math.round(500 / (m.speedMult||1)));
+    for(const ev of events){ pushLog(ev); try{ renderVfxForEvent(ev); }catch(e){} await sleep(delayForEvent(ev, null)); }
+    renderBoard(); renderHand(); renderHUD();
+    await sleep(Math.round(400 / (m.speedMult||1)));
+    return;
+  }
+  await resolveRound({manual:true, run: events=>{
+    if(step.kill) E.debugDamage(P, so, roles[step.kill], 99999, m.stats, events);
+    else if(step.dmg) E.debugDamage(P, so, roles[step.dmg], step.n || 5, m.stats, events);
+    else if(step.heal) E.debugHeal(P, so, roles[step.heal], step.n || 3, m.stats, events);
+    else if(step.attack) E.debugAttack(P, so, roles[step.attack], m.stats, events);
+    else if(step.fire) E.debugFireTrigger(P, so, roles.subject, step.fire, m.stats, events);
+    return false;
+  }});
+}
+/* ---------- panels ---------- */
+function fxlBuildUi(){
+  const list = document.createElement('aside'); list.className = 'fxl-list'; list.id = 'fxlList'; list.setAttribute('aria-label', 'Effects');
+  list.innerHTML = `<div class="fxl-list-head"><h2>🔬 Effects library</h2><button type="button" class="btn small" id="fxlClose" title="Back to Admin">✕ Close</button></div>
+    <input type="search" id="fxlSearch" placeholder="Search skills, triggers, fields…" autocomplete="off" aria-label="Search effects">
+    <div class="fxl-items" id="fxlItems" role="listbox" aria-label="Effects"></div>`;
+  const info = document.createElement('section'); info.className = 'fxl-info'; info.id = 'fxlInfo'; info.setAttribute('aria-live', 'polite');
+  const controls = document.createElement('div'); controls.className = 'fxl-controls'; controls.id = 'fxlControls';
+  const log = document.createElement('section'); log.className = 'fxl-log'; log.id = 'fxlLog'; log.setAttribute('aria-label', 'What the engine reported');
+  fxLib.ui = {list, info, controls, log};
+  list.querySelector('#fxlClose').onclick = closeEffectsLibrary;
+  const search = list.querySelector('#fxlSearch');
+  search.addEventListener('input', ()=>{ fxLib.search = search.value; fxlRenderList(); });
+  search.addEventListener('keydown', e=>{ if(e.key === 'Enter'){ const f = list.querySelector('.fxl-item'); if(f) fxlSelect(f.dataset.fxl); } });
+  list.querySelector('#fxlItems').addEventListener('click', e=>{ const b = e.target.closest('[data-fxl]'); if(b) fxlSelect(b.dataset.fxl); });
+  controls.addEventListener('click', e=>{ const b = e.target.closest('button'); if(!b) return;
+    if(b.id === 'fxlPlay') fxlPlay(); else if(b.id === 'fxlReset') fxlReset();
+    else if(b.dataset.fxlspeed){ fxLib.speed = Number(b.dataset.fxlspeed); if(matchState && matchState.fxLib) matchState.speedMult = fxLib.speed; fxlSavePrefs(); fxlRenderControls(); } });
+  fxlRenderList(); fxlRenderControls();
+}
+function fxlRenderList(){
+  if(!fxLib || !fxLib.ui) return;
+  const q = (fxLib.search||'').trim().toLowerCase(), box = fxLib.ui.list.querySelector('#fxlItems');
+  const all = fxlEntries().filter(x=> !q || x.name.toLowerCase().includes(q) || x.key.toLowerCase().includes(q));
+  box.innerHTML = FXL_GROUPS.map(g=>{ const items = all.filter(x=> x.group === g.key).sort((a, b)=> a.name.localeCompare(b.name)); if(!items.length) return '';
+    return `<div class="fxl-group"><div class="fxl-group-h">${g.icon} ${escapeHtml(g.label)} <small>${items.length}</small></div>${items.map(x=> `<button type="button" class="fxl-item ${x.id === fxLib.sel ? 'is-on' : ''}" data-fxl="${escapeAttr(x.id)}" role="option" aria-selected="${x.id === fxLib.sel}"><span class="fxl-ico">${escapeHtml(x.icon)}</span><span>${escapeHtml(x.name)}</span></button>`).join('')}</div>`; }).join('') || `<p class="panel-sub">Nothing matches "${escapeHtml(fxLib.search)}".</p>`;
+}
+function fxlEntryText(entry){
+  if(entry.sd){ const pd = PASSIVE_DEFS.find(p=> p.key === entry.key); const v = (()=>{ const e = (fxLib.sc && fxLib.sc.subjectFx) || {}; try{ return entry.sd.get(e); }catch(_){ return undefined; } })();
+    try{ return pd ? skillText(pd, v === undefined ? 2 : v, (fxLib.sc && fxLib.sc.subjectFx) || {}) : entry.sd.desc(v === undefined ? 2 : v, undefined, {}); }catch(e){ return ''; } }
+  if(entry.field) return entry.field.text();
+  if(entry.group === 'on') return 'Fires ' + entry.desc + '.';
+  return entry.desc || '';
+}
+function fxlRenderInfo(){
+  if(!fxLib || !fxLib.ui) return;
+  const entry = fxlEntry(), sc = fxLib.sc || {}, g = FXL_GROUPS.find(x=> x.key === entry.group);
+  const card = (()=>{ try{ const d = (matchDefsOverlay||{})[FXL_IDS.subject]; return d && !entry.field ? describeEffects(d).filter(l=> !/^🧬|^Token card|Dev-only/.test(l)) : []; }catch(e){ return []; } })();
+  const stepWord = st=> st === 'round' ? 'fight one round' : st.spawn ? `bring in the ${fxlBaseDefName(st.spawn)}` : st.kill ? `kill the ${fxlBaseDefName(st.kill)}` : st.dmg ? `deal ${st.n} damage to the ${fxlBaseDefName(st.dmg)}` : st.heal ? `heal the ${fxlBaseDefName(st.heal)} by ${st.n}` : st.attack ? `the ${fxlBaseDefName(st.attack)} attacks once` : st.fire ? 'fire the trigger by hand' : '?';
+  fxLib.ui.info.innerHTML = `<div class="fxl-title"><span class="fxl-big-ico" aria-hidden="true">${escapeHtml(entry.icon)}</span><div><h2>${escapeHtml(entry.name)}</h2><span class="fxl-chip">${g ? g.icon + ' ' + escapeHtml(g.label) : ''}</span> <code class="fxl-key">${escapeHtml(entry.key)}</code></div></div>
+    <p class="fxl-desc">${keywordizeHTML(escapeHtml(fxlEntryText(entry)))}</p>
+    ${card.length ? `<div class="fxl-cardtext"><b>On the Specimen's card:</b> ${card.map(l=> keywordizeHTML(escapeHtml(l))).join('<br>')}</div>` : ''}
+    ${sc.unsupported ? `<div class="fxl-warn" role="note">⚠️ Can't be shown here. ${escapeHtml(sc.unsupported)}</div>` : `<div class="fxl-setup"><b>▶ Play will:</b> ${escapeHtml((sc.steps||[]).map(stepWord).join(', then '))}.${(sc.notes||[]).length ? ' ' + escapeHtml(sc.notes.join(' ')) : ''}${sc.hand ? ' <span class="fxl-hand" title="This entry has a hand-made setup">✋ hand-made setup</span>' : ''}</div>`}
+    ${sc.quiet ? `<div class="fxl-warn is-soft" role="note">ℹ️ In this small fight the engine reports the same events with or without it, so there may be nothing to see. It probably needs a situation this stage doesn't set up.</div>` : ''}`;
+}
+function fxlBaseDefName(role){ const d = (matchDefsOverlay||{})[FXL_IDS[role]]; return d ? d.name : role; }
+function fxlRenderControls(){
+  if(!fxLib || !fxLib.ui) return;
+  const off = !fxLib.sc || fxLib.sc.unsupported;
+  fxLib.ui.controls.innerHTML = `<button type="button" class="btn primary" id="fxlPlay" ${fxLib.busy || off ? 'disabled' : ''}>${fxLib.busy ? '⏳ Playing…' : '▶ Play'}</button>
+    <button type="button" class="btn" id="fxlReset" ${fxLib.busy ? 'disabled' : ''}>↻ Reset</button>
+    <div class="tk-speed" role="radiogroup" aria-label="Speed">${[0.5, 1].map(s=> `<button type="button" class="tk-speed-btn ${fxLib.speed === s ? 'is-on' : ''}" role="radio" aria-checked="${fxLib.speed === s}" data-fxlspeed="${s}">${s}×</button>`).join('')}</div>
+    ${fxLib.pending ? '<span class="panel-sub">Switching after this play…</span>' : ''}`;
+}
+// The Log box: each event the engine sent, with its key fields, and the damage it all came to.
+const FXL_LOG_SKIP = new Set(['uid', 'attUid', 'targetUid', 'uids', 'nearUid', 'dogUid', 'placements', 'slot', 'boardSide', 'side', 'targetSide', 'type', 'attDefId', 'targetDefId', 'defId', 'swapUid']);
+function fxlRenderLog(events){
+  if(!fxLib || !fxLib.ui) return;
+  const box = fxLib.ui.log;
+  if(events == null){ box.innerHTML = `<h3>Log</h3><p class="panel-sub">Press ▶ Play to see what the engine sends.</p>`; return; }
+  if(!events.length){ box.innerHTML = `<h3>Log</h3><p class="panel-sub">${fxLib.busy ? 'Playing…' : 'The engine reported nothing.'}</p>`; return; }
+  const defs = getCardDefs(), nm = id=> id && defs[id] ? defs[id].name : (id || '');
+  const hurt = {};
+  events.forEach(ev=>{ const n = Number(ev.dmg); if(!(n > 0)) return; const who = ev.type === 'hitHQ' ? (ev.targetSide === 'A' || ev.side === 'B' ? 'Your castle' : 'Enemy castle') : nm(ev.targetDefId || ev.defId) || 'a unit'; hurt[who] = (hurt[who]||0) + n; });
+  const total = Object.values(hurt).reduce((a, b)=> a + b, 0);
+  const rows = events.map(ev=>{
+    if(ev.type === 'error') return `<li class="is-err"><b>error</b> ${escapeHtml(ev.text)}</li>`;
+    const who = [ev.attDefId ? nm(ev.attDefId) : '', ev.targetDefId ? '→ ' + nm(ev.targetDefId) : (ev.defId && !ev.attDefId ? nm(ev.defId) : '')].filter(Boolean).join(' ');
+    const extra = Object.keys(ev).filter(k=> !FXL_LOG_SKIP.has(k) && ev[k] != null && ev[k] !== false && ev[k] !== 0 && ev[k] !== '' && typeof ev[k] !== 'object').map(k=> `${k}=${ev[k]}`).join(' · ');
+    let said = ''; try{ const r = logText(ev); said = r && (r.text || (typeof r === 'string' ? r : '')) || ''; }catch(e){}
+    return `<li class="${Number(ev.dmg) > 0 ? 'is-hurt' : ''}"><b>${escapeHtml(ev.type)}</b> ${escapeHtml(who)}${extra ? ` <span class="fxl-kv">${escapeHtml(extra)}</span>` : ''}${said && said !== ev.type ? `<div class="fxl-said">${escapeHtml(said)}</div>` : ''}</li>`; }).join('');
+  box.innerHTML = `<h3>Log <small>${events.length} event${events.length === 1 ? '' : 's'}</small></h3>
+    <div class="fxl-hurt">${total ? `💥 Damage dealt: <b>${total}</b> — ${Object.entries(hurt).map(([k, v])=> `${escapeHtml(k)} −${v}`).join(', ')}` : 'No damage dealt.'}</div>
+    <ol class="fxl-events">${rows}</ol>`;
+}
+// Called from renderPlay: the stage (castle rows and field) goes in the middle, the list on the left, the info, controls and log beside it.
+function fxlArrangeLayout(root){
+  if(!fxLib || !fxLib.ui) return;
+  root.classList.add('fxlib-mode');
+  const stage = document.createElement('div'); stage.className = 'fxl-stage';
+  ['.top-play-row', '.battlefield', '.bottom-play-row'].forEach(sel=>{ const el = root.querySelector(':scope > ' + sel); if(el) stage.appendChild(el); });
+  const main = document.createElement('div'); main.className = 'fxl-main';
+  main.append(fxLib.ui.info, fxLib.ui.controls, stage, fxLib.ui.log);
+  const layout = document.createElement('div'); layout.className = 'fxl-layout';
+  layout.append(fxLib.ui.list, main);
+  root.insertBefore(layout, root.firstChild);
+}
 // Admin portal — "jump to progress" (2026-09-22, per explicit request: "include an admin portal
 // beside profile... 'jump to progress', selecting a skirmish level (behind the skirmish is its
 // ID - increasing)"): flattens every Conquest node across every map, in the same fixed order
@@ -38489,6 +39068,8 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminDialogueBtn">💬 Edit NPC speeches</button></div>
     <div class="panel admin-subpanel"><h3>🧪 Card workbench</h3><p class="panel-sub">Try any card with any art, rarity colour, foil, foil strength and art style. Nothing is saved.</p>
       <button type="button" class="btn small" id="adminCardBenchBtn">🧪 Open the workbench</button></div>
+    <div class="panel admin-subpanel"><h3>🔬 Effects library</h3><p class="panel-sub">Every skill, trigger, action and field condition, one at a time: what it says, and a small live stage that plays it with its real effects and sounds, plus a log of what the engine sent and the damage it did. Nothing is saved.</p>
+      <button type="button" class="btn small" id="adminFxLibBtn">🔬 Open the Effects library</button></div>
     <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
       <button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
@@ -38584,6 +39165,7 @@ function renderAdmin(){
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
   const deOpen = document.getElementById('adminDialogueBtn'); if(deOpen) deOpen.onclick = ()=> openDialogueEditor();
   const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
+  const fxOpen = document.getElementById('adminFxLibBtn'); if(fxOpen) fxOpen.onclick = ()=> openEffectsLibrary();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
@@ -39164,6 +39746,7 @@ function leaveMatchResumable(){
   showToast('⏸️ Fight saved. Press ▶ Continue (on Home or the map) to carry on.', 'ok');
 }
 function endMatch(opts){
+  if(matchState && matchState.fxLib){ closeEffectsLibrary(); return; } // 🔬 the Effects library has no result to record (2026-10-14)
   standardMatchActive = false;
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
@@ -39681,7 +40264,7 @@ function renderMatchUI(){
   const me = m.players[activePid]; // this client's own seat — whoever's *actual* turn it is is m.active, not this
   const p1 = m.players[1], p2 = m.players[2];
   const topLabel = isLiveRanked ? (m.liveMySeat===2 ? 'You' : 'Opponent')
-    : isPc ? 'Player 2' : (isSandbox ? (m.testKit ? 'Enemies' : 'Enemy (spawn freely)') : 'Enemy');
+    : isPc ? 'Player 2' : (isSandbox ? (m.testKit || m.fxLib ? 'Enemies' : 'Enemy (spawn freely)') : 'Enemy');
   // 2026-09-26 (#4, "add the name of the enemy in the right side of the top nav bar... where do we
   // show the enemy's name (player's name OR skirmish's name)"): one small helper picking the best
   // real identity available for THIS specific match, in priority order — a real opponent username
@@ -39695,7 +40278,7 @@ function renderMatchUI(){
     : m.opponentName ? m.opponentName
     : isPc ? 'Player 2' : 'Enemy';
   const bottomLabel = isLiveRanked ? (m.liveMySeat===1 ? 'You' : 'Opponent')
-    : isPc ? 'Player 1' : (isSandbox ? (m.testKit ? 'Your side' : 'Mine (spawn freely)') : 'You');
+    : isPc ? 'Player 1' : (isSandbox ? (m.testKit || m.fxLib ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
   const showWinModal = m.over && !m.winModalDismissed;
   try{ if(showWinModal && (coachOpen || coachShield)) hideCoachTip(); }catch(e){} // 2026-10-12: a tutorial step left open used to sit over the results (its shield ate clicks)
@@ -39806,7 +40389,7 @@ function renderMatchUI(){
         <p>Player ${activePid===1?2:1}'s cards stay hidden until they hand it back. Once Player ${activePid} has the device, tap ready to see your hand.</p>
         <button class="btn primary big" id="passReadyBtn">I'm Player ${activePid} — Ready</button>
       </div>
-    </div>` : isSandbox ? (m.testKit ? testKitPanelHTML() : sandboxPanelHTML(m)) : `
+    </div>` : isSandbox ? (m.fxLib ? '' : m.testKit ? testKitPanelHTML() : sandboxPanelHTML(m)) : `
     <div class="drop-row" id="dropRow">
       <!-- 2026-09-26, per explicit request ("Remove the <-> controls in the bottom - unneeded
            now [because] dragging and dropping directly on the field [already works]"): confirmed
@@ -39870,6 +40453,7 @@ function renderMatchUI(){
   `;
   root.classList.remove('testkit-mode');
   if(m.testKit) testKitArrangeLayout(root, tkKeep);
+  root.classList.remove('fxlib-mode'); if(m.fxLib) fxlArrangeLayout(root); // 🔬 Effects library (2026-10-14)
   const quitBtn = document.getElementById('quitMatchBtn'); if(quitBtn) quitBtn.addEventListener('click', isAsync ? saveAndExitAsyncMatch : (isTutorial ? quitTutorialToHome : (RESUMABLE_MODES.has(m.mode) && !m.over ? leaveMatchResumable : endMatch)));
   const forfeitBtn = document.getElementById('forfeitMatchBtn'); if(forfeitBtn) forfeitBtn.addEventListener('click', forfeitMatch);
   { const aw = document.getElementById('adminWinBtn'); if(aw) aw.addEventListener('click', adminAutoWin); }
@@ -40091,7 +40675,7 @@ function renderMatchUI(){
   renderBoard();
   if(!showPassOverlay) renderHand();
   wireDropZones();
-  if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox) wireSandboxPanel();
+  if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
   m.log.forEach(renderLogLine);
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
@@ -45418,6 +46002,7 @@ function tutorialAllyRemarks(m){
 }
 function maybeShowCoachTip(){
   const m = matchState;
+  if(m && m.fxLib) return; // 🔬 no coaching on the Effects library's stage (2026-10-14)
   try{ tutorialAllyRemarks(m); }catch(e){}
   try{ if(m && !m.resolving && m.mode !== 'tutorial') lumberDrawNudges(m); }catch(e){}
   // The shield (2026-10-13, user: "On Map 0-4, teach the player about the shield value"): the first enemy castle with a shield.
@@ -45979,7 +46564,7 @@ function delayForEvent(ev, prevKind){
   const mult = (matchState && matchState.speedMult) || 1;
   return Math.max(18, Math.round(base / mult));
 }
-function pushLog(ev){ if(!matchState || ev.type==='triggerFired') return; matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
+function pushLog(ev){ if(typeof fxLib!=='undefined' && fxLib && fxLib.cap && matchState && matchState.fxLib) fxLib.cap.push(ev); /* 🔬 Effects library's Log box (2026-10-14) */ if(!matchState || ev.type==='triggerFired') return; matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
 function sideLabel(side){
   const isPc = matchState && matchState.mode==='pc';
   if(isPc) return side==='A' ? 'Player 1' : 'Player 2';

@@ -47,7 +47,8 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | Pages | Codex pager on top too; admin-only buttons checked; no "claim it on the board" line; costs inside Nest and Forge buttons; deck cards show pictures, rating, total Attack/Health; Forge contrast; swap offer is a sheet on phones; Nest costs show on tap ("Need 3 more Kibble"), Kibble rises per species |
 | Cards | Big Bee, Frog, Fly renamed; MissingNo past World 1 and unobtainable; new Rafflesia, Puffball Bombardier, Otter Angler, Honeyjoe Brewer (not placed) |
 | Art | 23 NightCafe images (list in the changelog). Waiting: Bog Leech (for PixelLab), Rivergate Tribune (logged), Otter Shieldback and Armored Mastiff (their good PixelLab versions aren't in the gallery I can see; send them if you have them) |
-| Your calls | Crab Claws as built wastes a pinch when nobody is beside the target (42 one-on-one results flipped); say if wasted pinches should hit the castle instead. Effects library page and Psychic damage are next |
+| Your calls | Crab Claws as built wastes a pinch when nobody is beside the target (42 one-on-one results flipped); say if wasted pinches should hit the castle instead. Psychic damage is still undefined |
+| Effects library | Built at 21:00: Admin → 🔬 Effects library, every skill, trigger and field condition on a live stage with its effects, sounds and damage log |
 
 ## Done at 17:30 (continuing)
 
