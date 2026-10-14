@@ -334,17 +334,8 @@
 
 // Lab foils (2026-10-14): finishes in lab-foils.css that need moving bits get a .foil-fx layer here: drips for
 // Molten gold, petals for Sakura, glints for Glitter field, the crystal layer for Frost crystal. Positions are fixed per index so it looks the same each load.
-function decorateLabFoils(root){
-  (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
-    const kind = t.classList.contains('holo-molten') ? 'molten' : t.classList.contains('holo-sakura') ? 'sakura' : t.classList.contains('holo-sparkle') ? 'sparkle' : t.classList.contains('holo-frost') ? 'frost' : '';
-    if(!kind || t.querySelector(':scope > .foil-fx')) return;
-    const f = document.createElement('span'); f.className = 'foil-fx'; f.setAttribute('aria-hidden', 'true');
-    if(kind === 'molten') f.innerHTML = [12, 31, 52, 68, 86].map((x, k)=> `<i style="left:${x}%; --len:${14 + (k*11)%22}px; animation-delay:${-(k*1.7)%6}s"></i>`).join('');
-    if(kind === 'sakura') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(k*29)%96}%; --d:${6 + (k*1.3)%4}s; --dl:${-(k*0.9)}s; --sx:${((k%5) - 2)*10 + 8}px; transform:scale(${0.8 + (k%3)*0.2})"></i>`).join('');
-    if(kind === 'sparkle') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(9 + (k*41)%84)}%; top:${(7 + (k*59)%86)}%; --dl:${((k*0.31)%1.9).toFixed(2)}s; --h:${(k*67)%360}"></i>`).join('');
-    const glare = t.querySelector(':scope > .holo-glare'); t.insertBefore(f, glare || null);
-  });
-}
+// The Lab foils now live in the game; decorateHolo() adds their .foil-fx layer (2026-10-14).
+function decorateLabFoils(root){ if(typeof decorateHolo === 'function') decorateHolo(root || document); }
 window.decorateLabFoils = decorateLabFoils;
 try{ decorateLabFoils(document); }catch(e){}
 

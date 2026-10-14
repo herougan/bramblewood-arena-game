@@ -679,6 +679,37 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 </table>
 <p><strong>Parked, not open items:</strong> D55 (<code>world_events</code>), T3 / S1 / S2 and the D76 <code>coop_rooms</code> table all write to the live Supabase, so they wait for you to say "apply it". Nothing else is waiting on you.</p>
 <p><strong>Closed earlier:</strong> D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.</p>
+<h2>Planned, not built yet (your 08:28 note: "Dont add now")</h2>
+<table>
+<thead>
+<tr>
+<th>Idea</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Electricity</strong> (new skill)</td>
+<td>For cave and water cards. Needs its rules: e.g. a shock that chains to the next unit, or stuns. New units to carry it</td>
+</tr>
+<tr>
+<td><strong>Keen Sense</strong> (new skill)</td>
+<td>For moles: senses non-flying enemies even when blind; unaffected by Blind. A second effect still to come</td>
+</tr>
+<tr>
+<td><strong>Hammerhead</strong> (new card)</td>
+<td>A shark for the Ocean fodder</td>
+</tr>
+<tr>
+<td><strong>A big animal with a sledgehammer</strong></td>
+<td>There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon</td>
+</tr>
+<tr>
+<td><strong>Stat budget v2</strong></td>
+<td>N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15</td>
+</tr>
+</tbody>
+</table>
 <h2>2. Where things stand</h2>
 <ul>
 <li><strong>Balancing:</strong> the <span class="doc-ref" title="Project doc: claude/card-list-2026-10-10.md">card list</span> has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood &amp; Village; move 3 overpowered and 18 biome cards out; add 14).</li>
@@ -750,6 +781,16 @@ details.card .doc h1{font-size:22px;} details.card .doc h2{font-size:18px;}
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
 <section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc"><h1>Changelog</h1>
 <p>Headline changes only, newest first. The detail lives in git history, <code>MASTER.md</code> and the design addenda.</p>
+<h2>2026-10-14 (10:15)</h2>
+<ul>
+<li><strong>Eight new foils are in the game:</strong> Aurora, Galaxy swirl, Molten gold (with drips), Frost crystal, Oil slick, Sakura (falling petals), Glitter field and Holo scanlines. Admins can try them in the card inspector and the Card workbench; none is handed out by packs yet.</li>
+<li><strong>Level-up burst:</strong> tempering a card in the Forge, or training a hatchling to Level 1 in the Nest, now plays the Lab's level-up rays and "LEVEL N!" ribbon on the card.</li>
+</ul>
+<h2>2026-10-14 (09:30)</h2>
+<ul>
+<li><strong>The Effects Lab's skill effects play in real fights</strong> (Medium effects and up, at most once per unit a round): Regeneration knits a unit back, Poison and Bleed ticks show a cloud and a drip, Thorns bite back at the attacker, Helmet deflects with a ping, Earthquake cracks the field, Frost and heat show on chilled and scorched units, Swarm, Cleave and Quick attacks get their own strikes, Evasive and Swift units sidestep, and Lantern, Darksight and Guardian units glow, scan or raise a shield wall when played.</li>
+<li>Your new ideas (Electricity, Keen Sense, the Hammerhead, a sledgehammer bruiser, stat budget v2) are written up in the action items, not built yet.</li>
+</ul>
 <h2>2026-10-14 (03:30)</h2>
 <ul>
 <li><strong>Card plan workbook</strong> (docs/bramblewood-card-plan-2026-10-14.xlsx): every card sorted into Base, the two factions, the tutorial, Maps 0–21 (4 uniques each), fodder for the Ocean, Swamp, Ice, Volcano and Cave, the Mystery pack (Map 20's side map), Later worlds (the occult and alien cards) and Retired; plus a skill curriculum (Map 0: Flying, Swarm, Regeneration; Map 1: Diurnal, Thorns, Worthy …), animal-type counts (3–6 each, 4 Elementals, no trolls, 1 changeling) and the Card Pack seller at Maps 5, 11 and 17. Extra ordinary animals are listed as Spare, not placed.</li>
