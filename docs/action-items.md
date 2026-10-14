@@ -31,6 +31,15 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 17:30 (continuing)
+
+| Item | What's in the game now |
+|---|---|
+| Caves | No day or night in Caves & Alcoves, Smugglers' Grotto and The Sunken Depths (they had been left on Night) |
+| Dark fights | A lantern pool of light follows your pointer in pitch-black and absolute darkness |
+| Difficulty | Re-measured: Maps 1–9 are easy for a mid deck (90–99%); spikes at the Map 10, 14 and 16 bosses (35%, 43%, 8%). Say the word and I'll retune those three and tighten Maps 1–9 |
+| Art waiting | Rabid Jackal, Mirrorhide Mutant and Growth Sprout need art; your Chrome wasn't reachable, so NightCafe has to wait |
+
 ## Done at 16:15 (your 12:02 list)
 
 | Item | What's in the game now |

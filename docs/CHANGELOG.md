@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (17:30)
+- **Caves and the deep have no day or night** (Caves & Alcoves, Smugglers' Grotto, The Sunken Depths had been left on Night, with a moon showing in a cave). Sable Swampmire and Pinewood Taiga stay always-night.
+- **Lantern light in the dark:** in pitch-black and absolute-dark fights the field is shadowed except a warm pool of light that follows your pointer (it drifts by itself on touch). The cards don't move.
+- **Difficulty re-measured** after today's rules (Speed, Tide = Swimmers, day/night by map and the rest): a mid-strength deck now wins 90–99% on Maps 1–9. The spikes are the Map 10 boss (35%), Map 14 boss (43%) and Map 16 boss (8%). The numbers are in the ⚖️ Balance tab.
+
 ## 2026-10-14 (16:15)
 - **Bloom (conditions): +2/+2** while its conditions hold, e.g. "Bloom (Tide & Night)" or "Bloom (Wind or Wet)". For the plant cards to come; the old heal Bloom is unchanged. Units in bloom show 🌸.
 - **Irradiation sounds:** a sizzle as stats burn away, Geiger-counter clicks when radiation is handed out.

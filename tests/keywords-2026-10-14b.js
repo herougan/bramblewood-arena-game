@@ -85,7 +85,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   const m = src.match(/const MAP_DAYNIGHT = (\{[\s\S]*?\n\});/); ok(!!m, 'MAP_DAYNIGHT is in the app');
   const table = m ? eval('(' + m[1] + ')') : {};
-  ok(table.mtut === 'day' && table.m4 === 'night' && table.mg === 'night' && table.mn === 'off' && table.mi === 'off' && !table.m1 && !table.mb, 'caves and the deep have no cycle, the tutorial stays Day, the open maps cycle');
+  ok(table.mtut === 'day' && table.m4 === 'off' && table.mg === 'off' && table.mj === 'off' && table.m8 === 'night' && table.mn === 'off' && table.mi === 'off' && !table.m1 && !table.mb, 'caves and the deep have no cycle, the tutorial stays Day, the open maps cycle');
   ok(/const TIDESPOUT_MAPS = new Set\(\['mb'\]\)/.test(src), 'Pebble Beach spouts');
   ok(!/r\.zeitgeber = true/.test(src), 'fightRules no longer lets a card start the cycle'); }
 

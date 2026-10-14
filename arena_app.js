@@ -12378,7 +12378,9 @@ const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, 
 // night at all ('off'). The tutorial stays plain Day. A fight's own rules.phase still wins over its map.
 const MAP_DAYNIGHT = {
   // no day or night: caves, the deep, the dark places (their darkness, rules.dark, is unchanged)
-  m4:'night', mg:'night', mj:'night', m8:'night', mt:'night',  // the night maps (Caves & Alcoves, Smugglers' Grotto, The Sunken Depths, Sable Swampmire, The Pinewood Taiga)
+  // 2026-10-14 (user: "Dark places, Undersea, Caves ... don't have Night/Day"): the caves and the deep had been left on Night; now off
+  m4:'off', mg:'off', mj:'off',                                // Caves & Alcoves, Smugglers' Grotto, The Sunken Depths
+  m8:'night', mt:'night',                                      // out in the open but always night: Sable Swampmire, The Pinewood Taiga
   mn:'off', mi:'off', mz:'off', mx:'off',                      // The Glimmer Depths, The Ice Hollow, The Mycelium Deep, Volcano Lair (inside the mountain)
   mtut:'day',                                                  // the Tutorial: no cycle
 };
@@ -12456,6 +12458,20 @@ function terrainSummary(t, rules){
   else if(er > 0) txt += ` The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
   return txt;
 }
+// Lantern light in the dark (2026-10-14, the Effects Lab's lantern, made safe for fights): in pitch-black and absolute
+// darkness the field is shadowed except a warm pool of light that follows your pointer (or drifts on its own on touch).
+// It only changes what you see; the cards themselves aren't moved.
+function matchDarkLevel(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.arenaRuleset && m.arenaRuleset.rules) || null; return r && r.dark ? (r.dark === true ? 'dark' : r.dark) : null; }catch(e){ return null; } }
+(function wireLanternLight(){
+  if(typeof document === 'undefined') return;
+  let t0 = performance.now(), last = 0, raf = 0;
+  const set = (bf, x, y)=>{ bf.style.setProperty('--lx', x.toFixed(1) + '%'); bf.style.setProperty('--ly', y.toFixed(1) + '%'); };
+  document.addEventListener('pointermove', e=>{ const bf = document.querySelector('.battlefield.bf-lantern'); if(!bf) return; const r = bf.getBoundingClientRect(); if(!r.width) return;
+    last = performance.now(); set(bf, (e.clientX - r.left)/r.width*100, (e.clientY - r.top)/r.height*100); }, {passive:true});
+  const drift = now=>{ raf = requestAnimationFrame(drift); const bf = document.querySelector('.battlefield.bf-lantern'); if(!bf || now - last < 4000 || reducedMotion()) return;
+    const a = (now - t0)/5200; set(bf, 50 + Math.cos(a)*30, 50 + Math.sin(a*1.4)*22); };
+  raf = requestAnimationFrame(drift);
+})();
 function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.engine && m.arenaRuleset && m.arenaRuleset.rules) || null; /* the Arena's portent can bring home ground or the eruption too */ return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 && !volcanoRulesOn(r) ? {t: null, rules: r} : null); /* the volcano's hazards (2026-10-14) list as field rows instead */ }catch(e){ return null; } }
 // The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
 // bursts up through the struck card, embers fly, and the whole field flashes red.
@@ -21127,7 +21143,7 @@ function renderMatchUI(){
         <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
       </div>
     </div>
-    <div class="battlefield ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+    <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         ${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row enemy" id="resEnemy2" data-respid="2" data-resrow="2"></div>' : ''}${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row enemy" id="resEnemy1" data-respid="2" data-resrow="1"></div>' : ''}
