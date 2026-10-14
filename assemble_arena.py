@@ -38,11 +38,34 @@ def asset_url(rel, data, mime="image/png"):
         with open(path, "wb") as fh: fh.write(data)
     _written.add(path)
     return "assets/%s?v=%s" % (rel, hashlib.sha256(data).hexdigest()[:10])
+# 2026-10-14: the card art is now raw NightCafe paintings (about 110 KB each as PNG); big PNG/JPEG art is shipped as WebP
+# (quality 88, about a fifth of the size, no visible change). Small art and the canonical PNGs are left alone.
+_WEBP_CACHE = {}
+def _to_webp(data):
+    k = hashlib.sha256(data).hexdigest()
+    if k in _WEBP_CACHE: return _WEBP_CACHE[k]
+    try:
+        from PIL import Image
+        import io
+        im = Image.open(io.BytesIO(data))
+        has_alpha = im.mode in ("RGBA", "LA") or (im.mode == "P" and "transparency" in im.info)
+        im = im.convert("RGBA" if has_alpha else "RGB")
+        buf = io.BytesIO(); im.save(buf, "WEBP", quality=88, method=6)
+        out = buf.getvalue()
+        res = out if len(out) < len(data) * 0.8 else None
+    except Exception:
+        res = None
+    _WEBP_CACHE[k] = res
+    return res
 def data_uri_to_asset(rel_base, uri):
     m = _re.match(r"data:image/([a-z+]+);base64,(.*)$", uri or "", _re.S)
     if not m: return uri
     ext = {"jpeg": "jpg", "svg+xml": "svg"}.get(m.group(1), m.group(1))
-    return asset_url("%s.%s" % (rel_base, ext), base64.b64decode(m.group(2)), "image/" + m.group(1))
+    data = base64.b64decode(m.group(2))
+    if not INLINE and m.group(1) in ("png", "jpeg") and len(data) > 40000:
+        w = _to_webp(data)
+        if w: return asset_url("%s.webp" % rel_base, w, "image/webp")
+    return asset_url("%s.%s" % (rel_base, ext), data, "image/" + m.group(1))
 
 # Language packs (2026-10-05): lang/<code>.json -> assets/lang/<code>.js, loaded on demand by
 # bramblewood-i18n.js (or all inlined with BW_INLINE=1).

@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (01:00)
+- **Faster loading:** large card art is now shipped as WebP (same look). The game's image files dropped from 32 MB to 11 MB, so a Codex page of 50 cards loads about a third as much. The source art stays PNG.
+
 ## 2026-10-15 (00:15)
 - **Card plan workbook:**
   - The 23 cards made today are now on the Plan sheet, each with a suggested home and its budget v2 check. Five come out over budget at their suggested map: Vampire Bat, Wandering Mage, Arc Bat, Hammerhead Shark and Ironback Gorilla, mostly on the Attack × Health check. The fitted stats are noted; no card was changed.
