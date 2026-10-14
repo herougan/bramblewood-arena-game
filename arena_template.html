@@ -2972,6 +2972,15 @@
   .skirmish-editor .se-grid label{display:flex; flex-direction:column; gap:4px; font-size:12.5px; font-weight:800;}
   .skirmish-editor .se-grid input, .skirmish-editor .se-grid select{font-weight:400;}
   .skirmish-editor .se-wide{grid-column:1 / -1;}
+  /* Showcase picker (2026-10-14) */
+  .skirmish-editor .se-showcase{display:flex; flex-direction:column; gap:8px;}
+  .skirmish-editor .se-showcase select{max-width:320px;}
+  .se-sc-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .se-sc-pick{width:62px; padding:0; border:0; background:none; cursor:pointer; border-radius:10px; outline:3px solid transparent; outline-offset:2px; opacity:.72; transition:opacity .15s, outline-color .15s, transform .15s;}
+  .se-sc-pick .card-tile{width:100% !important; pointer-events:none;}
+  .se-sc-pick:hover{opacity:1; transform:translateY(-2px);}
+  .se-sc-pick.is-on{opacity:1; outline-color:#e3b23c;}
+  .se-sc-pick.is-auto{opacity:1; outline:3px dashed rgba(227,178,60,.7);}
   .skirmish-editor .se-req{display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; font-size:12.5px;}
   .skirmish-editor .se-chk{flex-direction:row !important; align-items:center; gap:4px !important; font-weight:600 !important;}
   .skirmish-editor .se-h{margin:14px 0 6px;}
@@ -3151,7 +3160,10 @@
   @keyframes lnudge{0%{opacity:0; transform:translate(-50%,6px);} 10%,80%{opacity:1; transform:translate(-50%,0);} 100%{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .lumber-lesson .ll-spare, .lumber-lesson .ll-cost, .hand-strip .card-tile .lumber-nudge{animation:none;} }
   /* Page bar (2026-10-13): shortcuts to the other places, then ↩, on the title row at the far right */
-  .page-back-bar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin:0 0 10px; position:relative; z-index:20;}
+  /* 2026-10-14 (user: "Proper margins between the feature pages tab and the feature page themselves. - the inventory one
+     especially"): 10px was not enough room under the Camp/Codex/Forge/Nest/Inventory strip; 20px on desktop, 16px on phones. */
+  .page-back-bar{display:flex; align-items:center; justify-content:flex-end; gap:8px; margin:0 0 20px; position:relative; z-index:20;}
+  @media (max-width:640px){ .page-back-bar{margin-bottom:16px;} }
   .page-back-bar .pb-shortcuts{margin-right:auto;}
   .page-back-bar .pb-shortcuts{display:flex; gap:4px; padding:3px; border-radius:999px; background:rgba(20,14,8,.45); box-shadow:inset 0 0 0 1px rgba(255,236,190,.2);}
   .page-back-bar .pb-sc{display:inline-flex; align-items:center; gap:5px; border:0; cursor:pointer; padding:5px 10px; border-radius:999px; background:transparent; color:#fff8e6; font:800 13px 'Baloo 2',system-ui,sans-serif;}
@@ -6135,6 +6147,16 @@
   .inv-slot{position:relative; width:64px; height:64px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(60,40,20,.12); border:2px solid rgba(120,90,50,.45); box-shadow:inset 0 2px 4px rgba(0,0,0,.18);}
   .inv-slot:focus-visible{outline:2px solid var(--accent, #c8902a); outline-offset:2px;}
   .inv-slot-ico{font-size:30px; line-height:1;} .inv-slot.is-empty .inv-slot-ico{opacity:.3; filter:grayscale(1);}
+  /* 2026-10-14: an item you held before and ran out of stays, greyed; a newly held one wears New! once */
+  .inv-slot.is-empty{opacity:.6;}
+  .inv-new{position:absolute; top:-8px; left:50%; transform:translateX(-50%) rotate(-6deg); font:800 10px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.3px; padding:3px 6px; border-radius:999px; background:linear-gradient(135deg,#ff5a5a,#ff9d3a); color:#fff; box-shadow:0 2px 6px rgba(0,0,0,.3); animation:invNewPop .5s cubic-bezier(.2,1.6,.4,1) both, invNewBob 1.6s .5s ease-in-out infinite; pointer-events:none; white-space:nowrap;}
+  .inv-new.is-inline{position:static; display:inline-block; transform:none; margin-left:6px; animation:invNewPop .5s cubic-bezier(.2,1.6,.4,1) both;}
+  .inv-slot.is-new{border-color:#ff9d3a; box-shadow:0 0 0 2px rgba(255,157,58,.35), inset 0 2px 4px rgba(0,0,0,.18);}
+  @keyframes invNewPop{from{opacity:0; transform:translateX(-50%) scale(.4);} to{opacity:1;}}
+  @keyframes invNewBob{0%,100%{margin-top:0;} 50%{margin-top:-2px;}}
+  @media (prefers-reduced-motion: reduce){ .inv-new{animation:none;} }
+  .inv-kit-note{margin:14px 0 0 !important;}
+  .inv-none{margin:0;}
   .inv-slot-n{position:absolute; right:3px; bottom:1px; font:800 13px/1 'Baloo 2',system-ui,sans-serif; color:#fff8e6; text-shadow:0 1px 0 #000, 0 0 3px #000;}
   .forge-castles{display:flex; flex-direction:column; gap:10px;}
   .fc-row{display:flex; gap:14px; align-items:center; padding:8px; border-radius:12px;} .fc-row.is-on{background:rgba(255,200,90,.12);}
@@ -8225,8 +8247,16 @@
   .winloss-card.is-fallen .winloss-reason, .winloss-card.is-fallen .wls-compact{color:rgba(230,233,240,.75) !important;} .winloss-card.is-fallen .wls-compact b{color:#fff;}
   .winloss-card.is-fallen .wl-corner-btn{background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff;}
   .winloss-card.is-fallen .winloss-actions .btn:not(.primary){background:rgba(255,255,255,.1); color:#fff; border-color:rgba(255,255,255,.28);}
-  .winloss-card.is-fallen .loss-tip, .winloss-card.is-fallen [class*="loss-tip"]{background:rgba(255,255,255,.07) !important; border-color:rgba(200,210,230,.28) !important; color:#e6e9f0 !important;}
-  .winloss-card.is-fallen [class*="loss-tip"] b{color:#fff;}
+  /* 2026-10-14 (user: "The rework my deck section + the light bulb has a different background color"): the old
+     [class*="loss-tip"] selector also painted .loss-tip-ico and .loss-tip-body, stacking a second tint (and border) on
+     them. Only the box is tinted now; its insides stay transparent, so bulb, text and button share one background. */
+  .winloss-card.is-fallen .loss-tip{background:rgba(255,255,255,.07) !important; border-color:rgba(200,210,230,.28) !important; color:#e6e9f0 !important;}
+  .winloss-card.is-fallen .loss-tip-ico, .winloss-card.is-fallen .loss-tip-body{background:transparent !important; border:0 !important;}
+  .winloss-card.is-fallen .loss-tip b{color:#fff;}
+  .winloss-card.is-fallen .loss-tip #wlReworkDeckBtn{background:rgba(255,255,255,.12); color:#fff; border-color:rgba(255,255,255,.3);}
+  .wl-loss-rank{display:flex; flex-direction:column; align-items:center; gap:2px; margin:6px auto 4px; text-align:center;}
+  .wl-loss-rank b{font:800 22px 'Baloo 2',system-ui,sans-serif; letter-spacing:.5px; color:#f3c9c9;}
+  .wl-loss-rank small{font-size:12.5px; opacity:.8;}
   .wl-quote{margin:12px auto 16px; max-width:560px; padding:12px 18px 10px; text-align:center; position:relative;
     background:#efe4c8; color:#3a2a14; border-radius:4px; box-shadow:0 6px 16px rgba(0,0,0,.35); rotate:-.6deg;}
   .wl-quote::before{content:""; position:absolute; top:-6px; left:50%; width:12px; height:12px; margin-left:-6px; border-radius:50%; background:radial-gradient(circle at 35% 35%, #d9675a, #8a2a20); box-shadow:0 2px 3px rgba(0,0,0,.4);}
@@ -9221,7 +9251,8 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   @media (prefers-reduced-motion: reduce){ .sm-sparks i{animation:none; display:none;} }
   /* Inventory (2026-10-11) */
   #view-inventory{max-width:960px; margin:0 auto; width:100%;}
-  .inv-page{display:flex; flex-direction:column; gap:10px;}
+  .inv-page{display:flex; flex-direction:column; gap:14px; padding-top:4px;} /* 2026-10-14: a little more air between the shelves */
+  .inv-sec .inv-slots{padding-top:8px;} /* room for a New! badge under the heading */
   .inv-head h2{margin:0;}
   .inv-sec h3{display:flex; align-items:center; gap:10px; margin:0 0 8px;} .inv-sec h3 .btn{margin-left:auto;} .inv-sec h3 small{opacity:.7; font-weight:600;}
   .inv-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px;}

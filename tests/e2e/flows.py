@@ -4,6 +4,7 @@
   - Conquest full-screen never outlives the map
   - Raid trench can be left
   - Pack cards show up in the Nest, the deck builder pool (unlocked) and the Forge
+  - Packs open at once: credited before the animation, never twice, no unopened stash (2026-10-14)
   - Escape closes Settings / Quests
 """
 import asyncio, sys
@@ -176,6 +177,34 @@ async def main():
     for d in got:
         if d not in forge: bad(f'forge: bought card {d} not in Forge pool')
     if errs: bad(f'pack flow page errors {errs[:2]}')
+    await pg.close()
+    # 2a. packs open at once (2026-10-14, user: "unopened packs should immediately open ... If the person exits during the pack
+    # opening, they are just credited to their account"): a granted pack's cards are credited before the animation, closing the
+    # animation never grants them again (no double credit), there is no stash, and an old save's stash is opened on load.
+    pg, errs = await fresh(b)
+    await pg.evaluate("localStorage.setItem('bramblewood_free_packs_v1', JSON.stringify({bronze:1})); localStorage.setItem('bramblewood_faction_packs_v1', JSON.stringify({otter:1})); location.reload(); 1")
+    await pg.wait_for_timeout(1500)
+    await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
+    for _ in range(60):
+        if await pg.evaluate("(JSON.parse(localStorage.getItem('bramblewood_free_packs_v1')||'{}').bronze|0) === 0"): break
+        await pg.wait_for_timeout(500)
+    stash = await pg.evaluate("[JSON.parse(localStorage.getItem('bramblewood_free_packs_v1')||'{}').bronze|0, JSON.parse(localStorage.getItem('bramblewood_faction_packs_v1')||'{}').otter|0]")
+    if stash != [0, 0]: bad(f'packs: an old save\'s waiting packs were not opened on load {stash}')
+    tot = "Object.values(myCardCopies).reduce((t,a)=> t + a.length, 0) + (loadPitchHeld()||[]).length"
+    before = await pg.evaluate(tot)
+    n = await pg.evaluate("grantFreePack('bronze', 1).length + grantFactionPack('otter', 1).length")
+    mid = await pg.evaluate(tot)
+    if n != 2 or mid <= before: bad(f'packs: a granted pack was not credited at once ({before} -> {mid}, {n} opened)')
+    for _ in range(12):
+        await pg.keyboard.press('Escape'); await pg.wait_for_timeout(350)
+        if await pg.evaluate("(()=>{ const o=document.getElementById('packOpenOverlay'); return !(o && !o.hidden) && !packRevealQueue.length; })()"): break
+    after = await pg.evaluate(tot)
+    if after != mid: bad(f'packs: closing the opening changed the collection ({mid} -> {after}): double credit')
+    left = await pg.evaluate("[Object.values(loadFreePacks()).reduce((t,k)=> t + (k|0), 0), Object.values(loadFactionPacks()).reduce((t,k)=> t + k, 0)]")
+    if left != [0, 0]: bad(f'packs: something went to the unopened stash {left}')
+    await pg.evaluate("switchTab('inventory'); 1"); await pg.wait_for_timeout(400)
+    if await pg.evaluate("/Unopened packs/.test(document.getElementById('view-inventory').textContent)"): bad('packs: the Inventory still has an Unopened packs shelf')
+    if errs: bad(f'packs open at once: page errors {errs[:2]}')
     await pg.close()
     # 2b. win screen buttons: Back to board, Play again, Next battle, Quit
     for btn_id in ['wlBackBtn', 'wlPrimaryBtn', 'wlNextBattleBtn', 'wlQuitBtn']:
