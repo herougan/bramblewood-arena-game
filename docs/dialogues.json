@@ -1491,7 +1491,7 @@
   {
    "id": "forge_cobble_intro",
    "where": [
-    "renderForge()  · arena_app.js:31998"
+    "renderForge()  · arena_app.js:32006"
    ],
    "lines": [
     {
@@ -1505,7 +1505,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "renderForge()  · arena_app.js:31998"
+     "where": "renderForge()  · arena_app.js:32006"
     },
     {
      "id": "forge_cobble_intro",
@@ -1794,7 +1794,7 @@
   {
    "id": "pitch_lesson_h",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:28000"
    ],
    "lines": [
     {
@@ -1808,14 +1808,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:28000"
     }
    ]
   },
   {
    "id": "pitch_lesson_o",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:28000"
    ],
    "lines": [
     {
@@ -1829,7 +1829,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:28000"
     }
    ]
   },
@@ -1925,7 +1925,7 @@
   {
    "id": "tut_boomerang",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28017"
+    "Tutorial fights: remarks from your side  · arena_app.js:28025"
    ],
    "lines": [
     {
@@ -1939,14 +1939,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28017"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28025"
     }
    ]
   },
   {
    "id": "tut_fly",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28016"
+    "Tutorial fights: remarks from your side  · arena_app.js:28024"
    ],
    "lines": [
     {
@@ -1960,14 +1960,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28016"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28024"
     }
    ]
   },
   {
    "id": "tut_traveller_cheer",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28012"
+    "Tutorial fights: remarks from your side  · arena_app.js:28020"
    ],
    "lines": [
     {
@@ -1981,7 +1981,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28012"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28020"
     }
    ]
   },
