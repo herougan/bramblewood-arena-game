@@ -52,7 +52,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   e.roundStart(P, 2, so, {}, []); e.roundStart(P, 3, so, {}, []); ok(e.getTide() === 'ebb', 'round 3 is Ebb');
   ok(dealt(e, P, byDef(P[1], 'kb-hit').uid, byDef(P[2], 'kb-swim')) === 4, 'on Ebb a Swimmer has +1 Armor as a Tide unit (5 -> 4)'); }
 { const {e, P} = mk(); e.roundStart(P, 1, so, {}, []); e.debugSpawnCard(P, so, 1, 'kb-swim', 'left', {}, []); e.roundStart(P, 2, so, {}, []);
-  ok(e.getTide() === 'flow', `the first Swimmer starts the tide like any Tide unit (${e.getTide()})`); }
+  ok(e.getTide() === null, `2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): a Swimmer no longer starts the tide (${e.getTide()})`); }
 // ---- Moonpull: the Tide comes in at once
 { const {e, P} = mk(); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []); ok(e.getTide() === null, 'no Tide unit yet: no tide');
   const ev = []; e.debugSpawnCard(P, so, 1, 'kb-moon', 'left', {}, ev);
