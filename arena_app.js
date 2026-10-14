@@ -7853,6 +7853,8 @@ function newAchievementsChipHTML(m){
     return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
   }catch(e){ return ''; }
 }
+// A fight you have actually won (see the clearedAt note in achievementContext).
+function conquestNodeBeaten(progress, mapId, key){ const id = conquestNodeId(mapId, key); return !!(progress && progress.clearedAt && progress.clearedAt[id] && (progress.completed||[]).includes(id)); }
 function achievementContext(){
   const s = loadMatchStats();
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
@@ -7867,9 +7869,13 @@ function achievementContext(){
     ownedCards, leveledCards,
     clearedNodes, mapsFullyCleared,
     raidBossesUnlocked: progress.raidUnlocked.length,
-    roadDone: progress.completed.includes(conquestNodeId('m11', '11-8')) ? 1 : 0,
-    eyeDone: progress.completed.includes(conquestNodeId('me', 'e-4')) ? 1 : 0,
-    worldBoss: (progress.completed.includes(conquestNodeId('mx', 'x-wb')) || progress.completed.includes(conquestNodeId('m11', '11-wb'))) ? 1 : 0,
+    // 2026-10-14 (user: "Wyrmslayer should only be achieved when I defeat the Caldera wyrm! Not just from seeing it."):
+    // progress.completed is also filled by things that are not a win (the 11-wb carry-over that ticks the whole Volcano
+    // Lair, the admin "clear map" / "jump to" tools, the reset-to-Map-N job). progress.clearedAt is only written by
+    // completeConquestNode, i.e. by actually winning that fight, so the "defeat / clear this boss" achievements read it.
+    roadDone: conquestNodeBeaten(progress, 'm11', '11-8') ? 1 : 0,
+    eyeDone: conquestNodeBeaten(progress, 'me', 'e-4') ? 1 : 0,
+    worldBoss: conquestNodeBeaten(progress, 'mx', 'x-wb') ? 1 : 0,
   };
 }
 function loadClaimedAchievements(){
@@ -11514,9 +11520,22 @@ const DIALOGUE_SPEAKERS = {
   beetle:     {name:'Sister Carapace', icon:'🪲', art:'art/npc/beetle.png'},
   frog:       {name:'Croaker, a pond warden', icon:'🐸', art:'art/npc/frog.png'},
   hedgehog:   {name:'Thimble the hedgehog', icon:'🦔', art:'art/npc/hedgehog.png'},
+  // 2026-10-14 (user: "Dk if this can be used for anything (this golem picture) - maybe not a card but an assistant"): Cobble,
+  // a mossy stone golem who works the Forge's bellows. Says hello the first time the Forge opens and voices its "can't".
+  golem:      {name:'Cobble, the Forge golem', icon:'🗿', art:'art/npc/golem.png'},
 };
 // Script format: {lines:[{who, text, options?:[{label, goto?}], silent?:goto, goto?}], ...}. `goto` jumps to a label.
 const DIALOGUES = {
+  // Cobble at the Forge (2026-10-14): the one-time hello, and the lines it says instead of a plain "can't afford" toast.
+  forge_cobble_intro: {lines:[
+    {who:'golem', text:'Cobble. I keep the fire. Feed a card Dust and Leaves and I temper it, one level at a time.'},
+    {who:'golem', text:'At level 10 a card hits its limit. Bring duplicates and I can break it, and it climbs again.'}]},
+  forge_cobble_dust: {lines:[{who:'golem', text:'Not enough Dust. Fuse a duplicate or win a few fights, then come back.'}]},
+  forge_cobble_gold: {lines:[{who:'golem', text:'Not enough Maple Leaves. The fire eats them too.'}]},
+  forge_cobble_mats: {lines:[{who:'golem', text:'Missing Materia for that one. The Blacksmith can make it.'}]},
+  forge_cobble_tier: {lines:[{who:'golem', text:'My Forge cannot heat that high yet. Upgrade the Forge first.'}]},
+  forge_cobble_gate: {lines:[{who:'golem', text:'Not yet. That level opens further down the road.'}]},
+  forge_cobble_limit: {lines:[{who:'golem', text:'It is not ready to break its limit. Level 10 and enough duplicates first.'}]},
   pitch_spent_o: {lines:[{who:'swiftpaw', text:'One card a turn. Try again next turn.'}]},
   pitch_spent_h: {lines:[{who:'aurelia', text:'One card a turn. Try again next turn.'}]},
   pitch_lesson_o: {lines:[{who:'swiftpaw', text:'Big cards need Lumber. Throw a spare card on the pile.'}]},
@@ -13188,7 +13207,14 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending castle: +1 Health per level. Blank = the default for this kind of fight">Castle level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
-        <label title="The card shown big on this skirmish's preview">Showcase card<select id="seShowcase"><option value="">Strongest card</option>${Object.keys(draft.deck||{}).filter(id=> getCardDefs()[id]).map(id=> opt(id, draft.showcase, getCardDefs()[id].name)).join('')}</select></label>
+        ${(()=>{ // 2026-10-14 (user: "Let me choose the showcase card (based on cards in the opponent's deck)"): a picker of the
+          // enemy deck's own cards, drawn as cards, under the dropdown (kept: read() saves from it). Auto = the strongest card.
+          const sdefs = getCardDefs(), ids = Object.keys(draft.deck||{}).filter(id=> draft.deck[id] > 0 && sdefs[id]);
+          const pick = draft.showcase && ids.includes(draft.showcase) ? draft.showcase : '';
+          const autoId = nodeShowcaseId(Object.assign({}, draft, {showcase:null}));
+          return `<fieldset class="se-wide se-showcase"><legend>Showcase card <small>shown big on this fight's panel · pick one of the enemy deck's cards</small></legend>
+            <select id="seShowcase" aria-label="Showcase card"><option value="">Auto (strongest${autoId && sdefs[autoId] ? ': ' + escapeHtml(sdefs[autoId].name) : ''})</option>${ids.map(id=> opt(id, pick, sdefs[id].name)).join('')}</select>
+            <div class="se-sc-row" aria-label="Enemy deck cards">${ids.length ? ids.map(id=> `<button type="button" class="se-sc-pick ${id === pick ? 'is-on' : ''} ${!pick && id === autoId ? 'is-auto' : ''}" data-sc="${escapeAttr(id)}" aria-pressed="${id === pick}" title="${escapeAttr(sdefs[id].name)}${!pick && id === autoId ? ' (the automatic pick)' : ''}">${cardTileHTML(sdefs[id], {inPlay:true})}</button>`).join('') : '<span class="panel-sub">Add cards to the deck first.</span>'}</div></fieldset>`; })()}
         ${draft.kind==='tutorial' ? '' : (()=>{ const def = CONQUEST_NODE_REWARDS[draft.kind] || CONQUEST_NODE_REWARDS.skirmish, r = draft.rewards || {}; const f = (k, c)=> `<input id="seRw_${k}_${c}" type="number" min="0" max="99999" placeholder="${def[k][c]}" value="${r[k] && r[k][c] != null ? r[k][c] : ''}" aria-label="${k==='first'?'First clear':'Repeat clear'} ${c==='gold'?'Gold':'Dust'}">`;
           return `<fieldset class="se-rewards"><legend>Rewards <small>blank = the ${escapeHtml(KIND_LABEL[draft.kind]||draft.kind)} default</small></legend>
             <span>First clear</span>${f('first','gold')}<i>🍁</i>${f('first','dust')}<i>✨</i>
@@ -13258,7 +13284,11 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       </div>
     </div>`;
     overlay.hidden = false;
-    window.__seRerender = ()=>{ if(!overlay.hidden && overlay.innerHTML) render(); }; // the tutorial editor redraws us after a save (2026-10-12)
+    window.__seRerender = ()=>{ if(!overlay.hidden && overlay.innerHTML) render(); };
+    { const sel = document.getElementById('seShowcase');
+      if(sel){ const sync = ()=> overlay.querySelectorAll('.se-sc-pick').forEach(b=>{ const on = b.dataset.sc === sel.value; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', String(on)); if(sel.value) b.classList.remove('is-auto'); });
+        sel.addEventListener('change', sync);
+        overlay.querySelectorAll('.se-sc-pick').forEach(b=> b.addEventListener('click', ()=>{ sel.value = sel.value === b.dataset.sc ? '' : b.dataset.sc; sel.dispatchEvent(new Event('change')); })); } } // the tutorial editor redraws us after a save (2026-10-12)
     const read = ()=>{
       const v = id=> (document.getElementById(id)||{}).value;
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
@@ -15082,17 +15112,31 @@ function rankExplain(rank, m){
   const mult = RANK_MULT[rank] != null ? ` Repeat rewards ×${RANK_MULT[rank]}.` : '';
   if(rank === 'SSS') return `No damage taken, and none of your units fell.${mult}`;
   if(rank === 'SS') return `No damage taken.${mult}`;
-  if(rank === 'FFF') return 'Lost, dealing 1 damage or less.';
-  if(rank === 'FF') return 'Lost; the enemy castle took 2 damage or less.';
+  if(rank === 'FFF') return 'Lost; their castle took 1 damage or less (Armour included).';
+  if(rank === 'FF') return 'Lost; their castle took 2 damage or less (Armour included).';
   if(rank === 'F') return 'Lost.';
   return pct != null ? `Won with ${pct}% of your castle's Health left.${mult}` : `Graded on your castle's Health left.${mult}`;
 }
+// 2026-10-14 (user: "why is there a discrepancy, I think fix it, then remove the pill. FF should include shield damage"):
+// the defeat screen showed "Rank F" in the lesson box (it folded FF/FFF into F) and "Rank FF" in a pill below, and FFF used
+// a different count (unit damage too) from FF (castle Health only). Now one count, the damage their castle took including
+// its Armour (shield), drives F / FF / FFF, and the screen shows that one rank once (lossRankHeadlineHTML).
+function lossCastleDamage(m){
+  const enemy = m.players[2].hq;
+  const hpDmg = Math.max(0, (enemy.maxHp||0) - Math.max(0, enemy.hp||0)), shDmg = Math.max(0, (enemy.maxShield||0) - Math.max(0, enemy.shield||0));
+  return {hp:hpDmg, shield:shDmg, total:hpDmg + shDmg};
+}
 function lossRankFor(m){
-  const enemy = m.players[2].hq, castleDmg = Math.max(0, (enemy.maxHp||0) - Math.max(0, enemy.hp));
-  let dealt = 0; Object.values(m.stats||{}).forEach(st=>{ if(st && st.side==='A') dealt += (st.dealt||0) + (st.faceDamage||0); });
-  if(Math.max(dealt, castleDmg) <= 1) return 'FFF';
-  if(castleDmg <= 2) return 'FF';
+  const d = lossCastleDamage(m).total;
+  if(d <= 1) return 'FFF';
+  if(d <= 2) return 'FF';
   return 'F';
+}
+function lossRankHeadlineHTML(m){
+  if(!m || m.mode !== 'conquest' || m.winner === 1 || !/^F+$/.test(m.conquestRankEarned || '')) return '';
+  const d = (()=>{ try{ return lossCastleDamage(m); }catch(e){ return null; } })();
+  const note = d ? `Their castle took ${d.total} damage${d.shield ? ` (${d.shield} of it to its Armour)` : ''}.` : '';
+  return `<div class="wl-loss-rank" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}"><b class="rank-${m.conquestRankEarned}">Rank ${m.conquestRankEarned}</b>${note ? `<small>${escapeHtml(note)}</small>` : ''}</div>`;
 }
 function conquestRankFor(m, node){
   const hq = m.players[1].hq, frac = hq.maxHp > 0 ? Math.max(0, hq.hp)/hq.maxHp : 0;
@@ -16339,22 +16383,24 @@ document.addEventListener('keydown', e=>{
   e.preventDefault();
   if(k.map.sub) leaveSubMap(k.map, k.body); else conquestPanTo(go.id, k.body, k.progress);
 });
-// The Sweep menu: how many runs, and the Idle-Sweep switch.
+// The Auto-sweep menu: how many runs, and the keep-auto-sweeping (Idle-Sweep) switch.
+// 2026-10-14 (user: "This should say Auto-sweep if I don't even have to play the game."): every player-facing "Sweep" here,
+// on the node panel's split pill and in the toasts now reads Auto-sweep; Idle-Sweep reads "Keep auto-sweeping here".
 function openSweepMenu(anchor, map, node, energyCost, body){
   document.getElementById('sweepMenu')?.remove();
   const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
   const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
-  const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Sweep');
-  m.innerHTML = `<div class="sm-q">🧹 How many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
-    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Idle-Sweep here</label>` : ''}</div>`;
+  const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Auto-sweep');
+  m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
+    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
   document.body.appendChild(m);
   const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
   const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
   const away = e=>{ if(!m.contains(e.target) && e.target !== anchor) close(); };
   setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
-  m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Sweeping…';
-    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(r2) showToast(`🧹 ${r2.played} sweep${r2.played===1?'':'s'}: ${r2.wins} won · +${r2.gold} Maple Leaves${r2.dust ? ' · +' + r2.dust + ' Dust' : ''}`, r2.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); });
-  const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? '🌙 Idle-Sweep set: spare Energy goes here while you are away.' : 'Idle-Sweep off.', 'ok'); };
+  m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Auto-sweeping…';
+    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(r2) showToast(`🧹 Auto-swept ${r2.played}×: ${r2.wins} won · +${r2.gold} Maple Leaves${r2.dust ? ' · +' + r2.dust + ' Dust' : ''}`, r2.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); });
+  const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? '🌙 Keep auto-sweeping here: spare Energy goes into this fight while you are away.' : 'Stopped auto-sweeping here.', 'ok'); };
 }
 function renderConquestSubTab(body){
   // Until Tutorial II is won, the road starts in the Tutorial side map (2026-10-13).
@@ -16756,7 +16802,7 @@ function renderConquestSubTab(body){
       ${selectedNode.virtual ? '' : (()=>{ const canSweep = done && sweepAllowed(map.id, selectedNode.key);
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
-        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Sweep: the CPU plays this fight for you. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Sweep</button>` : ''}</div>`; })()}
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>` : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
@@ -16776,9 +16822,9 @@ function renderConquestSubTab(body){
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
-    { const sb = document.getElementById('cnpSweepBtn'); if(sb) sb.addEventListener('click', ()=>{ const n = Number((document.getElementById('cnpSweepN')||{}).value)||1; sb.disabled = true; sb.textContent = 'Sweeping…';
-        setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); if(r) showToast(`🧹 ${r.played} sweep${r.played===1?'':'s'}: ${r.wins} won · +${r.gold} Maple Leaves${r.dust ? ' · +' + r.dust + ' Dust' : ''}`, r.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); }); }
-    { const ib = document.getElementById('cnpIdleSweep'); if(ib) ib.addEventListener('change', ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, selectedNode.key); showToast(ib.checked ? '🌙 Idle-Sweep set: spare Energy goes here while you are away.' : 'Idle-Sweep off.', 'ok'); }); }
+    { const sb = document.getElementById('cnpSweepBtn'); if(sb) sb.addEventListener('click', ()=>{ const n = Number((document.getElementById('cnpSweepN')||{}).value)||1; sb.disabled = true; sb.textContent = 'Auto-sweeping…';
+        setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); if(r) showToast(`🧹 Auto-swept ${r.played}×: ${r.wins} won · +${r.gold} Maple Leaves${r.dust ? ' · +' + r.dust + ' Dust' : ''}`, r.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); }); }
+    { const ib = document.getElementById('cnpIdleSweep'); if(ib) ib.addEventListener('change', ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, selectedNode.key); showToast(ib.checked ? '🌙 Keep auto-sweeping here: spare Energy goes into this fight while you are away.' : 'Stopped auto-sweeping here.', 'ok'); }); }
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
@@ -18564,7 +18610,7 @@ function tutorialWinLossSubtitleHTML(m){
     if(pick==='hummingbirds' || pick==='both') rewardIds.push('sunspire-envoy');
     rewardIds.push('rabbit-kit');
     if(loadTutorial2Done() && !m.tutorialFirstPart2) return `<p class="splash-sub">Nicely done — that was a replay, so no rewards this time.</p>`;
-    return `<p class="splash-sub">That's everything. The training wheels are off now: from here, fights don't stop to explain. An Ally Pack waits in the Shop.</p>`;
+    return `<p class="splash-sub">That's everything. The training wheels are off now: from here, fights don't stop to explain. Your Ally Pack opens as soon as you leave this screen.</p>`; // 2026-10-14: packs open at once
   }
   return `<p class="splash-sub">${meta.title} — ${meta.teaches}${m.winner===1?'':`. ${meta.lesson}`}</p>`;
 }
@@ -22195,7 +22241,7 @@ function renderMatchUI(){
         ${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}${rankLessonHTML(m)}
+        ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -25551,7 +25597,7 @@ function processIdleSweep(){
   const runs = Math.min(60, Math.floor(bank / cost)); if(!runs) return null;
   st.idleBank = bank - runs*cost; st.current += runs*cost; saveEnergyState(st); // runSweep spends it back out
   const r = runSweep(t.mapId, t.nodeKey, runs);
-  if(r && r.played) setTimeout(()=>{ try{ showToast(`🌙 While you were away: ${r.played} sweep${r.played===1?'':'s'} of ${conquestNodeLabel(t.mapId, t.nodeKey)}, ${r.wins} won (+${r.gold} Maple Leaves${r.dust ? ', +' + r.dust + ' Dust' : ''}).`, 'ok'); }catch(e){} }, 2500);
+  if(r && r.played) setTimeout(()=>{ try{ showToast(`🌙 While you were away: ${r.played} auto-sweep${r.played===1?'':'s'} of ${conquestNodeLabel(t.mapId, t.nodeKey)}, ${r.wins} won (+${r.gold} Maple Leaves${r.dust ? ', +' + r.dust + ' Dust' : ''}).`, 'ok'); }catch(e){} }, 2500);
   return r;
 }
 setTimeout(()=>{ try{ processIdleSweep(); }catch(e){} }, 6000);
@@ -28634,7 +28680,7 @@ function defeatQuoteHTML(m){
 // and SSS we provide them a tutorial explanation. If you get S or SS or SSS, you don't have to have explanations for the ranks
 // below till A anymore. But if you get A, then S, then SS, then SSS - there's always a congratulatory message everytime").
 const RANK_LESSONS = {
-  F:{t:'Rank F', d:'A loss. The more of their castle you knock down, the less it stings: F, FF, then FFF for barely a scratch.'},
+  // F lesson removed 2026-10-14 (user: "Don't need to explain Rank F like this"): a loss shows its rank once, lossRankHeadlineHTML.
   E:{t:'Rank E', d:'A win by a thread. Ranks grade the castle Health you keep: lose less of it for a better rank.'},
   A:{t:'Rank A!', d:'Well fought. Keep 90% of your castle and it becomes S.', cheer:true},
   S:{t:'Rank S!', d:'Barely a scratch on your castle. Take no damage at all for SS.', cheer:true},
@@ -28645,7 +28691,7 @@ function rankLessonHTML(m){
   if(!m || m.mode !== 'conquest' || !m.conquestRankEarned || m.adminTest) return '';
   if(m._rankLesson === undefined){
     m._rankLesson = null;
-    const r = /^F+$/.test(m.conquestRankEarned) ? 'F' : m.conquestRankEarned, L = RANK_LESSONS[r];
+    const r = m.conquestRankEarned, L = /^F+$/.test(r) ? null : RANK_LESSONS[r];
     const flags = loadDialogueFlags();
     if(L && !flags['rankLesson:' + r]){
       m._rankLesson = r;
@@ -28669,9 +28715,7 @@ function gloryBadgesHTML(m){
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
-  if(m.conquestRankEarned && m.winner!==1){
-    secs.push(`<div class="rw-sec rw-rank"><span class="conquest-rank-badge rank-${m.conquestRankEarned}" data-tip="${escapeAttr(rankExplain(m.conquestRankEarned, m))}">Rank ${m.conquestRankEarned}</span>${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" data-tip="First time clearing this fight — a bigger one-off bonus">✨ First Clear</span>` : ''}</div>`);
-  }
+  // The loss-rank pill that sat here was removed 2026-10-14: the headline (lossRankHeadlineHTML) shows the rank once.
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
   if(cards.length){
     const defs = getCardDefs();
@@ -28690,7 +28734,7 @@ function rewardsPanelHTML(m){
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack: it waits unopened in the Shop, under Your packs">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Rewards</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?' — first-clear bonus':' — repeat-clear payout'):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="An S-rank win on this map turned up a card (once per map)">🎁 Rare find</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="It's safe in your Nest and will grow into a ${escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')} card">🐣 Rescued a baby</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">🐉 Dragon Scale ${m.conquestScaleEarned.index}/${m.conquestScaleEarned.total}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="Materia for the Blacksmith (Forge)">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}</span>` : ''}${m.conquestFreePack ? (()=>{ const fp = getShopPacks().find(p=> p.id===m.conquestFreePack) || {}; return `<span class="hud-pill rank-bonus-pill rw-pack" data-tip="A free pack, opened: its cards are already in your collection. You'll see it open when you leave this screen">${fp.icon||'🎁'} Free ${escapeHtml(fp.name||'pack')}</span>`; })() : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="A Base card in your deck grew from this boss">🌱 ${escapeHtml((defs[x.id]||{}).name||x.id)} Lv ${x.to}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="A spare copy of a Base card in your deck: feed it in the Forge">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="Your Base cards had nothing left to grow, so it came as Dust">✨ ${g.dust} for Base growth</span>` : ''); })() : ''}</div></div>`);
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Spare castle</div><div class="rw-row"><span class="rw-act" data-tip="Fuse it in the Forge (Castles) to bank progress toward its next levels">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
@@ -28783,7 +28827,7 @@ function matchStatsHTML(m){
       ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="A rare find for an S-rank win on this map (once per map)">🎁 Rare find!</span>` : ''}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="Defeating a named Conquest leader (Boss/Raid Boss) pays out Metal">🔩 ${rewardCountSpan(m.conquestMetalEarned)} Metal</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="Food tokens buy Sunfeather packs in the Shop">🍯 ${m.conquestFoodEarned} Food</span>` : ''}
-      ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="It waits unopened in the Shop, under Your packs">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? ' · new subfaction!' : ''}</span>` : ''}
+      ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="Opened: its cards are already in your collection">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? ' · new subfaction!' : ''}</span>` : ''}
       ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="New card unlocked">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}${m.conquestCardsNeedRank ? `<span class="hud-pill" title="Win this fight at rank ${m.conquestCardsNeedRank} or better to take its card">🔒 Card at rank ${m.conquestCardsNeedRank}+</span>` : ''}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
@@ -31932,6 +31976,8 @@ function wireForgeMateriaBench(root){
 function renderForge(){
   const root = document.getElementById('view-forge'); if(!root) return;
   setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r){ dressForgePlace(r); wireForgeMateriaBench(r); wireStamina(r, renderForge); } }, 0);
+  // Cobble's hello, the first time the Forge is actually on screen (2026-10-14).
+  setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r && r.offsetParent !== null && !loadDialogueFlags()['seen:forge_cobble_intro']) playDialogue('forge_cobble_intro', {once:true}); }, 700);
   const defs = getCardDefs();
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && id!==HERO_ID);
   if(forgeMode==='refine') ids = ids.filter(id=> (myCardCopies[id]||[]).length);
@@ -32335,7 +32381,7 @@ function limitBreakDupBoardHTML(id, lb){
 }
 async function forgeLimitBreak(btn){
   if(forgeBusy || !forgeSelectedId) return;
-  const id = forgeSelectedId; if(!limitBreakState(id).ok){ denyShake(btn); return; }
+  const id = forgeSelectedId; if(!limitBreakState(id).ok){ denyShake(btn); cobbleSay('limit'); return; }
   forgeBusy = true; btn.disabled = true;
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   limitBreakCard(id);
@@ -32387,7 +32433,7 @@ async function forgePromote(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, to = forgePromotePick, defs = getCardDefs(), d = defs[id];
   const at = Math.max(1, Number(d && d.promoteAt)||3);
-  if(!to || !promotionTargets(id).includes(to) || getCardLevel(id) < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); return; }
+  if(!to || !promotionTargets(id).includes(to) || getCardLevel(id) < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); if(to && getCardLevel(id) >= at){ if(myCurrencies.dust < PROMOTE_COST.dust) cobbleSay('dust'); else if(myCurrencies.gold < PROMOTE_COST.gold) cobbleSay('gold'); } return; }
   forgeBusy = true; btn.disabled = true;
   const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview'});
   myCurrencies.gold -= PROMOTE_COST.gold; myCurrencies.dust -= PROMOTE_COST.dust; saveCurrencies();
@@ -32481,10 +32527,20 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
     tl.seek('heat').timeScale(FORGE_TEMPER_SPEED.heat).play();
   });
 }
+// Cobble says why the Forge said no (2026-10-14): Dust, Leaves, Materia, the Forge's tier or the map gate.
+function cobbleSay(key){ try{ playDialogue('forge_cobble_' + key, {force:true}); }catch(e){} }
+function cobbleWhyNot(L, id){
+  if(levelGateNeed((L||0) + 1)) return cobbleSay('gate');
+  if(forgeTierFor(id, (L||0) + 1)) return cobbleSay('tier');
+  const c = levelUpCost(L, id);
+  if((myCurrencies.dust||0) < c.dust) return cobbleSay('dust');
+  if((myCurrencies.gold||0) < c.gold) return cobbleSay('gold');
+  if(Object.entries(c.mats||{}).some(([m, n])=> ownedCount(m) < n)) return cobbleSay('mats');
+}
 async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, L = getCardLevel(id);
-  if(L>=10 || L < 1 || !canAffordLevelUp(L, id)){ denyShake(btn); return; } // Level 0 → 1 is the Nest's (2026-10-12)
+  if(L>=10 || L < 1 || !canAffordLevelUp(L, id)){ denyShake(btn); if(L >= 1 && L < 10) cobbleWhyNot(L, id); return; } // Level 0 → 1 is the Nest's (2026-10-12)
   forgeBusy = true; btn.disabled = true; try{ SoundKit.forgeStrike(); }catch(e){}
   const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
@@ -32667,11 +32723,11 @@ function itemsHudHTML(m){
   if(!itemsUsableIn(m)) return '';
   const c = loadItems().counts, n = Object.keys(ITEM_DEFS).reduce((t, id)=> t + (c[id]||0), 0); if(!n) return '';
   const used = !!m.itemUsed;
-  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this fight' : 'Your field kit: one item a fight'}" aria-label="Field kit, ${n} items">🎒 ${n}</button>`;
+  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this skirmish' : 'Your field kit: one item a skirmish'}" aria-label="Field kit, ${n} items">🎒 ${n}</button>`;
 }
 function useItem(id){
   const m = matchState; if(!itemsUsableIn(m) || m.resolving) return false;
-  if(m.itemUsed){ showToast('One item a fight.', 'warn'); return false; }
+  if(m.itemUsed){ showToast('One item a skirmish.', 'warn'); return false; }
   const o = loadItems(); if(!(o.counts[id] > 0)) return false;
   const me = m.players[1], E = m.engine, defs = getCardDefs(), d = ITEM_DEFS[id];
   if(id === 'draught'){ if(me.hq.hp >= me.hq.maxHp){ showToast('Your castle is already at full Health.', 'warn'); return false; } const h = Math.min(5, me.hq.maxHp - me.hq.hp); me.hq.hp += h; if(m.displayHqHp) m.displayHqHp.A = me.hq.hp; }
@@ -32697,7 +32753,9 @@ function openPackPopover(btn){
   const m = matchState; if(!itemsUsableIn(m)) return;
   const c = loadItems().counts, used = !!m.itemUsed;
   pop = document.createElement('div'); pop.id = 'packPop'; pop.className = 'pack-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Field kit');
-  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? 'used this fight' : 'one a fight'}</small></b>${Object.entries(ITEM_DEFS).map(([id, d])=> `<button type="button" class="pack-item" data-item="${id}" ${(c[id]||0) && !used ? '' : 'disabled'}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}</b><small>${escapeHtml(d.desc)}</small></span><span class="pack-n">×${c[id]||0}</span></button>`).join('')}`;
+  // 2026-10-14: only items you hold or have held (see loadInvSeen); "New!" the first time one shows up.
+  const seen = loadInvSeen(), vis = invVisible(Object.keys(ITEM_DEFS).map(id=> ({key:'kit:' + id, id, count:c[id]||0})), seen); if(vis.changed) saveInvSeen(seen);
+  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? 'used this skirmish' : 'one a skirmish'}</small></b>${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id]; return `<button type="button" class="pack-item ${it.isNew ? 'is-new' : ''}" data-item="${id}" ${(c[id]||0) && !used ? '' : 'disabled'}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}${it.isNew ? ' <span class="inv-new is-inline">New!</span>' : ''}</b><small>${escapeHtml(d.desc)}</small></span><span class="pack-n">×${c[id]||0}</span></button>`; }).join('')}`;
   document.body.appendChild(pop);
   const r = btn.getBoundingClientRect(); pop.style.left = Math.max(8, Math.min(innerWidth - pop.offsetWidth - 8, r.left + r.width/2 - pop.offsetWidth/2)) + 'px'; pop.style.top = Math.max(8, r.top - pop.offsetHeight - 8) + 'px';
   pop.addEventListener('click', e=>{ const b = e.target.closest('[data-item]'); if(b && useItem(b.dataset.item)) pop.remove(); });
@@ -32706,34 +32764,55 @@ function openPackPopover(btn){
 document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#hudPackBtn'); if(b) openPackPopover(b); });
 // ---- Inventory (2026-10-11, user: "Inventory ... need to have a page for this"): everything you hold that isn't a card in a
 // deck — Materia, the Scale Trail, eggs and babies, unopened packs, Enchant crystals and every currency — on one shelf.
+// Seen items (2026-10-14, user: "If you dont have an item, don't show a grey icon. Just dont show it. For consumables, it only
+// appears once you've seen it at least once. (New! effect as well), then even if you used finish your supply of it, it still
+// appears grey."): per item key, 1 once you have held it and 2 once its "New!" has been shown. An item you have never held
+// is not drawn at all; one you held before and ran out of stays, greyed out.
+const INV_SEEN_KEY = 'bramblewood_inv_seen_v1';
+function loadInvSeen(){ try{ const o = JSON.parse(localStorage.getItem(INV_SEEN_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
+function saveInvSeen(o){ try{ localStorage.setItem(INV_SEEN_KEY, JSON.stringify(o)); }catch(e){} }
+// Which of these {key: count} items to draw, and which wear "New!" this time. Marks them as held/announced.
+function invVisible(items, seen){
+  const out = []; let changed = false;
+  items.forEach(it=>{ const st = seen[it.key] || 0;
+    if(it.count > 0 && st < 2){ out.push(Object.assign({isNew:true}, it)); seen[it.key] = 2; changed = true; }
+    else if(it.count > 0 || st > 0) out.push(Object.assign({isNew:false}, it)); });
+  return {list: out, changed};
+}
 function renderInventory(){
   const root = document.getElementById('view-inventory'); if(!root) return;
-  const defs = getCardDefs(), n = nestState(), inv = loadFactionPacks(), st = materiaStore(), found = scalesFound();
+  const invSeen = loadInvSeen(); let invSeenChanged = false;
+  const shown = (items, sk)=>{ const r = invVisible(items.map(it=> Object.assign({}, it, {key: sk + ':' + it.key})), invSeen); if(r.changed) invSeenChanged = true; return r.list; };
+  const defs = getCardDefs(), n = nestState(), st = materiaStore(), found = scalesFound(); // unopened packs left the shelf 2026-10-14 (they open at once)
   const cell = (icon, count, label, sub)=> `<div class="inv-cell"><span class="inv-ico">${icon}</span><b class="inv-n">${count}</b><span class="inv-label">${escapeHtml(label)}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
   // Materia in square slots (2026-10-12, user: "Materia should use square slots. Then its the icon, with a x4 on the btm right.
   // Hovering over it gives you the name of the item").
-  const slot = (icon, count, name, sub)=> `<div class="inv-slot ${count ? '' : 'is-empty'}" tabindex="0" title="${escapeAttr(name + (sub ? ' · ' + sub : ''))}" aria-label="${escapeAttr(name + ': ' + count)}"><span class="inv-slot-ico">${icon}</span>${count ? `<b class="inv-slot-n">×${count}</b>` : ''}</div>`;
-  const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale','abyssal-ink','strange-materia'].filter(id=> defs[id]).map(id=> slot(defs[id].icon, ownedCount(id), defs[id].name, '')).join('');
+  const slot = (icon, count, name, sub, isNew)=> `<div class="inv-slot ${count ? '' : 'is-empty'} ${isNew ? 'is-new' : ''}" tabindex="0" title="${escapeAttr(name + (sub ? ' · ' + sub : '') + (count ? '' : ' · none left'))}" aria-label="${escapeAttr(name + ': ' + count + (isNew ? ', new' : ''))}"><span class="inv-slot-ico">${icon}</span>${count ? `<b class="inv-slot-n">×${count}</b>` : ''}${isNew ? '<span class="inv-new" aria-hidden="true">New!</span>' : ''}</div>`;
+  const slots = (list, none)=> list.length ? list.map(it=> slot(it.icon, it.count, it.name, it.sub, it.isNew)).join('') : `<p class="panel-sub inv-none">${none}</p>`;
+  const mat = slots(shown(['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale','abyssal-ink','strange-materia'].filter(id=> defs[id]).map(id=> ({key:id, icon:defs[id].icon, count:ownedCount(id), name:defs[id].name, sub:''})), 'mat'), 'No Materia yet. It comes from duplicates and the road.');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> e.kind !== 'nurture' && nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
-  const packs = Object.values(FACTION_PACKS).filter(fp=> (inv[fp.id]||0) > 0).map(fp=> cell(fp.icon, inv[fp.id], fp.name, 'unopened')).join(''); // 2026-10-12: none shown at 0
-  const crystals = MATERIA_KINDS.map(k=> slot(k.icon, st[k.id]||0, k.name + ' crystal', 'for Enchanting')).join('');
+  const crystals = slots(shown(MATERIA_KINDS.map(k=> ({key:k.id, icon:k.icon, count:st[k.id]||0, name:k.name + ' crystal', sub:'for Enchanting'})), 'cry'), 'No crystals yet.');
   const wallet = Object.keys(CURRENCY_META).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
   const trail = found.length ? `<section class="panel inv-sec inv-scales"><h3>🐉 The Scale Trail <small>${found.length}/${DRAGON_SCALE_NODES.length}</small></h3>
       <ol class="scale-trail">${DRAGON_SCALE_NODES.map((sn, i)=>{ const got = found.includes(sn); const map = CONQUEST_MAPS.find(m=> m.id===sn.map);
         return `<li class="${got ? 'got' : ''}"><span class="st-ico">${got ? '🐉' : '❔'}</span><span>${got ? `<b>${escapeHtml(skirmishCode(sn.map, sn.key))} · ${escapeHtml(map ? map.name : '')}</b> ${escapeHtml(sn.line)}` : '<i>Somewhere on the road, something glints.</i>'}</span></li>`; }).join('')}</ol></section>` : '';
   root.innerHTML = `<div class="inv-page">
     <div class="panel inv-head"><h2>🎒 Inventory</h2><p class="panel-sub">Everything you carry that isn't in a deck.</p></div>
-    ${featureUnlockedSafe('fieldkit') ? (()=>{ const ic = loadItems().counts; return `<section class="panel inv-sec inv-kit"><h3>🎒 Field kit <small>one item a fight · more from daily and weekly rewards · up to ${ITEM_CAP} of each</small></h3>
-      <div class="inv-slots">${Object.entries(ITEM_DEFS).map(([id, d])=> slot(d.icon, ic[id]||0, d.name, d.desc)).join('')}</div>
-      <p class="panel-sub">In a fight against the CPU, press 🎒 beside your Lumber: one item a turn, and it doesn't use your play.</p></section>`; })() : ''}
-    ${energyCapsules() ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slot('🔋', energyCapsules(), 'Energy capsule', '+' + ENERGY_CAPSULE_AMOUNT + ' Energy')}</div></section>` : ''}
+    ${featureUnlockedSafe('fieldkit') ? (()=>{ const ic = loadItems().counts;
+      // 2026-10-14 (user: "the field kit subtext 'in a fight against...' -> say skirmish instead, and leave some margin between it
+      // and the item slots"): skirmish wording; the note sits under the slots with its own top margin (.inv-kit-note).
+      const kit = shown(Object.entries(ITEM_DEFS).map(([id, d])=> ({key:id, icon:d.icon, count:ic[id]||0, name:d.name, sub:d.desc})), 'kit');
+      return `<section class="panel inv-sec inv-kit"><h3>🎒 Field kit <small>one item a skirmish · more from daily and weekly rewards · up to ${ITEM_CAP} of each</small></h3>
+      <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Items come from daily and weekly rewards.')}</div>
+      <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p></section>`; })() : ''}
+    ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     ${trail}
     <section class="panel inv-sec"><h3>🪺 In the Nest <button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button></h3><div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
-    <section class="panel inv-sec"><h3>🎁 Unopened packs <button type="button" class="btn small" data-inv-go="shop">Open in the Shop</button></h3><div class="inv-grid">${packs || '<p class="panel-sub">No unopened packs.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
     <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
   </div>`;
+  if(invSeenChanged) saveInvSeen(invSeen);
   root.querySelectorAll('[data-inv-go]').forEach(b=> b.onclick = ()=>{ const g = b.dataset.invGo;
     if(g==='smith' || g==='enchant'){ forgeMode = g; codexSubTab = 'forge'; switchTab('codex'); } else switchTab(g); });
 }
@@ -34264,7 +34343,60 @@ function loadFactionPacks(){ const out = {}; try{ const o = JSON.parse(localStor
 function saveFactionPacks(o){ try{ localStorage.setItem(FACTION_PACKS_KEY, JSON.stringify(o)); }catch(e){} }
 function loadSubfactions(){ try{ return new Set(JSON.parse(localStorage.getItem(SUBFACTIONS_KEY) || '[]')); }catch(e){ return new Set(); } }
 function collectSubfaction(id){ const s = loadSubfactions(); if(s.has(id)) return false; s.add(id); try{ localStorage.setItem(SUBFACTIONS_KEY, JSON.stringify([...s])); }catch(e){} return true; }
-function grantFactionPack(id, n){ if(!FACTION_PACKS[id]) return; const o = loadFactionPacks(); o[id] = (o[id]||0) + (n||1); saveFactionPacks(o); }
+// 2026-10-14 (user: "I think unopened packs should immediately open - you can't 'hang on' to a pack. It just opens. If the
+// person exits during the pack opening, they are just credited to their account."): a pack you are given is opened on the
+// spot: its cards are rolled and credited NOW (creditFactionPack / creditFreePack), and the opening animation is only a
+// replay of what you already got (queuePackReveal). Closing it, or leaving mid-way, loses nothing; the animation never
+// grants anything itself. The old stash (FACTION_PACKS_KEY / FREE_PACKS_KEY) is only read to open leftovers from older
+// saves (openStashedPacks), or as a fallback if a pack's pool is empty right now.
+function grantFactionPack(id, n, opts){ if(!FACTION_PACKS[id]) return []; const out = [];
+  for(let i = 0; i < (n||1); i++){ const c = creditFactionPack(id); if(!c){ const o = loadFactionPacks(); o[id] = (o[id]||0) + 1; saveFactionPacks(o); continue; } out.push(c); if(!(opts && opts.silent)) queuePackReveal(c.pack, c.o); }
+  return out; }
+function creditFactionPack(id){
+  const fp = FACTION_PACKS[id]; if(!fp || !factionPackPool(fp, 'own').length) return null;
+  const roll = rollFactionPackCards(fp); if(!roll.pulls.length) return null;
+  const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
+  const foils = rollPackFoils(pack, roll.pulls.length);
+  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
+  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  return {pack, o:{results, leveledId:null, glow: rollPackGlow(results, getCardDefs()), jackpot:false, bonus:false}};
+}
+// The reveal queue: what was credited, shown once no fight is on screen (a pack won in a fight opens when you leave the
+// results), one pack after another; several of the same pack go through the bundle table (Open all).
+const packRevealQueue = []; let packRevealTimer = null;
+function queuePackReveal(pack, o){ packRevealQueue.push({pack, o}); schedulePackReveals(); }
+function packRevealReady(){
+  const ov = document.getElementById('packOpenOverlay'); if(ov && !ov.hidden) return false;
+  if(typeof matchState !== 'undefined' && matchState && !matchState.over) return false;
+  if(document.querySelector('.winloss-overlay')) return false;
+  return true;
+}
+function schedulePackReveals(){
+  if(packRevealTimer) return;
+  const tick = ()=>{ packRevealTimer = null; if(!packRevealQueue.length) return;
+    if(!packRevealReady()){ packRevealTimer = setTimeout(tick, 700); return; }
+    const first = packRevealQueue[0], same = [], rest = [];
+    packRevealQueue.splice(0).forEach(b=> (b.pack.id === first.pack.id ? same : rest).push(b));
+    packRevealQueue.push(...rest);
+    try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
+    openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, onClose: ()=> schedulePackReveals()}); };
+  packRevealTimer = setTimeout(tick, 80);
+}
+// Older saves: packs that were waiting unopened are opened silently on load and credited (2026-10-14).
+function openStashedPacks(){
+  const names = [], defs = getCardDefs(); let n = 0;
+  const fpInv = loadFactionPacks(), had = Object.values(fpInv).some(k=> k > 0) || Object.values(loadFreePacks()).some(k=> (k|0) > 0);
+  if(!had) return 0;
+  Object.keys(fpInv).forEach(id=>{ let k = fpInv[id]|0; while(k > 0){ const c = creditFactionPack(id); if(!c) break; k--; n++; c.o.results.forEach(r=> names.push(r.id)); } fpInv[id] = k; });
+  saveFactionPacks(fpInv);
+  const frInv = loadFreePacks();
+  Object.keys(frInv).forEach(id=>{ let k = frInv[id]|0; while(k > 0){ const c = creditFreePack(id); if(!c) break; k--; n++; c.o.results.forEach(r=> names.push(r.id)); } frInv[id] = Math.max(0, k); });
+  saveFreePacks(frInv);
+  if(n){ const list = [...new Set(names)].map(id=> (defs[id]||{}).name).filter(Boolean), shown = list.slice(0, 6).join(', ') + (list.length > 6 ? ` and ${list.length - 6} more` : '');
+    showToast(`🎁 ${n} pack${n===1?'':'s'} you had waiting ${n===1?'was':'were'} opened: ${shown}.`, 'ok'); }
+  return n;
+}
+(function openStashedPacksWhenReady(tries){ setTimeout(()=>{ try{ const defs = getCardDefs(); if(!defs || !Object.keys(defs).length || !packCardPool().length || (!cloudReady && tries < 20)){ /* after the cloud pull, so it can't overwrite them */ if(tries < 40) openStashedPacksWhenReady(tries + 1); return; } openStashedPacks(); }catch(e){ if(tries < 40) openStashedPacksWhenReady(tries + 1); } }, tries ? 1500 : 2500); })(0);
 function myFactionPackId(){ const f = (typeof loadFactionChoice === 'function') ? loadFactionChoice() : 'otters'; if(f === 'hummingbirds') return 'hummingbird'; if(f === 'both') return (Math.random() < 0.5 ? 'otter' : 'hummingbird'); return 'otter'; }
 // The cards a pack draws from: a faction pack's own pool; a subfaction's people across the basic pack pools, topped up
 // with that people's Common/Uncommon map rewards when the packs hold fewer than six of them; general = the basic pools.
@@ -34293,16 +34425,9 @@ function openFactionPack(id){
   const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return false;
   if(!factionPackPool(fp, 'own').length){ showToast('This pack is empty right now.', 'error'); return false; }
   const inv = loadFactionPacks(); if(!(inv[id] > 0)) return false;
+  const c = creditFactionPack(id); if(!c) return false;
   inv[id]--; saveFactionPacks(inv);
-  const roll = rollFactionPackCards(fp);
-  const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
-  const foils = rollPackFoils(pack, roll.pulls.length);
-  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
-  const glow = rollPackGlow(results, getCardDefs());
-  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
-  try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
-  openPackAnimation(pack, [{results, leveledId:null, glow, jackpot:false, bonus:false}], {});
-  try{ if(currentTab === 'shop') setTimeout(()=>{ const sec = document.getElementById('factionPackShelf'); if(sec) sec.outerHTML = factionPackShelfHTML(); wireFactionPackShelf(); }, 50); }catch(e){}
+  queuePackReveal(c.pack, c.o);
   return true;
 }
 const FACTION_PACK_REPEAT_CHANCE = 0.05;
@@ -34466,7 +34591,17 @@ const MAP_FREE_PACKS = {3:'bronze', 7:'silver', 10:'mystery', 11:'gold', 13:'bro
 const FREE_PACKS_KEY = 'bramblewood_free_packs_v1';
 function loadFreePacks(){ try{ const o = JSON.parse(localStorage.getItem(FREE_PACKS_KEY)||'{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
 function saveFreePacks(o){ try{ localStorage.setItem(FREE_PACKS_KEY, JSON.stringify(o)); }catch(e){} }
-function grantFreePack(id, n){ const o = loadFreePacks(); o[id] = (o[id]|0) + (n||1); saveFreePacks(o); }
+// Free packs open at once too (2026-10-14, see grantFactionPack): credited now, revealed when no fight is on screen.
+function grantFreePack(id, n, opts){ const out = [];
+  for(let i = 0; i < (n||1); i++){ const c = creditFreePack(id); if(!c){ const o = loadFreePacks(); o[id] = (o[id]|0) + 1; saveFreePacks(o); continue; } out.push(c); if(!(opts && opts.silent)) queuePackReveal(c.pack, c.o); }
+  return out; }
+function creditFreePack(id){
+  const pack = getShopPacks().find(p=> p.id === id); if(!pack || !packCardPool().length) return null;
+  const o = purchasePackOnce(pack, true); if(!o) return null;
+  saveCurrencies(); if(o.leveledId) saveCardLevels();
+  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  return {pack, o};
+}
 function mapRewardNodeKey(map){ if(!map || !map.nodes) return null; const e = map.nodes.find(n=> n.ender); if(e) return e.key; const b = map.nodes.slice().reverse().find(n=> ['boss','finalboss'].includes(baseKind(n.kind||''))); return (b || map.nodes[map.nodes.length - 1] || {}).key || null; }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
   if(!isFirstClear) return null;
@@ -34479,13 +34614,9 @@ function grantMapFreePack(mapId, nodeKey, isFirstClear){
 function openFreePack(id){
   const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return false;
   const inv = loadFreePacks(); if(!((inv[id]|0) > 0)) return false;
-  const pack = getShopPacks().find(p=> p.id === id); if(!pack || !packCardPool().length) return false;
-  const o = purchasePackOnce(pack, true); if(!o) return false;
+  const c = creditFreePack(id); if(!c) return false;
   inv[id] = (inv[id]|0) - 1; saveFreePacks(inv);
-  saveCurrencies(); if(o.leveledId) saveCardLevels();
-  try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
-  try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
-  openPackAnimation(pack, [o], {});
+  queuePackReveal(c.pack, c.o);
   return true;
 }
 function freePackRowsHTML(){
@@ -34523,6 +34654,7 @@ function baseCardBossGrowth(node, isFirstClear){
   return (out.levels.length || out.copies.length || out.dust) ? out : null;
 }
 function factionPackShelfHTML(){
+  return ''; // 2026-10-14: packs open the moment you get them, so there is no "Your packs" shelf of unopened ones any more
   const inv = loadFactionPacks(), subs = loadSubfactions(), mine = (typeof loadFactionChoice==='function' && loadFactionChoice()==='hummingbirds') ? 'hummingbird' : 'otter';
   const show = Object.values(FACTION_PACKS).filter(fp=> (inv[fp.id]||0) > 0 || fp.id === mine || (fp.kind==='sub' && subs.has(fp.id)));
   const row = fp=>{ const n = inv[fp.id]||0;
@@ -34595,6 +34727,7 @@ function openPackAnimation(pack, opened, opts){
     unInert(); document.documentElement.classList.remove('po2-open');
     overlay.hidden = true; overlay.innerHTML = '';
     if(currentTab==='shop') renderShop();
+    if(opts.onClose){ try{ opts.onClose(); }catch(e){} } // the next queued reveal (2026-10-14)
   };
   const topBar = ()=> `<div class="po2-top">
       <span class="po2-count">${deckO && deckO.isPile && phase==='reveal' ? `${opened.length} packs · ${deckO.results.length} cards` : phase==='table' ? `${opened.length} packs` : bundle ? `Pack ${packIdx+1} of ${opened.length}` : escapeHtml(pack.name)}</span>
