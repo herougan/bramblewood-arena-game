@@ -4263,6 +4263,7 @@ function pixelReveal(ms){
 }
 function renderCodex(){
   try{ if(phylaUnlocked() && !adminModeEnabled) setTimeout(()=>{ try{ playDialogue('unlock_phyla', {once:true}); }catch(e){} }, 600); }catch(e){}
+  try{ if(!loadDialogueFlags()[RARITY_LESSON_FLAG]) setTimeout(()=>{ try{ maybeRarityLesson(); }catch(e){} }, 900); }catch(e){} // 2026-10-14 rarity lesson
   // 2026-09-25 (task #352): Recently Deleted and the transaction Log are admin/debug-only views --
   // a regular player can never populate either one (card delete/edit is already gated behind
   // Admin Mode, see the adminModeEnabled comment below), so they were just always-visible clutter
@@ -9065,6 +9066,36 @@ function maybeLeaderRuleLesson(haveAny){
   DIALOGUES.lesson_leader_rule = leaderRuleScript(haveAny);
   try{ playDialogue('lesson_leader_rule', {force:true}); }catch(e){}
 }
+// Rarity lesson (2026-10-14, user: "Tutorial for rarity. Not sure when it is relevant. But maybe when your unique collection size is
+// >50 & you have at least 1 very rare or above. and you visit the Codex."): once, when the Codex opens and the player has held more
+// than 50 different cards, one of them Very Rare or rarer. The rarest of them says a word for itself.
+const RARITY_LESSON_FLAG = 'lesson:rarity', RARITY_LESSON_MIN_CARDS = 50;
+const RARITY_RING_WORD = {rare:'blue', veryrare:'light blue', superrare:'teal', epic:'purple', heroic:'orange', unique:'amber', legendary:'yellow', mythic:'red', ancient:'deep blue', divine:'white', void:'purple-grey', daemonic:'black'};
+function rarityLessonPick(){
+  const defs = getCardDefs(); let n = 0, best = null, bestI = -1;
+  const floor = RARITY_TIER_BANDS.indexOf('veryrare');
+  myUnlockedCardIds.forEach(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero || d.cardType === 'materia') return; n++;
+    const i = RARITY_TIER_BANDS.indexOf(d.rarity || 'common'); if(i >= floor && i > bestI){ best = d; bestI = i; } });
+  return n > RARITY_LESSON_MIN_CARDS && best ? best : null;
+}
+function rarityLessonScript(d){
+  const r = d.rarity || 'common', tier = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r, rar = rarityDef(r).label;
+  return {lines:[
+    {who:'traveller', text:'Quite a collection. Time you learnt rarity: Common, Uncommon, Rare, Very Rare, Super Rare, Epic, Heroic, Unique, Legendary, Mythic, Ancient, and stranger things beyond.'},
+    {who:'traveller', text:`The colour of a card's ring tells its rung. Your ${d.name} wears ${RARITY_RING_WORD[tier] || 'its colour'}: it is ${rar}.`},
+    ...(d.id ? [{who:d.id, text:`${rar}, and proud of it.`}] : []),
+    {who:'traveller', text:'Rarer cards are stronger. Heroic and up can lead. And their duplicates are far harder to find, so a limit break is a long road.'},
+  ]};
+}
+function maybeRarityLesson(){
+  if(loadDialogueFlags()[RARITY_LESSON_FLAG]) return;
+  if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
+  if(typeof currentTab !== 'undefined' && currentTab !== 'codex') return;
+  const d = rarityLessonPick(); if(!d) return;
+  setDialogueFlag(RARITY_LESSON_FLAG, true);
+  DIALOGUES.lesson_rarity = rarityLessonScript(d);
+  try{ playDialogue('lesson_rarity', {force:true}); }catch(e){}
+}
 function maybeLeaderLesson(){
   if(!pendingLeaderLesson) return;
   if(typeof matchState !== 'undefined' && matchState && !matchState.over){ setTimeout(maybeLeaderLesson, 4000); return; } // never in the middle of a fight
@@ -9120,7 +9151,20 @@ function loadCardCopies(){
   return {};
 }
 let myCardCopies = loadCardCopies();
-function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); }catch(e){} soonCheckMilestones(); }
+// Lifetime duplicates (2026-10-14, user: "Limit break: Common - needs 10 duplicates in lifetime"): {[defId]: n}, every copy of a
+// card you ever received beyond the first. Spending a copy (melt, fuse, feed, recipe) never lowers it. Saved next to the copies.
+// An older save starts from what it can prove: its spare copies today (copies - 1) plus the duplicates it already fed.
+const CARD_DUPS_LIFETIME_KEY = 'bramblewood_arena_card_dups_lifetime';
+function loadCardDupsLifetime(){
+  try{ const raw = localStorage.getItem(CARD_DUPS_LIFETIME_KEY); if(raw){ const obj = JSON.parse(raw); if(obj && typeof obj==='object') return obj; } }catch(e){}
+  const seed = {}; let fed = {}; try{ fed = JSON.parse(localStorage.getItem('bramblewood_dups_fed_v1')||'{}') || {}; }catch(e){}
+  Object.keys(myCardCopies).forEach(id=>{ const n = Math.max(0, (myCardCopies[id]||[]).length - 1) + Math.max(0, fed[id]|0); if(n) seed[id] = n; });
+  try{ localStorage.setItem(CARD_DUPS_LIFETIME_KEY, JSON.stringify(seed)); }catch(e){}
+  return seed;
+}
+let myCardDupsLifetime = loadCardDupsLifetime();
+function lifetimeDuplicates(id){ return Math.max(myCardDupsLifetime[id]|0, Math.max(0, (myCardCopies[id]||[]).length - 1)); }
+function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); localStorage.setItem(CARD_DUPS_LIFETIME_KEY, JSON.stringify(myCardDupsLifetime)); }catch(e){} soonCheckMilestones(); }
 // One-time migration (2026-09-27): every card this player unlocked BEFORE the Nest existed has
 // no copy record at all yet — without this, those cards would show as owned x0 in the new
 // screen despite being real, played, unlocked cards. Seeds exactly 1 non-foil copy for any
@@ -9147,6 +9191,7 @@ let lastGrantWasShiny = false;
 function grantCardCopy(id, opts){
   if(!id) return;
   if(!myCardCopies[id]) myCardCopies[id] = [];
+  if(myCardCopies[id].length || myUnlockedCardIds.has(id)) myCardDupsLifetime[id] = lifetimeDuplicates(id) + 1; // a duplicate, for life (2026-10-14)
   const shiny = Math.random() < SHINY_CHANCE;
   lastGrantWasShiny = shiny;
   // A copy can be foil (with a finish rolled by the pack, see rollPackFoils) and/or Shiny.
@@ -9360,7 +9405,16 @@ function feedDuplicate(id){
 // it takes not just much more resources - advanced resources as well"). A level-10 card that has been fed 5 duplicates (ever;
 // melting doesn't take that back) can break to level 11 for what its whole road to 10 cost again. Level 11 is a major step
 // (+10%). Castles break past 20 to 25 (CASTLE_LIMIT_MAX), each step needing an 🔥 Ember Core, the last a 🐉 Dragon Scale too.
-const LIMIT_BREAK_LEVEL = 11, LIMIT_BREAK_FED = 5, DUPS_FED_KEY = 'bramblewood_dups_fed_v1';
+// Duplicate board (2026-10-14, user: "Limit break: Common - needs 10 duplicates in lifetime, small little pill board with 10 holes -
+// each hole is filled by a duplicate. Uncommon - needs 9, Rare - 8, Very Rare - 8, Super Rare - 8, Heroic & Epic - 7, Unique - 6,
+// Everything else - 5, Ancient - 4, Divine and above - 3. As you can see - this is supremely hard."). The old 5-duplicates-fed rule
+// is gone: a card now needs N LIFETIME duplicates (every extra copy you ever got, even ones since melted, fused or fed; see
+// lifetimeDuplicates). Special rarities count as the tier they stand for; Quest-Unique sits with "everything else".
+const LIMIT_BREAK_DUPS = {starter:10, common:10, uncommon:9, quest:9, rare:8, special:8, eventrare:8, veryrare:8, superrare:8,
+  epic:7, heroic:7, unique:6, questunique:5, legendary:5, devlegendary:5, eventlegendary:5, mythic:5, ancient:4, devancient:4,
+  divine:3, void:3, daemonic:3};
+function limitBreakDupsNeeded(d){ const r = (d && d.rarity) || 'common'; if(LIMIT_BREAK_DUPS[r] != null) return LIMIT_BREAK_DUPS[r]; const as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return LIMIT_BREAK_DUPS[as] || 10; }
+const LIMIT_BREAK_LEVEL = 11, DUPS_FED_KEY = 'bramblewood_dups_fed_v1';
 let myDupsFed = (()=>{ try{ return JSON.parse(localStorage.getItem(DUPS_FED_KEY)||'{}') || {}; }catch(e){ return {}; } })();
 function noteDuplicateFed(id){ myDupsFed[id] = (myDupsFed[id]|0) + 1; try{ localStorage.setItem(DUPS_FED_KEY, JSON.stringify(myDupsFed)); }catch(e){} }
 function duplicatesFed(id){ return myDupsFed[id]|0; }
@@ -9375,14 +9429,15 @@ function levelGateNeed(toLevel){ if(adminModeEnabled) return 0; const need = lev
 // same for every card, whatever its rarity.
 const MATERIA_MOTE = {dust: Math.round(MATERIA_UNIT.dust/45), gold: Math.round(MATERIA_UNIT.gold/45)};
 function limitBreakState(defId){
-  const d = forgeBaseDef(defId), L = getCardLevel(defId), fed = duplicatesFed(defId);
+  const d = forgeBaseDef(defId), L = getCardLevel(defId), dups = lifetimeDuplicates(defId), dupsNeed = limitBreakDupsNeeded(d);
   if(!canLimitBreakDef(d)) return {ok:false, why:'none'};
-  if(L >= LIMIT_BREAK_LEVEL) return {ok:false, why:'done', fed};
-  if(levelGateNeed(LIMIT_BREAK_LEVEL)) return {ok:false, why:'map', fed, need: levelGateNeed(LIMIT_BREAK_LEVEL)};
-  if(L < 10) return {ok:false, why:'level', fed};
-  if(fed < LIMIT_BREAK_FED) return {ok:false, why:'fed', fed};
+  const base = {dups, dupsNeed};
+  if(L >= LIMIT_BREAK_LEVEL) return Object.assign({ok:false, why:'done'}, base);
+  if(levelGateNeed(LIMIT_BREAK_LEVEL)) return Object.assign({ok:false, why:'map', need: levelGateNeed(LIMIT_BREAK_LEVEL)}, base);
+  if(L < 10) return Object.assign({ok:false, why:'level'}, base);
+  if(dups < dupsNeed) return Object.assign({ok:false, why:'dups'}, base);
   const c = limitBreakCost(defId);
-  return {ok: (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold, why: 'cost', fed, cost: c};
+  return Object.assign({ok: (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold, why: 'cost', cost: c}, base);
 }
 function limitBreakCard(defId){
   const st = limitBreakState(defId); if(!st.ok) return false;
@@ -31437,7 +31492,19 @@ function spendCopies(id, n){
   const order = arr.map((c, i)=> ({i, w: (c && c.shiny ? 4 : 0) + (c && c.foil ? 2 : 0) + (c && c.level ? 1 : 0)})).sort((a,b)=> a.w - b.w).slice(0, n).map(x=> x.i);
   myCardCopies[id] = arr.filter((c, i)=> !order.includes(i)); saveCardCopies(); return true;
 }
-function recipeReady(r){ return Object.entries(r.needs).every(([id, n])=> ownedCount(id) >= n) && canAffordCost(r.cost); }
+// Crafting needs a held card (2026-10-14, user: "Btw, you can't craft a card unless you've unlocked it - not just seen it. You must
+// have held it before."): seeing a card (Codex, a fight, a pack list) is not enough; it must be in myUnlockedCardIds. Materia
+// are materials, not collection cards, and a card only the anvil makes (source 'smith') has nowhere else to be held first, so
+// both stay craftable. Admin mode skips the check.
+const CRAFT_NEEDS_HELD_TIP = 'You need to have held this card once to craft it.';
+function craftNeedsHeld(id){
+  if(adminModeEnabled || !id) return false;
+  const d = getCardDefs()[id]; if(!d || d.cardType === 'materia') return false;
+  if(cardSourceOf(d).kind === 'smith' || (d.source && d.source.kind === 'smith')) return false;
+  return !myUnlockedCardIds.has(id);
+}
+function canCraftCard(id){ return !craftNeedsHeld(id); }
+function recipeReady(r){ return canCraftCard(r.out) && Object.entries(r.needs).every(([id, n])=> ownedCount(id) >= n) && canAffordCost(r.cost); }
 function fuseCandidates(){
   const defs = getCardDefs();
   return Object.keys(myCardCopies).filter(id=> defs[id] && ownedCount(id) > FUSE_COPIES && cardSourceOf(defs[id]).kind !== 'base' && defs[id].cardType !== 'materia' && fuseTargetRarity(defs[id].rarity))
@@ -31461,7 +31528,8 @@ function blacksmithHTML(){
         <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
         <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
         <div class="sm-needs">${needs}</div>
-        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>
+        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}${craftNeedsHeld(r.out) ? ` data-needs-held="1" title="${escapeAttr(CRAFT_NEEDS_HELD_TIP)}"` : ''}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>
+        ${craftNeedsHeld(r.out) ? `<p class="forge-note forge-gate">🔒 ${escapeHtml(CRAFT_NEEDS_HELD_TIP)}</p>` : ''}
       </div>
     </div>
     <div class="panel sm-fuse"><h3>🔥 Fuse</h3><p class="panel-sub">Melt ${FUSE_COPIES} spare copies of a card into one random card a rarity higher (up to Epic). You always keep at least one copy.</p>
@@ -31477,7 +31545,7 @@ function wireBlacksmith(root){
   root.querySelectorAll('[data-smith]').forEach(b=> b.onclick = ()=>{ smithSel = +b.dataset.smith; renderForge(); });
   const craft = document.getElementById('smithCraftBtn');
   if(craft) craft.onclick = async ()=>{
-    const r = SMITH_RECIPES[smithSel]; if(!r || !recipeReady(r) || forgeBusy){ denyShake(craft); return; }
+    const r = SMITH_RECIPES[smithSel]; if(!r || !recipeReady(r) || forgeBusy){ denyShake(craft); if(r && craftNeedsHeld(r.out)) showToast('🔒 ' + CRAFT_NEEDS_HELD_TIP, 'warn'); return; }
     forgeBusy = true;
     Object.entries(r.needs).forEach(([id, n])=> spendCopies(id, n));
     myCurrencies.dust -= r.cost.dust||0; myCurrencies.gold -= r.cost.gold||0; myCurrencies.gems -= r.cost.gems||0; saveCurrencies();
@@ -31655,14 +31723,22 @@ function forgeAnvilHTML(id, sel, L, maxed){
 // The limit-break panel on a level-10 card (2026-10-12).
 function forgeLimitBreakHTML(id, lb){
   const d = forgeBaseDef(id), c = lb.cost || limitBreakCost(id), next = forgeStatsAt(id, LIMIT_BREAK_LEVEL), now = forgeStatsAt(id, 10);
-  const fedLine = `🧩 Duplicates fed: <b>${Math.min(lb.fed, LIMIT_BREAK_FED)}/${LIMIT_BREAK_FED}</b>`;
+  const board = limitBreakDupBoardHTML(id, lb), short = Math.max(0, lb.dupsNeed - lb.dups);
   const gain = [now.attack!=null && next.attack>now.attack ? `⚔ ${now.attack} → ${next.attack}` : '', now.health!=null && next.health>now.health ? `❤ ${now.health} → ${next.health}` : ''].filter(Boolean).join(' · ');
-  if(lb.why==='map') return `<div class="forge-limit is-locked"><div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div><p class="forge-note">🗺️ Limit breaks open once you reach Map ${lb.need}, deep in the wilds.</p></div>`;
-  return `<div class="forge-limit ${lb.why==='fed'?'is-locked':''}">
+  if(lb.why==='map') return `<div class="forge-limit is-locked"><div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>${board}<p class="forge-note">🗺️ Limit breaks open once you reach Map ${lb.need}, deep in the wilds.</p></div>`;
+  return `<div class="forge-limit ${lb.why==='dups'?'is-locked':''}">
     <div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>
-    <p class="forge-note">${fedLine}. ${lb.why==='fed' ? `Feed ${LIMIT_BREAK_FED - lb.fed} more duplicate${LIMIT_BREAK_FED - lb.fed===1?'':'s'} of ${escapeHtml(d.name)} to unlock it.` : `It costs what the whole road to level 10 cost.`}${gain ? ` ${gain}.` : ''}</p>
-    ${lb.why==='fed' ? '' : `<button type="button" class="btn primary forge-act forge-lb-btn" id="forgeLimitBreakBtn" ${lb.ok?'':'aria-disabled="true"'}>💥 Limit break${btnCostHTML(c)}</button>`}
+    ${board}
+    <p class="forge-note">${lb.why==='dups' ? `Find ${short} more duplicate${short===1?'':'s'} of ${escapeHtml(d.name)} to unlock it.` : `It costs what the whole road to level 10 cost.`}${gain ? ` ${gain}.` : ''}</p>
+    ${lb.why==='dups' ? '' : `<button type="button" class="btn primary forge-act forge-lb-btn" id="forgeLimitBreakBtn" ${lb.ok?'':'aria-disabled="true"'}>💥 Limit break${btnCostHTML(c)}</button>`}
   </div>`;
+}
+// The duplicate board (2026-10-14): a small pill with one hole per duplicate the limit break needs, filled as they arrive.
+function limitBreakDupBoardHTML(id, lb){
+  const d = forgeBaseDef(id) || {}; lb = lb || {dups: lifetimeDuplicates(id), dupsNeed: limitBreakDupsNeeded(d)};
+  const need = lb.dupsNeed, have = Math.min(lb.dups, need), rar = rarityDef(d.rarity || 'common').label;
+  const tip = `Limit break needs ${need} duplicates of ${d.name || 'this card'} (${rar}). Every extra copy you ever get fills a hole, even ones you later melt, fuse or feed. Rarer cards need fewer, but their duplicates are much harder to find.`;
+  return `<div class="lb-dups ${have >= need ? 'is-full' : ''}" title="${escapeAttr(tip)}"><span class="lb-dupboard" role="img" aria-label="${have} of ${need} duplicates">${Array.from({length:need}, (_, k)=> `<i class="${k < have ? 'on' : ''}"></i>`).join('')}</span><span class="lb-dups-label">${have}/${need} duplicates</span></div>`;
 }
 async function forgeLimitBreak(btn){
   if(forgeBusy || !forgeSelectedId) return;
