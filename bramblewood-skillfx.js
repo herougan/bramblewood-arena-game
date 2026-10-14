@@ -918,4 +918,39 @@ function munch(target, o){
   g.fromTo(tileOf(target), {scaleY:1}, {scaleY:.94, duration:.08, yoyo:true, repeat:3, transformOrigin:'50% 100%', clearProps:'transform'});
 }
 Object.assign(root.SkillFX, {fireball, meteor, bananaThrow, munch});
+// ---- 2026-10-14 (seventh pass): Smoke Bomb and Psychic.
+//   SkillFX.smokeBomb(thrower, target, opts{onImpact})   SkillFX.mindWave(caster, target, opts{immune})
+const SEVENTH_CSS = `
+.sfx-smokebomb{width:18px; height:18px; border-radius:50%; background:radial-gradient(circle at 38% 35%, #9aa0a8 0, #3c4148 45%, #15181c 100%); box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+.sfx-smokebomb::after{content:''; position:absolute; left:11px; top:-6px; width:3px; height:8px; border-radius:2px; background:linear-gradient(#ffd34a, #c8711e); transform:rotate(25deg);}
+.sfx-smoke{width:40px; height:40px; border-radius:50%; background:radial-gradient(circle, rgba(215,218,224,.95) 0, rgba(170,175,184,.75) 45%, rgba(140,146,156,0) 72%); filter:blur(2px);}
+.sfx-mind{border-radius:50%; border:3px solid rgba(190,120,255,.9); box-shadow:0 0 12px 2px rgba(160,80,255,.65), inset 0 0 10px rgba(200,140,255,.5);}
+.sfx-mind.immune{border-color:rgba(170,170,190,.7); box-shadow:none;}
+`;
+function seventhCss(){ if(document.getElementById('sfx-seventh-css')) return; const s = document.createElement('style'); s.id = 'sfx-seventh-css'; s.textContent = SEVENTH_CSS; (document.head || document.body).appendChild(s); }
+// A grey puff that swells over a card and drifts apart.
+function smokePuff(target){
+  const g = G(); if(!g || !target) return; seventhCss(); const c = centre(target);
+  for(let k = 0; k < 7; k++){ const p = layer('sfx-smoke'); g.set(p, {x:c.x - 20 + rnd(-c.w*.3, c.w*.3), y:c.y - 20 + rnd(-c.h*.25, c.h*.25), scale:.3, opacity:.95});
+    g.to(p, {scale:rnd(1.6, 2.6), opacity:0, x:`+=${rnd(-24, 24)}`, y:`-=${rnd(6, 26)}`, duration:rnd(.8, 1.3), ease:'power1.out', onComplete:()=> p.remove()}); }
+}
+// Smoke Bomb: a lit bomb lobbed from the thrower onto the target, then it bursts into a grey cloud.
+function smokeBomb(thrower, target, o){
+  o = o || {}; if(!ready() || !thrower || !target){ later(o.onImpact, 400); return; } seventhCss();
+  const g = G(), a = centre(thrower), b = centre(target), bm = layer('sfx-smokebomb'), m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - 90}, s = {t:0};
+  g.set(bm, {x:a.x - 9, y:a.y - 9});
+  g.timeline({onComplete:()=> bm.remove()})
+    .to(s, {t:1, duration:.5, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(bm, {x:q.x - 9, y:q.y - 9}); }})
+    .to(bm, {rotation:540, duration:.5, ease:'none'}, 0)
+    .add(()=>{ bm.style.opacity = 0; smokePuff(target); call(o.onImpact); });
+}
+// Psychic: purple rings of thought pulse out from the attacker's mind into the target (grey and faint when it has no mind).
+function mindWave(caster, target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } seventhCss();
+  const g = G(), b = centre(target), sz = Math.max(b.w, b.h);
+  for(let k = 0; k < 3; k++){ const r = layer('sfx-mind' + (o.immune ? ' immune' : '')); g.set(r, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:sz*1.5, height:sz*1.5, opacity:0});
+    g.to(r, {width:sz*.2, height:sz*.2, opacity:o.immune ? .6 : 1, duration:.42, delay:k*.12, ease:'power2.in', onComplete:()=> r.remove()}); }
+  if(!o.immune) g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(250deg) saturate(1.8)', duration:.12, yoyo:true, repeat:3, delay:.4, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+Object.assign(root.SkillFX, {smokeBomb, smokePuff, mindWave});
 })(typeof window !== 'undefined' ? window : globalThis);

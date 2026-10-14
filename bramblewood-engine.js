@@ -490,6 +490,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       paralyzed:0, _paralyzedJustSet:false, // acid — a FRESH 50/50 coin flip gates each round's action while >0
       // Three more status effects (2026-09-17 batch) — see rollStatusOnHit/endOfRoundUpkeep/
       // computeHitDamage/effAtk for the full lifecycle of each:
+      smoke:0, _smokeJustSet:false,         // Smoke (2026-10-14): attacks at it miss 1 in 2 while >0 (a Smoke Bomb ally), ticks down every upkeep
       blind:0, _blindJustSet:false,         // this card's own attacks miss half the time while >0 (2026-10-11; was: always), ticks down every upkeep
       tipsy:0, _tipsyJustSet:false,         // Tipsy (2026-10-11): swings at the unit to the left, in front or to the right at random; nobody there = a miss
       confused:0, _confusedJustSet:false,   // Confused (2026-10-11): its triggers and on-hit skills fizzle half the time
@@ -1428,6 +1429,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Rabid (2026-10-14, user: "Rabid Beasts: 2/3, Poison 2, Vulnerable to water"): its hits add 2 Poison (on top of any Poison of
   // its own), and it takes double damage from Swimmers and water.
   function poisonOn(attDef){ const e = (attDef && attDef.effects) || {}; return (Number(e.poison)||0) + (e.rabid ? 2 : 0); }
+  // Toxin (planned, 2026-10-14, user: "Toxin: More dangerous poison - not yet defined."): not built; no behaviour yet.
+  // Psychic N (2026-10-14, user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."): each landed hit also
+  // deals N psychic damage straight to Health: Armor, a unit Shield, Shell's temporary Health and a Ghost's immunity don't stop it.
+  // Elementals and Plants have no mind to hurt: species Elemental or Plant, or archetype Elemental or Flora.
+  function isMindless(c){ const d = (c && CARD_DEFS[c.defId]) || {}, sp = d.species || [], ar = d.archetypes || [];
+    return sp.includes('Elemental') || sp.includes('Plant') || ar.includes('Elemental') || ar.includes('Flora'); }
+  function psychicHit(pid, att, c, sideOf, stats, events){
+    const n = Number(effectsOf(att).psychic)||0; if(!(n > 0) || !c || !(c.hp > 0)) return 0;
+    const tpid = otherId(pid), mindless = isMindless(c), dmg = mindless ? 0 : n;
+    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0) c.asleep = 0; if(c.hp <= 0) c.killedBy = att.uid;
+      ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
+    if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined});
+    return dmg;
+  }
   // Ichor N (2026-10-14, user: "Corrosive blood: When hit, the attacker takes N acid damage and loses 1 Armor" + "but also add
   // something about giving bleed to ghosts - ghosts are immune to bleed but ichor gives bleed indirectly"): an attack that lands
   // on it splashes the attacker: N acid damage, 1 Armor gone for good (if it has any), and 1 Bleed, which sticks even to a Ghost.
@@ -1722,7 +1737,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dmg = crush ? r0.dmg : spendTempHp(card, r0.dmg), tempSoak = r0.dmg - dmg; // Shell's temporary Health goes first (2026-10-12)
     const nul = isNullifier(attCard); // Nullify (2026-10-14): the hit doesn't count as "hit" for Cower, and Shell doesn't go up
     if(!nul) noteHit(card, dmg, dmgType);
+    const hp0 = card.hp;
     card.hp = Math.max(0, card.hp - dmg);
+    if(hp0 > 0 && card.hp <= 0 && attCard) card.killedBy = attCard.uid; // who:'killer' (2026-10-14): the unit whose hit killed it
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
@@ -1731,7 +1748,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
-  function damageCardFlat(card, amount, dmgType, attDefId){
+  function damageCardFlat(card, amount, dmgType, attDefId, attUid){
     if(card.exposed>0){ amount += card.exposed; card.exposed = 0; } // Expose applies to ranged/flat hits too, consumed on first hit taken
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
@@ -1757,8 +1774,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(card.petrified && !crush) dmg = Math.floor(dmg / 2); // Petrification (2026-10-14)
     if(!crush) dmg = spendTempHp(card, dmg);
     noteHit(card, dmg, dmgType);
+    const hp0 = card.hp;
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
+    if(attUid != null && hp0 > 0 && card.hp <= 0) card.killedBy = attUid; // who:'killer' (2026-10-14)
     if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep breaks on any flat/ranged damage too
     shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
     return dmg;
@@ -1879,8 +1898,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(targetExclude && r && r.card) targetExclude.add(r.card.uid);
     return r;
   }
+  let forcedTarget = null; // who:'killer' (2026-10-14): the one unit an On Death action is aimed at
   function resolveGeneralTarget0(players, playerId, boardCard, who, sub){
     const pl = players[playerId], enemy = players[otherId(playerId)];
+    if(sub === 'killer') return forcedTarget && forcedTarget.hp > 0 ? {pl: who === 'ally' ? pl : enemy, card: forcedTarget} : null;
     if(who==='self') return {pl, card:boardCard};
     const isAlly = who==='ally';
     const sidePl = isAlly ? pl : enemy;
@@ -1940,7 +1961,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(who!=='self' && c.hp>0){ bleedTick(sideOf, targetPid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, targetPid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
     };
     const dodge = c=>{ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(targetPid), targetDefId:c.defId, targetUid:c.uid}); };
-    const gated = c=>{ if(who==='self' || dodgeCheck(c)) apply(c); else dodge(c); };
+    const gated = c=>{ if(who==='self' || sub==='killer' || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
       ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); // area effect: Evade only dodges single-target
@@ -2036,6 +2057,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(singleTarget && dd.evasive && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
     if(dd.swift && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
+    if(defCard.smoke > 0 && rnd() < 0.5){ lastMissReason = 'smoke'; return false; }
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
     // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
@@ -2828,7 +2851,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       const c = redirectToGuardian(enemy, target.card); // Guardian: an adjacent protector eats the hit instead, if one's alive
       const guardianRedirect = c.uid !== target.card.uid;
-      const dmg = damageCardFlat(c, realAmount, dmgType, attDefId);
+      const dmg = damageCardFlat(c, realAmount, dmgType, attDefId, attUid);
       aStat.dealt += dmg;
       if(attUid != null){ const src = allBoardCards(owner).find(x=> x.uid === attUid); if(src) applySpite(players, sideOf, otherId(ownerId), c, src, dmg, stats, events, killCredit); }
       ensureStat(stats, sideOf(otherId(ownerId)), c.defId).taken += dmg;
@@ -2910,7 +2933,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const order = physicalRowOrder(pl), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf);
     const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
     if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
-    struck.forEach(c=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId);
+    struck.forEach(c=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'magic', ranged:true, dragonLightning:true});
       if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } });
@@ -2978,7 +3001,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // reactions (Bleed, On Attacked) if it lives.
   function skillAreaHit(players, sideOf, pid, att, c, n, dmgType, stats, events, tag){
     if(!c || !(c.hp > 0) || !(n > 0)) return 0;
-    const tpid = otherId(pid), dmg = damageCardFlat(c, n, dmgType, att.defId);
+    const tpid = otherId(pid), dmg = damageCardFlat(c, n, dmgType, att.defId, att.uid);
     ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
     if(recordEvents && events) events.push(Object.assign({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType, ranged:true}, tag || {}));
     if(c.hp > 0){ bleedTick(sideOf, tpid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, tpid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
@@ -3044,8 +3067,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             removeDeadCards(players, sideOf, {}, stats, events); } }
         if(e.durian && c.hp > 0 && rnd() < 0.5){ c.thornsBonus = (c.thornsBonus||0) + 1;
           if(recordEvents && events) events.push({type:'durian', side:sideOf(pid), uid:c.uid, defId:c.defId, thorns:(Number(e.thorns)||0) + c.thornsBonus, bonus:c.thornsBonus}); }
+        if(e.smokeBomb && c.hp > 0 && rnd() < 0.5) throwSmokeBomb(players, sideOf, pid, c, events);
       }
     }
+  }
+  // Smoke Bomb (2026-10-14, user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy,
+  // the enemy has blind. This is an evergreen skill. It happens 50% of the time every turn."): at Banana's time (after the whole
+  // swing order), a 1 in 2 chance each round: it throws at a random unit among its allies (never itself) and the enemy units. An ally
+  // gets Smoke (attacks at it miss 1 in 2 until the end of the next round); an enemy gets Blind for a round (Keen Sense shrugs it off).
+  function throwSmokeBomb(players, sideOf, pid, c, events){
+    const live = p=> physicalRowOrder(players[p]).filter(x=> x && !x.gap && x.hp > 0 && !x.cageOf);
+    const allies = live(pid).filter(x=> x.uid !== c.uid), foes = live(otherId(pid)), pool = allies.concat(foes);
+    if(!pool.length) return null;
+    const t = pool[Math.floor(rnd()*pool.length)], ally = allies.includes(t), tpid = ally ? pid : otherId(pid);
+    let effect = 'smoke';
+    if(ally){ t.smoke = Math.max(t.smoke||0, 1); t._smokeJustSet = true; }
+    else if(effectsOf(t).keenSense) effect = 'none';
+    else { effect = 'blind'; t.blind = Math.max(t.blind||0, 1); t._blindJustSet = true; }
+    if(recordEvents && events) events.push({type:'smokeBomb', side:sideOf(pid), uid:c.uid, defId:c.defId, attUid:c.uid, attDefId:c.defId, targetSide:sideOf(tpid), targetUid:t.uid, targetDefId:t.defId, ally, effect});
+    return t;
   }
   // Shield N (a unit's own, not the castle's): temporary Health that soaks damage after Shell's and never heals back. The skill
   // brings N when it arrives; the 'shield' trigger action grants more.
@@ -3767,6 +3807,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } };
       // Targets (2026-10-12, 23:12 list): an action with a who/sub picker can hit several distinct targets (t.targets),
       // and who:'any' picks an ally or an opponent at random each time.
+      // who:'killer' (2026-10-14): aim the action at the unit that killed it (On Death only); no killer, no action.
+      if(t.who === 'killer'){ const k = extra && extra.killerCard; if(!k || !(k.hp > 0)) return;
+        const kpid = allBoardCards(pl).includes(k) ? playerId : otherId(playerId);
+        forcedTarget = k; try{ runAction(Object.assign({}, t, {who: kpid === playerId ? 'ally' : 'enemy', sub:'killer', targets:1})); } finally{ forcedTarget = null; }
+        return; }
       const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
       targetExclude = reps > 1 ? new Set() : null;
       try{ for(let k=0; k<reps; k++) runAction(t.who==='any' ? Object.assign({}, t, {who: anySide(players, playerId, boardCard)}) : t); }
@@ -4171,6 +4216,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Blind/Shock/Corrode (2026-09-17 batch) — same "_justSet" survive-one-round-before-
       // decaying convention as Frozen/Asleep/Paralyzed above.
       if(c.blind>0){ if(c._blindJustSet) c._blindJustSet=false; else c.blind -= 1; }
+      if(c.smoke>0){ if(c._smokeJustSet) c._smokeJustSet=false; else c.smoke -= 1; } // Smoke (2026-10-14), same convention
       // Shedding N (2026-10-13, user: "the idea of molting or shedding - getting stronger as time progresses"): every N rounds on the
       // field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose fall away with the old skin.
       { const shN = Number(((CARD_DEFS[c.defId]||{}).effects||{}).shedding === true ? 3 : ((CARD_DEFS[c.defId]||{}).effects||{}).shedding) || 0;
@@ -4337,7 +4383,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
         card.revivedOnce = true;
         card.hasRemovalCounter = true;
-        card.hp = 1;
+        card.hp = 1; card.killedBy = null;
         card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
         card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
         card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
@@ -4400,7 +4446,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       if(card.equipment) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
-      if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events);
+      // who:'killer' (2026-10-14, user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the unit whose hit
+      // killed it, if it still stands; nothing when it died some other way (poison, bleed, the weather...).
+      const killerCard = card.killedBy != null ? [p1, p2].map(p=> allBoardCards(p).find(x=> x.uid === card.killedBy && x.hp > 0)).find(Boolean) || null : null;
+      if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events, {killerCard});
       // Meiosis N (2026-10-14): it splits in two once the board has cleared its dead (see the splits pass below)
       if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf) splits.push({pl, side, slot:card.slot, card});
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
@@ -5029,6 +5078,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
+              psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
               const nullF = isNullifier(a.att); // Nullify (2026-10-14)
               if(!nullF) applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
               { const pz = poisonOn(attDef); if(pz && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ c2.poison = (c2.poison||0) + pz; aStat.poisonApplied += pz; } } // + Rabid (2026-10-14)
@@ -5102,6 +5152,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
         if(kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:kingSlayerBonus});
+        psychicHit(otherId(a.enemyId), a.att, defCard, sideOf, stats, events); // Psychic N (2026-10-14)
         // Pierce (2026-09-17, per explicit request: "pierce... should also hit the castle"):
         // a flat, unconditional chunk of extra damage punches straight through to the enemy
         // castle on every landed melee hit, on top of whatever this hit did to defCard —

@@ -205,10 +205,17 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // Durian has no emoji: a drawn spiky green fruit, 🌰 in plain text. Shield (a unit's) is 💠 because Armor has 🛡 and Shield Call 🛡️.
 // Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"), with a spark: 🔌⚡. Keen Sense 👃.
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌⚡', keenSense:'👃'});
+// 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
+// because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
+Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
 // Icons drawn in CSS where HTML is allowed (card chips, skill lines, the Effects library): a round orange core with a flame tail,
 // and a spiky green durian. SKILL_ICON keeps a text stand-in for tooltips and plain text.
-const SKILL_ICON_HTML = {fireball:'<i class="ico-fireball" aria-hidden="true"></i>', durian:'<i class="ico-durian" aria-hidden="true"></i>'};
+const SKILL_ICON_HTML = {fireball:'<i class="ico-fireball" aria-hidden="true"></i>', durian:'<i class="ico-durian" aria-hidden="true"></i>', smokeBomb:'<i class="ico-smokebomb" aria-hidden="true"></i>'};
 function skillIconHTML(k){ return SKILL_ICON_HTML[k] || SKILL_ICON[k] || ''; }
+// Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
+// (species Crustacean or Crab, or "Crab" in its name) Fork shows a crab claw 🦞; everywhere else it stays ⇔.
+function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Crab)$/i.test(s)) || /crab/i.test(d.name||'')); }
+function skillIconFor(k, d){ return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
 const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'};
@@ -322,7 +329,7 @@ const PASSIVE_DEFS = [
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
-  {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
+  {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
   {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Hits the 3 nearest enemy units, full Attack each (none more than 1 column away).`},
@@ -374,7 +381,9 @@ const PASSIVE_DEFS = [
     get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
-  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never strikes the unit in front: each swing pinches the enemy unit in the column to its left or right, taking turns (left first). With no unit either side, a unit in front means a wasted pinch; with nothing in front either, it goes for the castle.`},
+  // Crab Claws retired from the editor (2026-10-14, user: "Ignore Crab claws. Crabs have fork"): hidden:true keeps it working on any
+  // card that still has it, but it is no longer offered in "+ Add Skill".
+  {key:'crabClaws', category:'passive', hidden:true, label:'Crab Claws', kind:'boolean', desc:()=>`Never strikes the unit in front: each swing pinches the enemy unit in the column to its left or right, taking turns (left first). With no unit either side, a unit in front means a wasted pinch; with nothing in front either, it goes for the castle.`},
   // Meiosis N (user: "Simple units only - this Passive skill means that the creature breaks into 2 smaller parts when it dies, with
   // half the stats, and skill numbers. Their Meiosis count drops by 1.").
   {key:'meiosis', category:'passive', label:'Meiosis', kind:'number', min:1, defaultValue:1, desc:v=>{ const n = v === true ? 1 : (Number(v)||1); return `Simple units only. When it dies it splits into 2 halves beside each other: tokens with half its Attack and Health (rounded up), every skill number halved (rounded down; a skill at 0 is lost) and ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -610,12 +619,18 @@ const PASSIVE_DEFS = [
   {key:'fencing', category:'passive', label:'Fencing', kind:'boolean', desc:()=>`A fine, precise blade: its attacks can't be dodged by Evasive or Swift units. (A Flyer is still out of reach half the time.)`},
   {key:'fireball', category:'evergreen', label:'Fireball', kind:'number', min:1, defaultValue:15, desc:v=>`When it becomes Ready, it hurls a fireball at a random enemy unit. The blast is 3 columns wide: that unit and the enemy units beside it each take ${v||15} fire damage. No enemy units: it hits the castle.`},
   {key:'meteor', category:'evergreen', label:'Meteor', kind:'number', min:1, defaultValue:20, desc:v=>`When it becomes Ready, a meteor crashes onto a random enemy column: the unit there takes ${v||20} damage (Armor doesn't stop it), the units beside it take ${Math.floor((v||20)/4)}, and the column burns: whoever stands there takes 2 fire at the start of the next 2 rounds.`},
-  {key:'banana', category:'passive', label:'Banana', kind:'number', min:1, defaultValue:3, desc:v=>`Every round, after everyone else has swung (Speed -1): a coin flip. Heads, it eats the banana and heals ${v||3}. Tails, it throws it at a random enemy unit for ${v||3} damage. It never eats at full Health (then it always throws). Its normal attack still happens.`},
-  {key:'bananarang', category:'passive', label:'Bananarang', kind:'number', min:1, defaultValue:3, desc:v=>`A Boomerang made of banana: it throws on attack, and next round it flies back and hits the same target again. Never misses Flying units. When it comes home, a 1 in 2 chance it eats it and heals ${v||3} (never at full Health).`},
+  {key:'banana', category:'evergreen', label:'Banana', kind:'number', min:1, defaultValue:3, desc:v=>`Every round, after everyone else has swung (Speed -1): a coin flip. Heads, it eats the banana and heals ${v||3}. Tails, it throws it at a random enemy unit for ${v||3} damage. It never eats at full Health (then it always throws). Its normal attack still happens.`},
+  {key:'bananarang', category:'evergreen', label:'Bananarang', kind:'number', min:1, defaultValue:3, desc:v=>`A Boomerang made of banana: it throws on attack, and next round it flies back and hits the same target again. Never misses Flying units. When it comes home, a 1 in 2 chance it eats it and heals ${v||3} (never at full Health).`},
   {key:'durian', category:'passive', label:'Durian', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +1 for the rest of the fight. It stacks.`},
   {key:'shield', category:'passive', label:'Shield', kind:'number', min:1, defaultValue:1, desc:v=>`It arrives with ${v||1} Shield: temporary Health (the blue 💠) that soaks damage before its Health does. Unlike Armor it doesn't block, it just absorbs, and it never comes back once spent.`},
   {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage. Wet units (Swimmers and Tide units, anyone in the rain or while the Tide is in) take +1 from it, and a wet target takes +1 too.`},
   {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, night and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
+  // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
+  // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
+  // This is an evergreen skill. It happens 50% of the time every turn. (The banana and bananarang and boomerang ones are all
+  // Evergreen)") - so Banana, Bananarang and Boomerang above are Evergreen now too.
+  {key:'psychic', category:'passive', label:'Psychic', kind:'number', min:1, defaultValue:1, desc:v=>`Each hit that lands also deals ${v||1} psychic damage straight to Health: Armor, Shield, Shell and a Ghost's body don't stop it. Elementals and Plants have no mind, so they don't take it.`},
+  {key:'smokeBomb', category:'evergreen', label:'Smoke Bomb', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it throws a smoke bomb at a random unit, ally or enemy (never itself). An ally is hidden in Smoke: attacks at it miss 1 in 2 until the end of the next round. An enemy is Blinded for a round.`},
 ];
 const ACTIVE_PRESETS = [
   // Arrow N / Arrow (=Attack) used to live here as dedicated one-shot presets backed by their
@@ -832,7 +847,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
@@ -1519,6 +1534,11 @@ Object.assign(SKILL_TEXT, {
   electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)}; wet units take +1.`,
   keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
 });
+// 2026-10-14 (seventh pass): Psychic and Smoke Bomb.
+Object.assign(SKILL_TEXT, {
+  psychic: v=> `Its hits also deal ${numOr(v, 1)} psychic damage, through Armor, Shield, Shell and Ghost. Elementals and Plants are immune.`,
+  smokeBomb: v=> `Every round, last: 1 in 2 it throws a smoke bomb at a random unit. An ally hides in Smoke (attacks at it miss 1 in 2); an enemy is Blinded.`,
+});
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
 function describeEffects(def, liveCard){
@@ -1553,8 +1573,8 @@ function describeEffects(def, liveCard){
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
   // the keyword first and reads the rule after.
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
-  // card face uses for it (SKILL_ICON).
-  const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
+  // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
+  const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
@@ -5220,6 +5240,9 @@ function abilityBadges(d, bopts){
   if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">💠${n1(numOr(e.shield, 1))}</span>`);
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">🔌⚡${n1(numOr(e.electricity, 1))}</span>`);
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">👃</span>`);
+  // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
+  if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">💭${n1(numOr(e.psychic, 1))}</span>`);
+  if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${SKILL_ICON_HTML.smokeBomb}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
@@ -5233,7 +5256,7 @@ function abilityBadges(d, bopts){
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
-  if(e.fork || e.swipe === true) out.push(`<span class="ab-fork" title="Fork: hits left and right, never straight">⇔</span>`); // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
+  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit left and right, never straight">🦞</span>` : `<span class="ab-fork" title="Fork: hits left and right, never straight">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
   if(e.twinStrike) out.push(`⚔⚔`);
   if(e.converge) out.push(`🧲`);
@@ -6919,7 +6942,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // own currently-selected key always stays visible in its own dropdown (row.key===x.key), so
   // an existing card never has its already-set skill silently vanish out from under it just
   // because its Archetype doesn't match (or hasn't been picked yet).
-  const gateOk = x => !x.mechLineGate || x.mechLineGate===mechLine || row.key===x.key;
+  const gateOk = x => row.key===x.key || (!x.hidden && (!x.mechLineGate || x.mechLineGate===mechLine)); // hidden (2026-10-14): retired from "+ Add Skill" (Crab Claws)
   const keyPickerPool = (categoryFilter==='evergreen' ? SKILL_DEFS.filter(x=>x.category==='evergreen')
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
     : SKILL_DEFS).filter(gateOk);
@@ -7097,7 +7120,7 @@ function triggerPreviewText(t){
   // field now (see the long comment above ACTION_DEFS). 'self' reads as "itself"; ally/enemy
   // read as "an ally"/"an enemy", qualified by the sub-pick.
   // 2026-10-12 (user: "On Death: Deal 5 fire damage to an adjacent enemy"): plain English targets.
-  const whoTarget = (()=>{ if(t.who==='self') return 'itself';
+  const whoTarget = (()=>{ if(t.who==='self') return 'itself'; if(t.who==='killer') return 'the unit that killed it';
     const n = t.targets > 1 && t.sub !== 'all' ? t.targets : 1;
     const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', any: n>1 ? 'units' : 'unit'}[t.who];
     if(!noun) return FILL;
@@ -7211,11 +7234,13 @@ function actionFieldsHTML(t,i){
   // action lists it; `sub` only renders once `who` isn't 'self' (a lone target has no sub-pick).
   if(aDef.fields.includes('who')){
     // 2026-10-12 (23:12 list): Self / Ally / Opponent / Any, then distance (Adjacent or Any), then how many targets.
-    const whoOptions = aDef.whoOptions || ['self','ally','enemy','any'];
-    const whoLabels = {self:'Self', ally:'Ally', enemy:'Opponent', any:'Any'};
+    // Killer (2026-10-14, user: "On Death: Attacking unit gets 5 Poison"): On Death only, the unit whose hit killed it.
+    const whoOptions0 = aDef.whoOptions || ['self','ally','enemy','any'];
+    const whoOptions = t.on === 'onDeath' && whoOptions0.includes('enemy') ? whoOptions0.concat('killer') : whoOptions0;
+    const whoLabels = {self:'Self', ally:'Ally', enemy:'Opponent', any:'Any', killer:'Killer'};
     const curWho = t.who && whoOptions.includes(t.who) ? t.who : whoOptions[0];
     html += `<select data-t="who" data-i="${i}">${whoOptions.map(w=>`<option value="${w}" ${curWho===w?'selected':''}>${whoLabels[w]}</option>`).join('')}</select>`;
-    if(aDef.fields.includes('sub') && curWho!=='self'){
+    if(aDef.fields.includes('sub') && curWho!=='self' && curWho!=='killer'){
       const subOptions = aDef.subOptions || ['adjacent','random','furthest'];
       const subLabels = {adjacent:'Adjacent', random:'Any distance', furthest:'Furthest', all:'All of them'};
       const curSub = t.sub && subOptions.includes(t.sub) ? t.sub : subOptions[0];
@@ -19934,6 +19959,9 @@ const FXL_SKILL_SETUPS = {
   shield: {steps:[{spawn:'subject'}, 'round'], note:'It arrives Shielded, then the dummy in front hits it.'},
   electricity: {foes:FXL_FOES3, rules:{field:'rain'}, rainy:true, note:'In the rain (everyone is wet) with dummies on both sides of the one in front.'},
   keenSense: {rules:{dark:'absolute'}, status:{subject:{blind:2}}, note:'Absolute darkness, and the Specimen starts Blind: it still hits the grounded dummy.'},
+  // 2026-10-14 (seventh pass).
+  psychic: {foeFx:{armor:3, ghost:true}, foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], note:'The dummies wear Armor 3 and are Ghosts: the psychic damage goes through anyway.'},
+  smokeBomb: {steps:['round', 'round', 'round'], note:'Three rounds, so you see a bomb or two (1 in 2 a round), at an ally or an enemy.'},
 };
 // Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
 const FXL_TRIGGER_SETUPS = {
@@ -19958,6 +19986,8 @@ const FXL_TRIGGER_SETUPS = {
   onHealed: {steps:[{dmg:'subject', n:6}, {heal:'subject', n:3}]},
   onAllyHealed: {steps:[{dmg:'ally', n:6}, {heal:'ally', n:3}]},
   onDiscard: {fire:true, why:'It happens from the hand, when the card is pitched.'},
+  // 2026-10-14 (user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the who:'killer' target.
+  onDeathKiller: {t:{on:'onDeath', do:'poison', amount:5, who:'killer'}, status:{subject:{hp:3}}, steps:[{attack:'foe'}], note:'The Specimen has 3 Health; the dummy in front kills it and is poisoned for it.'},
   onSacrifice: {fire:true, why:'It needs a Sacrifice, Devour or Offering.'},
 };
 // Trigger actions: On Spawn, Do <action>, unless said otherwise.
@@ -19989,6 +20019,7 @@ function fxlEntries(){
   const out = [];
   Registry.skills().forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', iconHTML: SKILL_ICON_HTML[sd.key] || '', name: sd.label || sd.key, key: sd.key, sd}));
   TRIGGER_DEFS.forEach(t=> out.push({id:'on:' + t.key, group:'on', icon:'🎬', name:t.label, key:t.key, desc:t.desc}));
+  out.push({id:'on:onDeathKiller', group:'on', icon:'🎬', name:'On Death → the killer', key:'onDeathKiller', desc:'An On Death action aimed at the unit whose hit killed it (Who: Killer). Nothing happens if it died some other way.'}); // 2026-10-14
   ACTION_DEFS.forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
   FXL_FIELDS.forEach(f=> out.push({id:'field:' + f.key, group:'field', icon:f.icon, name:f.name, key:f.key, field:f}));
   if(fxLib) fxLib.entries = out;
@@ -20038,8 +20069,9 @@ function fxlScenario(entry){
     if(!sc.steps){ const how = fxlProbeTiming(sc); sc.steps = how.steps; if(how.note) sc.notes.push(how.note); }
   } else if(entry.group === 'on'){
     const hm = FXL_TRIGGER_SETUPS[entry.key] || {}; sc.hand = true;
-    sc.triggers = [{on: entry.key, do:'damage', amount:3, dmgType:'physical', who:'enemy', sub:'random'}];
-    sc.notes.push('The Specimen carries "' + entry.name + ': deal 3 damage to a random enemy".');
+    sc.triggers = [hm.t ? Object.assign({}, hm.t) : {on: entry.key, do:'damage', amount:3, dmgType:'physical', who:'enemy', sub:'random'}];
+    sc.notes.push(hm.t ? 'The Specimen carries "' + triggerPreviewText(hm.t).replace(/\.$/, '') + '".' : 'The Specimen carries "' + entry.name + ': deal 3 damage to a random enemy".');
+    if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status));
     if(hm.subjectFx) Object.assign(sc.subjectFx, hm.subjectFx);
     if(hm.foes) useUnits({foes:hm.foes});
     if(hm.foeDef) setRoleDef('foe', hm.foeDef);
@@ -22938,7 +22970,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -24534,6 +24566,7 @@ function boardCardHTML(c, defs, opts){
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
@@ -24574,6 +24607,7 @@ function boardCardHTML(c, defs, opts){
       ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
       ${c.blind>0?`<div class="status-overlay blind-overlay">👁</div>`:''}
+      ${c.smoke>0?`<div class="status-overlay smoke-overlay" aria-hidden="true"></div>`:''}
       ${c.shocked>0?`<div class="status-overlay shock-overlay">🌩</div>`:''}
       ${c.staggered>0?`<div class="status-overlay stagger-overlay">💢</div>`:''}
       ${isFieryDef(d)?'<span class="heat-haze" aria-hidden="true"><i></i><i></i></span>':''}
@@ -25591,6 +25625,7 @@ function updateCardStatusDisplay(uid){
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
@@ -25639,6 +25674,10 @@ function updateCardStatusDisplay(uid){
   } else if(blindEl){
     blindEl.remove();
   }
+  // Smoke (2026-10-14, Smoke Bomb): a grey puff drifting over the card while attacks at it miss 1 in 2.
+  let smokeEl = tile.querySelector('.smoke-overlay');
+  if(c.smoke>0){ if(!smokeEl){ smokeEl = document.createElement('div'); smokeEl.className = 'status-overlay smoke-overlay'; smokeEl.setAttribute('aria-hidden', 'true'); tile.insertBefore(smokeEl, tile.firstChild); } }
+  else if(smokeEl) smokeEl.remove();
   let shockEl = tile.querySelector('.shock-overlay');
   if(c.shocked>0){
     if(!shockEl){ shockEl = document.createElement('div'); shockEl.className = 'status-overlay shock-overlay'; shockEl.textContent = '🌩'; tile.insertBefore(shockEl, tile.firstChild); }
@@ -26336,7 +26375,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
       });
     });
   });
@@ -27553,6 +27592,7 @@ const STATUS_TIPS = [
   {id:'st-tipsy', test:c=> c.tipsy>0, text:'🍺 Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.'},
   {id:'st-confused', test:c=> c.confused>0, text:'❓ Confused: half the time, this card\'s triggers and on-hit skills fizzle.'},
   {id:'st-blind', test:c=> c.blind>0, text:'👁 Blind: this card\'s swings miss half the time.'},
+  {id:'st-smoke', test:c=> c.smoke>0, text:'🌫️ Smoke: attacks at this card miss half the time until the end of next round.'},
   {id:'st-chained', test:c=> c.chained, text:'⛓️ Chained: can’t attack until its chain breaks.'},
   {id:'st-daunted', test:c=> (c.daunts||[]).length > 0, text:'😨 Daunted: this card has less Attack until the end of next round. More hits, more Attack lost.'},
 ];
@@ -28773,7 +28813,7 @@ function logText(ev){
     case 'sap': return {cls:'heal', text:`${nm(ev.attDefId)} drained ${ev.amount} HP from the hit. 🩹`};
     case 'exile': return {cls:'exile', text:`${nm(ev.defId)} was exiled from ${ev.zone}. 🌫`};
     case 'render': return {cls:'', text:`${nm(ev.attDefId)} lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}. 📉`};
-    case 'evaded': return {cls:'', text:`${nm(ev.targetDefId)} evaded ${nm(ev.attDefId)}'s attack! 🌀`};
+    case 'evaded': return {cls:'', text: ev.reason === 'smoke' ? `${nm(ev.attDefId)} swings into the smoke and misses ${nm(ev.targetDefId)}! 🌫️` : `${nm(ev.targetDefId)} evaded ${nm(ev.attDefId)}'s attack! 🌀`};
     case 'statusFx': {
       // castle passives (2026-10-12) read as the castle doing it
       { const castleTxt = {logjam: ()=> `🪵 The Logjam holds up ${nm(ev.targetDefId)}: +${ev.amount} Wait.`, castleBolt: ()=> `🏹 A ballista bolt flies at ${nm(ev.targetDefId)} (${ev.amount}).`,
@@ -28901,6 +28941,9 @@ function logText(ev){
     case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${ev.dmg}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
     case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'} (+${ev.amount} Health).` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the castle' : nm(ev.targetDefId)} (${ev.n})!`};
     case 'durian': return {cls:'', text:`${nm(ev.defId)} eats a durian: Thorns +1 (Thorns ${ev.thorns} now). 🌵`};
+    // 2026-10-14 (seventh pass)
+    case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
+    case 'smokeBomb': return {cls:'', text: ev.ally ? `💣💨 ${nm(ev.defId)} throws a smoke bomb: ${nm(ev.targetDefId)} hides in the smoke (attacks at it miss 1 in 2).` : ev.effect === 'blind' ? `💣💨 ${nm(ev.defId)} throws a smoke bomb in ${nm(ev.targetDefId)}'s face: Blinded!` : `💣💨 ${nm(ev.defId)} throws a smoke bomb at ${nm(ev.targetDefId)}, who sniffs its way through it.`};
     case 'electricity': return {cls:'', text:`🔌⚡ ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
     case 'shieldSoak': return {cls:'', text:`💠 ${nm(ev.defId)}'s Shield soaks ${ev.soaked}${ev.left ? ` (${ev.left} left)` : ' and breaks'}.`};
     default: return {cls:'', text: ev.type};
@@ -29577,6 +29620,7 @@ const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the ico
   flying:  {text:'Miss', icon:'🪽'},
   swift:   {text:'Miss', icon:'💨'},
   whiff:   {text:'Whiff~', icon:'🪃'}, // a boomerang coming home through empty air (2026-10-12)
+  smoke:   {text:'Miss', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
 };
 function missCallout(el, reason){
   const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
@@ -29982,6 +30026,19 @@ function sixthPassVfx(ev){
   if(ev.type==='durian'){
     const rc = rcs[ev.uid]; if(rc) rc.thornsBonus = ev.bonus; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
     const el = boardCardEl(ev.uid); if(el){ if(F && F.munch) F.munch(el, {glyph:'<i class="ico-durian big"></i>'}); try{ floatText(el, '🌵 Thorns +1', 'buff'); }catch(e){} }
+  }
+  // 2026-10-14 (seventh pass): Psychic's purple mind-wave; Smoke Bomb's lobbed bomb and grey cloud.
+  if(ev.type==='psychic'){
+    const t = boardCardEl(ev.targetUid);
+    if(t){ if(F && F.mindWave) try{ F.mindWave(boardCardEl(ev.attUid), t, {immune:!!ev.immune}); }catch(e){} try{ floatText(t, ev.immune ? '💭 No mind' : '💭 -' + ev.dmg, ev.immune ? 'buff' : 'dmg'); }catch(e){} }
+    if(!ev.immune){ const rc = rcs[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
+  }
+  if(ev.type==='smokeBomb'){
+    const me = boardCardEl(ev.uid), t = boardCardEl(ev.targetUid), rc = rcs[ev.targetUid];
+    if(rc){ if(ev.effect === 'smoke') rc.smoke = 1; else if(ev.effect === 'blind') rc.blind = Math.max(rc.blind||0, 1); }
+    const land = ()=>{ try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} if(t) try{ floatText(t, ev.effect === 'smoke' ? '🌫️ Smoke' : ev.effect === 'blind' ? '👁 Blinded' : '👃 Sniffs it off', ev.effect === 'blind' ? 'debuff' : 'buff'); }catch(e){} };
+    if(F && F.smokeBomb && me && t) F.smokeBomb(me, t, {onImpact: land}); else land();
+    sfx('boomerangWhirr');
   }
   if(ev.type==='statusFx' && ev.kind==='unitShield'){
     const rc = rcs[ev.targetUid]; if(rc) rc.shield = ev.total; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}

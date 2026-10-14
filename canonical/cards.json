@@ -4866,7 +4866,7 @@
       "thorns": 1,
       "tide": true,
       "molting": 4,
-      "crabClaws": true
+      "fork": true
     },
     "flavor": "Lives somewhere that would kill almost anything else instantly. Unbothered.",
     "locked": true,
@@ -5639,7 +5639,7 @@
       "armor": 1,
       "tide": true,
       "molting": 4,
-      "crabClaws": true
+      "fork": true
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pick a fight with.",
     "dmgType": "physical",
@@ -16923,6 +16923,75 @@
     ],
     "effects": {
       "bludgeon": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "source": {
+      "kind": "design",
+      "id": "2026-10-14"
+    },
+    "unattainable": true
+  },
+  {
+    "id": "smoke-raccoon",
+    "name": "Smokescreen Raccoon",
+    "icon": "\ud83e\udd9d",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 7,
+    "flavor": "By the time the smoke clears, so have your pockets.",
+    "locked": true,
+    "archetypes": [
+      "Raccoon"
+    ],
+    "numericId": 913,
+    "uuid": "5d1c9a2e-7b3f-4e8a-9c61-2f0d8b4a7e13",
+    "rarity": "uncommon",
+    "species": [
+      "Procyonid"
+    ],
+    "effects": {
+      "smokeBomb": true
+    },
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "source": {
+      "kind": "design",
+      "id": "2026-10-14"
+    },
+    "unattainable": true
+  },
+  {
+    "id": "blister-beetle",
+    "name": "Blister Beetle",
+    "icon": "\ud83e\udeb2",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 5,
+    "flavor": "Eat it and regret it. The birds that try it once never try it twice.",
+    "locked": true,
+    "archetypes": [
+      "Insect"
+    ],
+    "numericId": 914,
+    "uuid": "a8e4f6b1-3c2d-4f9e-8b07-6d5c1e9a2f48",
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "effects": {
+      "triggers": [
+        {
+          "on": "onDeath",
+          "do": "poison",
+          "amount": 5,
+          "who": "killer"
+        }
+      ]
     },
     "dmgType": "physical",
     "resist": [],
