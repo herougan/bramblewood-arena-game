@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (00:15)
+- **Card plan workbook:**
+  - The 23 cards made today are now on the Plan sheet, each with a suggested home and its budget v2 check. Five come out over budget at their suggested map: Vampire Bat, Wandering Mage, Arc Bat, Hammerhead Shark and Ironback Gorilla, mostly on the Attack × Health check. The fitted stats are noted; no card was changed.
+  - A new **Wild Veggies** sheet has 12 plant-card proposals for Maps 20+ (rooted ones like Venus Snaptrap and Durian Duke; walking ones like Turnip Brawler, Pumpkin Knight and Mandrake Screamer), built from existing skills. Tick the ones you want.
+
 ## 2026-10-14 (23:30)
 - **Fights:**
   - Day/Night, Flow/Ebb, wind and the forecast are now pills on the board's middle line, and each one explains itself on hover or tap.
