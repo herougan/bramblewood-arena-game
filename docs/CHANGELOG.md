@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (16:15)
+- **Bloom (conditions): +2/+2** while its conditions hold, e.g. "Bloom (Tide & Night)" or "Bloom (Wind or Wet)". For the plant cards to come; the old heal Bloom is unchanged. Units in bloom show 🌸.
+- **Irradiation sounds:** a sizzle as stats burn away, Geiger-counter clicks when radiation is handed out.
+- **〰️ Wave:** a hit pushes the target one column left or right (swapping if someone's there). On Dolphin Knight, Reef Manta Glider, Moray Ambusher and Tide Pool Crab.
+- **Perma-tide** on the river maps (Sunken Hollow and Lilypad Reach): the Tide is always in, and tide effects can't change it. Shown in the Map Codex.
+- **Blue Dragon: Supreme Tide** (double Tide bonuses, every round).
+- **🥚 Brood N:** swarms hatch 1/1 brood that count for Swarm (Bee Drone, Carrion Fly Swarm, Swarm Matriarch).
+- **Pack, reworked:** Pack units of the same type in an unbroken line each get +2/+2 per member (two: +4/+4, three: +6/+6). A **Pack Leader** links every same-type Pack unit on its side, adjacent or not, and adds its own +2/+2 plus +2/+2 for the shared type; a two-type leader leads two packs. Irradiation strips Pack 2 at a time. The AI places Pack cards next to their pack.
+- **New art** for Owl Fletcher, Owl Nightwatch and Bee Drone, as real animals, made with NightCafe's Flux 2 Klein model in a 16-bit pixel style (no extra pixel pass, so faces stay sharp).
+
 ## 2026-10-14 (14:30)
 - **Energy starts at 20 again.** The Camp raises it cheaply to 50 (+5 a step, 40 to 240 Maple Leaves); the Forge takes it from 50 to 60 (+2 a step). Anyone who already had 50 keeps it.
 - **Swimmers are Tide units** (they gain Flow and Ebb) and float on the board. **Moonpull** on Moon Jelly brings the Tide in at once. Pebble Beach has a **Tide-spout**: a water geyser in one column each round starts the Tide, pushes those units back and soaks non-swimmers.

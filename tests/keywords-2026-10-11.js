@@ -74,7 +74,9 @@ function board(a, bs){ const e = E.makeSimEngine(defs, E.mulberry32(11), {record
 { const e = E.makeSimEngine(defs, E.mulberry32(12), {battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'kw-swarm3', 'center', {}, []); e.debugSpawnCard(P, so, 1, 'kw-dummy', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'kw-pack', 'right', {}, []);
   ok(e.swarmBonusOf(P, e.allBoardCards(P[1]).find(c=> c.defId==='kw-swarm3')) === 6, 'Swarm 3: +3 per ally sharing a type');
-  const pk = e.allBoardCards(P[1]).find(c=> c.defId==='kw-pack'); ok(pk.maxHp === 14, `Pack 2: +2 Health per ally of its type on arrival (${pk.maxHp})`); }
+  // 2026-10-14 (user: "Pack not so much. Packs try to be adjacent to each other ..."): the old arrival bonus is gone; allies of its
+  // type that have no Pack make no chain (the new rule is tested in keywords-2026-10-14c.js).
+  const pk = e.allBoardCards(P[1]).find(c=> c.defId==='kw-pack'); ok(pk.maxHp === 10, `Pack 2 next to non-Pack allies: no chain, no bonus (${pk.maxHp})`); }
 { const e = E.makeSimEngine(defs, E.mulberry32(13), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'kw-conv', 'center', {}, []);
   ['center','left','left','left'].forEach(sd=> e.debugSpawnCard(P, so, 2, 'kw-dummy', sd, {}, []));

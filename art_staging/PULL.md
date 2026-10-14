@@ -22,3 +22,9 @@ talon-archer and forge-anvil use Chrome's actual prompt tails, which differ from
 2026-10-12 19:46 (11:46Z): batch C queued in Chrome as `window.__bwJobs4` (art_staging/jobs_2026_10_12c.json, 90 jobs: every
 player-obtainable card still without a portrait). Keys for the gallery scan: pull_keys_2026_10_12c.json. ~5 min a job, so
 done around 19:15Z. Weather fields, Tailwind, Bramble Gauntlet, Thornwood Palisade and MissingNo use the scene style.
+
+## NightCafe pixel art, the way that works (2026-10-14)
+- Model: **Flux 2 Klein 9B Fast** (0.75 credits, not PRO; HiDream I1 Fast is 1 credit). The pixel LoRAs (Retro VG Pixel Art, HD 2D Pixel Art) and NightCafe's Pixel Art templates need PRO; the "3D Game v2" preset is 3D, not pixel.
+- Prompt Magic **off**. Prompt: subject + scene, then ", 16-bit video game style pixel art, Pokemon style creature card portrait, natural animal anatomy, real animal body, not anthropomorphic, no hands, clean dark outlines, crisp square pixels, limited palette, detailed full background scene, centred composition". Avoid "no clothes", weapon words, "spiked", "studded", "monitor".
+- Generate in the user's Chrome (signed in). Download through the built-in browser tab on images.nightcafe.studio (`/jobs/<id>/<id>--0--<k>.jpg?tr=w-768`, returned as BWART_JSON so it spills to a file), then `python3 art_staging/nc_extract.py <file>`.
+- **Don't run nc_pixel.py on these**: Flux already draws clean pixels and the extra pass muddies eyes and faces. Resize straight to 256 px (LANCZOS) into art/cards/<id>.png and wire it.

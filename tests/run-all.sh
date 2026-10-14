@@ -28,6 +28,7 @@ run node tests/keywords-2026-10-11.js
 run node tests/keywords-2026-10-12.js
 run node tests/keywords-2026-10-14.js
 run node tests/keywords-2026-10-14b.js
+run node tests/keywords-2026-10-14c.js
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
 run node tests/tide.js

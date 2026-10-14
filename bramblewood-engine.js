@@ -618,6 +618,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // kind of decks (even maybe all-nights and all-brights)"): opts.rules = {phase:'cycle'|'nightFirst'|'day'|'night',
   // lumberEvery:N (each side +1 Lumber every N rounds), field:<id> (permanent field, same as opts.field)}.
   const rules = opts.rules || {};
+  // Perma-tide (2026-10-14, user: "River - effect: Perma-tide. (In codex only: Can't be affected by Tide affecting effects)"):
+  // rules.permaTide. The Tide is always in: Flow every round from round 1, never Ebb or High tide, whether or not a Tide card was
+  // played. Nothing that moves the tide (Moonpull, the Tide-spout's "tide comes in", the Ebb/High alternation) changes it.
+  const permaTide = !!rules.permaTide;
   // Terrain (2026-10-12, user: "Do effects for each biome, highlighting that biome's strength"): rules.terrain =
   // {types:[...], atk, hp, grant:{skill:value}}. A card whose types include one of the biome's is native: on either side it
   // arrives with +atk/+hp and gains the granted skills (its own value wins if it already has that skill). Done on this
@@ -672,10 +676,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const units = [...pl.row.left, ...pl.row.center, ...pl.row.right];
       // Lantern (2026-10-11, Lantern Bearer): while one is on your board at Night, your Diurnal units keep their day bonus.
       const lit = ph==='night' && units.some(c=> c && !c.gap && c.hp > 0 && CARD_DEFS[c.defId] && CARD_DEFS[c.defId].effects && CARD_DEFS[c.defId].effects.lantern);
+      const packs = packChainsOf(pl); // Pack chains (2026-10-14): their bonus rides on the same situational +A/+H as day and night
       units.forEach(c=>{
         if(!c || c.gap || c.hp <= 0) return;
+        { const pk = packs.get(c); c.packChain = pk ? pk.n : 0; c.packChainBonus = pk ? pk.bonus : 0; }
         const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
+        a += c.packChainBonus; h += c.packChainBonus;
         { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
           const key = grant ? JSON.stringify(grant) : '';
           if((c._condKey||'') !== key){ if(c._condBase){ c.defId = c._condBase; c._condBase = null; } if(key){ c._condBase = c.defId; deriveDef(c, grant); } c._condKey = key; } }
@@ -688,6 +695,54 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     computeSpeeds(players); // Speed and Haste (2026-10-14)
   }
   function phaseBonus(card){ return (card && card.phaseAtk) || 0; }
+  // Pack N, reworked 2026-10-14 (user: "Pack not so much. Packs try to be adjacent to each other. Each in the chain gives a massive
+  // stat boost. Default 2, increments of 2. Irradiation will wipe out 2 at a time, similarly. (If 3 creatures, +6/+6) Pack leader
+  // grants all Pack members on the map, adjacent or not, to count as adjacent, and also gives its own +2/+2 at minimum. (+ a +2/+2
+  // since its the same type) Btw Pack Leader only helps Packs that share a type. A Pack leader can possibly have 2 packs - if the
+  // pack leader is duo-type."). (The old Pack N: on arrival, +N Health per ally sharing a type.)
+  //   A chain is an unbroken run of Pack units, side by side in the row, that share a type (archetypes, as Swarm reads them). Each
+  //   member gets +S/+S, S = the sum of the chain's Pack values (two Pack 2s: +4/+4 each; three: +6/+6). A gap or any other unit
+  //   breaks the chain. Pack true counts as Pack 2.
+  //   A Pack Leader (effects.packLeader) links every Pack unit on its side that shares one of its types into one chain for that type,
+  //   adjacent or not, and joins it: it adds its own Pack value (at least 2) plus 2 more for sharing the type. A leader with two types
+  //   leads two packs. A leader with no Pack unit of its type has no pack.
+  //   A unit in two chains (different types, different members) gets both. Health moves as a difference, like Nocturnal.
+  function packNOf(e){ const v = e && e.pack; return v === true ? 2 : Math.max(0, Number(v)||0); }
+  function packChainsOf(pl){
+    const out = new Map(); if(!pl || !pl.row) return out;
+    const order = physicalRowOrder(pl);
+    const live = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf);
+    const typesOf = c=> ((CARD_DEFS[c.defId]||{}).archetypes) || [];
+    const isLeader = c=> live(c) && !!effectsOf(c).packLeader;
+    const isMember = c=> live(c) && !isLeader(c) && packNOf(effectsOf(c)) > 0;
+    const chains = [], leaders = order.filter(isLeader), led = new Set();
+    leaders.forEach(L=> typesOf(L).forEach(t=> led.add(t)));
+    led.forEach(T=>{ const ms = order.filter(c=> isMember(c) && typesOf(c).includes(T)); if(!ms.length) return;
+      const ls = leaders.filter(L=> typesOf(L).includes(T));
+      chains.push({members: [...ls, ...ms], sum: ms.reduce((t, c)=> t + packNOf(effectsOf(c)), 0) + ls.reduce((t, L)=> t + Math.max(2, packNOf(effectsOf(L))) + 2, 0)}); });
+    const free = new Set(); order.forEach(c=>{ if(isMember(c)) typesOf(c).forEach(t=>{ if(!led.has(t)) free.add(t); }); });
+    free.forEach(T=>{ let run = [];
+      const close = ()=>{ if(run.length >= 2) chains.push({members: run, sum: run.reduce((t, c)=> t + packNOf(effectsOf(c)), 0)}); run = []; };
+      order.forEach(c=>{ if(isMember(c) && typesOf(c).includes(T)) run.push(c); else close(); }); close(); });
+    const seen = new Set();
+    chains.forEach(ch=>{ const key = ch.members.map(c=> c.uid).sort().join(','); if(seen.has(key)) return; seen.add(key);
+      ch.members.forEach(c=>{ const o = out.get(c) || {n:0, bonus:0}; o.n = Math.max(o.n, ch.members.length); o.bonus += ch.sum; out.set(c, o); }); });
+    return out;
+  }
+  // AI placement for a Pack card (2026-10-14, "Packs try to be adjacent to each other"): an open slot beside a live Pack unit (or
+  // Pack Leader) of its side that shares a type with it, nearest the centre; null if there is none. Slotless rows: the flank
+  // whose outer end is such a unit.
+  function packPlacementFor(pl, defId){
+    const d = CARD_DEFS[defId] || {}, e = d.effects || {}; if(!(packNOf(e) > 0 || e.packLeader) || !pl) return null;
+    const mine = new Set(d.archetypes || []); if(!mine.size) return null;
+    const kin = c=>{ const ce = effectsOf(c); return c && !c.gap && c.hp > 0 && !c.cageOf && (packNOf(ce) > 0 || ce.packLeader) && (((CARD_DEFS[c.defId]||{}).archetypes)||[]).some(t=> mine.has(t)); };
+    if(slotMode){ const legal = legalSlots(pl); const near = new Set(); allBoardCards(pl).forEach(c=>{ if(kin(c)){ near.add(c.slot - 1); near.add(c.slot + 1); } });
+      const ok = legal.filter(sl=> near.has(sl)).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b); return ok.length ? ok[0] : null; }
+    const L = pl.row.left, R = pl.row.right;
+    if(L.length && kin(L[L.length - 1])) return 'left'; if(R.length && kin(R[R.length - 1])) return 'right';
+    if(!L.length && !R.length && pl.row.center.length && kin(pl.row.center[0])) return 'left';
+    return null;
+  }
   // The moon (2026-10-12): 8 phases, one step every time night falls. 0 = new, 4 = full. A Full Moon field is always full.
   let lunar = Math.floor(rnd()*8);
   function moonPhase(){ return (field && field.id === 'moon') ? 4 : lunar; }
@@ -705,12 +760,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let tideStart = null;
   // 2026-10-14 (user: "Tide effects: All swimmers and Tide units float. Remove Tide from those who are Swimmers. Swimmers = Tide"):
   // a Swimmer is a Tide unit. It gets Flow's +1 Attack and Ebb's +1 Armor, and the first one played starts the tide too.
-  function isTideDef(def){ const e = def && def.effects; return !!(e && (e.tide || e.swimmer)); }
+  function isTideDef(def){ const e = def && def.effects; return !!(e && (e.tide || e.swimmer || e.supremeTide)); }
   function noteTideCard(def){ if(tideStart === null && isTideDef(def)) tideStart = turnNo; noteZeitgeber(def); }
   // Moonpull (2026-10-14, user: "There is a creature that has a cool sounding evergreen effect - its effect brings in the Tide!"):
   // when it arrives, the Tide comes in at once: Flow this very round (High tide's cycle: its Flow step). A tide already rising
   // stays as it is; an Ebb turns to Flow. The Tide-spout field brings the tide in the same way.
-  function tideInNow(){ const t = getTide(); if(t === 'flow' || t === 'high') return false; tideStart = turnNo - (rules.highTide ? 2 : 1); return true; }
+  function tideInNow(){ if(permaTide) return false; const t = getTide(); if(t === 'flow' || t === 'high') return false; tideStart = turnNo - (rules.highTide ? 2 : 1); return true; }
   // Zeitgebers (2026-10-13, user: "tide and diurnal/nocturnal units start a system just like day/night or carnival rides in Magic
   // the Gathering"; the word is Zeitgeber, a time-giver): in a fight that's day by default (no phase set by the map designer), the
   // first Diurnal, Nocturnal or Crepuscular unit played starts the day/night cycle from that round: Day first, PL rounds each.
@@ -720,10 +775,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // saved fight and the board's pill keep working.
   let zeitStart = null;
   function noteZeitgeber(def){ /* Zeitgebers retired 2026-10-14: the map brings day and night, never a card */ }
-  function getTide(){ if(tideStart === null || !(turnNo > tideStart)) return null; const d = turnNo - tideStart; if(rules.highTide){ const k = d % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return d % 2 === 1 ? 'flow' : 'ebb'; }
+  function getTide(){ if(permaTide) return 'flow'; if(tideStart === null || !(turnNo > tideStart)) return null; const d = turnNo - tideStart; if(rules.highTide){ const k = d % 4; return k === 0 ? 'high' : k === 2 ? 'flow' : 'ebb'; } return d % 2 === 1 ? 'flow' : 'ebb'; }
   function tideRising(){ const t = getTide(); return t === 'flow' || t === 'high'; }
-  function tideAtk(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
-  function tideArmor(card){ if(!isTide(card)) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
+  // Supreme Tide (2026-10-14, user: "Blue Dragon - Has Supreme Tide!"): a Tide unit whose Tide bonuses are doubled (Flow +2 Attack,
+  // Ebb +2 Armor) and always on, both at once, every round: before the tide starts, on Flow, on Ebb, under Perma-tide. Nothing that
+  // moves the tide can take them away.
+  function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide); }
+  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
+  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ return isTideDef(card && CARD_DEFS[card.defId]); } // Swimmers count (2026-10-14)
   // Wind (2026-10-13, 09:56 list: "On windy maps, every alternate turn, there is strong wind. On certain maps, there is always
   // strong wind. The wind flips direction between ally side -> opponent or opponent -> ally side ... tailwind on the allies side,
@@ -751,7 +810,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(twilightOn(curPlayers)){ const k = Math.floor(rr / PL) % 5; ph = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
     }
     out.phase = ph; out.phaseChanges = !!(ph && ph !== getPhase());
-    if(tideStart !== null && r > tideStart){ const d = r - tideStart; out.tide = rules.highTide ? ({0:'high', 2:'flow'}[d % 4] || 'ebb') : (d % 2 === 1 ? 'flow' : 'ebb'); }
+    if(permaTide) out.tide = 'flow'; // Perma-tide (2026-10-14)
+    else if(tideStart !== null && r > tideStart){ const d = r - tideStart; out.tide = rules.highTide ? ({0:'high', 2:'flow'}[d % 4] || 'ebb') : (d % 2 === 1 ? 'flow' : 'ebb'); }
     const wm = rules.wind; if(wm === 'gale' || (wm === 'windy' && r % 2 === 0)) out.wind = {from: (windGusts + 1) % 2 === 1 ? 1 : 2};
     if(field){ out.field = field.id; out.fieldLeft = field.rounds; }
     const vc = r >= 2 ? volcanoChances(r) : null;
@@ -939,7 +999,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
     if(!keys.length) return;
     const col = keys[Math.floor(rnd()*keys.length)];
-    const tideIn = tideStart === null; if(tideIn) tideInNow();
+    const tideIn = tideStart === null && !permaTide; if(tideIn) tideInNow(); // under Perma-tide the tide is already in (2026-10-14)
     if(recordEvents && events) events.push({type:'fieldTick', field:'tideSpout', col, round, tideIn});
     let hurt = false;
     [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
@@ -1056,6 +1116,49 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const can = BLUDGEON_BREAKS.filter(b=> b.has(c, e)); if(!can.length) return;
     const b = can[Math.floor(rnd()*can.length)]; b.br(c, e);
     if(recordEvents && events) events.push({type:'statusFx', kind:'bludgeon', broke:b.key, side, attDefId:att.defId, attUid:att.uid, targetSide, targetDefId:c.defId, targetUid:c.uid});
+  }
+  // Wave (2026-10-14, user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right -
+  // waves."): effects.wave 'left' | 'right' | 'alternate' | true. When its attack lands on a unit (and the unit lives), the unit is
+  // pushed one column that way: 'alternate' goes left on its first swing, then right, and so on; true goes toward the side with
+  // more room (a seeded coin flip on a tie). If a unit stands in that column, the two swap. Open boards: the board's edge is the
+  // outermost column any unit on either side stands in, and a push never goes past it; a pinned unit or a cage can't be moved and
+  // blocks the push. Slotless rows are always packed, so there the unit swaps with its neighbour, if it has one that way.
+  function relayoutRow(pl){
+    const all = allBoardCards(pl);
+    pl.row.center = all.filter(c=> c.slot === 0);
+    pl.row.left = all.filter(c=> c.slot < 0).sort((a, b)=> Math.abs(a.slot) - Math.abs(b.slot));
+    pl.row.right = all.filter(c=> c.slot > 0).sort((a, b)=> a.slot - b.slot);
+  }
+  function waveHit(players, sideOf, attPid, att, t, events, stats){
+    const tpid = otherId(attPid), pl = players[tpid], v = effectsOf(att).wave;
+    if(!pl || !t || !(t.hp > 0) || t.pinned || t.cageOf || !v) return null;
+    let dir = v === 'left' ? -1 : v === 'right' ? 1 : 0;
+    if(v === 'alternate'){ att.waveFlip = !att.waveFlip; dir = att.waveFlip ? -1 : 1; }
+    const ev = {type:'wave', side:sideOf(attPid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:t.uid, targetDefId:t.defId, moves:[], blocked:false, slotMode};
+    let other = null;
+    if(slotMode){
+      syncSlots(players[1]); syncSlots(players[2]);
+      const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? allBoardCards(players[pid]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
+      const s0 = t.slot;
+      if(!dir){ const roomL = s0 + edge, roomR = edge - s0; dir = roomL > roomR ? -1 : roomR > roomL ? 1 : (rnd() < .5 ? -1 : 1); }
+      const d = s0 + dir; ev.dir = dir < 0 ? 'left' : 'right';
+      other = allBoardCards(pl).find(c=> c !== t && c.slot === d) || null;
+      if(Math.abs(d) > edge || (other && other.hp > 0 && (other.pinned || other.cageOf))){ ev.blocked = true; other = null; }
+      else { t.slot = d; ev.moves.push({uid:t.uid, from:s0, to:d}); if(other){ other.slot = s0; ev.moves.push({uid:other.uid, from:d, to:s0}); ev.swapUid = other.uid; } relayoutRow(pl); }
+    } else {
+      const order = physicalRowOrder(pl), i = order.indexOf(t);
+      if(!dir){ const roomL = i, roomR = order.length - 1 - i; dir = roomL > roomR ? -1 : roomR > roomL ? 1 : (rnd() < .5 ? -1 : 1); }
+      const j = i + dir; ev.dir = dir < 0 ? 'left' : 'right'; other = order[j] || null;
+      if(i < 0 || !other || other.pinned || other.cageOf){ ev.blocked = true; other = null; }
+      else { const L = pl.row.left.length, C = pl.row.center.length; order[i] = other; order[j] = t;
+        pl.row.left = order.slice(0, L).reverse(); pl.row.center = order.slice(L, L + C); pl.row.right = order.slice(L + C);
+        ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; }
+    }
+    if(recordEvents && events) events.push(ev);
+    if(!ev.blocked){ // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
+      runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: other || t});
+      if(other && other.hp > 0) runCustomTriggers(players, sideOf, tpid, other, CARD_DEFS[other.defId], 'onMove', stats || {}, events, {movedCard: t}); }
+    return ev;
   }
   function deriveDef(card, grant){
     const base = CARD_DEFS[card.defId]; const id = (base.derivedFrom || base.id) + '~dv' + (++derivedSeq);
@@ -1362,6 +1465,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     const v = e[k], off = {};
     const gone = ()=>{ off[k] = typeof v === 'number' ? 0 : false; (IRR_COMPANION[k]||[]).forEach(x=>{ if(x in e) off[x] = typeof e[x] === 'number' ? 0 : (x === 'loyalGrant' || x === 'usurperGrant' || x === 'swimmerGrant') ? null : false; }); patchUnitDef(c, off); irrNote(c, k, v, null); if(c.irrPartial) delete c.irrPartial[k]; return {key:k, what:'removed', from:v}; };
+    // Pack (2026-10-14, user: "Irradiation will wipe out 2 at a time, similarly"): a point takes 2 off Pack; gone at 0.
+    if(k === 'pack'){ const n = packNOf(e), to = n - 2; if(to > 0){ patchUnitDef(c, {pack: to}); irrNote(c, k, v, to); return {key:k, what:'value', from:v, to}; } off[k] = 0; patchUnitDef(c, off); irrNote(c, k, v, null); return {key:k, what:'removed', from:v}; }
     if(typeof v === 'number'){ if(v > 1){ patchUnitDef(c, {[k]: v - 1}); irrNote(c, k, v, v - 1); return {key:k, what:'value', from:v, to:v - 1}; } return gone(); }
     if(v && typeof v === 'object' && !Array.isArray(v)){
       const nk = ['count', 'amount', 'duration', 'n'].find(x=> Number(v[x]) > 1);
@@ -1423,7 +1528,36 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.moonborn && getPhase() === 'night'){ const n = Math.round((Number(e.moonborn)||1) * moonFullness()); a += n; h += n; }
     if(e.rockSolid){ const n = Math.max(0, pl.stone||0) * 2; a += n; h += n; }
     if(e.ironWill){ const n = Math.max(0, pl.metal||0) * 3; a += n; h += n; }
+    // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): effects.bloomWhen = {when:[...],
+    // mode:'and'|'or', atk, hp} (+2/+2 and 'and' by default). While its conditions hold the unit is in bloom (c.inBloom) and has
+    // +atk/+hp, gained and lost with the bloom like a Nocturnal bonus. (Kept apart from the old Bloom N heal, effects.bloom.)
+    c.inBloom = false;
+    if(e.bloomWhen && typeof e.bloomWhen === 'object'){ const b = bloomStateOf(e.bloomWhen); if(b.on){ c.inBloom = true; a += b.atk; h += b.hp; } }
     return [a, h, grant];
+  }
+  // One Bloom condition, as it stands right now. 'night' and 'day' both hold in Twilight (like Nocturnal and Diurnal); 'wet' is
+  // rain, or the Tide in, or a wet map (rules.wet: the beach, river and sea maps); 'dark' is a dark map or night.
+  const BLOOM_CONDS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost'];
+  function bloomCond(k){
+    const ph = phaseActive() ? getPhase() : null, f = field && field.id;
+    switch(String(k||'').toLowerCase()){
+      case 'tide': return tideRising();
+      case 'ebb': return getTide() === 'ebb';
+      case 'night': return ph === 'night' || ph === 'twilight';
+      case 'day': return ph === 'day' || ph === 'twilight';
+      case 'twilight': return ph === 'twilight';
+      case 'wind': return isWindy();
+      case 'wet': return f === 'rain' || tideRising() || !!rules.wet;
+      case 'dark': return !!rules.dark || ph === 'night';
+      case 'heat': return f === 'heatwave';
+      case 'frost': return f === 'frozen';
+    }
+    return false;
+  }
+  function bloomStateOf(bw){
+    const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean);
+    const or = bw.mode === 'or', on = when.length > 0 && (or ? when.some(bloomCond) : when.every(bloomCond));
+    return {on, atk: bw.atk != null ? Number(bw.atk)||0 : 2, hp: bw.hp != null ? Number(bw.hp)||0 : 2};
   }
   // Full melee-style damage pipeline: attacker rage bonus -> target resist
   // -> target rage reduction -> target armor (flat, floors at 0, last so
@@ -2529,6 +2663,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
     return nc;
   }
+  // A brood token's card (Brood N, 2026-10-14): one per parent card per match.
+  function broodDefOf(defId){ const base = CARD_DEFS[defId], root = base.derivedFrom || base.id, id = root + '~brood';
+    if(!CARD_DEFS[id]){ const pe = base.effects || {}, eff = {swarm: pe.swarm || true}; if(pe.swarmN) eff.swarmN = pe.swarmN; if(pe.flying) eff.flying = true;
+      const src = CARD_DEFS[root] || base;
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, src, {id, name: (src.name || root) + ' Brood', attack:1, health:1, wait:1, cost:0, stoneCost:0, metalCost:0, uraniumCost:0, graceCost:0, devilryCost:0,
+        derivedFrom: root, token:true, broodOf: root, effects: eff}); }
+    return id; }
   // The twin's card: a copy of the original's card, minus Twin, marked as a token (made once per match per card).
   function twinDefOf(defId){ const base = CARD_DEFS[defId]; const id = base.id + '~twin';
     if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, token:true, twinOf: base.derivedFrom || base.id, effects: Object.assign({}, base.effects||{}, {twin:false})});
@@ -2658,14 +2799,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats, mySide, boardCard.defId).devilryGenerated += def.effects.onSpawnDevilry;
       if(recordEvents && events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.onSpawnDevilry});
     }
-    // Pack N (2026-10-12, proposal for the user's "Pack N (New):"): entering the field, it gains +N Health for every ally
-    // already there that shares a type with it. Swarm's defensive twin: Swarm counts allies for Attack all match long.
-    if(Number(def.effects.pack) > 0){
-      const mine = new Set(def.archetypes || []), n = Number(def.effects.pack);
-      const allies = allBoardCards(pl).filter(c=> c!==boardCard && c.hp>0 && !c.cageOf && ((CARD_DEFS[c.defId]||{}).archetypes||[]).some(t=> mine.has(t))).length;
-      if(allies && mine.size){ const g = allies * n; boardCard.hp += g; boardCard.maxHp += g;
-        if(recordEvents && events) events.push({type:'statusFx', kind:'pack', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:g}); }
-    }
+    // (The old Pack N arrival bonus is gone: Pack chains are live now, see packChainsOf. 2026-10-14)
     if(def.effects.converge && !(boardCard.wait > 0)) convergeBoard(players, sideOf, playerId, boardCard, def.effects.converge === true ? 'enemy' : def.effects.converge, events); // a Wait-0 unit is ready on arrival
     if(def.effects.missile && def.effects.missile.trigger==='onSpawn'){
       fireMissile(players, sideOf, playerId, boardCard, def.effects.missile, stats, events);
@@ -2727,6 +2861,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (1/3 tokens that count toward every ally's Swarm) sprout beside it.
     if(Number(def.effects.sprout) > 0 || def.effects.sprout === true){ const n = def.effects.sprout === true ? 1 : Math.min(6, Number(def.effects.sprout)||0);
       for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, GROWTH_TOKEN, stats, events, 'sprout')) break; } }
+    // Brood N (2026-10-14, user: "Swarm units tend to like summoning more units of their type"): when it arrives, N brood tokens of
+    // its own kind hatch beside it: "<Name> Brood", 1/1, Wait 1, the same types (so they count for Swarm), with only Swarm (and
+    // Flying if it flies).
+    if(Number(def.effects.brood) > 0 || def.effects.brood === true){ const n = def.effects.brood === true ? 1 : Math.min(6, Number(def.effects.brood)||0), bid = broodDefOf(boardCard.defId);
+      for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, bid, stats, events, 'brood')) break; } }
     if(def.effects.moonpull && tideInNow() && recordEvents && events) events.push({type:'tide', tide:getTide(), round:turnNo, moonpull:true, side:mySide, defId:boardCard.defId, uid:boardCard.uid}); // Moonpull (2026-10-14)
     if(def.effects.rocket && !(boardCard.wait > 0)) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
@@ -3466,7 +3605,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
-      if(best[1] > -50){ const side = rnd() < 0.5 ? 'left' : 'right'; placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
+      if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
+        { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
+        placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
     }
     // Equipment (2026-10-11): with the turn's play still free, strap a carried item onto its strongest unit.
     if(!ai.playedThisTurn){ const eq = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].cardType === 'equipment');
@@ -4653,6 +4794,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow - and in the future, anything
         // like that"): each landed hit knocks out one defence the target still has, picked at random with equal odds.
         if(attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
+        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats); // Wave (2026-10-14): push it a column
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
         if(attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
@@ -4915,7 +5057,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

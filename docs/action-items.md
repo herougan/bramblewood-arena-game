@@ -31,6 +31,19 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 16:15 (your 12:02 list)
+
+| Item | What's in the game now |
+|---|---|
+| Bloom | Bloom (conditions) +2/+2, e.g. Tide & Night, Wind or Wet. New key so the old heal Bloom keeps working |
+| Irradiation sound | Sizzle when stats burn, Geiger clicks when radiation spreads |
+| Wave | Pushes the hit unit left or right; on four sea cards |
+| River | Perma-tide on Sunken Hollow and Lilypad Reach (there is no map named River yet) |
+| Blue Dragon | Supreme Tide |
+| Swarm | Brood N hatches 1/1 brood (Wait 1) on three swarm cards |
+| Pack | Chains of same-type Pack units: +2/+2 per member; Pack Leader links them all and adds +4/+4; irradiation strips 2 |
+| NightCafe | Best free route: Flux 2 Klein 9B Fast with a 16-bit pixel prompt, Prompt Magic off. The pixel LoRAs and pixel templates are PRO-only. Notes in art_staging/PULL.md |
+
 ## Done at 14:30 (your 11:07 and 11:25 notes)
 
 | Item | What's in the game now |
@@ -43,7 +56,7 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | Twin, Growth Sprout | Built; Twin on Puddle Changeling and the new Mirrorhide Mutant |
 | Art | Your images placed; Shallows Fry, Vampire Bat and Wandering Mage added (not on maps yet) |
 | Later | Wild Veggies, dragons from Map 50, Map 80 own effect, limit breaks every 100 maps, emoji/icon sets: in docs/design-2026-10-14-late-game.md |
-| Still to do | Redo Owl Fletcher, Bee Drone and Owl Nightwatch art as real animals with the game-art engine |
+| Art redo | Done at 16:15: Owl Fletcher, Owl Nightwatch and Bee Drone (NightCafe Flux 2 Klein, 16-bit pixel prompt, 2.25 credits; about 199 left) |
 
 ## Done at 12:45 (your 10:18 list)
 

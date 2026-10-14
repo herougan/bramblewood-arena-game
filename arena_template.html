@@ -8340,6 +8340,14 @@
 @keyframes supremeGlint{0%,100%{opacity:.35; transform:scale(.7) rotate(0deg);} 45%{opacity:1; transform:scale(1.15) rotate(20deg);} 60%{opacity:.8; transform:scale(.95) rotate(28deg);}}
 @media (prefers-reduced-motion: reduce){ .card-tile.is-supreme .stats .atk::after, .card-tile.is-supreme .stats .hp::after{animation:none; opacity:.9;} }
 .ab-supreme{filter:drop-shadow(0 0 3px rgba(255,236,150,.9));}
+/* 2026-10-14 (third pass): Supreme Tide's name sparkles like Supreme; Bloom glows pink while in bloom; a Pack in a chain glows blue. */
+.sk-supreme{font-weight:700; color:#f5d76e; text-shadow:0 0 6px rgba(255,236,150,.85);} .sk-supreme::after{content:' ✨'; filter:drop-shadow(0 0 3px rgba(255,240,170,.95));}
+.ab-bloom.is-on{filter:drop-shadow(0 0 4px rgba(255,150,210,.95)); animation:bloomPulse 2.4s ease-in-out infinite;}
+@keyframes bloomPulse{0%,100%{transform:scale(1);} 50%{transform:scale(1.14);}}
+.ab-pack.is-on, .ab-pair.is-on{filter:drop-shadow(0 0 4px rgba(120,190,255,.95)); font-weight:700;}
+.board-card.wave-pushed{animation:wavePush .55s ease-out;}
+@keyframes wavePush{0%{transform:translateX(0);} 30%{transform:translateX(var(--wave-dx, 10px)) rotate(var(--wave-rot, 3deg));} 100%{transform:translateX(0);}}
+@media (prefers-reduced-motion: reduce){ .ab-bloom.is-on, .board-card.wave-pushed{animation:none;} }
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}
