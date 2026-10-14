@@ -455,7 +455,7 @@ function swarm(attacker, target, o){
   later(()=>{ knock(target, rnd(-120, -60), .7); ring(b.x, b.y, 'sfx-poison', 70, 380); call(o.onImpact); if(o.light) call(o.light, b.x, b.y, [1, .85, .35], false); }, fly*1000 + 120);
   later(()=> knock(target, rnd(60, 120), .45), fly*1000 + 320);
 }
-// Regenerate: green motes spiral in from around the card and stitch it closed.
+// Regenerate: green motes spiral in from around the card, then a soft heal ring and glow.
 function regen(target, o){
   o = o || {}; if(!ready() || !target){ later(o.onDone, 500); return; }
   const g = G(), c = centre(target), n = 12;
@@ -468,10 +468,7 @@ function regen(target, o){
       .to(m, {opacity:0, scale:.3, duration:.12});
   }
   later(()=>{
-    const sv = svgLayer('sfx-stitch'); let d = `M${c.r.left + c.w*.2},${c.r.top + c.h*.28}`;
-    for(let k = 1; k <= 6; k++) d += ` L${c.r.left + c.w*(k % 2 ? .78 : .22)},${c.r.top + c.h*(.28 + k*.08)}`;
-    const p = drawPath(sv, d);
-    g.timeline({onComplete:()=> sv.remove()}).to(p, {strokeDashoffset:0, duration:.35, ease:'power1.inOut'}).to(sv, {opacity:0, duration:.4, delay:.25});
+    // (2026-10-14, user: "Remove the green Z effect at the end": the zig-zag stitch line is gone; motes, ring and glow stay.)
     ring(c.x, c.y, 'sfx-heal', c.w*1.3, 600);
     g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.3) saturate(1.3)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
     if(o.light) call(o.light, c.x, c.y, [.5, 1, .55], false);

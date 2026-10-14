@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (02:45)
+- **Regeneration:** the green zig-zag at the end is gone; the spiralling motes and the soft glow stay. A unit at full health no longer regenerates at all. Before, a bleeding unit at full health still "regenerated" to stop its Bleed.
+- **Castle crumble:** the enemy Bramble now crumbles completely before the Victory sign and results. The hit-stop on the killing blow could slow the crumble so much that a safety timer let the results through halfway. It now always plays at normal speed and pauses a beat afterwards.
+
 ## 2026-10-15 (02:00)
 - **Missing card pictures fixed:** Bee Drone, Bee Knight and Forager Ant lost their pictures because about 50 published admin edits from 10-12 had saved each card's own image file path. The WebP change renamed three of those files. The game now ignores a saved path that just points at the card's own built image and shows the current art. This also lets later art changes show on those 50 cards.
 - **Art:** Bee Drone (your NightCafe image), Bee Knight (bee set, bottom left), Sandstorm Roc (bottom right), Otter Kit (top-left otter), Barrow Leech (bottom-right bat). Kraken Spawnling moved to the dark kraken (top right) so the Colossal Squid can have the top-left one. The sparrow on Shrine Bell-Ringer was already the top-right one.

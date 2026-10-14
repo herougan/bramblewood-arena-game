@@ -4117,7 +4117,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Regeneration N (2026-09-16): heals N HP at the start of every round this card is on
         // the board, capped at its own max HP — feeds the new On Heal/On Healed/On Ally Healed
         // triggers (see fireHealTriggers) exactly like any other heal source.
-        if(c.hp>0 && def.effects && def.effects.regen){
+        // 2026-10-14 (user: "Do not regenerate when the unit is at full health"): nothing at all at full health, not even a bleed stanch.
+        if(c.hp>0 && c.hp < c.maxHp && def.effects && def.effects.regen){
           const healed = applyHeal(c, def.effects.regen, sideOf(pl.id), events);
           if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }

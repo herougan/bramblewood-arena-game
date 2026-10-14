@@ -26602,9 +26602,16 @@ async function castleCrumble(el){
   // 2026-10-14: the cellular-automaton crumble eats the castle along its own cracks, chips falling as rubble.
   if(window.ProcFX && ProcFX.crumble){ const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile');
     if(tile){ try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.quick && SoundKit.quick()); }catch(e){}
+      // 2026-10-14 (user: "While the enemy Bramble HP = 0 triggers crumbling, it also queues the post-battle in 0.5s"): the crumble
+      // rides GSAP's global clock, which the fight speed (1.5×–3×) and hit-stop scale, so at speed it was over in a blink and the
+      // Victory sign and results came straight after. It now always plays at 1×, runs at least its full length, then holds a beat.
+      const gtl = window.gsap && gsap.globalTimeline, ts0 = gtl ? gtl.timeScale() : 1, t0 = performance.now();
+      if(gtl) gtl.timeScale(1);
       await new Promise(res=>{ let done = false; const fin = ()=>{ if(!done){ done = true; res(); } };
-        try{ ProcFX.crumble(tile, {seed: tile.dataset.pfxSeed || 'castle', duration: 1.8, onDone: fin}); }catch(e){ fin(); } setTimeout(fin, 2600); });
-      el.classList.add('is-crumbled'); return; } }
+        try{ ProcFX.crumble(tile, {seed: tile.dataset.pfxSeed || 'castle', duration: 1.8, onDone: fin}); }catch(e){ fin(); } setTimeout(fin, 3200); });
+      const left = 2400 - (performance.now() - t0); if(left > 0) await sleep(left);
+      if(gtl && gtl.timeScale() === 1) gtl.timeScale(ts0);
+      el.classList.add('is-crumbled'); await sleep(450); return; } }
   const r = el.getBoundingClientRect(); if(!r.width) return;
   const layer = document.createElement('div'); layer.className = 'crumble-layer'; layer.setAttribute('aria-hidden', 'true');
   layer.style.cssText = `left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px;`;
@@ -26617,6 +26624,7 @@ async function castleCrumble(el){
   await sleep(1500);
   el.classList.add('is-crumbled');
   setTimeout(()=> layer.remove(), 900);
+  await sleep(450); // a beat before the Victory sign (2026-10-14)
 }
 async function resolveRound(opts){
   const m = matchState; if(!m||m.over||m.resolving||m._coachWait) return;
@@ -30229,7 +30237,7 @@ function labSkillFx(ev){
   const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
   const bf = document.getElementById('battlefieldEl');
   switch(ev.type){
-    case 'heal': if(ev.attUid != null && ev.attUid === ev.targetUid && F.regen && skillFxOnce('regen' + ev.targetUid)){ const t = el(ev.targetUid); if(t) F.regen(t); } break;
+    case 'heal': if(ev.attUid != null && ev.attUid === ev.targetUid && (ev.amount||0) > 0 && F.regen && skillFxOnce('regen' + ev.targetUid)){ const t = el(ev.targetUid); if(t) F.regen(t); } break;
     case 'poisonTick': if(F.poisonCloud && skillFxOnce('poison' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); } break;
     case 'bleedTick': if(F.bleedDrip && skillFxOnce('bleed' + ev.uid)){ const t = el(ev.uid); if(t) F.bleedDrip(t); } break;
     case 'thorns': if(F.thorns){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d && a) F.thorns(d, a); } break;
