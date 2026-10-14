@@ -2,6 +2,43 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (20:00)
+- **New skills:**
+  - 🦞 **Crab Claws** (hits left or right only; on Sulfur Vent Crab and Open-Ocean Hermit Crab).
+  - **Sacrifice - {}** (a trigger when the card is sacrificed; in hand it shows a set of dark teeth across the art).
+  - ⏲️ **Charge N - {}** (a yellow clock top-right starts when the unit is Ready; at 0 the effect fires and it starts again).
+  - 🧫 **Meiosis N** (splits into two halves on death).
+  - 🚫 **Nullify** (its hits get no reaction; what it kills goes to the Removal Zone).
+  - 👣 **Restless** (moves every round; on no card).
+- **Freeze is a clock now:** freezing adds icy counters shown on the Wait clock with snowflakes; each upkeep melts one instead of ticking Wait, same total delay. Stunned units have circling stars.
+- **Evergreens:** 🌪️ **Tornado**, 🏔️ **Avalanche**, 🌊 **Tsunami**, all on arrival with a board-wide sweep. **Dragonic Spire** skills: 🐉⚡ **Dragon Lightning** (red bolts that ignore Armor) and 💀 **Wither** (max Health falls for 3 rounds, no healing). The Dragonic Spire map itself is listed for later.
+- **Eggs are cards:** seven egg cards (Woodland Egg, Speckled Egg, River Bundle, Leathery Egg, Cocoon, Roe Pearl, Den Bundle). On the board they hatch into a random card of their kind when Ready. You get one the first time you set that egg in your Nest.
+- **Esprit** now counts spawned units too, and only allies that share a type.
+- **Screen shake** for big arrivals (over 20 Health, growing to 200) and big hits (over 15, growing to 100).
+- **Fights:**
+  - The sun and moon are gone; the field shifts colour temperature through the day (warm day, amber dusk, cool blue night).
+  - New **Misty** condition: no day or night, and the fog drifts from orange to blue and back.
+  - The deck pile is tighter and sits in line with the hand, and the gap to the board is smaller.
+  - Phones get an icon-only top row and compact skill chips.
+  - The Lumber lesson never asks you to pitch the card that needs the Lumber.
+- **Pages:**
+  - The Codex pager is now at the top as well.
+  - The Nest and Forge put costs inside their buttons.
+  - The Nest hides costs until you tap a card, greys out cards you can't afford ("Need 3 more Kibble"), and Kibble rises with each card of that species you train.
+  - Deck cards show pictures, rating, total Attack and Health (and the count only when it isn't 20).
+  - The Forge text has better contrast, and the swap offer is a proper sheet on phones.
+  - The "Claim it on the Achievements board" line is gone.
+- **Sheets:** a "Skill N values" sheet for you to set each skill's budget weight (tools/cardplan/import_skill_n.py brings your numbers into the game), and a "Factions & regions" sheet with the key skills per faction and region plus three subfactions: the Ashen Covenant (cultists), the Great Herd (savannah giants) and the Mycelium Choir.
+- **Card editor:** shows the card's budget score against N for its map, level and rarity.
+- **Art (NightCafe, 23 images):**
+  - New: Big Bee, Frog, Fly, Gale Sprite (now a wind swallow), Guardian Shield (a golden pangolin), Growth Sprout, Insect Swarmling, Maggot, Malachite Golem (a blind crystal beetle), Mirrorhide Mutant, Nest Hatchling, Trojan Raider and Rabid Jackal.
+  - Redone: Quarry Troll (a stone donkey), Webspire Sentinel, Yeti, Glass Golem (a glass armadillo), the Puddle Changeling at its reflection, and Rootworm Colony (lichen).
+  - For the new cards: Rafflesia, Puffball Bombardier, Otter Angler and Honeyjoe Brewer.
+- **Cards:**
+  - Renamed: Big Bee, Frog, Fly.
+  - MissingNo moved past World 1, and can't be obtained for now.
+  - New, not placed: Rafflesia, Puffball Bombardier, Otter Angler and Honeyjoe Brewer.
+
 ## 2026-10-14 (17:30)
 - **Caves and the deep have no day or night** (Caves & Alcoves, Smugglers' Grotto, The Sunken Depths had been left on Night, with a moon showing in a cave). Sable Swampmire and Pinewood Taiga stay always-night.
 - **Lantern light in the dark:** in pitch-black and absolute-dark fights the field is shadowed except a warm pool of light that follows your pointer (it drifts by itself on touch). The cards don't move.

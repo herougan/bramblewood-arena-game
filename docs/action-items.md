@@ -31,6 +31,24 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 20:00 (your 14:50 list)
+
+| Item | What's in the game now |
+|---|---|
+| Skill N | "Skill N values" sheet in the card plan workbook (fill "Your N"; tools/cardplan/import_skill_n.py brings it in). The card editor shows the card's budget score against N for its map, level and rarity |
+| Screen shake | Big arrivals (over 20 Health, up to 200) and big hits (over 15, up to 100) |
+| Factions | "Factions & regions" sheet: key skills per faction and region, and three subfactions with one card each (Ashen Covenant, Great Herd, Mycelium Choir). Not in the game |
+| New skills | Crab Claws, Sacrifice - {}, Charge N - {}, freeze counters and stun stars, Meiosis, Nullify (kills go to the Removal Zone; the name is one constant), Restless (optional, on no card) |
+| Evergreens | Tornado, Avalanche, Tsunami; Dragonic Spire's Dragon Lightning and Wither (the map is listed for later) |
+| Eggs | Seven egg cards that hatch on the board into a random card of their kind; you get one when you first set that egg in the Nest |
+| Esprit | Counts spawned units too, only those that share a type |
+| Fight look | No sun or moon: colour temperature changes through the day; Misty condition; tighter deck pile and rows; icon-only top row on phones; compact skill chips |
+| Lumber lesson | Never asks you to pitch the card that needs the Lumber; with no other card it says you'll draw an extra one next turn |
+| Pages | Codex pager on top too; admin-only buttons checked; no "claim it on the board" line; costs inside Nest and Forge buttons; deck cards show pictures, rating, total Attack/Health; Forge contrast; swap offer is a sheet on phones; Nest costs show on tap ("Need 3 more Kibble"), Kibble rises per species |
+| Cards | Big Bee, Frog, Fly renamed; MissingNo past World 1 and unobtainable; new Rafflesia, Puffball Bombardier, Otter Angler, Honeyjoe Brewer (not placed) |
+| Art | 23 NightCafe images (list in the changelog). Waiting: Bog Leech (for PixelLab), Rivergate Tribune (logged), Otter Shieldback and Armored Mastiff (their good PixelLab versions aren't in the gallery I can see; send them if you have them) |
+| Your calls | Crab Claws as built wastes a pinch when nobody is beside the target (42 one-on-one results flipped); say if wasted pinches should hit the castle instead. Effects library page and Psychic damage are next |
+
 ## Done at 17:30 (continuing)
 
 | Item | What's in the game now |

@@ -12,3 +12,4 @@ graphify-out/
 # stray test screenshots in the repo root (2026-10-08)
 /*.png
 __pycache__/
+.claude/
