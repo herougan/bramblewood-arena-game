@@ -844,4 +844,78 @@ function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || '';
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
 Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, cleave, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop});
+// ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
+//   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
+//   SkillFX.bananaThrow(thrower, target, opts{onImpact})             SkillFX.munch(target, opts{glyph})
+const SIXTH_CSS = `
+.sfx-fb{width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 42% 40%, #fffbe0 0, #ffd54a 28%, #ff8a1e 55%, #d8380e 78%, rgba(160,30,0,0) 100%); box-shadow:0 0 14px 6px rgba(255,140,30,.75);}
+.sfx-fb-tail{width:10px; height:10px; border-radius:50%; background:radial-gradient(circle, rgba(255,200,80,.95), rgba(255,110,20,.6) 50%, rgba(200,40,0,0) 75%); filter:blur(1px);}
+.sfx-meteor{width:34px; height:34px; border-radius:50%; background:radial-gradient(circle at 40% 38%, #fff2c2 0, #ffb04a 25%, #8a3a14 60%, #3a1a0c 100%); box-shadow:0 0 22px 10px rgba(255,120,30,.8);}
+.sfx-meteor-trail{height:10px; border-radius:6px; background:linear-gradient(90deg, rgba(255,120,30,0), rgba(255,170,60,.85) 70%, #fff3c4); filter:blur(2px); transform-origin:100% 50%;}
+.sfx-crater{border-radius:50%; background:radial-gradient(ellipse, rgba(255,150,40,.85), rgba(200,60,10,.5) 40%, rgba(80,20,0,0) 72%); mix-blend-mode:screen;}
+.sfx-banana{font-size:22px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));}
+`;
+function sixthCss(){ if(document.getElementById('sfx-sixth-css')) return; const s = document.createElement('style'); s.id = 'sfx-sixth-css'; s.textContent = SIXTH_CSS; (document.head || document.body).appendChild(s); }
+// Fireball: a flaming ball arcs from the caster to the target, leaving embers, then bursts 3 columns wide (the dynamite blast's flash,
+// fire core, smoke and debris), the cards beside it knocked outward.
+function fireball(caster, target, o){
+  o = o || {}; if(!ready() || !caster || !target){ later(o.onImpact, 500); return; } sixthCss();
+  const g = G(), a = centre(caster), b = centre(target), ball = layer('sfx-fb'), m = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - 110}, s = {t:0}, fly = (o.flight || 520)/1000;
+  g.set(ball, {x:a.x - 13, y:a.y - 13, scale:.6}); let k = 0;
+  const ember = ()=>{ if(k++ % 2) return; const r = ball.getBoundingClientRect(), e = layer('sfx-fb-tail'); g.set(e, {x:r.left + r.width/2 - 5, y:r.top + r.height/2 - 5, opacity:.95});
+    g.to(e, {scale:.2, opacity:0, y:`+=${rnd(-6, 10)}`, duration:.4, ease:'power1.out', onComplete:()=> e.remove()}); };
+  g.timeline({onComplete:()=> ball.remove()})
+    .to(s, {t:1, duration:fly, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(ball, {x:q.x - 13, y:q.y - 13, scale:.6 + .6*s.t}); ember(); }})
+    .add(()=>{
+      ball.style.opacity = 0; const span = [target].concat((o.sides||[]).filter(Boolean)).map(centre), x0 = Math.min(...span.map(c=> c.r.left)), x1 = Math.max(...span.map(c=> c.r.right)), W = Math.max(b.w*3, x1 - x0);
+      const f = layer('sfx-flash'); g.set(f, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:40, height:40, opacity:1});
+      g.to(f, {width:W*1.15, height:b.h*1.6, opacity:0, duration:.4, ease:'power2.out', onComplete:()=> f.remove()});
+      const fb = layer('sfx-fireball'); g.set(fb, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:20, height:20, opacity:1});
+      g.to(fb, {width:W*.9, height:b.h*1.1, duration:.25, ease:'power3.out'}); g.to(fb, {opacity:0, duration:.4, delay:.22, onComplete:()=> fb.remove()});
+      ring(b.x, b.y, 'sfx-ignite', W, 520); burst(b.x, b.y, -90, 'fire', 16);
+      (o.sides||[]).filter(Boolean).forEach(el=>{ const c = centre(el); burst(c.x, c.y, c.x < b.x ? 180 : 0, 'fire', 8); knock(el, c.x < b.x ? 180 : 0, 1.1); });
+      knock(target, -90, 1.4); if(o.light) call(o.light, b.x, b.y, [1, .55, .2], true); call(o.onImpact);
+    });
+}
+// Meteor: a burning rock streaks down from the top of the screen onto the target, a shockwave rolls out, and the crater glows.
+function meteor(target, o){
+  o = o || {}; if(!ready() || !target){ later(o.onImpact, 600); return; } sixthCss();
+  const g = G(), b = centre(target), rock = layer('sfx-meteor'), trail = layer('sfx-meteor-trail'), fall = (o.fall || 560)/1000;
+  const sx = b.x - Math.min(260, window.innerWidth*.3), sy = -60, ang = Math.atan2(b.y - sy, b.x - sx)*57.3, len = Math.hypot(b.x - sx, b.y - sy);
+  g.set(rock, {x:sx - 17, y:sy - 17}); g.set(trail, {x:sx - 140, y:sy - 5, width:140, rotation:ang, opacity:.9});
+  g.timeline({onComplete:()=>{ rock.remove(); trail.remove(); }})
+    .to(rock, {x:b.x - 17, y:b.y - 17, rotation:200, duration:fall, ease:'power2.in'}, 0)
+    .to(trail, {x:b.x - 140, y:b.y - 5, width:Math.min(220, len*.5), duration:fall, ease:'power2.in'}, 0)
+    .add(()=>{
+      rock.style.opacity = 0; trail.style.opacity = 0;
+      shockwave(b.x, b.y, {size:Math.max(260, b.w*5), cards:o.sides || [], light:o.light});
+      const cr = layer('sfx-crater'); g.set(cr, {x:b.x - b.w*.7, y:b.r.bottom - b.h*.35, width:b.w*1.4, height:b.h*.5, opacity:0});
+      g.timeline({onComplete:()=> cr.remove()}).to(cr, {opacity:1, duration:.15}).to(cr, {opacity:.55, duration:.4, yoyo:true, repeat:3}).to(cr, {opacity:0, duration:.6});
+      burst(b.x, b.y, -90, 'fire', 18); burst(b.x, b.y, -90, 'wood', 10); ring(b.x, b.r.bottom, 'sfx-ring-dust', b.w*2.6, 700);
+      knock(target, -90, 1.8); const host = o.host || null; if(host) shakeEl(host, 8, .5);
+      call(o.onImpact);
+    }, fall);
+}
+// Banana: a banana spins in an arc from the thrower onto the target and bounces off.
+function bananaThrow(thrower, target, o){
+  o = o || {}; if(!ready() || !thrower || !target){ later(o.onImpact, 400); return; } sixthCss();
+  const g = G(), a = centre(thrower), b = centre(target), bn = layer('sfx-banana', '🍌'), m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - 80}, s = {t:0};
+  g.set(bn, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  g.timeline({onComplete:()=> bn.remove()})
+    .to(s, {t:1, duration:.45, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(bn, {x:q.x, y:q.y}); }})
+    .to(bn, {rotation:720, duration:.45, ease:'none'}, 0)
+    .add(()=>{ knock(target, -90, .8); call(o.onImpact); })
+    .to(bn, {x:`+=${rnd(-30, 30)}`, y:'+=30', rotation:'+=180', opacity:0, duration:.35, ease:'power1.in'});
+}
+// Munch: the fruit pops up over the card and gets eaten in three bites.
+function munch(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } sixthCss();
+  const g = G(), c = centre(target), f = layer('sfx-banana', o.glyph || '🍌');
+  g.set(f, {x:c.x, y:c.r.top + c.h*.25, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+  g.timeline({onComplete:()=>{ f.remove(); call(o.onDone); }})
+    .to(f, {scale:1.1, opacity:1, duration:.15, ease:'back.out(3)'})
+    .to(f, {scaleX:.8, duration:.08, yoyo:true, repeat:1}).to(f, {scale:.7, duration:.1}).to(f, {scale:.45, duration:.1}).to(f, {scale:.1, opacity:0, duration:.12});
+  g.fromTo(tileOf(target), {scaleY:1}, {scaleY:.94, duration:.08, yoyo:true, repeat:3, transformOrigin:'50% 100%', clearProps:'transform'});
+}
+Object.assign(root.SkillFX, {fireball, meteor, bananaThrow, munch});
 })(typeof window !== 'undefined' ? window : globalThis);

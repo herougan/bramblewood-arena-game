@@ -187,7 +187,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // Sacrifice - { }"): fires when this card is consumed as Sacrifice fodder, eaten by Devour, or given up as a prayer offering.
   'onSacrifice'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer'];
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield'];
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -458,7 +458,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Self-inflicted statuses (2026-10-11, user: "passives for each status effect - where you self inflict yourself at the
   // start. Like Drunk = apply dizzy to yourself"): Drunk keeps the card Tipsy, Purblind keeps it Blind, Scatterbrained
   // keeps it Confused, from the moment it arrives and for good (a Cleanse only clears it until the next round).
-  function selfInflict(c){ const e = (CARD_DEFS[c.defId] || {}).effects || {}; if(e.drunk && !(c.tipsy>0)) c.tipsy = 1; if(e.purblind && !(c.blind>0)) c.blind = 1; if(e.scatterbrained && !(c.confused>0)) c.confused = 1; }
+  function selfInflict(c){ const e = (CARD_DEFS[c.defId] || {}).effects || {}; if(e.drunk && !(c.tipsy>0)) c.tipsy = 1; if(e.purblind && !e.keenSense && !(c.blind>0)) c.blind = 1; if(e.scatterbrained && !(c.confused>0)) c.confused = 1; }
   // Frenzy (2026-10-12): a Frenzy card is frenzied while any status is on it.
   function isFrenzied(c){
     const d = c && CARD_DEFS[c.defId]; if(!d || !d.effects || !d.effects.frenzy) return false;
@@ -1349,7 +1349,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n}); }
     return true;
   }
-  function spendTempHp(card, dmg){ if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; return dmg - s2; } return dmg; }
+  function spendTempHp(card, dmg){ if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; dmg -= s2; }
+    // Shield (2026-10-14, user: "Not the same as armour, just temp HP"): soaks what Shell's temporary Health didn't, and never heals back.
+    if(card.shield > 0 && dmg > 0){ const s3 = Math.min(card.shield, dmg); card.shield -= s3; dmg -= s3;
+      if(recordEvents && shieldEvents) shieldEvents.push({type:'shieldSoak', uid:card.uid, defId:card.defId, soaked:s3, left:card.shield}); }
+    return dmg; }
   // ---- 2026-10-14 skills (for the cards on the maps after Map 20) ----
   function effectsOf(c){ return ((c && CARD_DEFS[c.defId]) || {}).effects || {}; }
   // Speed N (2026-10-14, user: "Swing Order. So Speed +N means that: When combat begins, all creatures of the highest speed go
@@ -2027,15 +2031,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function combatHitLands(attCard, defCard, singleTarget){
     const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
-    if(singleTarget && dd.evasive && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
-    if(dd.swift && !ad.swift && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
-    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
+    // A Flyer's dodge still applies (it is out of reach, not quick).
+    if(singleTarget && dd.evasive && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
+    if(dd.swift && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
+    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
     if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
-    if(fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
+    // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
+    const keenNose = !!ad.keenSense && !dd.flying;
+    if(!keenNose && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
-    if(dd.shadow && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
+    if(!keenNose && dd.shadow && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
     return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
@@ -2179,7 +2187,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind==='sleep'){ defCard.asleep = Math.max(defCard.asleep||0, duration); defCard._asleepJustSet = true; }
     else if(kind==='paralyze'){ defCard.paralyzed = Math.max(defCard.paralyzed||0, duration); defCard._paralyzedJustSet = true; }
     else if(kind==='stunOnHit'){ defCard.stunned = (defCard.stunned|0) + 1; defCard._stunnedJustSet = true; }
-    else if(kind==='blind'){ defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; }
+    else if(kind==='blind'){ if(effectsOf(defCard).keenSense) return; defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; } // Keen Sense: never Blind
     else if(kind==='tipsy'){ defCard.tipsy = Math.max(defCard.tipsy||0, duration); defCard._tipsyJustSet = true; }
     else if(kind==='confuse'){ defCard.confused = Math.max(defCard.confused||0, duration); defCard._confusedJustSet = true; }
     else if(kind==='shock'){ defCard.shocked = Math.max(defCard.shocked||0, duration); defCard._shockedJustSet = true; }
@@ -2951,6 +2959,115 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return into.id;
   }
 
+  // ---- 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity and Keen Sense.
+  // (user: "Duelist should use 'Fencing' - a new skill related to fine & precise swordsmanship. Maybe fencing = cannot miss Evade
+  // creatures"; "On Ready _ Shoot an AOE fireball to a random enemy. in a 3-x size area, enemy units are hit for 15 Fire damage";
+  // "Banana: every turn, at speed -1 (slower than everyone else), 1/2 chance to eat the banana for 3 health, 1/2 chance to throw
+  // the banana at a random enemy for 3 damage ... The unit will never do eat if it is at full health"; "Bananarang: Same as
+  // boomerang, but when it goes back to the unit, it has a 1/2 chance to eat the banana for 3 health"; "Durian: 1/2 chance to eat
+  // it, giving itself Thorns +1"; "Shield: Not the same as armour, just temp HP. Shield N - the unit comes played with N shield.
+  // As an action - On X, Shield N"; Electricity and Keen Sense from the "Planned, not built yet" list.)
+  // The enemy units in the columns directly beside a unit (open boards: the slot either side; slotless rows: the row neighbours).
+  function besideOf(pl, t){
+    if(!pl || !t) return [];
+    if(slotMode && Number.isInteger(t.slot)) return liveFoesOf(pl).filter(c=> c !== t && Number.isInteger(c.slot) && Math.abs(c.slot - t.slot) === 1);
+    const order = physicalRowOrder(pl), i = order.indexOf(t); if(i < 0) return [];
+    return [order[i-1], order[i+1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
+  }
+  // One area hit from a skill: flat damage (Armor doesn't stop it, Evade can't dodge an area), a 'hit' event, and the usual
+  // reactions (Bleed, On Attacked) if it lives.
+  function skillAreaHit(players, sideOf, pid, att, c, n, dmgType, stats, events, tag){
+    if(!c || !(c.hp > 0) || !(n > 0)) return 0;
+    const tpid = otherId(pid), dmg = damageCardFlat(c, n, dmgType, att.defId);
+    ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
+    if(recordEvents && events) events.push(Object.assign({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType, ranged:true}, tag || {}));
+    if(c.hp > 0){ bleedTick(sideOf, tpid, c, stats, events, 'defend'); runCustomTriggers(players, sideOf, tpid, c, CARD_DEFS[c.defId], 'onAttacked', stats, events); }
+    return dmg;
+  }
+  // Fireball N (default 15): when it becomes Ready, a fireball flies at a random enemy unit and bursts 3 columns wide: that unit
+  // and the enemy units beside it each take N fire (heat) damage. No enemy units: it hits the castle.
+  function fireFireball(players, sideOf, pid, src, n, stats, events){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl || !src || !(src.hp > 0) || !(n > 0)) return;
+    const foes = liveFoesOf(pl);
+    if(!foes.length){ if(recordEvents && events) events.push({type:'fireball', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), castle:true, uids:[], n});
+      fireDamageAction(players, sideOf, pid, src.defId, n, 'heat', {kind:'hq'}, stats, events, null, src.uid); return; }
+    const t = foes[Math.floor(rnd()*foes.length)], hit = [t].concat(besideOf(pl, t));
+    if(recordEvents && events) events.push({type:'fireball', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), targetUid:t.uid, uids:hit.map(c=> c.uid), n});
+    hit.forEach(c=> skillAreaHit(players, sideOf, pid, src, c, n, 'heat', stats, events, {fireball:true}));
+  }
+  // Meteor N (default 20): when it becomes Ready, a meteor crashes onto a random enemy column. The unit there takes N (Armor doesn't
+  // stop it), the units beside it N/4 (rounded down), and the column burns: whoever stands there takes 2 fire at the start of each
+  // of the next 2 rounds. No enemy units: the castle takes N.
+  const meteorBurns = [];
+  function fireMeteor(players, sideOf, pid, src, n, stats, events){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl || !src || !(src.hp > 0) || !(n > 0)) return;
+    const foes = liveFoesOf(pl);
+    if(!foes.length){ if(recordEvents && events) events.push({type:'meteor', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), castle:true, sideUids:[], n, sideN:0});
+      fireDamageAction(players, sideOf, pid, src.defId, n, 'heat', {kind:'hq'}, stats, events, null, src.uid); return; }
+    const t = foes[Math.floor(rnd()*foes.length)], side = besideOf(pl, t), sideN = Math.floor(n / 4);
+    const burn = {pid:tpid, slot: (slotMode && Number.isInteger(t.slot)) ? t.slot : null, cell: cellKeyOf(players, tpid, t), left:2, side:sideOf(pid), srcDefId:src.defId, srcUid:src.uid, uid:t.uid};
+    meteorBurns.push(burn);
+    if(recordEvents && events) events.push({type:'meteor', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), targetUid:t.uid, sideUids:side.map(c=> c.uid), n, sideN, burn:2, slot:burn.slot});
+    skillAreaHit(players, sideOf, pid, src, t, n, 'heat', stats, events, {meteor:true});
+    side.forEach(c=> skillAreaHit(players, sideOf, pid, src, c, sideN, 'heat', stats, events, {meteor:true, splash:true}));
+  }
+  function applyMeteorBurns(players, sideOf, stats, events){
+    if(!meteorBurns.length) return; let any = false;
+    for(let i = meteorBurns.length - 1; i >= 0; i--){
+      const b = meteorBurns[i], pl = players[b.pid]; if(!pl){ meteorBurns.splice(i, 1); continue; } if(!inUpkeep(pl)) continue;
+      const c = liveFoesOf(pl).find(x=> b.slot != null ? x.slot === b.slot : cellKeyOf(players, b.pid, x) === b.cell) || null;
+      b.left -= 1; let dmg = 0;
+      if(c){ dmg = damageCardFlat(c, 2, 'heat', b.srcDefId); ensureStat(stats, sideOf(b.pid), c.defId).taken += dmg; ensureStat(stats, b.side, b.srcDefId).dealt += dmg; any = true; }
+      if(recordEvents && events) events.push({type:'meteorBurn', side:b.side, attDefId:b.srcDefId, attUid:b.srcUid, targetSide:sideOf(b.pid), uid: c ? c.uid : null, defId: c ? c.defId : null, dmg, left:b.left, craterUid:b.uid, slot:b.slot});
+      if(b.left <= 0) meteorBurns.splice(i, 1);
+    }
+    if(any) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // Banana N (default 3) and Durian: after everyone has swung this round (Speed -1: slower than everything), every Ready unit with
+  // a Banana flips a seeded coin: eat it (heal N; never at full Health, then it always throws) or throw it at a random enemy unit
+  // (N damage; the castle if there are none). A Durian unit has a 1 in 2 chance to eat one and gain Thorns +1 for good.
+  function snackTime(players, sideOf, stats, events, firstAttackerSide){
+    const first = firstAttackerSide || 2;
+    for(const pid of [first, otherId(first)]){
+      const pl = players[pid]; if(!pl || !inUpkeep(pl)) continue;
+      for(const c of physicalRowOrder(pl).slice()){
+        if(!c || c.gap || !(c.hp > 0) || c.cageOf || (c.wait||0) > 0) continue;
+        if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return;
+        const e = effectsOf(c);
+        if(e.banana){ const n = numN(e.banana, 3), hurt = c.hp < c.maxHp && !(c.wither > 0);
+          if(hurt && rnd() < 0.5){ const healed = applyHeal(c, n, sideOf(pid), events);
+            if(recordEvents && events) events.push({type:'banana', action:'eat', side:sideOf(pid), uid:c.uid, defId:c.defId, amount:healed, n});
+            if(healed > 0) fireHealTriggers(players, sideOf, pid, c, c, healed, stats, events); }
+          else { const foes = liveFoesOf(players[otherId(pid)]), t = foes.length ? foes[Math.floor(rnd()*foes.length)] : null;
+            if(recordEvents && events) events.push({type:'banana', action:'throw', side:sideOf(pid), uid:c.uid, defId:c.defId, attUid:c.uid, attDefId:c.defId, targetSide:sideOf(otherId(pid)), targetUid: t ? t.uid : null, targetDefId: t ? t.defId : null, castle:!t, n});
+            fireDamageAction(players, sideOf, pid, c.defId, n, 'physical', t ? {kind:'card', card:t} : {kind:'hq'}, stats, events, null, c.uid);
+            removeDeadCards(players, sideOf, {}, stats, events); } }
+        if(e.durian && c.hp > 0 && rnd() < 0.5){ c.thornsBonus = (c.thornsBonus||0) + 1;
+          if(recordEvents && events) events.push({type:'durian', side:sideOf(pid), uid:c.uid, defId:c.defId, thorns:(Number(e.thorns)||0) + c.thornsBonus, bonus:c.thornsBonus}); }
+      }
+    }
+  }
+  // Shield N (a unit's own, not the castle's): temporary Health that soaks damage after Shell's and never heals back. The skill
+  // brings N when it arrives; the 'shield' trigger action grants more.
+  function grantShield(pid, src, c, n, sideOf, events){
+    if(!c || !(c.hp > 0) || !(n > 0)) return 0;
+    c.shield = (c.shield||0) + n;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'unitShield', side:sideOf(pid), attDefId:src ? src.defId : c.defId, attUid:src ? src.uid : c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c.shield});
+    return n;
+  }
+  // Electricity N: its landed hits arc to one enemy unit beside the target (a seeded pick) for N lightning (shock) damage. Wet units
+  // (Swimmers and Tide units, anyone in the rain, anyone while the Tide is in) take +1 from the arc, and a wet target takes +1 too.
+  function isWetUnit(c){ return !!c && (isTide(c) || !!(field && field.id === 'rain') || tideRising()); }
+  function electricityArc(players, sideOf, pid, att, target, n, stats, events, killCredit){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
+    const side = besideOf(pl, target), arc = side.length ? side[Math.floor(rnd()*side.length)] : null;
+    const wetT = target.hp > 0 && isWetUnit(target), wetA = !!arc && isWetUnit(arc);
+    if(recordEvents && events) events.push({type:'electricity', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, arcUid: arc ? arc.uid : null, n, wetTarget:wetT, wetArc:wetA});
+    const credit = c=>{ if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } };
+    if(wetT){ skillAreaHit(players, sideOf, pid, att, target, 1, 'shock', stats, events, {electricity:true, wet:true}); credit(target); }
+    if(arc){ skillAreaHit(players, sideOf, pid, att, arc, n + (wetA ? 1 : 0), 'shock', stats, events, {electricity:true, arc:true, wet:wetA || undefined}); credit(arc); }
+  }
+
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     const def = CARD_DEFS[boardCard.defId];
@@ -3063,6 +3180,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, bid, stats, events, 'brood')) break; } }
     if(def.effects.moonpull && tideInNow() && recordEvents && events) events.push({type:'tide', tide:getTide(), round:turnNo, moonpull:true, side:mySide, defId:boardCard.defId, uid:boardCard.uid}); // Moonpull (2026-10-14)
     if(def.effects.rocket && !(boardCard.wait > 0)) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
+    // Shield N, Fireball N and Meteor N (2026-10-14, sixth pass): a Wait-0 unit is Ready on arrival, so its Fireball/Meteor goes then.
+    if(def.effects.shield) grantShield(playerId, boardCard, boardCard, numN(def.effects.shield, 1), sideOf, events);
+    if(def.effects.fireball && !(boardCard.wait > 0)) fireFireball(players, sideOf, playerId, boardCard, numN(def.effects.fireball, 15), stats, events);
+    if(def.effects.meteor && !(boardCard.wait > 0)) fireMeteor(players, sideOf, playerId, boardCard, numN(def.effects.meteor, 20), stats, events);
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
     // later) it crashes and naps for a round (Stunned 1).
     if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
@@ -3431,6 +3552,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // heal (2026-09-16): restores CURRENT hp up to the existing max — unlike buffHealth,
         // which permanently raises max HP too. Self-only, same convention as buffAttack/
         // buffHealth defaulting to the caster; fires the new heal trigger trio.
+        // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself (default), an ally, or
+        // every ally (who:'ally', sub:'all' — 'allies').
+        case 'shield': {
+          const n = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : Math.max(0, Number(t.amount)||0);
+          const who = t.who === 'allies' ? 'ally' : (t.who || 'self'), sub = t.who === 'allies' ? 'all' : (t.sub || 'random');
+          if(who === 'ally' && sub === 'all') physicalRowOrder(pl).filter(c=> c && !c.gap && c.hp > 0 && c.uid !== boardCard.uid).forEach(c=> grantShield(playerId, boardCard, c, n, sideOf, events));
+          else { const tg = who === 'self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who === 'enemy' ? 'ally' : who, sub); if(tg && tg.card) grantShield(playerId, boardCard, tg.card, n, sideOf, events); }
+          break;
+        }
         case 'heal': {
           // Custom/My-Attack/My-Health amount selector (2026-09-30) -- 'health' reads the card's
           // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
@@ -3800,7 +3930,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const d = CARD_DEFS[id] || {}, e = d.effects || {}; let v = cardValue(id);
         if(myHq < 0.4 || foeAtk > (mine.length+1)*4) v += (d.health||0)*0.5 + (e.armor||0)*2 + (e.bulwark||0)*3; // under pressure: walls
         if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + ((e.puncture||0) + (e.perforate||0))*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
-        if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + ((e.antiAir || e.boomerang) ? 3 + 2*foeFliers : 0);
+        if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + ((e.antiAir || e.boomerang || e.bananarang) ? 3 + 2*foeFliers : 0);
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
@@ -4108,6 +4238,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         fireRender(players, sideOf, pl.id, card, def.effects.render, stats, events);
       }
       if(def.effects.rocket) fireRocket(players, sideOf, pl.id, card, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
+      if(def.effects.fireball && card.hp > 0) fireFireball(players, sideOf, pl.id, card, numN(def.effects.fireball, 15), stats, events); // Fireball N (2026-10-14)
+      if(def.effects.meteor && card.hp > 0) fireMeteor(players, sideOf, pl.id, card, numN(def.effects.meteor, 20), stats, events); // Meteor N (2026-10-14)
       runCustomTriggers(players, sideOf, pl.id, card, def, 'onReady', stats, events);
       if(def.effects.converge) convergeBoard(players, sideOf, pl.id, card, def.effects.converge === true ? 'enemy' : def.effects.converge, events);
       // On Ally/Enemy Ready (2026-09-27, per explicit request: "Then On Ally Ready, On Enemy
@@ -4413,7 +4545,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // whatever stands in front of it then, and that is the unit's attack for the round. Then it throws again next round.
   // The old effects.antiAir counts as Boomerang.
   let combatNo = 0, combatDepth = 0;
-  function isBoomerangDef(d){ return !!(d && d.effects && (d.effects.boomerang || Number(d.effects.antiAir) > 0)); }
+  function isBoomerangDef(d){ return !!(d && d.effects && (d.effects.boomerang || d.effects.bananarang || Number(d.effects.antiAir) > 0)); } // Bananarang (2026-10-14) flies the same way
   // Boomerang flight (2026-10-12 rework, user: "the boomerang hits the enemy than flies out straightwards. On the next turn, it
   // just returns to sender, hitting the enemy again on the way back. And because the boomerang was hitting the unit in front,
   // it doesn't hit the castle on the way back - just whiff ... Hit the castle, and it hits on TO and FRO. If the boomerang
@@ -4467,6 +4599,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(stillThere){
         thrower._boomerangCombat = combatNo; thrower.boomerangOut = false; // catching it is its attack this round
         if(recordEvents && events) events.push({type:'boomerangCaught', side:sideOf(pid), uid:thrower.uid, defId:thrower.defId});
+        // Bananarang N (2026-10-14, user: "when it goes back to the unit, it has a 1/2 chance to eat the banana for 3 health"): only
+        // when it is hurt (like Banana, it never eats at full Health).
+        const br = effectsOf(thrower).bananarang;
+        if(br && thrower.hp < thrower.maxHp && !(thrower.wither > 0) && rnd() < 0.5){ const healed = applyHeal(thrower, numN(br, 3), sideOf(pid), events);
+          if(recordEvents && events) events.push({type:'banana', action:'eat', bananarang:true, side:sideOf(pid), uid:thrower.uid, defId:thrower.defId, amount:healed, n:numN(br, 3)});
+          if(healed > 0) fireHealTriggers(players, sideOf, pid, thrower, thrower, healed, stats, events); }
       } else {
         const myCols = combatColumnsOf(pl), home = myCols[lane] && myCols[lane].kind === 'card' ? myCols[lane].card : null;
         if(home && home.hp > 0){
@@ -4531,6 +4669,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     applyPoisonTicks(players, sideOf, stats, events);
     applyDecayTicks(players, sideOf, stats, events);
     applyWitherTicks(players, sideOf, stats, events); // Wither (2026-10-14)
+    if(!passOnlyUid) applyMeteorBurns(players, sideOf, stats, events); // a Meteor's burning crater (2026-10-14)
     fireRoundStartTriggers(players, sideOf, stats, events);
     const p1 = players[1], p2 = players[2];
     // Rally N (item #14): recomputed fresh every round, AFTER poison ticks/deaths resolve, so
@@ -4922,8 +5061,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
             }
       };
-      const sMiss = a.att.blind>0 ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
-      const blindNow = (a.att.blind>0 && rnd() < 0.5) || nightMiss;
+      // Keen Sense (2026-10-14, user: "For moles: senses non-flying enemies even when blind; unaffected by Blind"): darkness and
+      // Blind don't make it miss a target that isn't flying (the castle included).
+      const keenSense = !!(attDef.effects && attDef.effects.keenSense) && !(target && target.kind === 'card' && target.card && effectsOf(target.card).flying);
+      const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
+      const blindNow = (a.att.blind>0 && !keenSense && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(forkOnly){
         // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
@@ -4977,8 +5119,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const nullHit = isNullifier(a.att); // Nullify (2026-10-14): none of the reactions below
         if(nullHit && recordEvents && events) events.push({type:'statusFx', kind:'nullify', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid:defCard.uid, targetDefId:defCard.defId, killed: defCard.hp <= 0});
         const defDefEarly = nullHit ? {effects:{}} : CARD_DEFS[defCard.defId];
-        if(defDefEarly.effects && defDefEarly.effects.thorns){
-          const thornsDmg = defDefEarly.effects.thorns;
+        const durianThorns = nullHit ? 0 : (defCard.thornsBonus||0); // Durian (2026-10-14): Thorns +1 per durian eaten
+        if((defDefEarly.effects && defDefEarly.effects.thorns) || durianThorns > 0){
+          const thornsDmg = (Number(defDefEarly.effects && defDefEarly.effects.thorns)||0) + durianThorns;
           a.att.hp = Math.max(0, a.att.hp - thornsDmg);
           ensureStat(stats, sideOf(a.enemyId), defCard.defId).thornsDealt += thornsDmg;
           ensureStat(stats, mySide, a.att.defId).taken += thornsDmg;
@@ -5057,6 +5200,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats); // Wave (2026-10-14): push it a column
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
+        if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
         if(attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
@@ -5273,6 +5417,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // could die after the castle fell, unseen (the replay stops at the fall), and vanish when the board re-rendered.
       pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : (frenziedAgain ? a : pickNextAttacker());
     }
+    // Banana and Durian (2026-10-14, user: "every turn, at speed -1 (slower than everyone else) ... (They still do their normal
+    // action)"): after the whole swing order.
+    if(!passOnlyUid && p1.hq.hp > 0 && p2.hq.hp > 0) snackTime(players, sideOf, stats, events, firstAttackerSide);
     endOfRoundUpkeep(players, sideOf, stats, events);
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;

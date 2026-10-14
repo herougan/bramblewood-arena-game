@@ -200,6 +200,15 @@ function meiosisWarning(e){
 // 2026-10-14 (fifth pass, user: "Tornado, Avalanche, Tsunami ... All evergreen abilities" + "Dragonic Spire ... Dragon Lightning
 // (monster hunter), and Wither (Minecraft)"). Tornado is 🌪️💨 because Nature's Force has 🌪️; Tsunami 🌊💥 because Tide has 🌊.
 Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'🌊💥', dragonLightning:'🐉⚡', wither:'💀'});
+// 2026-10-14 (sixth pass). Meteor is ☄️ (user: "Meteor uses the meteor icon"); Fireball can't be 🔥 (Immolation and Momentum have it),
+// so on the card and in the skill lines it is a drawn fireball (SKILL_ICON_HTML below), with 🟠 where only text fits (tooltips).
+// Durian has no emoji: a drawn spiky green fruit, 🌰 in plain text. Shield (a unit's) is 💠 because Armor has 🛡 and Shield Call 🛡️.
+// Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"), with a spark: 🔌⚡. Keen Sense 👃.
+Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌⚡', keenSense:'👃'});
+// Icons drawn in CSS where HTML is allowed (card chips, skill lines, the Effects library): a round orange core with a flame tail,
+// and a spiky green durian. SKILL_ICON keeps a text stand-in for tooltips and plain text.
+const SKILL_ICON_HTML = {fireball:'<i class="ico-fireball" aria-hidden="true"></i>', durian:'<i class="ico-durian" aria-hidden="true"></i>'};
+function skillIconHTML(k){ return SKILL_ICON_HTML[k] || SKILL_ICON[k] || ''; }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
 const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'};
@@ -590,6 +599,23 @@ const PASSIVE_DEFS = [
   {key:'tsunami', category:'evergreen', label:'Tsunami', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, a great wave washes the enemy board: every enemy unit is pushed back (+1 Wait), and those that can't swim (not Swimmers or Tide units) take ${v||1} water damage. The Tide starts, if it hasn't yet.`},
   {key:'dragonLightning', category:'passive', label:'Dragon Lightning', kind:'number', min:1, defaultValue:1, desc:v=>`Red lightning follows its swing: whenever its attack connects, the target and one unit beside it each take ${v||1} magic damage. Armor doesn't stop it, and it strikes even if the target falls.`},
   {key:'wither', category:'passive', label:'Wither', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits wither the target: for 3 rounds it loses ${v||1} max Health (and ${v||1} Health) every upkeep, and nothing can heal it while it withers. A fresh hit starts the 3 rounds again.`},
+  // 2026-10-14 (sixth pass). Fencing (user: "Duelist should use 'Fencing' - a new skill related to fine & precise swordsmanship. Maybe
+  // fencing = cannot miss Evade creatures"); Fireball (user: "On Ready _ Shoot an AOE fireball to a random enemy. in a 3-x size area,
+  // enemy units are hit for 15 Fire damage"); Meteor (user: "On Ready _ Do some damage"); Banana, Bananarang, Durian (user: "Banana:
+  // every turn, at speed -1 ... 1/2 chance to eat the banana for 3 health, 1/2 chance to throw the banana at a random enemy for 3
+  // damage" / "Same as boomerang, but when it goes back to the unit, it has a 1/2 chance to eat the banana" / "Durian: 1/2 chance to
+  // eat it, giving itself Thorns +1"); Shield (user: "Not the same as armour, just temp HP. Shield N - the unit comes played with N
+  // shield"); Electricity and Keen Sense (the "Planned, not built yet" list: "For moles: senses non-flying enemies even when blind;
+  // unaffected by Blind").
+  {key:'fencing', category:'passive', label:'Fencing', kind:'boolean', desc:()=>`A fine, precise blade: its attacks can't be dodged by Evasive or Swift units. (A Flyer is still out of reach half the time.)`},
+  {key:'fireball', category:'evergreen', label:'Fireball', kind:'number', min:1, defaultValue:15, desc:v=>`When it becomes Ready, it hurls a fireball at a random enemy unit. The blast is 3 columns wide: that unit and the enemy units beside it each take ${v||15} fire damage. No enemy units: it hits the castle.`},
+  {key:'meteor', category:'evergreen', label:'Meteor', kind:'number', min:1, defaultValue:20, desc:v=>`When it becomes Ready, a meteor crashes onto a random enemy column: the unit there takes ${v||20} damage (Armor doesn't stop it), the units beside it take ${Math.floor((v||20)/4)}, and the column burns: whoever stands there takes 2 fire at the start of the next 2 rounds.`},
+  {key:'banana', category:'passive', label:'Banana', kind:'number', min:1, defaultValue:3, desc:v=>`Every round, after everyone else has swung (Speed -1): a coin flip. Heads, it eats the banana and heals ${v||3}. Tails, it throws it at a random enemy unit for ${v||3} damage. It never eats at full Health (then it always throws). Its normal attack still happens.`},
+  {key:'bananarang', category:'passive', label:'Bananarang', kind:'number', min:1, defaultValue:3, desc:v=>`A Boomerang made of banana: it throws on attack, and next round it flies back and hits the same target again. Never misses Flying units. When it comes home, a 1 in 2 chance it eats it and heals ${v||3} (never at full Health).`},
+  {key:'durian', category:'passive', label:'Durian', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +1 for the rest of the fight. It stacks.`},
+  {key:'shield', category:'passive', label:'Shield', kind:'number', min:1, defaultValue:1, desc:v=>`It arrives with ${v||1} Shield: temporary Health (the blue 💠) that soaks damage before its Health does. Unlike Armor it doesn't block, it just absorbs, and it never comes back once spent.`},
+  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage. Wet units (Swimmers and Tide units, anyone in the rain or while the Tide is in) take +1 from it, and a wet target takes +1 too.`},
+  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, night and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
 ];
 const ACTIVE_PRESETS = [
   // Arrow N / Arrow (=Attack) used to live here as dedicated one-shot presets backed by their
@@ -784,6 +810,8 @@ const ACTION_DEFS = [
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
+  // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself, an ally, or every ally (sub All).
+  {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally.'},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -1266,7 +1294,7 @@ const SKILL_COUNTERS = {
   flying: ['reach', 'boomerang'],
   armor: ['pierce', 'perforate', 'poison', 'puncture'],
   shell: ['pierce', 'perforate'],
-  evasive: ['sweep', 'fork'],
+  evasive: ['sweep', 'fork', 'fencing'], // Fencing (2026-10-14): Evasive can't dodge it
   stealth: ['guardian'],
   swarm: ['sweep', 'fork', 'defiance'],
   poison: ['regen', 'bloom', 'healing'],
@@ -1479,6 +1507,19 @@ Object.assign(SKILL_TEXT, {
   dragonLightning: v=> `Its hits call red lightning: ${v||1} damage to the target and a unit beside it, ignoring Armor.`,
   wither: v=> `Its hits wither: -${v||1} max Health a round for 3 rounds, and no healing meanwhile.`,
 });
+// 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
+Object.assign(SKILL_TEXT, {
+  fencing: v=> `Its attacks can't be dodged by Evasive or Swift units.`,
+  fireball: v=> `When Ready: a fireball hits a random enemy unit and the units beside it for ${numOr(v, 15)} fire each.`,
+  meteor: v=> `When Ready: a meteor hits a random enemy column for ${numOr(v, 20)} (${Math.floor(numOr(v, 20)/4)} beside it); the crater burns for 2 rounds.`,
+  banana: v=> `Every round, last: eats its banana (+${numOr(v, 3)} Health, only if hurt) or throws it at a random enemy (${numOr(v, 3)} damage).`,
+  bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
+  durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +1 (stacks).`,
+  shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
+  electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)}; wet units take +1.`,
+  keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
+});
+function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
 function describeEffects(def, liveCard){
   const lines = [];
@@ -5047,6 +5088,7 @@ function triggerActionEmoji(t){
     case 'stun': return '💫';
     case 'stunPlayer': return '🚫';
     case 'heal': return '💚';
+    case 'shield': return '💠';
     case 'cleanse': return '🫧';
     case 'addWait': return '⏳';
     case 'reduceWaitOfSpawned': return '⏩';
@@ -5168,6 +5210,16 @@ function abilityBadges(d, bopts){
   if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit beside it">🐉⚡${n1(e.dragonLightning)}</span>`);
   if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">💀${n1(e.wither)}</span>`);
   if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">🥚</span>`);
+  // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
+  if(e.fencing) out.push(`<span title="Fencing: Evasive and Swift units can't dodge its attacks">🤺</span>`);
+  if(e.fireball) out.push(`<span class="ab-fireball" title="Fireball ${numOr(e.fireball, 15)}: when Ready, a 3-wide fireball on a random enemy unit">${SKILL_ICON_HTML.fireball}${n1(numOr(e.fireball, 15))}</span>`);
+  if(e.meteor) out.push(`<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">☄️${n1(numOr(e.meteor, 20))}</span>`);
+  if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">🍌${n1(numOr(e.banana, 3))}</span>`);
+  if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">🍌<i>🪃</i></span>`);
+  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian: 1 in 2 each round it eats one for Thorns +1${db ? ` (Thorns +${db} so far)` : ''}">${SKILL_ICON_HTML.durian}${db ? '+' + db : ''}</span>`); }
+  if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">💠${n1(numOr(e.shield, 1))}</span>`);
+  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">🔌⚡${n1(numOr(e.electricity, 1))}</span>`);
+  if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">👃</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
@@ -7105,6 +7157,7 @@ function triggerPreviewText(t){
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
     case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Bleed first, capped at max HP)`; break;
+    case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
@@ -19829,6 +19882,17 @@ const FXL_SKILL_SETUPS = {
   rupture: {status:{subject:{bleed:3}}, note:'The Specimen starts Bleeding.'},
   kingSlayer: {foeDef:{archetypes:['King'], name:'Dummy King', icon:'👑'}, note:'The dummy in front is a King.'},
   shieldCall: {foeFx:{arrow:2}, note:'The dummies shoot arrows at your units.'},
+  // 2026-10-14 (sixth pass). Fireball and Meteor go off when it arrives Ready, so the default (arrival) run shows them; these give
+  // them a full row to land in. Banana needs a wound to eat; Bananarang a Flyer and a wound; Shield and Durian need blows.
+  fencing: {foeFx:{evasive:true, swift:true}, steps:['round', 'round'], note:'The dummies are Evasive and Swift, and never dodge it.'},
+  fireball: {foes:FXL_FOES3, note:'Three dummies side by side, so the blast is 3 wide.'},
+  meteor: {foes:FXL_FOES3, steps:[{spawn:'subject'}, 'round', 'round'], note:'Three dummies side by side; two rounds, so the crater burns.'},
+  banana: {status:{subject:{hp:9}}, steps:['round', 'round'], note:'The Specimen starts wounded, so it may eat; two rounds, so you see a throw too.'},
+  bananarang: {status:{subject:{hp:9}}, foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], steps:['round', 'round'], note:'Wounded, facing a Flyer; the second round brings it home.'},
+  durian: {steps:['round', 'round', 'round'], note:'Three rounds, so it gets the chance to eat.'},
+  shield: {steps:[{spawn:'subject'}, 'round'], note:'It arrives Shielded, then the dummy in front hits it.'},
+  electricity: {foes:FXL_FOES3, rules:{field:'rain'}, rainy:true, note:'In the rain (everyone is wet) with dummies on both sides of the one in front.'},
+  keenSense: {rules:{dark:'absolute'}, status:{subject:{blind:2}}, note:'Absolute darkness, and the Specimen starts Blind: it still hits the grounded dummy.'},
 };
 // Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
 const FXL_TRIGGER_SETUPS = {
@@ -19876,12 +19940,13 @@ const FXL_ACTION_SETUPS = {
   stunPlayer: {t:{count:1}, note:'The enemy player skips a turn: it shows in the log only.'},
   cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
   addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
+  shield: {t:{amount:4, who:'ally', sub:'all'}, steps:[{spawn:'subject'}, 'round'], note:'Every ally gets Shield 4, then a round of blows eats into it.'}, // 2026-10-14
 };
 const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger']);
 function fxlEntries(){
   if(fxLib && fxLib.entries) return fxLib.entries;
   const out = [];
-  Registry.skills().forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', name: sd.label || sd.key, key: sd.key, sd}));
+  Registry.skills().forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', iconHTML: SKILL_ICON_HTML[sd.key] || '', name: sd.label || sd.key, key: sd.key, sd}));
   TRIGGER_DEFS.forEach(t=> out.push({id:'on:' + t.key, group:'on', icon:'🎬', name:t.label, key:t.key, desc:t.desc}));
   ACTION_DEFS.forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
   FXL_FIELDS.forEach(f=> out.push({id:'field:' + f.key, group:'field', icon:f.icon, name:f.name, key:f.key, field:f}));
@@ -19900,6 +19965,8 @@ function fxlRealSkillValue(sd){
 }
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
+// Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
+const FXL_NUMBER_DEFAULTS = {fireball:15, meteor:20};
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -19909,7 +19976,7 @@ function fxlSkillEffects(sd){
   else if(real){ Object.assign(e, fxlRetype(real.raw, sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE)); from = real.from; if(chance && sd.kind === 'number') e[sd.key] = 100; }
   else {
     const opts = (()=>{ try{ const o = typeof sd.selectOptions === 'function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }catch(_){ return []; } })();
-    const v = sd.kind === 'boolean' ? true : sd.kind === 'number' ? (chance ? 100 : 3) : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'select' ? ((opts[0] && opts[0].value) || true)
+    const v = sd.kind === 'boolean' ? true : sd.kind === 'number' ? (chance ? 100 : (FXL_NUMBER_DEFAULTS[sd.key] || 3)) : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'select' ? ((opts[0] && opts[0].value) || true)
       : sd.kind === 'selectNumber' ? [(opts[0] && opts[0].value) || 'damage', 3] : sd.kind === 'text' ? (()=>{ const pd = PASSIVE_DEFS.find(p=> p.key === sd.key); return pd && pd.placeholder ? String(pd.placeholder).split('·')[0].trim() : undefined; })() : sd.kind === 'types' ? [sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE] : sd.kind === 'cardCount' ? {defId: FXL_IDS.ally2, count: 1} : undefined;
     if(v === undefined) return {e, from, unsupported:`No card uses it yet and its value (${sd.kind}) can't be guessed.`};
     try{ sd.apply(e, v, 2); }catch(err){ return {e, from, unsupported:'Its value could not be applied.'}; }
@@ -20172,7 +20239,7 @@ function fxlRenderList(){
   const q = (fxLib.search||'').trim().toLowerCase(), box = fxLib.ui.list.querySelector('#fxlItems');
   const all = fxlEntries().filter(x=> !q || x.name.toLowerCase().includes(q) || x.key.toLowerCase().includes(q));
   box.innerHTML = FXL_GROUPS.map(g=>{ const items = all.filter(x=> x.group === g.key).sort((a, b)=> a.name.localeCompare(b.name)); if(!items.length) return '';
-    return `<div class="fxl-group"><div class="fxl-group-h">${g.icon} ${escapeHtml(g.label)} <small>${items.length}</small></div>${items.map(x=> `<button type="button" class="fxl-item ${x.id === fxLib.sel ? 'is-on' : ''}" data-fxl="${escapeAttr(x.id)}" role="option" aria-selected="${x.id === fxLib.sel}"><span class="fxl-ico">${escapeHtml(x.icon)}</span><span>${escapeHtml(x.name)}</span></button>`).join('')}</div>`; }).join('') || `<p class="panel-sub">Nothing matches "${escapeHtml(fxLib.search)}".</p>`;
+    return `<div class="fxl-group"><div class="fxl-group-h">${g.icon} ${escapeHtml(g.label)} <small>${items.length}</small></div>${items.map(x=> `<button type="button" class="fxl-item ${x.id === fxLib.sel ? 'is-on' : ''}" data-fxl="${escapeAttr(x.id)}" role="option" aria-selected="${x.id === fxLib.sel}"><span class="fxl-ico">${x.iconHTML || escapeHtml(x.icon)}</span><span>${escapeHtml(x.name)}</span></button>`).join('')}</div>`; }).join('') || `<p class="panel-sub">Nothing matches "${escapeHtml(fxLib.search)}".</p>`;
 }
 function fxlEntryText(entry){
   if(entry.sd){ const pd = PASSIVE_DEFS.find(p=> p.key === entry.key); const v = (()=>{ const e = (fxLib.sc && fxLib.sc.subjectFx) || {}; try{ return entry.sd.get(e); }catch(_){ return undefined; } })();
@@ -20186,7 +20253,7 @@ function fxlRenderInfo(){
   const entry = fxlEntry(), sc = fxLib.sc || {}, g = FXL_GROUPS.find(x=> x.key === entry.group);
   const card = (()=>{ try{ const d = (matchDefsOverlay||{})[FXL_IDS.subject]; return d && !entry.field ? describeEffects(d).filter(l=> !/^🧬|^Token card|Dev-only/.test(l)) : []; }catch(e){ return []; } })();
   const stepWord = st=> st === 'round' ? 'fight one round' : st.spawn ? `bring in the ${fxlBaseDefName(st.spawn)}` : st.kill ? `kill the ${fxlBaseDefName(st.kill)}` : st.dmg ? `deal ${st.n} damage to the ${fxlBaseDefName(st.dmg)}` : st.heal ? `heal the ${fxlBaseDefName(st.heal)} by ${st.n}` : st.attack ? `the ${fxlBaseDefName(st.attack)} attacks once` : st.fire ? 'fire the trigger by hand' : '?';
-  fxLib.ui.info.innerHTML = `<div class="fxl-title"><span class="fxl-big-ico" aria-hidden="true">${escapeHtml(entry.icon)}</span><div><h2>${escapeHtml(entry.name)}</h2><span class="fxl-chip">${g ? g.icon + ' ' + escapeHtml(g.label) : ''}</span> <code class="fxl-key">${escapeHtml(entry.key)}</code></div></div>
+  fxLib.ui.info.innerHTML = `<div class="fxl-title"><span class="fxl-big-ico" aria-hidden="true">${entry.iconHTML || escapeHtml(entry.icon)}</span><div><h2>${escapeHtml(entry.name)}</h2><span class="fxl-chip">${g ? g.icon + ' ' + escapeHtml(g.label) : ''}</span> <code class="fxl-key">${escapeHtml(entry.key)}</code></div></div>
     <p class="fxl-desc">${keywordizeHTML(escapeHtml(fxlEntryText(entry)))}</p>
     ${card.length ? `<div class="fxl-cardtext"><b>On the Specimen's card:</b> ${card.map(l=> keywordizeHTML(escapeHtml(l))).join('<br>')}</div>` : ''}
     ${sc.unsupported ? `<div class="fxl-warn" role="note">⚠️ Can't be shown here. ${escapeHtml(sc.unsupported)}</div>` : `<div class="fxl-setup"><b>▶ Play will:</b> ${escapeHtml((sc.steps||[]).map(stepWord).join(', then '))}.${(sc.notes||[]).length ? ' ' + escapeHtml(sc.notes.join(' ')) : ''}${sc.hand ? ' <span class="fxl-hand" title="This entry has a hand-made setup">✋ hand-made setup</span>' : ''}</div>`}
@@ -22828,7 +22895,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -24453,6 +24520,9 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-14 (user: "All swimmers and Tide units float"): Tide units and Swimmers bob gently on the board (flyers keep their flight).
   // The bob rides on the same .fly-body wrapper flyers use, so GSAP's lunges and recoils still add up with it.
   const floats = !flies && isTideDefApp(d) && !caged;
+  // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
+  if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
+  if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
   const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}">${tideNow==='flow' ? '🌊⚔' : tideNow==='high' ? '🌊⚔🛡' : '🐚🛡'}</div>` : ''}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
@@ -25484,6 +25554,9 @@ function updateCardStatusDisplay(uid){
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`);
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   if(c.irradiation>0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}">☢️${c.irradiation}</span>`); // 2026-10-14
+  // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
+  if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
+  if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   // 2026-09-20 fix (badge top/bottom split, see boardCardHTML's own comment): this live-patch
   // path used to target `.badges` directly — which is now the ABILITY row (the card's own
   // permanent skills, built once and never touched here). Live status stacks now live in their
@@ -26199,7 +26272,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
       });
     });
   });
@@ -28568,6 +28641,7 @@ function logText(ev){
         shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
         grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
         shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
+        unitShield: ev.attUid === ev.targetUid ? `raised a Shield: +${ev.amount} temporary Health (${ev.total} in all) 💠` : `shielded ${nm(ev.targetDefId)}: +${ev.amount} temporary Health 💠`, // Shield (2026-10-14)
         cower: ev.mode === 'flee' ? `was hit last turn and backs off${ev.amount ? ` (+${ev.amount} Health)` : ''} 🫣` : `was hit last turn and hides in its shell: attacks can't hurt it this turn 🫣`,
         ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${ev.amount} acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
         shellDown: `came out of its shell 🐚`,
@@ -28665,6 +28739,14 @@ function logText(ev){
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
     case 'wave': return {cls:'', text: ev.blocked ? `〰️ ${nm(ev.attDefId)}'s wave breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.` : `〰️ ${nm(ev.attDefId)}'s wave pushes ${nm(ev.targetDefId)} ${ev.dir}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; // Wave (2026-10-14)
+    // 2026-10-14 (sixth pass)
+    case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
+    case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
+    case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${ev.dmg}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
+    case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'} (+${ev.amount} Health).` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the castle' : nm(ev.targetDefId)} (${ev.n})!`};
+    case 'durian': return {cls:'', text:`${nm(ev.defId)} eats a durian: Thorns +1 (Thorns ${ev.thorns} now). 🌵`};
+    case 'electricity': return {cls:'', text:`🔌⚡ ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
+    case 'shieldSoak': return {cls:'', text:`💠 ${nm(ev.defId)}'s Shield soaks ${ev.soaked}${ev.left ? ` (${ev.left} left)` : ' and breaks'}.`};
     default: return {cls:'', text: ev.type};
   }
 }
@@ -29714,6 +29796,52 @@ function fifthPassVfx(ev){
     sfx('unlockChime');
   }
 }
+// 2026-10-14 (sixth pass): Fireball, Meteor (with its burning crater), Banana, Bananarang, Durian, Shield, Electricity.
+function sixthPassVfx(ev){
+  if(!ev || !matchState) return;
+  const F = window.SkillFX || null, rcs = matchState.replayCards || {};
+  const sfx = name=>{ try{ SoundKit[name] && SoundKit[name](); }catch(e){} };
+  if(ev.type==='fireball'){
+    const a = boardCardEl(ev.attUid), t = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid), sides = (ev.uids||[]).filter(u=> u !== ev.targetUid).map(boardCardEl).filter(Boolean);
+    if(F && F.fireball && a && t) F.fireball(a, t, {sides}); else if(t) try{ floatText(t, '🟠 Fireball!', 'dmg'); }catch(e){}
+    sfx('burnAway');
+  }
+  if(ev.type==='meteor'){
+    const t = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid), sides = (ev.sideUids||[]).map(boardCardEl).filter(Boolean);
+    if(F && F.meteor && t) F.meteor(t, {sides, host:null}); else if(t) try{ floatText(t, '☄️ Meteor!', 'dmg'); }catch(e){}
+    try{ battlefieldShake(Math.min(1, 0.35 + (ev.n||20)/60)); }catch(e){}
+    if(t && !ev.castle){ t.classList.add('meteor-crater'); matchState.meteorCraters = Object.assign(matchState.meteorCraters || {}, {[ev.targetUid]: true}); }
+    sfx('knockOut');
+  }
+  if(ev.type==='meteorBurn'){
+    const el = ev.uid != null ? boardCardEl(ev.uid) : null;
+    if(el){ try{ floatText(el, '☄️🔥-' + ev.dmg, 'dmg'); }catch(e){} if(F && F.scorch) try{ F.scorch(el, {}); }catch(e){} }
+    if(!ev.left){ const c = boardCardEl(ev.craterUid); if(c) c.classList.remove('meteor-crater'); if(el) el.classList.remove('meteor-crater'); if(matchState.meteorCraters) delete matchState.meteorCraters[ev.craterUid]; }
+  }
+  if(ev.type==='banana'){
+    const me = boardCardEl(ev.uid);
+    if(ev.action === 'eat'){ if(F && F.munch && me) F.munch(me, {glyph:'🍌'}); if(me) try{ floatText(me, ev.bananarang ? '🍌🪃 Munch!' : '🍌 Munch!', 'heal'); }catch(e){} }
+    else { const t = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid); if(F && F.bananaThrow && me && t) F.bananaThrow(me, t, {}); sfx('boomerangWhirr'); }
+  }
+  if(ev.type==='durian'){
+    const rc = rcs[ev.uid]; if(rc) rc.thornsBonus = ev.bonus; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el){ if(F && F.munch) F.munch(el, {glyph:'<i class="ico-durian big"></i>'}); try{ floatText(el, '🌵 Thorns +1', 'buff'); }catch(e){} }
+  }
+  if(ev.type==='statusFx' && ev.kind==='unitShield'){
+    const rc = rcs[ev.targetUid]; if(rc) rc.shield = ev.total; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}
+    const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💠 +' + ev.amount, 'buff'); }catch(e){} if(F && F.shieldUp) try{ F.shieldUp(el, {}); }catch(e){} }
+  }
+  if(ev.type==='shieldSoak'){
+    const rc = rcs[ev.uid]; if(rc) rc.shield = ev.left; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){}
+  }
+  if(ev.type==='electricity'){
+    const a = boardCardEl(ev.attUid), ts = [ev.targetUid, ev.arcUid].filter(u=> u != null).map(boardCardEl).filter(Boolean);
+    if(F && F.lightning && a && ts.length > 1 && !reducedMotion()) F.lightning(a, ts, {});
+    if(ev.wetTarget || ev.wetArc) ts.forEach(el=>{ try{ floatText(el, '💧⚡', 'dmg'); }catch(e){} });
+    sfx('shockTone');
+  }
+}
 // Two halves of a shell fly apart, with a few chips.
 function eggCrackVfx(x, y){
   if(fxLevel() === 'none') return;
@@ -29737,6 +29865,7 @@ function renderVfxForEvent(ev){
   try{ noteFieldEvent(ev); }catch(e){}
   try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
+  try{ sixthPassVfx(ev); }catch(e){} // Fireball, Meteor, Banana, Durian, Shield, Electricity (2026-10-14)
   try{ labSkillFx(ev); }catch(e){}
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
@@ -29991,9 +30120,9 @@ function renderVfxForEvent(ev){
     try{ if(el && window.SkillFX && SkillFX.backstab){ const fromLeft = at ? at.getBoundingClientRect().left < el.getBoundingClientRect().left : true; SkillFX.backstab(el, fromLeft); } }catch(e){} }
   // Anti-Air (2026-10-10): a hit on a flier from an Anti-Air unit throws a boomerang that knocks feathers loose.
   if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
-    if(ad && td && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420}); } } }catch(e){} }
+    if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420}); } } }catch(e){} }
   // A boomerang thrown at the castle bounces off it and flies out the top (2026-10-13).
-  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); if(ev.boomerang || (matchState && matchState.boomerangBack === String(ev.attUid))){ matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420}); } else SkillFX.boomerangCastle(a, c, {flight:420}); } } }catch(e){} }
+  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); if(ev.boomerang || (matchState && matchState.boomerangBack === String(ev.attUid))){ matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420}); } else SkillFX.boomerangCastle(a, c, {flight:420}); } } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
   if(ev.type==='boomerangReturn'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Boomerang returns!', 'quick'); if(matchState) matchState.boomerangBack = String(ev.uid); }
   // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
