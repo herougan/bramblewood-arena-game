@@ -9102,6 +9102,23 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .hatch-side .nk-nurse{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
   .hatch-help, .hatch-wait{margin:0; font-size:13.5px; line-height:1.45;}
   @media (prefers-reduced-motion: reduce){ .hatch-sky .wind, .hatch-sky .leaf, .hay-nest .nest-thing{animation:none !important;} }
+  /* 2026-10-14 (fifth pass): board sweeps for Tornado / Avalanche / Tsunami, red Dragon Lightning, Wither smoke, egg cracks. */
+  .bw-sweep{position:fixed; pointer-events:none; z-index:9985; overflow:hidden;}
+  .bw-sweep-band{position:absolute; inset:0;}
+  .bw-sweep-tornado .bw-sweep-band{background:linear-gradient(90deg, transparent, rgba(210,220,200,.0) 20%, rgba(200,214,190,.55) 45%, rgba(240,245,235,.7) 50%, rgba(200,214,190,.55) 55%, transparent 80%); filter:blur(2px);}
+  .bw-sweep-tornado .bw-sweep-band::after{content:'🌪️'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:64px; opacity:.85;}
+  .bw-sweep-avalanche .bw-sweep-band{background:linear-gradient(180deg, transparent, rgba(235,245,255,.75) 40%, rgba(255,255,255,.9) 50%, rgba(205,225,245,.6) 62%, transparent);}
+  .bw-sweep-tsunami .bw-sweep-band{background:linear-gradient(90deg, transparent, rgba(40,120,200,.35) 30%, rgba(80,170,240,.7) 46%, rgba(230,248,255,.9) 50%, rgba(60,140,220,.45) 58%, transparent 80%);}
+  .sfx-bolt.sfx-bolt-red path{stroke:#ffe0d8;}
+  .sfx-bolt.sfx-bolt-red path.glow{stroke:rgba(235,40,30,.85); stroke-width:11;}
+  .board-card.dragon-struck .card-tile{box-shadow:0 0 0 2px rgba(255,70,50,.9), 0 0 22px rgba(230,30,20,.75);}
+  .wither-smoke{position:fixed; width:18px; height:18px; margin:-9px 0 0 -9px; border-radius:50%; background:radial-gradient(circle, rgba(20,16,22,.85), rgba(20,16,22,0) 70%); pointer-events:none; z-index:9986;}
+  .wither-smoke.skull{background:none; width:auto; height:auto; font-size:18px; filter:drop-shadow(0 0 4px rgba(0,0,0,.9)) grayscale(1);}
+  .egg-crack-bit{position:fixed; pointer-events:none; z-index:9987; font-size:22px; transform:translate(-50%,-50%);}
+  .egg-crack-bit.half-l{clip-path:inset(0 50% 0 0);} .egg-crack-bit.half-r{clip-path:inset(0 0 0 50%);}
+  .egg-crack-bit.chip{font-size:12px; color:#f4ead2;}
+  .board-card.egg-hatched .card-tile{box-shadow:0 0 0 2px rgba(255,236,170,.95), 0 0 20px rgba(255,220,120,.75);}
+  .ab-dragon-bolt{color:#d8382c;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

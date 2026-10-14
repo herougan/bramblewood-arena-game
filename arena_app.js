@@ -173,6 +173,9 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   // 2026-10-14 (third pass). Bloom (conditions) is 🌷 because the old Bloom N heal has 🌸 (the in-bloom chip on the board is 🌸);
   // Wave is 〰️ because Tide has 🌊 and Scatterbrained 🌀; Brood 🥚; Pack Leader 🐺👑; Supreme Tide ✨🌊.
   bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊'};
+// 2026-10-14 (fifth pass, user: "Tornado, Avalanche, Tsunami ... All evergreen abilities" + "Dragonic Spire ... Dragon Lightning
+// (monster hunter), and Wither (Minecraft)"). Tornado is 🌪️💨 because Nature's Force has 🌪️; Tsunami 🌊💥 because Tide has 🌊.
+Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'🌊💥', dragonLightning:'🐉⚡', wither:'💀'});
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
 const BLOOM_COND_NAMES = {tide:'Tide', ebb:'Ebb', night:'Night', day:'Day', twilight:'Twilight', wind:'Wind', wet:'Wet', dark:'Dark', heat:'Heat', frost:'Frost'};
@@ -541,6 +544,13 @@ const PASSIVE_DEFS = [
   {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the nearest enemy (a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
   {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the nearest enemy (Heat resistance and weakness apply). Never misses Flying units.`},
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
+  // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
+  // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
+  {key:'tornado', category:'evergreen', label:'Tornado', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, a tornado whirls the enemy row: ${v||1} random enemy unit${(v||1) === 1 ? ' is' : 's are'} thrown to a random other column (swapping with any unit there) and take${(v||1) === 1 ? 's' : ''} 1 damage. Flyers are flung harder: 2 damage. Pinned units hold on.`},
+  {key:'avalanche', category:'evergreen', label:'Avalanche', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, an avalanche buries the enemy board: every enemy unit that isn't flying takes ${v||1} cold damage and gets +1 Wait.`},
+  {key:'tsunami', category:'evergreen', label:'Tsunami', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, a great wave washes the enemy board: every enemy unit is pushed back (+1 Wait), and those that can't swim (not Swimmers or Tide units) take ${v||1} water damage. The Tide starts, if it hasn't yet.`},
+  {key:'dragonLightning', category:'passive', label:'Dragon Lightning', kind:'number', min:1, defaultValue:1, desc:v=>`Red lightning follows its swing: whenever its attack connects, the target and one unit beside it each take ${v||1} magic damage. Armor doesn't stop it, and it strikes even if the target falls.`},
+  {key:'wither', category:'passive', label:'Wither', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits wither the target: for 3 rounds it loses ${v||1} max Health (and ${v||1} Health) every upkeep, and nothing can heal it while it withers. A fresh hit starts the 3 rounds again.`},
 ];
 const ACTIVE_PRESETS = [
   // Arrow N / Arrow (=Attack) used to live here as dedicated one-shot presets backed by their
@@ -1415,6 +1425,14 @@ const SKILL_TEXT = {
   fireArrow: v=> `While Ready, shoot the enemy facing it for ${v} fire damage every upkeep.`,
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
+// 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
+Object.assign(SKILL_TEXT, {
+  tornado: v=> `When it arrives, ${Number(v) > 1 ? v + ' random enemy units are' : 'a random enemy unit is'} flung to another column for 1 damage (2 for flyers).`,
+  avalanche: v=> `When it arrives, every enemy unit without Flying takes ${v||1} cold damage and +1 Wait.`,
+  tsunami: v=> `When it arrives, every enemy unit gets +1 Wait; non-swimmers take ${v||1} water damage. Starts the Tide.`,
+  dragonLightning: v=> `Its hits call red lightning: ${v||1} damage to the target and a unit beside it, ignoring Armor.`,
+  wither: v=> `Its hits wither: -${v||1} max Health a round for 3 rounds, and no healing meanwhile.`,
+});
 function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
 function describeEffects(def, liveCard){
   const lines = [];
@@ -1431,6 +1449,7 @@ function describeEffects(def, liveCard){
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
+  if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
@@ -1970,6 +1989,7 @@ function cardObtainableFrom(d){
   if(src.kind==='map' && src.node) return 'skirmish';
   if(src.kind==='base') return 'base';
   if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12): they drop when that raid falls
+  if(src.kind==='nest') return 'nest'; // egg cards (2026-10-14): the Nest gives one when you set that kind of egg in a nest
   return null; // unsorted, or an event (no event system live yet)
 }
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
@@ -1979,6 +1999,7 @@ function cardWhereToGetText(d){
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
   if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
+  if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return `Raid only: ${r ? r.name : 'a raid'} drops its cards when it falls (more for the top raiders)`; }
   return 'Not obtainable yet';
@@ -5084,6 +5105,13 @@ function abilityBadges(d, bopts){
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">🥚${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flow or Ebb">✨🌊</span>`);
+  // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, and the egg card's 🥚.
+  if(e.tornado) out.push(`<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">🌪️💨${n1(e.tornado)}</span>`);
+  if(e.avalanche) out.push(`<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">🏔️${n1(e.avalanche)}</span>`);
+  if(e.tsunami) out.push(`<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">🌊💥${n1(e.tsunami)}</span>`);
+  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit beside it">🐉⚡${n1(e.dragonLightning)}</span>`);
+  if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">💀${n1(e.wither)}</span>`);
+  if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">🥚</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
@@ -25515,8 +25543,8 @@ async function resolveRound(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
-  const mainEvents = events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready');
-  const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready');
+  const mainEvents = events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch');
+  const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready' || ev.type==='hatch'); // an egg cracks open right after its Ready (2026-10-14)
   // 2026-09-17 follow-up ("there should be a 'fight' sign before the combat anims begin"):
   // resolveCombat() above already ran the WHOLE round synchronously to completion — events is
   // the full, final log — so this is the one place that can tell, before replaying a single
@@ -27839,6 +27867,8 @@ function logText(ev){
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         rocket: `launched a rocket 🚀`,
         shed: `shed its skin and came out stronger (+1/+1) 🐍`,
+        wither: `withered ${nm(ev.targetDefId)} (−${ev.amount} max Health a round for 3 rounds, no healing) 💀`, // 2026-10-14
+        avalancheWait: `buried ${nm(ev.targetDefId)} in snow (+${ev.amount} Wait) 🏔️`, // 2026-10-14
         bludgeon: `bludgeoned ${nm(ev.targetDefId)}: its ${({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || ev.broke} is broken 🔨`,
         coffeeCrash: `crashed after its coffee and dozes off 😴`,
         inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
@@ -27911,6 +27941,13 @@ function logText(ev){
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
+    // 2026-10-14 (fifth pass)
+    case 'tornado': return {cls:'', text:`🌪️ ${nm(ev.attDefId)}'s Tornado whirls the enemy row${(ev.hits||[]).length ? ` and flings ${(ev.hits||[]).length} unit${(ev.hits||[]).length===1?'':'s'}` : ''}!`};
+    case 'avalanche': return {cls:'', text:`🏔️ ${nm(ev.attDefId)}'s Avalanche buries ${(ev.hits||[]).length} enemy unit${(ev.hits||[]).length===1?'':'s'}: ${ev.n} cold damage and +1 Wait.`};
+    case 'tsunami': return {cls:'', text:`🌊 ${nm(ev.attDefId)}'s Tsunami washes the enemy back (+1 Wait)${(ev.hits||[]).length ? `; ${(ev.hits||[]).length} that can't swim take${(ev.hits||[]).length===1?'s':''} ${ev.n}` : ''}.${ev.tideStarted ? ' The Tide starts.' : ''}`};
+    case 'dragonLightning': return {cls:'', text:`🐉⚡ Red lightning from ${nm(ev.attDefId)} strikes ${(ev.uids||[]).length} unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} each!`};
+    case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
+    case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
     case 'wave': return {cls:'', text: ev.blocked ? `〰️ ${nm(ev.attDefId)}'s wave breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.` : `〰️ ${nm(ev.attDefId)}'s wave pushes ${nm(ev.targetDefId)} ${ev.dir}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; // Wave (2026-10-14)
     default: return {cls:'', text: ev.type};
   }
@@ -28854,8 +28891,136 @@ function labSkillFx(ev){
       break; }
   }
 }
+// Screen shake (2026-10-14, user: "when summoning >20hp monsters - gradual more and more increase up to 200HP max." and "damage >15
+// in 1 hit, gradual more and more, till 100HP damage."): a unit with more than 20 max Health arriving shakes the battlefield, from a
+// tiny tremble at 21 to the full shake at 200; a single hit of more than 15 (on a unit or a castle) does the same from 16 to 100.
+// GSAP jitter on the battlefield (max ~10px), 250-600 ms, never twice within 150 ms; off with reduced motion and on Low/None effects.
+let lastBigShakeAt = 0;
+function shakeStrengthForArrival(hp){ hp = Number(hp)||0; return hp > 20 ? Math.min(1, (hp - 20) / 180) : 0; }
+function shakeStrengthForHit(dmg){ dmg = Number(dmg)||0; return dmg > 15 ? Math.min(1, (dmg - 15) / 85) : 0; }
+function battlefieldShake(t){
+  if(!(t > 0) || !hasGsap() || reducedMotion()) return false;
+  const lv = fxLevel(); if(lv === 'low' || lv === 'none') return false;
+  const now = performance.now(); if(now - lastBigShakeAt < 150) return false;
+  const bf = document.querySelector('.battlefield') || document.getElementById('battlefieldEl'); if(!bf) return false;
+  lastBigShakeAt = now;
+  const amp = 1 + 9*Math.min(1, t), rot = 0.15 + 0.85*Math.min(1, t), dur = 0.25 + 0.35*Math.min(1, t);
+  const n = Math.max(5, Math.round(dur / 0.045)), kf = [];
+  for(let i = 0; i < n; i++){ const k = 1 - i/n; kf.push({x:(Math.random()*2 - 1)*amp*k, y:(Math.random()*2 - 1)*amp*0.6*k, rotation:(Math.random()*2 - 1)*rot*k, duration:dur/n}); }
+  gsap.killTweensOf(bf, 'x,y,rotation');
+  gsap.to(bf, {keyframes:kf.concat([{x:0, y:0, rotation:0, duration:.05}]), clearProps:'transform'});
+  return true;
+}
+function bigBlowShake(ev){
+  if(!ev) return;
+  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.dmg||0) > 15){ battlefieldShake(shakeStrengthForHit(ev.dmg)); return; }
+  let hp = 0;
+  const defs = getCardDefs();
+  if(ev.type==='play' && !ev.reserve){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; hp = (rc && rc.maxHp) || ((defs[ev.defId]||{}).health) || 0; }
+  else if(ev.type==='spawn'){ hp = (defs[ev.defId]||{}).health || 0; }
+  else if(ev.type==='hatch'){ hp = ev.hp || ((defs[ev.defId]||{}).health) || 0; }
+  if(hp > 20) battlefieldShake(shakeStrengthForArrival(hp));
+}
+// Egg cards (2026-10-14): the kind of card an egg hatches into, in words.
+const EGG_HATCH_LABEL = {woodland:'woodland', bird:'Bird', otter:'Otter', scaly:'Reptile or Amphibian', bug:'Insect or Arachnid', water:'Fish or sea', beast:'Beast'};
+function eggKindLabel(d){ if(!d) return ''; if(d.eggKind && EGG_HATCH_LABEL[d.eggKind]) return EGG_HATCH_LABEL[d.eggKind]; const h = d.hatchInto || {}; return h.any ? 'woodland' : [...(h.archetypes||[]), ...(h.species||[])].slice(0, 2).join(' or ') || 'beast'; }
+// The Dragonic Spire (2026-10-14, user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither
+// (Minecraft) -> the map's signature abilities"): a map still on the drawing board. Not playable yet; the Map Codex can list it.
+const FUTURE_MAPS = [
+  {id:'dragonic-spire', name:'Dragonic Spire', icon:'🐉', signature:['dragonLightning','wither'],
+   blurb:'A broken tower of grey stone wound in old dragon bones, where red lightning never stops falling. Its wyrms strike with Dragon Lightning, and the black smoke of the Wither creeps down from the top.'},
+];
+// A full-board sweep for the arrival skills: a band of colour runs across the battlefield.
+function boardSweepVfx(kind, fromSide){
+  if(!hasGsap() || reducedMotion() || fxLevel() === 'none') return;
+  const bf = document.querySelector('.battlefield') || document.getElementById('battlefieldEl'); if(!bf) return;
+  const r = bf.getBoundingClientRect(); if(!(r.width > 0)) return;
+  const d = document.createElement('div'); d.className = 'bw-sweep bw-sweep-' + kind; d.setAttribute('aria-hidden', 'true');
+  Object.assign(d.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'});
+  document.body.appendChild(d);
+  const band = document.createElement('div'); band.className = 'bw-sweep-band'; d.appendChild(band);
+  const vertical = kind === 'avalanche', down = fromSide !== 'B';
+  if(vertical) gsap.fromTo(band, {yPercent: down ? -120 : 120, opacity:.95}, {yPercent: down ? 120 : -120, duration:.75, ease:'power2.in', onComplete:()=> d.remove()});
+  else gsap.fromTo(band, {xPercent: fromSide === 'B' ? 120 : -120, opacity:.95}, {xPercent: fromSide === 'B' ? -120 : 120, duration:.7, ease:'power1.inOut', onComplete:()=> d.remove()});
+  setTimeout(()=>{ try{ d.remove(); }catch(e){} }, 1600);
+}
+// Moves on the replay board (Tornado): slot moves on open boards, or a list of swaps on slotless rows. Mirrors Wave's.
+function applyReplayMovesFor(ev){
+  const m = matchState, pid = ev.targetSide==='A' ? 1 : 2, rr = m && m.replayRows && m.replayRows[pid];
+  if(ev.slotMode){
+    if(m && m.replayCards) (ev.moves||[]).forEach(mv=>{ if(m.replayCards[mv.uid]) m.replayCards[mv.uid].slot = mv.to; });
+    if(rr){ const all = ['left','center','right'].flatMap(ln=> rr[ln]);
+      const slotOf = u=>{ const rc = m.replayCards && m.replayCards[u]; return rc && rc.slot!=null ? rc.slot : 0; };
+      rr.center = all.filter(u=> slotOf(u)===0); rr.left = all.filter(u=> slotOf(u)<0).sort((a,b)=> Math.abs(slotOf(a))-Math.abs(slotOf(b))); rr.right = all.filter(u=> slotOf(u)>0).sort((a,b)=> slotOf(a)-slotOf(b)); }
+  } else if(rr){ (ev.swaps||[]).forEach(([a, b])=>{ let aL=null, aI=-1, bL=null, bI=-1;
+      ['left','center','right'].forEach(ln=>{ const ia = rr[ln].indexOf(a); if(ia!==-1){ aL=ln; aI=ia; } const ib = rr[ln].indexOf(b); if(ib!==-1){ bL=ln; bI=ib; } });
+      if(aL && bL){ const t = rr[aL][aI]; rr[aL][aI] = rr[bL][bI]; rr[bL][bI] = t; } }); }
+}
+function fifthPassVfx(ev){
+  if(!ev || !matchState) return;
+  const F = window.SkillFX || null;
+  const sfx = name=>{ try{ SoundKit[name] && SoundKit[name](); }catch(e){} };
+  if(ev.type==='tornado'){
+    boardSweepVfx('tornado', ev.side); sfx('boomerangWhirr');
+    applyReplayMovesFor(ev);
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    (ev.hits||[]).forEach((u, i)=>{ const el = boardCardEl(u); if(!el) return; try{ floatText(el, '🌪️', 'quick'); }catch(e){}
+      if(hasGsap() && !reducedMotion()) gsap.fromTo(el, {rotation:-200, scale:.8}, {rotation:0, scale:1, duration:.55, delay:i*0.06, ease:'back.out(1.6)', clearProps:'transform'}); });
+  }
+  if(ev.type==='avalanche'){
+    boardSweepVfx('avalanche', ev.side); sfx('freezeChime');
+    (ev.hits||[]).forEach(u=>{ const el = boardCardEl(u); if(!el) return; try{ const c = el.getBoundingClientRect(); if(F && F.ring) F.ring(c.left + c.width/2, c.top + c.height/2, 'sfx-frost', 90, 600); if(F && F.burst) F.burst(c.left + c.width/2, c.top + c.height/3, 90, 'ice', 8); }catch(e){} });
+  }
+  if(ev.type==='statusFx' && ev.kind==='avalancheWait'){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.wait = (rc.wait||0) + (ev.amount||1); const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, '🏔️ +1 Wait', 'debuff'); }catch(e){} }
+  if(ev.type==='tsunami'){
+    boardSweepVfx('tsunami', ev.side); sfx('splash');
+    (ev.pushed||[]).forEach(u=>{ const el = boardCardEl(u); if(el && hasGsap() && !reducedMotion()) gsap.fromTo(el, {y: ev.side==='A' ? -14 : 14}, {y:0, duration:.5, ease:'elastic.out(1, .5)', clearProps:'transform'}); });
+  }
+  if(ev.type==='wash' && ev.tsunami){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.wait = (rc.wait||0) + 1; }
+  if(ev.type==='dragonLightning'){
+    const att = boardCardEl(ev.attUid), ts = (ev.uids||[]).map(u=> boardCardEl(u)).filter(Boolean);
+    if(F && F.lightning && att && ts.length && !reducedMotion()){ F.lightning(att, ts, {}); const bolts = document.querySelectorAll('svg.sfx-bolt'); const b = bolts[bolts.length - 1]; if(b) b.classList.add('sfx-bolt-red'); }
+    ts.forEach(el=>{ el.classList.add('dragon-struck'); setTimeout(()=> el.classList.remove('dragon-struck'), 700); });
+    sfx('shockTone');
+  }
+  if(ev.type==='statusFx' && ev.kind==='wither'){ const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💀 Wither', 'debuff'); }catch(e){} witherSmokeVfx(el); } }
+  if(ev.type==='witherTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.maxHp = Math.max(0, (rc.maxHp||0) - ev.n); rc.hp = Math.max(0, Math.min(rc.maxHp, (rc.hp||0) - ev.n)); }
+    try{ updateCardHpDisplay(ev.uid); }catch(e){} const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '💀 −' + ev.n, 'debuff'); }catch(e){} witherSmokeVfx(el); } }
+  if(ev.type==='hatch'){
+    const rc = matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc){ rc.defId = ev.defId; rc.hp = rc.maxHp = ev.hp; rc.atk = ev.atk; rc.wait = 0; }
+    const el0 = boardCardEl(ev.uid); let at = null; if(el0){ const r = el0.getBoundingClientRect(); at = {x:r.left + r.width/2, y:r.top + r.height/2}; }
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    const el = boardCardEl(ev.uid);
+    if(at) eggCrackVfx(at.x, at.y);
+    if(el){ try{ floatText(el, '🐣 Hatched!', ''); }catch(e){} el.classList.add('egg-hatched'); setTimeout(()=> el.classList.remove('egg-hatched'), 800);
+      if(hasGsap() && !reducedMotion()) gsap.fromTo(el, {scale:.4, opacity:.2}, {scale:1, opacity:1, duration:.5, ease:'back.out(2)', clearProps:'transform,opacity'}); }
+    sfx('unlockChime');
+  }
+}
+// Two halves of a shell fly apart, with a few chips.
+function eggCrackVfx(x, y){
+  if(fxLevel() === 'none') return;
+  const mk = (txt, cls)=>{ const d = document.createElement('div'); d.className = 'egg-crack-bit ' + (cls||''); d.textContent = txt; d.setAttribute('aria-hidden', 'true'); Object.assign(d.style, {left:x + 'px', top:y + 'px'}); document.body.appendChild(d); return d; };
+  const a = mk('🥚', 'half-l'), b = mk('🥚', 'half-r');
+  if(!hasGsap() || reducedMotion()){ setTimeout(()=>{ a.remove(); b.remove(); }, 400); return; }
+  gsap.to(a, {x:-34, y:-18, rotation:-60, opacity:0, duration:.6, ease:'power2.out', onComplete:()=> a.remove()});
+  gsap.to(b, {x:34, y:-18, rotation:60, opacity:0, duration:.6, ease:'power2.out', onComplete:()=> b.remove()});
+  for(let i = 0; i < 6; i++){ const c = mk('•', 'chip'); gsap.to(c, {x:(Math.random()*2 - 1)*50, y:-10 - Math.random()*40, opacity:0, duration:.5 + Math.random()*.3, ease:'power2.out', onComplete:()=> c.remove()}); }
+}
+// Black smoke with a skull, rising off a withering card.
+function witherSmokeVfx(el){
+  if(!el || fxLevel() === 'none') return;
+  const r = el.getBoundingClientRect(), n = fxLevel() === 'low' ? 2 : 5;
+  for(let i = 0; i < n; i++){ const p = document.createElement('div'); p.className = 'wither-smoke' + (i === 0 ? ' skull' : ''); p.textContent = i === 0 ? '💀' : ''; p.setAttribute('aria-hidden', 'true');
+    Object.assign(p.style, {left:(r.left + r.width*(0.25 + Math.random()*0.5)) + 'px', top:(r.top + r.height*0.6) + 'px'}); document.body.appendChild(p);
+    if(!hasGsap() || reducedMotion()){ setTimeout(()=> p.remove(), 500); continue; }
+    gsap.fromTo(p, {y:0, opacity:.85, scale:.6}, {y:-40 - Math.random()*30, x:(Math.random()*2 - 1)*14, opacity:0, scale:1.4, duration:.9 + Math.random()*.4, delay:i*0.08, ease:'power1.out', onComplete:()=> p.remove()}); }
+}
 function renderVfxForEvent(ev){
   try{ noteFieldEvent(ev); }catch(e){}
+  try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
+  try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
   try{ labSkillFx(ev); }catch(e){}
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
@@ -32105,7 +32270,10 @@ function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] 
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
 function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= NEST_SLOTS) return false;
-  const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + (EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3; saveNestState(n); return true; }
+  const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + (EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3; saveNestState(n); if(e.kind !== 'baby') grantEggCardFor(e.kind); return true; }
+// Egg cards (2026-10-14, user: "Eggs are now cards ... you can even put them in the deck. But it would suck ... You still have the egg out
+// of game"): the first time you set an egg of a kind in a nest, its egg card (e.g. Speckled Egg) joins your collection.
+function grantEggCardFor(kind){ const id = 'egg-' + (EGG_KINDS[kind] ? kind : 'woodland'); try{ if(!getCardDefs()[id] || myUnlockedCardIds.has(id)) return false; unlockCardForPlayer(id, 'nest'); try{ showToast(`🥚 New card: ${getCardDefs()[id].name}. It cracks open on the battlefield into a random ${eggKindLabel(getCardDefs()[id])} card.`, 'ok'); }catch(e){} return true; }catch(e){ return false; } }
 // Nurture (2026-10-12, 11:39 list: "In the nest, let there be a function to nurture the base cards (usually kids) to lvl 1 -
 // gaining quite a decent amount of power - to a common's. This is pre-forge basically" + "Forging doesnt level a card from 0-1.
 // only nest can do that"): a Level-0 card in a nest for an hour, for a mote of materia (15 Dust, 10 Maple Leaves), comes out Level 1.
