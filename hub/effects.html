@@ -1508,6 +1508,61 @@
   .terrain-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
   .terrain-pill .tp-tip{position:absolute; top:calc(100% + 8px); left:0; width:min(300px, 80vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s, transform .15s, visibility .15s; pointer-events:none;}
   .terrain-pill:hover .tp-tip, .terrain-pill:focus-visible .tp-tip, .terrain-pill.open .tp-tip{opacity:1; visibility:visible; transform:none;}
+  /* ---- 2026-10-14: battlefield pills (user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills will be on
+     the battlefield instead"), field cards on the enemy's side ("The open meadow and effects like this should look like a card on the
+     opposite side of the field") and the enemy's resources at the top right ("The opponent's lumber pill will be on the top right"). */
+  .battlefield-divider{position:relative; z-index:25;}
+  .bf-pills{position:absolute; top:50%; left:14px; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:calc(100% - 28px); pointer-events:none;}
+  .bf-pills .fp-b i{font-style:normal;}
+  .bf-pills .forecast-pill .fp-k{display:inline; margin-right:2px;}
+  .bf-pills:empty{display:none;}
+  .bf-pills > *{pointer-events:auto;}
+  .bf-pill{position:relative; margin:0 !important; border:1px solid rgba(255,255,255,.28); cursor:help; font-family:inherit; line-height:1.3; text-align:left;}
+  .bf-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .bf-pill .tp-tip{display:none;} /* the words live here; BfPillTip shows them in #bfPillTip, over everything */
+  .bf-tip-float{position:fixed; z-index:2600; width:min(290px, 78vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; white-space:normal; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; pointer-events:none; animation:bfTipIn .14s ease-out;}
+  .bf-tip-float[hidden]{display:none;}
+  @keyframes bfTipIn{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;}}
+  .bf-tip-float .pt-h{display:block; font:800 14px/1.3 'Baloo 2', system-ui, sans-serif; margin-bottom:3px;}
+  .bf-tip-float .pt-l{display:block; font-weight:500;} .bf-tip-float .pt-l + .pt-l{margin-top:4px;}
+  #battlefieldEl .bf-pills .wind-pill{position:relative; top:auto; left:auto; opacity:1; z-index:auto; pointer-events:auto; font-size:12px; background:linear-gradient(135deg, #5f8aa8, #34586f); color:#f2f8ff;}
+  #battlefieldEl .bf-pills .wind-pill.is-calm{background:linear-gradient(135deg, #8a7f62, #5d5540);}
+  .bf-pills .forecast-pill{border:1px solid rgba(255,255,255,.22); color:#fff3d6; font-family:inherit; flex-wrap:nowrap; max-width:none; white-space:nowrap; border-radius:999px; padding:3px 10px;}
+  .bf-pills .phase-pill.tide-flow, .bf-pills .phase-pill.tide-ebb, .bf-pills .phase-pill.arena-rs-pill{margin-left:0;}
+  @media (max-width:699px){ .bf-pills{left:8px; gap:3px; max-width:calc(100% - 16px);} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-k, .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
+  /* the enemy's resource pills: under the fight controls, top right (no longer on the board) */
+  .top-right-stack{display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; align-self:flex-start; min-width:0;}
+  .top-right-stack > .top-row-controls{margin-left:0; align-self:flex-end;}
+  .top-play-row .field-res.enemy{position:static; max-width:none; justify-content:flex-end; top:auto; right:auto; bottom:auto;}
+  /* field cards: the same card face as a Field card, at match-card size beside the enemy's Deck */
+  .match-field-tile{width:var(--match-card-w); height:var(--match-card-h); flex-shrink:0; font-size:13.5px; cursor:help;}
+  .match-field-tile .stats.field-stats .fld{font-size:calc(var(--match-card-w, 118px) * .082);}
+  .match-field-tile .stats.field-stats .fld{max-width:calc(100% - 6px); overflow:hidden; text-overflow:ellipsis; padding:1px 6px; box-sizing:border-box;}
+  @media (max-width:699px){ .match-field-tile .stats.field-stats .fld{font-size:8.5px; padding:1px 4px;} .match-field-tile .fl-w{display:none;} }
+  .match-field-tile.field-cond{--field-glow:rgba(255,226,140,.6);}
+  .match-field-tile.biome-forest{background:linear-gradient(180deg,#5f8f4e,#2f5a2c) !important; color:#f2ffe8;}
+  .match-field-tile.biome-meadow{background:linear-gradient(180deg,#d9e889,#86b24a) !important; color:#26330e;}
+  .match-field-tile.biome-water{background:linear-gradient(180deg,#8cc8e8,#3a7fb0) !important; color:#06243a;}
+  .match-field-tile.biome-beach{background:linear-gradient(180deg,#f6e4b2,#d9b36a) !important; color:#3a2a08;}
+  .match-field-tile.biome-reef{background:linear-gradient(180deg,#ffb7a3,#d5626a) !important; color:#3a0d12;}
+  .match-field-tile.biome-swamp{background:linear-gradient(180deg,#8fa267,#465a35) !important; color:#f0f6e0;}
+  .match-field-tile.biome-cave{background:linear-gradient(180deg,#5b4a78,#221a33) !important; color:#efe6ff;}
+  .match-field-tile.biome-alpine{background:linear-gradient(180deg,#d6e2ea,#8296a8) !important; color:#1c2a36;}
+  .match-field-tile.biome-tundra{background:linear-gradient(180deg,#eef8ff,#9cc6e2) !important; color:#10324d;}
+  .match-field-tile.biome-savanna{background:linear-gradient(180deg,#f3d37a,#c48a33) !important; color:#3a2504;}
+  .match-field-tile.biome-ash, .match-field-tile.biome-forge{background:linear-gradient(180deg,#8a3a24,#2a120c) !important; color:#ffe6d6; box-shadow:0 0 12px rgba(255,90,20,.45);}
+  .match-field-tile.field-frozen{background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.55), transparent 60%), linear-gradient(180deg,#bfe6ff,#6aa9d8) !important; color:#0f3350;}
+  .match-field-tile.field-rain{background:linear-gradient(180deg,#9fc4e6,#4f7fa8) !important; color:#fff;}
+  .match-field-tile.field-fog{background:linear-gradient(180deg,#e4e8ee,#9aa6b4) !important; color:#26303a;}
+  .match-field-tile.field-heatwave{background:linear-gradient(180deg,#ffcf73,#e2562b) !important; color:#3a1406;}
+  .match-field-tile.field-moon{background:linear-gradient(180deg,#3b4c8c,#121a3d) !important; color:#e8edff;}
+  .match-field-tile .nm{color:inherit;}
+  .match-field-tile .fc-trig{position:absolute; left:50%; bottom:-11px; transform:translateX(-50%); z-index:5; padding:1px 7px; border-radius:999px; background:rgba(30,26,22,.88); border:1px solid rgba(255,255,255,.25); font-size:12px; line-height:1.5; box-shadow:0 2px 6px rgba(0,0,0,.35);}
+  .match-field-tile.has-new::after{content:''; position:absolute; top:4px; right:4px; width:9px; height:9px; border-radius:50%; background:#ffd76a; box-shadow:0 0 6px #ffd76a; z-index:6;}
+  .match-field-tile.is-landing{animation:fieldLand .65s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes fieldLand{0%{transform:scale(1);} 35%{transform:scale(1.14); filter:brightness(1.35);} 100%{transform:scale(1);}}
+  .match-field-tile:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ .match-field-tile.is-landing{animation:none;} }
   .terrain-pill.biome-ash, .terrain-pill.biome-forge{border-color:rgba(255,120,50,.7); box-shadow:0 0 12px rgba(255,90,20,.45);}
   .terrain-banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:32; width:min(520px, 86%); padding:12px 18px; border-radius:16px; background:rgba(24,18,12,.86); color:#fff6dc; text-align:center; display:flex; flex-direction:column; gap:4px; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:terrainIn .5s cubic-bezier(.2,1.3,.4,1) both; pointer-events:none;}
   .terrain-banner > b{font-family:'Baloo 2', system-ui, sans-serif; font-size:19px;}
@@ -3250,6 +3305,54 @@
   @media (max-width: 900px){
     .testkit-layout{grid-template-columns:1fr;}
     .testkit-panel{position:static; max-height:none;}
+  }
+  /* ---------- 🔬 Effects library (2026-10-14, user: "an examiner's page that i can load up EACH Skill & action & trigger") ---------- */
+  #view-play.fxlib-mode{display:block;}
+  .fxl-layout{display:grid; grid-template-columns:minmax(230px,290px) minmax(0,1fr); gap:14px; align-items:start;}
+  .fxl-main{min-width:0; display:flex; flex-direction:column; gap:10px;}
+  .fxl-stage{min-width:0; display:flex; flex-direction:column; gap:8px;}
+  #view-play.fxlib-mode #deckWidgetTop, #view-play.fxlib-mode #deckWidgetBottom, #view-play.fxlib-mode #leaderWidgetWrap,
+  #view-play.fxlib-mode > .hud, #view-play.fxlib-mode .hud-opponent-tag, #view-play.fxlib-mode #ffBtn, #view-play.fxlib-mode .battle-log-panel{display:none !important;}
+  #view-play.fxlib-mode .battlefield{min-height:0;}
+  #view-play.fxlib-mode .board-row{min-height:150px;}
+  .fxl-list, .fxl-info, .fxl-log{background:var(--panel, #1f2a1e); color:var(--page-ink, #f4ecd8); border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 14px; font-size:13.5px; box-sizing:border-box;}
+  .fxl-list{position:sticky; top:8px; max-height:calc(100vh - 16px); display:flex; flex-direction:column; gap:8px;}
+  .fxl-list-head{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+  .fxl-list-head h2{margin:0; font-size:17px;}
+  .fxl-list input[type=search]{width:100%; background:rgba(0,0,0,.3); color:inherit; border:1px solid rgba(255,255,255,.2); border-radius:8px; padding:6px 8px; font:inherit; min-height:34px; box-sizing:border-box;}
+  .fxl-items{overflow:auto; min-height:0; flex:1; display:flex; flex-direction:column; gap:8px;}
+  .fxl-group-h{position:sticky; top:0; z-index:1; background:#26331f; font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:5px 6px; border-radius:6px; opacity:.95;}
+  .fxl-group-h small{opacity:.6; font-weight:700;}
+  .fxl-item{display:flex; gap:8px; align-items:center; width:100%; text-align:left; background:transparent; color:inherit; border:0; border-radius:8px; padding:5px 8px; min-height:32px; font:inherit; cursor:pointer;}
+  .fxl-item:hover{background:rgba(255,255,255,.07);}
+  .fxl-item.is-on{background:rgba(213,139,58,.32); box-shadow:inset 3px 0 0 var(--accent, #d58b3a); font-weight:700;}
+  .fxl-item:focus-visible{outline:2px solid #ffd27a; outline-offset:-2px;}
+  .fxl-ico{width:26px; text-align:center; flex:none;}
+  .fxl-title{display:flex; gap:12px; align-items:center;}
+  .fxl-title h2{margin:0 0 2px; font-size:20px;}
+  .fxl-big-ico{font-size:34px; line-height:1;}
+  .fxl-chip{display:inline-block; font-size:11.5px; font-weight:700; background:rgba(255,255,255,.1); border-radius:999px; padding:2px 8px;}
+  .fxl-key{font-size:11px; opacity:.6;}
+  .fxl-desc{margin:8px 0 6px; line-height:1.45;}
+  .fxl-cardtext{font-size:12.5px; line-height:1.45; background:rgba(0,0,0,.2); border-radius:8px; padding:6px 9px; margin-bottom:6px;}
+  .fxl-setup{font-size:12.5px; line-height:1.45; opacity:.9;}
+  .fxl-hand{display:inline-block; font-size:11px; font-weight:700; color:#ffd27a;}
+  .fxl-warn{margin-top:6px; font-size:13px; line-height:1.4; background:rgba(192,57,43,.25); border:1px solid rgba(255,140,120,.4); border-radius:8px; padding:7px 10px;}
+  .fxl-warn.is-soft{background:rgba(255,210,122,.12); border-color:rgba(255,210,122,.35);}
+  .fxl-controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .fxl-controls .tk-speed{margin-left:0;}
+  .fxl-log h3{margin:0 0 6px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; opacity:.8;}
+  .fxl-log h3 small{text-transform:none; letter-spacing:0; opacity:.7;}
+  .fxl-hurt{font-size:13px; margin-bottom:6px;}
+  .fxl-events{margin:0; padding-left:22px; max-height:260px; overflow:auto; font-size:12.5px; line-height:1.4;}
+  .fxl-events li{padding:2px 0; border-bottom:1px solid rgba(255,255,255,.06);}
+  .fxl-events li.is-hurt > b{color:#ff9a8a;}
+  .fxl-events li.is-err{color:#ff9a8a;}
+  .fxl-kv{opacity:.65; font-family:ui-monospace, monospace; font-size:11.5px;}
+  .fxl-said{opacity:.8; font-size:12px;}
+  @media (max-width: 900px){
+    .fxl-layout{grid-template-columns:1fr;}
+    .fxl-list{position:static; max-height:300px;}
   }
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 248px; padding-bottom:16px;} /* 2026-10-13: room for the skill badges that hang below the card (they were clipped) */
@@ -6338,6 +6441,9 @@
   @keyframes mseBob{50%{transform:translateY(-3px);}}
   @media (prefers-reduced-motion: reduce){ .map-subemblem .mse-ico{animation:none;} }
   .submap-iris{position:fixed; z-index:1900; overflow:hidden; pointer-events:none;}
+  /* 2026-10-14: a daylight side map zooms the whole map layer in and out; nothing scrolls while it does. */
+  html.submap-zooming, html.submap-zooming body{overflow:hidden !important;}
+  html.submap-zooming #conquestLayout{will-change:transform; pointer-events:none;}
   .submap-iris > span{position:absolute; width:0; height:0; transform:translate(-50%,-50%); border-radius:50%; box-shadow:0 0 0 300vmax #05080b, inset 0 0 40px 20px #05080b;}
   /* Promotion (2026-10-09) */
   .forge-promote{margin-top:14px; padding:10px 12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,215,120,.14), rgba(255,215,120,.04)); border:1px solid rgba(255,215,120,.35);}
@@ -7277,6 +7383,13 @@
   .forge-limit{margin:10px 0; padding:10px 12px; border-radius:10px; border:1px solid rgba(224,69,44,.45); background:linear-gradient(135deg, rgba(224,69,44,.10), rgba(255,207,107,.08));}
   .forge-limit.is-locked{opacity:.8; border-style:dashed;}
   .forge-limit .fl-head{font-weight:800; color:#e0452c; margin-bottom:4px;}
+  /* Duplicate board (2026-10-14, user: "small little pill board with 10 holes - each hole is filled by a duplicate") */
+  .lb-dups{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:4px 0 2px; cursor:help;}
+  .lb-dupboard{display:inline-flex; gap:4px; padding:4px 7px; border-radius:999px; background:rgba(44,51,32,.78); box-shadow:inset 0 2px 4px rgba(0,0,0,.55), 0 1px 0 rgba(255,255,255,.25);}
+  .lb-dupboard i{width:11px; height:11px; border-radius:50%; background:rgba(0,0,0,.55); box-shadow:inset 0 2px 3px rgba(0,0,0,.8);}
+  .lb-dupboard i.on{background:radial-gradient(circle at 35% 30%, #fff3c4, #ffcf6b 45%, #e0452c); box-shadow:0 0 5px rgba(255,207,107,.8);}
+  .lb-dups.is-full .lb-dupboard{box-shadow:inset 0 2px 4px rgba(0,0,0,.55), 0 0 10px rgba(255,207,107,.7);}
+  .lb-dups-label{font-size:.82rem; font-weight:700; color:var(--ink-muted);}
   .forge-lb-btn{background:linear-gradient(135deg,#e0452c,#ffb34a) !important; border-color:#8e1f12 !important;}
   @keyframes pipPulse{50%{box-shadow:0 0 6px 2px rgba(255,150,60,.7);}}
   .forge-stats{display:flex; justify-content:center; gap:18px; margin-bottom:8px; font:800 18px 'Baloo 2',system-ui,sans-serif; font-variant-numeric:tabular-nums;}
@@ -8085,6 +8198,19 @@
     font:800 20px/1 'Baloo 2',system-ui,sans-serif; color:#ffe1e1; padding:8px 18px; border-radius:12px; background:linear-gradient(180deg,#5a0f1c,#2a0610);
     border:2px solid #c0404e; box-shadow:0 8px 24px rgba(0,0,0,.5); animation:elBanner 2.2s ease forwards;}
   @keyframes elBanner{0%{opacity:0; transform:translate(-50%,-80%) scale(.85);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 20%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-40%);}}
+  /* The leader's moment (2026-10-14, user: "Whats the vfx when an enemy summons their leader?"): a callout for both sides (gold for
+     yours, crimson for theirs), a ring shockwave and a flash where the leader lands. See leaderThroneVfx(). */
+  .leader-callout{position:fixed; z-index:1103; animation-duration:2.4s; max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
+  .leader-callout.is-mine{color:#3a2604; background:linear-gradient(180deg,#ffe9a8,#e8b64a); border-color:#fff2c4; box-shadow:0 8px 24px rgba(0,0,0,.45), 0 0 26px rgba(255,205,90,.55);}
+  .leader-ring{position:fixed; z-index:1102; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%) scale(.3); border:4px solid rgba(255,214,110,.95); box-shadow:0 0 18px 4px rgba(255,200,80,.6), inset 0 0 14px rgba(255,236,170,.6); animation:leaderRing .9s cubic-bezier(.15,.7,.3,1) forwards;}
+  .leader-ring.is-late{animation-delay:.14s; border-width:2px; opacity:0;}
+  .leader-ring.is-enemy{border-color:rgba(255,190,90,.9); box-shadow:0 0 18px 5px rgba(200,30,60,.6), inset 0 0 14px rgba(220,60,70,.55);}
+  @keyframes leaderRing{0%{opacity:1; transform:translate(-50%,-50%) scale(.3);} 100%{opacity:0; transform:translate(-50%,-50%) scale(3.4);}}
+  .leader-flash{position:fixed; z-index:1099; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%); background:radial-gradient(closest-side, rgba(255,246,200,.95), rgba(255,210,100,.45) 55%, rgba(255,200,80,0)); mix-blend-mode:screen; animation:leaderFlash .7s ease-out forwards;}
+  .leader-flash.is-enemy{background:radial-gradient(closest-side, rgba(255,220,200,.9), rgba(210,50,70,.45) 55%, rgba(160,20,40,0));}
+  @keyframes leaderFlash{0%{opacity:0; transform:translate(-50%,-50%) scale(.6);} 25%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-50%) scale(1.25);}}
+  @media (max-width:560px){ .enemy-leader-banner{font-size:15px; padding:6px 12px;} }
+  @media (prefers-reduced-motion: reduce){ .leader-ring, .leader-flash{display:none;} }
 
   /* Stat changes (2026-10-10): bigger floats, and the stat pill swells (up) or shrinks (down). */
   .dmg-float.stat-up, .dmg-float.stat-down{font-size:1.45em !important;}
@@ -9180,6 +9306,34 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .egg-crack-bit.chip{font-size:12px; color:#f4ead2;}
   .board-card.egg-hatched .card-tile{box-shadow:0 0 0 2px rgba(255,236,170,.95), 0 0 20px rgba(255,220,120,.75);}
   .ab-dragon-bolt{color:#d8382c;}
+  /* 2026-10-14 (sixth pass): the drawn Fireball and Durian icons (no emoji fits: 🔥 is taken, there is no durian), a unit's Shield
+     (blue, like the castle's), Durian thorns, the Meteor's burning crater. */
+  .ico-fireball{display:inline-block; position:relative; width:.86em; height:.86em; margin:0 .1em 0 .18em; vertical-align:-.08em; border-radius:50%;
+    background:radial-gradient(circle at 40% 38%, #fffbe0 0, #ffd54a 26%, #ff8a1e 55%, #d8380e 85%); box-shadow:0 0 .25em rgba(255,130,30,.8);}
+  .ico-fireball::before{content:''; position:absolute; right:68%; top:8%; width:.62em; height:.5em; border-radius:60% 0 0 60% / 50% 0 0 50%;
+    background:linear-gradient(90deg, rgba(255,120,20,0), rgba(255,150,40,.75) 55%, rgba(255,200,80,.95)); transform:rotate(-24deg); transform-origin:100% 50%;}
+  .ico-durian{display:inline-block; width:.9em; height:.9em; margin:0 .08em; vertical-align:-.1em; border-radius:46% 46% 50% 50%;
+    background:radial-gradient(circle at 38% 34%, #e6f29a 0, #a8c43c 40%, #5f7d1c 85%);
+    -webkit-mask:radial-gradient(circle at 50% 50%, #000 58%, transparent 60%), repeating-conic-gradient(#000 0 12deg, transparent 12deg 30deg);
+    mask:radial-gradient(circle at 50% 50%, #000 58%, transparent 60%), repeating-conic-gradient(#000 0 12deg, transparent 12deg 30deg);
+    -webkit-mask-composite:source-over; mask-composite:add; filter:drop-shadow(0 0 1px rgba(40,60,10,.8));}
+  .ico-durian.big{width:26px; height:26px;}
+  /* 2026-10-14 (seventh pass): the drawn Smoke Bomb icon (💨 is Swift's, 🌫️ Shade's, 🫧 Poison's): a dark round bomb with a lit
+     fuse and a grey puff; Smoke on a unit is a slow grey cloud over the card; Crab Claw chip for Fork on crabs. */
+  .ico-smokebomb{display:inline-block; position:relative; width:.8em; height:.8em; margin:0 .14em 0 .08em; vertical-align:-.06em; border-radius:50%;
+    background:radial-gradient(circle at 36% 34%, #a7adb6 0, #474d55 42%, #16191d 100%);}
+  .ico-smokebomb::before{content:''; position:absolute; left:62%; top:-30%; width:.12em; height:.38em; border-radius:.1em; background:linear-gradient(#ffd34a, #c8711e); transform:rotate(28deg);}
+  .ico-smokebomb::after{content:''; position:absolute; left:58%; top:-62%; width:.62em; height:.5em; border-radius:50%;
+    background:radial-gradient(circle at 40% 55%, rgba(225,228,234,.95) 0, rgba(170,176,186,.7) 50%, rgba(150,156,166,0) 72%);}
+  .smoke-overlay{background:radial-gradient(ellipse at 50% 55%, rgba(205,208,214,.62) 0, rgba(165,170,180,.42) 45%, rgba(140,146,156,0) 75%); animation:smokeDrift 3.4s ease-in-out infinite; border-radius:inherit;}
+  @keyframes smokeDrift{0%,100%{opacity:.75; transform:translateX(-3%) scale(1);} 50%{opacity:1; transform:translateX(3%) scale(1.06);}}
+  @media (prefers-reduced-motion: reduce){ .smoke-overlay{animation:none;} }
+  .abadge.smoke{background:rgba(90,96,106,.88); color:#eef1f5;}
+  .ab-psychic{color:#b07cff;}
+  .ab-fork.ab-crab{color:inherit;}
+  .abadge.unit-shield{background:rgba(20,60,130,.88); color:#bfe2ff; box-shadow:0 0 6px rgba(90,170,255,.7);}
+  .abadge.durian-thorns{background:rgba(50,70,20,.85); color:#e2f5a0;}
+  .board-card.meteor-crater .card-tile{box-shadow:0 10px 18px -4px rgba(255,110,20,.85), 0 0 0 2px rgba(255,140,40,.55);}
   /* ---- 2026-10-14 UI pass: fight layout, phone controls, skill chips, Forge/Nest costs, deck view, swap sheet ---- */
   /* The fight's rows sit close to the board (user: "There is also still this weird margin between the deck and hand row and the board.
      Move it closer"): the resource-pill row (field kit, plays) no longer takes a line of its own; it floats over the board's
@@ -12595,6 +12749,115 @@ function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || '';
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
 Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, cleave, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop});
+// ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
+//   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
+//   SkillFX.bananaThrow(thrower, target, opts{onImpact})             SkillFX.munch(target, opts{glyph})
+const SIXTH_CSS = `
+.sfx-fb{width:26px; height:26px; border-radius:50%; background:radial-gradient(circle at 42% 40%, #fffbe0 0, #ffd54a 28%, #ff8a1e 55%, #d8380e 78%, rgba(160,30,0,0) 100%); box-shadow:0 0 14px 6px rgba(255,140,30,.75);}
+.sfx-fb-tail{width:10px; height:10px; border-radius:50%; background:radial-gradient(circle, rgba(255,200,80,.95), rgba(255,110,20,.6) 50%, rgba(200,40,0,0) 75%); filter:blur(1px);}
+.sfx-meteor{width:34px; height:34px; border-radius:50%; background:radial-gradient(circle at 40% 38%, #fff2c2 0, #ffb04a 25%, #8a3a14 60%, #3a1a0c 100%); box-shadow:0 0 22px 10px rgba(255,120,30,.8);}
+.sfx-meteor-trail{height:10px; border-radius:6px; background:linear-gradient(90deg, rgba(255,120,30,0), rgba(255,170,60,.85) 70%, #fff3c4); filter:blur(2px); transform-origin:100% 50%;}
+.sfx-crater{border-radius:50%; background:radial-gradient(ellipse, rgba(255,150,40,.85), rgba(200,60,10,.5) 40%, rgba(80,20,0,0) 72%); mix-blend-mode:screen;}
+.sfx-banana{font-size:22px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.35));}
+`;
+function sixthCss(){ if(document.getElementById('sfx-sixth-css')) return; const s = document.createElement('style'); s.id = 'sfx-sixth-css'; s.textContent = SIXTH_CSS; (document.head || document.body).appendChild(s); }
+// Fireball: a flaming ball arcs from the caster to the target, leaving embers, then bursts 3 columns wide (the dynamite blast's flash,
+// fire core, smoke and debris), the cards beside it knocked outward.
+function fireball(caster, target, o){
+  o = o || {}; if(!ready() || !caster || !target){ later(o.onImpact, 500); return; } sixthCss();
+  const g = G(), a = centre(caster), b = centre(target), ball = layer('sfx-fb'), m = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - 110}, s = {t:0}, fly = (o.flight || 520)/1000;
+  g.set(ball, {x:a.x - 13, y:a.y - 13, scale:.6}); let k = 0;
+  const ember = ()=>{ if(k++ % 2) return; const r = ball.getBoundingClientRect(), e = layer('sfx-fb-tail'); g.set(e, {x:r.left + r.width/2 - 5, y:r.top + r.height/2 - 5, opacity:.95});
+    g.to(e, {scale:.2, opacity:0, y:`+=${rnd(-6, 10)}`, duration:.4, ease:'power1.out', onComplete:()=> e.remove()}); };
+  g.timeline({onComplete:()=> ball.remove()})
+    .to(s, {t:1, duration:fly, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(ball, {x:q.x - 13, y:q.y - 13, scale:.6 + .6*s.t}); ember(); }})
+    .add(()=>{
+      ball.style.opacity = 0; const span = [target].concat((o.sides||[]).filter(Boolean)).map(centre), x0 = Math.min(...span.map(c=> c.r.left)), x1 = Math.max(...span.map(c=> c.r.right)), W = Math.max(b.w*3, x1 - x0);
+      const f = layer('sfx-flash'); g.set(f, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:40, height:40, opacity:1});
+      g.to(f, {width:W*1.15, height:b.h*1.6, opacity:0, duration:.4, ease:'power2.out', onComplete:()=> f.remove()});
+      const fb = layer('sfx-fireball'); g.set(fb, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:20, height:20, opacity:1});
+      g.to(fb, {width:W*.9, height:b.h*1.1, duration:.25, ease:'power3.out'}); g.to(fb, {opacity:0, duration:.4, delay:.22, onComplete:()=> fb.remove()});
+      ring(b.x, b.y, 'sfx-ignite', W, 520); burst(b.x, b.y, -90, 'fire', 16);
+      (o.sides||[]).filter(Boolean).forEach(el=>{ const c = centre(el); burst(c.x, c.y, c.x < b.x ? 180 : 0, 'fire', 8); knock(el, c.x < b.x ? 180 : 0, 1.1); });
+      knock(target, -90, 1.4); if(o.light) call(o.light, b.x, b.y, [1, .55, .2], true); call(o.onImpact);
+    });
+}
+// Meteor: a burning rock streaks down from the top of the screen onto the target, a shockwave rolls out, and the crater glows.
+function meteor(target, o){
+  o = o || {}; if(!ready() || !target){ later(o.onImpact, 600); return; } sixthCss();
+  const g = G(), b = centre(target), rock = layer('sfx-meteor'), trail = layer('sfx-meteor-trail'), fall = (o.fall || 560)/1000;
+  const sx = b.x - Math.min(260, window.innerWidth*.3), sy = -60, ang = Math.atan2(b.y - sy, b.x - sx)*57.3, len = Math.hypot(b.x - sx, b.y - sy);
+  g.set(rock, {x:sx - 17, y:sy - 17}); g.set(trail, {x:sx - 140, y:sy - 5, width:140, rotation:ang, opacity:.9});
+  g.timeline({onComplete:()=>{ rock.remove(); trail.remove(); }})
+    .to(rock, {x:b.x - 17, y:b.y - 17, rotation:200, duration:fall, ease:'power2.in'}, 0)
+    .to(trail, {x:b.x - 140, y:b.y - 5, width:Math.min(220, len*.5), duration:fall, ease:'power2.in'}, 0)
+    .add(()=>{
+      rock.style.opacity = 0; trail.style.opacity = 0;
+      shockwave(b.x, b.y, {size:Math.max(260, b.w*5), cards:o.sides || [], light:o.light});
+      const cr = layer('sfx-crater'); g.set(cr, {x:b.x - b.w*.7, y:b.r.bottom - b.h*.35, width:b.w*1.4, height:b.h*.5, opacity:0});
+      g.timeline({onComplete:()=> cr.remove()}).to(cr, {opacity:1, duration:.15}).to(cr, {opacity:.55, duration:.4, yoyo:true, repeat:3}).to(cr, {opacity:0, duration:.6});
+      burst(b.x, b.y, -90, 'fire', 18); burst(b.x, b.y, -90, 'wood', 10); ring(b.x, b.r.bottom, 'sfx-ring-dust', b.w*2.6, 700);
+      knock(target, -90, 1.8); const host = o.host || null; if(host) shakeEl(host, 8, .5);
+      call(o.onImpact);
+    }, fall);
+}
+// Banana: a banana spins in an arc from the thrower onto the target and bounces off.
+function bananaThrow(thrower, target, o){
+  o = o || {}; if(!ready() || !thrower || !target){ later(o.onImpact, 400); return; } sixthCss();
+  const g = G(), a = centre(thrower), b = centre(target), bn = layer('sfx-banana', '🍌'), m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - 80}, s = {t:0};
+  g.set(bn, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  g.timeline({onComplete:()=> bn.remove()})
+    .to(s, {t:1, duration:.45, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(bn, {x:q.x, y:q.y}); }})
+    .to(bn, {rotation:720, duration:.45, ease:'none'}, 0)
+    .add(()=>{ knock(target, -90, .8); call(o.onImpact); })
+    .to(bn, {x:`+=${rnd(-30, 30)}`, y:'+=30', rotation:'+=180', opacity:0, duration:.35, ease:'power1.in'});
+}
+// Munch: the fruit pops up over the card and gets eaten in three bites.
+function munch(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } sixthCss();
+  const g = G(), c = centre(target), f = layer('sfx-banana', o.glyph || '🍌');
+  g.set(f, {x:c.x, y:c.r.top + c.h*.25, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+  g.timeline({onComplete:()=>{ f.remove(); call(o.onDone); }})
+    .to(f, {scale:1.1, opacity:1, duration:.15, ease:'back.out(3)'})
+    .to(f, {scaleX:.8, duration:.08, yoyo:true, repeat:1}).to(f, {scale:.7, duration:.1}).to(f, {scale:.45, duration:.1}).to(f, {scale:.1, opacity:0, duration:.12});
+  g.fromTo(tileOf(target), {scaleY:1}, {scaleY:.94, duration:.08, yoyo:true, repeat:3, transformOrigin:'50% 100%', clearProps:'transform'});
+}
+Object.assign(root.SkillFX, {fireball, meteor, bananaThrow, munch});
+// ---- 2026-10-14 (seventh pass): Smoke Bomb and Psychic.
+//   SkillFX.smokeBomb(thrower, target, opts{onImpact})   SkillFX.mindWave(caster, target, opts{immune})
+const SEVENTH_CSS = `
+.sfx-smokebomb{width:18px; height:18px; border-radius:50%; background:radial-gradient(circle at 38% 35%, #9aa0a8 0, #3c4148 45%, #15181c 100%); box-shadow:0 0 0 2px rgba(0,0,0,.25);}
+.sfx-smokebomb::after{content:''; position:absolute; left:11px; top:-6px; width:3px; height:8px; border-radius:2px; background:linear-gradient(#ffd34a, #c8711e); transform:rotate(25deg);}
+.sfx-smoke{width:40px; height:40px; border-radius:50%; background:radial-gradient(circle, rgba(215,218,224,.95) 0, rgba(170,175,184,.75) 45%, rgba(140,146,156,0) 72%); filter:blur(2px);}
+.sfx-mind{border-radius:50%; border:3px solid rgba(190,120,255,.9); box-shadow:0 0 12px 2px rgba(160,80,255,.65), inset 0 0 10px rgba(200,140,255,.5);}
+.sfx-mind.immune{border-color:rgba(170,170,190,.7); box-shadow:none;}
+`;
+function seventhCss(){ if(document.getElementById('sfx-seventh-css')) return; const s = document.createElement('style'); s.id = 'sfx-seventh-css'; s.textContent = SEVENTH_CSS; (document.head || document.body).appendChild(s); }
+// A grey puff that swells over a card and drifts apart.
+function smokePuff(target){
+  const g = G(); if(!g || !target) return; seventhCss(); const c = centre(target);
+  for(let k = 0; k < 7; k++){ const p = layer('sfx-smoke'); g.set(p, {x:c.x - 20 + rnd(-c.w*.3, c.w*.3), y:c.y - 20 + rnd(-c.h*.25, c.h*.25), scale:.3, opacity:.95});
+    g.to(p, {scale:rnd(1.6, 2.6), opacity:0, x:`+=${rnd(-24, 24)}`, y:`-=${rnd(6, 26)}`, duration:rnd(.8, 1.3), ease:'power1.out', onComplete:()=> p.remove()}); }
+}
+// Smoke Bomb: a lit bomb lobbed from the thrower onto the target, then it bursts into a grey cloud.
+function smokeBomb(thrower, target, o){
+  o = o || {}; if(!ready() || !thrower || !target){ later(o.onImpact, 400); return; } seventhCss();
+  const g = G(), a = centre(thrower), b = centre(target), bm = layer('sfx-smokebomb'), m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - 90}, s = {t:0};
+  g.set(bm, {x:a.x - 9, y:a.y - 9});
+  g.timeline({onComplete:()=> bm.remove()})
+    .to(s, {t:1, duration:.5, ease:'power1.in', onUpdate:()=>{ const q = qpt(a, m, b, s.t); g.set(bm, {x:q.x - 9, y:q.y - 9}); }})
+    .to(bm, {rotation:540, duration:.5, ease:'none'}, 0)
+    .add(()=>{ bm.style.opacity = 0; smokePuff(target); call(o.onImpact); });
+}
+// Psychic: purple rings of thought pulse out from the attacker's mind into the target (grey and faint when it has no mind).
+function mindWave(caster, target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } seventhCss();
+  const g = G(), b = centre(target), sz = Math.max(b.w, b.h);
+  for(let k = 0; k < 3; k++){ const r = layer('sfx-mind' + (o.immune ? ' immune' : '')); g.set(r, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:sz*1.5, height:sz*1.5, opacity:0});
+    g.to(r, {width:sz*.2, height:sz*.2, opacity:o.immune ? .6 : 1, duration:.42, delay:k*.12, ease:'power2.in', onComplete:()=> r.remove()}); }
+  if(!o.immune) g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(250deg) saturate(1.8)', duration:.12, yoyo:true, repeat:3, delay:.4, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+Object.assign(root.SkillFX, {smokeBomb, smokePuff, mindWave});
 })(typeof window !== 'undefined' ? window : globalThis);
 
 // Procedural FX (2026-10-14, user: "More vfx, more gsap (advanced use cases - be exploratory), cellular automaton
@@ -14315,10 +14578,29 @@ function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
   const enemy = !!opts.enemy;
+  const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
+  const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
+  const hp = (rc && rc.maxHp) || def.health || 0, big = hp >= 20 || RARITY_TIER_BANDS.indexOf(def.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('legendary');
   try{ if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else SoundKit.leaderFanfare(); }catch(e){}
-  if(enemy) try{ const bf = document.querySelector('.battlefield'); if(bf){ const b = document.createElement('div'); b.className = 'enemy-leader-banner'; b.textContent = '👑 Their leader takes the field'; bf.appendChild(b); setTimeout(()=> b.remove(), 2200); } }catch(e){}
+  // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
+  try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
+    b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; document.body.appendChild(b); setTimeout(()=> b.remove(), 2400); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
+  // the drop: the card falls onto its spot from above, a touch too big, and settles
+  { const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  setTimeout(()=>{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q = cur.getBoundingClientRect(); if(!q.width) return;
+    // the shockwave and the flash, as it lands
+    const ring = document.createElement('div'); ring.className = 'leader-ring' + (enemy ? ' is-enemy' : ''); ring.setAttribute('aria-hidden', 'true');
+    ring.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width}px; height:${q.width}px;`;
+    const ring2 = ring.cloneNode(); ring2.classList.add('is-late');
+    const flash = document.createElement('div'); flash.className = 'leader-flash' + (enemy ? ' is-enemy' : ''); flash.setAttribute('aria-hidden', 'true');
+    flash.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width*1.8}px; height:${q.height*1.5}px;`;
+    document.body.append(flash, ring, ring2); setTimeout(()=>{ ring.remove(); ring2.remove(); flash.remove(); }, 1300);
+    try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
+    if(big) battlefieldShake(Math.max(0.35, shakeStrengthForArrival(hp)));
+  }, 420);
   // The field's middle line: halfway between the two rows (or the battlefield's own middle).
   const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
   const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
@@ -14342,8 +14624,6 @@ function leaderThroneVfx(uid, opts){
   gsap.timeline({onComplete:()=> crown.remove()})
     .fromTo(crown, {y:-70, opacity:0, scale:1.6}, {y:-14, opacity:1, scale:1, duration:.45, delay:.2, ease:'bounce.out'})
     .to(crown, {y:-30, opacity:0, duration:.5, delay:.5, ease:'power1.in'});
-  const t = el.querySelector('.card-tile');
-  if(t) gsap.fromTo(t, {y:6}, {y:-8, duration:.3, delay:.15, ease:'power2.out', yoyo:true, repeat:1, clearProps:'y'});
 }
 
 function deckShuffleVfx(decks){
