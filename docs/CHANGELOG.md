@@ -2,6 +2,45 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (05:30)
+- **Fight ids match what you see:** Thistlewood's f-1 is now 1-1, the first map's fights are 0-1…0-4, side maps read like 1-A-1, and so on (226 fights, 36 maps, plus the endless dungeon). Old saves, map layouts and published skirmish edits are translated when they load; nothing in the database was rewritten.
+- **Tutorial and early maps:**
+  - No more Start screen.
+  - Part I shows an 8-card deck plus its 1 reward. Part II adds the leader and 2 rewards, for a 20-card deck. 9 baby cards (1/2) fill the 17-card base behind the scenes.
+  - **0-1** gives one card, which you're asked to swap in. **0-2** gives your faction pack, shown in its First Clear box. The **Camp (Armoury)** opens once both are cleared, at 0-3, and any pack held until then opens at that point.
+  - Instruction tips say "Okay" instead of "Skip".
+  - Cards flying into your deck now pass over the label.
+  - Only the one highlighted card glows gold.
+- **Packs:** the results screen shows "🎁 Pack won!" with the pack art. Leaving it, the pack floats up into the opener. Several packs show as a pile you open one by one, and the pile shrinks as you go. The Nest button stays hidden until the Nest is unlocked.
+- **Swaps:** after the first one, you're offered up to 10 swaps in total, only when a new card strictly beats one in your deck. Clicking Swap shows "Nice!" and the window closes faster.
+- **Deck editor:** click adds a copy; Shift-click (or right-click, or the small "−") removes one.
+- **Skirmish preview:**
+  - The First Clear box is shorter and sits at the right, with "First Clear" on its border. Claimed rewards aren't greyed out.
+  - The title has room under the Fight again pill.
+  - The panel fits its contents.
+- **Fight:**
+  - The battle waits for a summon (your leader too) to finish before the first attack.
+  - **Deaths playing before the attack that caused them:** 0.5× speed was applied twice, so lunges ran 4× slower than the damage numbers. Tokens that spawned and died in the same round were never drawn. Both are fixed.
+  - Speed: Shift-click or a long press goes slower, and 0.5× is in the cycle even in Admin Mode.
+  - Stone (and Metal/Uranium) costs sit top-left with Lumber.
+  - Electricity is 🔌.
+- **Tide:**
+  - Playing a Tide or Swimmer card no longer brings the tide. Only field effects (Perma-tide, Tide-spout, High Tide), Moonpull and Tsunami do.
+  - Swimmer reads "🏊 Swimmer – On Tide, …" again.
+- **Darkness:**
+  - Night alone no longer makes units miss. Misses come from the field effects **Darkness** (1 in 4) and **Pitch Black** (1 in 2).
+  - Smugglers' Grotto is Pitch Black. Caves & Alcoves, Mycelium Deep and Sunken Depths are Darkness.
+  - Night-blind units still miss 1 in 2 at night.
+- **Field pills and dialogue:**
+  - Field pills sit at the left and show just an emoji and count, such as "☀️ 2/3". Details appear on hover.
+  - The Night/Day tip reads "Night and Day alternate every 3 days…".
+  - NPC lines come 1 s apart and stay up to 8 s; click to move on.
+  - The dialogue panel sits further left on the map. Interactibles open it expanded.
+- **Map 0** shows its field effects plainly; the "?" starts on Map 1. Misty now says "Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply."
+- **Admin:**
+  - New **🃏 Showcase cards** panel: one map at a time, pick each skirmish's showcase with one click.
+  - "Check the whole map" runs 30 fights per skirmish without freezing the page, and a re-check takes 67 ms when nothing changed.
+
 ## 2026-10-15 (03:15)
 - **Starting levels:** faction cards and the Wandering Traveller now start at Level 1, and their printed stats are their Level 1 stats.
 - **Card editor budget line:** one score, **Budget: Max(A, B) against N**. A is Attack × Health + Skills and B is 2×Attack + Health + Skills.

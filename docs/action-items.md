@@ -31,6 +31,18 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 05:30 (your 22:59–23:47 notes)
+
+Built (changelog 05:30). Choices to check:
+- **Starter deck:** 8 shown cards (your side's 3 + 5 shared) + 9 hidden baby cards (3 Honey Bee, 3 Silver Minnow, 3 Sparrow Chick). It's weaker than the old 17 basics; Map 0 wasn't retuned.
+- **0-2's card** (Chipmunk Cavalry) moved to 0-3, so 0-3 gives Owl Nightwatch and Chipmunk Cavalry.
+- **"Both sides" players** get a random faction pack at 0-2.
+- **Strictly better** means Cost and Wait no higher, Attack and Health no lower, at least one strictly better, and no fewer skills.
+- **The tutorial fights** keep their internal ids `tutorial`/`tutorial2` (shown T-0, T-1).
+- **The dialogue panel** moved about 5% left on the map, not 8%, so it doesn't cover the map list.
+- **No "Play tutorial" button** turned up after picking a side here. If you still see one, tell me when.
+- **The Misty on 1-1** isn't in the live data. It's probably an edit saved only in your browser.
+
 ## Done at 02:00 (your 20:31–21:33 notes)
 
 All built (changelog 02:00). Choices to check:
