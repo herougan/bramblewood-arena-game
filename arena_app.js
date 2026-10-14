@@ -9020,7 +9020,10 @@ function cardBaseLevel(d){
   if(!d) return 1;
   // 2026-10-12 (user: "base creatures start at 0, rewarded creatures at 1, quest creatures should also start at 0").
   const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
-  return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs || d.id==='wandering-traveller') ? 0 : 1;
+  // 2026-10-14 (22:50, user: "Faction cards come in at level 1. Wandering Trader comes in at level 1."): a faction's own cards
+  // and the Wandering Traveller start at Level 1 (their printed stats are their Level 1 stats).
+  if(d.faction || d.id==='wandering-traveller') return 1;
+  return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1;
 }
 // Level range per card (2026-10-11, user: "let me edit the stats PER level ... The start level and end level depend on the
 // rarity of the card. Base cards start at 0 ... Castles end at 20, Heroes end at 100"). Every rarity tops out at 10 for
@@ -19211,7 +19214,7 @@ function runCardCheck(host){
 //   (N 30); never more than +20. Quest and special rarities count as the tier they stand for.
 //   Score: (2×Attack + Health + Skills) and (Attack × Health + Skills), each ×1.5 for every skill that makes attacks at (or by)
 //   the card miss about half the time (SB_HALF_MISS: Evasive, Swift, Flying vs ground, Shadow, Blind); those skills cost 0 themselves.
-//   Checks unchanged: first score < N + 2 and second score < N. Bounty costs 0.
+//   Check (2026-10-14, 22:50): Max(added score, multiplied score) ≤ N. Bounty costs 0.
 const SB_KEY = 'bramblewood_stat_budget_v2';
 const SB_DEFAULT_SKILLS = {flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
@@ -19238,30 +19241,38 @@ function sbBudget(d, cfg){
   const src = cardSourceOf(d), mapNo = src.kind === 'map' ? (mapNumberOf(src.id) || 0) : 0;
   return sbBudgetAt(d, cfg, mapNo, cardBaseLevel(d));
 }
-function sbCheck(A, D, S, N, mode, M){ M = M || 1; const x1 = Math.round((2*A + D + S) * M * 100) / 100, x2 = Math.round((A*D + S) * M * 100) / 100, r1 = x1 < N + 2, r2 = x2 < N; return {r1, r2, x1, x2, ok: mode === 'or' ? (r1 || r2) : (r1 && r2)}; }
+// 2026-10-14 (22:50, user: "Say this card scores Max(A, B) < N ... If Max(A, B) <= N green, if Max(A, B) > N, red. If <<, Pink"):
+// one score, the larger of the multiplied (Attack × Health + Skills) and the added (2×Attack + Health + Skills) forms, against N.
+// "Well under" (pink) is at or below SB_WELL_UNDER of N. x1 = added, x2 = multiplied, as before.
+const SB_WELL_UNDER = 0.6;
+function sbCheck(A, D, S, N, mode, M){ M = M || 1; const x1 = Math.round((2*A + D + S) * M * 100) / 100, x2 = Math.round((A*D + S) * M * 100) / 100, score = Math.max(x1, x2), ok = score <= N;
+  return {r1: x1 <= N, r2: x2 <= N, x1, x2, score, ok, wellUnder: score <= N * SB_WELL_UNDER}; }
 function sbFit(d, S, N, mode, M){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode, M).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). Same N as sbBudget, but for a Map and Level picked in the line itself; the Map
 // comes from the card's own map when it has one.
 let ceBudgetSel = {map:0, level:1};
+// 2026-10-14 (22:50, user): no Level picker (the budget assumes Level 1), a small Map picker, N shown plainly, and one score:
+// Budget: Max(A, B) against N, where A is the multiplied form and B the added one. Green at or under N, red over, pink well under.
 function ceBudgetHTML(d){
   const cfg = sbLoad(), src = cardSourceOf(d), known = src.kind === 'map' ? mapNumberOf(src.id) : null;
-  const mapNo = known != null ? known : ceBudgetSel.map, lv = ceBudgetSel.level;
-  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, lv), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M);
+  const mapNo = known != null ? known : ceBudgetSel.map;
+  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M);
   const rar = (d.rarity || 'common'), rarLabel = rar[0].toUpperCase() + rar.slice(1);
   const maxMap = Math.max(1, (typeof mainConquestMaps === 'function' ? mainConquestMaps().length : 0) - 1, 30);
-  const mapCtl = known != null ? `<b>Map ${known}</b>` : `<label>Map <select id="ceBudgetMap" aria-label="Map for the budget">${Array.from({length:maxMap + 1}, (_, i)=> `<option value="${i}" ${i===mapNo?'selected':''}>${i}</option>`).join('')}</select></label>`;
-  const lvCtl = `<label>Level <select id="ceBudgetLv" aria-label="Level for the budget">${Array.from({length: Math.max(2, cardMaxLevel(d) || 10) + 1}, (_, i)=> i).map(i=> `<option value="${i}" ${i===lv?'selected':''}>${i}</option>`).join('')}</select></label>`;
-  const x1 = c.x1, x2 = c.x2, col = c.ok ? '#2e8b57' : 'var(--danger, #c0392b)', mTxt = M !== 1 ? ` × ${Math.round(M*1000)/1000}` : '';
-  const ms = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects||{})[k]);
-  return `<div style="color:${col}; font-weight:600">⚖️ Budget v2: this card scores ${x1} / ${Math.round((N + 2)*10)/10} and ${x2} / ${N} for ${mapCtl}, ${lvCtl}, ${escapeHtml(rarLabel)} ${c.ok ? '✓ under' : '✗ over'}</div>
-    <small style="color:var(--ink-muted)">(2×Attack + Health + Skills)${mTxt} = (2×${A} + ${D} + ${S})${mTxt} = ${x1} ${c.r1 ? '&lt;' : '≥'} N + 2 = ${Math.round((N + 2)*10)/10} ${c.r1 ? '✓' : '✗'} · (Attack × Health + Skills)${mTxt} = (${A}×${D} + ${S})${mTxt} = ${x2} ${c.r2 ? '&lt;' : '≥'} N = ${N} ${c.r2 ? '✓' : '✗'} (${cfg.mode === 'or' ? 'either' : 'both'} must pass; Skills = ${S}${ms.length ? `; ×${cfg.missMult == null ? 1.5 : cfg.missMult} for ${ms.join(', ')}` : ''}). N = ${cfg.base} + ${cfg.perWait}×Wait ${d.wait||0} + ${cfg.perLumber}×Lumber ${d.cost||0} + ${cfg.perMap}×map + level + rarity.</small>`;
+  const mapCtl = known != null ? `Map ${known}` : `Map <select id="ceBudgetMap" aria-label="Map for the budget" style="font-size:12px; line-height:1.2; padding:1px 22px 1px 8px; height:24px; min-height:0; width:auto; min-width:56px; border-radius:6px; vertical-align:middle">${Array.from({length:maxMap + 1}, (_, i)=> `<option value="${i}" ${i===mapNo?'selected':''}>${i}</option>`).join('')}</select>`;
+  const mA = c.x2, mB = c.x1, sc = c.score, col = !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57');
+  const verdict = !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'under');
+  const mTxt = M !== 1 ? ` × ${Math.round(M*1000)/1000}` : '';
+  return `<div style="color:${col}; font-weight:700; font-size:14px">⚖️ Budget: ${sc} ${c.ok ? '≤' : '&gt;'} N = ${N} <span style="font-weight:600">· ${verdict}</span></div>
+    <div style="font-size:12px; margin:2px 0">${mapCtl} · Level 1 · ${escapeHtml(rarLabel)}</div>
+    <small style="color:var(--ink-muted)">Score = Max(A, B) = Max(${mA}, ${mB}) = ${sc}. A = (Attack × Health + Skills)${mTxt} = (${A}×${D} + ${S})${mTxt} = ${mA}. B = (2×Attack + Health + Skills)${mTxt} = (2×${A} + ${D} + ${S})${mTxt} = ${mB}. N = 10 + 5×Wait ${d.wait||0} + 4×Lumber ${d.cost||0} + 0.2×map + rarity.${S ? '' : ' Skills = 0.'} Pink means at or below ${Math.round(SB_WELL_UNDER*100)}% of N.</small>`;
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
   if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:2px 0 10px; font-size:12.5px; line-height:1.5"></div>'); box = document.getElementById('ceBudget');
-    box.addEventListener('change', e=>{ if(e.target.id === 'ceBudgetMap') ceBudgetSel.map = Number(e.target.value)||0; if(e.target.id === 'ceBudgetLv') ceBudgetSel.level = Number(e.target.value)||0; }); }
+    box.addEventListener('change', e=>{ if(e.target.id === 'ceBudgetMap') ceBudgetSel.map = Number(e.target.value)||0; }); }
   try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
@@ -19270,7 +19281,7 @@ function renderStatBudget(host){
   const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), N = sbBudget(d, cfg), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M); return {id, d, S, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, cfg.mode, M)}; });
   const fails = rows.filter(r=> !r.c.ok), shown = sbState.onlyFail ? fails : rows;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">Budget v2. Rule: <b>(2×Attack + Health + Skills) &lt; N + 2</b> ${cfg.mode === 'or' ? '<b>or</b>' : '<b>and</b>'} <b>(Attack × Health + Skills) &lt; N</b>, each score ×${cfg.missMult} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). N = ${cfg.base} + ${cfg.perWait} per Wait + ${cfg.perLumber} per Lumber + ${cfg.perMap} per map number + Level (Level 1 +0 up to N ${cfg.levelTop} at the top level; Level 0 −2) + rarity (+${Math.round((cfg.rarityTop - cfg.base) / (cfg.rarityTopRank||10) * 100) / 100} a step: Common 1, Uncommon 2, Rare 3 … rarity ${cfg.rarityTopRank||10} = N ${cfg.rarityTop}). Bounty costs 0.</p>
+    <p class="panel-sub">Budget v2. Rule: <b>Max(Attack × Health + Skills, 2×Attack + Health + Skills) ≤ N</b>, each score ×${cfg.missMult} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). N = ${cfg.base} + ${cfg.perWait} per Wait + ${cfg.perLumber} per Lumber + ${cfg.perMap} per map number + Level (Level 1 +0 up to N ${cfg.levelTop} at the top level; Level 0 −2) + rarity (+${Math.round((cfg.rarityTop - cfg.base) / (cfg.rarityTopRank||10) * 100) / 100} a step: Common 1, Uncommon 2, Rare 3 … rarity ${cfg.rarityTopRank||10} = N ${cfg.rarityTop}). Bounty costs 0.</p>
     <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per Wait <input type="number" id="sbPerWait" value="${cfg.perWait}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber}" class="w-60"></label><label>Per map <input type="number" step="0.05" id="sbPerMap" value="${cfg.perMap}" class="w-60"></label>
       <label>N at top level <input type="number" id="sbLevelTop" value="${cfg.levelTop}" class="w-60"></label><label>N at rarity ${cfg.rarityTopRank||10} <input type="number" id="sbRarityTop" value="${cfg.rarityTop}" class="w-60"></label><label>Half-miss × <input type="number" step="0.05" id="sbMissMult" value="${cfg.missMult}" class="w-60"></label>
       <button type="button" class="btn small ghost" id="sbResetV2" title="Back to the v2 numbers">Reset to v2</button>

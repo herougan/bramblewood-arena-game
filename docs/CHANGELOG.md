@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (03:15)
+- **Starting levels:** faction cards and the Wandering Traveller now start at Level 1, and their printed stats are their Level 1 stats.
+- **Card editor budget line:** one score, **Budget: Max(A, B) against N**. A is Attack × Health + Skills and B is 2×Attack + Health + Skills.
+  - The colours are green at or under N, red over N, and pink when well under N (60% of N or less).
+  - Level is fixed at 1, so the Level picker is gone, and the Map picker is smaller.
+  - The Test Lab's ⚖️ Stat budget page and its Fit button use the same rule. The old rule had two checks: the added score under N + 2 and the multiplied score under N.
+
 ## 2026-10-15 (02:45)
 - **Regeneration:** the green zig-zag at the end is gone; the spiralling motes and the soft glow stay. A unit at full health no longer regenerates at all. Before, a bleeding unit at full health still "regenerated" to stop its Bleed.
 - **Castle crumble:** the enemy Bramble now crumbles completely before the Victory sign and results. The hit-stop on the killing blow could slow the crumble so much that a safety timer let the results through halfway. It now always plays at normal speed and pauses a beat afterwards.
