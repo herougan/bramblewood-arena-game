@@ -6300,11 +6300,11 @@
   .phase-pill.arena-rs-pill{background:linear-gradient(135deg, #6a5a9e, #3f3570); margin-left:4px;}
   .phase-pill.tide-flow{background:linear-gradient(135deg, #2a9fd6, #1565a8); margin-left:4px;}
   .phase-pill.tide-ebb{background:linear-gradient(135deg, #6f8fa3, #3e5566); margin-left:4px;}
-  /* 2026-10-14 (user: "The Daylight is too weak. The moon is unclear"): by day the field is warmer and brighter, with the sun's glow
-     and rays at the top; at night it is cooler and darker under a clear moon with a soft halo (the .sky-fx layer, syncSkyFx). */
-  body[data-phase="day"] .battlefield{transition:filter .8s ease; filter:brightness(1.07) saturate(1.12) sepia(.06);}
-  body[data-phase="night"] .battlefield{transition:filter .8s ease; filter:brightness(.74) saturate(.8) hue-rotate(-10deg);}
-  body[data-phase="night"] .battlefield .card-tile{filter:brightness(1.15);}
+  /* 2026-10-14 (second pass): no brightness filter on the whole board any more; the .sky-fx tint carries the temperature. Night
+     still sits a touch darker and cooler, eased in, and the cards themselves stay readable. */
+  body[data-phase] .battlefield{transition:filter 3s ease;}
+  body[data-phase="night"] .battlefield{filter:brightness(.88) saturate(.9);}
+  body[data-phase="night"] .battlefield .card-tile{filter:brightness(1.08);}
   .field-card .fc-left{position:absolute; top:4px; right:6px; font-size:11px; font-weight:800; background:rgba(0,0,0,.45); color:#fff; border-radius:999px; padding:0 6px;}
   .card-tile.is-field .stats.field-stats{position:absolute; left:0; right:0; top:auto; bottom:7%; display:flex; justify-content:center; background:none;}
   .card-tile.is-field .field-stats .fld{background:rgba(10,20,30,.72); color:#fff; border-radius:999px; padding:2px 8px; font-size:calc(var(--card-w, 118px) * .085); font-weight:800; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,.4);}
@@ -8309,32 +8309,24 @@
   background:linear-gradient(90deg, rgba(12,16,46,.18) 0%, rgba(12,16,46,.42) 14%, rgba(8,10,34,.5) 100%); transition:clip-path 2.4s cubic-bezier(.45,.05,.4,1);}
 #battlefieldEl > .night-veil.is-on{clip-path:inset(0 0 0 0);} #battlefieldEl > .night-veil.is-leaving{clip-path:inset(0 100% 0 0);} #battlefieldEl > .night-veil.no-anim{transition:none;}
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil{transition:none;} }
-/* The sky (2026-10-14, user: "The Daylight is too weak. The moon is unclear"): behind the cards, across the top of the battlefield. */
-#battlefieldEl > .sky-fx{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; overflow:hidden; transition:opacity 1.2s ease;}
-#battlefieldEl > .sky-fx > *{position:absolute; transition:opacity 1.6s ease, transform 2.4s cubic-bezier(.45,.05,.4,1);}
-#battlefieldEl > .sky-fx::before{content:''; position:absolute; inset:0; transition:opacity 1.6s ease; opacity:0;}
-#battlefieldEl > .sky-fx.is-day::before{opacity:1; background:radial-gradient(ellipse 75% 60% at 78% -8%, rgba(255,226,140,.55), rgba(255,196,96,.26) 38%, rgba(255,180,80,0) 72%), linear-gradient(180deg, rgba(255,214,130,.22), rgba(255,236,180,.08) 45%, rgba(255,240,200,0) 80%);}
-#battlefieldEl > .sky-fx.is-night::before, #battlefieldEl > .sky-fx.is-twilight::before{opacity:1; background:linear-gradient(180deg, rgba(40,60,140,.34), rgba(30,40,110,.16) 50%, rgba(20,24,70,0) 90%);}
-#battlefieldEl > .sky-fx.is-twilight::before{background:linear-gradient(180deg, rgba(240,120,90,.3), rgba(120,70,150,.18) 50%, rgba(40,30,90,0) 90%);}
-.sky-fx .sky-sun{right:7%; top:-70px; width:190px; height:190px; opacity:0; transform:translateY(-40px);}
-.sky-fx.is-day .sky-sun{opacity:1; transform:none;}
-.sky-fx .sun-core{position:absolute; inset:50px; border-radius:50%; background:radial-gradient(circle, #fffbe6 0%, #ffe48a 45%, #ffc24a 70%, rgba(255,180,60,0) 72%); box-shadow:0 0 40px 18px rgba(255,214,110,.7), 0 0 110px 50px rgba(255,190,80,.35);}
-.sky-fx .sun-rays{position:absolute; inset:-70px; border-radius:50%; background:repeating-conic-gradient(from 0deg, rgba(255,232,150,.42) 0deg 5deg, rgba(255,232,150,0) 5deg 15deg);
-  -webkit-mask:radial-gradient(circle, transparent 22%, #000 30%, rgba(0,0,0,.5) 50%, transparent 70%); mask:radial-gradient(circle, transparent 22%, #000 30%, rgba(0,0,0,.5) 50%, transparent 70%); animation:sunRays 60s linear infinite;}
-@keyframes sunRays{to{rotate:360deg;}}
-.sky-fx .sky-moon{right:9%; top:10px; width:74px; height:74px; opacity:0; transform:translateY(-30px);}
-.sky-fx.is-night .sky-moon, .sky-fx.is-twilight .sky-moon{opacity:1; transform:none;}
-.sky-fx.is-twilight .sky-moon{opacity:.75;}
-.sky-fx .moon-halo{position:absolute; inset:-46px; border-radius:50%; background:radial-gradient(circle, rgba(210,225,255,.5) 0%, rgba(170,195,255,.22) 40%, rgba(150,180,255,0) 70%); animation:moonHalo 7s ease-in-out infinite;}
-.sky-fx .moon-disc{position:absolute; inset:0; border-radius:50%; background:radial-gradient(circle at 34% 30%, #ffffff 0%, #f1f4ff 30%, #d9e0f2 62%, #b9c3dc 100%);
-  box-shadow:0 0 18px 6px rgba(225,235,255,.85), 0 0 50px 16px rgba(170,195,255,.45), inset -8px -6px 14px rgba(120,135,175,.45);}
-.sky-fx .moon-disc::before, .sky-fx .moon-disc::after{content:''; position:absolute; border-radius:50%; background:rgba(150,160,190,.42);}
-.sky-fx .moon-disc::before{left:22%; top:52%; width:22%; height:20%;} .sky-fx .moon-disc::after{left:56%; top:28%; width:14%; height:13%;}
-@keyframes moonHalo{0%,100%{opacity:.85; transform:scale(1);} 50%{opacity:1; transform:scale(1.06);}}
-.sky-fx .sky-stars{inset:0 0 45% 0; opacity:0;
-  background-image:radial-gradient(1.6px 1.6px at 12% 22%, #fff, transparent), radial-gradient(1.2px 1.2px at 27% 12%, #dfe8ff, transparent), radial-gradient(1.8px 1.8px at 41% 30%, #fff, transparent), radial-gradient(1.2px 1.2px at 55% 9%, #fff, transparent), radial-gradient(1.4px 1.4px at 66% 26%, #dfe8ff, transparent), radial-gradient(1.2px 1.2px at 6% 40%, #fff, transparent), radial-gradient(1.6px 1.6px at 34% 44%, #eaf0ff, transparent), radial-gradient(1.2px 1.2px at 74% 46%, #fff, transparent), radial-gradient(1.4px 1.4px at 20% 6%, #fff, transparent), radial-gradient(1.2px 1.2px at 48% 18%, #fff, transparent);}
-.sky-fx.is-night .sky-stars{opacity:.9;}
-@media (prefers-reduced-motion: reduce){ .sky-fx .sun-rays, .sky-fx .moon-halo{animation:none;} #battlefieldEl > .sky-fx > *{transition:none;} }
+/* The sky as colour temperature (2026-10-14, second pass, user: "Remove the sun and moon animation ... using temperature instead of
+   brightness"): one tint layer behind the cards, no sun, rays, moon or stars. Dawn and dusk amber, day warm and bright, night cool
+   blue and darker. The colour eases between tones (syncSkyFx sets .tone-*). Misty fights loop orange, blue and light instead. */
+#battlefieldEl > .sky-fx{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; overflow:hidden; mix-blend-mode:soft-light;
+  background-color:rgba(255,236,200,0); transition:background-color 3.2s ease, box-shadow 3.2s ease;}
+#battlefieldEl > .sky-fx.tone-day{background-color:rgba(255,226,170,.42); box-shadow:inset 0 0 0 9999px rgba(255,250,235,.06);}
+#battlefieldEl > .sky-fx.tone-dawn{background-color:rgba(255,170,90,.55);}
+#battlefieldEl > .sky-fx.tone-dusk{background-color:rgba(240,128,58,.62);}
+#battlefieldEl > .sky-fx.tone-night{mix-blend-mode:normal; background-color:rgba(30,52,120,.26); box-shadow:inset 0 0 120px 30px rgba(8,14,44,.35);}
+#battlefieldEl > .sky-fx.tone-misty{mix-blend-mode:normal; animation:mistyTint 90s ease-in-out infinite;
+  background-image:radial-gradient(ellipse 80% 60% at 30% 40%, rgba(255,255,255,.18), transparent 70%), radial-gradient(ellipse 70% 50% at 75% 65%, rgba(255,255,255,.14), transparent 70%);}
+@keyframes mistyTint{
+  0%,100%{background-color:rgba(236,232,222,.30);}
+  25%{background-color:rgba(242,170,104,.30);}
+  50%{background-color:rgba(232,226,214,.26);}
+  75%{background-color:rgba(120,150,205,.30);}
+}
+@media (prefers-reduced-motion: reduce){ #battlefieldEl > .sky-fx{transition:none;} #battlefieldEl > .sky-fx.tone-misty{animation:none; background-color:rgba(232,228,218,.28);} }
 /* Tide units and Swimmers float (2026-10-14, user: "All swimmers and Tide units float"): a slow bob on the board only (hand and Codex
    tiles stay still). It rides on the .fly-body wrapper, like a flyer's flight, so GSAP's lunges add up with it. */
 #appWrap.in-match .board-card.is-floating .fly-body{animation:tideFloat 4.2s ease-in-out infinite;}
@@ -9102,6 +9094,110 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .hatch-side .nk-nurse{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
   .hatch-help, .hatch-wait{margin:0; font-size:13.5px; line-height:1.45;}
   @media (prefers-reduced-motion: reduce){ .hatch-sky .wind, .hatch-sky .leaf, .hay-nest .nest-thing{animation:none !important;} }
+  /* ---- 2026-10-14 UI pass: fight layout, phone controls, skill chips, Forge/Nest costs, deck view, swap sheet ---- */
+  /* The fight's rows sit close to the board (user: "There is also still this weird margin between the deck and hand row and the board.
+     Move it closer"): the resource-pill row (field kit, plays) no longer takes a line of its own; it floats over the board's
+     bottom-right corner, and both hand rows keep a small gap to the field. */
+  #appWrap.in-match #view-play .top-play-row{margin-bottom:6px;}
+  #appWrap.in-match #view-play .battlefield{margin-bottom:6px;}
+  #appWrap.in-match #view-play .hud{min-height:0 !important; height:0; margin:0 !important; padding:0 14px; justify-content:flex-end; align-items:flex-end; align-content:flex-end; overflow:visible; transform:translateY(-18px); pointer-events:none;}
+  #appWrap.in-match #view-play .hud > *{pointer-events:auto;}
+  #appWrap.in-match #view-play .hud:empty{display:none;}
+  /* Phone fight controls (user: "for mobile, simplify the UI on the top row ... Use icons only if needed"): icon-only buttons
+     in one tight row; the words stay in each button's aria-label and title. */
+  .top-row-controls .trc-ico{display:none;}
+  @media (max-width:560px){
+    #view-play .top-row-controls{gap:4px; flex-wrap:nowrap;}
+    #view-play .top-row-controls .trc-lbl, #view-play .top-row-controls .hud-opponent-tag{display:none;}
+    #view-play .top-row-controls .trc-ico{display:inline;}
+    #view-play .top-row-controls > .btn.small{padding:0 6px; min-height:28px; height:28px; min-width:28px; font-size:12.5px; line-height:1; display:inline-flex; align-items:center; justify-content:center; gap:2px;}
+    #view-play .top-row-controls .settings-btn{width:28px; height:28px; min-width:28px; font-size:14px; padding:0;}
+    #view-play .top-row-controls .autoplay-btn, #view-play .top-row-controls .admin-win-btn{font-size:10.5px !important; padding:0 5px !important;}
+  }
+  /* Skill chips under a card (user screenshot: "☠2 🏆 🌵" spread wider than the card): tight, never wider than the card; a long
+     strip shrinks its icons, and wraps only as a last resort. */
+  .card-tile .badges.badge-slots, .card-tile .badges, .card-tile .badges-2row .badges-row{gap:1px !important;}
+  .card-tile .badges, .card-tile .badges-2row{max-width:calc(100% - 4px) !important; padding:1px 4px !important; flex-wrap:wrap !important; justify-content:center; box-sizing:border-box;}
+  .card-tile .badges .abadge{padding:0 1px !important; letter-spacing:-.02em;}
+  .card-tile .badges:has(> .abadge:nth-child(4)) .abadge{font-size:max(8px, calc(var(--cw, 120px) * .1)) !important;}
+  .card-tile .badges:has(> .abadge:nth-child(6)) .abadge{font-size:max(7px, calc(var(--cw, 120px) * .085)) !important;}
+  .board-card .card-tile .badges{padding:0 3px !important;}
+  /* Costs inside the buttons (Nest and Forge): " · 🍁 500 ✨ 40"; a part you are short of is underlined in red. */
+  .btn .btn-cost{display:inline-flex; align-items:center; gap:6px; margin-left:6px; font-weight:800; white-space:nowrap;}
+  .btn .btn-cost .bc-sep{opacity:.65; margin-right:-1px;}
+  .btn .btn-cost .bc{display:inline-flex; align-items:center; gap:2px;}
+  .btn .btn-cost .bc.is-short{color:#ffd6cc; text-decoration:underline wavy #ff7a66; text-underline-offset:3px;}
+  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:#b3261e;}
+  .forge-act{flex-wrap:wrap; justify-content:center; row-gap:2px;}
+  /* Forge text against the brick (user: "Village Forge, the text against the background - not enough contrast"): the bars that
+     sit straight on the brick and the glow are solid now, and their small print is full strength (AA on every line). */
+  .forge-upgrade{background:rgba(26,13,5,.94) !important; border-color:rgba(255,190,110,.45) !important; color:#fbe8cf; text-shadow:0 1px 1px rgba(0,0,0,.6);}
+  .forge-upgrade .fu-now small{opacity:1 !important; color:#f0dcc0;}
+  .forge-upgrade .fu-gate{opacity:1 !important; color:#ffe3b0;}
+  .forge-modes{background:rgba(18,10,4,.92) !important; box-shadow:0 2px 10px rgba(0,0,0,.4);}
+  .forge-mode{color:#fff1d8 !important; text-shadow:0 1px 1px rgba(0,0,0,.6);} .forge-mode.on{color:#2b1406 !important; text-shadow:none;}
+  .forge-hero{text-shadow:0 1px 2px rgba(0,0,0,.75);} .forge-hero p{opacity:1 !important; color:#fbecd6;}
+  .forge-hero .forge-embers{opacity:.6;}
+  #view-forge.forge-scene > p, #view-forge.forge-scene > .panel-sub, #view-forge.forge-scene > small, #view-forge.forge-scene .sm-mats-hint{background:rgba(22,12,5,.88); color:#fbecd6; padding:4px 10px; border-radius:10px; text-shadow:none;}
+  #view-forge.forge-scene .sm-mats{background:rgba(22,12,5,.88); color:#fbecd6; border-radius:12px;}
+  /* Deck card (compressed view): pictures, the rating, total Attack and Health; the count only when it's not 20. */
+  .dmp-foot{grid-template-columns:1fr;}
+  .dmp-meta .dmp-rating{background:rgba(70,40,110,.72);}
+  .dmp-meta .dmp-tot{background:rgba(0,0,0,.5);}
+  .dmp-meta .short{color:#ffd0c0; background:rgba(150,40,20,.78) !important;}
+  .ds-meta .short{color:#b3261e;}
+  /* Codex pager at the top too (2026-10-14). */
+  .cx-pager.cx-pager-top{margin:4px 0 12px;}
+  /* Nest picker: no prices on the tiles; unaffordable ones greyed; the price shows in the Train button once you pick. */
+  .np-card.is-short{filter:grayscale(.9); opacity:.55;}
+  .np-card.is-short:hover{opacity:.7;}
+  .np-card.is-picked{box-shadow:0 0 0 3px var(--accent-strong); border-color:var(--accent-strong);}
+  .np-confirm{position:sticky; bottom:-1px; display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px; padding:10px 12px; margin:4px 0 0; background:var(--surface-2); border:1px solid var(--surface-border); border-radius:12px; box-shadow:0 -6px 16px rgba(0,0,0,.18); z-index:2;}
+  .np-confirm[hidden]{display:none;}
+  .np-conf-name{margin-right:auto; font-weight:800;} .np-conf-name small{font-weight:600; opacity:.75;}
+  .np-need-toast{position:fixed; left:50%; top:50%; z-index:100050; padding:10px 18px; border-radius:999px; background:rgba(30,20,12,.94); color:#fff3dc; font:800 15px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 8px 24px rgba(0,0,0,.45); pointer-events:none; white-space:nowrap; animation:npNeed 2s ease forwards;}
+  @keyframes npNeed{0%{opacity:0; transform:translate(-50%,-40%) scale(.96);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1);} 70%{opacity:1; transform:translate(-50%,-50%);} 100%{opacity:0; transform:translate(-50%,-62%);}}
+  @media (prefers-reduced-motion: reduce){ .np-need-toast{animation:npNeedFade 2s linear forwards; transform:translate(-50%,-50%);} @keyframes npNeedFade{0%,75%{opacity:1;} 100%{opacity:0;}} }
+  /* The deck-swap offer (maybeOfferDeckSwap) had no styles at all, so it fell into the page flow at the bottom of every page. It is
+     a modal now: a centred card on wide screens, a compact bottom sheet on phones (old → new side by side, the text, Keep and Swap). */
+  .ds2-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(10,7,4,.62); animation:ds2In .25s ease both;}
+  .ds2-overlay.is-out{opacity:0; transition:opacity .25s ease;}
+  @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
+  .ds2{width:min(560px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55);}
+  .ds2-stage{display:flex; justify-content:center;}
+  .ds2-strip{display:flex; justify-content:center; align-items:center; gap:8px;}
+  .ds2-side{opacity:.45; transform:scale(.82); filter:saturate(.7);} .ds2-side .card-tile{width:56px !important;} .ds2-side{margin:0 -3px;}
+  .ds2-focus{position:relative; display:flex; align-items:center; gap:30px; padding:0 4px;}
+  .ds2-old .card-tile, .ds2-new .card-tile{width:112px !important;}
+  .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
+  .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
+  .ds2-arrows{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(90deg); font-size:22px; font-weight:800; color:#8a5a20;}
+  .ds2-focus.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
+  .ds2-focus.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-say{margin:12px 0 10px; font-size:15px; line-height:1.4; color:#2b1d10;} .ds2-say span{font-size:13px; color:#5a4630;}
+  .ds2-actions{display:flex; gap:10px; justify-content:center; align-items:center;}
+  @media (max-width:560px){
+    .ds2-overlay{align-items:flex-end; padding:0;}
+    .ds2{width:100%; max-height:70vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 14px calc(12px + env(safe-area-inset-bottom));}
+    .ds2-side, .ds2-lbl-x{display:none;}
+    .ds2-focus{gap:26px;}
+    .ds2-old .card-tile, .ds2-new .card-tile{width:84px !important;}
+    .ds2-say{font-size:14px; margin:8px 0;}
+    .ds2-actions .btn{flex:1; min-height:42px;}
+    .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .ds2-overlay{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  /* Phone header and Home (user: "In mobile, the logo, the icons are too separated from each other"): the logo and the header
+     icons sit together as one centred cluster, and Home's chestnut, title and level badge close up. */
+  @media (max-width:560px){
+    #appWrap:not(.tab-home) .topbar{justify-content:center !important; gap:6px !important;}
+    #appWrap:not(.tab-home) .topbar .brand{margin:0 4px 0 0 !important;}
+    #appWrap:not(.tab-home) .topbar .home-nav-btn{margin:0 !important;}
+    .home-menu{margin:14px auto 24px; gap:8px;}
+    .home-menu-mark{font-size:46px;}
+    .home-menu-title{margin:0 0 4px;}
+    .home-menu .player-level{margin-top:-2px !important; margin-bottom:6px !important;}
+  }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

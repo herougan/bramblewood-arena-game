@@ -4526,7 +4526,9 @@ function renderCodexGrid(keepPage){
     if(!sec.bare) html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`;
     html += gIds.map(tileFor).join('');
   });
-  if(pages.length > 1) html += `<div class="cx-pager" role="navigation" aria-label="Codex pages"><button type="button" class="btn small" data-cxpage="${codexPage - 1}" ${codexPage === 0 ? 'disabled' : ''}>‹ Back</button>${pages.map((_, i)=> `<button type="button" class="btn small ${i === codexPage ? 'primary' : 'ghost'}" data-cxpage="${i}" aria-current="${i === codexPage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-cxpage="${codexPage + 1}" ${codexPage >= pages.length - 1 ? 'disabled' : ''}>Next ›</button></div>`;
+  // 2026-10-14 (user: "Pagination in the codex should also exist at the top of the page"): the same pager above the grid too.
+  const pagerHTML = (where)=> pages.length > 1 ? `<div class="cx-pager cx-pager-${where}" role="navigation" aria-label="Codex pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-cxpage="${codexPage - 1}" ${codexPage === 0 ? 'disabled' : ''}>‹ Back</button>${pages.map((_, i)=> `<button type="button" class="btn small ${i === codexPage ? 'primary' : 'ghost'}" data-cxpage="${i}" aria-current="${i === codexPage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-cxpage="${codexPage + 1}" ${codexPage >= pages.length - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
+  if(html) html = pagerHTML('top') + html + pagerHTML('bottom');
   const groupIds = {}; ordered.forEach(g=>{ groupIds[g.sec.key] = g.ids; });
   const hints = {
     skirmish: 'Cards here are granted the first time a player clears that node. Edit a node with ✏️ Edit rewards, or set a card’s source in its detail view.',
@@ -7610,7 +7612,7 @@ function newAchievementsChipHTML(m){
     }
     if(!m.newAchv.length) return '';
     const names = m.newAchv.slice(0, 2).map(d=> (d.icon ? d.icon + " " : "") + escapeHtml(d.title || d.id)).join(', ') + (m.newAchv.length > 2 ? ` +${m.newAchv.length - 2}` : '');
-    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}<small>${_t('Claim it on the Achievements board.')}</small></span></div>`;
+    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
   }catch(e){ return ''; }
 }
 function achievementContext(){
@@ -9192,7 +9194,9 @@ try{ adminModeEnabled = isDevHost() && localStorage.getItem(ADMIN_MODE_KEY)==='1
 function syncAdminModeToAccount(){
   const was = adminModeEnabled;
   try{ adminModeEnabled = adminAllowed() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){ adminModeEnabled = false; }
-  if(was !== adminModeEnabled){ try{ if(currentTab==='play' && !matchState) renderPlay(); }catch(e){} }
+  if(was !== adminModeEnabled){ try{ if(currentTab==='play' && !matchState) renderPlay(); }catch(e){}
+    // 2026-10-14 (user: "Make sure admin functions in codex such as show hidden and get all only for admin"): the Codex redraws too.
+    try{ if(!adminModeEnabled) codexShowUnseen = false; if(currentTab==='codex' && !matchState) switchTab('codex'); }catch(e){} }
 }
 function setAdminMode(on){
   if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; return; }
@@ -9202,6 +9206,7 @@ function setAdminMode(on){
   // admin button (skirmish panel, card details, Codex) survives the switch.
   if(was !== adminModeEnabled){ try{ document.body.classList.toggle('is-admin', adminModeEnabled); }catch(e){}
     try{ const cd = document.getElementById('cdCloseBtn'); if(cd) cd.click(); }catch(e){}
+    try{ if(!adminModeEnabled) codexShowUnseen = false; }catch(e){}
     try{ if(!matchState && typeof switchTab === 'function' && currentTab) switchTab(currentTab); }catch(e){} }
 }
 // Level-up cost curve: rises with current level so 9→10 costs meaningfully more than 0→1. Dust
@@ -9399,8 +9404,8 @@ function forgeUpgradeHTML(){
   return `<div class="forge-upgrade" role="group" aria-label="Forge upgrade">
     <div class="fu-now"><b>🏭 ${escapeHtml(cur.name)}</b> <small>Tier ${cur.tier}/${FORGE_TIERS.length}: tempers to Lv ${cur.cap}, cards up to ${escapeHtml(rarName(cur.upTo))}</small></div>
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
-      ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : `<span class="forge-cost-row">${forgeCostChipsHTML(next.cost)}${next.strange ? `<span class="hud-pill ${ownedCount('strange-materia') >= next.strange ? '' : 'is-short'}" title="Strange Materia: the boss of Maps ${Object.keys(STRANGE_MATERIA_DROPS).join(', ')} drops it on its first clear">🔮 ${ownedCount('strange-materia')}/${next.strange}</span>` : ''}</span>`}
-      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+      ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : ''}
+      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:'Strange Materia (the boss of Maps ' + Object.keys(STRANGE_MATERIA_DROPS).join(', ') + ' drops it on its first clear)'}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
     ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
@@ -9525,7 +9530,7 @@ function forgeCastlesHTML(){
     const lc = castleLeveled(ch, L);
     return `<div class="fc-row ${ch.id===myCharacterId ? 'is-on' : ''}"><span class="fc-tile">${matchCastleTileHTML(lc, lc.health, lc.health, 'preview', '')}</span>
       <div class="fc-body"><b>${escapeHtml(ch.name)}${ch.id===myCharacterId ? ' <small>(yours)</small>' : ''}</b><span class="fc-lv">Lv ${L}/${lb ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span>
-        ${max ? `<p class="forge-note">Fully limit broken.</p>` : `<button type="button" class="btn small primary" data-forge-castle="${escapeAttr(ch.id)}" ${ok ? '' : 'aria-disabled="true"'}>${lb ? '💥 Break' : '🔨 Temper'} to Lv ${L+1} · ✨${c.dust} 🍁${c.gold}${mats}</button>${c.credit && (c.credit.dust || c.credit.gold) ? ` <small>credit −✨${c.credit.dust}</small>` : ''}`}
+        ${max ? `<p class="forge-note">Fully limit broken.</p>` : `<button type="button" class="btn small primary" data-forge-castle="${escapeAttr(ch.id)}" ${ok ? '' : 'aria-disabled="true"'}>${lb ? '💥 Break' : '🔨 Temper'} to Lv ${L+1}${btnCostHTML({dust:c.dust, gold:c.gold, mats:c.mats})}</button>${c.credit && (c.credit.dust || c.credit.gold) ? ` <small>credit −✨${c.credit.dust}</small>` : ''}`}
         <button type="button" class="btn small" data-fuse-castle="${escapeAttr(ch.id)}" ${dups ? '' : 'disabled'} title="Every extra copy of a castle is a duplicate: you only field one">🧩 Fuse duplicates (${dups})</button></div></div>`; }).join('')}</div>`;
 }
 function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleNetCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
@@ -10127,17 +10132,19 @@ function deckMediumPreviewHTML(d){
   const castle = CHARACTER_DEFS[d.characterId] || CHARACTER_DEFS.castle;
   const leader = d.leaderId && defs[d.leaderId];
   const sig = deckSignature(d), total = deckTotal(d.counts||{});
+  // 2026-10-14 (user: "don't need to write the name of the castle and leader - the pictures are enough ... include the total Attack
+  // and total HP as well. Don't need to write the number of cards in the deck unless its invalid aka not 20"): the names live in the
+  // aria-label and tooltips now; the foot shows the rating, the deck's total Attack and Health, and the count only when it's off.
+  const tot = Object.entries(d.counts||{}).reduce((a, [id, n])=>{ const c = defs[id]; if(c && n > 0){ a.atk += (c.attack||0) * n; a.hp += (c.health||0) * n; } return a; }, {atk:0, hp:0});
   const leaderBg = leader && leader.art ? `background-image:url(${leader.art})` : '';
   return `<div class="deck-medium-preview ${d.id===mainDeckId?'is-main':''}" data-deckid="${d.id}">
     <div class="dmp-bg" aria-hidden="true">
-      <div class="dmp-castle"><span>${castle ? castle.icon || '🏰' : '🏰'}</span></div>
-      <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
+      <div class="dmp-castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · Lv ' + castleLevelOf(castle && castle.id))}"><span>${castle ? castle.icon || '🏰' : '🏰'}</span></div>
+      <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
     <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
     <div class="dmp-foot">
-      <span class="dmp-who">🏰 ${escapeHtml(castle ? castle.name : 'Castle')} · Lv ${castleLevelOf(castle && castle.id)}</span>
-      <span class="dmp-who is-r">👑 ${leader ? escapeHtml(leader.name) : 'No leader'}</span>
-      <span class="dmp-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span title="Battle rating">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
+      <span class="dmp-meta"><span class="dmp-rating" title="Battle rating: how strong this deck plays overall">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span><span class="dmp-tot" title="Total Attack of the cards in this deck">🗡️ ${tot.atk}</span><span class="dmp-tot" title="Total Health of the cards in this deck">❤️ ${tot.hp}</span>${total===DECK_SIZE ? '' : `<span class="short" title="A deck needs exactly ${DECK_SIZE} cards to play">🃏 ${total}/${DECK_SIZE}</span>`}${sig.archetypes.slice(0, 2).map(a=> `<span>${escapeHtml(a)}</span>`).join('')}</span>
     </div>
   </div>`;
 }
@@ -10162,7 +10169,7 @@ function deckShowcaseHTML(d, opts){
         <span title="Average health"><b>${sig.avgHp}</b><small>❤ avg hp</small></span>
         <span title="Average cost (Lumber)"><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
       </div>
-      <div class="ds-meta"><span class="${total===DECK_SIZE?'ok':'short'}">🃏 ${total}/${DECK_SIZE}</span><span title="Battle rating">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span></div>
+      <div class="ds-meta">${total===DECK_SIZE ? '' : `<span class="short" title="A deck needs exactly ${DECK_SIZE} cards to play">🃏 ${total}/${DECK_SIZE}</span>`}<span title="Battle rating: how strong this deck plays overall">⚔ ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>${(()=>{ const t = Object.entries(d.counts||{}).reduce((a, [id, n])=>{ const c = defs[id]; if(c && n > 0){ a.atk += (c.attack||0) * n; a.hp += (c.health||0) * n; } return a; }, {atk:0, hp:0}); return `<span title="Total Attack of the cards in this deck">🗡️ ${t.atk}</span><span title="Total Health of the cards in this deck">❤️ ${t.hp}</span>`; })()}</div>
     </div>
   </div>`;
 }
@@ -12394,6 +12401,7 @@ const PERMATIDE_MAPS = new Set(['m2', 'mp']);
 function wetMap(mid){ const b = MAP_BIOME_OF[mid] || (()=>{ const m = CONQUEST_MAPS.find(x=> x.id === mid); return m && m.parent ? MAP_BIOME_OF[m.parent] : null; })(); return b === 'beach' || b === 'water' || b === 'reef'; }
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = mapDayNight(mid); // the map's own day and night (2026-10-14; Zeitgebers retired)
+  if(r.misty) r.phase = 'off'; // Misty (2026-10-14): no day or night in the mist; the fog's tint drifts instead (syncSkyFx)
   if(r.tideSpout == null && TIDESPOUT_MAPS.has(mid) && node) r.tideSpout = true;
   if(r.permaTide == null && PERMATIDE_MAPS.has(mid) && node) r.permaTide = true; // the river's Perma-tide (2026-10-14)
   if(r.wet == null && mid && wetMap(mid)) r.wet = true;
@@ -12506,7 +12514,7 @@ function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS
 function markFieldRow(key){ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide']);
+const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty']);
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -12534,6 +12542,7 @@ function fieldConditionRows(r){
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).');
   else if(r.dark === 'pitch') add('dark', '🌑', 'Pitchblack', 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.');
   else if(r.dark) add('dark', '🌘', 'Darkness', 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.');
+  if(r.misty) add('misty', '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.'); // 2026-10-14
   if(r.phase === 'night') add('night', '🌙', 'Night all fight', 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.');
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.');
   if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "the Tide is always in. Tide effects can't change it."); // 2026-10-14: Flow every round from round 1
@@ -12749,7 +12758,7 @@ function openDeckBuilderPopup(o){
 // map's default). Map defaults are switched off with an off value (field 'none', terrain false, eruption 0 …) so fightRules
 // keeps them off.
 const SE_PHASE_LABEL = {day:['☀️','Day all match'], night:['🌙','Night all match'], cycle:['🌗','Day and night'], nightFirst:['🌆','Dusk start'], off:['⏸️','No day or night'], realtime:['🕰️','Real-time day and night']};
-const SE_FX_OFF = {field:'none', terrain:false, eruption:0, highTide:false, tideSpout:false, bossSurge:false, enemyOre:false};
+const SE_FX_OFF = {field:'none', terrain:false, eruption:0, highTide:false, tideSpout:false, bossSurge:false, enemyOre:false, misty:false};
 function skirmishFxAuto(mapId, draft){
   const auto = fightRules(mapId, Object.assign({}, draft, {rules:{}}));
   let kind = null; try{ kind = typeof ShaderM !== 'undefined' && ShaderM.MAP_KIND ? ShaderM.MAP_KIND[mapId] : null; }catch(e){}
@@ -12769,6 +12778,7 @@ function skirmishFieldChips(mapId, draft){
   else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🌋', 'Eruption (off)', `The map would erupt for ${auto.eruption}.`);
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'The tide runs Ebb, Flow, Ebb, High tide.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
   if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
+  if(eff.misty) add('misty', true, '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.'); // 2026-10-14
   if(eff.bossSurge) add('bossSurge', true, '💥', `Boss surge +${eff.bossSurge.atk}/+${eff.bossSurge.hp}`, 'The boss arrives stronger.'); else if(exp.bossSurge === false && auto.bossSurge) add('bossSurge', false, '💥', 'Boss surge (off)', '');
   if(eff.enemyOre) add('enemyOre', true, '⛏️', 'Enemy mining', `The enemy digs ${eff.enemyOre.stone || 0} Stone a round${eff.enemyOre.metal ? ` and ${eff.enemyOre.metal} Metal every ${eff.enemyOre.metalEvery || 1}` : ''}.`); else if(exp.enemyOre === false && auto.enemyOre) add('enemyOre', false, '⛏️', 'Enemy mining (off)', '');
   if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
@@ -12786,7 +12796,7 @@ function skirmishFxAddOptionsHTML(){
   const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🌋', name:'Eruption ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'actions']).concat(erupt))}${grp('Home ground', grounds)}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'actions']).concat(erupt))}${grp('Home ground', grounds)}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -15968,7 +15978,7 @@ function maybeOfferDeckSwap(){
         ${others.slice(2, 4).map((k, i)=> `<div class="ds2-side is-right" style="--k:${i}">${cardTileHTML(defs[k], {inPlay:true})}</div>`).join('')}</div>
     </div>
     <p class="ds2-say"><b>${item.teach ? 'New card!' : 'Better card!'}</b> Swap <b>${escapeHtml(od.name)}</b> for <b>${escapeHtml(d.name)}</b>?<br><span>${escapeHtml(why)}</span></p>
-    <div class="ds2-actions">${item.forced ? '' : '<button type="button" class="btn ghost small" id="dsKeep">Keep my deck</button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
+    <div class="ds2-actions">${item.forced ? '' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
   document.body.appendChild(ov);
   const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 260); };
   const keep = ov.querySelector('#dsKeep'); if(keep) keep.onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
@@ -20342,6 +20352,7 @@ const FIELD_EFFECTS = [
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🌋', name:'The Mountain Wakes', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, one random unit on each side takes 2 fire damage every upkeep.'},
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are washed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
+  {id:'misty',     group:'misty', icon:'🌫️', name:'Misty',        weird:1, cost:1, rules:{misty:true}, text:'No day or night; the mist shifts from orange to blue and back.', editorOnly:true}, // 2026-10-14: no map has it yet
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'The tide runs Ebb, Flow, Ebb, High tide (it moves Tide units only).', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
@@ -21135,12 +21146,12 @@ function renderMatchUI(){
       ${fieldEffectCardHTML(m)}${forecastPillHTML(m)}
       <div class="top-row-controls">
         <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
-        <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}">${ffBtnLabel(m.speedMult)}</button>
+        <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}" aria-label="Playback speed">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
-        <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
+        <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
         ${hudSettingsWidgetHTML()}
-        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss">🏳️ Forfeit</button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
-        <button class="btn small" id="quitMatchBtn" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':''}>${isAsync?'Save & Exit':'Quit'}</button>
+        ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
+        <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
     </div>
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
@@ -25435,10 +25446,13 @@ function revealBoardCardsAtEnd(){
 // castle shakes, cracks, and slumps into a heap of falling stones and dust before the result sign.
 // The deck has a visible thickness (2026-10-13, user: "Your deck has a observable thickness, growing to the top left"): one
 // card edge peeks out up and to the left for every two cards left, up to twelve.
+// The deck pile (2026-10-14, user: "The 'deck' - the cards should look a bit closer together. 2ndly, the base card should be inline
+// with the other cards, then it grows from there"): the bottom card sits exactly where the hand's cards sit; each card above it is
+// lifted a hair up and to the left (at most 6 layers, 1px apart), so a full deck rises out of the row instead of sinking below it.
 function deckPileStyle(n){
-  const k = Math.min(12, Math.ceil((n||0) / 2)); if(!k) return '';
-  const edges = Array.from({length:k}, (_, i)=> `${-(i+1)}px ${-(i+1)}px 0 ${i % 2 ? 'rgba(60,40,20,.85)' : 'rgba(236,214,170,.95)'}`);
-  return `box-shadow:${edges.join(', ')}, 0 3px 0 rgba(0,0,0,.22); margin-top:${Math.round(k/2)}px;`;
+  const k = Math.min(6, Math.ceil((n||0) / 4)); if(!k) return '';
+  const edges = Array.from({length:k}, (_, i)=> `${i+1}px ${i+1}px 0 ${i % 2 ? 'rgba(60,40,20,.85)' : 'rgba(236,214,170,.95)'}`);
+  return `box-shadow:${edges.join(', ')}, ${k}px ${k+3}px 0 rgba(0,0,0,.22); top:${-k}px; left:${-k}px; margin-top:0;`;
 }
 async function castleCrumble(el){
   if(!el || !el.isConnected || reducedMotion()) return;
@@ -26293,18 +26307,35 @@ function syncDarkVeil(m){
   if(!v){ v = document.createElement('div'); v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); }
   v.className = 'dark-veil lvl-' + lvl;
 }
-// The sky (2026-10-14, user: "The Daylight is too weak. The moon is unclear"): a layer behind the cards with the sun's glow and rays by
-// day, and a clear moon with a soft halo and a few stars at night. It follows the phase like the night veil.
+// The sky as colour temperature (2026-10-14, second pass, user: "Remove the sun and moon animation. I think just making the field
+// gradually brighter - using temperature instead of brightness would help. At night would be darker of course"): no sun, rays, moon
+// or stars any more. A tint layer behind the cards warms and cools with the hour: dawn amber, full day warm and bright, dusk amber
+// again, night cool blue and darker. Each change eases over a few seconds (CSS transition on the layer's colour).
+// Misty fights (2026-10-14, user: "In misty areas ... no day/night, there is still pseudo day/night, the foggy arena becomes more
+// orange, then abit bluer etc. then abit lighter again"): no phase at all, and the fog's tint drifts orange, blue and light on a
+// slow loop (purely visual; rules.misty).
+let skyToneLast = null;
+function skyToneOf(m, ph){
+  if(ph === 'night') return 'night';
+  if(ph === 'twilight') return 'dusk';
+  if(ph !== 'day') return null;
+  try{ const pm = m.engine.getPhaseMode ? m.engine.getPhaseMode() : 'cycle'; if(pm !== 'cycle' && pm !== 'nightFirst') return 'day';
+    const PL = m.engine.getPhaseLen ? m.engine.getPhaseLen() : 3; if(PL < 2) return 'day';
+    const zs = m.engine.getZeitStart ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1, rip = (rr0 % PL) + 1;
+    return rip === 1 && (m.round||1) > 1 ? 'dawn' : rip === PL ? 'dusk' : 'day'; }catch(e){ return 'day'; }
+}
 function syncSkyFx(m, phase){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  const misty = !!(m && !m.over && (matchFieldRules(m) || {}).misty);
   const ph = phase || (m && m.engine && m.engine.getPhase && m.engine.getPhase());
-  const on = !!(m && !m.over && ph && dayNightOn(m) && matchPhaseMatters(m));
+  const tone = misty ? 'misty' : (m && !m.over && ph && dayNightOn(m) && matchPhaseMatters(m)) ? skyToneOf(m, ph) : null;
   let sky = bf.querySelector(':scope > .sky-fx');
-  if(!on){ if(sky) sky.remove(); return; }
-  if(!sky){ sky = document.createElement('div'); sky.setAttribute('aria-hidden', 'true');
-    sky.innerHTML = '<div class="sky-stars"></div><div class="sky-sun"><i class="sun-rays"></i><i class="sun-core"></i></div><div class="sky-moon"><i class="moon-halo"></i><i class="moon-disc"></i></div>';
-    bf.insertBefore(sky, bf.firstChild); }
-  sky.className = 'sky-fx is-' + ph;
+  if(!tone){ if(sky) sky.remove(); skyToneLast = null; return; }
+  if(!sky){ sky = document.createElement('div'); sky.setAttribute('aria-hidden', 'true'); bf.insertBefore(sky, bf.firstChild);
+    // a fresh board (every render rebuilds it) starts on the tone it last showed, so a change still eases in
+    if(skyToneLast && skyToneLast !== tone){ sky.className = 'sky-fx tone-' + skyToneLast; void sky.offsetWidth; } }
+  sky.className = 'sky-fx tone-' + tone; skyToneLast = tone;
+  if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
 function syncNightVeil(m, phase){
   try{ syncSkyFx(m, phase); }catch(e){}
@@ -26667,6 +26698,17 @@ function firstUncommonEnemy(m){
 // hold a card you can't afford, or in any fight from Map 2 on, whichever comes first. Replaces the old one-line Lumber tip.
 function pitchLessonMine(m){ return m.players[viewerHandPid(m)]; }
 function pitchLessonCostly(m){ const me = pitchLessonMine(m); return coachHandEl(d=> (d.cost||0) > (me.lumber||0)); }
+// The spare card to pitch (2026-10-14, user: "The lumber pitch tutorial shouldn't ask me to pitch the exact card that costs the
+// lumber!"): any hand card but the one the lesson is about; a card you can already play first, then any other.
+function pitchLessonSpare(m){
+  const me = pitchLessonMine(m), defs = getCardDefs(), costly = me.hand.find(h=> defs[h.defId] && (defs[h.defId].cost||0) > (me.lumber||0));
+  const others = me.hand.filter(h=> h !== costly); if(!others.length) return null;
+  const pick = others.find(h=> m.engine.canPlay && m.engine.canPlay(me, h.defId, h.uid)) || others[0];
+  return document.querySelector(`#handStrip [data-handuid="${pick.uid}"]`) || true;
+}
+// No spare card in hand (2026-10-14, user: "If I don't have any cards in hand to pitch, it wouldn't ask me to pitch. Just an Okay,
+// until next turn - draw 1 more card"): the lesson waits a turn instead of asking.
+const PITCH_WAIT_TIP = {id:'pl-wait', text:'Okay — next turn you’ll draw 1 more card.', anchor:()=> document.getElementById('deckWidgetBottom') || document.getElementById('handStrip')};
 const PITCH_LESSON = [
   {id:'pl-need', gate:true,
     text:'🪵 This card needs Lumber. Get Lumber by giving up a card.',
@@ -26692,6 +26734,7 @@ function pitchLessonTip(m){
   }
   if(next.id === 'pl-do' && me.discardUsedThisTurn){ markCoachSeen('pl-do'); return PITCH_LESSON[2]; }
   if(next.id === 'pl-do' && !me.hand.length) return null;
+  if(next.id === 'pl-do' && !pitchLessonSpare(m)){ if(m._plWaitRound === m.round) return null; m._plWaitRound = m.round; return PITCH_WAIT_TIP; }
   return next;
 }
 function peekGateTip(m){
@@ -26832,7 +26875,7 @@ function showCoachTip(tip, anchorEl){
     // If they let go again, it's back to the original visual"): while a hand card is held, a ghost card and hand glide from it
     // to your row, over and over; letting go brings the pointer back.
     if(tip.id === 'g-play') syncCoachPhantom(pointer);
-    if(tip.id === 'pl-do') syncCoachPhantom(pointer, {to:'dropDiscard', always:true});
+    if(tip.id === 'pl-do') syncCoachPhantom(pointer, {to:'dropDiscard', always:true, pick:()=>{ const el = matchState && pitchLessonSpare(matchState); return el && el !== true ? el : null; }});
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
   place();
@@ -26864,7 +26907,7 @@ function syncCoachPhantom(pointer, opts){
   opts = opts || {};
   const m = typeof matchState !== 'undefined' ? matchState : null;
   let held = document.querySelector('#handStrip .card-tile.dragging') || (m && m.selectedUid != null ? document.querySelector(`#handStrip [data-handuid="${m.selectedUid}"]`) : null);
-  if(!held && opts.always){ const tiles = [...document.querySelectorAll('#handStrip .card-tile[data-handuid]')]; held = tiles.find(t=> !t.classList.contains('playable')) || tiles[0] || null; }
+  if(!held && opts.always){ if(opts.pick) held = opts.pick(); else { const tiles = [...document.querySelectorAll('#handStrip .card-tile[data-handuid]')]; held = tiles.find(t=> !t.classList.contains('playable')) || tiles[0] || null; } }
   const row = document.getElementById(opts.to || 'rowMine');
   if(!held || !row || reducedMotion()){ if(coachPhantom){ coachPhantom.remove(); coachPhantom = null; } if(pointer) pointer.style.opacity = ''; return; }
   if(coachPhantom && coachPhantom.isConnected) return;
@@ -30564,8 +30607,7 @@ function blacksmithHTML(){
         <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
         <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
         <div class="sm-needs">${needs}</div>
-        <div class="forge-cost-row">${costChipsHTML(r.cost)}</div>
-        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}</button>
+        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>
       </div>
     </div>
     <div class="panel sm-fuse"><h3>🔥 Fuse</h3><p class="panel-sub">Melt ${FUSE_COPIES} spare copies of a card into one random card a rarity higher (up to Epic). You always keep at least one copy.</p>
@@ -30657,6 +30699,19 @@ function forgeReadyFor(id){
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
 }
+// Costs inside the button (2026-10-14, user: "Nest and Forge - upgrade costs are written into the button itself"): " · 🍁 500 ✨ 40",
+// each part dimmed and struck when you are short of it (the full need and what you have sit in its tooltip).
+function btnCostHTML(cost, extra){
+  cost = cost || {}; const defs = getCardDefs(), parts = [];
+  const part = (glyph, need, have, label)=>{ if(!need) return; const short = have < need; parts.push(`<span class="bc ${short ? 'is-short' : ''}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}</span>`); };
+  part(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
+  part('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust');
+  part('🦴', cost.kibble, myCurrencies.kibble||0, 'Kibble');
+  part('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
+  Object.entries(cost.mats||{}).forEach(([id, n])=>{ if(defs[id]) part(defs[id].icon, n, ownedCount(id), defs[id].name); });
+  (extra||[]).forEach(x=> part(x.icon, x.need, x.have, x.label));
+  return parts.length ? `<span class="btn-cost"><span class="bc-sep" aria-hidden="true">·</span>${parts.join('')}</span>` : '';
+}
 function costChipsHTML(cost){
   const chip = (glyph, need, have, label)=> need ? `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>` : '';
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves') + chip('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
@@ -30675,8 +30730,7 @@ function refineAnvilHTML(id, sel){
     <div class="rf-ladder" aria-label="Finish ladder">${ladder}</div>
     <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? escapeHtml(_t('Refines your best copy (of {n}).', {n:(myCardCopies[id]||[]).length})) : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
     ${next ? `
-      <div class="forge-cost-row">${costChipsHTML(next.cost)}</div>
-      <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ ${escapeHtml(_t('Refine to {finish}', {finish:_t(next.label)}))}</button>
+      <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ ${escapeHtml(_t('Refine to {finish}', {finish:_t(next.label)}))}${btnCostHTML(next.cost)}</button>
     ` : `<p class="forge-note forge-done">The finest finish there is. 🏆</p>`}`;
 }
 function enchantAnvilHTML(id, sel){
@@ -30733,17 +30787,14 @@ function forgeAnvilHTML(id, sel, L, maxed){
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
     ${!maxed ? `
-      <div class="forge-cost-row">${forgeCostChipsHTML(cost)}</div>
-
       ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
-      ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}</button>`}
+      ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}${btnCostHTML(cost)}</button>`}
       ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
     ` : `${lb && lb.why !== 'done' ? forgeLimitBreakHTML(id, lb) : ''}
       <div class="forge-medals">${PRESTIGE_TIERS.map((t,k)=> `<div class="forge-medal ${k<prestige?'owned':''} ${k===prestige?'next':''}" title="${escapeAttr(t.desc)}"><span class="fm-ico">${t.icon}</span><span class="fm-name">${escapeHtml(t.label)}</span><span class="fm-state">${k<prestige?'Owned':k===prestige?'Next':'Locked'}</span></div>`).join('')}</div>
       ${tier ? `
         <p class="forge-note">${escapeHtml(tier.desc)} Stats stay the same.</p>
-        <div class="forge-cost-row">${forgeCostChipsHTML(tier.cost)}</div>
-        <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}</button>
+        <button type="button" class="btn primary prestige-btn forge-act" id="forgePrestigeBtn" ${afford?'':'aria-disabled="true"'}>${tier.icon} Prestige: ${escapeHtml(tier.label)}${btnCostHTML(tier.cost)}</button>
       ` : `<p class="forge-note forge-done">Fully Prestiged: every finish owned. 🏆</p>`}
     `}${forgeDupMeltHTML(id, L)}${forgePromotionHTML(id, sel, L)}`;
 }
@@ -30756,8 +30807,7 @@ function forgeLimitBreakHTML(id, lb){
   return `<div class="forge-limit ${lb.why==='fed'?'is-locked':''}">
     <div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>
     <p class="forge-note">${fedLine}. ${lb.why==='fed' ? `Feed ${LIMIT_BREAK_FED - lb.fed} more duplicate${LIMIT_BREAK_FED - lb.fed===1?'':'s'} of ${escapeHtml(d.name)} to unlock it.` : `It costs what the whole road to level 10 cost.`}${gain ? ` ${gain}.` : ''}</p>
-    ${lb.why==='fed' ? '' : `<div class="forge-cost-row">${forgeCostChipsHTML(c)}</div>
-    <button type="button" class="btn primary forge-act forge-lb-btn" id="forgeLimitBreakBtn" ${lb.ok?'':'aria-disabled="true"'}>💥 Limit break</button>`}
+    ${lb.why==='fed' ? '' : `<button type="button" class="btn primary forge-act forge-lb-btn" id="forgeLimitBreakBtn" ${lb.ok?'':'aria-disabled="true"'}>💥 Limit break${btnCostHTML(c)}</button>`}
   </div>`;
 }
 async function forgeLimitBreak(btn){
@@ -30807,8 +30857,7 @@ function forgePromotionHTML(id, sel, L){
     <div class="fp-head">⬆ ${escapeHtml(_t('Promote'))}</div>
     <p class="forge-note">${escapeHtml(_t('Pick what it becomes. Your decks get the new card; this one goes back to level 0.'))}</p>
     <div class="fp-choices">${targets.map(t=> `<button type="button" class="fp-choice ${t===forgePromotePick?'selected':''}" data-promote="${escapeAttr(t)}" aria-pressed="${t===forgePromotePick}">${cardTileHTML(defs[t], {inPlay:true})}${myUnlockedCardIds.has(t) ? '<span class="fp-owned">✓</span>' : ''}</button>`).join('')}</div>
-    <div class="forge-cost-row">${forgeCostChipsHTML(PROMOTE_COST)}</div>
-    <button type="button" class="btn primary forge-act" id="forgePromoteBtn" ${pick && afford ? '' : 'aria-disabled="true"'}>⬆ ${pick ? escapeHtml(_t('Promote to {name}', {name:pick.name})) : escapeHtml(_t('Pick a promotion'))}</button>
+    <button type="button" class="btn primary forge-act" id="forgePromoteBtn" ${pick && afford ? '' : 'aria-disabled="true"'}>⬆ ${pick ? escapeHtml(_t('Promote to {name}', {name:pick.name})) : escapeHtml(_t('Pick a promotion'))}${btnCostHTML(PROMOTE_COST)}</button>
   </div>`;
 }
 async function forgePromote(btn){
@@ -32111,33 +32160,59 @@ function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id 
 // only nest can do that"): a Level-0 card in a nest for an hour, for a mote of materia (15 Dust, 10 Maple Leaves), comes out Level 1.
 // 2026-10-12 (21:01): training now also takes Kibble (🦴), and hatchlings (Level-0 cards from eggs) train the same way.
 const NURTURE_HOURS = 1, NURTURE_COST = {kibble:2, dust:15, gold:10};
-function canAffordNurture(){ return Object.keys(NURTURE_COST).every(k=> (myCurrencies[k]||0) >= NURTURE_COST[k]); }
+// Kibble grows with the egg line (2026-10-14, user: "Kibble cost is higher, the further the progression of that specific egg"): a
+// card's Kibble is 2, +1 for every card of its species already trained or hatched here, up to 8. Dust and Maple Leaves stay flat.
+const NEST_SPECIES_KEY = 'bramblewood_nest_species_v1', NURTURE_KIBBLE_CAP = 8;
+function nestSpeciesOf(id){ const d = getCardDefs()[id]; return (d && (d.species||[])[0]) || id; }
+function nestSpeciesCounts(){ try{ return JSON.parse(localStorage.getItem(NEST_SPECIES_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function noteNestSpecies(id){ const c = nestSpeciesCounts(), k = nestSpeciesOf(id); c[k] = (c[k]||0) + 1; try{ localStorage.setItem(NEST_SPECIES_KEY, JSON.stringify(c)); }catch(e){} }
+function nurtureCostFor(id){ const n = id ? (nestSpeciesCounts()[nestSpeciesOf(id)] || 0) : 0; return Object.assign({}, NURTURE_COST, {kibble: Math.min(NURTURE_KIBBLE_CAP, NURTURE_COST.kibble + n)}); }
+function nurtureShortfall(id){ const c = nurtureCostFor(id), names = {kibble:'Kibble', dust:'Dust', gold:'Maple Leaves'};
+  return Object.keys(c).filter(k=> (myCurrencies[k]||0) < c[k]).map(k=> `${c[k] - (myCurrencies[k]||0)} more ${names[k]}`); }
+function canAffordNurture(id){ const c = nurtureCostFor(id); return Object.keys(c).every(k=> (myCurrencies[k]||0) >= c[k]); }
 const NURTURE_COST_TEXT = ()=> `🦴${NURTURE_COST.kibble} ✨${NURTURE_COST.dust} 🍁${NURTURE_COST.gold}`;
 function nurtureCandidates(){ const defs = getCardDefs(), busy = new Set(nestState().eggs.filter(e=> e.kind === 'nurture').map(e=> e.cardId));
   return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && defs[id].cardType !== 'materia' && (myCardCopies[id]||[]).length && getCardLevel(id) === 0 && !busy.has(id)); }
 function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= NEST_SLOTS) return 'full';
-  if(!canAffordNurture()) return 'cost';
-  Object.keys(NURTURE_COST).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - NURTURE_COST[k]); saveCurrencies();
+  if(!canAffordNurture(cardId)) return 'cost';
+  const cost = nurtureCostFor(cardId); Object.keys(cost).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - cost[k]); saveCurrencies(); noteNestSpecies(cardId);
   const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + NURTURE_HOURS*3600e3, placed:true}); saveNestState(n); return 'ok'; }
 function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id === itemId); if(!e || e.kind !== 'nurture' || Date.now() < e.hatchAt) return null;
   n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n); myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0); saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;
+// The Nest picker (2026-10-14, user: "The nesting cost (0 -> 1) should be written only when you click the card. Cards whose cost is
+// too high are greyed out. But when you click them, they give a small central notification that fades 'Need 5 more Kibble' etc."):
+// no prices on the tiles; a card you can afford asks once, with its price in the Train button; one you can't greys out and says
+// what it still needs.
+function nestNeedToast(text){
+  document.querySelectorAll('.np-need-toast').forEach(t=> t.remove());
+  const t = document.createElement('div'); t.className = 'np-need-toast'; t.setAttribute('role', 'status'); t.textContent = text;
+  document.body.appendChild(t); setTimeout(()=> t.remove(), 2000);
+}
 function openNestPicker(){
   const defs = getCardDefs(), eggs = nestPackedEggs(), kids = nurtureCandidates();
   const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.setAttribute('role', 'dialog');
-  const afford = canAffordNurture();
   ov.innerHTML = `<div class="modal nest-picker" aria-label="Fill a nest"><div class="modal-head-row"><h2>🪺 Fill a nest</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <h3>🥚 Eggs in your pack</h3>${eggs.length ? `<div class="np-grid">${eggs.map(e=>{ const k = EGG_KINDS[e.kind] || EGG_KINDS.woodland, t = NEST_TYPES[k.type] || NEST_TYPES.woodland;
       return `<button type="button" class="np-item" data-np-egg="${escapeAttr(e.id)}"><span class="np-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${t.icon} ${escapeHtml(t.name)} · hatches in ${k.hatchHours}h</small></button>`; }).join('')}</div>` : '<p class="panel-sub">No eggs in your pack. They turn up on the road.</p>'}
-    <h3>🌱 Train a Level-0 card to Level 1 <small>${NURTURE_HOURS}h · ${NURTURE_COST_TEXT()} · you have 🦴${myCurrencies.kibble||0}</small></h3>
-    ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=> `<button type="button" class="np-item np-card ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" ${afford ? '' : 'aria-disabled="true"'}>${cardTileHTML(defs[id], {inPlay:true})}<b>${escapeHtml(defs[id].name)}</b></button>`).join('')}</div>` : '<p class="panel-sub">No Level-0 cards to nurture. Your Base cards start at Level 0.</p>'}
-    ${afford ? '' : '<p class="panel-sub">Not enough Kibble, Dust or Maple Leaves to train right now. Kibble comes from Conquest wins and grown babies.</p>'}</div>`;
+    <h3>🌱 Train a Level-0 card to Level 1 <small>${NURTURE_HOURS}h · tap a card · you have 🦴${myCurrencies.kibble||0}</small></h3>
+    ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=>{ const ok = canAffordNurture(id); return `<button type="button" class="np-item np-card ${ok ? '' : 'is-short'} ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (ok ? '' : ': not enough to train yet'))}">${cardTileHTML(defs[id], {inPlay:true})}<b>${escapeHtml(defs[id].name)}</b></button>`; }).join('')}</div>
+      <div class="np-confirm" hidden></div>` : '<p class="panel-sub">No Level-0 cards to nurture. Your Base cards start at Level 0.</p>'}</div>`;
   document.body.appendChild(ov); nestNurturePrefill = null;
   const close = ()=> ov.remove();
+  const conf = ov.querySelector('.np-confirm');
+  const train = id=>{ const r = startNurture(id); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); showToast(`🌱 ${defs[id].name} is in training. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); return true; } return false; };
   ov.addEventListener('click', e=>{ if(e.target === ov || e.target.closest('[data-close]')) return close();
-    const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]');
+    const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]'), go = e.target.closest('[data-np-train]'), no = e.target.closest('[data-np-cancel]');
     if(eg){ if(placeEggInNest(eg.dataset.npEgg)){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); } else denyShake(eg); }
-    else if(cd){ if(cd.getAttribute('aria-disabled') === 'true'){ denyShake(cd); return; } const r = startNurture(cd.dataset.npCard); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); showToast(`🌱 ${defs[cd.dataset.npCard].name} is in training. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); } else denyShake(cd); } });
+    else if(go){ if(!train(go.dataset.npTrain)) denyShake(go); }
+    else if(no){ conf.hidden = true; ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); }
+    else if(cd){ const id = cd.dataset.npCard;
+      if(!canAffordNurture(id)){ denyShake(cd); nestNeedToast('Need ' + nurtureShortfall(id).join(' and ')); return; }
+      if(nestPlaced().length >= NEST_SLOTS){ denyShake(cd); nestNeedToast('Every nest is full'); return; }
+      ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); cd.classList.add('is-picked');
+      conf.innerHTML = `<span class="np-conf-name">🌱 ${escapeHtml(defs[id].name)} <small>to Level 1 in ${NURTURE_HOURS}h</small></span><button type="button" class="btn ghost small" data-np-cancel>Cancel</button><button type="button" class="btn primary" data-np-train="${escapeAttr(id)}">🌱 Train${btnCostHTML(nurtureCostFor(id))}</button>`;
+      conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
 }
 function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
   n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + BABY_GROW_HOURS*3600e3, from: from||''}); saveNestState(n);
@@ -32191,7 +32266,7 @@ function hatchEgg(eggId){
   let r = Math.random()*tot, d = pool[pool.length-1]; for(const x of pool){ r -= w(x); if(r <= 0){ d = x; break; } }
   n.eggs = n.eggs.filter(e=> e.id!==eggId); saveNestState(n);
   const isNew = !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length;
-  unlockCardForPlayer(d.id, 'egg');
+  unlockCardForPlayer(d.id, 'egg'); try{ noteNestSpecies(d.id); }catch(e){} // the egg line moves on (2026-10-14)
   if(isNew && cardBaseLevel(d) > 0 && !(myCardLevels[d.id] > 0)){ hatchlingIds().add(d.id); saveHatchlings(); }
   if(egg.kind === 'baby'){ myCurrencies.kibble = (myCurrencies.kibble||0) + 2; saveCurrencies(); } // a grown baby brings its leftover Kibble
   return d.id;
