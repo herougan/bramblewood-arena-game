@@ -2114,6 +2114,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Spring Rain) goes through here. Returns the HP actually restored.
   function applyHeal(card, amount, side, events){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
+    if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
     const stanch = Math.min(n, card.bleed|0);
     if(stanch > 0){ card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
     const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0) card.hp += healed;
@@ -2844,6 +2845,112 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
   }
 
+  // ---- 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami (user: "All evergreen abilities"), Dragon Lightning and Wither
+  // (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft) -> the map's
+  // signature abilities") and egg cards (user: "Eggs are now cards ... When it hatches (5-10 wait), it forms a random beast of that type").
+  const numN = (v, d)=> v === true ? (d||1) : Math.max(0, Number(v)||0);
+  const liveFoesOf = pl=> allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf);
+  // Tornado N: when it arrives, it whirls the enemy row. N random enemy units (not pinned) are each thrown to a random other column
+  // (swapping with whoever stands there) and take 1 damage; a flyer is flung harder and takes 2.
+  function tornadoStrike(players, sideOf, pid, src, n, stats, events){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl) return null;
+    const pool = liveFoesOf(pl).filter(c=> !c.pinned); const picks = [];
+    while(picks.length < n && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
+    const ev = {type:'tornado', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), slotMode, moves:[], swaps:[], hits:picks.map(c=> c.uid)};
+    picks.forEach(t=>{
+      if(slotMode){
+        syncSlots(players[1]); syncSlots(players[2]);
+        const edge = Math.max(1, ...[1,2].flatMap(p=> players[p] ? allBoardCards(players[p]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
+        const opts = []; for(let s = -edge; s <= edge; s++){ if(s === t.slot) continue; const o = allBoardCards(pl).find(c=> c !== t && c.slot === s && c.hp > 0 && !c.gap); if(o && (o.pinned || o.cageOf)) continue; opts.push(s); }
+        if(!opts.length) return;
+        const s0 = t.slot, d = opts[Math.floor(rnd()*opts.length)], o = allBoardCards(pl).find(c=> c !== t && c.slot === d) || null;
+        t.slot = d; ev.moves.push({uid:t.uid, from:s0, to:d}); if(o){ o.slot = s0; ev.moves.push({uid:o.uid, from:d, to:s0}); } relayoutRow(pl);
+      } else {
+        const order = physicalRowOrder(pl), i = order.indexOf(t); if(i < 0) return;
+        const js = order.map((c, j)=> j).filter(j=> j !== i && order[j] && !order[j].pinned && !order[j].cageOf); if(!js.length) return;
+        const j = js[Math.floor(rnd()*js.length)], o = order[j], L = pl.row.left.length, C = pl.row.center.length;
+        order[i] = o; order[j] = t; pl.row.left = order.slice(0, L).reverse(); pl.row.center = order.slice(L, L + C); pl.row.right = order.slice(L + C);
+        ev.swaps.push([t.uid, o.uid]);
+      }
+    });
+    if(recordEvents && events) events.push(ev);
+    picks.forEach(t=>{ if(t.hp > 0) fireDamageAction(players, sideOf, pid, src.defId, effectsOf(t).flying ? 2 : 1, 'physical', {kind:'card', card:t}, stats, events, {}, src.uid); });
+    return ev;
+  }
+  // Avalanche N: when it arrives, N cold damage to every enemy unit that isn't flying, and each one it hits gets +1 Wait.
+  function avalancheStrike(players, sideOf, pid, src, n, stats, events){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl) return;
+    const hit = liveFoesOf(pl).filter(c=> !effectsOf(c).flying);
+    if(recordEvents && events) events.push({type:'avalanche', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), n, hits:hit.map(c=> c.uid)});
+    hit.forEach(c=>{ c.wait = (c.wait||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'avalancheWait', side:sideOf(pid), attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, amount:1});
+      fireDamageAction(players, sideOf, pid, src.defId, n, 'cold', {kind:'card', card:c}, stats, events, {}, src.uid); });
+  }
+  // Tsunami N: when it arrives, a wave washes the enemy board. Every enemy unit is pushed back (+1 Wait, as Wash does); those that
+  // can't swim (not Swimmers or Tide units) also take N water damage. The Tide starts, if it hasn't yet.
+  function tsunamiStrike(players, sideOf, pid, src, n, stats, events){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl) return;
+    const all = liveFoesOf(pl), wet = all.filter(c=> !isTide(c)); let tideStarted = false;
+    if(tideStart === null && !permaTide){ tideStart = turnNo; tideStarted = true; }
+    if(recordEvents && events) events.push({type:'tsunami', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targetSide:sideOf(tpid), n, pushed:all.map(c=> c.uid), hits:wet.map(c=> c.uid), tideStarted});
+    all.forEach(c=>{ c.wait = (c.wait||0) + 1; if(recordEvents && events) events.push({type:'wash', tsunami:true, side:sideOf(pid), uid:src.uid, defId:src.defId, targetUid:c.uid, targetDefId:c.defId}); });
+    wet.forEach(c=> fireDamageAction(players, sideOf, pid, src.defId, n, 'water', {kind:'card', card:c}, stats, events, {}, src.uid));
+  }
+  // Dragon Lightning N: every swing that connects calls down red lightning: the target and one unit beside it (a seeded pick if it
+  // has two) each take N magic damage. Armor doesn't stop it (it is not a melee hit), and it strikes even if the target just fell.
+  function dragonLightningStrike(players, sideOf, pid, att, target, n, stats, events, killCredit){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
+    const order = physicalRowOrder(pl), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf);
+    const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
+    if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
+    struck.forEach(c=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId);
+      ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'magic', ranged:true, dragonLightning:true});
+      if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } });
+  }
+  // Wither N: its hits wither the target: for the next 3 rounds it loses N max Health (and N Health) each upkeep, and nothing can
+  // heal it while it withers. A fresh hit sets the count back to 3 and keeps the bigger N.
+  function applyWither(pid, att, t, n, sideOf, events){
+    if(!t || !(t.hp > 0) || !(n > 0)) return;
+    t.wither = Math.max(t.wither||0, n); t.witherLeft = 3;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'wither', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:n});
+  }
+  function applyWitherTicks(players, sideOf, stats, events){
+    let any = false;
+    [players[1], players[2]].filter(inUpkeep).forEach(pl=> allBoardCards(pl).forEach(c=>{
+      if(!(c.wither > 0) || !(c.hp > 0)) return; any = true; const n = c.wither;
+      c.maxHp = Math.max(0, (c.maxHp||0) - n); c.hp = Math.max(0, Math.min(c.maxHp, c.hp - n));
+      c.witherLeft = Math.max(0, (c.witherLeft||1) - 1); if(!c.witherLeft) c.wither = 0;
+      ensureStat(stats, sideOf(pl.id), c.defId).taken += n;
+      if(recordEvents && events) events.push({type:'witherTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, n, left:c.witherLeft});
+    }));
+    if(any) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // Egg cards: an egg on the board that becomes Ready cracks open into a random card of its kind (def.hatchInto: {any} or
+  // {species:[...], archetypes:[...]}). Never a token, test, hidden, hero, spell or another egg; Common or Uncommon unless the egg
+  // itself is rarer (then up to the egg's rarity). It is not a real hatch: the egg card stays in your collection.
+  const EGG_RARITY_ORDER = ['common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic'];
+  function eggPoolFor(def){
+    const h = def.hatchInto || {}, cap = Math.max(EGG_RARITY_ORDER.indexOf('uncommon'), EGG_RARITY_ORDER.indexOf(def.rarity||'common'));
+    const sp = h.species || [], ar = h.archetypes || [];
+    return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.hidden && !d.hero && !d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
+      && !d.derivedFrom && !d.hatchInto && !(d.effects && d.effects.leader) && (d.attack|0) > 0
+      && EGG_RARITY_ORDER.indexOf(d.rarity) >= 0 && EGG_RARITY_ORDER.indexOf(d.rarity) <= cap
+      && (h.any || (d.species||[]).some(x=> sp.includes(x)) || (d.archetypes||[]).some(x=> ar.includes(x))));
+  }
+  function hatchEggCard(players, sideOf, pid, card, stats, events){
+    const def = CARD_DEFS[card.defId]; const pool = eggPoolFor(def); if(!pool.length) return null;
+    const into = pool[Math.floor(rnd()*pool.length)], from = card.defId;
+    card.defId = into.id; card.hp = card.maxHp = into.health; card.atk = card.baseAtk = into.attack; card.wait = 0;
+    card.fuse = Number(into.effects && into.effects.dynamite) || 0; card.ffCounters = Math.max(0, Number(into.effects && into.effects.fastForward) || 0);
+    card.hatchedFrom = from;
+    ensureStat(stats, sideOf(pid), from).hatched = (ensureStat(stats, sideOf(pid), from).hatched||0) + 1;
+    if(recordEvents && events) events.push({type:'hatch', side:sideOf(pid), uid:card.uid, fromDefId:from, defId:into.id, hp:card.hp, atk:card.atk});
+    applyOnSpawnEffects(players, sideOf, pid, card, stats, events);
+    fireSpawnFamilyTriggers(players, sideOf, pid, card, stats, events, 'spawned');
+    try{ syncPhaseStats(players, sideOf, events); }catch(e){}
+    return into.id;
+  }
+
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     const def = CARD_DEFS[boardCard.defId];
@@ -2862,6 +2969,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Worthy N (2026-10-12, user: "Lumber-on-spawn creatures should give the opponent a lumber when they die. Make it a single
     // passive"): it brings N Lumber when it arrives, and its death gives the other side 1.
     // Rainmaker N (2026-10-12, user: "add a rainmaker evergreen that causes rain on summon"): Spring Rain for N rounds (3 by default).
+    if(def.effects.tornado) tornadoStrike(players, sideOf, playerId, boardCard, Math.min(8, numN(def.effects.tornado, 1)), stats, events); // Tornado N (2026-10-14)
+    if(def.effects.avalanche) avalancheStrike(players, sideOf, playerId, boardCard, numN(def.effects.avalanche, 1), stats, events); // Avalanche N (2026-10-14)
+    if(def.effects.tsunami) tsunamiStrike(players, sideOf, playerId, boardCard, numN(def.effects.tsunami, 1), stats, events); // Tsunami N (2026-10-14)
     if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
     if(def.effects.worthy){ const got = addLumber(pl, Number(def.effects.worthy) === 0 ? 0 : (Number(def.effects.worthy)||1));
       ensureStat(stats, mySide, boardCard.defId).lumberGenerated += got;
@@ -3551,6 +3661,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // either way, so there's nothing to migrate. The Esprit anthem effect deliberately stays
   // scoped to kind:'played' only (unchanged from its pre-existing behavior) rather than also
   // reacting to unit-spawned allies — that's a broader behavior change nobody asked for here.
+  // 2026-10-14 (user: "Spawns should also power up your espirit! (if it already does then nvm) Espirit only works for units
+  // that share a type"): spawned units (tokens, brood, twins, hatched eggs, shields) now count as well as played ones, but only an
+  // ally that shares a type (archetype) with the Esprit unit powers it up.
+  function espritFrom(sideOf, playerId, src, newCard, events){
+    const def = src && CARD_DEFS[src.defId], nd = newCard && CARD_DEFS[newCard.defId];
+    if(!def || !nd || src === newCard || !(src.hp > 0) || !def.effects || !(def.effects.esprit || def.effects.espritHp)) return false;
+    const mine = def.archetypes || [], theirs = nd.archetypes || [];
+    if(!mine.some(t=> theirs.includes(t))) return false;
+    const ea = def.effects.esprit || 0, eh = def.effects.espritHp || 0;
+    src.atk += ea; src.baseAtk += ea;
+    if(eh){ src.hp += eh; if(typeof src.maxHp === 'number') src.maxHp += eh; }
+    if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:ea, hp:eh});
+    return true;
+  }
+  function espritForArrival(players, sideOf, playerId, newCard, events){ const pl = players[playerId]; if(!pl) return; allBoardCards(pl).forEach(src=> espritFrom(sideOf, playerId, src, newCard, events)); }
   function fireSpawnFamilyTriggers(players, sideOf, playerId, newlyPlacedCard, stats, events, kind){
     const allyHook = kind==='spawned' ? 'onAllySpawn' : 'onAllyPlayed';
     const enemyHook = kind==='spawned' ? 'onEnemySpawn' : 'onEnemyPlayed';
@@ -3564,12 +3689,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       runCustomTriggers(players, sideOf, playerId, src, def, allyHook, stats, events, {spawnedCard:newlyPlacedCard});
       // Esprit X/Y (anthem, item #14; 2026-10-08: any ally now, not just a shared archetype, and Health too via
       // espritHp): a permanent self-buff whenever another ally is played (kind 'played' only, as before).
-      if(kind==='played' && src.hp>0 && def && def.effects && (def.effects.esprit || def.effects.espritHp)){
-        const ea = def.effects.esprit || 0, eh = def.effects.espritHp || 0;
-        src.atk += ea; src.baseAtk += ea;
-        if(eh){ src.hp += eh; if(typeof src.maxHp === 'number') src.maxHp += eh; }
-        if(recordEvents && events) events.push({type:'statusFx', kind:'esprit', side:sideOf(playerId), attDefId:src.defId, attUid:src.uid, amount:ea, hp:eh});
-      }
+      // 2026-10-14 (user: "Spawns should also power up your espirit! (if it already does then nvm) Espirit only works for units
+      // that share a type"): spawned units (tokens, brood, twins, hatched eggs) now count as well as played ones, but only an ally
+      // that shares a type (archetype) with the Esprit unit powers it up.
+      espritFrom(sideOf, playerId, src, newlyPlacedCard, events);
     });
     // On Enemy Spawn/Played (2026-09-16, split 2026-09-27): mirrors the ally hook above but
     // cross-side — fires on every card the OPPONENT currently controls. Lets a card react
@@ -3967,6 +4090,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     for(const {pl,card} of readyNow){
       const def = CARD_DEFS[card.defId];
       if(recordEvents && events) events.push({type:'ready', side:sideOf(pl.id), defId:card.defId, uid:card.uid});
+      if(def.hatchInto && card.hp > 0){ hatchEggCard(players, sideOf, pl.id, card, stats, events); continue; } // an egg card cracks open (2026-10-14)
       if(!def.effects) continue;
       const enemy = players[otherId(pl.id)];
       const triggers = [];
@@ -4406,6 +4530,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Round Start hooks below — removeDeadCards runs inside applyPoisonTicks itself.
     applyPoisonTicks(players, sideOf, stats, events);
     applyDecayTicks(players, sideOf, stats, events);
+    applyWitherTicks(players, sideOf, stats, events); // Wither (2026-10-14)
     fireRoundStartTriggers(players, sideOf, stats, events);
     const p1 = players[1], p2 = players[2];
     // Rally N (item #14): recomputed fresh every round, AFTER poison ticks/deaths resolve, so
@@ -4930,6 +5055,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // like that"): each landed hit knocks out one defence the target still has, picked at random with equal odds.
         if(attDef.effects && attDef.effects.bludgeon && defCard.hp>0) bludgeonHit(a.att, defCard, mySide, sideOf(a.enemyId), events);
         if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats); // Wave (2026-10-14): push it a column
+        if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
+        if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
         if(attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
@@ -5017,6 +5144,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               for(let i=0;i<count;i++){ const tok = makeBoardCard(spawnId); laneArr.splice(insertAt+i, 0, tok); newUids.push(tok.uid); }
               ensureStat(stats, sideOf(a.enemyId), defCard.defId).spawnedTokens += count;
               if(recordEvents && events) events.push({type:'spawn', side:sideOf(a.enemyId), defId:spawnId, count, cause:'onAttackedSpawn', uids:newUids, lane:side, nearUid:defCard.uid});
+              newUids.forEach(u=>{ const tok = laneArr.find(c=> c.uid === u); if(tok) espritForArrival(players, sideOf, a.enemyId, tok, events); }); // Esprit counts spawns (2026-10-14)
             }
           }
           // Bleed: defending against a landed melee hit ticks the defender's own bleed stacks.
@@ -5192,7 +5320,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
