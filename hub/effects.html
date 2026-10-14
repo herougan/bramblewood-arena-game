@@ -4986,6 +4986,55 @@
   .board-card.is-paralyzed .card-tile{background:color-mix(in srgb, var(--status-paralyze-tint) 24%, var(--bg));}
   .freeze-overlay{font-size:24px; animation:freezeShimmer 2.4s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes freezeShimmer{0%,100%{opacity:.75; transform:scale(1);}50%{opacity:1; transform:scale(1.12);}}
+  /* ===== 2026-10-14 (fourth pass): freeze counters, the stun halo, the Charge clock, Sacrifice's teeth, Nullify, Crab Claws ===== */
+  /* Freeze counters (user: "The clock DOES +1. But it looks icy, with a snowflake effect ... If it doesnt have freeze counters
+     anymore, the effect fades out."): the Wait clock frosts over and snowflakes drift down the card until the last counter melts. */
+  .card-tile .waitbadge.is-icy{background:linear-gradient(180deg,#f2fbff,#a9dcf7) !important; color:#0b4a73 !important; border:1.5px solid #ffffff !important;
+    box-shadow:0 0 0 1px #7dd3fc, 0 0 8px rgba(125,211,252,.9), inset 0 1px 0 #fff !important; text-shadow:0 1px 0 #fff !important;}
+  .waitbadge.is-icy .wait-ring-fg{stroke:#38a3d9;} .waitbadge.is-icy .wait-ring-bg{stroke:rgba(56,163,217,.25);}
+  /* the Frost creep crystals (::after on the board card) leave a hole for the icy clock, so its number stays readable */
+  .board-card.is-frozen::after{-webkit-mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px); mask:radial-gradient(circle 15px at calc(100% - 6px) 6px, transparent 14px, #000 15px);}
+  .waitbadge .frost-mark{position:absolute; right:-5px; bottom:-5px; font-size:.75em; line-height:1; filter:drop-shadow(0 0 2px #fff); pointer-events:none;}
+  .frost-flakes{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:4; border-radius:inherit; transition:opacity .9s ease;
+    background:linear-gradient(180deg, rgba(220,244,255,.28), rgba(220,244,255,0) 45%);}
+  .frost-flakes i{position:absolute; top:-12%; font-style:normal; font-size:11px; color:#eaf8ff; text-shadow:0 0 3px #7dd3fc, 0 0 1px #0369a1; animation:frostFall 3.2s linear infinite;}
+  .frost-flakes i:nth-child(1){left:10%; animation-delay:0s;} .frost-flakes i:nth-child(2){left:32%; animation-delay:-1.1s; font-size:9px;}
+  .frost-flakes i:nth-child(3){left:55%; animation-delay:-2.2s;} .frost-flakes i:nth-child(4){left:74%; animation-delay:-.6s; font-size:8px;} .frost-flakes i:nth-child(5){left:88%; animation-delay:-1.7s;}
+  @keyframes frostFall{0%{transform:translate(0,0) rotate(0); opacity:0;} 12%{opacity:.95;} 85%{opacity:.85;} 100%{transform:translate(6px,120%) rotate(200deg); opacity:0;}}
+  .frost-flakes.is-thawing{opacity:0;}
+  /* The stun halo (user: "A cartoony stun effect plays above its head."): stars and a dizzy chick circle over the card's top edge. */
+  .status-overlay.stun-halo{inset:auto; top:-14px; left:50%; width:64%; height:20px; transform:translateX(-50%); animation:none; z-index:6; display:block;}
+  .stun-halo i{position:absolute; left:50%; top:4px; font-style:normal; font-size:13px; line-height:1; animation:stunHaloSpin 1.3s linear infinite; filter:drop-shadow(0 1px 1px rgba(0,0,0,.45));}
+  .stun-halo i:nth-child(2){animation-delay:-.325s;} .stun-halo i:nth-child(3){animation-delay:-.65s;} .stun-halo i:nth-child(4){animation-delay:-.975s; font-size:12px;}
+  @keyframes stunHaloSpin{0%{transform:translate(-50%,0) translateX(-24px) scale(.85); opacity:.85; z-index:1;} 25%{transform:translate(-50%,0) translate(0,5px) scale(1.1); opacity:1; z-index:2;}
+    50%{transform:translate(-50%,0) translateX(24px) scale(.85); opacity:.85;} 75%{transform:translate(-50%,0) translate(0,-4px) scale(.6); opacity:.45; z-index:0;} 100%{transform:translate(-50%,0) translateX(-24px) scale(.85); opacity:.85;}}
+  /* The Charge clock (user: "A yellow wait timer = N starts on the top right."): where the Wait clock was, in yellow. */
+  .card-tile .chargebadge{position:absolute; z-index:3; top:-7px; right:-7px; width:clamp(18px, 22cqw, 28px); height:clamp(18px, 22cqw, 28px); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:clamp(8.5px, 9.5cqw, 14px); color:#3a2600;
+    background:linear-gradient(180deg,#ffe57a,#e0a913); border:1.5px solid #fff4b8; box-shadow:0 2px 3px rgba(0,0,0,.5), 0 0 6px rgba(255,214,64,.7);}
+  .board-card .card-tile .chargebadge{transform:scale(.72); transform-origin:top right;}
+  .chargebadge .wait-ring{position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg);}
+  .chargebadge .wait-ring-bg{fill:none; stroke:rgba(122,82,0,.25); stroke-width:2.2;} .chargebadge .wait-ring-fg{fill:none; stroke:#7a5200; stroke-width:2.2; stroke-linecap:round; transition:stroke-dashoffset 420ms ease;}
+  .chargebadge .wait-num{position:relative; z-index:1; line-height:1;}
+  .chargebadge.tick-pulse{animation:waitTickPulse 550ms ease;}
+  .chargebadge.charge-fire{animation:chargeFire 680ms cubic-bezier(.2,.8,.3,1);}
+  @keyframes chargeFire{0%{box-shadow:0 0 0 0 rgba(255,214,64,.95);} 40%{transform:scale(1.35); box-shadow:0 0 0 8px rgba(255,214,64,0);} 100%{transform:scale(1);}}
+  /* Sacrifice's teeth (user: "The middle of the card has a dark foreboding set of teeth when you're holding a card."). */
+  .card-tile .sac-teeth{position:absolute; left:5%; right:5%; top:30%; height:24%; z-index:2; pointer-events:none; opacity:.8; filter:drop-shadow(0 0 4px rgba(150,0,30,.55));}
+  .sac-teeth svg{width:100%; height:100%; display:block; overflow:visible;}
+  .sac-teeth .st-top, .sac-teeth .st-bot{fill:#16070c; stroke:#6b0f22; stroke-width:.8; stroke-linejoin:round;}
+  .sac-teeth .st-top{animation:sacJawTop 3.6s ease-in-out infinite;} .sac-teeth .st-bot{animation:sacJawBot 3.6s ease-in-out infinite;}
+  @keyframes sacJawTop{0%,70%,100%{transform:translateY(0);} 80%{transform:translateY(3px);} 86%{transform:translateY(-1px);}}
+  @keyframes sacJawBot{0%,70%,100%{transform:translateY(0);} 80%{transform:translateY(-3px);} 86%{transform:translateY(1px);}}
+  .board-card.sac-chomp .card-tile{animation:sacChomp 650ms ease;}
+  @keyframes sacChomp{0%{filter:none;} 35%{filter:brightness(.5) sepia(1) hue-rotate(-40deg) saturate(3);} 100%{filter:none;}}
+  /* Nullify: the struck card flashes grey, its reaction snuffed out. Crab Claws: a sideways snap. */
+  .board-card.nullify-flash .card-tile{animation:nullifyFlash 650ms ease;}
+  @keyframes nullifyFlash{0%{filter:none;} 30%{filter:grayscale(1) brightness(.7); box-shadow:inset 0 0 0 3px rgba(200,30,30,.8);} 100%{filter:none;}}
+  .board-card.crab-pinch .card-tile{animation:crabPinch 450ms ease;}
+  @keyframes crabPinch{0%,100%{transform:translateX(0);} 40%{transform:translateX(var(--crab-dx, -8px)) rotate(-2deg);}}
+  .sk-warn{color:#b45309; font-weight:700;}
+  @media (prefers-reduced-motion: reduce){ .frost-flakes i, .stun-halo i, .sac-teeth .st-top, .sac-teeth .st-bot{animation:none !important;} }
   .sleep-overlay{font-size:22px; animation:sleepBob 2.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   @keyframes sleepBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
   .paralyze-overlay{font-size:24px; animation:paralyzeJitter .35s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
@@ -5655,6 +5704,13 @@
   .board-card.immolate-pulse .card-tile{animation:immolatePulse .9s ease-out;}
   @keyframes immolatePulse{0%{box-shadow:0 0 0 0 rgba(255,120,30,0);} 40%{box-shadow:0 0 0 10px rgba(255,120,30,.55);} 100%{box-shadow:0 0 0 22px rgba(255,120,30,0);}}
   @media (prefers-reduced-motion: reduce){ .battlefield.erupt-rumble, .board-card.erupt-hit .card-tile, .board-card.immolate-pulse .card-tile{animation:none;} }
+  /* The volcano's hazards (2026-10-14): a petrified unit is grey stone for the round; a lava tide glows the flooded column. */
+  .board-card.is-petrified .card-tile{filter:grayscale(1) brightness(.82) contrast(1.15); transition:filter .4s ease;}
+  .board-card.is-petrified .card-tile::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:4;
+    background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.12) 0 8%, transparent 9%), radial-gradient(circle at 70% 60%, rgba(0,0,0,.18) 0 7%, transparent 8%), linear-gradient(160deg, rgba(150,150,150,.28), rgba(70,70,70,.32)); mix-blend-mode:multiply;}
+  .board-card.lava-tide-hit .card-tile{animation:eruptHit .9s ease-out; box-shadow:0 0 0 2px rgba(255,110,30,.8), 0 0 18px rgba(255,90,20,.6);}
+  .board-card.irradiate-pulse .card-tile{box-shadow:0 0 0 2px rgba(150,255,90,.75), 0 0 16px rgba(120,255,60,.55); transition:box-shadow .3s;}
+  @media (prefers-reduced-motion: reduce){ .board-card.lava-tide-hit .card-tile{animation:none;} }
   /* 2026-10-12 (10:12 screenshot): Iron Shard / Base-growth pills were cream with pale text on the gold results card */
   .winloss-card.is-glory .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){background:rgba(255,255,255,.14) !important; color:#fff !important; border:1px solid rgba(255,220,150,.35) !important; box-shadow:none !important;}
   .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(130px, 16vw, 170px) !important; height:auto !important;}
@@ -6324,8 +6380,11 @@
   .phase-pill.arena-rs-pill{background:linear-gradient(135deg, #6a5a9e, #3f3570); margin-left:4px;}
   .phase-pill.tide-flow{background:linear-gradient(135deg, #2a9fd6, #1565a8); margin-left:4px;}
   .phase-pill.tide-ebb{background:linear-gradient(135deg, #6f8fa3, #3e5566); margin-left:4px;}
-  body[data-phase="night"] .battlefield{transition:filter .8s ease; filter:brightness(.78) saturate(.85) hue-rotate(-8deg);}
-  body[data-phase="night"] .battlefield .card-tile{filter:brightness(1.12);}
+  /* 2026-10-14 (second pass): no brightness filter on the whole board any more; the .sky-fx tint carries the temperature. Night
+     still sits a touch darker and cooler, eased in, and the cards themselves stay readable. */
+  body[data-phase] .battlefield{transition:filter 3s ease;}
+  body[data-phase="night"] .battlefield{filter:brightness(.88) saturate(.9);}
+  body[data-phase="night"] .battlefield .card-tile{filter:brightness(1.08);}
   .field-card .fc-left{position:absolute; top:4px; right:6px; font-size:11px; font-weight:800; background:rgba(0,0,0,.45); color:#fff; border-radius:999px; padding:0 6px;}
   .card-tile.is-field .stats.field-stats{position:absolute; left:0; right:0; top:auto; bottom:7%; display:flex; justify-content:center; background:none;}
   .card-tile.is-field .field-stats .fld{background:rgba(10,20,30,.72); color:#fff; border-radius:999px; padding:2px 8px; font-size:calc(var(--card-w, 118px) * .085); font-weight:800; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,.4);}
@@ -7331,6 +7390,10 @@
   .card-tile .atk, .card-tile .hp{background:linear-gradient(180deg,rgba(28,18,10,.82),rgba(12,8,4,.9)); border-radius:.38em; padding:.02em .24em 0;
     line-height:1.02; box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12);}
   .card-tile .atk{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,122,94,.45);}
+  /* Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour"). */
+  .card-tile .atk.atk-magic{color:#8fd0ff; background:linear-gradient(180deg,rgba(16,38,82,.9),rgba(6,16,44,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,190,255,.7), 0 0 6px rgba(80,160,255,.45);}
+  .card-tile .atk.atk-magic .atk-buffed{color:#bfe6ff;}
+  .ab-speed{color:#d9f3ff; font-weight:800;}
   .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(141,230,109,.45);}
   /* Names: a step smaller relative to the card, capped lower, so the scroll covers less art. */
   .card-tile .nm{font-size:clamp(9px, 11cqw, 17px) !important;}
@@ -7674,6 +7737,19 @@
   /* Pass turn sits under the graveyard pile, never on it */
   .drop-row{justify-content:flex-end !important; margin-top:-2px;}
   .drop-row .skipzone.compact{position:static !important;}
+  /* Max Energy steps in the Camp and the Forge (2026-10-14) */
+  .stamina-panel{margin:14px auto 6px; max-width:560px; padding:12px 14px; border-radius:12px; background:rgba(255,248,230,.9); color:#3b2a14; border:1px solid rgba(120,80,30,.25); box-shadow:0 2px 8px rgba(0,0,0,.12);}
+  .stamina-panel h3{margin:0 0 4px; font-size:16px; display:flex; gap:8px; align-items:baseline;} .stamina-panel h3 b{font-size:18px;}
+  .stamina-panel .wp-stam-pips i:not(.on){background:rgba(120,80,30,.15); box-shadow:inset 0 0 0 1px rgba(120,80,30,.3);}
+  .stamina-panel p{margin:0 0 8px; font-size:13px; opacity:.85;} .stamina-panel .wp-stam-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  /* Lantern light in pitch-black and absolute-dark fights (2026-10-14) */
+  .battlefield.bf-lantern{--lx:50%; --ly:45%;}
+  .battlefield.bf-lantern::after{content:''; position:absolute; inset:0; pointer-events:none; z-index:6; border-radius:inherit;
+    background:radial-gradient(circle 200px at var(--lx) var(--ly), rgba(255,205,130,.22) 0, rgba(255,190,110,.08) 30%, rgba(6,6,14,.48) 68%, rgba(4,4,10,.66) 100%); mix-blend-mode:normal;
+    transition:background-position .2s; animation:bfLanternFlicker 2.4s steps(6) infinite;}
+  .battlefield.bf-lantern.bf-dark-absolute::after{background:radial-gradient(circle 150px at var(--lx) var(--ly), rgba(255,200,120,.08) 0, rgba(6,6,14,.62) 62%, rgba(2,2,8,.80) 100%);}
+  @keyframes bfLanternFlicker{0%,100%{opacity:1;} 30%{opacity:.94;} 55%{opacity:.98;} 80%{opacity:.92;}}
+  @media (prefers-reduced-motion: reduce){ .battlefield.bf-lantern::after{animation:none;} }
 
 
   #bwLoader{position:fixed; inset:0; z-index:20000; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at 50% 40%, #2c3b22, #141a10 70%); color:#f3e3bf; transition:opacity .45s ease;}
@@ -8302,6 +8378,52 @@
   background:linear-gradient(90deg, rgba(12,16,46,.18) 0%, rgba(12,16,46,.42) 14%, rgba(8,10,34,.5) 100%); transition:clip-path 2.4s cubic-bezier(.45,.05,.4,1);}
 #battlefieldEl > .night-veil.is-on{clip-path:inset(0 0 0 0);} #battlefieldEl > .night-veil.is-leaving{clip-path:inset(0 100% 0 0);} #battlefieldEl > .night-veil.no-anim{transition:none;}
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil{transition:none;} }
+/* The sky as colour temperature (2026-10-14, second pass, user: "Remove the sun and moon animation ... using temperature instead of
+   brightness"): one tint layer behind the cards, no sun, rays, moon or stars. Dawn and dusk amber, day warm and bright, night cool
+   blue and darker. The colour eases between tones (syncSkyFx sets .tone-*). Misty fights loop orange, blue and light instead. */
+#battlefieldEl > .sky-fx{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; overflow:hidden; mix-blend-mode:soft-light;
+  background-color:rgba(255,236,200,0); transition:background-color 3.2s ease, box-shadow 3.2s ease;}
+#battlefieldEl > .sky-fx.tone-day{background-color:rgba(255,226,170,.42); box-shadow:inset 0 0 0 9999px rgba(255,250,235,.06);}
+#battlefieldEl > .sky-fx.tone-dawn{background-color:rgba(255,170,90,.55);}
+#battlefieldEl > .sky-fx.tone-dusk{background-color:rgba(240,128,58,.62);}
+#battlefieldEl > .sky-fx.tone-night{mix-blend-mode:normal; background-color:rgba(30,52,120,.26); box-shadow:inset 0 0 120px 30px rgba(8,14,44,.35);}
+#battlefieldEl > .sky-fx.tone-misty{mix-blend-mode:normal; animation:mistyTint 90s ease-in-out infinite;
+  background-image:radial-gradient(ellipse 80% 60% at 30% 40%, rgba(255,255,255,.18), transparent 70%), radial-gradient(ellipse 70% 50% at 75% 65%, rgba(255,255,255,.14), transparent 70%);}
+@keyframes mistyTint{
+  0%,100%{background-color:rgba(236,232,222,.30);}
+  25%{background-color:rgba(242,170,104,.30);}
+  50%{background-color:rgba(232,226,214,.26);}
+  75%{background-color:rgba(120,150,205,.30);}
+}
+@media (prefers-reduced-motion: reduce){ #battlefieldEl > .sky-fx{transition:none;} #battlefieldEl > .sky-fx.tone-misty{animation:none; background-color:rgba(232,228,218,.28);} }
+/* Tide units and Swimmers float (2026-10-14, user: "All swimmers and Tide units float"): a slow bob on the board only (hand and Codex
+   tiles stay still). It rides on the .fly-body wrapper, like a flyer's flight, so GSAP's lunges add up with it. */
+#appWrap.in-match .board-card.is-floating .fly-body{animation:tideFloat 4.2s ease-in-out infinite;}
+#appWrap.in-match .board-card.is-floating:nth-child(2n) .fly-body{animation-delay:-1.6s;}
+@keyframes tideFloat{0%,100%{translate:0 0; rotate:0deg;} 30%{translate:0 -4px; rotate:-.7deg;} 55%{translate:0 -1px; rotate:.2deg;} 80%{translate:0 -5px; rotate:.7deg;}}
+@media (prefers-reduced-motion: reduce){ #appWrap.in-match .board-card.is-floating .fly-body{animation:none;} }
+/* Supreme beasts (2026-10-14, user: "Their attacks have a sparkle on the icon ... Their armor (HP also sparkles) are magic"): a ✨ glint on
+   the Attack and Health chips. */
+.card-tile.is-supreme .stats .atk::after, .card-tile.is-supreme .stats .hp::after{content:'✨'; position:absolute; top:-.55em; right:-.45em; font-size:.62em; line-height:1; pointer-events:none; filter:drop-shadow(0 0 3px rgba(255,240,170,.95)); animation:supremeGlint 2.6s ease-in-out infinite;}
+.card-tile.is-supreme .stats .hp::after{animation-delay:-1.3s;}
+@keyframes supremeGlint{0%,100%{opacity:.35; transform:scale(.7) rotate(0deg);} 45%{opacity:1; transform:scale(1.15) rotate(20deg);} 60%{opacity:.8; transform:scale(.95) rotate(28deg);}}
+@media (prefers-reduced-motion: reduce){ .card-tile.is-supreme .stats .atk::after, .card-tile.is-supreme .stats .hp::after{animation:none; opacity:.9;} }
+.ab-supreme{filter:drop-shadow(0 0 3px rgba(255,236,150,.9));}
+/* 2026-10-14 (third pass): Supreme Tide's name sparkles like Supreme; Bloom glows pink while in bloom; a Pack in a chain glows blue. */
+.sk-supreme{font-weight:700; color:#f5d76e; text-shadow:0 0 6px rgba(255,236,150,.85);} .sk-supreme::after{content:' ✨'; filter:drop-shadow(0 0 3px rgba(255,240,170,.95));}
+.ab-bloom.is-on{filter:drop-shadow(0 0 4px rgba(255,150,210,.95)); animation:bloomPulse 2.4s ease-in-out infinite;}
+@keyframes bloomPulse{0%,100%{transform:scale(1);} 50%{transform:scale(1.14);}}
+.ab-pack.is-on, .ab-pair.is-on{filter:drop-shadow(0 0 4px rgba(120,190,255,.95)); font-weight:700;}
+.board-card.wave-pushed{animation:wavePush .55s ease-out;}
+@keyframes wavePush{0%{transform:translateX(0);} 30%{transform:translateX(var(--wave-dx, 10px)) rotate(var(--wave-rot, 3deg));} 100%{transform:translateX(0);}}
+@media (prefers-reduced-motion: reduce){ .ab-bloom.is-on, .board-card.wave-pushed{animation:none;} }
+/* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
+.abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
+.stat-irr{color:#3fbf4a; font-weight:800;}
+.irr-skills{margin:6px 0 2px; font-size:13px;} .irr-skills b{color:#7fd14a;} .irr-skills ul{margin:3px 0 0 16px; padding:0;} .irr-skills s{opacity:.75;}
+/* Tide-spout (2026-10-14): the volcano's geyser, in water. */
+.lava-geyser.is-water .lg-col{background:linear-gradient(0deg, rgba(40,140,230,.95), rgba(120,210,255,.9) 60%, rgba(235,250,255,.85)); box-shadow:0 0 22px rgba(90,190,255,.85);}
+.lava-geyser.is-water b{background:#e8f8ff; box-shadow:0 0 8px #6cc8ff;}
 .winloss-card.is-tutorial{background:radial-gradient(ellipse at 50% 0%, #4f86d8 0%, #23468f 45%, #142a5e 100%) !important; border-color:#9cc4ff !important;} /* tutorial results are blue (2026-10-12) */
 .winloss-card.is-tutorial .winloss-reason, .winloss-card.is-tutorial p{color:#e6f0ff;}
 body.world-hidden #conquestMapList, body.world-hidden .conquest-world-btn, body.world-hidden .world-edge{display:none !important;}
@@ -9041,6 +9163,127 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .hatch-side .nk-nurse{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
   .hatch-help, .hatch-wait{margin:0; font-size:13.5px; line-height:1.45;}
   @media (prefers-reduced-motion: reduce){ .hatch-sky .wind, .hatch-sky .leaf, .hay-nest .nest-thing{animation:none !important;} }
+  /* 2026-10-14 (fifth pass): board sweeps for Tornado / Avalanche / Tsunami, red Dragon Lightning, Wither smoke, egg cracks. */
+  .bw-sweep{position:fixed; pointer-events:none; z-index:9985; overflow:hidden;}
+  .bw-sweep-band{position:absolute; inset:0;}
+  .bw-sweep-tornado .bw-sweep-band{background:linear-gradient(90deg, transparent, rgba(210,220,200,.0) 20%, rgba(200,214,190,.55) 45%, rgba(240,245,235,.7) 50%, rgba(200,214,190,.55) 55%, transparent 80%); filter:blur(2px);}
+  .bw-sweep-tornado .bw-sweep-band::after{content:'🌪️'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:64px; opacity:.85;}
+  .bw-sweep-avalanche .bw-sweep-band{background:linear-gradient(180deg, transparent, rgba(235,245,255,.75) 40%, rgba(255,255,255,.9) 50%, rgba(205,225,245,.6) 62%, transparent);}
+  .bw-sweep-tsunami .bw-sweep-band{background:linear-gradient(90deg, transparent, rgba(40,120,200,.35) 30%, rgba(80,170,240,.7) 46%, rgba(230,248,255,.9) 50%, rgba(60,140,220,.45) 58%, transparent 80%);}
+  .sfx-bolt.sfx-bolt-red path{stroke:#ffe0d8;}
+  .sfx-bolt.sfx-bolt-red path.glow{stroke:rgba(235,40,30,.85); stroke-width:11;}
+  .board-card.dragon-struck .card-tile{box-shadow:0 0 0 2px rgba(255,70,50,.9), 0 0 22px rgba(230,30,20,.75);}
+  .wither-smoke{position:fixed; width:18px; height:18px; margin:-9px 0 0 -9px; border-radius:50%; background:radial-gradient(circle, rgba(20,16,22,.85), rgba(20,16,22,0) 70%); pointer-events:none; z-index:9986;}
+  .wither-smoke.skull{background:none; width:auto; height:auto; font-size:18px; filter:drop-shadow(0 0 4px rgba(0,0,0,.9)) grayscale(1);}
+  .egg-crack-bit{position:fixed; pointer-events:none; z-index:9987; font-size:22px; transform:translate(-50%,-50%);}
+  .egg-crack-bit.half-l{clip-path:inset(0 50% 0 0);} .egg-crack-bit.half-r{clip-path:inset(0 0 0 50%);}
+  .egg-crack-bit.chip{font-size:12px; color:#f4ead2;}
+  .board-card.egg-hatched .card-tile{box-shadow:0 0 0 2px rgba(255,236,170,.95), 0 0 20px rgba(255,220,120,.75);}
+  .ab-dragon-bolt{color:#d8382c;}
+  /* ---- 2026-10-14 UI pass: fight layout, phone controls, skill chips, Forge/Nest costs, deck view, swap sheet ---- */
+  /* The fight's rows sit close to the board (user: "There is also still this weird margin between the deck and hand row and the board.
+     Move it closer"): the resource-pill row (field kit, plays) no longer takes a line of its own; it floats over the board's
+     bottom-right corner, and both hand rows keep a small gap to the field. */
+  #appWrap.in-match #view-play .top-play-row{margin-bottom:6px;}
+  #appWrap.in-match #view-play .battlefield{margin-bottom:6px;}
+  #appWrap.in-match #view-play .hud{min-height:0 !important; height:0; margin:0 !important; padding:0 14px; justify-content:flex-end; align-items:flex-end; align-content:flex-end; overflow:visible; transform:translateY(-18px); pointer-events:none;}
+  #appWrap.in-match #view-play .hud > *{pointer-events:auto;}
+  #appWrap.in-match #view-play .hud:empty{display:none;}
+  /* Phone fight controls (user: "for mobile, simplify the UI on the top row ... Use icons only if needed"): icon-only buttons
+     in one tight row; the words stay in each button's aria-label and title. */
+  .top-row-controls .trc-ico{display:none;}
+  @media (max-width:560px){
+    #view-play .top-row-controls{gap:4px; flex-wrap:nowrap;}
+    #view-play .top-row-controls .trc-lbl, #view-play .top-row-controls .hud-opponent-tag{display:none;}
+    #view-play .top-row-controls .trc-ico{display:inline;}
+    #view-play .top-row-controls > .btn.small{padding:0 6px; min-height:28px; height:28px; min-width:28px; font-size:12.5px; line-height:1; display:inline-flex; align-items:center; justify-content:center; gap:2px;}
+    #view-play .top-row-controls .settings-btn{width:28px; height:28px; min-width:28px; font-size:14px; padding:0;}
+    #view-play .top-row-controls .autoplay-btn, #view-play .top-row-controls .admin-win-btn{font-size:10.5px !important; padding:0 5px !important;}
+  }
+  /* Skill chips under a card (user screenshot: "☠2 🏆 🌵" spread wider than the card): tight, never wider than the card; a long
+     strip shrinks its icons, and wraps only as a last resort. */
+  .card-tile .badges.badge-slots, .card-tile .badges, .card-tile .badges-2row .badges-row{gap:1px !important;}
+  .card-tile .badges, .card-tile .badges-2row{max-width:calc(100% - 4px) !important; padding:1px 4px !important; flex-wrap:wrap !important; justify-content:center; box-sizing:border-box;}
+  .card-tile .badges .abadge{padding:0 1px !important; letter-spacing:-.02em;}
+  .card-tile .badges:has(> .abadge:nth-child(4)) .abadge{font-size:max(8px, calc(var(--cw, 120px) * .1)) !important;}
+  .card-tile .badges:has(> .abadge:nth-child(6)) .abadge{font-size:max(7px, calc(var(--cw, 120px) * .085)) !important;}
+  .board-card .card-tile .badges{padding:0 3px !important;}
+  /* Costs inside the buttons (Nest and Forge): " · 🍁 500 ✨ 40"; a part you are short of is underlined in red. */
+  .btn .btn-cost{display:inline-flex; align-items:center; gap:6px; margin-left:6px; font-weight:800; white-space:nowrap;}
+  .btn .btn-cost .bc-sep{opacity:.65; margin-right:-1px;}
+  .btn .btn-cost .bc{display:inline-flex; align-items:center; gap:2px;}
+  .btn .btn-cost .bc.is-short{color:#ffd6cc; text-decoration:underline wavy #ff7a66; text-underline-offset:3px;}
+  .btn.ghost .btn-cost .bc.is-short, .btn:not(.primary) .btn-cost .bc.is-short{color:#b3261e;}
+  .forge-act{flex-wrap:wrap; justify-content:center; row-gap:2px;}
+  /* Forge text against the brick (user: "Village Forge, the text against the background - not enough contrast"): the bars that
+     sit straight on the brick and the glow are solid now, and their small print is full strength (AA on every line). */
+  .forge-upgrade{background:rgba(26,13,5,.94) !important; border-color:rgba(255,190,110,.45) !important; color:#fbe8cf; text-shadow:0 1px 1px rgba(0,0,0,.6);}
+  .forge-upgrade .fu-now small{opacity:1 !important; color:#f0dcc0;}
+  .forge-upgrade .fu-gate{opacity:1 !important; color:#ffe3b0;}
+  .forge-modes{background:rgba(18,10,4,.92) !important; box-shadow:0 2px 10px rgba(0,0,0,.4);}
+  .forge-mode{color:#fff1d8 !important; text-shadow:0 1px 1px rgba(0,0,0,.6);} .forge-mode.on{color:#2b1406 !important; text-shadow:none;}
+  .forge-hero{text-shadow:0 1px 2px rgba(0,0,0,.75);} .forge-hero p{opacity:1 !important; color:#fbecd6;}
+  .forge-hero .forge-embers{opacity:.6;}
+  #view-forge.forge-scene > p, #view-forge.forge-scene > .panel-sub, #view-forge.forge-scene > small, #view-forge.forge-scene .sm-mats-hint{background:rgba(22,12,5,.88); color:#fbecd6; padding:4px 10px; border-radius:10px; text-shadow:none;}
+  #view-forge.forge-scene .sm-mats{background:rgba(22,12,5,.88); color:#fbecd6; border-radius:12px;}
+  /* Deck card (compressed view): pictures, the rating, total Attack and Health; the count only when it's not 20. */
+  .dmp-foot{grid-template-columns:1fr;}
+  .dmp-meta .dmp-rating{background:rgba(70,40,110,.72);}
+  .dmp-meta .dmp-tot{background:rgba(0,0,0,.5);}
+  .dmp-meta .short{color:#ffd0c0; background:rgba(150,40,20,.78) !important;}
+  .ds-meta .short{color:#b3261e;}
+  /* Codex pager at the top too (2026-10-14). */
+  .cx-pager.cx-pager-top{margin:4px 0 12px;}
+  /* Nest picker: no prices on the tiles; unaffordable ones greyed; the price shows in the Train button once you pick. */
+  .np-card.is-short{filter:grayscale(.9); opacity:.55;}
+  .np-card.is-short:hover{opacity:.7;}
+  .np-card.is-picked{box-shadow:0 0 0 3px var(--accent-strong); border-color:var(--accent-strong);}
+  .np-confirm{position:sticky; bottom:-1px; display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px; padding:10px 12px; margin:4px 0 0; background:var(--surface-2); border:1px solid var(--surface-border); border-radius:12px; box-shadow:0 -6px 16px rgba(0,0,0,.18); z-index:2;}
+  .np-confirm[hidden]{display:none;}
+  .np-conf-name{margin-right:auto; font-weight:800;} .np-conf-name small{font-weight:600; opacity:.75;}
+  .np-need-toast{position:fixed; left:50%; top:50%; z-index:100050; padding:10px 18px; border-radius:999px; background:rgba(30,20,12,.94); color:#fff3dc; font:800 15px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 8px 24px rgba(0,0,0,.45); pointer-events:none; white-space:nowrap; animation:npNeed 2s ease forwards;}
+  @keyframes npNeed{0%{opacity:0; transform:translate(-50%,-40%) scale(.96);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1);} 70%{opacity:1; transform:translate(-50%,-50%);} 100%{opacity:0; transform:translate(-50%,-62%);}}
+  @media (prefers-reduced-motion: reduce){ .np-need-toast{animation:npNeedFade 2s linear forwards; transform:translate(-50%,-50%);} @keyframes npNeedFade{0%,75%{opacity:1;} 100%{opacity:0;}} }
+  /* The deck-swap offer (maybeOfferDeckSwap) had no styles at all, so it fell into the page flow at the bottom of every page. It is
+     a modal now: a centred card on wide screens, a compact bottom sheet on phones (old → new side by side, the text, Keep and Swap). */
+  .ds2-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(10,7,4,.62); animation:ds2In .25s ease both;}
+  .ds2-overlay.is-out{opacity:0; transition:opacity .25s ease;}
+  @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
+  .ds2{width:min(560px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55);}
+  .ds2-stage{display:flex; justify-content:center;}
+  .ds2-strip{display:flex; justify-content:center; align-items:center; gap:8px;}
+  .ds2-side{opacity:.45; transform:scale(.82); filter:saturate(.7);} .ds2-side .card-tile{width:56px !important;} .ds2-side{margin:0 -3px;}
+  .ds2-focus{position:relative; display:flex; align-items:center; gap:30px; padding:0 4px;}
+  .ds2-old .card-tile, .ds2-new .card-tile{width:112px !important;}
+  .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
+  .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
+  .ds2-arrows{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(90deg); font-size:22px; font-weight:800; color:#8a5a20;}
+  .ds2-focus.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
+  .ds2-focus.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-say{margin:12px 0 10px; font-size:15px; line-height:1.4; color:#2b1d10;} .ds2-say span{font-size:13px; color:#5a4630;}
+  .ds2-actions{display:flex; gap:10px; justify-content:center; align-items:center;}
+  @media (max-width:560px){
+    .ds2-overlay{align-items:flex-end; padding:0;}
+    .ds2{width:100%; max-height:70vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 14px calc(12px + env(safe-area-inset-bottom));}
+    .ds2-side, .ds2-lbl-x{display:none;}
+    .ds2-focus{gap:26px;}
+    .ds2-old .card-tile, .ds2-new .card-tile{width:84px !important;}
+    .ds2-say{font-size:14px; margin:8px 0;}
+    .ds2-actions .btn{flex:1; min-height:42px;}
+    .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .ds2-overlay{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  /* Phone header and Home (user: "In mobile, the logo, the icons are too separated from each other"): the logo and the header
+     icons sit together as one centred cluster, and Home's chestnut, title and level badge close up. */
+  @media (max-width:560px){
+    #appWrap:not(.tab-home) .topbar{justify-content:center !important; gap:6px !important;}
+    #appWrap:not(.tab-home) .topbar .brand{margin:0 4px 0 0 !important;}
+    #appWrap:not(.tab-home) .topbar .home-nav-btn{margin:0 !important;}
+    .home-menu{margin:14px auto 24px; gap:8px;}
+    .home-menu-mark{font-size:46px;}
+    .home-menu-title{margin:0 0 4px;}
+    .home-menu .player-level{margin-top:-2px !important; margin-bottom:6px !important;}
+  }
 </style>
 <style>
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
@@ -13772,6 +14015,19 @@ const SoundKit = (()=>{
     // "one swing, multiple targets"); the on-screen label is what tells them apart.
     swipeTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
     sweepTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
+    // Irradiation (2026-10-14, user: "Irradiation effect - sizzling sound as stats burn away - dealing irradiation damage sounds like
+    // geiger counters going off"). radSizzle: a short hissing, crackling burn as a token eats a point (filtered noise, sweeping
+    // down). geiger: an irregular burst of dry clicks as Irradiated N hands out tokens. Both throttled, so a board full of glowing
+    // units reads as one sizzle / one burst rather than a wall of noise.
+    radSizzle(n){ const now = Date.now(); if(now - (SFX_THROTTLE.radSizzle||0) < 260) return; SFX_THROTTLE.radSizzle = now; const k = Math.min(3, Math.max(1, n|0));
+      fnoise(0.22 + 0.06*k, 0.05, {type:'highpass', freq:5200, freqEnd:2600, q:0.9, attack:0.01, crackle:0.12});
+      fnoise(0.16, 0.03, {type:'bandpass', freq:1800, freqEnd:900, q:2, attack:0.02, crackle:0.05, delay:0.04}); },
+    geiger(n){ const now = Date.now(); if(now - (SFX_THROTTLE.geiger||0) < 420) return; SFX_THROTTLE.geiger = now; const clicks = 5 + Math.min(10, (n|0) * 2);
+      let t = 0; for(let i = 0; i < clicks; i++){ t += 0.012 + Math.random()*Math.random()*0.09; fnoise(0.008, 0.11, {type:'highpass', freq:3200 + Math.random()*1800, q:0.7, attack:0.0008, delay:t}); } },
+    // Wave and the Tide-spout (2026-10-14): a quick splash, a whoosh of water with a few droplets.
+    splash(){ const now = Date.now(); if(now - (SFX_THROTTLE.splash||0) < 180) return; SFX_THROTTLE.splash = now;
+      fnoise(0.32, 0.07, {type:'lowpass', freq:2400, freqEnd:500, q:0.8, attack:0.02});
+      for(let i = 0; i < 4; i++) sweep(900 + Math.random()*700, 1600 + Math.random()*900, 0.05, 'sine', 0.025, 0.08 + i*0.05); },
   };
 })();
 

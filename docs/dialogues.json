@@ -1423,7 +1423,7 @@
   {
    "id": "lesson_leader_rule",
    "where": [
-    "First time you open the 👑 leader picker  · arena_app.js:8918"
+    "First time you open the 👑 leader picker  · arena_app.js:9066"
    ],
    "lines": [
     {
@@ -1437,7 +1437,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "First time you open the 👑 leader picker  · arena_app.js:8918"
+     "where": "First time you open the 👑 leader picker  · arena_app.js:9066"
     },
     {
      "id": "lesson_leader_rule",
@@ -1457,7 +1457,7 @@
   {
    "id": "lesson_leaders",
    "where": [
-    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:8929"
+    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9077"
    ],
    "lines": [
     {
@@ -1471,7 +1471,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:8929"
+     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9077"
     },
     {
      "id": "lesson_leaders",
@@ -1530,7 +1530,7 @@
   {
    "id": "outskirts_reveal",
    "where": [
-    "The first time the Conquest map opens  · arena_app.js:12173"
+    "The first time the Conquest map opens  · arena_app.js:12326"
    ],
    "lines": [
     {
@@ -1544,7 +1544,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The first time the Conquest map opens  · arena_app.js:12173"
+     "where": "The first time the Conquest map opens  · arena_app.js:12326"
     },
     {
      "id": "outskirts_reveal",
@@ -1629,7 +1629,7 @@
   {
    "id": "pitch_lesson_h",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:26605"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
    ],
    "lines": [
     {
@@ -1643,14 +1643,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26605"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
     }
    ]
   },
   {
    "id": "pitch_lesson_o",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:26605"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
    ],
    "lines": [
     {
@@ -1664,14 +1664,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26605"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
     }
    ]
   },
   {
    "id": "pitch_spent_h",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24314"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
    ],
    "lines": [
     {
@@ -1685,14 +1685,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24314"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
     }
    ]
   },
   {
    "id": "pitch_spent_o",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24314"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
    ],
    "lines": [
     {
@@ -1706,7 +1706,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24314"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
     }
    ]
   },
@@ -1760,7 +1760,7 @@
   {
    "id": "tut_boomerang",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26629"
+    "Tutorial fights: remarks from your side  · arena_app.js:26915"
    ],
    "lines": [
     {
@@ -1774,14 +1774,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26629"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26915"
     }
    ]
   },
   {
    "id": "tut_fly",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26628"
+    "Tutorial fights: remarks from your side  · arena_app.js:26914"
    ],
    "lines": [
     {
@@ -1795,14 +1795,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26628"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26914"
     }
    ]
   },
   {
    "id": "tut_traveller_cheer",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26624"
+    "Tutorial fights: remarks from your side  · arena_app.js:26910"
    ],
    "lines": [
     {
@@ -1816,7 +1816,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26624"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26910"
     }
    ]
   },
@@ -2327,7 +2327,7 @@
   {
    "id": "unlock_phyla",
    "where": [
-    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4142"
+    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4265"
    ],
    "lines": [
     {
@@ -2341,7 +2341,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4142"
+     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4265"
     },
     {
      "id": "unlock_phyla",
@@ -2917,7 +2917,7 @@
   {
    "id": "well_m1",
    "where": [
-    "Tapping the old well on Map 0  · arena_app.js:12152"
+    "Tapping the old well on Map 0  · arena_app.js:12305"
    ],
    "lines": [
     {
@@ -2931,7 +2931,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tapping the old well on Map 0  · arena_app.js:12152"
+     "where": "Tapping the old well on Map 0  · arena_app.js:12305"
     },
     {
      "id": "well_m1",
