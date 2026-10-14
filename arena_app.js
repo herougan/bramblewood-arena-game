@@ -8906,7 +8906,7 @@ function bestCopyClass(id, d){
 const MATERIA_UNIT = {dust:675, gold:450}; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below)
 const MU = f=> Math.round(f * MATERIA_UNIT.dust); // MU fraction → Dust
 const DISENCHANT_PCT = {starter:0.25, common:0.25, uncommon:0.55, rare:1.15, veryrare:1.75, superrare:2.4, epic:3.25, heroic:4.1, unique:5.0, legendary:6.2, mythic:7.3, ancient:8.5, divine:10};
-const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1};
+const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
 function copyTreatmentBonus(d, copy){
   let b = 0; copy = copy || {};
   if(copy.foil){ const f = copy.finish && copy.finish !== 'auto' ? copy.finish : ((holoClass(d).match(/holo-(\w+)/) || [])[1] || 'rainbow'); b += FINISH_BONUS[f] || 1; }
@@ -24983,9 +24983,11 @@ function deathVfx(uid){
   const style = deathStyleFor(uid);
   const rcD = matchState && matchState.replayCards && matchState.replayCards[uid];
   const isToken = !!(rcD && (getCardDefs()[rcD.defId]||{}).token);
-  const burnt = isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  // Frozen deaths shatter like ice (2026-10-14): ProcFX's Voronoi shards fly from the card; the ice particles below still fall.
+  const iceShards = !isToken && style==='cold' && !!(window.ProcFX && ProcFX.shatter && fxAtLeast('med') && !reducedMotion()) && (()=>{ try{ ProcFX.shatter(el.querySelector('.card-tile') || el, {seed:String(uid), power:.75, gravity:1.2}); return true; }catch(e){ return false; } })();
+  const burnt = iceShards ? true : isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
   try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
-  if(burnt && (style==='fall' || isToken) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
+  if(burnt && (style==='fall' || isToken || iceShards) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   // 2026-10-10: cold and poison deaths shed ice shards / drips (SkillFX.elementDeath, from the VFX Playground).
   try{ if((style==='cold' || style==='poison') && window.SkillFX && SkillFX.elementDeath){ SkillFX.elementDeath(el, style, {particlesOnly:true}); if(style==='cold') SoundKit.iceShatter(); } }catch(e){}
@@ -31379,8 +31381,11 @@ const FOIL_FINISHES = [
   {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'cosmos', label:'Cosmos'},
   {key:'prism', label:'Prism'}, {key:'hex', label:'Hex'}, {key:'etched', label:'Etched'},
   {key:'ice', label:'Cracked ice'}, {key:'reverse', label:'Reverse'}, {key:'gold', label:'Gold'},
+  // 2026-10-14: the Effects Lab finishes, now rare pack prints
+  {key:'aurora', label:'Aurora'}, {key:'galaxy', label:'Galaxy swirl'}, {key:'molten', label:'Molten gold'}, {key:'frost', label:'Frost crystal'}, {key:'oilslick', label:'Oil slick'},
+  {key:'sakura', label:'Sakura'}, {key:'sparkle', label:'Glitter field'}, {key:'scanline', label:'Holo scanlines'}, {key:'old', label:'Cards of old'},
 ];
-const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3};
+const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
 function normalizePack(p){
   const o = Object.assign({pool:1, foilChance:0.04, foilGuaranteed:false}, p);
   o.cost = Object.assign({gold:0, gems:0}, p.cost||{});
@@ -32819,12 +32824,15 @@ function openPackAnimation(pack, opened, opts){
     sfx('gold');
   };
   // Summary cards lean toward the pointer (2026-10-08).
-  const wireTilt = ()=> overlay.querySelectorAll('.po2-sum-card').forEach(c=>{
+  const wireTilt = ()=>{ const cards = [...overlay.querySelectorAll('.po2-sum-card')];
+    // a wave runs across the haul once it's laid out (2026-10-14, ProcFX.ripple from the Effects Lab)
+    if(!reduce && cards.length > 2 && window.ProcFX && ProcFX.ripple) setTimeout(()=>{ try{ if(cards[0].isConnected) ProcFX.ripple(cards, {from:0, amount:.7}); }catch(e){} }, 420);
+    cards.forEach(c=>{
     if(reduce) return;
     c.addEventListener('pointermove', e=>{ const r = c.getBoundingClientRect(); const x = (e.clientX - r.left)/r.width - .5, y = (e.clientY - r.top)/r.height - .5;
       c.style.transform = `perspective(700px) rotateY(${(x*16).toFixed(1)}deg) rotateX(${(-y*14).toFixed(1)}deg) scale(1.04)`; });
     c.addEventListener('pointerleave', ()=>{ c.style.transform = ''; });
-  });
+  }); };
   // ---- Open-all table (2026-10-08, user: "When opening 10 packs or more ... all the packs are laid in front of you
   // (max 25), and you slice all at once. Then they get piled into ONE HUGE deck for you to slowly reveal off.")
   // 2026-10-10 (user: "only the packs that your mouse passes through opens. You have to open every single one to

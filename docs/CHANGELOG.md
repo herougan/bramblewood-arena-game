@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (11:30)
+- **The new foils can drop from packs:** Aurora, Galaxy swirl, Molten gold, Frost crystal, Oil slick, Sakura, Glitter field, Holo scanlines and Cards of old are now rare prints in every pack's foil roll (each about 2–3% of foils), and each adds to a card's collection bonus. Admins can tune the odds in the pack editor.
+- **Frozen units shatter:** a unit that dies to cold breaks into ice-glass shards (the Lab's shatter).
+- **Pack hauls ripple:** a wave runs across the cards when the pack summary is laid out.
+
 ## 2026-10-14 (10:45)
 - **Leader tutorial:** the first time you open the 👑 leader picker, the traveller explains that only Heroic and above can lead. Your first Heroic card brings it back ("this one can be your leader"), and the card itself speaks; if you skipped the first note, its line comes first.
 - **D39:** 🍴 Pitchfork hits the 4 nearest enemy units within 2 columns (no Pierce). 🔱 Trident hits the 3 nearest within 1 column, never the castle.

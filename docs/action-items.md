@@ -39,7 +39,8 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | D39 | Pitchfork and Trident reworked (above) |
 | Dialogues | 💬 Dialogues tab in the hub and docs/dialogues-2026-10-14.xlsx: all 63 conversations, who says each line and where it plays. An "Add your own" sheet; any card's name works as a speaker and shows that card's art |
 | VFX | Castles crack with random-walk "miners" as they lose Health and crumble cell by cell (a cellular automaton) when destroyed. "Cards of old" finish: aged paper, foxing, creases. New Effects Lab tab, Procedural FX: shatter, Flip riffle shuffle, lantern light, a scrubbable forge timeline, a ripple wave |
-| Foils | The eight Lab foils are in the game (admins: card inspector and Card workbench); the Forge and the Nest play a level-up burst |
+| Foils | The eight Lab foils and Cards of old are in the game and drop from packs as rare prints (each about 2–3% of foils); the Forge and the Nest play a level-up burst |
+| Effects in play | Frozen units shatter into ice shards; pack hauls ripple when laid out |
 
 ## Done at 23:30 (your 20:55, 21:36 and 22:05 lists)
 
