@@ -631,7 +631,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // {types:[...], atk, hp, grant:{skill:value}}. A card whose types include one of the biome's is native: on either side it
   // arrives with +atk/+hp and gains the granted skills (its own value wins if it already has that skill). Done on this
   // match's own copy of the card list, so every skill reads the granted value with no other change.
-  const terrain = rules.terrain && Array.isArray(rules.terrain.types) && rules.terrain.types.length ? rules.terrain : null;
+  // 2026-10-14 (user: "Remove the Home ground explanation. Remove the home ground effect."): retired. rules.terrain still names
+  // the biome (the board's look), but native cards get nothing from it any more: no +atk/+hp and no granted skill.
+  const terrain = null;
   if(terrain){
     const types = new Set(terrain.types), out = Object.assign({}, CARD_DEFS);
     Object.keys(CARD_DEFS).forEach(id=>{ const d = CARD_DEFS[id]; if(!d || !Array.isArray(d.archetypes) || !d.archetypes.some(a=> types.has(a))) return;
@@ -755,7 +757,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && d.effects.moonborn); })); }
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
-  // hit +1, and Wash units push the enemy card facing them back 1 Wait (once per enemy card); on Ebb, Tide units take
+  // hit +1 (Wash, which pushed the enemy facing it back, was retired 2026-10-14); on Ebb, Tide units take
   // 1 less damage per hit (never below 1). Round 1 (and modes with no cycle) has no tide.
   // 2026-10-12 (09:48, user: "On tide, the card gains 1 Attack. ON ebb, the card gains 1 Armour. On high tide (rare - only in the
   // boss fight and elite water fights) +2 Attack, +2 Armour. (Ebb -> Tide -> Ebb -> High Tide)"): rules.highTide turns on the
@@ -821,6 +823,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(field){ out.field = field.id; out.fieldLeft = field.rounds; }
     const vc = r >= 2 ? volcanoChances(r) : null;
     if(rules.tideSpout && r >= 2) out.tideSpout = true; // a spout bursts somewhere next round (2026-10-14)
+    if(cometRounds > 0) out.comets = cometRounds; // comets still to fall after an Eruption (2026-10-14)
     if(vc) out.volcano = vc; // the hazards' odds next round (2026-10-14); whether they come stays a roll
     else if(Number(rules.eruption) > 0 && r >= 2) out.eruption = Number(rules.eruption);
     return out;
@@ -928,15 +931,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     });
     if(rules.tideSpout && round > 1) tideSpoutTick(players, round, sideOf, stats, events); // Tide-spout (2026-10-14), before the tide's own step
+    // 2026-10-14 (user: "Remove the 'Wash' effect"): Wash (on Flow, push the enemy facing it back 1 Wait) is gone. The tide only
+    // moves Tide units now; the Tsunami and the Tide-spout are the pushes left.
     if(tideRising()){
       if(recordEvents && events) events.push({type:'tide', tide:getTide(), round});
-      [1,2].forEach(pid=>{ const me = players[pid], foe = players[pid===1 ? 2 : 1]; if(!me || !foe) return;
-        ['left','center','right'].forEach(lane=> (me.row[lane]||[]).forEach((c, i)=>{
-          if(!c || c.gap || !(c.hp > 0)) return; const d = CARD_DEFS[c.defId]; if(!(d && d.effects && d.effects.wash)) return;
-          const t = (foe.row[lane]||[])[i]; if(!t || t.gap || !(t.hp > 0) || t.washed) return; // each enemy card can be washed back only once
-          t.wait = (t.wait||0) + 1; t.washed = true;
-          if(recordEvents && events) events.push({type:'wash', side:sideOf(pid), uid:c.uid, defId:c.defId, targetUid:t.uid, targetDefId:t.defId});
-        })); });
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
     volcanoTick(players, round, sideOf, stats, events);
     if(!field) return;
@@ -992,10 +990,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 'even' climbs +2 a round after round 2 ("and increasing"). Without any of these, rules.eruption N is the old guaranteed
   // eruption every round, unchanged.
   const VOLCANO_LEVELS = {verylow:[1,2,3], low:[10,12,14], medium:[20,22,24], even:[45,50,55], high:[60,65,70]};
+  let volcanoRiseFrom = 2, cometRounds = 0; // after an Eruption: the round the rise restarts from, and comet rounds still to fall
   function volcanoOn(){ return !!(VOLCANO_LEVELS[rules.volcano] || rules.lavaTideChance != null || rules.petrifyChance != null || rules.eruptionChance != null); }
   function volcanoChances(round){
     if(!volcanoOn()) return null;
-    const t = VOLCANO_LEVELS[rules.volcano] || [0, 0, 0], up = rules.volcano === 'even' ? 2 * Math.max(0, (Number(round)||0) - 2) : 0;
+    const t = VOLCANO_LEVELS[rules.volcano] || [0, 0, 0], up = rules.volcano === 'even' ? 2 * Math.max(0, (Number(round)||0) - volcanoRiseFrom) : 0;
     const pick = (ov, base)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? base + up : 0)));
     return {lavaTide: pick(rules.lavaTideChance, t[0]), petrify: pick(rules.petrifyChance, t[1]), eruption: pick(rules.eruptionChance, t[2])};
   }
@@ -1023,9 +1022,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const heatProof = c=>{ const d = CARD_DEFS[c.defId] || {}; return (d.resist||[]).includes('heat') || (d.resist||[]).includes('fire'); };
     let burnt = false;
     [1,2].forEach(pid=>{ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.petrified) c.petrified = false; }); }); // last round's stone wears off
-    const erupt = (n)=> [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !heatProof(c)); if(!cs.length) return;
-      const c = cs[Math.floor(rnd()*cs.length)]; damageCardFlat(c, n, 'heat'); burnt = true;
-      if(recordEvents && events) events.push({type:'fieldTick', field:'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:n}); });
+    // ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed, secondly, have to show damage
+    // numbers!"): the old guaranteed eruption every round is Scorched Ground now (field 'scorched'); the volcano's Eruption hazard
+    // keeps its name. dmg is what the unit really lost.
+    const erupt = (n, ground)=> [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !heatProof(c)); if(!cs.length) return;
+      const c = cs[Math.floor(rnd()*cs.length)]; const hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
+      if(recordEvents && events) events.push({type:'fieldTick', field: ground ? 'scorched' : 'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp)}); });
+    // Comets (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down, dealing 2-5 (random)
+    // fire damage to each unit. The damage dealt to each unit is random."): for 3 rounds after an Eruption, at the start of the round
+    // every unit on both sides is struck for its own 2–5 fire damage (the fight's seeded roll; fire-resistant units take half).
+    if(cometRounds > 0 && round > 1){
+      cometRounds -= 1;
+      if(recordEvents && events) events.push({type:'fieldTick', field:'cometRain', round, left: cometRounds});
+      [1,2].forEach(pid=> allLive(players[pid]).filter(c=> !c.cageOf).forEach(c=>{ const n = 2 + Math.floor(rnd()*4), hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
+        if(recordEvents && events) events.push({type:'fieldTick', field:'comet', side:sideOf(pid), uid:c.uid, defId:c.defId, roll:n, dmg:Math.max(0, hp0 - c.hp)}); }));
+    }
     const vc = round > 1 ? volcanoChances(round) : null;
     if(vc){
       const roll = p=> p >= 100 || (p > 0 && rnd()*100 < p);
@@ -1040,10 +1051,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(stone) [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !c.cageOf); if(!cs.length) return;
         const c = cs[Math.floor(rnd()*cs.length)]; c.petrified = true;
         if(recordEvents && events) events.push({type:'fieldTick', field:'petrify', side:sideOf(pid), uid:c.uid, defId:c.defId}); });
-      if(boom) erupt(Number(rules.eruption) > 0 ? Number(rules.eruption) : 2);
+      if(boom){ erupt(Number(rules.eruption) > 0 ? Number(rules.eruption) : 2);
+        volcanoRiseFrom = round + 1; cometRounds = 3; // the cycle resets (a rising level climbs again from its base), and comets follow
+        if(recordEvents && events) events.push({type:'fieldTick', field:'eruptionReset', round, comets:3}); }
     } else {
       const n = Number(rules.eruption)||0;
-      if(n > 0 && round > 1 && !volcanoOn()) erupt(n);
+      if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
     }
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       allLive(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return;
@@ -2916,7 +2929,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     hit.forEach(c=>{ c.wait = (c.wait||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'avalancheWait', side:sideOf(pid), attDefId:src.defId, attUid:src.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, amount:1});
       fireDamageAction(players, sideOf, pid, src.defId, n, 'cold', {kind:'card', card:c}, stats, events, {}, src.uid); });
   }
-  // Tsunami N: when it arrives, a wave washes the enemy board. Every enemy unit is pushed back (+1 Wait, as Wash does); those that
+  // Tsunami N: when it arrives, a wave washes the enemy board. Every enemy unit is pushed back (+1 Wait); those that
   // can't swim (not Swimmers or Tide units) also take N water damage. The Tide starts, if it hasn't yet.
   function tsunamiStrike(players, sideOf, pid, src, n, stats, events){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl) return;
@@ -5518,7 +5531,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
+  return { eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

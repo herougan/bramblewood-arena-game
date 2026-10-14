@@ -700,8 +700,12 @@ function frostChill(target, o){
 // Immolation scorch: flames lick up from the card's lower edge in a heat shimmer; embers rise and the edge chars.
 function scorch(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onImpact); return; }
-  const g = G(), c = centre(target), hz = over(target, 'sfx-haze', 6);
-  g.set(hz, {opacity:0}); g.timeline({onComplete:()=> hz.remove()}).to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.5, delay:1});
+  // 2026-10-14 (user: "The haze effect doesnt fade off properly, and doesnt extend to the full extent of the card"): the shimmer
+  // sits exactly on the card tile with its corners, fades out over the last half second, and is removed even if the tween is cut.
+  const g = G(), c = centre(target), tl = tileOf(target), hz = over(tl, 'sfx-haze', 0);
+  try{ hz.style.borderRadius = getComputedStyle(tl).borderRadius || '10px'; }catch(e){}
+  g.set(hz, {opacity:0}); g.timeline({onComplete:()=> hz.remove()}).to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.6, delay:.9, ease:'power1.in'});
+  setTimeout(()=>{ if(hz.isConnected) hz.remove(); }, 2400);
   for(let i = 0; i < 9; i++){ const f = layer('sfx-flame'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
     g.set(f, {x:x - 7, y:c.r.bottom - 26 + rnd(-4, 6), scaleY:0, opacity:1});
     g.timeline({delay:i*0.03 + rnd(0, .08), onComplete:()=> f.remove()}).to(f, {scaleY:rnd(1, 1.8), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }

@@ -40,16 +40,15 @@ function dealt(att, def, rounds){
 { const p = dealt('tt-plain', 'tt-wall', 3), t = dealt('tt-tide', 'tt-wall', 3); ok(p === t, `on Ebb Tide gives no attack bonus (plain ${p}, tide ${t})`); }
 { const p = dealt('tt-hit', 'tt-wall', 3), t = dealt('tt-hit', 'tt-twall', 3);
   ok(p > 0 && t * 5 === p * 4, `on Ebb a Tide unit should take 4 from a 5 hit (plain ${p}, tide ${t})`); }
-// 4) Wash: +1 Wait to the facing enemy on Flow, once per enemy card
+// 4) Wash retired (2026-10-14, user: "Remove the 'Wash' effect"): a card still carrying the old key pushes nobody back on Flow
 { const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */
   const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
   e.debugSpawnCard(P, so, 1, 'tt-wash', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'tt-wall', 'left', {}, []);
   const foe = all(P[2])[0], w0 = foe.wait || 0; const ev = [];
   e.roundStart(P, 2, so, {}, ev);
-  ok((foe.wait||0) === w0 + 1, `Flow: the facing enemy gets +1 Wait (${w0} → ${foe.wait})`);
-  ok(ev.some(x=> x.type==='wash'), 'a wash event is recorded');
-  e.roundStart(P, 3, so, {}, []); e.roundStart(P, 4, so, {}, []);
-  ok((foe.wait||0) === w0 + 1, `a card is washed back only once (wait ${foe.wait})`); }
+  ok((foe.wait||0) === w0, `Flow: the facing enemy is not pushed back any more (${w0} → ${foe.wait})`);
+  ok(!ev.some(x=> x.type==='wash'), 'no wash event on Flow');
+  ok(ev.some(x=> x.type==='tide'), 'the tide itself still turns'); }
 
 // 2026-10-12: High tide (rules.highTide): Ebb, Flow, Ebb, High; on High a Tide unit gets +2 Attack
 { const H2 = require('./lib/harness.js'); const e = H2.Engine.makeSimEngine(defs, H2.Engine.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{highTide:true}}); e.startTide && e.startTide(); /* the tide waits for a Tide card since 2026-10-13; these checks start it */ const so = id=> id===1?'A':'B';

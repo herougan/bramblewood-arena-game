@@ -71,7 +71,6 @@
     },
     "rarity": "rare",
     "effects": {
-      "wash": true,
       "swimmer": true,
       "wave": "alternate"
     },
@@ -1134,8 +1133,7 @@
     "uuid": "bb5ad042-f2e4-4f4d-8452-aaeba1320030",
     "rarity": "rare",
     "effects": {
-      "tide": true,
-      "wash": true
+      "tide": true
     },
     "species": [
       "Elemental"
@@ -1745,8 +1743,7 @@
     "effects": {
       "sweep": 1,
       "bounty": 1,
-      "tide": true,
-      "wash": true
+      "tide": true
     },
     "flavor": "Eight arms, eight opinions on how this fight should go. Usually gets its way.",
     "locked": true,
@@ -5145,7 +5142,6 @@
     ],
     "effects": {
       "reload": 1,
-      "wash": true,
       "swimmer": true
     },
     "flavor": "One vicious pull, then it needs the current to reset.",
@@ -6821,7 +6817,6 @@
     "health": 5,
     "effects": {
       "poison": 2,
-      "wash": true,
       "swimmer": true
     },
     "archetypes": [
@@ -15037,7 +15032,6 @@
     "rarity": "epic",
     "effects": {
       "sweep": 1,
-      "wash": true,
       "tide": true
     },
     "flavor": "One arm of eight. The boat it came up under is still somewhere above it.",

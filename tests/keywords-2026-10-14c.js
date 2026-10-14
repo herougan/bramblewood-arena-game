@@ -99,7 +99,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(dealt(e, P, T.uid, W) === 2, 'a Tide unit hits with Flow\'s +1 on round 1'); }
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(/const PERMATIDE_MAPS = new Set\(\['m2', 'mp'\]\)/.test(src), 'the Riverbank maps (Sunken Hollow, Lilypad Reach) have Perma-tide');
-  ok(/Perma-tide/.test(src) && /the Tide is always in\. Tide effects can't change it\./.test(src), 'the Codex and fight conditions say so'); }
+  ok(/Perma-tide/.test(src) && /[Tt]he Tide is always in\. Tide effects can't change it\./.test(src), 'the Codex and fight conditions say so'); }
 
 // ---- 5. Supreme Tide
 { const {e, P} = mk(); e.roundStart(P, 1, so, {}, []); const S = put(e, P, 1, 'kc-stide', 0); const W = put(e, P, 2, 'kc-wall', 0); const Hh = put(e, P, 2, 'kc-hit', 1);
