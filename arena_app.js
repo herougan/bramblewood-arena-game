@@ -212,6 +212,75 @@ Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
 // and a spiky green durian. SKILL_ICON keeps a text stand-in for tooltips and plain text.
 const SKILL_ICON_HTML = {fireball:'<i class="ico-fireball" aria-hidden="true"></i>', durian:'<i class="ico-durian" aria-hidden="true"></i>', smokeBomb:'<i class="ico-smokebomb" aria-hidden="true"></i>'};
 function skillIconHTML(k){ return SKILL_ICON_HTML[k] || SKILL_ICON[k] || ''; }
+// Icon groundwork (2026-10-14): every skill and resource icon goes through iconHTML(key, fallbackEmoji, opts), so our own
+// art can replace an emoji one key at a time. ICON_ART maps a key to an asset path (rendered as an <img>) or to {html}
+// for a glyph already drawn in CSS. Anything not in the registry is the emoji in <span class="ico ico-<key>">; the
+// [data-ik] attribute keeps these spans clear of the card-art layer's own .ico rules (see arena_template.html).
+const ICON_ART = {
+  fireball: {html: SKILL_ICON_HTML.fireball},
+  durian: {html: SKILL_ICON_HTML.durian},
+  'smoke-bomb': {html: SKILL_ICON_HTML.smokeBomb},
+  // e.g. lumber: 'assets/icons/lumber.webp' (none shipped yet)
+};
+function iconHTML(key, fallbackEmoji, opts){
+  opts = opts || {};
+  const k = String(key == null ? '' : key).toLowerCase().replace(/[^a-z0-9_-]/g, '');
+  const art = ICON_ART[k], fb = fallbackEmoji == null ? '' : String(fallbackEmoji);
+  const cls = 'ico ico-' + k + (opts.cls ? ' ' + opts.cls : ''), tip = opts.title ? ` title="${escapeAttr(opts.title)}"` : '';
+  if(art && !opts.emojiOnly){
+    if(typeof art === 'string') return `<img class="${cls} ico-art" data-ik="${k}" src="${escapeAttr(art)}" alt="${escapeAttr(opts.alt != null ? opts.alt : fb)}" draggable="false"${tip}>`;
+    if(art.html) return art.html;
+  }
+  return `<span class="${cls}" data-ik="${k}"${tip}>${fb}</span>`;
+}
+// Emoji style (2026-10-14): Settings → "Emoji style: System / Twemoji". Twemoji swaps emoji for the Twemoji images, so the
+// game looks the same on every device. The library loads from jsDelivr only when chosen; if it can't load, the game
+// silently stays on System. A debounced MutationObserver re-parses whatever the game re-renders.
+var EMOJI_STYLE_KEY = 'bramblewood_emoji_style', TWEMOJI_SRC = 'https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js';
+var EmojiStyle = (function(){
+  let loading = null, observer = null, timer = 0, pending = new Set(), active = false;
+  const get = ()=>{ try{ return localStorage.getItem(EMOJI_STYLE_KEY) === 'twemoji' ? 'twemoji' : 'system'; }catch(e){ return 'system'; } };
+  const load = ()=>{
+    if(window.twemoji && window.twemoji.parse) return Promise.resolve(window.twemoji);
+    if(loading) return loading;
+    loading = new Promise((res, rej)=>{ const s = document.createElement('script'); s.src = TWEMOJI_SRC; s.async = true; s.crossOrigin = 'anonymous';
+      const t = setTimeout(()=> rej(new Error('timeout')), 8000);
+      s.onload = ()=>{ clearTimeout(t); window.twemoji && window.twemoji.parse ? res(window.twemoji) : rej(new Error('no twemoji')); };
+      s.onerror = ()=>{ clearTimeout(t); rej(new Error('load failed')); };
+      document.head.appendChild(s); }).catch(e=>{ loading = null; throw e; });
+    return loading;
+  };
+  const opts = {folder:'svg', ext:'.svg', className:'emoji tw-emoji'};
+  const parse = node=>{ try{ if(active && window.twemoji && node && node.isConnected !== false) window.twemoji.parse(node, opts); }catch(e){} };
+  const flush = ()=>{ timer = 0; const nodes = [...pending]; pending.clear();
+    // parse only the outermost changed nodes; a node inside another pending one is covered by it
+    nodes.filter(n=> n.isConnected && !nodes.some(o=> o !== n && o.contains(n))).forEach(parse); };
+  const watch = ()=>{
+    if(observer || typeof MutationObserver === 'undefined') return;
+    observer = new MutationObserver(list=>{
+      for(const r of list){ const n = r.type === 'characterData' ? r.target.parentNode : r.target;
+        if(!n || n.nodeType !== 1 || /^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION)$/.test(n.nodeName)) continue;
+        if(r.type === 'childList' && [...r.addedNodes].every(a=> a.nodeName === 'IMG' && a.classList && a.classList.contains('tw-emoji'))) continue; // our own swaps
+        pending.add(n); }
+      if(pending.size && !timer) timer = setTimeout(flush, 120);
+    });
+    observer.observe(document.body, {childList:true, subtree:true, characterData:true});
+  };
+  const unwatch = ()=>{ if(observer){ observer.disconnect(); observer = null; } if(timer){ clearTimeout(timer); timer = 0; } pending.clear(); };
+  // Back to System: every Twemoji image turns back into its emoji text (alt holds the original).
+  const restore = ()=>{ document.querySelectorAll('img.tw-emoji').forEach(img=> img.replaceWith(document.createTextNode(img.alt || ''))); };
+  const apply = ()=>{
+    const want = get() === 'twemoji';
+    document.documentElement.dataset.emoji = want ? 'twemoji' : 'system';
+    if(!want){ active = false; unwatch(); restore(); refreshCredits(); return Promise.resolve(false); }
+    return load().then(()=>{ if(get() !== 'twemoji') return false; active = true; parse(document.body); watch(); refreshCredits(); return true; })
+      .catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // CDN unreachable: silently stay on System
+  };
+  const set = v=>{ try{ localStorage.setItem(EMOJI_STYLE_KEY, v === 'twemoji' ? 'twemoji' : 'system'); }catch(e){} return apply(); };
+  const refreshCredits = ()=>{ document.querySelectorAll('.emoji-credit').forEach(el=>{ el.hidden = !active; }); };
+  return {get, set, apply, isActive: ()=> active, refreshCredits};
+})();
+try{ if(EmojiStyle.get() === 'twemoji'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
 // (species Crustacean or Crab, or "Crab" in its name) Fork shows a crab claw 🦞; everywhere else it stays ⇔.
 function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Crab)$/i.test(s)) || /crab/i.test(d.name||'')); }
@@ -5168,124 +5237,124 @@ function abilityBadges(d, bopts){
   // just not the identical glyph as the cost pill it sits beside.
   // 2026-10-11 (user: "I wanted ALL symbols (incl like flying and poison) to be on the south border"): poison joins the
   // skill strip, which now sits on the card's bottom edge.
-  if(e.poison) out.push(`<span class="ab-poison">☠${n1(e.poison)}</span>`);
-  if(e.bounty) out.push(`<span class="ab-bounty">🏆${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
-  if(e.explode) out.push(`💣${e.explode.time}/${e.explode.damage}`);
+  if(e.poison) out.push(`<span class="ab-poison">${iconHTML('poison', '☠')}${n1(e.poison)}</span>`);
+  if(e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
+  if(e.explode) out.push(`${iconHTML('explode', '💣')}${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
   if(e.armor) out.push(e.armor <= 5 ? `<span class="ab-shields">${'<i>🛡</i>'.repeat(e.armor)}</span>` : `🛡×${n1(e.armor)}`); // 2026-10-08: one shield per point of Armour; 2026-10-10: stacked closer (they overlap)
-  if(e.thorns) out.push(`🌵${n1(e.thorns)}`);
+  if(e.thorns) out.push(`${iconHTML('thorns', '🌵')}${n1(e.thorns)}`);
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
-  if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">🍃</span>`);
-  if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">↺</span>`);
-  if(e.tide) out.push(`<span class="ab-tide" title="Tide: Flow +1 Attack, Ebb +1 Armor">🌊</span>`);
-  if(e.swimmer) out.push(`🏊`);
-  if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${n1(e.rainrunner)}`); if(e.moonborn) out.push(`🌕${n1(e.moonborn)}`); if(e.frostbite) out.push(`🥶${n1(e.frostbite)}`);
+  if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
+  if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`);
+  if(e.tide) out.push(`<span class="ab-tide" title="Tide: Flow +1 Attack, Ebb +1 Armor">${iconHTML('tide', '🌊')}</span>`);
+  if(e.swimmer) out.push(`${iconHTML('swimmer', '🏊')}`);
+  if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
-  if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
-  if(e.natureForce) out.push(`<span title="Nature's Force">🌪️${n1(e.natureForce)}</span>`);
-  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">🌆</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">🕶️</span>`); if(e.nightblind) out.push(`<span title="Night-blind">🌑</span>`);
-  if(e.shedding) out.push(`<span title="Shedding">🐍${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
-  if(e.molting) out.push(`<span title="Molting">🦀${e.molting}</span>`);
-  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands">🧨${e.dynamite}</span>`);
+  if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
+  if(e.natureForce) out.push(`<span title="Nature's Force">${iconHTML('nature-force', '🌪️')}${n1(e.natureForce)}</span>`);
+  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`);
+  if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
+  if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
+  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
   if(e.helmet) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
-  if(e.bludgeon) out.push(`<span title="Bludgeon">🔨</span>`); if(e.snipe) out.push(`<span title="Snipe">🎯${n1(e.snipe)}</span>`);
-  if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">🫶</span>`); if(e.rocket) out.push(`<span title="Rocket">🚀${n1(e.rocket)}</span>`);
-  if(e.loneWolf) out.push(`<span title="Lone Wolf">🐺</span>`); if(e.sociable) out.push(`<span title="Sociable">🫂</span>`);
-  if(e.coffee) out.push(`<span title="Coffee">☕${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">🏜️</span>`);
-  if(e.darksight) out.push(`<span title="Darksight">👁️</span>`);
-  if(e.landslide) out.push(`<span title="Landslide">🪨${n1(e.landslide)}</span>`);
-  if(e.inspiring) out.push(`📯${n1(e.inspiring)}`);
-  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">⚙️${n1(e.friction)}</span>`);
-  if(e.worthy) out.push(`🪵${n1(e.worthy)}`);
-  if(e.lumberjack) out.push(`🪓`); if(e.heavyMetal) out.push(`🤘`);
-  if(e.timber) out.push(`🌲`); if(e.rockSolid) out.push(`🪨`); if(e.ironWill) out.push(`🔩`);
-  if(e.loyal || e.loyalGrant) out.push(`🎖️`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">👑<i>🗡️</i></span>`);
-  if(e.shell) out.push(`<span title="Shell">🐢${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: the 4 nearest enemy units, within 2 columns">🍴</span>`); if(e.trident) out.push(`<span title="Trident: the 3 nearest enemy units, within 1 column">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
+  if(e.bludgeon) out.push(`<span title="Bludgeon">${iconHTML('bludgeon', '🔨')}</span>`); if(e.snipe) out.push(`<span title="Snipe">${iconHTML('snipe', '🎯')}${n1(e.snipe)}</span>`);
+  if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) out.push(`<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
+  if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
+  if(e.coffee) out.push(`<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
+  if(e.darksight) out.push(`<span title="Darksight">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
+  if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
+  if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
+  if(e.worthy) out.push(`${iconHTML('worthy', '🪵')}${n1(e.worthy)}`);
+  if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
+  if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
+  if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
+  if(e.shell) out.push(`<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: the 4 nearest enemy units, within 2 columns">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) out.push(`<span title="Trident: the 3 nearest enemy units, within 1 column">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
   // 2026-10-14 skills. Speed shows the live value on the board (c.speed: its own Speed, Haste, and a Haste ally beside it).
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
     if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
-  if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">🏃</span>`);
-  if(e.rabid) out.push(`<span title="Rabid: hits add 2 Poison; Swimmers and water hit it for double">🤬</span>`);
-  if(e.cower) out.push(`<span title="Cower (${e.cower === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${e.cower === 'flee' ? 'backs off' : 'hides'} this turn">🫣</span>`);
-  if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">👻</span>`);
-  if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">🧪${n1(e.ichor)}</span>`);
-  if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its neighbours and the enemy facing it">☢️${n1(e.irradiated)}</span>`);
+  if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
+  if(e.rabid) out.push(`<span title="Rabid: hits add 2 Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}</span>`);
+  if(e.cower) out.push(`<span title="Cower (${e.cower === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${e.cower === 'flee' ? 'backs off' : 'hides'} this turn">${iconHTML('cower', '🫣')}</span>`);
+  if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
+  if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
+  if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its neighbours and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
   // 2026-10-14 (second pass)
-  if(e.shade) out.push(`<span title="Shade: half damage from non-magic attacks at night or in darkness">🌫️</span>`);
-  if(e.shadow) out.push(`<span title="Shadow: at night or in darkness, attacks at it miss 1 in 2">👤</span>`);
-  if(e.supreme) out.push(`<span class="ab-supreme" title="Supreme: magic attacks that crush every defence; takes half from non-magic damage">✨</span>`);
-  if(e.twin) out.push(`<span title="Twin: a token twin arrives with it">👯</span>`);
-  if(e.sprout) out.push(`<span title="Sprout: Growth Sprouts arrive with it">🌱${n1(e.sprout)}</span>`);
-  if(e.growth) out.push(`<span title="Growth: counts toward every Swarm">🌿</span>`);
-  if(e.moonpull) out.push(`<span title="Moonpull: when it arrives, the Tide comes in">🌙🌊</span>`);
+  if(e.shade) out.push(`<span title="Shade: half damage from non-magic attacks at night or in darkness">${iconHTML('shade', '🌫️')}</span>`);
+  if(e.shadow) out.push(`<span title="Shadow: at night or in darkness, attacks at it miss 1 in 2">${iconHTML('shadow-skill', '👤')}</span>`);
+  if(e.supreme) out.push(`<span class="ab-supreme" title="Supreme: magic attacks that crush every defence; takes half from non-magic damage">${iconHTML('supreme', '✨')}</span>`);
+  if(e.twin) out.push(`<span title="Twin: a token twin arrives with it">${iconHTML('twin', '👯')}</span>`);
+  if(e.sprout) out.push(`<span title="Sprout: Growth Sprouts arrive with it">${iconHTML('sprout', '🌱')}${n1(e.sprout)}</span>`);
+  if(e.growth) out.push(`<span title="Growth: counts toward every Swarm">${iconHTML('growth', '🌿')}</span>`);
+  if(e.moonpull) out.push(`<span title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}🌊</span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
-  if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">🥚${n1(e.brood)}</span>`);
-  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flow or Ebb">✨🌊</span>`);
+  if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
+  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flow or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
-  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only">🦞</span>`);
-  if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">🧫${n1(e.meiosis)}</span>`);
-  if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">🚫</span>`);
-  if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">👣</span>`);
-  if(e.charge){ const cp = chargeParts(e.charge) || {n:1}; out.push(`<span class="ab-charge" title="${escapeAttr(chargeLabel(e.charge))}">⏲️${cp.n}</span>`); }
+  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only">${iconHTML('crab-claws', '🦞')}</span>`);
+  if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
+  if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">${iconHTML('nullify', '🚫')}</span>`);
+  if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">${iconHTML('restless', '👣')}</span>`);
+  if(e.charge){ const cp = chargeParts(e.charge) || {n:1}; out.push(`<span class="ab-charge" title="${escapeAttr(chargeLabel(e.charge))}">${iconHTML('charge', '⏲️')}${cp.n}</span>`); }
   // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, and the egg card's 🥚.
-  if(e.tornado) out.push(`<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">🌪️💨${n1(e.tornado)}</span>`);
-  if(e.avalanche) out.push(`<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">🏔️${n1(e.avalanche)}</span>`);
-  if(e.tsunami) out.push(`<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">🌊💥${n1(e.tsunami)}</span>`);
-  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit beside it">🐉⚡${n1(e.dragonLightning)}</span>`);
-  if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">💀${n1(e.wither)}</span>`);
-  if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">🥚</span>`);
+  if(e.tornado) out.push(`<span title="Tornado ${e.tornado === true ? 1 : e.tornado}: when it arrives, enemy units are flung to other columns">${iconHTML('tornado', '🌪️')}💨${n1(e.tornado)}</span>`);
+  if(e.avalanche) out.push(`<span title="Avalanche ${e.avalanche === true ? 1 : e.avalanche}: when it arrives, every grounded enemy takes damage and +1 Wait">${iconHTML('avalanche', '🏔️')}${n1(e.avalanche)}</span>`);
+  if(e.tsunami) out.push(`<span title="Tsunami ${e.tsunami === true ? 1 : e.tsunami}: when it arrives, every enemy +1 Wait; non-swimmers take damage">${iconHTML('tsunami', '🌊')}💥${n1(e.tsunami)}</span>`);
+  if(e.dragonLightning) out.push(`<span class="ab-dragon-bolt" title="Dragon Lightning ${e.dragonLightning === true ? 1 : e.dragonLightning}: its hits call red lightning on the target and a unit beside it">${iconHTML('dragon-lightning', '🐉')}⚡${n1(e.dragonLightning)}</span>`);
+  if(e.wither) out.push(`<span title="Wither ${e.wither === true ? 1 : e.wither}: its hits wither the target (max Health falls for 3 rounds, no healing)">${iconHTML('wither', '💀')}${n1(e.wither)}</span>`);
+  if(d.hatchInto) out.push(`<span title="Egg: cracks open into a random ${escapeAttr(eggKindLabel(d))} card when Ready">${iconHTML('hatch-into', '🥚')}</span>`);
   // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
-  if(e.fencing) out.push(`<span title="Fencing: Evasive and Swift units can't dodge its attacks">🤺</span>`);
-  if(e.fireball) out.push(`<span class="ab-fireball" title="Fireball ${numOr(e.fireball, 15)}: when Ready, a 3-wide fireball on a random enemy unit">${SKILL_ICON_HTML.fireball}${n1(numOr(e.fireball, 15))}</span>`);
-  if(e.meteor) out.push(`<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">☄️${n1(numOr(e.meteor, 20))}</span>`);
-  if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">🍌${n1(numOr(e.banana, 3))}</span>`);
-  if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">🍌<i>🪃</i></span>`);
-  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian: 1 in 2 each round it eats one for Thorns +1${db ? ` (Thorns +${db} so far)` : ''}">${SKILL_ICON_HTML.durian}${db ? '+' + db : ''}</span>`); }
-  if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">💠${n1(numOr(e.shield, 1))}</span>`);
-  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">🔌⚡${n1(numOr(e.electricity, 1))}</span>`);
-  if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">👃</span>`);
+  if(e.fencing) out.push(`<span title="Fencing: Evasive and Swift units can't dodge its attacks">${iconHTML('fencing', '🤺')}</span>`);
+  if(e.fireball) out.push(`<span class="ab-fireball" title="Fireball ${numOr(e.fireball, 15)}: when Ready, a 3-wide fireball on a random enemy unit">${iconHTML('fireball', '🟠')}${n1(numOr(e.fireball, 15))}</span>`);
+  if(e.meteor) out.push(`<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">${iconHTML('meteor', '☄️')}${n1(numOr(e.meteor, 20))}</span>`);
+  if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
+  if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
+  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian: 1 in 2 each round it eats one for Thorns +1${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
+  if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">${iconHTML('electricity', '🔌')}⚡${n1(numOr(e.electricity, 1))}</span>`);
+  if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
-  if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">💭${n1(numOr(e.psychic, 1))}</span>`);
-  if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${SKILL_ICON_HTML.smokeBomb}</span>`);
+  if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
+  if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
-  if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
-  if(e.boomerang || e.antiAir) out.push(`🪃`);
-  if(e.demolisher) out.push(`⛏️${n1(e.demolisher)}`);
-  if(e.changeling) out.push(`🎭`);
-  if(e.keenEye) out.push(`👁️`);
-  if(e.primed) out.push(`🔋`);
-  if(e.drunk) out.push(`🍺`); if(e.purblind) out.push(`🕶️`); if(e.scatterbrained) out.push(`❓`);
-  if(e.tipsy) out.push(`🍺${e.tipsy.chance||''}%`); if(e.confuse) out.push(`❓${e.confuse.chance||''}%`);
-  if(e.overwhelm) out.push(`🐘`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
+  if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">${iconHTML('stone-cost', '🪨')}${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">${iconHTML('metal-cost', '🔩')}${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">${iconHTML('uranium-cost', '☢️')}${d.uraniumCost}</span>`);
+  if(e.boomerang || e.antiAir) out.push(`${iconHTML('boomerang', '🪃')}`);
+  if(e.demolisher) out.push(`${iconHTML('demolisher', '⛏️')}${n1(e.demolisher)}`);
+  if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
+  if(e.keenEye) out.push(`${iconHTML('keen-eye', '👁️')}`);
+  if(e.primed) out.push(`${iconHTML('primed', '🔋')}`);
+  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind) out.push(`${iconHTML('purblind', '🕶️')}`); if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
+  if(e.tipsy) out.push(`${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) out.push(`${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
+  if(e.overwhelm) out.push(`${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
   if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit left and right, never straight">🦞</span>` : `<span class="ab-fork" title="Fork: hits left and right, never straight">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
-  if(e.twinStrike) out.push(`⚔⚔`);
-  if(e.converge) out.push(`🧲`);
-  if(e.defiance) out.push(`😤${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
+  if(e.twinStrike) out.push(`${iconHTML('twin-strike', '⚔')}⚔`);
+  if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
+  if(e.defiance) out.push(`${iconHTML('defiance', '😤')}${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
   // Pack (reworked 2026-10-14): on the board it shows the live chain, 🐺×n (n units in its chain).
   { const lv = bopts && bopts.live; const pn = e.pack === true ? 2 : e.pack;
     if(e.pack) out.push(lv && lv.packChain ? `<span class="ab-pack is-on" title="Pack ${pn}: in a chain of ${lv.packChain}, +${lv.packChainBonus||0}/+${lv.packChainBonus||0}">🐺×${lv.packChain}</span>` : `<span class="ab-pack" title="Pack ${pn}">🐺${n1(pn)}</span>`);
     if(e.packLeader) out.push(`<span class="ab-pair${lv && lv.packChain ? ' is-on' : ''}" title="Pack Leader${lv && lv.packChain ? `: leading ${lv.packChain - 1} (+${lv.packChainBonus||0}/+${lv.packChainBonus||0})` : ''}">🐺<i>👑</i></span>`); }
-  if(e.fastForward) out.push(`⏩${n1(e.fastForward)}`);
+  if(e.fastForward) out.push(`${iconHTML('fast-forward', '⏩')}${n1(e.fastForward)}`);
   // Sweep recolored from a bare ⚔+N (2026-09-18, per explicit request: "sweep should have a
   // sweep icon" — it was reusing the exact same sword glyph as the plain attack stat right
   // below it on the card, which is precisely why it didn't read as its own distinct ability) to
   // 🌀, evoking the wide/cleaving arc a Sweep hit actually is.
-  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">😨${n1(e.daunt)}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">💢${n1(e.recoil)}</span>`);
-  if(e.sweep) out.push(`<span title="Cleave ${e.sweep}">🪓${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
+  if(e.daunt) out.push(`<span title="Daunt ${e.daunt}">${iconHTML('daunt', '😨')}${n1(e.daunt)}</span>`); if(e.recoil) out.push(`<span title="Recoil ${e.recoil}">${iconHTML('recoil', '💢')}${n1(e.recoil)}</span>`);
+  if(e.sweep) out.push(`<span title="Cleave ${e.sweep}">${iconHTML('sweep', '🪓')}${n1(e.sweep)}</span>`); // 2026-10-12: its own mark (🌀 is the dodge); 09:11 (user: "dont put Sweep +N, just Sweep N")
   // Pierce (2026-09-18, per explicit request: "a pierce should have a pierce logo at the top,
   // following our card styling so far") — Pierce is a real, playable skill (SKILL_DEFS above:
   // "every landed melee hit also punches N flat damage straight through to the enemy castle")
   // but had NO badge at all before this — a card with Pierce looked completely identical to one
   // without it anywhere outside the card editor. 🎯 reads as "punches straight through to the
   // target beyond," and isn't used by any other badge here.
-  if(e.puncture) out.push(`🎯${n1(e.puncture)}`);
-  if(e.rage) out.push(`😡`);
+  if(e.puncture) out.push(`${iconHTML('puncture', '🎯')}${n1(e.puncture)}`);
+  if(e.rage) out.push(`${iconHTML('rage', '😡')}`);
   // 🏹 also covers the generic Custom Trigger equivalent (On Spawn/On Ready + Deal damage to a
   // random enemy) that Arrow N/Arrow(=Attack) were migrated to (2026-09-20) -- see ACTIVE_PRESETS.
   // Bugfix 2026-09-30: this checked the OLD `t.target==='random'` field, which the Custom
@@ -5295,12 +5364,12 @@ function abilityBadges(d, bopts){
   // fires the same "arrow toward a random enemy" read.
   if(e.missile
   ) out.push(`🏹`); // custom triggers show as ⚡→🏹 now (triggerBadges, 2026-10-11)
-  if(e.render) out.push(`📉`);
+  if(e.render) out.push(`${iconHTML('render', '📉')}`);
   // 🐝 also covers the generic Custom Trigger equivalent (any On X + "Spawn card(s)" action) that
   // On Attacked: Spawn was migrated to (2026-09-21) -- see SKILL_DEFS' own comment on the removal.
-  if(e.onDeathSpawn||e.onAttackedSpawn) out.push(`🐝`);
-  if(e.onSpawnGold||e.onReadyGold) out.push(`🪵`); // 2026-09-22: these grant Lumber now, not Gold
-  if(e.onSpawnGrace||e.onReadyGrace) out.push(`🕊️`);
+  if(e.onDeathSpawn||e.onAttackedSpawn) out.push(`${iconHTML('on-death-spawn', '🐝')}`);
+  if(e.onSpawnGold||e.onReadyGold) out.push(`${iconHTML('on-spawn-gold', '🪵')}`); // 2026-09-22: these grant Lumber now, not Gold
+  if(e.onSpawnGrace||e.onReadyGrace) out.push(`${iconHTML('on-spawn-grace', '🕊️')}`);
   // New unified Buff/Debuff/Exile badges (2026-09-30, per explicit request: "The emoji symbol on
   // the card should use an arm or flag to represent this skill" — the Custom Triggers redesign
   // unified 4 old buff-family actions into one 'buff' action, and that one action had never
@@ -5325,20 +5394,20 @@ function abilityBadges(d, bopts){
   // author this). 2026-09-21: also covers the two new named passives, Inherent Darkness N
   // (onReadyDevilry's own convenience preset) and Core Evil (a pitch-time Dark Point bonus) --
   // both generate Dark Points just like the fields/triggers above, so both should earn the badge.
-  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil) out.push(`★`);
+  if(e.onSpawnDevilry||e.onReadyDevilry||e.inherentDarkness||e.coreEvil) out.push(`${iconHTML('on-spawn-devilry', '★')}`);
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`<span class="ab-wing">🪽</span>`); // 2026-10-06: 20% larger, it was easy to miss
-  if(e.quick) out.push(`👢`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
-  if(e.swift) out.push(`💨`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
-  if(e.earthquake) out.push(`<span class="ab-pair">🌎<i>💥</i></span>${n1(e.earthquake)}`);
-  if(e.pounce) out.push(`🐾${n1(e.pounce)}`); // Pounce (2026-10-12)
+  if(e.flying) out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  if(e.quick) out.push(`${iconHTML('quick', '👢')}`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
+  if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
+  if(e.pounce) out.push(`${iconHTML('pounce', '🐾')}${n1(e.pounce)}`); // Pounce (2026-10-12)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
-  if(e.kingSlayer) out.push(`<span class="ab-pair">👑<i>⚔️</i></span>${n1(e.kingSlayer)}`);
-  if(d.graceCost) out.push(`🕊️cost`);
-  if(d.exileCost) out.push(`🌫cost`);
+  if(e.kingSlayer) out.push(`<span class="ab-pair">${iconHTML('king-slayer', '👑')}<i>⚔️</i></span>${n1(e.kingSlayer)}`);
+  if(d.graceCost) out.push(`${iconHTML('grace-cost', '🕊️')}cost`);
+  if(d.exileCost) out.push(`${iconHTML('exile-cost', '🌫')}cost`);
   // 2026-09-29, per explicit request ("I think remove the lightning symbol - no need. Just have
   // the Bee symbol"): this was a catch-all "⚡×N" badge showing the raw count of ANY custom
   // triggers on the card, pushed in addition to whatever more-specific badge(s) already fired
@@ -10725,6 +10794,7 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div></div>
             </div>
           </div>
           <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
@@ -25505,14 +25575,14 @@ function sideResourcePillsHTML(m, p, mine){
   const sfx = mine ? '' : 'Enemy';
   const pill = (cls, id, title, body)=> `<span class="hud-pill ${cls}" id="${id}${sfx}" title="${escapeAttr((mine ? '' : 'Enemy ') + title)}">${body}</span>`;
   const out = [];
-  if((p.lumber||0) > 0) out.push(pill('lumber', 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `🪵 ${p.lumber}`));
-  if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `🪨 ${p.stone}`));
-  if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `🔩 ${p.metal}`));
-  if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `☢️ ${p.uranium}`));
-  if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `🕊️ ${p.grace}`));
-  if(deckHasEcclesia(m, p)) out.push(pill('prayer', 'hudPrayerPill', RESOURCE_TOOLTIP.prayer, `🙏 ${m.engine.prayerOf ? m.engine.prayerOf(p) : 0}${(mine && m.engine.prayerOfferReady && m.engine.prayerOfferReady(p)) ? '<small class="dark-left"> · offer ready</small>' : ''}`));
-  if(deckHasDevilry(m, p)) out.push(pill('devilry', 'hudDevilryPill', RESOURCE_TOOLTIP.devilry, `★ ${p.devilry||0}${mine ? `<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(p) : 1) - (p.darkUsed||0))}</small>` : ''}`));
-  if((p.elementalEnergy||0) > 0) out.push(pill('elementalenergy', 'hudElementalEnergyPill', RESOURCE_TOOLTIP.elementalenergy, `✨ ${p.elementalEnergy}`));
+  if((p.lumber||0) > 0) out.push(pill('lumber', 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber}`));
+  if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
+  if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
+  if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `${iconHTML('uranium', '☢️')} ${p.uranium}`));
+  if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `${iconHTML('grace', '🕊️')} ${p.grace}`));
+  if(deckHasEcclesia(m, p)) out.push(pill('prayer', 'hudPrayerPill', RESOURCE_TOOLTIP.prayer, `${iconHTML('prayer', '🙏')} ${m.engine.prayerOf ? m.engine.prayerOf(p) : 0}${(mine && m.engine.prayerOfferReady && m.engine.prayerOfferReady(p)) ? '<small class="dark-left"> · offer ready</small>' : ''}`));
+  if(deckHasDevilry(m, p)) out.push(pill('devilry', 'hudDevilryPill', RESOURCE_TOOLTIP.devilry, `${iconHTML('devilry', '★')} ${p.devilry||0}${mine ? `<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(p) : 1) - (p.darkUsed||0))}</small>` : ''}`));
+  if((p.elementalEnergy||0) > 0) out.push(pill('elementalenergy', 'hudElementalEnergyPill', RESOURCE_TOOLTIP.elementalenergy, `${iconHTML('elemental-energy', '✨')} ${p.elementalEnergy}`));
   return out.join('');
 }
 function fieldResSideHTML(m, mine){
@@ -26082,11 +26152,50 @@ function leaderThroneVfx(uid, opts){
 function maybeDeckShuffle(m){
   if(m && !fxAtLeast('med')){ m._deckShuffled = true; return; }
   if(!m || m._deckShuffled || m._shufflePending || (m.round||1) > 1) return;
+  // 2026-10-14: the versus opener is appended just after the first render, so look for it a beat later (it used to riffle unseen under the opener).
+  if(!m._shuffleArmed){ m._shuffleArmed = true; m._shufflePending = true; setTimeout(()=>{ m._shufflePending = false; if(m === matchState) maybeDeckShuffle(m); }, 90); return; }
   if(document.querySelector('.vs-opener, .vs-screen')){ m._shufflePending = true; setTimeout(()=>{ m._shufflePending = false; if(m === matchState) maybeDeckShuffle(m); }, 300); return; }
   m._deckShuffled = true;
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(!hasGsap() || reduce) return;
-  deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)));
+  // 2026-10-14: your own pile fans five backs out and riffles them with ProcFX.flipShuffle; the enemy's keeps the split riffle.
+  // Fire-and-forget: nothing waits on it, and the first turn runs underneath.
+  const mine = document.getElementById('deckWidgetBottom');
+  if(deckRiffleFx(mine)) deckShuffleVfx([document.getElementById('deckWidgetTop')]);
+  else deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)));
+}
+// Deck riffle (2026-10-14): five card backs fan out of the pile in a row, ProcFX.flipShuffle riffles the row (Flip
+// reorders them, the halves arc over and under each other), and they stack back into the pile. About 1.1 s, drawn in a
+// fixed overlay above the pile so it never touches the deck's own DOM or blocks a click. Returns false when it can't run
+// (no GSAP/Flip/ProcFX, Low effects, reduced motion, no pile on screen) so the caller can fall back.
+// Hook: call deckRiffleFx(el) whenever an effect shuffles cards back into a deck (no engine event does that yet).
+function deckRiffleFx(deck){
+  if(!deck || !deck.isConnected || deck.classList.contains('is-empty') || !hasGsap() || typeof Flip === 'undefined' || !window.ProcFX || !ProcFX.flipShuffle) return false;
+  if(!fxAtLeast('med') || reducedMotion()) return false;
+  const r = deck.getBoundingClientRect(); if(r.width < 8 || r.height < 8) return false;
+  const N = 5, w = r.width, h = r.height, step = Math.min(30, w*0.42), rowW = w + step*(N - 1), cs = getComputedStyle(deck);
+  const row = document.createElement('div'); row.className = 'deck-riffle'; row.setAttribute('aria-hidden', 'true');
+  row.style.cssText = `left:${(r.left + r.width/2 - rowW/2).toFixed(1)}px; top:${r.top.toFixed(1)}px; width:${rowW.toFixed(1)}px; height:${h.toFixed(1)}px; --ov:${(step - w).toFixed(1)}px;`;
+  for(let i = 0; i < N; i++){ const c = document.createElement('div'); c.className = 'deck-riffle-card';
+    c.style.cssText = `width:${w.toFixed(1)}px; height:${h.toFixed(1)}px; background:${cs.background}; border:${cs.border}; border-radius:${cs.borderRadius};`;
+    row.appendChild(c); }
+  document.body.appendChild(row);
+  const cards = [...row.children], mid = (N - 1)/2;
+  let gone = false; const cleanup = ()=>{ if(gone) return; gone = true; try{ gsap.killTweensOf(cards); }catch(e){} row.remove(); };
+  setTimeout(cleanup, 1600); // a hard stop, whatever happens to the timelines
+  const stackBack = ()=>{
+    if(gone) return; const rr = row.getBoundingClientRect(), cx = rr.left + rr.width/2;
+    gsap.to(row.children, {x:(i, el)=>{ const b = el.getBoundingClientRect(); return cx - (b.left + b.width/2); }, rotation:0, duration:.16, ease:'power2.in', stagger:.015,
+      onComplete:()=>{ cleanup(); if(deck.isConnected) gsap.fromTo(deck, {y:0}, {y:-2, duration:.07, yoyo:true, repeat:1, ease:'power1.out', clearProps:'y'}); }});
+  };
+  try{ SoundKit.riffle(); }catch(e){}
+  gsap.from(cards, {x:(i)=> (mid - i)*step, rotation:(i)=> (i - mid)*-2, duration:.16, ease:'power2.out', onComplete:()=>{
+    if(gone) return;
+    let tl = null; try{ tl = ProcFX.flipShuffle(row, {onDone: stackBack}); }catch(e){ tl = null; }
+    if(tl) tl.timeScale(1.25); else stackBack();
+    setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 260);
+  }});
+  return true;
 }
 // Deck shuffle (2026-10-12, user: "Improve the deck shuffling animation, Do not shorten the cards during shuffling"): a riffle.
 // Six full-size card backs split into two piles that slide out to the sides, then fall back in one at a time, alternating
@@ -32196,6 +32305,45 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
       }, '+=0.15');
   });
 }
+// Temper on the anvil (2026-10-14): the level-up plays ProcFX.forge's stages on the card itself: heat glow → three hammer
+// strikes with sparks → quench steam → temper shine. The forge timeline runs from 'heat' to its end at FORGE_TEMPER_SPEED,
+// about 2 s, as long as the old smithing sequence. Each hammer impact plays the anvil clang, the quench a hiss of drips
+// and the temper a chime; the existing LEVEL burst follows in forgeTemper. Falls back to forgeSmithAnimation without
+// ProcFX; skipped under reduced motion. Prestige, refine, limit break and promotion keep forgeSmithAnimation.
+const FORGE_TEMPER_SPEED = {heat:3.5, hammer:2, quench:3.2}; // ≈ 0.46 s + 0.95 s + 0.6 s
+function forgeTemperAnimation(beforeHTML, afterHTML){
+  return new Promise(resolve=>{
+    const stage = document.getElementById('anvilStage'), mountEl = stage && stage.querySelector('.forge-preview-wrap');
+    const card = mountEl && mountEl.querySelector('.card-tile');
+    if(!stage || !card || reducedMotion() || !hasGsap()){ resolve(); return; }
+    if(!window.ProcFX || !ProcFX.forge){ forgeSmithAnimation(beforeHTML, afterHTML, false).then(resolve, resolve); return; }
+    let f = null; try{ f = ProcFX.forge(card, {seed: 'temper:' + (forgeSelectedId || '') + ':' + Date.now()}); }catch(e){ f = null; }
+    if(!f || !f.tl){ forgeSmithAnimation(beforeHTML, afterHTML, false).then(resolve, resolve); return; }
+    // The hammer, sparks and steam layer is lifted off the tile onto the wrap, at the same origin, so the heat/quench
+    // filters tint only the card and the strikes stay bright.
+    const fxl = card.querySelector(':scope > .pfx-forge-fx');
+    if(fxl){ fxl.style.left = card.offsetLeft + 'px'; fxl.style.top = card.offsetTop + 'px'; mountEl.appendChild(fxl); }
+    const tl = f.tl, hammer = stage.querySelector('.forge-hammer');
+    if(hammer) hammer.style.opacity = '0'; // ProcFX brings its own hammer onto the card
+    stage.classList.add('is-hot');
+    // Sounds ride the timeline, so they stay on the strikes at any speed: impacts land 0.15 s after each swing starts.
+    [1.9, 2.45, 3.0].forEach(at=> tl.call(()=>{ try{ SoundKit.clang(); }catch(e){} }, null, at + .15));
+    tl.call(()=>{ stage.classList.remove('is-hot'); stage.classList.add('is-quench'); try{ SoundKit.drip ? SoundKit.drip() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'quench');
+    tl.call(()=>{ try{ SoundKit.readyChime ? SoundKit.readyChime() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'temper+=0.15');
+    let done = false;
+    const finish = ()=>{ if(done) return; done = true;
+      try{ f.destroy(); }catch(e){}
+      stage.classList.remove('is-hot', 'is-quench');
+      if(mountEl.isConnected) mountEl.innerHTML = afterHTML; // the tempered face; renderForge redraws the panel right after
+      resolve(); };
+    tl.eventCallback('onComplete', finish);
+    setTimeout(finish, 4000); // never hold the Forge hostage
+    // Pace per stage: the heat and the cool-down move quickly, the hammer gets the most real time so each strike reads.
+    tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.hammer), null, 'hammer');
+    tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.quench), null, 'quench');
+    tl.seek('heat').timeScale(FORGE_TEMPER_SPEED.heat).play();
+  });
+}
 async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, L = getCardLevel(id);
@@ -32208,7 +32356,7 @@ async function forgeTemper(btn){
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   myCardLevels[id] = L+1; saveCardLevels();
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
-  try{ await forgeSmithAnimation(beforeHTML, afterHTML, false); }catch(e){}
+  try{ await forgeTemperAnimation(beforeHTML, afterHTML); }catch(e){}
   forgeBusy = false; renderForge();
   const pop = document.querySelector('#forgeDetail .forge-level-label');
   if(pop){ pop.classList.add('pop'); }
@@ -36499,6 +36647,13 @@ function wireSettingsButton(idSuffix){
     fxSel.value = fxLevel();
     fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast('Effects: ' + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
   }
+  // Emoji style (2026-10-14): System / Twemoji. Picking Twemoji falls back to System quietly if the library can't load.
+  const emSel = document.getElementById('emojiStyleSelect'+idSuffix);
+  if(emSel){
+    emSel.innerHTML = `<option value="system">System</option><option value="twemoji">Twemoji</option>`;
+    emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits();
+    emSel.addEventListener('change', ()=>{ EmojiStyle.set(emSel.value).then(ok=>{ if(emSel.value === 'twemoji' && !ok){ try{ localStorage.setItem(EMOJI_STYLE_KEY, 'system'); }catch(e){} emSel.value = 'system'; } document.querySelectorAll('select[id^="emojiStyleSelect"]').forEach(x=>{ x.value = EmojiStyle.get(); }); }); });
+  }
   { const dg = document.getElementById('dangerSelect'+idSuffix); if(dg){
       dg.innerHTML = [['uncommon','From Uncommon (2), then Rare (3), Very Rare (4)…'],['rare','From Rare, then rarer'],['veryrare','From Very Rare, then rarer'],['epic','From Epic, then rarer'],['legendary','Legendary and up'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
       dg.value = dangerFrom(); dg.addEventListener('change', ()=>{ setDangerFrom(dg.value); showToast(dg.value === 'off' ? 'Danger warnings off.' : 'Danger warnings: ' + dg.options[dg.selectedIndex].text + '.'); }); } }
@@ -36513,6 +36668,7 @@ function wireSettingsButton(idSuffix){
     panel.hidden = false;
     if(!idSuffix) renderSettingsLinks();
     if(atmo) atmo.value = loadAtmosphere();
+    if(emSel){ emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits(); }
     btn.classList.add('is-open');
     btn.setAttribute('aria-expanded','true');
   };
