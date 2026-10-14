@@ -467,10 +467,10 @@ const PASSIVE_DEFS = [
   {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
   {key:'satiety', category:'passive', label:'Satiety', kind:'number', min:0, desc:v=>`Well fed: at the start of each round at full health, gains +${v} max Health.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
-  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flow: +1 Attack. Ebb: +1 Armor. (Every Swimmer is a Tide unit too.)`}, // 2026-10-14: "Swimmers = Tide" // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
+  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flow: +1 Attack. Ebb: +1 Armor. High Tide: +2 Attack, +2 Armor. (Every Swimmer is a Tide unit too.)`}, // 2026-10-14: "Swimmers = Tide" // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
   {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
-  {key:'wash', category:'passive', label:'Wash', kind:'boolean', desc:()=>`On Flow rounds, the enemy card facing this one gets +1 Wait (once per enemy card).`},
+  // Wash retired 2026-10-14 (user: "Remove the 'Wash' effect"): no card carries it and the tide no longer pushes anyone back.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
@@ -1474,7 +1474,6 @@ const SKILL_TEXT = {
   desecrate: v=> `Its hits curse the ground: whoever stands there takes ${v} damage every upkeep. Stacks.`,
   tide: ()=> `Flow: +1 Attack. Ebb: +1 Armor.`, swimmer: v=> `A Tide unit. On Flow: ${v === 'quickAttack' ? 'Quick Attack' : v === 'evade' ? 'Evade' : '+1 Attack more'}.`,
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
-  wash: ()=> `On Flow, the enemy facing it gets +1 Wait (once per enemy).`,
   expose: v=> `Its hits mark the target: +${v} damage on the next hit it takes.`,
   guardian: ()=> `Takes the hits aimed at adjacent allies.`,
   quick: ()=> `Attacks before every unit without Quick.`,
@@ -1578,6 +1577,9 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
+    if(p.key==='tide' || p.key==='swimmer'){ if(p.key==='tide' && e.swimmer) return; // one Tide line for a Tide Swimmer
+      const lt = liveCard ? liveTideState(e) : null, sw = p.key==='swimmer' && v !== true && v !== 'extraAttack' ? ` <small>(on Flow: ${v === 'quickAttack' ? 'Quick Attack' : v === 'evade' ? 'Evade' : '+1 Attack more'})</small>` : '';
+      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide${sw}`); return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -1654,9 +1656,7 @@ function describeEffects(def, liveCard){
   if(e.weakness && e.weakness.length) core.push(`<span class="core-line">💢 Weakness: ${e.weakness.map(resistOptionLabel).join(', ')}</span>`);
   if(e.immune && e.immune.length) core.push(`<span class="core-line">✳️ Immune: ${e.immune.map(resistOptionLabel).join(', ')}</span>`);
   if(core.length){ const at = lines.length && /^🧬/.test(lines[0]) ? 1 : 0; lines.splice(at, 0, ...core); }
-  { const tr = (typeof matchState !== 'undefined' && matchState) ? terrainOfMatch(matchState) : null, t = tr && tr.t;
-    if(t && Array.isArray(def.archetypes) && def.archetypes.some(a=> t.types.includes(a))){ const g = t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-      lines.push(`<span class="granted-skill" title="Given by this fight's terrain">${t.icon} Home ground — ${[t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', g].filter(Boolean).join(' and ')} on the ${t.name}.</span>`); } }
+  // (The terrain's "Home ground" line went with the effect, 2026-10-14.)
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
   return lines;
@@ -4100,8 +4100,8 @@ function fieldHoverHTML(){
     if(r.frostbite) extra.push(`Frostbite: an enemy the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
     extra.push('Units that resist cold are never chilled.');
   }
-  const left = f.rounds != null ? `${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left, then it clears.` : 'It lasts the whole fight.';
-  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${keywordizeHTML(escapeHtml(f.text))}</p>${rowsHTML}${extra.map(t=> `<p>${keywordizeHTML(escapeHtml(t))}</p>`).join('')}<p class="fh-left">${escapeHtml(left)}</p><p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
+  const left = f.rounds != null ? `${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left, then it clears.` : ''; // 2026-10-14: no "lasts the whole fight"
+  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.name)}</b></div><p>${keywordizeHTML(escapeHtml(f.text))}</p>${rowsHTML}${extra.map(t=> `<p>${keywordizeHTML(escapeHtml(t))}</p>`).join('')}${left ? `<p class="fh-left">${escapeHtml(left)}</p>` : ""}<p class="fh-note">A field card played by either side replaces it for a few rounds.</p></div>`;
 }
 function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
@@ -4161,7 +4161,7 @@ function castleHoverHTML(hqSide){
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
-      const html = el.dataset.fieldhover === 'cond' ? fieldCondHoverHTML() : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
+      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -5177,8 +5177,9 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">🍃</span>`);
   if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">↺</span>`);
-  if(e.tide) out.push(`<span class="ab-tide" title="Tide: Flow +1 Attack, Ebb +1 Armor">🌊</span>`);
-  if(e.swimmer) out.push(`🏊`);
+  { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
+    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">🌊</span>`);
+    if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr(lt.name + ' – ' + lt.bonus)}">🏊</span>` : `<span title="Tide">🏊</span>`); }
   if(e.rainmaker) out.push(`🌧️`); if(e.rainrunner) out.push(`🌦️${n1(e.rainrunner)}`); if(e.moonborn) out.push(`🌕${n1(e.moonborn)}`); if(e.frostbite) out.push(`🥶${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">🤝${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">🚩${n1(e.rally)}</span>`);
@@ -9085,7 +9086,8 @@ function unlockCardForPlayer(id, source, copyOpts){
   // Leaders lesson (2026-10-12, 11:26 list: "The first time you get a Unique+ card, there should be a tutorial that they (Unique
   // rarity and higher) can be used as leaders"): once, when the first card that can lead arrives, after any fight.
   try{ if(canLeadDef(d) && source !== 'admin' && !loadDialogueFlags()['lesson:leaders']){ setDialogueFlag('lesson:leaders', true); pendingLeaderLesson = id; setTimeout(maybeLeaderLesson, 1500); } }catch(e){}
-  try{ if((d.cost||0) > 0 && source !== 'admin') queueLumberLesson(id); }catch(e){}
+  // 2026-10-14 (user: "Don't show the lumber tutorial till i have a lumber card to play..."): obtaining a Lumber card no longer
+  // queues the lesson; it waits for a fight where one is in your hand (lumberDrawNudges).
   return true;
 }
 // Lumber lesson (2026-10-13, user: "players don't read ... a first lumber tutorial as soon as a card that uses lumber is drawn or
@@ -9095,6 +9097,7 @@ let pendingLumberLesson = null, lumberLessonTries = 0;
 function queueLumberLesson(id){ if(loadDialogueFlags()[LUMBER_LESSON_FLAG] || adminModeEnabled) return; pendingLumberLesson = id; lumberLessonTries = 0; setTimeout(maybeLumberLesson, 1800); }
 function maybeLumberLesson(inBattle){
   if(!pendingLumberLesson || loadDialogueFlags()[LUMBER_LESSON_FLAG]) return;
+  if(!inBattle) return; // 2026-10-14: only in a fight, with the Lumber card in your hand (see lumberDrawNudges)
   const busy = !inBattle && ((typeof matchState !== 'undefined' && matchState && !matchState.over) || document.querySelector('.po2-stage, .winloss-overlay, #lumberLesson, .modal-overlay:not([hidden]) .modal'));
   if(busy){ if(++lumberLessonTries < 120) setTimeout(maybeLumberLesson, 2500); return; }
   const d = getCardDefs()[pendingLumberLesson]; pendingLumberLesson = null; if(!d) return;
@@ -12196,16 +12199,19 @@ function enterSubMap(id, el, body){
   if(!mainEl || reduce || !mainEl.animate || !el) return go();
   const mr = mainEl.getBoundingClientRect(), r = el.getBoundingClientRect();
   // A side map in daylight (2026-10-14, user: "If the submap is not dark, don't need to darken the screen - just zoom into the
-  // entrance, then open and zoom out from the new submap."): no iris and no loading card, just the camera. The whole map layer
-  // (art, trail and fights) zooms into the entrance; the side map then opens zoomed in on its own way in and pulls back.
-  // Caves and dark side maps keep the dive into the dark below.
+  // entrance, then open and zoom out from the new submap."): no iris and no loading card, just the camera. Caves and dark side
+  // maps keep the dive into the dark below.
+  // 2026-10-14 (user: "When going into clovermead and similar submaps, dont zoom the whole screen in, just the map. Then when we go
+  // into the submap, the new map zooms in to fit our screen size. (The same method as zoom out, but opposite)"): only the map
+  // (its art, trail and fights) zooms into the entrance; the map list beside it holds still. The side map then starts small in
+  // the middle of its panel and grows to fill it, the reverse of leaving one.
   if(!subMapIsDark(sm)){
     const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
     try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
     document.documentElement.classList.add('submap-zooming');
-    const za = lay.animate([{transform:'none', transformOrigin:`${r.left + r.width/2 - lr.left}px ${r.top + r.height/2 - lr.top}px`}, {transform:'scale(4.5)', transformOrigin:`${r.left + r.width/2 - lr.left}px ${r.top + r.height/2 - lr.top}px`}], {duration:560, easing:'cubic-bezier(.55,0,.85,.35)', fill:'forwards'});
+    const za = mapOnlyZoom(lay, 1, 4.5, r.left + r.width/2 - lr.left, r.top + r.height/2 - lr.top, 560, t=> t*t*t, true);
     za.onfinish = ()=>{ conquestVeiledMap = id; // the side map's loading card would darken the screen again
-      conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = 'fromEntry'; renderConquestSubTab(body); try{ za.cancel(); }catch(e){} };
+      conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = 'grow'; renderConquestSubTab(body); try{ za.cancel(); }catch(e){} };
     setTimeout(()=> document.documentElement.classList.remove('submap-zooming'), 2200);
     return;
   }
@@ -12231,6 +12237,22 @@ function enterSubMap(id, el, body){
     const o = iris.firstChild.animate([{width:'0px', height:'0px'}, {width:big2+'px', height:big2+'px'}], {duration:600, easing:'cubic-bezier(.4,0,.3,1)', fill:'forwards'});
     o.onfinish = ()=> iris.remove(); setTimeout(()=> iris.remove(), 900);
   };
+}
+// Zoom the map but not the map list (2026-10-14): the art lives on #conquestLayout, which also holds the list, so the layout is
+// scaled about (ox, oy) and the list gets the exact inverse scale at every keyframe (its own origin placed on the same point),
+// which keeps it where it is. ease maps 0–1 progress to 0–1; the keyframes carry the easing, so they run linear.
+function mapOnlyZoom(lay, from, to, ox, oy, ms, ease, hold){
+  const list = lay.querySelector(':scope > .conquest-maps'), N = 18, ks = [], lk = [];
+  const lo = list ? {x: list.offsetLeft, y: list.offsetTop} : null;
+  for(let k = 0; k <= N; k++){ const t = k / N, sc = from + (to - from) * ease(t);
+    ks.push({transform:`scale(${sc})`, transformOrigin:`${ox}px ${oy}px`, offset:t});
+    if(list) lk.push({transform:`scale(${1/sc})`, transformOrigin:`${ox - lo.x}px ${oy - lo.y}px`, offset:t}); }
+  const o = {duration:ms, easing:'linear', fill: hold ? 'forwards' : 'none'};
+  const a = lay.animate(ks, o);
+  // shrunk below full size, the layout's own clip would cut the (held-still) list off, so it may overflow while the zoom runs
+  if(list){ list.style.zIndex = '3'; if(Math.min(from, to) < 1) lay.style.overflow = 'visible'; const b = list.animate(lk, o); const done = ()=>{ list.style.zIndex = ''; lay.style.overflow = ''; };
+    a.addEventListener('finish', ()=> setTimeout(()=>{ try{ b.cancel(); }catch(e){} done(); }, 0)); a.addEventListener('cancel', ()=>{ try{ b.cancel(); }catch(e){} done(); }); }
+  return a;
 }
 function subMapIris(rect, cx, cy){
   document.querySelectorAll('.submap-iris').forEach(e=> e.remove());
@@ -12699,10 +12721,12 @@ function terrainSummary(t, rules){
   if(!t) return '';
   const bonus = [t.atk || t.hp ? `+${t.atk}/+${t.hp}` : '', t.grant ? Object.entries(t.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : ''].filter(Boolean).join(' and ');
   const who = t.types.length > 1 ? t.types.slice(0, -1).join(', ') + ' and ' + t.types[t.types.length - 1] : t.types[0];
-  let txt = `${who} units on both sides are on home ground: ${bonus}.`;
+  // 2026-10-14 (user: "Remove the Home ground explanation. Remove the home ground effect."): the terrain gives nothing now, so
+  // only the volcano's own effects are left to say.
+  void bonus; void who; let txt = '';
   const er = rules && Number(rules.eruption) || 0;
-  if(volcanoRulesOn(rules)){ const o = volcanoOddsOf(rules, 2); const hz = VOLCANO_HAZARDS.filter(h=> o[h.key] > 0).map(h=> `${h.name} (${volcanoChanceWord(rules, h.key)})`); if(hz.length) txt += ` The mountain stirs: ${hz.join(', ')}.`; }
-  else if(er > 0) txt += ` The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
+  if(volcanoRulesOn(rules)){ const o = volcanoOddsOf(rules, 2); const hz = VOLCANO_HAZARDS.filter(h=> o[h.key] > 0).map(h=> `${h.name} (${volcanoChanceWord(rules, h.key)})`); if(hz.length) txt = `The mountain stirs: ${hz.join(', ')}.`; }
+  else if(er > 0) txt = scorchedGroundText(er);
   return txt;
 }
 // Lantern light in the dark (2026-10-14, the Effects Lab's lantern, made safe for fights): in pitch-black and absolute
@@ -12736,10 +12760,11 @@ function eruptionGeyserVfx(el, water){
 // The terrain's first appearance in a match: a banner across the field saying what it does, then it lives in the pill.
 function maybeTerrainIntro(m){
   if(!m || m._terrainIntro) return; const tr = terrainOfMatch(m); if(!tr) return; m._terrainIntro = true;
+  if(!(tr.t ? terrainSummary(tr.t, tr.rules) : Number(tr.rules.eruption) > 0)) return; // no home ground any more (2026-10-14): a quiet terrain has nothing to announce
   setTimeout(()=>{ const bf = document.getElementById('battlefieldEl'); if(!bf || matchState !== m) return;
     const t = tr.t, er = Number(tr.rules.eruption) || 0;
     const b = document.createElement('div'); b.className = 'terrain-banner biome-' + (t ? t.biome : 'ash'); b.setAttribute('role', 'status');
-    b.innerHTML = `<b>${escapeHtml(t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions')}</b><span>${keywordizeHTML(escapeHtml(t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep.`))}</span>`;
+    b.innerHTML = `<b>${escapeHtml(t ? `${t.icon} ${t.name}` : '🔥 ' + SCORCHED_NAME)}</b><span>${keywordizeHTML(escapeHtml(t ? terrainSummary(t, tr.rules) : scorchedGroundText(er)))}</span>`;
     bf.appendChild(b);
     // 2026-10-14: it then shrinks into the field card on the enemy's side, where it stays.
     setTimeout(()=>{ const c = document.getElementById('fieldCondCard'); if(!c || reducedMotion()){ b.classList.add('is-out'); return; }
@@ -12771,37 +12796,46 @@ function volcanoRulesOn(r){ return !!(r && (VOLCANO_LEVELS[r.volcano] || r.lavaT
 function volcanoOddsOf(r, round){ if(!volcanoRulesOn(r)) return null; const t = (VOLCANO_LEVELS[r.volcano] || {odds:[0,0,0]}).odds, up = r.volcano === 'even' ? 2 * Math.max(0, (Number(round)||2) - 2) : 0;
   const pick = (ov, base)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? base + up : 0)));
   return {lavaTide: pick(r.lavaTideChance, t[0]), petrify: pick(r.petrifyChance, t[1]), eruption: pick(r.eruptionChance, t[2])}; }
+// Scorched Ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed"): the old fixed
+// "Eruptions" (rules.eruption with no volcano odds). The volcano's Eruption hazard keeps its name.
+const SCORCHED_NAME = 'Scorched Ground';
+function scorchedGroundText(n){ return `From round 2, the ground burns one random unit on each side for ${n} fire damage every round. Units that resist fire are spared.`; }
 const VOLCANO_HAZARDS = [
   {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> `From round 2, lava may flood one random column on both sides: the units there that don't fly take 3 fire damage (fire-resistant units take half).`},
   {key:'petrify', icon:'🪨', name:'Petrification', text:()=> `From round 2, one random unit on each side may turn to stone for the round: it can't attack, and it takes half damage.`},
-  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Units that resist fire are spared.`},
+  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Then the odds reset, and for 3 rounds comets rain down: every unit takes 2–5 fire damage (fire-resistant units take half).`},
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
 function fieldConditionRows(r){
-  r = r || {}; const rows = [], add = (key, icon, name, text, tip)=> rows.push({key, icon, name, text, tip});
-  if(r.terrain){ const t = r.terrain; add('terrain', t.icon, `${t.name} ${TIER_NUMERAL[t.tier]||''}`.trim(), terrainSummary(t, r)); }
+  // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
+  // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
+  // explanation").
+  r = r || {}; const rows = [], add = (key, icon, name, text, tip, short)=> rows.push({key, icon, name, text, tip, short: short || name});
   if(volcanoRulesOn(r)){ const o = volcanoOddsOf(r, 2);
-    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`); }); }
-  else if(Number(r.eruption) > 0) add('eruption', '🌋', 'Eruptions', `From round 2, one random unit on each side takes ${r.eruption} fire damage every upkeep. Units that resist fire are spared.`);
-  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
-  else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.');
-  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).');
-  else if(r.dark === 'pitch') add('dark', '🌑', 'Pitchblack', 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.');
-  else if(r.dark) add('dark', '🌘', 'Darkness', 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.');
-  if(r.misty) add('misty', '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.'); // 2026-10-14
-  if(r.phase === 'night') add('night', '🌙', 'Night all fight', 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.');
-  if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.');
-  if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "the Tide is always in. Tide effects can't change it."); // 2026-10-14: Flow every round from round 1
-  if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High tide', 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.');
-  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are washed back (+1 Wait), and the ones that can\'t swim take 1 water damage.'); // 2026-10-14
+    const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
+    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
+  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
+  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every round');
+  else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every other round');
+  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', '', 'No Darksight: every attack misses');
+  else if(r.dark === 'pitch') add('dark', '🌑', 'Pitchblack', 'Units without Darksight miss 1 attack in 2. A Lantern lights your side.', '', 'No Darksight: miss 1 in 2');
+  else if(r.dark) add('dark', '🌘', 'Darkness', 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.', '', 'No Darksight: miss 1 in 4');
+  if(r.misty) add('misty', '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.', '', 'No day or night'); // 2026-10-14
+  if(r.phase === 'night') add('night', '🌙', 'Night', 'Darkness: units without Darksight or Nocturnal miss 1 attack in 4. Night-blind units miss 1 in 2.', '', 'Always night');
+  if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
+  if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "The Tide is always in. Tide effects can't change it.", '', 'The Tide is always in'); // 2026-10-14: Flow every round from round 1
+  // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
+  if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High Tide', 'Periodic High Tides.', '', 'Periodic High Tides');
+  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', 'Each round from round 2, a spout bursts in one random column: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', '', 'A spout pushes a column back'); // 2026-10-14
   if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
-    add('frost', '❄️', 'Frost', (()=>{ const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1); return `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`; })());
+    const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1);
+    add('frost', '❄️', 'Frost', `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`, '', `Chills ${n} a side each round`);
     // 2026-10-13 (user: 'Remove "Used to the cold" - what's that!'): units that ignore the frost are part of the Frost line now.
     if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
-    if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`);
+    if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
-  if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`);
-  if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.');
+  if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
+  if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
 }
 function fieldRowsListHTML(rows){
@@ -12821,6 +12855,7 @@ function noteFieldEvent(ev){
   if(ev.type === 'fieldTick' && ev.field === 'frozen'){ hit = markFieldRow('frost'); }
   else if(ev.type === 'statusFx' && ev.kind === 'frostbite') hit = markFieldRow('frostbite');
   else if(ev.type === 'fieldTick' && (ev.field === 'eruption' || ev.field === 'lavaTide' || ev.field === 'petrify')) hit = markFieldRow(ev.field); // + the volcano's hazards (2026-10-14)
+  else if(ev.type === 'fieldTick' && ev.field === 'scorched') hit = markFieldRow('eruption'); // Scorched Ground keeps the old row key (2026-10-14)
   else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
   else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
@@ -13004,12 +13039,11 @@ function skirmishFieldChips(mapId, draft){
   const ph = eff.phase || 'day'; if(ph !== 'day' || 'phase' in exp){ const L = SE_PHASE_LABEL[ph] || ['🌗', ph]; add('phase', true, L[0], L[1] + ((ph === 'cycle' || ph === 'nightFirst') ? `, every ${eff.phaseLen || 3} rounds` : ''), 'Day & night, in the battle box above.'); }
   if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); }
   else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frigid (off)', 'The map would freeze this fight.');
-  if(eff.terrain && eff.terrain.types) add('terrain', true, eff.terrain.icon, `${eff.terrain.name} ${ROMAN_TIER[eff.terrain.tier] || ''}`, terrainSummary(eff.terrain));
-  else if(eff.terrain === false && auto.terrain) add('terrain', false, auto.terrain.icon, `${auto.terrain.name} ${ROMAN_TIER[auto.terrain.tier] || ''} (off)`, 'Home ground is switched off for this fight.');
+  // (Terrain chips went with home ground, 2026-10-14: a terrain on its own does nothing to switch on or off.)
   if(volcanoRulesOn(eff)){ const lv = VOLCANO_LEVELS[eff.volcano]; add('volcano', true, '🌋', `Volcano: ${lv ? lv.label : 'custom odds'}`, VOLCANO_HAZARDS.map(h=> `${h.name}: ${volcanoChanceWord(eff, h.key)}`).join(' · ') + (Number(eff.eruption) > 0 ? ` (eruptions deal ${eff.eruption})` : '') + '.'); }
-  else if(Number(eff.eruption) > 0) add('eruption', true, '🌋', `Eruption ${eff.eruption}`, `From round 2, one random unit on each side takes ${eff.eruption} fire damage every upkeep.`);
-  else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🌋', 'Eruption (off)', `The map would erupt for ${auto.eruption}.`);
-  if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'The tide runs Ebb, Flow, Ebb, High tide.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
+  else if(Number(eff.eruption) > 0) add('eruption', true, '🔥', `${SCORCHED_NAME} ${eff.eruption}`, scorchedGroundText(eff.eruption));
+  else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
+  if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
   if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
   if(eff.misty) add('misty', true, '🌫️', 'Misty', 'No day or night; the mist shifts from orange to blue and back.'); // 2026-10-14
   if(eff.bossSurge) add('bossSurge', true, '💥', `Boss surge +${eff.bossSurge.atk}/+${eff.bossSurge.hp}`, 'The boss arrives stronger.'); else if(exp.bossSurge === false && auto.bossSurge) add('bossSurge', false, '💥', 'Boss surge (off)', '');
@@ -13026,10 +13060,10 @@ function skirmishFxAddOptionsHTML(){
   const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`;
   const grp = (label, list)=> `<optgroup label="${escapeAttr(label)}">${list.map(o).join('')}</optgroup>`;
   const by = g=> FIELD_EFFECTS.filter(f=> !f.arenaOnly && g.includes(f.group));
-  const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🌋', name:'Eruption ' + n}))
+  const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'actions']).concat(erupt))}${grp('Home ground', grounds)}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -16527,6 +16561,9 @@ function renderConquestSubTab(body){
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
   try{ mountCaveDark(document.getElementById('conquestCanvas'), map); }catch(e){}
+  // A dark map, cleared (2026-10-14, user: "If a dark map is completely cleared - it will turn a little bit brighter."): caves,
+  // the dark marsh and any side map fought in the dark get their art lifted and a soft warm glow once every fight on them is won.
+  try{ const lay = document.getElementById('conquestLayout'); if(lay) lay.classList.toggle('dark-cleared', !!((isDarkMap(map) || subMapIsDark(map)) && caveMapCleared(map))); }catch(e){}
   { let layer = null; try{ layer = mountMapShader(conquestShaderHost(), map.id); }catch(e){}
     const vh = conquestShaderHost();
     // 2026-10-10 (user: "Only do this if viewing for the FIRST TIME OR, if this is the first map you open when opening the
@@ -16553,12 +16590,13 @@ function renderConquestSubTab(body){
   { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; leaveSubMap(map, body); }); }
   { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
-  if(conquestSubZoom === 'fromEntry'){ conquestSubZoom = null;
-    // 2026-10-14: a daylight side map opens zoomed in on its way in (the exit back out, or its first fight) and pulls back.
-    const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
-    const entry = mainEl.querySelector('#mapSubExit') || mainEl.querySelector('[data-nodekey], .conquest-node, [data-node]');
-    const er = entry ? entry.getBoundingClientRect() : null, ox = er && er.width ? er.left + er.width/2 - lr.left : lr.width/2, oy = er && er.width ? er.top + er.height/2 - lr.top : lr.height/2;
-    if(lay.animate){ const o = `${ox}px ${oy}px`; const zo = lay.animate([{transform:'scale(4.5)', transformOrigin:o}, {transform:'none', transformOrigin:o}], {duration:760, easing:'cubic-bezier(.2,.75,.25,1)'});
+  if(conquestSubZoom === 'grow'){ conquestSubZoom = null;
+    // 2026-10-14: a daylight side map starts small in the middle of its map panel and zooms in until it fills it (leaving one
+    // shrinks it away; this is the same move the other way round). The map list holds still.
+    const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect(), mr = mainEl.getBoundingClientRect();
+    const ox = mr.left + mr.width/2 - lr.left, oy = mr.top + mr.height/2 - lr.top;
+    if(lay.animate){ const zo = mapOnlyZoom(lay, .35, 1, ox, oy, 640, t=> 1 - Math.pow(1 - t, 3), false);
+      mainEl.animate([{opacity:0}, {opacity:1, offset:.35}, {opacity:1}], {duration:640, easing:'ease-out'});
       zo.onfinish = zo.oncancel = ()=> document.documentElement.classList.remove('submap-zooming'); }
     else document.documentElement.classList.remove('submap-zooming');
   }
@@ -19924,7 +19962,7 @@ function fxlBaseDef(role){
 }
 // Field and fight conditions. rules go to the engine as an Arena ruleset would; units/steps/pre as in fxlScenario.
 const FXL_TIDE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}, {role:'ally', slot:-1, def:{name:'Tide Runner', icon:'🌊', effects:{tide:true}}}, {role:'ally2', slot:1, def:{name:'Landlubber', icon:'🪨'}}],
-  foes:[{role:'foe', slot:0, def:{name:'Wave Washer', icon:'💦', effects:{tide:true, wash:true}}}, {role:'foe2', slot:1}]};
+  foes:[{role:'foe', slot:0, def:{name:'Wave Rider', icon:'💦', effects:{tide:true}}}, {role:'foe2', slot:1}]};
 const FXL_PHASE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2, nocturnalHp:2}}}, {role:'ally', slot:-1, def:{name:'Sun Lark', icon:'🐦', effects:{diurnal:2, diurnalHp:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
 const FXL_FLYER_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}]};
 const FXL_DARK_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}, {role:'ally', slot:-1, def:{name:'Lantern Bearer', icon:'🏮', effects:{lantern:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
@@ -19940,11 +19978,11 @@ const FXL_FIELDS = [
   {key:'nightToDay', icon:'🌅', name:'Night → Dawn', text:()=> 'At dawn (the first round of a new day) both sides draw a card.', rules:{phase:'nightFirst', phaseLen:1}, units:FXL_PHASE_UNITS, decks:true},
   {key:'twilight', icon:'🌆', name:'Twilight', text:()=> 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', rules:{phase:'cycle', phaseLen:1, twilight:true}, pre:3, units:{mine:[{role:'subject', slot:0, def:{name:'Dusk Moth', icon:'🦋', effects:{crepuscular:2, crepuscularHp:2}}}, {role:'ally', slot:-1, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
   {key:'misty', icon:'🌫️', name:'Misty', text:()=> 'No day or night; the mist shifts from orange to blue and back.', rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
-  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once a Tide unit (Swimmers count) is in play the water flows and ebbs every round. On Flow, Tide units get +1 Attack and Wash units push the card facing them back 1 Wait.', rules:{}, units:FXL_TIDE_UNITS},
+  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once a Tide unit (Swimmers count) is in play the water flows and ebbs every round. On Flow, Tide units get +1 Attack.', rules:{}, units:FXL_TIDE_UNITS},
   {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, units:FXL_TIDE_UNITS, pre:1, note:'The Flow passes silently first, so this round brings the Ebb.'},
-  {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'The tide runs Ebb, Flow, Ebb, High tide. At High tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
+  {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'Periodic High Tides. At High Tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
   {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
-  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are washed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
+  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds: the wind rises at the start of round 2.'},
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, so you see a round fought in the wind.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> 'Units without Darksight miss 1 attack in 4. A Lantern lights your side.', rules:{dark:'dark'}, units:FXL_DARK_UNITS},
@@ -19953,9 +19991,8 @@ const FXL_FIELDS = [
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
   {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
-  {key:'eruption', icon:'🌋', name:'Eruptions (fixed)', text:()=> 'From round 2, one random unit on each side takes 3 fire damage every upkeep. Units that resist fire are spared.', rules:{eruption:3}},
-  ...Object.keys(TERRAIN_BIOMES).filter(k=> k !== 'ash').map(k=>{ const b = TERRAIN_BIOMES[k];
-    return {key:'terrain-' + k, icon:b.icon, name:`Terrain: ${b.name} II`, text:()=> terrainSummary(terrainObj(k, 2), {}), rules:{terrain: terrainObj(k, 2)}, myTypes:[b.types[0]], note:`Your side is ${b.types[0]} here (home ground); the enemy is not.`}; }),
+  {key:'eruption', icon:'🔥', name:SCORCHED_NAME, text:()=> scorchedGroundText(3), rules:{eruption:3}},
+  // (The "Terrain: … II" entries left with home ground, 2026-10-14: a terrain on its own does nothing now.)
   {key:'bossSurge', icon:'💢', name:'Boss surge', text:()=> "Their boss surges when it's cast.", unsupported:'It needs a real boss fight (a boss card cast by the enemy) and can\'t be staged with stand-ins.'},
   {key:'enemyOre', icon:'⛏️', name:'Deep mines', text:()=> 'Their side digs the Stone and Metal it needs.', unsupported:'It only changes the enemy\'s resources, so there is nothing to see on the field.'},
 ];
@@ -19991,7 +20028,6 @@ const FXL_SKILL_SETUPS = {
   retribution: {steps:[{kill:'ally'}], note:'The Sparring Partner is killed.'},
   frenzy: {status:{subject:{poison:2}}, note:'The Specimen starts Poisoned.'}, fester: {status:{subject:{poison:3}}, note:'The Specimen starts Poisoned.'},
   helmet: {foeFx:{arrow:2}, note:'The dummies shoot arrows.'},
-  wash: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], note:'A Swimmer ally starts the tide.'},
   swipe: {foeLumber:3, note:'The enemy has 3 Lumber to lose.'},
   bloomWhen: {rules:{phase:'night'}, mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], steps:['round', 'round'], note:'At night, with a Swimmer ally to bring the Tide in.'},
   swimmerGrant: {helperFx:{swimmer:true}, steps:['round', 'round'], note:'The Specimen is a Swimmer, so the Tide comes in with it.'},
@@ -21195,10 +21231,10 @@ const FIELD_EFFECTS = [
   {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
-  {id:'eruption',  group:'eruption', icon:'🌋', name:'The Mountain Wakes', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, one random unit on each side takes 2 fire damage every upkeep.'},
-  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are washed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
+  {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
+  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
   {id:'misty',     group:'misty', icon:'🌫️', name:'Misty',        weird:1, cost:1, rules:{misty:true}, text:'No day or night; the mist shifts from orange to blue and back.', editorOnly:true}, // 2026-10-14: no map has it yet
-  {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'The tide runs Ebb, Flow, Ebb, High tide (it moves Tide units only).', editorOnly:true},
+  {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
   {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
@@ -21213,8 +21249,9 @@ function terrainObj(biome, tier){
   return {biome, tier, name: b.name, icon: b.icon, types: b.types.slice(), atk: st.atk, hp: st.hp, grant: tier >= 2 && b.grant ? Object.assign({}, b.grant) : null, sig: tier >= 2 ? b.sig : null};
 }
 const ROMAN_TIER = ['', 'I', 'II', 'III'];
-function groundEffect(biome, tier){ const t = terrainObj(biome, tier); if(!t) return null;
-  return {id:'ground-' + biome + '-' + tier, group:'terrain', icon: t.icon, name: `${t.name} ${ROMAN_TIER[tier]}`, weird: tier >= 2 ? 2 : 1, cost:1, terrain: t, text: terrainSummary(t)}; }
+// 2026-10-14 (user: "Remove the home ground effect"): there is no home-ground effect to offer any more (the Arena's portents and
+// Edit skirmish's list drop it), so this gives nothing.
+function groundEffect(biome, tier){ void biome; void tier; return null; }
 function fieldEffectById(id){
   const m = /^ground-(\w+)-(\d)$/.exec(id || ''); if(m) return groundEffect(m[1], +m[2]);
   return FIELD_EFFECTS.find(f=> f.id === id) || null;
@@ -21241,7 +21278,7 @@ function dailyPortent(day){
   const strange = r() < 1/7, maxWeird = strange ? 4 : 3;
   const x = r(); let slots = x < 0.2 ? 1 : x < 0.8 ? 2 : 3;
   const pool = FIELD_EFFECTS.filter(f=> !f.editorOnly && f.weird <= maxWeird)
-    .concat(PORTENT_GROUNDS.map(b=> groundEffect(b, r() < 0.6 ? 1 : 2)));
+    .concat(PORTENT_GROUNDS.map(b=> groundEffect(b, r() < 0.6 ? 1 : 2))).filter(Boolean); // grounds are gone (2026-10-14); the rolls stay so the days don't reshuffle more than they must
   const picks = [], groups = new Set();
   const take = f=>{ picks.push(f); groups.add(f.group); slots -= f.cost; };
   if(strange){ const w4 = pool.filter(f=> f.weird === 4); take(w4[Math.floor(r() * w4.length)]); slots = Math.max(slots, 1); }
@@ -21401,7 +21438,7 @@ function endMatch(opts){
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
   SoundKit.stopAll();
-  document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended');
+  document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended'); syncFightTimeScale(null);
   // 2026-10-12 (user: "Tutorial disappears when a mission ends. If I didn't click next, it is silenced once"): a tip you
   // never acknowledged comes back first thing next match, instead of skipping a match.
   if(coachOpen && coachOpen.tip && !coachSeen.has(coachOpen.tip.id)) coachPendingId = coachOpen.tip.id;
@@ -22170,7 +22207,7 @@ function renderMatchUI(){
       const idx = st.indexOf(m.speedMult);
       m.speedMult = st[((idx<0?0:idx)+1) % st.length];
       ffBtn.innerHTML = ffBtnLabel(m.speedMult);
-      ffBtn.title = ffBtnTitle(m.speedMult);
+      ffBtn.title = ffBtnTitle(m.speedMult); syncFightTimeScale(m);
       if(speedKeeps()) try{ localStorage.setItem(SPEED_KEEP_KEY, String(m.speedMult)); }catch(e){}
     });
   }
@@ -22887,12 +22924,16 @@ function speedSteps(){
     if(cleared(15)) out.push(4);
     if(cleared(30)) out.push(5);
   }catch(e){}
+  out.push(0.5); // 2026-10-14 (user: "We need a 0.5x mode."): slow motion is always there, last in the cycle before normal
   return out;
 }
+// Slow motion (2026-10-14): at 0.5× the delays double (they divide by speedMult everywhere) and, while a round plays out, GSAP's
+// own tweens run at half speed too. Back to normal the moment the round hands control back.
+function syncFightTimeScale(m){ try{ if(hasGsap()) gsap.globalTimeline.timeScale(m && m.resolving && m.speedMult > 0 && m.speedMult < 1 ? m.speedMult : 1); }catch(e){} }
 function speedKeeps(){ try{ const mains = mainConquestMaps(); return adminModeEnabled || !!(mains[5] && conquestMapCleared(mains[5].id)); }catch(e){ return false; } }
 function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getItem(SPEED_KEEP_KEY) || 0; }catch(e){ return 0; } }
-function ffBtnLabel(mult){ const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
-function ffBtnTitle(mult){ const st = speedSteps(); return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (${st.slice(1).map(x=> x + 'x').join(' → ')} → normal)${speedKeeps() ? '. Your choice carries over to the next fight' : ''}`; }
+function ffBtnLabel(mult){ if(mult > 0 && mult < 1) return `<span class="ff-arrows">▷</span> ${mult}×`; const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
+function ffBtnTitle(mult){ const st = speedSteps(); if(mult > 0 && mult < 1) return `Playback speed: ${mult}x (slow motion) — click for normal${speedKeeps() ? '. Your choice carries over to the next fight' : ''}`; return (!mult || mult<=1) ? 'Playback speed: normal — click to speed up' : `Playback speed: ${mult}x — click to cycle (${st.slice(1).map(x=> x + 'x').join(' → ')} → normal)${speedKeeps() ? '. Your choice carries over to the next fight' : ''}`; }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
 // duration, factored out of renderBoard's own local `dur` so any OTHER code that needs to know
@@ -26410,7 +26451,7 @@ async function resolveRound(opts){
   // the battle - and only continues after the player plays. Otherwise the player misses the first combat").
   await waitForBlockingCoach(m);
   if(matchState !== m || m.over || m.resolving) return;
-  m.resolving = true; document.documentElement.classList.add('bw-resolving'); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
+  m.resolving = true; document.documentElement.classList.add('bw-resolving'); syncFightTimeScale(m); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
   const events = [];
   // Progressive castle HP (2026-09-16): capture each HQ's HP BEFORE this round's combat is
   // resolved, so the bar can be stepped down hit-by-hit as each hitHQ event plays out below,
@@ -27051,7 +27092,7 @@ async function resolveRound(opts){
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
-    drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+    floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
     if(m.mode==='pvp'){ aiActNow(); setTimeout(()=>{ if(matchState===m && m.aiArrivalEvents) waitForBoardEntrances(1400).then(()=> replayAiArrivalEvents(m)); }, 0); } // "They always go first": the stranger plays before you plan
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
@@ -27062,7 +27103,7 @@ async function resolveRound(opts){
   // clicking through it then you get the menu"): cards won are revealed one at a time, then new fights and
   // features drop onto the board, before the results window opens.
   if(m.over && m.winner === (m.mode==='liveRanked' ? m.liveMySeat : 1)){ try{ await playRewardReveal(m); }catch(e){ console.warn('reward reveal', e); } }
-  m.resolving = false; document.documentElement.classList.remove('bw-resolving');
+  m.resolving = false; document.documentElement.classList.remove('bw-resolving'); syncFightTimeScale(m);
   renderMatchUI();
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
@@ -27293,17 +27334,30 @@ function phaseTipLines(phase, m){
   if(phase === 'dawn') return ['Both sides draw a card.', 'Diurnal units get their day bonus.'];
   return ['Diurnal units get their day bonus.', 'Sun-shy units miss 1 attack in 2.'];
 }
+// 2026-10-14 (user: "Remove the 'Wash' effect. Also, don't have to talk about the tide order"): only what Tide units get now.
 const TIDE_TIPS = {
-  high: ['Tide units get +2 Attack and +2 Armor.', 'Wash units push the card facing them back 1 Wait.'],
-  flow: ['Tide units get +1 Attack.', 'Wash units push the card facing them back 1 Wait.'],
-  ebb: ['Tide units get +1 Armor: they take 1 less damage from each hit.'],
+  high: ['Tide units get +2 Attack and +2 Armor.'],
+  flow: ['Tide units get +1 Attack.'],
+  ebb: ['Tide units get +1 Armor.'],
 };
+// The Tide skill, live (2026-10-14, user: "animals should just say 'Tide'. When in play, and there is a tide. That skill is blue -
+// meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
+// when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
+function liveTideState(e){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || !m.engine || !m.engine.getTide || !matchHasTide(m)) return null;
+    const t = m.engine.getTide(); if(!t) return null;
+    const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
+    const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evade'] : []);
+    if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+1 Armor'};
+    if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+2 Armor').join(', ')};
+    return {k:'flow', name:'Tide', bonus: rising.join(', ')};
+  }catch(err){ return null; }
+}
 function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
   const high = t==='high', flow = t==='flow' || high, k = high ? 'high' : flow ? 'flow' : 'ebb', name = high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb');
-  const fr = matchFieldRules(m) || {}, extra = fr.permaTide ? 'Perma-tide: the Tide is always in here.' : fr.highTide ? 'Here the tide runs Ebb, Flow, Ebb, High tide.' : '';
-  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, TIDE_TIPS[k].concat(extra)), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
+  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, TIDE_TIPS[k]), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
 }
 // The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it).
 function windPillHTML(m){
@@ -27326,7 +27380,8 @@ function forecastPillHTML(m){
     if(f.phaseChanges && matchPhaseMatters(m)) add(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)', phaseTipLines(f.phase === 'night' ? 'night' : f.phase === 'twilight' ? 'twilight' : 'dawn', m).join(' '));
     const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) add(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb', TIDE_TIPS[f.tide === 'high' ? 'high' : f.tide === 'flow' ? 'flow' : 'ebb'].join(' '));
     if(f.wind) add(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face', f.wind.from === mine ? 'your Flyers get a quick extra turn before combat; theirs use their skills and triggers twice.' : 'their Flyers get a quick extra turn before combat; yours use their skills and triggers twice.');
-    if(f.eruption) add(`🌋 Eruption ${f.eruption}`, `one random unit on each side takes ${f.eruption} fire damage (units that resist fire are spared).`);
+    if(f.eruption) add(`🔥 ${SCORCHED_NAME} ${f.eruption}`, `the ground burns one random unit on each side for ${f.eruption} fire damage (units that resist fire are spared).`);
+    if(f.comets) add(`☄️ Comets (${f.comets} more)`, 'every unit on both sides takes 2–5 fire damage (fire-resistant units take half).'); // after an Eruption (2026-10-14)
     if(f.tideSpout) add('⛲ Tide-spout', ((fieldConditionRows(fr).find(r=> r.key === 'tideSpout') || {}).text) || 'a spout bursts in one random column.'); // 2026-10-14
     if(f.volcano) VOLCANO_HAZARDS.forEach(h=>{ const p = f.volcano[h.key]; if(p > 0) add(`${h.icon} ${h.name}: ${volcanoBand(p)}`, h.text(fr)); }); // 2026-10-14: the odds, as a band word
     if(f.field && f.fieldLeft === 1) add('The field clears', "the field card's effect ends after this round.");
@@ -27383,30 +27438,40 @@ function matchFieldTileHTML(def, cls, attrs, badges){
   const html = cardTileHTML(def, {inPlay:true, extraClass:'match-field-tile ' + cls, extraAttrs: attrs});
   return badges ? html.replace(/<\/div>\s*$/, badges + '</div>') : html;
 }
+// Environment cards (2026-10-14, user: "split Tide-Spout ... I think effect cards need to have a different frame - so we know its an
+// environmental field effect" and "For field effects with many multiple effects, split into multiple field cards"): one card per
+// lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
+// Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
+// terrain banner still flies into it and a new row still lights it.
+function fieldEnvBiome(key){ return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 function fieldCondCardHTML(m){
   const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
   if(m && m.mode !== 'tutorial') rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); });
   const tr = terrainOfMatch(m);
-  if(!tr && !rows.length) return '';
   if(tr) maybeTerrainIntro(m);
-  const t = tr && tr.t, head = t ? {icon:t.icon, name:`${t.name} ${TIER_NUMERAL[t.tier]||''}`.trim(), biome:t.biome} : rows[0] ? {icon:rows[0].icon, name:rows[0].name, biome: rows[0].key === 'dark' ? 'cave' : (rows[0].key === 'gale' || rows[0].key === 'wind') ? 'alpine' : /tide|Spout/i.test(rows[0].key) ? 'water' : 'ash'} : {icon:'🌋', name:'Eruptions', biome:'ash'};
-  const more = Math.max(0, rows.length - 1), aria = 'Field: ' + (rows.length ? rows.map(x=> x.name + '. ' + x.text).join(' ') : head.name);
-  const def = {id:'__fieldcond', name: head.name, icon: head.icon, rarity:'common', field:{label: more ? `🌐 <span class="fl-w">Field · </span>+${more}` : '🌐 <span class="fl-w">Field · </span>all fight', title:'A field rule: it lasts the whole fight'}};
-  return matchFieldTileHTML(def, `field-cond biome-${head.biome}`, `id="fieldCondCard" tabindex="0" data-fieldhover="cond" role="button" aria-label="${escapeAttr(aria)}"`, '');
+  if(!rows.length) return '';
+  const n = rows.length;
+  const cards = rows.map((row, i)=>{
+    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title:'An environment card: a rule of this battlefield'}};
+    const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
+    return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? 'Not seen yet.' : row.text))}"`, line);
+  }).join('');
+  return `<div class="env-stack${n > 1 ? ' is-fanned' : ''}" id="fieldCondCard" style="--n:${n}" role="group" aria-label="Environment cards">${cards}</div>`;
 }
-function fieldCondHoverHTML(){
+function fieldCondHoverHTML(key){
   const m = matchState; if(!m) return '';
-  const fr = matchFieldRules(m) || {}, rows = fieldConditionRows(fr), tr = terrainOfMatch(m);
-  const t = tr && tr.t, head = t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]||''}` : rows[0] ? `${rows[0].icon} ${rows[0].name}` : '🌋 Eruptions';
-  const body = rows.length ? `<ul class="fcr-list">${fieldRowsListHTML(rows)}</ul>` : `<p>${keywordizeHTML(escapeHtml(tr && !t ? `The mountain erupts: from round 2, one random unit on each side takes ${Number(tr.rules.eruption)||0} fire damage every upkeep (units that resist fire are spared).` : ''))}</p>`;
-  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌐</span><b>${escapeHtml(head.trim())}</b></div>${body}<p class="fh-left">It lasts the whole fight.</p></div>`;
+  const fr = matchFieldRules(m) || {}, rows = fieldConditionRows(fr).filter(r=> !key || r.key === key);
+  if(!rows.length) return '';
+  const head = rows.length === 1 ? `${rows[0].icon} ${rows[0].name}` : 'Environment';
+  return `<div class="field-hover env-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌿</span><b>${escapeHtml(head.trim())}</b></div><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul><p class="fh-left">Environment card: a rule of this battlefield.</p></div>`;
 }
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
   const def = {id:'__field', name: f.name, icon: f.icon, rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
-  return matchFieldTileHTML(def, `field-weather field-${id}`, `tabindex="0" data-fieldhover="1" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}"`,
-    FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : '');
+  return matchFieldTileHTML(def, `field-weather env-card field-${id}`, `tabindex="0" data-fieldhover="1" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}"`,
+    `<div class="env-ribbon" aria-hidden="true">Environment</div>` + (FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : ''));
 }
 // Frost strength (2026-10-12, user: "On the +2 and +3 frost effect maps, the frost is a little thicker"): the fight's +Wait.
 function frostLevelOf(m){
@@ -27516,7 +27581,7 @@ const FORFEIT_MODES = new Set(['ai','conquest','gauntlet','dungeon','async','rai
 async function forfeitMatch(){
   const m = matchState; if(!m || m.over || m.resolving || !FORFEIT_MODES.has(m.mode)) return;
   // 2026-10-08 playtest: an in-game dialog (not the browser's), and Forfeit is the cancel-focused choice
-  if(!(await bwConfirm({title:'🏳️ Forfeit this match?', body:'It counts as a loss. Quit instead keeps the fight so you can continue later.', okLabel:'Forfeit', focusCancel:true}))) return;
+  if(!(await bwConfirm({title:'🏳️ Forfeit this match?', body:'It counts as a loss. Quit instead keeps the fight so you can continue later.', okLabel:'Forfeit', focusCancel:true, centre:true}))) return;
   if(matchState !== m || m.over) return;
   m.forcedWinner = 2; m.endReason = 'forfeit';
   await resolveRound();
@@ -27750,8 +27815,7 @@ function pitchLessonTip(m){
   const me = pitchLessonMine(m);
   if(next.id === 'pl-need'){
     if(me.discardUsedThisTurn || !me.hand.length) return null;           // wait for a turn where a pitch is still possible
-    const mapNo = m.conquestNode ? mapNumberOf(m.conquestNode.mapId) : null;
-    if(!pitchLessonCostly(m) && !(mapNo != null && mapNo >= 2)) return null;
+    if(!pitchLessonCostly(m)) return null; // only with a Lumber card in hand you can't pay for yet (2026-10-14; it used to start on any Map 2+ fight)
     if(!m._toldPitch){ m._toldPitch = true; try{ playDialogue(loadFactionChoice() === 'hummingbirds' ? 'pitch_lesson_h' : 'pitch_lesson_o'); }catch(e){} }
   }
   if(next.id === 'pl-do' && me.discardUsedThisTurn){ markCoachSeen('pl-do'); return PITCH_LESSON[2]; }
@@ -28815,7 +28879,7 @@ function logText(ev){
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -29284,8 +29348,77 @@ function denyShake(el){
 // Number icons (2026-10-08, user: "add a Punch emoji before the number. Same for bleed, fire, cold, poison,
 // heal, blocked (def symbol), gold"): a bare number with one of these classes gets its icon in front.
 const FLOAT_ICON = {crit:'👊', bleed:'🩸', 'bleed-tick':'🩸', heat:'🔥', cold:'❄️', poison:'☠️', 'poison-tick':'☠️', heal:'💚', blocked:'🛡', gold:'🪙'};
+// Round-start numbers that last (2026-10-14, user: "The damage effect of the volcanic ground ... have to show damage numbers!"):
+// the upkeep's field events (Scorched Ground, the volcano, comets, the Tide-spout's push) play just before the board re-renders,
+// which used to wipe their floating numbers within a frame. While floatDetachDepth > 0, a number aimed at a board card floats on
+// a fixed host laid over that card instead, so it survives the re-render and plays out in full.
+let floatDetachDepth = 0;
+function fxHostAt(el, ms, at){
+  const r = at || el.getBoundingClientRect(), h = document.createElement('div');
+  h.className = 'fx-float-host'; h.setAttribute('aria-hidden', 'true');
+  h.dataset.row = el && el.closest && el.closest('#rowEnemy, [data-row="enemy"]') ? 'enemy' : 'mine';
+  h.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
+  document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
+  return h;
+}
+// The push-back, made plain (2026-10-14, user: "The pushback effect of wash needs to be clearer."): a Tide-spout or a Tsunami
+// shoves the card back toward its own side with a splash of water, its Wait clock flashes +1, and "⏪ +1 Wait" floats up.
+// The board re-renders right after an upkeep's events (and a lunge may still be settling), so the effects look the card up again
+// a moment later; a card that died meanwhile keeps the spot it had.
+function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? el0.getBoundingClientRect() : null, row0 = el0;
+  setTimeout(()=>{ const el = boardCardEl(uid); if(el) fn(el, el.getBoundingClientRect()); else if(r0) fn(null, r0, row0); }, 60); }
+function washPushVfx(ev){
+  try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
+  afterSettle(ev.targetUid, (el, r, row0)=>{
+    const host = fxHostAt(el || row0, 2000, r);
+    try{ floatText(host, '⏪ +1 Wait', 'debuff wait-push'); }catch(e){}
+    if(ev.dmg) setTimeout(()=>{ try{ floatText(host, `💧-${ev.dmg}`, 'dmg'); }catch(e){} }, 260);
+    if(ev.spout) eruptionGeyserVfx(host, true); else washSplashVfx(host);
+    if(!el) return;
+    el.classList.toggle('push-up', !!el.closest('#rowEnemy, [data-row="enemy"]'));
+    el.classList.remove('wash-pushed'); void el.offsetWidth; el.classList.add('wash-pushed');
+    const wb = el.querySelector('.waitbadge'); if(wb){ wb.classList.remove('wait-bump'); void wb.offsetWidth; wb.classList.add('wait-bump'); }
+    setTimeout(()=>{ el.classList.remove('wash-pushed', 'push-up'); if(wb) wb.classList.remove('wait-bump'); }, 1000); });
+}
+// A small splash at the card's foot (the Tsunami's push; the spout has its own column).
+function washSplashVfx(el){
+  if(!el || reducedMotion() || !fxAtLeast('low')) return;
+  const r = el.getBoundingClientRect(), g = document.createElement('div');
+  g.className = 'lava-geyser is-water is-splash'; g.setAttribute('aria-hidden', 'true');
+  g.style.left = (r.left + r.width / 2) + 'px'; g.style.top = (r.bottom - 8) + 'px'; g.style.setProperty('--h', Math.round(r.height * .35) + 'px');
+  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 10}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.3)}px; --y:${-Math.round(r.height * (.25 + Math.random() * .4))}px; --d:${(k * 0.03).toFixed(2)}s"></b>`).join('');
+  document.body.appendChild(g); setTimeout(()=> g.remove(), 1200);
+}
+// Comets (2026-10-14, user: "After eruption ... for the next 3 turns, comets rain down, dealing 2-5 (random) fire damage to each
+// unit"): a small comet streaks down onto each struck card, one after another; on impact it flashes, shakes and shows its number.
+let cometSeq = 0;
+function cometRainVfx(){
+  cometSeq = 0;
+  const bf = document.getElementById('battlefieldEl'); if(!bf || reducedMotion() || !fxAtLeast('low')) return;
+  bf.classList.remove('comet-sky'); void bf.offsetWidth; bf.classList.add('comet-sky'); setTimeout(()=> bf.classList.remove('comet-sky'), 2600);
+}
+function cometStrikeVfx(ev){
+  if(!boardCardEl(ev.uid)) return;
+  const k = cometSeq++; afterSettle(ev.uid, (el1, r, row0)=> cometFall(ev, k, fxHostAt(el1 || row0, 2600, r), r));
+}
+function cometFall(ev, k, host, r){
+  const delay = Math.min(1400, k * 110);
+  const mult = (matchState && matchState.speedMult) || 1, d = Math.round(delay / Math.max(.5, mult));
+  const impact = ()=>{ try{ floatText(host, `☄️-${ev.dmg}`, 'dmg'); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el){ el.classList.remove('comet-hit'); void el.offsetWidth; el.classList.add('comet-hit'); setTimeout(()=> el.classList.remove('comet-hit'), 700); try{ shakeEl(el); }catch(e){} }
+    try{ const F = window.SkillFX; if(F && F.burst) F.burst(r.left + r.width/2, r.top + r.height*.45, -90, 'fire', 8); }catch(e){}
+    try{ SoundKit.hitAt ? SoundKit.hitAt(ev.dmg||2, false) : null; }catch(e){} };
+  if(reducedMotion() || !fxAtLeast('low')){ setTimeout(impact, d); return; }
+  const c = document.createElement('div'); c.className = 'bw-comet'; c.setAttribute('aria-hidden', 'true');
+  const tx = r.left + r.width/2, ty = r.top + r.height*.45, dx = 150 + (k % 3) * 30, dy = 260;
+  c.style.cssText = `left:${tx}px; top:${ty}px; --dx:${dx}px; --dy:${dy}px; animation-delay:${d}ms;`;
+  document.body.appendChild(c);
+  setTimeout(impact, d + 380); setTimeout(()=> c.remove(), d + 900);
+}
 function floatText(el, text, cls){
   if(!el) return;
+  if(floatDetachDepth > 0 && el.closest && el.closest('.board-card[data-uid]')){ const uid = el.closest('.board-card[data-uid]').dataset.uid; // upkeep numbers outlive the re-render (2026-10-14)
+    afterSettle(uid, (e1, r, row0)=>{ try{ floatText(fxHostAt(e1 || row0, 1900, r), text, cls); }catch(e){} }); return; }
   const f = document.createElement('div');
   let raw = String(text);
   const classes = String(cls || '').split(/\s+/).filter(Boolean);
@@ -30836,9 +30969,12 @@ function renderVfxForEvent(ev){
     if(rc){ rc.irradiation = ev.left; rc.maxHp = Math.max(0, (rc.maxHp||0) - lost.hp); if(rc.hp > rc.maxHp) rc.hp = rc.maxHp; rc.atk = Math.max(0, (rc.atk||0) - lost.atk); }
     try{ updateCardStatusDisplay(ev.uid); updateCardHpDisplay(ev.uid); }catch(e){}
     if(el) try{ floatText(el, `☢️${lost.hp ? ' −' + lost.hp + '❤' : ''}${lost.atk ? ' −' + lost.atk + '⚔' : ''}${lost.sk ? ' −' + lost.sk + ' skill' : ''}`, 'debuff'); el.classList.add('irradiate-pulse'); setTimeout(()=> el.classList.remove('irradiate-pulse'), 900); }catch(e){} }
-  if(ev.type==='fieldTick' && ev.field!=='frozen' && ev.field!=='tideSpout'){ const el = boardCardEl(ev.uid);
+  if(ev.type==='fieldTick' && ev.field==='cometRain') cometRainVfx(); // comets after an Eruption (2026-10-14)
+  if(ev.type==='fieldTick' && ev.field==='comet') cometStrikeVfx(ev);
+  if(ev.type==='fieldTick' && ev.field==='eruptionReset'){ try{ showToast('☄️ The mountain settles, and comets will fall for 3 rounds.', 'warn'); }catch(e){} }
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset'].includes(ev.field)){ const el = boardCardEl(ev.uid);
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
-    const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️'}[ev.field] || '🔥';
+    const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){}
     if(ev.field==='petrify' && el){ el.classList.add('is-petrified'); try{ SoundKit.thud ? SoundKit.thud() : null; }catch(e){} }
     if(ev.field==='lavaTide' && el){ el.classList.add('lava-tide-hit'); setTimeout(()=> el.classList.remove('lava-tide-hit'), 900); eruptionGeyserVfx(el); try{ SoundKit.boom ? SoundKit.boom() : null; }catch(e){} }
@@ -30846,13 +30982,14 @@ function renderVfxForEvent(ev){
     if(ev.field==='irradiated'){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rc) rc.irradiation = ev.total; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
       const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('irradiate-pulse'); setTimeout(()=> src.classList.remove('irradiate-pulse'), 900); } }
     // 2026-10-12 the volcano: an eruption rumbles the board and lights the struck card from below
+    if(ev.field==='scorched' && el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 900); try{ const F = window.SkillFX; if(F && F.scorch && fxAtLeast('low')) F.scorch(el); }catch(e){} try{ SoundKit.boom ? SoundKit.boom() : null; }catch(e){} } // Scorched Ground (2026-10-14)
     if(ev.field==='eruption'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } SoundKit.boom ? SoundKit.boom() : null; }catch(e){}
       if(el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 900); eruptionGeyserVfx(el); } }
     if(ev.field==='immolation'){ const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('immolate-pulse'); setTimeout(()=> src.classList.remove('immolate-pulse'), 900); } } }
   if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast('🔓 Your leader is free!', 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🜏-${ev.dmg}`, 'dmg'); }catch(e){} }
-  if(ev.type==='wash'){ const el = boardCardEl(ev.targetUid); if(el) try{ floatText(el, ev.spout && ev.dmg ? `⛲ +1 Wait −${ev.dmg}` : '🌊 +1 Wait', 'debuff'); if(ev.spout) eruptionGeyserVfx(el, true); }catch(e){}
+  if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
     if(ev.spout && ev.dmg){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} } }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
@@ -32932,16 +33069,20 @@ function bwChoice({title, body, choices}){
     setTimeout(()=> (ov.querySelector('.btn.primary') || ov.querySelector('button')).focus(), 30);
   });
 }
-function bwConfirm({title, body, list, okLabel, focusCancel}){
+function bwConfirm({title, body, list, okLabel, focusCancel, centre}){
   return new Promise(resolve=>{
-    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog';
+    // centre (2026-10-14, user: "The forfeit menu should be in the centre methinks, and everywhere else darkened (fade transition)"):
+    // the dialog sits in the middle of the screen over a dimmed backdrop that fades in, and fades out again when it closes.
+    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog' + (centre ? ' bw-centre-dialog' : '');
     ov.innerHTML = `<div class="modal" role="alertdialog" aria-modal="true" aria-label="${escapeAttr(title)}">
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
       <p class="panel-sub">${escapeHtml(body||'')}</p>
       ${list && list.length ? `<ul class="bwc-list">${list.map(x=> `<li>${escapeHtml(x)}</li>`).join('')}</ul>` : ''}
       <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-ok>${escapeHtml(okLabel||'OK')}</button></div></div>`;
     document.body.appendChild(ov);
-    const done = v=>{ ov.remove(); resolve(v); };
+    let closed = false;
+    const done = v=>{ if(closed) return; closed = true; resolve(v);
+      if(centre && !reducedMotion()){ ov.classList.add('is-out'); setTimeout(()=> ov.remove(), 260); } else ov.remove(); };
     ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = ()=> done(false));
     ov.onclick = e=>{ if(e.target === ov) done(false); };
     ov.onkeydown = e=>{ if(e.key==='Escape'){ e.stopPropagation(); done(false); } };
@@ -36254,7 +36395,7 @@ function mountCaveDark(canvas, map){
   let scr = document.getElementById('caveScreenDark');
   const host = document.getElementById('conquestLayout') || document.body;
   if(!scr){ scr = document.createElement('div'); scr.id = 'caveScreenDark'; scr.className = 'cave-screen-dark'; scr.setAttribute('aria-hidden', 'true'); }
-  el.style.opacity = scr.style.opacity = lit ? '0.9' : '';
+  el.style.opacity = scr.style.opacity = lit ? '0.78' : ''; // cleared: the dark lifts (10% from 2026-10-12, about 20% since 2026-10-14)
   if(scr.parentNode !== host || host.firstChild !== scr) host.insertBefore(scr, host.firstChild); // first in the map's own layer: under the map list and the map, over the backdrop
   document.body.classList.add('cave-screen');
   const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px');

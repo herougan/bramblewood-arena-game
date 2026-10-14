@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// Terrain and Immune (2026-10-12). rules.terrain gives native cards (by type) +atk/+hp and its granted skills, on both
-// sides, without touching anyone else. effects.immune: a matching hit (damage type here) deals 0.
+// Terrain and Immune (2026-10-12). Home ground (natives +atk/+hp and a granted skill) was retired 2026-10-14; rules.terrain
+// is only the biome's name now. effects.immune: a matching hit (damage type here) deals 0.
 'use strict';
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -13,19 +13,17 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'tr-immune': {id:'tr-immune', name:'I', attack:0, health:10, wait:0, cost:0, effects:{immune:['Volcanic']}},
   'tr-burner': {id:'tr-burner', name:'B', attack:0, health:10, wait:3, cost:0, archetypes:['Volcanic'], effects:{pounce:4}},
 });
+// 2026-10-14 (user: "Remove the Home ground explanation. Remove the home ground effect."): rules.terrain no longer changes anyone.
 const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, rules:{terrain:{types:['Swamp'], atk:1, hp:2, grant:{poison:1}}}});
 const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
 e.debugSpawnCard(P, so, 1, 'tr-native', 'center', {}, []);
 e.debugSpawnCard(P, so, 2, 'tr-native', 'center', {}, []);
 e.debugSpawnCard(P, so, 2, 'tr-other', 'left', {}, []);
 const mine = P[1].row.center[0], theirs = P[2].row.center[0], other = P[2].row.left[0];
-ok(mine.atk === 3 && mine.hp === 7 && mine.maxHp === 7, `your native is ${mine.atk}/${mine.hp} (want 3/7)`);
-ok(theirs.atk === 3 && theirs.hp === 7, `their native is ${theirs.atk}/${theirs.hp} (want 3/7): terrain favours both sides`);
+ok(mine.atk === 2 && mine.hp === 5 && mine.maxHp === 5, `a native is plain ${mine.atk}/${mine.hp} (want 2/5): no home ground`);
+ok(theirs.atk === 2 && theirs.hp === 5, `their native is plain ${theirs.atk}/${theirs.hp} (want 2/5)`);
 ok(other.atk === 2 && other.hp === 5, `a non-native stays ${other.atk}/${other.hp} (want 2/5)`);
-// the grant is visible to the engine's skill code, and a card's own value wins
-const e2 = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, rules:{terrain:{types:['Swamp'], atk:0, hp:0, grant:{poison:1}}}});
-const P2 = {1: e2.newPlayer(1, {}), 2: e2.newPlayer(2, {})};
-e2.debugSpawnCard(P2, so, 1, 'tr-native-own', 'center', {}, []);
+ok(!(e.effectsOf(mine) || {}).poison, 'a native gets no granted skill (no Poison 1)');
 // Immune: a pounce from a Volcanic attacker on a unit immune to Volcanic does nothing
 const e3 = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true});
 const P3 = {1: e3.newPlayer(1, {}), 2: e3.newPlayer(2, {})};

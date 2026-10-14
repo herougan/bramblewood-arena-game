@@ -143,10 +143,34 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
 { // a 'high' volcano is random but seeded: the same seed gives the same fight, and something does happen over ten rounds
   const run = ()=>{ const {e, P} = lone({volcano:'high'}, 11); const out = []; for(let r = 2; r < 12; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); ev.filter(x=> x.type==='fieldTick').forEach(x=> out.push(r + x.field)); } return out.join(','); };
   const a = run(); ok(a && a === run(), `a high volcano is deterministic (${a.slice(0, 60)})`); }
-// ---- The old rules.eruption N, unchanged: from round 2, every round, one unit a side takes N
+// ---- The old rules.eruption N: from round 2, every round, one unit a side takes N. Renamed Scorched Ground 2026-10-14 (its
+// events say field 'scorched' now; the volcano's Eruption hazard keeps 'eruption').
 { const {e, P} = lone({eruption:2}); let per = [];
-  for(let r = 1; r < 6; r++){ const ev = []; if(r > 1) e.roundStart(P, r, so, {}, ev); per.push(ev.filter(x=> x.field==='eruption' && x.dmg===2).length); }
-  ok(per.join() === '0,2,2,2,2', `old eruption: 2 a round from round 2 (${per})`);
+  for(let r = 1; r < 6; r++){ const ev = []; if(r > 1) e.roundStart(P, r, so, {}, ev); per.push(ev.filter(x=> x.field==='scorched' && x.dmg===2).length); }
+  ok(per.join() === '0,2,2,2,2', `Scorched Ground: 2 a round from round 2 (${per})`);
   ok(e.forecast().eruption === 2 && !e.forecast().volcano, 'and the forecast still says Eruption 2'); }
+// ---- Comets after an Eruption (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down,
+// dealing 2-5 (random) fire damage to each unit. The damage dealt to each unit is random.")
+{ const R = {lavaTideChance:0, petrifyChance:0, eruptionChance:100}; const {e, P} = mk(13, R);
+  ['k4-wall', 'k4-wall', 'k4-hot'].forEach(id=> e.debugSpawnCard(P, so, 1, id, 'left', {}, [])); ['k4-wall', 'k4-wall'].forEach(id=> e.debugSpawnCard(P, so, 2, id, 'left', {}, []));
+  const ev2 = []; e.roundStart(P, 2, so, {}, ev2);
+  ok(ev2.some(x=> x.field==='eruptionReset') && !ev2.some(x=> x.field==='comet'), 'the Eruption fires and resets; no comets on its own round');
+  R.eruptionChance = 0; // no more eruptions, so the three comet rounds can be counted
+  ok(e.forecast().comets === 3, `the forecast says 3 comet rounds to come (${e.forecast().comets})`);
+  const per = [], rolls = [];
+  for(let r = 3; r < 8; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); const cs = ev.filter(x=> x.type==='fieldTick' && x.field==='comet'); per.push(cs.length); cs.forEach(x=> rolls.push(x)); }
+  ok(per.join() === '5,5,5,0,0', `comets strike all 5 units for 3 rounds, then stop (${per})`);
+  const plain = rolls.filter(x=> x.defId==='k4-wall'), hot = rolls.filter(x=> x.defId==='k4-hot');
+  ok(plain.every(x=> x.roll >= 2 && x.roll <= 5 && x.dmg === x.roll), `each comet deals 2–5 to a plain unit (${plain.map(x=> x.dmg)})`);
+  ok(new Set(plain.map(x=> x.dmg)).size > 1, 'the damage differs from unit to unit');
+  ok(hot.length === 3 && hot.every(x=> x.dmg === Math.max(1, Math.floor(x.roll / 2))), `a fire-resistant unit takes half (${hot.map(x=> x.roll + '→' + x.dmg)})`);
+  const run = ()=>{ const m = mk(13, {lavaTideChance:0, petrifyChance:0, eruptionChance:100}); m.e.debugSpawnCard(m.P, so, 1, 'k4-wall', 'left', {}, []); m.e.debugSpawnCard(m.P, so, 2, 'k4-wall', 'left', {}, []);
+    const out = []; for(let r = 2; r < 6; r++){ const ev = []; m.e.roundStart(m.P, r, so, {}, ev); ev.filter(x=> x.field==='comet').forEach(x=> out.push(x.dmg)); } return out.join(); };
+  ok(run() === run(), 'the comets are seeded: the same fight rolls the same damage'); }
+{ // the cycle resets: a rising ('even') volcano climbs again from its base after an Eruption
+  const R = {volcano:'even', lavaTideChance:0, petrifyChance:0}; const {e, P} = lone(R);
+  ok(e.volcanoChances(6).eruption === 63, `before an Eruption the odds keep rising (${e.volcanoChances(6).eruption})`);
+  R.eruptionChance = 100; e.roundStart(P, 5, so, {}, []); delete R.eruptionChance;
+  ok(e.volcanoChances(6).eruption === 55 && e.volcanoChances(8).eruption === 59, `after it, back to the base 55 and rising again (${e.volcanoChances(6).eruption}, ${e.volcanoChances(8).eruption})`); }
 console.log(fail ? `keywords-2026-10-14: ${fail} failure(s)` : 'keywords-2026-10-14: all passed');
 process.exit(fail ? 1 : 0);
