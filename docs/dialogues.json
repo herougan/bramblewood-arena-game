@@ -75,6 +75,11 @@
    "key": "hedgehog",
    "name": "Thimble the hedgehog",
    "portrait": "assets/npc/hedgehog.png?v=f4811b5832"
+  },
+  {
+   "key": "golem",
+   "name": "Cobble, the Forge golem",
+   "portrait": "assets/npc/golem.png?v=2a1bc2b6f5"
   }
  ],
  "scripts": [
@@ -1421,9 +1426,169 @@
    ]
   },
   {
+   "id": "forge_cobble_dust",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_dust",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "Not enough Dust. Fuse a duplicate or win a few fights, then come back.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_gate",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_gate",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "Not yet. That level opens further down the road.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_gold",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_gold",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "Not enough Maple Leaves. The fire eats them too.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_intro",
+   "where": [
+    "renderForge()  · arena_app.js:31998"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_intro",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "Cobble. I keep the fire. Feed a card Dust and Leaves and I temper it, one level at a time.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "renderForge()  · arena_app.js:31998"
+    },
+    {
+     "id": "forge_cobble_intro",
+     "n": 2,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "At level 10 a card hits its limit. Bring duplicates and I can break it, and it climbs again.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_limit",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_limit",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "It is not ready to break its limit. Level 10 and enough duplicates first.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_mats",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_mats",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "Missing Materia for that one. The Blacksmith can make it.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
+   "id": "forge_cobble_tier",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "forge_cobble_tier",
+     "n": 1,
+     "who": "golem",
+     "name": "Cobble, the Forge golem",
+     "portrait": "assets/npc/golem.png?v=2a1bc2b6f5",
+     "text": "My Forge cannot heat that high yet. Upgrade the Forge first.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    }
+   ]
+  },
+  {
    "id": "lesson_leader_rule",
    "where": [
-    "First time you open the 👑 leader picker  · arena_app.js:9066"
+    "First time you open the 👑 leader picker  · arena_app.js:9242"
    ],
    "lines": [
     {
@@ -1437,7 +1602,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "First time you open the 👑 leader picker  · arena_app.js:9066"
+     "where": "First time you open the 👑 leader picker  · arena_app.js:9242"
     },
     {
      "id": "lesson_leader_rule",
@@ -1457,7 +1622,7 @@
   {
    "id": "lesson_leaders",
    "where": [
-    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9077"
+    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9286"
    ],
    "lines": [
     {
@@ -1471,7 +1636,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9077"
+     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9286"
     },
     {
      "id": "lesson_leaders",
@@ -1530,7 +1695,7 @@
   {
    "id": "outskirts_reveal",
    "where": [
-    "The first time the Conquest map opens  · arena_app.js:12326"
+    "The first time the Conquest map opens  · arena_app.js:12610"
    ],
    "lines": [
     {
@@ -1544,7 +1709,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The first time the Conquest map opens  · arena_app.js:12326"
+     "where": "The first time the Conquest map opens  · arena_app.js:12610"
     },
     {
      "id": "outskirts_reveal",
@@ -1629,7 +1794,7 @@
   {
    "id": "pitch_lesson_h",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
    ],
    "lines": [
     {
@@ -1643,14 +1808,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
     }
    ]
   },
   {
    "id": "pitch_lesson_o",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
    ],
    "lines": [
     {
@@ -1664,14 +1829,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26890"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:27992"
     }
    ]
   },
   {
    "id": "pitch_spent_h",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:25486"
    ],
    "lines": [
     {
@@ -1685,14 +1850,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:25486"
     }
    ]
   },
   {
    "id": "pitch_spent_o",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:25486"
    ],
    "lines": [
     {
@@ -1706,7 +1871,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24568"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:25486"
     }
    ]
   },
@@ -1760,7 +1925,7 @@
   {
    "id": "tut_boomerang",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26915"
+    "Tutorial fights: remarks from your side  · arena_app.js:28017"
    ],
    "lines": [
     {
@@ -1774,14 +1939,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26915"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28017"
     }
    ]
   },
   {
    "id": "tut_fly",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26914"
+    "Tutorial fights: remarks from your side  · arena_app.js:28016"
    ],
    "lines": [
     {
@@ -1795,14 +1960,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26914"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28016"
     }
    ]
   },
   {
    "id": "tut_traveller_cheer",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:26910"
+    "Tutorial fights: remarks from your side  · arena_app.js:28012"
    ],
    "lines": [
     {
@@ -1816,7 +1981,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:26910"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:28012"
     }
    ]
   },
@@ -2327,7 +2492,7 @@
   {
    "id": "unlock_phyla",
    "where": [
-    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4265"
+    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4409"
    ],
    "lines": [
     {
@@ -2341,7 +2506,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4265"
+     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4409"
     },
     {
      "id": "unlock_phyla",
@@ -2917,7 +3082,7 @@
   {
    "id": "well_m1",
    "where": [
-    "Tapping the old well on Map 0  · arena_app.js:12305"
+    "Tapping the old well on Map 0  · arena_app.js:12589"
    ],
    "lines": [
     {
@@ -2931,7 +3096,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tapping the old well on Map 0  · arena_app.js:12305"
+     "where": "Tapping the old well on Map 0  · arena_app.js:12589"
     },
     {
      "id": "well_m1",
