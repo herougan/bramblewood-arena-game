@@ -34,13 +34,12 @@ WATCH="""(()=>{ window.__jumps=[]; window.__lastRender=null;
       last.set(el,{x:r.left,y:r.top,w:r.width,b});
     }));
     requestAnimationFrame(tick);} requestAnimationFrame(tick); })()"""
-async def main(node, vw, vh, speed, n):
+async def main(mp, node, vw, vh, speed, n):
   async with async_playwright() as p:
     b=await p.chromium.launch(executable_path='/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
     pg=await b.new_page(viewport={'width':vw,'height':vh}); errs=[]; pg.on('pageerror',lambda e: errs.append(str(e)))
     await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
     await pg.goto('file://'+__import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__),'..','..','index.html'))+''); await pg.wait_for_timeout(1300)
-    mp = 'm'+node.split('-')[0]
     await pg.evaluate(f"(()=>{{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('play'); startConquestMatch('{mp}','{node}'); matchState.speedMult={speed}; return 1}})()")
     await pg.wait_for_timeout(600)
     await pg.evaluate(WATCH)
@@ -55,7 +54,9 @@ async def main(node, vw, vh, speed, n):
     for x in j[:3]: print(json.dumps(x, indent=0)[:6000])
     if errs: print('  ERR', errs[:3])
     await b.close()
-RUNS=[('2-3',1366,860,1,140),('2-5',1366,860,3,160),('2-4',390,844,1,140),('1-4',390,844,3,140)]
+# 2026-10-14 (user: "The internal Map IDs have not been edited to the current layout. (1-1 is still called f-1)."): fight keys
+# follow the map numbers now (m2's old 2-3 is 4-3, m1's 1-4 is 0-4), so each run names its map.
+RUNS=[('m2','4-3',1366,860,1,140),('m2','4-5',1366,860,3,160),('m2','4-4',390,844,1,140),('m1','0-4',390,844,3,140)]
 async def all_runs():
   import io, contextlib
   bad=0
@@ -66,5 +67,5 @@ async def all_runs():
     if 'jumps 0 ' not in out or 'ERR' in out: bad+=1; print(out)
   print(f'snaps: {bad} failure(s)'); sys.exit(1 if bad else 0)
 if __name__=='__main__':
-  if len(sys.argv)>5: a=sys.argv; asyncio.run(main(a[1], int(a[2]), int(a[3]), float(a[4]), int(a[5])))
+  if len(sys.argv)>6: a=sys.argv; asyncio.run(main(a[1], a[2], int(a[3]), int(a[4]), float(a[5]), int(a[6])))
   else: asyncio.run(all_runs())

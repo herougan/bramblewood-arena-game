@@ -28,7 +28,7 @@ Also run `hero.py` or `i18n.py` when touching those areas.
 - Serve over http, not file:// (fonts need it): `setsid nohup python3 -m http.server 8765 >/dev/null 2>&1 &` in the repo.
 - Playwright Chromium: `/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell`. WebGL needs `--enable-unsafe-swiftshader --use-angle=swiftshader --ignore-gpu-blocklist`.
 - Skip the splash and tutorial with init script: `localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1')`.
-- Start a fight: `FEATURE_SPOTS.forEach(sp=>unlockFeature(sp.key)); switchTab('play'); startConquestMatch('m1','1-4')`.
+- Start a fight: `FEATURE_SPOTS.forEach(sp=>unlockFeature(sp.key)); switchTab('play'); startConquestMatch('m1','0-4')`.
 - Check desktop (1280×800) and phone (390×844), light and dark.
 
 ## Animation rules that bit us before

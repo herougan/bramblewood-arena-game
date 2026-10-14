@@ -1528,9 +1528,13 @@
      the battlefield instead"), field cards on the enemy's side ("The open meadow and effects like this should look like a card on the
      opposite side of the field") and the enemy's resources at the top right ("The opponent's lumber pill will be on the top right"). */
   .battlefield-divider{position:relative; z-index:25;}
-  .bf-pills{position:absolute; top:50%; left:14px; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:calc(100% - 28px); pointer-events:none;}
+  /* 2026-10-14 (user: "The map pills should be further to the left."): they sit on the board's left edge, not inset along the divider */
+  .bf-pills{position:absolute; top:50%; left:-20px; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:calc(100% - 28px); pointer-events:none;}
   .bf-pills .fp-b i{font-style:normal;}
   .bf-pills .forecast-pill .fp-k{display:inline; margin-right:2px;}
+  .bf-pills .forecast-pill .fp-t{display:none;} /* 2026-10-14: icons only, the words are in the tooltip */
+  .bf-pills .forecast-pill{padding:3px 8px; gap:3px;}
+  .bf-pills .phase-pill{gap:3px; padding:3px 8px;}
   .bf-pills:empty{display:none;}
   .bf-pills > *{pointer-events:auto;}
   .bf-pill{position:relative; margin:0 !important; border:1px solid rgba(255,255,255,.28); cursor:help; font-family:inherit; line-height:1.3; text-align:left;}
@@ -1545,7 +1549,7 @@
   #battlefieldEl .bf-pills .wind-pill.is-calm{background:linear-gradient(135deg, #8a7f62, #5d5540);}
   .bf-pills .forecast-pill{border:1px solid rgba(255,255,255,.22); color:#fff3d6; font-family:inherit; flex-wrap:nowrap; max-width:none; white-space:nowrap; border-radius:999px; padding:3px 10px;}
   .bf-pills .phase-pill.tide-flow, .bf-pills .phase-pill.tide-ebb, .bf-pills .phase-pill.arena-rs-pill{margin-left:0;}
-  @media (max-width:699px){ .bf-pills{left:8px; gap:3px; max-width:calc(100% - 16px);} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-k, .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
+  @media (max-width:699px){ .bf-pills{left:-12px; gap:3px; max-width:calc(100% - 16px);} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
   /* the enemy's resource pills: under the fight controls, top right (no longer on the board) */
   .top-right-stack{display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; align-self:flex-start; min-width:0;}
   .top-right-stack > .top-row-controls{margin-left:0; align-self:flex-end;}
@@ -6629,7 +6633,9 @@
   @keyframes mwRipple{30%{box-shadow:0 0 0 3px rgba(190,230,255,.8);} 100%{box-shadow:0 0 0 8px rgba(190,230,255,0);}}
   @media (prefers-reduced-motion:reduce){ .map-well .mw-bucket{animation:none;} }
   /* map dialogue sits clear of the map rail and HUD (2026-10-08 playtest) */
-  @media (min-width:821px){ body.conquest-full .dialogue-dock{left:290px; top:120px;} }
+  /* 2026-10-14 (user: "Move the NPC dialogue further to the left abit more, like 8%."): as far left as it goes without covering
+     the map list (220px wide): 62px, about 5% of a 1280px window (a full 8% would sit on the map tabs). */
+  @media (min-width:821px){ body.conquest-full .dialogue-dock{left:228px; top:120px;} }
   @media (max-width:820px){ body.conquest-full .dialogue-dock{top:236px;} }
   /* starter deck hand-over (2026-10-08) */
   .starter-modal{max-width:min(860px, 94vw); width:min(860px, 94vw); text-align:center;}
