@@ -31,6 +31,16 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 12:45 (your 10:18 list)
+
+| Item | What's in the game now |
+|---|---|
+| Volcano | Lava Tide, Petrification and Eruption roll each round at the fight's volcano level (Very low → High); the conditions show the band word |
+| Map 20+ skills | Speed, Haste, Rabid, Cower, Ghost + Magic damage, Ichor, Irradiated, with tests. Rabid Jackal (2/3) added, no art or map yet |
+| Names | docs/name-picker-2026-10-14.xlsx: tick ✓ to choose 15 Base, 15 Otters, 15 Hummingbirds and 6 per biome. Bog Leech already exists (2/5, Bleed 1); Vampire Bat (3 Attack, Leech 3) is proposed |
+| Boomerang | Checked against your rules: it throws on its swing, comes back at the start of the next combat for a second hit (fast, before the main order), its owner doesn't swing that round, it never misses flyers, and an empty lane on the way back is a whiff. Tests cover each |
+| Resources | Noted: Lumber, Stone and Metal are World 1 (T1–T3); Uranium belongs to World 3 (T7–T9). Irradiated cards don't make Uranium |
+
 ## Done at 10:45 (your 09:00 list)
 
 | Item | What's in the game now |

@@ -5624,6 +5624,13 @@
   .board-card.immolate-pulse .card-tile{animation:immolatePulse .9s ease-out;}
   @keyframes immolatePulse{0%{box-shadow:0 0 0 0 rgba(255,120,30,0);} 40%{box-shadow:0 0 0 10px rgba(255,120,30,.55);} 100%{box-shadow:0 0 0 22px rgba(255,120,30,0);}}
   @media (prefers-reduced-motion: reduce){ .battlefield.erupt-rumble, .board-card.erupt-hit .card-tile, .board-card.immolate-pulse .card-tile{animation:none;} }
+  /* The volcano's hazards (2026-10-14): a petrified unit is grey stone for the round; a lava tide glows the flooded column. */
+  .board-card.is-petrified .card-tile{filter:grayscale(1) brightness(.82) contrast(1.15); transition:filter .4s ease;}
+  .board-card.is-petrified .card-tile::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:4;
+    background:radial-gradient(circle at 30% 25%, rgba(255,255,255,.12) 0 8%, transparent 9%), radial-gradient(circle at 70% 60%, rgba(0,0,0,.18) 0 7%, transparent 8%), linear-gradient(160deg, rgba(150,150,150,.28), rgba(70,70,70,.32)); mix-blend-mode:multiply;}
+  .board-card.lava-tide-hit .card-tile{animation:eruptHit .9s ease-out; box-shadow:0 0 0 2px rgba(255,110,30,.8), 0 0 18px rgba(255,90,20,.6);}
+  .board-card.irradiate-pulse .card-tile{box-shadow:0 0 0 2px rgba(150,255,90,.75), 0 0 16px rgba(120,255,60,.55); transition:box-shadow .3s;}
+  @media (prefers-reduced-motion: reduce){ .board-card.lava-tide-hit .card-tile{animation:none;} }
   /* 2026-10-12 (10:12 screenshot): Iron Shard / Base-growth pills were cream with pale text on the gold results card */
   .winloss-card.is-glory .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){background:rgba(255,255,255,.14) !important; color:#fff !important; border:1px solid rgba(255,220,150,.35) !important; box-shadow:none !important;}
   .winloss-card.is-glory .rw-unlocks .card-tile, .winloss-card.is-glory .rw-unlocks .rw-card{width:clamp(130px, 16vw, 170px) !important; height:auto !important;}
@@ -7300,6 +7307,10 @@
   .card-tile .atk, .card-tile .hp{background:linear-gradient(180deg,rgba(28,18,10,.82),rgba(12,8,4,.9)); border-radius:.38em; padding:.02em .24em 0;
     line-height:1.02; box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.12);}
   .card-tile .atk{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,122,94,.45);}
+  /* Magic attackers (2026-10-14, user: "some units have a wand instead of a sword symbol on their bottom left, blue in colour"). */
+  .card-tile .atk.atk-magic{color:#8fd0ff; background:linear-gradient(180deg,rgba(16,38,82,.9),rgba(6,16,44,.94)); box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(120,190,255,.7), 0 0 6px rgba(80,160,255,.45);}
+  .card-tile .atk.atk-magic .atk-buffed{color:#bfe6ff;}
+  .ab-speed{color:#d9f3ff; font-weight:800;}
   .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(141,230,109,.45);}
   /* Names: a step smaller relative to the card, capped lower, so the scroll covers less art. */
   .card-tile .nm{font-size:clamp(9px, 11cqw, 17px) !important;}
