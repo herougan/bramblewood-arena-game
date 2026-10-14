@@ -190,6 +190,9 @@
     ['Combat', 'Skill effects: Cleave, Guardian wall, Dynamite, Helmet deflect, Darksight, Frostbite chill, Immolation scorch, Lantern glow', 'part', 'Skills tab (Lab)'],
     ['Cards', 'Foils: Aurora, Galaxy swirl, Molten gold, Frost crystal, Oil slick, Sakura, Glitter field, Holo scanlines', 'part', 'Foils tab (Lab)'],
     ['Battlefield', 'Shockwave ripple (DOM ring that shoves cards)', 'part', 'Card ideas tab (Lab)'], ['Battlefield', 'Castle crumble: collapse, sink, topple', 'part', 'Card ideas tab (Lab)'],
+    ['Battlefield', 'Drunken-miner castle cracks (seeded, grow per stage)', 'part', 'Procedural FX tab (Lab)'], ['Battlefield', 'Cellular-automaton castle crumble into rubble', 'part', 'Procedural FX tab (Lab)'],
+    ['Cards', 'Cards of old: procedural aged-paper finish', 'part', 'Foils and Procedural FX tabs (Lab)'], ['Combat', 'Voronoi shatter', 'part', 'Procedural FX tab (Lab)'],
+    ['Animation', 'Flip riffle, lantern light, forge timeline, grid ripple (GSAP experiments)', 'part', 'Procedural FX tab (Lab)'],
     ['Cards', 'Level-up burst', 'part', 'Card ideas tab (Lab)'], ['Cards', 'Card unlock sparkle', 'part', 'Card ideas tab (Lab)'], ['Animation', 'Skirmish sky-drop', 'part', 'Card ideas tab (Lab)'],
   ];
   const label = {live:'<span class="st live">Live</span>', part:'<span class="st part">Partly</span>', idea:'<span class="st idea">Idea</span>'};
@@ -348,7 +351,8 @@ try{ decorateLabFoils(document); }catch(e){}
   const paint = ()=>{ const html = (window.TREAT_CARDS||{})[sel.value]; if(!html) return; const plus = star && star.checked;
     stages.forEach(st=>{ let cls = st.dataset.treat; if(plus && cls !== 'holo-starlight') cls = (cls ? cls + ' ' : '') + 'holo-starlight';
       st.innerHTML = cls ? html.replace('class="card-tile ', 'class="card-tile is-holo ' + cls + ' ') : html; });
-    if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments')); decorateLabFoils(document.getElementById('treatments')); };
+    if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments')); decorateLabFoils(document.getElementById('treatments'));
+    if(window.ProcFX) ProcFX.decorateOld(document.getElementById('treatments')); };
   sel.addEventListener('change', paint); if(star) star.addEventListener('change', paint);
   let t0 = performance.now();
   const loop = now=>{
@@ -367,6 +371,7 @@ try{ decorateLabFoils(document); }catch(e){}
   requestAnimationFrame(loop);
   if(typeof decorateHolo==='function') decorateHolo(document.getElementById('treatments'));
   decorateLabFoils(document.getElementById('treatments'));
+  if(window.ProcFX) ProcFX.decorateOld(document.getElementById('treatments'));
 })();
 
 
@@ -454,4 +459,73 @@ try{ decorateLabFoils(document); }catch(e){}
       b.onclick = ()=>{ const c = es.querySelector('.board-card'); try{ maybeEmote('lab-emote', k, {force:true, el:c}); SoundKit.voiceTone && SoundKit.voiceTone(3); }catch(e){} }; eb.appendChild(b); });
   }
   show(location.hash.slice(1) || 'skills');
+})();
+
+// ===== Procedural damage & GSAP experiments (2026-10-14, ProcFX in bramblewood-procfx.js) =====
+(function(){
+  const $ = (s, r)=> (r||document).querySelector(s), $$ = (s, r)=> [...(r||document).querySelectorAll(s)];
+  if(!window.ProcFX || !$('#procfx')) return;
+  const S = (fn, ...a)=>{ try{ SoundKit[fn](...a); }catch(e){} };
+  const setSpeed = ()=>{ if(window.gsap) gsap.globalTimeline.timeScale($('#pfxSlow') && $('#pfxSlow').checked ? .25 : 1); };
+  $('#pfxSlow') && $('#pfxSlow').addEventListener('change', setSpeed);
+  const at = (e, el)=>{ const r = el.getBoundingClientRect(); return {x:(e.clientX - r.left)/r.width, y:(e.clientY - r.top)/r.height}; };
+
+  // --- cracks: buttons set the Health stage, clicks strike where you click
+  let crackSeed = 'castle-west', crackStage = 0;
+  const ct = ()=> $('#pfxCrackStage .card-tile');
+  const setStage = (n, from)=>{ const grow = n > crackStage; ProcFX.cracks(ct(), {seed:crackSeed, stage:n, grow, from}); if(grow){ S('siegeTone'); S('hitAt', 6, true); } crackStage = n; };
+  $$('[data-pfx="crack"]').forEach(b=> b.addEventListener('click', ()=>{ setSpeed(); setStage(+b.dataset.stage); }));
+  $('[data-pfx="reseed"]').addEventListener('click', ()=>{ ProcFX.clearCracks(ct()); crackSeed = 'castle-' + Math.random().toString(36).slice(2, 7); const n = crackStage || 3; crackStage = 0; setStage(n); });
+  ct().addEventListener('click', e=>{ setSpeed(); if(crackStage < 3) setStage(crackStage + 1, at(e, ct())); else { S('hitAt', 4, false); ProcFX.cracks(ct(), {stage:3}); } });
+
+  // --- crumble: a siege (three strikes, then the fall) or a straight crumble
+  let busy = false;
+  const cbt = ()=> $('#pfxCrumbleStage .card-tile');
+  function fall(){ S('castleCollapse'); ProcFX.crumble(cbt(), {seed:"siege", duration:2.4, restore:1000, onDone:()=>{ ProcFX.clearCracks(cbt()); setTimeout(()=>{ busy = false; }, 1100); }}); }
+  $('[data-pfx="siege"]').addEventListener('click', ()=>{ if(busy) return; busy = true; setSpeed(); const k = $('#pfxSlow').checked ? 4 : 1;
+    [1, 2, 3].forEach((n, i)=> setTimeout(()=>{ ProcFX.cracks(cbt(), {seed:'siege', stage:n, grow:true}); S('siegeTone'); S('hitAt', 5 + n*2, true); }, i*650*k));
+    setTimeout(fall, 2100*k); });
+  $('[data-pfx="crumble"]').addEventListener('click', ()=>{ if(busy) return; busy = true; setSpeed(); fall(); });
+
+  // --- cards of old
+  const oldTiles = ()=> $$('#pfxOldStage .card-tile');
+  ProcFX.decorateOld($('#pfxOldStage'));
+  $('[data-pfx="oldseed"]').addEventListener('click', ()=>{ oldTiles().forEach(t=>{ t.dataset.pfxSeed = 'old-' + Math.random().toString(36).slice(2, 8); t.querySelectorAll(':scope > .pfx-old, :scope > .pfx-old-wear').forEach(n=> n.remove()); });
+    ProcFX.decorateOld($('#pfxOldStage')); S('pageTurn'); });
+  $('#pfxOldClean').addEventListener('change', e=> oldTiles().forEach(t=> t.classList.toggle('holo-old', !e.target.checked)));
+
+  // --- shatter
+  let shattering = false;
+  const st = ()=> $('#pfxShatterStage .card-tile');
+  const doShatter = from=>{ if(shattering) return; shattering = true; setSpeed(); S('iceShatter'); S('hitAt', 10, true);
+    ProcFX.shatter(st(), {from, restore:600, onDone:()=> setTimeout(()=>{ shattering = false; }, 700)}); };
+  st().addEventListener('click', e=> doShatter(at(e, st())));
+  $('[data-pfx="shatter"]').addEventListener('click', ()=> doShatter({x:.3 + Math.random()*.4, y:.3 + Math.random()*.4}));
+
+  // --- Flip riffle
+  let riffling = false;
+  const riffle = rounds=>{ if(riffling) return; riffling = true; setSpeed(); ProcFX.flipShuffle($('#pfxFlipStage'), {rounds, onEach:()=> S('cardFlip'), onDone:()=>{ riffling = false; }}); };
+  $('[data-pfx="riffle"]').addEventListener('click', ()=> riffle(1));
+  $('[data-pfx="riffle2"]').addEventListener('click', ()=> riffle(3));
+
+  // --- lantern
+  let lamp = null; const lb = $('[data-pfx="lantern"]');
+  lb.addEventListener('click', ()=>{ if(lamp){ lamp.destroy(); lamp = null; lb.textContent = '🏮 Light the lantern'; lb.classList.remove('primary'); return; }
+    lamp = ProcFX.lantern($('#pfxLanternStage'), {radius:110}); lb.textContent = '⏹ Put it out'; lb.classList.add('primary'); S('readyChime'); });
+
+  // --- forge (built when first used, so the tile has a size)
+  let fg = null; const scrub = $('#pfxForgeScrub');
+  const forge = ()=>{ if(fg && fg.w) return fg; if(fg) fg.destroy(); const t = $('#pfxForgeStage .card-tile'); if(!t.clientWidth) return null;
+    fg = ProcFX.forge(t); fg.w = t.clientWidth; fg.tl.eventCallback('onUpdate', ()=>{ scrub.value = Math.round(fg.tl.progress()*1000); }); return fg; };
+  scrub.addEventListener('input', ()=>{ const f = forge(); if(f){ f.tl.pause(); f.tl.progress(scrub.value/1000); } });
+  $$('[data-forge]').forEach(b=> b.addEventListener('click', ()=>{ const f = forge(); if(!f) return; setSpeed(); const k = b.dataset.forge;
+    if(k === 'play'){ f.tl.progress() >= 1 ? f.tl.restart() : f.tl.play(); S('materiaForm'); }
+    else if(k === 'blank'){ f.tl.pause(0); }
+    else f.tl.tweenTo(k, {ease:'none'}); }));
+  const tabBtn = $('nav.toc [data-tab="procfx"]'); if(tabBtn) tabBtn.addEventListener('click', ()=> requestAnimationFrame(forge));
+  if(location.hash === '#procfx') requestAnimationFrame(forge);
+
+  // --- ripple
+  $('#pfxRippleStage').addEventListener('click', e=>{ const t = e.target.closest('.card-tile'); if(!t) return; setSpeed(); S('rallyTone');
+    ProcFX.ripple($$('#pfxRippleStage .card-tile'), {from:t}); });
 })();
