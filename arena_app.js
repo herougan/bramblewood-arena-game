@@ -313,8 +313,9 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // 2026-10-14 (sixth pass). Meteor is ☄️ (user: "Meteor uses the meteor icon"); Fireball can't be 🔥 (Immolation and Momentum have it),
 // so on the card and in the skill lines it is a drawn fireball (SKILL_ICON_HTML below), with 🟠 where only text fits (tooltips).
 // Durian has no emoji: a drawn spiky green fruit, 🌰 in plain text. Shield (a unit's) is 💠 because Armor has 🛡 and Shield Call 🛡️.
-// Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"), with a spark: 🔌⚡. Keen Sense 👃.
-Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌⚡', keenSense:'👃'});
+// Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"). 2026-10-14 (user: "Electric skill's icon: 🔌"):
+// just the plug now, no spark beside it, on the card chip, in the Codex, the effects library and the battle log. Keen Sense 👃.
+Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -5441,7 +5442,7 @@ function abilityBadges(d, bopts){
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
   if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian: 1 in 2 each round it eats one for Thorns +1${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
   if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
-  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">${iconHTML('electricity', '🔌')}⚡${n1(numOr(e.electricity, 1))}</span>`);
+  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`);
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
@@ -15673,7 +15674,11 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   const cardsAll = cards + tokenChips;
   if(!cardsAll && !cur.length && !rankHTML) return '';
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">${done ? 'Won' : 'First clear'}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
+  // 2026-10-14 (user: "Move the first time rewards section to the right. Decrease the height of the first reward section. The
+  // 'Won' will not be part of it, and instead a overlaid word ontop, on the top border, justify-center. It says 'First Clear'.
+  // The card will not be greyed out."): the label is always "First Clear", sitting on the box's top border like a legend (CSS);
+  // a won box keeps its colours, with only a small ✓ beside the label.
+  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">First Clear${done ? ' <i class="cnp-rw-ok" aria-hidden="true">✓</i>' : ''}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
 }
 const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 5; // index in play order = map number (from 0): Map 5 and later
 function rollSRankFind(mapId, rank, rng){
@@ -16515,14 +16520,17 @@ function maybeOfferDeckSwap(){
     <p class="ds2-say"><b>${item.teach ? 'New card!' : 'Better card!'}</b> Swap <b>${escapeHtml(od.name)}</b> for <b>${escapeHtml(d.name)}</b>?<br><span>${escapeHtml(why)}</span></p>
     <div class="ds2-actions">${item.forced ? '' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
   document.body.appendChild(ov);
-  const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 260); };
+  const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 160); }; // 2026-10-14: quicker fade (was 260 ms), see the Swap click below
   const keep = ov.querySelector('#dsKeep'); if(keep) keep.onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
   const sw = ov.querySelector('#dsSwap'); setTimeout(()=>{ try{ sw.focus(); }catch(e){} }, 60);
   sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true;
     myDeckCounts[out] -= 1; if(myDeckCounts[out] <= 0) delete myDeckCounts[out]; myDeckCounts[id] = (myDeckCounts[id]||0) + 1; saveMyDeck();
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
     ov.querySelector('.ds2-focus').classList.add('is-swapped');
-    setTimeout(()=>{ try{ showToast(`🃏 ${d.name} is in your deck, in place of ${od.name}.`, 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 1300); };
+    // 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): the line under the
+    // cards turns into a "Nice!", and the window goes after 650 ms (was 1.3 s) with a quicker fade (CSS .ds2-overlay.is-out).
+    { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">Nice!</b>'; }
+    setTimeout(()=>{ try{ showToast(`🃏 ${d.name} is in your deck, in place of ${od.name}.`, 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 650); };
 }
 // Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"): ↑ the next map, ↓ the one
 // before (or out of a side map). Only on the open map, never while typing, in a fight or over a window.
@@ -21731,12 +21739,28 @@ function endMatch(opts){
 // vs AI: the AI already acted instantly alongside the player (see aiActNow) — resolve at once.
 // vs PC: only resolve once BOTH humans have acted this round; otherwise hand off with a
 // "pass the device" beat so the next player's hand isn't visible until they're ready.
+// Play/summon animations the round must wait for (2026-10-14, user: "The battle animations need to wait for the play card
+// animation. It often jumps the gun. Especially for the leader. Summoning the leader - and battle is over but there's no
+// animation."): anything that plays a card's arrival (the leader's throne moment above all, which starts ~380 ms after the
+// summon and runs ~1.7 s) books the time it needs with noteMatchFx(ms); resolveRound awaits waitForMatchFx before it replays
+// a single attack, so the summon always finishes first — also on the round that ends the match. Capped, so it can never hang.
+function noteMatchFx(ms, m){
+  m = m || (typeof matchState !== 'undefined' ? matchState : null); if(!m) return;
+  const until = performance.now() + Math.max(0, ms || 0);
+  if(!(m._fxBusyUntil > until)) m._fxBusyUntil = until;
+}
+async function waitForMatchFx(m, cap){
+  const t0 = performance.now(); cap = cap || 3200;
+  while(m && matchState === m && m._fxBusyUntil && performance.now() < m._fxBusyUntil && performance.now() - t0 < cap)
+    await sleep(Math.max(16, Math.min(80, m._fxBusyUntil - performance.now())));
+}
 // Resolves once no card on the board is still dropping in (or after `max` ms).
 async function waitForBoardEntrances(max){
   const t0 = performance.now();
   await sleep(60);
   while(performance.now() - t0 < (max||1400)){
-    const busy = [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)));
+    // 2026-10-14: a card whose tile is still mid-drop (the leader's throne drop tweens the tile, not the card) counts too.
+    const busy = [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)) || (hasGsap() && el.querySelector('.card-tile') && gsap.isTweening(el.querySelector('.card-tile'))));
     if(!busy) return;
     await sleep(50);
   }
@@ -21783,6 +21807,7 @@ async function afterPlayerAction(actingPid){
   }
   m.awaitingPass = false;
   renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+  await waitForBoardEntrances(1400); // 2026-10-14: the played cards land before the fight, as vs the AI
   await sleep(180); // see the vs-AI branch above for why this is 180ms, not 520ms
   await resolveRound();
   if(m.mode==='liveRanked') broadcastLiveState();
@@ -21914,7 +21939,8 @@ async function attemptSummonLeader(preferredLane){
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
-  if(m.leaderUid != null){ const lu = m.leaderUid; setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), Math.round(animMs().strike || 380)); }
+  if(m.leaderUid != null){ const lu = m.leaderUid; noteMatchFx(Math.round(animMs().strike || 380) + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), Math.round(animMs().strike || 380)); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
 }
@@ -25161,6 +25187,16 @@ function renderHand(){
   // Hand collapse (2026-10-08, user: "When you play a card, your hand collapses with the same
   // animations"): remember where each card sat, then slide the survivors into their new places.
   const prevHandRects = new Map([...strip.querySelectorAll('[data-handuid]')].map(el=> [el.getAttribute('data-handuid'), el.getBoundingClientRect()]));
+  // 2026-10-14 (user: "The Pond trout is made golden by the tutorial, but ALL pond trouts become permanently golden in that
+  // tutorial. Only that single selected pond trout or card by the tutorial should be golden."): the tutorial's golden glow
+  // used to go on every hand card with the highlighted card's id, for the whole fight. It now picks ONE card in the hand
+  // (the first copy dealt) and stays on that card only; once it has left the hand (played or pitched) nothing glows again.
+  // It was never saved anywhere: it's a match-only look, so no saved card needs cleaning up.
+  if(m.tutorialHighlight && !m._tutHlDone){
+    const isHlCard = hc=> hc.defId === m.tutorialHighlight || (defs[hc.defId] && defs[hc.defId].derivedFrom === m.tutorialHighlight);
+    if(m._tutHlUid != null && !me.hand.some(hc=> hc.uid === m._tutHlUid)) m._tutHlDone = true;
+    else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
+  }
   strip.innerHTML = me.hand.map(hc=>{
     const d = defs[hc.defId]; if(!d) return '';
     const can = canPlayWithOffer(m, me, hc);
@@ -25170,7 +25206,7 @@ function renderHand(){
     // 2026-10-13 (user: "The first card has a golden glow - only glow when you reach the 2nd tutorial that asks you to pull it
     // out"): in part 1 the glow waits until the "drag a card onto the field" step.
     const hlReady = m.mode !== 'tutorial' || (m.tutorialStage||1) >= 2 || coachSeen.has('g-hand');
-    const isHl = m.tutorialHighlight && (hc.defId === m.tutorialHighlight || d.derivedFrom === m.tutorialHighlight);
+    const isHl = !!m.tutorialHighlight && !m._tutHlDone && m._tutHlUid != null && hc.uid === m._tutHlUid; // one card only (2026-10-14, see above)
     const hl = isHl ? (hlReady ? 'tut-highlight tut-hl-cand' : 'tut-hl-cand') : '';
     return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
@@ -26358,9 +26394,11 @@ function waterRippleAt(el){
 // leader now drops onto its spot, a ring shockwave rolls out from it (gold for yours, crimson-gold for theirs), the card flashes,
 // a "👑 <Leader> joins the fight!" callout crosses the field with a fanfare (yours) or a war drum (theirs), and a big leader
 // (20+ Health or Legendary and up) shakes the field with the screen-shake helper.
+const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam is gone by 1.55 s); see noteMatchFx
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
+  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_FX_MS : 500); // 2026-10-14: the round waits for it
   const enemy = !!opts.enemy;
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
@@ -26788,6 +26826,9 @@ async function resolveRound(opts){
   // A blocking tip holds the round until you press Next (2026-10-13, user: "the 'This the enemy castle' tutorial should pause
   // the battle - and only continues after the player plays. Otherwise the player misses the first combat").
   await waitForBlockingCoach(m);
+  // 2026-10-14 (user: "The battle animations need to wait for the play card animation ... Especially for the leader"): a summon
+  // still playing (see noteMatchFx) finishes before the first attack; a forfeit doesn't wait.
+  if(m.forcedWinner == null) await waitForMatchFx(m);
   if(matchState !== m || m.over || m.resolving) return;
   m.resolving = true; document.documentElement.classList.add('bw-resolving'); syncFightTimeScale(m); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
   const events = [];
@@ -29408,7 +29449,7 @@ function logText(ev){
     // 2026-10-14 (seventh pass)
     case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
     case 'smokeBomb': return {cls:'', text: ev.ally ? `💣💨 ${nm(ev.defId)} throws a smoke bomb: ${nm(ev.targetDefId)} hides in the smoke (attacks at it miss 1 in 2).` : ev.effect === 'blind' ? `💣💨 ${nm(ev.defId)} throws a smoke bomb in ${nm(ev.targetDefId)}'s face: Blinded!` : `💣💨 ${nm(ev.defId)} throws a smoke bomb at ${nm(ev.targetDefId)}, who sniffs its way through it.`};
-    case 'electricity': return {cls:'', text:`🔌⚡ ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
+    case 'electricity': return {cls:'', text:`🔌 ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
     case 'shieldSoak': return {cls:'', text:`💠 ${nm(ev.defId)}'s Shield soaks ${ev.soaked}${ev.left ? ` (${ev.left} left)` : ' and breaks'}.`};
     default: return {cls:'', text: ev.type};
   }
@@ -31415,7 +31456,7 @@ function renderVfxForEvent(ev){
   if((ev.type==='play'||ev.type==='discard') && ev.side==='B') SoundKit.play();
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')) setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380);
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
 }
 
 overlayDelegateChanges();
@@ -36622,6 +36663,14 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
     triggerEntranceAnimation(true);
     // The splash (where "Welcome back" lives) is skipped for signed-in players, so greet them on Home.
     if(hasPlayedBefore() && myProfile && myProfile.name) setTimeout(()=> showToast(`Welcome back, ${myProfile.name}! 🌰`), 600);
+    return;
+  }
+  // 2026-10-14 (user: "Dont even include the Play button screen anymore. Just remove that part."): a player who already gave a
+  // name never sees the "Welcome, <name>! ▶ Start" screen; they go straight in (to the side picker, the tutorial, or Home),
+  // greeted on the way. Only a brand-new player still sees the splash, to type a name (Enter the Grove goes straight on).
+  if(myProfile && myProfile.name){
+    triggerEntranceAnimation(true);
+    if(hasPlayedBefore()) setTimeout(()=> showToast(`Welcome back, ${myProfile.name}! 🌰`), 600);
     return;
   }
   renderEntranceAuth();
