@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (14:30)
+- **Energy starts at 20 again.** The Camp raises it cheaply to 50 (+5 a step, 40 to 240 Maple Leaves); the Forge takes it from 50 to 60 (+2 a step). Anyone who already had 50 keeps it.
+- **Swimmers are Tide units** (they gain Flow and Ebb) and float on the board. **Moonpull** on Moon Jelly brings the Tide in at once. Pebble Beach has a **Tide-spout**: a water geyser in one column each round starts the Tide, pushes those units back and soaks non-swimmers.
+- **Day and night come from the map**, not from cards: outdoor maps cycle; caves, the undersea and dark places have none. Daylight is warmer with a sun and rays; night has a clear moon and stars.
+- **Irradiation tokens:** each round every ☢️ token takes a point from Health, Attack or a skill (skills weaken, then vanish), then the tokens drop by 1. Card details show the change in colour.
+- **Ghost** takes half from elemental attacks (only magic is full); new **Shade** and **Shadow**. **Supreme** beasts (the five dragons, still hidden) hit with magic, ignore Armor and Ward, and halve non-magic damage.
+- **Twin** (Puddle Changeling, new Mirrorhide Mutant) and **Growth Sprout** tokens (1/3, count for Swarm) with **Sprout N**.
+- **Your art is in:** Sunspire Envoy (the bottom-right bird), Tide Pool Crab, Cave Bat Swarm, Upside-Down Bat and Bat Swarmling. New cards: **Shallows Fry** (the green-water fish), **Vampire Bat** (3/4, drinks what it deals) and **Wandering Mage** (the wizard cat, a free leader for Map 51).
+- Late-game plan written up: docs/design-2026-10-14-late-game.md.
+
 ## 2026-10-14 (12:45)
 - **Volcano hazards with odds:** Lava Tide (lava floods a column), Petrification (a unit turns to stone for a round) and Eruption each roll every round from round 2. A fight's volcano level sets the odds: Very low 1/2/3%, Low 10/12/14%, Medium 20/22/24%, 1 in 2 45/50/55% (rising each round), High 60/65/70%. The fight conditions show the band word, not the number. Old fights with a fixed eruption are unchanged.
 - **New skills for the maps after Map 20:** 🐇 Speed (the fastest units swing first; ties keep today's order), 🏃 Haste (+2 Speed, neighbours +1), 🤬 Rabid (hits poison 2; double damage from water), 🫣 Cower (hit last round: it hides in its shell, or flees), 👻 Ghost (normal attacks pass through; magic, fire, poison and acid still hurt), 🪄 Magic attacks (a blue wand on the card instead of the sword), 🧪 Ichor (attackers take acid, lose 1 Armor and bleed, even Ghosts), ☢️ Irradiated (withers itself and the units around it: lost max Health and Attack).

@@ -74,7 +74,7 @@ function mk(mode, seed){ const e = E.makeSimEngine(defs, E.mulberry32(seed||5), 
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'n-swimg', 'left', {}, []); e.roundStart(P, 2, so, {}, []);
   const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); const S = all(P[1])[0];
   ok(e.getTide() === 'flow' && (defs[S.defId] || e.derivedDefs[S.defId] || {effects:{}}).effects.armor === 3, `on Flow the Swimmer gets its list (armor ${((defs[S.defId] || e.derivedDefs[S.defId] || {}).effects||{}).armor})`);
-  ok(hq - P[2].hq.hp === 2, `…and swings once, no Fast Forward (${hq - P[2].hq.hp})`); }
+  ok(hq - P[2].hq.hp === 3, `…and swings once, no Fast Forward: 2 +1 as a Tide unit (2026-10-14: "Swimmers = Tide") (${hq - P[2].hq.hp})`); }
 // Fork after the ranks shift (collapse mode): 3 enemies vs 2 of mine — a straddling Fork hits the two it stands between
 { let far = 0;
   for(let s = 1; s < 25; s++){ const {e, P} = mk('collapse', s);

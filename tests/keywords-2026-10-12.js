@@ -64,7 +64,8 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 // Swimmer: an extra turn on Flow
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-swim', 'left', {}, []); e.roundStart(P, 2, so, {}, []);
   ok(e.getTide() === 'flow', 'round 2 is Flow'); const hq = P[2].hq.hp; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(hq - P[2].hq.hp === 4, `a Swimmer swings twice on Flow (${hq - P[2].hq.hp}, want 4)`); }
+  // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit, so each of its two Flow swings is +1 (3 + 3)
+  ok(hq - P[2].hq.hp === 6, `a Swimmer swings twice on Flow, +1 each as a Tide unit (${hq - P[2].hq.hp}, want 6)`); }
 // Tailwind: Flyers get the extra turn
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-fly', 'left', {}, []); const t = give(P, 1, 'k2-tail'); ok(e.placeCard(P, so, 1, t.uid, 'left', {}, []), 'Tailwind is cast');
   const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(hq - P[2].hq.hp === 4, `a Flyer swings twice under a Tailwind (${hq - P[2].hq.hp}, want 4)`); }

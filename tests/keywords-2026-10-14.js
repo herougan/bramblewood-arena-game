@@ -79,7 +79,8 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-hit', 'left', {}, []);
   const G = byDef(P[1], 'k4-ghost'); e.debugAttack(P, so, byDef(P[2], 'k4-hit').uid, {}, []); ok(G.hp === 20, `a physical hit does nothing to a Ghost (${G.hp})`);
   e.damageCardFlat(G, 3, 'physical'); ok(G.hp === 20, 'physical arrows pass through too');
-  e.damageCardFlat(G, 3, 'heat'); ok(G.hp === 17, `fire still burns it (${G.hp})`); }
+  // 2026-10-14 second pass (user: "those creatures that deal elemental damage physically, deal half. Only magic damage deals equal")
+  e.damageCardFlat(G, 3, 'heat'); ok(G.hp === 19, `fire burns it for half, rounded down (${G.hp}, want 19)`); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-ghost', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-magic', 'left', {}, []);
   const G = byDef(P[1], 'k4-ghost'), ev = []; e.debugAttack(P, so, byDef(P[2], 'k4-magic').uid, {}, ev);
   ok(G.hp === 16, `a Magic attack hurts a Ghost (${G.hp})`); ok(ev.some(x=> x.type==='hit' && x.dmgType==='magic'), 'the hit is logged as magic damage'); }
@@ -90,23 +91,28 @@ const firstSwing = ev=> ev.find(x=> x.type==='hit' || x.type==='hitHQ');
   const I = byDef(P[1], 'k4-ichor'), G = byDef(P[2], 'k4-gharm'), ev = [];
   e.debugAttack(P, so, G.uid, {}, ev);
   ok(I.hp === 49, `the Ghost's hit lands on the Ichor unit... (${I.hp})`);
-  ok(G.hp === 18, `...but the splash burns it for 2 acid (${G.hp})`);
+  ok(G.hp === 19, `...but the splash burns it for 2 acid, halved on a Ghost (2026-10-14) (${G.hp})`);
   ok(G.armorLoss === 1, `and strips 1 Armor (${G.armorLoss})`);
   ok(G.bleed === 1, `and the Ghost bleeds 1 (${G.bleed})`);
   ok(ev.some(x=> x.type==='statusFx' && x.kind==='ichor'), 'the splash is logged');
-  e.debugAttack(P, so, G.uid, {}, []); ok(G.hp === 15, `its next attack bleeds it 1, then the splash again 2 (${G.hp}, want 15)`); }
-// ---- Irradiated 2: itself -1 max Health a round; its neighbours and the enemy facing it -2 max Health, -1 Attack once
+  e.debugAttack(P, so, G.uid, {}, []); ok(G.hp === 17, `its next attack bleeds it 1 (Bleed stays whole), then the splash again 1 (${G.hp}, want 17)`); }
+// ---- Irradiated 2 (reworked 2026-10-14, user: "Irradiation tokens - Irradiated ..."): every upkeep it gives 2 Irradiation tokens to
+// the units beside it and the enemy facing it, and 1 to itself; a 'radiation' Resist halves them. The tokens then each take a point and
+// drop by 1 (see keywords-2026-10-14b.js for the token rules).
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-irr', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k4-mid', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k4-wall', 'right', {}, []);
   e.debugSpawnCard(P, so, 2, 'k4-radres', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-wall', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-wall', 'right', {}, []);
   const I = byDef(P[1], 'k4-irr'), M = byDef(P[1], 'k4-mid'), R = byDef(P[2], 'k4-radres'), ev = [];
   e.roundStart(P, 2, so, {}, ev);
-  ok(I.maxHp === 9 && I.hp === 9, `it withers itself by 1 (${I.hp}/${I.maxHp})`);
-  ok(M.maxHp === 18 && M.hp === 18 && M.atk === 2, `the ally beside it: -2 max Health, -1 Attack (${M.hp}/${M.maxHp}, atk ${M.atk})`);
-  ok(R.maxHp === 19 && R.atk === 3, `the enemy facing it resists radiation: -1 (${R.maxHp}, atk ${R.atk})`);
-  ok(ev.some(x=> x.type==='fieldTick' && x.field==='irradiated'), 'the withering is logged as a fieldTick');
-  e.roundStart(P, 3, so, {}, []); ok(M.maxHp === 16 && M.atk === 2, `the Attack loss only happens once (${M.maxHp}, atk ${M.atk})`); }
+  const got = uid=> ev.filter(x=> x.type==='fieldTick' && x.field==='irradiated' && x.uid===uid).reduce((t, x)=> t + x.tokens, 0);
+  ok(got(I.uid) === 1, `it gives itself 1 token (${got(I.uid)})`);
+  ok(got(M.uid) === 2, `the ally beside it gets 2 (${got(M.uid)})`);
+  ok(got(R.uid) === 1, `the enemy facing it resists radiation: 1 (${got(R.uid)})`);
+  ok(M.irradiation === 1 && I.irradiation === 0 && R.irradiation === 0, `each unit's tokens took their points and dropped by 1 (${M.irradiation}, ${I.irradiation}, ${R.irradiation})`);
+  const W1 = all(P[1]).find(c=> c.defId==='k4-wall'); ok(got(W1.uid) === 2, `the ally on its other side gets 2 too (${got(W1.uid)})`);
+  const pts = ev.filter(x=> x.type==='irradiation'); ok(pts.length === 4 && pts.find(x=> x.uid===M.uid).points.length === 2 && pts.find(x=> x.uid===I.uid).points.length === 1, `two points on each neighbour, one on itself and the resistant foe (${pts.length})`);
+  e.roundStart(P, 3, so, {}, []); ok(M.irradiation === 2, `next upkeep: 1 left + 2 more, then -1 (${M.irradiation})`); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k4-irr', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k4-frail', 'left', {}, []);
-  e.roundStart(P, 2, so, {}, []); ok(!byDef(P[2], 'k4-frail'), 'a frail unit can wither to death'); }
+  for(let r = 2; r < 8 && byDef(P[2], 'k4-frail'); r++) e.roundStart(P, r, so, {}, []); ok(!byDef(P[2], 'k4-frail'), 'a frail unit can wither to death'); }
 // ---- Volcano hazards
 const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard(m.P, so, 1, 'k4-wall', 'left', {}, []); m.e.debugSpawnCard(m.P, so, 2, 'k4-wall', 'left', {}, []); return m; };
 { const {e, P} = lone({lavaTideChance:100, petrifyChance:0, eruptionChance:0}); const ev = []; e.roundStart(P, 2, so, {}, ev);

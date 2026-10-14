@@ -31,6 +31,20 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 14:30 (your 11:07 and 11:25 notes)
+
+| Item | What's in the game now |
+|---|---|
+| Energy | Starts at 20; Camp to 50 (cheap), Forge to 60. About 14 days to Map 20 at two sessions a day if you buy the Camp steps early (26 days if you never do). Details in the late-game note |
+| Tide | Swimmers = Tide, float; Moonpull (Moon Jelly); Tide-spout on Pebble Beach |
+| Day and night | By map: outdoor maps cycle; caves, undersea and dark places have none; brighter sun, clear moon |
+| Irradiation | Tokens that eat Health, Attack or skill values each round; shown in card details |
+| Ghost, Shade, Shadow, Supreme | Built; Supreme is on the five hidden dragons only |
+| Twin, Growth Sprout | Built; Twin on Puddle Changeling and the new Mirrorhide Mutant |
+| Art | Your images placed; Shallows Fry, Vampire Bat and Wandering Mage added (not on maps yet) |
+| Later | Wild Veggies, dragons from Map 50, Map 80 own effect, limit breaks every 100 maps, emoji/icon sets: in docs/design-2026-10-14-late-game.md |
+| Still to do | Redo Owl Fletcher, Bee Drone and Owl Nightwatch art as real animals with the game-art engine |
+
 ## Done at 12:45 (your 10:18 list)
 
 | Item | What's in the game now |
