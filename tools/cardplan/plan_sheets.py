@@ -23,7 +23,7 @@ YELLOW = PatternFill('solid', fgColor='FFF2CC'); GREY = PatternFill('solid', fgC
 WRAP = Alignment(wrap_text=True, vertical='top')
 
 data = json.loads(subprocess.check_output(['node', os.path.join(ROOT, 'tools', 'cardplan', 'extract_skills.js')]))
-SKILLS, BUDGET = data['skills'], data['budget']
+SKILLS, BUDGET, HALF_MISS, V2 = data['skills'], data['budget'], data.get('halfMiss', []), data.get('v2', {})
 LABEL = {s['key']: s['label'] for s in SKILLS}; ICON = {s['key']: s['icon'] for s in SKILLS}
 cards = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json')))
 CARD = {c['id']: c for c in cards}
@@ -65,16 +65,35 @@ ws = wb.create_sheet('Skill N values', index=wb.sheetnames.index('Skill curricul
 use = collections.Counter(k for c in cards for k in (c.get('effects') or {}))
 def counted(key, kind):
     w = BUDGET.get(key)
+    if key in HALF_MISS: return f'Costs {w if w is not None else 0}: instead the card\'s whole score is ×{V2.get("missMult", 1.5)} (attacks miss it, or by it, about half the time)'
+    if key == 'bounty': return 'Costs 0: Bounty pays both players (the one who plays it, and the other side when it dies)'
     if w == 'v': return f'By its number: {LABEL.get(key, key)} 2 costs 2 (at least 1; two-number values add up)'
     if isinstance(w, (int, float)): return f'Fixed: costs {w} whatever its number' if kind != 'flag' else f'Fixed: costs {w}'
     return 'Not in the table: costs 1' + ('' if kind == 'flag' else ', plus half its number (rounded down) when over 1')
 ws.append(['Skill N values: what each skill costs in the stat budget'])
-ws.append(['Rule (Test Lab ⚖️ Stat budget): 2×Attack + Health + Skills < N + 2 and Attack × Health + Skills < N. Skills is the sum of the costs below. N = 8 + rarity step + Level (Level 0: −2) + 0.1 per map number.'])
+ws.append(['Rule (Test Lab ⚖️ Stat budget, v2): (2×Attack + Health + Skills) < N + 2 and (Attack × Health + Skills) < N. Skills is the sum of the costs below. See the Budget v2 legend for N.'])
 ws.append(['Fill the yellow "Your N" column: a number (the skill always costs that much) or v (it costs its own number, e.g. Poison 2 = 2). Leave it empty to keep the current weight. Then run: python3 tools/cardplan/import_skill_n.py'])
 ws.append(['Kind: flag = on or off · number = it has a value (Poison 2) · trigger = a bundled When … do … skill. Blue text = values you type.'])
-ws.append(['Example', '🪽', 'Flying', 'flag', 'boolean', 3, 'Fixed: costs 3', 2, 'Example only (this row is not read): Flying would cost 2 instead of 3.'])
+ws.append(['Example', '⚡', 'Quick', 'flag', 'boolean', 2, 'Fixed: costs 2', 3, 'Example only (this row is not read): Quick would cost 3 instead of 2.'])
 ws.append([])
-H = 7
+# Budget v2 legend (2026-10-14, user: "Balancing formula v2: N=10 base. Each Wait gives 5 bonus points. Any skill with about a 1/2 miss
+# chance gives a ×1.5 multiplier ... Max level N=20; rarity 10 N=30. Each map +0.2 (Map 40 → N=38)." and "Each lumber increases your
+# budget by 4. If you have bounty, that is worth 0.")
+b, rt, rr = V2.get('base', 10), V2.get('rarityTop', 30), V2.get('rarityTopRank', 10)
+LEG = [('Budget v2', 'What N is made of (the same numbers as the game\'s Test Lab and card editor)'),
+       ('Base', f'N starts at {b}'),
+       ('Wait', f'+{V2.get("perWait", 5)} per Wait'),
+       ('Lumber', f'+{V2.get("perLumber", 4)} per Lumber it costs'),
+       ('Map', f'+{V2.get("perMap", 0.2)} per map number (Map 40: +{round(40 * V2.get("perMap", 0.2), 1)})'),
+       ('Level', f'Level 1 adds 0, the top level (10) brings N to {V2.get("levelTop", 20)} (+{V2.get("levelTop", 20) - b}), straight line between; Level 0 is −2'),
+       ('Rarity', f'+{round((rt - b) / rr, 2)} per rarity step (Starter 0, Common 1, Uncommon 2, Rare 3 … Mythic {rr}): rarity {rr} brings N to {rt}, never more. Quest and special rarities count as the tier they stand for'),
+       ('Half-miss ×', f'The card\'s scores are ×{V2.get("missMult", 1.5)} for each of: {", ".join(HALF_MISS)} (they cost 0 themselves). A 2/5 Evasive card: (4+5)×1.5 = 13.5 and 2×5×1.5 = 15'),
+       ('Bounty', 'Costs 0: it pays the player who plays it and, when it dies, the other side'),
+       ('Formula', f'N = {b} + {V2.get("perWait", 5)}×Wait + {V2.get("perLumber", 4)}×Lumber + {V2.get("perMap", 0.2)}×map + level part + rarity part')]
+for k, v in LEG: ws.append([k, None, v])
+LEG0 = ws.max_row - len(LEG) + 1
+ws.append([])
+H = ws.max_row + 1
 ws.append(['Key', 'Icon', 'Skill', 'Kind', 'Value type', 'Current weight', 'How its value counts', 'Your N', 'Note', 'Cards using it'])
 for c in ws[H]: c.font = HDR; c.fill = HFILL; c.alignment = WRAP
 rows = [(s['key'], s['icon'], s['label'], s['kind'], s['valueKind']) for s in SKILLS]
@@ -90,6 +109,8 @@ for r in range(1, last + 1):
         if r != H: c.font = BODY
 ws['A1'].font = TITLE
 for r in (2, 3, 4): ws.cell(r, 1).font = SUB
+for r in range(LEG0, LEG0 + len(LEG)): ws.cell(r, 1).font = BOLD; ws.cell(r, 1).fill = GREY; ws.cell(r, 3).font = BODY
+ws.cell(LEG0, 1).font = Font(name=F, bold=True, size=12); ws.cell(LEG0, 3).font = SUB
 for c in ws[5]: c.font = Font(name=F, italic=True, color='777777'); c.fill = GREY
 ws['H5'].font = Font(name=F, italic=True, color='0000FF'); ws['H5'].fill = YELLOW
 for r in range(H + 1, last + 1):

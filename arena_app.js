@@ -4100,7 +4100,7 @@ function castleHoverHTML(hqSide){
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
-      const html = el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
+      const html = el.dataset.fieldhover === 'cond' ? fieldCondHoverHTML() : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -4978,7 +4978,7 @@ function cardTileHTML(d, opts){
     <div class="rarity-band"></div>
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="Field card: changes the whole battlefield for ${d.field.rounds||3} rounds"><span class="fld">🌐 Field · ${d.field.rounds||3} rounds</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(isMagicDef(d) ? '<span class="atk atk-magic" title="Magic attack"><i class="sg">🪄</i>' : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(isMagicDef(d) ? '<span class="atk atk-magic" title="Magic attack"><i class="sg">🪄</i>' : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -12057,6 +12057,20 @@ function enterSubMap(id, el, body){
   const go = ()=>{ conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = reduce ? null : 'in'; renderConquestSubTab(body); };
   if(!mainEl || reduce || !mainEl.animate || !el) return go();
   const mr = mainEl.getBoundingClientRect(), r = el.getBoundingClientRect();
+  // A side map in daylight (2026-10-14, user: "If the submap is not dark, don't need to darken the screen - just zoom into the
+  // entrance, then open and zoom out from the new submap."): no iris and no loading card, just the camera. The whole map layer
+  // (art, trail and fights) zooms into the entrance; the side map then opens zoomed in on its own way in and pulls back.
+  // Caves and dark side maps keep the dive into the dark below.
+  if(!subMapIsDark(sm)){
+    const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
+    try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
+    document.documentElement.classList.add('submap-zooming');
+    const za = lay.animate([{transform:'none', transformOrigin:`${r.left + r.width/2 - lr.left}px ${r.top + r.height/2 - lr.top}px`}, {transform:'scale(4.5)', transformOrigin:`${r.left + r.width/2 - lr.left}px ${r.top + r.height/2 - lr.top}px`}], {duration:560, easing:'cubic-bezier(.55,0,.85,.35)', fill:'forwards'});
+    za.onfinish = ()=>{ conquestVeiledMap = id; // the side map's loading card would darken the screen again
+      conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = 'fromEntry'; renderConquestSubTab(body); try{ za.cancel(); }catch(e){} };
+    setTimeout(()=> document.documentElement.classList.remove('submap-zooming'), 2200);
+    return;
+  }
   mainEl.style.transformOrigin = `${r.left + r.width/2 - mr.left}px ${r.top + r.height/2 - mr.top}px`;
   try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
   // An iris closes on the cave mouth while the map dives into it (the map art lives on the layout
@@ -12102,6 +12116,9 @@ function leaveSubMap(sm, body){
 // symbols - just use an icon representing the main map"). A map can say `cave:true` itself.
 const CAVE_SUBMAPS = new Set(['mg', 'mz', 'mx']);
 function isCaveSubMap(map){ return !!(map && (map.cave || CAVE_SUBMAPS.has(map.id))); }
+// Dark side maps (2026-10-14): caves, cave-look maps and any map whose fights are in the dark keep the dive into the dark.
+function subMapIsDark(map){ if(!map) return false; if(isCaveSubMap(map) || map.dark || DARK_MAPS.has(map.id)) return true; try{ if(isCaveMap(map)) return true; }catch(e){}
+  try{ return map.nodes.some(n=> n.kind !== 'tutorial' && (n.rules || {}).dark); }catch(e){ return false; } }
 function subMapExitHTML(map, positions){
   if(!map.sub) return '';
   if(map.id === 'mtut' && !loadTutorial2Done()) return ''; // the way out opens with Tutorial II
@@ -12585,7 +12602,14 @@ function maybeTerrainIntro(m){
     const t = tr.t, er = Number(tr.rules.eruption) || 0;
     const b = document.createElement('div'); b.className = 'terrain-banner biome-' + (t ? t.biome : 'ash'); b.setAttribute('role', 'status');
     b.innerHTML = `<b>${escapeHtml(t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions')}</b><span>${keywordizeHTML(escapeHtml(t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep.`))}</span>`;
-    bf.appendChild(b); setTimeout(()=> b.classList.add('is-out'), 5200); setTimeout(()=> b.remove(), 5900); }, 900);
+    bf.appendChild(b);
+    // 2026-10-14: it then shrinks into the field card on the enemy's side, where it stays.
+    setTimeout(()=>{ const c = document.getElementById('fieldCondCard'); if(!c || reducedMotion()){ b.classList.add('is-out'); return; }
+      const cr = c.getBoundingClientRect(), br = b.getBoundingClientRect(); const dx = (cr.left + cr.width/2) - (br.left + br.width/2), dy = (cr.top + cr.height/2) - (br.top + br.height/2);
+      b.style.transition = 'transform .65s cubic-bezier(.5,0,.75,0), opacity .65s ease-in'; b.style.animation = 'none';
+      b.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(.12)`; b.style.opacity = '0';
+      setTimeout(()=>{ const c2 = document.getElementById('fieldCondCard'); if(c2){ c2.classList.remove('is-landing'); void c2.offsetWidth; c2.classList.add('is-landing'); setTimeout(()=> c2.classList.remove('is-landing'), 700); } }, 600); }, 5200);
+    setTimeout(()=> b.remove(), 6000); }, 900);
 }
 document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('#terrainPill'); document.querySelectorAll('.terrain-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); } });
 const TIER_NUMERAL = ['', 'I', 'II', 'III'];
@@ -12664,22 +12688,9 @@ function noteFieldEvent(ev){
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
   else if(ev.type === 'fieldTick' && ev.field === 'tideSpout') hit = markFieldRow('tideSpout');
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
-  if(hit){ const p = document.getElementById('terrainPill'); if(p) p.classList.add('has-new'); }
+  if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p) p.classList.add('has-new'); }
 }
-function terrainPillHTML(m){
-  const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
-  if(m && m.mode !== 'tutorial') rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); });
-  const tr = terrainOfMatch(m);
-  if(!tr && rows.length){ const head = rows.length === 1 ? `${rows[0].icon} ${rows[0].name}` : `${rows.map(x=> x.icon).join('')} Field`;
-    return `<button type="button" class="terrain-pill biome-ash" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr('Field: ' + rows.map(x=> x.name).join(', '))}"><span class="tp-head">${escapeHtml(head)}</span><span class="tp-tip" role="tooltip"><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></span></button>`; }
-  if(!tr) return '';
-  maybeTerrainIntro(m);
-  const t = tr.t, er = Number(tr.rules.eruption) || 0;
-  const title = t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]}` : '🌋 Eruptions';
-  const body = t ? terrainSummary(t, tr.rules) : `The mountain erupts: from round 2, one random unit on each side takes ${er} fire damage every upkeep (units that resist fire are spared).`;
-  const tip = rows.length > 1 ? `<ul class="fcr-list">${fieldRowsListHTML(rows)}</ul>` : keywordizeHTML(escapeHtml(body));
-  return `<button type="button" class="terrain-pill biome-${t ? t.biome : 'ash'}" id="terrainPill" aria-expanded="false" aria-label="${escapeAttr(title + '. ' + body)}"><span class="tp-head">${escapeHtml(title)}${rows.length > 1 ? ` <small>+${rows.length - 1}</small>` : ''}</span><span class="tp-tip" role="tooltip">${tip}</span></button>`;
-}
+// The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
 // Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
 // The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
@@ -16404,6 +16415,15 @@ function renderConquestSubTab(body){
   { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; leaveSubMap(map, body); }); }
   { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
+  if(conquestSubZoom === 'fromEntry'){ conquestSubZoom = null;
+    // 2026-10-14: a daylight side map opens zoomed in on its way in (the exit back out, or its first fight) and pulls back.
+    const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
+    const entry = mainEl.querySelector('#mapSubExit') || mainEl.querySelector('[data-nodekey], .conquest-node, [data-node]');
+    const er = entry ? entry.getBoundingClientRect() : null, ox = er && er.width ? er.left + er.width/2 - lr.left : lr.width/2, oy = er && er.width ? er.top + er.height/2 - lr.top : lr.height/2;
+    if(lay.animate){ const o = `${ox}px ${oy}px`; const zo = lay.animate([{transform:'scale(4.5)', transformOrigin:o}, {transform:'none', transformOrigin:o}], {duration:760, easing:'cubic-bezier(.2,.75,.25,1)'});
+      zo.onfinish = zo.oncancel = ()=> document.documentElement.classList.remove('submap-zooming'); }
+    else document.documentElement.classList.remove('submap-zooming');
+  }
   if(conquestSubZoom && mainEl.animate){ const z = conquestSubZoom; conquestSubZoom = null;
     mainEl.animate(z==='in' ? [{transform:'scale(.55)', opacity:0, filter:'brightness(0)'}, {transform:'scale(1.04)', opacity:1, filter:'brightness(.8)', offset:.7}, {transform:'none', opacity:1, filter:'none'}]
                             : [{transform:'scale(1.5)', opacity:0}, {transform:'none', opacity:1}], {duration: z==='in' ? 520 : 300, easing:'cubic-bezier(.2,.8,.3,1)'}); }
@@ -18869,11 +18889,25 @@ function runCardCheck(host){
 // ⚖️ Stat budget (2026-10-13, user: "Self balance - 1st pass ... Attack * 2 + Defence * 1 must be < N+2 AND Attack * Defence
 // < N. Each rarity increases N by 1. Each level increases N by 1. Then for each skill - introduce a N formula. The full formula
 // will be then A*2+D+SKILLS < N+2 or A*D+SKILLS < N. Level 0 cards have a -2 penalty"). Map placement is ignored for now.
-// N = base + rarity step (Starter 0, Common 1, Uncommon 2 …) + level (−2 at Level 0) + per-Lumber bonus. Every number and
-// every skill's cost is editable here and kept on this device (base 8, +0.1 per map number); "Fit" lowers Attack, then Health, until both rules pass.
-const SB_KEY = 'bramblewood_stat_budget_v1';
-const SB_DEFAULT_SKILLS = {flying:3, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
-function sbLoad(){ try{ return Object.assign({base:8, perMap:0.1, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return {base:8, perMap:0.1, perLumber:0, mode:'and', skills:SB_DEFAULT_SKILLS}; } }
+// v1 was N = 8 + rarity step (Starter 0, Common 1, Uncommon 2 …) + level (−2 at Level 0) + 0.1 per map number. Every number and
+// every skill's cost is editable here and kept on this device; "Fit" lowers Attack, then Health, until both rules pass.
+// Stat budget v2 (2026-10-14, user: "Balancing formula v2: N=10 base. Each Wait gives 5 bonus points. Any skill with about a 1/2
+// miss chance gives a ×1.5 multiplier (2/5: 4+5=9 → ×1.5 = 13.5; 2×5×1.5 = 15). Max level N=20; rarity 10 N=30. Each map +0.2
+// (Map 40 → N=38)." and "Each lumber increases your budget by 4. If you have bounty, that is worth 0. Since bounty should give both
+// the playing player on play and the opposing player on death."):
+//   N = 10 + 5×Wait + 4×Lumber + 0.2×map number + Level part + Rarity part
+//   Level part: Level 1 = 0, the card's top level (10) = +10, straight line between; Level 0 = −2.
+//   Rarity part: +2 per rarity step on the main ladder (Starter 0, Common 1, Uncommon 2, Rare 3 … Mythic 10), so rarity 10 = +20
+//   (N 30); never more than +20. Quest and special rarities count as the tier they stand for.
+//   Score: (2×Attack + Health + Skills) and (Attack × Health + Skills), each ×1.5 for every skill that makes attacks at (or by)
+//   the card miss about half the time (SB_HALF_MISS: Evasive, Swift, Flying vs ground, Shadow, Blind); those skills cost 0 themselves.
+//   Checks unchanged: first score < N + 2 and second score < N. Bounty costs 0.
+const SB_KEY = 'bramblewood_stat_budget_v2';
+const SB_DEFAULT_SKILLS = {flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
+const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
+const SB_V2_DEFAULTS = {base:10, perWait:5, perLumber:4, perMap:0.2, levelTop:20, rarityTop:30, rarityTopRank:10, missMult:1.5, mode:'and'};
+function sbLoad(){ const def = Object.assign({}, SB_V2_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
+  try{ return Object.assign(def, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return def; } }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
@@ -18881,33 +18915,37 @@ function sbSkillCost(effects, cfg){
     if(rule === 'v') t += Math.max(1, num); else if(typeof rule === 'number') t += rule; else t += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
   return t;
 }
-function sbBudget(d, cfg){
-  const r = Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')), lv = cardBaseLevel(d);
-  // 2026-10-13 (22:07, user: "N is 8 ... as we go through the maps, the map count also gives a +0.1 bonus. So Map 30 = +3").
-  const src = cardSourceOf(d), mapNo = src.kind === 'map' ? (mapNumberOf(src.id) || 0) : 0;
-  return Math.round((cfg.base + r + (lv <= 0 ? -2 : lv) + (d.cost||0) * (cfg.perLumber||0) + mapNo * (cfg.perMap == null ? 0.1 : cfg.perMap)) * 10) / 10;
+// The ×1.5 per half-miss skill the card has (they stack in the engine, so they stack here).
+function sbMissMult(d, cfg){ const e = (d && d.effects) || {}, m = cfg.missMult == null ? 1.5 : cfg.missMult; let x = 1; (cfg.halfMiss || SB_HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
+function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r.key), d = RARITY_DEFS.find(r=> r.key === k); return Math.max(0, ladder.indexOf(d && d.as ? d.as : (k || 'common'))); }
+function sbBudgetAt(d, cfg, mapNo, lv){
+  const base = cfg.base == null ? 10 : cfg.base, top = Math.max(2, cardMaxLevel(d) || 10);
+  const lvPart = lv <= 0 ? -2 : ((cfg.levelTop == null ? 20 : cfg.levelTop) - base) * Math.min(1, (lv - 1) / (top - 1));
+  const rr = cfg.rarityTopRank || 10, rTop = (cfg.rarityTop == null ? 30 : cfg.rarityTop) - base, rPart = Math.min(rTop, rTop * sbRarityRank(d.rarity) / rr);
+  return Math.round((base + lvPart + rPart + (d.wait||0) * (cfg.perWait == null ? 5 : cfg.perWait) + (d.cost||0) * (cfg.perLumber == null ? 4 : cfg.perLumber) + (mapNo||0) * (cfg.perMap == null ? 0.2 : cfg.perMap)) * 10) / 10;
 }
-function sbCheck(A, D, S, N, mode){ const r1 = 2*A + D + S < N + 2, r2 = A*D + S < N; return {r1, r2, ok: mode === 'or' ? (r1 || r2) : (r1 && r2)}; }
-function sbFit(d, S, N, mode){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+function sbBudget(d, cfg){
+  const src = cardSourceOf(d), mapNo = src.kind === 'map' ? (mapNumberOf(src.id) || 0) : 0;
+  return sbBudgetAt(d, cfg, mapNo, cardBaseLevel(d));
+}
+function sbCheck(A, D, S, N, mode, M){ M = M || 1; const x1 = Math.round((2*A + D + S) * M * 100) / 100, x2 = Math.round((A*D + S) * M * 100) / 100, r1 = x1 < N + 2, r2 = x2 < N; return {r1, r2, x1, x2, ok: mode === 'or' ? (r1 || r2) : (r1 && r2)}; }
+function sbFit(d, S, N, mode, M){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode, M).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). Same N as sbBudget, but for a Map and Level picked in the line itself; the Map
 // comes from the card's own map when it has one.
 let ceBudgetSel = {map:0, level:1};
-function sbBudgetAt(d, cfg, mapNo, lv){
-  const r = Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common'));
-  return Math.round((cfg.base + r + (lv <= 0 ? -2 : lv) + (d.cost||0) * (cfg.perLumber||0) + (mapNo||0) * (cfg.perMap == null ? 0.1 : cfg.perMap)) * 10) / 10;
-}
 function ceBudgetHTML(d){
   const cfg = sbLoad(), src = cardSourceOf(d), known = src.kind === 'map' ? mapNumberOf(src.id) : null;
   const mapNo = known != null ? known : ceBudgetSel.map, lv = ceBudgetSel.level;
-  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, lv), c = sbCheck(A, D, S, N, cfg.mode);
+  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, lv), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M);
   const rar = (d.rarity || 'common'), rarLabel = rar[0].toUpperCase() + rar.slice(1);
   const maxMap = Math.max(1, (typeof mainConquestMaps === 'function' ? mainConquestMaps().length : 0) - 1, 30);
   const mapCtl = known != null ? `<b>Map ${known}</b>` : `<label>Map <select id="ceBudgetMap" aria-label="Map for the budget">${Array.from({length:maxMap + 1}, (_, i)=> `<option value="${i}" ${i===mapNo?'selected':''}>${i}</option>`).join('')}</select></label>`;
-  const lvCtl = `<label>Level <select id="ceBudgetLv" aria-label="Level for the budget">${[0,1,2,3,4,5].map(i=> `<option value="${i}" ${i===lv?'selected':''}>${i}</option>`).join('')}</select></label>`;
-  const x1 = 2*A + D + S, x2 = A*D + S, col = c.ok ? '#2e8b57' : 'var(--danger, #c0392b)';
-  return `<div style="color:${col}; font-weight:600">⚖️ Budget: this card scores ${x1} / ${Math.round((N + 2)*10)/10} and ${x2} / ${N} for ${mapCtl}, ${lvCtl}, ${escapeHtml(rarLabel)} ${c.ok ? '✓ under' : '✗ over'}</div>
-    <small style="color:var(--ink-muted)">2×Attack + Health + Skills = 2×${A} + ${D} + ${S} = ${x1} ${c.r1 ? '&lt;' : '≥'} N + 2 = ${Math.round((N + 2)*10)/10} ${c.r1 ? '✓' : '✗'} · Attack × Health + Skills = ${A}×${D} + ${S} = ${x2} ${c.r2 ? '&lt;' : '≥'} N = ${N} ${c.r2 ? '✓' : '✗'} (${cfg.mode === 'or' ? 'either' : 'both'} must pass; Skills = ${S})</small>`;
+  const lvCtl = `<label>Level <select id="ceBudgetLv" aria-label="Level for the budget">${Array.from({length: Math.max(2, cardMaxLevel(d) || 10) + 1}, (_, i)=> i).map(i=> `<option value="${i}" ${i===lv?'selected':''}>${i}</option>`).join('')}</select></label>`;
+  const x1 = c.x1, x2 = c.x2, col = c.ok ? '#2e8b57' : 'var(--danger, #c0392b)', mTxt = M !== 1 ? ` × ${Math.round(M*1000)/1000}` : '';
+  const ms = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects||{})[k]);
+  return `<div style="color:${col}; font-weight:600">⚖️ Budget v2: this card scores ${x1} / ${Math.round((N + 2)*10)/10} and ${x2} / ${N} for ${mapCtl}, ${lvCtl}, ${escapeHtml(rarLabel)} ${c.ok ? '✓ under' : '✗ over'}</div>
+    <small style="color:var(--ink-muted)">(2×Attack + Health + Skills)${mTxt} = (2×${A} + ${D} + ${S})${mTxt} = ${x1} ${c.r1 ? '&lt;' : '≥'} N + 2 = ${Math.round((N + 2)*10)/10} ${c.r1 ? '✓' : '✗'} · (Attack × Health + Skills)${mTxt} = (${A}×${D} + ${S})${mTxt} = ${x2} ${c.r2 ? '&lt;' : '≥'} N = ${N} ${c.r2 ? '✓' : '✗'} (${cfg.mode === 'or' ? 'either' : 'both'} must pass; Skills = ${S}${ms.length ? `; ×${cfg.missMult == null ? 1.5 : cfg.missMult} for ${ms.join(', ')}` : ''}). N = ${cfg.base} + ${cfg.perWait}×Wait ${d.wait||0} + ${cfg.perLumber}×Lumber ${d.cost||0} + ${cfg.perMap}×map + level + rarity.</small>`;
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
@@ -18919,20 +18957,23 @@ function ceBudgetRefresh(d){
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
-  const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), N = sbBudget(d, cfg), A = d.attack||0, D = d.health||0, c = sbCheck(A, D, S, N, cfg.mode); return {id, d, S, N, A, D, c, fit: c.ok ? null : sbFit(d, S, N, cfg.mode)}; });
+  const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), N = sbBudget(d, cfg), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M); return {id, d, S, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, cfg.mode, M)}; });
   const fails = rows.filter(r=> !r.c.ok), shown = sbState.onlyFail ? fails : rows;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">Rule: <b>2×Attack + Health + Skills &lt; N + 2</b> ${cfg.mode === 'or' ? '<b>or</b>' : '<b>and</b>'} <b>Attack × Health + Skills &lt; N</b>. N = base + rarity step (Starter 0, Common 1, Uncommon 2, …) + Level (Level 0: −2) + ${cfg.perMap == null ? 0.1 : cfg.perMap} per map number (Map 30: +3)${cfg.perLumber ? ' + ' + cfg.perLumber + ' per Lumber' : ''}.</p>
-    <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per map <input type="number" step="0.05" id="sbPerMap" value="${cfg.perMap == null ? 0.1 : cfg.perMap}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber||0}" class="w-60"></label>
+    <p class="panel-sub">Budget v2. Rule: <b>(2×Attack + Health + Skills) &lt; N + 2</b> ${cfg.mode === 'or' ? '<b>or</b>' : '<b>and</b>'} <b>(Attack × Health + Skills) &lt; N</b>, each score ×${cfg.missMult} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). N = ${cfg.base} + ${cfg.perWait} per Wait + ${cfg.perLumber} per Lumber + ${cfg.perMap} per map number + Level (Level 1 +0 up to N ${cfg.levelTop} at the top level; Level 0 −2) + rarity (+${Math.round((cfg.rarityTop - cfg.base) / (cfg.rarityTopRank||10) * 100) / 100} a step: Common 1, Uncommon 2, Rare 3 … rarity ${cfg.rarityTopRank||10} = N ${cfg.rarityTop}). Bounty costs 0.</p>
+    <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per Wait <input type="number" id="sbPerWait" value="${cfg.perWait}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber}" class="w-60"></label><label>Per map <input type="number" step="0.05" id="sbPerMap" value="${cfg.perMap}" class="w-60"></label>
+      <label>N at top level <input type="number" id="sbLevelTop" value="${cfg.levelTop}" class="w-60"></label><label>N at rarity ${cfg.rarityTopRank||10} <input type="number" id="sbRarityTop" value="${cfg.rarityTop}" class="w-60"></label><label>Half-miss × <input type="number" step="0.05" id="sbMissMult" value="${cfg.missMult}" class="w-60"></label>
+      <button type="button" class="btn small ghost" id="sbResetV2" title="Back to the v2 numbers">Reset to v2</button>
       <label>Rules <select id="sbMode"><option value="and" ${cfg.mode==='and'?'selected':''}>Both must pass</option><option value="or" ${cfg.mode==='or'?'selected':''}>Either passes</option></select></label>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number, or v = its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
     <p class="panel-sub">${fails.length} of ${rows.length} cards over budget.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
-    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>A/H</th><th>Skills</th><th>N</th><th>2A+H+S</th><th>A×H+S</th><th>Fits as</th><th></th></tr></thead><tbody>
-    ${shown.map(r=> `<tr class="${r.c.ok ? '' : 'cc-strong'}"><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.A}/${r.D}</td><td>${r.S}</td><td>${r.N}</td><td>${2*r.A + r.D + r.S} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N + 2}</td><td>${r.A*r.D + r.S} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
+    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m</th><th>(A×H+S)×m</th><th>Fits as</th><th></th></tr></thead><tbody>
+    ${shown.map(r=> `<tr class="${r.c.ok ? '' : 'cc-strong'}"><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${Math.round((r.N + 2)*10)/10}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbLumber', 'perLumber'); num('#sbPerMap', 'perMap');
+  num('#sbBase', 'base'); num('#sbLumber', 'perLumber'); num('#sbPerMap', 'perMap'); num('#sbPerWait', 'perWait'); num('#sbLevelTop', 'levelTop'); num('#sbRarityTop', 'rarityTop'); num('#sbMissMult', 'missMult');
+  { const rb = host.querySelector('#sbResetV2'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V2_DEFAULTS); sbSave(c); re(); }; }
   host.querySelector('#sbMode').onchange = e=>{ const c = sbLoad(); c.mode = e.target.value; sbSave(c); re(); };
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
@@ -21399,7 +21440,7 @@ async function attemptSummonLeader(preferredLane){
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
-  if(m.leaderUid != null){ const lu = m.leaderUid; setTimeout(()=> leaderThroneVfx(lu), Math.round(animMs().strike || 380)); }
+  if(m.leaderUid != null){ const lu = m.leaderUid; setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), Math.round(animMs().strike || 380)); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
 }
@@ -21789,7 +21830,8 @@ function renderMatchUI(){
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
-      ${fieldEffectCardHTML(m)}${forecastPillHTML(m)}
+      ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
+      <div class="top-right-stack">
       <div class="top-row-controls">
         <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}" aria-label="Playback speed">${ffBtnLabel(m.speedMult)}</button>
@@ -21799,13 +21841,15 @@ function renderMatchUI(){
         ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
         <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
+      ${fieldResSideHTML(m, false) /* 2026-10-14 (user: "The opponent's lumber pill will be on the top right."): under the controls */}
+      </div>
     </div>
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         ${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row enemy" id="resEnemy2" data-respid="2" data-resrow="2"></div>' : ''}${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row enemy" id="resEnemy1" data-respid="2" data-resrow="1"></div>' : ''}
         <div class="board-row enemy" id="rowEnemy"></div>
-        <div class="battlefield-divider"></div>
+        <div class="battlefield-divider">${bfPillsHTML(m) /* 2026-10-14: the phase/tide/wind pills ride the board's middle line, left, where no card ever stands */}</div>
         <div class="board-row mine" id="rowMine"></div>
         ${reserveRowsOf(m) >= 1 ? '<div class="board-row reserve-row mine" id="resMine1" data-respid="1" data-resrow="1"></div>' : ''}${reserveRowsOf(m) >= 2 ? '<div class="board-row reserve-row mine" id="resMine2" data-respid="1" data-resrow="2"></div>' : ''}
       </div>
@@ -21813,8 +21857,7 @@ function renderMatchUI(){
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow frost-lv${frostLevelOf(m)}" aria-hidden="true">${Array.from({length: Math.round((fxAtLeast('high') ? 28 : 14) * [1, 1, 1.6, 2.2][frostLevelOf(m)])}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
       ${fieldOverlayHTML(fieldEffectOf(m))}
-      ${fieldResourcesHTML(m)}
-      ${terrainPillHTML(m)}
+      ${fieldResSideHTML(m, true)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -25308,12 +25351,12 @@ function sideResourcePillsHTML(m, p, mine){
   if((p.elementalEnergy||0) > 0) out.push(pill('elementalenergy', 'hudElementalEnergyPill', RESOURCE_TOOLTIP.elementalenergy, `✨ ${p.elementalEnergy}`));
   return out.join('');
 }
-function fieldResourcesHTML(m){
+function fieldResSideHTML(m, mine){
   if(!m || !m.players) return '';
-  const mePid = viewerHandPid(m), foePid = mePid === 1 ? 2 : 1;
-  const mine = sideResourcePillsHTML(m, m.players[mePid], true), foe = sideResourcePillsHTML(m, m.players[foePid], false);
-  return `<div class="field-res mine" id="fieldResMine">${mine}</div><div class="field-res enemy" id="fieldResEnemy">${foe ? `<span class="field-res-tag">Enemy</span>${foe}` : ''}</div>`;
+  const mePid = viewerHandPid(m), pid = mine ? mePid : (mePid === 1 ? 2 : 1), pills = sideResourcePillsHTML(m, m.players[pid], mine);
+  return mine ? `<div class="field-res mine" id="fieldResMine">${pills}</div>` : `<div class="field-res enemy" id="fieldResEnemy">${pills ? `<span class="field-res-tag">Enemy</span>${pills}` : ''}</div>`;
 }
+function fieldResourcesHTML(m){ return fieldResSideHTML(m, true) + fieldResSideHTML(m, false); }
 function renderFieldResources(m){
   const a = document.getElementById('fieldResMine'), b = document.getElementById('fieldResEnemy');
   if(!a || !b){ const bf = document.getElementById('battlefieldEl'); if(bf){ bf.insertAdjacentHTML('beforeend', fieldResourcesHTML(m)); } return; }
@@ -25807,14 +25850,37 @@ function waterRippleAt(el){
 // 2026-10-10 (user: "it shouldn't extend to the enemy's side. Only your field. Enemy summoning their leader should mean
 // something as well!"): the beam stops at the middle of the field. Your leader's light rises from your row; the rival's
 // leader gets a dark crimson pillar falling from the top of their half, a low drum and a banner.
+// The leader's moment (2026-10-14, user: "Whats the vfx when an enemy summons their leader?"): on top of the pillar and crown, the
+// leader now drops onto its spot, a ring shockwave rolls out from it (gold for yours, crimson-gold for theirs), the card flashes,
+// a "👑 <Leader> joins the fight!" callout crosses the field with a fanfare (yours) or a war drum (theirs), and a big leader
+// (20+ Health or Legendary and up) shakes the field with the screen-shake helper.
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
   const enemy = !!opts.enemy;
+  const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
+  const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
+  const hp = (rc && rc.maxHp) || def.health || 0, big = hp >= 20 || RARITY_TIER_BANDS.indexOf(def.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('legendary');
   try{ if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else SoundKit.leaderFanfare(); }catch(e){}
-  if(enemy) try{ const bf = document.querySelector('.battlefield'); if(bf){ const b = document.createElement('div'); b.className = 'enemy-leader-banner'; b.textContent = '👑 Their leader takes the field'; bf.appendChild(b); setTimeout(()=> b.remove(), 2200); } }catch(e){}
+  // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
+  try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
+    b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; document.body.appendChild(b); setTimeout(()=> b.remove(), 2400); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
+  // the drop: the card falls onto its spot from above, a touch too big, and settles
+  { const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  setTimeout(()=>{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q = cur.getBoundingClientRect(); if(!q.width) return;
+    // the shockwave and the flash, as it lands
+    const ring = document.createElement('div'); ring.className = 'leader-ring' + (enemy ? ' is-enemy' : ''); ring.setAttribute('aria-hidden', 'true');
+    ring.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width}px; height:${q.width}px;`;
+    const ring2 = ring.cloneNode(); ring2.classList.add('is-late');
+    const flash = document.createElement('div'); flash.className = 'leader-flash' + (enemy ? ' is-enemy' : ''); flash.setAttribute('aria-hidden', 'true');
+    flash.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width*1.8}px; height:${q.height*1.5}px;`;
+    document.body.append(flash, ring, ring2); setTimeout(()=>{ ring.remove(); ring2.remove(); flash.remove(); }, 1300);
+    try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
+    if(big) battlefieldShake(Math.max(0.35, shakeStrengthForArrival(hp)));
+  }, 420);
   // The field's middle line: halfway between the two rows (or the battlefield's own middle).
   const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
   const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
@@ -25838,8 +25904,6 @@ function leaderThroneVfx(uid, opts){
   gsap.timeline({onComplete:()=> crown.remove()})
     .fromTo(crown, {y:-70, opacity:0, scale:1.6}, {y:-14, opacity:1, scale:1, duration:.45, delay:.2, ease:'bounce.out'})
     .to(crown, {y:-30, opacity:0, duration:.5, delay:.5, ease:'power1.in'});
-  const t = el.querySelector('.card-tile');
-  if(t) gsap.fromTo(t, {y:6}, {y:-8, duration:.3, delay:.15, ease:'power2.out', yoyo:true, repeat:1, clearProps:'y'});
 }
 // Deck shuffle (2026-10-06, effects "Coming next"): at the start of a match both decks split and
 // riffle together twice. Waits for the versus opener to close so it's actually seen.
@@ -26967,7 +27031,7 @@ const MOON_PHASES = [['🌑','New moon'],['🌒','Waxing crescent'],['🌓','Fir
 function moonPillHTML(m){
   if(!m.engine || !m.engine.moonPhase || !matchHasMoonCards(m)) return '';
   const [ico, name] = MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0], full = Math.round((m.engine.moonFullness() || 0) * 100);
-  return `<div class="phase-pill moon-pill" title="${escapeAttr(name + ': Moonborn units get ' + full + '% of their bonus at night. The moon moves one phase every night.')}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${ico}</span><b>${escapeHtml(name)}</b></div>`;
+  return bfPillHTML('moon-pill', ico, name, '', pillTipHTML(name, ['Moonborn units get ' + full + '% of their bonus at night.', 'The moon moves one phase every night.']), name);
 }
 // Night creeps in (2026-10-12, user: "When night happens, cause darkness to creep into the field. As fast as night enters,
 // when its day, the night leaves the other direction, mimicking the way the earth travels around the sun"): a dark veil
@@ -27039,46 +27103,138 @@ function syncNightVeil(m, phase){
   if(want){ v.classList.remove('is-leaving'); v.classList.add('is-on'); return; }
   if(v.classList.contains('is-on')){ v.classList.add('is-leaving'); setTimeout(()=>{ if(!v.isConnected) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
 }
+// Battlefield pills with tooltips (2026-10-14, user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills
+// will be on the battlefield instead"): Day/Night/Twilight, the moon, the tide, the wind, the Arena's portent and the "Next round"
+// forecast sit in one cluster on the board's top-left edge (#bfPills). Each is a button: hover or focus shows what it does right
+// now in the game's cream tooltip, a tap pins it open. The words come from the rules the engine runs (sightMiss, the tide and wind
+// code) and the field rows (fieldConditionRows), not new text.
+function bfPillHTML(cls, ico, name, small, tipHTML, aria){
+  return `<button type="button" class="phase-pill bf-pill ${cls}" aria-expanded="false" aria-label="${escapeAttr(aria || name)}"><span aria-hidden="true">${ico}</span><b>${escapeHtml(name)}</b>${small ? `<small>${escapeHtml(small)}</small>` : ''}<span class="tp-tip" role="tooltip">${tipHTML}</span></button>`;
+}
+function pillTipHTML(head, lines){ return `<b class="pt-h">${escapeHtml(head)}</b>${(lines||[]).filter(Boolean).map(t=> `<span class="pt-l">${keywordizeHTML(escapeHtml(t))}</span>`).join('')}`; }
+// What each phase does, in the engine's own terms (sightMiss: night 1 in 4 without Darksight/Nocturnal/Moonborn or a Lantern,
+// Night-blind 1 in 2; Sun-shy 1 in 2 by day; dawn draws both sides a card).
+function phaseTipLines(phase, m){
+  const fr = matchFieldRules(m) || {}, night = (fieldConditionRows(fr).find(r=> r.key === 'night') || {}).text;
+  if(phase === 'night') return ['Nocturnal units get their night bonus.', night || 'Units without Darksight, Nocturnal or Moonborn miss 1 attack in 4 (a Lantern on their side lights it). Night-blind units miss 1 in 2.'];
+  if(phase === 'twilight') return ['Nocturnal and Diurnal bonuses both apply, and Crepuscular units wake up.'];
+  if(phase === 'dawn') return ['Both sides draw a card.', 'Diurnal units get their day bonus.'];
+  return ['Diurnal units get their day bonus.', 'Sun-shy units miss 1 attack in 2.'];
+}
+const TIDE_TIPS = {
+  high: ['Tide units get +2 Attack and +2 Armor.', 'Wash units push the card facing them back 1 Wait.'],
+  flow: ['Tide units get +1 Attack.', 'Wash units push the card facing them back 1 Wait.'],
+  ebb: ['Tide units get +1 Armor: they take 1 less damage from each hit.'],
+};
 function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
-  const high = t==='high', flow = t==='flow' || high;
-  const tip = high ? 'High tide: Tide units get +2 Attack and +2 Armor, and Wash units push the card facing them back 1 Wait.' : flow ? 'Flow: Tide units +1 Attack, and Wash units push the card facing them back 1 Wait.' : 'Ebb: Tide units +1 Armor.';
-  return `<div class="phase-pill tide-${t}" title="${tip}" aria-label="Tide: ${high ? 'High tide' : flow ? 'Flow' : 'Ebb'}"><span aria-hidden="true">${high ? '🌊🌊' : flow ? '🌊' : '🐚'}</span><b>${high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb')}</b></div>`;
+  const high = t==='high', flow = t==='flow' || high, k = high ? 'high' : flow ? 'flow' : 'ebb', name = high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb');
+  const fr = matchFieldRules(m) || {}, extra = fr.permaTide ? 'Perma-tide: the Tide is always in here.' : fr.highTide ? 'Here the tide runs Ebb, Flow, Ebb, High tide.' : '';
+  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, TIDE_TIPS[k].concat(extra)), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
+}
+// The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it).
+function windPillHTML(m){
+  const w = m && m._windNow; if(!w || m.over) return '';
+  const fr = matchFieldRules(m) || {}, every = fr.wind === 'gale' ? 'Gale: strong wind every round, turning each time.' : 'Windy: strong wind every other round, turning each time.';
+  if(!w.windy) return bfPillHTML('wind-pill is-calm', '🍂', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.', every]), 'Wind: calm');
+  const tail = 'Flyers have a Tailwind: a quick extra turn before combat, then their normal one.', head = 'Flyers have a Headwind: their skills and triggers go off twice.';
+  const lines = w.mine ? ['At your back: your ' + tail, 'In their face: their ' + head] : ['At their back: their ' + tail, 'In your face: your ' + head];
+  return bfPillHTML('wind-pill is-windy', '🌬️', w.mine ? 'Wind at your back' : 'Wind in your face', '', pillTipHTML(fr.wind === 'gale' ? 'Gale' : 'Windy', lines.concat(every)), 'Wind ' + (w.mine ? 'at your back' : 'in your face'));
 }
 // Fields that act every round wear the clock on their south border, like a unit's trigger badge (2026-10-12, user: "On the
 // frost effect card, also include that on its south border - let's start doing that to make the game consistent").
 const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
 // Next round, said a round early (D80, 2026-10-13): nightfall and dawn, the tide's turn, the wind and the eruption.
+// 2026-10-14: a battlefield pill too; its tooltip says what each change will do.
 function forecastPillHTML(m){
   try{ if(!m || m.over || m.mode === 'tutorial' || !m.engine || !m.engine.forecast) return '';
-    const f = m.engine.forecast(), bits = [], mine = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 2 : 1;
-    if(f.phaseChanges && matchPhaseMatters(m)) bits.push(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)');
-    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) bits.push(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb');
-    if(f.wind) bits.push(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face');
-    if(f.eruption) bits.push(`🌋 Eruption ${f.eruption}`);
-    if(f.tideSpout) bits.push('⛲ Tide-spout'); // 2026-10-14
-    if(f.volcano) VOLCANO_HAZARDS.forEach(h=>{ const p = f.volcano[h.key]; if(p > 0) bits.push(`${h.icon} ${h.name}: ${volcanoBand(p)}`); }); // 2026-10-14: the odds, as a band word
-    if(f.field && f.fieldLeft === 1) bits.push('The field clears');
+    const f = m.engine.forecast(), bits = [], tips = [], mine = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 2 : 1, fr = matchFieldRules(m) || {};
+    const add = (b, t)=>{ bits.push(b); tips.push(b + ': ' + t); };
+    if(f.phaseChanges && matchPhaseMatters(m)) add(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)', phaseTipLines(f.phase === 'night' ? 'night' : f.phase === 'twilight' ? 'twilight' : 'dawn', m).join(' '));
+    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) add(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb', TIDE_TIPS[f.tide === 'high' ? 'high' : f.tide === 'flow' ? 'flow' : 'ebb'].join(' '));
+    if(f.wind) add(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face', f.wind.from === mine ? 'your Flyers get a quick extra turn before combat; theirs use their skills and triggers twice.' : 'their Flyers get a quick extra turn before combat; yours use their skills and triggers twice.');
+    if(f.eruption) add(`🌋 Eruption ${f.eruption}`, `one random unit on each side takes ${f.eruption} fire damage (units that resist fire are spared).`);
+    if(f.tideSpout) add('⛲ Tide-spout', ((fieldConditionRows(fr).find(r=> r.key === 'tideSpout') || {}).text) || 'a spout bursts in one random column.'); // 2026-10-14
+    if(f.volcano) VOLCANO_HAZARDS.forEach(h=>{ const p = f.volcano[h.key]; if(p > 0) add(`${h.icon} ${h.name}: ${volcanoBand(p)}`, h.text(fr)); }); // 2026-10-14: the odds, as a band word
+    if(f.field && f.fieldLeft === 1) add('The field clears', "the field card's effect ends after this round.");
     if(!bits.length) return '';
-    return `<div class="forecast-pill" role="status" aria-label="${escapeAttr('Next round: ' + bits.join(', '))}"><span class="fp-k">Next round</span>${bits.map(b=> `<span class="fp-b">${escapeHtml(b)}</span>`).join('')}</div>`;
+    const part = b=>{ const m0 = /^(\S+)\s+(.*)$/.exec(b); return m0 && /[^\w]/.test(m0[1]) && !/^[A-Za-z]/.test(m0[1]) ? [m0[1], m0[2]] : ['🌐', b]; };
+    return `<button type="button" class="forecast-pill bf-pill" aria-expanded="false" aria-label="${escapeAttr('Next round: ' + bits.join(', '))}"><span class="fp-k">Next round</span>${bits.map(b=>{ const [i, t] = part(b); return `<span class="fp-b"><i aria-hidden="true">${i}</i> <span class="fp-t">${escapeHtml(t)}</span></span>`; }).join('')}<span class="tp-tip" role="tooltip">${pillTipHTML('Next round', tips)}</span></button>`;
   }catch(e){ return ''; }
 }
-function fieldEffectCardHTML(m){
-  const id = fieldEffectOf(m), f = id && m.engine.getField();
-  const phase = (dayNightOn(m) && matchPhaseMatters(m)) ? m.engine.getPhase() : null;
+function phasePillHTML(m){
+  const phase = (dayNightOn(m) && matchPhaseMatters(m)) ? m.engine.getPhase() : null; if(!phase) return '';
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
   const zs = (m.engine && m.engine.getZeitStart) ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1;
   const roundInPhase = (rr0 % PL) + 1;
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
   const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
-  const phaseHTML = !phase ? '' : cycling ? `<div class="phase-pill phase-${phase}" title="${phase==='night' ? 'Night. Day returns after round ' : 'Day. Night falls after round '}${(m.round||1) + (PL - roundInPhase)}. At dawn both sides draw a card.${zs != null ? ' A Zeitgeber started the cycle.' : ''}" aria-label="${phase==='night' ? 'Night' : 'Day'}, round ${roundInPhase} of ${PL}"><span aria-hidden="true">${phIco}</span><b>${phName}</b><small>${roundInPhase}/${PL}</small></div>`
-    : `<div class="phase-pill phase-${phase}" title="${escapeAttr(phase==='twilight' ? 'Twilight: Nocturnal and Diurnal bonuses both apply, and Crepuscular units wake up.' : pmode==='realtime' ? `${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.` : phase==='night' ? 'Night all match: Nocturnal units have their bonus.' : 'Day all match: Diurnal units have their bonus.')}" aria-label="${phName}"><span aria-hidden="true">${phIco}</span><b>${phName}</b></div>`;
-  const rsHTML = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? `<div class="phase-pill arena-rs-pill" title="${escapeAttr(m.arenaRuleset.name + ': ' + m.arenaRuleset.text)}"><span aria-hidden="true">${m.arenaRuleset.icon}</span><b>${escapeHtml(m.arenaRuleset.name)}</b></div>` : '';
-  if(!f) return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML;
+  const lines = phaseTipLines(phase, m);
+  if(cycling) lines.push(`${phase==='night' ? 'Day returns' : 'Night falls'} after round ${(m.round||1) + (PL - roundInPhase)}. At dawn both sides draw a card.${zs != null ? ' A Zeitgeber started the cycle.' : ''}`);
+  else if(pmode === 'realtime') lines.push(`${phName} by your clock: 7 PM to 7 AM is day here, 7 AM to 7 PM night.`);
+  else if(phase !== 'twilight') lines.push(`${phName} all match.`);
+  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName);
+}
+function bfPillsHTML(m){
+  if(!m || !m.engine) return '';
+  const rs = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? bfPillHTML('arena-rs-pill', m.arenaRuleset.icon, m.arenaRuleset.name, '', pillTipHTML(m.arenaRuleset.name, [m.arenaRuleset.text]), m.arenaRuleset.name) : '';
+  let inner = ''; try{ inner = phasePillHTML(m) + moonPillHTML(m) + tidePillHTML(m) + windPillHTML(m) + rs + forecastPillHTML(m); }catch(e){}
+  return `<div class="bf-pills" id="bfPills">${inner}</div>`;
+}
+function refreshBfPills(m){ const el = document.getElementById('bfPills'); if(!el || !m) return; const t = document.createElement('div'); t.innerHTML = bfPillsHTML(m); const n = t.firstElementChild; if(n) el.innerHTML = n.innerHTML; }
+// The pill's tooltip floats over everything (the board clips what pokes out of it): one #bfPillTip on the page, placed under the
+// pill (or above it when there's no room) and kept inside the screen. Hover or focus shows it; a tap pins it open until the next tap.
+const BfPillTip = (()=>{
+  let tip = null, src = null;
+  const show = p=>{ const inner = p && p.querySelector('.tp-tip'); if(!inner) return;
+    if(!tip){ tip = document.createElement('div'); tip.id = 'bfPillTip'; tip.className = 'bf-tip-float'; tip.setAttribute('role', 'tooltip'); document.body.appendChild(tip); }
+    tip.innerHTML = inner.innerHTML; tip.hidden = false; src = p;
+    const r = p.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight; tip.style.left = '0px'; tip.style.top = '0px';
+    const w = tip.offsetWidth, h = tip.offsetHeight; let y = r.bottom + 8; if(y + h > vh - 8 && r.top - 8 - h > 8) y = r.top - 8 - h;
+    tip.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px'; tip.style.top = Math.max(8, y) + 'px'; };
+  const hide = ()=>{ if(tip) tip.hidden = true; src = null; };
+  document.addEventListener('pointerover', e=>{ if(e.pointerType === 'touch') return; const p = e.target.closest && e.target.closest('.bf-pill');
+    if(p){ if(p !== src) show(p); } else if(src && !(src.isConnected && src.classList.contains('open'))) hide(); }, {passive:true});
+  document.addEventListener('focusin', e=>{ const p = e.target.closest && e.target.closest('.bf-pill'); if(p) show(p); });
+  document.addEventListener('focusout', ()=>{ if(src && !src.classList.contains('open')) hide(); });
+  window.addEventListener('scroll', ()=>{ if(src) hide(); }, {passive:true, capture:true});
+  setInterval(()=>{ if(src && !src.isConnected) hide(); }, 500);
+  return {show, hide};
+})();
+document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('.bf-pill'); document.querySelectorAll('.bf-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); if(on) BfPillTip.show(p); else BfPillTip.hide(); } else BfPillTip.hide(); });
+// Field cards on the opponent's side (2026-10-14, user: "The open meadow and effects like this should look like a card on the opposite
+// side of the field."): the terrain and every lasting field rule (darkness, wind, mist, perma-tide, the volcano…) are one card-shaped
+// tile beside the enemy's Deck, the same card face as a Field card; hover (or hold on a phone) shows all its rows. A weather field
+// played from a hand (Frigid, Heatwave, Rain, Fog, Moon) gets the same card face next to it.
+function matchFieldTileHTML(def, cls, attrs, badges){
+  const html = cardTileHTML(def, {inPlay:true, extraClass:'match-field-tile ' + cls, extraAttrs: attrs});
+  return badges ? html.replace(/<\/div>\s*$/, badges + '</div>') : html;
+}
+function fieldCondCardHTML(m){
+  const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
+  if(m && m.mode !== 'tutorial') rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); });
+  const tr = terrainOfMatch(m);
+  if(!tr && !rows.length) return '';
+  if(tr) maybeTerrainIntro(m);
+  const t = tr && tr.t, head = t ? {icon:t.icon, name:`${t.name} ${TIER_NUMERAL[t.tier]||''}`.trim(), biome:t.biome} : rows[0] ? {icon:rows[0].icon, name:rows[0].name, biome: rows[0].key === 'dark' ? 'cave' : (rows[0].key === 'gale' || rows[0].key === 'wind') ? 'alpine' : /tide|Spout/i.test(rows[0].key) ? 'water' : 'ash'} : {icon:'🌋', name:'Eruptions', biome:'ash'};
+  const more = Math.max(0, rows.length - 1), aria = 'Field: ' + (rows.length ? rows.map(x=> x.name + '. ' + x.text).join(' ') : head.name);
+  const def = {id:'__fieldcond', name: head.name, icon: head.icon, rarity:'common', field:{label: more ? `🌐 <span class="fl-w">Field · </span>+${more}` : '🌐 <span class="fl-w">Field · </span>all fight', title:'A field rule: it lasts the whole fight'}};
+  return matchFieldTileHTML(def, `field-cond biome-${head.biome}`, `id="fieldCondCard" tabindex="0" data-fieldhover="cond" role="button" aria-label="${escapeAttr(aria)}"`, '');
+}
+function fieldCondHoverHTML(){
+  const m = matchState; if(!m) return '';
+  const fr = matchFieldRules(m) || {}, rows = fieldConditionRows(fr), tr = terrainOfMatch(m);
+  const t = tr && tr.t, head = t ? `${t.icon} ${t.name} ${TIER_NUMERAL[t.tier]||''}` : rows[0] ? `${rows[0].icon} ${rows[0].name}` : '🌋 Eruptions';
+  const body = rows.length ? `<ul class="fcr-list">${fieldRowsListHTML(rows)}</ul>` : `<p>${keywordizeHTML(escapeHtml(tr && !t ? `The mountain erupts: from round 2, one random unit on each side takes ${Number(tr.rules.eruption)||0} fire damage every upkeep (units that resist fire are spared).` : ''))}</p>`;
+  return `<div class="field-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌐</span><b>${escapeHtml(head.trim())}</b></div>${body}<p class="fh-left">It lasts the whole fight.</p></div>`;
+}
+function fieldEffectCardHTML(m){
+  const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  return phaseHTML + moonPillHTML(m) + tidePillHTML(m) + rsHTML + `<div class="field-card hq-tile field-${id}" tabindex="0" data-defid="__field" data-fieldhover="1" title="${escapeAttr(f.name + ': ' + f.text + left)}" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}">
-    <div class="castle-label">Field</div><div class="fc-ico" aria-hidden="true">${f.icon}</div><div class="fc-name">${escapeHtml(f.name.split(' ').slice(-1)[0])}</div>${f.rounds != null ? `<div class="fc-left">${f.rounds}</div>` : ''}${FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : ''}</div>`;
+  const def = {id:'__field', name: f.name, icon: f.icon, rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
+  return matchFieldTileHTML(def, `field-weather field-${id}`, `tabindex="0" data-fieldhover="1" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}"`,
+    FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : '');
 }
 // Frost strength (2026-10-12, user: "On the +2 and +3 frost effect maps, the frost is a little thicker"): the fight's +Wait.
 function frostLevelOf(m){
@@ -30454,8 +30610,8 @@ function renderVfxForEvent(ev){
     if(ev.spout && ev.dmg){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} } }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
-  if(ev.type==='wind'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf){ let p = bf.querySelector('.wind-pill'); if(!p){ p = document.createElement('div'); p.className = 'wind-pill'; p.setAttribute('role', 'status'); bf.appendChild(p); }
-      const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); p.textContent = ev.windy ? (mine ? '🌬️ Strong wind at your back: your Flyers act twice; theirs use skills twice' : '🌬️ Strong wind against you: their Flyers act twice; yours use skills twice') : '🍂 Calm'; p.classList.toggle('is-windy', !!ev.windy); bf.classList.toggle('is-windy', !!ev.windy); } }catch(e){} }
+  if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
+      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } }catch(e){} }
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
     try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }
@@ -30536,7 +30692,7 @@ function renderVfxForEvent(ev){
   if((ev.type==='play'||ev.type==='discard') && ev.side==='B') SoundKit.play();
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')) setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true}), 380);
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')) setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380);
 }
 
 overlayDelegateChanges();
