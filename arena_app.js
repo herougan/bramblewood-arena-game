@@ -6219,6 +6219,7 @@ function mountEditorSide(modal){
         }
       }
     }
+    try{ ceBudgetRefresh(d); }catch(e){}
     const th = document.getElementById('ceArtThumb'); if(th) th.innerHTML = editingCard.art ? `<img src="${escapeAttr(editingCard.art)}" alt="">` : `<span>${escapeHtml(d.icon||'🌰')}</span>`;
     const note = document.getElementById('ceArtNote'); if(note) note.textContent = editingCard.art ? (String(editingCard.art).startsWith('data:') ? 'Uploaded image' : 'From a path or URL') : 'No art: the icon is shown';
   };
@@ -18795,6 +18796,33 @@ function sbBudget(d, cfg){
 }
 function sbCheck(A, D, S, N, mode){ const r1 = 2*A + D + S < N + 2, r2 = A*D + S < N; return {r1, r2, ok: mode === 'or' ? (r1 || r2) : (r1 && r2)}; }
 function sbFit(d, S, N, mode){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+// Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
+// value for the map, level, and rarity"). Same N as sbBudget, but for a Map and Level picked in the line itself; the Map
+// comes from the card's own map when it has one.
+let ceBudgetSel = {map:0, level:1};
+function sbBudgetAt(d, cfg, mapNo, lv){
+  const r = Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common'));
+  return Math.round((cfg.base + r + (lv <= 0 ? -2 : lv) + (d.cost||0) * (cfg.perLumber||0) + (mapNo||0) * (cfg.perMap == null ? 0.1 : cfg.perMap)) * 10) / 10;
+}
+function ceBudgetHTML(d){
+  const cfg = sbLoad(), src = cardSourceOf(d), known = src.kind === 'map' ? mapNumberOf(src.id) : null;
+  const mapNo = known != null ? known : ceBudgetSel.map, lv = ceBudgetSel.level;
+  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, lv), c = sbCheck(A, D, S, N, cfg.mode);
+  const rar = (d.rarity || 'common'), rarLabel = rar[0].toUpperCase() + rar.slice(1);
+  const maxMap = Math.max(1, (typeof mainConquestMaps === 'function' ? mainConquestMaps().length : 0) - 1, 30);
+  const mapCtl = known != null ? `<b>Map ${known}</b>` : `<label>Map <select id="ceBudgetMap" aria-label="Map for the budget">${Array.from({length:maxMap + 1}, (_, i)=> `<option value="${i}" ${i===mapNo?'selected':''}>${i}</option>`).join('')}</select></label>`;
+  const lvCtl = `<label>Level <select id="ceBudgetLv" aria-label="Level for the budget">${[0,1,2,3,4,5].map(i=> `<option value="${i}" ${i===lv?'selected':''}>${i}</option>`).join('')}</select></label>`;
+  const x1 = 2*A + D + S, x2 = A*D + S, col = c.ok ? '#2e8b57' : 'var(--danger, #c0392b)';
+  return `<div style="color:${col}; font-weight:600">⚖️ Budget: this card scores ${x1} / ${Math.round((N + 2)*10)/10} and ${x2} / ${N} for ${mapCtl}, ${lvCtl}, ${escapeHtml(rarLabel)} ${c.ok ? '✓ under' : '✗ over'}</div>
+    <small style="color:var(--ink-muted)">2×Attack + Health + Skills = 2×${A} + ${D} + ${S} = ${x1} ${c.r1 ? '&lt;' : '≥'} N + 2 = ${Math.round((N + 2)*10)/10} ${c.r1 ? '✓' : '✗'} · Attack × Health + Skills = ${A}×${D} + ${S} = ${x2} ${c.r2 ? '&lt;' : '≥'} N = ${N} ${c.r2 ? '✓' : '✗'} (${cfg.mode === 'or' ? 'either' : 'both'} must pass; Skills = ${S})</small>`;
+}
+function ceBudgetRefresh(d){
+  const fa = document.getElementById('fAtk'); if(!fa) return;
+  let box = document.getElementById('ceBudget');
+  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:2px 0 10px; font-size:12.5px; line-height:1.5"></div>'); box = document.getElementById('ceBudget');
+    box.addEventListener('change', e=>{ if(e.target.id === 'ceBudgetMap') ceBudgetSel.map = Number(e.target.value)||0; if(e.target.id === 'ceBudgetLv') ceBudgetSel.level = Number(e.target.value)||0; }); }
+  try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
+}
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
