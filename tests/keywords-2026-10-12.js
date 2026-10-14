@@ -97,10 +97,11 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 { const {e, P} = mk(); const m = give(P, 1, 'k2-mal'); ok(!e.canPlay(P[1], 'k2-mal', m.uid), 'Malachite needs 1 Stone'); P[1].stone = 1;
   ok(e.placeCard(P, so, 1, m.uid, 'left', {}, []) && P[1].stone === 0, 'with 1 Stone it is played and the Stone spent');
   const u = give(P, 2, 'k2-uran'); P[2].uranium = 1; ok(!e.canPlay(P[2], 'k2-uran', u.uid), '2 Uranium needed'); P[2].uranium = 2; ok(e.canPlay(P[2], 'k2-uran', u.uid), 'with 2 Uranium it can be played'); }
-// Trident: front + both sides; an empty side goes to the castle
-{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-trident', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-wall', 'left', {}, []);
-  const W = all(P[2])[0], hp = W.hp, hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
-  ok(hp - W.hp === 3 && hq - P[2].hq.hp === 6, `Trident: 3 to the unit in front, both empty sides to the castle (unit ${hp - W.hp}, castle ${hq - P[2].hq.hp})`); }
+// Trident (2026-10-14 rework): the 3 nearest enemy units within 1 column, never the castle
+{ const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-trident', 'left', {}, []); ['left','right','left','right','left','right'].forEach(s=> e.debugSpawnCard(P, so, 2, 'k2-wall', s, {}, []));
+  const ws = all(P[2]), b = ws.map(c=> c.hp), hq = P[2].hq.hp; e.debugAttack(P, so, all(P[1])[0].uid, {}, []);
+  const hit = ws.filter((c, i)=> b[i] > c.hp); const me = all(P[1])[0].slot;
+  ok(hit.length === 3 && hit.every(c=> Math.abs(c.slot - me) <= 1) && P[2].hq.hp === hq, `Trident hits 3 units within 1 column, not the castle (${ws.map((c, i)=> c.slot + ':' + (b[i] - c.hp))})`); }
 // Pitchfork (2026-10-13 rework): the 4 nearest enemy units, none more than 2 columns away
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-pitch', 'left', {}, []); ['left','right','left','right','left','right'].forEach(s=> e.debugSpawnCard(P, so, 2, 'k2-armor', s, {}, []));
   const ws = all(P[2]), b = ws.map(c=> c.hp); e.debugAttack(P, so, all(P[1])[0].uid, {}, []);

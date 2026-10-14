@@ -1,0 +1,3004 @@
+{
+ "generated": "2026-10-14",
+ "speakers": [
+  {
+   "key": "shieldback",
+   "name": "High Marshal Shieldback",
+   "portrait": "card art: Otter Shieldback"
+  },
+  {
+   "key": "swiftpaw",
+   "name": "Captain Swiftpaw",
+   "portrait": "card art: Otter Scout"
+  },
+  {
+   "key": "silverstream",
+   "name": "Queen Silverstream",
+   "portrait": "card art: River Warden"
+  },
+  {
+   "key": "aurelia",
+   "name": "Matriarch Aurelia",
+   "portrait": "card art: Sunthroat Courier"
+  },
+  {
+   "key": "vesper",
+   "name": "Warlord Vesper",
+   "portrait": "card art: Crimson Wing Duelist Cadet"
+  },
+  {
+   "key": "whisper",
+   "name": "Whisper-of-Ash",
+   "portrait": "card art: Voidfeather Scout"
+  },
+  {
+   "key": "otternarian",
+   "name": "Brother Ripple, the otternarian",
+   "portrait": "assets/npc/otternarian.png?v=dbc73e7523"
+  },
+  {
+   "key": "traveller",
+   "name": "The Wandering Traveller",
+   "portrait": "card art: Wandering Traveller"
+  },
+  {
+   "key": "peddler",
+   "name": "Old Cinder, the Ember Peddler",
+   "portrait": "card art: Quarry Mole"
+  },
+  {
+   "key": "mole",
+   "name": "Pip, a lost mole",
+   "portrait": "assets/npc/mole.png?v=01647e4362"
+  },
+  {
+   "key": "heron",
+   "name": "Old Heron Wade",
+   "portrait": "assets/npc/heron.png?v=b84651e097"
+  },
+  {
+   "key": "mouse",
+   "name": "Bramble the courier mouse",
+   "portrait": "assets/npc/mouse.png?v=e3f60fc9db"
+  },
+  {
+   "key": "beetle",
+   "name": "Sister Carapace",
+   "portrait": "assets/npc/beetle.png?v=f7ef8a0d37"
+  },
+  {
+   "key": "frog",
+   "name": "Croaker, a pond warden",
+   "portrait": "assets/npc/frog.png?v=562596982e"
+  },
+  {
+   "key": "hedgehog",
+   "name": "Thimble the hedgehog",
+   "portrait": "assets/npc/hedgehog.png?v=f4811b5832"
+  }
+ ],
+ "scripts": [
+  {
+   "id": "boss_banter",
+   "where": [
+    "(not found: maybe unused)"
+   ],
+   "lines": [
+    {
+     "id": "boss_banter",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "That one doesn't surrender. Don't wait for it to.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "(not found: maybe unused)"
+    },
+    {
+     "id": "boss_banter",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Then we make it a short conversation.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "both_peace",
+   "where": [
+    "After Tutorial Part 2, if you chose both tribes"
+   ],
+   "lines": [
+    {
+     "id": "both_peace",
+     "n": 1,
+     "who": "otternarian",
+     "name": "Brother Ripple, the otternarian",
+     "portrait": "assets/npc/otternarian.png?v=dbc73e7523",
+     "text": "You chose both sides. Brave. Most folk on this river can't manage one.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After Tutorial Part 2, if you chose both tribes"
+    },
+    {
+     "id": "both_peace",
+     "n": 2,
+     "who": "otternarian",
+     "name": "Brother Ripple, the otternarian",
+     "portrait": "assets/npc/otternarian.png?v=dbc73e7523",
+     "text": "Making peace is slower than making war, and twice as tiring. Everyone wants it; nobody wants to go first.",
+     "replies": "I'll go first. | How can I help?",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "both_peace",
+     "n": 3,
+     "who": "otternarian",
+     "name": "Brother Ripple, the otternarian",
+     "portrait": "assets/npc/otternarian.png?v=dbc73e7523",
+     "text": "Win where you can, mend where you can't. And when you meet someone from the other bank, talk before you swing.",
+     "replies": "",
+     "act": "",
+     "label": "help",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "both_peace",
+     "n": 4,
+     "who": "otternarian",
+     "name": "Brother Ripple, the otternarian",
+     "portrait": "assets/npc/otternarian.png?v=dbc73e7523",
+     "text": "Then I'll need your help. Peace needs friends on both banks, and right now it has one: you.",
+     "replies": "",
+     "act": "",
+     "label": "yes",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "both_peace",
+     "n": 5,
+     "who": "otternarian",
+     "name": "Brother Ripple, the otternarian",
+     "portrait": "assets/npc/otternarian.png?v=dbc73e7523",
+     "text": "Here, take this. A gift from each side, so neither feels left out.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m10_nest",
+   "where": [
+    "Map curiosity: An empty eyrie (Map 11 Eyrie Heights)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m10_nest",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "An eyrie, abandoned. The eggs hatched long ago.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: An empty eyrie (Map 11 Eyrie Heights)"
+    },
+    {
+     "id": "cur_m10_nest",
+     "n": 2,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "Wherever they flew, they flew alone. Like all the best ones.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m11_banner",
+   "where": [
+    "Map curiosity: A torn banner (Map 20 The Sundered Peak)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m11_banner",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "A torn banner on the ridge. Not ours, not theirs.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A torn banner (Map 20 The Sundered Peak)"
+    },
+    {
+     "id": "cur_m11_banner",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "There are more than two sides on this road. You'll meet them.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m1_signpost",
+   "where": [
+    "Map curiosity: A signpost (Map 0 Bramblewood Outskirts)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m1_signpost",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "A signpost, and every arm points somewhere we haven't been yet.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A signpost (Map 0 Bramblewood Outskirts)"
+    },
+    {
+     "id": "cur_m1_signpost",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Clovermead is the next one along. Want to see where it sits?",
+     "replies": "Show me the road. [map:mq] | One map at a time.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m1_signpost",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Sensible. The road keeps.",
+     "replies": "",
+     "act": "",
+     "label": "stay",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m1_signpost",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "There. Past the briars.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m1_signpost",
+     "n": 5,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Someone carved a little otter on the post. Nice work, too.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m2_lantern",
+   "where": [
+    "Map curiosity: A lit lantern (Map 4 Sunken Hollow)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m2_lantern",
+     "n": 1,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Someone left a lantern burning down here. Nobody is minding it.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A lit lantern (Map 4 Sunken Hollow)"
+    },
+    {
+     "id": "cur_m2_lantern",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "In the Hollow, a lit lantern means “I'll be back”. It's bad luck to blow it out.",
+     "replies": "Leave it lit. | Trim the wick.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m2_lantern",
+     "n": 3,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "…It burns brighter. That's either very good or very bad.",
+     "replies": "",
+     "act": "",
+     "label": "trim",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m2_lantern",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Good. Somebody's coming home.",
+     "replies": "",
+     "act": "",
+     "label": "lit",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m2_lantern",
+     "n": 5,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "I'll keep an eye on it. I keep an eye on everything.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m3_ashcairn",
+   "where": [
+    "Map curiosity: A black cairn (Map 19 Ashen Spurn)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m3_ashcairn",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "A cairn of black stones. Each one, a climber who didn't come down.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A black cairn (Map 19 Ashen Spurn)"
+    },
+    {
+     "id": "cur_m3_ashcairn",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Add a stone for them. Then keep climbing.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m3_peddler",
+   "where": [
+    "Map curiosity: Old Cinder's stall (Map 19 Ashen Spurn)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m3_peddler",
+     "n": 1,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Warm cinders, cold cards, everything in between. The Shop has my good stock.",
+     "replies": "Take me to the Shop. [tab:shop] | Just browsing the mountain.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: Old Cinder's stall (Map 19 Ashen Spurn)"
+    },
+    {
+     "id": "cur_m3_peddler",
+     "n": 2,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Browse away. The mountain charges nothing. Yet.",
+     "replies": "",
+     "act": "",
+     "label": "no",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m3_peddler",
+     "n": 3,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Mind the step. It's hot.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m3_peddler",
+     "n": 4,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Come back when the ash settles.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m4_echo",
+   "where": [
+    "Map curiosity: An echoing hollow (Map 8 Caves & Alcoves)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m4_echo",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "HELLO!",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: An echoing hollow (Map 8 Caves & Alcoves)"
+    },
+    {
+     "id": "cur_m4_echo",
+     "n": 2,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "…hello… hello… hello…",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m4_echo",
+     "n": 3,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "That last one wasn't the echo.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m4_glowpool",
+   "where": [
+    "Map curiosity: A glowworm pool (Map 8 Caves & Alcoves)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m4_glowpool",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Glowworms over still water. They light the cave a little brighter for every map you clear down here.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A glowworm pool (Map 8 Caves & Alcoves)"
+    },
+    {
+     "id": "cur_m4_glowpool",
+     "n": 2,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Clear the caves and the dark gets kinder. Your lantern too.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m5_baobab",
+   "where": [
+    "Map curiosity: The old baobab (Map 14 Savanna Reaches)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m5_baobab",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A baobab older than any map. The herds shelter under it at noon.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: The old baobab (Map 14 Savanna Reaches)"
+    },
+    {
+     "id": "cur_m5_baobab",
+     "n": 2,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Even rivals share shade out here. Remember that when the sun is high.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m5_drum",
+   "where": [
+    "Map curiosity: A drum by the waterhole (Map 14 Savanna Reaches)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m5_drum",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "A drum, left by the waterhole. Somebody's calling a meeting.",
+     "replies": "Answer the drum. [quests] | Let it be.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A drum by the waterhole (Map 14 Savanna Reaches)"
+    },
+    {
+     "id": "cur_m5_drum",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "There. Whatever they wanted is on the board now.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m5_drum",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The savanna will ask again.",
+     "replies": "",
+     "act": "",
+     "label": "no",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m5_drum",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Out here, everybody hears the drum.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m6_icefish",
+   "where": [
+    "Map curiosity: An ice-fishing hole (Map 17 Wolfsbane Tundra)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m6_icefish",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "An ice-fishing hole, and a line still in it.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: An ice-fishing hole (Map 17 Wolfsbane Tundra)"
+    },
+    {
+     "id": "cur_m6_icefish",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Whoever left it is coming back cold and hungry.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m7_shell",
+   "where": [
+    "Map curiosity: A spiral shell (Map 10 Coral Current)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m7_shell",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A great spiral shell. Hold it up and you hear the reef breathing.",
+     "replies": "Listen. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A spiral shell (Map 10 Coral Current)"
+    },
+    {
+     "id": "cur_m7_shell",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Flow… ebb… flow. The tide decides who hits harder. Watch the pill at the top of the field.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m7_shell",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The reef will still be breathing later.",
+     "replies": "",
+     "act": "",
+     "label": "no",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m7_shell",
+     "n": 4,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Swimmers ride the Flow. Keep that in mind.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m7_wreck",
+   "where": [
+    "Map curiosity: A coral wreck (Map 10 Coral Current)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m7_wreck",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "A wreck, furred with coral. Rivergate colours on the stern.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A coral wreck (Map 10 Coral Current)"
+    },
+    {
+     "id": "cur_m7_wreck",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "The Tidewall supply barge. We never found out what sank her.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m8_wisp",
+   "where": [
+    "Map curiosity: A light over the bog (Map 6 Sable Swampmire)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m8_wisp",
+     "n": 1,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "A light over the bog. Don't follow it.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A light over the bog (Map 6 Sable Swampmire)"
+    },
+    {
+     "id": "cur_m8_wisp",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "I wasn't going to. …Much.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_m9_anvil",
+   "where": [
+    "Map curiosity: The old anvil (Map 19 Basalt Foundry)"
+   ],
+   "lines": [
+    {
+     "id": "cur_m9_anvil",
+     "n": 1,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "The old anvil. Smiths say a card hammered here keeps its edge forever.",
+     "replies": "Show me the Forge. [forge] | Later.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: The old anvil (Map 19 Basalt Foundry)"
+    },
+    {
+     "id": "cur_m9_anvil",
+     "n": 2,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Bring dust. Bring copies. Bring patience.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m9_anvil",
+     "n": 3,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "The fire will wait. Fires are good at that.",
+     "replies": "",
+     "act": "",
+     "label": "no",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_m9_anvil",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Every great card was ordinary once.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_mb_bottle",
+   "where": [
+    "Map curiosity: A bottle on the tideline (Map 2 Pebble Beach)"
+   ],
+   "lines": [
+    {
+     "id": "cur_mb_bottle",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "A bottle on the tideline, with a note inside!",
+     "replies": "Read it. | Leave it for the gulls.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A bottle on the tideline (Map 2 Pebble Beach)"
+    },
+    {
+     "id": "cur_mb_bottle",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "“Whoever finds this: the smugglers keep their stash below the cliff.” Huh. I'll pin it on the Notices.",
+     "replies": "",
+     "act": "quests",
+     "label": "read",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_mb_bottle",
+     "n": 3,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "The gulls will read it anyway. Gulls read everything.",
+     "replies": "",
+     "act": "",
+     "label": "leave",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_mb_bottle",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The sea always has one more thing to tell you.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_mb_crab",
+   "where": [
+    "Map curiosity: A very serious crab (Map 2 Pebble Beach)"
+   ],
+   "lines": [
+    {
+     "id": "cur_mb_crab",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "That crab has been guarding the same rock all morning.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A very serious crab (Map 2 Pebble Beach)"
+    },
+    {
+     "id": "cur_mb_crab",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "At high tide it guards it from underwater. Dedication.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_mf_beehive",
+   "where": [
+    "Map curiosity: A humming stump (Map 1 Thistlewood)"
+   ],
+   "lines": [
+    {
+     "id": "cur_mf_beehive",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Hear that hum? A wild hive, deep in the stump.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A humming stump (Map 1 Thistlewood)"
+    },
+    {
+     "id": "cur_mf_beehive",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Bees on a battlefield. I'd rather have them on our side.",
+     "replies": "Leave them be. | Check the Codex for bees. [tab:codex]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_mf_beehive",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Every bee you've met is written in there. More to come.",
+     "replies": "",
+     "act": "",
+     "label": "look",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_mf_beehive",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Wise. They'll remember the courtesy.",
+     "replies": "",
+     "act": "",
+     "label": "be",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "cur_mf_beehive",
+     "n": 5,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The honey's the best on the road, if you ever earn it.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "cur_mf_scarecrow",
+   "where": [
+    "Map curiosity: A scarecrow (Map 1 Thistlewood)"
+   ],
+   "lines": [
+    {
+     "id": "cur_mf_scarecrow",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "A scarecrow, dressed in an old Rivergate cloak. Somebody's idea of a joke.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map curiosity: A scarecrow (Map 1 Thistlewood)"
+    },
+    {
+     "id": "cur_mf_scarecrow",
+     "n": 2,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Or somebody's idea of a warning. The thistles here keep what they catch.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:beetle-packs",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (beetle-packs)"
+   ],
+   "lines": [
+    {
+     "id": "errand:beetle-packs",
+     "n": 1,
+     "who": "beetle",
+     "name": "Sister Carapace",
+     "portrait": "assets/npc/beetle.png?v=f7ef8a0d37",
+     "text": "The Hive trades in sealed packs. Open a couple and tell me what you find?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (beetle-packs)"
+    },
+    {
+     "id": "errand:beetle-packs",
+     "n": 2,
+     "who": "beetle",
+     "name": "Sister Carapace",
+     "portrait": "assets/npc/beetle.png?v=f7ef8a0d37",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:beetle-packs",
+     "n": 3,
+     "who": "beetle",
+     "name": "Sister Carapace",
+     "portrait": "assets/npc/beetle.png?v=f7ef8a0d37",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:frog-march",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (frog-march)"
+   ],
+   "lines": [
+    {
+     "id": "errand:frog-march",
+     "n": 1,
+     "who": "frog",
+     "name": "Croaker, a pond warden",
+     "portrait": "assets/npc/frog.png?v=562596982e",
+     "text": "The pond needs a strong patrol. Spend some time on the road for us?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (frog-march)"
+    },
+    {
+     "id": "errand:frog-march",
+     "n": 2,
+     "who": "frog",
+     "name": "Croaker, a pond warden",
+     "portrait": "assets/npc/frog.png?v=562596982e",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:frog-march",
+     "n": 3,
+     "who": "frog",
+     "name": "Croaker, a pond warden",
+     "portrait": "assets/npc/frog.png?v=562596982e",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:hedgehog-bully",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (hedgehog-bully)"
+   ],
+   "lines": [
+    {
+     "id": "errand:hedgehog-bully",
+     "n": 1,
+     "who": "hedgehog",
+     "name": "Thimble the hedgehog",
+     "portrait": "assets/npc/hedgehog.png?v=f4811b5832",
+     "text": "There’s a big bully on this road. Beat a few of his friends so he backs off?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (hedgehog-bully)"
+    },
+    {
+     "id": "errand:hedgehog-bully",
+     "n": 2,
+     "who": "hedgehog",
+     "name": "Thimble the hedgehog",
+     "portrait": "assets/npc/hedgehog.png?v=f4811b5832",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:hedgehog-bully",
+     "n": 3,
+     "who": "hedgehog",
+     "name": "Thimble the hedgehog",
+     "portrait": "assets/npc/hedgehog.png?v=f4811b5832",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:heron-feast",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (heron-feast)"
+   ],
+   "lines": [
+    {
+     "id": "errand:heron-feast",
+     "n": 1,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "I’m hosting a feast. I need a hundred-odd things caught. Well, twenty.",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (heron-feast)"
+    },
+    {
+     "id": "errand:heron-feast",
+     "n": 2,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:heron-feast",
+     "n": 3,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:heron-pests",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (heron-pests)"
+   ],
+   "lines": [
+    {
+     "id": "errand:heron-pests",
+     "n": 1,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "Pests in my reeds. Many, many small pests. Thin them out for an old bird?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (heron-pests)"
+    },
+    {
+     "id": "errand:heron-pests",
+     "n": 2,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:heron-pests",
+     "n": 3,
+     "who": "heron",
+     "name": "Old Heron Wade",
+     "portrait": "assets/npc/heron.png?v=b84651e097",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:mole-ridge",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (mole-ridge)"
+   ],
+   "lines": [
+    {
+     "id": "errand:mole-ridge",
+     "n": 1,
+     "who": "mole",
+     "name": "Pip, a lost mole",
+     "portrait": "assets/npc/mole.png?v=01647e4362",
+     "text": "My cousin is stuck past the next ridge. Could you clear the road for him?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (mole-ridge)"
+    },
+    {
+     "id": "errand:mole-ridge",
+     "n": 2,
+     "who": "mole",
+     "name": "Pip, a lost mole",
+     "portrait": "assets/npc/mole.png?v=01647e4362",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:mole-ridge",
+     "n": 3,
+     "who": "mole",
+     "name": "Pip, a lost mole",
+     "portrait": "assets/npc/mole.png?v=01647e4362",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "errand:mouse-letter",
+   "where": [
+    "After a Conquest win, sometimes: an errand offer (mouse-letter)"
+   ],
+   "lines": [
+    {
+     "id": "errand:mouse-letter",
+     "n": 1,
+     "who": "mouse",
+     "name": "Bramble the courier mouse",
+     "portrait": "assets/npc/mouse.png?v=e3f60fc9db",
+     "text": "I’ve got letters for three camps and wolves on every path. Walk with me?",
+     "replies": "I’ll do it. | Not now.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a Conquest win, sometimes: an errand offer (mouse-letter)"
+    },
+    {
+     "id": "errand:mouse-letter",
+     "n": 2,
+     "who": "mouse",
+     "name": "Bramble the courier mouse",
+     "portrait": "assets/npc/mouse.png?v=e3f60fc9db",
+     "text": "Thank you! I’ll pin it on the Notices so you don’t forget.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "errand:mouse-letter",
+     "n": 3,
+     "who": "mouse",
+     "name": "Bramble the courier mouse",
+     "portrait": "assets/npc/mouse.png?v=e3f60fc9db",
+     "text": "I’ll leave a note on the Quest Board, in case you change your mind.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "lesson_leader_rule",
+   "where": [
+    "First time you open the 👑 leader picker  · arena_app.js:8789"
+   ],
+   "lines": [
+    {
+     "id": "lesson_leader_rule",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Only Heroic rarity cards and above can be leader cards.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "First time you open the 👑 leader picker  · arena_app.js:8789"
+    },
+    {
+     "id": "lesson_leader_rule",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "You don't have one yet. Win or pull a Heroic card and I'll let you know.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "lesson_leaders",
+   "where": [
+    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:8800"
+   ],
+   "lines": [
+    {
+     "id": "lesson_leaders",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Only Heroic rarity cards and above can be leader cards.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:8800"
+    },
+    {
+     "id": "lesson_leaders",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Sergeant Bramblefox is Heroic: this one can be your leader!",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "lesson_leaders",
+     "n": 3,
+     "who": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "portrait": "card art: Sergeant Bramblefox",
+     "text": "Put me in the 👑 slot and I'll join you once a fight.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "lesson_leaders",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A leader waits beside the board and joins you once a fight. Pick it in the Camp, in the 👑 slot.",
+     "replies": "Show me. [tab:deck] | Later.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "lesson_leaders",
+     "n": 5,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Mind you, I am still the best leader you have got.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "outskirts_reveal",
+   "where": [
+    "The first time the Conquest map opens  · arena_app.js:12044"
+   ],
+   "lines": [
+    {
+     "id": "outskirts_reveal",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "There — the Outskirts. Scouts and stragglers, mostly.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "The first time the Conquest map opens  · arena_app.js:12044"
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Mostly. Which means not entirely. We go carefully.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 3,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "You heard the Marshal. You're with us, aren't you?",
+     "replies": "Of course. | What's in it for me?",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 4,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Good. Then the first patrol is yours.",
+     "replies": "",
+     "act": "",
+     "label": "yes",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 5,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Leaves, glory, and the Marshal's eternal respect. Two of those are real.",
+     "replies": "",
+     "act": "",
+     "label": "pay",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 6,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "…Quiet type. I can work with quiet.",
+     "replies": "",
+     "act": "",
+     "label": "quiet",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "outskirts_reveal",
+     "n": 7,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Watch the map. Things turn up when you push further in.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "pitch_lesson_h",
+   "where": [
+    "In a fight, the first time a card needs Lumber  · arena_app.js:26400"
+   ],
+   "lines": [
+    {
+     "id": "pitch_lesson_h",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Big cards need Lumber. Give up a spare card.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26400"
+    }
+   ]
+  },
+  {
+   "id": "pitch_lesson_o",
+   "where": [
+    "In a fight, the first time a card needs Lumber  · arena_app.js:26400"
+   ],
+   "lines": [
+    {
+     "id": "pitch_lesson_o",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Big cards need Lumber. Throw a spare card on the pile.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:26400"
+    }
+   ]
+  },
+  {
+   "id": "pitch_spent_h",
+   "where": [
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24136"
+   ],
+   "lines": [
+    {
+     "id": "pitch_spent_h",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "One card a turn. Try again next turn.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24136"
+    }
+   ]
+  },
+  {
+   "id": "pitch_spent_o",
+   "where": [
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24136"
+   ],
+   "lines": [
+    {
+     "id": "pitch_spent_o",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "One card a turn. Try again next turn.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:24136"
+    }
+   ]
+  },
+  {
+   "id": "training_wheels_off",
+   "where": [
+    "After Tutorial Part 2, the first time"
+   ],
+   "lines": [
+    {
+     "id": "training_wheels_off",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "That's everything I can teach you on a quiet road.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "After Tutorial Part 2, the first time"
+    },
+    {
+     "id": "training_wheels_off",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Training is over. No more stopping to explain.",
+     "replies": "I'm ready.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "training_wheels_off",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Read every card you meet. The road will do the rest.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "tut_boomerang",
+   "where": [
+    "Tutorial fights: remarks from your side  · arena_app.js:26424"
+   ],
+   "lines": [
+    {
+     "id": "tut_boomerang",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Boomerangs come back. They hit twice.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26424"
+    }
+   ]
+  },
+  {
+   "id": "tut_fly",
+   "where": [
+    "Tutorial fights: remarks from your side  · arena_app.js:26423"
+   ],
+   "lines": [
+    {
+     "id": "tut_fly",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "We fly! Ground units miss us half the time.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26423"
+    }
+   ]
+  },
+  {
+   "id": "tut_traveller_cheer",
+   "where": [
+    "Tutorial fights: remarks from your side  · arena_app.js:26419"
+   ],
+   "lines": [
+    {
+     "id": "tut_traveller_cheer",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "You almost got them! One more push.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:26419"
+    }
+   ]
+  },
+  {
+   "id": "unlock_arena",
+   "where": [
+    "Map feature: The Arena (Map 11 Eyrie Heights)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_arena",
+     "n": 1,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "An otter with a deck. How quaint. Fight me where it counts.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: The Arena (Map 11 Eyrie Heights)"
+    },
+    {
+     "id": "unlock_arena",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "The Arena. Strangers, tickets, bad manners.",
+     "replies": "I'm in. [sub:arena] | Later.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_arena",
+     "n": 3,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "Of course. Later. They always say later.",
+     "replies": "",
+     "act": "",
+     "label": "later",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_arena",
+     "n": 4,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "Ten tickets a day. Spend them well.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_autobattler",
+   "where": [
+    "Map feature: Whisper’s Game (Map 5 Gatorback Swamp)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_autobattler",
+     "n": 1,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "You like games? Here's one. Build an army from nothing. Watch it fight without you.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Whisper’s Game (Map 5 Gatorback Swamp)"
+    },
+    {
+     "id": "unlock_autobattler",
+     "n": 2,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Ten wins and you're a legend. Five losses and you're a story.",
+     "replies": "Deal.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_autobattler",
+     "n": 3,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "…Don't tell the Marshal you saw me.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_backpack",
+   "where": [
+    "Map feature: A note in your pack (Map 5 Gatorback Swamp)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_backpack",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Psst. You have carried that pack since the Outskirts and never once looked inside.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: A note in your pack (Map 5 Gatorback Swamp)"
+    },
+    {
+     "id": "unlock_backpack",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Everything you win that isn't a card ends up in there: materia, eggs, packs, coin.",
+     "replies": "Show me. [tab:inventory]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_backpack",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "It's all in your Inventory now.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_codex",
+   "where": [
+    "Map feature: Codex (Map 7 The Morel Hollow)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_codex",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A field book. Every card anyone on this road has ever seen, drawn in by somebody.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Codex (Map 7 The Morel Hollow)"
+    },
+    {
+     "id": "unlock_codex",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Half the pages are blank.",
+     "replies": "Then we fill them. [tab:codex]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_codex",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A page fills itself the first time you meet the card. Keep your eyes open.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_deck",
+   "where": [
+    "Map feature: Camp (Map 0 Bramblewood Outskirts)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_deck",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "An armoury tent. About time.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Camp (Map 0 Bramblewood Outskirts)"
+    },
+    {
+     "id": "unlock_deck",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Choose who marches with you. Twenty cards, no more, no less.",
+     "replies": "Show me.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_deck",
+     "n": 3,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "And maybe stop bringing the slow ones.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_fieldkit",
+   "where": [
+    "Map feature: The traveller's kit (Map 12 The Briar Maze)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_fieldkit",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The road gets mean from here. I packed you a field kit: draughts, kindling, a scout's map, a fire pot and a few odds and ends.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: The traveller's kit (Map 12 The Briar Maze)"
+    },
+    {
+     "id": "unlock_fieldkit",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Save it for a fight you can't win any other way. One item a fight, and I'll top you up a little each day.",
+     "replies": "Show me. [tab:inventory]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_fieldkit",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "In a fight, look for the 🎒 beside your Lumber.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_forge",
+   "where": [
+    "Map feature: The Forge (Map 11 Eyrie Heights)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_forge",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The Foundry’s smiths will temper anything you bring them, for a price.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: The Forge (Map 11 Eyrie Heights)"
+    },
+    {
+     "id": "unlock_forge",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Dust, leaves and spare copies. Bring all three.",
+     "replies": "Show me the anvil. [forge]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_forge",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Feed a card enough of itself and, one day, it breaks its own limit.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_gauntlet",
+   "where": [
+    "Map feature: Gauntlet Gate (Map 16 The Pinewood Taiga)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_gauntlet",
+     "n": 1,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "You win in the Arena. Fine. Can you keep winning?",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Gauntlet Gate (Map 16 The Pinewood Taiga)"
+    },
+    {
+     "id": "unlock_gauntlet",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Ten in a row? That’s the Gauntlet.",
+     "replies": "Bring it.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_gauntlet",
+     "n": 3,
+     "who": "vesper",
+     "name": "Warlord Vesper",
+     "portrait": "card art: Crimson Wing Duelist Cadet",
+     "text": "Lose once and you start again from nothing. That’s the point.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_mapcodex",
+   "where": [
+    "Map feature: Map Codex (Map 11 Eyrie Heights)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_mapcodex",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Somebody has been drawing the road as you go. Every map, and what the weather does on each.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Map Codex (Map 11 Eyrie Heights)"
+    },
+    {
+     "id": "unlock_mapcodex",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "It is in your Codex now, under Maps.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_market",
+   "where": [
+    "Map feature: Flea Market (~map31)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_market",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Every trader who ever crossed these maps ends up here sooner or later. So do their cards.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Flea Market (~map31)"
+    },
+    {
+     "id": "unlock_market",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The Flea Market. Buy from other players, sell what you don't need. Haggling is frowned upon. Mostly.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_nest",
+   "where": [
+    "Map feature: Nest (Map 2 Pebble Beach)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_nest",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "An old nest. Somebody kept their cards here once.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Nest (Map 2 Pebble Beach)"
+    },
+    {
+     "id": "unlock_nest",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Everything you win ends up in yours now. Want a look?",
+     "replies": "Show me. [tab:nest]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_nest",
+     "n": 3,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Count it twice. Soldiers lose things.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_phyla",
+   "where": [
+    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4066"
+   ],
+   "lines": [
+    {
+     "id": "unlock_phyla",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Notice how the cards fall into families? Otters, badgers and moles are all Beasts. Bees and scorpions are Arthropods.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4066"
+    },
+    {
+     "id": "unlock_phyla",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Those families are phyla. The Codex can sort and filter by them now.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_questboard",
+   "where": [
+    "Map feature: Quest Board (Map 8 Caves & Alcoves)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_questboard",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "A proper quest board. Real requests from real folk, not lodge orders.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Quest Board (Map 8 Caves & Alcoves)"
+    },
+    {
+     "id": "unlock_questboard",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "So when somebody on the road says “could you…”, it goes up here?",
+     "replies": "Sounds like work. [quests:errands]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_questboard",
+     "n": 3,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Errands. Small favours, small rewards. They add up.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_quests",
+   "where": [
+    "Map feature: Notices (Map 4 Sunken Hollow)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_quests",
+     "n": 1,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "The notice board. Orders from the lodge — every day, every week.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Notices (Map 4 Sunken Hollow)"
+    },
+    {
+     "id": "unlock_quests",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "The first few pay well. The rest… pay.",
+     "replies": "I'll take them. [quests]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_quests",
+     "n": 3,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Do the work, get the leaves. That's the whole system.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_raid",
+   "where": [
+    "Map feature: Raid Banner (Map 13 The Redwood Deep)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_raid",
+     "n": 1,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Even the Dominion cannot fell that thing alone.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Raid Banner (Map 13 The Redwood Deep)"
+    },
+    {
+     "id": "unlock_raid",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Then we chip at it together. Every deck that fights wears it down.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_raid",
+     "n": 3,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Will you stand with your enemies, if only for an afternoon?",
+     "replies": "For an afternoon. | Never.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_raid",
+     "n": 4,
+     "who": "aurelia",
+     "name": "Matriarch Aurelia",
+     "portrait": "card art: Sunthroat Courier",
+     "text": "Then stand beside them and pretend. It works the same.",
+     "replies": "",
+     "act": "",
+     "label": "never",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_raid",
+     "n": 5,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "One shared foe. One shared prize when it falls.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_shop",
+   "where": [
+    "Map feature: Traveller’s Cart (Map 5 Gatorback Swamp)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_shop",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Ah! A customer. Or a soldier. In this war they're the same thing.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Traveller’s Cart (Map 5 Gatorback Swamp)"
+    },
+    {
+     "id": "unlock_shop",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Packs, trinkets, the odd rumour. Interested?",
+     "replies": "Let's trade. | Rumours?",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_shop",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Only that the Crown didn't fly away on its own. But you didn't hear it from me.",
+     "replies": "",
+     "act": "",
+     "label": "rumour",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_shop",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Leaves on the counter, please.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_shop2",
+   "where": [
+    "Map feature: Ember Peddler (Map 8 Caves & Alcoves)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_shop2",
+     "n": 1,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Mind the cinders. The Foundry's fire is right behind me, and it's still warm. So are the prices.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Ember Peddler (Map 8 Caves & Alcoves)"
+    },
+    {
+     "id": "unlock_shop2",
+     "n": 2,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "Tidemire Chests. Five cards, one you've never held. The Cart can't carry them this far up.",
+     "replies": "Show me. | Who are you?",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_shop2",
+     "n": 3,
+     "who": "peddler",
+     "name": "Old Cinder, the Ember Peddler",
+     "portrait": "card art: Quarry Mole",
+     "text": "A mole who walked the wrong way out of a mine and kept going. You'll find my stall with the Cart's.",
+     "replies": "",
+     "act": "",
+     "label": "who",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_shop2",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Competition! Wonderful. We'll share a counter. Shops, plural, now.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_shop3",
+   "where": [
+    "Map feature: Gilded Caravan (Map 13 The Redwood Deep)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_shop3",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A caravan with gold on the wheels. They only sell the good cases.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Gilded Caravan (Map 13 The Redwood Deep)"
+    },
+    {
+     "id": "unlock_shop3",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Highcrest Cases. I’ve heard of those.",
+     "replies": "Let’s look. [tab:shop]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_shop3",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Look first. Buy second. Regret never.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_skillcodex",
+   "where": [
+    "Map feature: Skill Codex (Map 9 The Kelp Mangroves)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_skillcodex",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A field guide to tricks. Every skill you have run into, and what beats it.",
+     "replies": "Show me. [codex:skills]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Skill Codex (Map 9 The Kelp Mangroves)"
+    },
+    {
+     "id": "unlock_skillcodex",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "It is a new page in your Codex: Skills.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_stomp",
+   "where": [
+    "Map feature: Stomping Grounds (Map 21 The Quiet Summit)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_stomp",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Hoofprints, pawprints, clawprints. Everything that trains up here trains on this field.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Stomping Grounds (Map 21 The Quiet Summit)"
+    },
+    {
+     "id": "unlock_stomp",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The Stomping Grounds. Bring your Hero: level it, spend its points, pick its skills.",
+     "replies": "Show me. [tab:stomp]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_stomp",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Mind the ruts. Some of them are mine.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_tavern",
+   "where": [
+    "Map feature: The Tavern (Map 14 Savanna Reaches)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_tavern",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "A tavern, this far out. Warm fire, long tables, and a keeper who has heard every road story twice.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: The Tavern (Map 14 Savanna Reaches)"
+    },
+    {
+     "id": "unlock_tavern",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.",
+     "replies": "Show me. [tavern]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_tavern",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Max Energy, raised one cup at a time.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_testlab",
+   "where": [
+    "Map feature: Test Lab (Map 21 The Quiet Summit)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_testlab",
+     "n": 1,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Psst. A tent full of tables. Nobody fights for real in here.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Test Lab (Map 21 The Quiet Summit)"
+    },
+    {
+     "id": "unlock_testlab",
+     "n": 2,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Put any cards down, see what they do. Nothing you win, nothing you lose.",
+     "replies": "Let me try. [sub:sandbox]",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_testlab",
+     "n": 3,
+     "who": "whisper",
+     "name": "Whisper-of-Ash",
+     "portrait": "card art: Voidfeather Scout",
+     "text": "Experiments only. The Marshal calls it “cheating”. I call it homework.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "unlock_wanderer",
+   "where": [
+    "Map feature: Wanderer’s Camp (Map 13 The Redwood Deep)"
+   ],
+   "lines": [
+    {
+     "id": "unlock_wanderer",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Someone made camp here. Someone who doesn’t stay anywhere long.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Map feature: Wanderer’s Camp (Map 13 The Redwood Deep)"
+    },
+    {
+     "id": "unlock_wanderer",
+     "n": 2,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "The wandering trader! The one with the mystery boosters.",
+     "replies": "Where are they?",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "unlock_wanderer",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Somewhere on the road, on some days. When you find them, they’ll sell you five. No more.",
+     "replies": "",
+     "act": "",
+     "label": "go",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  },
+  {
+   "id": "well_m1",
+   "where": [
+    "Tapping the old well on Map 0  · arena_app.js:12023"
+   ],
+   "lines": [
+    {
+     "id": "well_m1",
+     "n": 1,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "Huh. The old well. Otters drew water here long before the border war.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "Tapping the old well on Map 0  · arena_app.js:12023"
+    },
+    {
+     "id": "well_m1",
+     "n": 2,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "And hummingbirds drank from the bucket when nobody was looking. Nobody minded, back then.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "well_m1",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Toss a leaf in, they say, and the Bramblewood remembers who was kind to it.",
+     "replies": "Toss in a leaf. | Keep walking.",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "well_m1",
+     "n": 4,
+     "who": "swiftpaw",
+     "name": "Captain Swiftpaw",
+     "portrait": "card art: Otter Scout",
+     "text": "…Did it just splash back?",
+     "replies": "",
+     "act": "",
+     "label": "toss",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "well_m1",
+     "n": 5,
+     "who": "shieldback",
+     "name": "High Marshal Shieldback",
+     "portrait": "card art: Otter Shieldback",
+     "text": "Good. Superstition never won a skirmish.",
+     "replies": "",
+     "act": "",
+     "label": "walk",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "well_m1",
+     "n": 6,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Wells are patient. So are the friends you make on both sides of the river.",
+     "replies": "",
+     "act": "",
+     "label": "end",
+     "edited": false,
+     "where": ""
+    }
+   ]
+  }
+ ]
+}

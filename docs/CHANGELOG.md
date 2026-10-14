@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (10:45)
+- **Leader tutorial:** the first time you open the 👑 leader picker, the traveller explains that only Heroic and above can lead. Your first Heroic card brings it back ("this one can be your leader"), and the card itself speaks; if you skipped the first note, its line comes first.
+- **D39:** 🍴 Pitchfork hits the 4 nearest enemy units within 2 columns (no Pierce). 🔱 Trident hits the 3 nearest within 1 column, never the castle.
+- **Castles crack and crumble procedurally:** random-walk "miners" chisel cracks as Health drops, and a cellular automaton eats the castle along them when it falls, with rubble chips.
+- **"Cards of old" finish** (aged paper, foxing, creases) for admins in the inspector and workbench, and a new Effects Lab tab, Procedural FX: shatter, Flip riffle shuffle, lantern light, a scrubbable forge timeline, a ripple wave.
+- **💬 Dialogues:** every conversation, its speakers and where it plays, as a hub tab and a spreadsheet with an "Add your own" sheet. Any card's name works as a speaker and shows that card's art.
+- The hub's Action items now open with your calls and the planned ideas.
+
 ## 2026-10-14 (10:15)
 - **Eight new foils are in the game:** Aurora, Galaxy swirl, Molten gold (with drips), Frost crystal, Oil slick, Sakura (falling petals), Glitter field and Holo scanlines. Admins can try them in the card inspector and the Card workbench; none is handed out by packs yet.
 - **Level-up burst:** tempering a card in the Forge, or training a hatchling to Level 1 in the Nest, now plays the Lab's level-up rays and "LEVEL N!" ribbon on the card.

@@ -1,6 +1,45 @@
 # Action items
 
-_Updated 2026-10-14, 3:30 am. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+
+## 1. Your calls
+
+**Your answers, 2026-10-14 09:00.** Say an ID to reopen one.
+
+| ID | Status |
+|---|---|
+| D27 | **Confirmed:** Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit |
+| D39 | **Built:** 🍴 Pitchfork hits the 4 nearest enemy units within 2 columns (no Pierce any more). 🔱 Trident hits the 3 nearest enemy units within 1 column (never the castle) |
+| D74 | **Confirmed and built:** Ranked Live plays Standard (every card at Level 1); friendly invites keep their own format |
+| D75 | Answered in the economy doc: the bundle sizes and the 4.99 USD Bramble Pass stand as first prices; Krooni and Laurels buy cosmetics only |
+| D76 | **Confirmed:** a 30-second plan timer (60 in casual rooms), one shared castle, friends-only rooms first. Building it waits on the `coop_rooms` table (parked below) |
+| D77 | **Future.** Free-to-play on Steam with a cosmetic-leaning shop, revisit by December. *Can we ship it as an executable?* Yes. The game is one web page, so Electron (or the lighter Tauri) wraps it as a Windows/Mac/Linux app with no rewrite; plenty of Steam games ship this way. Steam overlay and achievements come through a small Steamworks binding (steamworks.js or greenworks). Two things to plan: saves and sign-in still go through Supabase, so it needs internet unless we add an offline mode; and the art and code should be bundled into the app rather than fetched |
+| D78 | **Confirmed:** the Camp opens on Map 0, and Maps 0–1 swap in teaching cards |
+| D55 | **Parked, explanation kept:** the 3-minute check already reads world events and GM messages, and Admin has a 📣 World call-out composer. The `world_events` table is written up in `supabase/migrations/20261013_world_events.sql` and is **not applied**: it waits for "apply it" |
+
+**Parked, not open items:** D55 (`world_events`), T3 / S1 / S2 and the D76 `coop_rooms` table all write to the live Supabase, so they wait for you to say "apply it".
+
+**Closed earlier:** D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.
+
+## Planned, not built yet (your 08:28 note: "Dont add now")
+
+| Idea | Notes |
+|---|---|
+| **Electricity** (new skill) | For cave and water cards. Needs its rules: e.g. a shock that chains to the next unit, or stuns. New units to carry it |
+| **Keen Sense** (new skill) | For moles: senses non-flying enemies even when blind; unaffected by Blind. A second effect still to come |
+| **Hammerhead** (new card) | A shark for the Ocean fodder |
+| **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
+| **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
+
+## Done at 10:45 (your 09:00 list)
+
+| Item | What's in the game now |
+|---|---|
+| Leader tutorial | The first time you open the 👑 leader picker, the traveller says only Heroic and above can lead. Your first Heroic card brings the lesson back: "this one can be your leader", and the card itself speaks. If you never saw the first note, its line comes first |
+| D39 | Pitchfork and Trident reworked (above) |
+| Dialogues | 💬 Dialogues tab in the hub and docs/dialogues-2026-10-14.xlsx: all 63 conversations, who says each line and where it plays. An "Add your own" sheet; any card's name works as a speaker and shows that card's art |
+| VFX | Castles crack with random-walk "miners" as they lose Health and crumble cell by cell (a cellular automaton) when destroyed. "Cards of old" finish: aged paper, foxing, creases. New Effects Lab tab, Procedural FX: shatter, Flip riffle shuffle, lantern light, a scrubbable forge timeline, a ripple wave |
+| Foils | The eight Lab foils are in the game (admins: card inspector and Card workbench); the Forge and the Nest play a level-up burst |
 
 ## Done at 23:30 (your 20:55, 21:36 and 22:05 lists)
 
@@ -167,34 +206,6 @@ New calls for you:
 | BAL | Enemy levels flattened: Lv 2 at Map 5, +1 every 5 maps, Lv 5 at Map 20, boss decks one higher. |
 | 22:04 | Your 16 items: map emblems, Sunken Ferry side map, Stamina in Wildpaths, centipede and millipede, node panel, 22 drop castles, editor card details, out-of-cards summons, cosmetic types removed, 🔌 Shock, pack names. |
 | 22:25 | Bare shaking map emblems, the pack note on Gatorback Swamp, real battle ratings, X/Y ⚡ MM:SS clocks, castle art (generating). |
-
-## 1. Your calls
-
-**Cleared 2026-10-14 (you asked to clear every action item).** Each is closed on my recommendation; say the ID to reopen one.
-
-| ID | Closed as |
-|---|---|
-| D27 | Kept: Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit |
-| D39 | Kept, except the retired Pitchfork reading (it's Trident + Pierce now) |
-| D74 | **Built:** Ranked Live plays Standard (every card at Level 1); friendly invites keep their own format |
-| D75 | Answered in the economy doc: the bundle sizes and the 4.99 USD Bramble Pass stand as first prices; Krooni and Laurels buy cosmetics only; Ranked uses Standard (D74) |
-| D76 | Answered in the co-op doc: a 30-second plan timer (60 in casual rooms), one shared castle, friends-only rooms first. Building it waits on the `coop_rooms` table (below) |
-| D77 | Recommendation recorded: free-to-play on Steam with a cosmetic-leaning shop, to keep one economy across web and Steam. Revisit by December |
-| D78 | Moot: the Camp (Armoury) opens on Map 0 now, and Maps 0–1 swap in teaching cards instead |
-
-**Parked, not open items:** D55 (`world_events`), T3 / S1 / S2 and the D76 `coop_rooms` table all write to the live Supabase, so they wait for you to say "apply it". Nothing else is waiting on you.
-
-**Closed earlier:** D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.
-
-## Planned, not built yet (your 08:28 note: "Dont add now")
-
-| Idea | Notes |
-|---|---|
-| **Electricity** (new skill) | For cave and water cards. Needs its rules: e.g. a shock that chains to the next unit, or stuns. New units to carry it |
-| **Keen Sense** (new skill) | For moles: senses non-flying enemies even when blind; unaffected by Blind. A second effect still to come |
-| **Hammerhead** (new card) | A shark for the Ocean fodder |
-| **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
-| **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
 ## 2. Where things stand
 

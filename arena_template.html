@@ -6637,7 +6637,8 @@
     background-position:calc(var(--hbx) * .3) calc(var(--hby) * .3); opacity:var(--dec-lines, .9); mix-blend-mode:screen;}
   /* Starlight (2026-10-08): the twinkling star sparkles, now their own finish; decorateHolo adds .holo-glitter.
      A starlight-only card keeps a faint sheen so it still reads as foil. */
-  .card-tile.holo-starlight:not(.holo-cosmos):not(.holo-rainbow):not(.holo-pearl):not(.holo-hex):not(.holo-etched):not(.holo-ice):not(.holo-gold):not(.holo-reverse):not(.holo-prism):not(.holo-lattice):not(.holo-aurora):not(.holo-galaxy):not(.holo-molten):not(.holo-frost):not(.holo-oilslick):not(.holo-sakura):not(.holo-sparkle):not(.holo-scanline) .holo-layer{opacity:.12;}
+  .card-tile.holo-starlight:not(.holo-cosmos):not(.holo-rainbow):not(.holo-pearl):not(.holo-hex):not(.holo-etched):not(.holo-ice):not(.holo-gold):not(.holo-reverse):not(.holo-prism):not(.holo-lattice):not(.holo-aurora):not(.holo-galaxy):not(.holo-molten):not(.holo-frost):not(.holo-oilslick):not(.holo-sakura):not(.holo-sparkle):not(.holo-scanline):not(.holo-old) .holo-layer{opacity:.12;}
+  .card-tile.has-pfx-cracks .castle-cracks{display:none;}
   /* Eight more finishes (2026-10-14, moved in from the Effects Lab): Aurora, Galaxy, Molten gold, Frost crystal, Oil slick,
      Sakura, Glitter field, Holo scanlines. Molten/Sakura/Glitter/Frost get a .foil-fx layer from decorateHolo(). */
   @property --frost-r{syntax:'<percentage>'; inherits:false; initial-value:14%;}

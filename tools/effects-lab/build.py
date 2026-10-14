@@ -11,6 +11,8 @@ cards=json.load(open(f'{ROOT}/.fxcat/cards.json'))
 fx=open(f'{ROOT}/.fxcat/fx-src.js').read()
 shaders=open(f'{ROOT}/bramblewood-shaders.js').read()
 skillfx=open(f'{ROOT}/bramblewood-skillfx.js').read()
+# 2026-10-14: procedural damage, Cards of old and the GSAP experiments (ProcFX), loaded like SkillFX
+procfx=open(f'{ROOT}/bramblewood-procfx.js').read()
 # GSAP inlined, as in the game (2026-10-10): the CDN copy didn't load inside the hub, which broke Draw flip, Victory toss,
 # the crit stamp, feathers and the new damage-number bursts.
 gsap=open(f'{ROOT}/gsap.min.js').read().replace('</script','<\\/script')
@@ -90,6 +92,16 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 .ready-flare{box-shadow:0 0 0 3px #ffd56e, 0 0 24px 6px rgba(255,200,80,.75) !important; transition:box-shadow .2s;}
 .dust-puff{position:absolute; width:16px; height:16px; border-radius:50%; background:radial-gradient(circle, rgba(220,200,160,.9), rgba(220,200,160,0) 70%); pointer-events:none; z-index:5;}
 @media (max-width:560px){ .sk-row{gap:8px;} .sk-row .card-tile{width:76px !important; height:95px !important;} .skill-arena{gap:44px;} }
+/* Procedural FX tab (2026-10-14) */
+@media (min-width:640px){ .fx.pfx-wide{grid-column:span 2;} }
+#pfxCrackStage .card-tile, #pfxCrumbleStage .card-tile{width:130px !important; height:162px !important; cursor:crosshair;}
+#pfxShatterStage .card-tile{cursor:crosshair;}
+#pfxOldStage{gap:16px; flex-wrap:wrap; padding:14px 8px; min-height:200px;} #pfxOldStage .card-tile{width:124px !important; height:155px !important;}
+#pfxFlipStage{gap:5px; flex-wrap:nowrap;} #pfxFlipStage .card-tile{width:42px !important; height:53px !important;}
+#pfxLanternStage{min-height:200px; gap:12px; overflow:hidden;} #pfxLanternStage .card-tile{width:68px !important; height:85px !important;}
+#pfxRippleStage{display:grid; grid-template-columns:repeat(4, 48px); gap:9px; padding:16px; justify-content:center;} #pfxRippleStage .card-tile{width:48px !important; height:60px !important; cursor:pointer;}
+.pfx-scrub{width:100%; accent-color:#e0a63a;}
+.pfx-scrubrow{display:flex; align-items:center; gap:8px; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
 @media (max-width:560px){ .bf-lab{height:300px;} .bf-lab .bf-cards .card-tile{width:72px !important; height:90px !important;} }
 '''
 TREATS = [('', 'No foil', 'The everyday print.', 'live'),
@@ -112,7 +124,9 @@ TREATS = [('', 'No foil', 'The everyday print.', 'live'),
   ('holo-oilslick', 'Oil slick', 'Thin-film rainbow pooled in organic blotches that slide as the light moves.', 'new'),
   ('holo-sakura', 'Sakura', 'A soft pink sheen with cherry petals drifting down across the card.', 'new'),
   ('holo-sparkle', 'Glitter field', 'Dense multicolour glitter that flashes where the light falls, with a few bright glints.', 'new'),
-  ('holo-scanline', 'Holo scanlines', 'Fine scanlines with a bright bar rolling down and the odd flicker, like a projected hologram.', 'new')]
+  ('holo-scanline', 'Holo scanlines', 'Fine scanlines with a bright bar rolling down and the odd flicker, like a projected hologram.', 'new'),
+  # 2026-10-14: procedural, from bramblewood-procfx.js (ProcFX.decorateOld adds the aged-paper layers)
+  ('holo-old', 'Cards of old', 'A well-loved vintage print: yellowed, foxed paper with a water-stain tide line, creases, rubbed corners and faded ink, grown procedurally per card.', 'new')]
 STATUS_PILL = {'live': ('live', 'Live'), 'new': ('idea', 'New'), 'lab': ('part', 'Lab')}
 def treat_tile(k, cls):
     t = C(k)
@@ -136,7 +150,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
 
@@ -192,6 +206,35 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <tr><td>🏮 Lantern glow</td><td><span class="st part">Lab</span></td><td>A lantern swings above the card, casting a warm flickering pool; moths circle</td></tr>
 </tbody></table></div>
 </section>
+
+<section id="procfx"><h2>Procedural damage &amp; GSAP experiments <span class="st idea" style="vertical-align:middle">New</span></h2><p class="sec-sub">From bramblewood-procfx.js (ProcFX). Stone fractures dug by drunken-miner random walks, a cellular automaton that erodes a castle into falling rubble, and a procedurally aged “cards of old” finish. Everything is seeded: the same castle or card always breaks and ages the same way. Then five GSAP experiments: Voronoi shatter, a Flip riffle, a quickTo lantern, a scrubbable forge timeline and a grid ripple.</p>
+<div class="bf-controls" style="margin:0 0 10px"><label class="sk-slow"><input type="checkbox" id="pfxSlow"> Slow motion (×4)</label></div>
+<div class="fx-grid">
+  <div class="fx"><h3>Drunken-miner cracks <span class="st idea">New</span></h3><div class="stage dark" id="pfxCrackStage">{{C_PFX_CASTLE}}</div>
+    <div class="btns"><button class="btn small" data-pfx="crack" data-stage="1">≤66%</button><button class="btn small" data-pfx="crack" data-stage="2">≤33%</button><button class="btn small" data-pfx="crack" data-stage="3">≤15%</button><button class="btn small ghost" data-pfx="crack" data-stage="0">Repair</button><button class="btn small" data-pfx="reseed">🎲 New seed</button></div>
+    <p>Click the castle to strike it there. Each hit sends out “miners”: random walks with momentum and sharp kinks that taper and branch, drawn with a dark gap, a shadowed core and a lit lower lip so they read as chiselled stone. A strike spalls a small crater. Calling it again keeps the old cracks and adds new ones.</p><div class="where">ProcFX.cracks · ProcFX.castleDamage(el, hp/max)</div></div>
+  <div class="fx"><h3>Cellular-automaton crumble <span class="st idea">New</span></h3><div class="stage dark" id="pfxCrumbleStage">{{C_PFX_CASTLE2}}</div>
+    <div class="btns"><button class="btn small primary" data-pfx="siege">🏰 Siege: crack ×3, then fall</button><button class="btn small" data-pfx="crumble">🧱 Crumble now</button></div>
+    <p>A grid of jittered stone blocks over the tile. Each step a block breaks away with a chance that rises with its broken neighbours, along the cracks, and sharply when the block under it is gone. Fallen blocks leave the tile's mask and drop as rubble that bounces; broken edges get a dark rim with a lit lip.</p><div class="where">ProcFX.crumble · castle kill</div></div>
+  <div class="fx pfx-wide"><h3>Cards of old <span class="st idea">New</span></h3><div class="stage" id="pfxOldStage">{{C_PFX_OLD}}</div>
+    <div class="btns"><button class="btn small" data-pfx="oldseed">🎲 Age them differently</button><label class="sk-slow"><input type="checkbox" id="pfxOldClean"> Show the clean print</label></div>
+    <p>An aged-paper finish grown per card: yellowed paper browning toward the edges, fibre grain and specks, foxing spots and a water stain with a darker tide line (both grown by a cellular automaton), drunken-walk creases with flaked ink along them, a dog-eared corner, rubbed white edges and corners, faded ink and an old halftone print. A soft warm sheen follows the light. Hover a card.</p><div class="where">card-tile is-holo holo-old · ProcFX.decorateOld</div></div>
+  <div class="fx"><h3>Voronoi shatter <span class="st idea">New</span></h3><div class="stage dark" id="pfxShatterStage">{{C_PFX_SHATTER}}</div>
+    <div class="btns"><button class="btn small" data-pfx="shatter">💥 Shatter</button></div>
+    <p>Click the card to break it from there. Voronoi shards (denser near the hit), the fracture lines flash, then the shards fly on ballistic arcs with a 3D tumble; launch times come from gsap.utils.distribute so the break travels outward.</p><div class="where">ProcFX.shatter · quickSetter physics</div></div>
+  <div class="fx"><h3>Flip riffle <span class="st idea">New</span></h3><div class="stage" id="pfxFlipStage">{{C_PFX_FLIP}}</div>
+    <div class="btns"><button class="btn small" data-pfx="riffle">🔀 Riffle</button><button class="btn small" data-pfx="riffle2">🔀 Riffle ×3</button></div>
+    <p>The row gathers, the order is shuffled, and Flip animates each card from where it was; cards moving right arc high and cards moving left arc low, so the halves interleave.</p><div class="where">ProcFX.flipShuffle · Flip plugin</div></div>
+  <div class="fx"><h3>Lantern light <span class="st idea">New</span></h3><div class="stage dark" id="pfxLanternStage">{{C_PFX_LANTERN}}</div>
+    <div class="btns"><button class="btn small" data-pfx="lantern">🏮 Light the lantern</button></div>
+    <p>The board goes dark except a flickering pool of light that trails your pointer (quickTo); it wanders on its own when you leave. Cards turn to face it, brighten as it nears and cast shadows away from it.</p><div class="where">ProcFX.lantern · caves, Darksight</div></div>
+  <div class="fx"><h3>Forge timeline <span class="st idea">New</span></h3><div class="stage dark" id="pfxForgeStage">{{C_PFX_FORGE}}</div>
+    <div class="pfx-scrubrow">Scrub <input type="range" class="pfx-scrub" id="pfxForgeScrub" min="0" max="1000" value="0"></div>
+    <div class="btns" id="pfxForgeBtns"><button class="btn small primary" data-forge="play">▶ Forge</button><button class="btn small" data-forge="heat">Heat</button><button class="btn small" data-forge="hammer">Hammer</button><button class="btn small" data-forge="quench">Quench</button><button class="btn small" data-forge="temper">Temper</button><button class="btn small ghost" data-forge="blank">Reset</button></div>
+    <p>One timeline with labels: heat it red, three hammer blows with sparks, quench in steam, temper with a gold shine. Drag the slider to scrub, or jump to a label with tweenTo.</p><div class="where">ProcFX.forge · Forge, card upgrades</div></div>
+  <div class="fx"><h3>Ripple from click <span class="st idea">New</span></h3><div class="stage dark" id="pfxRippleStage">{{C_PFX_RIPPLE}}</div>
+    <p>Click any card: a wave pops through the grid from it. One gsap.utils.distribute grid stagger drives both the pop and the glow; the glow colour is interpolated from gold to teal by distance.</p><div class="where">ProcFX.ripple · rally, level-up, set complete</div></div>
+</div></section>
 
 <section id="cardnew"><h2>Card ideas <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">New card animations from the recommendations list, prototyped here so you can judge them before they go in.</p>
 <div class="fx-grid">
@@ -334,6 +377,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 var matchState = null;
 {shaders}
 {skillfx}
+{procfx}
 SkillFX.setImages('assets/fx/arrow.png', 'assets/fx/fire_arrow.png');
 </script>
 <script>
@@ -347,6 +391,13 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 '''
 rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
  '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_W1}':C('rare'),'{C_W2}':C('legendary'),'{C_W3}':C('bee'),'{C_CASTLE2}':C('castle'),'{C_LVL}':C('epic'),'{C_UNLOCK}':C('legendary'),'{C_D1}':C('common'),'{C_D2}':C('fire'),'{C_D3}':C('bee'),'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
+def _old(k, n):
+    return treat_tile(k, 'holo-old').replace('class="card-tile ', f'data-pfx-seed="old-{k}-{n}" class="card-tile ', 1)
+rep.update({'{C_PFX_CASTLE}':C('castle'), '{C_PFX_CASTLE2}':C('castle'), '{C_PFX_SHATTER}':C('legendary'), '{C_PFX_FORGE}':C('epic'),
+  '{C_PFX_OLD}':_old('legendary', 1) + _old('fire', 2) + _old('bee', 3) + _old('rare', 4),
+  '{C_PFX_FLIP}':''.join(C(k) for k in ['common', 'rare', 'epic', 'legendary', 'fire']),
+  '{C_PFX_LANTERN}':C('bee') + C('fire') + C('ant'),
+  '{C_PFX_RIPPLE}':''.join(C(k) for k in (['common', 'rare', 'epic', 'legendary', 'fire', 'bee', 'ant'] * 2)[:12])})
 for k,v in rep.items(): html=html.replace(k, v)
 open(f'{ROOT}/.fxcat/effects.html','w',encoding='utf-8').write(html)
 print(len(html))

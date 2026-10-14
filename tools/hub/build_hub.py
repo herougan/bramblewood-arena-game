@@ -234,6 +234,21 @@ def _decks_panel():
         parts.append(f"<details class='dk-map' open><summary><b>{e(r['name'])}</b></summary>{inner}</details>")
     return '<section class="panel" id="p-decks" role="tabpanel" aria-labelledby="t-decks" hidden><div class="bal"><div class="dec-head"><h2>Decks &amp; tutorials</h2><p>Every deck in the game, exported from the build. Tap a row to open it.</p></div>' + ''.join(parts) + '</div></section>'
 decks_panel = _decks_panel()
+
+def _dialogues_panel():
+    import html as _h
+    path = os.path.join(ROOT, 'docs', 'dialogues.json') if 'ROOT' in globals() else 'docs/dialogues.json'
+    if not os.path.exists(path): return '<section class="panel" id="p-dialogues" role="tabpanel" aria-labelledby="t-dialogues" hidden><p class="dec-empty">Run tools/dialogues/export_dialogues.py.</p></section>'
+    d = json.load(open(path, encoding='utf-8')); e = lambda s: _h.escape(str(s or ''))
+    parts = []
+    for s in d['scripts']:
+        rows = ''.join(f"<tr><td>{e(l['name'])}<br><small>{e(l['who'])}</small></td><td>{e(l['text'])}{'<br><small>↳ ' + e(l['replies']) + '</small>' if l['replies'] else ''}</td></tr>" for l in s['lines'])
+        parts.append(f"<details><summary><b>{e(s['id'])}</b> · {len(s['lines'])} line{'s' if len(s['lines']) != 1 else ''} · <small>{e(' ; '.join(w.split('  · ')[0] for w in s['where']))}</small></summary><table class=\"dk-t\"><thead><tr><th>Speaker</th><th>Line</th></tr></thead><tbody>{rows}</tbody></table></details>")
+    return ('<section class="panel" id="p-dialogues" role="tabpanel" aria-labelledby="t-dialogues" hidden><div class="bal"><div class="dec-head"><h2>Dialogues</h2>'
+            f"<p>Every conversation in the game ({len(d['scripts'])}), who says each line and where it plays. Exported {e(d['generated'])}. "
+            'The spreadsheet (docs/dialogues-*.xlsx) has an “Add your own” sheet: any card’s name works as a speaker, and that card speaks with its main card art.</p></div>'
+            + ''.join(parts) + '</div></section>')
+dialogues_panel = _dialogues_panel()
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bramblewood Master Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -340,6 +355,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
+<button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
@@ -368,6 +384,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
 {curve_panel}
 {decks_panel}
+{dialogues_panel}
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
 </main>

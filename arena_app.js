@@ -164,7 +164,7 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
-  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🔱🗡', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
+  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🍴', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉'};
 // "Poison 1" reads "Poison" (2026-10-12, 23:12, user: "This omission of N if its default should be standardised everywhere" + "If
 // its just Poison 1 or Bleed 1 or ETC, just omit the number"): a skill value of 1 (or true) is shown without its number.
 function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) ? '' : ' ' + v; }
@@ -265,7 +265,7 @@ const PASSIVE_DEFS = [
   {key:'boomerang', category:'passive', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
-  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Strikes the unit in front and both columns beside it with its full Attack. A side with no unit sends that prong to the castle.`},
+  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Hits the 3 nearest enemy units, full Attack each (none more than 1 column away).`},
   {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits the 4 nearest enemy units, full Attack each (none more than 2 columns away).`},
   {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
   // 2026-10-12 skills (the 22:40 list).
@@ -1262,8 +1262,8 @@ const SKILL_TEXT = {
   backstab: v=> `Attacks the nearest enemy unit, never the castle. +${v} damage when that unit isn't the one in front.`,
   shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
   boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
-  trident: ()=> `Hits the unit in front and both columns beside it with full Attack.`,
-  pitchfork: ()=> `Hits the unit in front and both columns beside it with full Attack, ignoring Armor.`,
+  trident: ()=> `Hits the 3 nearest enemy units (within 1 column) with full Attack.`,
+  pitchfork: ()=> `Hits the 4 nearest enemy units (within 2 columns) with full Attack.`,
   octolash: ()=> `Hits the 8 nearest enemy units with full Attack.`,
   rainmaker: v=> `When played, Spring Rain falls for ${v} rounds.`,
   rainrunner: v=> `In rain: +${v}/+${v}, and it can't be blocked.`,
@@ -4931,7 +4931,7 @@ function abilityBadges(d, bopts){
   if(e.lumberjack) out.push(`🪓`); if(e.heavyMetal) out.push(`🤘`);
   if(e.timber) out.push(`🌲`); if(e.rockSolid) out.push(`🪨`); if(e.ironWill) out.push(`🔩`);
   if(e.loyal || e.loyalGrant) out.push(`🎖️`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">👑<i>🗡️</i></span>`);
-  if(e.shell) out.push(`<span title="Shell">🐢${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span class="ab-pair" title="Pitchfork: Trident + Pierce">🔱<i>🗡</i></span>`); if(e.trident) out.push(`<span title="Trident: front and both sides">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
+  if(e.shell) out.push(`<span title="Shell">🐢${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: the 4 nearest enemy units, within 2 columns">🍴</span>`); if(e.trident) out.push(`<span title="Trident: the 3 nearest enemy units, within 1 column">🔱</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">🐙</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   if(d.stoneCost) out.push(`<span title="Costs ${d.stoneCost} Stone to play. Stone comes from cards that quarry it">🪨${d.stoneCost}</span>`); if(d.metalCost) out.push(`<span title="Costs ${d.metalCost} Metal to play">🔩${d.metalCost}</span>`); if(d.uraniumCost) out.push(`<span title="Costs ${d.uraniumCost} Uranium to play">☢️${d.uraniumCost}</span>`);
   if(e.boomerang || e.antiAir) out.push(`🪃`);
@@ -5594,7 +5594,7 @@ function bwInertOthers(keep){
   [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
   return ()=> done.forEach(el=>{ el.inert = false; });
 }
-const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-starlight'];
+const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight'];
 const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
 function openCardInspector(defId, opts){
@@ -8768,17 +8768,35 @@ function lumberDrawNudges(m){
     el.appendChild(tag); setTimeout(()=> tag.remove(), 3600); });
 }
 let pendingLeaderLesson = null;
+// Leader rule (2026-10-14, user: "When you try to change your leader for the first time - there's a tutorial note that says, you need a
+// heroic rarity and above card to be your leader"): once, the first time the 👑 picker opens.
+const LEADER_RULE_FLAG = 'lesson:leaderRule', LEADER_RULE_TEXT = 'Only Heroic rarity cards and above can be leader cards.';
+function leaderRuleScript(haveAny){ return {lines:[{who:'traveller', text:LEADER_RULE_TEXT},
+  {who:'traveller', text: haveAny ? 'You have one already. Tap it below to make it your leader.' : "You don't have one yet. Win or pull a Heroic card and I'll let you know."}]}; }
+function leaderLessonScript(d, sawRule){
+  const rar = ({heroic:'Heroic', unique:'Unique', questunique:'Quest-Unique', legendary:'Legendary', mythic:'Mythic', ancient:'Ancient'})[d.rarity];
+  return {lines:[
+    ...(sawRule ? [] : [{who:'traveller', text:LEADER_RULE_TEXT}]),
+    {who:'traveller', text: sawRule ? `Remember the leader slot? ${d.name || 'Your new card'} is ${rar || 'a leader'}: this one can be your leader!` : `${d.name || 'Your new card'} is ${rar || 'a leader'}: this one can be your leader!`},
+    ...(d.id ? [{who:d.id, text:`Put me in the 👑 slot and I'll join you once a fight.`}] : []),
+    {who:'traveller', text:'A leader waits beside the board and joins you once a fight. Pick it in the Camp, in the 👑 slot.', options:[{label:'Show me.', goto:'go', act:'tab:deck'}, {label:'Later.', goto:'go'}], silent:'go'},
+    {label:'go', who:'traveller', text:'Mind you, I am still the best leader you have got.'},
+  ]};
+}
+function maybeLeaderRuleLesson(haveAny){
+  if(loadDialogueFlags()[LEADER_RULE_FLAG]) return; setDialogueFlag(LEADER_RULE_FLAG, true);
+  DIALOGUES.lesson_leader_rule = leaderRuleScript(haveAny);
+  try{ playDialogue('lesson_leader_rule', {force:true}); }catch(e){}
+}
 function maybeLeaderLesson(){
   if(!pendingLeaderLesson) return;
   if(typeof matchState !== 'undefined' && matchState && !matchState.over){ setTimeout(maybeLeaderLesson, 4000); return; } // never in the middle of a fight
   if(document.querySelector('.winloss-card, .starter-step, .dialogue-box')){ setTimeout(maybeLeaderLesson, 3000); return; }
   const d = getCardDefs()[pendingLeaderLesson] || {}; pendingLeaderLesson = null;
-  DIALOGUES.lesson_leaders = {lines:[
-    {who:'traveller', text:`${d.name || 'That card'} is ${({heroic:'Heroic', unique:'Unique', questunique:'Quest-Unique', legendary:'Legendary', mythic:'Mythic', ancient:'Ancient'})[d.rarity] || 'rare'}. Cards that rare can do more than fight in a deck.`},
-    {who:'traveller', text:'Rare cards can lead. A leader joins you once a fight.'},
-    {who:'traveller', text:'Pick one in the Camp, in the 👑 slot.', options:[{label:'Show me.', goto:'go', act:'tab:deck'}, {label:'Later.', goto:'go'}], silent:'go'},
-    {label:'go', who:'traveller', text:'Mind you, I am still the best leader you have got.'},
-  ]};
+  // 2026-10-14 (user: "When you do get a heroic card for your first time, the tutorial springs back up again, saying this guy can be
+  // your leader. If you have not seen the prior tutorial, it also says ... 'Only heroic rarity cards and above can be leader cards'").
+  const sawRule = !!loadDialogueFlags()[LEADER_RULE_FLAG]; setDialogueFlag(LEADER_RULE_FLAG, true);
+  DIALOGUES.lesson_leaders = leaderLessonScript(d, sawRule);
   try{ playDialogue('lesson_leaders'); }catch(e){}
 }
 // "Received but still locked" (2026-09-25, per explicit request: "I think maybe there are times
@@ -9477,11 +9495,12 @@ function openLoadoutPicker(kind){
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
       <h2>${isCastle ? '🏰 Choose your castle' : '👑 Choose your leader'}</h2>
-      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle ratinl. Leaders are Heroic or above, or have the Leader passive.'}</p>
+      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle rating. Leaders are Heroic or above, or have the Leader passive.'}</p>
       ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
   document.body.appendChild(ov);
+  if(!isCastle) maybeLeaderRuleLesson(leaderIds().length > 0);
   const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key==='Escape') close(); };
   document.addEventListener('keydown', onKey);
@@ -11322,6 +11341,14 @@ function dialogueDock(){
   }
   return dock.querySelector('.dlg-lines');
 }
+// Card speakers (2026-10-14, user: "If I add my own and use a card's name - just use that card's main card art"): a line's `who`
+// can be a speaker key, a card id or a card's name (any case); a card speaks with its name and its main card art.
+function speakerFor(who){
+  if(DIALOGUE_SPEAKERS[who]) return DIALOGUE_SPEAKERS[who];
+  const defs = getCardDefs(), w = String(who||'').trim(), lw = w.toLowerCase();
+  const id = defs[w] ? w : defs[lw] ? lw : Object.keys(defs).find(k=> (defs[k].name||'').toLowerCase() === lw);
+  return id ? {name: defs[id].name, card: id, icon: defs[id].icon || '💬'} : {name: w || '…', icon:'💬'};
+}
 function speakerPortraitHTML(sp){
   if(sp.art) return `<img class="dlg-portrait" src="${sp.art}" alt="">`; // 2026-10-13: NPC portraits (art/npc/<speaker>.png)
   const d = sp.card && getCardDefs()[sp.card];
@@ -11377,10 +11404,11 @@ function openDialogueEditor(){
     ov.innerHTML = `<div class="modal dialogue-editor" role="dialog" aria-label="NPC speeches">
       <div class="modal-head-row"><h2>💬 NPC speeches</h2><button class="modal-close-btn" data-de-close aria-label="Close">✕</button></div>
       <p class="panel-sub">Every conversation in the game. Change a line's words or who says it; ${cloudCardAdmin ? 'Save publishes it for every player.' : 'Save keeps it in this browser (sign in as a cloud admin to publish).'} Edited lines are marked ✎.</p>
+      <datalist id="deWhoList">${speakers.map(sp=> `<option value="${escapeAttr(sp)}">${escapeHtml(DIALOGUE_SPEAKERS[sp].name)}</option>`).join('')}</datalist>
       <div class="de-layout"><div class="de-list"><input type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
         ${list.map(k=> `<button type="button" class="de-item ${k===cur?'on':''}" data-de="${escapeAttr(k)}">${dialogueEdits[k] ? '✎ ' : ''}${escapeHtml(k)} <small>${DIALOGUES[k].lines.length}</small></button>`).join('')}</div>
       <div class="de-body">${sc ? `<h3>${escapeHtml(cur)}</h3>${sc.lines.map((l, i)=> `<div class="de-line ${(dialogueEdits[cur]||{})[i] ? 'is-edited' : ''}">
-          <select data-de-who="${i}">${speakers.map(sp=> `<option value="${sp}" ${sp===l.who?'selected':''}>${escapeHtml(DIALOGUE_SPEAKERS[sp].name)}</option>`).join('')}</select>
+          <input type="text" class="de-who" list="deWhoList" data-de-who="${i}" value="${escapeAttr(l.who||'')}" title="A speaker, or any card's name (it speaks with its card art)">
           ${l.label ? `<small class="de-label">#${escapeHtml(l.label)}</small>` : ''}
           <textarea rows="2" data-de-text="${i}">${escapeHtml(l.text||'')}</textarea>
           ${(l.options||[]).map((op, k)=> `<label class="de-opt">↳ reply <input type="text" data-de-opt="${i}:${k}" value="${escapeAttr(op.label||'')}"></label>`).join('')}</div>`).join('')}
@@ -11422,7 +11450,7 @@ function playDialogue(id, opts){
     let i = 0, guard = 0;
     while(i < script.lines.length && guard++ < 50){
       const line = script.lines[i];
-      const sp = DIALOGUE_SPEAKERS[line.who] || {name: line.who, icon:'💬'};
+      const sp = speakerFor(line.who);
       const b = document.createElement('div');
       b.className = 'dlg-line' + (line.options ? ' dlg-to-you' : '');
       b.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(line.text)}</div></div>`;
@@ -21187,6 +21215,9 @@ function renderMatchUI(){
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
   if(!showPassOverlay && !isSandbox) maybeAutoSkip();
+  // a re-rendered castle gets its procedural cracks back at once (no grow)
+  try{ [['A', m.players[1]], ['B', m.players[2]]].forEach(([s, p])=>{ const t = hqTileEl(s); if(!t || !p || !p.hq) return;
+    const hp = (m.resolving && m.displayHqHp && m.displayHqHp[s] != null) ? m.displayHqHp[s] : p.hq.hp; if(crackStage(hp, p.hq.maxHp) > 0) pfxCastleCracks(t, hp, p.hq.maxHp, false); }); }catch(e){}
   setTimeout(maybeShowCoachTip, 600); setTimeout(maybeShowCoachTip, 2200); setTimeout(maybeShowCoachTip, 4500); // an open tip stays put across re-renders (2026-10-05); the later tries catch anchors that weren't up yet (the versus opener)
 }
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
@@ -24359,10 +24390,20 @@ function renderHUD(){
 function crackStage(hp, maxHp){ const f = maxHp>0 ? hp/maxHp : 1; return f<=0.15 ? 3 : f<=0.33 ? 2 : f<=0.66 ? 1 : 0; }
 // Low-HP tremble (2026-10-06): a unit at a quarter of its health or less shivers now and then.
 function isLowHp(c){ return !!(c && c.maxHp>0 && c.hp/c.maxHp<=0.25); } // 2026-10-08: 0 HP keeps the critical colour
+// Procedural cracks (2026-10-14, user: "drunken miner to show structural damage"): ProcFX's random-walk miners chisel real
+// cracks into the castle (they grow when a stage is reached and redraw on a fresh tile), replacing the three fixed SVG cracks.
+function pfxCastleCracks(tile, hp, maxHp, grow){
+  try{ const F = window.ProcFX; if(!F || !tile || !(maxHp > 0)) return false;
+    const m = matchState, side = tile.closest('[data-hq]') ? tile.closest('[data-hq]').dataset.hq : (tile.closest('#hqA, .hq-a') ? 'A' : 'B');
+    if(!tile.dataset.pfxSeed) tile.dataset.pfxSeed = 'castle:' + side + ':' + ((m && m.startedAt) || 0);
+    F.castleDamage(tile, Math.max(0, hp)/maxHp, {grow: !!grow && !reducedMotion()}); tile.classList.add('has-pfx-cracks'); return true;
+  }catch(e){ return false; }
+}
 function updateCastleCracks(el, hp, maxHp){
   const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile'); if(!tile) return;
   const prev = [1,2,3].find(n=> tile.classList.contains('crack-'+n)) || 0;
   const next = crackStage(hp, maxHp);
+  if(next > 0 || tile.classList.contains('has-pfx-cracks')) pfxCastleCracks(tile, hp, maxHp, next > prev);
   if(next===prev) return;
   tile.classList.remove('crack-0','crack-1','crack-2','crack-3'); tile.classList.add('crack-'+next);
   if(next>prev && next>0){
@@ -25132,6 +25173,12 @@ function deckPileStyle(n){
 }
 async function castleCrumble(el){
   if(!el || !el.isConnected || reducedMotion()) return;
+  // 2026-10-14: the cellular-automaton crumble eats the castle along its own cracks, chips falling as rubble.
+  if(window.ProcFX && ProcFX.crumble){ const tile = el.classList.contains('card-tile') ? el : el.querySelector('.card-tile');
+    if(tile){ try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.quick && SoundKit.quick()); }catch(e){}
+      await new Promise(res=>{ let done = false; const fin = ()=>{ if(!done){ done = true; res(); } };
+        try{ ProcFX.crumble(tile, {seed: tile.dataset.pfxSeed || 'castle', duration: 1.8, onDone: fin}); }catch(e){ fin(); } setTimeout(fin, 2600); });
+      el.classList.add('is-crumbled'); return; } }
   const r = el.getBoundingClientRect(); if(!r.width) return;
   const layer = document.createElement('div'); layer.className = 'crumble-layer'; layer.setAttribute('aria-hidden', 'true');
   layer.style.cssText = `left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px;`;
@@ -31921,7 +31968,7 @@ function holoClass(d){
 // Card workbench (2026-10-12, user: "make sure i can use a dropdown in the effects lab or something when im viewing and
 // experimenting with cards - choose art, properties of the foil, art type etc."): Admin → 🧪 Card workbench. One card, drawn
 // live by the game's own card code, with every look switchable. Nothing is saved.
-const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines']];
+const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines'], ['holo-old', 'Cards of old']];
 function openCardWorkbench(startId){
   const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].token && defs[id].cardType !== 'materia').sort((a, b)=> defs[a].name.localeCompare(defs[b].name));
   const artIds = ids.filter(id=> defs[id].art);
@@ -31995,6 +32042,7 @@ function decorateHolo(root){
     }
     const g = document.createElement('span'); g.className = 'holo-glare'; g.setAttribute('aria-hidden','true'); t.appendChild(g);
   });
+  try{ if(window.ProcFX) ProcFX.decorateOld(root || document); }catch(e){} // Cards of old (2026-10-14): aged paper, foxing, creases
 }
 (function wireHolo(){
   if(typeof document === 'undefined') return;

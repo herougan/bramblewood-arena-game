@@ -4481,10 +4481,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
-      if(tridentAtk && !blindNow){ const lanesT = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
-        // square on: the lanes either side of the unit in front; between two: the other of the two, and the gap goes to the castle
-        const sides = lanesT.integer ? [lanesT.left, lanesT.right] : [lanesT.left, lanesT.right].filter(c=> !(target && target.kind==='card' && target.col === c)).concat([null]).slice(0, 2);
-        sides.forEach(c=> forkStrike(c, true, 'trident')); }
+      // Trident (2026-10-14 rework, user: "Trident is hit nearest 3 enemies ... within 1 x units square away"): besides its normal
+      // swing, it strikes the next-nearest enemy units within 1 column, up to 3 units in all (ties at random). No castle prongs.
+      if(tridentAtk && !blindNow){ const tcT = target && target.kind === 'card' ? target.col : null;
+        const candT = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const en = liveEnemyCols[c]; return c !== tcT && en && en.kind === 'card' && en.card.hp > 0 && Math.abs(c - liveSelf.col) <= 1; })
+          .map(c=> [c, Math.abs(c - liveSelf.col) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
+        candT.slice(0, tcT != null ? 2 : 3).forEach(c=> forkStrike(c, false, 'trident')); }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
       // Pitchfork (2026-10-13 rework, user: "Hits the nearest 4 opposing units. (Can't be more than 2 x-units away)"): besides its
       // normal swing, it strikes the next-nearest enemy units within 2 columns, up to 4 units in all (ties at random).
