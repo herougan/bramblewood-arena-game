@@ -1514,6 +1514,61 @@
   .terrain-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
   .terrain-pill .tp-tip{position:absolute; top:calc(100% + 8px); left:0; width:min(300px, 80vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s, transform .15s, visibility .15s; pointer-events:none;}
   .terrain-pill:hover .tp-tip, .terrain-pill:focus-visible .tp-tip, .terrain-pill.open .tp-tip{opacity:1; visibility:visible; transform:none;}
+  /* ---- 2026-10-14: battlefield pills (user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills will be on
+     the battlefield instead"), field cards on the enemy's side ("The open meadow and effects like this should look like a card on the
+     opposite side of the field") and the enemy's resources at the top right ("The opponent's lumber pill will be on the top right"). */
+  .battlefield-divider{position:relative; z-index:25;}
+  .bf-pills{position:absolute; top:50%; left:14px; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:calc(100% - 28px); pointer-events:none;}
+  .bf-pills .fp-b i{font-style:normal;}
+  .bf-pills .forecast-pill .fp-k{display:inline; margin-right:2px;}
+  .bf-pills:empty{display:none;}
+  .bf-pills > *{pointer-events:auto;}
+  .bf-pill{position:relative; margin:0 !important; border:1px solid rgba(255,255,255,.28); cursor:help; font-family:inherit; line-height:1.3; text-align:left;}
+  .bf-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .bf-pill .tp-tip{display:none;} /* the words live here; BfPillTip shows them in #bfPillTip, over everything */
+  .bf-tip-float{position:fixed; z-index:2600; width:min(290px, 78vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; white-space:normal; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; pointer-events:none; animation:bfTipIn .14s ease-out;}
+  .bf-tip-float[hidden]{display:none;}
+  @keyframes bfTipIn{from{opacity:0; transform:translateY(-4px);} to{opacity:1; transform:none;}}
+  .bf-tip-float .pt-h{display:block; font:800 14px/1.3 'Baloo 2', system-ui, sans-serif; margin-bottom:3px;}
+  .bf-tip-float .pt-l{display:block; font-weight:500;} .bf-tip-float .pt-l + .pt-l{margin-top:4px;}
+  #battlefieldEl .bf-pills .wind-pill{position:relative; top:auto; left:auto; opacity:1; z-index:auto; pointer-events:auto; font-size:12px; background:linear-gradient(135deg, #5f8aa8, #34586f); color:#f2f8ff;}
+  #battlefieldEl .bf-pills .wind-pill.is-calm{background:linear-gradient(135deg, #8a7f62, #5d5540);}
+  .bf-pills .forecast-pill{border:1px solid rgba(255,255,255,.22); color:#fff3d6; font-family:inherit; flex-wrap:nowrap; max-width:none; white-space:nowrap; border-radius:999px; padding:3px 10px;}
+  .bf-pills .phase-pill.tide-flow, .bf-pills .phase-pill.tide-ebb, .bf-pills .phase-pill.arena-rs-pill{margin-left:0;}
+  @media (max-width:699px){ .bf-pills{left:8px; gap:3px; max-width:calc(100% - 16px);} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-k, .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
+  /* the enemy's resource pills: under the fight controls, top right (no longer on the board) */
+  .top-right-stack{display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; align-self:flex-start; min-width:0;}
+  .top-right-stack > .top-row-controls{margin-left:0; align-self:flex-end;}
+  .top-play-row .field-res.enemy{position:static; max-width:none; justify-content:flex-end; top:auto; right:auto; bottom:auto;}
+  /* field cards: the same card face as a Field card, at match-card size beside the enemy's Deck */
+  .match-field-tile{width:var(--match-card-w); height:var(--match-card-h); flex-shrink:0; font-size:13.5px; cursor:help;}
+  .match-field-tile .stats.field-stats .fld{font-size:calc(var(--match-card-w, 118px) * .082);}
+  .match-field-tile .stats.field-stats .fld{max-width:calc(100% - 6px); overflow:hidden; text-overflow:ellipsis; padding:1px 6px; box-sizing:border-box;}
+  @media (max-width:699px){ .match-field-tile .stats.field-stats .fld{font-size:8.5px; padding:1px 4px;} .match-field-tile .fl-w{display:none;} }
+  .match-field-tile.field-cond{--field-glow:rgba(255,226,140,.6);}
+  .match-field-tile.biome-forest{background:linear-gradient(180deg,#5f8f4e,#2f5a2c) !important; color:#f2ffe8;}
+  .match-field-tile.biome-meadow{background:linear-gradient(180deg,#d9e889,#86b24a) !important; color:#26330e;}
+  .match-field-tile.biome-water{background:linear-gradient(180deg,#8cc8e8,#3a7fb0) !important; color:#06243a;}
+  .match-field-tile.biome-beach{background:linear-gradient(180deg,#f6e4b2,#d9b36a) !important; color:#3a2a08;}
+  .match-field-tile.biome-reef{background:linear-gradient(180deg,#ffb7a3,#d5626a) !important; color:#3a0d12;}
+  .match-field-tile.biome-swamp{background:linear-gradient(180deg,#8fa267,#465a35) !important; color:#f0f6e0;}
+  .match-field-tile.biome-cave{background:linear-gradient(180deg,#5b4a78,#221a33) !important; color:#efe6ff;}
+  .match-field-tile.biome-alpine{background:linear-gradient(180deg,#d6e2ea,#8296a8) !important; color:#1c2a36;}
+  .match-field-tile.biome-tundra{background:linear-gradient(180deg,#eef8ff,#9cc6e2) !important; color:#10324d;}
+  .match-field-tile.biome-savanna{background:linear-gradient(180deg,#f3d37a,#c48a33) !important; color:#3a2504;}
+  .match-field-tile.biome-ash, .match-field-tile.biome-forge{background:linear-gradient(180deg,#8a3a24,#2a120c) !important; color:#ffe6d6; box-shadow:0 0 12px rgba(255,90,20,.45);}
+  .match-field-tile.field-frozen{background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.55), transparent 60%), linear-gradient(180deg,#bfe6ff,#6aa9d8) !important; color:#0f3350;}
+  .match-field-tile.field-rain{background:linear-gradient(180deg,#9fc4e6,#4f7fa8) !important; color:#fff;}
+  .match-field-tile.field-fog{background:linear-gradient(180deg,#e4e8ee,#9aa6b4) !important; color:#26303a;}
+  .match-field-tile.field-heatwave{background:linear-gradient(180deg,#ffcf73,#e2562b) !important; color:#3a1406;}
+  .match-field-tile.field-moon{background:linear-gradient(180deg,#3b4c8c,#121a3d) !important; color:#e8edff;}
+  .match-field-tile .nm{color:inherit;}
+  .match-field-tile .fc-trig{position:absolute; left:50%; bottom:-11px; transform:translateX(-50%); z-index:5; padding:1px 7px; border-radius:999px; background:rgba(30,26,22,.88); border:1px solid rgba(255,255,255,.25); font-size:12px; line-height:1.5; box-shadow:0 2px 6px rgba(0,0,0,.35);}
+  .match-field-tile.has-new::after{content:''; position:absolute; top:4px; right:4px; width:9px; height:9px; border-radius:50%; background:#ffd76a; box-shadow:0 0 6px #ffd76a; z-index:6;}
+  .match-field-tile.is-landing{animation:fieldLand .65s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes fieldLand{0%{transform:scale(1);} 35%{transform:scale(1.14); filter:brightness(1.35);} 100%{transform:scale(1);}}
+  .match-field-tile:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ .match-field-tile.is-landing{animation:none;} }
   .terrain-pill.biome-ash, .terrain-pill.biome-forge{border-color:rgba(255,120,50,.7); box-shadow:0 0 12px rgba(255,90,20,.45);}
   .terrain-banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:32; width:min(520px, 86%); padding:12px 18px; border-radius:16px; background:rgba(24,18,12,.86); color:#fff6dc; text-align:center; display:flex; flex-direction:column; gap:4px; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:terrainIn .5s cubic-bezier(.2,1.3,.4,1) both; pointer-events:none;}
   .terrain-banner > b{font-family:'Baloo 2', system-ui, sans-serif; font-size:19px;}
@@ -6355,6 +6410,9 @@
   @keyframes mseBob{50%{transform:translateY(-3px);}}
   @media (prefers-reduced-motion: reduce){ .map-subemblem .mse-ico{animation:none;} }
   .submap-iris{position:fixed; z-index:1900; overflow:hidden; pointer-events:none;}
+  /* 2026-10-14: a daylight side map zooms the whole map layer in and out; nothing scrolls while it does. */
+  html.submap-zooming, html.submap-zooming body{overflow:hidden !important;}
+  html.submap-zooming #conquestLayout{will-change:transform; pointer-events:none;}
   .submap-iris > span{position:absolute; width:0; height:0; transform:translate(-50%,-50%); border-radius:50%; box-shadow:0 0 0 300vmax #05080b, inset 0 0 40px 20px #05080b;}
   /* Promotion (2026-10-09) */
   .forge-promote{margin-top:14px; padding:10px 12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,215,120,.14), rgba(255,215,120,.04)); border:1px solid rgba(255,215,120,.35);}
@@ -8113,6 +8171,19 @@
     font:800 20px/1 'Baloo 2',system-ui,sans-serif; color:#ffe1e1; padding:8px 18px; border-radius:12px; background:linear-gradient(180deg,#5a0f1c,#2a0610);
     border:2px solid #c0404e; box-shadow:0 8px 24px rgba(0,0,0,.5); animation:elBanner 2.2s ease forwards;}
   @keyframes elBanner{0%{opacity:0; transform:translate(-50%,-80%) scale(.85);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 20%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-40%);}}
+  /* The leader's moment (2026-10-14, user: "Whats the vfx when an enemy summons their leader?"): a callout for both sides (gold for
+     yours, crimson for theirs), a ring shockwave and a flash where the leader lands. See leaderThroneVfx(). */
+  .leader-callout{position:fixed; z-index:1103; animation-duration:2.4s; max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
+  .leader-callout.is-mine{color:#3a2604; background:linear-gradient(180deg,#ffe9a8,#e8b64a); border-color:#fff2c4; box-shadow:0 8px 24px rgba(0,0,0,.45), 0 0 26px rgba(255,205,90,.55);}
+  .leader-ring{position:fixed; z-index:1102; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%) scale(.3); border:4px solid rgba(255,214,110,.95); box-shadow:0 0 18px 4px rgba(255,200,80,.6), inset 0 0 14px rgba(255,236,170,.6); animation:leaderRing .9s cubic-bezier(.15,.7,.3,1) forwards;}
+  .leader-ring.is-late{animation-delay:.14s; border-width:2px; opacity:0;}
+  .leader-ring.is-enemy{border-color:rgba(255,190,90,.9); box-shadow:0 0 18px 5px rgba(200,30,60,.6), inset 0 0 14px rgba(220,60,70,.55);}
+  @keyframes leaderRing{0%{opacity:1; transform:translate(-50%,-50%) scale(.3);} 100%{opacity:0; transform:translate(-50%,-50%) scale(3.4);}}
+  .leader-flash{position:fixed; z-index:1099; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%); background:radial-gradient(closest-side, rgba(255,246,200,.95), rgba(255,210,100,.45) 55%, rgba(255,200,80,0)); mix-blend-mode:screen; animation:leaderFlash .7s ease-out forwards;}
+  .leader-flash.is-enemy{background:radial-gradient(closest-side, rgba(255,220,200,.9), rgba(210,50,70,.45) 55%, rgba(160,20,40,0));}
+  @keyframes leaderFlash{0%{opacity:0; transform:translate(-50%,-50%) scale(.6);} 25%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-50%) scale(1.25);}}
+  @media (max-width:560px){ .enemy-leader-banner{font-size:15px; padding:6px 12px;} }
+  @media (prefers-reduced-motion: reduce){ .leader-ring, .leader-flash{display:none;} }
 
   /* Stat changes (2026-10-10): bigger floats, and the stat pill swells (up) or shrinks (down). */
   .dmg-float.stat-up, .dmg-float.stat-down{font-size:1.45em !important;}
