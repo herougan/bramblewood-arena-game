@@ -9031,6 +9031,28 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
 @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
+/* 2026-10-14 (user: "Move the first time rewards section to the right. Decrease the height of the first reward section. The
+   'Won' will not be part of it, and instead a overlaid word ontop, on the top border, justify-center. It says 'First Clear'.
+   The card will not be greyed out."; "Put some margin between the top boundary and the top row. Just abit, so that the words
+   are not covered by the Play Again sign."; "Resize the Skirmish preview to hug the contents and not have extra margin at the
+   bottom."): the reward box hugs the right edge and is shorter (smaller card, slimmer chips, no label row); "First Clear" is a
+   tag centred on its top border; nothing in it is greyed once won. The panel gets a little room under the Fight pill and no
+   spare space at the bottom. */
+.conquest-node-panel .cnp-rw{position:relative; margin-top:8px; padding:12px 10px 7px; gap:5px 8px;}
+.conquest-node-panel .cnp-head > .cnp-rw:last-child{margin-right:0;}
+.conquest-node-panel .cnp-rw .cnp-rw-label{position:absolute; top:0; left:50%; transform:translate(-50%,-50%); flex:none; width:auto; margin:0; padding:1px 9px; border-radius:999px; background:#2e3b2b; border:1px solid rgba(255,220,150,.45); font:800 10px/1.5 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; white-space:nowrap; color:#ffd98a; z-index:2;}
+.conquest-node-panel .cnp-rw .cnp-rw-ok{font-style:normal; color:#8fe08a; margin-left:2px;}
+.conquest-node-panel .cnp-rw .cnp-rw-cur{font-size:15px; padding:2px 9px;}
+.conquest-node-panel .cnp-rw .cnp-rw-curs{gap:4px;}
+.conquest-node-panel .cnp-rw .cnp-rw-card{width:52px;}
+.conquest-node-panel .cnp-rw.is-done .cnp-rw-curs{filter:none; opacity:1;}
+.conquest-node-panel .cnp-rw-card.is-got .card-tile, .conquest-node-panel .cnp-rw-card.is-got .cnp-rw-back{filter:none;}
+.conquest-node-panel{padding-bottom:10px !important;}
+.conquest-node-panel .cnp-squad{padding-bottom:6px;}
+.conquest-node-panel > :last-child, .conquest-node-panel .cnp-deck:last-child{margin-bottom:0 !important;}
+@media (min-width:821px){ .conquest-main > .conquest-node-panel{padding-top:32px !important;} }
+@media (max-width:620px){ .conquest-node-panel .cnp-head > .cnp-showcase, .conquest-node-panel .cnp-head > .cnp-ico{grid-row:span 2;}
+  .conquest-node-panel .cnp-head > .cnp-rw:last-child{grid-column:2; justify-self:end; align-self:end; margin-top:12px;} }
 /* Glimmer Depths campfire and the cleared-gem shine (2026-10-13) */
 .map-campfire{position:absolute; z-index:5; width:40px; height:40px; transform:translate(-50%,-50%); pointer-events:none;}
 .map-campfire .mcf-glow{position:absolute; left:50%; top:60%; width:220px; height:180px; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(closest-side, rgba(255,190,90,.55), rgba(255,140,40,.22) 45%, rgba(255,120,30,0) 100%); mix-blend-mode:screen; animation:mcfGlow 1.9s ease-in-out infinite;}
@@ -9506,7 +9528,9 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   /* The deck-swap offer (maybeOfferDeckSwap) had no styles at all, so it fell into the page flow at the bottom of every page. It is
      a modal now: a centred card on wide screens, a compact bottom sheet on phones (old → new side by side, the text, Keep and Swap). */
   .ds2-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(10,7,4,.62); animation:ds2In .25s ease both;}
-  .ds2-overlay.is-out{opacity:0; transition:opacity .25s ease;}
+  .ds2-overlay.is-out{opacity:0; transition:opacity .15s ease;} /* 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): .25s → .15s */
+  .ds2-say .ds2-nice{display:inline-block; font:900 26px 'Baloo 2',system-ui,sans-serif; color:#3a8f4b; animation:ds2Nice .35s cubic-bezier(.3,1.5,.5,1) both;}
+  @keyframes ds2Nice{from{opacity:0; transform:scale(.6);} to{opacity:1; transform:none;}}
   @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
   .ds2{width:min(560px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55);}
   .ds2-stage{display:flex; justify-content:center;}
