@@ -2,6 +2,33 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (02:00)
+- **Missing card pictures fixed:** Bee Drone, Bee Knight and Forager Ant lost their pictures because about 50 published admin edits from 10-12 had saved each card's own image file path. The WebP change renamed three of those files. The game now ignores a saved path that just points at the card's own built image and shows the current art. This also lets later art changes show on those 50 cards.
+- **Art:** Bee Drone (your NightCafe image), Bee Knight (bee set, bottom left), Sandstorm Roc (bottom right), Otter Kit (top-left otter), Barrow Leech (bottom-right bat). Kraken Spawnling moved to the dark kraken (top right) so the Colossal Squid can have the top-left one. The sparrow on Shrine Bell-Ringer was already the top-right one.
+- **New cards (not placed on maps, budget v2):** Colossal Squid (4 Lumber, Wait 3, 4/10, Fork, Gash 3, Tide), Lantern Spark Fly (2/5, Flying, Lantern), Baby Bat (1/5, Flying, Nocturnal), Baby Horned Capybara (2/6, Thorns 1).
+- **Your 21:49 images:** Scraper of Skies has the new hive-tree art. The new **Red Dragon Egg** (Legendary, Wait 12, 0/10, not obtainable yet) cracks open into the Red Dragon when Ready. It's the first egg that hatches into one set card rather than a random one.
+- **Deck previews** show the castle's art instead of the 🏰 icon.
+- **Rarity lesson** now says cards run from Common up to Epic, without naming each, and calls a Very Rare or Super Rare card Rare.
+- **Fight and field:**
+  - Tide wording: pills say only what Tide units get, and in a fight the Tide chip turns blue and says the current bonus. Wash is removed (it only ever worked on Flow), so 6 cards lose it.
+  - Each field effect is its own ENVIRONMENT card with a mossy frame. The High Tide card reads "Periodic High Tides" and the Tide-spout card "A spout pushes a column back".
+  - Home ground is gone.
+  - Push-back now has an animation: the card slides back with "⏪ +1 Wait".
+  - Volcanic ground damage is renamed "Scorched Ground", and its damage numbers now stay on screen.
+  - After an Eruption, comets fall for 3 rounds (2–5 each, halved for fire-resistant units).
+  - The heat haze is fixed. New 0.5× speed. Forfeit asks in the centre over a dimmed backdrop.
+  - The Lumber lesson only shows when you hold a Lumber card you can't afford yet.
+  - Cleared dark maps are brighter. Only the map zooms into a sub-map, and the new map grows in.
+- **Pages:**
+  - Auto-sweep naming.
+  - One loss rank on the Defeat screen, counting Armour damage, with the extra pill removed and the tip box background fixed.
+  - Pick a skirmish's showcase card in the editor.
+  - Wyrmslayer, To the Caldera and Eye of the Volcano now need a real win.
+  - Field kit wording says "skirmish".
+  - Inventory hides items you never had, marks new ones New!, and greys used-up ones. Wider tab margins.
+  - **Packs open at once:** cards are credited when the pack is given, and old unopened packs open on load.
+  - **Cobble, the Forge golem**, explains the Forge and says why something can't be done.
+
 ## 2026-10-15 (01:00)
 - **Faster loading:** large card art is now shipped as WebP (same look). The game's image files dropped from 32 MB to 11 MB, so a Codex page of 50 cards loads about a third as much. The source art stays PNG.
 

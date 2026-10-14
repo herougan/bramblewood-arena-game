@@ -1624,7 +1624,8 @@ function describeEffects(def, liveCard){
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
-  if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
+  if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — when its Wait runs out it cracks open into the ${into ? into.name : 'creature inside'}, ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); }
+  else if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
@@ -1796,6 +1797,7 @@ function loadLocalCardOverlay(){
     const parsed = JSON.parse(raw);
     if(parsed && typeof parsed==='object'){
       liveCards = parsed.liveCards || {};
+      Object.keys(liveCards).forEach(id=>{ try{ liveCards[id] = dropStaleArtPath(id, liveCards[id]); }catch(e){} }); // stale built-asset paths (2026-10-14)
       liveDeletes = parsed.liveDeletes || {};
       liveTombstones = parsed.liveTombstones || {};
     }
@@ -2485,8 +2487,20 @@ async function logTxn(entry){
 // Ledger commits (2026-10-11, user: "a COMMIT button that commits edits to the real game"): the Card Ledger writes a
 // row whose data is a patch, {__patch:true, cost, wait, attack, health, rarity}, rather than a whole card. It is laid
 // over the built-in card, so art, skills and text stay as they are.
+// Stale art paths (2026-10-14, user: "bee drone and bee knight and forager ant's images are gone"): ~50 published edits from
+// 2026-10-12 saved the card's own built asset path (assets/cards/<id>.png?v=…) as its art. That pins old art, and when the
+// WebP build renamed a file to .webp the image vanished. An override whose art is just a path to the card's own built asset
+// now keeps the current built art instead. Real art changes (an uploaded image, another card's art) still apply.
+function dropStaleArtPath(id, d){
+  if(!d || typeof d.art !== 'string') return d;
+  const m = /^assets\/cards\/([^/?.]+)\.(png|webp|jpe?g)(\?|$)/.exec(d.art);
+  if(!m || m[1] !== id) return d;
+  const base = CARD_DEFS_BASELINE[id]; if(!base || !base.art) return d;
+  return Object.assign({}, d, {art: base.art});
+}
 function cloudCardData(r){
-  const d = r && r.data; if(!d || !d.__patch) return d;
+  const d0 = r && r.data; if(!d0 || !d0.__patch) return dropStaleArtPath(r && r.id, d0);
+  const d = d0;
   const base = CARD_DEFS_BASELINE[r.id]; if(!base) return null;
   const out = Object.assign({}, base);
   Object.keys(d).forEach(k=>{ if(k !== '__patch' && k !== '__ledger') out[k] = d[k]; });
@@ -9239,13 +9253,16 @@ function rarityLessonPick(){
     const i = RARITY_TIER_BANDS.indexOf(d.rarity || 'common'); if(i >= floor && i > bestI){ best = d; bestI = i; } });
   return n > RARITY_LESSON_MIN_CARDS && best ? best : null;
 }
+// 2026-10-14 (21:02, user): the lesson only spans Common up to Epic, without naming each, and never names Very Rare or Super Rare
+// (players can take those as shades of Rare). A Very Rare or Super Rare card is spoken of as Rare.
 function rarityLessonScript(d){
-  const r = d.rarity || 'common', tier = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r, rar = rarityDef(r).label;
+  const r = d.rarity || 'common', tier = (RARITY_DEFS.find(x=> x.key===r) || {}).as || r;
+  const rar = (tier === 'veryrare' || tier === 'superrare') ? 'Rare' : rarityDef(r).label;
   return {lines:[
-    {who:'traveller', text:'Quite a collection. Time you learnt rarity: Common, Uncommon, Rare, Very Rare, Super Rare, Epic, Heroic, Unique, Legendary, Mythic, Ancient, and stranger things beyond.'},
+    {who:'traveller', text:'Quite a collection. Time you learnt rarity: cards run from Common up to Epic, and there are stranger things beyond.'},
     {who:'traveller', text:`The colour of a card's ring tells its rung. Your ${d.name} wears ${RARITY_RING_WORD[tier] || 'its colour'}: it is ${rar}.`},
     ...(d.id ? [{who:d.id, text:`${rar}, and proud of it.`}] : []),
-    {who:'traveller', text:'Rarer cards are stronger. Heroic and up can lead. And their duplicates are far harder to find, so a limit break is a long road.'},
+    {who:'traveller', text:'Rarer cards are stronger, and their duplicates are far harder to find, so a limit break is a long road.'},
   ]};
 }
 function maybeRarityLesson(){
@@ -10436,10 +10453,11 @@ function deckMediumPreviewHTML(d){
   // and total HP as well. Don't need to write the number of cards in the deck unless its invalid aka not 20"): the names live in the
   // aria-label and tooltips now; the foot shows the rating, the deck's total Attack and Health, and the count only when it's off.
   const tot = Object.entries(d.counts||{}).reduce((a, [id, n])=>{ const c = defs[id]; if(c && n > 0){ a.atk += (c.attack||0) * n; a.hp += (c.health||0) * n; } return a; }, {atk:0, hp:0});
+  // 2026-10-14 (21:33, user: "The Deck preview art should show the Castle's art. Not the generic icon."): the castle half paints the castle's art.
   const leaderBg = leader && leader.art ? `background-image:url(${leader.art})` : '';
   return `<div class="deck-medium-preview ${d.id===mainDeckId?'is-main':''}" data-deckid="${d.id}">
     <div class="dmp-bg" aria-hidden="true">
-      <div class="dmp-castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · Lv ' + castleLevelOf(castle && castle.id))}"><span>${castle ? castle.icon || '🏰' : '🏰'}</span></div>
+      <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
       <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
     <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
@@ -30267,7 +30285,7 @@ function bigBlowShake(ev){
 }
 // Egg cards (2026-10-14): the kind of card an egg hatches into, in words.
 const EGG_HATCH_LABEL = {woodland:'woodland', bird:'Bird', otter:'Otter', scaly:'Reptile or Amphibian', bug:'Insect or Arachnid', water:'Fish or sea', beast:'Beast'};
-function eggKindLabel(d){ if(!d) return ''; if(d.eggKind && EGG_HATCH_LABEL[d.eggKind]) return EGG_HATCH_LABEL[d.eggKind]; const h = d.hatchInto || {}; return h.any ? 'woodland' : [...(h.archetypes||[]), ...(h.species||[])].slice(0, 2).join(' or ') || 'beast'; }
+function eggKindLabel(d){ if(!d) return ''; if(d.hatchInto && d.hatchInto.defId){ const into = getCardDefs()[d.hatchInto.defId]; return into ? into.name : 'dragon'; } if(d.eggKind && EGG_HATCH_LABEL[d.eggKind]) return EGG_HATCH_LABEL[d.eggKind]; const h = d.hatchInto || {}; return h.any ? 'woodland' : [...(h.archetypes||[]), ...(h.species||[])].slice(0, 2).join(' or ') || 'beast'; }
 // The Dragonic Spire (2026-10-14, user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither
 // (Minecraft) -> the map's signature abilities"): a map still on the drawing board. Not playable yet; the Map Codex can list it.
 const FUTURE_MAPS = [

@@ -86,11 +86,12 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   e.debugDamage(P, so, T.uid, 5, {}, []); ok(e.debugHeal(P, so, T.uid, 5, {}, []) === 5, 'once the Wither fades it can heal again'); }
 
 // ---- 6. Egg cards
-{ const eggs = Object.values(base).filter(d=> d.hatchInto);
+{ const eggs = Object.values(base).filter(d=> d.hatchInto && !d.hatchInto.defId); // fixed-hatch eggs (Red Dragon Egg) are checked below
   ok(eggs.length === 7, `one egg card per Nest egg kind (${eggs.length})`);
   ok(eggs.every(d=> d.attack === 0 && d.health <= 6 && d.wait >= 5 && d.wait <= 10 && d.icon === '🥚' && !d.token && d.eggKind), 'eggs: 0 Attack, low Health, Wait 5-10, 🥚, deckable (not tokens)');
   const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8'); const m = src.match(/const EGG_KINDS = \{([\s\S]*?)\n\};/);
   const kinds = m ? [...m[1].matchAll(/^\s*(\w+):\s*\{/gm)].map(x=> x[1]) : []; ok(kinds.length === 7 && kinds.every(k=> base['egg-' + k]), `an egg card for every EGG_KINDS entry (${kinds})`);
+  { const {e} = mk(), rde = base['egg-red-dragon']; const pool = rde ? e.eggPoolFor(rde) : []; ok(rde && pool.length === 1 && pool[0].id === 'red-dragon', 'Red Dragon Egg hatches into the Red Dragon'); }
   const {e} = mk(); eggs.forEach(d=>{ const pool = e.eggPoolFor(d); ok(pool.length > 5 && pool.every(c=> !c.token && !c.test && !c.hidden && !c.hatchInto && ['common','uncommon'].includes(c.rarity)), `${d.name} hatches into Common/Uncommon real cards (${pool.length})`); });
   ok(e.eggPoolFor(base['egg-bird']).every(c=> (c.species||[]).includes('Bird') || (c.archetypes||[]).some(a=> ['Bird','Hummingbird','Owl','Eagle','Duck','Raven'].includes(a))), 'a Speckled Egg only hatches birds');
   const rareEgg = Object.assign({}, base['egg-bird'], {rarity:'rare'}); ok(e.eggPoolFor(rareEgg).some(c=> c.rarity === 'rare'), 'a rarer egg can hatch up to its own rarity'); }

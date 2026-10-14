@@ -2974,6 +2974,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // itself is rarer (then up to the egg's rarity). It is not a real hatch: the egg card stays in your collection.
   const EGG_RARITY_ORDER = ['common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic'];
   function eggPoolFor(def){
+    if(def.hatchInto && def.hatchInto.defId) return CARD_DEFS[def.hatchInto.defId] ? [CARD_DEFS[def.hatchInto.defId]] : []; // a fixed hatch, e.g. the Red Dragon Egg (2026-10-14)
     const h = def.hatchInto || {}, cap = Math.max(EGG_RARITY_ORDER.indexOf('uncommon'), EGG_RARITY_ORDER.indexOf(def.rarity||'common'));
     const sp = h.species || [], ar = h.archetypes || [];
     return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.hidden && !d.hero && !d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss

@@ -31,6 +31,19 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 02:00 (your 20:31–21:33 notes)
+
+All built (changelog 02:00). Choices to check:
+- **Wash removed** from 6 cards (Dolphin Knight, Tide Spirit, Octopus Tactician, Riptide Eel, Coral Current Eel, Goliath Tentacle). They lose that ability.
+- **"Periodic High Tides"** is on the High Tide card; the Tide-spout card says it pushes a column back. Say if you meant the other way.
+- **Scorched Ground** is the new name of the volcanic ground's damage.
+- **0.5× speed** is always available.
+- **A pack won in a fight** opens after the results screen.
+- **Cobble the golem** speaks at the Forge.
+- **Kraken Spawnling** now uses the dark kraken so the Colossal Squid has the top-left one.
+- Your 21:06 ideas are kept in `docs/design-notes-2026-10-14-ideas.md`. Card backings are noted as a future task.
+- Clovermead's map art doesn't show in local builds (it is the same before these changes).
+
 ## Done at 23:30 (your 16:58, 17:03, 17:13 and 17:55 notes)
 
 All built (see the changelog's 23:30 entry). Open: Toxin is a placeholder only; Blacksmith equipment isn't gated by "held once" because it has no other source.
