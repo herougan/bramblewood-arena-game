@@ -5594,7 +5594,7 @@ function bwInertOthers(keep){
   [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
   return ()=> done.forEach(el=>{ el.inert = false; });
 }
-const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-starlight'];
+const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-starlight'];
 const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
 function openCardInspector(defId, opts){
@@ -30502,6 +30502,7 @@ async function forgeTemper(btn){
   forgeBusy = false; renderForge();
   const pop = document.querySelector('#forgeDetail .forge-level-label');
   if(pop){ pop.classList.add('pop'); }
+  metaFx('levelUp', '#forgeDetail .card-tile', {text:'LEVEL ' + (L+1) + '!'});
   showToast(`🔨 ${getCardDefs()[id].name} is now level ${L+1}.`, 'ok');
 }
 async function forgePrestige(btn){
@@ -31873,7 +31874,8 @@ function renderNest(){
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
   root.querySelectorAll('[data-nurture]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; }
     const id = finishNurture(b.dataset.nurture); if(!id) return; renderNest(); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
-    const d = getCardDefs()[id] || {}; showToast(`🌱 ${d.name || 'Your card'} grew to Level 1.`, 'ok'); });
+    const d = getCardDefs()[id] || {}; showToast(`🌱 ${d.name || 'Your card'} grew to Level 1.`, 'ok');
+    metaFx('levelUp', `#view-nest [data-nestcard="${cssEsc(id)}"] .card-tile`, {text:'LEVEL 1!'}); });
   if(nestNurturePrefill) setTimeout(openNestPicker, 200);
   root.querySelectorAll('[data-egg]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; }
     const egg = nestState().eggs.find(e=> e.id === b.dataset.egg), icon = egg ? (egg.kind === 'baby' ? (NEST_TYPES[nestItemType(egg)]||{}).icon : (EGG_KINDS[egg.kind]||{}).icon) : '🥚';
@@ -31919,7 +31921,7 @@ function holoClass(d){
 // Card workbench (2026-10-12, user: "make sure i can use a dropdown in the effects lab or something when im viewing and
 // experimenting with cards - choose art, properties of the foil, art type etc."): Admin → 🧪 Card workbench. One card, drawn
 // live by the game's own card code, with every look switchable. Nothing is saved.
-const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice']];
+const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines']];
 function openCardWorkbench(startId){
   const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].token && defs[id].cardType !== 'materia').sort((a, b)=> defs[a].name.localeCompare(defs[b].name));
   const artIds = ids.filter(id=> defs[id].art);
@@ -31966,6 +31968,13 @@ function openCardWorkbench(startId){
     requestAnimationFrame(loop); };
   paint(); requestAnimationFrame(loop);
 }
+// Effects Lab moments outside battle (2026-10-14): level-up rays in the Forge and Nest, the unlock sparkle on a new card.
+function cssEsc(s){ return (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/["\\]/g, '\\$&'); }
+function metaFx(kind, sel, opts){
+  try{ const F = window.SkillFX; if(!F || !F[kind] || reducedMotion()) return;
+    setTimeout(()=>{ const el = typeof sel === 'string' ? document.querySelector(sel) : sel; if(el && el.getBoundingClientRect().width) F[kind](el, opts || {}); }, 60);
+  }catch(e){}
+}
 function decorateHolo(root){
   (root || document).querySelectorAll('.card-tile.is-holo').forEach(t=>{
     if(t.querySelector(':scope > .holo-layer')) return;
@@ -31974,6 +31983,15 @@ function decorateHolo(root){
       const gl = document.createElement('span'); gl.className = 'holo-glitter'; gl.setAttribute('aria-hidden','true');
       gl.innerHTML = Array.from({length:9}, (_, k)=> `<i style="left:${(11 + (k*37)%80)}%;top:${(9 + (k*53)%82)}%;animation-delay:${(k*0.37)%2.6}s"></i>`).join('');
       t.appendChild(gl);
+    }
+    // Moving bits for the finishes moved in from the Effects Lab (2026-10-14): drips, petals, glints, frost.
+    const kind = t.classList.contains('holo-molten') ? 'molten' : t.classList.contains('holo-sakura') ? 'sakura' : t.classList.contains('holo-sparkle') ? 'sparkle' : t.classList.contains('holo-frost') ? 'frost' : '';
+    if(kind){
+      const f = document.createElement('span'); f.className = 'foil-fx'; f.setAttribute('aria-hidden','true');
+      if(kind === 'molten') f.innerHTML = [12, 31, 52, 68, 86].map((x, k)=> `<i style="left:${x}%; --len:${14 + (k*11)%22}px; animation-delay:${-(k*1.7)%6}s"></i>`).join('');
+      if(kind === 'sakura') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(k*29)%96}%; --d:${6 + (k*1.3)%4}s; --dl:${-(k*0.9)}s; --sx:${((k%5) - 2)*10 + 8}px; transform:scale(${0.8 + (k%3)*0.2})"></i>`).join('');
+      if(kind === 'sparkle') f.innerHTML = Array.from({length:12}, (_, k)=> `<i style="left:${(9 + (k*41)%84)}%; top:${(7 + (k*59)%86)}%; --dl:${((k*0.31)%1.9).toFixed(2)}s; --h:${(k*67)%360}"></i>`).join('');
+      t.appendChild(f);
     }
     const g = document.createElement('span'); g.className = 'holo-glare'; g.setAttribute('aria-hidden','true'); t.appendChild(g);
   });

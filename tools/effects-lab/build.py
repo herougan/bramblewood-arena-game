@@ -16,7 +16,6 @@ skillfx=open(f'{ROOT}/bramblewood-skillfx.js').read()
 gsap=open(f'{ROOT}/gsap.min.js').read().replace('</script','<\\/script')
 gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
 C=lambda k,v='plain': cards[k][v]
-labfoils=open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'lab-foils.css'), encoding='utf-8').read()
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
 .lab{max-width:1180px; margin:0 auto; padding:24px 16px 80px; color:var(--ink);}
@@ -105,15 +104,15 @@ TREATS = [('', 'No foil', 'The everyday print.', 'live'),
   ('holo-prism', 'Prism', 'Sharp prismatic facets that turn around the light.', 'new'),
   ('holo-lattice', 'Lattice', 'A grid of fine foil lines crossed at 43°, each line catching the rainbow as the light moves.', 'new'),
   ('holo-starlight', 'Starlight', 'Twinkling four-point star sparkles. Its own layer: Legendary cards wear it over Cosmos, and it can go over any finish.', 'live'),
-  # 2026-10-14 (user: "more foil vfx"): Lab-only finishes, CSS in tools/effects-lab/lab-foils.css, ready to move into the game.
-  ('holo-aurora', 'Aurora', 'Slow northern-lights curtains of green, teal and violet drifting across the art.', 'lab'),
-  ('holo-galaxy', 'Galaxy swirl', 'A spiral of violet and blue arms turning slowly around the light, over a fine star field.', 'lab'),
-  ('holo-molten', 'Molten gold', 'A hot gold sheen and glowing rim; liquid gold drips from the top edge and swells.', 'lab'),
-  ('holo-frost', 'Frost crystal', 'Fern-like ice crystals grow in from the corners, then thaw, over a cold blue sheen.', 'lab'),
-  ('holo-oilslick', 'Oil slick', 'Thin-film rainbow pooled in organic blotches that slide as the light moves.', 'lab'),
-  ('holo-sakura', 'Sakura', 'A soft pink sheen with cherry petals drifting down across the card.', 'lab'),
-  ('holo-sparkle', 'Glitter field', 'Dense multicolour glitter that flashes where the light falls, with a few bright glints.', 'lab'),
-  ('holo-scanline', 'Holo scanlines', 'Fine scanlines with a bright bar rolling down and the odd flicker, like a projected hologram.', 'lab')]
+  # 2026-10-14: these eight began in the Lab and are now in the game's stylesheet.
+  ('holo-aurora', 'Aurora', 'Slow northern-lights curtains of green, teal and violet drifting across the art.', 'new'),
+  ('holo-galaxy', 'Galaxy swirl', 'A spiral of violet and blue arms turning slowly around the light, over a fine star field.', 'new'),
+  ('holo-molten', 'Molten gold', 'A hot gold sheen and glowing rim; liquid gold drips from the top edge and swells.', 'new'),
+  ('holo-frost', 'Frost crystal', 'Fern-like ice crystals grow in from the corners, then thaw, over a cold blue sheen.', 'new'),
+  ('holo-oilslick', 'Oil slick', 'Thin-film rainbow pooled in organic blotches that slide as the light moves.', 'new'),
+  ('holo-sakura', 'Sakura', 'A soft pink sheen with cherry petals drifting down across the card.', 'new'),
+  ('holo-sparkle', 'Glitter field', 'Dense multicolour glitter that flashes where the light falls, with a few bright glints.', 'new'),
+  ('holo-scanline', 'Holo scanlines', 'Fine scanlines with a bright bar rolling down and the odd flicker, like a projected hologram.', 'new')]
 STATUS_PILL = {'live': ('live', 'Live'), 'new': ('idea', 'New'), 'lab': ('part', 'Lab')}
 def treat_tile(k, cls):
     t = C(k)
@@ -130,7 +129,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>{gamecss}</style>
 <style>{page_css}</style>
-<style>{labfoils}</style>
+
 <div class="lab">
 <header>
   <h1>Bramblewood Effects Lab</h1>
@@ -221,7 +220,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
 <section id="tbc"><h2>Coming next <span class="st idea" style="vertical-align:middle">TBC</span></h2><p class="sec-sub">The first list is all built. Here is the next one, not built yet; veto or reorder freely.</p>
 <div class="fx-grid"><div class="fx tbc"><h3>🔗 Combo counter <span class="st idea">TBC</span></h3><p>Several hits in one round build a x2, x3… counter over the board. Waiting on a decision: cosmetic only, a small reward per step, or drop it.</p></div><div class="fx tbc"><h3>🧭 Card tilt in hand <span class="st idea">On hold</span></h3><p>Hand cards lean toward the pointer. On hold: the style guide keeps the magnetic tilt out of the hand strip, because it fights the drag and selection motion there.</p></div></div></section>
 
-<section id="treatments"><h2>Foils</h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. Live ones are in the game today; New ones are in the game's stylesheet, ready to assign to print variants, pack rarities or events; Lab ones (Aurora onward) exist only here so far (tools/effects-lab/lab-foils.css).</p>
+<section id="treatments"><h2>Foils</h2><p class="sec-sub">Every print finish on the same card. Hover a card (or turn on auto-tilt) to move the light. Live ones are in the game today; New ones are in the game's stylesheet, ready to assign to print variants, pack rarities or events; Aurora onward came from this Lab and are now in the game too.</p>
 <div class="bf-controls"><label>Card <select id="treatCard">{TREAT_OPTS}</select></label><label class="sk-slow"><input type="checkbox" id="treatAuto" checked> Auto-tilt</label><label class="sk-slow"><input type="checkbox" id="treatStar"> ＋ Starlight on every card</label></div>
 <div class="treat-grid">{TREAT_CARDS}</div></section>
 
