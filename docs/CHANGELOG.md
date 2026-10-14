@@ -2,6 +2,44 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-14 (23:30)
+- **Fights:**
+  - Day/Night, Flow/Ebb, wind and the forecast are now pills on the board's middle line, and each one explains itself on hover or tap.
+  - The terrain and lasting field rules ("Open Meadow I", Frigid, the volcano…) show as a field card beside the enemy's deck.
+  - The opponent's Lumber is top right.
+  - Leaders now drop in with a flash, a ring shockwave and a "👑 <Leader> joins the fight!" callout (and a shake for big ones).
+- **Side maps** that aren't dark just zoom into the entrance and back out of the new map; caves keep the dark dive.
+- **Stat budget v2:** N = 10 + 5 per Wait + 4 per Lumber + 0.2 per map + level (Level 1 to its top level adds up to +10) + rarity (+2 a step, Mythic +20). A half-miss skill (Evasive, Swift, Flying, Shadow, Blind) multiplies the score ×1.5, and Bounty costs 0. It's in the Test Lab, the card editor and the Skill N sheet.
+- **New skills:**
+  - 🤺 **Fencing:** Evasive and Swift can't dodge it; Frillneck Duelist has it instead of Bludgeon.
+  - **Fireball** (on Ready, 15 fire to a random enemy and the units either side) and ☄️ **Meteor** (on Ready, 20 that ignores Armor, splash to the units beside it, and the column burns).
+  - 🍌 **Banana** (Bramblewood Macaque) and 🍌🪃 **Bananarang** (Howler Monkey).
+  - **Durian** (War Drum Mandrill): may gain Thorns each round.
+  - 💠 **Shield:** temporary Health, and a Shield trigger action.
+  - 🔌⚡ **Electricity:** arcs to the next unit, stronger on wet ones. On Voltaic Eel and three new cave bats: Voltwing, Static and Arc Bat.
+  - 👃 **Keen Sense:** moles ignore darkness and Blind.
+  - 💭 **Psychic N:** extra damage that nothing blocks; minds only.
+  - **Smoke Bomb:** each round, maybe smoke an ally (attacks miss it half the time) or blind an enemy. It's on the new Smokescreen Raccoon.
+  - Banana, Bananarang, Boomerang and Smoke Bomb are Evergreen.
+- **Crabs Fork again**, shown with a crab claw 🦞. Crab Claws is retired.
+- **On Death → the killer** as a trigger target: the new **Blister Beetle** poisons whoever eats it (5 Poison).
+- **New cards** (not placed yet): Hammerhead Shark, Ironback Gorilla (Bludgeon), Voltwing / Static / Arc Bat, Smokescreen Raccoon, Blister Beetle.
+- **Limit break** now needs lifetime duplicates by rarity, shown as a pill board with holes:
+  - 10 for Common, 9 for Uncommon;
+  - 8 for Rare up to Super Rare;
+  - 7 for Heroic and Epic, 6 for Unique;
+  - 5 for Quest-Unique up to Mythic, 4 for Ancient;
+  - 3 for Divine and above.
+- **Rarity lesson:** once, in the Codex, after 50 different cards and your first Very Rare.
+- **Crafting** needs a card you've held, not just seen.
+- **Codex: 🔢 All by ID** toggle shows one unsectioned list of every card by card number, 50 a page; it's remembered.
+- **Art:**
+  - Your images for Rootworm Colony (purple lichen), Bee Drone, Rivergate Tribune and Bramblewood Macaque.
+  - The electric bats.
+  - New NightCafe art for the new cards and all seven eggs.
+  - The 193 cards from the earlier NightCafe batch now use their raw originals (no extra pixel pass), which keeps faces sharper.
+  - Every card now has art.
+
 ## 2026-10-14 (21:00)
 - **🔬 Effects library** (Admin → Effects library): every skill, trigger event, trigger action and field condition (254 in all) on a live stage. ▶ Play runs it through the real fight engine with its effects and sounds, ↻ Reset sets it up again, 0.5× slows it down, and a log shows each event and the damage it did. Field conditions show their look too (the Tide coming in and floating the swimmers, rain, fog, night, the volcano). A few things that need a bigger setup (leaders, Structures, Dark Summon) say so instead.
 

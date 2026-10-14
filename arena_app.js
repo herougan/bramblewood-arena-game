@@ -4383,6 +4383,7 @@ function renderCodex(){
         ${adminModeEnabled ? `<option value="unassigned" ${codexFilter.groupBy==='unassigned'?'selected':''}>View by: Unassigned</option>` : ''}
       </select>
       ${adminModeEnabled ? `<label class="cx-test-toggle" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
+      <label class="cx-test-toggle" title="One list of every card, by card number, 50 a page (no sections)"><input type="checkbox" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
       <select id="cxViewMode" title="Grid display density">
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
@@ -4398,6 +4399,7 @@ function renderCodex(){
   if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
   document.getElementById('cxGroupBy').addEventListener('change', e=>{ codexFilter.groupBy = e.target.value; renderCodexGrid(); });
   { const su = document.getElementById('cxShowUnseen'); if(su) su.addEventListener('change', ()=>{ codexShowUnseen = su.checked; renderCodexGrid(); }); }
+  { const fb = document.getElementById('cxFlatById'); if(fb) fb.addEventListener('change', ()=>{ codexFlatById = fb.checked; try{ localStorage.setItem('bramblewood_codex_flat_v1', codexFlatById ? '1' : '0'); }catch(e){} codexPage = 0; renderCodexGrid(); }); }
   document.getElementById('cxArch').addEventListener('change', e=>{ codexFilter.archetype = e.target.value; renderCodexGrid(); });
   document.getElementById('cxMechLine').addEventListener('change', e=>{ codexFilter.mechLine = e.target.value; renderCodexGrid(); });
   { const ph = document.getElementById('cxPhylum'); if(ph) ph.addEventListener('change', e=>{ codexFilter.phylum = e.target.value; renderCodexGrid(); }); }
@@ -4560,6 +4562,8 @@ function setCodexStatsChart(v){ codexStatsChart = v; refreshCodexStats(); }
 // sources until 50 is passed. A filter or sort change goes back to page 1.
 const CODEX_PAGE_SIZE = 50;
 let codexPage = 0, codexShowUnseen = false;
+// 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
+let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
 function renderCodexGrid(keepPage){
   if(keepPage !== true) codexPage = 0;
   const defs = getCardDefs();
@@ -4627,6 +4631,7 @@ function renderCodexGrid(keepPage){
       if(!groups.has(key)) groups.set(key, {sec:{key, order:[mi,ni,0,''], label:conquestNodeLabel(map.id, node.key), mapId:map.id, nodeKey:node.key}, ids:[]});
     }));
   }
+  if(codexFlatById){ groups.clear(); groups.set('all-by-id', {sec:{key:'all-by-id', order:[0], label:'All cards by number', bare:true}, ids:ids.slice()}); }
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
   const tileFor = id=>{
     const d = defs[id];
@@ -4642,7 +4647,7 @@ function renderCodexGrid(keepPage){
   const pages = [];
   { let cur = [], n = 0;
     ordered.forEach(g=>{
-      const sorted = g.ids.slice().sort(cmp);
+      const sorted = g.ids.slice().sort(codexFlatById ? ((x, y)=> (Number(defs[x].numericId)||1e9) - (Number(defs[y].numericId)||1e9) || x.localeCompare(y)) : cmp);
       if(g.sec.bare || ordered.length === 1){ for(let i = 0; i < sorted.length; i += CODEX_PAGE_SIZE){ if(cur.length){ pages.push(cur); cur = []; n = 0; } pages.push([{sec:g.sec, ids:sorted.slice(i, i + CODEX_PAGE_SIZE), all:g.ids, cont:i > 0}]); } if(!sorted.length) cur.push({sec:g.sec, ids:[], all:g.ids}); return; }
       cur.push({sec:g.sec, ids:sorted, all:g.ids}); n += sorted.length;
       if(n >= CODEX_PAGE_SIZE){ pages.push(cur); cur = []; n = 0; } });

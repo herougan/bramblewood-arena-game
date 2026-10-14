@@ -31,6 +31,10 @@ _Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One 
 | **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
 | **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
 
+## Done at 23:30 (your 16:58, 17:03, 17:13 and 17:55 notes)
+
+All built (see the changelog's 23:30 entry). Open: Toxin is a placeholder only; Blacksmith equipment isn't gated by "held once" because it has no other source.
+
 ## Done at 20:00 (your 14:50 list)
 
 | Item | What's in the game now |
