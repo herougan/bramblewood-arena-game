@@ -17964,7 +17964,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
     </div>`;
     overlay.hidden = false;
     try{ fxHook('trenchRender', overlay, v.round); }catch(e){} // 2026-10-15 batch F: the Core's stumps link their armour
-    overlay.querySelector('#trClose').onclick =()=>{ if(!T.over && !confirm('Leave the fight? The damage you have done so far still counts.')) return; settle(); close(); };
+    overlay.querySelector('#trClose').onclick = ()=>{ if(!T.over && !confirm('Leave the fight? The damage you have done so far still counts.')) return; settle(); close(); };
     const dn = overlay.querySelector('#trDone'); if(dn) dn.onclick = close;
     overlay.querySelectorAll('[data-hand]').forEach(b=> b.onclick = ()=>{ if(busy) return; const uid = +b.dataset.hand; selected = selected===uid ? null : uid; render(T.view()); });
     overlay.querySelectorAll('[data-slot]').forEach(c=>{ const go = ()=>{ if(busy || selected==null) return; if(T.playMine(selected, +c.dataset.slot)){ try{ SoundKit.play(); }catch(e){} selected = null; } render(T.view()); }; c.onclick = go; c.onkeydown = e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }; });

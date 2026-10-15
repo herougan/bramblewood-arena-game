@@ -167,7 +167,10 @@ function glyph(x, y, text, o){
     if(o.onTl) o.onTl(t, el);
   });
 }
-const label = (x, y, text, kind, o)=> glyph(x, y, text, Object.assign({cls:'fxf-label' + (kind ? ' is-' + kind : ''), scale0:.5, rise:30, hold:.75}, o || {}));
+// 2026-10-15: a label over a pill in the top bar would rise off the screen; near the top edge it sits lower and drifts down.
+const label = (x, y, text, kind, o)=>{ o = Object.assign({cls:'fxf-label' + (kind ? ' is-' + kind : ''), scale0:.5, rise:30, hold:.75}, o || {});
+  if(y < 34){ y = 34 + Math.max(0, 34 - y)*.5; o.rise = -Math.abs(o.rise)*.5; }
+  x = Math.max(40, Math.min(VW() - 40, x)); return glyph(x, y, text, o); };
 // A light sweep across an element's box.
 function sheen(el, o){
   o = o || {}; const g = G(); if(!g || !el) return Promise.resolve();
@@ -258,7 +261,7 @@ function stamp(x, y, text, o){
 function vignette(color, o){
   o = o || {}; const g = G(); if(!g) return Promise.resolve();
   const host = lay('fxf-vighost', '', 4000), v = document.createElement('div'); v.className = 'fxf-vig'; host.appendChild(v);
-  if(o.host){ const r = o.host.getBoundingClientRect(); Object.assign(v.style, {position:'absolute', left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px', inset:'auto'}); }
+  if(o.host){ const r = o.host.getBoundingClientRect(); Object.assign(v.style, {inset:'auto', position:'absolute', left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px', borderRadius:getComputedStyle(o.host).borderRadius || '0'}); } // 2026-10-15: inset first, or it wipes left/top
   v.style.background = `radial-gradient(ellipse at 50% 50%, transparent 35%, ${color} 100%)`;
   return new Promise(res=> g.timeline({onComplete:()=>{ host.remove(); res(); }}).fromTo(v, {opacity:0}, {opacity:o.peak || .9, duration:o.inDur || .18, ease:'power1.out'}).to(v, {opacity:0, duration:o.outDur || .7, ease:'power1.in'}, '+=' + (o.hold || .15)));
 }
@@ -931,6 +934,7 @@ M.dragonScale_B = function(el, opts){
   opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const c = el ? pt(el) : hostPt(opts.host), hr = opts.host ? opts.host.getBoundingClientRect() : {left:0, width:VW(), top:0};
   const h = lay('fxf-dragsh', `<div class="fxf-g" style="font-size:140px; filter:brightness(0) blur(3px); opacity:.45">🐉</div><i class="fxf-scale"></i>`, 6000), d = h.children[0], sc = h.children[1];
+  if(opts.host) clipTo(h, hr); // 2026-10-15: the shadow stays inside the panel it crosses
   g.set(d, {x:hr.left - 160, y:c.y - 150, scaleX:-1}); g.set(sc, {x:c.x - 17, y:c.y - 150, opacity:0, scale:.8});
   return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }})
     .to(d, {x:hr.left + hr.width + 40, duration:1.3, ease:'none'})
@@ -1091,14 +1095,20 @@ const TENTACLE_SVG = (id)=> `<svg viewBox="0 0 100 300" preserveAspectRatio="non
   <path d="M8,0 C4,90 22,170 28,230 C31,268 46,294 66,292 C84,290 90,268 78,258 C68,250 58,258 61,268 C50,258 54,238 56,224 C62,168 92,90 92,0 Z" fill="url(#${id})" stroke="#24112f" stroke-width="2"/>
   <path d="M52,0 C50,80 58,160 52,224 C50,238 48,252 56,262" fill="none" stroke="#e9b8d8" stroke-width="9" stroke-linecap="round" opacity=".55"/>
   ${[40, 80, 120, 160, 196, 226].map((y, i)=> `<ellipse cx="${55 - i*.4}" cy="${y}" rx="${8.5 - i*.9}" ry="${6 - i*.5}" fill="#f6d2ea" stroke="#7a4a92" stroke-width="1.6"/>`).join('')}</svg>`;
+// 2026-10-15: clip a fixed overlay to a host's box (the battlefield), so arms and tails don't spill over the page around it.
+function clipTo(h, hr){ if(!h || !hr || !hr.width) return; Object.assign(h.style, {width:VW() + 'px', height:VH() + 'px',
+  clipPath:`inset(${Math.max(0, hr.top)}px ${Math.max(0, VW() - hr.right)}px ${Math.max(0, VH() - hr.bottom)}px ${Math.max(0, hr.left)}px)`}); }
 M.tentacleSmack = function(cells, opts){
   opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   cells = (Array.isArray(cells) ? cells : [cells]).filter(Boolean);
   const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), ref = rs[0] || {left:VW()/2 - 40, width:80, top:VH()/2, bottom:VH()/2 + 100};
-  const bottom = Math.max(...rs.map(r=> r.bottom)), w = Math.max(70, ref.width*1.5), x = ref.left + ref.width/2, H = bottom + 10;
+  // 2026-10-15: with a host (the battlefield) the arm comes down from the host's top edge and is clipped to it.
+  const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null, top0 = hr ? Math.max(0, hr.top) : 0;
+  const bottom = Math.max(...rs.map(r=> r.bottom)), w = Math.max(70, ref.width*1.5), x = ref.left + ref.width/2, H = bottom + 10 - top0;
   const h = lay('fxf-tent', `<i class="sh"></i><div class="tn">${TENTACLE_SVG('fxfT' + Math.floor(Math.random()*1e6))}</div>`, 4000), sh = h.children[0], tn = h.children[1];
+  clipTo(h, hr);
   Object.assign(sh.style, {position:'absolute', left:(x - w*.6) + 'px', top:(bottom - 24) + 'px', width:(w*1.2) + 'px', height:'30px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(20,0,30,.55), transparent 70%)'});
-  Object.assign(tn.style, {position:'absolute', left:(x - w/2) + 'px', top:'0px', width:w + 'px', height:H + 'px', transformOrigin:'50% 0%', filter:'drop-shadow(0 6px 10px rgba(0,0,0,.5))'});
+  Object.assign(tn.style, {position:'absolute', left:(x - w/2) + 'px', top:top0 + 'px', width:w + 'px', height:H + 'px', transformOrigin:'50% 0%', filter:'drop-shadow(0 6px 10px rgba(0,0,0,.5))'});
   g.set(sh, {scale:.3, opacity:0}); g.set(tn, {y:-H, scaleY:.7});
   return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }})
     .to(sh, {scale:1, opacity:1, duration:.3, ease:'power1.in'})
@@ -1119,6 +1129,7 @@ M.tailSweep = function(cards, opts){
   cards = (cards || []).filter(alive); const rs = cards.map(e=> e.getBoundingClientRect());
   const row = rs.length ? {left:Math.min(...rs.map(r=> r.left)), right:Math.max(...rs.map(r=> r.right)), y:rs.reduce((a, r)=> a + r.top + r.height/2, 0)/rs.length} : {left:VW()*.2, right:VW()*.8, y:VH()*.55};
   const W = (row.right - row.left)*.7 + 120, h = lay('fxf-tailh', '<i class="fxf-whoosh"></i><i class="fxf-tail"></i>', 4000), wh = h.children[0], tl2 = h.children[1];
+  if(opts.host && opts.host.getBoundingClientRect) clipTo(h, opts.host.getBoundingClientRect());
   tl2.style.width = W + 'px'; wh.style.width = (W*1.2) + 'px';
   const x0 = row.left - W - 60, x1 = row.right + 60;
   g.set(tl2, {x:x0, y:row.y - 21, rotation:-6}); g.set(wh, {x:x0, y:row.y - 48, opacity:0});
@@ -1502,13 +1513,14 @@ H.trenchRender = (ov, round, env)=>{ if(!ov || !medOK(env) || ov._fxfRound === r
   const ents = $$('.tr-card.is-entity', ov); if(ents.length >= 2 && (round <= 1 || round % 3 === 0)) later(()=> M.coreStumps(ents), 300); };
 // The raid panel: stage changes, parts that went down since you last looked, the bars, and claim buttons.
 const memo = {get(k){ try{ return localStorage.getItem('fxf:' + k); }catch(e){ return null; } }, set(k, v){ try{ localStorage.setItem('fxf:' + k, v); }catch(e){} }}; // per-viewer only
+const barsShown = new Set();
 H.raidPanel = (panel, def, env)=>{ if(!panel || !medOK(env)) return; const id = (def && def.id) || 'raid';
   const stage = ($('.r2-stage', panel) || {}).textContent || '', was = memo.get('stage:' + id);
   if(stage && was != null && was !== stage) later(()=> M.raidStageChange(panel, {stage}), 250); memo.set('stage:' + id, stage);
   const downs = $$('.r2-part.is-down', panel), wasDown = Number(memo.get('down:' + id) || 0);
   if(downs.length > wasDown && memo.get('down:' + id) != null) downs.slice(wasDown).forEach((p, i)=> later(()=> M.raidPartDown(p), 400 + i*500)); memo.set('down:' + id, String(downs.length));
   const fill = $('.raid-boss-hp-bar-fill', panel), frac = fill ? (parseFloat(fill.style.width) || 0)/100 : null, wasF = parseFloat(memo.get('hp:' + id));
-  if(fill && !isNaN(wasF) && wasF > frac + .001) M.raidBars($('.r2-total', panel) || panel, {from:wasF}); else if(!panel._fxfBars){ panel._fxfBars = 1; M.raidBars(panel); }
+  if(fill && !isNaN(wasF) && wasF > frac + .001) M.raidBars($('.r2-total', panel) || panel, {from:wasF}); else if(!barsShown.has(id)){ barsShown.add(id); M.raidBars(panel); } // 2026-10-15: the fill-in once per session, not on every re-render
   if(frac != null) memo.set('hp:' + id, String(frac));
   // capture: read the button's place before the claim re-renders the panel
   $$('[data-raid-claim]', panel).forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); later(()=> M.raidClaim({getBoundingClientRect:()=> r}), 30); }, {once:true, capture:true})); };
