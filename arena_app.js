@@ -9948,6 +9948,7 @@ function upgradeForge(){
   if(c.next.strange && !adminModeEnabled) try{ spendCopies('strange-materia', c.next.strange); }catch(e){}
   try{ localStorage.setItem(FORGE_TIER_KEY, String(c.next.tier)); }catch(e){}
   try{ logTxn({action:'forgeUpgrade', source:'Forge', before: c.next.tier - 1, after: c.next.tier}); }catch(e){}
+  fxHook('forgeTierUp', c.next); // batch D (2026-10-15, docs/effects-lab-contract.md)
   return c.next;
 }
 function forgeUpgradeHTML(){
@@ -10093,6 +10094,7 @@ function temperCastle(id){
   if(c.credit && (c.credit.dust || c.credit.gold)){ const cr = loadJSONKey(CASTLE_CREDIT_KEY), o = cr[id] || {}; cr[id] = {dust: Math.max(0, (o.dust|0) - c.credit.dust), gold: Math.max(0, (o.gold|0) - c.credit.gold)}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){} }
   Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
+  fxHook('castleTempered', id, L + 1); // batch D (2026-10-15, docs/effects-lab-contract.md)
   return true;
 }
 function leaderSlotHTML(){
@@ -24101,6 +24103,7 @@ function renderBoard(opts){
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
   if(needEnemy && rowEnemy) rowEnemy.innerHTML = rowHTML(m.players[2], p2Rows);
   if(needMine && rowMine) rowMine.innerHTML = rowHTML(m.players[1], p1Rows);
+  if(needEnemy || needMine) fxHook('boardRowsBuilt', document.getElementById('battlefieldEl')); // batch D (2026-10-15, docs/effects-lab-contract.md): status looks back on rebuilt rows
   // Reserve rows (2026-10-12, raids as a full game): the same columns as the front rows, so a reserve sits right behind its unit.
   if(reserveRowsOf(m)){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
@@ -26482,6 +26485,7 @@ function updateCardStatusDisplay(uid){
   } else if(staggerEl){
     staggerEl.remove();
   }
+  fxHook('cardStatusShown', el, c); // batch D (2026-10-15, docs/effects-lab-contract.md): persistent status looks on the tile
 }
 // Chained break flourish (2026-09-17): the chain-link overlay snaps and falls away instead of
 // silently disappearing on the next render — mirrors playReadyFlourish's "animate on the
@@ -32872,6 +32876,7 @@ function renderForge(){
     const id = forgeSelectedId;
     if(forgeMeltArmed !== id){ forgeMeltArmed = id; renderForge(); setTimeout(()=>{ if(forgeMeltArmed === id){ forgeMeltArmed = null; try{ renderForge(); }catch(e){} } }, 6000); return; }
     forgeMeltArmed = null; const v = meltCard(id); if(!v){ denyShake(meltBtn); return; }
+    fxHook('forgeMelt', document.querySelector('#anvilStage .forge-preview'), v); // batch D (2026-10-15, docs/effects-lab-contract.md)
     try{ SoundKit.burnAway && SoundKit.burnAway(); }catch(e){} renderForge(); showToast(`🔥 Melted down: ✨ ${v.dust}${v.gold ? ' and ' + v.gold + ' Maple Leaves' : ''} back.`, 'ok'); });
   const preBtn = document.getElementById('forgePrestigeBtn');
   if(preBtn) preBtn.addEventListener('click', ()=> forgePrestige(preBtn));
@@ -33001,6 +33006,7 @@ function wireBlacksmith(root){
     const ok = await bwConfirm({title:'🔥 Fuse', body:`Melt ${FUSE_COPIES} copies of ${defs[id].name} into one random ${rarityDef(to).label} card?`, okLabel:'Fuse'});
     if(!ok) return;
     spendCopies(id, FUSE_COPIES);
+    fxHook('forgeFuse', document.getElementById('smithAnvil') || b, defs[id]); // batch D (2026-10-15, docs/effects-lab-contract.md)
     const got = pool[Math.floor(Math.random()*pool.length)];
     unlockCardForPlayer(got, 'fuse');
     try{ SoundKit.gold && SoundKit.gold(); }catch(e){}
@@ -33112,6 +33118,7 @@ async function forgeRefine(btn){
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
   const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
+  fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(`✨ ${d.name} refined to ${step.label}.`, 'ok');
@@ -33184,6 +33191,7 @@ async function forgeLimitBreak(btn){
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   limitBreakCard(id);
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
   forgeBusy = false; renderForge();
   showToast(`💥 ${getCardDefs()[id].name} broke its limit: level ${LIMIT_BREAK_LEVEL}!`, 'ok');
@@ -33244,6 +33252,7 @@ async function forgePromote(btn){
   if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
   logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
   const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
+  fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
   forgeBusy = false; forgePromotePick = null; forgeSelectedId = to; renderForge();
   showToast(`⬆ ${escapeHtml(d.name)} was promoted to ${escapeHtml(defs[to].name)}!${changed ? ' Your decks have the new card.' : ''}`, 'ok');
@@ -33363,6 +33372,7 @@ async function forgePrestige(btn){
   if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
   try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
   const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
   forgeBusy = false; renderForge();
 }
@@ -35644,6 +35654,7 @@ function openPackAnimation(pack, opened, opts){
     </div>
     <div class="po2-hint" id="poHint" aria-live="polite">Drag across the top to tear it open</div>`;
     wireTop();
+    fxHook('packShown', overlay.querySelector('#poPack'), pack, opened[packIdx]); // batch D (2026-10-15, docs/effects-lab-contract.md)
     const pk = overlay.querySelector('#poPack'), strip = overlay.querySelector('#poStrip'), hint = overlay.querySelector('#poHint');
     sfx('pickup');
     let startX = null, prog = 0, lastStep = 0, torn = false;
@@ -35651,6 +35662,7 @@ function openPackAnimation(pack, opened, opts){
     const tear = ()=>{
       if(torn) return; torn = true; setProg(1);
       strip.classList.add('is-gone'); pk.classList.add('is-open'); hint.textContent = '';
+      fxHook('packTorn', pk, pack, o); // batch D (2026-10-15, docs/effects-lab-contract.md)
       sfx('swipeTone'); sfx('gold'); burst(pk, o.jackpot ? ['👑','🌟','✨','💎'] : [pack.icon, '✨', '🐾'], o.jackpot ? 40 : 16); if(o.jackpot) sfx('rareRise', true);
       later(()=> pk.classList.add('is-rising'), 450);
       later(()=> showReveal(), 1100);
@@ -35704,6 +35716,7 @@ function openPackAnimation(pack, opened, opts){
       if(tally) tally.textContent = `${cur + 1} of ${cards.length}`;
       c.focus({preventScroll:true});
       autoNext(()=> reveal(c), deckO.isPile ? 1100 : 2600);
+      fxHook('packCardUp', c, deckO.results[+c.dataset.i], defs[deckO.results[+c.dataset.i].id]); // batch D (2026-10-15, docs/effects-lab-contract.md)
       if(c.classList.contains('tease-rare') || c.classList.contains('tease-epic') || c.classList.contains('tease-legend')) sfx('rareRise', c.classList.contains('tease-legend'));
     };
     let autoT = null;
@@ -35712,6 +35725,7 @@ function openPackAnimation(pack, opened, opts){
       if(!c || c.classList.contains('is-revealed')) return;
       c.classList.add('is-revealed'); sfx('cardFlip');
       const r = deckO.results[+c.dataset.i], d = defs[r.id];
+      fxHook('packCardRevealed', c, r, d); // batch D (2026-10-15, docs/effects-lab-contract.md)
       // light rays in the card's rarity colour: soft for Rare and up, bigger and faster for Epic and up
       if(stage){ const t = tierOf(r.id); if(t >= 4 || r.isNew){ stage.style.setProperty('--ray', rarityStops(d.rarity||'common')[0]); stage.classList.add('is-rays'); stage.classList.toggle('is-rays-big', t >= 7); } }
       // 2026-10-08: sparks (rarer cards spark far more often), and the card moves on by itself after 3 s.
