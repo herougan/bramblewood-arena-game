@@ -4716,7 +4716,7 @@ function renderCodex(){
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
-      <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
+      <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
       ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
       <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
@@ -4939,6 +4939,7 @@ function renderCodexGrid(keepPage){
     else if(codexFilter.sort==='advance') base = advancementKey(B).localeCompare(advancementKey(A)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
     else if(codexFilter.sort==='attack') base = B.attack-A.attack;
     else if(codexFilter.sort==='health') base = B.health-A.health;
+    else if(codexFilter.sort==='wait') base = ((A.wait||0)-(B.wait||0)) || (A.cost-B.cost) || A.name.localeCompare(B.name); // like Cost: quickest first (2026-10-15)
     else if(codexFilter.sort==='rarity'){
       const ra = RARITY_TIER_BANDS.indexOf(A.rarity||'common'), rb = RARITY_TIER_BANDS.indexOf(B.rarity||'common');
       base = (rb-ra) || (RARITY_DEFS.findIndex(r=>r.key===(A.rarity||'common')) - RARITY_DEFS.findIndex(r=>r.key===(B.rarity||'common'))) || A.name.localeCompare(B.name);
@@ -16923,8 +16924,10 @@ function maybeOfferDeckSwap(){
     { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">Nice!</b>'; }
     setTimeout(()=>{ try{ showToast(TX('toast.is-in-your-deck-in-place', {name: d.name, name2: od.name}), 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 650); };
 }
-// Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"): ↑ the next map, ↓ the one
-// before (or out of a side map). Only on the open map, never while typing, in a fight or over a window.
+// Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"). Flipped 2026-10-15 (user:
+// "Up arrow should go lower in map number, down arrow should go higher in map number!"): ↑ the map before (lower number, like the
+// map list above it; out of a side map, as its "↑ Way out"), ↓ the next one. Only on the open map, never while typing, in a fight
+// or over a window.
 let conquestKeyNav = null;
 document.addEventListener('keydown', e=>{
   if(e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
@@ -16932,7 +16935,7 @@ document.addEventListener('keydown', e=>{
   if((typeof matchState !== 'undefined' && matchState && !matchState.over) || conquestLayoutEdit || conquestLinkEdit) return;
   const t = e.target; if(t && (t.closest && t.closest('input, textarea, select, [contenteditable="true"]'))) return;
   if(!document.getElementById('conquestCanvas') || document.querySelector('.modal-overlay:not([hidden]) .modal, .ds2-overlay, .lumber-lesson, .po2-stage, .winloss-overlay')) return;
-  const go = e.key === 'ArrowUp' ? k.next : k.prev; if(!go || !isMapUnlocked(go, loadConquestProgress())) return;
+  const go = e.key === 'ArrowUp' ? k.prev : k.next; if(!go || !isMapUnlocked(go, loadConquestProgress())) return; // 2026-10-15: ↑ lower, ↓ higher
   e.preventDefault();
   if(k.map.sub) leaveSubMap(k.map, k.body); else conquestPanTo(go.id, k.body, k.progress);
 });
@@ -32871,7 +32874,21 @@ let forgeSelectedId = null;
 // short of, and the three Prestige medallions. Tempering plays a short smithing sequence:
 // the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
 // to its new stats. Reduced motion skips straight to the result.
-let forgeFilter = 'all', forgeSearch = '', forgeSort = 'name', forgeBusy = false;
+let forgeFilter = 'all', forgeSearch = '', forgeSort = 'cost', forgeBusy = false;
+// The Forge sorts like the Codex (2026-10-15, user: "The Forge sort should have the codex sort like cost, wait, attack, hp. Also the
+// sort is not consistent sizing."): Cost, Wait, Attack, Health, then Rarity, Level and Name; the same "Sort: …" labels as the Codex.
+const FORGE_SORTS = [['cost','Cost'], ['wait','Wait'], ['attack','Attack'], ['health','Health'], ['rarity','Rarity'], ['level','Level'], ['name','Name']];
+function forgeSortCmp(defs, rIdx){ const nm = (a, b)=> defs[a].name.localeCompare(defs[b].name);
+  return (a, b)=>{ const A = defs[a], B = defs[b];
+    switch(forgeSort){
+      case 'level': return getCardLevel(b) - getCardLevel(a) || nm(a, b);
+      case 'rarity': return rIdx(b) - rIdx(a) || nm(a, b);
+      case 'cost': return (A.cost||0) - (B.cost||0) || nm(a, b);
+      case 'wait': return (A.wait||0) - (B.wait||0) || (A.cost||0) - (B.cost||0) || nm(a, b);
+      case 'attack': return (B.attack||0) - (A.attack||0) || nm(a, b);
+      case 'health': return (B.health||0) - (A.health||0) || nm(a, b);
+      default: return nm(a, b);
+    } }; }
 let forgeMode = 'upgrade'; // 'upgrade' (level + prestige) | 'refine' (foil finish) | 'enchant' (Materia socket)
 function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
 function forgeStatsAt(id, level){
@@ -32958,9 +32975,7 @@ function renderForge(){
   if(forgeFilter==='max') shown = shown.filter(id=> getCardLevel(id)>=10);
   if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
   const rIdx = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common');
-  shown.sort((a,b)=> forgeSort==='level' ? (getCardLevel(b)-getCardLevel(a) || defs[a].name.localeCompare(defs[b].name))
-    : forgeSort==='rarity' ? (rIdx(b)-rIdx(a) || defs[a].name.localeCompare(defs[b].name))
-    : defs[a].name.localeCompare(defs[b].name));
+  shown.sort(forgeSortCmp(defs, rIdx)); // Codex-like sorts (2026-10-15)
   const sel = forgeSelectedId ? defs[forgeSelectedId] : null;
   const L = sel ? getCardLevel(forgeSelectedId) : 0;
   const maxed = L>=10;
@@ -32991,7 +33006,7 @@ function renderForge(){
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
           ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
-          <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
+          <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
         <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
       </div>

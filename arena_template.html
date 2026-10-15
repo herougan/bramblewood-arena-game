@@ -3470,6 +3470,11 @@
   }
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 248px; padding-bottom:16px;} /* 2026-10-13: room for the skill badges that hang below the card (they were clipped) */
+  /* 2026-10-15 (user: "The codex still cuts off the corner symbolage of the cards."): content-visibility:auto paints only inside the
+     wrap, so the cost and Wait badges that sit over the card's top corners were cut in half. The wrap reaches 8 px past the card on
+     the top and sides (negative margins keep the card the same size and place in the grid). */
+  #codexGrid .cx-tile-wrap{padding:8px 7px 16px; margin:-8px -7px 0;}
+  #codexGrid .cx-tile-wrap .cx-lock{top:14px; left:13px;} #codexGrid .cx-tile-wrap .cx-tag{left:11px; bottom:20px;} #codexGrid .cx-tile-wrap .cx-tag-event{left:auto; right:11px; top:12px; bottom:auto;}
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
@@ -9624,6 +9629,24 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .forge-hero .forge-embers{opacity:.6;}
   #view-forge.forge-scene > p, #view-forge.forge-scene > .panel-sub, #view-forge.forge-scene > small, #view-forge.forge-scene .sm-mats-hint{background:rgba(22,12,5,.88); color:#fbecd6; padding:4px 10px; border-radius:10px; text-shadow:none;}
   #view-forge.forge-scene .sm-mats{background:rgba(22,12,5,.88); color:#fbecd6; border-radius:12px;}
+  /* 2026-10-15 (user: "The blacksmith fonts are not contrasting against their backgrounds."): buttons don't inherit the page's ink,
+     so the recipe names, the needs and the fuse buttons read black on the dark theme's panels; everything here takes the theme ink,
+     and the small print is full strength (the muted ink, not a faded one). The Materia strip sits on its own solid dark bar. */
+  #view-forge .sm-recipe, #view-forge .sm-fuse-btn, #view-forge .sm-need{color:var(--ink);}
+  #view-forge .sm-recipe b{color:var(--ink);}
+  #view-forge .sm-recipe small, #view-forge .sm-fuse-btn small{opacity:1; color:var(--ink-muted);}
+  #view-forge .sm-recipe.on{background:color-mix(in srgb, #d08a3a 16%, var(--surface));}
+  #view-forge .sm-need.ok{color:color-mix(in srgb, #3f8f22 70%, var(--ink));} #view-forge .sm-need.short{color:color-mix(in srgb, #c0392b 60%, var(--ink));}
+  #view-forge .sm-mat{background:rgba(255,236,205,.1); border-color:rgba(255,196,130,.45); color:#fbecd6;}
+  #view-forge .sm-mat small{opacity:1; color:#f2dcbc;} #view-forge .sm-mat b{color:#ffd69a;}
+  #view-forge .sm-mats-hint{opacity:1;}
+  #view-forge .sm-fuse h3, #view-forge .sm-anvil .forge-name{color:var(--ink);} #view-forge .sm-fuse .panel-sub{opacity:1; color:var(--ink-muted);}
+  /* 2026-10-15 ("the sort is not consistent sizing"): every control on the Forge's search row is the same 34 px tall and type size. */
+  .forge-toolbar .forge-search, .forge-toolbar .forge-sort, .forge-toolbar > .btn, .forge-toolbar .forge-chip{box-sizing:border-box; height:34px; min-height:34px; font-size:13px; line-height:1;}
+  .forge-toolbar .forge-sort{padding:0 10px; border-radius:10px; font-family:'Nunito',system-ui,sans-serif; font-weight:700;}
+  .forge-toolbar .forge-search{padding:0 12px; border-radius:10px;}
+  .forge-toolbar > .btn{display:inline-flex; align-items:center; padding:0 12px; border-radius:10px;}
+  .forge-toolbar .forge-chip{display:inline-flex; align-items:center; padding:0 12px;}
   /* Deck card (compressed view): pictures, the rating, total Attack and Health; the count only when it's not 20. */
   .dmp-foot{grid-template-columns:1fr;}
   .dmp-meta .dmp-rating{background:rgba(70,40,110,.72);}
