@@ -174,10 +174,43 @@ app_src = app_src.replace("__SPLASH_DEPTH__", _depth_uri, 1)
 # Conquest map backgrounds (2026-10-04): tools/make_map_backgrounds.py -> art/maps/<id>.png, one CSS
 # custom property per map theme, shown pixelated under the map's light/vignette gradients.
 _map_css = []
-for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "tut"]:   # m1..m29 plus the 2026-10-09 field/beach maps
+# Side maps that borrow another map's art (2026-10-15, user: "Are there any submaps with no background? fill them in."). These
+# were plain byte-for-byte copies of their parent's PNG (and the app never switched them on), or had no art at all (Murgle
+# Mayhem). Each is now recoloured here at build time so it never looks identical to the map it borrows from:
+# id -> (source map, hue shift in degrees, saturation x, brightness x).
+MAP_ART_DERIVED = {
+    "mo": ("mf", -14, 0.80, 0.70),   # The Old Bramble: the old Outskirts forest (mf since the swap), darker and olive
+    "mi": ("m6", 14, 1.25, 0.82),    # The Ice Hollow: the tundra, bluer and dimmer
+    "mn": ("m4", -70, 1.25, 1.00),   # The Glimmer Depths: the caves, shifted from violet to teal
+    "ms": ("mw", 22, 0.95, 0.80),    # The Sunken Grove: Gatorback Swamp, cooler and darker
+    "mv": ("m10", 190, 1.00, 0.95),  # The Aerie Vault: Eyrie Heights, turned from slate blue to straw and twig
+    "mx": ("m11", 16, 1.15, 0.78),   # Volcano Lair: the Sundered Peak, hotter orange and darker
+    "mm": ("m8", 34, 1.10, 0.92),    # Murgle Mayhem (endless dungeon under Sable Swampmire): the swamp, tinted teal
+}
+def _derived_map_png(src, dh, ds, dv):
+    from PIL import Image
+    import io as _io, numpy as _np
+    im = Image.open(SCRATCH + "art/maps/m%s.png" % src[1:]).convert("RGB")
+    hsv = _np.array(im.convert("HSV")).astype(_np.float32)
+    hsv[..., 0] = (hsv[..., 0] + dh * 255.0 / 360.0) % 256
+    hsv[..., 1] = _np.clip(hsv[..., 1] * ds, 0, 255); hsv[..., 2] = _np.clip(hsv[..., 2] * dv, 0, 255)
+    out = Image.fromarray(hsv.astype(_np.uint8), "HSV").convert("RGB")
+    buf = _io.BytesIO(); out.save(buf, format="PNG", optimize=True); return buf.getvalue()
+_art_ids = []
+for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "tut"]:   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/m%s.png" % _mid
-    if os.path.exists(_fp):
-        _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, open(_fp, "rb").read())))
+    if ("m" + _mid) in MAP_ART_DERIVED:
+        _data = _derived_map_png(*MAP_ART_DERIVED["m" + _mid])
+    elif os.path.exists(_fp):
+        _data = open(_fp, "rb").read()
+    else:
+        continue
+    _art_ids.append("m" + _mid)
+    _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, _data)))
+# The app only draws art for ids in MAP_ART_IDS (arena_app.js); six side maps had art baked in but were missing from it.
+_mai = _re.search(r"const MAP_ART_IDS = new Set\(\[([^\]]*)\]\)", app_src)
+_missing = sorted(set(_art_ids) - set(_re.findall(r'"(m[a-z0-9]+)"', _mai.group(1) if _mai else "")))
+if _missing: raise SystemExit("MAP_ART_IDS in arena_app.js is missing maps that have art: %s" % ", ".join(_missing))
 # Forge art (2026-10-12): tools/make_forge_art.py -> art/forge/bg.png + anvil.png (PixelLab versions replace them).
 _fg = [(k, SCRATCH + "art/forge/%s.png" % f) for k, f in (("--forge-art", "bg"), ("--anvil-art", "anvil"))]
 _fg = ["%s:url(%s);" % (k, asset_url("forge/" + os.path.basename(fp), open(fp, "rb").read())) for k, fp in _fg if os.path.exists(fp)]

@@ -291,7 +291,9 @@ void main(){
   gl_FragColor = outc;
 }`;
 
-const MAP_KIND = {mtut:4, m21:9, mj:6, mf:4, mb:12, mg:3, mu:0, mp:1, mc:12, mw:7, mk:6, mh:4, mr:0, ml:4, mt:5, md:4, my:0, m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, me:10, m12:3, m13:4, m14:10};
+// 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds"): the overlay follows the art, so the Outskirts (m1)
+// take the meadow look (4) and Thistlewood (mf) the wet forest (0).
+const MAP_KIND = {mtut:4, m21:9, mj:6, mf:0, mb:12, mg:3, mu:0, mp:1, mc:12, mw:7, mk:6, mh:4, mr:0, ml:4, mt:5, md:4, my:0, m1:4, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, me:10, m12:3, m13:4, m14:10};
 
 const layers = new Set();
 let raf = null, t0 = performance.now();

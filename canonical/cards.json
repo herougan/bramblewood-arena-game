@@ -16603,7 +16603,19 @@
         "Lagomorph",
         "Equid",
         "Bovine",
-        "Primate"
+        "Primate",
+        "Mammal",
+        "Megafauna",
+        "Feline",
+        "Procyonid",
+        "Mustelid",
+        "Erinaceid",
+        "Herpestid",
+        "Hyaenid",
+        "Xenarthran",
+        "Bat",
+        "Pinniped",
+        "Cetacean"
       ]
     },
     "eggKind": "beast",
